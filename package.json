@@ -1,14 +1,14 @@
 {
-  "name": "scm-macro-process-register",
+  "name": "journi",
   "version": "1.0.0",
   "type": "module",
+  "description": "journi — the human side of change, mapped as a journey. Human Change Management application.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "firebase": "^10.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.0"
