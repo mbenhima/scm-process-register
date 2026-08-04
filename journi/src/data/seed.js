@@ -94,6 +94,7 @@ export function buildSeed() {
     { id: 'u-cm-atlas-erp', name: 'Nadia Chraibi', email: 'nadia.chraibi@atlas-industrial.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-atlas-erp', language: 'fr' },
     { id: 'u-cm-atlas-auto', name: 'Omar Tazi', email: 'omar.tazi@atlas-industrial.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-atlas-auto', language: 'fr' },
     { id: 'u-cm-atlas-qms', name: 'Fatima Zahra Naciri', email: 'fz.naciri@atlas-industrial.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-atlas-qms', language: 'fr' },
+    { id: 'u-cm-atlas-safety', name: 'Yassine Berrada', email: 'yassine.berrada@atlas-industrial.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-atlas-safety-culture', language: 'fr' },
     { id: 'u-cm-maghreb-erp', name: 'Hicham Alaoui', email: 'hicham.alaoui@maghreb-logistics.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-maghreb-erp', language: 'fr' },
     { id: 'u-cm-maghreb-auto', name: 'Salma Benjelloun', email: 'salma.benjelloun@maghreb-logistics.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-maghreb-auto', language: 'ar' },
     { id: 'u-cm-maghreb-qms', name: 'Rachid Ouazzani', email: 'rachid.ouazzani@maghreb-logistics.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-maghreb-qms', language: 'ar' },

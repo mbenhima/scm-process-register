@@ -19,7 +19,7 @@ export default function Dashboard() {
   const avgReadiness = projects.length
     ? Math.round(projects.reduce((a, p) => a + readinessIndex(p), 0) / projects.length)
     : 0
-  const totalPeople = projects.reduce((a, p) => a + (parseInt((p.targetPopulation || '').replace(/[^\d]/g, '')) || 0), 0)
+  const totalPeople = projects.reduce((a, p) => a + (parseInt((p.targetPopulation || '').match(/[\d,]+/)?.[0].replace(/,/g, '')) || 0), 0)
   const openRisks = projects.reduce((a, p) => a + p.risks.filter((r) => r.status === 'open').length, 0)
 
   const byPhase = { unfreeze: [], change: [], refreeze: [] }
