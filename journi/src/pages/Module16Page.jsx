@@ -116,6 +116,7 @@ function Content({ project }) {
   const orgProjects = useOrgProjects(org?.id)
   const [zoom, setZoom] = useState('project')
   const [shared, setShared] = useState(false)
+  const [newEvent, setNewEvent] = useState({ label: '', offsetDays: 0, type: 'milestone' })
 
   return (
     <div className="space-y-5">
@@ -166,6 +167,37 @@ function Content({ project }) {
               </div>
             ))}
         </div>
+        <div className="grid sm:grid-cols-4 gap-2 mt-3 pt-3 border-t border-brand-50">
+          <input
+            className="input sm:col-span-2"
+            placeholder="Event label, e.g. Go-live, Plant 1"
+            value={newEvent.label}
+            onChange={(e) => setNewEvent({ ...newEvent, label: e.target.value })}
+          />
+          <input
+            type="number"
+            className="input"
+            placeholder="Day offset (+/-)"
+            value={newEvent.offsetDays}
+            onChange={(e) => setNewEvent({ ...newEvent, offsetDays: e.target.value })}
+          />
+          <select className="input" value={newEvent.type} onChange={(e) => setNewEvent({ ...newEvent, type: e.target.value })}>
+            <option value="milestone">milestone</option>
+            <option value="communication">communication</option>
+            <option value="training">training</option>
+            <option value="assessment">assessment</option>
+          </select>
+        </div>
+        <button
+          className="btn-primary text-xs mt-2"
+          onClick={() => {
+            if (!newEvent.label.trim()) return
+            addSubItem(project.id, 'journeyEvents', { label: newEvent.label, offsetDays: Number(newEvent.offsetDays) || 0, type: newEvent.type })
+            setNewEvent({ label: '', offsetDays: 0, type: 'milestone' })
+          }}
+        >
+          {t('add')}
+        </button>
       </div>
     </div>
   )

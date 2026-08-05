@@ -35,7 +35,14 @@ function Content({ project }) {
               </button>
             ))}
           </div>
-          <p className="text-sm text-ink/60">{project.bridgesNote}</p>
+          <label className="label">Notes — what you're observing at this stage</label>
+          <textarea
+            className="input text-sm"
+            rows={2}
+            placeholder="e.g. Finance team entering Neutral Zone; shop floor still in Ending"
+            value={project.bridgesNote}
+            onChange={(e) => updateProjectMeta(project.id, { bridgesNote: e.target.value })}
+          />
         </div>
 
         <div className="card p-5">
@@ -53,7 +60,14 @@ function Content({ project }) {
               </button>
             ))}
           </div>
-          <p className="text-sm text-ink/60">{project.sentimentSnapshot}</p>
+          <label className="label">Notes — sentiment snapshot</label>
+          <textarea
+            className="input text-sm"
+            rows={2}
+            placeholder="e.g. Mixed Denial/Resistance among shop-floor supervisors"
+            value={project.sentimentSnapshot}
+            onChange={(e) => updateProjectMeta(project.id, { sentimentSnapshot: e.target.value })}
+          />
         </div>
       </div>
 
