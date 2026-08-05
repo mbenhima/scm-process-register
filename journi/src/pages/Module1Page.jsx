@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { visibleOrganizations } from '../utils/rbac.js'
+import { visibleOrganizations, canManageHierarchy } from '../utils/rbac.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
@@ -18,9 +18,22 @@ function Field({ label, children }) {
 
 export default function Module1Page() {
   const { t } = useI18n()
-  const { data, currentUser, addGroup, addOrganization, addMainProject, addCmProject } = useAppState()
+  const {
+    data,
+    currentUser,
+    addGroup,
+    addOrganization,
+    updateOrganization,
+    deleteGroup,
+    deleteOrganization,
+    deleteMainProject,
+    deleteCmProject,
+    addMainProject,
+    addCmProject,
+  } = useAppState()
   const [modal, setModal] = useState(null)
   const [form, setForm] = useState({})
+  const canEdit = canManageHierarchy(currentUser?.role)
 
   const orgs = visibleOrganizations(currentUser, data)
 
@@ -42,6 +55,7 @@ export default function Module1Page() {
         employeeCount: Number(form.employeeCount) || 0,
         sites: (form.sites || '').split(',').map((s) => s.trim()).filter(Boolean),
         languages: (form.languages || 'en').split(',').map((s) => s.trim()),
+        defaultLanguage: form.defaultLanguage || 'en',
       })
     if (modal === 'mp')
       addMainProject({
@@ -73,23 +87,32 @@ export default function Module1Page() {
         title={t('navM1')}
         description="Group → Organization → Projects. Every Change Management Project carries an optional link to zero or one Main Project."
         actions={
-          <>
-            <button className="btn-secondary" onClick={() => openModal('group')}>
-              + {t('group')}
-            </button>
-            <button className="btn-secondary" onClick={() => openModal('org')}>
-              + {t('organization')}
-            </button>
-          </>
+          canEdit && (
+            <>
+              <button className="btn-secondary" onClick={() => openModal('group')}>
+                + {t('group')}
+              </button>
+              <button className="btn-secondary" onClick={() => openModal('org')}>
+                + {t('organization')}
+              </button>
+            </>
+          )
         }
       />
 
       <div className="space-y-4">
         {data.groups.map((g) => (
           <div key={g.id} className="card p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Badge tone="sand">{t('group')}</Badge>
-              <h3 className="font-semibold text-brand-950">{g.name}</h3>
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <div className="flex items-center gap-2">
+                <Badge tone="sand">{t('group')}</Badge>
+                <h3 className="font-semibold text-brand-950">{g.name}</h3>
+              </div>
+              {canEdit && (
+                <button className="btn-danger text-xs" onClick={() => deleteGroup(g.id)}>
+                  {t('delete')}
+                </button>
+              )}
             </div>
           </div>
         ))}
@@ -111,15 +134,36 @@ export default function Module1Page() {
                     {t(`sector_${org.sector}`)} · {org.employeeCount.toLocaleString()} employees · {org.sites?.length || 0} sites ·{' '}
                     {org.languages?.join(', ').toUpperCase()}
                   </p>
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    <span className="text-[11px] text-ink/40">{t('defaultLanguage')}:</span>
+                    {canEdit ? (
+                      <select
+                        className="input py-0.5 px-1.5 text-xs w-auto"
+                        value={org.defaultLanguage || 'en'}
+                        onChange={(e) => updateOrganization(org.id, { defaultLanguage: e.target.value })}
+                      >
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                        <option value="ar">AR</option>
+                      </select>
+                    ) : (
+                      <Badge tone="gray">{(org.defaultLanguage || 'en').toUpperCase()}</Badge>
+                    )}
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <button className="btn-ghost text-xs" onClick={() => openModal('mp', { orgId: org.id })}>
-                    + {t('mainProject')}
-                  </button>
-                  <button className="btn-ghost text-xs" onClick={() => openModal('cm', { orgId: org.id })}>
-                    + {t('cmProject')}
-                  </button>
-                </div>
+                {canEdit && (
+                  <div className="flex gap-2">
+                    <button className="btn-ghost text-xs" onClick={() => openModal('mp', { orgId: org.id })}>
+                      + {t('mainProject')}
+                    </button>
+                    <button className="btn-ghost text-xs" onClick={() => openModal('cm', { orgId: org.id })}>
+                      + {t('cmProject')}
+                    </button>
+                    <button className="btn-danger text-xs" onClick={() => deleteOrganization(org.id)}>
+                      {t('delete')}
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
@@ -133,7 +177,14 @@ export default function Module1Page() {
                         <div key={mp.id} className="rounded-lg border border-brand-100 p-3">
                           <div className="flex items-center justify-between">
                             <span className="font-medium text-sm text-brand-950">{mp.name}</span>
-                            <Badge tone="sand">{t(`archetype_${mp.type}`)}</Badge>
+                            <div className="flex items-center gap-1.5">
+                              <Badge tone="sand">{t(`archetype_${mp.type}`)}</Badge>
+                              {canEdit && (
+                                <button className="btn-danger text-xs" onClick={() => deleteMainProject(mp.id)}>
+                                  {t('delete')}
+                                </button>
+                              )}
+                            </div>
                           </div>
                           <p className="text-xs text-ink/50 mt-1">
                             {mp.durationMonths}mo · {mp.budgetBand} · {mp.executiveSponsor}
@@ -158,7 +209,14 @@ export default function Module1Page() {
                         <div key={cm.id} className="rounded-lg border border-brand-100 p-3">
                           <div className="flex items-center justify-between">
                             <span className="font-medium text-sm text-brand-950">{cm.name}</span>
-                            <Badge tone="sand">{t(`lewin_${cm.lewinPhase}`)}</Badge>
+                            <div className="flex items-center gap-1.5">
+                              <Badge tone="sand">{t(`lewin_${cm.lewinPhase}`)}</Badge>
+                              {canEdit && (
+                                <button className="btn-danger text-xs" onClick={() => deleteCmProject(cm.id)}>
+                                  {t('delete')}
+                                </button>
+                              )}
+                            </div>
                           </div>
                           <p className="text-xs text-ink/50 mt-1">{cm.changeManager}</p>
                           <p className="text-[11px] mt-1">{mp ? `↳ ${t('linkedMainProject')}: ${mp.name}` : `↳ ${t('standalone')}`}</p>
@@ -241,6 +299,13 @@ export default function Module1Page() {
         </Field>
         <Field label={`${t('language')} (en,fr,ar)`}>
           <input className="input" value={form.languages || 'en'} onChange={(e) => setForm({ ...form, languages: e.target.value })} />
+        </Field>
+        <Field label={t('defaultLanguage')}>
+          <select className="input" value={form.defaultLanguage || 'en'} onChange={(e) => setForm({ ...form, defaultLanguage: e.target.value })}>
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="ar">AR</option>
+          </select>
         </Field>
       </Modal>
 

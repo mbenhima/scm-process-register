@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { buildSeed } from '../data/seed.js'
 import { uid } from '../utils/id.js'
+import { useI18n } from '../i18n/index.jsx'
 
 const AppStateContext = createContext(null)
 const STORAGE_KEY = 'journi.state.v1'
@@ -23,6 +24,7 @@ function updateProjectIn(list, projectId, fn) {
 }
 
 export function AppStateProvider({ children }) {
+  const { setLang } = useI18n()
   const [data, setData] = useState(loadInitialState)
   const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('journi.currentUser') || null)
   const [scope, setScopeState] = useState(() => {
@@ -48,29 +50,53 @@ export function AppStateProvider({ children }) {
 
   const currentUser = useMemo(() => data.users.find((u) => u.id === currentUserId) || null, [data.users, currentUserId])
 
-  const setScope = useCallback((next) => setScopeState((prev) => ({ ...prev, ...next })), [])
+  // Switching Organization re-applies that tenant's configured default language —
+  // a personal language choice should not permanently "supersede" every
+  // Organization/Group's own setting once you move between tenants.
+  const setScope = useCallback(
+    (next) => {
+      if (next.orgId) {
+        setScopeState((prev) => {
+          if (next.orgId !== prev.orgId) {
+            const org = data.organizations.find((o) => o.id === next.orgId)
+            if (org?.defaultLanguage) setLang(org.defaultLanguage)
+          }
+          return { ...prev, ...next }
+        })
+      } else {
+        setScopeState((prev) => ({ ...prev, ...next }))
+      }
+    },
+    [data.organizations, setLang],
+  )
 
   const signIn = useCallback(
     (userId) => {
       setCurrentUserId(userId)
       const user = data.users.find((u) => u.id === userId)
       if (user) {
+        let org = null
         if (user.scopeType === 'project') {
           const proj = data.cmProjects.find((p) => p.id === user.scopeId)
+          org = data.organizations.find((o) => o.id === proj?.orgId) || null
           setScopeState({ orgId: proj?.orgId || null, cmProjectId: user.scopeId })
         } else if (user.scopeType === 'organization') {
+          org = data.organizations.find((o) => o.id === user.scopeId) || null
           setScopeState({ orgId: user.scopeId, cmProjectId: null })
         } else if (user.scopeType === 'group') {
-          const org = data.organizations.find((o) => o.groupId === user.scopeId)
+          org = data.organizations.find((o) => o.groupId === user.scopeId) || null
           setScopeState({ orgId: org?.id || null, cmProjectId: null })
         } else {
-          const org = data.organizations[0]
+          org = data.organizations[0]
           const proj = data.cmProjects.find((p) => p.orgId === org.id)
           setScopeState({ orgId: org.id, cmProjectId: proj?.id || null })
         }
+        // Precedence: explicit per-user preference, then the tenant's configured
+        // default, then the platform fallback — never a stray leftover session value.
+        setLang(user.language || org?.defaultLanguage || 'en')
       }
     },
-    [data],
+    [data, setLang],
   )
 
   const signOut = useCallback(() => setCurrentUserId(null), [])
@@ -295,6 +321,59 @@ export function AppStateProvider({ children }) {
     })
   }, [])
 
+  const updateOrganization = useCallback((orgId, patch) => {
+    setData((prev) => ({ ...prev, organizations: prev.organizations.map((o) => (o.id === orgId ? { ...o, ...patch } : o)) }))
+  }, [])
+
+  const deleteGroup = useCallback((groupId) => {
+    setData((prev) => ({
+      ...prev,
+      groups: prev.groups.filter((g) => g.id !== groupId),
+      organizations: prev.organizations.map((o) => (o.groupId === groupId ? { ...o, groupId: null } : o)),
+    }))
+  }, [])
+
+  const deleteMainProject = useCallback((mainProjectId) => {
+    setData((prev) => ({
+      ...prev,
+      mainProjects: prev.mainProjects.filter((mp) => mp.id !== mainProjectId),
+      cmProjects: prev.cmProjects.map((cm) => (cm.mainProjectId === mainProjectId ? { ...cm, mainProjectId: null } : cm)),
+    }))
+  }, [])
+
+  const deleteCmProject = useCallback((cmProjectId) => {
+    setData((prev) => {
+      const { [cmProjectId]: _drop, ...aiProjectOverride } = prev.aiProjectOverride
+      return {
+        ...prev,
+        cmProjects: prev.cmProjects.filter((cm) => cm.id !== cmProjectId),
+        aiProjectOverride,
+        users: prev.users.filter((u) => !(u.scopeType === 'project' && u.scopeId === cmProjectId)),
+      }
+    })
+  }, [])
+
+  const deleteOrganization = useCallback((orgId) => {
+    setData((prev) => {
+      const cmIdsInOrg = new Set(prev.cmProjects.filter((cm) => cm.orgId === orgId).map((cm) => cm.id))
+      const aiProjectOverride = Object.fromEntries(Object.entries(prev.aiProjectOverride).filter(([id]) => !cmIdsInOrg.has(id)))
+      const { [orgId]: _drop, ...aiOrgActivation } = prev.aiOrgActivation
+      return {
+        ...prev,
+        organizations: prev.organizations.filter((o) => o.id !== orgId),
+        mainProjects: prev.mainProjects.filter((mp) => mp.orgId !== orgId),
+        cmProjects: prev.cmProjects.filter((cm) => cm.orgId !== orgId),
+        aiOrgActivation,
+        aiProjectOverride,
+        users: prev.users.filter((u) => {
+          if (u.scopeType === 'organization' && u.scopeId === orgId) return false
+          if (u.scopeType === 'project' && cmIdsInOrg.has(u.scopeId)) return false
+          return true
+        }),
+      }
+    })
+  }, [])
+
   const addUser = useCallback((user) => {
     setData((prev) => ({ ...prev, users: [...prev.users, { id: uid('u'), ...user }] }))
   }, [])
@@ -332,6 +411,11 @@ export function AppStateProvider({ children }) {
       logAiUsage,
       addGroup,
       addOrganization,
+      updateOrganization,
+      deleteGroup,
+      deleteOrganization,
+      deleteMainProject,
+      deleteCmProject,
       addMainProject,
       addCmProject,
       addUser,
@@ -362,6 +446,11 @@ export function AppStateProvider({ children }) {
       logAiUsage,
       addGroup,
       addOrganization,
+      updateOrganization,
+      deleteGroup,
+      deleteOrganization,
+      deleteMainProject,
+      deleteCmProject,
       addMainProject,
       addCmProject,
       addUser,

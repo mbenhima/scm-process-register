@@ -7,10 +7,12 @@ import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
 import { scoreColor, isBlockStalled } from '../utils/compute.js'
+import { canWrite } from '../utils/rbac.js'
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta } = useAppState()
+  const { updateProjectMeta, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const [readiness, setReadiness] = useState(project.managerReadiness ?? 3)
   const stalled = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
 
@@ -36,13 +38,14 @@ function Content({ project }) {
           {[1, 2, 3, 4, 5].map((n) => (
             <button
               key={n}
+              disabled={!canEdit}
               onClick={() => {
                 setReadiness(n)
                 updateProjectMeta(project.id, { managerReadiness: n })
               }}
               className={`flex-1 h-10 rounded-lg text-sm font-semibold ${
                 n === readiness ? 'bg-brand-600 text-white' : 'bg-brand-50 text-ink/40 hover:bg-brand-100'
-              }`}
+              } ${!canEdit ? 'cursor-default' : ''}`}
             >
               {n}
             </button>

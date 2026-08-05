@@ -9,12 +9,18 @@ import EmptyState from '../components/EmptyState.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { RESISTANCE_TYPES } from '../data/constants.js'
 import { severityColor } from '../utils/compute.js'
+import { canWrite } from '../utils/rbac.js'
 
 const STATUS_TONE = { open: 'red', in_progress: 'amber', closed: 'green' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem } = useAppState()
+  const { addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
+  // Employees may submit a concern (per spec, "submission only") even though they
+  // cannot otherwise write to this project; only full write roles can manage
+  // status, classification, or delete an entry.
+  const canManage = canWrite(currentUser?.role)
+  const canSubmit = canManage || currentUser?.role === 'employee'
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({
     type: 'will',
@@ -56,11 +62,13 @@ function Content({ project }) {
         </div>
       )}
 
-      <div className="flex justify-end">
-        <button className="btn-primary" onClick={() => setModal(true)}>
-          + {t('resistanceType')}
-        </button>
-      </div>
+      {canSubmit && (
+        <div className="flex justify-end">
+          <button className="btn-primary" onClick={() => setModal(true)}>
+            + {t('resistanceType')}
+          </button>
+        </div>
+      )}
 
       <div className="space-y-3">
         {project.resistanceLog.length === 0 && <EmptyState />}
@@ -81,13 +89,18 @@ function Content({ project }) {
             <div className="rounded-lg bg-brand-50/60 p-2 text-sm">
               <strong>{t('mitigationAction')}:</strong> {r.mitigation} — {r.owner} ({r.dueDate})
             </div>
-            {r.status !== 'closed' && (
+            {canManage && (
               <div className="mt-2 flex gap-2">
-                <button
-                  className="btn-secondary text-xs"
-                  onClick={() => updateSubItem(project.id, 'resistanceLog', r.id, { status: r.status === 'open' ? 'in_progress' : 'closed' })}
-                >
-                  {r.status === 'open' ? 'Mark in progress' : 'Close'}
+                {r.status !== 'closed' && (
+                  <button
+                    className="btn-secondary text-xs"
+                    onClick={() => updateSubItem(project.id, 'resistanceLog', r.id, { status: r.status === 'open' ? 'in_progress' : 'closed' })}
+                  >
+                    {r.status === 'open' ? 'Mark in progress' : 'Close'}
+                  </button>
+                )}
+                <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'resistanceLog', r.id)}>
+                  {t('delete')}
                 </button>
               </div>
             )}

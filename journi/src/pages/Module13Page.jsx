@@ -6,12 +6,14 @@ import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import ProgressBar from '../components/ProgressBar.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import { canWrite } from '../utils/rbac.js'
 
 const RISK_TONE = { low: 'green', moderate: 'amber', high: 'red' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateCheckpoint, addQuickWin, addLesson, toggleSignoff } = useAppState()
+  const { updateCheckpoint, addQuickWin, addLesson, toggleSignoff, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const [win, setWin] = useState('')
   const [lesson, setLesson] = useState('')
 
@@ -38,10 +40,12 @@ function Content({ project }) {
                 </div>
                 <Badge tone={RISK_TONE[c.regressionRisk]}>{t('regressionRisk')}: {c.regressionRisk}</Badge>
               </>
-            ) : (
+            ) : canEdit ? (
               <button className="btn-secondary text-xs" onClick={() => markComplete(c)}>
                 Record checkpoint
               </button>
+            ) : (
+              <span className="text-xs text-ink/40">{t('noData')}</span>
             )}
           </div>
         ))}
@@ -58,19 +62,21 @@ function Content({ project }) {
             ))}
             {project.sustainment.quickWins.length === 0 && <p className="text-sm text-ink/40 italic">{t('noData')}</p>}
           </div>
-          <div className="flex gap-2">
-            <input className="input" placeholder={t('quickWin')} value={win} onChange={(e) => setWin(e.target.value)} />
-            <button
-              className="btn-primary shrink-0"
-              onClick={() => {
-                if (!win.trim()) return
-                addQuickWin(project.id, { title: win, date: new Date().toISOString().slice(0, 10) })
-                setWin('')
-              }}
-            >
-              {t('add')}
-            </button>
-          </div>
+          {canEdit && (
+            <div className="flex gap-2">
+              <input className="input" placeholder={t('quickWin')} value={win} onChange={(e) => setWin(e.target.value)} />
+              <button
+                className="btn-primary shrink-0"
+                onClick={() => {
+                  if (!win.trim()) return
+                  addQuickWin(project.id, { title: win, date: new Date().toISOString().slice(0, 10) })
+                  setWin('')
+                }}
+              >
+                {t('add')}
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="card p-4">
@@ -83,19 +89,21 @@ function Content({ project }) {
             ))}
             {project.sustainment.lessonsLearned.length === 0 && <p className="text-sm text-ink/40 italic">{t('noData')}</p>}
           </div>
-          <div className="flex gap-2">
-            <input className="input" placeholder={t('lessonsLearned')} value={lesson} onChange={(e) => setLesson(e.target.value)} />
-            <button
-              className="btn-primary shrink-0"
-              onClick={() => {
-                if (!lesson.trim()) return
-                addLesson(project.id, lesson)
-                setLesson('')
-              }}
-            >
-              {t('add')}
-            </button>
-          </div>
+          {canEdit && (
+            <div className="flex gap-2">
+              <input className="input" placeholder={t('lessonsLearned')} value={lesson} onChange={(e) => setLesson(e.target.value)} />
+              <button
+                className="btn-primary shrink-0"
+                onClick={() => {
+                  if (!lesson.trim()) return
+                  addLesson(project.id, lesson)
+                  setLesson('')
+                }}
+              >
+                {t('add')}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -104,7 +112,11 @@ function Content({ project }) {
           <h3 className="font-semibold text-brand-950">{t('sustainmentSignoff')}</h3>
           <p className="text-xs text-ink/50">Formal hand-off to Business-as-Usual ownership — Lewin's Refreeze.</p>
         </div>
-        <button className={project.sustainment.signoff ? 'btn-primary' : 'btn-secondary'} onClick={() => toggleSignoff(project.id)}>
+        <button
+          className={project.sustainment.signoff ? 'btn-primary' : 'btn-secondary'}
+          disabled={!canEdit}
+          onClick={() => toggleSignoff(project.id)}
+        >
           {project.sustainment.signoff ? '✓ Signed off' : 'Sign off'}
         </button>
       </div>

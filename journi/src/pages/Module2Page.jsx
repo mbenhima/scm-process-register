@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { visibleOrganizations, roleLabelKey } from '../utils/rbac.js'
+import { visibleOrganizations, roleLabelKey, canManageUsers } from '../utils/rbac.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
@@ -24,6 +24,7 @@ export default function Module2Page() {
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({})
   const [pending, setPending] = useState(true)
+  const canEdit = canManageUsers(currentUser?.role)
 
   const orgs = visibleOrganizations(currentUser, data)
   const orgIds = new Set(orgs.map((o) => o.id))
@@ -57,9 +58,11 @@ export default function Module2Page() {
         title={t('navM2')}
         description="Role-based access control scoped to Group / Organization / Project. Self-service sign-ups land as pending Employee accounts until approved."
         actions={
-          <button className="btn-primary" onClick={() => setModal(true)}>
-            + {t('add')}
-          </button>
+          canEdit && (
+            <button className="btn-primary" onClick={() => setModal(true)}>
+              + {t('add')}
+            </button>
+          )
         }
       />
 
@@ -71,7 +74,7 @@ export default function Module2Page() {
               <th className="text-start px-4 py-2.5">{t('role')}</th>
               <th className="text-start px-4 py-2.5">{t('scope')}</th>
               <th className="text-start px-4 py-2.5">{t('language')}</th>
-              <th className="text-start px-4 py-2.5">{t('actions')}</th>
+              {canEdit && <th className="text-start px-4 py-2.5">{t('actions')}</th>}
             </tr>
           </thead>
           <tbody>
@@ -91,27 +94,33 @@ export default function Module2Page() {
                     <div className="text-xs text-ink/40">{u.email}</div>
                   </td>
                   <td className="px-4 py-2.5">
-                    <select
-                      className="input py-1 text-xs"
-                      value={u.role}
-                      onChange={(e) => updateUser(u.id, { role: e.target.value })}
-                    >
-                      {ROLE_OPTIONS.map((r) => (
-                        <option key={r} value={r}>
-                          {t(roleLabelKey(r))}
-                        </option>
-                      ))}
-                    </select>
+                    {canEdit ? (
+                      <select
+                        className="input py-1 text-xs"
+                        value={u.role}
+                        onChange={(e) => updateUser(u.id, { role: e.target.value })}
+                      >
+                        {ROLE_OPTIONS.map((r) => (
+                          <option key={r} value={r}>
+                            {t(roleLabelKey(r))}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <Badge tone="sand">{t(roleLabelKey(u.role))}</Badge>
+                    )}
                   </td>
                   <td className="px-4 py-2.5 text-ink/60">
                     <Badge tone="sand">{u.scopeType}</Badge> {scopeLabel}
                   </td>
                   <td className="px-4 py-2.5 uppercase text-xs text-ink/50">{u.language}</td>
-                  <td className="px-4 py-2.5">
-                    <button className="btn-danger text-xs" onClick={() => removeUser(u.id)}>
-                      {t('delete')}
-                    </button>
-                  </td>
+                  {canEdit && (
+                    <td className="px-4 py-2.5">
+                      <button className="btn-danger text-xs" onClick={() => removeUser(u.id)}>
+                        {t('delete')}
+                      </button>
+                    </td>
+                  )}
                 </tr>
               )
             })}
@@ -130,7 +139,7 @@ export default function Module2Page() {
             <div className="text-xs text-ink/50">Requested access · Atlas ERP People Readiness Program</div>
           </div>
           <Badge tone={pending ? 'amber' : 'green'}>{pending ? 'Pending approval' : 'Approved'}</Badge>
-          {pending && (
+          {pending && canEdit && (
             <button className="btn-primary text-xs" onClick={() => setPending(false)}>
               {t('confirm')}
             </button>

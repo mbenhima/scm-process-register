@@ -7,6 +7,7 @@ export const organization = {
   employeeCount: 5200,
   sites: ['Facility 1 — Central Hospital', 'Facility 2 — East Clinic', 'Facility 3 — West Clinic'],
   languages: ['fr', 'en'],
+  defaultLanguage: 'en',
 }
 
 export const mainProjects = [

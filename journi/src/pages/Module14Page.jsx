@@ -9,12 +9,14 @@ import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import { RISK_CATEGORIES } from '../data/constants.js'
 import { riskScore, isHighSeverityRisk } from '../utils/compute.js'
+import { canWrite } from '../utils/rbac.js'
 
 const STATUS_TONE = { open: 'red', mitigating: 'amber', closed: 'green' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem } = useAppState()
+  const { addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const orgProjects = useOrgProjects(project.orgId)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({ category: 'adoption', description: '', likelihood: 3, impact: 3, owner: '', status: 'open' })
@@ -38,11 +40,13 @@ function Content({ project }) {
         </div>
       )}
 
-      <div className="flex justify-end">
-        <button className="btn-primary" onClick={() => setModal(true)}>
-          + {t('riskCategory')}
-        </button>
-      </div>
+      {canEdit && (
+        <div className="flex justify-end">
+          <button className="btn-primary" onClick={() => setModal(true)}>
+            + {t('riskCategory')}
+          </button>
+        </div>
+      )}
 
       <div className="card overflow-x-auto">
         {sorted.length === 0 ? (
@@ -60,6 +64,7 @@ function Content({ project }) {
                 <th className="text-start px-4 py-2.5">{t('riskScore')}</th>
                 <th className="text-start px-4 py-2.5">{t('owner')}</th>
                 <th className="text-start px-4 py-2.5">{t('status')}</th>
+                {canEdit && <th className="px-2 py-2.5" />}
               </tr>
             </thead>
             <tbody>
@@ -76,16 +81,27 @@ function Content({ project }) {
                   </td>
                   <td className="px-4 py-2.5 text-ink/60">{r.owner}</td>
                   <td className="px-4 py-2.5">
-                    <select
-                      className="input py-1 text-xs"
-                      value={r.status}
-                      onChange={(e) => updateSubItem(project.id, 'risks', r.id, { status: e.target.value })}
-                    >
-                      <option value="open">open</option>
-                      <option value="mitigating">mitigating</option>
-                      <option value="closed">closed</option>
-                    </select>
+                    {canEdit ? (
+                      <select
+                        className="input py-1 text-xs"
+                        value={r.status}
+                        onChange={(e) => updateSubItem(project.id, 'risks', r.id, { status: e.target.value })}
+                      >
+                        <option value="open">open</option>
+                        <option value="mitigating">mitigating</option>
+                        <option value="closed">closed</option>
+                      </select>
+                    ) : (
+                      <Badge tone={STATUS_TONE[r.status]}>{r.status}</Badge>
+                    )}
                   </td>
+                  {canEdit && (
+                    <td className="px-2 py-2.5">
+                      <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'risks', r.id)}>
+                        {t('delete')}
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

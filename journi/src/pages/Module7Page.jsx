@@ -7,13 +7,15 @@ import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { BRIDGES_PHASES, SENTIMENT_STAGES } from '../data/constants.js'
 import { inferSentimentStage, hasDivergence } from '../utils/compute.js'
+import { canWrite } from '../utils/rbac.js'
 
 const SENTIMENT_COLOR = { denial: 'bg-red-500', resistance: 'bg-orange-500', exploration: 'bg-amber-400', commitment: 'bg-emerald-500' }
 const BRIDGES_COLOR = { ending: 'bg-red-100 text-red-700', neutral: 'bg-amber-100 text-amber-700', beginning: 'bg-emerald-100 text-emerald-700' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta } = useAppState()
+  const { updateProjectMeta, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const sentiment = project.sentimentStage || inferSentimentStage(project)
   const divergence = hasDivergence(project)
 
@@ -26,23 +28,28 @@ function Content({ project }) {
             {BRIDGES_PHASES.map((phase, idx) => (
               <button
                 key={phase}
+                disabled={!canEdit}
                 onClick={() => updateProjectMeta(project.id, { bridgesPhase: phase })}
                 className={`flex-1 rounded-lg py-2 text-xs font-semibold transition-colors ${
                   project.bridgesPhase === phase ? BRIDGES_COLOR[phase] + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
-                }`}
+                } ${!canEdit ? 'cursor-default' : ''}`}
               >
                 {idx + 1}. {t(`bridges_${phase}`)}
               </button>
             ))}
           </div>
           <label className="label">Notes — what you're observing at this stage</label>
-          <textarea
-            className="input text-sm"
-            rows={2}
-            placeholder="e.g. Finance team entering Neutral Zone; shop floor still in Ending"
-            value={project.bridgesNote}
-            onChange={(e) => updateProjectMeta(project.id, { bridgesNote: e.target.value })}
-          />
+          {canEdit ? (
+            <textarea
+              className="input text-sm"
+              rows={2}
+              placeholder="e.g. Finance team entering Neutral Zone; shop floor still in Ending"
+              value={project.bridgesNote}
+              onChange={(e) => updateProjectMeta(project.id, { bridgesNote: e.target.value })}
+            />
+          ) : (
+            <p className="text-sm text-ink/70">{project.bridgesNote}</p>
+          )}
         </div>
 
         <div className="card p-5">
@@ -51,23 +58,28 @@ function Content({ project }) {
             {SENTIMENT_STAGES.map((s) => (
               <button
                 key={s}
+                disabled={!canEdit}
                 onClick={() => updateProjectMeta(project.id, { sentimentStage: s })}
                 className={`flex-1 rounded-lg py-2 text-[11px] font-semibold text-white transition-opacity ${SENTIMENT_COLOR[s]} ${
                   sentiment === s ? 'opacity-100 ring-2 ring-offset-1 ring-brand-400' : 'opacity-40 hover:opacity-70'
-                }`}
+                } ${!canEdit ? 'cursor-default' : ''}`}
               >
                 {t(`sentiment_${s}`)}
               </button>
             ))}
           </div>
           <label className="label">Notes — sentiment snapshot</label>
-          <textarea
-            className="input text-sm"
-            rows={2}
-            placeholder="e.g. Mixed Denial/Resistance among shop-floor supervisors"
-            value={project.sentimentSnapshot}
-            onChange={(e) => updateProjectMeta(project.id, { sentimentSnapshot: e.target.value })}
-          />
+          {canEdit ? (
+            <textarea
+              className="input text-sm"
+              rows={2}
+              placeholder="e.g. Mixed Denial/Resistance among shop-floor supervisors"
+              value={project.sentimentSnapshot}
+              onChange={(e) => updateProjectMeta(project.id, { sentimentSnapshot: e.target.value })}
+            />
+          ) : (
+            <p className="text-sm text-ink/70">{project.sentimentSnapshot}</p>
+          )}
         </div>
       </div>
 

@@ -7,6 +7,7 @@ import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
 import { scoreColor, isBlockStalled } from '../utils/compute.js'
+import { canWrite } from '../utils/rbac.js'
 
 const BARRIER_HINTS = {
   awareness: ['fear of the unknown', 'insufficient communication reach', 'competing priorities crowding out the message'],
@@ -16,7 +17,7 @@ const BARRIER_HINTS = {
   reinforcement: ['too early — pre go-live', 'no visible recognition of adoption', 'old process still technically available'],
 }
 
-function BlockCard({ project, block }) {
+function BlockCard({ project, block, canEdit }) {
   const { t } = useI18n()
   const { updateAdkar } = useAppState()
   const val = project.adkar[block]
@@ -32,22 +33,27 @@ function BlockCard({ project, block }) {
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
+            disabled={!canEdit}
             onClick={() => updateAdkar(project.id, block, { score: n })}
             className={`flex-1 h-9 rounded-lg text-sm font-semibold transition-colors ${
               n === val.score ? scoreColor(val.score) + ' ring-2 ring-brand-400' : 'bg-brand-50/60 text-ink/30 hover:bg-brand-50'
-            }`}
+            } ${!canEdit ? 'cursor-default' : ''}`}
           >
             {n}
           </button>
         ))}
       </div>
       <label className="label">{t('barrierReason')}</label>
-      <textarea
-        className="input text-sm"
-        rows={2}
-        value={val.note}
-        onChange={(e) => updateAdkar(project.id, block, { note: e.target.value })}
-      />
+      {canEdit ? (
+        <textarea
+          className="input text-sm"
+          rows={2}
+          value={val.note}
+          onChange={(e) => updateAdkar(project.id, block, { note: e.target.value })}
+        />
+      ) : (
+        <p className="text-sm text-ink/70">{val.note}</p>
+      )}
       <div className="mt-2 text-[11px] text-ink/40">
         {t('history')}: {val.history.map((h) => `${h.date}: ${h.score}`).join(' → ')}
       </div>
@@ -57,7 +63,8 @@ function BlockCard({ project, block }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateProjectMeta, updateAdkar } = useAppState()
+  const { addSubItem, updateProjectMeta, updateAdkar, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const [coachForm, setCoachForm] = useState({ managerName: '', cohort: '', barrierBlock: 'desire', note: '' })
   const stalledBlockList = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
 
@@ -71,7 +78,7 @@ function Content({ project }) {
     <div className="space-y-5">
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
         {ADKAR_BLOCKS.map((b) => (
-          <BlockCard key={b} project={project} block={b} />
+          <BlockCard key={b} project={project} block={b} canEdit={canEdit} />
         ))}
       </div>
 
@@ -142,41 +149,45 @@ function Content({ project }) {
             </div>
           ))}
         </div>
-        <div className="grid sm:grid-cols-2 gap-2 mb-2">
-          <input
-            className="input"
-            placeholder={t('owner')}
-            value={coachForm.managerName}
-            onChange={(e) => setCoachForm({ ...coachForm, managerName: e.target.value })}
-          />
-          <input
-            className="input"
-            placeholder={t('cohort')}
-            value={coachForm.cohort}
-            onChange={(e) => setCoachForm({ ...coachForm, cohort: e.target.value })}
-          />
-          <select
-            className="input"
-            value={coachForm.barrierBlock}
-            onChange={(e) => setCoachForm({ ...coachForm, barrierBlock: e.target.value })}
-          >
-            {ADKAR_BLOCKS.map((b) => (
-              <option key={b} value={b}>
-                {t(b)}
-              </option>
-            ))}
-          </select>
-        </div>
-        <textarea
-          className="input mb-2"
-          rows={2}
-          placeholder={t('addCoachingNote')}
-          value={coachForm.note}
-          onChange={(e) => setCoachForm({ ...coachForm, note: e.target.value })}
-        />
-        <button className="btn-primary" onClick={submitCoachNote}>
-          {t('add')}
-        </button>
+        {canEdit && (
+          <>
+            <div className="grid sm:grid-cols-2 gap-2 mb-2">
+              <input
+                className="input"
+                placeholder={t('owner')}
+                value={coachForm.managerName}
+                onChange={(e) => setCoachForm({ ...coachForm, managerName: e.target.value })}
+              />
+              <input
+                className="input"
+                placeholder={t('cohort')}
+                value={coachForm.cohort}
+                onChange={(e) => setCoachForm({ ...coachForm, cohort: e.target.value })}
+              />
+              <select
+                className="input"
+                value={coachForm.barrierBlock}
+                onChange={(e) => setCoachForm({ ...coachForm, barrierBlock: e.target.value })}
+              >
+                {ADKAR_BLOCKS.map((b) => (
+                  <option key={b} value={b}>
+                    {t(b)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <textarea
+              className="input mb-2"
+              rows={2}
+              placeholder={t('addCoachingNote')}
+              value={coachForm.note}
+              onChange={(e) => setCoachForm({ ...coachForm, note: e.target.value })}
+            />
+            <button className="btn-primary" onClick={submitCoachNote}>
+              {t('add')}
+            </button>
+          </>
+        )}
       </div>
     </div>
   )

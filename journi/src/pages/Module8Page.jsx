@@ -7,10 +7,12 @@ import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { VISIBILITY_LEVELS } from '../data/constants.js'
 import { visibilityColor } from '../utils/compute.js'
+import { canWrite } from '../utils/rbac.js'
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, toggleSponsorAction, addSponsorAction } = useAppState()
+  const { updateProjectMeta, toggleSponsorAction, addSponsorAction, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const [newAction, setNewAction] = useState('')
 
   return (
@@ -24,10 +26,11 @@ function Content({ project }) {
             {VISIBILITY_LEVELS.map((v) => (
               <button
                 key={v}
+                disabled={!canEdit}
                 onClick={() => updateProjectMeta(project.id, { sponsor: { ...project.sponsor, visibility: v } })}
                 className={`flex-1 rounded-lg py-2 text-xs font-semibold ${
                   project.sponsor.visibility === v ? visibilityColor(v) + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
-                }`}
+                } ${!canEdit ? 'cursor-default' : ''}`}
               >
                 {t(`visibility${v[0].toUpperCase()}${v.slice(1)}`)}
               </button>
@@ -81,26 +84,34 @@ function Content({ project }) {
         <h3 className="font-semibold text-brand-950 mb-3">{t('sponsorAction')} — Roadmap</h3>
         <div className="space-y-2 mb-3">
           {project.sponsor.actions.map((a) => (
-            <label key={a.id} className="flex items-center gap-3 rounded-lg border border-brand-100 px-3 py-2 cursor-pointer">
-              <input type="checkbox" checked={a.done} onChange={() => toggleSponsorAction(project.id, a.id)} className="accent-brand-600" />
+            <label key={a.id} className={`flex items-center gap-3 rounded-lg border border-brand-100 px-3 py-2 ${canEdit ? 'cursor-pointer' : ''}`}>
+              <input
+                type="checkbox"
+                checked={a.done}
+                disabled={!canEdit}
+                onChange={() => toggleSponsorAction(project.id, a.id)}
+                className="accent-brand-600"
+              />
               <span className={`flex-1 text-sm ${a.done ? 'line-through text-ink/40' : 'text-ink/80'}`}>{a.action}</span>
               <Badge tone="sand">{a.phase}</Badge>
             </label>
           ))}
         </div>
-        <div className="flex gap-2">
-          <input className="input" placeholder={t('sponsorAction')} value={newAction} onChange={(e) => setNewAction(e.target.value)} />
-          <button
-            className="btn-primary shrink-0"
-            onClick={() => {
-              if (!newAction.trim()) return
-              addSponsorAction(project.id, { action: newAction, phase: 'Manage' })
-              setNewAction('')
-            }}
-          >
-            {t('add')}
-          </button>
-        </div>
+        {canEdit && (
+          <div className="flex gap-2">
+            <input className="input" placeholder={t('sponsorAction')} value={newAction} onChange={(e) => setNewAction(e.target.value)} />
+            <button
+              className="btn-primary shrink-0"
+              onClick={() => {
+                if (!newAction.trim()) return
+                addSponsorAction(project.id, { action: newAction, phase: 'Manage' })
+                setNewAction('')
+              }}
+            >
+              {t('add')}
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="card p-4">

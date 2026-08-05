@@ -8,6 +8,7 @@ import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { isHighImpactLowInfluence } from '../utils/compute.js'
+import { canWrite } from '../utils/rbac.js'
 
 const DIMS = ['process', 'tech', 'role', 'location', 'identity']
 
@@ -19,7 +20,8 @@ function impactCellColor(v) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem } = useAppState()
+  const { addSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({ headcount: 50, impact: { process: 3, tech: 3, role: 3, location: 3, identity: 3 }, influence: 3 })
 
@@ -31,11 +33,13 @@ function Content({ project }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        <button className="btn-primary" onClick={() => setModal(true)}>
-          + {t('stakeholderGroup')}
-        </button>
-      </div>
+      {canEdit && (
+        <div className="flex justify-end">
+          <button className="btn-primary" onClick={() => setModal(true)}>
+            + {t('stakeholderGroup')}
+          </button>
+        </div>
+      )}
 
       <div className="card overflow-x-auto">
         {project.stakeholderGroups.length === 0 ? (
@@ -55,6 +59,7 @@ function Content({ project }) {
                 ))}
                 <th className="text-center px-2 py-2.5">{t('influence')}</th>
                 <th className="text-start px-4 py-2.5">{t('status')}</th>
+                {canEdit && <th className="px-2 py-2.5" />}
               </tr>
             </thead>
             <tbody>
@@ -73,6 +78,13 @@ function Content({ project }) {
                   <td className="px-4 py-2.5">
                     {isHighImpactLowInfluence(sh) && <Badge tone="red">{t('highImpactLowInfluence')}</Badge>}
                   </td>
+                  {canEdit && (
+                    <td className="px-2 py-2.5">
+                      <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'stakeholderGroups', sh.id)}>
+                        {t('delete')}
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

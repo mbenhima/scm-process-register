@@ -9,12 +9,14 @@ import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
+import { canWrite } from '../utils/rbac.js'
 
 const STATUS_TONE = { sent: 'green', scheduled: 'amber', draft: 'gray' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem } = useAppState()
+  const { addSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const orgProjects = useOrgProjects(project.orgId)
   const otherProjects = orgProjects.filter((p) => p.id !== project.id)
   const [modal, setModal] = useState(false)
@@ -41,11 +43,13 @@ function Content({ project }) {
         </div>
       )}
 
-      <div className="flex justify-end">
-        <button className="btn-primary" onClick={() => setModal(true)}>
-          + {t('message')}
-        </button>
-      </div>
+      {canEdit && (
+        <div className="flex justify-end">
+          <button className="btn-primary" onClick={() => setModal(true)}>
+            + {t('message')}
+          </button>
+        </div>
+      )}
 
       <div className="card overflow-x-auto">
         {project.communications.length === 0 ? (
@@ -62,6 +66,7 @@ function Content({ project }) {
                 <th className="text-start px-4 py-2.5">{t('timing')}</th>
                 <th className="text-start px-4 py-2.5">{t('linkedAdkarBlock')}</th>
                 <th className="text-start px-4 py-2.5">{t('status')}</th>
+                {canEdit && <th className="px-2 py-2.5" />}
               </tr>
             </thead>
             <tbody>
@@ -77,6 +82,13 @@ function Content({ project }) {
                   <td className="px-4 py-2.5">
                     <Badge tone={STATUS_TONE[c.status]}>{c.status}</Badge>
                   </td>
+                  {canEdit && (
+                    <td className="px-2 py-2.5">
+                      <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'communications', c.id)}>
+                        {t('delete')}
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

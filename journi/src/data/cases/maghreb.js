@@ -7,6 +7,7 @@ export const organization = {
   employeeCount: 4500,
   sites: ['Hub 1 — Casablanca Port', 'Hub 2 — Tangier Med', 'Hub 3 — Fes', 'Hub 4 — Marrakech', 'Hub 5 — Agadir'],
   languages: ['fr', 'ar'],
+  defaultLanguage: 'ar',
 }
 
 export const mainProjects = [

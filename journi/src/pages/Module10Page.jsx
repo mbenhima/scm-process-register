@@ -8,10 +8,12 @@ import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import ProgressBar from '../components/ProgressBar.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import { canWrite } from '../utils/rbac.js'
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem } = useAppState()
+  const { addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({ curriculum: '', track: '', facilitator: '', format: 'Classroom', completion: 0, certified: false })
 
@@ -32,11 +34,13 @@ function Content({ project }) {
         </div>
       )}
 
-      <div className="flex justify-end">
-        <button className="btn-primary" onClick={() => setModal(true)}>
-          + {t('curriculum')}
-        </button>
-      </div>
+      {canEdit && (
+        <div className="flex justify-end">
+          <button className="btn-primary" onClick={() => setModal(true)}>
+            + {t('curriculum')}
+          </button>
+        </div>
+      )}
 
       <div className="card overflow-x-auto">
         {project.trainings.length === 0 ? (
@@ -53,6 +57,7 @@ function Content({ project }) {
                 <th className="text-start px-4 py-2.5">{t('format')}</th>
                 <th className="text-start px-4 py-2.5 w-40">{t('completion')}</th>
                 <th className="text-start px-4 py-2.5">{t('certification')}</th>
+                {canEdit && <th className="px-2 py-2.5" />}
               </tr>
             </thead>
             <tbody>
@@ -70,12 +75,20 @@ function Content({ project }) {
                   </td>
                   <td className="px-4 py-2.5">
                     <button
+                      disabled={!canEdit}
                       onClick={() => updateSubItem(project.id, 'trainings', tr.id, { certified: !tr.certified })}
-                      className="cursor-pointer"
+                      className={canEdit ? 'cursor-pointer' : 'cursor-default'}
                     >
                       <Badge tone={tr.certified ? 'green' : 'gray'}>{tr.certified ? t('certification') : 'trained only'}</Badge>
                     </button>
                   </td>
+                  {canEdit && (
+                    <td className="px-2 py-2.5">
+                      <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'trainings', tr.id)}>
+                        {t('delete')}
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

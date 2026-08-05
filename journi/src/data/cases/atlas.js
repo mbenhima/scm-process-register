@@ -7,6 +7,7 @@ export const organization = {
   employeeCount: 3100,
   sites: ['Plant 1 — Ain Sebaâ', 'Plant 2 — Nouaceur', 'Plant 3 — Mohammedia', 'Shared Services Center'],
   languages: ['fr', 'ar'],
+  defaultLanguage: 'fr',
 }
 
 export const mainProjects = [

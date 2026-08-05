@@ -1,20 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { visibleOrganizations, visibleProjects } from '../utils/rbac.js'
+import { availableRollupLevels, projectsForLevel } from '../utils/rbac.js'
+import { useScopedOrg } from '../utils/useScoped.js'
 import { readinessIndex, stalledBlocks, hasDivergence } from '../utils/compute.js'
 import PageHeader from '../components/PageHeader.jsx'
 import StatCard from '../components/StatCard.jsx'
 import Badge from '../components/Badge.jsx'
+import LevelSelector from '../components/LevelSelector.jsx'
 
 export default function Dashboard() {
   const { t } = useI18n()
-  const { data, currentUser, setScope } = useAppState()
+  const { data, currentUser, scope, setScope } = useAppState()
   const navigate = useNavigate()
+  const org = useScopedOrg()
 
-  const orgs = visibleOrganizations(currentUser, data)
-  const projects = orgs.flatMap((o) => visibleProjects(currentUser, data, o.id))
+  const rollupLevels = availableRollupLevels(currentUser, org)
+  const levels = [...(scope.cmProjectId ? ['project'] : []), ...rollupLevels]
+  const [levelPref, setLevelPref] = useState(null)
+  const level = levels.includes(levelPref) ? levelPref : levels[0] || 'organization'
+
+  const projects = org ? projectsForLevel(data, level, scope, org) : []
 
   const avgReadiness = projects.length
     ? Math.round(projects.reduce((a, p) => a + readinessIndex(p), 0) / projects.length)
@@ -30,9 +37,16 @@ export default function Dashboard() {
     navigate('/app/m6')
   }
 
+  const levelLabel = level === 'project' ? t('cmProject') : level === 'group' ? t('group') : t('organization')
+
   return (
     <div>
-      <PageHeader title={t('navPortfolio')} description={t('appTagline')} />
+      <PageHeader
+        title={t('navPortfolio')}
+        description={t('appTagline')}
+        actions={<LevelSelector levels={levels} value={level} onChange={setLevelPref} />}
+      />
+      <p className="text-xs text-ink/40 -mt-4 mb-4">{t('viewingAtLevel')}: {levelLabel}</p>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <StatCard label={t('activeInitiatives')} value={projects.length} />
@@ -82,13 +96,13 @@ export default function Dashboard() {
           <tbody>
             {projects.map((p) => {
               const ri = readinessIndex(p)
-              const org = data.organizations.find((o) => o.id === p.orgId)
+              const projOrg = data.organizations.find((o) => o.id === p.orgId)
               const stalled = stalledBlocks(p)
               const divergence = hasDivergence(p)
               return (
                 <tr key={p.id} className="border-t border-brand-50 hover:bg-brand-50/40">
                   <td className="px-4 py-2.5 font-medium text-brand-950">{p.name}</td>
-                  <td className="px-4 py-2.5 text-ink/60">{org?.name}</td>
+                  <td className="px-4 py-2.5 text-ink/60">{projOrg?.name}</td>
                   <td className="px-4 py-2.5">
                     <span className={`font-semibold ${ri < 50 ? 'text-red-600' : ri < 70 ? 'text-amber-600' : 'text-brand-700'}`}>{ri}%</span>
                   </td>

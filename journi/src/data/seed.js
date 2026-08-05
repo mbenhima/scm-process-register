@@ -1,6 +1,7 @@
 import { uid } from '../utils/id.js'
 import aiUseCaseCatalog from './aiUseCases.js'
 import * as atlas from './cases/atlas.js'
+import * as atlasTangier from './cases/atlasTangier.js'
 import * as maghreb from './cases/maghreb.js'
 import * as meridia from './cases/meridia.js'
 
@@ -41,13 +42,13 @@ function normalizeCmProject(raw) {
 }
 
 export function buildSeed() {
-  const groups = [{ id: 'grp-atlas', name: 'Atlas Industrial Group' }]
+  const groups = [{ id: 'grp-atlas', name: 'Atlas Industrial Group', defaultLanguage: 'fr' }]
 
-  const organizations = [atlas.organization, maghreb.organization, meridia.organization]
+  const organizations = [atlas.organization, atlasTangier.organization, maghreb.organization, meridia.organization]
 
-  const mainProjects = [...atlas.mainProjects, ...maghreb.mainProjects, ...meridia.mainProjects]
+  const mainProjects = [...atlas.mainProjects, ...atlasTangier.mainProjects, ...maghreb.mainProjects, ...meridia.mainProjects]
 
-  const cmProjects = [...atlas.cmProjects, ...maghreb.cmProjects, ...meridia.cmProjects].map(normalizeCmProject)
+  const cmProjects = [...atlas.cmProjects, ...atlasTangier.cmProjects, ...maghreb.cmProjects, ...meridia.cmProjects].map(normalizeCmProject)
 
   // AI Use Case Governance: org-level activation = union of everything any of its projects use.
   // Project-level entries mirror the seeded "activated (example)" list; undefined = inherit org default.
@@ -95,6 +96,7 @@ export function buildSeed() {
     { id: 'u-cm-atlas-auto', name: 'Omar Tazi', email: 'omar.tazi@atlas-industrial.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-atlas-auto', language: 'fr' },
     { id: 'u-cm-atlas-qms', name: 'Fatima Zahra Naciri', email: 'fz.naciri@atlas-industrial.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-atlas-qms', language: 'fr' },
     { id: 'u-cm-atlas-safety', name: 'Yassine Berrada', email: 'yassine.berrada@atlas-industrial.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-atlas-safety-culture', language: 'fr' },
+    { id: 'u-cm-atlas-tangier', name: 'Imane Fassi-Fihri', email: 'imane.fassifihri@atlas-industrial.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-atlas-tangier', language: 'fr' },
     { id: 'u-cm-maghreb-erp', name: 'Hicham Alaoui', email: 'hicham.alaoui@maghreb-logistics.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-maghreb-erp', language: 'fr' },
     { id: 'u-cm-maghreb-auto', name: 'Salma Benjelloun', email: 'salma.benjelloun@maghreb-logistics.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-maghreb-auto', language: 'ar' },
     { id: 'u-cm-maghreb-qms', name: 'Rachid Ouazzani', email: 'rachid.ouazzani@maghreb-logistics.example', role: 'change_manager', scopeType: 'project', scopeId: 'cm-maghreb-qms', language: 'ar' },

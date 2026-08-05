@@ -2,7 +2,7 @@ import React from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { useScopedOrg, useMainProject } from '../utils/useScoped.js'
-import { visibleProjects } from '../utils/rbac.js'
+import { visibleProjects, canWrite } from '../utils/rbac.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
@@ -22,7 +22,8 @@ function Field({ label, children }) {
 
 function ProjectDetail({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta } = useAppState()
+  const { updateProjectMeta, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role)
   const mainProject = useMainProject(project.mainProjectId)
 
   return (
@@ -45,6 +46,7 @@ function ProjectDetail({ project }) {
             <select
               className="input"
               value={project.changeType}
+              disabled={!canEdit}
               onChange={(e) => updateProjectMeta(project.id, { changeType: e.target.value })}
             >
               {CHANGE_TYPES.map((c) => (
@@ -58,6 +60,7 @@ function ProjectDetail({ project }) {
             <select
               className="input"
               value={project.lewinPhase}
+              disabled={!canEdit}
               onChange={(e) => updateProjectMeta(project.id, { lewinPhase: e.target.value })}
             >
               {LEWIN.map((l) => (
@@ -73,6 +76,7 @@ function ProjectDetail({ project }) {
             className="input"
             rows={2}
             value={project.businessDriver}
+            readOnly={!canEdit}
             onChange={(e) => updateProjectMeta(project.id, { businessDriver: e.target.value })}
           />
         </Field>
@@ -80,6 +84,7 @@ function ProjectDetail({ project }) {
           <input
             className="input"
             value={project.targetPopulation}
+            readOnly={!canEdit}
             onChange={(e) => updateProjectMeta(project.id, { targetPopulation: e.target.value })}
           />
         </Field>
@@ -88,6 +93,7 @@ function ProjectDetail({ project }) {
             className="input"
             rows={2}
             value={project.successCriteria}
+            readOnly={!canEdit}
             onChange={(e) => updateProjectMeta(project.id, { successCriteria: e.target.value })}
           />
         </Field>
