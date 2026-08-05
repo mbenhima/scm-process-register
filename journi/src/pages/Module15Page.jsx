@@ -41,6 +41,8 @@ export default function Module15Page() {
     .filter(Boolean)
 
   const levelLabel = level === 'project' ? t('cmProject') : level === 'group' ? t('group') : t('organization')
+  const group = org?.groupId ? data.groups.find((g) => g.id === org.groupId) : null
+  const scopeName = level === 'project' ? project?.name : level === 'group' ? group?.name : org?.name
 
   return (
     <div className="space-y-5">
@@ -120,7 +122,7 @@ export default function Module15Page() {
           </div>
 
           <div className="card p-5 overflow-x-auto">
-            <h3 className="font-semibold text-brand-950 mb-3">{t('heatmapByDept')} — {levelLabel === t('cmProject') ? project?.name : org ? org.name : 'Portfolio'}</h3>
+            <h3 className="font-semibold text-brand-950 mb-3">{t('heatmapByDept')} — {scopeName || 'Portfolio'}</h3>
             <table className="w-full text-sm">
               <thead className="text-xs uppercase text-ink/40">
                 <tr>
