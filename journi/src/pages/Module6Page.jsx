@@ -57,7 +57,7 @@ function BlockCard({ project, block }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateProjectMeta } = useAppState()
+  const { addSubItem, updateProjectMeta, updateAdkar } = useAppState()
   const [coachForm, setCoachForm] = useState({ managerName: '', cohort: '', barrierBlock: 'desire', note: '' })
   const stalledBlockList = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
 
