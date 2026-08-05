@@ -170,7 +170,7 @@ const dict = {
   visibility: { en: 'Visibility', fr: 'Visibilité', ar: 'الظهور' },
   engagement: { en: 'Engagement', fr: 'Engagement', ar: 'الانخراط' },
   sponsorAction: { en: 'Sponsor Action', fr: 'Action du sponsor', ar: 'إجراء الراعي' },
-  visibilityLow: { en: 'Weak', fr: 'Faible', ar: 'ضعيف' },
+  visibilityWeak: { en: 'Weak', fr: 'Faible', ar: 'ضعيف' },
   visibilityModerate: { en: 'Moderate', fr: 'Modéré', ar: 'متوسط' },
   visibilityStrong: { en: 'Strong', fr: 'Fort', ar: 'قوي' },
 
