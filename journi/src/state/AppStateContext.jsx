@@ -275,7 +275,16 @@ export function AppStateProvider({ children }) {
         coachingNotes: [],
         journeyEvents: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
-        sustainment: { checkpoints: [], quickWins: [], lessonsLearned: [], signoff: false },
+        sustainment: {
+          checkpoints: [
+            { id: uid('chk'), label: '30-day', daysAfterGoLive: 30, adoptionRate: null, regressionRisk: null, status: 'not_due' },
+            { id: uid('chk'), label: '60-day', daysAfterGoLive: 60, adoptionRate: null, regressionRisk: null, status: 'not_due' },
+            { id: uid('chk'), label: '90-day', daysAfterGoLive: 90, adoptionRate: null, regressionRisk: null, status: 'not_due' },
+          ],
+          quickWins: [],
+          lessonsLearned: [],
+          signoff: false,
+        },
         ...cm,
       }
       return {
