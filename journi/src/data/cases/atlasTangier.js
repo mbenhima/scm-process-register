@@ -29,7 +29,7 @@ export const cmProjects = [
   {
     id: 'cm-atlas-tangier',
     orgId: 'org-atlas-tangier',
-    mainProjectId: 'mp-atlas-tangier-erp',
+    mainProjectIds: ['mp-atlas-tangier-erp'],
     name: 'Tangier Plant Adoption Program',
     changeManager: 'Change Manager, Tangier Plant Program',
     changeType: 'technology',

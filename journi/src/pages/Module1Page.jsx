@@ -70,7 +70,7 @@ export default function Module1Page() {
     if (modal === 'cm')
       addCmProject({
         orgId: form.orgId,
-        mainProjectId: form.mainProjectId || null,
+        mainProjectIds: form.mainProjectIds || [],
         name: form.name,
         changeManager: form.changeManager || '',
         changeType: form.changeType || 'technology',
@@ -85,7 +85,7 @@ export default function Module1Page() {
     <div>
       <PageHeader
         title={t('navM1')}
-        description="Group → Organization → Projects. Every Change Management Project carries an optional link to zero or one Main Project."
+        description="Group → Organization → Projects. Every Change Management Project carries an optional link to zero, one, or more Main Projects."
         actions={
           canEdit && (
             <>
@@ -172,7 +172,7 @@ export default function Module1Page() {
                   {mps.length === 0 && <EmptyState />}
                   <div className="space-y-2">
                     {mps.map((mp) => {
-                      const linked = cms.filter((cm) => cm.mainProjectId === mp.id)
+                      const linked = cms.filter((cm) => (cm.mainProjectIds || []).includes(mp.id))
                       return (
                         <div key={mp.id} className="rounded-lg border border-brand-100 p-3">
                           <div className="flex items-center justify-between">
@@ -204,7 +204,7 @@ export default function Module1Page() {
                   {cms.length === 0 && <EmptyState />}
                   <div className="space-y-2">
                     {cms.map((cm) => {
-                      const mp = data.mainProjects.find((m) => m.id === cm.mainProjectId)
+                      const linkedMps = data.mainProjects.filter((m) => (cm.mainProjectIds || []).includes(m.id))
                       return (
                         <div key={cm.id} className="rounded-lg border border-brand-100 p-3">
                           <div className="flex items-center justify-between">
@@ -219,7 +219,11 @@ export default function Module1Page() {
                             </div>
                           </div>
                           <p className="text-xs text-ink/50 mt-1">{cm.changeManager}</p>
-                          <p className="text-[11px] mt-1">{mp ? `↳ ${t('linkedMainProject')}: ${mp.name}` : `↳ ${t('standalone')}`}</p>
+                          <p className="text-[11px] mt-1">
+                            {linkedMps.length > 0
+                              ? `↳ ${t('linkedMainProject')}: ${linkedMps.map((m) => m.name).join(', ')}`
+                              : `↳ ${t('standalone')}`}
+                          </p>
                         </div>
                       )
                     })}
@@ -378,18 +382,38 @@ export default function Module1Page() {
           <input className="input" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} />
         </Field>
         <Field label={t('linkedMainProject')}>
-          <select
-            className="input"
-            value={form.mainProjectId || ''}
-            onChange={(e) => setForm({ ...form, mainProjectId: e.target.value })}
-          >
-            <option value="">{t('standalone')}</option>
-            {data.mainProjects.filter((mp) => mp.orgId === form.orgId).map((mp) => (
-              <option key={mp.id} value={mp.id}>
-                {mp.name}
-              </option>
-            ))}
-          </select>
+          {(() => {
+            const orgMainProjects = data.mainProjects.filter((mp) => mp.orgId === form.orgId)
+            if (orgMainProjects.length === 0) {
+              return <p className="text-xs text-ink/40 italic">{t('standalone')} — no Main Project exists yet for this Organization.</p>
+            }
+            const selected = form.mainProjectIds || []
+            return (
+              <>
+                <div className="space-y-1.5 rounded-lg border border-brand-100 p-2 max-h-40 overflow-y-auto">
+                  {orgMainProjects.map((mp) => {
+                    const checked = selected.includes(mp.id)
+                    return (
+                      <label key={mp.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(e) => {
+                            const next = e.target.checked ? [...selected, mp.id] : selected.filter((id) => id !== mp.id)
+                            setForm({ ...form, mainProjectIds: next })
+                          }}
+                        />
+                        {mp.name}
+                      </label>
+                    )
+                  })}
+                </div>
+                <p className="text-[11px] text-ink/40 mt-1">
+                  Select zero, one, or more Main Projects. Leave all unchecked for a standalone Change Management Project.
+                </p>
+              </>
+            )
+          })()}
         </Field>
         <Field label={t('owner')}>
           <input

@@ -47,7 +47,7 @@ export const cmProjects = [
   {
     id: 'cm-meridia-erp',
     orgId: 'org-meridia',
-    mainProjectId: 'mp-meridia-erp',
+    mainProjectIds: ['mp-meridia-erp'],
     name: 'Meridia Health ERP Adoption Program',
     changeManager: 'Change Manager, Meridia ERP Program',
     changeType: 'technology',
@@ -129,7 +129,7 @@ export const cmProjects = [
   {
     id: 'cm-meridia-auto',
     orgId: 'org-meridia',
-    mainProjectId: 'mp-meridia-auto',
+    mainProjectIds: ['mp-meridia-auto'],
     name: 'Meridia Care Access Automation Program',
     changeManager: 'Change Manager, Meridia Care Access Program',
     changeType: 'process',
@@ -208,7 +208,7 @@ export const cmProjects = [
   {
     id: 'cm-meridia-qms',
     orgId: 'org-meridia',
-    mainProjectId: 'mp-meridia-qms',
+    mainProjectIds: ['mp-meridia-qms'],
     name: 'Meridia Clinical Quality Culture Program',
     changeManager: 'Change Manager, Meridia Quality Program',
     changeType: 'cultural',

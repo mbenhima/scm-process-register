@@ -47,7 +47,7 @@ export const cmProjects = [
   {
     id: 'cm-atlas-erp',
     orgId: 'org-atlas',
-    mainProjectId: 'mp-atlas-erp',
+    mainProjectIds: ['mp-atlas-erp'],
     name: 'Atlas ERP People Readiness Program',
     changeManager: 'Change Manager, Atlas ERP Program',
     changeType: 'technology',
@@ -131,7 +131,7 @@ export const cmProjects = [
   {
     id: 'cm-atlas-auto',
     orgId: 'org-atlas',
-    mainProjectId: 'mp-atlas-auto',
+    mainProjectIds: ['mp-atlas-auto'],
     name: 'Atlas Automation Adoption Track',
     changeManager: 'Change Manager, Atlas Automation Track',
     changeType: 'process',
@@ -214,7 +214,7 @@ export const cmProjects = [
   {
     id: 'cm-atlas-qms',
     orgId: 'org-atlas',
-    mainProjectId: 'mp-atlas-qms',
+    mainProjectIds: ['mp-atlas-qms'],
     name: 'Atlas Quality Culture Program',
     changeManager: 'Change Manager, Atlas Quality Program',
     changeType: 'process',
@@ -296,7 +296,7 @@ export const cmProjects = [
   {
     id: 'cm-atlas-safety-culture',
     orgId: 'org-atlas',
-    mainProjectId: null,
+    mainProjectIds: [],
     name: 'Atlas Safety-First Leadership Culture Program',
     changeManager: 'Change Manager, Atlas Safety Culture Program',
     changeType: 'cultural',

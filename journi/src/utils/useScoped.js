@@ -16,7 +16,11 @@ export function useOrgProjects(orgId) {
   return useMemo(() => data.cmProjects.filter((p) => p.orgId === orgId), [data.cmProjects, orgId])
 }
 
-export function useMainProject(mainProjectId) {
+/** A CM Project can link to zero, one, or more Main Projects — see mainProjectIds. */
+export function useMainProjects(mainProjectIds) {
   const { data } = useAppState()
-  return useMemo(() => data.mainProjects.find((mp) => mp.id === mainProjectId) || null, [data.mainProjects, mainProjectId])
+  return useMemo(
+    () => (mainProjectIds || []).map((id) => data.mainProjects.find((mp) => mp.id === id)).filter(Boolean),
+    [data.mainProjects, mainProjectIds],
+  )
 }

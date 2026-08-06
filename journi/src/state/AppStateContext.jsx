@@ -120,20 +120,54 @@ export function AppStateProvider({ children }) {
       cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => {
         const current = p.adkar[block]
         const changed = score !== undefined && score !== current.score
+        const justification = note ?? current.note
         return {
           ...p,
           adkar: {
             ...p.adkar,
             [block]: {
               score: score ?? current.score,
-              note: note ?? current.note,
+              note: justification,
               history: changed
-                ? [...current.history, { id: uid('hist'), date: new Date().toISOString().slice(0, 10), score }]
+                ? [...current.history, { id: uid('hist'), date: new Date().toISOString().slice(0, 10), score, justification }]
                 : current.history,
             },
           },
+          changeLog: changed
+            ? [
+                ...(p.changeLog || []),
+                {
+                  id: uid('log'),
+                  date: new Date().toISOString().slice(0, 10),
+                  module: 'M6 · ADKAR Engine',
+                  field: block,
+                  oldValue: String(current.score),
+                  newValue: String(score),
+                  justification,
+                },
+              ]
+            : p.changeLog || [],
         }
       }),
+    }))
+  }, [])
+
+  /**
+   * General-purpose justified change: applies `applyPatch` to the project and
+   * appends one changeLog entry in the same update, so a score/state change
+   * and the evidence behind it are always recorded together — never as two
+   * separate, driftable steps. Used by M4 (Lewin), M7 (Bridges / Kübler-Ross).
+   */
+  const logJustifiedChange = useCallback((projectId, { module, field, oldValue, newValue, justification, applyPatch }) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...applyPatch(p),
+        changeLog: [
+          ...(p.changeLog || []),
+          { id: uid('log'), date: new Date().toISOString().slice(0, 10), module, field, oldValue, newValue, justification },
+        ],
+      })),
     }))
   }, [])
 
@@ -286,12 +320,13 @@ export function AppStateProvider({ children }) {
       const blank = { score: 1, note: '', history: [{ id: uid('hist'), date: 'baseline', score: 1 }] }
       const project = {
         id,
-        mainProjectId: null,
+        mainProjectIds: [],
         lewinPhase: 'unfreeze',
         bridgesPhase: 'ending',
         bridgesNote: '',
         sentimentSnapshot: '',
         aiUseCases: [],
+        changeLog: [],
         adkar: { awareness: blank, desire: { ...blank }, knowledge: { ...blank }, ability: { ...blank }, reinforcement: { ...blank } },
         risks: [],
         stakeholderGroups: [],
@@ -337,7 +372,11 @@ export function AppStateProvider({ children }) {
     setData((prev) => ({
       ...prev,
       mainProjects: prev.mainProjects.filter((mp) => mp.id !== mainProjectId),
-      cmProjects: prev.cmProjects.map((cm) => (cm.mainProjectId === mainProjectId ? { ...cm, mainProjectId: null } : cm)),
+      cmProjects: prev.cmProjects.map((cm) =>
+        (cm.mainProjectIds || []).includes(mainProjectId)
+          ? { ...cm, mainProjectIds: cm.mainProjectIds.filter((id) => id !== mainProjectId) }
+          : cm,
+      ),
     }))
   }, [])
 
@@ -397,6 +436,7 @@ export function AppStateProvider({ children }) {
       resetDemoData,
       updateProjectMeta,
       updateAdkar,
+      logJustifiedChange,
       addSubItem,
       updateSubItem,
       removeSubItem,
@@ -432,6 +472,7 @@ export function AppStateProvider({ children }) {
       resetDemoData,
       updateProjectMeta,
       updateAdkar,
+      logJustifiedChange,
       addSubItem,
       updateSubItem,
       removeSubItem,

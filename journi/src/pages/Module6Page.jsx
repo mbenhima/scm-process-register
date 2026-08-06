@@ -22,6 +22,14 @@ function BlockCard({ project, block, canEdit }) {
   const { updateAdkar } = useAppState()
   const val = project.adkar[block]
   const stalled = isBlockStalled(val)
+  const [pendingScore, setPendingScore] = useState(val.score)
+  const [note, setNote] = useState(val.note)
+  const dirty = pendingScore !== val.score || note !== val.note
+
+  function save() {
+    if (!dirty) return
+    updateAdkar(project.id, block, { score: pendingScore, note })
+  }
 
   return (
     <div className="card p-4">
@@ -34,28 +42,39 @@ function BlockCard({ project, block, canEdit }) {
           <button
             key={n}
             disabled={!canEdit}
-            onClick={() => updateAdkar(project.id, block, { score: n })}
+            onClick={() => setPendingScore(n)}
             className={`flex-1 h-9 rounded-lg text-sm font-semibold transition-colors ${
-              n === val.score ? scoreColor(val.score) + ' ring-2 ring-brand-400' : 'bg-brand-50/60 text-ink/30 hover:bg-brand-50'
+              n === pendingScore ? scoreColor(pendingScore) + ' ring-2 ring-brand-400' : 'bg-brand-50/60 text-ink/30 hover:bg-brand-50'
             } ${!canEdit ? 'cursor-default' : ''}`}
           >
             {n}
           </button>
         ))}
       </div>
-      <label className="label">{t('barrierReason')}</label>
+      <label className="label">{t('barrierReason')} — justify this score</label>
       {canEdit ? (
-        <textarea
-          className="input text-sm"
-          rows={2}
-          value={val.note}
-          onChange={(e) => updateAdkar(project.id, block, { note: e.target.value })}
-        />
+        <textarea className="input text-sm" rows={2} value={note} onChange={(e) => setNote(e.target.value)} />
       ) : (
         <p className="text-sm text-ink/70">{val.note}</p>
       )}
+      {canEdit && dirty && (
+        <button
+          className="btn-primary text-xs mt-2"
+          onClick={save}
+          disabled={pendingScore !== val.score && !note.trim()}
+          title={pendingScore !== val.score && !note.trim() ? 'A score change needs a justification note' : ''}
+        >
+          Save with justification
+        </button>
+      )}
       <div className="mt-2 text-[11px] text-ink/40">
-        {t('history')}: {val.history.map((h) => `${h.date}: ${h.score}`).join(' → ')}
+        {t('history')}:
+        {val.history.map((h) => (
+          <div key={h.id}>
+            {h.date}: {h.score}
+            {h.justification ? ` — "${h.justification}"` : ''}
+          </div>
+        ))}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import RequireProject from '../components/RequireProject.jsx'
@@ -14,10 +14,38 @@ const BRIDGES_COLOR = { ending: 'bg-red-100 text-red-700', neutral: 'bg-amber-10
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, currentUser } = useAppState()
+  const { updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role)
   const sentiment = project.sentimentStage || inferSentimentStage(project)
   const divergence = hasDivergence(project)
+
+  const [pendingBridges, setPendingBridges] = useState(project.bridgesPhase)
+  const bridgesDirty = pendingBridges !== project.bridgesPhase
+  function saveBridges() {
+    if (!bridgesDirty) return
+    logJustifiedChange(project.id, {
+      module: 'M7 · Emotional & Transition',
+      field: 'Bridges transition',
+      oldValue: t(`bridges_${project.bridgesPhase}`),
+      newValue: t(`bridges_${pendingBridges}`),
+      justification: project.bridgesNote,
+      applyPatch: (p) => ({ ...p, bridgesPhase: pendingBridges }),
+    })
+  }
+
+  const [pendingSentiment, setPendingSentiment] = useState(sentiment)
+  const sentimentDirty = pendingSentiment !== sentiment
+  function saveSentiment() {
+    if (!sentimentDirty) return
+    logJustifiedChange(project.id, {
+      module: 'M7 · Emotional & Transition',
+      field: 'Kübler-Ross sentiment',
+      oldValue: t(`sentiment_${sentiment}`),
+      newValue: t(`sentiment_${pendingSentiment}`),
+      justification: project.sentimentSnapshot,
+      applyPatch: (p) => ({ ...p, sentimentStage: pendingSentiment }),
+    })
+  }
 
   return (
     <div className="space-y-5">
@@ -29,9 +57,9 @@ function Content({ project }) {
               <button
                 key={phase}
                 disabled={!canEdit}
-                onClick={() => updateProjectMeta(project.id, { bridgesPhase: phase })}
+                onClick={() => setPendingBridges(phase)}
                 className={`flex-1 rounded-lg py-2 text-xs font-semibold transition-colors ${
-                  project.bridgesPhase === phase ? BRIDGES_COLOR[phase] + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
+                  pendingBridges === phase ? BRIDGES_COLOR[phase] + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
                 } ${!canEdit ? 'cursor-default' : ''}`}
               >
                 {idx + 1}. {t(`bridges_${phase}`)}
@@ -50,6 +78,16 @@ function Content({ project }) {
           ) : (
             <p className="text-sm text-ink/70">{project.bridgesNote}</p>
           )}
+          {canEdit && bridgesDirty && (
+            <button
+              className="btn-primary text-xs mt-2"
+              onClick={saveBridges}
+              disabled={!project.bridgesNote.trim()}
+              title={!project.bridgesNote.trim() ? 'Write a note above justifying this move first' : ''}
+            >
+              Save with justification
+            </button>
+          )}
         </div>
 
         <div className="card p-5">
@@ -59,9 +97,9 @@ function Content({ project }) {
               <button
                 key={s}
                 disabled={!canEdit}
-                onClick={() => updateProjectMeta(project.id, { sentimentStage: s })}
+                onClick={() => setPendingSentiment(s)}
                 className={`flex-1 rounded-lg py-2 text-[11px] font-semibold text-white transition-opacity ${SENTIMENT_COLOR[s]} ${
-                  sentiment === s ? 'opacity-100 ring-2 ring-offset-1 ring-brand-400' : 'opacity-40 hover:opacity-70'
+                  pendingSentiment === s ? 'opacity-100 ring-2 ring-offset-1 ring-brand-400' : 'opacity-40 hover:opacity-70'
                 } ${!canEdit ? 'cursor-default' : ''}`}
               >
                 {t(`sentiment_${s}`)}
@@ -79,6 +117,16 @@ function Content({ project }) {
             />
           ) : (
             <p className="text-sm text-ink/70">{project.sentimentSnapshot}</p>
+          )}
+          {canEdit && sentimentDirty && (
+            <button
+              className="btn-primary text-xs mt-2"
+              onClick={saveSentiment}
+              disabled={!project.sentimentSnapshot.trim()}
+              title={!project.sentimentSnapshot.trim() ? 'Write a note above justifying this move first' : ''}
+            >
+              Save with justification
+            </button>
           )}
         </div>
       </div>

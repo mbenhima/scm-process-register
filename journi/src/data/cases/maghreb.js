@@ -47,7 +47,7 @@ export const cmProjects = [
   {
     id: 'cm-maghreb-erp',
     orgId: 'org-maghreb',
-    mainProjectId: 'mp-maghreb-erp',
+    mainProjectIds: ['mp-maghreb-erp'],
     name: 'Maghreb ERP Transition Program',
     changeManager: 'Change Manager, Maghreb ERP Program',
     changeType: 'technology',
@@ -130,7 +130,7 @@ export const cmProjects = [
   {
     id: 'cm-maghreb-auto',
     orgId: 'org-maghreb',
-    mainProjectId: 'mp-maghreb-auto',
+    mainProjectIds: ['mp-maghreb-auto'],
     name: 'Maghreb Frontline Adoption Program',
     changeManager: 'Change Manager, Maghreb Frontline Program',
     changeType: 'technology',
@@ -211,7 +211,7 @@ export const cmProjects = [
   {
     id: 'cm-maghreb-qms',
     orgId: 'org-maghreb',
-    mainProjectId: 'mp-maghreb-qms',
+    mainProjectIds: ['mp-maghreb-qms'],
     name: 'Maghreb Safety & Quality Culture Initiative',
     changeManager: 'Change Manager, Maghreb Safety Initiative',
     changeType: 'cultural',

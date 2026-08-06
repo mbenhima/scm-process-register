@@ -22,46 +22,57 @@ body {
   background: transparent;
 }
 
-.card {
-  @apply bg-white rounded-xl border border-brand-100/70 shadow-sm;
-}
+/* Wrapped in @layer components so Tailwind utility classes (e.g. `w-auto`
+   appended in a className like "input w-auto") always win the cascade, per
+   Tailwind's intended layer order (base < components < utilities). Without
+   this, these rules — being defined as plain CSS after `@tailwind utilities`
+   — would win over utilities by source order instead of losing to them,
+   silently breaking any element that combines one of these classes with a
+   conflicting utility (this is exactly what caused the TopBar language
+   selector to render at full width instead of `w-auto`, crowding out the
+   Organization/Project selectors next to it). */
+@layer components {
+  .card {
+    @apply bg-white rounded-xl border border-brand-100/70 shadow-sm;
+  }
 
-.btn {
-  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none;
-}
-.btn-primary {
-  @apply btn bg-brand-600 text-white hover:bg-brand-700;
-}
-.btn-secondary {
-  @apply btn bg-brand-50 text-brand-800 hover:bg-brand-100;
-}
-.btn-ghost {
-  @apply btn text-brand-700 hover:bg-brand-50;
-}
-.btn-danger {
-  @apply btn bg-red-50 text-red-700 hover:bg-red-100;
-}
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+  }
+  .btn-secondary {
+    @apply btn bg-brand-50 text-brand-800 hover:bg-brand-100;
+  }
+  .btn-ghost {
+    @apply btn text-brand-700 hover:bg-brand-50;
+  }
+  .btn-danger {
+    @apply btn bg-red-50 text-red-700 hover:bg-red-100;
+  }
 
-.input {
-  @apply w-full rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent;
-}
+  .input {
+    @apply w-full rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent;
+  }
 
-.label {
-  @apply block text-xs font-semibold uppercase tracking-wide text-brand-800/70 mb-1;
-}
+  .label {
+    @apply block text-xs font-semibold uppercase tracking-wide text-brand-800/70 mb-1;
+  }
 
-.badge {
-  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
-}
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
+  }
 
-.tab {
-  @apply px-3 py-1.5 text-sm font-medium rounded-lg cursor-pointer transition-colors;
-}
-.tab-active {
-  @apply bg-brand-600 text-white;
-}
-.tab-inactive {
-  @apply text-brand-800 hover:bg-brand-50;
+  .tab {
+    @apply px-3 py-1.5 text-sm font-medium rounded-lg cursor-pointer transition-colors;
+  }
+  .tab-active {
+    @apply bg-brand-600 text-white;
+  }
+  .tab-inactive {
+    @apply text-brand-800 hover:bg-brand-50;
+  }
 }
 
 [dir="rtl"] .flip-x {
