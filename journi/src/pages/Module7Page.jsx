@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import RequireProject from '../components/RequireProject.jsx'
@@ -33,14 +33,22 @@ function Content({ project }) {
     })
   }
 
+  // sentiment falls back to inferSentimentStage(project), which re-reads the
+  // free-text note live as it's typed — so it must NOT be used as the dirty
+  // baseline: as soon as a typed note happens to contain the target stage's
+  // keyword, the inferred "current" value would silently catch up to
+  // pendingSentiment and the Save button would vanish before the user could
+  // ever click it. baselineSentiment is captured once, on mount, and never
+  // reacts to later note edits, so the comparison stays meaningful.
+  const baselineSentiment = useRef(sentiment).current
   const [pendingSentiment, setPendingSentiment] = useState(sentiment)
-  const sentimentDirty = pendingSentiment !== sentiment
+  const sentimentDirty = pendingSentiment !== baselineSentiment
   function saveSentiment() {
     if (!sentimentDirty) return
     logJustifiedChange(project.id, {
       module: 'M7 · Emotional & Transition',
       field: 'Kübler-Ross sentiment',
-      oldValue: t(`sentiment_${sentiment}`),
+      oldValue: t(`sentiment_${baselineSentiment}`),
       newValue: t(`sentiment_${pendingSentiment}`),
       justification: project.sentimentSnapshot,
       applyPatch: (p) => ({ ...p, sentimentStage: pendingSentiment }),
