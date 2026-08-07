@@ -3,9 +3,24 @@ import { buildSeed } from '../data/seed.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
 import { useI18n } from '../i18n/index.jsx'
+import { callLLM } from '../utils/llmProviders.js'
 
 const AppStateContext = createContext(null)
 const STORAGE_KEY = 'journi.state.v1'
+// Deliberately a separate localStorage key from STORAGE_KEY: an LLM connection
+// is a browser-level setting, not seeded demo data, so it must survive
+// Reset Demo Data untouched and never gets bundled into a data export/reset.
+const LLM_CONFIG_KEY = 'journi.llmConfig.v1'
+
+function loadLlmConfig() {
+  try {
+    const raw = localStorage.getItem(LLM_CONFIG_KEY)
+    if (raw) return JSON.parse(raw)
+  } catch {
+    // fall through to default
+  }
+  return { provider: 'anthropic', apiKey: '', model: '', baseUrl: '', connected: false, lastError: null }
+}
 
 function loadInitialState() {
   try {
@@ -33,6 +48,7 @@ function updateProjectIn(list, projectId, fn) {
 export function AppStateProvider({ children }) {
   const { setLang } = useI18n()
   const [data, setData] = useState(loadInitialState)
+  const [llmConfig, setLlmConfigState] = useState(loadLlmConfig)
   const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('journi.currentUser') || null)
   const [scope, setScopeState] = useState(() => {
     try {
@@ -45,6 +61,13 @@ export function AppStateProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   }, [data])
+
+  useEffect(() => {
+    // Never persist a raw API key to disk without the user's own action having
+    // written it — this effect just mirrors whatever setLlmConfigState already
+    // holds, so the key lives only as long as the browser profile does.
+    localStorage.setItem(LLM_CONFIG_KEY, JSON.stringify(llmConfig))
+  }, [llmConfig])
 
   useEffect(() => {
     if (currentUserId) localStorage.setItem('journi.currentUser', currentUserId)
@@ -282,6 +305,36 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // ---------- LLM provider connection (browser-local, no backend) ----------
+  const setLlmConfig = useCallback((patch) => {
+    setLlmConfigState((prev) => ({ ...prev, ...patch, connected: false, lastError: null }))
+  }, [])
+
+  const testAndConnectLlm = useCallback(async () => {
+    setLlmConfigState((prev) => ({ ...prev, lastError: null }))
+    try {
+      const reply = await callLLM(llmConfig, 'Reply with exactly one word: OK')
+      if (!reply) throw new Error('Empty response from provider.')
+      setLlmConfigState((prev) => ({ ...prev, connected: true, lastError: null }))
+      return { ok: true }
+    } catch (err) {
+      setLlmConfigState((prev) => ({ ...prev, connected: false, lastError: err.message }))
+      return { ok: false, error: err.message }
+    }
+  }, [llmConfig])
+
+  const disconnectLlm = useCallback(() => {
+    setLlmConfigState((prev) => ({ ...prev, connected: false, lastError: null }))
+  }, [])
+
+  const generateWithLlm = useCallback(
+    (prompt) => {
+      if (!llmConfig.connected) return Promise.reject(new Error('No LLM provider connected.'))
+      return callLLM(llmConfig, prompt)
+    },
+    [llmConfig],
+  )
+
   const toggleAiOrgActivation = useCallback((orgId, useCaseId) => {
     setData((prev) => ({
       ...prev,
@@ -464,6 +517,11 @@ export function AppStateProvider({ children }) {
       toggleSponsorAction,
       addSponsorAction,
       updateRolePermission,
+      llmConfig,
+      setLlmConfig,
+      testAndConnectLlm,
+      disconnectLlm,
+      generateWithLlm,
       toggleAiOrgActivation,
       toggleAiProjectOverride,
       logAiUsage,
@@ -501,6 +559,11 @@ export function AppStateProvider({ children }) {
       toggleSponsorAction,
       addSponsorAction,
       updateRolePermission,
+      llmConfig,
+      setLlmConfig,
+      testAndConnectLlm,
+      disconnectLlm,
+      generateWithLlm,
       toggleAiOrgActivation,
       toggleAiProjectOverride,
       logAiUsage,

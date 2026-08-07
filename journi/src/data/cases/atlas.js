@@ -81,7 +81,8 @@ export const cmProjects = [
         score: 3,
         note: 'Town halls held; shop-floor supervisors still under-informed',
         history: [
-          { date: 'baseline', score: 2 },
+          { date: 'baseline', score: 1 },
+          { date: '2026-08-04', score: 2, justification: 'First-wave town hall held at Ain Sebaâ; awareness lifted from a standing start.' },
           { date: '2026-08-05', score: 3, justification: 'Second wave of town halls completed at all three plants; awareness confirmed via post-session pulse survey.' },
         ],
       },
@@ -112,6 +113,14 @@ export const cmProjects = [
       reinforcement: { score: 1, note: 'Go-live still 9 months out; too early to reinforce' },
     },
     changeLog: [
+      {
+        date: '2026-08-04',
+        module: 'M6 · ADKAR Engine',
+        field: 'awareness',
+        oldValue: '1',
+        newValue: '2',
+        justification: 'First-wave town hall held at Ain Sebaâ; awareness lifted from a standing start.',
+      },
       {
         date: '2026-08-05',
         module: 'M6 · ADKAR Engine',

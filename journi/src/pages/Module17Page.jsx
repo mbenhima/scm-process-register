@@ -3,10 +3,109 @@ import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { useScopedOrg, useScopedProject } from '../utils/useScoped.js'
 import { canActivateAiForOrg, canRequestProjectAiOverride } from '../utils/rbac.js'
+import { PROVIDERS, providerLabel } from '../utils/llmProviders.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 
 const OUTCOME_TONE = { accepted: 'green', edited: 'amber', rejected: 'red' }
+
+function ProviderConnectionPanel({ canEdit }) {
+  const { llmConfig, setLlmConfig, testAndConnectLlm, disconnectLlm } = useAppState()
+  const [testing, setTesting] = useState(false)
+  const providerMeta = PROVIDERS.find((p) => p.id === llmConfig.provider)
+
+  async function handleConnect() {
+    setTesting(true)
+    await testAndConnectLlm()
+    setTesting(false)
+  }
+
+  return (
+    <div className="card p-4 mb-4 space-y-3">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h3 className="font-semibold text-brand-950 text-sm">LLM Provider Connection</h3>
+        {llmConfig.connected ? (
+          <Badge tone="green">Connected — {providerLabel(llmConfig.provider)} ({llmConfig.model || providerMeta?.defaultModel})</Badge>
+        ) : (
+          <Badge tone="gray">Not connected — using built-in example generators</Badge>
+        )}
+      </div>
+      <p className="text-xs text-ink/50">
+        journi has no backend: connecting sends your API key and every generated prompt directly from this browser to the
+        provider you choose. The key is stored only in this browser's local storage — never in the seeded demo data, and never
+        cleared by "Reset Demo Data." Do not use a production key on a shared or public machine. Once connected, every AI Use
+        Case across the app calls this provider instead of its canned example text; the review/accept/edit/reject checkpoint is
+        unchanged either way.
+      </p>
+
+      {!canEdit ? (
+        <p className="text-xs text-ink/40 italic">Only an Organization Admin or broader can configure this.</p>
+      ) : (
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label className="label">Provider</label>
+            <select
+              className="input"
+              value={llmConfig.provider}
+              onChange={(e) => setLlmConfig({ provider: e.target.value, model: '' })}
+            >
+              {PROVIDERS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="label">Model</label>
+            <input
+              className="input"
+              placeholder={providerMeta?.defaultModel || 'model id'}
+              value={llmConfig.model}
+              onChange={(e) => setLlmConfig({ model: e.target.value })}
+            />
+          </div>
+          {llmConfig.provider === 'custom' && (
+            <div>
+              <label className="label">Base URL</label>
+              <input
+                className="input"
+                placeholder="https://your-endpoint.example.com/v1"
+                value={llmConfig.baseUrl}
+                onChange={(e) => setLlmConfig({ baseUrl: e.target.value })}
+              />
+            </div>
+          )}
+          <div>
+            <label className="label">API Key</label>
+            <input
+              className="input"
+              type="password"
+              placeholder={providerMeta?.keyPlaceholder}
+              value={llmConfig.apiKey}
+              onChange={(e) => setLlmConfig({ apiKey: e.target.value })}
+            />
+          </div>
+        </div>
+      )}
+
+      {canEdit && (
+        <div className="flex items-center gap-2 flex-wrap">
+          {!llmConfig.connected ? (
+            <button className="btn-primary text-xs" onClick={handleConnect} disabled={testing}>
+              {testing ? 'Testing connection…' : 'Connect'}
+            </button>
+          ) : (
+            <button className="btn-danger text-xs" onClick={disconnectLlm}>
+              Disconnect
+            </button>
+          )}
+          {llmConfig.lastError && <span className="text-xs text-red-600">{llmConfig.lastError}</span>}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function Toggle({ checked, onChange, disabled }) {
   return (
@@ -37,6 +136,8 @@ export default function Module17Page() {
   return (
     <div>
       <PageHeader title={t('m17_title')} description={t('m17_desc')} />
+
+      <ProviderConnectionPanel canEdit={canOrgToggle} />
 
       <div className="flex gap-2 mb-4">
         <button className={`tab ${tab === 'catalog' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('catalog')}>

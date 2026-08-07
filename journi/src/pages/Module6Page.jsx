@@ -106,11 +106,17 @@ function buildDesireCoachingScript(project, topResistance) {
 }
 
 function DesireDiagnosisCoach({ project }) {
-  const { data, logAiUsage } = useAppState()
+  const { data, llmConfig, generateWithLlm, logAiUsage } = useAppState()
   const [diagnosis, setDiagnosis] = useState(null)
   const [diagnosisAccepted, setDiagnosisAccepted] = useState(false)
+  const [diagnosisSource, setDiagnosisSource] = useState(null)
+  const [diagnosisError, setDiagnosisError] = useState(null)
+  const [diagnosisLoading, setDiagnosisLoading] = useState(false)
   const [script, setScript] = useState(null)
   const [scriptResolved, setScriptResolved] = useState(null)
+  const [scriptSource, setScriptSource] = useState(null)
+  const [scriptError, setScriptError] = useState(null)
+  const [scriptLoading, setScriptLoading] = useState(false)
 
   function isActive(ucId) {
     const orgActive = data.aiOrgActivation[project.orgId]?.[ucId]
@@ -121,19 +127,62 @@ function DesireDiagnosisCoach({ project }) {
   const scriptUcActive = isActive('uc-coaching-script')
   const topResistance = (project.resistanceLog || []).find((r) => r.type === 'will') || project.resistanceLog?.[0]
 
-  function generateDiagnosis() {
-    setDiagnosis(buildDesireDiagnosis(project, topResistance))
+  async function generateDiagnosis() {
     setDiagnosisAccepted(false)
     setScript(null)
     setScriptResolved(null)
+    setDiagnosisError(null)
+    if (llmConfig.connected) {
+      setDiagnosisLoading(true)
+      try {
+        const prompt =
+          `You diagnose why the ADKAR "Desire" score is stalled for a change management project, citing only the evidence given. ` +
+          `Desire is scored ${project.adkar.desire.score}/5 — reason on file: "${project.adkar.desire.note}". ` +
+          (topResistance ? `Resistance Log entry (${topResistance.type}, severity ${topResistance.severity}/5, from ${topResistance.source}): "${topResistance.rootCause}". ` : '') +
+          (project.sentimentSnapshot ? `Sentiment snapshot: "${project.sentimentSnapshot}". ` : '') +
+          `In under 80 words, explain whether this looks attitudinal/political versus a skills or awareness gap, and what that implies for the next intervention. Plain prose, no preamble.`
+        const text = await generateWithLlm(prompt)
+        setDiagnosis(text)
+        setDiagnosisSource('llm')
+      } catch (err) {
+        setDiagnosisError(`LLM error — showing the built-in example instead. (${err.message})`)
+        setDiagnosis(buildDesireDiagnosis(project, topResistance))
+        setDiagnosisSource('template')
+      }
+      setDiagnosisLoading(false)
+    } else {
+      setDiagnosis(buildDesireDiagnosis(project, topResistance))
+      setDiagnosisSource('template')
+    }
   }
   function acceptDiagnosis() {
     logAiUsage({ useCaseId: 'uc-adkar-barrier', orgId: project.orgId, cmProjectId: project.id, outputSummary: diagnosis, outcome: 'accepted', user: 'You (current session)' })
     setDiagnosisAccepted(true)
   }
-  function generateScript() {
-    setScript(buildDesireCoachingScript(project, topResistance))
+  async function generateScript() {
     setScriptResolved(null)
+    setScriptError(null)
+    if (llmConfig.connected) {
+      setScriptLoading(true)
+      try {
+        const namedConcern = topResistance ? topResistance.rootCause : 'concerns about job security tied to this change'
+        const prompt =
+          `Write a short 1:1 coaching script (4 numbered steps, plain prose, under 120 words) for a People Manager to use with a team ` +
+          `showing low Desire in a change program. The specific named concern to address directly is: "${namedConcern}". ` +
+          `The manager should acknowledge it without minimizing it, ask an open question, avoid over-promising, and end by agreeing one concrete next step and a follow-up date. No preamble, just the script.`
+        const text = await generateWithLlm(prompt)
+        setScript(text)
+        setScriptSource('llm')
+      } catch (err) {
+        setScriptError(`LLM error — showing the built-in example instead. (${err.message})`)
+        setScript(buildDesireCoachingScript(project, topResistance))
+        setScriptSource('template')
+      }
+      setScriptLoading(false)
+    } else {
+      setScript(buildDesireCoachingScript(project, topResistance))
+      setScriptSource('template')
+    }
   }
   function resolveScript(outcome) {
     logAiUsage({ useCaseId: 'uc-coaching-script', orgId: project.orgId, cmProjectId: project.id, outputSummary: script, outcome, user: 'You (current session)' })
@@ -158,21 +207,27 @@ function DesireDiagnosisCoach({ project }) {
       ) : (
         <>
           {!diagnosis && (
-            <button className="btn-secondary text-xs" onClick={generateDiagnosis}>
-              Diagnose Desire
+            <button className="btn-secondary text-xs" onClick={generateDiagnosis} disabled={diagnosisLoading}>
+              {diagnosisLoading ? 'Diagnosing…' : 'Diagnose Desire'}
             </button>
           )}
+          {diagnosisError && <p className="text-[11px] text-red-600">{diagnosisError}</p>}
           {diagnosis && (
             <div className="rounded-lg border border-sand-200 bg-sand-50/60 p-3 space-y-2">
-              <Badge tone="sand">AI-generated — review required</Badge>
+              <div className="flex items-center justify-between">
+                <Badge tone="sand">AI-generated — review required</Badge>
+                {diagnosisSource && (
+                  <span className="text-[10px] text-ink/40">{diagnosisSource === 'llm' ? 'Generated by connected LLM' : 'Built-in example'}</span>
+                )}
+              </div>
               <p className="text-sm text-ink/80">{diagnosis}</p>
               {!diagnosisAccepted ? (
                 <div className="flex items-center gap-2">
                   <button className="btn-primary text-xs" onClick={acceptDiagnosis}>
                     Confirm diagnosis
                   </button>
-                  <button className="btn-ghost text-xs" onClick={generateDiagnosis}>
-                    Regenerate
+                  <button className="btn-ghost text-xs" onClick={generateDiagnosis} disabled={diagnosisLoading}>
+                    {diagnosisLoading ? 'Regenerating…' : 'Regenerate'}
                   </button>
                 </div>
               ) : (
@@ -191,13 +246,19 @@ function DesireDiagnosisCoach({ project }) {
       {diagnosisAccepted && scriptUcActive && (
         <div className="pt-2 border-t border-brand-50 space-y-2">
           {!script && (
-            <button className="btn-secondary text-xs" onClick={generateScript}>
-              Draft coaching script
+            <button className="btn-secondary text-xs" onClick={generateScript} disabled={scriptLoading}>
+              {scriptLoading ? 'Drafting…' : 'Draft coaching script'}
             </button>
           )}
+          {scriptError && <p className="text-[11px] text-red-600">{scriptError}</p>}
           {script && (
             <div className="rounded-lg border border-sand-200 bg-sand-50/60 p-3 space-y-2">
-              <Badge tone="sand">AI-generated — review required</Badge>
+              <div className="flex items-center justify-between">
+                <Badge tone="sand">AI-generated — review required</Badge>
+                {scriptSource && (
+                  <span className="text-[10px] text-ink/40">{scriptSource === 'llm' ? 'Generated by connected LLM' : 'Built-in example'}</span>
+                )}
+              </div>
               <p className="text-sm text-ink/80 whitespace-pre-line">{script}</p>
               {!scriptResolved ? (
                 <div className="flex items-center gap-2 flex-wrap">
@@ -207,8 +268,8 @@ function DesireDiagnosisCoach({ project }) {
                   <button className="btn-danger text-xs" onClick={() => resolveScript('rejected')}>
                     Discard
                   </button>
-                  <button className="btn-ghost text-xs" onClick={generateScript}>
-                    Regenerate
+                  <button className="btn-ghost text-xs" onClick={generateScript} disabled={scriptLoading}>
+                    {scriptLoading ? 'Regenerating…' : 'Regenerate'}
                   </button>
                 </div>
               ) : (
