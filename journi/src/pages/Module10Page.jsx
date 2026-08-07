@@ -53,8 +53,8 @@ function CurriculumDetail({ tr }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState(BLANK_FORM)
   const [expanded, setExpanded] = useState(null)

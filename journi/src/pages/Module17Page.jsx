@@ -31,8 +31,8 @@ export default function Module17Page() {
   const project = useScopedProject()
   const [tab, setTab] = useState('catalog')
 
-  const canOrgToggle = canActivateAiForOrg(currentUser?.role)
-  const canProjectToggle = canRequestProjectAiOverride(currentUser?.role)
+  const canOrgToggle = canActivateAiForOrg(currentUser?.role, data.rolePermissions)
+  const canProjectToggle = canRequestProjectAiOverride(currentUser?.role, data.rolePermissions)
 
   return (
     <div>

@@ -33,7 +33,7 @@ export default function Module1Page() {
   } = useAppState()
   const [modal, setModal] = useState(null)
   const [form, setForm] = useState({})
-  const canEdit = canManageHierarchy(currentUser?.role)
+  const canEdit = canManageHierarchy(currentUser?.role, data.rolePermissions)
 
   const orgs = visibleOrganizations(currentUser, data)
 

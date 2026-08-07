@@ -14,8 +14,8 @@ const BRIDGES_COLOR = { ending: 'bg-red-100 text-red-700', neutral: 'bg-amber-10
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const sentiment = project.sentimentStage || inferSentimentStage(project)
   const divergence = hasDivergence(project)
 

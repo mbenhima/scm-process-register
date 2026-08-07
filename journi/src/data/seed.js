@@ -1,5 +1,6 @@
 import { uid } from '../utils/id.js'
 import aiUseCaseCatalog from './aiUseCases.js'
+import { DEFAULT_ROLE_PERMISSIONS } from './constants.js'
 import * as atlas from './cases/atlas.js'
 import * as atlasTangier from './cases/atlasTangier.js'
 import * as maghreb from './cases/maghreb.js'
@@ -109,5 +110,7 @@ export function buildSeed() {
     { id: 'u-employee', name: 'Younes Amrani', email: 'younes.amrani@atlas-industrial.example', role: 'employee', scopeType: 'project', scopeId: 'cm-atlas-erp', language: 'ar' },
   ]
 
-  return { groups, organizations, mainProjects, cmProjects, users, aiUseCaseCatalog, aiOrgActivation, aiProjectOverride, aiUsageLog }
+  const rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
+
+  return { groups, organizations, mainProjects, cmProjects, users, aiUseCaseCatalog, aiOrgActivation, aiProjectOverride, aiUsageLog, rolePermissions }
 }

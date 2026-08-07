@@ -11,8 +11,8 @@ import { canWrite } from '../utils/rbac.js'
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, toggleSponsorAction, addSponsorAction, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, updateProjectMeta, toggleSponsorAction, addSponsorAction, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [newAction, setNewAction] = useState('')
 
   return (

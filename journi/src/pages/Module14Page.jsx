@@ -99,8 +99,8 @@ function MitigationActions({ project, risk, canEdit }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const orgProjects = useOrgProjects(project.orgId)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({ category: 'adoption', description: '', likelihood: 3, impact: 3, owner: '', status: 'open' })

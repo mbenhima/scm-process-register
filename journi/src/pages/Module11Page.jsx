@@ -15,11 +15,11 @@ const STATUS_TONE = { open: 'red', in_progress: 'amber', closed: 'green' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
+  const { data, addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
   // Employees may submit a concern (per spec, "submission only") even though they
   // cannot otherwise write to this project; only full write roles can manage
   // status, classification, or delete an entry.
-  const canManage = canWrite(currentUser?.role)
+  const canManage = canWrite(currentUser?.role, data.rolePermissions)
   const canSubmit = canManage || currentUser?.role === 'employee'
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({

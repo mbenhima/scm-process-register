@@ -22,7 +22,7 @@ const CORE_MODULES = [
 
 export default function Sidebar({ mobileOpen, onNavigate }) {
   const { t } = useI18n()
-  const { currentUser } = useAppState()
+  const { currentUser, data } = useAppState()
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
@@ -48,12 +48,12 @@ export default function Sidebar({ mobileOpen, onNavigate }) {
             <NavLink to="/app/dashboard" className={linkClass} onClick={onNavigate}>
               {t('navPortfolio')}
             </NavLink>
-            {canManageHierarchy(currentUser?.role) && (
+            {canManageHierarchy(currentUser?.role, data.rolePermissions) && (
               <NavLink to="/app/m1" className={linkClass} onClick={onNavigate}>
                 {t('navM1')}
               </NavLink>
             )}
-            {canManageUsers(currentUser?.role) && (
+            {canManageUsers(currentUser?.role, data.rolePermissions) && (
               <NavLink to="/app/m2" className={linkClass} onClick={onNavigate}>
                 {t('navM2')}
               </NavLink>

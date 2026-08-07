@@ -112,8 +112,8 @@ function JourneyChart({ project, zoom, orgProjects }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, removeSubItem, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const org = useScopedOrg()
   const orgProjects = useOrgProjects(org?.id)
   const [zoom, setZoom] = useState('project')

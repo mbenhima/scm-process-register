@@ -11,8 +11,8 @@ import { canWrite } from '../utils/rbac.js'
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, updateProjectMeta, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [readiness, setReadiness] = useState(project.managerReadiness ?? 3)
   const stalled = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
 

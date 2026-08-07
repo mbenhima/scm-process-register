@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { buildSeed } from '../data/seed.js'
+import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
 import { useI18n } from '../i18n/index.jsx'
 
@@ -11,7 +12,13 @@ function loadInitialState() {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) {
       const parsed = JSON.parse(raw)
-      if (parsed && parsed.cmProjects && parsed.organizations) return parsed
+      if (parsed && parsed.cmProjects && parsed.organizations) {
+        // A browser session persisted before the Permission Matrix feature shipped
+        // won't have this field — back-fill the default matrix rather than let every
+        // capability check silently fail closed (matrix[role]?.write === undefined).
+        if (!parsed.rolePermissions) parsed.rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
+        return parsed
+      }
     }
   } catch {
     // fall through to fresh seed
@@ -265,6 +272,16 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  const updateRolePermission = useCallback((role, capabilityKey, value) => {
+    setData((prev) => ({
+      ...prev,
+      rolePermissions: {
+        ...prev.rolePermissions,
+        [role]: { ...prev.rolePermissions[role], [capabilityKey]: value },
+      },
+    }))
+  }, [])
+
   const toggleAiOrgActivation = useCallback((orgId, useCaseId) => {
     setData((prev) => ({
       ...prev,
@@ -446,6 +463,7 @@ export function AppStateProvider({ children }) {
       toggleSignoff,
       toggleSponsorAction,
       addSponsorAction,
+      updateRolePermission,
       toggleAiOrgActivation,
       toggleAiProjectOverride,
       logAiUsage,
@@ -482,6 +500,7 @@ export function AppStateProvider({ children }) {
       toggleSignoff,
       toggleSponsorAction,
       addSponsorAction,
+      updateRolePermission,
       toggleAiOrgActivation,
       toggleAiProjectOverride,
       logAiUsage,

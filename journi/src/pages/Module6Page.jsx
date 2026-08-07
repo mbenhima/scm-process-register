@@ -82,8 +82,8 @@ function BlockCard({ project, block, canEdit }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateProjectMeta, updateAdkar, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, addSubItem, updateProjectMeta, updateAdkar, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [coachForm, setCoachForm] = useState({ managerName: '', cohort: '', barrierBlock: 'desire', note: '' })
   const stalledBlockList = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
 

@@ -57,8 +57,8 @@ function ChangeLogTable({ project }) {
 
 function ProjectDetail({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const mainProjects = useMainProjects(project.mainProjectIds)
   const [pendingLewin, setPendingLewin] = useState(project.lewinPhase)
   const [lewinJustification, setLewinJustification] = useState('')

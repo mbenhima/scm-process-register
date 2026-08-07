@@ -40,6 +40,31 @@ export const ROLES_WITH_WRITE_ACCESS = new Set([
   ROLES.PEOPLE_MANAGER,
 ])
 
+// The configurable capabilities shown on Module 2's Permission Matrix tab.
+// Each maps 1:1 to a check function in utils/rbac.js; DEFAULT_ROLE_PERMISSIONS
+// below is that same function's original hardcoded logic, expressed as data
+// so it can be seeded into app state and edited at runtime by a Super Admin
+// instead of requiring a code change.
+export const CAPABILITIES = [
+  { key: 'manageHierarchy', label: 'Manage Hierarchy', description: 'Create/delete Groups, Organizations, Main Projects, and Change Management Projects (Module 1).' },
+  { key: 'manageUsers', label: 'Manage Users', description: 'Add, edit, or remove users and change their role/scope (Module 2).' },
+  { key: 'write', label: 'Edit CM Project Data', description: 'Edit ADKAR scores, risks, communications, training, and every other Change Management module (M4–M16).' },
+  { key: 'activateAiForOrg', label: 'Activate AI Use Cases (Org)', description: 'Turn AI use cases on or off for an Organization (Module 17).' },
+  { key: 'requestProjectAiOverride', label: 'Override AI Use Cases (Project)', description: 'Override an AI use case’s activation for a single Project (Module 17).' },
+]
+
+export const DEFAULT_ROLE_PERMISSIONS = {
+  [ROLES.SUPER_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true },
+  [ROLES.GROUP_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true },
+  [ROLES.ORG_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true },
+  [ROLES.SPONSOR]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false },
+  [ROLES.CHANGE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: true },
+  [ROLES.PEOPLE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false },
+  [ROLES.PRACTITIONER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false },
+  [ROLES.EMPLOYEE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false },
+  [ROLES.EXECUTIVE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false },
+}
+
 export const ADKAR_BLOCKS = ['awareness', 'desire', 'knowledge', 'ability', 'reinforcement']
 
 export const BRIDGES_PHASES = ['ending', 'neutral', 'beginning']

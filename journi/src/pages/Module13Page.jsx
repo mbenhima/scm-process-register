@@ -12,8 +12,8 @@ const RISK_TONE = { low: 'green', moderate: 'amber', high: 'red' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateCheckpoint, addQuickWin, addLesson, toggleSignoff, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, updateCheckpoint, addQuickWin, addLesson, toggleSignoff, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [win, setWin] = useState('')
   const [lesson, setLesson] = useState('')
 
