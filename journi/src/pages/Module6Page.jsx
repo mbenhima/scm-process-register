@@ -80,6 +80,153 @@ function BlockCard({ project, block, canEdit }) {
   )
 }
 
+function buildDesireDiagnosis(project, topResistance) {
+  const desire = project.adkar.desire
+  let out = `Desire is scored ${desire.score}/5 — ${desire.note}.`
+  if (topResistance) {
+    out += ` Resistance Log shows a ${topResistance.type}-based entry from ${topResistance.source} (severity ${topResistance.severity}/5): "${topResistance.rootCause}."`
+  }
+  if (project.sentimentSnapshot) {
+    out += ` Sentiment snapshot: "${project.sentimentSnapshot}"`
+  }
+  out += ' This pattern reads as attitudinal — fear and prior history, not a skills or awareness gap — so a direct manager conversation is likely to move the needle faster than more communication or training content.'
+  return out
+}
+
+function buildDesireCoachingScript(project, topResistance) {
+  const manager = project.sponsor?.members?.[1]?.name || project.sponsor?.name || 'the People Manager'
+  const namedConcern = topResistance ? topResistance.rootCause : 'concerns about job security tied to this change'
+  return (
+    `Coaching script for ${manager}\n\n` +
+    `1. Open by naming what you're both already seeing: "${namedConcern}." Don't minimize it or rush past it.\n` +
+    `2. Ask an open question: "What would need to be true for this to feel safe for your team?"\n` +
+    `3. Share only what's actually confirmed — don't over-promise on headcount or scope.\n` +
+    `4. Agree on one concrete next step together (e.g. a small-group listening session) and a date to follow up.`
+  )
+}
+
+function DesireDiagnosisCoach({ project }) {
+  const { data, logAiUsage } = useAppState()
+  const [diagnosis, setDiagnosis] = useState(null)
+  const [diagnosisAccepted, setDiagnosisAccepted] = useState(false)
+  const [script, setScript] = useState(null)
+  const [scriptResolved, setScriptResolved] = useState(null)
+
+  function isActive(ucId) {
+    const orgActive = data.aiOrgActivation[project.orgId]?.[ucId]
+    const override = data.aiProjectOverride[project.id]?.[ucId]
+    return override ?? orgActive
+  }
+  const diagnosisUcActive = isActive('uc-adkar-barrier')
+  const scriptUcActive = isActive('uc-coaching-script')
+  const topResistance = (project.resistanceLog || []).find((r) => r.type === 'will') || project.resistanceLog?.[0]
+
+  function generateDiagnosis() {
+    setDiagnosis(buildDesireDiagnosis(project, topResistance))
+    setDiagnosisAccepted(false)
+    setScript(null)
+    setScriptResolved(null)
+  }
+  function acceptDiagnosis() {
+    logAiUsage({ useCaseId: 'uc-adkar-barrier', orgId: project.orgId, cmProjectId: project.id, outputSummary: diagnosis, outcome: 'accepted', user: 'You (current session)' })
+    setDiagnosisAccepted(true)
+  }
+  function generateScript() {
+    setScript(buildDesireCoachingScript(project, topResistance))
+    setScriptResolved(null)
+  }
+  function resolveScript(outcome) {
+    logAiUsage({ useCaseId: 'uc-coaching-script', orgId: project.orgId, cmProjectId: project.id, outputSummary: script, outcome, user: 'You (current session)' })
+    setScriptResolved(outcome)
+  }
+
+  return (
+    <div className="card p-4 space-y-3 border-brand-200">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h3 className="font-semibold text-brand-950 text-sm">AI Diagnosis & Coaching — Desire</h3>
+        <Badge tone="sand">Assistive</Badge>
+      </div>
+      <p className="text-xs text-ink/60">
+        AI assists and augments. Here, it diagnoses a low Desire score in seconds, pointing to the resistance and sentiment data
+        behind it. One click drafts a coaching script for the manager to review and send — never auto-sent, always human-approved.
+      </p>
+
+      {!diagnosisUcActive ? (
+        <div className="rounded-lg border border-dashed border-brand-100 bg-brand-50/40 px-3 py-2 text-xs text-ink/40">
+          ADKAR Barrier Diagnosis Assistant — not activated for this scope. An Organization Admin can enable it in M17.
+        </div>
+      ) : (
+        <>
+          {!diagnosis && (
+            <button className="btn-secondary text-xs" onClick={generateDiagnosis}>
+              Diagnose Desire
+            </button>
+          )}
+          {diagnosis && (
+            <div className="rounded-lg border border-sand-200 bg-sand-50/60 p-3 space-y-2">
+              <Badge tone="sand">AI-generated — review required</Badge>
+              <p className="text-sm text-ink/80">{diagnosis}</p>
+              {!diagnosisAccepted ? (
+                <div className="flex items-center gap-2">
+                  <button className="btn-primary text-xs" onClick={acceptDiagnosis}>
+                    Confirm diagnosis
+                  </button>
+                  <button className="btn-ghost text-xs" onClick={generateDiagnosis}>
+                    Regenerate
+                  </button>
+                </div>
+              ) : (
+                <Badge tone="green">Confirmed</Badge>
+              )}
+            </div>
+          )}
+        </>
+      )}
+
+      {diagnosisAccepted && !scriptUcActive && (
+        <div className="rounded-lg border border-dashed border-brand-100 bg-brand-50/40 px-3 py-2 text-xs text-ink/40">
+          Manager Coaching Script Generator — not activated for this scope. An Organization Admin can enable it in M17.
+        </div>
+      )}
+      {diagnosisAccepted && scriptUcActive && (
+        <div className="pt-2 border-t border-brand-50 space-y-2">
+          {!script && (
+            <button className="btn-secondary text-xs" onClick={generateScript}>
+              Draft coaching script
+            </button>
+          )}
+          {script && (
+            <div className="rounded-lg border border-sand-200 bg-sand-50/60 p-3 space-y-2">
+              <Badge tone="sand">AI-generated — review required</Badge>
+              <p className="text-sm text-ink/80 whitespace-pre-line">{script}</p>
+              {!scriptResolved ? (
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button className="btn-primary text-xs" onClick={() => resolveScript('accepted')}>
+                    Save for manager review
+                  </button>
+                  <button className="btn-danger text-xs" onClick={() => resolveScript('rejected')}>
+                    Discard
+                  </button>
+                  <button className="btn-ghost text-xs" onClick={generateScript}>
+                    Regenerate
+                  </button>
+                </div>
+              ) : (
+                <Badge tone={scriptResolved === 'rejected' ? 'red' : 'green'}>
+                  {scriptResolved === 'rejected' ? 'Discarded' : 'Saved for manager review'}
+                </Badge>
+              )}
+              <p className="text-[11px] text-ink/40 italic">
+                Never sent automatically — always reviewed, personalized, and sent by the People Manager.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function Content({ project }) {
   const { t } = useI18n()
   const { data, addSubItem, updateProjectMeta, updateAdkar, currentUser } = useAppState()
@@ -107,6 +254,8 @@ function Content({ project }) {
           Manager for review.
         </div>
       )}
+
+      <DesireDiagnosisCoach project={project} />
 
       <div className="grid md:grid-cols-2 gap-4">
         <div className="card p-4">

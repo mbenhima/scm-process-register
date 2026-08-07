@@ -32,13 +32,19 @@ function normalizeCmProject(raw) {
     members: (raw.sponsor?.members || []).map((m) => ({ id: uid('coal'), ...m })),
     actions: (raw.sponsor?.actions || []).map((a) => ({ id: uid('spact'), ...a })),
   }
-  // ADKAR history seed: one baseline snapshot ("today") per block, editable going forward
+  // ADKAR history seed: a single baseline snapshot per block by default, editable
+  // going forward — unless the raw case file supplies its own explicit history
+  // (e.g. a pre-populated example of a justified change), which is kept as-is.
   project.adkar = Object.fromEntries(
     Object.entries(raw.adkar).map(([block, val]) => [
       block,
-      { ...val, history: [{ id: uid('hist'), date: 'baseline', score: val.score }] },
+      {
+        ...val,
+        history: (val.history || [{ date: 'baseline', score: val.score }]).map((h) => ({ id: uid('hist'), ...h })),
+      },
     ]),
   )
+  project.changeLog = (raw.changeLog || []).map((entry) => ({ id: uid('log'), ...entry }))
   return project
 }
 

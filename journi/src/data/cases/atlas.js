@@ -78,11 +78,28 @@ export const cmProjects = [
     aiUseCases: ['uc-adkar-barrier', 'uc-comm-draft', 'uc-saturation-advisor', 'uc-divergence-detector'],
     adkar: {
       awareness: { score: 3, note: 'Town halls held; shop-floor supervisors still under-informed' },
-      desire: { score: 2, note: 'Job-security concerns after prior automation announcement' },
+      desire: {
+        score: 2,
+        note: 'Job-security concerns after prior automation announcement',
+        history: [
+          { date: 'baseline', score: 1 },
+          { date: '2026-08-07', score: 2, justification: 'Data migration phase revealed historical skepticism' },
+        ],
+      },
       knowledge: { score: 2, note: 'Training curriculum not yet launched' },
       ability: { score: 2, note: 'No hands-on practice environment available yet' },
       reinforcement: { score: 1, note: 'Go-live still 9 months out; too early to reinforce' },
     },
+    changeLog: [
+      {
+        date: '2026-08-07',
+        module: 'M6 · ADKAR Engine',
+        field: 'desire',
+        oldValue: '1',
+        newValue: '2',
+        justification: 'Data migration phase revealed historical skepticism',
+      },
+    ],
     risks: [
       { category: 'saturation', description: 'Change saturation — concurrent Process Automation initiative targets an overlapping population', likelihood: 4, impact: 4, owner: 'Change Manager, Atlas ERP Program', status: 'open' },
       { category: 'adoption', description: 'Union sensitivities around headcount perception in consolidated back-office roles', likelihood: 3, impact: 4, owner: 'HR Business Partner', status: 'open' },
