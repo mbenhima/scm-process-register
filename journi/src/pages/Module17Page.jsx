@@ -13,12 +13,12 @@ function Toggle({ checked, onChange, disabled }) {
     <button
       disabled={disabled}
       onClick={() => onChange(!checked)}
-      className={`w-10 h-5.5 rounded-full transition-colors relative shrink-0 ${checked ? 'bg-brand-600' : 'bg-brand-100'} ${disabled ? 'opacity-70 cursor-not-allowed' : ''}`}
+      className={`w-10 rounded-full transition-colors relative shrink-0 ${checked ? 'bg-brand-600' : 'bg-brand-100'} ${disabled ? 'opacity-70 cursor-not-allowed' : ''}`}
       style={{ height: 22 }}
     >
       <span
-        className="absolute top-0.5 w-4.5 h-4.5 rounded-full bg-white shadow transition-transform"
-        style={{ width: 18, height: 18, transform: checked ? 'translateX(19px)' : 'translateX(2px)' }}
+        className="absolute rounded-full bg-white shadow transition-transform"
+        style={{ top: 2, left: 0, width: 18, height: 18, transform: checked ? 'translateX(19px)' : 'translateX(2px)' }}
       />
     </button>
   )
