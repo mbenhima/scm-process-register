@@ -1,7 +1,7 @@
 import React from 'react'
 import { useI18n, LANGUAGES } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { visibleOrganizations, visibleProjects, roleLabelKey } from '../utils/rbac.js'
+import { visibleOrganizations, visibleProjects, roleLabelKey, canManageHierarchy } from '../utils/rbac.js'
 
 export default function TopBar({ onMenuClick }) {
   const { t, lang, setLang } = useI18n()
@@ -68,7 +68,7 @@ export default function TopBar({ onMenuClick }) {
         <span className="text-sm font-semibold text-brand-950">{currentUser?.name}</span>
         <span className="text-[11px] text-ink/50">{t(roleLabelKey(currentUser?.role))}</span>
       </div>
-      {currentUser?.role === 'super_admin' && (
+      {canManageHierarchy(currentUser?.role) && (
         <button className="btn-ghost text-sm hidden md:inline-flex" onClick={handleResetDemoData} title={t('resetDemoDataConfirm')}>
           {t('resetDemoData')}
         </button>
