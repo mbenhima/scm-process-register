@@ -77,7 +77,14 @@ export const cmProjects = [
     },
     aiUseCases: ['uc-adkar-barrier', 'uc-comm-draft', 'uc-saturation-advisor', 'uc-divergence-detector'],
     adkar: {
-      awareness: { score: 3, note: 'Town halls held; shop-floor supervisors still under-informed' },
+      awareness: {
+        score: 3,
+        note: 'Town halls held; shop-floor supervisors still under-informed',
+        history: [
+          { date: 'baseline', score: 2 },
+          { date: '2026-08-05', score: 3, justification: 'Second wave of town halls completed at all three plants; awareness confirmed via post-session pulse survey.' },
+        ],
+      },
       desire: {
         score: 2,
         note: 'Job-security concerns after prior automation announcement',
@@ -86,11 +93,49 @@ export const cmProjects = [
           { date: '2026-08-07', score: 2, justification: 'Data migration phase revealed historical skepticism' },
         ],
       },
-      knowledge: { score: 2, note: 'Training curriculum not yet launched' },
-      ability: { score: 2, note: 'No hands-on practice environment available yet' },
+      knowledge: {
+        score: 2,
+        note: 'Training curriculum not yet launched',
+        history: [
+          { date: 'baseline', score: 1 },
+          { date: '2026-08-06', score: 2, justification: 'Initial curriculum walkthrough session held with pilot cohort; foundational training materials now published.' },
+        ],
+      },
+      ability: {
+        score: 2,
+        note: 'No hands-on practice environment available yet',
+        history: [
+          { date: 'baseline', score: 1 },
+          { date: '2026-08-06', score: 2, justification: 'First hands-on sandbox session run with the finance pilot group; still short of a full practice environment.' },
+        ],
+      },
       reinforcement: { score: 1, note: 'Go-live still 9 months out; too early to reinforce' },
     },
     changeLog: [
+      {
+        date: '2026-08-05',
+        module: 'M6 · ADKAR Engine',
+        field: 'awareness',
+        oldValue: '2',
+        newValue: '3',
+        justification: 'Second wave of town halls completed at all three plants; awareness confirmed via post-session pulse survey.',
+      },
+      {
+        date: '2026-08-06',
+        module: 'M6 · ADKAR Engine',
+        field: 'knowledge',
+        oldValue: '1',
+        newValue: '2',
+        justification: 'Initial curriculum walkthrough session held with pilot cohort; foundational training materials now published.',
+      },
+      {
+        date: '2026-08-06',
+        module: 'M6 · ADKAR Engine',
+        field: 'ability',
+        oldValue: '1',
+        newValue: '2',
+        justification: 'First hands-on sandbox session run with the finance pilot group; still short of a full practice environment.',
+      },
       {
         date: '2026-08-07',
         module: 'M6 · ADKAR Engine',
