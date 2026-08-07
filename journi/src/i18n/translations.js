@@ -8,6 +8,12 @@ const dict = {
   poweredBy: { en: 'Human Change Management Platform', fr: 'Plateforme de gestion humaine du changement', ar: 'منصة إدارة التغيير البشري' },
   search: { en: 'Search', fr: 'Rechercher', ar: 'بحث' },
   logout: { en: 'Sign out', fr: 'Déconnexion', ar: 'تسجيل الخروج' },
+  resetDemoData: { en: 'Reset Demo Data', fr: 'Réinitialiser les données', ar: 'إعادة تعيين البيانات' },
+  resetDemoDataConfirm: {
+    en: 'This will discard every change made in this browser and restore the original seed data for all Organizations. This cannot be undone. Continue?',
+    fr: 'Cette action supprimera toutes les modifications effectuées dans ce navigateur et restaurera les données d’origine pour toutes les Organisations. Cette action est irréversible. Continuer ?',
+    ar: 'سيؤدي هذا إلى إلغاء كل التغييرات التي تمت في هذا المتصفح واستعادة البيانات الأصلية لجميع المؤسسات. لا يمكن التراجع عن هذا الإجراء. هل تريد المتابعة؟',
+  },
   language: { en: 'Language', fr: 'Langue', ar: 'اللغة' },
   role: { en: 'Role', fr: 'Rôle', ar: 'الدور' },
   scope: { en: 'Scope', fr: 'Périmètre', ar: 'النطاق' },

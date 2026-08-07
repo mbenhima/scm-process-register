@@ -75,7 +75,7 @@ export const cmProjects = [
         { action: 'Sponsor-led go/no-go review at each cutover', phase: 'Manage', done: false },
       ],
     },
-    aiUseCases: ['uc-adkar-barrier', 'uc-comm-draft', 'uc-saturation-advisor'],
+    aiUseCases: ['uc-adkar-barrier', 'uc-comm-draft', 'uc-saturation-advisor', 'uc-divergence-detector'],
     adkar: {
       awareness: { score: 3, note: 'Town halls held; shop-floor supervisors still under-informed' },
       desire: { score: 2, note: 'Job-security concerns after prior automation announcement' },
