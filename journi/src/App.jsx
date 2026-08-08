@@ -21,6 +21,7 @@ import Module14Page from './pages/Module14Page.jsx'
 import Module15Page from './pages/Module15Page.jsx'
 import Module16Page from './pages/Module16Page.jsx'
 import Module17Page from './pages/Module17Page.jsx'
+import Module18Page from './pages/Module18Page.jsx'
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
           }
         />
         <Route path="m4" element={<Module4Page />} />
+        <Route path="m18" element={<Module18Page />} />
         <Route path="m5" element={<Module5Page />} />
         <Route path="m6" element={<Module6Page />} />
         <Route path="m7" element={<Module7Page />} />

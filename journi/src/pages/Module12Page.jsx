@@ -7,14 +7,32 @@ import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
 import { scoreColor, isBlockStalled } from '../utils/compute.js'
-import { canWrite } from '../utils/rbac.js'
+import { canWrite, justificationRequired } from '../utils/rbac.js'
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, currentUser } = useAppState()
+  const { data, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role)
-  const [readiness, setReadiness] = useState(project.managerReadiness ?? 3)
+  const org = data.organizations.find((o) => o.id === project.orgId)
+  const required = justificationRequired(org)
+  const committedReadiness = project.managerReadiness ?? 3
+  const [readiness, setReadiness] = useState(committedReadiness)
+  const [readinessNote, setReadinessNote] = useState('')
+  const readinessDirty = readiness !== committedReadiness
   const stalled = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
+
+  function saveReadiness() {
+    if (!readinessDirty) return
+    logJustifiedChange(project.id, {
+      module: 'M12 · Manager as Coach',
+      field: 'Manager Readiness',
+      oldValue: String(committedReadiness),
+      newValue: String(readiness),
+      justification: readinessNote,
+      applyPatch: (p) => ({ ...p, managerReadiness: readiness }),
+    })
+    setReadinessNote('')
+  }
 
   return (
     <div className="space-y-5">
@@ -39,10 +57,7 @@ function Content({ project }) {
             <button
               key={n}
               disabled={!canEdit}
-              onClick={() => {
-                setReadiness(n)
-                updateProjectMeta(project.id, { managerReadiness: n })
-              }}
+              onClick={() => setReadiness(n)}
               className={`flex-1 h-10 rounded-lg text-sm font-semibold ${
                 n === readiness ? 'bg-brand-600 text-white' : 'bg-brand-50 text-ink/40 hover:bg-brand-100'
               } ${!canEdit ? 'cursor-default' : ''}`}
@@ -51,6 +66,22 @@ function Content({ project }) {
             </button>
           ))}
         </div>
+        {canEdit && readinessDirty && (
+          <div className="mt-3 rounded-lg border border-sand-300 bg-amber-50/60 p-3 space-y-2">
+            <label className="label">Justify this change</label>
+            <textarea
+              className="input text-sm"
+              rows={2}
+              placeholder="What have you observed from this manager that supports this rating?"
+              value={readinessNote}
+              onChange={(e) => setReadinessNote(e.target.value)}
+            />
+            <button className="btn-primary text-xs" onClick={saveReadiness} disabled={required && !readinessNote.trim()}>
+              Save with justification
+            </button>
+            <p className="text-[11px] text-ink/40">{required ? t('justificationRequiredHint') : t('justificationOptionalOrgHint')}</p>
+          </div>
+        )}
       </div>
 
       <div className="card p-4">

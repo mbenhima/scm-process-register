@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { useScopedOrg, useMainProjects } from '../utils/useScoped.js'
-import { visibleProjects, canWrite } from '../utils/rbac.js'
+import { visibleProjects, canWrite, justificationRequired } from '../utils/rbac.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
@@ -57,8 +57,10 @@ function ChangeLogTable({ project }) {
 
 function ProjectDetail({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
+  const { data, updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role)
+  const org = data.organizations.find((o) => o.id === project.orgId)
+  const required = justificationRequired(org)
   const mainProjects = useMainProjects(project.mainProjectIds)
   const [pendingLewin, setPendingLewin] = useState(project.lewinPhase)
   const [lewinJustification, setLewinJustification] = useState('')
@@ -136,9 +138,10 @@ function ProjectDetail({ project }) {
               value={lewinJustification}
               onChange={(e) => setLewinJustification(e.target.value)}
             />
-            <button className="btn-primary text-xs" onClick={saveLewin} disabled={!lewinJustification.trim()}>
+            <button className="btn-primary text-xs" onClick={saveLewin} disabled={required && !lewinJustification.trim()}>
               Save with justification
             </button>
+            <p className="text-[11px] text-ink/40">{required ? t('justificationRequiredHint') : t('justificationOptionalOrgHint')}</p>
           </div>
         )}
         <Field label={t('businessDriver')}>

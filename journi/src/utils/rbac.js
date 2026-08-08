@@ -4,6 +4,11 @@ export function canWrite(role) {
   return ROLES_WITH_WRITE_ACCESS.has(role)
 }
 
+/** Whether a justification note is mandatory before saving a score/state change — an Org-level governance setting, mandatory by default. */
+export function justificationRequired(org) {
+  return org?.requireJustification !== false
+}
+
 export function canSeeIndividualData(role) {
   return ROLES_WITH_INDIVIDUAL_VISIBILITY.has(role)
 }

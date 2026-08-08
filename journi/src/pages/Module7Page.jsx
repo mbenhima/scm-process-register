@@ -7,15 +7,17 @@ import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { BRIDGES_PHASES, SENTIMENT_STAGES } from '../data/constants.js'
 import { inferSentimentStage, hasDivergence } from '../utils/compute.js'
-import { canWrite } from '../utils/rbac.js'
+import { canWrite, justificationRequired } from '../utils/rbac.js'
 
 const SENTIMENT_COLOR = { denial: 'bg-red-500', resistance: 'bg-orange-500', exploration: 'bg-amber-400', commitment: 'bg-emerald-500' }
 const BRIDGES_COLOR = { ending: 'bg-red-100 text-red-700', neutral: 'bg-amber-100 text-amber-700', beginning: 'bg-emerald-100 text-emerald-700' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
+  const { data, updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role)
+  const org = data.organizations.find((o) => o.id === project.orgId)
+  const required = justificationRequired(org)
   const sentiment = project.sentimentStage || inferSentimentStage(project)
   const divergence = hasDivergence(project)
 
@@ -87,14 +89,17 @@ function Content({ project }) {
             <p className="text-sm text-ink/70">{project.bridgesNote}</p>
           )}
           {canEdit && bridgesDirty && (
-            <button
-              className="btn-primary text-xs mt-2"
-              onClick={saveBridges}
-              disabled={!project.bridgesNote.trim()}
-              title={!project.bridgesNote.trim() ? 'Write a note above justifying this move first' : ''}
-            >
-              Save with justification
-            </button>
+            <>
+              <button
+                className="btn-primary text-xs mt-2"
+                onClick={saveBridges}
+                disabled={required && !project.bridgesNote.trim()}
+                title={required && !project.bridgesNote.trim() ? 'Write a note above justifying this move first' : ''}
+              >
+                Save with justification
+              </button>
+              <p className="text-[11px] text-ink/40 mt-1">{required ? t('justificationRequiredHint') : t('justificationOptionalOrgHint')}</p>
+            </>
           )}
         </div>
 
@@ -127,14 +132,17 @@ function Content({ project }) {
             <p className="text-sm text-ink/70">{project.sentimentSnapshot}</p>
           )}
           {canEdit && sentimentDirty && (
-            <button
-              className="btn-primary text-xs mt-2"
-              onClick={saveSentiment}
-              disabled={!project.sentimentSnapshot.trim()}
-              title={!project.sentimentSnapshot.trim() ? 'Write a note above justifying this move first' : ''}
-            >
-              Save with justification
-            </button>
+            <>
+              <button
+                className="btn-primary text-xs mt-2"
+                onClick={saveSentiment}
+                disabled={required && !project.sentimentSnapshot.trim()}
+                title={required && !project.sentimentSnapshot.trim() ? 'Write a note above justifying this move first' : ''}
+              >
+                Save with justification
+              </button>
+              <p className="text-[11px] text-ink/40 mt-1">{required ? t('justificationRequiredHint') : t('justificationOptionalOrgHint')}</p>
+            </>
           )}
         </div>
       </div>

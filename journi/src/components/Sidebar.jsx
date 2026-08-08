@@ -6,6 +6,7 @@ import { canManageHierarchy, canManageUsers } from '../utils/rbac.js'
 
 const CORE_MODULES = [
   { path: '/app/m4', key: 'navM4' },
+  { path: '/app/m18', key: 'navM18' },
   { path: '/app/m5', key: 'navM5' },
   { path: '/app/m6', key: 'navM6' },
   { path: '/app/m7', key: 'navM7' },

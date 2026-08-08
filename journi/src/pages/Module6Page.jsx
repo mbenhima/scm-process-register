@@ -7,7 +7,7 @@ import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
 import { scoreColor, isBlockStalled } from '../utils/compute.js'
-import { canWrite } from '../utils/rbac.js'
+import { canWrite, justificationRequired } from '../utils/rbac.js'
 
 const BARRIER_HINTS = {
   awareness: ['fear of the unknown', 'insufficient communication reach', 'competing priorities crowding out the message'],
@@ -17,7 +17,7 @@ const BARRIER_HINTS = {
   reinforcement: ['too early — pre go-live', 'no visible recognition of adoption', 'old process still technically available'],
 }
 
-function BlockCard({ project, block, canEdit }) {
+function BlockCard({ project, block, canEdit, required }) {
   const { t } = useI18n()
   const { updateAdkar } = useAppState()
   const val = project.adkar[block]
@@ -58,14 +58,17 @@ function BlockCard({ project, block, canEdit }) {
         <p className="text-sm text-ink/70">{val.note}</p>
       )}
       {canEdit && dirty && (
-        <button
-          className="btn-primary text-xs mt-2"
-          onClick={save}
-          disabled={pendingScore !== val.score && !note.trim()}
-          title={pendingScore !== val.score && !note.trim() ? 'A score change needs a justification note' : ''}
-        >
-          Save with justification
-        </button>
+        <>
+          <button
+            className="btn-primary text-xs mt-2"
+            onClick={save}
+            disabled={pendingScore !== val.score && required && !note.trim()}
+            title={pendingScore !== val.score && required && !note.trim() ? 'A score change needs a justification note' : ''}
+          >
+            Save with justification
+          </button>
+          <p className="text-[10px] text-ink/40 mt-1">{required ? t('justificationRequiredHint') : t('justificationOptionalOrgHint')}</p>
+        </>
       )}
       <div className="mt-2 text-[11px] text-ink/40">
         {t('history')}:
@@ -82,8 +85,10 @@ function BlockCard({ project, block, canEdit }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateProjectMeta, updateAdkar, currentUser } = useAppState()
+  const { data, addSubItem, updateProjectMeta, updateAdkar, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role)
+  const org = data.organizations.find((o) => o.id === project.orgId)
+  const required = justificationRequired(org)
   const [coachForm, setCoachForm] = useState({ managerName: '', cohort: '', barrierBlock: 'desire', note: '' })
   const stalledBlockList = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
 
@@ -97,7 +102,7 @@ function Content({ project }) {
     <div className="space-y-5">
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
         {ADKAR_BLOCKS.map((b) => (
-          <BlockCard key={b} project={project} block={b} canEdit={canEdit} />
+          <BlockCard key={b} project={project} block={b} canEdit={canEdit} required={required} />
         ))}
       </div>
 

@@ -335,6 +335,7 @@ export function AppStateProvider({ children }) {
         resistanceLog: [],
         coachingNotes: [],
         journeyEvents: [],
+        wbsTasks: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [

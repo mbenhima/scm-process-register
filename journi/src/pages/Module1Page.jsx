@@ -150,6 +150,22 @@ export default function Module1Page() {
                       <Badge tone="gray">{(org.defaultLanguage || 'en').toUpperCase()}</Badge>
                     )}
                   </div>
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    <span className="text-[11px] text-ink/40">{t('requireJustification')}:</span>
+                    {canEdit ? (
+                      <button
+                        className="input py-0.5 px-1.5 text-xs w-auto"
+                        onClick={() => updateOrganization(org.id, { requireJustification: org.requireJustification === false })}
+                        title="Whether score/state changes across this Organization's projects must carry a justification note before they can be saved"
+                      >
+                        {org.requireJustification === false ? t('justificationOptional') : t('justificationMandatory')}
+                      </button>
+                    ) : (
+                      <Badge tone={org.requireJustification === false ? 'gray' : 'sand'}>
+                        {org.requireJustification === false ? t('justificationOptional') : t('justificationMandatory')}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
                 {canEdit && (
                   <div className="flex gap-2">

@@ -1,4 +1,5 @@
 import { uid } from '../utils/id.js'
+import { generateDefaultWbs, addDays, todayISO } from '../utils/wbs.js'
 import aiUseCaseCatalog from './aiUseCases.js'
 import * as atlas from './cases/atlas.js'
 import * as atlasTangier from './cases/atlasTangier.js'
@@ -38,6 +39,10 @@ function normalizeCmProject(raw) {
       { ...val, history: [{ id: uid('hist'), date: 'baseline', score: val.score }] },
     ]),
   )
+  // WBS/Gantt seed: a representative Project Management + Change Management + Framework
+  // timeline anchored 90 days before "today", so the demo shows a mix of done, in-progress
+  // and planned-only tasks with realistic baseline/actual gaps out of the box.
+  project.wbsTasks = (raw.wbsTasks || generateDefaultWbs(addDays(todayISO(), -90))).map((t) => ({ id: uid('wbs'), ...t }))
   return project
 }
 
