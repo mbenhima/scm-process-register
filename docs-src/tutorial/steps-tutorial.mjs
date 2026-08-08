@@ -648,17 +648,17 @@ export const TUTORIAL_PHASES = [
     cmTasks: [
       {
         id: 'CM7.1',
-        name: 'Complete the risk mitigation action plan',
+        name: 'Complete the risk mitigation action plan with justification',
         sipoc: {
           suppliers: 'The high-severity risk logged in CM2.2; its mitigation action owner',
-          inputs: 'Mitigation action description, owner, due date; updated risk status',
-          process: ['Open M14', 'Log the mitigation action against the risk', 'Move the risk status to closed'],
-          outputs: 'A closed-loop risk record from open through mitigated, with its full action history intact',
+          inputs: 'Mitigation action description, owner, due date; risk status change, justification',
+          process: ['Open M14', 'Log the mitigation action against the risk', 'Stage the risk status to closed', 'Save with justification'],
+          outputs: 'A closed-loop, justified risk record from open through mitigated',
           customers: 'M4’s Change Log; the Phase 3 exit checklist this risk was tied to',
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: '', employee: '' },
         steps: [
-          { module: 'M14 · Risk Register', action: 'Log the mitigation action and close the risk', userInput: 'Expand "Mitigation actions" on the training-time risk. Action: "Protected training time formally added to both plants\' shift schedules"; Owner: Karim Chraibi; Due: 2026-02-20. Add the action, then move the risk\'s status dropdown from "mitigating" to "closed".', expectedResult: 'The risk moves to "closed" with its mitigation action visible in the same panel — risk status itself is a direct field, not one of the justification-gated saves; the evidence lives in the mitigation action\'s own description instead.', screenshot: '43-p7-m14-risk-closed.png' },
+          { module: 'M14 · Risk Register', action: 'Log the mitigation action and close the risk with justification', userInput: 'Expand "Mitigation actions" on the training-time risk. Action: "Protected training time formally added to both plants\' shift schedules"; Owner: Karim Chraibi; Due: 2026-02-20. Add the action, stage risk status "mitigating" → "closed" ● Save with justification: "Protected training time was formally added to both plants\' shift schedules starting this week, confirmed with both Plant Directors."', expectedResult: 'The risk moves to "closed" with its mitigation action and the closing justification both visible in the same panel — the same stage-then-justify pattern used everywhere else in journi, here applied to a risk\'s status field.', screenshot: '43-p7-m14-risk-closed.png' },
         ],
       },
       {
