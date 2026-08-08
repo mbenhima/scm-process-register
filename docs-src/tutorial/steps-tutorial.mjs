@@ -151,6 +151,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
         steps: [
+          { module: 'M5 · Stakeholder Mapping', action: 'Open Stakeholder Mapping on a fresh project', userInput: 'Open M5.', expectedResult: 'No stakeholder groups exist yet — the same "start from nothing" empty state used across every module.', screenshot: '52-p1-m5-before.png' },
           { module: 'M5 · Stakeholder Mapping', action: 'Log the first two stakeholder groups', userInput: 'Add "Finance & Procurement (HQ)" — 210 headcount, high process/tech impact; add "Shop-Floor Supervisors, both plants" — 260 headcount, high process/location/identity impact, low influence.', expectedResult: 'The impact map flags the shop-floor supervisor group as high-impact/low-influence — exactly the population Kotter’s coalition-building work should prioritize.', screenshot: '15-p1-m5-two-groups-flagged.png' },
         ],
       },
@@ -208,6 +209,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: '', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M18 · WBS & Gantt', action: 'Open the WBS mid-program', userInput: 'Open M18.', expectedResult: 'The baseline populated in Phase 1 is all still "planned" — no task has an actual date yet, so every gap column reads "—".', screenshot: '53-p2-m18-before-actuals.png' },
           { module: 'M18 · WBS & Gantt', action: 'Log a completed Phase 2 task with both baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 2"; Name: "Stand up the first training curriculum"; Baseline start/finish: 2026-03-02 → 2026-03-13 (the two weeks originally planned); Actual start/finish: 2026-03-02 → 2026-03-20 (the trainer needed a second cohort session). Status: done. Save.', expectedResult: 'Unlike the Phase 1 baseline entries, which only had planned dates, this task is logged with both baseline and actual at once — the WBS doesn’t wait for a dedicated end-of-program exercise to start showing reality; a visible amber schedule-gap badge appears immediately.', screenshot: '47-p2-m18-actual-progress.png' },
         ],
       },
@@ -241,7 +243,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'C', cm: 'A/R', peopleManager: '', employee: '' },
         steps: [
-          { module: 'M14 · Risk Register', action: 'Log the adoption risk', userInput: 'Category: Adoption; Description: "Shop-floor supervisors at the Kénitra plant have no protected time allotted for training once the line is running."; Likelihood: 4; Impact: 4; Owner: Karim Chraibi.', expectedResult: 'The risk is auto-flagged high-severity (likelihood × impact ≥ threshold), shown with a red badge.', screenshot: '20-p2-m14-risk-logged.png' },
+          { module: 'M14 · Risk Register', action: 'Open the Risk Register before any risk exists', userInput: 'Open M14.', expectedResult: 'An empty register — no risks logged yet for this project.', screenshot: '54-p2-m14-before.png' },
+          { module: 'M14 · Risk Register', action: 'Log the adoption risk', userInput: 'Category: Adoption; Description: "Shop-floor supervisors at the Kénitra plant have no protected time allotted for training once the line is running."; Likelihood: 4; Impact: 4; Owner: Karim Chraibi. Save.', expectedResult: 'The risk is auto-flagged high-severity (likelihood × impact ≥ threshold), shown with a red badge.', screenshot: '20-p2-m14-risk-logged.png' },
         ],
       },
       {
@@ -256,7 +259,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: '', pmo: '', cm: 'A', peopleManager: 'C/R', employee: 'I' },
         steps: [
-          { module: 'M10 · Training', action: 'Create the first curriculum', userInput: 'Name: "New Platform Fundamentals — Shop Floor"; Target cohort: Shop-Floor Supervisors (both plants); Modules: Navigation basics, Daily transaction entry, Exception handling; Format: In-person, plant floor.', expectedResult: 'The curriculum appears with a 0% completion rate across the target cohort — the number M12’s heatmap and M6’s Knowledge block will move as sessions run.', screenshot: '21-p2-m10-curriculum-created.png' },
+          { module: 'M10 · Training', action: 'Open Training before any curriculum exists', userInput: 'Open M10.', expectedResult: 'No curricula exist yet for this project.', screenshot: '55-p2-m10-before.png' },
+          { module: 'M10 · Training', action: 'Create the first curriculum', userInput: 'Name: "New Platform Fundamentals — Shop Floor"; Target cohort: Shop-Floor Supervisors (both plants); Modules: Navigation basics, Daily transaction entry, Exception handling; Format: In-person, plant floor. Save.', expectedResult: 'The curriculum appears with a 0% completion rate across the target cohort — the number M12’s heatmap and M6’s Knowledge block will move as sessions run.', screenshot: '21-p2-m10-curriculum-created.png' },
         ],
       },
       {
@@ -271,7 +275,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'C', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'I', employee: 'I' },
         steps: [
-          { module: 'M9 · Communications', action: 'Log the first communication', userInput: 'Theme: "Why we’re changing, and what stays the same"; Channel: Town hall + plant-floor poster; Audience: Finance, Procurement, Warehouse & Production Planning; Timing: Week 1 of Month 7.', expectedResult: 'The communication appears on the plan; the Change Saturation Advisor confirms no other active project is targeting the same population that week.', screenshot: '22-p2-m9-communication-logged.png' },
+          { module: 'M9 · Communications', action: 'Open Communications before any entry exists', userInput: 'Open M9.', expectedResult: 'No communications logged yet for this project.', screenshot: '56-p2-m9-before.png' },
+          { module: 'M9 · Communications', action: 'Log the first communication', userInput: 'Theme: "Why we’re changing, and what stays the same"; Channel: Town hall + plant-floor poster; Audience: Finance, Procurement, Warehouse & Production Planning; Timing: Week 1 of Month 7. Save.', expectedResult: 'The communication appears on the plan; the Change Saturation Advisor confirms no other active project is targeting the same population that week.', screenshot: '22-p2-m9-communication-logged.png' },
         ],
       },
     ],
@@ -313,6 +318,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: '', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M18 · WBS & Gantt', action: 'Open the WBS before this phase’s task is logged', userInput: 'Open M18.', expectedResult: 'The Phase 2 training-curriculum entry from a moment ago now carries its actual dates and amber gap badge; this phase’s task hasn’t been added yet.', screenshot: '57-p3-m18-before-actuals.png' },
           { module: 'M18 · WBS & Gantt', action: 'Log a completed Phase 3 task with both baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 3"; Name: "Score Desire & diagnose the stall"; Baseline start/finish: 2026-07-13 → 2026-07-15; Actual start/finish: 2026-07-13 → 2026-07-14 (the pulse survey came back a day early). Status: done. Save.', expectedResult: 'This task lands ahead of its baseline — a green, negative-gap badge — a useful contrast to Phase 2’s training-curriculum slip logged a moment ago; the WBS isn’t only tracking bad news.', screenshot: '48-p3-m18-actual-progress.png' },
         ],
       },
@@ -330,6 +336,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
         steps: [
+          { module: 'M6 · ADKAR Engine', action: 'Open ADKAR Engine on the Desire block', userInput: 'Open M6.', expectedResult: 'Awareness sits at 3/5 from Phase 2; Desire is still at its baseline of 1/5 — the gap this task exists to score honestly.', screenshot: '58-p3-m6-desire-before.png' },
           { module: 'M6 · ADKAR Engine', action: 'Stage and save the Desire score', userInput: 'Open ADKAR Engine ● Stage a score of 2 on Desire, with a note citing this week’s pulse survey ● Save with justification: "This week’s pulse survey shows Awareness has moved but Desire has not — the dominant open comment is ‘why should we trust this will actually work this time.’"', expectedResult: 'Desire sits at 2/5 against Awareness at 3/5 — the gap this task exists to surface.', screenshot: '23-p3-m6-desire-scored.png' },
         ],
       },
@@ -345,6 +352,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
         steps: [
+          { module: 'M7 · Emotional & Transition', action: 'Open Emotional & Transition before any sentiment reading exists', userInput: 'Open M7.', expectedResult: 'The Kübler-Ross curve marker sits at its default position with no note — no sentiment has been explicitly logged for this project yet.', screenshot: '59-p3-m7-before.png' },
           { module: 'M7 · Emotional & Transition', action: 'Stage and save the Kübler-Ross sentiment position', userInput: 'Open Emotional & Transition ● Stage "Resistance / Anger" on the Kübler-Ross curve ● Save with justification: "The stalled Desire score and this week’s ‘wait it out’ comments from the supervisor floor meeting both point to open resistance, not passive avoidance — the first explicit sentiment reading logged for this project."', expectedResult: 'The sentiment marker moves to Resistance/Anger; Bridges stays in Ending for the population that hasn’t started disengaging from the old process, while the curve records the emotional signal separately.', screenshot: '24-p3-m7-sentiment-set.png' },
         ],
       },
@@ -360,7 +368,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'C/S', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
         steps: [
-          { module: 'M11 · Resistance', action: 'Log the resistance with its mitigation plan', userInput: 'Type: Will; Source: Shop-floor supervisors, Kénitra plant; Root cause: "Supervisors openly stating they’ll ‘wait it out’ rather than engage with the new process."; Severity: 4; Mitigation action: "Sponsor floor visit + small-group listening session before next town hall"; Owner: Hicham Benjelloun; Due date: next week.', expectedResult: 'The resistance entry is logged with its mitigation action, owner and due date captured in the same form — the same category of tracked, owned action plan used for risk mitigation in M14.', screenshot: '25-p3-m11-resistance-logged.png' },
+          { module: 'M11 · Resistance', action: 'Open Resistance before any entry exists', userInput: 'Open M11.', expectedResult: 'No resistance entries logged yet; the type-count cards across the top all read zero.', screenshot: '60-p3-m11-before.png' },
+          { module: 'M11 · Resistance', action: 'Log the resistance with its mitigation plan', userInput: 'Type: Will; Source: Shop-floor supervisors, Kénitra plant; Root cause: "Supervisors openly stating they’ll ‘wait it out’ rather than engage with the new process."; Severity: 4; Mitigation action: "Sponsor floor visit + small-group listening session before next town hall"; Owner: Hicham Benjelloun; Due date: next week. Save.', expectedResult: 'The resistance entry is logged with its mitigation action, owner and due date captured in the same form — the same category of tracked, owned action plan used for risk mitigation in M14.', screenshot: '25-p3-m11-resistance-logged.png' },
         ],
       },
     ],
@@ -402,6 +411,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M18 · WBS & Gantt', action: 'Open the WBS before go-live is logged', userInput: 'Open M18.', expectedResult: 'The Phase 3 Desire-diagnosis task now shows its ahead-of-schedule actual bar; the go-live milestone hasn’t been added yet.', screenshot: '61-p4-m18-before-actuals.png' },
           { module: 'M18 · WBS & Gantt', action: 'Add the go-live milestone with matching baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 4"; Name: "Go-live milestone"; Baseline start/finish: 2026-09-08 → 2026-09-08; Actual start/finish: 2026-09-08 → 2026-09-08. Status: done. Save.', expectedResult: 'Setting both baseline dates equal renders a diamond instead of a bar, exactly as the tip on the Add-task form promised back in Phase 1 — and because the actual date matches the baseline exactly, it’s the one entry on the whole Gantt with a flat "on time" badge.', screenshot: '49-p4-m18-actual-progress.png' },
         ],
       },
@@ -419,6 +429,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: '', cm: 'A/R', peopleManager: 'C', employee: '' },
         steps: [
+          { module: 'M12 · Manager as Coach', action: 'Open Manager as Coach before a readiness rating exists', userInput: 'Open M12.', expectedResult: 'Manager readiness sits at its tentative kickoff-era default — the rating this task is about to justify a real improvement against.', screenshot: '62-p4-m12-before.png' },
           { module: 'M12 · Manager as Coach', action: 'Stage and save the manager readiness rating', userInput: 'Open Manager as Coach ● Stage a readiness rating of 4 ● Save with justification: "Ran the first cutover briefing unprompted this week and fielded floor questions without escalating — clear improvement from the tentative rating logged at kickoff."', expectedResult: 'Manager readiness moves to 4/5 with the evidence stored alongside it.', screenshot: '26-p4-m12-readiness-scored.png' },
         ],
       },
@@ -449,7 +460,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'A', superAdmin: '', pmo: 'R', cm: 'C/R', peopleManager: 'I', employee: 'I' },
         steps: [
-          { module: 'M16 · Journey Map', action: 'Mark go-live', userInput: 'Add journey event: "Technical cutover — go-live", dated Month 9, Week 2 — matching the Main Project’s Description from Phase 0.', expectedResult: 'The go-live marker appears on the journey map; the 30/60/90-day sustainment checkpoints in M13 now activate against this date.', screenshot: '28-p4-m16-golive-marked.png' },
+          { module: 'M16 · Journey Map', action: 'Open the journey map before go-live is marked', userInput: 'Open M16.', expectedResult: 'The journey map runs from kickoff through the current phase, with no go-live event yet — the one marker every "before/after" comparison from here on will anchor to.', screenshot: '63-p4-m16-before.png' },
+          { module: 'M16 · Journey Map', action: 'Mark go-live', userInput: 'Add journey event: "Technical cutover — go-live", dated Month 9, Week 2 — matching the Main Project’s Description from Phase 0. Save.', expectedResult: 'The go-live marker appears on the journey map; the 30/60/90-day sustainment checkpoints in M13 now activate against this date.', screenshot: '28-p4-m16-golive-marked.png' },
         ],
       },
     ],
@@ -490,6 +502,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: 'S', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M1 · Hierarchy', action: 'Open Hierarchy before the portfolio expands', userInput: 'Open M1.', expectedResult: 'Kenitra Precision Manufacturing still shows only its one original Change Management Project — a single-project "portfolio" that a Group-level roll-up can’t say much about yet.', screenshot: '64-p5-m1-before-expansion.png' },
           { module: 'M1 · Hierarchy', action: 'Add two more CM Projects', userInput: 'Under Kenitra Precision Manufacturing: "Warehouse Automation Adoption Track" (Process change, standalone). Under the Tangier Organization: "Tangier Plant Adoption Program" (Technology change).', expectedResult: 'The portfolio now has three CM Projects across two Organizations sharing one Group — enough real data for a Group-level roll-up to mean something.', screenshot: '29-p5-m1-portfolio-three-cm-projects.png' },
         ],
       },
@@ -505,7 +518,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: 'S', pmo: 'A/R', cm: 'I', peopleManager: '', employee: '' },
         steps: [
-          { module: 'Dashboard', action: 'Switch roll-up levels', userInput: 'On the Portfolio Dashboard, switch the level selector from Project → Organization → Group.', expectedResult: 'Each level aggregates only what that role’s scope permits — Group level shows both Organizations’ combined readiness, never a sibling Group.', screenshot: '30-p5-dashboard-rollup-levels.png' },
+          { module: 'Dashboard', action: 'View the Dashboard at Project level', userInput: 'Open the Portfolio Dashboard with the level selector on Project.', expectedResult: 'The Readiness Index reflects a single CM Project — the narrowest, most granular scope available.', screenshot: '65-p5-dashboard-project-level.png' },
+          { module: 'Dashboard', action: 'Switch roll-up levels up to Group', userInput: 'Switch the level selector from Project → Organization → Group.', expectedResult: 'Each level aggregates only what that role’s scope permits — Group level shows both Organizations’ combined readiness, never a sibling Group.', screenshot: '30-p5-dashboard-rollup-levels.png' },
         ],
       },
       {
@@ -520,7 +534,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'A/R', cm: 'I', peopleManager: '', employee: '' },
         steps: [
-          { module: 'M15 · Benchmarking', action: 'Review standing against the peer reference band', userInput: 'Open M15 · Analytics, switch to the Benchmarking tab.', expectedResult: 'Each project is labeled ahead of / in line with / behind the sector reference band, computed from the same peer-average formula documented in Appendix A.', screenshot: '31-p5-benchmarking-tab.png' },
+          { module: 'M15 · Analytics', action: 'Open Analytics on its default tab', userInput: 'Open M15 · Analytics.', expectedResult: 'The default view shows the project’s own Readiness Index trend, with no peer comparison yet.', screenshot: '66-p5-m15-before-benchmarking.png' },
+          { module: 'M15 · Benchmarking', action: 'Switch to the Benchmarking tab', userInput: 'Switch to the Benchmarking tab.', expectedResult: 'Each project is labeled ahead of / in line with / behind the sector reference band, computed from the same peer-average formula documented in Appendix A.', screenshot: '31-p5-benchmarking-tab.png' },
         ],
       },
       {
@@ -553,6 +568,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
         steps: [
+          { module: 'M13 · Sustainment', action: 'Open Sustainment now that real post-go-live time has passed', userInput: 'Open M13.', expectedResult: 'The 30-day card still shows "not due" with blank stat fields, exactly as it did when reviewed pre-go-live in CM4.2 — the checkpoint hasn’t been recorded yet.', screenshot: '67-p5-m13-before-checkpoint.png' },
           { module: 'M13 · Sustainment', action: 'Record the 30-day checkpoint and log a quick win', userInput: 'Open Sustainment ● Click "Record checkpoint" on the 30-day card ● Log a quick win: "First shift lead reports the new transaction flow now feels \'routine\' — no prompting needed."', expectedResult: 'The 30-day card that showed blank stat fields back in CM4.2 now carries a real adoption-rate percentage and a color-coded regression-risk badge — the checkpoint mechanism reviewed pre-go-live is doing its actual job.', screenshot: '50-p5-m13-checkpoint-logged.png' },
         ],
       },
@@ -594,6 +610,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: 'A/R', pmo: 'C', cm: 'I', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M17 · AI Use Case Library', action: 'Open the AI Use Case Library before activating anything', userInput: 'Open M17.', expectedResult: 'The catalog lists every available use case inactive for this Organization — activation is opt-in, never on by default.', screenshot: '68-p6-m17-before-activation.png' },
           { module: 'M17 · AI Use Case Library', action: 'Activate a use case for one Organization only', userInput: 'Open M17, activate "Divergence Pattern Detector" for Kenitra Precision Manufacturing, leave it off for the Tangier Organization.', expectedResult: 'The catalog shows the use case as active for one Organization and inactive for the other — activation is always per-tenant, never global.', screenshot: '34-p6-m17-activation.png' },
         ],
       },
@@ -625,6 +642,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: 'A/R', pmo: '', cm: 'I', peopleManager: '', employee: '' },
         steps: [
+          { module: 'TopBar', action: 'View the Dashboard scoped to Kenitra, in English', userInput: 'Confirm the Organization selector reads Kenitra Precision Manufacturing and the language selector reads English.', expectedResult: 'A normal English-language session — the baseline this task is about to override by switching Organization.', screenshot: '69-p6-before-language-switch.png' },
           { module: 'TopBar', action: 'Switch Organization and observe language precedence', userInput: 'Switch from Kenitra Precision Manufacturing to the Tangier Organization in the top bar.', expectedResult: 'The interface re-applies whichever default language the Tangier Organization is configured with, unless the signed-in user has their own personal language override set — confirming the precedence order documented in Section 3.1.1 of the spec.', screenshot: '37-p6-toplevel-language-switch.png' },
         ],
       },
@@ -640,7 +658,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: 'A/R', pmo: 'C', cm: 'I', peopleManager: '', employee: '' },
         steps: [
-          { module: 'M1 · Hierarchy', action: 'Delete the throwaway CM Project and verify cleanup', userInput: 'Create a disposable "Cascade Test Project", then delete it from M1.', expectedResult: 'The project, any user scoped directly to it, and its AI-override state all disappear together — exactly the cascading behavior documented in the spec, verified live rather than taken on faith.', screenshot: '38-p6-m1-cascade-delete.png' },
+          { module: 'M1 · Hierarchy', action: 'Create a disposable CM Project to delete', userInput: 'On Kenitra Precision Manufacturing, click "+ Change Management Project". Name: "Cascade Test Project". Save.', expectedResult: 'The throwaway project appears in the CM Project column alongside the others — real enough to prove the cascading delete actually removes something, not just a no-op.', screenshot: '70-p6-m1-cascade-project-created.png' },
+          { module: 'M1 · Hierarchy', action: 'Delete the throwaway CM Project and verify cleanup', userInput: 'Click "Delete" on "Cascade Test Project".', expectedResult: 'The project, any user scoped directly to it, and its AI-override state all disappear together — exactly the cascading behavior documented in the spec, verified live rather than taken on faith.', screenshot: '38-p6-m1-cascade-delete.png' },
         ],
       },
     ],
@@ -657,7 +676,8 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: '', pmo: '', cm: 'C', peopleManager: 'A/R', employee: '' },
         steps: [
-          { module: 'M11 · Resistance', action: 'Log a skill-based resistance signal while still signed in as the scoped People Manager', userInput: 'Still signed in as Nadia Squalli ● Open M11 ● Type: Skill; Source: "Production Planning team, Kénitra plant"; Root cause: "Several planners are quietly falling back to the old spreadsheet for anything beyond a simple transaction — they haven\'t said so directly, but it shows in the shared drive activity."; Severity: 3; Mitigation: "Add a floor-side cheat sheet for the three most common non-simple transactions"; Owner: Nadia Squalli; Due: two weeks.', expectedResult: 'The entry is logged from Nadia’s own scoped session — the same RBAC scope that limited her visibility to one Project in PM6.2 also lets her write real Change Management data inside it, closing the loop from "can she see it" to "can she use it."', screenshot: '51-p6-m11-peoplemanager-resistance.png' },
+          { module: 'M11 · Resistance', action: 'Open Resistance in Nadia’s own scoped session', userInput: 'Still signed in as Nadia Squalli ● Open M11.', expectedResult: 'The existing entry from Karim (CM3.3) is visible — her scope shows the whole project’s data, not just her own future entries — but nothing of hers exists yet.', screenshot: '71-p6-m11-before-peoplemanager.png' },
+          { module: 'M11 · Resistance', action: 'Log a skill-based resistance signal while still signed in as the scoped People Manager', userInput: 'Type: Skill; Source: "Production Planning team, Kénitra plant"; Root cause: "Several planners are quietly falling back to the old spreadsheet for anything beyond a simple transaction — they haven\'t said so directly, but it shows in the shared drive activity."; Severity: 3; Mitigation: "Add a floor-side cheat sheet for the three most common non-simple transactions"; Owner: Nadia Squalli; Due: two weeks. Save.', expectedResult: 'The entry is logged from Nadia’s own scoped session — the same RBAC scope that limited her visibility to one Project in PM6.2 also lets her write real Change Management data inside it, closing the loop from "can she see it" to "can she use it."', screenshot: '51-p6-m11-peoplemanager-resistance.png' },
         ],
       },
     ],
@@ -714,6 +734,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: 'C', pmo: 'A/R', cm: 'I', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M17 · AI Use Case Library', action: 'Open the catalog before this round of activation', userInput: 'Open M17.', expectedResult: 'Only the Divergence Pattern Detector (activated in PM6.1) shows as active; Sentiment & Emotion Classifier and Manager Coaching Script Generator are still off.', screenshot: '72-p7-m17-before-more-activations.png' },
           { module: 'M17 · AI Use Case Library', action: 'Activate the remaining recommended use cases', userInput: 'Activate "Sentiment & Emotion Classifier" and "Manager Coaching Script Generator" for Kenitra Precision Manufacturing.', expectedResult: 'Both use cases now show as active, and their assistive/augmented suggestion boxes appear live on M7 and M12 respectively.', screenshot: '41-p7-m17-usecases-activated.png' },
         ],
       },
@@ -729,6 +750,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: 'A/R', pmo: 'C', cm: 'I', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M17 · Provider Connection', action: 'Open the Provider Connection panel before any connection is configured', userInput: 'Open M17 and scroll to the Provider Connection panel at the top.', expectedResult: 'No provider is selected and no key is stored — every AI Use Case in the meantime runs on the built-in generator.', screenshot: '73-p7-m17-before-llm-connection.png' },
           { module: 'M17 · Provider Connection', action: 'Configure the LLM Provider Connection', userInput: 'Open the Provider Connection panel at the top of M17. Provider: Anthropic (Claude); Model: the recommended default from the curated shortlist; API key: pasted into the password-masked field.', expectedResult: 'The panel is ready to test — clicking "Connect" sends the key and a test prompt directly from this browser to the provider; on success every AI Use Case switches from its built-in generator to the real model, and on any failure (bad key, network, CORS) it falls back to the built-in generator automatically rather than blocking the workflow.', screenshot: '42-p7-m17-llm-connected.png' },
         ],
       },
@@ -746,6 +768,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M14 · Risk Register', action: 'Open the Risk Register before this risk is closed', userInput: 'Open M14.', expectedResult: 'The training-time risk logged in CM2.2 still shows status "mitigating", with no mitigation action recorded yet.', screenshot: '74-p7-m14-before-close.png' },
           { module: 'M14 · Risk Register', action: 'Log the mitigation action and close the risk with justification', userInput: 'Expand "Mitigation actions" on the training-time risk. Action: "Protected training time formally added to both plants\' shift schedules"; Owner: Karim Chraibi; Due: 2026-02-20. Add the action, stage risk status "mitigating" → "closed" ● Save with justification: "Protected training time was formally added to both plants\' shift schedules starting this week, confirmed with both Plant Directors."', expectedResult: 'The risk moves to "closed" with its mitigation action and the closing justification both visible in the same panel — the same stage-then-justify pattern used everywhere else in journi, here applied to a risk\'s status field.', screenshot: '43-p7-m14-risk-closed.png' },
         ],
       },
