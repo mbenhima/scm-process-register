@@ -213,6 +213,7 @@ await addWbsTask('framework', 'ADKAR', 'Awareness staged to 3', '2026-02-10', '2
 await shoot('14-p1-m18-baseline-populated.png')
 
 await goto('/app/m5')
+await shoot('52-p1-m5-before.png')
 await openModal('+ Stakeholder Group')
 await fillByLabel('Name', 'Finance & Procurement (HQ)')
 await fillByLabel('Headcount', 210)
@@ -248,16 +249,18 @@ await saveWithJustification(awarenessCard)
 await shoot('19-p2-m6-awareness-scored.png')
 
 await goto('/app/m14')
+await shoot('54-p2-m14-before.png')
 await openModal('+ ')
 await page.waitForTimeout(250)
 await page.locator('.fixed textarea').fill('Shop-floor supervisors at the Kénitra plant have no protected time allotted for training once the line is running.')
 await page.locator('.fixed input[type="number"]').nth(0).fill('4')
 await page.locator('.fixed input[type="number"]').nth(1).fill('4')
 await page.locator('.fixed input:not([type="checkbox"]):not([type="number"])').first().fill('Karim Chraibi')
-await shoot('20-p2-m14-risk-logged.png')
 await saveModal()
+await shoot('20-p2-m14-risk-logged.png')
 
 await goto('/app/m10')
+await shoot('55-p2-m10-before.png')
 await openModal('+ ')
 await page.waitForTimeout(250)
 const m10Inputs = page.locator('.fixed input:not([type="checkbox"]):not([type="number"])')
@@ -265,22 +268,24 @@ await m10Inputs.nth(0).fill('New Platform Fundamentals — Shop Floor')
 await m10Inputs.nth(1).fill('Shop-Floor Supervisors, both plants')
 await m10Inputs.nth(2).fill('Module 1 — Navigation & Daily Transactions')
 await page.locator('.fixed textarea').first().fill('Navigate the new platform confidently\nEnter daily transactions without error\nHandle common exceptions')
-await shoot('21-p2-m10-curriculum-created.png')
 await saveModal()
+await shoot('21-p2-m10-curriculum-created.png')
 
 await goto('/app/m9')
+await shoot('56-p2-m9-before.png')
 await openModal('+ ')
 await page.waitForTimeout(250)
 await page.locator('.fixed textarea').fill('Why we\'re changing, and what stays the same')
 await fillPlaceholder('Audience', 'Finance, Procurement, Warehouse & Production Planning')
 await fillPlaceholder('Channel', 'Town hall + plant-floor poster')
 await fillPlaceholder('Timing', 'Week 1 of Month 7')
-await shoot('22-p2-m9-communication-logged.png')
 await saveModal()
+await shoot('22-p2-m9-communication-logged.png')
 
 // PM2.1 — log the completed training curriculum on the WBS with both
 // baseline and actual dates, starting the progressive-tracking rhythm.
 await goto('/app/m18')
+await shoot('53-p2-m18-before-actuals.png')
 await addWbsTaskWithActual('cm', 'Phase 2', 'Stand up the first training curriculum', '2026-03-02', '2026-03-13', '2026-03-02', '2026-03-20')
 await shoot('47-p2-m18-actual-progress.png')
 
@@ -289,6 +294,7 @@ await shoot('47-p2-m18-actual-progress.png')
 // ============================================================
 
 await goto('/app/m6')
+await shoot('58-p3-m6-desire-before.png')
 const desireCard = page.locator('.card', { hasText: 'desire' }).first()
 await desireCard.locator('button:has-text("2")').click()
 await desireCard.locator('textarea').fill('This week\'s pulse survey shows Awareness has moved but Desire has not — the dominant open comment is "why should we trust this will actually work this time."')
@@ -296,6 +302,7 @@ await saveWithJustification(desireCard)
 await shoot('23-p3-m6-desire-scored.png')
 
 await goto('/app/m7')
+await shoot('59-p3-m7-before.png')
 const kublerCard = page.locator('.card', { hasText: 'Kübler' }).first()
 await kublerCard.locator('button:has-text("Resistance")').click()
 await kublerCard.locator('textarea').fill('The stalled Desire score and this week\'s "wait it out" comments from the supervisor floor meeting both point to open resistance, not passive avoidance — the first explicit sentiment reading logged for this project.')
@@ -303,6 +310,7 @@ await saveWithJustification(kublerCard)
 await shoot('24-p3-m7-sentiment-set.png')
 
 await goto('/app/m11')
+await shoot('60-p3-m11-before.png')
 await openModal('+ ')
 await page.waitForTimeout(250)
 const m11Inputs = page.locator('.fixed input:not([type="checkbox"]):not([type="number"])')
@@ -312,12 +320,13 @@ await page.locator('.fixed input[type="number"]').fill('4')
 await m11Inputs.nth(1).fill('Sponsor floor visit + small-group listening session before next town hall')
 await m11Inputs.nth(2).fill('Hicham Benjelloun')
 await m11Inputs.nth(3).fill('Next week')
-await shoot('25-p3-m11-resistance-logged.png')
 await saveModal()
+await shoot('25-p3-m11-resistance-logged.png')
 
 // PM3.1 — log the Desire-diagnosis task on the WBS, this one landing ahead
 // of baseline rather than behind it.
 await goto('/app/m18')
+await shoot('57-p3-m18-before-actuals.png')
 await addWbsTaskWithActual('cm', 'Phase 3', 'Score Desire & diagnose the stall', '2026-07-13', '2026-07-15', '2026-07-13', '2026-07-14')
 await shoot('48-p3-m18-actual-progress.png')
 
@@ -326,6 +335,7 @@ await shoot('48-p3-m18-actual-progress.png')
 // ============================================================
 
 await goto('/app/m12')
+await shoot('62-p4-m12-before.png')
 await page.locator('button').filter({ hasText: /^4$/ }).first().click()
 await page.waitForTimeout(200)
 await page.locator('textarea').last().fill('Ran the first cutover briefing unprompted this week and fielded floor questions without escalating — clear improvement from the tentative rating logged at kickoff.')
@@ -336,6 +346,7 @@ await goto('/app/m13')
 await shoot('27-p4-m13-checkpoints-reviewed.png')
 
 await goto('/app/m16')
+await shoot('63-p4-m16-before.png')
 await page.locator('[placeholder="Event label, e.g. Go-live, Plant 1"]').fill('Technical cutover — go-live')
 await page.locator('input[type="number"]').fill('245')
 await page.locator('button:has-text("Add")').last().click()
@@ -345,6 +356,7 @@ await shoot('28-p4-m16-golive-marked.png')
 // PM4.1 — log go-live itself as a zero-duration WBS milestone, baseline and
 // actual matching exactly.
 await goto('/app/m18')
+await shoot('61-p4-m18-before-actuals.png')
 await addWbsTaskWithActual('cm', 'Phase 4', 'Go-live milestone', '2026-09-08', '2026-09-08', '2026-09-08', '2026-09-08')
 await shoot('49-p4-m18-actual-progress.png')
 
@@ -353,6 +365,7 @@ await shoot('49-p4-m18-actual-progress.png')
 // ============================================================
 
 await goto('/app/m1')
+await shoot('64-p5-m1-before-expansion.png')
 await orgCard('Kenitra Precision Manufacturing').locator('button:has-text("+ Change Management Project")').click()
 await page.waitForTimeout(250)
 await fillByLabel('Name', 'Warehouse Automation Adoption Track')
@@ -364,9 +377,13 @@ await saveModal()
 await shoot('29-p5-m1-portfolio-three-cm-projects.png')
 
 await goto('/app/dashboard')
+await shoot('65-p5-dashboard-project-level.png')
+await page.locator('button:has-text("Group")').click()
+await page.waitForTimeout(300)
 await shoot('30-p5-dashboard-rollup-levels.png')
 
 await goto('/app/m15')
+await shoot('66-p5-m15-before-benchmarking.png')
 await page.locator('button:has-text("Benchmarking")').click()
 await page.waitForTimeout(300)
 await shoot('31-p5-benchmarking-tab.png')
@@ -385,6 +402,7 @@ await shoot('33-p5-m18-gap-summary.png')
 // CM5.1 — record the first real 30-day sustainment checkpoint (blank/seeded
 // when reviewed pre-go-live back in CM4.2) and log a quick win.
 await goto('/app/m13')
+await shoot('67-p5-m13-before-checkpoint.png')
 await page.locator('button:has-text("Record checkpoint")').first().click()
 await page.waitForTimeout(300)
 await page.locator('[placeholder="Quick Win / Milestone"]').fill('First shift lead reports the new transaction flow now feels "routine" — no prompting needed.')
@@ -397,6 +415,7 @@ await shoot('50-p5-m13-checkpoint-logged.png')
 // ============================================================
 
 await goto('/app/m17')
+await shoot('68-p6-m17-before-activation.png')
 const divergenceCard = page.locator('.card', { hasText: 'Divergence Pattern Detector' }).first()
 await divergenceCard.locator('button').first().click().catch(() => {})
 await page.waitForTimeout(300)
@@ -422,6 +441,7 @@ await shoot('36-p6-m2-scoped-session.png')
 // CM6.1 — still signed in as the newly scoped People Manager: prove the
 // scope also supports real write access, not just restricted visibility.
 await goto('/app/m11')
+await shoot('71-p6-m11-before-peoplemanager.png')
 await openModal('+ ')
 await page.waitForTimeout(250)
 await page.locator('.fixed select').first().selectOption('skill').catch(() => {})
@@ -432,13 +452,14 @@ await page.locator('.fixed input[type="number"]').fill('3')
 await cm61Inputs.nth(1).fill('Add a floor-side cheat sheet for the three most common non-simple transactions')
 await cm61Inputs.nth(2).fill('Nadia Squalli')
 await cm61Inputs.nth(3).fill('Two weeks')
-await shoot('51-p6-m11-peoplemanager-resistance.png')
 await saveModal()
+await shoot('51-p6-m11-peoplemanager-resistance.png')
 
 await signIn('Amina Idrissi')
 await switchScope('Kenitra Precision Manufacturing', 'Enterprise Platform Renewal — People Readiness')
 
 await goto('/app/dashboard')
+await shoot('69-p6-before-language-switch.png')
 // Deliberately do NOT reset to English here — the point of this screenshot
 // is to show the Tangier org's Arabic default actually taking over the UI.
 await page.locator('header select, select').first().selectOption({ label: 'Kenitra Precision Manufacturing — Tangier Plant' }).catch(() => {})
@@ -452,6 +473,7 @@ await page.waitForTimeout(250)
 await fillByLabel('Name', 'Cascade Test Project')
 await saveModal()
 await page.waitForTimeout(300)
+await shoot('70-p6-m1-cascade-project-created.png')
 // The CM project's name sits in a <span>, inside a `.rounded-lg` card div
 // alongside its own Delete button — walk up to that specific card so this
 // never risks clicking some other project's Delete button by accident.
@@ -477,17 +499,20 @@ await page.waitForTimeout(300)
 await shoot('40-p7-m2-governance-settings.png')
 
 await goto('/app/m17')
+await shoot('72-p7-m17-before-more-activations.png')
 await page.locator('.card:has-text("Sentiment & Emotion Classifier") button').first().click().catch(() => {})
 await page.locator('.card:has-text("Manager Coaching Script Generator") button').first().click().catch(() => {})
 await page.waitForTimeout(300)
 await shoot('41-p7-m17-usecases-activated.png')
 
+await shoot('73-p7-m17-before-llm-connection.png')
 await page.locator('select').first().selectOption('anthropic').catch(() => {})
 await page.waitForTimeout(150)
 await page.locator('input[type="password"]').fill('sk-ant-demo-key-not-real')
 await shoot('42-p7-m17-llm-connected.png')
 
 await goto('/app/m14')
+await shoot('74-p7-m14-before-close.png')
 await page.locator('button:has-text("Mitigation")').first().click()
 await page.waitForTimeout(300)
 const mitigationInputs = page.locator('input[placeholder="Action description"], input[placeholder="Owner"], input[placeholder="Due date"]')
