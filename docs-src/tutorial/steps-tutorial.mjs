@@ -778,13 +778,14 @@ export const TUTORIAL_PHASES = [
         sipoc: {
           suppliers: 'ADKAR Knowledge/Ability scores; Bridges/sentiment position',
           inputs: 'Current ADKAR and Bridges/sentiment readings',
-          process: ['Open M7', 'Run the Divergence Pattern Detector'],
+          process: ['Open M7', 'Generate the Sentiment & Emotion Classifier suggestion, now that PM7.2 has activated it', 'Generate the Divergence Pattern Detector suggestion'],
           outputs: 'A flagged divergence — strong Knowledge/Ability against a lagging emotional position — for the Change Manager to review',
           customers: 'Change Manager (decides whether to act, no automatic action)',
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: '', cm: 'A/R', peopleManager: '', employee: '' },
         steps: [
-          { module: 'M7 · Divergence Pattern Detector', action: 'Run the divergence check', userInput: 'Open M7 and review the Divergence Pattern Detector panel.', expectedResult: 'The detector flags that Knowledge and Ability are now comparatively strong while the cohort remains near Bridges "Ending" — a classic hidden-resistance pattern surfaced for review, never acted on automatically.', screenshot: '44-p7-m7-divergence-flagged.png' },
+          { module: 'M7 · Sentiment & Emotion Classifier', action: 'Generate the sentiment classification, now that it’s active', userInput: 'Open M7 ● Click "Generate — Sentiment & Emotion Classifier".', expectedResult: 'An AI-generated, review-required suggestion appears — the use case PM7.2 activated a moment ago is now producing real output on this page, not just sitting in the catalog as "on".', screenshot: '75-p7-m7-sentiment-classifier-generated.png' },
+          { module: 'M7 · Divergence Pattern Detector', action: 'Generate the divergence check', userInput: 'Click "Generate — Divergence Pattern Detector".', expectedResult: 'The detector flags that Knowledge and Ability are now comparatively strong while the cohort remains near Bridges "Ending" — a classic hidden-resistance pattern surfaced for review, never acted on automatically.', screenshot: '44-p7-m7-divergence-flagged.png' },
         ],
       },
       {

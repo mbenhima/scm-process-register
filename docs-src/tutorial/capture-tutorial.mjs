@@ -529,6 +529,12 @@ await page.waitForTimeout(300)
 await shoot('43-p7-m14-risk-closed.png')
 
 await goto('/app/m7')
+await page.locator('button:has-text("Generate — Sentiment & Emotion Classifier")').click()
+await page.waitForTimeout(400)
+await shoot('75-p7-m7-sentiment-classifier-generated.png')
+
+await page.locator('button:has-text("Generate — Divergence Pattern Detector")').click()
+await page.waitForTimeout(400)
 await shoot('44-p7-m7-divergence-flagged.png')
 
 await goto('/app/m12')
