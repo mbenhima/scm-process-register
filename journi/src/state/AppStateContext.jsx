@@ -3,7 +3,7 @@ import { buildSeed } from '../data/seed.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
 import { useI18n } from '../i18n/index.jsx'
-import { callLLM } from '../utils/llmProviders.js'
+import { callLLM, recommendedModel } from '../utils/llmProviders.js'
 
 const AppStateContext = createContext(null)
 const STORAGE_KEY = 'journi.state.v1'
@@ -19,7 +19,7 @@ function loadLlmConfig() {
   } catch {
     // fall through to default
   }
-  return { provider: 'anthropic', apiKey: '', model: '', baseUrl: '', connected: false, lastError: null }
+  return { provider: 'anthropic', apiKey: '', model: recommendedModel('anthropic'), baseUrl: '', connected: false, lastError: null }
 }
 
 function loadInitialState() {

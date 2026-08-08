@@ -3,7 +3,7 @@ import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { useScopedOrg, useScopedProject } from '../utils/useScoped.js'
 import { canActivateAiForOrg, canRequestProjectAiOverride } from '../utils/rbac.js'
-import { PROVIDERS, providerLabel } from '../utils/llmProviders.js'
+import { PROVIDERS, MODEL_OPTIONS, recommendedModel, providerLabel } from '../utils/llmProviders.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 
@@ -13,11 +13,26 @@ function ProviderConnectionPanel({ canEdit }) {
   const { llmConfig, setLlmConfig, testAndConnectLlm, disconnectLlm } = useAppState()
   const [testing, setTesting] = useState(false)
   const providerMeta = PROVIDERS.find((p) => p.id === llmConfig.provider)
+  const modelOptions = MODEL_OPTIONS[llmConfig.provider] || []
+  const isKnownModel = modelOptions.some((m) => m.id === llmConfig.model)
+  const showCustomModelInput = modelOptions.length === 0 || !isKnownModel
 
   async function handleConnect() {
     setTesting(true)
     await testAndConnectLlm()
     setTesting(false)
+  }
+
+  function handleProviderChange(providerId) {
+    setLlmConfig({ provider: providerId, model: recommendedModel(providerId) })
+  }
+
+  function handleModelSelect(value) {
+    if (value === '__custom__') {
+      setLlmConfig({ model: '' })
+    } else {
+      setLlmConfig({ model: value })
+    }
   }
 
   return (
@@ -44,11 +59,7 @@ function ProviderConnectionPanel({ canEdit }) {
         <div className="grid sm:grid-cols-2 gap-3">
           <div>
             <label className="label">Provider</label>
-            <select
-              className="input"
-              value={llmConfig.provider}
-              onChange={(e) => setLlmConfig({ provider: e.target.value, model: '' })}
-            >
+            <select className="input" value={llmConfig.provider} onChange={(e) => handleProviderChange(e.target.value)}>
               {PROVIDERS.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.label}
@@ -58,12 +69,25 @@ function ProviderConnectionPanel({ canEdit }) {
           </div>
           <div>
             <label className="label">Model</label>
-            <input
-              className="input"
-              placeholder={providerMeta?.defaultModel || 'model id'}
-              value={llmConfig.model}
-              onChange={(e) => setLlmConfig({ model: e.target.value })}
-            />
+            {modelOptions.length > 0 && (
+              <select className="input" value={showCustomModelInput ? '__custom__' : llmConfig.model} onChange={(e) => handleModelSelect(e.target.value)}>
+                {modelOptions.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.label}
+                    {m.recommended ? ' (recommended for journi)' : ''}
+                  </option>
+                ))}
+                <option value="__custom__">Custom…</option>
+              </select>
+            )}
+            {showCustomModelInput && (
+              <input
+                className="input mt-1.5"
+                placeholder="model id"
+                value={llmConfig.model}
+                onChange={(e) => setLlmConfig({ model: e.target.value })}
+              />
+            )}
           </div>
           {llmConfig.provider === 'custom' && (
             <div>

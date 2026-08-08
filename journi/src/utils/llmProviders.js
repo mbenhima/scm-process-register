@@ -15,6 +15,33 @@ export const PROVIDERS = [
   { id: 'custom', label: 'Custom / OpenAI-compatible endpoint', defaultModel: '', keyPlaceholder: '(if required)' },
 ]
 
+// Curated per-provider shortlist for the Model dropdown. The AI Use Case
+// Library only ever needs short, structured text (a diagnosis, a coaching
+// script, a draft message) — never long-form generation — so the
+// "recommended" pick in each list favors the fastest/cheapest model that's
+// still strong at instruction-following, not the biggest flagship model.
+export const MODEL_OPTIONS = {
+  anthropic: [
+    { id: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5', recommended: true },
+    { id: 'claude-opus-4-5', label: 'Claude Opus 4.5' },
+    { id: 'claude-haiku-4-5', label: 'Claude Haiku 4.5' },
+  ],
+  openai: [
+    { id: 'gpt-4o-mini', label: 'GPT-4o mini', recommended: true },
+    { id: 'gpt-4o', label: 'GPT-4o' },
+    { id: 'gpt-4.1-mini', label: 'GPT-4.1 mini' },
+  ],
+  google: [
+    { id: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash', recommended: true },
+    { id: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
+  ],
+  custom: [],
+}
+
+export function recommendedModel(providerId) {
+  return MODEL_OPTIONS[providerId]?.find((m) => m.recommended)?.id || ''
+}
+
 export function providerLabel(providerId) {
   return PROVIDERS.find((p) => p.id === providerId)?.label || providerId
 }
