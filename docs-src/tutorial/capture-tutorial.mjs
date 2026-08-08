@@ -7,6 +7,7 @@ if (!fs.existsSync(SHOTS)) fs.mkdirSync(SHOTS)
 
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', headless: true })
 const page = await browser.newPage({ viewport: { width: 1440, height: 950 } })
+page.setDefaultTimeout(10000)
 page.on('pageerror', (e) => console.log('PAGEERROR:', e.message))
 
 async function shoot(name) {
@@ -301,7 +302,7 @@ await goto('/app/m13')
 await shoot('27-p4-m13-checkpoints-reviewed.png')
 
 await goto('/app/m16')
-await fillPlaceholder('Event label, e.g. Go-live, Plant 1', 'Technical cutover — go-live')
+await page.locator('[placeholder="Event label, e.g. Go-live, Plant 1"]').fill('Technical cutover — go-live')
 await page.locator('input[type="number"]').fill('245')
 await page.locator('button:has-text("Add")').last().click()
 await page.waitForTimeout(300)
