@@ -5,3 +5,14 @@ dist/
 *.log
 .DS_Store
 journi/_tut_*.mjs
+
+# docs-src build outputs — the sources (md/mjs/html/py) are tracked so they
+# survive a sandbox revert; generated binaries and screenshots are not,
+# since they're large, regenerable, and change on every rebuild.
+docs-src/**/*.docx
+docs-src/**/*.pdf
+docs-src/**/shots/
+docs-src/**/spec-*.md
+docs-src/**/spec-pandoc.docx
+docs-src/**/spec-styled.docx
+docs-src/**/*.log
