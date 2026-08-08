@@ -778,14 +778,15 @@ export const TUTORIAL_PHASES = [
         sipoc: {
           suppliers: 'ADKAR Knowledge/Ability scores; Bridges/sentiment position',
           inputs: 'Current ADKAR and Bridges/sentiment readings',
-          process: ['Open M7', 'Generate the Sentiment & Emotion Classifier suggestion, now that PM7.2 has activated it', 'Generate the Divergence Pattern Detector suggestion'],
+          process: ['Open M6', 'Score Knowledge & Ability now that months of real platform use have passed since go-live', 'Open M7', 'Generate the Sentiment & Emotion Classifier suggestion, now that PM7.2 has activated it', 'Generate the Divergence Pattern Detector suggestion'],
           outputs: 'A flagged divergence — strong Knowledge/Ability against a lagging emotional position — for the Change Manager to review',
           customers: 'Change Manager (decides whether to act, no automatic action)',
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: '', cm: 'A/R', peopleManager: '', employee: '' },
         steps: [
+          { module: 'M6 · ADKAR Engine', action: 'Score Knowledge & Ability, five months after go-live', userInput: 'Open M6 ● Stage a score of 4 on Knowledge, with a note citing the training curriculum’s near-100% completion since Phase 2 ● Save with justification: "Training curriculum completion is at 96% and daily-transaction error rates have dropped to pre-legacy-system levels — Knowledge is no longer the gap." ● Repeat for Ability, scored 4, with a matching note.', expectedResult: 'Knowledge and Ability both move to 4/5 — genuinely capable on the new platform — while Bridges is still sitting in "Ending" from CM3.2. That gap is exactly what the Divergence Pattern Detector exists to catch.', screenshot: '76-p7-m6-knowledge-ability-scored.png' },
           { module: 'M7 · Sentiment & Emotion Classifier', action: 'Generate the sentiment classification, now that it’s active', userInput: 'Open M7 ● Click "Generate — Sentiment & Emotion Classifier".', expectedResult: 'An AI-generated, review-required suggestion appears — the use case PM7.2 activated a moment ago is now producing real output on this page, not just sitting in the catalog as "on".', screenshot: '75-p7-m7-sentiment-classifier-generated.png' },
-          { module: 'M7 · Divergence Pattern Detector', action: 'Generate the divergence check', userInput: 'Click "Generate — Divergence Pattern Detector".', expectedResult: 'The detector flags that Knowledge and Ability are now comparatively strong while the cohort remains near Bridges "Ending" — a classic hidden-resistance pattern surfaced for review, never acted on automatically.', screenshot: '44-p7-m7-divergence-flagged.png' },
+          { module: 'M7 · Divergence Pattern Detector', action: 'Generate the divergence check', userInput: 'Click "Generate — Divergence Pattern Detector".', expectedResult: 'With Knowledge and Ability both now at 4/5 while Bridges remains in "Ending", the detector flags a genuine divergence — a classic hidden-resistance pattern surfaced for review, never acted on automatically.', screenshot: '44-p7-m7-divergence-flagged.png' },
         ],
       },
       {

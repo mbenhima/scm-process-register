@@ -528,6 +528,21 @@ await page.locator('button:has-text("Set to closed with justification")').click(
 await page.waitForTimeout(300)
 await shoot('43-p7-m14-risk-closed.png')
 
+// CM7.2 — stage Knowledge/Ability high enough to actually trigger
+// hasDivergence() (requires both >= 3 while Bridges is still 'ending'),
+// otherwise the Divergence Pattern Detector has nothing real to flag.
+await goto('/app/m6')
+const knowledgeCard = page.locator('.card', { hasText: 'knowledge' }).first()
+await knowledgeCard.locator('button:has-text("4")').click()
+await knowledgeCard.locator('textarea').fill('Training curriculum completion is at 96% and daily-transaction error rates have dropped to pre-legacy-system levels — Knowledge is no longer the gap.')
+await saveWithJustification(knowledgeCard)
+await page.waitForTimeout(300)
+const abilityCard = page.locator('.card', { hasText: 'ability' }).first()
+await abilityCard.locator('button:has-text("4")').click()
+await abilityCard.locator('textarea').fill('Same evidence as Knowledge: near-universal curriculum completion and clean daily-transaction execution five months after go-live.')
+await saveWithJustification(abilityCard)
+await shoot('76-p7-m6-knowledge-ability-scored.png')
+
 await goto('/app/m7')
 await page.locator('button:has-text("Generate — Sentiment & Emotion Classifier")').click()
 await page.waitForTimeout(400)
