@@ -53,6 +53,11 @@ async function saveWithJustification(scope) {
 }
 
 async function signIn(name) {
+  // /login redirects straight to the dashboard if someone is already signed
+  // in (LoginPage's own guard), so switching users has to sign out first.
+  const signOutLink = page.locator('a:has-text("Sign out"), button:has-text("Sign out")').first()
+  if (await signOutLink.count()) await signOutLink.click().catch(() => {})
+  await page.waitForTimeout(300)
   await goto('/login')
   await page.locator(`button:has-text("${name}")`).click()
   await page.waitForTimeout(500)
