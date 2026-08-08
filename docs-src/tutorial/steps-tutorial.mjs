@@ -29,7 +29,7 @@ export const TUTORIAL_PHASES = [
         id: 'PM0.1',
         name: 'Stand up the tenant hierarchy',
         sipoc: {
-          suppliers: 'Super Admin (Salma Bennis); POWERACT onboarding checklist',
+          suppliers: 'Super Admin (Amina Idrissi); POWERACT onboarding checklist',
           inputs: 'Group name; Organization names, sectors, site lists, employee counts, default languages',
           process: ['Create the Group', 'Create two Organizations under it (Kenitra plant + Tangier plant)', 'Set each Organization’s default language'],
           outputs: 'A Group with two Organizations, each carrying its own default language and site list',
@@ -38,7 +38,7 @@ export const TUTORIAL_PHASES = [
         racsi: { sponsor: 'I', superAdmin: 'A/R', pmo: 'C', cm: 'I', peopleManager: '', employee: '' },
         steps: [
           { module: 'Login', action: 'Sign-in screen', userInput: 'None yet — journi ships with named demo users per role, no password required for this environment.', expectedResult: 'The journi login screen, with a language selector and a grid of demo users grouped by role.', screenshot: '01-login-screen.png' },
-          { module: 'M1 · Hierarchy', action: 'Open Hierarchy on a fresh install', userInput: 'Sign in as Salma Bennis (Super Admin).', expectedResult: 'M1 lists the pre-seeded demo organizations (Atlas, Maghreb, Meridia); nothing Kenitra-specific exists yet.', screenshot: '02-m1-empty-hierarchy-before.png' },
+          { module: 'M1 · Hierarchy', action: 'Open Hierarchy on a fresh install', userInput: 'Sign in as Amina Idrissi (Super Admin).', expectedResult: 'M1 lists the pre-seeded demo organizations (Atlas, Maghreb, Meridia); nothing Kenitra-specific exists yet.', screenshot: '02-m1-empty-hierarchy-before.png' },
           { module: 'M1 · Hierarchy', action: 'Create a Group', userInput: 'Click "+ Group". Name: "Sahara Manufacturing Holdings". Save.', expectedResult: 'A modal collects the Group name only — Groups are a lightweight container, not a full tenant record.', screenshot: '03-m1-modal-create-group.png' },
           { module: 'M1 · Hierarchy', action: 'Create the first Organization', userInput: 'Click "+ Organization". Name: "Kenitra Precision Manufacturing"; Group: Sahara Manufacturing Holdings; Sector: Manufacturing; Employees: 3100; Sites: Kénitra Atlantic Free Zone Plant; Languages: fr, ar; Default language: FR.', expectedResult: 'The new Organization card shows its sector, headcount, site count, and a "Default language: FR" control.', screenshot: '04-m1-modal-create-org.png' },
           { module: 'M1 · Hierarchy', action: 'Create a second Organization in the same Group', userInput: 'Repeat with Name: "Kenitra Precision Manufacturing — Tangier Plant"; same Group; 850 employees.', expectedResult: 'Two Organizations now sit under one Group — the minimum real structure a Group-level roll-up needs to be meaningful later.', screenshot: '05-m1-two-orgs-under-group.png' },
@@ -325,7 +325,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: 'C/S', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
         steps: [
-          { module: 'M11 · Resistance', action: 'Log the resistance and add a mitigation action', userInput: 'Type: Will; Description: "Supervisors openly stating they’ll ‘wait it out’ rather than engage with the new process."; Owner: Karim Chraibi. Add mitigation action: "Sponsor floor visit + small-group listening session before next town hall"; Owner: Hicham Benjelloun; Due: next week.', expectedResult: 'The resistance entry is logged with an active mitigation action plan — the same pattern used for risk mitigation in M14.', screenshot: '25-p3-m11-resistance-logged.png' },
+          { module: 'M11 · Resistance', action: 'Log the resistance with its mitigation plan', userInput: 'Type: Will; Source: Shop-floor supervisors, Kénitra plant; Root cause: "Supervisors openly stating they’ll ‘wait it out’ rather than engage with the new process."; Severity: 4; Mitigation action: "Sponsor floor visit + small-group listening session before next town hall"; Owner: Hicham Benjelloun; Due date: next week.', expectedResult: 'The resistance entry is logged with its mitigation action, owner and due date captured in the same form — the same category of tracked, owned action plan used for risk mitigation in M14.', screenshot: '25-p3-m11-resistance-logged.png' },
         ],
       },
     ],
@@ -460,13 +460,13 @@ export const TUTORIAL_PHASES = [
         sipoc: {
           suppliers: 'The three-project portfolio (PM5.1); seeded peer benchmark bands',
           inputs: 'Readiness Index per project, sector reference band',
-          process: ['Open the Benchmarking tab', 'Compare each project’s standing against the reference band'],
+          process: ['Open M15’s Benchmarking tab', 'Compare each project’s standing against the reference band'],
           outputs: 'A standing label per project — ahead of, in line with, or behind reference',
           customers: 'Executive reporting narratives (M17’s Executive Readiness Narrative Generator)',
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'A/R', cm: 'I', peopleManager: '', employee: '' },
         steps: [
-          { module: 'Dashboard · Benchmarking', action: 'Review standing against the peer reference band', userInput: 'Open the Benchmarking tab.', expectedResult: 'Each project is labeled ahead of / in line with / behind the sector reference band, computed from the same peer-average formula documented in Appendix A.', screenshot: '31-p5-benchmarking-tab.png' },
+          { module: 'M15 · Benchmarking', action: 'Review standing against the peer reference band', userInput: 'Open M15 · Analytics, switch to the Benchmarking tab.', expectedResult: 'Each project is labeled ahead of / in line with / behind the sector reference band, computed from the same peer-average formula documented in Appendix A.', screenshot: '31-p5-benchmarking-tab.png' },
         ],
       },
       {
@@ -641,7 +641,7 @@ export const TUTORIAL_PHASES = [
         },
         racsi: { sponsor: '', superAdmin: 'A/R', pmo: 'C', cm: 'I', peopleManager: '', employee: '' },
         steps: [
-          { module: 'M17 · Provider Connection', action: 'Connect a real LLM provider', userInput: 'Open the Provider Connection panel. Provider: Anthropic (Claude); Model: the recommended default from the curated shortlist; API key: (entered, stored only in this browser).', expectedResult: 'The connection is saved; from this point forward, AI use cases call the real provider directly from the browser, falling back automatically to the built-in generator if the call ever fails.', screenshot: '42-p7-m17-llm-connected.png' },
+          { module: 'M17 · Provider Connection', action: 'Configure the LLM Provider Connection', userInput: 'Open the Provider Connection panel at the top of M17. Provider: Anthropic (Claude); Model: the recommended default from the curated shortlist; API key: pasted into the password-masked field.', expectedResult: 'The panel is ready to test — clicking "Connect" sends the key and a test prompt directly from this browser to the provider; on success every AI Use Case switches from its built-in generator to the real model, and on any failure (bad key, network, CORS) it falls back to the built-in generator automatically rather than blocking the workflow.', screenshot: '42-p7-m17-llm-connected.png' },
         ],
       },
     ],
