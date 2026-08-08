@@ -1,23 +1,26 @@
-import { ROLES, ROLES_WITH_INDIVIDUAL_VISIBILITY, ROLES_WITH_WRITE_ACCESS } from '../data/constants.js'
+import { ROLES, ROLES_WITH_INDIVIDUAL_VISIBILITY, ROLES_WITH_WRITE_ACCESS, DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 
-export function canWrite(role) {
+// Each of these five checks now reads from the runtime-editable permission
+// matrix (Module 2's Permission Matrix tab, backed by data.rolePermissions)
+// when a caller passes one in as the second argument. The hardcoded
+// fallback below only fires for a call site that hasn't been updated to
+// pass the matrix, or if a role/capability is missing an explicit entry.
+export function canWrite(role, matrix) {
+  if (matrix) return !!matrix[role]?.write
   return ROLES_WITH_WRITE_ACCESS.has(role)
-}
-
-/** Whether a justification note is mandatory before saving a score/state change — an Org-level governance setting, mandatory by default. */
-export function justificationRequired(org) {
-  return org?.requireJustification !== false
 }
 
 export function canSeeIndividualData(role) {
   return ROLES_WITH_INDIVIDUAL_VISIBILITY.has(role)
 }
 
-export function canManageHierarchy(role) {
+export function canManageHierarchy(role, matrix) {
+  if (matrix) return !!matrix[role]?.manageHierarchy
   return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN].includes(role)
 }
 
-export function canManageUsers(role) {
+export function canManageUsers(role, matrix) {
+  if (matrix) return !!matrix[role]?.manageUsers
   return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN].includes(role)
 }
 
@@ -25,13 +28,18 @@ export function canManageAiCatalog(role) {
   return role === ROLES.SUPER_ADMIN
 }
 
-export function canActivateAiForOrg(role) {
+export function canActivateAiForOrg(role, matrix) {
+  if (matrix) return !!matrix[role]?.activateAiForOrg
   return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN].includes(role)
 }
 
-export function canRequestProjectAiOverride(role) {
+export function canRequestProjectAiOverride(role, matrix) {
+  if (matrix) return !!matrix[role]?.requestProjectAiOverride
   return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN, ROLES.CHANGE_MANAGER].includes(role)
 }
+
+// Only used to seed data.rolePermissions at buildSeed() time.
+export { DEFAULT_ROLE_PERMISSIONS }
 
 /** Organizations visible to a user, respecting Group / Organization / Project scope. */
 export function visibleOrganizations(user, data) {

@@ -56,6 +56,31 @@ body {
     @apply w-full rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent;
   }
 
+  /* select elements keep their native browser dropdown arrow on top of the
+     `.input` box model above, which reserves no extra space for it — on a
+     narrow/truncated select (e.g. the TopBar's Organization/Project
+     pickers) the arrow renders directly over the last visible characters.
+     Disabling the native appearance and drawing our own arrow with
+     dedicated right padding guarantees text never runs under it. */
+  select.input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23275650' stroke-width='1.5'%3E%3Cpath d='M6 8l4 4 4-4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 14px 14px;
+  }
+  [dir="rtl"] select.input {
+    padding-right: 0.75rem;
+    padding-left: 2rem;
+    background-position: left 0.6rem center;
+  }
+
   .label {
     @apply block text-xs font-semibold uppercase tracking-wide text-brand-800/70 mb-1;
   }

@@ -15,8 +15,8 @@ const STATUS_TONE = { sent: 'green', scheduled: 'amber', draft: 'gray' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, removeSubItem, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const orgProjects = useOrgProjects(project.orgId)
   const otherProjects = orgProjects.filter((p) => p.id !== project.id)
   const [modal, setModal] = useState(false)

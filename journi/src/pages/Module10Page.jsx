@@ -8,6 +8,7 @@ import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import ProgressBar from '../components/ProgressBar.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import JustifyPanel from '../components/JustifyPanel.jsx'
 import { canWrite } from '../utils/rbac.js'
 
 const LEVELS = ['Foundation', 'Practitioner', 'Advanced']
@@ -53,11 +54,34 @@ function CurriculumDetail({ tr }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState(BLANK_FORM)
   const [expanded, setExpanded] = useState(null)
+  const [certJustifyId, setCertJustifyId] = useState(null)
+  const [certJustification, setCertJustification] = useState('')
+
+  function startCertToggle(tr) {
+    setCertJustifyId(tr.id)
+    setCertJustification('')
+  }
+  function cancelCertToggle() {
+    setCertJustifyId(null)
+    setCertJustification('')
+  }
+  function saveCertToggle(tr) {
+    const nextCertified = !tr.certified
+    logJustifiedChange(project.id, {
+      module: 'M10 · Training & Certification',
+      field: `Certification — ${tr.curriculum}`,
+      oldValue: tr.certified ? t('certification') : 'trained only',
+      newValue: nextCertified ? t('certification') : 'trained only',
+      justification: certJustification,
+      applyPatch: (p) => ({ ...p, trainings: p.trainings.map((t2) => (t2.id === tr.id ? { ...t2, certified: nextCertified } : t2)) }),
+    })
+    cancelCertToggle()
+  }
 
   function submit() {
     if (!form.curriculum.trim()) return
@@ -122,7 +146,7 @@ function Content({ project }) {
                     <td className="px-4 py-2.5">
                       <button
                         disabled={!canEdit}
-                        onClick={() => updateSubItem(project.id, 'trainings', tr.id, { certified: !tr.certified })}
+                        onClick={() => startCertToggle(tr)}
                         className={canEdit ? 'cursor-pointer' : 'cursor-default'}
                       >
                         <Badge tone={tr.certified ? 'green' : 'gray'}>{tr.certified ? t('certification') : 'trained only'}</Badge>
@@ -141,6 +165,20 @@ function Content({ project }) {
                       </td>
                     )}
                   </tr>
+                  {certJustifyId === tr.id && (
+                    <tr className="border-t border-brand-50">
+                      <td colSpan={canEdit ? 8 : 7} className="px-4 py-3">
+                        <JustifyPanel
+                          justification={certJustification}
+                          onJustificationChange={setCertJustification}
+                          onSave={() => saveCertToggle(tr)}
+                          onCancel={cancelCertToggle}
+                          saveLabel={tr.certified ? 'Revoke certification with justification' : 'Certify with justification'}
+                          placeholder="Why is this cohort's certification status changing?"
+                        />
+                      </td>
+                    </tr>
+                  )}
                   {expanded === tr.id && (
                     <tr className="border-t border-brand-50">
                       <td colSpan={canEdit ? 8 : 7} className="px-4 py-3">

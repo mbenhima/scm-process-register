@@ -5,19 +5,22 @@ import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import JustifyPanel from '../components/JustifyPanel.jsx'
 import { VISIBILITY_LEVELS } from '../data/constants.js'
 import { visibilityColor } from '../utils/compute.js'
-import { canWrite, justificationRequired } from '../utils/rbac.js'
+import { canWrite } from '../utils/rbac.js'
+
+function visibilityLabel(t, v) {
+  return t(`visibility${v[0].toUpperCase()}${v.slice(1)}`)
+}
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, logJustifiedChange, toggleSponsorAction, addSponsorAction, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
-  const org = data.organizations.find((o) => o.id === project.orgId)
-  const required = justificationRequired(org)
+  const { data, toggleSponsorAction, addSponsorAction, logJustifiedChange, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [newAction, setNewAction] = useState('')
   const [pendingVisibility, setPendingVisibility] = useState(project.sponsor.visibility)
-  const [visibilityNote, setVisibilityNote] = useState('')
+  const [visibilityJustification, setVisibilityJustification] = useState('')
   const visibilityDirty = pendingVisibility !== project.sponsor.visibility
 
   function saveVisibility() {
@@ -25,12 +28,12 @@ function Content({ project }) {
     logJustifiedChange(project.id, {
       module: 'M8 · Sponsor & Coalition',
       field: 'Sponsor visibility',
-      oldValue: t(`visibility${project.sponsor.visibility[0].toUpperCase()}${project.sponsor.visibility.slice(1)}`),
-      newValue: t(`visibility${pendingVisibility[0].toUpperCase()}${pendingVisibility.slice(1)}`),
-      justification: visibilityNote,
+      oldValue: visibilityLabel(t, project.sponsor.visibility),
+      newValue: visibilityLabel(t, pendingVisibility),
+      justification: visibilityJustification,
       applyPatch: (p) => ({ ...p, sponsor: { ...p.sponsor, visibility: pendingVisibility } }),
     })
-    setVisibilityNote('')
+    setVisibilityJustification('')
   }
 
   return (
@@ -50,24 +53,22 @@ function Content({ project }) {
                   pendingVisibility === v ? visibilityColor(v) + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
                 } ${!canEdit ? 'cursor-default' : ''}`}
               >
-                {t(`visibility${v[0].toUpperCase()}${v.slice(1)}`)}
+                {visibilityLabel(t, v)}
               </button>
             ))}
           </div>
           {canEdit && visibilityDirty && (
-            <div className="mt-2 rounded-lg border border-sand-300 bg-amber-50/60 p-3 space-y-2">
-              <label className="label">Justify this change</label>
-              <textarea
-                className="input text-sm"
-                rows={2}
-                placeholder="What evidence supports this visibility reading? Cite what you've observed."
-                value={visibilityNote}
-                onChange={(e) => setVisibilityNote(e.target.value)}
+            <div className="mt-3">
+              <JustifyPanel
+                justification={visibilityJustification}
+                onJustificationChange={setVisibilityJustification}
+                onSave={saveVisibility}
+                onCancel={() => {
+                  setPendingVisibility(project.sponsor.visibility)
+                  setVisibilityJustification('')
+                }}
+                placeholder="Why is sponsorship visibility moving? Cite the specific evidence."
               />
-              <button className="btn-primary text-xs" onClick={saveVisibility} disabled={required && !visibilityNote.trim()}>
-                Save with justification
-              </button>
-              <p className="text-[11px] text-ink/40">{required ? t('justificationRequiredHint') : t('justificationOptionalOrgHint')}</p>
             </div>
           )}
           {project.sponsor.visibility === 'weak' && (

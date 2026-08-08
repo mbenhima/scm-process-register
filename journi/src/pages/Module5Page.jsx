@@ -20,8 +20,8 @@ function impactCellColor(v) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, removeSubItem, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
+  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({ headcount: 50, impact: { process: 3, tech: 3, role: 3, location: 3, identity: 3 }, influence: 3 })
 

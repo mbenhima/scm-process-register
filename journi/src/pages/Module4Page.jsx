@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { useScopedOrg, useMainProjects } from '../utils/useScoped.js'
-import { visibleProjects, canWrite, justificationRequired } from '../utils/rbac.js'
+import { visibleProjects, canWrite } from '../utils/rbac.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
+import JustifyPanel from '../components/JustifyPanel.jsx'
 import { readinessIndex } from '../utils/compute.js'
 
 const LEWIN = ['unfreeze', 'change', 'refreeze']
@@ -58,9 +59,7 @@ function ChangeLogTable({ project }) {
 function ProjectDetail({ project }) {
   const { t } = useI18n()
   const { data, updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role)
-  const org = data.organizations.find((o) => o.id === project.orgId)
-  const required = justificationRequired(org)
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const mainProjects = useMainProjects(project.mainProjectIds)
   const [pendingLewin, setPendingLewin] = useState(project.lewinPhase)
   const [lewinJustification, setLewinJustification] = useState('')
@@ -129,20 +128,12 @@ function ProjectDetail({ project }) {
           </Field>
         </div>
         {canEdit && lewinDirty && (
-          <div className="rounded-lg border border-sand-300 bg-amber-50/60 p-3 space-y-2">
-            <label className="label">Justify this change</label>
-            <textarea
-              className="input text-sm"
-              rows={2}
-              placeholder="Why is the Lewin macro-state moving now? Cite the specific evidence."
-              value={lewinJustification}
-              onChange={(e) => setLewinJustification(e.target.value)}
-            />
-            <button className="btn-primary text-xs" onClick={saveLewin} disabled={required && !lewinJustification.trim()}>
-              Save with justification
-            </button>
-            <p className="text-[11px] text-ink/40">{required ? t('justificationRequiredHint') : t('justificationOptionalOrgHint')}</p>
-          </div>
+          <JustifyPanel
+            justification={lewinJustification}
+            onJustificationChange={setLewinJustification}
+            onSave={saveLewin}
+            placeholder="Why is the Lewin macro-state moving now? Cite the specific evidence."
+          />
         )}
         <Field label={t('businessDriver')}>
           <textarea

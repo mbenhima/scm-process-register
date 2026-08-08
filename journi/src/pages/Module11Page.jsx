@@ -7,21 +7,25 @@ import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import JustifyPanel from '../components/JustifyPanel.jsx'
 import { RESISTANCE_TYPES } from '../data/constants.js'
 import { severityColor } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
 
 const STATUS_TONE = { open: 'red', in_progress: 'amber', closed: 'green' }
+const STATUS_LABEL = { open: 'open', in_progress: 'in progress', closed: 'closed' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
+  const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
   // Employees may submit a concern (per spec, "submission only") even though they
   // cannot otherwise write to this project; only full write roles can manage
   // status, classification, or delete an entry.
-  const canManage = canWrite(currentUser?.role)
+  const canManage = canWrite(currentUser?.role, data.rolePermissions)
   const canSubmit = canManage || currentUser?.role === 'employee'
   const [modal, setModal] = useState(false)
+  const [statusJustifyId, setStatusJustifyId] = useState(null)
+  const [statusJustification, setStatusJustification] = useState('')
   const [form, setForm] = useState({
     type: 'will',
     source: '',
@@ -43,6 +47,27 @@ function Content({ project }) {
 
   const typeCounts = RESISTANCE_TYPES.map((rt) => ({ type: rt, count: project.resistanceLog.filter((r) => r.type === rt).length }))
   const systemic = typeCounts.find((tc) => tc.type === 'systemic' && tc.count >= 2)
+
+  function startStatusChange(r) {
+    setStatusJustifyId(r.id)
+    setStatusJustification('')
+  }
+  function cancelStatusChange() {
+    setStatusJustifyId(null)
+    setStatusJustification('')
+  }
+  function saveStatusChange(r) {
+    const nextStatus = r.status === 'open' ? 'in_progress' : 'closed'
+    logJustifiedChange(project.id, {
+      module: 'M11 · Resistance Tracker',
+      field: `Resistance status — ${r.rootCause.slice(0, 40)}`,
+      oldValue: STATUS_LABEL[r.status],
+      newValue: STATUS_LABEL[nextStatus],
+      justification: statusJustification,
+      applyPatch: (p) => ({ ...p, resistanceLog: p.resistanceLog.map((r2) => (r2.id === r.id ? { ...r2, status: nextStatus } : r2)) }),
+    })
+    cancelStatusChange()
+  }
 
   return (
     <div className="space-y-4">
@@ -92,16 +117,25 @@ function Content({ project }) {
             {canManage && (
               <div className="mt-2 flex gap-2">
                 {r.status !== 'closed' && (
-                  <button
-                    className="btn-secondary text-xs"
-                    onClick={() => updateSubItem(project.id, 'resistanceLog', r.id, { status: r.status === 'open' ? 'in_progress' : 'closed' })}
-                  >
+                  <button className="btn-secondary text-xs" onClick={() => startStatusChange(r)}>
                     {r.status === 'open' ? 'Mark in progress' : 'Close'}
                   </button>
                 )}
                 <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'resistanceLog', r.id)}>
                   {t('delete')}
                 </button>
+              </div>
+            )}
+            {statusJustifyId === r.id && (
+              <div className="mt-2">
+                <JustifyPanel
+                  justification={statusJustification}
+                  onJustificationChange={setStatusJustification}
+                  onSave={() => saveStatusChange(r)}
+                  onCancel={cancelStatusChange}
+                  saveLabel={r.status === 'open' ? 'Mark in progress with justification' : 'Close with justification'}
+                  placeholder="What changed to justify this status move?"
+                />
               </div>
             )}
           </div>

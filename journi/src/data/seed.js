@@ -1,6 +1,7 @@
 import { uid } from '../utils/id.js'
 import { generateDefaultWbs, addDays, todayISO } from '../utils/wbs.js'
 import aiUseCaseCatalog from './aiUseCases.js'
+import { DEFAULT_ROLE_PERMISSIONS } from './constants.js'
 import * as atlas from './cases/atlas.js'
 import * as atlasTangier from './cases/atlasTangier.js'
 import * as maghreb from './cases/maghreb.js'
@@ -32,13 +33,19 @@ function normalizeCmProject(raw) {
     members: (raw.sponsor?.members || []).map((m) => ({ id: uid('coal'), ...m })),
     actions: (raw.sponsor?.actions || []).map((a) => ({ id: uid('spact'), ...a })),
   }
-  // ADKAR history seed: one baseline snapshot ("today") per block, editable going forward
+  // ADKAR history seed: a single baseline snapshot per block by default, editable
+  // going forward — unless the raw case file supplies its own explicit history
+  // (e.g. a pre-populated example of a justified change), which is kept as-is.
   project.adkar = Object.fromEntries(
     Object.entries(raw.adkar).map(([block, val]) => [
       block,
-      { ...val, history: [{ id: uid('hist'), date: 'baseline', score: val.score }] },
+      {
+        ...val,
+        history: (val.history || [{ date: 'baseline', score: val.score }]).map((h) => ({ id: uid('hist'), ...h })),
+      },
     ]),
   )
+  project.changeLog = (raw.changeLog || []).map((entry) => ({ id: uid('log'), ...entry }))
   // WBS/Gantt seed: a representative Project Management + Change Management + Framework
   // timeline anchored 90 days before "today", so the demo shows a mix of done, in-progress
   // and planned-only tasks with realistic baseline/actual gaps out of the box.
@@ -114,5 +121,23 @@ export function buildSeed() {
     { id: 'u-employee', name: 'Younes Amrani', email: 'younes.amrani@atlas-industrial.example', role: 'employee', scopeType: 'project', scopeId: 'cm-atlas-erp', language: 'ar' },
   ]
 
-  return { groups, organizations, mainProjects, cmProjects, users, aiUseCaseCatalog, aiOrgActivation, aiProjectOverride, aiUsageLog }
+  const rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
+
+  // Platform-wide default: any score/state change requires a justification.
+  // A Super/Group/Org Admin can flip this off in Module 2's governance settings.
+  const requireJustification = true
+
+  return {
+    groups,
+    organizations,
+    mainProjects,
+    cmProjects,
+    users,
+    aiUseCaseCatalog,
+    aiOrgActivation,
+    aiProjectOverride,
+    aiUsageLog,
+    rolePermissions,
+    requireJustification,
+  }
 }

@@ -1,11 +1,11 @@
 import React from 'react'
 import { useI18n, LANGUAGES } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { visibleOrganizations, visibleProjects, roleLabelKey } from '../utils/rbac.js'
+import { visibleOrganizations, visibleProjects, roleLabelKey, canManageHierarchy } from '../utils/rbac.js'
 
 export default function TopBar({ onMenuClick }) {
   const { t, lang, setLang } = useI18n()
-  const { data, currentUser, scope, setScope, signOut } = useAppState()
+  const { data, currentUser, scope, setScope, signOut, resetDemoData } = useAppState()
 
   const orgs = visibleOrganizations(currentUser, data)
   const projects = scope.orgId ? visibleProjects(currentUser, data, scope.orgId) : []
@@ -13,6 +13,10 @@ export default function TopBar({ onMenuClick }) {
   function handleOrgChange(orgId) {
     const projs = visibleProjects(currentUser, data, orgId)
     setScope({ orgId, cmProjectId: projs[0]?.id || null })
+  }
+
+  function handleResetDemoData() {
+    if (window.confirm(t('resetDemoDataConfirm'))) resetDemoData()
   }
 
   return (
@@ -64,6 +68,11 @@ export default function TopBar({ onMenuClick }) {
         <span className="text-sm font-semibold text-brand-950">{currentUser?.name}</span>
         <span className="text-[11px] text-ink/50">{t(roleLabelKey(currentUser?.role))}</span>
       </div>
+      {canManageHierarchy(currentUser?.role) && (
+        <button className="btn-ghost text-sm hidden md:inline-flex" onClick={handleResetDemoData} title={t('resetDemoDataConfirm')}>
+          {t('resetDemoData')}
+        </button>
+      )}
       <button className="btn-ghost text-sm" onClick={signOut}>
         {t('logout')}
       </button>
