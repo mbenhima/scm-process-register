@@ -648,17 +648,17 @@ export const TUTORIAL_PHASES = [
     cmTasks: [
       {
         id: 'CM7.1',
-        name: 'Complete the risk mitigation action plan with justification',
+        name: 'Complete the risk mitigation action plan',
         sipoc: {
           suppliers: 'The high-severity risk logged in CM2.2; its mitigation action owner',
-          inputs: 'Mitigation action status update, justification',
-          process: ['Open M14', 'Mark the mitigation action closed', 'Update the risk status with justification'],
-          outputs: 'A closed-loop, justified risk record from open through mitigated',
+          inputs: 'Mitigation action description, owner, due date; updated risk status',
+          process: ['Open M14', 'Log the mitigation action against the risk', 'Move the risk status to closed'],
+          outputs: 'A closed-loop risk record from open through mitigated, with its full action history intact',
           customers: 'M4’s Change Log; the Phase 3 exit checklist this risk was tied to',
         },
         racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: '', employee: '' },
         steps: [
-          { module: 'M14 · Risk Register', action: 'Close the mitigation action and update risk status with justification', userInput: 'Mark the training-time mitigation action "closed". Stage risk status "mitigating" → "closed" ● Save with justification: "Protected training time was formally added to both plants’ shift schedules starting this week, confirmed with both Plant Directors."', expectedResult: 'The risk moves to "closed" with its full mitigation history intact — the same justified, evidence-cited pattern used everywhere else in journi.', screenshot: '43-p7-m14-risk-closed.png' },
+          { module: 'M14 · Risk Register', action: 'Log the mitigation action and close the risk', userInput: 'Expand "Mitigation actions" on the training-time risk. Action: "Protected training time formally added to both plants\' shift schedules"; Owner: Karim Chraibi; Due: 2026-02-20. Add the action, then move the risk\'s status dropdown from "mitigating" to "closed".', expectedResult: 'The risk moves to "closed" with its mitigation action visible in the same panel — risk status itself is a direct field, not one of the justification-gated saves; the evidence lives in the mitigation action\'s own description instead.', screenshot: '43-p7-m14-risk-closed.png' },
         ],
       },
       {
@@ -682,13 +682,14 @@ export const TUTORIAL_PHASES = [
         sipoc: {
           suppliers: 'The stalled Desire reading (CM3.1); the Manager Coaching Script Generator (PM7.2)',
           inputs: 'Stalled ADKAR block, manager cohort',
-          process: ['Open M12', 'Generate a coaching script targeted at the stalled Desire block', 'Log the resulting coaching note'],
-          outputs: 'A generated, human-reviewed coaching script and a logged coaching note closing the loop from diagnosis to action',
+          process: ['Open M12', 'Generate a coaching script targeted at the stalled Desire block', 'Accept it', 'Log the resulting coaching note from M6'],
+          outputs: 'A human-reviewed coaching script (recorded to the AI usage audit trail) and a logged coaching note closing the loop from diagnosis to action',
           customers: 'People Manager (delivers the coaching); M6’s coaching-note history',
         },
         racsi: { sponsor: '', superAdmin: '', pmo: '', cm: 'A/C', peopleManager: 'R', employee: 'I' },
         steps: [
-          { module: 'M12 · Manager Coaching Script Generator', action: 'Generate and log a coaching script for the stalled Desire block', userInput: 'Generate a script targeted at the Desire barrier; review and accept it; log the resulting coaching note against Nadia Squalli’s cohort.', expectedResult: 'The AI-generated script is clearly labeled "AI-generated — review required" until accepted; once logged, the coaching note appears in both M12’s and M6’s history — the full diagnosis-to-coaching loop this tutorial has followed since Phase 3.', screenshot: '45-p7-m12-coaching-logged.png' },
+          { module: 'M12 · Manager Coaching Script Generator', action: 'Generate and accept a coaching script for the stalled Desire block', userInput: 'Generate a script targeted at the Desire barrier, then review and accept it.', expectedResult: 'The AI-generated script is clearly labeled "AI-generated — review required" until accepted; accepting logs the outcome to the AI usage audit trail on M17 — the human-in-the-loop checkpoint every AI use case in journi goes through.', screenshot: '45-p7-m12-coaching-logged.png' },
+          { module: 'M6 · ADKAR Engine', action: 'Log the coaching note this script fed into', userInput: 'Back on M6, add a coaching note: Manager: Nadia Squalli; Cohort: Finance, Procurement, Warehouse & Production Planning; Barrier: Desire; Note: "Used the generated talking points for this week\'s 1:1s — leading with the trust concern directly rather than more process content."', expectedResult: 'The coaching note appears in both M6\'s and M12\'s history — M12\'s AI suggestion informed the conversation; the note itself is a separate, human-authored record of what was actually said, closing the diagnosis-to-coaching loop this tutorial has followed since Phase 3.', screenshot: '46-p7-m6-coaching-note-logged.png' },
         ],
       },
     ],
