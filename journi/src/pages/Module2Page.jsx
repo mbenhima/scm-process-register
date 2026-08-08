@@ -1,11 +1,52 @@
 import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { visibleOrganizations, roleLabelKey, canManageUsers } from '../utils/rbac.js'
+import { visibleOrganizations, roleLabelKey, canManageUsers, canManageHierarchy } from '../utils/rbac.js'
 import { CAPABILITIES } from '../data/constants.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
+
+function Toggle({ checked, onChange, disabled }) {
+  return (
+    <button
+      disabled={disabled}
+      onClick={() => onChange(!checked)}
+      className={`w-10 rounded-full transition-colors relative shrink-0 ${checked ? 'bg-brand-600' : 'bg-brand-100'} ${disabled ? 'opacity-70 cursor-not-allowed' : ''}`}
+      style={{ height: 22 }}
+    >
+      <span
+        className="absolute rounded-full bg-white shadow transition-transform"
+        style={{ top: 2, left: 0, width: 18, height: 18, transform: checked ? 'translateX(19px)' : 'translateX(2px)' }}
+      />
+    </button>
+  )
+}
+
+function GovernanceSettings({ canEdit }) {
+  const { data, setRequireJustification } = useAppState()
+  const required = data.requireJustification !== false
+
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-ink/60">
+        Platform-wide controls over how changes are recorded across every Change Management module — not scoped to one Organization.
+      </p>
+      <div className="card p-4 flex items-center justify-between gap-4">
+        <div>
+          <h4 className="font-semibold text-brand-950 text-sm">Require justification for score/state changes</h4>
+          <p className="text-xs text-ink/50 mt-1 max-w-2xl">
+            When on (the default), every scored or state-changing update — Lewin macro-state, ADKAR scores, Bridges transition,
+            Kübler-Ross sentiment, Sponsor visibility, Training certification, Resistance status, Manager readiness rating, and
+            Risk status — must be saved with a written justification, logged to that project's audit trail. When off,
+            justification is still offered but optional.
+          </p>
+        </div>
+        <Toggle checked={required} onChange={(v) => setRequireJustification(v)} disabled={!canEdit} />
+      </div>
+    </div>
+  )
+}
 
 const ROLE_OPTIONS = [
   'super_admin',
@@ -84,6 +125,7 @@ export default function Module2Page() {
   const [tab, setTab] = useState('users')
   const canEdit = canManageUsers(currentUser?.role, data.rolePermissions)
   const canEditMatrix = currentUser?.role === 'super_admin'
+  const canEditGovernance = canManageHierarchy(currentUser?.role, data.rolePermissions)
 
   const orgs = visibleOrganizations(currentUser, data)
   const orgIds = new Set(orgs.map((o) => o.id))
@@ -133,9 +175,13 @@ export default function Module2Page() {
         <button className={`tab ${tab === 'matrix' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('matrix')}>
           Permission Matrix
         </button>
+        <button className={`tab ${tab === 'governance' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('governance')}>
+          Governance Settings
+        </button>
       </div>
 
       {tab === 'matrix' && <PermissionMatrix canEditMatrix={canEditMatrix} />}
+      {tab === 'governance' && <GovernanceSettings canEdit={canEditGovernance} />}
 
       {tab === 'users' && (
       <>

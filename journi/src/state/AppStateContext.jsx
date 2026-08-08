@@ -32,6 +32,7 @@ function loadInitialState() {
         // won't have this field — back-fill the default matrix rather than let every
         // capability check silently fail closed (matrix[role]?.write === undefined).
         if (!parsed.rolePermissions) parsed.rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
+        if (parsed.requireJustification === undefined) parsed.requireJustification = true
         return parsed
       }
     }
@@ -295,6 +296,10 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  const setRequireJustification = useCallback((value) => {
+    setData((prev) => ({ ...prev, requireJustification: value }))
+  }, [])
+
   const updateRolePermission = useCallback((role, capabilityKey, value) => {
     setData((prev) => ({
       ...prev,
@@ -517,6 +522,7 @@ export function AppStateProvider({ children }) {
       toggleSponsorAction,
       addSponsorAction,
       updateRolePermission,
+      setRequireJustification,
       llmConfig,
       setLlmConfig,
       testAndConnectLlm,
@@ -559,6 +565,7 @@ export function AppStateProvider({ children }) {
       toggleSponsorAction,
       addSponsorAction,
       updateRolePermission,
+      setRequireJustification,
       llmConfig,
       setLlmConfig,
       testAndConnectLlm,

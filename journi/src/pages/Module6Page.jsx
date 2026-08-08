@@ -19,7 +19,8 @@ const BARRIER_HINTS = {
 
 function BlockCard({ project, block, canEdit }) {
   const { t } = useI18n()
-  const { updateAdkar } = useAppState()
+  const { data, updateAdkar } = useAppState()
+  const required = data.requireJustification !== false
   const val = project.adkar[block]
   const stalled = isBlockStalled(val)
   const [pendingScore, setPendingScore] = useState(val.score)
@@ -51,7 +52,9 @@ function BlockCard({ project, block, canEdit }) {
           </button>
         ))}
       </div>
-      <label className="label">{t('barrierReason')} — justify this score</label>
+      <label className="label">
+        {t('barrierReason')} — justify this score{required ? '' : ' (optional)'}
+      </label>
       {canEdit ? (
         <textarea className="input text-sm" rows={2} value={note} onChange={(e) => setNote(e.target.value)} />
       ) : (
@@ -61,8 +64,8 @@ function BlockCard({ project, block, canEdit }) {
         <button
           className="btn-primary text-xs mt-2"
           onClick={save}
-          disabled={pendingScore !== val.score && !note.trim()}
-          title={pendingScore !== val.score && !note.trim() ? 'A score change needs a justification note' : ''}
+          disabled={pendingScore !== val.score && required && !note.trim()}
+          title={pendingScore !== val.score && required && !note.trim() ? 'A score change needs a justification note' : ''}
         >
           Save with justification
         </button>

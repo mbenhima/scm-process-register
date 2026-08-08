@@ -7,6 +7,7 @@ import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
+import JustifyPanel from '../components/JustifyPanel.jsx'
 import { RISK_CATEGORIES } from '../data/constants.js'
 import { riskScore, isHighSeverityRisk } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
@@ -99,11 +100,35 @@ function MitigationActions({ project, risk, canEdit }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
+  const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const orgProjects = useOrgProjects(project.orgId)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useState({ category: 'adoption', description: '', likelihood: 3, impact: 3, owner: '', status: 'open' })
+  const [statusJustifyId, setStatusJustifyId] = useState(null)
+  const [pendingStatus, setPendingStatus] = useState('open')
+  const [statusJustification, setStatusJustification] = useState('')
+
+  function startStatusChange(r, nextStatus) {
+    setStatusJustifyId(r.id)
+    setPendingStatus(nextStatus)
+    setStatusJustification('')
+  }
+  function cancelStatusChange() {
+    setStatusJustifyId(null)
+    setStatusJustification('')
+  }
+  function saveStatusChange(r) {
+    logJustifiedChange(project.id, {
+      module: 'M14 · Risk Register',
+      field: `Risk status — ${r.description.slice(0, 40)}`,
+      oldValue: r.status,
+      newValue: pendingStatus,
+      justification: statusJustification,
+      applyPatch: (p) => ({ ...p, risks: p.risks.map((r2) => (r2.id === r.id ? { ...r2, status: pendingStatus } : r2)) }),
+    })
+    cancelStatusChange()
+  }
 
   function submit() {
     if (!form.description.trim()) return
@@ -171,8 +196,8 @@ function Content({ project }) {
                       {canEdit ? (
                         <select
                           className="input py-1 text-xs"
-                          value={r.status}
-                          onChange={(e) => updateSubItem(project.id, 'risks', r.id, { status: e.target.value })}
+                          value={statusJustifyId === r.id ? pendingStatus : r.status}
+                          onChange={(e) => startStatusChange(r, e.target.value)}
                         >
                           <option value="open">open</option>
                           <option value="mitigating">mitigating</option>
@@ -198,6 +223,20 @@ function Content({ project }) {
                       </td>
                     )}
                   </tr>
+                  {statusJustifyId === r.id && (
+                    <tr className="border-t border-brand-50">
+                      <td colSpan={canEdit ? 8 : 7} className="px-4 py-3">
+                        <JustifyPanel
+                          justification={statusJustification}
+                          onJustificationChange={setStatusJustification}
+                          onSave={() => saveStatusChange(r)}
+                          onCancel={cancelStatusChange}
+                          saveLabel={`Set to ${pendingStatus} with justification`}
+                          placeholder="Why is this risk's status changing?"
+                        />
+                      </td>
+                    </tr>
+                  )}
                   {expanded === r.id && (
                     <tr className="border-t border-brand-50">
                       <td colSpan={canEdit ? 8 : 7} className="px-4 py-3">

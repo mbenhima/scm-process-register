@@ -6,6 +6,7 @@ import { visibleProjects, canWrite } from '../utils/rbac.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
+import JustifyPanel from '../components/JustifyPanel.jsx'
 import { readinessIndex } from '../utils/compute.js'
 
 const LEWIN = ['unfreeze', 'change', 'refreeze']
@@ -127,19 +128,12 @@ function ProjectDetail({ project }) {
           </Field>
         </div>
         {canEdit && lewinDirty && (
-          <div className="rounded-lg border border-sand-300 bg-amber-50/60 p-3 space-y-2">
-            <label className="label">Justify this change</label>
-            <textarea
-              className="input text-sm"
-              rows={2}
-              placeholder="Why is the Lewin macro-state moving now? Cite the specific evidence."
-              value={lewinJustification}
-              onChange={(e) => setLewinJustification(e.target.value)}
-            />
-            <button className="btn-primary text-xs" onClick={saveLewin} disabled={!lewinJustification.trim()}>
-              Save with justification
-            </button>
-          </div>
+          <JustifyPanel
+            justification={lewinJustification}
+            onJustificationChange={setLewinJustification}
+            onSave={saveLewin}
+            placeholder="Why is the Lewin macro-state moving now? Cite the specific evidence."
+          />
         )}
         <Field label={t('businessDriver')}>
           <textarea

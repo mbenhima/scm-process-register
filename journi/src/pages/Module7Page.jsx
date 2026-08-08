@@ -16,6 +16,7 @@ function Content({ project }) {
   const { t } = useI18n()
   const { data, updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
+  const required = data.requireJustification !== false
   const sentiment = project.sentimentStage || inferSentimentStage(project)
   const divergence = hasDivergence(project)
 
@@ -74,7 +75,7 @@ function Content({ project }) {
               </button>
             ))}
           </div>
-          <label className="label">Notes — what you're observing at this stage</label>
+          <label className="label">Notes — what you're observing at this stage{required ? '' : ' (optional)'}</label>
           {canEdit ? (
             <textarea
               className="input text-sm"
@@ -90,8 +91,8 @@ function Content({ project }) {
             <button
               className="btn-primary text-xs mt-2"
               onClick={saveBridges}
-              disabled={!project.bridgesNote.trim()}
-              title={!project.bridgesNote.trim() ? 'Write a note above justifying this move first' : ''}
+              disabled={required && !project.bridgesNote.trim()}
+              title={required && !project.bridgesNote.trim() ? 'Write a note above justifying this move first' : ''}
             >
               Save with justification
             </button>
@@ -114,7 +115,7 @@ function Content({ project }) {
               </button>
             ))}
           </div>
-          <label className="label">Notes — sentiment snapshot</label>
+          <label className="label">Notes — sentiment snapshot{required ? '' : ' (optional)'}</label>
           {canEdit ? (
             <textarea
               className="input text-sm"
@@ -130,8 +131,8 @@ function Content({ project }) {
             <button
               className="btn-primary text-xs mt-2"
               onClick={saveSentiment}
-              disabled={!project.sentimentSnapshot.trim()}
-              title={!project.sentimentSnapshot.trim() ? 'Write a note above justifying this move first' : ''}
+              disabled={required && !project.sentimentSnapshot.trim()}
+              title={required && !project.sentimentSnapshot.trim() ? 'Write a note above justifying this move first' : ''}
             >
               Save with justification
             </button>

@@ -118,5 +118,21 @@ export function buildSeed() {
 
   const rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
 
-  return { groups, organizations, mainProjects, cmProjects, users, aiUseCaseCatalog, aiOrgActivation, aiProjectOverride, aiUsageLog, rolePermissions }
+  // Platform-wide default: any score/state change requires a justification.
+  // A Super/Group/Org Admin can flip this off in Module 2's governance settings.
+  const requireJustification = true
+
+  return {
+    groups,
+    organizations,
+    mainProjects,
+    cmProjects,
+    users,
+    aiUseCaseCatalog,
+    aiOrgActivation,
+    aiProjectOverride,
+    aiUsageLog,
+    rolePermissions,
+    requireJustification,
+  }
 }

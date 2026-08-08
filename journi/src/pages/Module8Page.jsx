@@ -5,15 +5,36 @@ import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import JustifyPanel from '../components/JustifyPanel.jsx'
 import { VISIBILITY_LEVELS } from '../data/constants.js'
 import { visibilityColor } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
 
+function visibilityLabel(t, v) {
+  return t(`visibility${v[0].toUpperCase()}${v.slice(1)}`)
+}
+
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, updateProjectMeta, toggleSponsorAction, addSponsorAction, currentUser } = useAppState()
+  const { data, toggleSponsorAction, addSponsorAction, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [newAction, setNewAction] = useState('')
+  const [pendingVisibility, setPendingVisibility] = useState(project.sponsor.visibility)
+  const [visibilityJustification, setVisibilityJustification] = useState('')
+  const visibilityDirty = pendingVisibility !== project.sponsor.visibility
+
+  function saveVisibility() {
+    if (!visibilityDirty) return
+    logJustifiedChange(project.id, {
+      module: 'M8 · Sponsor & Coalition',
+      field: 'Sponsor visibility',
+      oldValue: visibilityLabel(t, project.sponsor.visibility),
+      newValue: visibilityLabel(t, pendingVisibility),
+      justification: visibilityJustification,
+      applyPatch: (p) => ({ ...p, sponsor: { ...p.sponsor, visibility: pendingVisibility } }),
+    })
+    setVisibilityJustification('')
+  }
 
   return (
     <div className="space-y-5">
@@ -27,15 +48,29 @@ function Content({ project }) {
               <button
                 key={v}
                 disabled={!canEdit}
-                onClick={() => updateProjectMeta(project.id, { sponsor: { ...project.sponsor, visibility: v } })}
+                onClick={() => setPendingVisibility(v)}
                 className={`flex-1 rounded-lg py-2 text-xs font-semibold ${
-                  project.sponsor.visibility === v ? visibilityColor(v) + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
+                  pendingVisibility === v ? visibilityColor(v) + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
                 } ${!canEdit ? 'cursor-default' : ''}`}
               >
-                {t(`visibility${v[0].toUpperCase()}${v.slice(1)}`)}
+                {visibilityLabel(t, v)}
               </button>
             ))}
           </div>
+          {canEdit && visibilityDirty && (
+            <div className="mt-3">
+              <JustifyPanel
+                justification={visibilityJustification}
+                onJustificationChange={setVisibilityJustification}
+                onSave={saveVisibility}
+                onCancel={() => {
+                  setPendingVisibility(project.sponsor.visibility)
+                  setVisibilityJustification('')
+                }}
+                placeholder="Why is sponsorship visibility moving? Cite the specific evidence."
+              />
+            </div>
+          )}
           {project.sponsor.visibility === 'weak' && (
             <div className="mt-3 text-xs rounded-lg bg-red-50 text-red-700 p-2">
               Alert: sponsorship visibility below threshold — cross-reference with stalled Desire scores in M6.

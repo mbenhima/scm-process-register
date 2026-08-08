@@ -5,16 +5,33 @@ import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import JustifyPanel from '../components/JustifyPanel.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
 import { scoreColor, isBlockStalled } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, updateProjectMeta, currentUser } = useAppState()
+  const { data, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const [readiness, setReadiness] = useState(project.managerReadiness ?? 3)
+  const committedReadiness = project.managerReadiness ?? 3
+  const [pendingReadiness, setPendingReadiness] = useState(committedReadiness)
+  const [readinessJustification, setReadinessJustification] = useState('')
+  const readinessDirty = pendingReadiness !== committedReadiness
   const stalled = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
+
+  function saveReadiness() {
+    if (!readinessDirty) return
+    logJustifiedChange(project.id, {
+      module: 'M12 · Manager Enablement',
+      field: 'Manager readiness rating',
+      oldValue: String(committedReadiness),
+      newValue: String(pendingReadiness),
+      justification: readinessJustification,
+      applyPatch: (p) => ({ ...p, managerReadiness: pendingReadiness }),
+    })
+    setReadinessJustification('')
+  }
 
   return (
     <div className="space-y-5">
@@ -39,18 +56,29 @@ function Content({ project }) {
             <button
               key={n}
               disabled={!canEdit}
-              onClick={() => {
-                setReadiness(n)
-                updateProjectMeta(project.id, { managerReadiness: n })
-              }}
+              onClick={() => setPendingReadiness(n)}
               className={`flex-1 h-10 rounded-lg text-sm font-semibold ${
-                n === readiness ? 'bg-brand-600 text-white' : 'bg-brand-50 text-ink/40 hover:bg-brand-100'
+                n === pendingReadiness ? 'bg-brand-600 text-white' : 'bg-brand-50 text-ink/40 hover:bg-brand-100'
               } ${!canEdit ? 'cursor-default' : ''}`}
             >
               {n}
             </button>
           ))}
         </div>
+        {canEdit && readinessDirty && (
+          <div className="mt-3">
+            <JustifyPanel
+              justification={readinessJustification}
+              onJustificationChange={setReadinessJustification}
+              onSave={saveReadiness}
+              onCancel={() => {
+                setPendingReadiness(committedReadiness)
+                setReadinessJustification('')
+              }}
+              placeholder="Why is this manager's readiness rating changing?"
+            />
+          </div>
+        )}
       </div>
 
       <div className="card p-4">
