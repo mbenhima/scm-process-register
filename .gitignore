@@ -7,11 +7,13 @@ dist/
 journi/_tut_*.mjs
 
 # docs-src build outputs — the sources (md/mjs/html/py) are tracked so they
-# survive a sandbox revert; generated binaries and screenshots are not,
-# since they're large, regenerable, and change on every rebuild.
+# survive a sandbox revert; generated binaries are not, since they're large
+# and regenerable. Tutorial screenshots ARE tracked despite being
+# regenerable in principle: capturing them correctly took several rounds of
+# debugging (scoping, language cascade, sign-out timing), so checkpointing
+# the result is cheaper than re-deriving it after another revert.
 docs-src/**/*.docx
 docs-src/**/*.pdf
-docs-src/**/shots/
 docs-src/**/spec-*.md
 docs-src/**/spec-pandoc.docx
 docs-src/**/spec-styled.docx
