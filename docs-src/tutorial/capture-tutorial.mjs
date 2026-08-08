@@ -390,9 +390,14 @@ await page.waitForTimeout(250)
 await fillByLabel('Name', 'Cascade Test Project')
 await saveModal()
 await page.waitForTimeout(300)
-await page.locator('p', { hasText: 'Cascade Test Project' }).locator('xpath=ancestor::div[contains(@class,"flex")][1]').locator('button:has-text("Delete")').click().catch(async () => {
-  await page.locator('button:has-text("Delete")').last().click()
-})
+// The CM project's name sits in a <span>, inside a `.rounded-lg` card div
+// alongside its own Delete button — walk up to that specific card so this
+// never risks clicking some other project's Delete button by accident.
+await page
+  .locator('span', { hasText: 'Cascade Test Project' })
+  .locator('xpath=ancestor::div[contains(@class,"rounded-lg")][1]')
+  .locator('button:has-text("Delete")')
+  .click()
 await page.waitForTimeout(300)
 await shoot('38-p6-m1-cascade-delete.png')
 
