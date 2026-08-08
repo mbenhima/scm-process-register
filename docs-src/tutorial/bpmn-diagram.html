@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; font-family: Arial, Helvetica, sans-serif; }
+  #stage { display: inline-block; background: #ffffff; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const BRAND = '#1F4B45'
+const BRAND_MID = '#275650'
+const SAND = '#B8925A'
+const TEAL = '#3F827B'
+const RED = '#B5533C'
+const LANE_BG = '#F7F8F7'
+const LANE_BG_ALT = '#EEF3F2'
+
+const LANES = ['Sponsor', 'Platform / Super Admin', 'PMO / Program Manager', 'Change Manager', 'People Manager']
+
+const PHASES = [
+  { id: 'Phase 0', name: 'Set Up Multi-\nTenant Structure' },
+  { id: 'Phase 1', name: 'Initiate &\nDiagnose' },
+  { id: 'Phase 2', name: 'Plan &\nPrepare' },
+  { id: 'Phase 3', name: 'Mobilize &\nExecute' },
+  { id: 'Phase 4', name: 'Reinforce &\nAdopt' },
+  { id: 'Phase 5', name: 'Sustain, Analyze\n& Benchmark' },
+  { id: 'Phase 6', name: 'Governance,\nRBAC & Language' },
+  { id: 'Phase 7', name: 'Justification, AI\n& LLM Connection' },
+]
+
+// lane index -> { phaseIdx -> [{id, kind}] }  kind: 'pm' | 'cm'
+const TASKS = {
+  0: { 0: [{ id: 'PM0.2', kind: 'pm' }], 1: [{ id: 'PM1.1, CM1.2', kind: 'pm' }], 3: [{ id: 'CM3.3', kind: 'cm' }] },
+  1: { 0: [{ id: 'PM0.1', kind: 'pm' }], 6: [{ id: 'PM6.2–6.4', kind: 'pm' }], 7: [{ id: 'PM7.1', kind: 'pm' }] },
+  2: {
+    0: [{ id: 'Start', kind: 'start' }],
+    1: [{ id: 'PM1.2', kind: 'pm' }],
+    5: [{ id: 'PM5.1–5.4', kind: 'pm' }],
+    6: [{ id: 'PM6.1', kind: 'pm' }],
+    7: [{ id: 'PM7.2–7.3', kind: 'pm' }, { id: 'End', kind: 'end' }],
+  },
+  3: {
+    0: [{ id: 'CM0.1', kind: 'cm' }],
+    1: [{ id: 'CM1.1', kind: 'cm' }],
+    2: [{ id: 'CM2.1–2.4', kind: 'cm' }],
+    3: [{ id: 'CM3.1–3.2', kind: 'cm' }],
+    4: [{ id: 'CM4.2–4.3', kind: 'cm' }],
+    7: [{ id: 'CM7.1–7.3', kind: 'cm' }],
+  },
+  4: { 4: [{ id: 'CM4.1', kind: 'cm' }] },
+}
+
+const LABEL_W = 190
+const COL_W = 330
+const HEADER_H = 150
+const LANE_H = 118
+const TOTAL_W = LABEL_W + COL_W * PHASES.length + 90
+const TOTAL_H = HEADER_H + LANE_H * LANES.length + 60
+
+const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+svg.setAttribute('width', TOTAL_W)
+svg.setAttribute('height', TOTAL_H)
+svg.setAttribute('viewBox', `0 0 ${TOTAL_W} ${TOTAL_H}`)
+document.getElementById('stage').appendChild(svg)
+
+function el(tag, attrs, text) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag)
+  for (const k in attrs) e.setAttribute(k, attrs[k])
+  if (text !== undefined) e.textContent = text
+  return e
+}
+
+function multilineText(x, y, lines, attrs) {
+  const g = el('text', { x, y, 'text-anchor': attrs['text-anchor'] || 'middle', 'font-size': attrs['font-size'] || 11, fill: attrs.fill || '#16221f', 'font-weight': attrs['font-weight'] || 'normal' })
+  lines.forEach((line, i) => {
+    const tspan = el('tspan', { x, dy: i === 0 ? 0 : (attrs.lineHeight || 13) })
+    tspan.textContent = line
+    g.appendChild(tspan)
+  })
+  return g
+}
+
+// ---- Title ----
+svg.appendChild(el('text', { x: TOTAL_W / 2, y: 32, 'text-anchor': 'middle', 'font-size': 20, 'font-weight': 'bold', fill: BRAND }, 'Change Management End-to-End Process — Kenitra Precision Manufacturing'))
+svg.appendChild(el('text', { x: TOTAL_W / 2, y: 52, 'text-anchor': 'middle', 'font-size': 11.5, fill: '#666666' }, 'BPMN pool: swimlanes = RACSI role; horizontal flow = Phase 0 → Phase 7; each Go/No-Go gateway is that phase’s Change Management Exit Checklist'))
+
+// ---- Phase header band ----
+PHASES.forEach((p, i) => {
+  const x = LABEL_W + i * COL_W
+  svg.appendChild(el('rect', { x, y: 68, width: COL_W - 6, height: 70, rx: 6, fill: i % 2 === 0 ? BRAND : BRAND_MID }))
+  svg.appendChild(el('text', { x: x + (COL_W - 6) / 2, y: 88, 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 'bold', fill: '#ffffff' }, p.id))
+  svg.appendChild(multilineText(x + (COL_W - 6) / 2, 105, p.name.split('\n'), { 'font-size': 10.5, fill: '#EAF3F1', lineHeight: 13 }))
+})
+
+// ---- Lane backgrounds + labels ----
+LANES.forEach((lane, li) => {
+  const y = HEADER_H + li * LANE_H
+  svg.appendChild(el('rect', { x: 0, y, width: TOTAL_W, height: LANE_H, fill: li % 2 === 0 ? LANE_BG : LANE_BG_ALT }))
+  svg.appendChild(el('rect', { x: 0, y, width: LABEL_W - 6, height: LANE_H, fill: BRAND }))
+  svg.appendChild(multilineText(LABEL_W / 2 - 3, y + LANE_H / 2 - 4, lane.split(' / '), { 'font-size': 11.5, 'font-weight': 'bold', fill: '#ffffff', lineHeight: 15 }))
+  svg.appendChild(el('line', { x1: 0, x2: TOTAL_W, y1: y, y2: y, stroke: '#ffffff', 'stroke-width': 1 }))
+})
+svg.appendChild(el('line', { x1: LABEL_W - 6, x2: LABEL_W - 6, y1: HEADER_H, y2: HEADER_H + LANE_H * LANES.length, stroke: BRAND, 'stroke-width': 2 }))
+
+// ---- Vertical phase separators ----
+PHASES.forEach((p, i) => {
+  const x = LABEL_W + i * COL_W
+  svg.appendChild(el('line', { x1: x, x2: x, y1: HEADER_H, y2: HEADER_H + LANE_H * LANES.length, stroke: '#ffffff', 'stroke-width': 1.5 }))
+})
+
+// ---- Go/No-Go gateways in PMO lane, between phases ----
+const pmoY = HEADER_H + 2 * LANE_H + LANE_H / 2
+for (let i = 0; i < PHASES.length; i++) {
+  const gx = LABEL_W + i * COL_W + COL_W - 3
+  const size = 13
+  svg.appendChild(el('rect', { x: gx - size, y: pmoY - size, width: size * 2, height: size * 2, fill: '#ffffff', stroke: RED, 'stroke-width': 2, transform: `rotate(45 ${gx} ${pmoY})` }))
+  svg.appendChild(el('text', { x: gx, y: pmoY - 18, 'text-anchor': 'middle', 'font-size': 8.5, 'font-weight': 'bold', fill: RED }, 'Go /'))
+  svg.appendChild(el('text', { x: gx, y: pmoY - 9, 'text-anchor': 'middle', 'font-size': 8.5, 'font-weight': 'bold', fill: RED }, 'No-Go'))
+  if (i < PHASES.length - 1) {
+    svg.appendChild(el('line', { x1: gx + 13, x2: LABEL_W + (i + 1) * COL_W, y1: pmoY, y2: pmoY, stroke: BRAND, 'stroke-width': 1.5, 'marker-end': 'url(#arrow)' }))
+  }
+}
+// arrow marker
+const defs = el('defs', {})
+const marker = el('marker', { id: 'arrow', viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' })
+marker.appendChild(el('path', { d: 'M0,0 L10,5 L0,10 z', fill: BRAND }))
+defs.appendChild(marker)
+svg.appendChild(defs)
+
+// start circle
+svg.appendChild(el('circle', { cx: LABEL_W + 24, cy: pmoY, r: 12, fill: '#ffffff', stroke: BRAND, 'stroke-width': 2.5 }))
+svg.appendChild(el('text', { x: LABEL_W + 24, y: pmoY + 26, 'text-anchor': 'middle', 'font-size': 9, fill: BRAND }, 'Start'))
+svg.appendChild(el('line', { x1: LABEL_W + 36, x2: LABEL_W + COL_W - 16, y1: pmoY, y2: pmoY, stroke: BRAND, 'stroke-width': 1.5, 'marker-end': 'url(#arrow)' }))
+
+// end event
+const endX = LABEL_W + PHASES.length * COL_W - 3 + 40
+svg.appendChild(el('circle', { cx: endX, cy: pmoY, r: 13, fill: BRAND, stroke: BRAND, 'stroke-width': 4 }))
+svg.appendChild(el('line', { x1: LABEL_W + PHASES.length * COL_W - 3 + 13, x2: endX - 13, y1: pmoY, y2: pmoY, stroke: BRAND, 'stroke-width': 1.5, 'marker-end': 'url(#arrow)' }))
+svg.appendChild(multilineText(endX, pmoY + 30, ['CM record/audit-', 'trail complete'], { 'font-size': 8.5, fill: '#666666', lineHeight: 11 }))
+
+// ---- Task boxes ----
+const BOX_W = COL_W - 40
+const BOX_H = 26
+function taskColor(kind) {
+  return kind === 'pm' ? SAND : TEAL
+}
+Object.entries(TASKS).forEach(([laneIdx, byPhase]) => {
+  const li = Number(laneIdx)
+  const laneY = HEADER_H + li * LANE_H
+  Object.entries(byPhase).forEach(([phaseIdx, tasks]) => {
+    const pi = Number(phaseIdx)
+    const colX = LABEL_W + pi * COL_W
+    tasks.forEach((task, ti) => {
+      if (task.kind === 'start' || task.kind === 'end') return
+      const bx = colX + 20 + ti * (BOX_W + 8)
+      const by = laneY + LANE_H / 2 - BOX_H / 2
+      svg.appendChild(el('rect', { x: bx, y: by, width: BOX_W, height: BOX_H, rx: 5, fill: '#ffffff', stroke: taskColor(task.kind), 'stroke-width': 2 }))
+      svg.appendChild(el('text', { x: bx + BOX_W / 2, y: by + BOX_H / 2 + 4, 'text-anchor': 'middle', 'font-size': 10.5, 'font-weight': 'bold', fill: taskColor(task.kind) }, task.id))
+    })
+  })
+})
+
+// ---- Legend ----
+const legendY = HEADER_H + LANE_H * LANES.length + 20
+svg.appendChild(el('rect', { x: LABEL_W - 6, y: legendY - 12, width: 16, height: 12, fill: '#ffffff', stroke: SAND, 'stroke-width': 2 }))
+svg.appendChild(el('text', { x: LABEL_W + 14, y: legendY - 2, 'font-size': 10, fill: '#16221f' }, 'Project Management task'))
+svg.appendChild(el('rect', { x: LABEL_W + 190, y: legendY - 12, width: 16, height: 12, fill: '#ffffff', stroke: TEAL, 'stroke-width': 2 }))
+svg.appendChild(el('text', { x: LABEL_W + 210, y: legendY - 2, 'font-size': 10, fill: '#16221f' }, 'Change Management task'))
+const gx2 = LABEL_W + 420
+svg.appendChild(el('rect', { x: gx2 - 6, y: legendY - 12, width: 12, height: 12, fill: '#ffffff', stroke: RED, 'stroke-width': 2, transform: `rotate(45 ${gx2} ${legendY - 6})` }))
+svg.appendChild(el('text', { x: gx2 + 14, y: legendY - 2, 'font-size': 10, fill: '#16221f' }, 'Go/No-Go gateway — see that phase’s Exit Checklist'))
+</script>
+</body>
+</html>
