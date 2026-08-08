@@ -193,8 +193,25 @@ export const TUTORIAL_PHASES = [
     name: 'Plan & Prepare',
     goals: [
       'Score the first real ADKAR reading, log the top adoption risk, and stand up the training curriculum and first communication — the four pillars of preparation.',
+      'Start recording real schedule progress on the WBS — the baseline set in Phase 1 only means something once actual dates start landing next to it.',
     ],
-    pmTasks: [],
+    pmTasks: [
+      {
+        id: 'PM2.1',
+        name: 'Add this phase’s completed task to the WBS with baseline and actual dates',
+        sipoc: {
+          suppliers: 'PMO; the Change Management task it just completed (CM2.4)',
+          inputs: 'Task name, track, phase, baseline dates, actual dates',
+          process: ['Open M18', 'Log the training curriculum as a new WBS task, entering baseline and actual dates together since both are already known'],
+          outputs: 'A WBS entry carrying real schedule variance — the first evidence the baseline exists for something other than looking complete',
+          customers: 'PM5.4 (rolls this into the portfolio-level schedule gap); the Sponsor’s program-status view',
+        },
+        racsi: { sponsor: '', superAdmin: '', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
+        steps: [
+          { module: 'M18 · WBS & Gantt', action: 'Log a completed Phase 2 task with both baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 2"; Name: "Stand up the first training curriculum"; Baseline start/finish: 2026-03-02 → 2026-03-13 (the two weeks originally planned); Actual start/finish: 2026-03-02 → 2026-03-20 (the trainer needed a second cohort session). Status: done. Save.', expectedResult: 'Unlike the Phase 1 baseline entries, which only had planned dates, this task is logged with both baseline and actual at once — the WBS doesn’t wait for a dedicated end-of-program exercise to start showing reality; a visible amber schedule-gap badge appears immediately.', screenshot: '47-p2-m18-actual-progress.png' },
+        ],
+      },
+    ],
     cmTasks: [
       {
         id: 'CM2.1',
@@ -270,6 +287,7 @@ export const TUTORIAL_PHASES = [
         'The highest-severity adoption risk is logged and owned',
         'A training curriculum exists for the target population',
         'A first communication is planned and checked for saturation',
+        'At least one completed task this phase has both baseline and actual dates on the WBS',
       ],
       decision: 'GO — preparation pillars are in place; proceed to Phase 3.',
     },
@@ -280,8 +298,25 @@ export const TUTORIAL_PHASES = [
     name: 'Mobilize & Execute',
     goals: [
       'Score Desire and diagnose the stall it reveals, move Bridges/Kübler-Ross to reflect surfacing resistance, and begin logging and mitigating that resistance.',
+      'Keep the WBS current with this phase’s real dates, continuing the tracking rhythm started in Phase 2.',
     ],
-    pmTasks: [],
+    pmTasks: [
+      {
+        id: 'PM3.1',
+        name: 'Add this phase’s completed task to the WBS with baseline and actual dates',
+        sipoc: {
+          suppliers: 'PMO; the Change Management task it just completed (CM3.1)',
+          inputs: 'Task name, track, phase, baseline dates, actual dates',
+          process: ['Open M18', 'Log the Desire-diagnosis task as a new WBS entry with baseline and actual dates together'],
+          outputs: 'A second real schedule-variance data point, this one landing ahead of plan rather than behind it',
+          customers: 'PM5.4 (rolls this into the portfolio-level schedule gap)',
+        },
+        racsi: { sponsor: '', superAdmin: '', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
+        steps: [
+          { module: 'M18 · WBS & Gantt', action: 'Log a completed Phase 3 task with both baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 3"; Name: "Score Desire & diagnose the stall"; Baseline start/finish: 2026-07-13 → 2026-07-15; Actual start/finish: 2026-07-13 → 2026-07-14 (the pulse survey came back a day early). Status: done. Save.', expectedResult: 'This task lands ahead of its baseline — a green, negative-gap badge — a useful contrast to Phase 2’s training-curriculum slip logged a moment ago; the WBS isn’t only tracking bad news.', screenshot: '48-p3-m18-actual-progress.png' },
+        ],
+      },
+    ],
     cmTasks: [
       {
         id: 'CM3.1',
@@ -341,6 +376,7 @@ export const TUTORIAL_PHASES = [
         'Sentiment position reflects real evidence, not the platform’s default',
         'Resistance is logged with a named owner',
         'A mitigation action exists with an owner and a due date',
+        'This phase’s completed task is logged on the WBS with baseline and actual dates',
       ],
       decision: 'GO if the mitigation action is scheduled within two weeks; NO-GO — escalate to Sponsor — if resistance is logged but no mitigation owner has been assigned.',
     },
@@ -351,8 +387,25 @@ export const TUTORIAL_PHASES = [
     name: 'Reinforce & Adopt',
     goals: [
       'Confirm managers are ready to lead the change, review the sustainment checkpoints that will catch regression, and mark go-live on the journey map.',
+      'Log go-live itself on the WBS as a milestone — the one reference point every other task’s schedule gap gets measured against.',
     ],
-    pmTasks: [],
+    pmTasks: [
+      {
+        id: 'PM4.1',
+        name: 'Log the go-live milestone on the WBS',
+        sipoc: {
+          suppliers: 'PMO; the go-live event just marked on the journey map (CM4.3)',
+          inputs: 'Milestone name, phase, a single date used for both baseline and actual start/finish',
+          process: ['Open M18', 'Add a zero-duration milestone task at the go-live date, baseline and actual matching exactly'],
+          outputs: 'A diamond marker on the Gantt at Month 9, confirming cutover landed exactly on the date named in the Main Project’s Description back in Phase 0',
+          customers: 'PM5.4 (the schedule-gap review); the Sponsor’s program-status view',
+        },
+        racsi: { sponsor: 'I', superAdmin: '', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
+        steps: [
+          { module: 'M18 · WBS & Gantt', action: 'Add the go-live milestone with matching baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 4"; Name: "Go-live milestone"; Baseline start/finish: 2026-09-08 → 2026-09-08; Actual start/finish: 2026-09-08 → 2026-09-08. Status: done. Save.', expectedResult: 'Setting both baseline dates equal renders a diamond instead of a bar, exactly as the tip on the Add-task form promised back in Phase 1 — and because the actual date matches the baseline exactly, it’s the one entry on the whole Gantt with a flat "on time" badge.', screenshot: '49-p4-m18-actual-progress.png' },
+        ],
+      },
+    ],
     cmTasks: [
       {
         id: 'CM4.1',
@@ -412,6 +465,7 @@ export const TUTORIAL_PHASES = [
         '30/60/90-day sustainment checkpoints are confirmed and dated',
         'Go-live is marked on the journey map at the date named in the Main Project’s Description',
         'No open high-severity risk lacks a mitigation owner heading into cutover',
+        'Go-live is logged on the WBS as a milestone at the exact planned date',
       ],
       decision: 'GO — cutover readiness confirmed across manager coaching, sustainment and risk; proceed to Phase 5.',
     },
@@ -473,9 +527,9 @@ export const TUTORIAL_PHASES = [
         id: 'PM5.4',
         name: 'Review the WBS schedule gap — baseline vs. actual',
         sipoc: {
-          suppliers: 'Every task completed since Phase 1 (their real start/finish dates)',
-          inputs: 'Actual start/finish dates for each completed WBS task',
-          process: ['Open M18', 'Enter actual dates for tasks completed since the baseline was set', 'Review the resulting schedule-gap badges and portfolio average'],
+          suppliers: 'The remaining WBS tasks that don’t yet have actual dates; the entries already made progressively in Phases 2–4',
+          inputs: 'Actual start/finish dates for the WBS tasks still missing them',
+          process: ['Open M18', 'Enter actual dates for the Phase 1 and Phase 5 tasks that are still missing them', 'Review the resulting schedule-gap badges and portfolio average across every task logged since Phase 1'],
           outputs: 'A confirmed baseline-vs-actual gap per task and a portfolio-level average schedule variance',
           customers: 'PMO status reporting; the Sponsor’s program-status view',
         },
@@ -486,7 +540,23 @@ export const TUTORIAL_PHASES = [
         ],
       },
     ],
-    cmTasks: [],
+    cmTasks: [
+      {
+        id: 'CM5.1',
+        name: 'Log the first real sustainment checkpoint',
+        sipoc: {
+          suppliers: 'Post-go-live floor observation; the 30-day checkpoint reviewed (still blank) back in CM4.2',
+          inputs: 'Real adoption signal since go-live, a logged quick win',
+          process: ['Open M13', 'Record the 30-day checkpoint now that real post-go-live data exists', 'Log a quick win from the floor'],
+          outputs: 'A completed checkpoint carrying an adoption rate and regression-risk reading, plus a logged quick win',
+          customers: 'M15 Analytics; the Regression Risk Predictor’s own next reading',
+        },
+        racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
+        steps: [
+          { module: 'M13 · Sustainment', action: 'Record the 30-day checkpoint and log a quick win', userInput: 'Open Sustainment ● Click "Record checkpoint" on the 30-day card ● Log a quick win: "First shift lead reports the new transaction flow now feels \'routine\' — no prompting needed."', expectedResult: 'The 30-day card that showed blank stat fields back in CM4.2 now carries a real adoption-rate percentage and a color-coded regression-risk badge — the checkpoint mechanism reviewed pre-go-live is doing its actual job.', screenshot: '50-p5-m13-checkpoint-logged.png' },
+        ],
+      },
+    ],
     frameworkUpdate: {
       lewin: 'Refreeze',
       prosci: 'Reinforce',
@@ -499,6 +569,7 @@ export const TUTORIAL_PHASES = [
         'Readiness Index is confirmed and correctly scoped at Project, Organization and Group level',
         'Every project has a benchmarking standing against its sector reference band',
         'Every completed WBS task has an actual date entered, with the resulting gap reviewed',
+        'A real 30-day sustainment checkpoint is recorded, not just the seeded placeholder reviewed pre-go-live',
       ],
       decision: 'GO — portfolio, benchmarking and schedule-gap review are all current; proceed to Phase 6.',
     },
@@ -573,7 +644,23 @@ export const TUTORIAL_PHASES = [
         ],
       },
     ],
-    cmTasks: [],
+    cmTasks: [
+      {
+        id: 'CM6.1',
+        name: 'Log a skill-based resistance signal from the newly scoped session',
+        sipoc: {
+          suppliers: 'Nadia Squalli’s own floor observations, now that her scoped session (PM6.2) is confirmed',
+          inputs: 'Resistance type, source, root cause, severity, mitigation, owner, due date',
+          process: ['Stay signed in as the newly scoped People Manager', 'Open M11', 'Log a second resistance entry, raised bottom-up rather than by the Change Manager'],
+          outputs: 'A second resistance entry, proving the RBAC scope confirmed in PM6.2 supports real write access, not just restricted visibility',
+          customers: 'Change Manager (Karim Chraibi, who triages it); M8 Sponsor Action Recommender',
+        },
+        racsi: { sponsor: '', superAdmin: '', pmo: '', cm: 'C', peopleManager: 'A/R', employee: '' },
+        steps: [
+          { module: 'M11 · Resistance', action: 'Log a skill-based resistance signal while still signed in as the scoped People Manager', userInput: 'Still signed in as Nadia Squalli ● Open M11 ● Type: Skill; Source: "Production Planning team, Kénitra plant"; Root cause: "Several planners are quietly falling back to the old spreadsheet for anything beyond a simple transaction — they haven\'t said so directly, but it shows in the shared drive activity."; Severity: 3; Mitigation: "Add a floor-side cheat sheet for the three most common non-simple transactions"; Owner: Nadia Squalli; Due: two weeks.', expectedResult: 'The entry is logged from Nadia’s own scoped session — the same RBAC scope that limited her visibility to one Project in PM6.2 also lets her write real Change Management data inside it, closing the loop from "can she see it" to "can she use it."', screenshot: '51-p6-m11-peoplemanager-resistance.png' },
+        ],
+      },
+    ],
     frameworkUpdate: {
       lewin: 'n/a — platform/administrative, not a change-lifecycle phase',
       prosci: 'n/a',
@@ -586,6 +673,7 @@ export const TUTORIAL_PHASES = [
         'A newly provisioned user’s visibility is verified to match their assigned scope exactly',
         'Tenant-language precedence behaves as documented when switching Organizations',
         'Cascading delete removes a project’s users and AI-override state along with it',
+        'The newly scoped user can write real Change Management data, not just view what their scope permits',
       ],
       decision: 'GO — governance and administration surface verified; proceed to Phase 7.',
     },

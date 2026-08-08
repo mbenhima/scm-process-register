@@ -83,6 +83,23 @@ async function addWbsTask(track, phase, name, baseStart, baseEnd) {
   await saveModal()
 }
 
+// Logs a WBS task with both baseline AND actual dates filled at creation time
+// (rather than added-planned-then-edited-later, like PM1.2's baseline entries) —
+// used by the Phase 2/3/4 progressive-tracking tasks (PM2.1/PM3.1/PM4.1).
+async function addWbsTaskWithActual(track, phase, name, baseStart, baseEnd, actualStart, actualEnd, status = 'done') {
+  await openModal('+ Add WBS task')
+  await page.locator('.fixed select').first().selectOption(track)
+  await page.locator('.fixed input:not([type="checkbox"]):not([type="date"])').nth(0).fill(phase)
+  await page.locator('.fixed input:not([type="checkbox"]):not([type="date"])').nth(1).fill(name)
+  const dateInputs = page.locator('.fixed input[type="date"]')
+  await dateInputs.nth(0).fill(baseStart)
+  await dateInputs.nth(1).fill(baseEnd)
+  await dateInputs.nth(2).fill(actualStart)
+  await dateInputs.nth(3).fill(actualEnd)
+  await page.locator('.fixed select').last().selectOption(status)
+  await saveModal()
+}
+
 // ============================================================
 // Phase 0 — Set Up Your Multi-Tenant Structure
 // ============================================================
@@ -261,6 +278,12 @@ await fillPlaceholder('Timing', 'Week 1 of Month 7')
 await shoot('22-p2-m9-communication-logged.png')
 await saveModal()
 
+// PM2.1 — log the completed training curriculum on the WBS with both
+// baseline and actual dates, starting the progressive-tracking rhythm.
+await goto('/app/m18')
+await addWbsTaskWithActual('cm', 'Phase 2', 'Stand up the first training curriculum', '2026-03-02', '2026-03-13', '2026-03-02', '2026-03-20')
+await shoot('47-p2-m18-actual-progress.png')
+
 // ============================================================
 // Phase 3 — Mobilize & Execute
 // ============================================================
@@ -292,6 +315,12 @@ await m11Inputs.nth(3).fill('Next week')
 await shoot('25-p3-m11-resistance-logged.png')
 await saveModal()
 
+// PM3.1 — log the Desire-diagnosis task on the WBS, this one landing ahead
+// of baseline rather than behind it.
+await goto('/app/m18')
+await addWbsTaskWithActual('cm', 'Phase 3', 'Score Desire & diagnose the stall', '2026-07-13', '2026-07-15', '2026-07-13', '2026-07-14')
+await shoot('48-p3-m18-actual-progress.png')
+
 // ============================================================
 // Phase 4 — Reinforce & Adopt
 // ============================================================
@@ -312,6 +341,12 @@ await page.locator('input[type="number"]').fill('245')
 await page.locator('button:has-text("Add")').last().click()
 await page.waitForTimeout(300)
 await shoot('28-p4-m16-golive-marked.png')
+
+// PM4.1 — log go-live itself as a zero-duration WBS milestone, baseline and
+// actual matching exactly.
+await goto('/app/m18')
+await addWbsTaskWithActual('cm', 'Phase 4', 'Go-live milestone', '2026-09-08', '2026-09-08', '2026-09-08', '2026-09-08')
+await shoot('49-p4-m18-actual-progress.png')
 
 // ============================================================
 // Phase 5 — Sustain, Analyze & Benchmark
@@ -347,6 +382,16 @@ await saveModal()
 await shoot('32-p5-m18-actuals-entered.png')
 await shoot('33-p5-m18-gap-summary.png')
 
+// CM5.1 — record the first real 30-day sustainment checkpoint (blank/seeded
+// when reviewed pre-go-live back in CM4.2) and log a quick win.
+await goto('/app/m13')
+await page.locator('button:has-text("Record checkpoint")').first().click()
+await page.waitForTimeout(300)
+await page.locator('[placeholder="Quick Win / Milestone"]').fill('First shift lead reports the new transaction flow now feels "routine" — no prompting needed.')
+await page.locator('.card:has-text("Quick Win / Milestone") button:has-text("Add")').click()
+await page.waitForTimeout(300)
+await shoot('50-p5-m13-checkpoint-logged.png')
+
 // ============================================================
 // Phase 6 — Governance, Multi-Tenancy, RBAC & Language
 // ============================================================
@@ -373,6 +418,23 @@ await page.locator('a:has-text("Sign out"), button:has-text("Sign out")').first(
 await page.waitForTimeout(400)
 await signIn('Nadia Squalli')
 await shoot('36-p6-m2-scoped-session.png')
+
+// CM6.1 — still signed in as the newly scoped People Manager: prove the
+// scope also supports real write access, not just restricted visibility.
+await goto('/app/m11')
+await openModal('+ ')
+await page.waitForTimeout(250)
+await page.locator('.fixed select').first().selectOption('skill').catch(() => {})
+const cm61Inputs = page.locator('.fixed input:not([type="checkbox"]):not([type="number"])')
+await cm61Inputs.nth(0).fill('Production Planning team, Kénitra plant')
+await page.locator('.fixed textarea').fill('Several planners are quietly falling back to the old spreadsheet for anything beyond a simple transaction — they haven\'t said so directly, but it shows in the shared drive activity.')
+await page.locator('.fixed input[type="number"]').fill('3')
+await cm61Inputs.nth(1).fill('Add a floor-side cheat sheet for the three most common non-simple transactions')
+await cm61Inputs.nth(2).fill('Nadia Squalli')
+await cm61Inputs.nth(3).fill('Two weeks')
+await shoot('51-p6-m11-peoplemanager-resistance.png')
+await saveModal()
+
 await signIn('Amina Idrissi')
 await switchScope('Kenitra Precision Manufacturing', 'Enterprise Platform Renewal — People Readiness')
 
