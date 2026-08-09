@@ -41,6 +41,12 @@ async function selectByLabel(label, value) {
   const field = page.locator('.fixed label', { hasText: label }).first().locator('xpath=following-sibling::select[1]')
   await field.selectOption(value)
 }
+// Page-level (non-modal) equivalent of selectByLabel — used for M4's Lewin
+// dropdown, which lives in the page body, not a .fixed modal.
+async function selectByLabelOnPage(label, value) {
+  const field = page.locator('label', { hasText: label }).first().locator('xpath=following-sibling::select[1]')
+  await field.selectOption(value)
+}
 async function fillPlaceholder(placeholder, value) {
   await page.locator(`.fixed [placeholder="${placeholder}"]`).first().fill(String(value))
 }
@@ -289,6 +295,11 @@ await shoot('53-p2-m18-before-actuals.png')
 await addWbsTaskWithActual('cm', 'Phase 2', 'Stand up the first training curriculum', '2026-03-02', '2026-03-13', '2026-03-02', '2026-03-20')
 await shoot('47-p2-m18-actual-progress.png')
 
+// PM2.2 — review the M4 Change Log, now that two justified changes have
+// accumulated (CM1.2 sponsor visibility, CM2.1 Awareness score).
+await goto('/app/m4')
+await shoot('77-p2-m4-changelog.png')
+
 // ============================================================
 // Phase 3 — Mobilize & Execute
 // ============================================================
@@ -330,6 +341,16 @@ await shoot('57-p3-m18-before-actuals.png')
 await addWbsTaskWithActual('cm', 'Phase 3', 'Score Desire & diagnose the stall', '2026-07-13', '2026-07-15', '2026-07-13', '2026-07-14')
 await shoot('48-p3-m18-actual-progress.png')
 
+// PM3.2 — stage the Lewin macro-state to Change via M4's own justify-and-save
+// mechanism (previously only narrated in prose, never actually staged).
+await goto('/app/m4')
+await shoot('78-p3-m4-lewin-before.png')
+await selectByLabelOnPage('Lewin', 'change')
+await page.waitForTimeout(200)
+await page.locator('textarea[placeholder="Why is the Lewin macro-state moving now? Cite the specific evidence."]').fill('Desire has been scored, sentiment has moved to Resistance/Anger, and resistance is logged with an owned mitigation plan — the population is actively engaging with the change, not just hearing about it.')
+await saveWithJustification()
+await shoot('79-p3-m4-lewin-change.png')
+
 // ============================================================
 // Phase 4 — Reinforce & Adopt
 // ============================================================
@@ -359,6 +380,15 @@ await goto('/app/m18')
 await shoot('61-p4-m18-before-actuals.png')
 await addWbsTaskWithActual('cm', 'Phase 4', 'Go-live milestone', '2026-09-08', '2026-09-08', '2026-09-08', '2026-09-08')
 await shoot('49-p4-m18-actual-progress.png')
+
+// PM4.2 — stage the Lewin macro-state to Refreeze.
+await goto('/app/m4')
+await shoot('80-p4-m4-lewin-before.png')
+await selectByLabelOnPage('Lewin', 'refreeze')
+await page.waitForTimeout(200)
+await page.locator('textarea[placeholder="Why is the Lewin macro-state moving now? Cite the specific evidence."]').fill('Manager readiness is rated 4/5 with real evidence, sustainment checkpoints are confirmed and dated, and cutover happened exactly on the date named in this project\'s own Description — the program is moving from managing the change to reinforcing it.')
+await saveWithJustification()
+await shoot('81-p4-m4-lewin-refreeze.png')
 
 // ============================================================
 // Phase 5 — Sustain, Analyze & Benchmark
@@ -409,6 +439,18 @@ await page.locator('[placeholder="Quick Win / Milestone"]').fill('First shift le
 await page.locator('.card:has-text("Quick Win / Milestone") button:has-text("Add")').click()
 await page.waitForTimeout(300)
 await shoot('50-p5-m13-checkpoint-logged.png')
+
+// CM5.2 — score initial Awareness on the second CM Project (created in
+// PM5.1), proving the portfolio roll-up aggregates real per-project data.
+await switchScope('Kenitra Precision Manufacturing', 'Warehouse Automation Adoption Track')
+await goto('/app/m6')
+await shoot('82-p5-m6-warehouse-before.png')
+const warehouseAwarenessCard = page.locator('.card', { hasText: 'awareness' }).first()
+await warehouseAwarenessCard.locator('button:has-text("2")').click()
+await warehouseAwarenessCard.locator('textarea').fill('Warehouse leads were briefed on the automation rollout timeline this week; most staff still associate it with the ERP project rather than understanding it as a separate initiative.')
+await saveWithJustification(warehouseAwarenessCard)
+await shoot('83-p5-m6-warehouse-scored.png')
+await switchScope('Kenitra Precision Manufacturing', 'Enterprise Platform Renewal — People Readiness')
 
 // ============================================================
 // Phase 6 — Governance, Multi-Tenancy, RBAC & Language
@@ -465,6 +507,22 @@ await shoot('69-p6-before-language-switch.png')
 await page.locator('header select, select').first().selectOption({ label: 'Kenitra Precision Manufacturing — Tangier Plant' }).catch(() => {})
 await page.waitForTimeout(300)
 await shoot('37-p6-toplevel-language-switch.png')
+
+// CM6.2 — log a stakeholder group on the Tangier Organization's own CM
+// Project (created in PM5.1), confirming CM modules work identically across
+// Organizations, not just the Kenitra one everything else in this tutorial uses.
+await switchScope('Kenitra Precision Manufacturing — Tangier Plant', 'Tangier Plant Adoption Program')
+await goto('/app/m5')
+await shoot('84-p6-m5-tangier-before.png')
+await openModal('+ Stakeholder Group')
+await fillByLabel('Name', 'Line Supervisors, Tangier Plant')
+await fillByLabel('Headcount', 140)
+const tangierImpactInputs = page.locator('.fixed .grid.grid-cols-2 input[type="number"]')
+const tn = await tangierImpactInputs.count()
+for (let i = 0; i < tn; i++) await tangierImpactInputs.nth(i).fill(i < 2 ? '4' : '2')
+await saveModal()
+await shoot('85-p6-m5-tangier-logged.png')
+
 await switchScope('Kenitra Precision Manufacturing', 'Enterprise Platform Renewal — People Readiness')
 
 await goto('/app/m1')
