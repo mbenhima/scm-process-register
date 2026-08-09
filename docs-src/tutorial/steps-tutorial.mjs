@@ -213,6 +213,21 @@ export const TUTORIAL_PHASES = [
           { module: 'M18 · WBS & Gantt', action: 'Log a completed Phase 2 task with both baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 2"; Name: "Stand up the first training curriculum"; Baseline start/finish: 2026-03-02 → 2026-03-13 (the two weeks originally planned); Actual start/finish: 2026-03-02 → 2026-03-20 (the trainer needed a second cohort session). Status: done. Save.', expectedResult: 'Unlike the Phase 1 baseline entries, which only had planned dates, this task is logged with both baseline and actual at once — the WBS doesn’t wait for a dedicated end-of-program exercise to start showing reality; a visible amber schedule-gap badge appears immediately.', screenshot: '47-p2-m18-actual-progress.png' },
         ],
       },
+      {
+        id: 'PM2.2',
+        name: 'Review the Initiative Registry’s Change Log',
+        sipoc: {
+          suppliers: 'PMO; every justified change logged so far across M4, M6, M7 and M8',
+          inputs: 'The accumulated Change Log entries — sponsor visibility (CM1.2), Awareness score (CM2.1)',
+          process: ['Open M4', 'Scroll to the Justification & Change Log panel', 'Confirm every entry carries its evidence, not just a new value'],
+          outputs: 'A confirmed, centralized audit trail spanning every module that writes a justified change',
+          customers: 'Sponsor and PMO status reporting; any future audit of how a score or state actually moved',
+        },
+        racsi: { sponsor: 'I', superAdmin: '', pmo: 'A/R', cm: 'I', peopleManager: '', employee: '' },
+        steps: [
+          { module: 'M4 · Justification & Change Log', action: 'Review the accumulated audit trail', userInput: 'Open M4 and scroll to the "Justification & Change Log" panel at the bottom of the page.', expectedResult: 'Both changes logged so far — the sponsor-visibility baseline from CM1.2 and the Awareness score from CM2.1 — appear here with their full justification text, even though they were entered from two completely different modules. M4 is the one place that aggregates every justified change project-wide.', screenshot: '77-p2-m4-changelog.png' },
+        ],
+      },
     ],
     cmTasks: [
       {
@@ -322,6 +337,22 @@ export const TUTORIAL_PHASES = [
           { module: 'M18 · WBS & Gantt', action: 'Log a completed Phase 3 task with both baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 3"; Name: "Score Desire & diagnose the stall"; Baseline start/finish: 2026-07-13 → 2026-07-15; Actual start/finish: 2026-07-13 → 2026-07-14 (the pulse survey came back a day early). Status: done. Save.', expectedResult: 'This task lands ahead of its baseline — a green, negative-gap badge — a useful contrast to Phase 2’s training-curriculum slip logged a moment ago; the WBS isn’t only tracking bad news.', screenshot: '48-p3-m18-actual-progress.png' },
         ],
       },
+      {
+        id: 'PM3.2',
+        name: 'Stage the Lewin macro-state to Change',
+        sipoc: {
+          suppliers: 'PMO; the Desire, sentiment and resistance evidence just logged (CM3.1–CM3.3)',
+          inputs: 'Lewin phase selector, justification',
+          process: ['Open M4', 'Stage Lewin from Unfreeze to Change', 'Save with justification'],
+          outputs: 'The first real Lewin macro-state transition recorded in M4’s own Change Log — not just narrated, staged',
+          customers: 'M4’s Change Log; the Composite Readiness Index; every later Framework Update in this tutorial',
+        },
+        racsi: { sponsor: 'I', superAdmin: '', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
+        steps: [
+          { module: 'M4 · Initiative Registry', action: 'Open M4 before staging the transition', userInput: 'Open M4.', expectedResult: 'The Lewin selector still reads "Unfreeze" — its Phase 0 default, never touched since PM1.1 filled in the rest of the profile.', screenshot: '78-p3-m4-lewin-before.png' },
+          { module: 'M4 · Initiative Registry', action: 'Stage and save the Lewin transition', userInput: 'Select "Change" in the Lewin dropdown ● Save with justification: "Desire has been scored, sentiment has moved to Resistance/Anger, and resistance is logged with an owned mitigation plan — the population is actively engaging with the change, not just hearing about it."', expectedResult: 'The Lewin macro-state moves to Change, and the entry appears immediately in the Change Log below — the same stage-then-justify pattern used everywhere in journi, here applied to the project’s own top-level framework state.', screenshot: '79-p3-m4-lewin-change.png' },
+        ],
+      },
     ],
     cmTasks: [
       {
@@ -376,8 +407,8 @@ export const TUTORIAL_PHASES = [
     frameworkUpdate: {
       lewin: 'Change',
       prosci: 'Manage',
-      bridges: 'Neutral Zone',
-      justification: 'Desire scored and diagnosed as stalled, sentiment explicitly moved to Resistance/Anger, and resistance logged with an active mitigation plan together confirm the population is now actively engaging with (resisting) the change rather than merely hearing about it — Lewin and Prosci settle into Change/Manage, and Bridges moves to Neutral Zone: the old way is being let go of, even if unwillingly.',
+      bridges: 'Ending',
+      justification: 'Desire scored and diagnosed as stalled, sentiment explicitly moved to Resistance/Anger, and resistance logged with an active mitigation plan together confirm the population is now actively engaging with (resisting) the change rather than merely hearing about it — Lewin and Prosci settle into Change/Manage. Bridges stays in Ending: the Kübler-Ross curve captures the emotional signal, but nobody has staged the macro-level Bridges transition itself yet — worth watching, since M7’s Divergence Pattern Detector later flags exactly this kind of stall.',
     },
     exitChecklist: {
       items: [
@@ -413,6 +444,22 @@ export const TUTORIAL_PHASES = [
         steps: [
           { module: 'M18 · WBS & Gantt', action: 'Open the WBS before go-live is logged', userInput: 'Open M18.', expectedResult: 'The Phase 3 Desire-diagnosis task now shows its ahead-of-schedule actual bar; the go-live milestone hasn’t been added yet.', screenshot: '61-p4-m18-before-actuals.png' },
           { module: 'M18 · WBS & Gantt', action: 'Add the go-live milestone with matching baseline and actual dates', userInput: 'Click "+ Add WBS task". Track: Change Management; Phase: "Phase 4"; Name: "Go-live milestone"; Baseline start/finish: 2026-09-08 → 2026-09-08; Actual start/finish: 2026-09-08 → 2026-09-08. Status: done. Save.', expectedResult: 'Setting both baseline dates equal renders a diamond instead of a bar, exactly as the tip on the Add-task form promised back in Phase 1 — and because the actual date matches the baseline exactly, it’s the one entry on the whole Gantt with a flat "on time" badge.', screenshot: '49-p4-m18-actual-progress.png' },
+        ],
+      },
+      {
+        id: 'PM4.2',
+        name: 'Stage the Lewin macro-state to Refreeze',
+        sipoc: {
+          suppliers: 'PMO; manager readiness, sustainment checkpoints and go-live itself (CM4.1–CM4.3)',
+          inputs: 'Lewin phase selector, justification',
+          process: ['Open M4', 'Stage Lewin from Change to Refreeze', 'Save with justification'],
+          outputs: 'A second justified Lewin transition — the program’s own Change Log now shows the full Unfreeze → Change → Refreeze arc',
+          customers: 'M4’s Change Log; Phase 5’s steady-state framework reading',
+        },
+        racsi: { sponsor: 'I', superAdmin: '', pmo: 'A/R', cm: 'C', peopleManager: '', employee: '' },
+        steps: [
+          { module: 'M4 · Initiative Registry', action: 'Open M4 before staging the second transition', userInput: 'Open M4.', expectedResult: 'The Lewin selector still reads "Change", staged back in PM3.2 — untouched since.', screenshot: '80-p4-m4-lewin-before.png' },
+          { module: 'M4 · Initiative Registry', action: 'Stage and save the Lewin transition', userInput: 'Select "Refreeze" in the Lewin dropdown ● Save with justification: "Manager readiness is rated 4/5 with real evidence, sustainment checkpoints are confirmed and dated, and cutover happened exactly on the date named in this project’s own Description — the program is moving from managing the change to reinforcing it."', expectedResult: 'The Lewin macro-state moves to Refreeze, and the Change Log now shows two justified transitions back to back — the same evidence this tutorial has been narrating all along, now actually staged in the app rather than only described in prose.', screenshot: '81-p4-m4-lewin-refreeze.png' },
         ],
       },
     ],
@@ -468,8 +515,8 @@ export const TUTORIAL_PHASES = [
     frameworkUpdate: {
       lewin: 'Change → Refreeze (transitioning)',
       prosci: 'Manage → Reinforce (transitioning)',
-      bridges: 'Neutral Zone → New Beginning (transitioning)',
-      justification: 'A justified manager-readiness improvement, confirmed sustainment checkpoints, and the go-live marker itself together signal the population is moving from actively managing the change toward reinforcing it — all three frameworks begin their final transition toward their post-go-live steady state.',
+      bridges: 'Ending — still unmoved',
+      justification: 'A justified manager-readiness improvement, confirmed sustainment checkpoints, and the go-live marker itself together signal the population is moving from actively managing the change toward reinforcing it — Lewin and Prosci begin their final transition toward the post-go-live steady state PM4.2 stages directly in M4. Bridges, notably, does not: nobody has staged it past Ending, even as cutover happens on schedule — the same lagging signal CM7.2 catches later.',
     },
     exitChecklist: {
       items: [
@@ -572,12 +619,28 @@ export const TUTORIAL_PHASES = [
           { module: 'M13 · Sustainment', action: 'Record the 30-day checkpoint and log a quick win', userInput: 'Open Sustainment ● Click "Record checkpoint" on the 30-day card ● Log a quick win: "First shift lead reports the new transaction flow now feels \'routine\' — no prompting needed."', expectedResult: 'The 30-day card that showed blank stat fields back in CM4.2 now carries a real adoption-rate percentage and a color-coded regression-risk badge — the checkpoint mechanism reviewed pre-go-live is doing its actual job.', screenshot: '50-p5-m13-checkpoint-logged.png' },
         ],
       },
+      {
+        id: 'CM5.2',
+        name: 'Score initial Awareness for a second portfolio project',
+        sipoc: {
+          suppliers: 'Shop-floor feedback on the Warehouse Automation Adoption Track (PM5.1)',
+          inputs: 'Awareness score, barrier note, justification — the same ADKAR workflow used in CM2.1, now on a second project',
+          process: ['Switch scope to Warehouse Automation Adoption Track', 'Open M6', 'Stage Awareness score', 'Save with justification'],
+          outputs: 'A second CM Project carrying real ADKAR data, proving the portfolio-wide Readiness Index (PM5.2) aggregates genuine per-project numbers, not placeholders',
+          customers: 'PM5.2 (Readiness Index roll-up); PM5.3 (benchmarking)',
+        },
+        racsi: { sponsor: 'I', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
+        steps: [
+          { module: 'M6 · ADKAR Engine', action: 'Switch scope and open ADKAR on the second project', userInput: 'Switch the Change Management Project selector to "Warehouse Automation Adoption Track" ● Open M6.', expectedResult: 'A completely separate ADKAR record — every block back at its baseline of 1 — confirming project scoping is real, not shared state leaking in from the flagship project.', screenshot: '82-p5-m6-warehouse-before.png' },
+          { module: 'M6 · ADKAR Engine', action: 'Stage and save the Awareness score', userInput: 'Stage a score of 2 on Awareness ● Save with justification: "Warehouse leads were briefed on the automation rollout timeline this week; most staff still associate it with the ERP project rather than understanding it as a separate initiative."', expectedResult: 'Awareness moves to 2/5 on this project specifically — a real, independent data point the Group-level roll-up in PM5.2 now has to average in.', screenshot: '83-p5-m6-warehouse-scored.png' },
+        ],
+      },
     ],
     frameworkUpdate: {
       lewin: 'Refreeze',
       prosci: 'Reinforce',
-      bridges: 'New Beginning (once checkpoint adoption data confirms it)',
-      justification: 'Portfolio expansion, a confirmed multi-level Readiness Index, peer benchmarking and a closed-loop schedule-gap review together mark the program settling into its new steady state — Lewin Refreeze and Prosci Reinforce are now justified by real post-go-live structure, not just elapsed time; Bridges reaches New Beginning only once the 30/60/90-day checkpoints (M13) actually confirm adoption is holding.',
+      bridges: 'Ending — still unmoved',
+      justification: 'Portfolio expansion, a confirmed multi-level Readiness Index, peer benchmarking and a closed-loop schedule-gap review together mark the program settling into its new steady state — Lewin Refreeze (staged in PM4.2) and Prosci Reinforce are now justified by real post-go-live structure, not just elapsed time. Bridges still sits in Ending, unremarked-on by anyone signed into this project — exactly the gap M7’s Divergence Pattern Detector was built to surface once Knowledge and Ability catch up (CM7.2).',
     },
     exitChecklist: {
       items: [
@@ -678,6 +741,22 @@ export const TUTORIAL_PHASES = [
         steps: [
           { module: 'M11 · Resistance', action: 'Open Resistance in Nadia’s own scoped session', userInput: 'Still signed in as Nadia Squalli ● Open M11.', expectedResult: 'The existing entry from Karim (CM3.3) is visible — her scope shows the whole project’s data, not just her own future entries — but nothing of hers exists yet.', screenshot: '71-p6-m11-before-peoplemanager.png' },
           { module: 'M11 · Resistance', action: 'Log a skill-based resistance signal while still signed in as the scoped People Manager', userInput: 'Type: Skill; Source: "Production Planning team, Kénitra plant"; Root cause: "Several planners are quietly falling back to the old spreadsheet for anything beyond a simple transaction — they haven\'t said so directly, but it shows in the shared drive activity."; Severity: 3; Mitigation: "Add a floor-side cheat sheet for the three most common non-simple transactions"; Owner: Nadia Squalli; Due: two weeks. Save.', expectedResult: 'The entry is logged from Nadia’s own scoped session — the same RBAC scope that limited her visibility to one Project in PM6.2 also lets her write real Change Management data inside it, closing the loop from "can she see it" to "can she use it."', screenshot: '51-p6-m11-peoplemanager-resistance.png' },
+        ],
+      },
+      {
+        id: 'CM6.2',
+        name: 'Log a stakeholder group on the Tangier CM Project',
+        sipoc: {
+          suppliers: 'Tangier plant HR headcount data',
+          inputs: 'Stakeholder group name, headcount, impact ratings — the same M5 workflow used in CM1.1, now on a Project under a different Organization',
+          process: ['Switch scope to the Tangier Organization and its CM Project', 'Open M5', 'Log a stakeholder group'],
+          outputs: 'Confirms Change Management modules work identically for a Project under a different Organization and default language, not just Kenitra',
+          customers: 'Any later Communications or Resistance work on the Tangier Plant Adoption Program',
+        },
+        racsi: { sponsor: '', superAdmin: '', pmo: 'I', cm: 'A/R', peopleManager: 'C', employee: '' },
+        steps: [
+          { module: 'M5 · Stakeholder Mapping', action: 'Switch scope to the Tangier CM Project', userInput: 'Switch the Organization selector to "Kenitra Precision Manufacturing — Tangier Plant", then the Project selector to "Tangier Plant Adoption Program" ● Open M5.', expectedResult: 'An empty stakeholder map — this Project has never had M5 data entered, even though the Organization itself was created back in Phase 0.', screenshot: '84-p6-m5-tangier-before.png' },
+          { module: 'M5 · Stakeholder Mapping', action: 'Log the first Tangier stakeholder group', userInput: 'Add "Line Supervisors, Tangier Plant" — 140 headcount, high process/tech impact.', expectedResult: 'The stakeholder group is logged exactly as it would be under Kenitra — same form, same fields, same impact map logic — confirming the Change Management modules don’t special-case the Organization they run under.', screenshot: '85-p6-m5-tangier-logged.png' },
         ],
       },
     ],
