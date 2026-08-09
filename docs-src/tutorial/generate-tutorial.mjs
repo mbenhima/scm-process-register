@@ -290,7 +290,7 @@ landscapeSections.push(
   new Paragraph({ children: [new PageBreak()] }),
   h2('3.2 Program timeline — WBS Gantt (14 months)'),
   p('The Gantt below plots the same eight phases against the full 14-month program calendar, month by month, with week-level sub-ticks shown for Month 1 (multi-tenant setup, where several tasks turn over inside a single month) and Month 9 (go-live). Beneath the phase band sit the three framework tracks (Lewin, Prosci, Bridges) shaded by state — steady (solid teal), transitioning (sand), or not applicable (grey, Phases 6-7, which are platform/administrative) — and the two ADKAR milestones this tutorial stages: Awareness → 3 in Month 2-3 (Phase 2) and Desire → 2 in Month 7 (Phase 3). The two task tracks at the bottom place every Project Management and Change Management task from Section 3.4\'s Work Breakdown Structure at the week it actually occurs in this tutorial\'s narrative — the same task bars underpin the SIPOC/RACSI task blocks in Section 4 onward, including the two new Module 18 tasks (PM1.2 baseline setup, PM5.4 schedule-gap review).'),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 120, after: 60 }, children: [img('00b-gantt-wbs-timeline.png', 960, 1816, 1448)] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 120, after: 60 }, children: [img('00b-gantt-wbs-timeline.png', 960, 1816, 1464)] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 200 }, children: [new TextRun({ text: 'Program timeline — Work Breakdown Structure Gantt, 14 months, Kenitra Precision Manufacturing Enterprise Platform Renewal Program', italics: true, size: 18, color: '666666' })] }),
 )
 
