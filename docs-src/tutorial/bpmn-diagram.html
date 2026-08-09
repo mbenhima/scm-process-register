@@ -33,28 +33,82 @@ const PHASES = [
 
 // lane index -> { phaseIdx -> [{id, kind}] }  kind: 'pm' | 'cm'
 const TASKS = {
-  0: { 0: [{ id: 'PM0.2', kind: 'pm' }], 1: [{ id: 'PM1.1, CM1.2', kind: 'pm' }], 3: [{ id: 'CM3.3', kind: 'cm' }] },
-  1: { 0: [{ id: 'PM0.1', kind: 'pm' }], 6: [{ id: 'PM6.2–6.4', kind: 'pm' }], 7: [{ id: 'PM7.1', kind: 'pm' }] },
+  0: {
+    0: [{ id: 'PM0.2', name: 'Register Main Project', kind: 'pm' }],
+    1: [{ id: 'PM1.1', name: 'Initiative profile', kind: 'pm' }, { id: 'CM1.2', name: 'Sponsor visibility baseline', kind: 'cm' }],
+    3: [{ id: 'CM3.3', name: 'Resistance logged & mitigated', kind: 'cm' }],
+  },
+  1: {
+    0: [{ id: 'PM0.1', name: 'Stand up hierarchy', kind: 'pm' }],
+    6: [
+      { id: 'PM6.2', name: 'Provision users / RBAC', kind: 'pm' },
+      { id: 'PM6.3', name: 'Language precedence', kind: 'pm' },
+      { id: 'PM6.4', name: 'Delete / cascade verify', kind: 'pm' },
+    ],
+    7: [{ id: 'PM7.1', name: 'Permission Matrix / justification', kind: 'pm' }],
+  },
   2: {
     0: [{ id: 'Start', kind: 'start' }],
-    1: [{ id: 'PM1.2', kind: 'pm' }],
-    2: [{ id: 'PM2.1–2.2', kind: 'pm' }],
-    3: [{ id: 'PM3.1–3.2', kind: 'pm' }],
-    4: [{ id: 'PM4.1–4.2', kind: 'pm' }],
-    5: [{ id: 'PM5.1–5.4', kind: 'pm' }],
-    6: [{ id: 'PM6.1', kind: 'pm' }],
-    7: [{ id: 'PM7.2–7.3', kind: 'pm' }, { id: 'End', kind: 'end' }],
+    1: [{ id: 'PM1.2', name: 'WBS & Gantt baseline', kind: 'pm' }],
+    2: [
+      { id: 'PM2.1', name: 'WBS actuals — training curriculum', kind: 'pm' },
+      { id: 'PM2.2', name: 'Review M4 Change Log', kind: 'pm' },
+    ],
+    3: [
+      { id: 'PM3.1', name: 'WBS actuals — Desire diagnosis', kind: 'pm' },
+      { id: 'PM3.2', name: 'Stage Lewin to Change', kind: 'pm' },
+    ],
+    4: [
+      { id: 'PM4.1', name: 'WBS actuals — go-live milestone', kind: 'pm' },
+      { id: 'PM4.2', name: 'Stage Lewin to Refreeze', kind: 'pm' },
+    ],
+    5: [
+      { id: 'PM5.1', name: 'Expand portfolio', kind: 'pm' },
+      { id: 'PM5.2', name: 'Confirm Readiness Index', kind: 'pm' },
+      { id: 'PM5.3', name: 'Benchmark peers', kind: 'pm' },
+      { id: 'PM5.4', name: 'Review WBS schedule gap', kind: 'pm' },
+    ],
+    6: [{ id: 'PM6.1', name: 'AI governance review', kind: 'pm' }],
+    7: [
+      { id: 'PM7.2', name: 'Activate AI use cases', kind: 'pm' },
+      { id: 'PM7.3', name: 'Connect LLM provider', kind: 'pm' },
+      { id: 'End', kind: 'end' },
+    ],
   },
   3: {
-    0: [{ id: 'CM0.1', kind: 'cm' }],
-    1: [{ id: 'CM1.1', kind: 'cm' }],
-    2: [{ id: 'CM2.1–2.4', kind: 'cm' }],
-    3: [{ id: 'CM3.1–3.2', kind: 'cm' }],
-    4: [{ id: 'CM4.2–4.3', kind: 'cm' }],
-    5: [{ id: 'CM5.1–5.2', kind: 'cm' }],
-    7: [{ id: 'CM7.1–7.3', kind: 'cm' }],
+    0: [{ id: 'CM0.1', name: 'Register & link CM Project', kind: 'cm' }],
+    1: [{ id: 'CM1.1', name: 'Map stakeholders', kind: 'cm' }],
+    2: [
+      { id: 'CM2.1', name: 'Score Awareness', kind: 'cm' },
+      { id: 'CM2.2', name: 'Log adoption risk', kind: 'cm' },
+      { id: 'CM2.4', name: 'Training curriculum', kind: 'cm' },
+      { id: 'CM2.3', name: 'Plan communication', kind: 'cm' },
+    ],
+    3: [
+      { id: 'CM3.1', name: 'Score Desire & diagnose', kind: 'cm' },
+      { id: 'CM3.2', name: 'Bridges & sentiment', kind: 'cm' },
+    ],
+    4: [
+      { id: 'CM4.2', name: 'Sustainment checkpoints reviewed', kind: 'cm' },
+      { id: 'CM4.3', name: 'Go-live milestone (journey map)', kind: 'cm' },
+    ],
+    5: [
+      { id: 'CM5.1', name: 'Sustainment checkpoint logged', kind: 'cm' },
+      { id: 'CM5.2', name: 'Score Awareness — Warehouse project', kind: 'cm' },
+    ],
+    7: [
+      { id: 'CM7.1', name: 'Risk mitigation + justified status', kind: 'cm' },
+      { id: 'CM7.2', name: 'Divergence detection', kind: 'cm' },
+      { id: 'CM7.3', name: 'Desire diagnosis & coaching', kind: 'cm' },
+    ],
   },
-  4: { 4: [{ id: 'CM4.1', kind: 'cm' }], 6: [{ id: 'CM6.1–6.2', kind: 'cm' }] },
+  4: {
+    4: [{ id: 'CM4.1', name: 'Manager readiness', kind: 'cm' }],
+    6: [
+      { id: 'CM6.1', name: 'Scoped resistance signal (People Mgr)', kind: 'cm' },
+      { id: 'CM6.2', name: 'Stakeholder group — Tangier project', kind: 'cm' },
+    ],
+  },
 }
 
 const LABEL_W = 190
@@ -145,9 +199,10 @@ svg.appendChild(el('circle', { cx: endX, cy: pmoY, r: 13, fill: BRAND, stroke: B
 svg.appendChild(el('line', { x1: LABEL_W + PHASES.length * COL_W - 3 + 13, x2: endX - 13, y1: pmoY, y2: pmoY, stroke: BRAND, 'stroke-width': 1.5, 'marker-end': 'url(#arrow)' }))
 svg.appendChild(multilineText(endX, pmoY + 30, ['CM record/audit-', 'trail complete'], { 'font-size': 8.5, fill: '#666666', lineHeight: 11 }))
 
-// ---- Task boxes ----
+// ---- Task boxes — one line per task, showing its exact ID and name ----
 const BOX_W = COL_W - 40
-const BOX_H = 26
+const LINE_H = 13
+const PAD_Y = 6
 function taskColor(kind) {
   return kind === 'pm' ? SAND : TEAL
 }
@@ -157,12 +212,16 @@ Object.entries(TASKS).forEach(([laneIdx, byPhase]) => {
   Object.entries(byPhase).forEach(([phaseIdx, tasks]) => {
     const pi = Number(phaseIdx)
     const colX = LABEL_W + pi * COL_W
-    tasks.forEach((task, ti) => {
-      if (task.kind === 'start' || task.kind === 'end') return
-      const bx = colX + 20 + ti * (BOX_W + 8)
-      const by = laneY + LANE_H / 2 - BOX_H / 2
-      svg.appendChild(el('rect', { x: bx, y: by, width: BOX_W, height: BOX_H, rx: 5, fill: '#ffffff', stroke: taskColor(task.kind), 'stroke-width': 2 }))
-      svg.appendChild(el('text', { x: bx + BOX_W / 2, y: by + BOX_H / 2 + 4, 'text-anchor': 'middle', 'font-size': 10.5, 'font-weight': 'bold', fill: taskColor(task.kind) }, task.id))
+    const realTasks = tasks.filter((t) => t.kind === 'pm' || t.kind === 'cm')
+    if (realTasks.length === 0) return
+    const boxH = realTasks.length * LINE_H + PAD_Y * 2
+    const bx = colX + 20
+    const by = laneY + LANE_H / 2 - boxH / 2
+    const color = taskColor(realTasks[0].kind)
+    svg.appendChild(el('rect', { x: bx, y: by, width: BOX_W, height: boxH, rx: 5, fill: '#ffffff', stroke: color, 'stroke-width': 2 }))
+    realTasks.forEach((task, ti) => {
+      const ty = by + PAD_Y + LINE_H * ti + LINE_H - 3
+      svg.appendChild(el('text', { x: bx + 8, y: ty, 'text-anchor': 'start', 'font-size': 9.5, fill: color }, `${task.id}  ${task.name}`))
     })
   })
 })

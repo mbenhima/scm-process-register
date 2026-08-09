@@ -19,15 +19,18 @@ const GREY = '#8a9490'
 
 function wk(m, w) { return (m - 1) * 4 + w }
 
+// nameLines is pre-wrapped by hand so it fits each phase's own bar width
+// (as narrow as ~1 month for Phases 0/1/6/7) without relying on SVG text
+// auto-wrap, which doesn't exist.
 const PHASES = [
-  { id: 'Phase 0', start: wk(1, 1), end: wk(1, 4) },
-  { id: 'Phase 1', start: wk(1, 4), end: wk(2, 3) },
-  { id: 'Phase 2', start: wk(2, 4), end: wk(7, 2) },
-  { id: 'Phase 3', start: wk(7, 3), end: wk(8, 3) },
-  { id: 'Phase 4', start: wk(8, 4), end: wk(9, 4) },
-  { id: 'Phase 5', start: wk(10, 1), end: wk(12, 4) },
-  { id: 'Phase 6', start: wk(13, 1), end: wk(13, 4) },
-  { id: 'Phase 7', start: wk(14, 1), end: wk(14, 4) },
+  { id: 'Phase 0', nameLines: ['Set Up Your', 'Multi-Tenant', 'Structure'], start: wk(1, 1), end: wk(1, 4) },
+  { id: 'Phase 1', nameLines: ['Initiate &', 'Diagnose'], start: wk(1, 4), end: wk(2, 3) },
+  { id: 'Phase 2', nameLines: ['Plan & Prepare'], start: wk(2, 4), end: wk(7, 2) },
+  { id: 'Phase 3', nameLines: ['Mobilize &', 'Execute'], start: wk(7, 3), end: wk(8, 3) },
+  { id: 'Phase 4', nameLines: ['Reinforce &', 'Adopt'], start: wk(8, 4), end: wk(9, 4) },
+  { id: 'Phase 5', nameLines: ['Sustain, Analyze & Benchmark'], start: wk(10, 1), end: wk(12, 4) },
+  { id: 'Phase 6', nameLines: ['Governance,', 'Multi-Tenancy,', 'RBAC & Language'], start: wk(13, 1), end: wk(13, 4) },
+  { id: 'Phase 7', nameLines: ['Justification,', 'AI Diagnosis &', 'LLM Connection'], start: wk(14, 1), end: wk(14, 4) },
 ]
 
 const FRAMEWORK_ROWS = [
@@ -114,7 +117,7 @@ const ROW_H = 24
 const FW_ROW_H = 30
 const ADKAR_ROW_H = 34
 const HEADER_H = 118
-const PHASE_BAND_H = 34
+const PHASE_BAND_H = 50
 
 function xForWeek(w) { return LABEL_W + (w - 1) * WEEK_W }
 function monthOf(w) { return Math.ceil(w / 4) }
@@ -167,13 +170,17 @@ svg.appendChild(el('text', { x: 6, y: y + 16, 'font-size': 10, 'font-weight': 'b
 // go-live marker (drawn last, on top, positioned near the title so it never collides with week ticks)
 const goLiveX = xForWeek(GO_LIVE_WEEK) + WEEK_W / 2
 
-// phase band
+// phase band — phase ID (bold) plus its full name, wrapped to fit even the
+// narrowest (1-month) phase bars
 y += 28
 PHASES.forEach((p, i) => {
   const x = xForWeek(p.start)
   const w = xForWeek(p.end) + WEEK_W - x - 2
   svg.appendChild(el('rect', { x, y, width: w, height: PHASE_BAND_H - 2, fill: i % 2 === 0 ? BRAND : BRAND_MID }))
-  svg.appendChild(el('text', { x: x + w / 2, y: y + PHASE_BAND_H / 2 + 4, 'text-anchor': 'middle', 'font-size': 10.5, 'font-weight': 'bold', fill: '#ffffff' }, p.id))
+  svg.appendChild(el('text', { x: x + w / 2, y: y + 13, 'text-anchor': 'middle', 'font-size': 10.5, 'font-weight': 'bold', fill: '#ffffff' }, p.id))
+  p.nameLines.forEach((line, li) => {
+    svg.appendChild(el('text', { x: x + w / 2, y: y + 25 + li * 10, 'text-anchor': 'middle', 'font-size': 7.5, fill: '#EAF3F1' }, line))
+  })
 })
 
 // framework rows
