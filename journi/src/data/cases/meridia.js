@@ -41,6 +41,16 @@ export const mainProjects = [
     budgetBand: '€1.1M band',
     executiveSponsor: 'Chief Medical Officer, Meridia Health Network',
   },
+  {
+    id: 'mp-meridia-comp',
+    orgId: 'org-meridia',
+    name: 'Cross-Border Patient Data Protection Compliance',
+    type: 'compliance',
+    scope: 'Bring patient-data handling into compliance with a new cross-border health-data protection regulation ahead of its enforcement date, including consent workflows, data-residency controls and breach-notification procedures.',
+    durationMonths: 8,
+    budgetBand: '€420K band',
+    executiveSponsor: 'Chief Compliance Officer, Meridia Health Network',
+  },
 ]
 
 export const cmProjects = [
@@ -285,6 +295,77 @@ export const cmProjects = [
       { offsetDays: -30, label: '30-day lead facility checkpoint — 58% adoption', type: 'assessment' },
       { offsetDays: 0, label: 'Today — rollout to Facilities 2 & 3 underway', type: 'assessment' },
       { offsetDays: 90, label: 'JCI accreditation audit', type: 'milestone' },
+    ],
+  },
+  {
+    id: 'cm-meridia-comp',
+    orgId: 'org-meridia',
+    mainProjectIds: ['mp-meridia-comp'],
+    name: 'Data Protection Compliance Adoption Program',
+    changeManager: 'Change Manager, Data Protection Compliance Program',
+    changeType: 'process',
+    businessDriver: 'A new cross-border health-data protection regulation takes effect in 8 months; clinical and billing staff must adopt new consent, data-residency and breach-notification procedures before the enforcement date.',
+    targetPopulation: '~450 clinical and billing staff across all 3 facilities who handle patient data subject to the new regulation',
+    successCriteria: 'New consent workflow adopted at 100% of patient touchpoints by enforcement date; zero reportable compliance gaps at first regulator audit.',
+    lewinPhase: 'unfreeze',
+    bridgesPhase: 'ending',
+    bridgesNote: 'Ending phase — the prior, informal consent process is being formally retired ahead of the enforcement date',
+    sentimentSnapshot: 'Awareness high due to a fixed regulatory deadline; Desire mixed — some staff see it as "more paperwork" rather than patient protection',
+    sponsor: {
+      name: 'Chief Compliance Officer, Meridia Health Network',
+      visibility: 'strong',
+      visibilityNote: 'CCO sponsoring directly given the fixed regulatory deadline; Legal counsel co-chairs the steering group',
+      members: [
+        { name: 'Chief Compliance Officer', role: 'Executive Sponsor', influence: 5, engagement: 5 },
+        { name: 'General Counsel', role: 'Coalition Member', influence: 4, engagement: 4 },
+        { name: 'Chief Medical Officer', role: 'Coalition Member', influence: 4, engagement: 3 },
+      ],
+      actions: [
+        { action: 'CCO briefing to all department heads on the regulatory deadline', phase: 'Prepare', done: true },
+        { action: 'Facility-by-facility consent-workflow walkthrough', phase: 'Manage', done: false },
+      ],
+    },
+    aiUseCases: [],
+    adkar: {
+      awareness: { score: 4, note: 'Fixed regulatory deadline made this highly visible; department heads briefed directly by CCO' },
+      desire: { score: 2, note: 'Some staff frame this as added administrative burden rather than a patient-protection improvement' },
+      knowledge: { score: 2, note: 'Regulation requirements mapped to workflow changes; facility-level training not yet started' },
+      ability: { score: 1, note: 'New consent workflow not yet piloted at any facility' },
+      reinforcement: { score: 1, note: 'Pre-pilot' },
+    },
+    risks: [
+      { category: 'capacity', description: 'Fixed regulatory enforcement date leaves no schedule slack if facility rollout slips', likelihood: 3, impact: 5, owner: 'Chief Compliance Officer', status: 'open' },
+      { category: 'adoption', description: 'Staff may treat the new consent workflow as a check-box exercise rather than substantively changing behavior', likelihood: 3, impact: 4, owner: 'Change Manager, Data Protection Compliance Program', status: 'open' },
+    ],
+    stakeholderGroups: [
+      { name: 'Front-desk & Registration', headcount: 90, impact: { process: 5, tech: 3, role: 2, location: 1, identity: 1 }, influence: 2 },
+      { name: 'Clinical Staff (all 3 facilities)', headcount: 280, impact: { process: 4, tech: 2, role: 2, location: 2, identity: 1 }, influence: 2 },
+      { name: 'Billing & Claims', headcount: 80, impact: { process: 4, tech: 3, role: 2, location: 1, identity: 1 }, influence: 2 },
+    ],
+    communications: [
+      { message: 'What the new regulation requires and why it protects patients, not just the organization', audience: 'All target population', channel: 'Department head briefing', sender: 'Chief Compliance Officer', timing: 'Prepare phase — completed', adkarBlock: 'awareness', status: 'sent' },
+      { message: 'Walkthrough of the new consent workflow at intake', audience: 'Front-desk & Registration', channel: 'Workshop', sender: 'General Counsel', timing: 'M+2', adkarBlock: 'knowledge', status: 'scheduled' },
+    ],
+    trainings: [],
+    resistanceLog: [
+      { type: 'will', source: 'Clinical Staff', rootCause: 'Perception that consent documentation is administrative burden disconnected from patient care', severity: 3, mitigation: 'Reframe training around real anonymized cases where consent gaps caused patient harm', owner: 'Chief Medical Officer', dueDate: '+45d', status: 'open', anonymous: false },
+    ],
+    coachingNotes: [],
+    sustainment: {
+      checkpoints: [
+        { label: '30-day', daysAfterGoLive: 30, adoptionRate: null, regressionRisk: null, status: 'not_due' },
+        { label: '60-day', daysAfterGoLive: 60, adoptionRate: null, regressionRisk: null, status: 'not_due' },
+        { label: '90-day', daysAfterGoLive: 90, adoptionRate: null, regressionRisk: null, status: 'not_due' },
+      ],
+      quickWins: [],
+      signoff: false,
+      lessonsLearned: [],
+    },
+    journeyEvents: [
+      { offsetDays: -30, label: 'Regulation and enforcement deadline communicated to department heads', type: 'communication' },
+      { offsetDays: 0, label: 'Today — baseline assessment', type: 'assessment' },
+      { offsetDays: 45, label: 'Consent-workflow pilot at Facility 1', type: 'milestone' },
+      { offsetDays: 240, label: 'Regulatory enforcement date', type: 'milestone' },
     ],
   },
 ]

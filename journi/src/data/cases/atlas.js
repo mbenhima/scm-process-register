@@ -41,6 +41,16 @@ export const mainProjects = [
     budgetBand: '€620K band',
     executiveSponsor: 'VP Quality, Atlas Industrial Group',
   },
+  {
+    id: 'mp-atlas-cult',
+    orgId: 'org-atlas',
+    name: 'Safety-First Leadership Culture Program',
+    type: 'cultural',
+    scope: 'Shift the organization from compliance-driven to leadership-driven safety behavior across all three plants, led by CEO-level sponsorship rather than a single underlying system rollout.',
+    durationMonths: 12,
+    budgetBand: '€310K band',
+    executiveSponsor: 'CEO, Atlas Industrial Group',
+  },
 ]
 
 export const cmProjects = [
@@ -367,11 +377,11 @@ export const cmProjects = [
   {
     id: 'cm-atlas-safety-culture',
     orgId: 'org-atlas',
-    mainProjectIds: [],
+    mainProjectIds: ['mp-atlas-cult'],
     name: 'Atlas Safety-First Leadership Culture Program',
     changeManager: 'Change Manager, Atlas Safety Culture Program',
     changeType: 'cultural',
-    businessDriver: 'Shift from compliance-driven to leadership-driven safety behavior across all three plants after a rise in near-miss incidents — a standalone culture initiative with no single underlying system project behind it.',
+    businessDriver: 'Shift from compliance-driven to leadership-driven safety behavior across all three plants after a rise in near-miss incidents — a Cultural / Values Transformation with no underlying system rollout behind it.',
     targetPopulation: '~3,100 employees across all 3 plants and the Shared Services Center (entire Atlas workforce)',
     successCriteria: 'Recordable incident rate reduced 40% year-on-year; 100% of frontline supervisors certified in safety-leadership coaching; plant-director safety-walk participation >90% monthly.',
     lewinPhase: 'change',
@@ -443,7 +453,7 @@ export const cmProjects = [
       ],
       signoff: false,
       lessonsLearned: [
-        { text: 'A standalone culture initiative with no linked Main Project still needs the same milestone discipline as a system rollout — the CEO safety-walk cadence became the de facto "go-live" heartbeat.' },
+        { text: 'A Cultural / Values Transformation with no underlying system to cut over still needs the same milestone discipline as a system rollout — the CEO safety-walk cadence became the de facto "go-live" heartbeat.' },
       ],
     },
     journeyEvents: [
