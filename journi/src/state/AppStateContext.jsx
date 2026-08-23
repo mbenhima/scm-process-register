@@ -3,6 +3,7 @@ import { buildSeed } from '../data/seed.js'
 import macroProcessCatalog from '../data/macroProcesses.js'
 import e2eProcessCatalog from '../data/e2eProcesses.js'
 import phaseTemplateCatalog from '../data/phaseTemplates.js'
+import defaultRacsiGrid from '../data/racsi.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
 import { addDays } from '../utils/wbs.js'
@@ -43,6 +44,7 @@ function loadInitialState() {
         if (!parsed.macroProcessCatalog) parsed.macroProcessCatalog = macroProcessCatalog
         if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
         if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
+        if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
         return parsed
       }
     }
@@ -350,6 +352,16 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  const updateRacsiCell = useCallback((macroProcessId, role, value) => {
+    setData((prev) => ({
+      ...prev,
+      racsiGrid: {
+        ...prev.racsiGrid,
+        [macroProcessId]: { ...prev.racsiGrid[macroProcessId], [role]: value },
+      },
+    }))
+  }, [])
+
   // ---------- LLM provider connection (browser-local, no backend) ----------
   const setLlmConfig = useCallback((patch) => {
     setLlmConfigState((prev) => ({ ...prev, ...patch, connected: false, lastError: null }))
@@ -564,6 +576,7 @@ export function AppStateProvider({ children }) {
       toggleSponsorAction,
       addSponsorAction,
       updateRolePermission,
+      updateRacsiCell,
       setRequireJustification,
       llmConfig,
       setLlmConfig,
@@ -608,6 +621,7 @@ export function AppStateProvider({ children }) {
       toggleSponsorAction,
       addSponsorAction,
       updateRolePermission,
+      updateRacsiCell,
       setRequireJustification,
       llmConfig,
       setLlmConfig,

@@ -46,8 +46,8 @@ const e2eProcesses = [
     orderedMacroProcesses: ['MP-03', 'MP-05', 'MP-07', 'MP-08'],
     trigger: 'New awareness (MP-03) or knowledge/ability (MP-05) signal recorded',
     terminalState: 'Composite Readiness Index (MP-07) recalculated and evaluated by the Divergence Pattern Detector (MP-08)',
-    relatedModules: ['M9', 'M10', 'M6', 'M15', 'M14'],
-    note: 'Makes explicit a dependency that already exists in journi’s data model (ADKAR + Analytics feeding the Risk Register); no new data-entry UI required, only traceability.',
+    relatedModules: ['M9', 'M10', 'M6', 'M7', 'M14'],
+    note: 'Makes explicit a dependency that already exists in journi’s data model (Communications + Training feeding ADKAR, ADKAR feeding the Risk Register); no new data-entry UI required, only traceability.',
   },
   {
     id: 'E2E-06',

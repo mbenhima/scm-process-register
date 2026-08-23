@@ -12,7 +12,7 @@ const macroProcesses = [
     id: 'MP-02',
     name: 'Sponsorship & Governance Management',
     description: 'Builds and tracks the sponsor coalition, escalation actions, and governance cadence that keep executive backing visible and active.',
-    primaryModules: ['M8'],
+    primaryModules: ['M4', 'M8'],
   },
   {
     id: 'MP-03',
@@ -36,31 +36,31 @@ const macroProcesses = [
     id: 'MP-06',
     name: 'Champion Network Management',
     description: 'Manages the change-champion network — floor-level advocates who surface early signals into the Sponsor Coalition and Resistance Log.',
-    primaryModules: ['M8', 'M11'],
+    primaryModules: ['M8'],
   },
   {
     id: 'MP-07',
     name: 'Readiness Diagnostics & Signal Capture',
     description: 'Aggregates ADKAR scores, sentiment, and other signals into the Composite Readiness Index used to judge go/no-go readiness.',
-    primaryModules: ['M6', 'M15'],
+    primaryModules: ['M6', 'M7'],
   },
   {
     id: 'MP-08',
     name: 'Divergence & Risk Detection',
     description: 'Detects divergence patterns between plan and reality (schedule slips, adoption risk, saturation) and logs them to the Risk Register.',
-    primaryModules: ['M14'],
+    primaryModules: ['M7', 'M14'],
   },
   {
     id: 'MP-09',
     name: 'Hypercare & Floor Coaching Support',
     description: 'Provides manager-led floor coaching and hypercare support immediately after go-live, while adoption is still fragile.',
-    primaryModules: ['M12'],
+    primaryModules: ['M12', 'M13'],
   },
   {
     id: 'MP-10',
     name: 'Reinforcement & Sustainment Management',
     description: 'Locks in the change through checkpoints, quick wins, and lessons learned so gains outlast the project close-out.',
-    primaryModules: ['M13'],
+    primaryModules: ['M4', 'M13'],
   },
 ]
 
