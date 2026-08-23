@@ -80,6 +80,6 @@ export const RISK_CATEGORIES = ['adoption', 'sponsorship', 'capacity', 'saturati
 export const RESISTANCE_TYPES = ['role', 'skill', 'will', 'systemic']
 
 export const SECTORS = ['manufacturing', 'logistics', 'health']
-export const ARCHETYPES = ['erp', 'automation', 'qms']
+export const ARCHETYPES = ['erp', 'automation', 'qms', 'bpr', 'cultural', 'operating_model', 'compliance', 'training_skills']
 
 export const VISIBILITY_LEVELS = ['weak', 'moderate', 'strong']

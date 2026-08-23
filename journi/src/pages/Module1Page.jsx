@@ -336,6 +336,11 @@ export default function Module1Page() {
             <option value="erp">{t('archetype_erp')}</option>
             <option value="automation">{t('archetype_automation')}</option>
             <option value="qms">{t('archetype_qms')}</option>
+            <option value="bpr">{t('archetype_bpr')}</option>
+            <option value="cultural">{t('archetype_cultural')}</option>
+            <option value="operating_model">{t('archetype_operating_model')}</option>
+            <option value="compliance">{t('archetype_compliance')}</option>
+            <option value="training_skills">{t('archetype_training_skills')}</option>
             <option value="restructuring">Restructuring</option>
             <option value="ma">M&A</option>
           </select>

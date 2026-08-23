@@ -296,6 +296,11 @@ const dict = {
   archetype_erp: { en: 'ERP Implementation', fr: 'Mise en œuvre ERP', ar: 'تنفيذ نظام تخطيط الموارد' },
   archetype_automation: { en: 'Process Automation', fr: 'Automatisation des processus', ar: 'أتمتة العمليات' },
   archetype_qms: { en: 'QMS Implementation', fr: 'Mise en œuvre SMQ', ar: 'تنفيذ نظام إدارة الجودة' },
+  archetype_bpr: { en: 'Business Process Reengineering', fr: 'Réingénierie des processus métier', ar: 'إعادة هندسة العمليات' },
+  archetype_cultural: { en: 'Cultural / Values Transformation', fr: 'Transformation culturelle / des valeurs', ar: 'التحول الثقافي / القيمي' },
+  archetype_operating_model: { en: 'Operating Model Redesign', fr: 'Refonte du modèle opérationnel', ar: 'إعادة تصميم نموذج التشغيل' },
+  archetype_compliance: { en: 'Compliance-Driven Change', fr: 'Changement réglementaire / de conformité', ar: 'التغيير المدفوع بالامتثال' },
+  archetype_training_skills: { en: 'Training & Skills Development', fr: 'Formation et développement des compétences', ar: 'التدريب وتطوير المهارات' },
 }
 
 export default dict
