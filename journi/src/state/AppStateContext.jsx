@@ -45,6 +45,11 @@ function loadInitialState() {
         if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
         if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
         if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
+        parsed.cmProjects = parsed.cmProjects.map((p) => ({
+          ...p,
+          phaseGates: p.phaseGates || [],
+          phaseChecklists: p.phaseChecklists || [],
+        }))
         return parsed
       }
     }
@@ -463,6 +468,8 @@ export function AppStateProvider({ children }) {
         coachingNotes: [],
         journeyEvents: [],
         wbsTasks: [],
+        phaseGates: [],
+        phaseChecklists: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [

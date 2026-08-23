@@ -54,6 +54,13 @@ export function pctForDate(dateISO, range) {
   return Math.min(100, Math.max(0, (pos / total) * 100))
 }
 
+/** Module 18 — Phase Checklist (D32c) completion %, for a given phase, across both PM and CM tracks (or one track if given). */
+export function phaseChecklistCompletion(phaseChecklists, phase, track) {
+  const items = (phaseChecklists || []).filter((c) => c.phase === phase && (!track || c.track === track))
+  if (items.length === 0) return null
+  return Math.round((items.filter((c) => c.done).length / items.length) * 100)
+}
+
 export function monthTicks(range) {
   const ticks = []
   const cursor = new Date(range.start + 'T00:00:00')

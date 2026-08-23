@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import RequireProject from '../components/RequireProject.jsx'
@@ -9,11 +9,15 @@ import EmptyState from '../components/EmptyState.jsx'
 import StatCard from '../components/StatCard.jsx'
 import GanttChart from '../components/GanttChart.jsx'
 import { canWrite } from '../utils/rbac.js'
-import { WBS_TRACKS, WBS_STATUSES, taskGapDays, gapTone, todayISO } from '../utils/wbs.js'
+import { WBS_TRACKS, WBS_STATUSES, taskGapDays, gapTone, todayISO, phaseChecklistCompletion } from '../utils/wbs.js'
+import { readinessIndex, hasDivergence, stalledBlocks } from '../utils/compute.js'
 
 const TRACK_TITLE = { pm: 'Project Management', cm: 'Change Management', framework: 'Framework' }
 const STATUS_TONE = { planned: 'gray', in_progress: 'amber', done: 'green', at_risk: 'red' }
 const GAP_TONE_BADGE = { green: 'green', amber: 'amber', red: 'red', gray: 'gray' }
+const GATE_DECISIONS = ['go', 'go_conditions', 'no_go']
+const GATE_DECISION_TONE = { go: 'green', go_conditions: 'amber', no_go: 'red' }
+const GATE_DECISION_LABEL = { go: 'Go', go_conditions: 'Go with Conditions', no_go: 'No-Go' }
 
 const BLANK_FORM = {
   track: 'pm',
@@ -199,6 +203,332 @@ function TemplateModal({ open, onClose, project, data, loadPhaseTemplate }) {
   )
 }
 
+const BLANK_CHECKLIST_ITEM = { phase: '', track: 'pm', item: '', done: false }
+
+function ChecklistSection({ project, canEdit }) {
+  const { addSubItem, updateSubItem, removeSubItem } = useAppState()
+  const [form, setForm] = useState(BLANK_CHECKLIST_ITEM)
+  const items = project.phaseChecklists || []
+  const phaseOptions = [...new Set((project.wbsTasks || []).filter((t) => t.track === 'pm').map((t) => t.phase))]
+
+  function submit() {
+    if (!form.phase.trim() || !form.item.trim()) return
+    addSubItem(project.id, 'phaseChecklists', form)
+    setForm({ ...BLANK_CHECKLIST_ITEM, phase: form.phase, track: form.track })
+  }
+
+  return (
+    <div className="card overflow-x-auto">
+      <div className="px-4 py-3 border-b border-brand-50 font-semibold text-sm text-brand-950">
+        Phase Checklist <span className="font-normal text-ink/40 text-xs">(PM-track + CM-track, distinct from WBS tasks — feeds Phase Gate completion %)</span>
+      </div>
+      {items.length === 0 ? (
+        <div className="p-4">
+          <EmptyState text="No checklist items logged yet." />
+        </div>
+      ) : (
+        <table className="w-full text-sm">
+          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+            <tr>
+              <th className="text-start px-3 py-2">Phase</th>
+              <th className="text-start px-3 py-2">Track</th>
+              <th className="text-start px-3 py-2">Item</th>
+              <th className="text-start px-3 py-2">Done</th>
+              {canEdit && <th className="px-2 py-2" />}
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((c) => (
+              <tr key={c.id} className="border-t border-brand-50">
+                <td className="px-3 py-2 text-ink/60 whitespace-nowrap">{c.phase}</td>
+                <td className="px-3 py-2">
+                  <Badge tone="gray">{c.track === 'pm' ? 'PM' : 'CM'}</Badge>
+                </td>
+                <td className="px-3 py-2 text-brand-950">{c.item}</td>
+                <td className="px-3 py-2">
+                  <input
+                    type="checkbox"
+                    checked={!!c.done}
+                    disabled={!canEdit}
+                    onChange={(e) => updateSubItem(project.id, 'phaseChecklists', c.id, { done: e.target.checked })}
+                  />
+                </td>
+                {canEdit && (
+                  <td className="px-2 py-2 whitespace-nowrap">
+                    <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'phaseChecklists', c.id)}>
+                      Delete
+                    </button>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {canEdit && (
+        <div className="p-3 border-t border-brand-50 grid sm:grid-cols-[1fr_auto_2fr_auto] gap-2">
+          <input
+            className="input"
+            list="m18-phase-options"
+            placeholder="Phase (e.g. P1 Intake & Diagnosis)"
+            value={form.phase}
+            onChange={(e) => setForm({ ...form, phase: e.target.value })}
+          />
+          <datalist id="m18-phase-options">
+            {phaseOptions.map((p) => (
+              <option key={p} value={p} />
+            ))}
+          </datalist>
+          <select className="input" value={form.track} onChange={(e) => setForm({ ...form, track: e.target.value })}>
+            <option value="pm">PM-track</option>
+            <option value="cm">CM-track</option>
+          </select>
+          <input className="input" placeholder="Checklist item" value={form.item} onChange={(e) => setForm({ ...form, item: e.target.value })} />
+          <button className="btn-primary text-sm" onClick={submit}>
+            + Add
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+const BLANK_GATE_FORM = {
+  phase: '',
+  date: todayISO(),
+  pmRecommendation: 'go',
+  pmNotes: '',
+  cmRecommendation: 'go',
+  cmNotes: '',
+  readinessIndexSnapshot: 0,
+  checklistCompletionPct: 0,
+  openFlags: '',
+  jointDecision: 'go',
+  conditions: '',
+}
+
+function PhaseGateModal({ open, onClose, project }) {
+  const { addSubItem } = useAppState()
+  const [form, setForm] = useState(BLANK_GATE_FORM)
+  const phaseOptions = [...new Set((project.wbsTasks || []).filter((t) => t.track === 'pm').map((t) => t.phase))]
+
+  useEffect(() => {
+    if (!open) return
+    const flags = []
+    if (hasDivergence(project)) flags.push('Divergence pattern: strong Knowledge/Ability but still in Ending (Bridges)')
+    const stalled = stalledBlocks(project)
+    if (stalled.length) flags.push(`Stalled ADKAR block(s): ${stalled.join(', ')}`)
+    setForm({
+      ...BLANK_GATE_FORM,
+      readinessIndexSnapshot: readinessIndex(project),
+      checklistCompletionPct: phaseChecklistCompletion(project.phaseChecklists, phaseOptions[0] || '') ?? 0,
+      openFlags: flags.join('; '),
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
+
+  function submit() {
+    if (!form.phase.trim()) return
+    addSubItem(project.id, 'phaseGates', {
+      ...form,
+      accountable: 'PM',
+      pmInput: { recommendation: form.pmRecommendation, notes: form.pmNotes },
+      cmInput: {
+        recommendation: form.cmRecommendation,
+        notes: form.cmNotes,
+        readinessIndexSnapshot: form.readinessIndexSnapshot,
+        checklistCompletionPct: form.checklistCompletionPct,
+        openFlags: form.openFlags,
+      },
+    })
+    onClose()
+  }
+
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="+ Add Phase Gate"
+      footer={
+        <>
+          <button className="btn-ghost" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="btn-primary" onClick={submit}>
+            Record joint decision
+          </button>
+        </>
+      }
+    >
+      <div className="space-y-4">
+        <p className="text-[11px] text-ink/40">
+          E2E-06 · PM ↔ CM Governance Bridge (D32d/D32e): triggered by a Main Project schedule slip or a phase-gate checkpoint. PM and CM
+          record their inputs independently below; the fused Joint Decision has exactly one Accountable role — the Project Manager.
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="label">Phase</label>
+            <input
+              className="input"
+              list="m18-gate-phase-options"
+              value={form.phase}
+              onChange={(e) => setForm({ ...form, phase: e.target.value })}
+            />
+            <datalist id="m18-gate-phase-options">
+              {phaseOptions.map((p) => (
+                <option key={p} value={p} />
+              ))}
+            </datalist>
+          </div>
+          <div>
+            <label className="label">Date</label>
+            <input type="date" className="input" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div className="border border-brand-100 rounded-lg p-3 space-y-2">
+            <div className="text-xs font-semibold text-brand-950">PM input</div>
+            <select className="input" value={form.pmRecommendation} onChange={(e) => setForm({ ...form, pmRecommendation: e.target.value })}>
+              {GATE_DECISIONS.map((d) => (
+                <option key={d} value={d}>
+                  {GATE_DECISION_LABEL[d]}
+                </option>
+              ))}
+            </select>
+            <textarea className="input" rows={2} placeholder="Schedule / delivery notes" value={form.pmNotes} onChange={(e) => setForm({ ...form, pmNotes: e.target.value })} />
+          </div>
+          <div className="border border-brand-100 rounded-lg p-3 space-y-2">
+            <div className="text-xs font-semibold text-brand-950">CM input</div>
+            <select className="input" value={form.cmRecommendation} onChange={(e) => setForm({ ...form, cmRecommendation: e.target.value })}>
+              {GATE_DECISIONS.map((d) => (
+                <option key={d} value={d}>
+                  {GATE_DECISION_LABEL[d]}
+                </option>
+              ))}
+            </select>
+            <textarea className="input" rows={2} placeholder="Adoption-risk notes" value={form.cmNotes} onChange={(e) => setForm({ ...form, cmNotes: e.target.value })} />
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="label">Readiness Index</label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  className="input"
+                  value={form.readinessIndexSnapshot}
+                  onChange={(e) => setForm({ ...form, readinessIndexSnapshot: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="label">Checklist %</label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  className="input"
+                  value={form.checklistCompletionPct}
+                  onChange={(e) => setForm({ ...form, checklistCompletionPct: Number(e.target.value) })}
+                />
+              </div>
+            </div>
+            <input className="input text-xs" placeholder="Open flags" value={form.openFlags} onChange={(e) => setForm({ ...form, openFlags: e.target.value })} />
+          </div>
+        </div>
+
+        <div>
+          <label className="label">Joint Decision (Accountable: PM)</label>
+          <select className="input" value={form.jointDecision} onChange={(e) => setForm({ ...form, jointDecision: e.target.value })}>
+            {GATE_DECISIONS.map((d) => (
+              <option key={d} value={d}>
+                {GATE_DECISION_LABEL[d]}
+              </option>
+            ))}
+          </select>
+        </div>
+        {form.jointDecision === 'go_conditions' && (
+          <div>
+            <label className="label">Conditions</label>
+            <textarea className="input" rows={2} value={form.conditions} onChange={(e) => setForm({ ...form, conditions: e.target.value })} />
+          </div>
+        )}
+      </div>
+    </Modal>
+  )
+}
+
+function PhaseGateSection({ project, canEdit }) {
+  const { removeSubItem } = useAppState()
+  const [modal, setModal] = useState(false)
+  const gates = project.phaseGates || []
+
+  return (
+    <div className="card overflow-x-auto">
+      <div className="px-4 py-3 border-b border-brand-50 flex items-center justify-between flex-wrap gap-2">
+        <div className="font-semibold text-sm text-brand-950">
+          Phase Gates <span className="font-normal text-ink/40 text-xs">(Joint Decision Record — PM ↔ CM Governance Bridge, E2E-06)</span>
+        </div>
+        {canEdit && (
+          <button className="btn-primary text-sm" onClick={() => setModal(true)}>
+            + Add Phase Gate
+          </button>
+        )}
+      </div>
+      {gates.length === 0 ? (
+        <div className="p-4">
+          <EmptyState text="No phase gate decisions recorded yet." />
+        </div>
+      ) : (
+        <table className="w-full text-sm">
+          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+            <tr>
+              <th className="text-start px-3 py-2">Phase</th>
+              <th className="text-start px-3 py-2">Date</th>
+              <th className="text-start px-3 py-2">PM</th>
+              <th className="text-start px-3 py-2">CM</th>
+              <th className="text-start px-3 py-2">Readiness / Checklist</th>
+              <th className="text-start px-3 py-2">Joint Decision</th>
+              <th className="text-start px-3 py-2">Accountable</th>
+              {canEdit && <th className="px-2 py-2" />}
+            </tr>
+          </thead>
+          <tbody>
+            {gates.map((g) => (
+              <tr key={g.id} className="border-t border-brand-50 align-top">
+                <td className="px-3 py-2 text-ink/60 whitespace-nowrap">{g.phase}</td>
+                <td className="px-3 py-2 text-ink/60 whitespace-nowrap text-xs">{g.date}</td>
+                <td className="px-3 py-2">
+                  <Badge tone={GATE_DECISION_TONE[g.pmInput?.recommendation]}>{GATE_DECISION_LABEL[g.pmInput?.recommendation]}</Badge>
+                </td>
+                <td className="px-3 py-2">
+                  <Badge tone={GATE_DECISION_TONE[g.cmInput?.recommendation]}>{GATE_DECISION_LABEL[g.cmInput?.recommendation]}</Badge>
+                </td>
+                <td className="px-3 py-2 text-xs text-ink/60 whitespace-nowrap">
+                  {g.cmInput?.readinessIndexSnapshot ?? '—'} / {g.cmInput?.checklistCompletionPct ?? '—'}%
+                  {g.cmInput?.openFlags && <div className="text-red-600 mt-0.5">{g.cmInput.openFlags}</div>}
+                </td>
+                <td className="px-3 py-2">
+                  <Badge tone={GATE_DECISION_TONE[g.jointDecision]}>{GATE_DECISION_LABEL[g.jointDecision]}</Badge>
+                  {g.conditions && <div className="text-xs text-ink/60 mt-1 max-w-xs">{g.conditions}</div>}
+                </td>
+                <td className="px-3 py-2 text-ink/60 whitespace-nowrap">{g.accountable}</td>
+                {canEdit && (
+                  <td className="px-2 py-2 whitespace-nowrap">
+                    <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'phaseGates', g.id)}>
+                      Delete
+                    </button>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <PhaseGateModal open={modal} onClose={() => setModal(false)} project={project} />
+    </div>
+  )
+}
+
 function Content({ project }) {
   const { t } = useI18n()
   const { addSubItem, updateSubItem, currentUser, data, loadPhaseTemplate } = useAppState()
@@ -260,6 +590,9 @@ function Content({ project }) {
           <TaskTable project={project} tasks={tasks.filter((t) => t.track === tr)} canEdit={canEdit} onEdit={openEdit} />
         </div>
       ))}
+
+      <ChecklistSection project={project} canEdit={canEdit} />
+      <PhaseGateSection project={project} canEdit={canEdit} />
 
       <Modal
         open={modal}

@@ -19,6 +19,8 @@ const SUB_COLLECTIONS = [
   'resistanceLog',
   'coachingNotes',
   'journeyEvents',
+  'phaseGates',
+  'phaseChecklists',
 ]
 
 function normalizeCmProject(raw) {
