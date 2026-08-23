@@ -1,5 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { buildSeed } from '../data/seed.js'
+import macroProcessCatalog from '../data/macroProcesses.js'
+import e2eProcessCatalog from '../data/e2eProcesses.js'
+import phaseTemplateCatalog from '../data/phaseTemplates.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
 import { useI18n } from '../i18n/index.jsx'
@@ -33,6 +36,12 @@ function loadInitialState() {
         // capability check silently fail closed (matrix[role]?.write === undefined).
         if (!parsed.rolePermissions) parsed.rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
         if (parsed.requireJustification === undefined) parsed.requireJustification = true
+        // A browser session persisted before CR1 (8-type E2E addendum) shipped
+        // won't have these reference catalogs — back-fill from the seed rather
+        // than let Module 19 / the phase-template picker render empty.
+        if (!parsed.macroProcessCatalog) parsed.macroProcessCatalog = macroProcessCatalog
+        if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
+        if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
         return parsed
       }
     }

@@ -1,6 +1,9 @@
 import { uid } from '../utils/id.js'
 import { generateDefaultWbs, addDays, todayISO } from '../utils/wbs.js'
 import aiUseCaseCatalog from './aiUseCases.js'
+import macroProcessCatalog from './macroProcesses.js'
+import e2eProcessCatalog from './e2eProcesses.js'
+import phaseTemplateCatalog from './phaseTemplates.js'
 import { DEFAULT_ROLE_PERMISSIONS } from './constants.js'
 import * as atlas from './cases/atlas.js'
 import * as atlasTangier from './cases/atlasTangier.js'
@@ -134,6 +137,9 @@ export function buildSeed() {
     cmProjects,
     users,
     aiUseCaseCatalog,
+    macroProcessCatalog,
+    e2eProcessCatalog,
+    phaseTemplateCatalog,
     aiOrgActivation,
     aiProjectOverride,
     aiUsageLog,
