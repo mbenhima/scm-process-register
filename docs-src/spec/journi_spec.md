@@ -39,13 +39,20 @@ hierarchy, project linkage model, access control and localization), the
 eighteen functional modules that make up the application --- including a
 governed AI Use Case Library restricted to Assistive and Augmented AI, a
 runtime-configurable Permission Matrix and justification-governance
-layer (Section 3.4--3.5), and a Work Breakdown Structure & Gantt module
+layer (Section 3.4--3.5), a Work Breakdown Structure & Gantt module
 that gives Project Management, Change Management and the framework
-milestones a single baseline-vs-actual timeline (Module 18) --- and a
-seed dataset of nine illustrative cases spanning three sectors ---
-Manufacturing, Logistics & Transportation, and Health --- and three
-common project archetypes --- ERP Implementation, Process Automation,
-and QMS Implementation.
+milestones a single baseline-vs-actual timeline together with type-specific
+Phase Templates and Phase Gate / Joint Decision Records (Module 18), and a
+Macro Process, SIPOC, RACSI & End-to-End Process Registry (Module 19)
+that makes the process backbone underneath every other module browsable
+and, for its RACSI grid, runtime-editable --- and a seed dataset of
+fourteen illustrative cases spanning three sectors --- Manufacturing,
+Logistics & Transportation, and Health --- and eight transformation
+types --- ERP Implementation, Business Process Reengineering, Business
+Process Automation, Integrated Management System (QMS), Cultural /
+Values Transformation, Operating Model Redesign, Compliance-Driven
+Change, and Training & Skills Development --- each mapped to its own
+End-to-End Process lifecycle and Phase Template (Section 4, Module 19).
 
 **2. Application Architecture**
 
@@ -356,12 +363,14 @@ police its content.
 
 **4. Core Modules**
 
-*Seventeen modules in total: three foundation/platform modules covering
+*Eighteen modules in total: three foundation/platform modules covering
 hierarchy, access and localization (detailed in Sections 2--3 above),
-thirteen change-management core modules, and one AI Use Case Library &
-Governance module. Each core module lists its purpose, key features, the
-change management framework(s) it operationalizes, and its primary
-users.*
+thirteen change-management core modules, one AI Use Case Library &
+Governance module, one cross-cutting Work Breakdown Structure & Gantt
+module (Module 18), and one Macro Process, SIPOC, RACSI & End-to-End
+Process Registry module (Module 19). Each core module lists its purpose,
+key features, the change management framework(s) it operationalizes, and
+its primary users.*
 
 **Module 1 --- Organization, Group & Project Hierarchy**
 
@@ -382,9 +391,15 @@ implementation) and the people-side initiative that manages its adoption
     stakeholder mapping, and a configured Default Language governing
     the precedence rule in Section 3.1.1
 
--   Main Project registry: project type (ERP, Process Automation, QMS,
-    Restructuring, M&A, etc.), scope, budget band, timeline, delivery
-    vendor, executive sponsor
+-   Main Project registry: project type --- one of eight transformation
+    types (ERP Implementation, Business Process Reengineering, Business
+    Process Automation, Integrated Management System/QMS, Cultural /
+    Values Transformation, Operating Model Redesign, Compliance-Driven
+    Change, Training & Skills Development), plus Restructuring and M&A
+    --- scope, budget band, timeline, delivery vendor, executive
+    sponsor. Each of the eight transformation types carries a Default
+    End-to-End Process and a matching Phase Template, browsable in
+    Module 19 and selectable from Module 18
 
 -   Change Management Project registry: every CM project can link to
     exactly one Main Project, or be created as a fully independent,
@@ -420,11 +435,12 @@ design: administrator-provisioned accounts for controlled onboarding,
 and self-service sign-up for employees who need lightweight access to
 complete surveys or view their own journey.
 
-The module is organized into three tabs: **Users** (the account list and
+The module is organized into four tabs: **Users** (the account list and
 create/edit/delete controls described above), **Permission Matrix** (the
 runtime-configurable role × capability grid described in Section 3.4),
-and **Governance Settings** (the platform-wide \"Require Justification\"
-toggle described in Section 3.5). See Section 3.2 for the full role
+**Governance Settings** (the platform-wide \"Require Justification\"
+toggle described in Section 3.5), and **License & Plan** (the platform
+license record described below). See Section 3.2 for the full role
 table and Section 3.3 for account-creation and security practices.
 
 **Key Features**
@@ -439,6 +455,17 @@ table and Section 3.3 for account-creation and security practices.
 -   Governance Settings tab: the platform-wide justification-requirement
     toggle (mandatory by default) that every score/state-change save
     flow across Modules 4, 6, 7, 8, 10, 11, 12 and 14 reads from
+
+-   License & Plan tab: a lightweight, client-side platform-license
+    record --- SaaS mode by default, or OnPrem mode once a Super Admin
+    uploads a signed \`.lic\` file (a JSON document carrying version,
+    companyId, companyName, hardwareId, expiryDate, maxUsers, plan,
+    features and issueDate). Shows current plan, seat usage against the
+    license\'s max-user ceiling, expiry countdown, and active feature
+    flags. This is a proportionate, browser-local reflection of the
+    licensing model described in the platform\'s D30 Licensing
+    Implementation Schema, not the full multi-platform Ed25519/Firebase
+    licensing SDK that schema specifies for a server-backed deployment
 
 **Primary Users:** Super Admin, Group/Organization Admin, all downstream
 roles
@@ -1105,11 +1132,87 @@ average, so schedule risk is visible before it becomes a missed go-live.
     illustrative seed cases (Section 6) each carry a representative WBS
     for demonstration
 
+-   **Load Phase Template:** seeds the Project Management track with one
+    skeleton task per phase of a Phase Template (Section 4, Module 19),
+    spaced evenly from a chosen start date. The template picker defaults
+    to the Recommended End-to-End Process\'s template for the project\'s
+    linked Main Project type --- e.g. a Business Process Reengineering
+    Main Project defaults to TPL-BPR-7 --- but any of the eight
+    templates can be selected. This is a starting skeleton to break down
+    into real tasks, not a finished plan
+
+-   **Phase Checklist:** PM-track and CM-track checklist items per
+    phase, distinct from WBS tasks, each with a done/not-done state; the
+    completion percentage per phase feeds the CM input of a Phase Gate
+    decision below
+
+-   **Phase Gates (Joint Decision Record):** implements the PM ↔ CM
+    Governance Bridge (E2E-06) --- triggered by a Main Project schedule
+    slip or a phase-gate checkpoint. The Project Manager and the Change
+    Manager record their inputs independently (a Go / Go with
+    Conditions / No-Go recommendation each, with notes), the Change
+    Manager\'s input carrying an auto-populated Composite Readiness
+    Index snapshot (Module 15\'s formula), a Phase Checklist completion
+    percentage, and any open flags (auto-suggested from the Divergence
+    Pattern Detector and stalled ADKAR blocks). The two independent
+    inputs are preserved alongside the fused Joint Decision, which
+    carries exactly one Accountable role --- the Project Manager
+
 **Frameworks Integrated:** Cross-cutting --- gives Lewin, Prosci, Bridges
 and ADKAR a shared timeline alongside the Project Management delivery
-track, rather than tracking each in isolation
+track, rather than tracking each in isolation; Phase Gates implement the
+PM ↔ CM Governance Bridge cross-cutting loop (Module 19)
 
 **Primary Users:** PMO, Change Manager, Sponsor
+
+**Module 19 --- Macro Process, SIPOC, RACSI & End-to-End Registry**
+
+The process backbone every other module is built on, made browsable in
+one place. Ten Macro Processes (MP-01 through MP-10) are the atomic
+units of journi\'s process model; every module owns one or more of them
+(Module 5 owns MP-01, Module 8 owns MP-02 and MP-06, and so on). Sixteen
+End-to-End Process chains are registered against that backbone: four
+core lifecycle chains spanning the whole engagement (Readiness &
+Mobilization, Capability Build, Resistance-to-Commitment, Sustainment &
+Closure), four cross-cutting loop chains that make an existing
+cross-module dependency explicit as its own registered chain (Signal
+Aggregation Loop, PM ↔ CM Governance Bridge, Champion Early-Warning
+Loop, Governance Escalation Loop), and eight transformation-type
+lifecycles --- one per project type introduced in Module 1, each with
+its own rolled-up SIPOC and linked Phase Template.
+
+**Key Features**
+
+-   **Macro Process Catalog tab:** all ten Macro Processes, each with
+    its ID, name, description, and the journi module(s) that implement
+    it
+
+-   **E2E Process Registry tab:** all sixteen registered End-to-End
+    Process chains, grouped by kind (core lifecycle / cross-cutting loop
+    / transformation-type lifecycle), each rendered as its ordered
+    Macro Process chain with trigger and terminal-state text where
+    defined; transformation-type entries additionally show their
+    rolled-up SIPOC (suppliers and customers) and linked Phase Template
+
+-   **RACSI Grid tab:** a ten-Macro-Process × six-role editable grid
+    (Sponsor, Change Manager, People Manager, Practitioner, Employee,
+    Executive), each cell one of Responsible / Accountable / Consulted /
+    Sign-off / Informed --- editable in place by a Super/Group/Org Admin,
+    read-only for every other role, mirroring how the Permission Matrix
+    (Module 2) is seeded with a sensible default and left runtime-editable
+    rather than hardcoded
+
+-   Read access to the catalog and registry is unrestricted (every role
+    can browse it); only the RACSI grid\'s edit capability is
+    role-gated, matching Module 2\'s Manage Hierarchy capability
+
+**Frameworks Integrated:** Cross-cutting --- this module is the
+canonical source for the Macro Process and End-to-End Process vocabulary
+used throughout Sections 4--6 of this document; it also hosts the RACSI
+governance layer referenced by the Phase Gate feature in Module 18
+
+**Primary Users:** All roles (read); Super Admin, Group/Organization
+Admin (RACSI grid edits)
 
 **5. Framework-to-Module Mapping Matrix**
 
@@ -1155,13 +1258,22 @@ delivery track, alongside the Lewin macro-state owned by M4, the
 Bridges/Kübler-Ross position owned by M7, and the ADKAR scores owned by
 M6.
 
-**6. Seed Dataset --- Nine Illustrative Cases**
+**6. Seed Dataset --- Fourteen Illustrative Cases**
 
 To pre-populate journi for demonstration, training and testing, the
-platform is seeded with nine cases: three sectors --- Manufacturing,
+platform is seeded with fourteen cases. Nine follow the original
+three-sectors-by-three-types pattern: three sectors --- Manufacturing,
 Logistics & Transportation, and Health --- each carrying three project
-archetypes --- ERP Implementation, Process Automation, and QMS
-Implementation. Every case pairs a Main Project with a linked Change
+types --- ERP Implementation, Business Process Automation, and
+Integrated Management System (QMS). Five more were added to give each of
+CR1\'s remaining transformation types a real, working example: a
+Cultural / Values Transformation case in Manufacturing (reusing an
+existing standalone culture-change Change Management Project, now linked
+to a Main Project of that type), a Business Process Reengineering and an
+Operating Model Redesign case in Logistics & Transportation, a
+Compliance-Driven Change case in Health, and a Training & Skills
+Development case at a second Manufacturing site. Section 6.4 documents
+these five. Every case pairs a Main Project with a linked Change
 Management Project, illustrating the linkage model described in Section
 2.2. Each Change Management Project also ships with an example set of AI
 use cases pre-activated from the Module 17 library, illustrating how an
@@ -1892,6 +2004,437 @@ Integration\"**
 
 -   Just-culture framing must be established before reporting rates will
     genuinely improve
+
+**6.4 CR1 Transformation-Type Expansion Cases**
+
+Five cases added to give each of the remaining five CR1 transformation types --- Cultural / Values Transformation, Business Process Reengineering, Operating Model Redesign, Compliance-Driven Change, and Training & Skills Development --- a real, working example alongside the nine original cases in Sections 6.1--6.3. Each follows the same Main Project + linked Change Management Project structure.
+
+**6.4.1 Cultural / Values Transformation --- \"Safety-First Leadership Culture Program\" (Manufacturing)**
+
+**Seeded Organization:** Atlas Industrial Group --- Casablanca Plant Cluster (see Section 6.1). This case reuses the culture-change Change Management Project already seeded there, now linked to a Main Project of the matching type.
+
+  -----------------------------------------------------------------------
+  **Main Project**    
+  ------------------- ---------------------------------------------------
+  Name                Safety-First Leadership Culture Program
+
+  Type                Cultural / Values Transformation
+
+  Scope               Shift the organization from compliance-driven to
+                      leadership-driven safety behavior across all three
+                      plants, led by CEO-level sponsorship rather than a
+                      single underlying system rollout.
+
+  Duration            12 months
+
+  Budget Band         €310K band
+
+  Executive Sponsor   CEO, Atlas Industrial Group
+  -----------------------------------------------------------------------
+
+  -----------------------------------------------------------------------
+  **Linked Change     
+  Management          
+  Project**           
+  ------------------- ---------------------------------------------------
+  Name                Atlas Safety-First Leadership Culture Program
+
+  Linkage             Linked to Main Project
+
+  Change Manager      Change Manager, Atlas Safety Culture Program
+
+  Target Population   \~3,100 employees across all 3 plants and the
+                      Shared Services Center (entire Atlas workforce)
+
+  Bridges Transition  Neutral Zone across all 3 plants --- supervisors
+  Phase               actively practicing new coaching behaviors, not yet
+                      fully habitual
+
+  Sentiment Snapshot  Exploration dominant among frontline supervisors
+  (Kübler-Ross)       after visible plant-director safety walks; residual
+                      skepticism among veteran shop-floor staff
+
+  Sponsor Coalition   CEO personally sponsors --- the only Atlas
+  Status              initiative with CEO-level (not COO/CFO/VP)
+                      sponsorship; visibility rated Strong across all 3
+                      plants
+
+  AI Use Cases        Sponsor Coalition Recommender, Coaching
+  Activated (example) Conversation Script Generator
+  -----------------------------------------------------------------------
+
+**ADKAR Baseline Snapshot**
+
+  ------------------------------------------------------------------------
+  **Building       **Score**   **Note**
+  Block**                                                                 
+  ---------------- ----------- -------------------------------------------
+  Awareness        5 / 5       CEO pledge and plant-entrance signage make
+                               this the most visible initiative at Atlas
+
+  Desire           3 / 5       Frontline supervisors bought in after
+                               visible leadership walks; veteran staff
+                               cite fatigue from prior campaigns
+
+  Knowledge        3 / 5       Safety-leadership coaching curriculum
+                               rolled out to first cohort of supervisors
+
+  Ability          3 / 5       Early cohort practicing coaching
+                               conversations; not yet consistent across
+                               all shifts
+
+  Reinforcement    2 / 5       Recognition program not yet launched ---
+                               coaching behavior not yet self-sustaining
+  ------------------------------------------------------------------------
+
+**Key Risks**
+
+-   Veteran shop-floor staff skepticism from prior safety campaigns that
+    faded after 6 months
+
+-   Program depends heavily on CEO visibility --- risk if
+    travel/priorities reduce CEO safety-walk cadence
+
+-   Frontline supervisors already stretched across 3 plants; coaching time
+    competes with production pressure
+
+**6.4.2 Business Process Reengineering --- \"Order Fulfillment Clean-Slate Redesign\" (Logistics)**
+
+**Seeded Organization:** Maghreb Logistics Hub (see Section 6.2).
+
+  -----------------------------------------------------------------------
+  **Main Project**    
+  ------------------- ---------------------------------------------------
+  Name                Order Fulfillment Clean-Slate Redesign
+
+  Type                Business Process Reengineering
+
+  Scope               Redesign the order-to-delivery process from a clean
+                      slate --- collapsing a 9-handoff, cross-hub
+                      fulfillment chain into a single accountable flow
+                      --- rather than automating the existing process as-
+                      is.
+
+  Duration            10 months
+
+  Budget Band         €1.1M band
+
+  Executive Sponsor   COO, Maghreb Logistics Hub
+  -----------------------------------------------------------------------
+
+  -----------------------------------------------------------------------
+  **Linked Change     
+  Management          
+  Project**           
+  ------------------- ---------------------------------------------------
+  Name                Order Fulfillment Redesign Adoption Program
+
+  Linkage             Linked to Main Project
+
+  Change Manager      Change Manager, Order Fulfillment Redesign
+
+  Target Population   \~340 dispatch, warehouse and customer-service
+                      staff across 3 hubs whose roles are restructured
+                      under the new single-accountable-owner flow
+
+  Bridges Transition  Ending phase --- the redesign eliminates several
+  Phase               existing roles as distinct positions, folding them
+                      into a new \"fulfillment owner\" role
+
+  Sentiment Snapshot  Denial/Resistance among staff whose current role is
+  (Kübler-Ross)       folded into the new structure; Exploration among
+                      hub supervisors who see fewer handoffs as a win
+
+  Sponsor Coalition   COO personally chartered the redesign; hub
+  Status              supervisors form the coalition but customer-service
+                      team not yet represented
+
+  AI Use Cases        None yet activated
+  Activated (example) 
+  -----------------------------------------------------------------------
+
+**ADKAR Baseline Snapshot**
+
+  ------------------------------------------------------------------------
+  **Building       **Score**   **Note**
+  Block**                                                                 
+  ---------------- ----------- -------------------------------------------
+  Awareness        3 / 5       Redesign announced; detailed role-mapping
+                               not yet communicated individually
+
+  Desire           2 / 5       Uncertainty about which staff land in the
+                               new role versus which positions are
+                               eliminated
+
+  Knowledge        1 / 5       New process flow designed but not yet
+                               trained
+
+  Ability          1 / 5       Pilot hub not yet selected
+
+  Reinforcement    1 / 5       Pre-pilot
+  ------------------------------------------------------------------------
+
+**Key Risks**
+
+-   Clean-slate redesign eliminates several current job titles, creating
+    higher anxiety than a like-for-like automation would
+
+-   Customer-service team not yet engaged in the redesign despite being a
+    downstream consumer of the new flow
+
+**6.4.3 Operating Model Redesign --- \"Regional Hub Governance Redesign\" (Logistics)**
+
+**Seeded Organization:** Maghreb Logistics Hub (see Section 6.2).
+
+  -----------------------------------------------------------------------
+  **Main Project**    
+  ------------------- ---------------------------------------------------
+  Name                Regional Hub Governance Redesign
+
+  Type                Operating Model Redesign
+
+  Scope               Redesign decision rights and reporting lines across
+                      the 5 regional hubs, moving from hub-by-hub
+                      autonomy to a standing regional operating committee
+                      with clear escalation paths.
+
+  Duration            9 months
+
+  Budget Band         €540K band
+
+  Executive Sponsor   CEO, Maghreb Logistics Hub
+  -----------------------------------------------------------------------
+
+  -----------------------------------------------------------------------
+  **Linked Change     
+  Management          
+  Project**           
+  ------------------- ---------------------------------------------------
+  Name                Regional Hub Governance Adoption Program
+
+  Linkage             Linked to Main Project
+
+  Change Manager      Change Manager, Regional Hub Governance
+
+  Target Population   \~60 hub managers and regional functional leads
+                      whose decision rights move to the new operating
+                      committee
+
+  Bridges Transition  Ending phase --- hub managers are losing a degree
+  Phase               of local decision authority, the clearest identity-
+                      loss signal in this program
+
+  Sentiment Snapshot  Resistance concentrated among longest-tenured hub
+  (Kübler-Ross)       managers; newer hub managers more open to the
+                      shared cadence
+
+  Sponsor Coalition   CEO personally chairs the new committee\'s first
+  Status              three sessions to establish its authority;
+                      visibility rated Strong
+
+  AI Use Cases        None yet activated
+  Activated (example) 
+  -----------------------------------------------------------------------
+
+**ADKAR Baseline Snapshot**
+
+  ------------------------------------------------------------------------
+  **Building       **Score**   **Note**
+  Block**                                                                 
+  ---------------- ----------- -------------------------------------------
+  Awareness        4 / 5       CEO-led launch made the change highly
+                               visible across all 5 hubs
+
+  Desire           2 / 5       Longest-tenured hub managers see this as a
+                               loss of autonomy held for years
+
+  Knowledge        2 / 5       New escalation and decision-rights matrix
+                               published but not yet exercised in a real
+                               conflict
+
+  Ability          1 / 5       Committee has not yet handled a live cross-
+                               hub pricing conflict
+
+  Reinforcement    1 / 5       Too early --- cadence not yet self-
+                               sustaining
+  ------------------------------------------------------------------------
+
+**Key Risks**
+
+-   New committee\'s authority depends on continued CEO visibility in its
+    early sessions
+
+-   Longest-tenured hub managers may route decisions around the committee
+    rather than through it
+
+**6.4.4 Compliance-Driven Change --- \"Cross-Border Patient Data Protection Compliance\" (Health)**
+
+**Seeded Organization:** Meridia Health Network (see Section 6.3).
+
+  -----------------------------------------------------------------------
+  **Main Project**    
+  ------------------- ---------------------------------------------------
+  Name                Cross-Border Patient Data Protection Compliance
+
+  Type                Compliance-Driven Change
+
+  Scope               Bring patient-data handling into compliance with a
+                      new cross-border health-data protection regulation
+                      ahead of its enforcement date, including consent
+                      workflows, data-residency controls and breach-
+                      notification procedures.
+
+  Duration            8 months
+
+  Budget Band         €420K band
+
+  Executive Sponsor   Chief Compliance Officer, Meridia Health Network
+  -----------------------------------------------------------------------
+
+  -----------------------------------------------------------------------
+  **Linked Change     
+  Management          
+  Project**           
+  ------------------- ---------------------------------------------------
+  Name                Data Protection Compliance Adoption Program
+
+  Linkage             Linked to Main Project
+
+  Change Manager      Change Manager, Data Protection Compliance Program
+
+  Target Population   \~450 clinical and billing staff across all 3
+                      facilities who handle patient data subject to the
+                      new regulation
+
+  Bridges Transition  Ending phase --- the prior, informal consent
+  Phase               process is being formally retired ahead of the
+                      enforcement date
+
+  Sentiment Snapshot  Awareness high due to a fixed regulatory deadline;
+  (Kübler-Ross)       Desire mixed --- some staff see it as \"more
+                      paperwork\" rather than patient protection
+
+  Sponsor Coalition   CCO sponsoring directly given the fixed regulatory
+  Status              deadline; General Counsel co-chairs the steering
+                      group; visibility rated Strong
+
+  AI Use Cases        None yet activated
+  Activated (example) 
+  -----------------------------------------------------------------------
+
+**ADKAR Baseline Snapshot**
+
+  ------------------------------------------------------------------------
+  **Building       **Score**   **Note**
+  Block**                                                                 
+  ---------------- ----------- -------------------------------------------
+  Awareness        4 / 5       Fixed regulatory deadline made this highly
+                               visible; department heads briefed directly
+                               by CCO
+
+  Desire           2 / 5       Some staff frame this as added
+                               administrative burden rather than a
+                               patient-protection improvement
+
+  Knowledge        2 / 5       Regulation requirements mapped to workflow
+                               changes; facility-level training not yet
+                               started
+
+  Ability          1 / 5       New consent workflow not yet piloted at any
+                               facility
+
+  Reinforcement    1 / 5       Pre-pilot
+  ------------------------------------------------------------------------
+
+**Key Risks**
+
+-   Fixed regulatory enforcement date leaves no schedule slack if facility
+    rollout slips
+
+-   Staff may treat the new consent workflow as a check-box exercise
+    rather than substantively changing behavior
+
+**6.4.5 Training & Skills Development --- \"Frontline Digital Skills Certification Program\" (Manufacturing)**
+
+**Seeded Organization:** Atlas Industrial Group --- Tangier Free Zone Plant, a second Organization under the Atlas Group (see Section 2.1), added to give Group-level roll-up a real second tenant alongside the Casablanca cluster.
+
+  -----------------------------------------------------------------------
+  **Main Project**    
+  ------------------- ---------------------------------------------------
+  Name                Frontline Digital Skills Certification Program
+
+  Type                Training & Skills Development
+
+  Scope               Close a digital-literacy gap on the plant floor
+                      ahead of the ERP extension: certify all frontline
+                      operators on core digital-device and data-entry
+                      skills before any system-specific training begins.
+
+  Duration            5 months
+
+  Budget Band         €180K band
+
+  Executive Sponsor   Plant Director, Tangier Free Zone
+  -----------------------------------------------------------------------
+
+  -----------------------------------------------------------------------
+  **Linked Change     
+  Management          
+  Project**           
+  ------------------- ---------------------------------------------------
+  Name                Tangier Frontline Digital Skills Program
+
+  Linkage             Linked to Main Project
+
+  Change Manager      Change Manager, Tangier Digital Skills Program
+
+  Target Population   \~420 frontline plant operators at the Tangier Free
+                      Zone site
+
+  Bridges Transition  Ending phase --- operators moving from paper-only
+  Phase               workflows to device-based ones for the first time
+
+  Sentiment Snapshot  Denial among longer-tenured operators who have
+  (Kübler-Ross)       never used a work device; Exploration among
+                      younger, device-comfortable operators
+
+  Sponsor Coalition   Plant Director sponsoring; shift supervisors form
+  Status              the coalition but not yet visible on the floor
+                      daily; visibility rated Moderate
+
+  AI Use Cases        None yet activated
+  Activated (example) 
+  -----------------------------------------------------------------------
+
+**ADKAR Baseline Snapshot**
+
+  ------------------------------------------------------------------------
+  **Building       **Score**   **Note**
+  Block**                                                                 
+  ---------------- ----------- -------------------------------------------
+  Awareness        3 / 5       Floor walk introduced the program;
+                               individual certification schedule not yet
+                               communicated
+
+  Desire           2 / 5       Longer-tenured operators worry that \"not
+                               being good with devices\" will be held
+                               against them
+
+  Knowledge        1 / 5       Curriculum designed; first cohort not yet
+                               started
+
+  Ability          1 / 5       No practice devices on the floor yet
+
+  Reinforcement    1 / 5       Pre-cohort
+  ------------------------------------------------------------------------
+
+**Key Risks**
+
+-   Certification must complete before ERP-specific training can start,
+    creating a hard sequencing dependency
+
+-   Longer-tenured operators may perceive the certification as a proxy
+    performance review rather than a skills investment
 
 **7. Closing Notes**
 

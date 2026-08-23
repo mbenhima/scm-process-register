@@ -34,8 +34,40 @@ TOC_LINE = re.compile(r'^\*\*Table of Contents\*\*\s*$')
 
 PAGEBREAK = '\n```{=openxml}\n<w:p><w:r><w:br w:type="page"/></w:r></w:p>\n```\n\n'
 
-out_lines = []
+def classify(stripped):
+    """Return (level, text) for a heading line, or None."""
+    m3 = H3_NUM.match(stripped)
+    if m3:
+        return ('H3', f'{m3.group(1)}.{m3.group(2)}.{m3.group(3)} {m3.group(4)}')
+    m2 = H2_NUM.match(stripped)
+    if m2:
+        return ('H2', f'{m2.group(1)}.{m2.group(2)} {m2.group(3)}')
+    m1 = H1_NUM.match(stripped)
+    if m1:
+        return ('H1', f'{m1.group(1)}. {m1.group(2)}')
+    mm = MODULE.match(stripped)
+    if mm:
+        return ('H3', mm.group(1))
+    return None
+
+# First pass: collect every heading so the Table of Contents (rendered in
+# the second pass, before most headings have been seen) can list all of them.
 headings_found = []
+for line in lines:
+    c = classify(line.rstrip('\n'))
+    if c:
+        headings_found.append(c)
+
+TOC_INDENT = {'H1': '', 'H2': '&nbsp;&nbsp;&nbsp;&nbsp;', 'H3': '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}
+
+def render_toc(headings):
+    out = []
+    for lvl, text in headings:
+        clean = text.replace('\\"', '"').replace("\\'", "'").replace('\\~', '~')
+        out.append(f'{TOC_INDENT[lvl]}{clean}\\\n')
+    return ''.join(out)
+
+out_lines = []
 
 for line in lines:
     stripped = line.rstrip('\n')
@@ -43,35 +75,16 @@ for line in lines:
     if TOC_LINE.match(stripped):
         out_lines.append(PAGEBREAK)
         out_lines.append('# Table of Contents\n\n')
-        out_lines.append('TOCPLACEHOLDERXYZ\n\n')
+        out_lines.append(render_toc(headings_found))
+        out_lines.append('\n')
         out_lines.append(PAGEBREAK)
         continue
 
-    m3 = H3_NUM.match(stripped)
-    if m3:
-        text = f'{m3.group(1)}.{m3.group(2)}.{m3.group(3)} {m3.group(4)}'
-        out_lines.append(f'### {text}\n')
-        headings_found.append(('H3', text))
-        continue
-
-    m2 = H2_NUM.match(stripped)
-    if m2:
-        text = f'{m2.group(1)}.{m2.group(2)} {m2.group(3)}'
-        out_lines.append(f'## {text}\n')
-        headings_found.append(('H2', text))
-        continue
-
-    m1 = H1_NUM.match(stripped)
-    if m1:
-        text = f'{m1.group(1)}. {m1.group(2)}'
-        out_lines.append(f'# {text}\n')
-        headings_found.append(('H1', text))
-        continue
-
-    mm = MODULE.match(stripped)
-    if mm:
-        out_lines.append(f'### {mm.group(1)}\n')
-        headings_found.append(('H3', mm.group(1)))
+    c = classify(stripped)
+    if c:
+        level, text = c
+        marker = {'H1': '#', 'H2': '##', 'H3': '###'}[level]
+        out_lines.append(f'{marker} {text}\n')
         continue
 
     out_lines.append(line)
