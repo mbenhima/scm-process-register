@@ -6,7 +6,7 @@ import phaseTemplateCatalog from '../data/phaseTemplates.js'
 import defaultRacsiGrid from '../data/racsi.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
-import { addDays } from '../utils/wbs.js'
+import { addDays, todayISO } from '../utils/wbs.js'
 import { useI18n } from '../i18n/index.jsx'
 import { callLLM, recommendedModel } from '../utils/llmProviders.js'
 
@@ -45,6 +45,18 @@ function loadInitialState() {
         if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
         if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
         if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
+        if (!parsed.license) {
+          parsed.license = {
+            mode: 'saas',
+            plan: 'professional',
+            companyName: 'journi Demo Tenant',
+            maxUsers: 50,
+            issueDate: addDays(todayISO(), -90),
+            expiryDate: addDays(todayISO(), 275),
+            features: ['core_cm_modules', 'wbs_gantt', 'ai_use_case_library', 'process_registry_m19'],
+            uploadedFile: null,
+          }
+        }
         parsed.cmProjects = parsed.cmProjects.map((p) => ({
           ...p,
           phaseGates: p.phaseGates || [],
@@ -367,6 +379,10 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  const updateLicense = useCallback((patch) => {
+    setData((prev) => ({ ...prev, license: { ...prev.license, ...patch } }))
+  }, [])
+
   // ---------- LLM provider connection (browser-local, no backend) ----------
   const setLlmConfig = useCallback((patch) => {
     setLlmConfigState((prev) => ({ ...prev, ...patch, connected: false, lastError: null }))
@@ -584,6 +600,7 @@ export function AppStateProvider({ children }) {
       addSponsorAction,
       updateRolePermission,
       updateRacsiCell,
+      updateLicense,
       setRequireJustification,
       llmConfig,
       setLlmConfig,
@@ -629,6 +646,7 @@ export function AppStateProvider({ children }) {
       addSponsorAction,
       updateRolePermission,
       updateRacsiCell,
+      updateLicense,
       setRequireJustification,
       llmConfig,
       setLlmConfig,

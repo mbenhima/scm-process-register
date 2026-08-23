@@ -48,6 +48,131 @@ function GovernanceSettings({ canEdit }) {
   )
 }
 
+const REQUIRED_LIC_FIELDS = ['version', 'companyId', 'companyName', 'hardwareId', 'expiryDate', 'maxUsers', 'plan', 'features', 'issueDate', 'signature']
+const PLAN_TONE = { starter: 'gray', professional: 'brand', enterprise: 'green' }
+
+function LicensePanel({ canEdit }) {
+  const { data, updateLicense } = useAppState()
+  const license = data.license
+  const [uploadError, setUploadError] = useState('')
+  const userCount = data.users.length
+  const daysToExpiry = Math.round((new Date(license.expiryDate) - new Date()) / 86400000)
+  const expiryTone = daysToExpiry < 0 ? 'red' : daysToExpiry < 30 ? 'amber' : 'green'
+  const overCapacity = userCount > license.maxUsers
+
+  function handleFile(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadError('')
+    const reader = new FileReader()
+    reader.onload = () => {
+      let parsed
+      try {
+        parsed = JSON.parse(reader.result)
+      } catch {
+        setUploadError('Not valid JSON — expected a D30 .lic file.')
+        return
+      }
+      const missing = REQUIRED_LIC_FIELDS.filter((f) => parsed[f] === undefined)
+      if (missing.length) {
+        setUploadError(`Missing required field(s): ${missing.join(', ')}`)
+        return
+      }
+      updateLicense({
+        mode: 'onprem',
+        plan: parsed.plan,
+        companyName: parsed.companyName,
+        maxUsers: parsed.maxUsers,
+        issueDate: parsed.issueDate,
+        expiryDate: parsed.expiryDate,
+        features: parsed.features,
+        uploadedFile: { name: file.name, companyId: parsed.companyId, hardwareId: parsed.hardwareId },
+      })
+    }
+    reader.readAsText(file)
+    e.target.value = ''
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-ink/60">
+        Platform license terms — journi runs entirely client-side, so this reflects the license record a real deployment would keep
+        (D30): SaaS mode by default, or OnPrem mode once a signed <code>.lic</code> file is uploaded. Only a Super Admin can change
+        this.
+      </p>
+
+      <div className="card p-4 space-y-3">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Badge tone={license.mode === 'onprem' ? 'brand' : 'gray'}>{license.mode === 'onprem' ? 'OnPrem' : 'SaaS'}</Badge>
+            <Badge tone={PLAN_TONE[license.plan] || 'gray'}>{license.plan}</Badge>
+            <span className="font-semibold text-brand-950 text-sm">{license.companyName}</span>
+          </div>
+          <Badge tone={expiryTone}>{daysToExpiry < 0 ? 'Expired' : `Expires in ${daysToExpiry}d`} — {license.expiryDate}</Badge>
+        </div>
+        <div className="grid sm:grid-cols-3 gap-3 text-sm">
+          <div>
+            <div className="text-xs text-ink/40 uppercase tracking-wide">Users</div>
+            <div className={overCapacity ? 'text-red-600 font-semibold' : 'text-brand-950 font-semibold'}>
+              {userCount} / {license.maxUsers}
+              {overCapacity && ' — over capacity'}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-ink/40 uppercase tracking-wide">Issued</div>
+            <div className="text-brand-950">{license.issueDate}</div>
+          </div>
+          {license.uploadedFile && (
+            <div>
+              <div className="text-xs text-ink/40 uppercase tracking-wide">Source file</div>
+              <div className="text-brand-950">{license.uploadedFile.name}</div>
+            </div>
+          )}
+        </div>
+        <div>
+          <div className="text-xs text-ink/40 uppercase tracking-wide mb-1">Feature flags</div>
+          <div className="flex gap-1 flex-wrap">
+            {license.features.map((f) => (
+              <Badge key={f} tone="gray">
+                {f}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {canEdit && (
+        <div className="card p-4 space-y-2">
+          <h4 className="font-semibold text-brand-950 text-sm">Upload license file (.lic)</h4>
+          <p className="text-xs text-ink/50">
+            A JSON file matching the D30 schema (version, companyId, companyName, hardwareId, expiryDate, maxUsers, plan, features,
+            issueDate, signature). This demo checks the required fields are present but does not verify the cryptographic signature —
+            a production journi deployment would verify it against the issuer's public key before accepting the file.
+          </p>
+          <input type="file" accept=".lic,.json,application/json" onChange={handleFile} className="text-sm" />
+          {uploadError && <p className="text-xs text-red-600">{uploadError}</p>}
+          {license.mode === 'onprem' && (
+            <button
+              className="btn-ghost text-xs"
+              onClick={() =>
+                updateLicense({
+                  mode: 'saas',
+                  plan: 'professional',
+                  companyName: 'journi Demo Tenant',
+                  maxUsers: 50,
+                  uploadedFile: null,
+                })
+              }
+            >
+              Revert to SaaS mode
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 const ROLE_OPTIONS = [
   'super_admin',
   'group_admin',
@@ -178,10 +303,14 @@ export default function Module2Page() {
         <button className={`tab ${tab === 'governance' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('governance')}>
           Governance Settings
         </button>
+        <button className={`tab ${tab === 'license' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('license')}>
+          License & Plan
+        </button>
       </div>
 
       {tab === 'matrix' && <PermissionMatrix canEditMatrix={canEditMatrix} />}
       {tab === 'governance' && <GovernanceSettings canEdit={canEditGovernance} />}
+      {tab === 'license' && <LicensePanel canEdit={canEditMatrix} />}
 
       {tab === 'users' && (
       <>

@@ -137,6 +137,21 @@ export function buildSeed() {
   // A Super/Group/Org Admin can flip this off in Module 2's governance settings.
   const requireJustification = true
 
+  // Platform License (D30, proportionate scope): journi has no backend, so this
+  // is a lightweight client-side record of the license terms rather than the
+  // full multi-platform Ed25519/Firebase licensing SDK the source spec describes —
+  // seeded as a demo SaaS-mode license, editable by a Super Admin on Module 2.
+  const license = {
+    mode: 'saas',
+    plan: 'professional',
+    companyName: 'journi Demo Tenant',
+    maxUsers: 50,
+    issueDate: addDays(todayISO(), -90),
+    expiryDate: addDays(todayISO(), 275),
+    features: ['core_cm_modules', 'wbs_gantt', 'ai_use_case_library', 'process_registry_m19'],
+    uploadedFile: null,
+  }
+
   return {
     groups,
     organizations,
@@ -153,5 +168,6 @@ export function buildSeed() {
     aiUsageLog,
     rolePermissions,
     requireJustification,
+    license,
   }
 }
