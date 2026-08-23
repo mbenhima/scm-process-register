@@ -5,6 +5,7 @@ import e2eProcessCatalog from '../data/e2eProcesses.js'
 import phaseTemplateCatalog from '../data/phaseTemplates.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
+import { addDays } from '../utils/wbs.js'
 import { useI18n } from '../i18n/index.jsx'
 import { callLLM, recommendedModel } from '../utils/llmProviders.js'
 
@@ -239,6 +240,36 @@ export function AppStateProvider({ children }) {
         [collection]: (p[collection] || []).filter((it) => it.id !== itemId),
       })),
     }))
+  }, [])
+
+  /**
+   * Seeds the PM track with one skeleton task per phase of a Phase Template
+   * (D32b), spaced evenly from `startISO` — a starting point the user then
+   * breaks down into real tasks, not a finished plan.
+   */
+  const loadPhaseTemplate = useCallback((projectId, templateId, startISO, phaseDurationDays = 30) => {
+    setData((prev) => {
+      const template = prev.phaseTemplateCatalog.find((tpl) => tpl.id === templateId)
+      if (!template) return prev
+      const newTasks = template.phases.map((phase, i) => ({
+        id: uid('wbsTasks'),
+        track: 'pm',
+        phase,
+        name: phase,
+        baselineStart: addDays(startISO, i * phaseDurationDays),
+        baselineEnd: addDays(startISO, (i + 1) * phaseDurationDays - 1),
+        actualStart: null,
+        actualEnd: null,
+        status: 'planned',
+      }))
+      return {
+        ...prev,
+        cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+          ...p,
+          wbsTasks: [...(p.wbsTasks || []), ...newTasks],
+        })),
+      }
+    })
   }, [])
 
   const updateSustainment = useCallback((projectId, patchFn) => {
@@ -525,6 +556,7 @@ export function AppStateProvider({ children }) {
       addSubItem,
       updateSubItem,
       removeSubItem,
+      loadPhaseTemplate,
       updateCheckpoint,
       addQuickWin,
       addLesson,
@@ -568,6 +600,7 @@ export function AppStateProvider({ children }) {
       addSubItem,
       updateSubItem,
       removeSubItem,
+      loadPhaseTemplate,
       updateCheckpoint,
       addQuickWin,
       addLesson,

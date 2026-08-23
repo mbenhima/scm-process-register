@@ -138,12 +138,74 @@ function TaskTable({ project, tasks, canEdit, onEdit }) {
   )
 }
 
+function TemplateModal({ open, onClose, project, data, loadPhaseTemplate }) {
+  const { t } = useI18n()
+  const linkedMainProject = data.mainProjects.find((mp) => (project.mainProjectIds || []).includes(mp.id))
+  const defaultTemplate =
+    data.e2eProcessCatalog.find((e2e) => e2e.transformationType === linkedMainProject?.type)?.phaseTemplateId ||
+    data.phaseTemplateCatalog[0].id
+  const [templateId, setTemplateId] = useState(defaultTemplate)
+  const [startISO, setStartISO] = useState(todayISO())
+  const template = data.phaseTemplateCatalog.find((tpl) => tpl.id === templateId)
+
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={t('m18_load_template_title')}
+      footer={
+        <>
+          <button className="btn-ghost" onClick={onClose}>
+            {t('cancel')}
+          </button>
+          <button
+            className="btn-primary"
+            onClick={() => {
+              loadPhaseTemplate(project.id, templateId, startISO)
+              onClose()
+            }}
+          >
+            {t('m18_load_button')}
+          </button>
+        </>
+      }
+    >
+      <div className="space-y-3">
+        <p className="text-[11px] text-ink/40">{t('m18_load_template_desc')}</p>
+        <div>
+          <label className="label">{t('m18_template_label')}</label>
+          <select className="input" value={templateId} onChange={(e) => setTemplateId(e.target.value)}>
+            {data.phaseTemplateCatalog.map((tpl) => (
+              <option key={tpl.id} value={tpl.id}>
+                {tpl.id} — {tpl.name}
+              </option>
+            ))}
+          </select>
+          {linkedMainProject && templateId === defaultTemplate && <p className="text-[11px] text-ink/40 mt-1">{t('m18_recommended_for')}</p>}
+        </div>
+        <div>
+          <label className="label">{t('m18_start_date')}</label>
+          <input type="date" className="input" value={startISO} onChange={(e) => setStartISO(e.target.value)} />
+        </div>
+        {template && (
+          <ul className="text-xs text-ink/60 list-disc ps-4 space-y-0.5">
+            {template.phases.map((phase) => (
+              <li key={phase}>{phase}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </Modal>
+  )
+}
+
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem, currentUser } = useAppState()
+  const { addSubItem, updateSubItem, currentUser, data, loadPhaseTemplate } = useAppState()
   const canEdit = canWrite(currentUser?.role)
   const tasks = project.wbsTasks || []
   const [modal, setModal] = useState(false)
+  const [templateModal, setTemplateModal] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [form, setForm] = useState(BLANK_FORM)
 
@@ -180,7 +242,10 @@ function Content({ project }) {
       </div>
 
       {canEdit && (
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
+          <button className="btn-ghost" onClick={() => setTemplateModal(true)}>
+            {t('m18_load_template')}
+          </button>
           <button className="btn-primary" onClick={openNew}>
             + Add WBS task
           </button>
@@ -213,6 +278,8 @@ function Content({ project }) {
       >
         <TaskFormFields form={form} setForm={setForm} />
       </Modal>
+
+      <TemplateModal open={templateModal} onClose={() => setTemplateModal(false)} project={project} data={data} loadPhaseTemplate={loadPhaseTemplate} />
     </div>
   )
 }
