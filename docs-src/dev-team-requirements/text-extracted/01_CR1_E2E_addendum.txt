@@ -1,0 +1,311 @@
+journi Baseline — Required Changes for Transformation-Type E2E Processes
+
+Summary of Changes
+
+  -------------------------------------------------------------------------
+  File / Deliverable    Change Type  Description
+  --------------------- ------------ --------------------------------------
+  D21 — Project         Structural   Add Default_E2E_Process column (FK to
+  Registry                           D32h)
+
+  D21 — Project         Data         Seed Default_E2E_Process for all 13
+  Registry                           existing projects
+
+  D32i — Cross-Type     Structural   Add Recommended_E2E_Process column (FK
+  Comparison Matrix                  to D32h)
+
+  D32i — Cross-Type     Data         Seed Recommended_E2E_Process for all 7
+  Comparison Matrix                  transformation types
+
+  D32h — End-to-End     Data         Add 8 new E2E process records
+  Process Registry                   
+
+  D32b — Phase Template Data         Add 7 type-specific phase templates
+  Library                            
+
+  D17 — Catalogs        Data         Add Transformation Type Catalog
+                                     (CAT-13) and update Phase Template
+                                     Catalog (CAT-09)
+  -------------------------------------------------------------------------
+
+Detailed Changes
+
+1. D21 — Project Registry
+
+Change Type: Structural + Data
+
+New Column:
+
+  ---------------------------------------------------------------------------
+  Column Name           Data Type       Description                Example
+  --------------------- --------------- -------------------------- ----------
+  Default_E2E_Process   FK →            The recommended E2E        E2E-ERP
+                        D32h.E2E_ID     process for this project   
+
+  ---------------------------------------------------------------------------
+
+Updated Seed Data:
+
+  -----------------------------------------------------------------------------
+  Project_ID   Project_Name          Project_Type         Default_E2E_Process
+  ------------ --------------------- -------------------- ---------------------
+  PRJ-001      S/4HANA Unification   ERP Implementation   E2E-ERP
+               Program                                    
+
+  PRJ-002      Order-to-Cash RPA &   Process Automation   E2E-BPA
+               Workflow Automation                        
+
+  PRJ-003      ISO 9001:2015 QMS     QMS Implementation   E2E-IMS
+               Digitalization                             
+
+  PRJ-004      Oracle Fusion Freight ERP Implementation   E2E-ERP
+               ERP Rollout                                
+
+  PRJ-005      Warehouse & Dispatch  Process Automation   E2E-BPA
+               Automation                                 
+
+  PRJ-006      ISO 9001 & Transport  QMS Implementation   E2E-IMS
+               Safety QMS                                 
+
+  PRJ-007      Unified Hospital ERP  ERP Implementation   E2E-ERP
+               & HIS Integration                          
+
+  PRJ-008      Patient Intake &      Process Automation   E2E-BPA
+               Claims Automation                          
+
+  PRJ-009      JCI Accreditation &   QMS Implementation   E2E-IMS
+               QMS Rollout                                
+
+  PRJ-010      Order Fulfillment     Business Process     E2E-BPR
+               Clean-Slate Redesign  Reengineering        
+
+  PRJ-011      Just-Culture          Cultural / Values    E2E-CULT
+               Patient-Safety        Transformation       
+               Program                                    
+
+  PRJ-012      Regional Hub          Operating Model      E2E-OM
+               Governance Redesign   Redesign             
+
+  PRJ-013      Cross-Border Data     Compliance-Driven    E2E-COMP
+               Protection Compliance Change               
+  -----------------------------------------------------------------------------
+
+2. D32i — Cross-Type Comparison Matrix
+
+Change Type: Structural + Data
+
+New Column:
+
+  ----------------------------------------------------------------------------
+  Column Name               Data Type       Description             Example
+  ------------------------- --------------- ----------------------- ----------
+  Recommended_E2E_Process   FK →            The default E2E process E2E-BPR
+                            D32h.E2E_ID     for this transformation 
+                                            type                    
+
+  ----------------------------------------------------------------------------
+
+Updated Seed Data:
+
+  -----------------------------------------------------------------------
+  Transformation_Type                       Recommended_E2E_Process
+  ----------------------------------------- -----------------------------
+  ERP Implementation                        E2E-ERP
+
+  Business Process Reengineering            E2E-BPR
+
+  Business Process Automation (Full Track)  E2E-BPA
+
+  Integrated Management System (e.g., QHSE) E2E-IMS
+
+  Cultural / Values Transformation          E2E-CULT
+
+  Operating Model Redesign                  E2E-OM
+
+  Compliance-Driven Change                  E2E-COMP
+
+  Training & Skills Development             E2E-TSD
+  -----------------------------------------------------------------------
+
+3. D32h — End-to-End Process Registry
+
+Change Type: Data
+
+New Records:
+
+  --------------------------------------------------------------------------------------------------------------
+  E2E_ID     E2E_Name            Ordered_Macro_Processes   Rolled_Up_SIPOC_Supplier   Rolled_Up_SIPOC_Customer
+  ---------- ------------------- ------------------------- -------------------------- --------------------------
+  E2E-ERP    ERP Implementation  MP-01 → MP-02 → MP-03 →   Executive Sponsor,         Steering Committee, End
+             Lifecycle           MP-05 → MP-07 → MP-09 →   Program/Project Manager,   Users, Sustainment Team
+                                 MP-10                     Change Manager             
+
+  E2E-BPR    Business Process    MP-01 → MP-02 → MP-03 →   Executive Sponsor,         Steering Committee,
+             Reengineering       MP-05 → MP-07 → MP-08 →   Functional Process Owners, Process Owner, End Users
+             Lifecycle           MP-09 → MP-10             Change Manager             
+
+  E2E-BPA    Business Process    MP-01 → MP-02 → MP-03 →   Executive Sponsor,         Steering Committee, Center
+             Automation          MP-05 → MP-07 → MP-08 →   IT/Technical Lead,         of Excellence, End Users
+             Lifecycle           MP-09 → MP-10             Functional Process Owner   
+
+  E2E-IMS    Integrated          MP-01 → MP-02 → MP-03 →   Certification Body,        Steering Committee,
+             Management System   MP-05 → MP-07 → MP-08 →   Functional Process Owners, Quality Function, External
+             Lifecycle           MP-09 → MP-10             Change Manager             Auditor
+
+  E2E-CULT   Cultural / Values   MP-01 → MP-02 → MP-03 →   Executive Sponsor, HR      Steering Committee,
+             Transformation      MP-04 → MP-06 → MP-07 →   Business Partner, Change   Leadership Team, All
+             Lifecycle           MP-08 → MP-09 → MP-10     Manager                    Employees
+
+  E2E-OM     Operating Model     MP-01 → MP-02 → MP-03 →   Executive Sponsor,         Steering Committee,
+             Redesign Lifecycle  MP-05 → MP-07 → MP-08 →   Function Heads, HR         Standing Operating
+                                 MP-09 → MP-10             Business Partner           Committee, All Employees
+
+  E2E-COMP   Compliance-Driven   MP-01 → MP-02 → MP-03 →   Legal/Compliance,          Steering Committee,
+             Change Lifecycle    MP-05 → MP-07 → MP-08 →   Functional Process Owners, Compliance Function,
+                                 MP-09 → MP-10             Change Manager             Regulator
+
+  E2E-TSD    Training & Skills   MP-01 → MP-02 → MP-03 →   Training Lead, Functional  Steering Committee, End
+             Development         MP-05 → MP-06 → MP-07 →   Process Owners, Change     Users, Business-as-Usual
+             Lifecycle           MP-08 → MP-09 → MP-10     Manager                    Owner
+  --------------------------------------------------------------------------------------------------------------
+
+4. D32b — Phase Template Library
+
+Change Type: Data
+
+New Records:
+
+  ------------------------------------------------------------------------------------------------------------
+  Template_ID   Template_Name    Applies_To_Project_Type   Phase_Count   Phases                   Is_Default
+  ------------- ---------------- ------------------------- ------------- ------------------------ ------------
+  TPL-ERP-8     ERP              ERP Implementation        8             Discovery, Design,       Yes
+                Implementation —                                         Build, Test, Train,      
+                8 Phase                                                  Deploy, Hypercare,       
+                                                                         Sustain                  
+
+  TPL-BPR-7     Common Lifecycle Business Process          7             P1 Intake & Diagnosis,   No
+                — BPR Variant    Reengineering                           P2 Clean-Slate Design,   
+                                                                         P3 Build, P4 Pilot, P5   
+                                                                         Rollout, P6              
+                                                                         Stabilization, P7        
+                                                                         Sustainment              
+
+  TPL-BPA-7     Common Lifecycle Process Automation        7             P1                       No
+                — Automation                                             Automation-Opportunity   
+                Variant                                                  Assessment, P2           
+                                                                         Architecture Design, P3  
+                                                                         Build, P4 UAT &          
+                                                                         Shadow-Mode, P5          
+                                                                         Production Go-Live, P6   
+                                                                         Exception Tuning, P7 CoE 
+                                                                         Handover                 
+
+  TPL-IMS-7     Common Lifecycle QMS Implementation        7             P1 Intake & Diagnosis,   No
+                — QMS Variant                                            P2 Design, P3            
+                                                                         Implementation, P4       
+                                                                         Mock-up Audit, P5        
+                                                                         Certifying Audit, P6     
+                                                                         Surveillance Prep, P7    
+                                                                         Ongoing Surveillance     
+
+  TPL-CULT-7    Common Lifecycle Cultural / Values         7             P1 Diagnosis, P2 Target  No
+                — Culture        Transformation                          Values Design, P3        
+                Variant                                                  Leadership Modeling &    
+                                                                         Reinforcement Build, P4  
+                                                                         Pilot Cohort, P5         
+                                                                         Organization-Wide        
+                                                                         Rollout, P6              
+                                                                         Reinforcement Through    
+                                                                         Skepticism, P7           
+                                                                         Institutionalization     
+
+  TPL-OM-7      Common Lifecycle Operating Model Redesign  7             P1 Current Operating     No
+                — Operating                                              Model Assessment, P2 TOM 
+                Model Variant                                            Design, P3 Detailed Org  
+                                                                         Design, P4 Pilot         
+                                                                         Transition, P5 Full      
+                                                                         Transition, P6           
+                                                                         Governance Adoption      
+                                                                         Tracking, P7 Standing    
+                                                                         Rhythm Handover          
+
+  TPL-COMP-7    Common Lifecycle Compliance-Driven Change  7             P1 Regulatory            No
+                — Compliance                                             Requirement & Gap        
+                Variant                                                  Analysis, P2 Control     
+                                                                         Design, P3 Control       
+                                                                         Implementation, P4       
+                                                                         Internal Audit /         
+                                                                         Independent Testing, P5  
+                                                                         Controls Go Live, P6     
+                                                                         First Monitoring Cycle,  
+                                                                         P7 Ongoing Compliance    
+                                                                         Handover                 
+
+  TPL-TSD-7     Common Lifecycle Training & Skills         7             P1 Skills Gap Diagnosis, No
+                — Training &     Development                             P2 Curriculum Design, P3 
+                Skills Variant                                           Training Delivery, P4    
+                                                                         Competency Verification, 
+                                                                         P5 Practical             
+                                                                         Application, P6          
+                                                                         On-the-Job Coaching, P7  
+                                                                         Skills Sustainment       
+  ------------------------------------------------------------------------------------------------------------
+
+5. D17 — Catalogs
+
+Change Type: Data
+
+New Records:
+
+  -----------------------------------------------------------------------------------------
+  Catalog_ID   Catalog_Type     Catalog_Name     Version   Common_vs_Tenant   Reuse_Score
+  ------------ ---------------- ---------------- --------- ------------------ -------------
+  CAT-13       Transformation   Transformation   v1.0      Common             95
+               Type Catalog     Types                                         
+
+  -----------------------------------------------------------------------------------------
+
+Updated Records:
+
+  -------------------------------------------------------------------------------------
+  Catalog_ID   Catalog_Type   Catalog_Name   Version   Common_vs_Tenant   Reuse_Score
+  ------------ -------------- -------------- --------- ------------------ -------------
+  CAT-09       Phase Template ERP 8-Phase +  v1.3      Common             93
+               Catalog        7-Phase Common                              
+                              Lifecycle                                   
+                              Templates                                   
+
+  -------------------------------------------------------------------------------------
+
+Summary of All Required Changes
+
+  -------------------------------------------------------------------------
+  #   File             Change Type  What to Change
+  --- ---------------- ------------ ---------------------------------------
+  1   D21 — Project    Structural   Add Default_E2E_Process column (FK →
+      Registry                      D32h.E2E_ID)
+
+  2   D21 — Project    Data         Seed Default_E2E_Process for all 13
+      Registry                      existing projects
+
+  3   D32i —           Structural   Add Recommended_E2E_Process column (FK
+      Cross-Type                    → D32h.E2E_ID)
+      Comparison                    
+      Matrix                        
+
+  4   D32i —           Data         Seed Recommended_E2E_Process for all 7
+      Cross-Type                    transformation types
+      Comparison                    
+      Matrix                        
+
+  5   D32h —           Data         Add 8 new E2E process records (E2E-ERP,
+      End-to-End                    E2E-BPR, E2E-BPA, E2E-IMS, E2E-CULT,
+      Process Registry              E2E-OM, E2E-COMP, E2E-TSD)
+
+  6   D32b — Phase     Data         Add 7 type-specific phase templates
+      Template Library              
+
+  7   D17 — Catalogs   Data         Add CAT-13 (Transformation Type
+                                    Catalog) and update CAT-09 (Phase
+                                    Template Catalog)
+  -------------------------------------------------------------------------
