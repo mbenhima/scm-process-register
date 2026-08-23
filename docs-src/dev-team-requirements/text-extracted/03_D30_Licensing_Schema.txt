@@ -1,0 +1,1080 @@
+D30 — Licensing Implementation Schema
+
+Any Application Licensing Implementation Schema
+
+Deliverable ID: D30-001
+
+Version: 1.0 | Status: Active
+
+Effective Date: 2026-06-18
+
+Owner: Senior Enterprise Architect
+
+Font: Calibri 12pt
+
+Table des matières
+
+Table des matières 2
+
+1. Linked Artifacts (Traceability) 3
+
+2. Core Principle: One Interface, Multiple Implementations 3
+
+3. The Abstraction (LicenceProvider Interface) 4
+
+4. SaaS Implementation (Cloud-Hosted) 4
+
+4.1. What You Use (100% Free) 4
+
+4.2. SaaS Implementation Code 5
+
+5. OnPrem Implementation (Self-Hosted) 6
+
+5.1. What You Use (100% Free) 6
+
+5.2. OnPrem Implementation by Platform 6
+
+A) Web Applications (Browser) 6
+
+B) Desktop Applications (.NET, Java, C++, Python, Electron) 7
+
+C) Mobile Applications (iOS, Android) 8
+
+D) CLI / Backend Applications 9
+
+E) Embedded / IoT Devices 10
+
+6. Hardware Binding (Extra Security for Non-Web) 10
+
+7. License File Format (Vendor Signs) 11
+
+8. The Vendor Signing Tool (Cross-Platform) 12
+
+9. How maxUsers Is Enforced (All Platforms) 12
+
+10. Summary: OnPrem Implementation by Platform 13
+
+11. Total Cost: $0 13
+
+12. Implementation Roadmap (All Platforms) 14
+
+13. One-Sentence Summary 14
+
+14. D30 Metadata (For Tracking) 14
+
+15. Mapping to D01–D29 15
+
+Summary 15
+
+1. Linked Artifacts (Traceability)
+
+  --------------------------------------------------------------------------
+  Artifact            Link ID           Description of Link
+  ------------------- ----------------- ------------------------------------
+  D01 (Macro          MP-18             License Management & Entitlement
+  Processes)                            Enforcement
+
+  D02 (Tasks + BPMN   MP-18-T001-S001   Input activation key (maps to file
+  Steps)                                upload)
+
+  D02 (Tasks + BPMN   MP-18-T001-S002   Validate signature and entitlements
+  Steps)                                
+
+  D02 (Tasks + BPMN   MP-18-T002-S001   Check license on login
+  Steps)                                
+
+  D02 (Tasks + BPMN   MP-18-T002-S002   Enforce API rate limits
+  Steps)                                
+
+  D02 (Tasks + BPMN   MP-18-T002-S003   Check feature entitlement
+  Steps)                                
+
+  D03 (Business       RULE-LIC-001      License signature validation
+  Rules)                                
+
+  D03 (Business       RULE-LIC-002      Expiry date validation
+  Rules)                                
+
+  D03 (Business       RULE-LIC-003      maxUsers enforcement
+  Rules)                                
+
+  D04 (Controls)      CTRL-003          License Expiry Prevention
+
+  D04 (Controls)      CTRL-016          License File Integrity Check
+                                        (Ed25519)
+
+  D05 (Risks)         RISK-004          License Expiry
+
+  D06 (KPIs)          KPI-006           License Compliance %
+
+  D06 (KPIs)          KPI-011           API Availability
+
+  D09 (Information    OC-019            License (fully defined)
+  Class Model)                          
+
+  D10 (Data           (Various)         hardwareId, maxUsers, plan,
+  Dictionary)                           features, signature
+
+  D13 (Application    REQ-041           Admin can upload license file
+  Requirements)                         (OnPrem)
+
+  D26 (Module         M-10              OnPrem Suite (detailed
+  Catalog)                              implementation)
+  --------------------------------------------------------------------------
+
+2. Core Principle: One Interface, Multiple Implementations
+
+Build a single application (web, desktop, mobile, CLI, or embedded) with
+an abstract licensing interface (LicenceProvider). A configuration flag
+(DEPLOYMENT_MODE) determines whether it validates against a cloud
+database (SaaS) or a local signed file (OnPrem).
+
+Benefits:
+
+-   No if (onPrem) branches scattered across the codebase.
+
+-   Single configuration knob controls everything.
+
+-   Extensible — new strategies can be added without changing core
+    logic.
+
+-   Works for any platform: web, desktop, mobile, CLI, embedded.
+
+3. The Abstraction (LicenceProvider Interface)
+
++-----------------------------------------------------------------------+
+| // src/licensing/LicenceProvider.js                                   |
+|                                                                       |
+| interface LicenceProvider {                                           |
+|                                                                       |
+| check(): {                                                            |
+|                                                                       |
+| status: 'active' | 'expired' | 'warning' | 'inactive',                |
+|                                                                       |
+| daysLeft: number,                                                     |
+|                                                                       |
+| licence: object                                                       |
+|                                                                       |
+| };                                                                    |
+|                                                                       |
+| canCreateUser(): boolean; // maxUsers enforcement                     |
+|                                                                       |
+| getMode(): 'saas' | 'onprem';                                         |
+|                                                                       |
+| getMaxUsers(): number; // Returns the license's user limit            |
+|                                                                       |
+| getExpiryDate(): Date | null;                                         |
+|                                                                       |
+| getPlan(): string | null;                                             |
+|                                                                       |
+| getFeatureFlags(): string[]; // Returns enabled features              |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| // Factory picks implementation at boot time                          |
+|                                                                       |
+| function getLicenceProvider(): LicenceProvider {                      |
+|                                                                       |
+| const mode = import.meta.env.VITE_DEPLOYMENT_MODE || 'saas';          |
+|                                                                       |
+| if (mode === 'onprem') {                                              |
+|                                                                       |
+| return new OnPremLicenceProvider(); // Reads local .lic file          |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| return new SaasLicenceProvider(); // Reads Firestore or API           |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+4. SaaS Implementation (Cloud-Hosted)
+
+The application runs on your infrastructure. Licensing is enforced
+centrally via API or database.
+
+4.1. What You Use (100% Free)
+
+  ------------------------------------------------------------------------------------
+  Component        What It Does                 Cost                 Applicable
+                                                                     Platforms
+  ---------------- ---------------------------- -------------------- -----------------
+  Firebase Spark   Hosts your web app,          Free                 Web, Mobile
+  Plan             authentication, and database                      (iOS/Android via
+                                                                     Firebase SDK)
+
+  Firestore        Stores license records       Free                 All platforms
+                   (licences/{companyId})                            
+
+  Firebase         Enforces license checks at   Free                 Web, Mobile (with
+  Security Rules   the database layer                                Firebase SDK)
+
+  Firebase Cloud   HMAC signing of license      Free (125K           All platforms
+  Functions        records (prevents tampering) invocations/month)   
+
+  Firebase Secret  Stores your HMAC secret key  Free (6 secrets)     All platforms
+  Manager          securely                                          
+
+  Admin UI         Built into your application  Free (your own code) Web (or
+                                                                     cross-platform)
+
+  Payment Gateway  Stripe / PayPal (webhook     Free to integrate    All platforms
+                   updates license)                                  
+  ------------------------------------------------------------------------------------
+
+Or use your own backend (also free):
+
+  -----------------------------------------------------------------------
+  Alternative             What It Does            Cost
+  ----------------------- ----------------------- -----------------------
+  PostgreSQL / MySQL      Open-source relational  Free
+                          database                
+
+  Node.js / Python / Go   REST API for license    Free (your own code)
+  Backend                 validation              
+
+  Redis                   Caching for license     Free (open-source)
+                          status                  
+
+  Docker                  Containerize your       Free
+                          backend                 
+  -----------------------------------------------------------------------
+
+4.2. SaaS Implementation Code
+
++-----------------------------------------------------------------------+
+| // SaasLicenceProvider.js — Works for Web, Desktop, Mobile            |
+|                                                                       |
+| class SaasLicenceProvider {                                           |
+|                                                                       |
+| constructor(apiBaseUrl) {                                             |
+|                                                                       |
+| this.apiBaseUrl = apiBaseUrl || 'https://api.yourcompany.com';        |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| async check() {                                                       |
+|                                                                       |
+| try {                                                                 |
+|                                                                       |
+| const response = await fetch(`${this.apiBaseUrl}/api/license`, {      |
+|                                                                       |
+| headers: { 'Authorization': `Bearer ${getAuthToken()}` }              |
+|                                                                       |
+| });                                                                   |
+|                                                                       |
+| const license = await response.json();                                |
+|                                                                       |
+| if (license.status === 'active') {                                    |
+|                                                                       |
+| return {                                                              |
+|                                                                       |
+| status: 'active',                                                     |
+|                                                                       |
+| daysLeft: license.daysLeft,                                           |
+|                                                                       |
+| licence: license,                                                     |
+|                                                                       |
+| maxUsers: license.maxUsers                                            |
+|                                                                       |
+| };                                                                    |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| return { status: license.status, daysLeft: 0 };                       |
+|                                                                       |
+| } catch (error) {                                                     |
+|                                                                       |
+| return { status: 'inactive', error: error.message };                  |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| canCreateUser() {                                                     |
+|                                                                       |
+| // Enforce maxUsers by checking current users vs license limit        |
+|                                                                       |
+| const currentUsers = getCurrentUserCount();                           |
+|                                                                       |
+| const maxUsers = this.getMaxUsers();                                  |
+|                                                                       |
+| return currentUsers < maxUsers;                                       |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+⚠ The customer installs nothing. They just access your application (web
+browser, download from app store, etc.) and log in.
+
+5. OnPrem Implementation (Self-Hosted)
+
+The application runs on the customer's own infrastructure. Licensing is
+enforced via a signed license file.
+
+5.1. What You Use (100% Free)
+
+  --------------------------------------------------------------------------
+  Component        What It Does                 Cost            Applicable
+                                                                Platforms
+  ---------------- ---------------------------- --------------- ------------
+  Ed25519          Signing & verification       Free (built     All
+  Signatures       algorithm                    into most       platforms
+                                                languages)      
+
+  Your Signing CLI A small script you run to    Free (your own  Any platform
+  Tool             generate .lic files          code)           
+
+  License File     One JSON file per customer   Free            All
+  (.lic)           with maxUsers field                          platforms
+
+  Hardware Binding Lock license to specific     Free (built     Desktop,
+                   machine                      into app)       Server,
+                                                                Mobile
+
+  SQLite           Track user accounts locally  Free (built-in) Desktop,
+                                                                Mobile,
+                                                                Embedded
+
+  Docker           Package the application      Free            All
+                                                (open-source)   platforms
+
+  File System      Read license file from local Free (built-in) All
+                   storage                                      platforms
+  --------------------------------------------------------------------------
+
+5.2. OnPrem Implementation by Platform
+
+The core licensing logic is identical across all platforms. Only the
+file reading mechanism differs.
+
+A) Web Applications (Browser)
+
+  -----------------------------------------------------------------------
+  Strategy         How the File is Read               Use Case
+  ---------------- ---------------------------------- -------------------
+  A1: User Upload  <input type="file"> → User selects Simplest, no
+                   file → App reads it, stores in     backend needed
+                   localStorage                       
+
+  A2: Self-Hosted  Backend reads                      Recommended for
+  Backend          /app/data/license.lic → Serves via full OnPrem data
+                   /api/license → Frontend fetches it residency
+
+  A3: Electron /   fs.readFileSync() (Node.js/Rust) → Desktop wrapper for
+  Tauri            reads from app data directory      web apps
+  -----------------------------------------------------------------------
+
++-----------------------------------------------------------------------+
+| // Web: Strategy A1 (User Upload)                                     |
+|                                                                       |
+| class OnPremLicenceProvider {                                         |
+|                                                                       |
+| async uploadLicense(file) {                                           |
+|                                                                       |
+| const text = await file.text();                                       |
+|                                                                       |
+| const license = JSON.parse(text);                                     |
+|                                                                       |
+| if (this.validateLicense(license)) {                                  |
+|                                                                       |
+| localStorage.setItem('cognilabs_license', JSON.stringify(license));   |
+|                                                                       |
+| this.licenseData = license;                                           |
+|                                                                       |
+| return { success: true };                                             |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| return { success: false, error: 'Invalid license' };                  |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| check() {                                                             |
+|                                                                       |
+| const stored = localStorage.getItem('cognilabs_license');             |
+|                                                                       |
+| if (!stored) return { status: 'inactive' };                           |
+|                                                                       |
+| const license = JSON.parse(stored);                                   |
+|                                                                       |
+| return this.validateAndReturn(license);                               |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+B) Desktop Applications (.NET, Java, C++, Python, Electron)
+
+Desktop apps have direct file system access. The license file is placed
+in a specific directory by the admin.
+
+  ---------------------------------------------------------------------------
+  Platform    License File Location                  Read Method
+  ----------- -------------------------------------- ------------------------
+  Windows     C:\ProgramData\YourApp\license.lic     File.ReadAllText(path)
+
+  macOS       ~/Library/Application                  fs.readFileSync(path)
+              Support/YourApp/license.lic            
+
+  Linux       /etc/yourapp/license.lic or            fs.readFileSync(path)
+              ~/.config/yourapp/license.lic          
+  ---------------------------------------------------------------------------
+
++-----------------------------------------------------------------------+
+| // Desktop: Electron (Node.js)                                        |
+|                                                                       |
+| const fs = require('fs');                                             |
+|                                                                       |
+| const path = require('path');                                         |
+|                                                                       |
+| class OnPremLicenceProvider {                                         |
+|                                                                       |
+| constructor() {                                                       |
+|                                                                       |
+| const appData = process.env.APPDATA ||                                |
+|                                                                       |
+| process.env.HOME + '/.config';                                        |
+|                                                                       |
+| this.licensePath = path.join(appData, 'CogniLabs', 'license.lic');    |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| check() {                                                             |
+|                                                                       |
+| if (!fs.existsSync(this.licensePath)) {                               |
+|                                                                       |
+| return { status: 'inactive' };                                        |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| const content = fs.readFileSync(this.licensePath, 'utf8');            |
+|                                                                       |
+| const license = JSON.parse(content);                                  |
+|                                                                       |
+| return this.validateAndReturn(license);                               |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
++-----------------------------------------------------------------------+
+| // Desktop: .NET / C#                                                 |
+|                                                                       |
+| using System.IO;                                                      |
+|                                                                       |
+| class OnPremLicenceProvider {                                         |
+|                                                                       |
+| private string licensePath = Path.Combine(                            |
+|                                                                       |
+| Enviro                                                                |
+| nment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), |
+|                                                                       |
+| "CogniLabs", "license.lic"                                            |
+|                                                                       |
+| );                                                                    |
+|                                                                       |
+| public LicenseStatus Check() {                                        |
+|                                                                       |
+| if (!File.Exists(licensePath)) {                                      |
+|                                                                       |
+| return new LicenseStatus { Status = "inactive" };                     |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| string content = File.ReadAllText(licensePath);                       |
+|                                                                       |
+| var license = JsonSerializer.Deserialize<License>(content);           |
+|                                                                       |
+| return ValidateAndReturn(license);                                    |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+C) Mobile Applications (iOS, Android)
+
+Mobile apps read the license file from the app's sandboxed storage or
+receive it via email/AirDrop.
+
+  --------------------------------------------------------------------------------------
+  Platform   License File Location               Read Method
+  ---------- ----------------------------------- ---------------------------------------
+  iOS        Documents directory or via          FileManager.default.contents(atPath:)
+             UIDocumentPickerViewController      
+
+  Android    files directory or via              context.filesDir + FileInputStream
+             Intent.ACTION_OPEN_DOCUMENT         
+  --------------------------------------------------------------------------------------
+
++-----------------------------------------------------------------------+
+| // Android (Kotlin)                                                   |
+|                                                                       |
+| class OnPremLicenceProvider(context: Context) {                       |
+|                                                                       |
+| private val licenseFile = File(context.filesDir, "license.lic")       |
+|                                                                       |
+| fun check(): LicenseStatus {                                          |
+|                                                                       |
+| if (!licenseFile.exists()) {                                          |
+|                                                                       |
+| return LicenseStatus(status = "inactive")                             |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| val content = licenseFile.readText()                                  |
+|                                                                       |
+| val license = Gson().fromJson(content, License::class.java)           |
+|                                                                       |
+| return validateAndReturn(license)                                     |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
++-----------------------------------------------------------------------+
+| // iOS (Swift)                                                        |
+|                                                                       |
+| class OnPremLicenceProvider {                                         |
+|                                                                       |
+| private var licensePath: URL {                                        |
+|                                                                       |
+| let paths = FileManager.default.urls(for: .documentDirectory, in:     |
+| .userDomainMask)                                                      |
+|                                                                       |
+| return paths[0].appendingPathComponent("license.lic")                 |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| func check() -> LicenseStatus {                                       |
+|                                                                       |
+| guard FileManager.default.fileExists(atPath: licensePath.path) else { |
+|                                                                       |
+| return LicenseStatus(status: "inactive")                              |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| let content = try! String(contentsOf: licensePath, encoding: .utf8)   |
+|                                                                       |
+| let license = try! JSONDecoder().decode(License.self, from:           |
+| content.data(using: .utf8)!)                                          |
+|                                                                       |
+| return validateAndReturn(license)                                     |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+D) CLI / Backend Applications
+
+CLI tools read the license from a configurable path (environment
+variable or command-line flag).
+
++-----------------------------------------------------------------------+
+| # Usage                                                               |
+|                                                                       |
+| ./myapp --license-file /path/to/license.lic                           |
+|                                                                       |
+| # or                                                                  |
+|                                                                       |
+| export LICENSE_PATH=/etc/myapp/license.lic                            |
+|                                                                       |
+| ./myapp                                                               |
++=======================================================================+
++-----------------------------------------------------------------------+
+
++-----------------------------------------------------------------------+
+| // Node.js CLI                                                        |
+|                                                                       |
+| const args = require('minimist')(process.argv.slice(2));              |
+|                                                                       |
+| const licensePath = args['license-file'] || process.env.LICENSE_PATH; |
+|                                                                       |
+| class OnPremLicenceProvider {                                         |
+|                                                                       |
+| constructor() {                                                       |
+|                                                                       |
+| this.licensePath = licensePath || './license.lic';                    |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| check() {                                                             |
+|                                                                       |
+| if (!fs.existsSync(this.licensePath)) {                               |
+|                                                                       |
+| return { status: 'inactive' };                                        |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| const content = fs.readFileSync(this.licensePath, 'utf8');            |
+|                                                                       |
+| const license = JSON.parse(content);                                  |
+|                                                                       |
+| return this.validateAndReturn(license);                               |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+E) Embedded / IoT Devices
+
+Embedded devices (Raspberry Pi, industrial controllers) read the license
+from a file on the filesystem or from an EEPROM.
+
++-----------------------------------------------------------------------+
+| // C (Embedded Linux)                                                 |
+|                                                                       |
+| #include <stdio.h>                                                    |
+|                                                                       |
+| #include <stdlib.h>                                                   |
+|                                                                       |
+| #include <json-c/json.h>                                              |
+|                                                                       |
+| LicenseStatus check_license() {                                       |
+|                                                                       |
+| FILE *file = fopen("/etc/myapp/license.lic", "r");                    |
+|                                                                       |
+| if (!file) {                                                          |
+|                                                                       |
+| return (LicenseStatus){.status = "inactive"};                         |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| fseek(file, 0, SEEK_END);                                             |
+|                                                                       |
+| long length = ftell(file);                                            |
+|                                                                       |
+| fseek(file, 0, SEEK_SET);                                             |
+|                                                                       |
+| char *content = malloc(length + 1);                                   |
+|                                                                       |
+| fread(content, 1, length, file);                                      |
+|                                                                       |
+| content[length] = '\0';                                               |
+|                                                                       |
+| fclose(file);                                                         |
+|                                                                       |
+| json_object *license = json_tokener_parse(content);                   |
+|                                                                       |
+| // Validate signature, expiry, hardware binding...                    |
+|                                                                       |
+| return validate_and_return(license);                                  |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+6. Hardware Binding (Extra Security for Non-Web)
+
+Non-web applications can implement stronger hardware binding because
+they have access to system-level identifiers.
+
+  ----------------------------------------------------------------------------
+  Platform        Hardware Identifiers            Implementation
+  --------------- ------------------------------- ----------------------------
+  Windows         CPU ID, MAC address, Disk       WMI or Win32 API
+                  Serial, Motherboard ID          
+
+  macOS           MAC address, Hardware UUID,     IOKit or sysctl
+                  System Serial                   
+
+  Linux           CPU ID, MAC address, DMI/SMBIOS /sys/class/dmi/id/,
+                  data                            /sys/class/net/
+
+  Mobile          Android ID, MAC address, Device Settings.Secure.ANDROID_ID
+  (Android)       ID                              
+
+  Mobile (iOS)    Device ID, MAC address          identifierForVendor
+                  (deprecated)                    
+
+  Embedded        Serial number, MAC address,     STM32 Unique ID, Raspberry
+                  unique chip ID                  Pi Serial
+  ----------------------------------------------------------------------------
+
++-----------------------------------------------------------------------+
+| // Node.js (Electron, CLI)                                            |
+|                                                                       |
+| function generateHardwareId() {                                       |
+|                                                                       |
+| const os = require('os');                                             |
+|                                                                       |
+| const crypto = require('crypto');                                     |
+|                                                                       |
+| const mac = os.networkInterfaces()['eth0']?.[0]?.mac ||               |
+|                                                                       |
+| os.networkInterfaces()['en0']?.[0]?.mac || '';                        |
+|                                                                       |
+| const cpu = os.cpus()[0]?.model || '';                                |
+|                                                                       |
+| const hostname = os.hostname();                                       |
+|                                                                       |
+| const totalMem = os.totalmem();                                       |
+|                                                                       |
+| const fingerprint = `${mac}|${cpu}|${hostname}|${totalMem}`;          |
+|                                                                       |
+| return crypto.createHash('sha256').update(fingerprint).digest('hex'); |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
++-----------------------------------------------------------------------+
+| # Python (Desktop, CLI)                                               |
+|                                                                       |
+| import hashlib                                                        |
+|                                                                       |
+| import uuid                                                           |
+|                                                                       |
+| import platform                                                       |
+|                                                                       |
+| import subprocess                                                     |
+|                                                                       |
+| def generate_hardware_id():                                           |
+|                                                                       |
+| # CPU serial                                                          |
+|                                                                       |
+| cpu = subprocess.check_output(['wmic', 'cpu', 'get',                  |
+| 'ProcessorId']).decode().strip()                                      |
+|                                                                       |
+| # MAC address                                                         |
+|                                                                       |
+| mac = ':'.join(('{:02x}'.format((uuid.getnode() >> ele) & 0xff)       |
+|                                                                       |
+| for ele in range(5, -1, -1)))                                         |
+|                                                                       |
+| # Disk serial                                                         |
+|                                                                       |
+| disk = subprocess.check_output(['wmic', 'diskdrive', 'get',           |
+| 'SerialNumber']).decode().strip()                                     |
+|                                                                       |
+| fingerprint = f"{cpu}|{mac}|{disk}"                                   |
+|                                                                       |
+| return hashlib.sha256(fingerprint.encode()).hexdigest()               |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+7. License File Format (Vendor Signs)
+
++-----------------------------------------------------------------------+
+| {                                                                     |
+|                                                                       |
+| "version": 1,                                                         |
+|                                                                       |
+| "companyId": "comp_123",                                              |
+|                                                                       |
+| "companyName": "Acme Corp",                                           |
+|                                                                       |
+| "hardwareId": "CPU-ABC123-MAC-DEF456",                                |
+|                                                                       |
+| "expiryDate": "2027-06-17T23:59:59Z",                                 |
+|                                                                       |
+| "maxUsers": 10,                                                       |
+|                                                                       |
+| "plan": "enterprise",                                                 |
+|                                                                       |
+| "features": ["analytics", "export", "api"],                           |
+|                                                                       |
+| "issueDate": "2026-06-17T00:00:00Z",                                  |
+|                                                                       |
+| "signature": "abc123def456..."                                        |
+|                                                                       |
+| }                                                                     |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+⚠ You issue ONE license file per customer (not 10 files for 10 users).
+The maxUsers field controls how many users can access the application.
+
+8. The Vendor Signing Tool (Cross-Platform)
+
++-----------------------------------------------------------------------+
+| // tools/sign-licence.js                                              |
+|                                                                       |
+| const crypto = require('crypto');                                     |
+|                                                                       |
+| const fs = require('fs');                                             |
+|                                                                       |
+| // Load your private key (keep this secure on your machine)           |
+|                                                                       |
+| const privateKey = fs.readFileSync('./private-key.pem', 'utf8');      |
+|                                                                       |
+| function signLicense(data) {                                          |
+|                                                                       |
+| const payload = JSON.stringify(data);                                 |
+|                                                                       |
+| const signature = crypto.sign(null, Buffer.from(payload),             |
+| privateKey);                                                          |
+|                                                                       |
+| return { ...data, signature: signature.toString('base64') };          |
+|                                                                       |
+| }                                                                     |
+|                                                                       |
+| // Usage: ONE file per customer with maxUsers = 10                    |
+|                                                                       |
+| const license = signLicense({                                         |
+|                                                                       |
+| version: 1,                                                           |
+|                                                                       |
+| companyId: 'comp_123',                                                |
+|                                                                       |
+| companyName: 'Acme Corp',                                             |
+|                                                                       |
+| hardwareId: 'CPU-ABC123-MAC-DEF456',                                  |
+|                                                                       |
+| expiryDate: '2027-06-17T23:59:59Z',                                   |
+|                                                                       |
+| maxUsers: 10,                                                         |
+|                                                                       |
+| plan: 'enterprise',                                                   |
+|                                                                       |
+| features: ['analytics', 'export'],                                    |
+|                                                                       |
+| issueDate: new Date().toISOString()                                   |
+|                                                                       |
+| });                                                                   |
+|                                                                       |
+| fs.writeFileSync('./AcmeCorp.lic', JSON.stringify(license, null, 2)); |
++=======================================================================+
++-----------------------------------------------------------------------+
+
++-----------------------------------------------------------------------+
+| # Usage                                                               |
+|                                                                       |
+| node tools/sign-licence.js \                                          |
+|                                                                       |
+| --company "Acme Corp" \                                               |
+|                                                                       |
+| --hardwareId "CPU-ABC123-MAC-DEF456" \                                |
+|                                                                       |
+| --expiry "2027-06-17" \                                               |
+|                                                                       |
+| --maxUsers 10 \                                                       |
+|                                                                       |
+| --plan enterprise \                                                   |
+|                                                                       |
+| --features analytics,export \                                         |
+|                                                                       |
+| --output ./AcmeCorp.lic                                               |
++=======================================================================+
++-----------------------------------------------------------------------+
+
+9. How maxUsers Is Enforced (All Platforms)
+
+  ------------------------------------------------------------------------
+  Enforcement      SaaS                        OnPrem
+  Point                                        
+  ---------------- --------------------------- ---------------------------
+  User             Security Rules / API        App logic checks active
+  Registration     prevents creating more than user count against maxUsers
+                   maxUsers accounts           
+
+  Concurrent Login Session manager checks      Session manager checks
+                   active sessions against     active sessions against
+                   maxUsers                    maxUsers
+
+  REST API         Security Rules + App Logic  Backend validates on every
+                   on every write              authenticated request
+
+  Admin UI         Displays current usage: "10 Displays current usage: "10
+                   of 10 licenses used"        of 10 licenses used"
+
+  Local Database   N/A (cloud)                 SQLite or file-based user
+                                               tracking
+  ------------------------------------------------------------------------
+
+10. Summary: OnPrem Implementation by Platform
+
+  ----------------------------------------------------------------------------
+  Platform           File Reading Method   Hardware Binding   User Enforcement
+  ------------------ --------------------- ------------------ ----------------
+  Web (Browser)      User upload OR        Server-side        App logic +
+                     backend API           Hardware ID        backend
+                                           (Strategy B)       
+
+  Web                fs.readFileSync()     CPU + MAC + Disk   App logic
+  (Electron/Tauri)   (file system)                            
+
+  Desktop            File.ReadAllText()    CPU + MAC + Disk + App logic
+  (.NET/Java/C++)                          Motherboard        
+
+  Mobile (iOS)       FileManager +         Device ID, Vendor  App logic
+                     Document Picker       ID                 
+
+  Mobile (Android)   context.filesDir +    Android ID, MAC    App logic
+                     FileInputStream                          
+
+  CLI / Backend      fs.readFileSync()     CPU + MAC + Disk   App logic
+                     (configurable path)                      
+
+  Embedded/IoT       File system or EEPROM Unique chip ID,    App logic
+                                           Serial             
+  ----------------------------------------------------------------------------
+
+11. Total Cost: $0
+
+  ------------------------------------------------------------------------
+  Component        SaaS                        OnPrem
+  ---------------- --------------------------- ---------------------------
+  Database         Firebase Firestore (free    SQLite (built-in, free) OR
+                   tier) OR PostgreSQL (free)  file-based
+
+  Authentication   Firebase Auth (free tier)   Built-in or none
+                   OR built-in                 
+
+  Hosting          Firebase Hosting (free      Customer's own
+                   tier) OR your own server    infrastructure
+
+  License Signing  HMAC (Cloud Function, free  Ed25519 (built into all
+                   tier)                       languages)
+
+  License Storage  Firestore document (1 per   .lic file (1 per company)
+                   company)                    
+
+  Admin Interface  Built into your app         Built into your app
+
+  Payment          Stripe/PayPal (free to      Manual invoicing (or
+  Integration      integrate)                  Stripe)
+
+  Platform SDKs    Firebase SDK (free)         Native file I/O (built-in)
+
+  Total            $0/month                    $0/month
+  ------------------------------------------------------------------------
+
+12. Implementation Roadmap (All Platforms)
+
+  -------------------------------------------------------------------------
+  Priority   Task                                    Applicable Platforms
+  ---------- --------------------------------------- ----------------------
+  1          Build LicenceProvider interface +       All
+             factory                                 
+
+  2          Implement SaasLicenceProvider           All
+
+  3          Write backend API / Firestore Security  All (SaaS)
+             Rules                                   
+
+  4          Implement OnPremLicenceProvider         All
+
+  5          Build signing CLI tool                  All (Vendor)
+             (tools/sign-licence.js)                 
+
+  6          Generate Ed25519 key pair               All (Vendor)
+
+  7          Add maxUsers enforcement                All
+
+  8          Implement hardware binding (non-web)    Desktop, Mobile,
+                                                     Embedded
+
+  9          Test both deployment modes on all       All
+             platforms                               
+  -------------------------------------------------------------------------
+
+13. One-Sentence Summary
+
+Build a single, unified LicenceProvider abstraction with SaaS
+(API/Firestore) and OnPrem (signed .lic file with Ed25519)
+implementations; the SaaS mode works identically for all platforms,
+while OnPrem adapts the file-reading mechanism to the target environment
+(upload for web browsers, direct filesystem for desktop/mobile/CLI, and
+serial/EEPROM for embedded) — all with zero recurring costs and a single
+vendor-side signing tool.
+
+14. D30 Metadata (For Tracking)
+
+  -----------------------------------------------------------------------
+  Attribute              Value
+  ---------------------- ------------------------------------------------
+  Deliverable ID         D30-001
+
+  Deliverable Name       Licensing Implementation Schema
+
+  Version                1.0
+
+  Status                 Active
+
+  Effective Date         2026-06-18
+
+  Owner                  Senior Enterprise Architect
+
+  Linked Macros          MP-18, MP-17, MP-02
+
+  Linked Modules         M-10, M-18
+
+  Linked Controls        CTRL-003, CTRL-016
+
+  Linked Risks           RISK-004, RISK-001
+
+  Linked KPIs            KPI-006, KPI-011
+
+  Linked Object Classes  OC-019 (License)
+
+  Linked Requirements    REQ-041
+  -----------------------------------------------------------------------
+
+15. Mapping to D01–D29
+
+  -----------------------------------------------------------------------
+  D01–D29 Artifact      How D30 Enriches It
+  --------------------- -------------------------------------------------
+  D01 (MP-18)           Provides implementation code for license
+                        validation.
+
+  D02 (MP-18 Tasks)     Maps check() method to validation steps.
+
+  D03 (Rules)           Adds concrete rules: signature validation, expiry
+                        check, maxUsers.
+
+  D04 (Controls)        Adds CTRL-016 (Ed25519 integrity check).
+
+  D05 (Risks)           Hardware binding mitigates unauthorized access
+                        risk.
+
+  D06 (KPIs)            Provides measurement logic for license compliance
+                        %.
+
+  D09 (OC-019)          Defines all fields in the license JSON object.
+
+  D10                   Adds hardwareId, signature, maxUsers, plan,
+                        features.
+
+  D13                   Adds user story: "As an admin, I want to upload a
+                        license file."
+
+  D26 (M-10)            Provides the exact implementation for the OnPrem
+                        Suite.
+
+  D27–D29               Enables tracking of license activation as a
+                        journey touchpoint.
+  -----------------------------------------------------------------------
+
+Summary
+
+This D30 – Licensing Implementation Schema is now a fully traceable,
+implementation-ready deliverable that:
+
+-   Operationalizes MP18 (License Management) with actual code.
+
+-   Provides platform-specific implementations (web, desktop, mobile,
+    CLI, embedded).
+
+-   Ensures zero-cost licensing (no third-party license servers needed).
+
+-   Maps explicitly back to D01–D29 for full auditability.
+
+-   Includes a vendor signing tool to generate .lic files securely.
