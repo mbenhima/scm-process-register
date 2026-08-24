@@ -320,8 +320,23 @@ export function AppStateProvider({ children }) {
   )
 
   const addLesson = useCallback(
-    (projectId, text) => {
-      updateSustainment(projectId, (s) => ({ ...s, lessonsLearned: [...s.lessonsLearned, { id: uid('lesson'), text }] }))
+    (projectId, text, linkedRuleOrControl = '') => {
+      updateSustainment(projectId, (s) => ({
+        ...s,
+        lessonsLearned: [...s.lessonsLearned, { id: uid('lesson'), text, linkedRuleOrControl, status: linkedRuleOrControl ? 'applied' : 'pending' }],
+      }))
+    },
+    [updateSustainment],
+  )
+
+  // D25 REX Institutionalization Log: a lesson only closes the loop once it names
+  // exactly which Rule, Control, or Charter now encodes it — this toggles that.
+  const updateLesson = useCallback(
+    (projectId, lessonId, patch) => {
+      updateSustainment(projectId, (s) => ({
+        ...s,
+        lessonsLearned: s.lessonsLearned.map((l) => (l.id === lessonId ? { ...l, ...patch } : l)),
+      }))
     },
     [updateSustainment],
   )
@@ -596,6 +611,7 @@ export function AppStateProvider({ children }) {
       updateCheckpoint,
       addQuickWin,
       addLesson,
+      updateLesson,
       toggleSignoff,
       toggleSponsorAction,
       addSponsorAction,
@@ -642,6 +658,7 @@ export function AppStateProvider({ children }) {
       updateCheckpoint,
       addQuickWin,
       addLesson,
+      updateLesson,
       toggleSignoff,
       toggleSponsorAction,
       addSponsorAction,

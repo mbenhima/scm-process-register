@@ -267,6 +267,15 @@ const dict = {
   quickWin: { en: 'Quick Win / Milestone', fr: 'Gain rapide / Jalon', ar: 'إنجاز سريع / معلم' },
   sustainmentSignoff: { en: 'Sustainment Sign-off', fr: 'Validation de pérennisation', ar: 'توقيع الاستدامة' },
   lessonsLearned: { en: 'Lessons Learned', fr: 'Leçons apprises', ar: 'الدروس المستفادة' },
+  m13_rex_desc: {
+    en: 'D25 REX Institutionalization Log: a lesson counts as closed only once it names the specific Rule, Control, or Charter that now encodes it — not just recorded, but applied.',
+    fr: 'Journal d’institutionnalisation REX (D25) : une leçon n’est considérée close que lorsqu’elle nomme la règle, le contrôle ou la charte qui l’encode désormais — pas seulement consignée, mais appliquée.',
+    ar: 'سجل ترسيخ الدروس (D25): لا يُعتبر الدرس مغلقًا إلا عند تسمية القاعدة أو الضابط أو الميثاق الذي أصبح يجسده — وليس مجرد تسجيله.',
+  },
+  m13_rex_applied: { en: 'Applied', fr: 'Appliquée', ar: 'مطبّق' },
+  m13_rex_pending: { en: 'Pending', fr: 'En attente', ar: 'قيد الانتظار' },
+  m13_rex_link_placeholder: { en: 'Linked Rule / Control / Charter (e.g. RULE-008, CTRL-012, CHTR-05)', fr: 'Règle / Contrôle / Charte liée (ex. RULE-008, CTRL-012, CHTR-05)', ar: 'القاعدة/الضابط/الميثاق المرتبط (مثال RULE-008, CTRL-012, CHTR-05)' },
+  m13_rex_link_label: { en: 'Linked to', fr: 'Liée à', ar: 'مرتبط بـ' },
 
   // ---------- Module 14 ----------
   m14_title: { en: 'Change Risk Register', fr: 'Registre des risques de changement', ar: 'سجل مخاطر التغيير' },

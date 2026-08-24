@@ -12,10 +12,11 @@ const RISK_TONE = { low: 'green', moderate: 'amber', high: 'red' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, updateCheckpoint, addQuickWin, addLesson, toggleSignoff, currentUser } = useAppState()
+  const { data, updateCheckpoint, addQuickWin, addLesson, updateLesson, toggleSignoff, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const [win, setWin] = useState('')
   const [lesson, setLesson] = useState('')
+  const [lessonLink, setLessonLink] = useState('')
 
   function markComplete(chk) {
     const adoptionRate = Math.round(50 + Math.random() * 40)
@@ -80,28 +81,60 @@ function Content({ project }) {
         </div>
 
         <div className="card p-4">
-          <h3 className="font-semibold text-brand-950 mb-3">{t('lessonsLearned')}</h3>
+          <h3 className="font-semibold text-brand-950 mb-1">{t('lessonsLearned')}</h3>
+          <p className="text-xs text-ink/40 mb-3">
+            {t('m13_rex_desc')}
+          </p>
           <div className="space-y-2 mb-3">
             {project.sustainment.lessonsLearned.map((l) => (
-              <div key={l.id} className="rounded-lg border border-brand-100 p-2 text-sm text-ink/70">
-                {l.text}
+              <div key={l.id} className="rounded-lg border border-brand-100 p-2 space-y-1.5">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-sm text-ink/70">{l.text}</p>
+                  <Badge tone={l.status === 'applied' ? 'green' : 'amber'}>{l.status === 'applied' ? t('m13_rex_applied') : t('m13_rex_pending')}</Badge>
+                </div>
+                {canEdit ? (
+                  <div className="flex gap-2 items-center">
+                    <input
+                      className="input text-xs py-1"
+                      placeholder={t('m13_rex_link_placeholder')}
+                      value={l.linkedRuleOrControl || ''}
+                      onChange={(e) =>
+                        updateLesson(project.id, l.id, {
+                          linkedRuleOrControl: e.target.value,
+                          status: e.target.value.trim() ? 'applied' : 'pending',
+                        })
+                      }
+                    />
+                  </div>
+                ) : (
+                  l.linkedRuleOrControl && <p className="text-xs text-ink/50">{t('m13_rex_link_label')}: {l.linkedRuleOrControl}</p>
+                )}
               </div>
             ))}
             {project.sustainment.lessonsLearned.length === 0 && <p className="text-sm text-ink/40 italic">{t('noData')}</p>}
           </div>
           {canEdit && (
-            <div className="flex gap-2">
+            <div className="space-y-2">
               <input className="input" placeholder={t('lessonsLearned')} value={lesson} onChange={(e) => setLesson(e.target.value)} />
-              <button
-                className="btn-primary shrink-0"
-                onClick={() => {
-                  if (!lesson.trim()) return
-                  addLesson(project.id, lesson)
-                  setLesson('')
-                }}
-              >
-                {t('add')}
-              </button>
+              <div className="flex gap-2">
+                <input
+                  className="input"
+                  placeholder={t('m13_rex_link_placeholder')}
+                  value={lessonLink}
+                  onChange={(e) => setLessonLink(e.target.value)}
+                />
+                <button
+                  className="btn-primary shrink-0"
+                  onClick={() => {
+                    if (!lesson.trim()) return
+                    addLesson(project.id, lesson, lessonLink)
+                    setLesson('')
+                    setLessonLink('')
+                  }}
+                >
+                  {t('add')}
+                </button>
+              </div>
             </div>
           )}
         </div>
