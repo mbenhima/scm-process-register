@@ -2,18 +2,75 @@ import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { useScopedProject } from '../utils/useScoped.js'
-import { canWrite } from '../utils/rbac.js'
+import { canWrite, canManageCharters, canDeleteCharter } from '../utils/rbac.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
-import charters from '../data/charters.js'
+import Modal from '../components/Modal.jsx'
 import charterActions from '../data/charterActions.js'
 import mentoringStages from '../data/mentoringStages.js'
 
 const STAGE_TONE = { 1: 'gray', 2: 'amber', 3: 'green' }
 const PDCA_TONE = { Plan: 'gray', Do: 'brand', Check: 'amber', Act: 'green' }
+const CHARTER_STATUSES = ['Active', 'Draft', 'Retired']
+const BLANK_CHARTER = {
+  name: '', category: '', pdcaCycle: 'Full Cycle (Plan-Do-Check-Act)', what: '', who: '', when: '', where: '', why: '', how: '',
+  ownerRole: '', racsi: { R: '', A: '', C: '', S: '', I: '' }, primaryLinkedMacroId: '', governsObsLevel: 'Project',
+  status: 'Draft', version: 'v1.0', effectiveDate: '', reviewFrequency: '', description: '',
+}
 
-function CharterCard({ charter, expanded, onToggle }) {
+function CharterForm({ form, setForm }) {
   const { t } = useI18n()
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
+  const setRacsi = (k) => (e) => setForm({ ...form, racsi: { ...form.racsi, [k]: e.target.value } })
+  return (
+    <div className="space-y-3">
+      <input className="input" placeholder="Charter name" value={form.name} onChange={set('name')} />
+      <div className="grid grid-cols-2 gap-2">
+        <input className="input" placeholder="Category" value={form.category} onChange={set('category')} />
+        <input className="input" placeholder={t('m19_owner')} value={form.ownerRole} onChange={set('ownerRole')} />
+      </div>
+      <textarea className="input" rows={2} placeholder={`${t('m19_what')}`} value={form.what} onChange={set('what')} />
+      <textarea className="input" rows={2} placeholder={`${t('m19_who')}`} value={form.who} onChange={set('who')} />
+      <div className="grid grid-cols-2 gap-2">
+        <input className="input" placeholder={t('m19_when')} value={form.when} onChange={set('when')} />
+        <input className="input" placeholder={t('m19_where')} value={form.where} onChange={set('where')} />
+      </div>
+      <textarea className="input" rows={2} placeholder={t('m19_why')} value={form.why} onChange={set('why')} />
+      <textarea className="input" rows={2} placeholder={t('m19_how')} value={form.how} onChange={set('how')} />
+      <textarea className="input" rows={2} placeholder="Description" value={form.description} onChange={set('description')} />
+      <div>
+        <label className="label">{t('m18_chain_racsi')}</label>
+        <div className="grid grid-cols-5 gap-1.5">
+          {['R', 'A', 'C', 'S', 'I'].map((k) => (
+            <input key={k} className="input text-xs" placeholder={k} value={form.racsi[k]} onChange={setRacsi(k)} />
+          ))}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        <input className="input" placeholder="Primary linked macro (e.g. MP-02)" value={form.primaryLinkedMacroId} onChange={set('primaryLinkedMacroId')} />
+        <select className="input" value={form.governsObsLevel} onChange={set('governsObsLevel')}>
+          <option value="Project">Project</option>
+          <option value="Organization">Organization</option>
+          <option value="Group">Group</option>
+        </select>
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        <select className="input" value={form.status} onChange={set('status')}>
+          {CHARTER_STATUSES.map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+        <input className="input" placeholder={t('m19_version')} value={form.version} onChange={set('version')} />
+        <input className="input" placeholder={t('m19_effective')} value={form.effectiveDate} onChange={set('effectiveDate')} />
+      </div>
+      <input className="input" placeholder={t('m19_review')} value={form.reviewFrequency} onChange={set('reviewFrequency')} />
+    </div>
+  )
+}
+
+function CharterCard({ charter, expanded, onToggle, canManage, canDelete, onEdit, onDelete }) {
+  const { t } = useI18n()
+  const deleteBlocked = charter.status === 'Active'
   return (
     <div className="card p-4 space-y-2">
       <button className="w-full flex items-start justify-between gap-3 text-start" onClick={onToggle}>
@@ -53,6 +110,23 @@ function CharterCard({ charter, expanded, onToggle }) {
             <span>·</span>
             <span>{t('m19_linked_macro')}: {charter.primaryLinkedMacroId}</span>
           </div>
+          {(canManage || canDelete) && (
+            <div className="flex items-center gap-2 pt-2">
+              {canManage && (
+                <button className="btn-secondary text-xs" onClick={onEdit}>{t('m19_edit')}</button>
+              )}
+              {canDelete && (
+                <button
+                  className="btn-danger text-xs disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={deleteBlocked}
+                  title={deleteBlocked ? t('m19_delete_retire_first') : undefined}
+                  onClick={onDelete}
+                >
+                  {t('delete')}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -61,20 +135,73 @@ function CharterCard({ charter, expanded, onToggle }) {
 
 function CharterTab() {
   const { t } = useI18n()
+  const { data, currentUser, addCharter, updateCharter, deleteCharter } = useAppState()
+  const charters = data.charters
+  const canManage = canManageCharters(currentUser?.role, data.rolePermissions)
+  const canDelete = canDeleteCharter(currentUser?.role)
   const [expandedId, setExpandedId] = useState(null)
+  const [modal, setModal] = useState(null) // { mode: 'add' | 'edit', charterId? }
+  const [form, setForm] = useState(BLANK_CHARTER)
+
+  function openAdd() {
+    setForm(BLANK_CHARTER)
+    setModal({ mode: 'add' })
+  }
+  function openEdit(charter) {
+    setForm({ ...BLANK_CHARTER, ...charter, racsi: { ...BLANK_CHARTER.racsi, ...charter.racsi } })
+    setModal({ mode: 'edit', charterId: charter.id })
+  }
+  function submit() {
+    if (!form.name.trim()) return
+    if (modal.mode === 'add') addCharter(form)
+    else updateCharter(modal.charterId, form)
+    setModal(null)
+  }
+
   return (
     <div className="space-y-3">
-      <p className="text-xs text-ink/50">{t('m19_charter_desc')}</p>
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <p className="text-xs text-ink/50 flex-1">{t('m19_charter_desc')}</p>
+        {canManage && (
+          <button className="btn-primary text-xs shrink-0" onClick={openAdd}>
+            + {t('m19_add_charter')}
+          </button>
+        )}
+      </div>
       {charters.map((c) => (
-        <CharterCard key={c.id} charter={c} expanded={expandedId === c.id} onToggle={() => setExpandedId(expandedId === c.id ? null : c.id)} />
+        <CharterCard
+          key={c.id}
+          charter={c}
+          expanded={expandedId === c.id}
+          onToggle={() => setExpandedId(expandedId === c.id ? null : c.id)}
+          canManage={canManage}
+          canDelete={canDelete}
+          onEdit={() => openEdit(c)}
+          onDelete={() => deleteCharter(c.id)}
+        />
       ))}
+
+      <Modal
+        open={!!modal}
+        onClose={() => setModal(null)}
+        title={modal?.mode === 'add' ? `+ ${t('m19_add_charter')}` : t('m19_edit')}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setModal(null)}>{t('cancel')}</button>
+            <button className="btn-primary" onClick={submit}>{t('save')}</button>
+          </>
+        }
+      >
+        {modal && <CharterForm form={form} setForm={setForm} />}
+      </Modal>
     </div>
   )
 }
 
 function ActionMappingTab({ project, canEdit }) {
   const { t } = useI18n()
-  const { logCharterAction, deleteCharterActionLog } = useAppState()
+  const { data, logCharterAction, deleteCharterActionLog } = useAppState()
+  const charters = data.charters
   const [filterCharter, setFilterCharter] = useState('all')
   const rows = charterActions.filter((a) => filterCharter === 'all' || a.charterId === filterCharter)
   const log = project?.charterActionLog || []

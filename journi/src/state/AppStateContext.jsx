@@ -5,6 +5,7 @@ import e2eProcessCatalog from '../data/e2eProcesses.js'
 import phaseTemplateCatalog from '../data/phaseTemplates.js'
 import defaultRacsiGrid from '../data/racsi.js'
 import defaultCodebook from '../data/defaultCodebook.js'
+import defaultCharters from '../data/charters.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
 import { addDays, todayISO } from '../utils/wbs.js'
@@ -54,6 +55,10 @@ function loadInitialState() {
             parsed.codebooks[org.id] = defaultCodebook.map((c) => ({ id: uid('code'), ...c }))
           }
         }
+        // D31b: a session persisted before Charter CRUD shipped won't have
+        // data.charters yet — back-fill from the same default set Module 19
+        // used to render as a static import.
+        if (!parsed.charters) parsed.charters = JSON.parse(JSON.stringify(defaultCharters))
         if (!parsed.license) {
           parsed.license = {
             mode: 'saas',
@@ -436,6 +441,24 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // D31b Charter RBAC x OBS CRUD matrix: create/edit charter definitions
+  // themselves (distinct from logCharterAction above, which tracks
+  // per-project completion of an existing charter's D31a actions).
+  const addCharter = useCallback((charter) => {
+    setData((prev) => ({ ...prev, charters: [...prev.charters, { ...charter, id: uid('chtr') }] }))
+  }, [])
+
+  const updateCharter = useCallback((charterId, patch) => {
+    setData((prev) => ({
+      ...prev,
+      charters: prev.charters.map((c) => (c.id === charterId ? { ...c, ...patch } : c)),
+    }))
+  }, [])
+
+  const deleteCharter = useCallback((charterId) => {
+    setData((prev) => ({ ...prev, charters: prev.charters.filter((c) => c.id !== charterId) }))
+  }, [])
+
   // Module 20 — D28 Journey Touchpoints: records which touchpoints an
   // employee/cohort actually reached for this project, giving D29's Journey
   // Analytics dashboards a real completion rate to compute rather than a
@@ -753,6 +776,9 @@ export function AppStateProvider({ children }) {
       updateRacsiCell,
       logCharterAction,
       deleteCharterActionLog,
+      addCharter,
+      updateCharter,
+      deleteCharter,
       logTouchpoint,
       deleteTouchpointLog,
       addCode,
@@ -810,6 +836,9 @@ export function AppStateProvider({ children }) {
       updateRacsiCell,
       logCharterAction,
       deleteCharterActionLog,
+      addCharter,
+      updateCharter,
+      deleteCharter,
       logTouchpoint,
       deleteTouchpointLog,
       addCode,

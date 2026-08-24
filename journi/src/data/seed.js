@@ -6,6 +6,7 @@ import e2eProcessCatalog from './e2eProcesses.js'
 import phaseTemplateCatalog from './phaseTemplates.js'
 import defaultRacsiGrid from './racsi.js'
 import defaultCodebook from './defaultCodebook.js'
+import defaultCharters from './charters.js'
 import { DEFAULT_ROLE_PERMISSIONS } from './constants.js'
 import * as atlas from './cases/atlas.js'
 import * as atlasTangier from './cases/atlasTangier.js'
@@ -160,7 +161,7 @@ export function buildSeed() {
     maxUsers: 50,
     issueDate: addDays(todayISO(), -90),
     expiryDate: addDays(todayISO(), 275),
-    features: ['core_cm_modules', 'wbs_gantt', 'ai_use_case_library', 'process_registry_m19'],
+    features: ['core_cm_modules', 'wbs_gantt', 'ai_use_case_library', 'process_registry_m18'],
     uploadedFile: null,
   }
 
@@ -179,6 +180,7 @@ export function buildSeed() {
     aiProjectOverride,
     aiUsageLog,
     codebooks,
+    charters: JSON.parse(JSON.stringify(defaultCharters)),
     rolePermissions,
     requireJustification,
     license,

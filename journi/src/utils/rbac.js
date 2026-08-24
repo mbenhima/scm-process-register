@@ -38,6 +38,23 @@ export function canRequestProjectAiOverride(role, matrix) {
   return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN, ROLES.CHANGE_MANAGER].includes(role)
 }
 
+// D31b Charter RBAC x OBS CRUD matrix: Super/Group/Org Admin and Change
+// Manager can create/edit charter definitions; deletion is narrower still
+// (see canDeleteCharter) — Change Manager can create/edit but never delete.
+export function canManageCharters(role, matrix) {
+  if (matrix) return !!matrix[role]?.manageCharters
+  return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN, ROLES.CHANGE_MANAGER].includes(role)
+}
+
+// D31b: "cannot delete a charter still in Active status anywhere — must
+// retire it first" and deletion itself is Group/Org Admin or above only,
+// never a Change Manager even though they can create/edit. Not part of the
+// runtime-configurable matrix, matching how canDelete() elsewhere is also a
+// fixed role set rather than a Permission Matrix column.
+export function canDeleteCharter(role) {
+  return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN].includes(role)
+}
+
 // Only used to seed data.rolePermissions at buildSeed() time.
 export { DEFAULT_ROLE_PERMISSIONS }
 
