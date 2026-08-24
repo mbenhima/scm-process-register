@@ -24,6 +24,7 @@ import Module17Page from './pages/Module17Page.jsx'
 import Module18Page from './pages/Module18Page.jsx'
 import Module19Page from './pages/Module19Page.jsx'
 import Module20Page from './pages/Module20Page.jsx'
+import Module21Page from './pages/Module21Page.jsx'
 
 export default function App() {
   return (
@@ -65,6 +66,7 @@ export default function App() {
         <Route path="m17" element={<Module17Page />} />
         <Route path="m19" element={<Module19Page />} />
         <Route path="m20" element={<Module20Page />} />
+        <Route path="m21" element={<Module21Page />} />
       </Route>
       <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
     </Routes>

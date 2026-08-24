@@ -62,6 +62,7 @@ function loadInitialState() {
           phaseGates: p.phaseGates || [],
           phaseChecklists: p.phaseChecklists || [],
           charterActionLog: p.charterActionLog || [],
+          touchpointLog: p.touchpointLog || [],
         }))
         return parsed
       }
@@ -424,6 +425,30 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // Module 21 — D28 Journey Touchpoints: records which touchpoints an
+  // employee/cohort actually reached for this project, giving D29's Journey
+  // Analytics dashboards a real completion rate to compute rather than a
+  // narrative description.
+  const logTouchpoint = useCallback((projectId, touchpointId, note) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        touchpointLog: [{ id: uid('tplog'), touchpointId, date: todayISO(), note: note || '' }, ...(p.touchpointLog || [])],
+      })),
+    }))
+  }, [])
+
+  const deleteTouchpointLog = useCallback((projectId, logId) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        touchpointLog: (p.touchpointLog || []).filter((l) => l.id !== logId),
+      })),
+    }))
+  }, [])
+
   const updateLicense = useCallback((patch) => {
     setData((prev) => ({ ...prev, license: { ...prev.license, ...patch } }))
   }, [])
@@ -532,6 +557,7 @@ export function AppStateProvider({ children }) {
         phaseGates: [],
         phaseChecklists: [],
         charterActionLog: [],
+        touchpointLog: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [
@@ -649,6 +675,8 @@ export function AppStateProvider({ children }) {
       updateRacsiCell,
       logCharterAction,
       deleteCharterActionLog,
+      logTouchpoint,
+      deleteTouchpointLog,
       updateLicense,
       setRequireJustification,
       llmConfig,
@@ -698,6 +726,8 @@ export function AppStateProvider({ children }) {
       updateRacsiCell,
       logCharterAction,
       deleteCharterActionLog,
+      logTouchpoint,
+      deleteTouchpointLog,
       updateLicense,
       setRequireJustification,
       llmConfig,

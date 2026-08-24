@@ -85,6 +85,9 @@ export default function Sidebar({ mobileOpen, onNavigate }) {
             <NavLink to="/app/m20" className={linkClass} onClick={onNavigate}>
               {t('navM20')}
             </NavLink>
+            <NavLink to="/app/m21" className={linkClass} onClick={onNavigate}>
+              {t('navM21')}
+            </NavLink>
           </div>
         </div>
       </nav>
