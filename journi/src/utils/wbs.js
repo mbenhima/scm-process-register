@@ -98,10 +98,16 @@ export function pctForDate(dateISO, range) {
 }
 
 /** Module 18 — Phase Checklist (D32c) completion %, for a given phase, across both PM and CM tracks (or one track if given). */
+/** D32c: each item carries a Weight_% (default 100 for items created before
+ * weighting existed, or left blank); completion is a weighted average, not a
+ * simple item count, so a heavier item blocks the phase more than a light one. */
 export function phaseChecklistCompletion(phaseChecklists, phase, track) {
   const items = (phaseChecklists || []).filter((c) => c.phase === phase && (!track || c.track === track))
   if (items.length === 0) return null
-  return Math.round((items.filter((c) => c.done).length / items.length) * 100)
+  const totalWeight = items.reduce((sum, c) => sum + (c.weight ?? 100), 0)
+  if (totalWeight === 0) return null
+  const doneWeight = items.filter((c) => c.done).reduce((sum, c) => sum + (c.weight ?? 100), 0)
+  return Math.round((doneWeight / totalWeight) * 100)
 }
 
 export function monthTicks(range) {

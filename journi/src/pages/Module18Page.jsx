@@ -237,7 +237,7 @@ function TemplateModal({ open, onClose, project, data, loadPhaseTemplate }) {
   )
 }
 
-const BLANK_CHECKLIST_ITEM = { phase: '', track: 'pm', item: '', done: false }
+const BLANK_CHECKLIST_ITEM = { phase: '', track: 'pm', item: '', weight: 50, done: false }
 
 function ChecklistSection({ project, canEdit, phaseFilter }) {
   const { addSubItem, updateSubItem, removeSubItem } = useAppState()
@@ -268,6 +268,7 @@ function ChecklistSection({ project, canEdit, phaseFilter }) {
               <th className="text-start px-3 py-2">Phase</th>
               <th className="text-start px-3 py-2">Track</th>
               <th className="text-start px-3 py-2">Item</th>
+              <th className="text-start px-3 py-2">Weight %</th>
               <th className="text-start px-3 py-2">Done</th>
               {canEdit && <th className="px-2 py-2" />}
             </tr>
@@ -280,6 +281,7 @@ function ChecklistSection({ project, canEdit, phaseFilter }) {
                   <Badge tone="gray">{c.track === 'pm' ? 'PM' : 'CM'}</Badge>
                 </td>
                 <td className="px-3 py-2 text-brand-950">{c.item}</td>
+                <td className="px-3 py-2 text-ink/60">{c.weight ?? 100}</td>
                 <td className="px-3 py-2">
                   <input
                     type="checkbox"
@@ -301,7 +303,7 @@ function ChecklistSection({ project, canEdit, phaseFilter }) {
         </table>
       )}
       {canEdit && (
-        <div className="p-3 border-t border-brand-50 grid sm:grid-cols-[1fr_auto_2fr_auto] gap-2">
+        <div className="p-3 border-t border-brand-50 grid sm:grid-cols-[1fr_auto_2fr_auto_auto] gap-2">
           <input
             className="input"
             list="m18-phase-options"
@@ -319,6 +321,15 @@ function ChecklistSection({ project, canEdit, phaseFilter }) {
             <option value="cm">CM-track</option>
           </select>
           <input className="input" placeholder="Checklist item" value={form.item} onChange={(e) => setForm({ ...form, item: e.target.value })} />
+          <input
+            type="number"
+            min="1"
+            max="100"
+            className="input w-20"
+            title="Weight %"
+            value={form.weight}
+            onChange={(e) => setForm({ ...form, weight: Number(e.target.value) })}
+          />
           <button className="btn-primary text-sm" onClick={submit}>
             + Add
           </button>
@@ -327,6 +338,10 @@ function ChecklistSection({ project, canEdit, phaseFilter }) {
     </div>
   )
 }
+
+// D17 CAT-02 RACSI role codes — the Accountable role on a Joint Decision Record
+// (D32e/JD-05) may be any single one of these, not necessarily the PM.
+const ACCOUNTABLE_ROLE_OPTIONS = ['PM', 'CM', 'ES', 'FPO', 'ITL', 'SUP']
 
 const BLANK_GATE_FORM = {
   phase: '',
@@ -340,6 +355,7 @@ const BLANK_GATE_FORM = {
   openFlags: '',
   jointDecision: 'go',
   conditions: '',
+  accountable: 'PM',
 }
 
 function PhaseGateModal({ open, onClose, project }) {
@@ -366,7 +382,6 @@ function PhaseGateModal({ open, onClose, project }) {
     if (!form.phase.trim()) return
     addSubItem(project.id, 'phaseGates', {
       ...form,
-      accountable: 'PM',
       pmInput: { recommendation: form.pmRecommendation, notes: form.pmNotes },
       cmInput: {
         recommendation: form.cmRecommendation,
@@ -398,7 +413,8 @@ function PhaseGateModal({ open, onClose, project }) {
       <div className="space-y-4">
         <p className="text-[11px] text-ink/40">
           E2E-06 · PM ↔ CM Governance Bridge (D32d/D32e): triggered by a Main Project schedule slip or a phase-gate checkpoint. PM and CM
-          record their inputs independently below; the fused Joint Decision has exactly one Accountable role — the Project Manager.
+          record their inputs independently below; the fused Joint Decision has exactly one Accountable role, selected below — it may
+          differ from either input's author (D32e/JD-05).
         </p>
         <div className="grid grid-cols-2 gap-3">
           <div>
@@ -471,15 +487,27 @@ function PhaseGateModal({ open, onClose, project }) {
           </div>
         </div>
 
-        <div>
-          <label className="label">Joint Decision (Accountable: PM)</label>
-          <select className="input" value={form.jointDecision} onChange={(e) => setForm({ ...form, jointDecision: e.target.value })}>
-            {GATE_DECISIONS.map((d) => (
-              <option key={d} value={d}>
-                {GATE_DECISION_LABEL[d]}
-              </option>
-            ))}
-          </select>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="label">Joint Decision</label>
+            <select className="input" value={form.jointDecision} onChange={(e) => setForm({ ...form, jointDecision: e.target.value })}>
+              {GATE_DECISIONS.map((d) => (
+                <option key={d} value={d}>
+                  {GATE_DECISION_LABEL[d]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="label">Accountable role (exactly one)</label>
+            <select className="input" value={form.accountable} onChange={(e) => setForm({ ...form, accountable: e.target.value })}>
+              {ACCOUNTABLE_ROLE_OPTIONS.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         {form.jointDecision === 'go_conditions' && (
           <div>

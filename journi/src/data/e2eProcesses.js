@@ -67,7 +67,7 @@ const e2eProcesses = [
     kind: 'loop',
     orderedMacroProcesses: ['MP-02', 'MP-08'],
     trigger: 'Main Project schedule slip logged OR Phase Gate checkpoint reached',
-    terminalState: 'Joint Decision Record produced (Go / Go with Conditions / No-Go); PM and CM inputs preserved independently; exactly one Accountable role named (PM)',
+    terminalState: 'Joint Decision Record produced (Go / Go with Conditions / No-Go); PM and CM inputs preserved independently; exactly one Accountable role named (selectable, may differ from either input’s author per D32e/JD-05)',
     relatedModules: ['M8', 'M14', 'M18'],
     note: 'Cross-references adoption-risk entries (MP-08) against linked Main Project schedule slips. Implemented in M18 as the Phase Gate / Joint Decision Record feature.',
   },
