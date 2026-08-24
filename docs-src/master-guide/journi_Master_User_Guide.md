@@ -23,6 +23,25 @@ Version 1.0 · August 2026 · Confidential
   - [1.7 Step 5 --- Governance Settings (M2)](#p1-7)
   - [1.8 Step 6 --- Creating the First Main Project and CM Project (M1)](#p1-8)
   - [1.9 Tenant Setup Checklist](#p1-9)
+- [Part 1B --- Week-by-Week ERP Implementation Timeline: Normal Flow and Exceptions](#part-1b)
+  - [1B.1 How the Four Frameworks Actually Read in journi](#p1b-1)
+  - [1B.2 The 60-Week Program Calendar](#p1b-2)
+  - [1B.3 Phase-by-Phase Playbook (Normal Flow)](#p1b-3)
+    - [Phase 1 --- Discovery (W1--8)](#phase-1)
+    - [Phase 2 --- Design (W6--14)](#phase-2)
+    - [Phase 3 --- Build (W12--30)](#phase-3)
+    - [Phase 4 --- Test (W28--38)](#phase-4)
+    - [Phase 5 --- Train (W30--42)](#phase-5)
+    - [Phase 6 --- Deploy (W43)](#phase-6)
+    - [Phase 7 --- Hypercare (W43--50)](#phase-7)
+    - [Phase 8 --- Sustain (W48--60+)](#phase-8)
+  - [1B.4 Six Exception Scenarios, in Detail](#p1b-4)
+    - [E1 --- Desire Stall at Settat](#exc-e1)
+    - [E2 --- Divergence Pattern at UAT](#exc-e2)
+    - [E3 --- Two-Clock Problem at Deploy](#exc-e3)
+    - [E4 --- Sentiment Regression During Hypercare](#exc-e4)
+    - [E5 --- Reinforcement Gap at Sustain](#exc-e5)
+    - [E6 --- Cohort Divergence Across Sites](#exc-e6)
 - [Part 2 --- Module-by-Module Feature Tour](#part-2)
 - [Part 3 --- All 16 End-to-End Process Walkthroughs](#part-3)
 - [Part 4 --- Change Management Scenario Library](#part-4)
@@ -41,6 +60,7 @@ This is journi's single comprehensive reference: one guide that starts at a genu
 It is organized in five parts:
 
 - **Part 1 --- Tenant and Admin Setup.** How a brand-new journi tenant is actually built, from the License record through the first Change Management Project, using a new scenario organization created for this guide: **Bouregreg Group**, a Moroccan manufacturing group.
+- **Part 1B --- Week-by-Week ERP Implementation Timeline.** The Bouregreg ERP Adoption Program run forward week by week for its full 60-week duration, across all four frameworks' real stage vocabulary, in journi's own 8-phase ERP structure --- normal flow first, then six realistic exception scenarios in the same level of detail.
 - **Part 2 --- Module-by-Module Feature Tour.** All 20 modules, each demonstrated against Bouregreg Group's real, growing data set, with CRUD and RBAC behavior called out per role.
 - **Part 3 --- All 16 End-to-End Process Walkthroughs.** Every process in the End-to-End Process Catalogue --- the 4 core Change Management chains, the 4 cross-cutting loops, and the 8 transformation-type lifecycles --- each walked through step by step against Bouregreg Group's data.
 - **Part 4 --- Change Management Scenario Library.** Several distinct Change Management Projects under the same tenant, each a different archetype (technology, structural, cultural, compliance) and a different readiness pattern, so the guide shows more than one way a program can actually unfold.
@@ -207,6 +227,8 @@ With this checklist complete, Bouregreg Group is a fully operational journi tena
 
 Part 1 ended with Bouregreg ERP Adoption Program registered and its Lewin phase opened at Unfreeze. This Part runs that program forward, week by week, for its full 14-month (60-week) duration --- against journi's own 8-phase ERP template (M17, TPL-ERP-8: Discovery, Design, Build, Test, Train, Deploy, Hypercare, Sustain) and journi's own framework definitions, verified against source rather than assumed. It covers the normal flow through all four frameworks first, then --- in the same level of detail --- six realistic exception patterns, each tied to a specific point in Bouregreg's timeline where a program's readiness signals genuinely go off track.
 
+<a id="p1b-1"></a>
+
 ### 1B.1 How the Four Frameworks Actually Read in journi
 
 journi tracks four frameworks, each at a different altitude, and this guide states their real stage vocabulary rather than a textbook approximation of it:
@@ -221,6 +243,8 @@ journi tracks four frameworks, each at a different altitude, and this guide stat
 A deliberate design choice in journi is worth stating plainly here: it never auto-computes a Lewin, Bridges, or Kübler-Ross reading. All three remain a Change Manager's evidence-based judgment call, logged with a justification under Bouregreg Group's Governance Setting (Part 1, Step 5). Only two things are ever computed automatically --- the Composite Readiness Index (M14, blending ADKAR 50%, Kübler-Ross sentiment 25%, and training completion 25%) and the Divergence Pattern Detector (ALT-001, firing when Knowledge ≥ 4 and Ability ≥ 4 while Bridges still reads exactly "Ending"). Everything else in the four-framework picture is a human reading, not a system inference --- which is exactly why the timeline below shows a Change Manager actively setting each reading, week by week, rather than journi silently deriving one.
 
 The four frameworks do not move in lockstep, and a well-run program does not expect them to. Lewin is the single organizational headline; ADKAR is where individual barriers actually surface, block by block; Bridges and Kübler-Ross track the emotional undercurrent that a clean ADKAR score can mask entirely --- which is the exact gap the Divergence Pattern Detector exists to catch. The calendar below shows one defensible way these four readings progress together across a normal 60-week ERP program; Section 1B.4's six exceptions show, in detail, the specific and realistic ways that progression stalls, diverges, or reverses.
+
+<a id="p1b-2"></a>
 
 ### 1B.2 The 60-Week Program Calendar
 
@@ -241,9 +265,13 @@ Two things about this calendar are deliberate and worth stating rather than leav
 
 ---
 
+<a id="p1b-3"></a>
+
 ### 1B.3 Phase-by-Phase Playbook (Normal Flow)
 
 Each phase below states its weeks, its framework readings at the phase's close, four concrete Tasks with their Steps, and the phase gate outcome recorded on M17. Every journi module reference is real; every Task is written as something Driss El Amrani, Meryem Sabri, Houda Zerouali, or their teams actually do inside the modules toured in Part 2.
+
+<a id="phase-1"></a>
 
 #### Phase 1 --- Discovery (W1--8)
 
@@ -258,6 +286,8 @@ Discovery is where the business case gets made and the Month-0 baseline gets cap
 
 **Phase gate (M17):** Discovery closes with a clean Go once the Stakeholder Map, business case, and Lewin baseline are all in place --- the state Part 1's setup checklist ends at.
 
+<a id="phase-2"></a>
+
 #### Phase 2 --- Design (W6--14)
 
 **Framework readings at close:** Lewin Unfreeze · ADKAR focus Awareness → Desire · Bridges Ending · Kübler-Ross Denial → Resistance/Anger.
@@ -270,6 +300,8 @@ Design overlaps Discovery's tail: future-state process scope gets drafted while 
 - **Task 4 --- Recruit the champion network.** A first cohort of champions --- one per site, per major function --- is recruited and logged against the Stakeholder Map on M4, ahead of their formal briefing in Build. *journi: M4.*
 
 **Phase gate:** Design closes once the future-state scope is signed off by the Steering Committee and the baseline Awareness pulse is logged --- this is also the point where, if the program were instead running as the Order-to-Cash Process Redesign of Part 4, the first Resistance-to-Commitment (E2E-03) signals would already be visible in Casablanca finance.
+
+<a id="phase-3"></a>
 
 #### Phase 3 --- Build (W12--30)
 
@@ -284,6 +316,8 @@ Build is the longest phase and the one where the Lewin call actually moves --- n
 
 **Phase gate:** Build closes once the platform configuration is functionally complete and Lewin has moved to Change on real evidence --- a No-Go or Conditional call here (ALT-009, Part 5) means configuration is not ready for Test, and the phase does not advance on schedule alone.
 
+<a id="phase-4"></a>
+
 #### Phase 4 --- Test (W28--38)
 
 **Framework readings at close:** Lewin Change · ADKAR focus Knowledge · Bridges Neutral Zone · Kübler-Ross Resistance/Anger → Exploration.
@@ -296,6 +330,8 @@ Test is the first point a representative slice of end users gets real hands-on e
 - **Task 4 --- Cross-check Knowledge/Ability against Bridges.** The Divergence Pattern check runs here for the first time with real data: if a cohort's Knowledge and Ability both read 4 or higher while Bridges still reads Ending, ALT-001 fires --- exactly Exception E2 below. *journi: M6.*
 
 **Phase gate:** Test closes once SIT and UAT sign-off are both recorded and any Divergence Pattern flags from Task 4 are resolved or explicitly accepted, not silently ignored.
+
+<a id="phase-5"></a>
 
 #### Phase 5 --- Train (W30--42)
 
@@ -310,6 +346,8 @@ Train runs alongside Test rather than strictly after it --- Knowledge becomes Ab
 
 **Phase gate:** Train closes once cohort-level go/no-go readiness is confirmed against benchmarking bands on M14 --- a per-cohort call, not a single project-wide one, since Bouregreg's three sites are not required to reach readiness on the same week.
 
+<a id="phase-6"></a>
+
 #### Phase 6 --- Deploy (W43)
 
 **Framework readings at close:** Lewin Change (provisional toward Refreeze) · ADKAR focus Ability · Bridges Neutral Zone → New Beginning (provisional) · Kübler-Ross Exploration.
@@ -322,6 +360,8 @@ Deploy is a single, sharp week --- the clearest instance in Bouregreg's program 
 - **Task 4 --- Activate hypercare; mark Lewin as provisional.** The hypercare support model goes live on Day 1, and Lewin is marked "Change → Refreeze (provisional)" on M3 rather than called Refreeze outright --- the exact discipline Exception E3 protects. *journi: M3.*
 
 **Phase gate:** Deploy closes on a clean technical go-live; the Lewin call explicitly does not close here, and stays provisional into Hypercare.
+
+<a id="phase-7"></a>
 
 #### Phase 7 --- Hypercare (W43--50)
 
@@ -336,6 +376,8 @@ The last mile of adoption is won or lost here, and Kübler-Ross regression durin
 
 **Phase gate:** Hypercare closes once the re-pulse confirms Bridges has genuinely moved to New Beginning and Kübler-Ross reads Exploration or better across all three sites --- not on the calendar alone.
 
+<a id="phase-8"></a>
+
 #### Phase 8 --- Sustain (W48--60+)
 
 **Framework readings at close:** Lewin Refreeze (confirmed) · ADKAR focus Reinforcement · Bridges New Beginning · Kübler-Ross Commitment.
@@ -349,9 +391,13 @@ Sustain is where Refreeze is called from checkpoint evidence, never the calendar
 
 **Phase gate:** Sustain --- and the program --- closes on the sign-off toggle on M12, blocked by ALT-015 (Part 5) if any checkpoint still carries an open High regression-risk flag.
 
+<a id="p1b-4"></a>
+
 ### 1B.4 Six Exception Scenarios, in Detail
 
 Every exception below is a realistic, specific way one of the four frameworks' normal progression (1B.1--1B.3) stalls, diverges, or reverses --- not a hypothetical. Each is tied to a concrete point in Bouregreg's 60-week timeline and a specific site, cohort, or role, with its trigger, timeline impact, recovery Tasks, and outputs stated in the same detail as the normal-flow phases above.
+
+<a id="exc-e1"></a>
 
 #### E1 --- Desire Stall at Settat (Related to Phase 3 --- Build)
 
@@ -368,6 +414,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 
 **Outputs:** root-cause clustering of the Desire stall; a specific, sponsor-delivered response; updated Desire and Kübler-Ross scores; Settat cleared to enter Train's Task 1 on schedule.
 
+<a id="exc-e2"></a>
+
 #### E2 --- Divergence Pattern at UAT (Related to Phases 4--5 --- Test, Train)
 
 **Trigger:** ALT-001 fires --- a UAT participant or cohort logs Knowledge ≥ 4 and Ability ≥ 4 on M5 while Bridges still reads exactly "Ending" on M6. In Bouregreg's timeline, this is most likely to first appear among Casablanca finance staff, who move through Knowledge/Ability quickly given their proximity to the program team but whose day-to-day work is the most disrupted by the new process.
@@ -382,6 +430,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 5. **Re-check the Bridges reading only, at the next scheduled pulse.** Only Bridges is re-scored; Knowledge and Ability are already confirmed and do not need re-testing. *journi: M6.*
 
 **Outputs:** confirmed or dismissed divergence case; documented loss concern if genuine; updated Bridges reading; the individual cleared for Train's cohort-readiness call once resolved.
+
+<a id="exc-e3"></a>
 
 #### E3 --- Two-Clock Problem at Deploy (Related to Phase 6 --- Deploy)
 
@@ -398,6 +448,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 
 **Outputs:** an explicit provisional Lewin phase call rather than a premature confirmed one; sustained hypercare funding through the lag; a confirmed or corrected Lewin phase once the re-pulse lands.
 
+<a id="exc-e4"></a>
+
 #### E4 --- Sentiment Regression During Hypercare (Related to Phase 7 --- Hypercare)
 
 **Trigger:** A cohort's Kübler-Ross reading moves backward on M6 --- typically from Exploration back to Resistance/Anger --- following a specific triggering event: in Bouregreg's case, a defect in the Kenitra plant's inventory-matching logic that caused a visible, embarrassing stock-count error in front of a cohort that had just started to trust the new system.
@@ -413,6 +465,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 
 **Outputs:** the triggering defect resolved and communicated; the regression event and response documented; confirmed recovery, or continued monitoring if the re-pulse doesn't yet show it.
 
+<a id="exc-e5"></a>
+
 #### E5 --- Reinforcement Gap at Sustain (Related to Phase 8 --- Sustain)
 
 **Trigger:** The ADKAR Reinforcement score stalls below 3 on M5 as the program's formal end date approaches, with no forcing deadline prompting continued attention --- the exact risk Phase 8's discipline (Refreeze called from evidence, never the calendar) exists to prevent.
@@ -427,6 +481,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 5. **Delay the formal Refreeze/closure call.** Sustain's Task 4 does not run until checkpoints show target Reinforcement, however long that takes. *journi: M3.*
 
 **Outputs:** a documented Reinforcement stall and remediation plan; a re-authorized checkpoint cadence; a re-chartered champion network; a delayed but evidence-based Refreeze call rather than a premature one.
+
+<a id="exc-e6"></a>
 
 #### E6 --- Cohort Divergence Across Sites (Cross-Cutting, Phases 4--7 --- Test through Hypercare)
 
