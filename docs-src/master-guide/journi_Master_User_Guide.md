@@ -349,6 +349,100 @@ Sustain is where Refreeze is called from checkpoint evidence, never the calendar
 
 **Phase gate:** Sustain --- and the program --- closes on the sign-off toggle on M12, blocked by ALT-015 (Part 5) if any checkpoint still carries an open High regression-risk flag.
 
+### 1B.4 Six Exception Scenarios, in Detail
+
+Every exception below is a realistic, specific way one of the four frameworks' normal progression (1B.1--1B.3) stalls, diverges, or reverses --- not a hypothetical. Each is tied to a concrete point in Bouregreg's 60-week timeline and a specific site, cohort, or role, with its trigger, timeline impact, recovery Tasks, and outputs stated in the same detail as the normal-flow phases above.
+
+#### E1 --- Desire Stall at Settat (Related to Phase 3 --- Build)
+
+**Trigger:** ADKAR Desire logged at 2 or below for the Settat plant-floor cohort on M5, auto-escalating; barrier-reason notes cite low visibility into what the new inventory workflow will actually look like on their specific line, and unresolved fear about whether the new system will eliminate positions.
+
+**Timeline impact:** Inserted as a 2--4 week parallel track within Build (around W20--24); Train's Task 1 (role-based delivery) does not open for the Settat cohort while their Desire score remains escalated --- Test's Task 2 UAT recruitment (Part 1B.3) is affected in turn if Settat's representative isn't ready to participate meaningfully.
+
+**Recovery Tasks:**
+1. **Cluster barrier-reason notes by root cause.** Houda Zerouali reviews Settat's logged barrier notes and finds the two recurring themes: workflow visibility and position security, not the system itself. *journi: M5.*
+2. **Run targeted listening sessions.** Small-group sessions with the Settat plant-floor cohort validate which of the two themes is actually driving the stall --- in this case, position security, not workflow visibility.
+3. **Design a specific, credible response.** Driss El Amrani and the CFO agree a concrete, verifiable commitment on staffing levels post-go-live --- not a vague reassurance.
+4. **Have the Sponsor deliver the response personally.** The CFO delivers the commitment directly to the Settat cohort, in person, rather than through a written communication alone --- consistent with the CM Charter Sponsor standard (M19).
+5. **Re-score Desire and Kübler-Ross sentiment 2--4 weeks later.** Both scores are re-read on M5/M6 to confirm the intervention actually worked, not just that it happened. *journi: M5--M6.*
+
+**Outputs:** root-cause clustering of the Desire stall; a specific, sponsor-delivered response; updated Desire and Kübler-Ross scores; Settat cleared to enter Train's Task 1 on schedule.
+
+#### E2 --- Divergence Pattern at UAT (Related to Phases 4--5 --- Test, Train)
+
+**Trigger:** ALT-001 fires --- a UAT participant or cohort logs Knowledge ≥ 4 and Ability ≥ 4 on M5 while Bridges still reads exactly "Ending" on M6. In Bouregreg's timeline, this is most likely to first appear among Casablanca finance staff, who move through Knowledge/Ability quickly given their proximity to the program team but whose day-to-day work is the most disrupted by the new process.
+
+**Timeline impact:** A targeted, individual-level intervention runs alongside Train; the flagged individual does not count toward Train's Task 3 cohort-readiness call until Bridges moves off Ending.
+
+**Recovery Tasks:**
+1. **Review the alert and confirm it against supervisor observation.** Driss El Amrani checks whether the flagged individual's supervisor has independently noticed anything --- confirming this isn't a false positive from a single bad Bridges reading. *journi: M6.*
+2. **Hold a 1:1 focused on what is being let go of, not on skills.** The conversation deliberately does not revisit training content --- the person already scored Knowledge ≥ 4 and Ability ≥ 4; the gap is emotional, not technical.
+3. **Distinguish a genuine loss concern from simple reluctance.** The 1:1 surfaces whether this is a real identity/loss concern (for example, a role that existed under the legacy system and doesn't exist in the new one) or ordinary change reluctance.
+4. **Provide an explicit closure moment if a genuine loss is identified.** If real, the loss is acknowledged explicitly and directly --- not talked around.
+5. **Re-check the Bridges reading only, at the next scheduled pulse.** Only Bridges is re-scored; Knowledge and Ability are already confirmed and do not need re-testing. *journi: M6.*
+
+**Outputs:** confirmed or dismissed divergence case; documented loss concern if genuine; updated Bridges reading; the individual cleared for Train's cohort-readiness call once resolved.
+
+#### E3 --- Two-Clock Problem at Deploy (Related to Phase 6 --- Deploy)
+
+**Trigger:** Lewin is technically eligible to be called "Change → Refreeze" on the Deploy week's calendar date, while Bridges and Kübler-Ross across most cohorts still read Neutral Zone / Resistance-Anger or lower --- the organizational clock (a single go-live date) and the emotional clock (which does not move on a fixed schedule) diverging exactly as 1B.3's Phase 6 anticipates.
+
+**Timeline impact:** Does not delay go-live itself; extends the hypercare and reinforcement budget and staffing window by the observed lag --- commonly 2--6 weeks past the original Hypercare end date.
+
+**Recovery Tasks:**
+1. **Separate the technical go-live milestone from the Lewin phase call.** Driss El Amrani and the ITL team agree explicitly: a clean technical cutover is not, by itself, evidence for Refreeze. *journi: M3.*
+2. **Mark Lewin as "provisional Refreeze" pending emotional-layer evidence.** Exactly the Phase 6 Task 4 language --- logged as provisional, with a justification stating what evidence is still pending. *journi: M3.*
+3. **Keep Reinforcement and hypercare fully active.** The hypercare support model (Phase 7 Task 1) is not tapered down just because the Lewin call is provisional rather than confirmed.
+4. **Re-pulse Bridges/Kübler-Ross at 2 and 4 weeks.** Exactly Phase 7's Task 3, run with this exception's resolution specifically in mind. *journi: M6.*
+5. **Confirm or walk back the Refreeze call once evidence supports it.** If the re-pulse shows genuine movement, Refreeze is confirmed; if not, hypercare extends further and the cycle repeats. *journi: M3.*
+
+**Outputs:** an explicit provisional Lewin phase call rather than a premature confirmed one; sustained hypercare funding through the lag; a confirmed or corrected Lewin phase once the re-pulse lands.
+
+#### E4 --- Sentiment Regression During Hypercare (Related to Phase 7 --- Hypercare)
+
+**Trigger:** A cohort's Kübler-Ross reading moves backward on M6 --- typically from Exploration back to Resistance/Anger --- following a specific triggering event: in Bouregreg's case, a defect in the Kenitra plant's inventory-matching logic that caused a visible, embarrassing stock-count error in front of a cohort that had just started to trust the new system.
+
+**Timeline impact:** A short, contained recovery cycle of days to roughly two weeks; escalated to Steering Committee only if the pattern recurs across multiple cohorts rather than staying isolated to the one affected.
+
+**Recovery Tasks:**
+1. **Confirm the regression is tied to a specific incident.** Houda Zerouali checks whether this is a one-off reaction to the Kenitra defect or a broader readiness failure --- in this case, clearly the former.
+2. **Resolve or clearly communicate the status of the triggering defect.** ITL fixes the inventory-matching defect and Driss El Amrani communicates the fix explicitly to the affected cohort, closing the loop rather than letting it fade unaddressed.
+3. **Have the supervisor directly acknowledge the setback.** The Kenitra plant supervisor acknowledges the incident with the affected team directly, rather than letting the program office's fix announcement stand in for a floor-level conversation.
+4. **Provide targeted, in-context coaching on the specific process step affected.** Coaching is scoped narrowly to the exact inventory-matching step that failed, not a general refresher.
+5. **Re-pulse the affected cohort only, at 1--2 weeks.** Only the Kenitra cohort is re-scored --- this is a localized regression, not a program-wide one. *journi: M6.*
+
+**Outputs:** the triggering defect resolved and communicated; the regression event and response documented; confirmed recovery, or continued monitoring if the re-pulse doesn't yet show it.
+
+#### E5 --- Reinforcement Gap at Sustain (Related to Phase 8 --- Sustain)
+
+**Trigger:** The ADKAR Reinforcement score stalls below 3 on M5 as the program's formal end date approaches, with no forcing deadline prompting continued attention --- the exact risk Phase 8's discipline (Refreeze called from evidence, never the calendar) exists to prevent.
+
+**Timeline impact:** Extends the formal project-closure date by however long it takes to accumulate 2--3 consecutive healthy checkpoints on M12 --- commonly 4--8 weeks past the original W60 close.
+
+**Recovery Tasks:**
+1. **Flag the Reinforcement stall explicitly.** Driss El Amrani flags the stall on M5 rather than letting Sustain's Task 4 (call Refreeze; close the project) proceed on schedule regardless. *journi: M5.*
+2. **Reconvene the Sponsor to re-authorize a checkpoint cadence.** The CFO re-authorizes a defined checkpoint cadence beyond the originally planned close date.
+3. **Re-activate or formally re-charter the champion network.** The champion network, which naturally quiets down as a program matures, is re-activated specifically to reinforce the new process on the floor.
+4. **Embed adoption metrics into the next performance-review cycle.** Adoption metrics are explicitly written into HR's next performance-review cycle, giving Reinforcement a structural home beyond the CM project's own lifespan.
+5. **Delay the formal Refreeze/closure call.** Sustain's Task 4 does not run until checkpoints show target Reinforcement, however long that takes. *journi: M3.*
+
+**Outputs:** a documented Reinforcement stall and remediation plan; a re-authorized checkpoint cadence; a re-chartered champion network; a delayed but evidence-based Refreeze call rather than a premature one.
+
+#### E6 --- Cohort Divergence Across Sites (Cross-Cutting, Phases 4--7 --- Test through Hypercare)
+
+**Trigger:** Casablanca, Kenitra, and Settat read genuinely differently across all four frameworks by mid-Train --- Casablanca ahead on Knowledge/Ability given proximity to the program team, Settat behind following E1's Desire stall, Kenitra solid until E4's regression --- making the project-level Composite Readiness Index on M14 a misleading blend of three very different real situations.
+
+**Timeline impact:** Runs continuously alongside Test, Train, and Hypercare; enables a cohort-by-cohort go/no-go at Phase 5's gate instead of a single all-or-nothing call for all 3,400 people at once.
+
+**Recovery Tasks:**
+1. **Disaggregate the Composite Readiness Index by site.** Meryem Sabri pulls the blended M14 number apart into three site-level readings, using the Stakeholder Map's site tags on M4. *journi: M4.*
+2. **Identify which cohorts are driving the spread.** Casablanca high, Settat low, Kenitra mid-but-dipping-post-E4 --- named explicitly rather than averaged away.
+3. **Investigate what Casablanca did differently.** Proximity to the program team and an earlier champion briefing are identified as the concrete, transferable factors --- not an unexplained "Casablanca is just more ready."
+4. **Transfer concrete practices to Settat and Kenitra.** The earlier champion briefing timing is applied to the next site rollout in the scenario library (Part 4); Settat's dedicated E1 recovery plan is extended to cover the same visibility gap at Kenitra proactively.
+5. **Continue reporting cohort-level readiness alongside the project-level number.** Every future Steering Committee readout carries the three-site breakdown, not just the blended figure, through Phase 5's cohort-by-cohort gate and beyond.
+
+**Outputs:** a disaggregated, site-level readiness report; a root-cause comparison between Casablanca and the other two sites; a revised, cohort-by-cohort go/no-go recommendation at Phase 5's gate rather than one all-or-nothing call.
+
 ---
 
 <a id="part-2"></a>
