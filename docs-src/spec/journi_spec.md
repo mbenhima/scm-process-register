@@ -36,16 +36,25 @@ consistent readiness signal across every initiative in the portfolio.
 
 This document describes the platform architecture (organizational
 hierarchy, project linkage model, access control and localization), the
-eighteen functional modules that make up the application --- including a
+twenty functional modules that make up the application --- including a
 governed AI Use Case Library restricted to Assistive and Augmented AI, a
 runtime-configurable Permission Matrix and justification-governance
 layer (Section 3.4--3.5), a Work Breakdown Structure & Gantt module
 that gives Project Management, Change Management and the framework
 milestones a single baseline-vs-actual timeline together with type-specific
-Phase Templates and Phase Gate / Joint Decision Records (Module 18), and a
+Phase Templates, a generic P1--P7 lifecycle-phase filter, and Phase Gate /
+Joint Decision Records with a selectable Accountable role (Module 18), a
 Macro Process, SIPOC, RACSI & End-to-End Process Registry (Module 19)
-that makes the process backbone underneath every other module browsable
-and, for its RACSI grid, runtime-editable --- and a seed dataset of
+that makes the process backbone underneath every other module browsable,
+carries a per-chain RACSI on its four core lifecycle chains, and hosts a
+Cross-Type Comparison Matrix contrasting all eight transformation types
+side by side, a Change Management Charter Registry (Module 20) of eight
+signed, trackable sponsorship/coaching/communication standards with their
+concrete action mapping and per-project compliance log, and a Stakeholder
+Journeys, Touchpoints & Analytics module (Module 21) that gives eight
+persona/exception/system journeys a touchpoint-level completion record and
+an experience-centric companion to the score-centric dashboards elsewhere
+in the platform --- and a seed dataset of
 fourteen illustrative cases spanning three sectors --- Manufacturing,
 Logistics & Transportation, and Health --- and eight transformation
 types --- ERP Implementation, Business Process Reengineering, Business
@@ -53,6 +62,11 @@ Process Automation, Integrated Management System (QMS), Cultural /
 Values Transformation, Operating Model Redesign, Compliance-Driven
 Change, and Training & Skills Development --- each mapped to its own
 End-to-End Process lifecycle and Phase Template (Section 4, Module 19).
+Reporting is rounded out by client-side CSV export on the platform's
+highest-traffic tables (Sponsor Coalition, Communications, Training,
+Risk Register, Analytics) and an in-app Notification Center surfacing the
+subset of the platform's sixteen defined alert conditions computable from
+data journi already holds (Section 2.6).
 
 **2. Application Architecture**
 
@@ -164,13 +178,76 @@ satisfy the following data-availability requirements:
 
 The current reference build described throughout the rest of this
 document satisfies every functional requirement above --- hierarchy,
-RBAC, the eighteen modules, AI governance, localization --- against a
+RBAC, the twenty modules, AI governance, localization --- against a
 client-side-only data layer (browser localStorage), with no backend
 server. That implementation choice is documented in the companion
 Setup & Administration Guide, and does not yet satisfy the
 server-side persistence requirements in this section; it is a reference
 implementation of journi\'s functional behavior, not yet a
 production-ready deployment against the requirements above.
+
+Beyond server-side persistence, a small number of specifically
+backend-dependent capabilities remain out of scope for this client-side
+reference build, by the same design logic: a BPMN/DMN workflow-execution
+engine actually orchestrating the process model Module 19 makes browsable
+(today it is data, not an executable process); a COSO-aligned
+control-testing framework actually evidencing and sampling control
+operation (today Module 14\'s risk register and the justification-log
+audit trail record the human judgment a control-testing program would
+draw on, but do not run one); real outbound delivery for the sixteen
+alert conditions catalogued in Section 2.6 --- email, push notification
+and Teams channels are named in each alert\'s specification but not
+wired to a real send path, since there is no backend to send from; and
+an NLP embeddings backend actually powering the free-text theme-mining
+and classification AI use cases in Module 17 at scale (today those use
+cases run against a deterministic built-in generator or, if configured,
+directly against a third-party LLM provider from the browser --- see
+Module 17\'s Real LLM Provider Connection --- neither of which is a
+purpose-built embeddings/NLP service). Each of these requires
+platform-level infrastructure a production backend would provide; this
+reference build represents the closest client-side equivalent it can
+build without one, documented at the relevant module rather than treated
+as a silent omission.
+
+**2.5 CSV Export**
+
+journi\'s highest-traffic tables offer a client-side CSV export --- the
+proportionate equivalent of a server-generated Excel/PDF report, built
+entirely in the browser via a Blob download rather than a backend export
+service. Available on the Sponsor Coalition table (Module 8), the
+Communications log (Module 9), the Training & Certification table
+(Module 10), the Risk Register (Module 14), and the Analytics readiness
+heatmap and benchmarking tables (Module 15). Each export reflects
+exactly the rows and columns currently on screen --- respecting the same
+RBAC and scope filtering as the table itself --- and is written with a
+UTF-8 byte-order mark so accented French and Arabic content opens
+correctly in Excel.
+
+**2.6 Notification Center (Alerts)**
+
+A bell icon in the top bar surfaces the platform\'s defined alert
+conditions as a persistent, dismissible, per-project in-app log --- the
+client-side equivalent of the sixteen alert definitions a production
+backend would deliver by email, push notification and Teams (Section 2.4
+notes why real outbound delivery is out of scope here). Eight of the
+sixteen alerts have a condition directly computable from data journi
+already holds client-side, and fire live whenever that condition is true
+for the scoped Change Management Project: a Divergence Pattern (Knowledge
+and Ability both verified while the Bridges position still reads Ending),
+a Critical post-go-live regression-risk score, a Sponsor Coverage Gap
+(sponsor visibility rated Weak), a Resistance Escalation Threshold breach
+(three or more open resistance-log entries), a Change Saturation breach
+(two or more other concurrent initiatives targeting the same
+Organization), a Phase Gate closed No-Go or Go-with-Conditions, a Guiding
+Coalition Gap (fewer than two named coalition members), and a blocked
+Sustainment sign-off. Each alert shows its severity, SLA threshold and
+recipient-role list alongside the live message. Dismissing an alert
+persists per Change Management Project and survives a page reload; a
+Restore control brings a dismissed alert back into view. The remaining
+eight alerts --- survey-exception retries, AI-confidence scoring, import
+integrity, administrative account lock-out, GDPR request SLA, and AI
+provider fallback --- depend on backend infrastructure this reference
+build does not have and are catalogued for traceability but never fire.
 
 **3. Multilingual Access & Administration**
 
@@ -363,12 +440,14 @@ police its content.
 
 **4. Core Modules**
 
-*Eighteen modules in total: three foundation/platform modules covering
+*Twenty modules in total: three foundation/platform modules covering
 hierarchy, access and localization (detailed in Sections 2--3 above),
 thirteen change-management core modules, one AI Use Case Library &
 Governance module, one cross-cutting Work Breakdown Structure & Gantt
-module (Module 18), and one Macro Process, SIPOC, RACSI & End-to-End
-Process Registry module (Module 19). Each core module lists its purpose,
+module (Module 18), one Macro Process, SIPOC, RACSI & End-to-End
+Process Registry module (Module 19), one Change Management Charter
+Registry module (Module 20), and one Stakeholder Journeys, Touchpoints &
+Analytics module (Module 21). Each core module lists its purpose,
 key features, the change management framework(s) it operationalizes, and
 its primary users.*
 
@@ -630,6 +709,8 @@ success, and the substance of Kotter\'s Step 2.
 -   Alerts when sponsorship visibility drops below the threshold
     associated with stalled Desire scores in Module 6
 
+-   CSV export of the guiding-coalition roster (Section 2.5)
+
 **Frameworks Integrated:** Prosci Sponsor Model (active/visible
 sponsorship); Kotter Step 2 --- Build a Guiding Coalition
 
@@ -657,6 +738,8 @@ drives Awareness and Desire, and operationalizes Kotter\'s Step 4
 
 -   Direct linkage of each communication to the ADKAR block it is
     intended to move (usually Awareness or Desire)
+
+-   CSV export of the communications log (Section 2.5)
 
 **Frameworks Integrated:** Kotter Step 4 --- Communicate the Vision;
 feeds ADKAR Awareness/Desire
@@ -687,6 +770,8 @@ training pipeline such as POWERACT\'s DPSK-style curriculum tracks.
 -   Post-training Ability re-assessment loop that feeds back into the
     ADKAR Engine
 
+-   CSV export of the curriculum/certification table (Section 2.5)
+
 **Frameworks Integrated:** ADKAR Knowledge & Ability blocks; Kotter Step
 5 --- Enable Action by Removing Barriers
 
@@ -715,6 +800,16 @@ Module 7 to concrete manager interventions.
 
 -   Employee-submitted resistance/concern flag (anonymous option)
     feeding directly into this log
+
+-   **Coding Workbench tab:** a Qualitative Coding Workbench for 1:1
+    coaching notes and resistance-log entries. An Organization-scoped,
+    Change-Manager-editable codebook (not a fixed platform-wide
+    taxonomy) supplies the codes; tagging a note against the codebook
+    can optionally cross-reference it to an existing Resistance Log
+    barrier record; a frequency rollup surfaces which codes recur most
+    often across a project\'s tagged material, catching a pattern a
+    single Change Manager reading each note individually would likely
+    miss
 
 **Frameworks Integrated:** Kübler-Ross resistance/anger stage; Kotter
 Step 5
@@ -805,6 +900,8 @@ population.
 -   Rolled-up risk view at Organization and Group level for portfolio
     governance
 
+-   CSV export of the risk register (Section 2.5)
+
 **Frameworks Integrated:** Extends standard project-risk practice with
 change-saturation and adoption-risk categories
 
@@ -852,7 +949,15 @@ recommended actions.
     1:1s with these 12 managers\"
 
 -   Exportable executive reporting pack, generated per audience
-    (Sponsor, Executive, PMO)
+    (Sponsor, Executive, PMO); the readiness heatmap and benchmarking
+    tables additionally offer a direct CSV export (Section 2.5)
+
+-   **Cross-Type Comparison Matrix tab:** contrasts all eight
+    transformation types side by side --- typical duration, terminal
+    gate, external-party involvement, dominant framework, and
+    reversibility --- each row linked to a seed-project example, so a
+    Change Manager new to a given transformation type can see at a
+    glance how it differs from the ones they already know
 
 **Frameworks Integrated:** Synthesizes all frameworks in the platform
 into a single readiness signal, benchmarked against phase-appropriate
@@ -962,7 +1067,7 @@ explicitly-gated tier rather than folded into this one.
 **Seeded AI Use Case Catalog**
 
 The following fourteen use cases are seeded into the library at launch,
-spanning eight of the seventeen other modules. All are Assistive or
+spanning eight of the nineteen other modules. All are Assistive or
 Augmented; none acts autonomously.
 
   -------------------------------------------------------------------------------------------------
@@ -1105,10 +1210,22 @@ average, so schedule risk is visible before it becomes a missed go-live.
     (Section 3.2) and Permission Matrix (Section 3.4) as every other
     module
 
--   Each task carries a track, a phase label, a name, a baseline
-    start/finish, an optional actual start/finish, a status (planned /
-    in progress / done / at risk), and a computed schedule-gap value in
-    days
+-   Each task carries a delivery track, a phase label, a name, a
+    baseline start/finish, an optional actual start/finish, a status
+    (planned / in progress / done / at risk), and a computed
+    schedule-gap value in days
+
+-   **Accountability tag:** a task also carries a Project / Change /
+    Joint accountability tag, deliberately distinct from its delivery
+    track --- a task delivered on the Project Management track can still
+    be a joint decision point (e.g. the go/no-go call itself), so the
+    two are tracked as separate fields rather than conflated into one
+
+-   **Lifecycle phase filter:** every task, Phase Checklist item and
+    Phase Gate can additionally be filtered against the seven generic
+    P1--P7 lifecycle phases (Intake & Diagnosis through Sustainment &
+    Closure) that every type-specific Phase Template rolls up into,
+    regardless of which template\'s own phase label produced it
 
 -   Framework-track tasks may be zero-duration milestones (baseline
     start equals baseline finish) --- e.g. \"Awareness staged to 3\" or
@@ -1142,9 +1259,11 @@ average, so schedule risk is visible before it becomes a missed go-live.
     into real tasks, not a finished plan
 
 -   **Phase Checklist:** PM-track and CM-track checklist items per
-    phase, distinct from WBS tasks, each with a done/not-done state; the
-    completion percentage per phase feeds the CM input of a Phase Gate
-    decision below
+    phase, distinct from WBS tasks, each with a done/not-done state and
+    its own configurable weight; the phase completion percentage is the
+    weighted average across an item\'s weight, not a simple item count,
+    so a heavier item blocks the phase more than a light one --- and
+    feeds the CM input of a Phase Gate decision below
 
 -   **Phase Gates (Joint Decision Record):** implements the PM ↔ CM
     Governance Bridge (E2E-06) --- triggered by a Main Project schedule
@@ -1156,7 +1275,9 @@ average, so schedule risk is visible before it becomes a missed go-live.
     percentage, and any open flags (auto-suggested from the Divergence
     Pattern Detector and stalled ADKAR blocks). The two independent
     inputs are preserved alongside the fused Joint Decision, which
-    carries exactly one Accountable role --- the Project Manager
+    carries exactly one Accountable role, selected from the RACSI
+    role-code list (ES / CM / PM / FPO / ITL / SUP) at the time the
+    decision is recorded --- it may differ from either input\'s author
 
 **Frameworks Integrated:** Cross-cutting --- gives Lewin, Prosci, Bridges
 and ADKAR a shared timeline alongside the Project Management delivery
@@ -1191,7 +1312,11 @@ its own rolled-up SIPOC and linked Phase Template.
     Process chains, grouped by kind (core lifecycle / cross-cutting loop
     / transformation-type lifecycle), each rendered as its ordered
     Macro Process chain with trigger and terminal-state text where
-    defined; transformation-type entries additionally show their
+    defined; the four core lifecycle chains additionally carry a
+    per-chain RACSI (Responsible / Accountable / Consulted / Sign-off /
+    Informed, using the same seven role codes --- ES / CM / PM / FPO /
+    ITL / SUP / EU --- as the Phase Gate Accountable role in Module 18);
+    transformation-type entries additionally show their
     rolled-up SIPOC (suppliers and customers) and linked Phase Template
 
 -   **RACSI Grid tab:** a ten-Macro-Process × six-role editable grid
@@ -1213,6 +1338,107 @@ governance layer referenced by the Phase Gate feature in Module 18
 
 **Primary Users:** All roles (read); Super Admin, Group/Organization
 Admin (RACSI grid edits)
+
+**Module 20 --- Change Management Charter Registry**
+
+Eight signed, trackable behavioral standards --- one per governed
+sponsorship, engagement, communication, impact-assessment, coaching and
+mentoring, and pulse/interview discipline in the platform --- each
+naming specific, observable actions rather than generic guidance, with
+a concrete mapping to the macro processes/tasks that generate them and a
+per-project compliance log, so charter governance is trackable, not just
+aspirational.
+
+**Key Features**
+
+-   **Charters tab:** all eight charters (Sponsorship/Leadership,
+    Participative Management, Communication, Organizational Impact,
+    Team Coaching, One-to-One Coaching, Mentoring, and Pulse/Interview),
+    each with its full What / Who / When / Where / Why / How, owner
+    role, RACSI, governing scope, version and review cadence
+
+-   **Action Mapping & Compliance tab:** every charter\'s concrete
+    action mapping --- PDCA stage, sequence, linked macro
+    process/task/lifecycle phase, Responsible/Accountable role and
+    frequency --- filterable by charter; for the scoped Change
+    Management Project, a Change Manager logs completion of each
+    action instance, building a real compliance log rather than only
+    static reference content
+
+-   **Mentoring Progression tab:** the three-stage Trainee →
+    Observer → Autonomous competency model behind the Mentoring
+    Charter, with entry/exit criteria, typical duration, mentor
+    involvement, competency evidence, and a regression path that
+    returns a mentee one stage rather than restarting the full cycle
+
+-   Charter and action-mapping content is read-accessible to every
+    role; logging a compliance instance is gated the same way as other
+    project write actions (Section 3.2, Section 3.4)
+
+**Frameworks Integrated:** Prosci Sponsor Model and Kotter Step 2 (CHTR-01);
+Kotter Step 5 (CHTR-02); Kotter Step 4 (CHTR-03); Prosci Impact &
+Stakeholder Analysis (CHTR-04); the Framework Interaction Map\'s
+Exception E2 recovery workflow (CHTR-06); Module 10\'s trained-versus-capable
+distinction (CHTR-07, Mentoring Progression)
+
+**Primary Users:** Change Manager, Training Lead, People Manager
+(compliance logging within scope); all roles (read)
+
+**Module 21 --- Stakeholder Journeys, Touchpoints & Analytics**
+
+The experience-layer companion to the score-centric dashboards elsewhere
+in journi (Module 15): eight persona/exception/system journeys broken
+into concrete touchpoints with auditable success criteria and evidence,
+five journey-analytics dashboards, and a project-context overlay
+distinguishing each case from the generic journey template.
+
+**Key Features**
+
+-   **Journeys tab:** all eight registered journeys --- End User
+    Adoption, Executive Sponsor, Frontline Supervisor/People Manager,
+    Champion, Mentee (a specialization of End User Adoption for
+    mentored roles), Divergence Case (an exception journey realizing the
+    Exception E2 recovery path), QMS Certification (a specialization of
+    End User Adoption for QMS-type projects), and the AI Suggestion
+    Lifecycle (a system journey, not persona-based) --- each with its
+    trigger, target audience, typical duration and linked modules
+
+-   **Touchpoints & Completion tab:** twenty-four concrete touchpoints
+    across the five most fully detailed journeys, each with its PDCA
+    sub-phase, target day offset from trigger, owner role, and a
+    concrete, auditable success criterion and evidence requirement;
+    filterable by journey. For the scoped Change Management Project, a
+    Change Manager logs which touchpoints an employee or cohort actually
+    reached, giving a real completion record rather than a narrative
+    description
+
+-   **Analytics Dashboards tab:** five journey-analytics dashboards,
+    each an experience-layer companion extending an existing score-layer
+    report elsewhere in the platform rather than duplicating it. The End
+    User Journey Completion and Sponsor & Charter Compliance dashboards
+    compute a live percentage from the scoped project\'s own touchpoint
+    and charter-action logs (Module 20); the Mentoring Progression,
+    Divergence Case Resolution, and Executive Roll-Up dashboards are
+    shown as reference cards, since this reference build does not model
+    per-mentee or per-case granularity separately from the underlying
+    Module 20/Module 14 logs a BI-connected deployment would aggregate
+
+-   **Project Context Overlay tab:** what makes each of the source
+    framework\'s illustrative seed projects distinct from the generic
+    journey template --- the specific tension, constraint, or exception
+    pattern most likely to fire --- shown as the source framework\'s own
+    worked reference set rather than mapped onto journi\'s own seeded
+    demo projects, the same posture Module 19\'s Cross-Type Comparison
+    Matrix takes with its seed-project examples
+
+**Frameworks Integrated:** Cross-cutting --- realizes Module 16\'s
+Journey Map at the persona-definition and touchpoint level of detail;
+the Divergence Case journey operationalizes the Framework Interaction
+Map\'s Exception E2 recovery path; the Mentee journey operationalizes
+Module 20\'s Mentoring Progression model
+
+**Primary Users:** Change Manager, Training Lead (touchpoint logging
+within scope); all roles (read)
 
 **5. Framework-to-Module Mapping Matrix**
 
@@ -1256,7 +1482,12 @@ one row above: it is the one place every framework in this table shares
 a single baseline-vs-actual calendar with the Project Management
 delivery track, alongside the Lewin macro-state owned by M4, the
 Bridges/Kübler-Ross position owned by M7, and the ADKAR scores owned by
-M6.
+M6. Modules 20 (Charter Registry) and 21 (Journeys, Touchpoints &
+Analytics) are cross-cutting in the same sense --- rather than
+introducing frameworks of their own, they operationalize the Prosci and
+Kotter rows above as signed, trackable behavioral standards (M20) and
+give the Bridges/Kübler-Ross journey M16 already visualizes a
+touchpoint-level completion record (M21).
 
 **6. Seed Dataset --- Fourteen Illustrative Cases**
 
