@@ -2,6 +2,7 @@ import React from 'react'
 import { useI18n, LANGUAGES } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { visibleOrganizations, visibleProjects, roleLabelKey, canManageHierarchy } from '../utils/rbac.js'
+import NotificationBell from './NotificationBell.jsx'
 
 export default function TopBar({ onMenuClick }) {
   const { t, lang, setLang } = useI18n()
@@ -63,6 +64,8 @@ export default function TopBar({ onMenuClick }) {
           </option>
         ))}
       </select>
+
+      <NotificationBell />
 
       <div className="hidden sm:flex flex-col items-end leading-tight">
         <span className="text-sm font-semibold text-brand-950">{currentUser?.name}</span>

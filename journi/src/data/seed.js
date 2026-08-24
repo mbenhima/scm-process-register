@@ -25,6 +25,7 @@ const SUB_COLLECTIONS = [
   'charterActionLog',
   'touchpointLog',
   'codeTags',
+  'dismissedAlerts',
 ]
 
 function normalizeCmProject(raw) {

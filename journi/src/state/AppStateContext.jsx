@@ -73,6 +73,7 @@ function loadInitialState() {
           charterActionLog: p.charterActionLog || [],
           touchpointLog: p.touchpointLog || [],
           codeTags: p.codeTags || [],
+          dismissedAlerts: p.dismissedAlerts || [],
         }))
         return parsed
       }
@@ -501,6 +502,29 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // Notification Center (D07, proportionate closure): dismissal state persists
+  // per project; the alerts themselves are computed live from current project
+  // data (utils/alertEngine.js), not stored, so they always reflect current state.
+  const dismissAlert = useCallback((projectId, alertId) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        dismissedAlerts: p.dismissedAlerts.includes(alertId) ? p.dismissedAlerts : [...p.dismissedAlerts, alertId],
+      })),
+    }))
+  }, [])
+
+  const undismissAlert = useCallback((projectId, alertId) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        dismissedAlerts: p.dismissedAlerts.filter((id) => id !== alertId),
+      })),
+    }))
+  }, [])
+
   const updateLicense = useCallback((patch) => {
     setData((prev) => ({ ...prev, license: { ...prev.license, ...patch } }))
   }, [])
@@ -611,6 +635,7 @@ export function AppStateProvider({ children }) {
         charterActionLog: [],
         touchpointLog: [],
         codeTags: [],
+        dismissedAlerts: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [
@@ -734,6 +759,8 @@ export function AppStateProvider({ children }) {
       removeCode,
       tagItem,
       removeCodeTag,
+      dismissAlert,
+      undismissAlert,
       updateLicense,
       setRequireJustification,
       llmConfig,
@@ -789,6 +816,8 @@ export function AppStateProvider({ children }) {
       removeCode,
       tagItem,
       removeCodeTag,
+      dismissAlert,
+      undismissAlert,
       updateLicense,
       setRequireJustification,
       llmConfig,
