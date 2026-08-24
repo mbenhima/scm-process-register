@@ -18,133 +18,133 @@ Version 2.0 · August 2026 · Confidential
 
 **Table of Contents**
 
-**Executive Summary**4
+**Executive Summary** 4
 
-> What This Guide Contains4
+> What This Guide Contains 4
 >
-> How to Use It4
+> How to Use It 4
 
-**1. Introduction**5
+**1. Introduction** 5
 
-> 1.1 Purpose of This Guide5
+> 1.1 Purpose of This Guide 5
 >
-> 1.2 Who This Guide Is For5
+> 1.2 Who This Guide Is For 5
 >
-> 1.3 How the Eight journi Phases Map to a 12-Month Calendar5
+> 1.3 How the Eight journi Phases Map to a 12-Month Calendar 5
 
-**2. Getting Started in journi**7
+**2. Getting Started in journi** 7
 
-> 2.1 Core Modules Referenced Throughout This Guide7
+> 2.1 Core Modules Referenced Throughout This Guide 7
 >
-> 2.2 One Rule Before You Start Logging Anything7
+> 2.2 One Rule Before You Start Logging Anything 7
 >
-> 2.3 journi\'s Two Computed Metrics (the only automated calls journi makes)7
+> 2.3 journi\'s Two Computed Metrics (the only automated calls journi makes) 7
 >
-> 2.4 Where to Find journi Cross-References in This Guide7
+> 2.4 Where to Find journi Cross-References in This Guide 7
 
-**3. The Four Frameworks --- Quick Primer and Signal Catalogue**8
+**3. The Four Frameworks --- Quick Primer and Signal Catalogue** 8
 
-> 3.1 Lewin\'s Unfreeze -- Change -- Refreeze8
+> 3.1 Lewin\'s Unfreeze -- Change -- Refreeze 8
 >
-> 3.2 Prosci ADKAR8
+> 3.2 Prosci ADKAR 8
 >
-> 3.3 Bridges\' Transition Model9
+> 3.3 Bridges\' Transition Model 9
 >
-> 3.4 Kübler-Ross Change Curve9
+> 3.4 Kübler-Ross Change Curve 9
 >
-> 3.5 The Project / Change / Joint Tag9
+> 3.5 The Project / Change / Joint Tag 9
 
-**4. Process Map --- Macro Process, Tasks & Nature**10
+**4. Process Map --- Macro Process, Tasks & Nature** 10
 
-> 4.1 Macro Process --- Task --- Nature Reference Table10
+> 4.1 Macro Process --- Task --- Nature Reference Table 10
 
-**5. Week-by-Week Implementation Timeline**13
+**5. Week-by-Week Implementation Timeline** 13
 
-> 5.1 Phase 1 --- Discovery & Design (Weeks 1--12)13
+> 5.1 Phase 1 --- Discovery & Design (Weeks 1--12) 13
 >
-> 5.2 Phase 2 --- Build & Configuration (Weeks 5--24 (overlaps Phase 1 close and Phase 3 start))13
+> 5.2 Phase 2 --- Build & Configuration (Weeks 5--24 (overlaps Phase 1 close and Phase 3 start)) 13
 >
-> 5.3 Phase 3 --- Data Migration & Integration (Weeks 13--28 (runs alongside Phase 2))14
+> 5.3 Phase 3 --- Data Migration & Integration (Weeks 13--28 (runs alongside Phase 2)) 14
 >
-> 5.4 Phase 4 --- Testing (SIT / UAT) (Weeks 25--32 (overlaps Phase 3 close and Phase 5))14
+> 5.4 Phase 4 --- Testing (SIT / UAT) (Weeks 25--32 (overlaps Phase 3 close and Phase 5)) 14
 >
-> 5.5 Phase 5 --- Training & Change Readiness (Weeks 25--36 (overlaps Testing))15
+> 5.5 Phase 5 --- Training & Change Readiness (Weeks 25--36 (overlaps Testing)) 15
 >
-> 5.6 Phase 6 --- Cutover & Go-Live (Week 37 (short, discrete event))15
+> 5.6 Phase 6 --- Cutover & Go-Live (Week 37 (short, discrete event)) 15
 >
-> 5.7 Phase 7 --- Hypercare & Stabilization (Weeks 37--48)16
+> 5.7 Phase 7 --- Hypercare & Stabilization (Weeks 37--48) 16
 >
-> 5.8 Phase 8 --- Sustainment & Closure (Weeks 45--52+)16
+> 5.8 Phase 8 --- Sustainment & Closure (Weeks 45--52+) 16
 
-**6. Detailed Phase Playbooks --- SIPOC, Timeline, Tasks, Steps & RACSI**17
+**6. Detailed Phase Playbooks --- SIPOC, Timeline, Tasks, Steps & RACSI** 17
 
-> 6.1 Phase 1 --- Discovery & Design (Weeks 1--12)18
+> 6.1 Phase 1 --- Discovery & Design (Weeks 1--12) 18
 >
-> 6.2 Phase 2 --- Build & Configuration (Weeks 5--24)25
+> 6.2 Phase 2 --- Build & Configuration (Weeks 5--24) 25
 >
-> 6.3 Phase 3 --- Data Migration & Integration (Weeks 13--28)32
+> 6.3 Phase 3 --- Data Migration & Integration (Weeks 13--28) 32
 >
-> 6.4 Phase 4 --- Testing (SIT / UAT) (Weeks 25--32)39
+> 6.4 Phase 4 --- Testing (SIT / UAT) (Weeks 25--32) 39
 >
-> 6.5 Phase 5 --- Training & Change Readiness (Weeks 25--36)45
+> 6.5 Phase 5 --- Training & Change Readiness (Weeks 25--36) 45
 >
-> 6.6 Phase 6 --- Cutover & Go-Live (Week 37)52
+> 6.6 Phase 6 --- Cutover & Go-Live (Week 37) 52
 >
-> 6.7 Phase 7 --- Hypercare & Stabilization (Weeks 37--48)58
+> 6.7 Phase 7 --- Hypercare & Stabilization (Weeks 37--48) 58
 >
-> 6.8 Phase 8 --- Sustainment & Closure (Weeks 45--52+)65
+> 6.8 Phase 8 --- Sustainment & Closure (Weeks 45--52+) 65
 
-**7. What to Track --- By Cadence**72
+**7. What to Track --- By Cadence** 72
 
-> 7.1 Daily72
+> 7.1 Daily 72
 >
-> 7.2 Weekly72
+> 7.2 Weekly 72
 >
-> 7.3 Bi-Weekly72
+> 7.3 Bi-Weekly 72
 >
-> 7.4 Monthly72
+> 7.4 Monthly 72
 >
-> 7.5 Escalation Thresholds73
+> 7.5 Escalation Thresholds 73
 >
-> 7.6 Weekly Dashboard --- What a Healthy Week Looks Like73
+> 7.6 Weekly Dashboard --- What a Healthy Week Looks Like 73
 
-**8. Simulated Data Walkthrough --- Project Meridian**74
+**8. Simulated Data Walkthrough --- Project Meridian** 74
 
-> 8.1 Reading the Simulation75
+> 8.1 Reading the Simulation 75
 
-**9. Exception Playbook --- Detailed SIPOC, Tasks, Steps & RACSI**76
+**9. Exception Playbook --- Detailed SIPOC, Tasks, Steps & RACSI** 76
 
-> 9.1 E1 --- Desire Stall During Data Migration & Integration77
+> 9.1 E1 --- Desire Stall During Data Migration & Integration 77
 >
-> 9.2 E2 --- Divergence Pattern Detected During Testing / Training81
+> 9.2 E2 --- Divergence Pattern Detected During Testing / Training 81
 >
-> 9.3 E3 --- Two-Clock Problem at Cutover & Go-Live85
+> 9.3 E3 --- Two-Clock Problem at Cutover & Go-Live 85
 >
-> 9.4 E4 --- Sentiment Regression During Hypercare90
+> 9.4 E4 --- Sentiment Regression During Hypercare 90
 >
-> 9.5 E5 --- Reinforcement Gap at Sustainment & Closure94
+> 9.5 E5 --- Reinforcement Gap at Sustainment & Closure 94
 >
-> 9.6 E6 --- Cohort Divergence Across Sites or Departments98
+> 9.6 E6 --- Cohort Divergence Across Sites or Departments 98
 
-**10. Governance & Reporting Cadence**103
+**10. Governance & Reporting Cadence** 103
 
-**Appendix --- Quick Reference**104
+**Appendix --- Quick Reference** 104
 
-> A.1 Role Legend104
+> A.1 Role Legend 104
 >
-> A.2 RACSI Legend104
+> A.2 RACSI Legend 104
 >
-> A.3 Project / Change Tag Legend104
+> A.3 Project / Change Tag Legend 104
 >
-> A.4 Blank Weekly Tracker Template104
+> A.4 Blank Weekly Tracker Template 104
 >
-> A.5 Consolidated Open-Source Tool Reference105
+> A.5 Consolidated Open-Source Tool Reference 105
 >
-> A.6 Recommended Reading Order by Role106
+> A.6 Recommended Reading Order by Role 106
 >
-> A.7 Frequently Asked Questions106
+> A.7 Frequently Asked Questions 106
 >
-> A.8 Glossary107
+> A.8 Glossary 107
 >
 > A.9 Technique Reference107
 
