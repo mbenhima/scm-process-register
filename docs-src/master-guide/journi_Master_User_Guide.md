@@ -714,6 +714,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** gated to whoever holds hierarchy-management rights on the Permission Matrix --- by default Super Admin, Group Admin, and Org Admin.
 
+**Key fields:** Group name; Organization name, sector, employee count, sites, languages, default language; Main Project name/type/scope/duration/budget band/executive sponsor; CM Project name/linked Main Projects/owner/change type/target population/business driver.
+
 ### M2 --- Identity & RBAC
 
 **Purpose:** role-based access control scoped to Group / Organization / Project, with four tabs: Users & Scope, Permission Matrix, Governance Settings, and License & Plan.
@@ -723,6 +725,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** create, edit, and remove user accounts (Users & Scope); toggle any role/capability cell (Permission Matrix, Super Admin only); toggle the justification requirement (Governance Settings); upload a new `.lic` file or revert to SaaS mode (License & Plan, Super Admin only).
 
 **Who can edit:** Users & Scope is gated to whoever holds user-management rights (by default Super Admin, Group Admin, Org Admin); the Permission Matrix and License & Plan tabs are Super-Admin-only regardless of the matrix's own settings, since a role should not be able to grant itself more power through the very table that limits it.
+
+**Key fields:** User name, email, role, scope type, scope ID, language; Permission Matrix role × capability checkboxes; Governance justification toggle; License companyName, plan, maxUsers, issueDate, expiryDate, features.
 
 ### M3 --- Initiative Registry
 
@@ -734,6 +738,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** general write access; a Lewin phase change is a scored/state change, so under Bouregreg Group's Governance Setting (Part 1, Step 5) it requires a written justification, logged to the project's audit trail.
 
+**Key fields:** Business driver; scope; target population; Lewin macro-state.
+
 ### M4 --- Stakeholder Mapping
 
 **Purpose:** who is affected, how heavily, and in what dimension --- impact scores drive tracking depth.
@@ -743,6 +749,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** add, edit, and remove stakeholder/cohort entries, each with a name, dimension, impact severity, and site/department.
 
 **Who can edit:** general write access; individual-level detail is visible only to the roles with individual visibility (Super Admin, Group Admin, Org Admin, Change Manager, People Manager) --- a Practitioner sees the aggregated map.
+
+**Key fields:** Cohort name; impact dimension; impact severity; site/department.
 
 ### M5 --- ADKAR Engine
 
@@ -754,6 +762,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** general write access, with a mandatory justification on every score change under Bouregreg Group's Governance Setting.
 
+**Key fields:** Five block scores (1--5): Awareness, Desire, Knowledge, Ability, Reinforcement; a barrier-reason note on any score ≤ 2.
+
 ### M6 --- Emotional & Transition Layer
 
 **Purpose:** Bridges transition position and Kübler-Ross sentiment, cross-referenced with ADKAR.
@@ -763,6 +773,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** set or update the Bridges transition stage and the Kübler-Ross sentiment reading, each with a justification note.
 
 **Who can edit:** general write access, individual-level detail restricted the same way as M4 and M5.
+
+**Key fields:** Bridges stage (Ending / Neutral Zone / New Beginning); Kübler-Ross sentiment (Denial / Resistance-Anger / Exploration / Commitment); justification note.
 
 ### M7 --- Sponsor & Coalition
 
@@ -774,6 +786,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** general write access for logging and marking actions; the Sponsor role itself can typically mark their own roadmap actions done without needing full write access, since that toggle is a narrower capability than editing every field on the page.
 
+**Key fields:** Sponsor roadmap action and due date; visibility rating (active/weak); coalition member name and role.
+
 ### M8 --- Communications
 
 **Purpose:** a message × audience × channel × timing matrix, with saturation detection.
@@ -783,6 +797,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** add a new communication (message, audience, channel, timing); delete an existing one. There is no inline "reschedule" on an existing entry --- a superseding communication is logged as a new entry, consistent with the audit trail this module is built to support.
 
 **Who can edit:** general write access.
+
+**Key fields:** Message text; audience/cohort; channel; timing; status (queued/sent).
 
 ### M9 --- Training
 
@@ -794,6 +810,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** general write access.
 
+**Key fields:** Curriculum entry name; cohort; completion percentage; Certified toggle.
+
 ### M10 --- Resistance
 
 **Purpose:** log, classify, and resolve resistance, linked to concrete mitigation actions --- with a Qualitative Coding Workbench for tagging interview and free-text evidence.
@@ -803,6 +821,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** log, edit, and resolve resistance entries with linked mitigation actions; add and remove codes from the Organization's codebook; tag and untag evidence against those codes.
 
 **Who can edit:** general write access; the Codebook itself (the set of codes available to tag against) is typically managed by whoever holds hierarchy-management rights, since it is shared across every project in the Organization, not owned by one CM Project.
+
+**Key fields:** Resistance entry description; root cause; status (open/closed); linked mitigation action; Codebook code name; tagged evidence (interview note, free-text source).
 
 ### M11 --- Manager as Coach
 
@@ -814,6 +834,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** People Managers see their own team's view by default; Change Manager and above see across teams.
 
+**Key fields:** (Computed heatmap, not a data-entry field); logged coaching action per barrier.
+
 ### M12 --- Sustainment
 
 **Purpose:** post-go-live adoption audits, regression detection, and sustainment sign-off.
@@ -823,6 +845,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** log and update sustainment checkpoints; add quick wins; add and edit lessons-learned entries; toggle the sign-off once criteria are met.
 
 **Who can edit:** general write access; sign-off is typically reserved for the Change Manager and above.
+
+**Key fields:** Checkpoint label and date; status (planned/complete); regression-risk flag (low/high); quick-win entry; lesson-learned entry; sign-off toggle.
 
 ### M13 --- Risk Register
 
@@ -834,6 +858,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** general write access.
 
+**Key fields:** Risk description; category; severity; status (open/closed).
+
 ### M14 --- Analytics
 
 **Purpose:** the Composite Readiness Index, adoption curves, and correlation analysis --- journi's benchmarking dashboard.
@@ -843,6 +869,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** this module is entirely computed --- there is nothing to create, update, or delete here; it reads live from M5, M6, and M9.
 
 **Who can edit:** read access follows each role's normal visibility; there is no write capability on this module.
+
+**Key fields:** (Computed) Composite Readiness Index; adoption curve; correlation view --- no direct data entry.
 
 ### M15 --- Journey Map
 
@@ -854,6 +882,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** read-only, following each role's normal visibility.
 
+**Key fields:** (Computed) combined ADKAR/Bridges/sentiment timeline --- no direct data entry.
+
 ### M16 --- AI Use Case Library
 
 **Purpose:** a governed catalog of Assistive and Augmented AI use cases. No use case acts autonomously.
@@ -863,6 +893,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** the catalog of use cases itself is a fixed reference list, not editable; what is editable is the activation toggle per Organization and the override toggle per Project, plus the usage log every actual AI call writes to.
 
 **Who can edit:** activation is gated to Org-Admin-and-above; project-level overrides to the Change Manager on that project.
+
+**Key fields:** Use-case activation toggle (per Organization); override toggle (per Project); usage-log entry.
 
 ### M17 --- WBS & Gantt
 
@@ -874,6 +906,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** general write access.
 
+**Key fields:** Task name; track (PM/CM/framework); baseline start/end date; actual start/end date; status; Phase Gate Joint Decision (Go / Go with Conditions / No-Go).
+
 ### M18 --- Process Registry
 
 **Purpose:** the process backbone every module is built on --- the 10 macro processes, the 16 registered end-to-end chains (core lifecycle, cross-cutting loops, and one per transformation type), and who is Responsible / Accountable / Consulted / Sign-off / Informed for each.
@@ -883,6 +917,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** the Macro Process and End-to-End Process catalogs are fixed reference content, shared platform-wide and not editable per tenant. The RACSI grid --- who holds each of the five roles for each macro process --- is editable cell by cell.
 
 **Who can edit:** RACSI grid edits are gated to whoever holds that capability on the Permission Matrix, by default Org-Admin-and-above; the process catalogs themselves are read-only for every role.
+
+**Key fields:** RACSI grid cell (role × macro process); Macro Process and End-to-End Process catalogs (read-only reference).
 
 ### M19 --- CM Charters
 
@@ -894,6 +930,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Who can edit:** Charter create/edit is gated to whoever holds Charter-management rights on the Permission Matrix; delete is further restricted to Org-Admin-and-above, matching the sensitivity of removing a governance record outright.
 
+**Key fields:** Charter name; category; RACSI (R/A/C/S/I); status (Active/Draft/Retired); version; effective date; review frequency; compliance-log entry.
+
 ### M20 --- Journeys & Analytics
 
 **Purpose:** the experience-layer companion to the score-centric dashboards elsewhere in journi --- 8 persona/exception/system journeys, their concrete touchpoints with success criteria and evidence, 5 journey analytics dashboards, and a project-context overlay distinguishing each case from the generic template.
@@ -903,6 +941,8 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 **Create / update / delete:** log evidence and mark success criteria met against a journey's touchpoints for the current project; the 8 journey templates themselves are shared reference content.
 
 **Who can edit:** general write access for logging evidence; the underlying journey templates are read-only for every role.
+
+**Key fields:** Journey touchpoint; success criterion; logged evidence.
 
 ---
 
