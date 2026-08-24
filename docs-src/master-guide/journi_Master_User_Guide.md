@@ -560,4 +560,58 @@ Between them, the nine cases above exercise every one of journi's 9 live-compute
 
 ---
 
-*End of Part 4. Part 5 --- Alerts and Analytics Reference --- follows next.*
+---
+
+<a id="part-5"></a>
+
+## Part 5 --- Alerts and Analytics Reference
+
+### 5.1 How alerts work in journi
+
+journi has no backend to send real email, push, or Teams notifications, so the Notification Center --- reached from the bell icon in the TopBar --- is the client-side equivalent: a persistent, dismissible in-app log. journi's alert catalog registers 16 alerts total; of those, **9 have a condition directly computable from data already in journi's client-side model, and are live** --- they actually fire, dismiss, and re-evaluate as Bouregreg Group's data changes. The other 7 are documented for traceability but never fire in this build, for two different reasons stated plainly rather than left implicit: 6 depend on infrastructure journi does not have (a real backend, AI confidence scoring, authentication lockout, a request-tracking system), and the 7th --- Champion Coverage Below Target --- is excluded because journi has no structured champion-tracking data model to compute it from (a coalition member carries a free-text role field, not a governed Champion entity), so there is no genuine signal to compute, only one that could be faked.
+
+### 5.2 The 9 live alerts
+
+| ID | Name | Severity | Trigger condition (as actually computed) | Escalation | SLA |
+|---|---|---|---|---|---|
+| ALT-001 | Divergence Pattern Detected | High | Knowledge ≥ 4 **and** Ability ≥ 4 on M5, while Bridges reads exactly "Ending" on M6, for the same cohort | L2 --- Change Manager | Acknowledge within 48h |
+| ALT-002 | Regression Risk Score Critical | Critical | A sustainment checkpoint on M12 is marked complete with regression risk logged as High | L2 --- Change Manager | Acknowledge within 24h |
+| ALT-003 | Sponsor Coverage Gap | Medium | Sponsor visibility on M7 is logged as "weak" | L1 --- PMO | Acknowledge within 5 business days |
+| ALT-004 | Resistance Escalation Threshold Breached | High | 3 or more open (non-closed) entries in the Resistance Log on M10 | L2 --- Steering Committee | Acknowledge within 3 business days |
+| ALT-008 | Change Saturation Threshold Breached | Medium | A project's population segment is targeted by 2 or more other concurrent CM Projects in the same Organization | L1 --- PMO | Review within 10 business days |
+| ALT-009 | Phase Gate No-Go / Conditional | High | A Phase Gate on M17 records a Joint Decision other than a clean "Go" | L2 --- Program/Project Manager | Review within 3 business days |
+| ALT-010 | Guiding Coalition Gap | Medium | The Sponsor & Coalition record on M7 names fewer than 2 coalition members | L1 --- PMO | Review within 10 business days |
+| ALT-011 | Communication Overload Detected | Low | More than 3 not-yet-sent communications are queued for one population across this and other concurrent projects in the same Organization | L1 --- Change Manager | Review within 5 business days |
+| ALT-015 | Sustainment Sign-Off Blocked | Medium | Sign-off on M12 is not yet given, and a checkpoint carries a High regression-risk flag | L1 --- Change Manager | Review within 5 business days |
+
+Part 4's nine-project scenario library was deliberately designed so that every one of these 9 fires at least once against Bouregreg Group's real data --- seven from a single project's own record, and ALT-008 and ALT-011 only because several projects are genuinely running concurrently against overlapping populations.
+
+### 5.3 The 7 catalogued but non-live alerts
+
+| ID | Name | Why it never fires here |
+|---|---|---|
+| ALT-005 | Survey Exception Escalated to Admin | Depends on a real backend to run and retry surveys |
+| ALT-006 | Champion Coverage Below Target | No governed Champion data entity exists to compute against --- see 5.1 |
+| ALT-007 | AI Use Case Confidence Below Threshold | Depends on a real AI confidence-scoring pipeline |
+| ALT-012 | Import Integrity Check Failed | Depends on a real backend data-import pipeline |
+| ALT-013 | Administrative Account Locked | Depends on real authentication/lockout infrastructure |
+| ALT-014 | GDPR Request SLA at Risk | Depends on a real request-tracking system |
+| ALT-016 | AI Provider Fallback Triggered | Depends on a real multi-provider AI backend |
+
+### 5.4 The two computed metrics behind the alerts
+
+Two numbers drive several of the alerts and dashboards above, and journi computes both automatically rather than leave them to a Change Manager's arithmetic:
+
+- **Composite Readiness Index** (M14): `ADKAR% × 0.50 + Kübler-Ross sentiment% × 0.25 + Training completion% × 0.25`. Recalculated live as any of its three inputs change; this is the number the Steering Committee reviews at every phase gate in Part 3 and Part 4.
+- **Divergence Pattern Detector**: the same boolean rule that drives ALT-001 --- Knowledge ≥ 4 and Ability ≥ 4 while Bridges reads exactly "Ending." It is not a separate module; it is computed live from M5 and M6 data and surfaces exclusively as ALT-001 in the Notification Center.
+
+### 5.5 Where to look, by role
+
+- **Change Manager** (Driss El Amrani, Houda Zerouali on their own scenarios): the Notification Center bell first, then M14 for the trend behind whatever fired.
+- **Executive Sponsor / Steering Committee**: M14's benchmarking view for the blended readiness trend; ALT-003, ALT-004, ALT-009, and ALT-010 are the four most likely to name them directly as a recipient.
+- **PMO / Program Manager**: ALT-008 and ALT-009 are PM-facing by design --- saturation and gate outcomes are portfolio- and schedule-level concerns first.
+- **Super Admin**: none of the 9 live alerts route to Super Admin by default; their standing responsibility is Part 1's tenant configuration (License, Permission Matrix, Governance Settings), not day-to-day alert triage.
+
+---
+
+*This concludes the journi Complete User Guide --- Parts 1 through 5.*
