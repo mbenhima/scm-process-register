@@ -8,6 +8,27 @@ Date: August 2026
 
 ---
 
+## Table of Contents
+
+- [Purpose and Sources](#purpose-and-sources)
+- [1. Executive Summary](#1-executive-summary)
+- [2. Critical Source-Consistency Findings](#2-critical-source-consistency-findings)
+  - [Finding A — The 4 core E2E processes](#finding-a)
+  - [Finding B — 7 vs. 8 transformation types](#finding-b)
+  - [Finding C — "RACSI" vs "RASCI" naming](#finding-c)
+- [3. Requirement-by-Requirement Status (D13)](#3-requirement-by-requirement-status-d13)
+- [4. Gaps Beyond the REQ-001–024 List](#4-gaps-beyond-the-req-001024-list)
+  - [4.1 CM Charters](#41-cm-charters)
+  - [4.2 Stakeholder Journeys, Touchpoints & Journey Analytics](#42-stakeholder-journeys-touchpoints--journey-analytics)
+  - [4.3 Refinements to the Module 18 Phase Gate / Checklist feature](#43-refinements-to-the-module-18-phase-gate--checklist-feature)
+  - [4.4 Cross-Type Comparison Matrix](#44-cross-type-comparison-matrix)
+  - [4.5 Report export formats & Alerts/notification channels](#45-report-export-formats--alertsnotification-channels)
+- [5. What's Fully Aligned](#5-whats-fully-aligned)
+- [6. Architectural Divergence, By Design](#6-architectural-divergence-by-design-not-re-scored-above)
+- [7. Recommendations, in Priority Order](#7-recommendations-in-priority-order)
+
+---
+
 ## Purpose and Sources
 
 This report compares journi's **current implementation** (the application in `journi/`, as described by `journi_spec.md` v1.4) against the requirement source set supplied across this engagement:
