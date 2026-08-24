@@ -503,4 +503,61 @@ Each lifecycle's SIPOC supplier/customer roles are fixed by its type (for exampl
 
 ---
 
-*End of Part 3. Part 4 --- Change Management Scenario Library --- follows next.*
+---
+
+<a id="part-4"></a>
+
+## Part 4 --- Change Management Scenario Library
+
+Bouregreg Group's single tenant (Part 1) holds one Organization, Bouregreg Manufacturing Maroc, under which every Change Management Project in this Part runs. journi's own data model makes this the natural way to show "more than one kind of change" without a second tenant: several CM Projects share one Organization, one Stakeholder Map, one Codebook, and one Permission Matrix, while each keeps its own Lewin phase, ADKAR scores, resistance log, and sustainment record. Running eight further projects alongside the ERP program also does something no single scenario can: two of journi's live alerts --- Change Saturation and Communication Overload --- only fire when several projects target the same population at once, so this library is what actually makes those two alerts real rather than theoretical.
+
+Each case below states its archetype, business driver, target population, starting readiness pattern, and --- concretely, not abstractly --- which of journi's 9 live-computed alerts it is built to exercise.
+
+### Bouregreg ERP Adoption Program *(archetype: ERP --- E2E-ERP)*
+
+Covered in full in Part 1 (setup) and Part 3 (E2E-01 through E2E-04, and E2E-ERP). Target population: all 3,400 staff across Casablanca, Kenitra, and Settat. Starting Lewin phase: Unfreeze. This is the throughline case, and the one most likely to trigger **ALT-001 (Divergence Pattern Detected)** at UAT if a cohort's Knowledge and Ability scores both reach 4 while Bridges still reads Ending --- and **ALT-009 (Phase Gate No-Go / Conditional)** if a Phase Gate closes as anything other than a clean Go.
+
+### Order-to-Cash Process Redesign *(archetype: BPR --- E2E-BPR)*
+
+Casablanca HQ's finance function has run order-to-cash manually since before the ERP program began; this project redesigns the process itself, independent of any system change. Business driver: three weeks of month-end reconciliation work, self-inflicted by the process design, not the tooling. Target population: Casablanca finance (140 staff). Starting pattern: finance staff who built and privately own today's manual workarounds resist a redesign that makes those workarounds obsolete --- by design, this case is built to cross the resistance-escalation threshold and fire **ALT-004 (Resistance Escalation Threshold Breached)** once three or more open resistance entries accumulate.
+
+### Kenitra Invoice-Matching Automation *(archetype: Automation --- E2E-BPA)*
+
+A narrow, well-scoped robotic process automation project matching supplier invoices against purchase orders at the Kenitra plant. Business driver: a repetitive task with no judgment calls, a strong automation candidate. Target population: Kenitra accounts payable (18 staff). Starting pattern: this is this guide's deliberate low-resistance, fast-moving contrast case --- narrow scope, an already-bought-in team, and a Sponsor who is visibly active from day one. It is designed to close without any of the 9 live alerts firing, which is itself the point: not every Change Management Project needs a recovery playbook, and this guide states that plainly rather than manufacture a crisis where none exists.
+
+### ISO 9001/14001 Integrated Management System *(archetype: QMS --- E2E-IMS)*
+
+Settat plant pursues integrated ISO 9001 (quality) and ISO 14001 (environmental) certification on one management system rather than two. Business driver: a customer contract now requires certified quality management; a parallel environmental certification is bundled in for efficiency. Target population: Settat plant operations and quality function (410 staff). Starting pattern: the Quality Manager sponsors the program alone, without a broader guiding coalition behind them --- built to fire **ALT-010 (Guiding Coalition Gap)** once the Sponsor & Coalition record (M7) shows fewer than two named coalition members.
+
+### One Bouregreg: Post-Acquisition Culture Integration *(archetype: Cultural --- E2E-CULT)*
+
+Six months into the ERP program, Bouregreg Group acquires a smaller regional competitor's Tangier distribution operation. This project is the culture integration that follows --- aligning two distinct ways of working under one set of values, not a system or process change. Business driver: the acquisition's stated synergies depend on the two workforces actually operating as one company within 18 months. Target population: the acquired Tangier team (260 staff) plus their new Bouregreg counterparts. Starting pattern: a newly appointed integration Sponsor has not yet logged any visible activity in the record --- built to fire **ALT-003 (Sponsor Coverage Gap)** in the program's early weeks, before that Sponsor's first town hall is logged.
+
+### Regional Operating Model Redesign *(archetype: Operating Model --- E2E-OM)*
+
+Realigns reporting lines across all three sites from a site-based structure to a function-based one --- Finance, Operations, and Quality each reporting centrally rather than to a site director. Business driver: the ERP program exposed how much duplicated decision-making the site-based structure was causing. Target population: all people-manager-level staff across the three sites (95 staff). Starting pattern: this case runs past its first 30-day sustainment checkpoint with regression risk logged as high --- built to fire **ALT-002 (Regression Risk Score Critical)** at that checkpoint, and consequently **ALT-015 (Sustainment Sign-Off Blocked)** until the regression is resolved and a clean checkpoint follows.
+
+### Loi 09-08 Data Protection Compliance Program *(archetype: Compliance --- E2E-COMP)*
+
+Brings Bouregreg Group's customer and employee data handling into compliance with Morocco's Loi n° 09-08 on the protection of personal data, under the national data protection authority's (CNDP) oversight. Business driver: a scheduled CNDP audit with a fixed external deadline, not a discretionary program. Target population: any function touching customer or employee personal data --- HR, Sales, Customer Service (310 staff). This case's SIPOC is fixed by its type: Legal/Compliance is the supplier, the regulator is the customer, a cast this guide names concretely rather than leaves generic. Because its deadline is externally fixed, this is the case in the library where a Phase Gate closing as anything but Go carries the least schedule flexibility --- the practical reason **ALT-009** matters most here even when it does not fire.
+
+### Plant Digital Skills Upskilling Program *(archetype: Training & Skills Development --- E2E-TSD)*
+
+A standalone digital-literacy and systems-skills program for plant-floor staff at Kenitra and Settat, run independent of any specific system rollout --- preparing the workforce for the next several years of technology change generally, not one program's go-live. Business driver: a skills gap identified independently of the ERP program, but accelerated once the ERP program made it visible. Target population: plant-floor staff without prior systems training (620 staff). This is the case that most exercises M9 (Training) and M16 (AI Use Case Library, for AI-assisted curriculum drafting) in this guide's library, without a go-live event of its own to anchor to.
+
+### Settat Plant Consolidation & Workforce Restructuring *(archetype: Restructuring --- no dedicated E2E lifecycle)*
+
+Consolidates two overlapping production lines at the Settat plant into one, with a workforce restructuring as a direct consequence. This case is included deliberately without a dedicated End-to-End lifecycle or Phase Template of its own: Restructuring is one of Main Project's ten available archetypes, but --- unlike ERP, BPR, Automation, QMS, Cultural, Operating Model, Compliance, and Training & Skills --- it is not one of the 8 types the E2E addendum built a registered chain for. It runs on the 4 core chains (E2E-01 through E2E-04) generically instead, and this guide states that gap plainly rather than imply a lifecycle exists where it does not. Business driver: sustained overcapacity on the older of the two lines. Target population: the affected line's 130 staff. Starting pattern: the highest-resistance case in the library by design, expected to cross the resistance threshold early and stay there --- a second, independent source (alongside Order-to-Cash) of **ALT-004** firing in this Organization.
+
+### What the portfolio view shows
+
+With nine Change Management Projects now running under one Organization, two alerts become visible that no single project could trigger alone:
+
+- **ALT-008 (Change Saturation Threshold Breached)** fires once a project's population segment is targeted by two or more other concurrent initiatives in the same Organization --- true almost everywhere in this library by design, since the ERP program, the Operating Model redesign, and the Training & Skills program all reach broad, overlapping populations across the same three sites.
+- **ALT-011 (Communication Overload Detected)** fires once the combined not-yet-sent communications queued across a population's concurrent initiatives exceed three --- realistic here precisely because nine programs are drafting town halls, FAQs, and go-live messages against overlapping audiences at the same time, which is exactly the condition this alert exists to catch before it reaches an inbox.
+
+Between them, the nine cases above exercise every one of journi's 9 live-computed alerts at least once --- eight through a single project's own data, and the last two only because the portfolio, taken together, is what makes them real. Part 5 covers all 9 in full, plus the 7 reference alerts in journi's D07 catalog that are documented but not live-computed in this build.
+
+---
+
+*End of Part 4. Part 5 --- Alerts and Analytics Reference --- follows next.*
