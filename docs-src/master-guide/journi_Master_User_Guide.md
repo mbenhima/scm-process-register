@@ -47,6 +47,7 @@ Version 1.0 · August 2026 · Confidential
 - [Part 3 --- All 16 End-to-End Process Walkthroughs](#part-3)
 - [Part 4 --- Change Management Scenario Library](#part-4)
 - [Part 5 --- Alerts and Analytics Reference](#part-5)
+- [Appendix --- Quick Reference](#appendix)
 
 ---
 
@@ -987,4 +988,112 @@ Two numbers drive several of the alerts and dashboards above, and journi compute
 
 ---
 
-*This concludes the journi Complete User Guide --- Parts 1 through 5.*
+---
+
+<a id="appendix"></a>
+
+## Appendix --- Quick Reference
+
+### A.1 Role Legend
+
+| Role | Scope level | Individual visibility? | General write access? | Bouregreg example |
+|---|---|---|---|---|
+| Super Admin | Platform | Yes | Yes (plus License, Permission Matrix) | Zineb Alaoui |
+| Group Admin | Group | Yes | Yes (plus hierarchy management) | Anas Bouzid |
+| Org Admin | Organization | Yes | Yes (plus hierarchy management) | Meryem Sabri |
+| Change Manager | Project | Yes | Yes | Driss El Amrani |
+| People Manager | Project | Yes | Yes | Houda Zerouali |
+| Practitioner / Contributor | Project | No (aggregated only) | Yes | Ghita Bennis |
+| Sponsor | Project | No | No (own roadmap actions only) | CFO, Bouregreg Group |
+| Executive | Organization | No | No | Board Executive Viewer |
+| Employee | Project | No | No | Reda Loukili |
+
+### A.2 RACSI Legend
+
+journi's RACSI convention (D17 CAT-02) uses seven role codes rather than the generic five RACI roles, so a Change Management responsibility and a Project Management one can be named separately in the same grid:
+
+| Code | Meaning | Rule |
+|---|---|---|
+| **R** | Responsible | May be more than one role per Task or process |
+| **A** | Accountable | Exactly one role, always |
+| **C** | Consulted | Two-way input sought before the decision |
+| **S** | Support | Contributes effort but is not Responsible |
+| **I** | Informed | One-way notification after the fact |
+
+Role-code abbreviations used throughout this guide: **ES** Executive Sponsor · **CM** Change Manager · **PM** Program/Project Manager · **FPO** Functional Process Owner · **ITL** IT/Technical Lead · **SUP** Supervisor · **EU** End User.
+
+### A.3 The Four Frameworks, One Page
+
+| Framework | Altitude | Stages, in order | Logged on | Auto-computed? |
+|---|---|---|---|---|
+| Lewin | Organizational | Unfreeze → Change → Refreeze | M3 | No --- judgment call |
+| Prosci ADKAR | Individual / cohort | Awareness → Desire → Knowledge → Ability → Reinforcement | M5 | No --- judgment call, per block |
+| Bridges' Transition Model | Individual / cohort | Ending → Neutral Zone → New Beginning | M6 | No --- judgment call |
+| Kübler-Ross Change Curve | Individual / cohort | Denial → Resistance/Anger → Exploration → Commitment | M6 | No --- judgment call |
+| *(derived)* Composite Readiness Index | Blended | 0--100%, ADKAR 50% + sentiment 25% + training 25% | M14 | **Yes** --- live |
+| *(derived)* Divergence Pattern Detector | Blended | Boolean: Knowledge ≥ 4 and Ability ≥ 4 while Bridges = Ending | Surfaces as ALT-001 | **Yes** --- live |
+
+### A.4 Module Index (M1--M20)
+
+| Module | Name | Primarily holds | Editable? |
+|---|---|---|---|
+| M1 | Hierarchy | Groups, Organizations, Main/CM Projects | CRUD |
+| M2 | Identity & RBAC | Users, Permission Matrix, Governance, License | CRUD |
+| M3 | Initiative Registry | Business driver, scope, Lewin phase | CRUD |
+| M4 | Stakeholder Mapping | Cohorts, impact dimension/severity, champions | CRUD |
+| M5 | ADKAR Engine | Five block scores, barrier notes | CRUD |
+| M6 | Emotional & Transition | Bridges stage, Kübler-Ross sentiment | CRUD |
+| M7 | Sponsor & Coalition | Sponsor roadmap, coalition members | CRUD |
+| M8 | Communications | Message × audience × channel × timing | CRUD |
+| M9 | Training | Curriculum, completion, certification | CRUD |
+| M10 | Resistance | Resistance log, Qualitative Coding Workbench | CRUD |
+| M11 | Manager as Coach | Team ADKAR heatmap, coaching actions | Computed view + logged actions |
+| M12 | Sustainment | Checkpoints, quick wins, lessons, sign-off | CRUD |
+| M13 | Risk Register | CM-specific risk entries | CRUD |
+| M14 | Analytics | Composite Readiness Index, adoption curves | Read-only (computed) |
+| M15 | Journey Map | Combined ADKAR/Bridges/sentiment timeline | Read-only (computed) |
+| M16 | AI Use Case Library | Governed AI use-case catalog | Activation toggles only |
+| M17 | WBS & Gantt | Baseline vs. actual schedule, Phase Gates | CRUD |
+| M18 | Process Registry | 10 macro processes, 16 E2E chains, RACSI grid | RACSI grid editable; catalogs read-only |
+| M19 | CM Charters | 8 signed behavioral standards, compliance log | CRUD |
+| M20 | Journeys & Analytics | 8 experience journeys, touchpoint evidence | Evidence logging; templates read-only |
+
+### A.5 The 16 End-to-End Processes Index
+
+| ID | Name | Kind |
+|---|---|---|
+| E2E-01 | Readiness & Mobilization | Core |
+| E2E-02 | Capability & Divergence Management | Core |
+| E2E-03 | Resistance-to-Commitment | Core |
+| E2E-04 | Adoption-to-Sustainment | Core |
+| E2E-05 | Signal Aggregation Loop | Cross-cutting loop |
+| E2E-06 | PM ↔ CM Governance Bridge | Cross-cutting loop |
+| E2E-07 | Champion Early-Warning Loop | Cross-cutting loop |
+| E2E-08 | Governance Escalation Loop | Cross-cutting loop |
+| E2E-ERP | ERP Implementation Lifecycle | Transformation type |
+| E2E-BPR | Business Process Reengineering Lifecycle | Transformation type |
+| E2E-BPA | Business Process Automation Lifecycle | Transformation type |
+| E2E-IMS | Integrated Management System Lifecycle | Transformation type |
+| E2E-CULT | Cultural / Values Transformation Lifecycle | Transformation type |
+| E2E-OM | Operating Model Redesign Lifecycle | Transformation type |
+| E2E-COMP | Compliance-Driven Change Lifecycle | Transformation type |
+| E2E-TSD | Training & Skills Development Lifecycle | Transformation type |
+
+### A.6 Glossary
+
+- **ADKAR** --- Prosci's individual-change model: Awareness, Desire, Knowledge, Ability, Reinforcement.
+- **Bridges' Transition Model** --- William Bridges' three-stage emotional model: Ending, Neutral Zone, New Beginning.
+- **Composite Readiness Index (CRI)** --- journi's single blended readiness number; ADKAR 50% + Kübler-Ross sentiment 25% + training completion 25%.
+- **Divergence Pattern Detector** --- journi's automated check for a cohort whose demonstrated capability (Knowledge/Ability) has outpaced their emotional transition (Bridges still "Ending"); surfaces as ALT-001.
+- **E2E** --- End-to-End (process chain), registered on M18.
+- **Kübler-Ross Change Curve** --- as implemented in journi, a simplified four-stage sentiment model: Denial, Resistance/Anger, Exploration, Commitment.
+- **Lewin's Change Model** --- Kurt Lewin's organizational three-stage model: Unfreeze, Change, Refreeze.
+- **MP** --- Macro Process (one of journi's 10 registered process categories, MP-01 through MP-10).
+- **RACSI** --- journi's seven-role responsibility grid; see A.2.
+- **SIPOC** --- Suppliers, Inputs, Process, Outputs, Customers --- the process-mapping frame used throughout Part 1B and Part 3.
+- **TPL-ERP-8** --- journi's 8-phase ERP implementation Phase Template (M17): Discovery, Design, Build, Test, Train, Deploy, Hypercare, Sustain.
+- **WBS** --- Work Breakdown Structure, M17's combined Project Management / Change Management schedule.
+
+---
+
+*This concludes the journi Complete User Guide --- Parts 1, 1B, and 2 through 5, plus this Appendix.*
