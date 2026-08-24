@@ -43,6 +43,7 @@ Version 1.0 · August 2026 · Confidential
     - [E5 --- Reinforcement Gap at Sustain](#exc-e5)
     - [E6 --- Cohort Divergence Across Sites](#exc-e6)
   - [1B.5 What to Track, by Cadence](#p1b-5)
+  - [1B.6 The Program, Month by Month](#p1b-6)
 - [Part 2 --- Module-by-Module Feature Tour](#part-2)
 - [Part 3 --- All 16 End-to-End Process Walkthroughs](#part-3)
 - [Part 4 --- Change Management Scenario Library](#part-4)
@@ -572,6 +573,40 @@ The tracking model below is the bridge between the phase-by-phase playbook above
 | 3 or more open Resistance Log entries | Any point | Escalate to Steering Committee | ALT-004 |
 | Sponsor visibility logged "weak" | Any governance week | Escalate to PMO | ALT-003 |
 | Fewer than 2 named coalition members | Any point | Escalate to PMO | ALT-010 |
+
+<a id="p1b-6"></a>
+
+### 1B.6 The Program, Month by Month
+
+Sections 1B.3 and 1B.4 gave the Bouregreg ERP Adoption Program's normal flow and its six exceptions as separate, structured references. This subsection puts them back together as one continuous account, month by month, so a reader can see how the two actually interleave over the program's real 14 months --- which is what living through a program week by week actually looks like, rather than a phase table and an exception appendix read separately.
+
+**Month 1 (W1--4).** Discovery opens. Meryem Sabri's team runs the first discovery workshops at Casablanca HQ; Kenitra and Settat follow the week after. Lewin reads Unfreeze from the first week --- not because the program just started, but because the discovery findings already support it.
+
+**Month 2 (W5--8).** Discovery closes with a signed-off business case and a complete Stakeholder Map. Design opens in parallel: the first design-principle draft circulates before Discovery's final workshop has even happened at Settat.
+
+**Month 3 (W9--13).** Design's future-state scope is signed off by the Steering Committee. The first town hall goes out across all three sites, and the first real Awareness scores land on M5 --- Casablanca reading highest, Settat lowest, exactly the spread Exception E6 will later name explicitly.
+
+**Month 4 (W14--17).** Build opens. Configuration sprints begin against the signed-off design principles, and the first wave of champions is briefed --- the moment Exception E7 (Part 3) becomes an operating loop rather than a theoretical one.
+
+**Month 5 (W18--22).** Mid-Build. Awareness gives way to Desire across most cohorts --- except the Settat plant floor, where Desire drops to 2 and auto-escalates. **Exception E1 opens here.** Houda Zerouali clusters the barrier notes; the theme is position security, not workflow visibility.
+
+**Month 6 (W23--27).** **E1 closes.** The CFO delivers a direct, verifiable staffing commitment to the Settat cohort in person; Desire and Kübler-Ross sentiment both recover within the month. Build closes shortly after: configuration is functionally complete, and Lewin moves from Unfreeze to Change on the strength of that evidence, not the calendar.
+
+**Month 7 (W28--30).** Test opens. SIT runs clean. The UAT cohort is recruited across all three sites, with Settat's representative now genuinely ready to participate meaningfully, thanks to Month 6's recovery.
+
+**Month 8 (W31--35).** UAT runs in earnest. A Casablanca finance participant logs Knowledge ≥ 4 and Ability ≥ 4 while Bridges still reads Ending --- **Exception E2 fires** as ALT-001. Driss El Amrani runs the 1:1; the underlying concern turns out to be genuine, tied to a role that exists under the legacy system and doesn't exist in the new one, and is given an explicit closure moment. Train opens in parallel: role-based training begins by cohort.
+
+**Month 9 (W36--39).** Train continues. Kenitra and Settat's job aids and sandbox environment go live. The Composite Readiness Index on M14, blended across all three sites, starts reading in a range that --- disaggregated --- turns out to mean something different at each site. **Exception E6 is formally opened** as Meryem Sabri pulls the site-level breakdown apart for the first time.
+
+**Month 10 (W40--42).** Train closes. Cohort-level go/no-go is confirmed --- Casablanca and Settat (recovered since Month 6) clear cleanly; Kenitra clears with a coaching note attached, informed directly by E6's site-level comparison. Supervisors at both plant sites are briefed on floor-coaching expectations for the go-live week ahead.
+
+**Month 11 (W43).** Deploy --- a single, sharp week. Data freeze, final migration, cutover runbook, technical validation: all clean. Driss El Amrani sends the go-live confirmation across all three sites, timed against M8's saturation detection. Hypercare activates on Day 1. Lewin is marked "Change → Refreeze (provisional)," not Refreeze --- **Exception E3 is, by design, already active** the moment this month begins, and stays active through Month 12.
+
+**Month 12 (W44--47).** Hypercare in full swing. A configuration defect in Kenitra's inventory-matching logic causes a visible stock-count error in front of a cohort that had just started to trust the new system --- **Exception E4 opens**, isolated to Kenitra. The defect is fixed and communicated within the week; the Kenitra plant supervisor acknowledges the setback directly with the team; a targeted re-pulse at the 1--2 week mark confirms recovery. The broader 2- and 4-week Bridges/Kübler-Ross re-pulse required to resolve **E3** also runs this month.
+
+**Month 13 (W48--52).** Hypercare closes: the re-pulse confirms Bridges has genuinely moved to New Beginning and Kübler-Ross reads Exploration or better across all three sites --- **E3 closes**, Lewin's provisional Refreeze is confirmed rather than walked back. Sustain opens. New-process metrics are embedded into performance management with HR's support; the first 30-day checkpoint runs clean.
+
+**Month 14 (W53--60+).** The 60-day checkpoint runs clean. At the 90-day mark, Reinforcement stalls below 3 for the first time --- not a crisis, but exactly the pattern **Exception E5** exists to catch before the program closes on schedule regardless. Driss El Amrani flags it explicitly; the CFO re-authorizes a further checkpoint cadence; the champion network is re-chartered specifically for reinforcement. Two further consecutive healthy checkpoints follow. **E5 closes.** Refreeze is called from that evidence, the Bouregreg ERP Adoption Program's sign-off is recorded on M12, and ongoing ownership passes to the business-as-usual process owner --- the same close Part 1B.3's Phase 8 describes, now with the full story of how the program actually got there.
 
 ---
 
