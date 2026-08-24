@@ -31,6 +31,7 @@ Version 1.0 (Draft --- Part 1 of 5) · August 2026 · Confidential
 ---
 
 <a id="part-0"></a>
+
 ## Part 0 --- Purpose and How to Use This Guide
 
 ### What this guide is
@@ -56,9 +57,11 @@ Every screen, field, tab, and button named in this guide is verified against jou
 ---
 
 <a id="part-1"></a>
+
 ## Part 1 --- Tenant and Admin Setup
 
 <a id="p1-1"></a>
+
 ### 1.1 journi's Tenant Model
 
 journi is deployed one tenant at a time. Everything a tenant contains --- its Groups, Organizations, Main Projects, Change Management Projects, users, role permissions, and license terms --- lives in a single record, held in the browser's local storage under a fixed key (`journi.state.v1`) and, in a real deployment, in that tenant's own database. There is no in-app "switch tenant" control, because there is nothing to switch between: one journi deployment is one tenant, in the same way one browser profile is one tenant in this demo build.
@@ -69,6 +72,7 @@ Two consequences follow directly from this model, and this guide states them pla
 - **A tenant can hold more than one Organization.** The License record (Module 2, License & Plan tab) is tenant-wide --- one company name, one plan, one user cap, one set of feature flags for the whole deployment. Underneath that single License, Module 1's Group → Organization hierarchy can hold several distinct Organizations (business units, subsidiaries, plants), each with its own sector, employee count, sites, and default language. Part 4 of this guide uses that same single-tenant, multi-Organization capacity to host a scenario library without inventing a second tenant.
 
 <a id="p1-2"></a>
+
 ### 1.2 The Scenario Organization: Veyra Group
 
 This guide is built around one new organization, invented for this guide and not part of journi's other seeded demo data (Atlas Industrial Group, Maghreb Logistics, and Meridia Health remain available separately as journi's standard demo tenant, and are not used here).
@@ -88,6 +92,7 @@ This guide is built around one new organization, invented for this guide and not
 Veyra Group makes three disconnected legacy systems (order management, inventory, and finance) redundant across its three sites and is 14 months into replacing them with a single unified platform --- the Main Project and Change Management Project this Part ends by creating, and that Parts 2 and 3 use as the throughline scenario. Part 4 later adds further Change Management Projects under this same Organization --- a plant restructuring, a post-acquisition culture integration, and others --- to build out the scenario library without inventing a second tenant.
 
 <a id="p1-3"></a>
+
 ### 1.3 Step 1 --- First Access and the License Record (M2)
 
 A brand-new deployment's very first user is a Super Admin, provisioned outside the app by journi's implementation team (in this demo build, by picking the Super Admin persona at the login screen --- journi's demo login has no password, only a persona picker). Everything else in this Part is done signed in as that Super Admin.
@@ -104,6 +109,7 @@ A brand-new deployment's very first user is a Super Admin, provisioned outside t
 6. Once accepted, the License panel shows Veyra Group's company name, plan badge, user count against the 60-seat cap, issue and expiry dates, and the feature-flag list --- this is the tenant's identity from this point forward.
 
 <a id="p1-4"></a>
+
 ### 1.4 Step 2 --- Building the Group / Organization Hierarchy (M1)
 
 1. Open **Module 1 --- Group / Organization / Projects**.
@@ -119,6 +125,7 @@ A brand-new deployment's very first user is a Super Admin, provisioned outside t
 4. Save. The Organization card now shows its sector, employee count, site count, and languages, and --- for anyone with hierarchy-management rights --- an inline default-language selector that future users in this Organization inherit unless they set a personal language preference.
 
 <a id="p1-5"></a>
+
 ### 1.5 Step 3 --- Creating User Accounts and Scopes (M2)
 
 Every journi user carries exactly three things beyond name, email, and language: a **role** (one of nine), a **scope type** (`platform`, `group`, `organization`, or `project`), and a **scope ID** (which Group, Organization, or Project that scope resolves to). Scope is what actually limits what a user sees --- role determines *capability* (can this person edit the Permission Matrix), scope determines *reach* (which Organizations' and Projects' data this person's role applies to).
@@ -140,6 +147,7 @@ Open **Module 2 --- Users & Roles**, **Users & Scope** tab, and click **+ Add** 
 A practical note this guide carries over from journi's own behavior rather than invents: a Change Manager, People Manager, Sponsor, Employee, or Practitioner account can only be scoped to a Project, so the four project-scoped rows above are created (or their scope corrected) once the Veyra ERP Adoption Program project exists in Step 6 --- in practice, a Super Admin typically completes Steps 2--3's Organization-level and Group-level accounts first, creates the first Project, and only then finishes scoping the project-level team. Self-service sign-ups, separately, land as pending Employee accounts awaiting approval rather than being created directly through this screen.
 
 <a id="p1-6"></a>
+
 ### 1.6 Step 4 --- The Permission Matrix (M2)
 
 1. Open the **Permission Matrix** tab. This table is platform-wide, not scoped to one Organization, and only a Super Admin may edit it --- every other role sees it read-only, for transparency.
@@ -147,6 +155,7 @@ A practical note this guide carries over from journi's own behavior rather than 
 3. Every checkbox change here takes effect immediately across the whole tenant --- there is no separate "publish" step.
 
 <a id="p1-7"></a>
+
 ### 1.7 Step 5 --- Governance Settings (M2)
 
 1. Open the **Governance Settings** tab.
@@ -154,6 +163,7 @@ A practical note this guide carries over from journi's own behavior rather than 
 3. Veyra Group's Super Admin leaves this on: the scenario in Parts 2--4 depends on every framework reading carrying a real, auditable reason, not a bare number.
 
 <a id="p1-8"></a>
+
 ### 1.8 Step 6 --- Creating the First Main Project and CM Project (M1)
 
 1. Back in **Module 1**, on the Veyra Manufacturing Europe Organization card, click **+ Main Project**. Fill in:
@@ -174,6 +184,7 @@ A practical note this guide carries over from journi's own behavior rather than 
 4. Return to Step 3 and finish creating or re-scoping the four project-level user accounts (Diego Fontes, Inês Cabral, the Sponsor, Bruno Alves, and Sofia Rocha) against this now-existing Project.
 
 <a id="p1-9"></a>
+
 ### 1.9 Tenant Setup Checklist
 
 - [ ] License record set (company name, plan, user cap, feature flags) --- Module 2, License & Plan
