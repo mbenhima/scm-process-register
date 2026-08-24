@@ -9,7 +9,18 @@ import EmptyState from '../components/EmptyState.jsx'
 import StatCard from '../components/StatCard.jsx'
 import GanttChart from '../components/GanttChart.jsx'
 import { canWrite } from '../utils/rbac.js'
-import { WBS_TRACKS, WBS_STATUSES, taskGapDays, gapTone, todayISO, phaseChecklistCompletion } from '../utils/wbs.js'
+import {
+  WBS_TRACKS,
+  WBS_STATUSES,
+  ACCOUNTABILITY_TAGS,
+  PHASE_IDS,
+  PHASE_NAMES,
+  lifecyclePhaseFromLabel,
+  taskGapDays,
+  gapTone,
+  todayISO,
+  phaseChecklistCompletion,
+} from '../utils/wbs.js'
 import { readinessIndex, hasDivergence, stalledBlocks } from '../utils/compute.js'
 
 const TRACK_TITLE = { pm: 'Project Management', cm: 'Change Management', framework: 'Framework' }
@@ -18,9 +29,11 @@ const GAP_TONE_BADGE = { green: 'green', amber: 'amber', red: 'red', gray: 'gray
 const GATE_DECISIONS = ['go', 'go_conditions', 'no_go']
 const GATE_DECISION_TONE = { go: 'green', go_conditions: 'amber', no_go: 'red' }
 const GATE_DECISION_LABEL = { go: 'Go', go_conditions: 'Go with Conditions', no_go: 'No-Go' }
+const TAG_TONE = { PROJECT: 'brand', CHANGE: 'sand', JOINT: 'amber' }
 
 const BLANK_FORM = {
   track: 'pm',
+  accountabilityTag: 'PROJECT',
   phase: '',
   name: '',
   baselineStart: todayISO(),
@@ -45,9 +58,24 @@ function TaskFormFields({ form, setForm }) {
           </select>
         </div>
         <div>
-          <label className="label">Phase</label>
-          <input className="input" placeholder="e.g. Phase 2" value={form.phase} onChange={(e) => setForm({ ...form, phase: e.target.value })} />
+          <label className="label">Accountability tag</label>
+          <select className="input" value={form.accountabilityTag || 'PROJECT'} onChange={(e) => setForm({ ...form, accountabilityTag: e.target.value })}>
+            {ACCOUNTABILITY_TAGS.map((tag) => (
+              <option key={tag} value={tag}>
+                {tag}
+              </option>
+            ))}
+          </select>
         </div>
+      </div>
+      <div>
+        <label className="label">Phase</label>
+        <input className="input" placeholder="e.g. Phase 2" value={form.phase} onChange={(e) => setForm({ ...form, phase: e.target.value })} />
+        <p className="text-[11px] text-ink/40 mt-1">
+          {lifecyclePhaseFromLabel(form.phase)
+            ? `Maps to lifecycle ${lifecyclePhaseFromLabel(form.phase)} — ${PHASE_NAMES[lifecyclePhaseFromLabel(form.phase)]}`
+            : 'Free text — won’t be filterable by lifecycle phase unless it starts with P1–P7 or matches an ERP phase name.'}
+        </p>
       </div>
       <div>
         <label className="label">Task name</label>
@@ -96,6 +124,7 @@ function TaskTable({ project, tasks, canEdit, onEdit }) {
       <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
         <tr>
           <th className="text-start px-3 py-2">Phase</th>
+          <th className="text-start px-3 py-2">Tag</th>
           <th className="text-start px-3 py-2">Task</th>
           <th className="text-start px-3 py-2">Baseline</th>
           <th className="text-start px-3 py-2">Actual</th>
@@ -107,9 +136,14 @@ function TaskTable({ project, tasks, canEdit, onEdit }) {
       <tbody>
         {tasks.map((t) => {
           const gap = taskGapDays(t)
+          const lifecyclePhase = lifecyclePhaseFromLabel(t.phase)
           return (
             <tr key={t.id} className="border-t border-brand-50">
-              <td className="px-3 py-2 text-ink/60 whitespace-nowrap">{t.phase}</td>
+              <td className="px-3 py-2 text-ink/60 whitespace-nowrap">
+                {t.phase}
+                {lifecyclePhase && <span className="text-ink/30"> · {lifecyclePhase}</span>}
+              </td>
+              <td className="px-3 py-2">{t.accountabilityTag && <Badge tone={TAG_TONE[t.accountabilityTag]}>{t.accountabilityTag}</Badge>}</td>
               <td className="px-3 py-2 text-brand-950 font-medium max-w-xs">{t.name}</td>
               <td className="px-3 py-2 text-ink/60 whitespace-nowrap text-xs">
                 {t.baselineStart}
@@ -205,10 +239,11 @@ function TemplateModal({ open, onClose, project, data, loadPhaseTemplate }) {
 
 const BLANK_CHECKLIST_ITEM = { phase: '', track: 'pm', item: '', done: false }
 
-function ChecklistSection({ project, canEdit }) {
+function ChecklistSection({ project, canEdit, phaseFilter }) {
   const { addSubItem, updateSubItem, removeSubItem } = useAppState()
   const [form, setForm] = useState(BLANK_CHECKLIST_ITEM)
-  const items = project.phaseChecklists || []
+  const allItems = project.phaseChecklists || []
+  const items = phaseFilter === 'all' ? allItems : allItems.filter((c) => lifecyclePhaseFromLabel(c.phase) === phaseFilter)
   const phaseOptions = [...new Set((project.wbsTasks || []).filter((t) => t.track === 'pm').map((t) => t.phase))]
 
   function submit() {
@@ -457,10 +492,11 @@ function PhaseGateModal({ open, onClose, project }) {
   )
 }
 
-function PhaseGateSection({ project, canEdit }) {
+function PhaseGateSection({ project, canEdit, phaseFilter }) {
   const { removeSubItem } = useAppState()
   const [modal, setModal] = useState(false)
-  const gates = project.phaseGates || []
+  const allGates = project.phaseGates || []
+  const gates = phaseFilter === 'all' ? allGates : allGates.filter((g) => lifecyclePhaseFromLabel(g.phase) === phaseFilter)
 
   return (
     <div className="card overflow-x-auto">
@@ -533,11 +569,13 @@ function Content({ project }) {
   const { t } = useI18n()
   const { addSubItem, updateSubItem, currentUser, data, loadPhaseTemplate } = useAppState()
   const canEdit = canWrite(currentUser?.role)
-  const tasks = project.wbsTasks || []
+  const allTasks = project.wbsTasks || []
   const [modal, setModal] = useState(false)
   const [templateModal, setTemplateModal] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [form, setForm] = useState(BLANK_FORM)
+  const [phaseFilter, setPhaseFilter] = useState('all')
+  const tasks = phaseFilter === 'all' ? allTasks : allTasks.filter((t) => lifecyclePhaseFromLabel(t.phase) === phaseFilter)
 
   const gaps = tasks.map((t) => taskGapDays(t)).filter((g) => g !== null && g !== undefined)
   const onTrack = gaps.filter((g) => g <= 0).length
@@ -571,15 +609,31 @@ function Content({ project }) {
         <StatCard label="Avg. schedule gap" value={`${avgGap >= 0 ? '+' : ''}${avgGap}d`} tone={avgGap > 7 ? 'red' : avgGap > 0 ? 'amber' : 'brand'} />
       </div>
 
-      {canEdit && (
-        <div className="flex justify-end gap-2">
-          <button className="btn-ghost" onClick={() => setTemplateModal(true)}>
-            {t('m18_load_template')}
-          </button>
-          <button className="btn-primary" onClick={openNew}>
-            + Add WBS task
-          </button>
-        </div>
+      <div className="flex justify-end gap-2 items-center">
+        <label className="text-xs text-ink/50">Lifecycle phase (REQ-021):</label>
+        <select className="input w-auto" value={phaseFilter} onChange={(e) => setPhaseFilter(e.target.value)}>
+          <option value="all">All phases</option>
+          {PHASE_IDS.map((p) => (
+            <option key={p} value={p}>
+              {p} — {PHASE_NAMES[p]}
+            </option>
+          ))}
+        </select>
+        {canEdit && (
+          <>
+            <button className="btn-ghost" onClick={() => setTemplateModal(true)}>
+              {t('m18_load_template')}
+            </button>
+            <button className="btn-primary" onClick={openNew}>
+              + Add WBS task
+            </button>
+          </>
+        )}
+      </div>
+      {phaseFilter !== 'all' && (
+        <p className="text-xs text-ink/40 -mt-3">
+          Filtering WBS tasks, Phase Checklist items, and Phase Gates to {phaseFilter} — {PHASE_NAMES[phaseFilter]}.
+        </p>
       )}
 
       <GanttChart tasks={tasks} />
@@ -591,8 +645,8 @@ function Content({ project }) {
         </div>
       ))}
 
-      <ChecklistSection project={project} canEdit={canEdit} />
-      <PhaseGateSection project={project} canEdit={canEdit} />
+      <ChecklistSection project={project} canEdit={canEdit} phaseFilter={phaseFilter} />
+      <PhaseGateSection project={project} canEdit={canEdit} phaseFilter={phaseFilter} />
 
       <Modal
         open={modal}

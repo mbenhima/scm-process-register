@@ -273,6 +273,7 @@ export function AppStateProvider({ children }) {
       const newTasks = template.phases.map((phase, i) => ({
         id: uid('wbsTasks'),
         track: 'pm',
+        accountabilityTag: 'PROJECT',
         phase,
         name: phase,
         baselineStart: addDays(startISO, i * phaseDurationDays),

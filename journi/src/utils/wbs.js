@@ -1,6 +1,49 @@
 export const WBS_TRACKS = ['pm', 'cm', 'framework']
 export const WBS_STATUSES = ['planned', 'in_progress', 'done', 'at_risk']
 
+// REQ-020 (D32a WBS-02): accountability tag, distinct from WBS_TRACKS (delivery
+// track). A task can be delivered on the PM track but still be a Joint decision
+// point (e.g. the go/no-go call), so this is deliberately a separate field.
+export const ACCOUNTABILITY_TAGS = ['PROJECT', 'CHANGE', 'JOINT']
+
+// REQ-021 (D32g Common-Lifecycle Phase Registry, corrected): the 7 generic
+// P1-P7 phases every WBS task/checklist/gate can be filtered by, regardless of
+// which type-specific Phase Template produced its human-readable phase label.
+export const PHASE_IDS = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7']
+export const PHASE_NAMES = {
+  P1: 'Intake & Diagnosis',
+  P2: 'Case for Change & Target-State Design',
+  P3: 'Build & Development',
+  P4: 'Validation',
+  P5: 'Deployment',
+  P6: 'Stabilization & Hypercare',
+  P7: 'Sustainment & Closure',
+}
+
+// D32g.Maps_To_ERP_8Phase: the ERP 8-phase template's phases don't carry a P1-P7
+// prefix of their own, so they're mapped explicitly here (Discovery and Design
+// both roll up to P1/P2 respectively; Train folds into Validation alongside Test).
+const ERP_PHASE_TO_LIFECYCLE = {
+  Discovery: 'P1',
+  Design: 'P2',
+  Build: 'P3',
+  Test: 'P4',
+  Train: 'P4',
+  Deploy: 'P5',
+  Hypercare: 'P6',
+  Sustain: 'P7',
+}
+
+/** Derives the generic P1-P7 lifecycle phase from any phase label journi uses — a
+ * type-specific Phase Template label (already P-prefixed, e.g. "P2 Clean-Slate
+ * Design"), an ERP 8-phase label, or free text (returns null, unfilterable). */
+export function lifecyclePhaseFromLabel(label) {
+  if (!label) return null
+  const prefixed = label.match(/^(P[1-7])\b/)
+  if (prefixed) return prefixed[1]
+  return ERP_PHASE_TO_LIFECYCLE[label.trim()] || null
+}
+
 export function addDays(dateISO, n) {
   const d = new Date(dateISO + 'T00:00:00')
   d.setDate(d.getDate() + n)
@@ -114,6 +157,7 @@ export function generateDefaultWbs(startISO) {
   ]
   return raw.map((t) => ({
     ...t,
+    accountabilityTag: t.track === 'pm' ? 'PROJECT' : t.track === 'cm' ? 'CHANGE' : 'JOINT',
     status: t.actualEnd ? 'done' : t.actualStart ? 'in_progress' : 'planned',
     percentComplete: t.actualEnd ? 100 : t.actualStart ? 50 : 0,
   }))
