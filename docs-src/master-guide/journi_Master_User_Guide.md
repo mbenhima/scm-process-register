@@ -1384,6 +1384,10 @@ This is Version 1.0 of the journi Complete User Guide, built around a single new
 
 The 60-week program calendar (Part 1B.2), the eight scenario mini-timelines (Part 4), and the month-by-month narrative (Part 1B.6) are this guide's own illustrative pacing, built for a 3,400-person, three-site organization, and are stated as illustrative rather than implied to be a platform default. Everything else --- module behavior, RBAC gating, alert trigger conditions, macro process compositions, framework stage vocabulary --- is verified journi platform fact.
 
+**What this version covers, end to end:** a complete tenant build from a blank deployment (Part 1); a 60-week ERP program run week by week through all four frameworks' real stage vocabulary, normal flow and all six documented exceptions, in full task-and-step detail (Part 1B); every one of journi's 20 modules with its real CRUD and RBAC behavior (Part 2); all 16 registered End-to-End processes, each traced to a real point in the Bouregreg scenario (Part 3); a nine-project scenario library covering eight of journi's ten Main Project archetypes and exercising all 9 live-computed alerts at least once (Part 4); the full alert catalog and the two automated readiness metrics behind it (Part 5); and a nine-section quick-reference appendix, from role and RACSI legends through a worked grid example, sample field entries, and this FAQ.
+
+**What a future version might add:** a second scenario tenant in a different sector (Logistics or Health, the two sectors this version's single Manufacturing tenant does not exercise); a full step-by-step SIPOC/RACSI treatment of the eight Part 4 scenarios at the same depth Part 1B gives the ERP program; and worked examples of the seven catalogued-but-non-live alerts once journi's backend infrastructure exists to compute them for real.
+
 ---
 
 *This concludes the journi Complete User Guide --- Parts 1, 1B, and 2 through 5, plus this Appendix.*
