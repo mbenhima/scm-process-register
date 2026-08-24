@@ -42,6 +42,7 @@ Version 1.0 · August 2026 · Confidential
     - [E4 --- Sentiment Regression During Hypercare](#exc-e4)
     - [E5 --- Reinforcement Gap at Sustain](#exc-e5)
     - [E6 --- Cohort Divergence Across Sites](#exc-e6)
+  - [1B.5 What to Track, by Cadence](#p1b-5)
 - [Part 2 --- Module-by-Module Feature Tour](#part-2)
 - [Part 3 --- All 16 End-to-End Process Walkthroughs](#part-3)
 - [Part 4 --- Change Management Scenario Library](#part-4)
@@ -542,6 +543,34 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 **Outputs:** a disaggregated, site-level readiness report; a root-cause comparison between Casablanca and the other two sites; a revised, cohort-by-cohort go/no-go recommendation at Phase 5's gate rather than one all-or-nothing call.
 
 **RACSI for this exception.** R = CM, FPO · A = CM · C = SUP · S = PM · I = ES, EU
+
+<a id="p1b-5"></a>
+
+### 1B.5 What to Track, by Cadence
+
+The tracking model below is the bridge between the phase-by-phase playbook above and the alerts in Part 5 --- what Driss El Amrani and his team actually look at, and how often, across the Bouregreg ERP Adoption Program's 60 weeks.
+
+**Daily (Deploy through Hypercare, W43--50 --- Phase 6 Task 3, Phase 7 Task 2):** adoption-metric dashboard on M14; the elevated support desk's open ticket count by site; any new resistance entry on M10 logged in the last 24 hours.
+
+**Weekly (throughout):** the Notification Center bell, for any of the 9 live alerts (Part 5); ADKAR scores for any cohort currently mid-training or mid-intervention; sponsor-action completion on M7 against that week's roadmap item.
+
+**Bi-Weekly (Hypercare, W43--50 --- Phase 7 Task 3):** the Kübler-Ross/Bridges re-pulse cadence itself; regression coaching outcomes on M11 for any cohort flagged the prior cycle.
+
+**Monthly (throughout, and mandatory from Sustain onward):** the Composite Readiness Index trend line on M14; Lewin phase justification, reviewed against evidence rather than the calendar; Steering Committee readout, carrying the per-site breakdown established in Exception E6.
+
+**Escalation thresholds (the bridge to Part 5's alerts):**
+
+| Signal observed | Threshold | Action required | Linked exception / alert |
+|---|---|---|---|
+| Desire ≤ 2, auto-escalated, low-visibility barrier notes | 1 occurrence | Log barrier-reason note; begin E1 recovery | E1 · M5 escalation |
+| Knowledge ≥ 4 and Ability ≥ 4 while Bridges = Ending | 1 occurrence | Run E2 recovery; do not count toward cohort readiness | E2 · ALT-001 |
+| Lewin eligible for Refreeze on the calendar, Bridges/KR not yet there | Go-live date reached | Mark Lewin provisional; run E3 | E3 · Phase 6 gate |
+| Kübler-Ross reading moves backward after a specific incident | 1 occurrence, 1 cohort | Run E4's contained recovery cycle | E4 |
+| ADKAR Reinforcement < 3 as formal close approaches | Any Sustain-phase checkpoint | Flag stall; run E5; delay closure | E5 · ALT-015 |
+| Site-level readiness spread exceeds one full benchmark band | Any Phase 4--7 checkpoint | Disaggregate M14; run E6 | E6 |
+| 3 or more open Resistance Log entries | Any point | Escalate to Steering Committee | ALT-004 |
+| Sponsor visibility logged "weak" | Any governance week | Escalate to PMO | ALT-003 |
+| Fewer than 2 named coalition members | Any point | Escalate to PMO | ALT-010 |
 
 ---
 
