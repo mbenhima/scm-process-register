@@ -11,6 +11,7 @@ import LevelSelector from '../components/LevelSelector.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
 import { adkarAverage, readinessIndex, trainingCompletionAvg, inferSentimentStage, scoreColor } from '../utils/compute.js'
 import { readinessBenchmark, benchmarkStanding } from '../data/benchmarks.js'
+import crossTypeMatrix from '../data/crossTypeMatrix.js'
 
 const STANDING_TONE = { ahead: 'green', in_line: 'sand', behind: 'red' }
 
@@ -59,6 +60,9 @@ export default function Module15Page() {
         </button>
         <button className={`tab ${tab === 'benchmark' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('benchmark')}>
           {t('benchmarking')}
+        </button>
+        <button className={`tab ${tab === 'crosstype' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('crosstype')}>
+          {t('m15_crosstype_tab')}
         </button>
       </div>
 
@@ -235,6 +239,39 @@ export default function Module15Page() {
             </table>
             {focusProjects.length === 0 && <p className="text-sm text-ink/40 italic mt-2">{t('noData')}</p>}
           </div>
+        </div>
+      )}
+
+      {tab === 'crosstype' && (
+        <div className="card p-5 overflow-x-auto">
+          <h3 className="font-semibold text-brand-950 mb-1">{t('m15_crosstype_title')}</h3>
+          <p className="text-xs text-ink/50 mb-4">{t('m15_crosstype_desc')}</p>
+          <table className="w-full text-sm">
+            <thead className="text-xs uppercase text-ink/40">
+              <tr>
+                <th className="text-start py-1.5">{t('type')}</th>
+                <th className="text-start py-1.5">{t('m15_crosstype_duration')}</th>
+                <th className="text-start py-1.5">{t('m15_crosstype_gate')}</th>
+                <th className="text-start py-1.5">{t('m15_crosstype_external')}</th>
+                <th className="text-start py-1.5">{t('m15_crosstype_framework')}</th>
+                <th className="text-start py-1.5">{t('m15_crosstype_reversibility')}</th>
+                <th className="text-start py-1.5">{t('m15_crosstype_example')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {crossTypeMatrix.map((row) => (
+                <tr key={row.transformationType} className="border-t border-brand-50 align-top">
+                  <td className="py-2 pe-3 font-medium text-brand-950 whitespace-nowrap">{t(`archetype_${row.transformationType}`)}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.typicalDuration}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.terminalGate}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.externalPartyInvolvement}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.dominantFramework}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.reversibility}</td>
+                  <td className="py-2 text-ink/50 text-xs">{row.seedProjectExample}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
