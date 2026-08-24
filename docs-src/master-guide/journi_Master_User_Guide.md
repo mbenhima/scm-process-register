@@ -282,10 +282,21 @@ Each phase below states its weeks, its framework readings at the phase's close, 
 
 Discovery is where the business case gets made and the Month-0 baseline gets captured, before any visible change has reached the plant floor.
 
-- **Task 1 --- Run current-state discovery workshops per site.** Meryem Sabri's team runs facilitated workshops at Casablanca HQ, Kenitra, and Settat to document how order management, inventory, and finance actually work today, warts and workarounds included. *Steps:* schedule one workshop per site per function; capture current-state process maps; log every manual workaround as a discovery finding, not yet as a resistance entry.
-- **Task 2 --- Quantify the cost of inaction.** The three legacy systems' manual reconciliation, delayed month-end close, and duplicate data entry are costed out in hours and dirhams, giving the CFO's business case real numbers rather than a general sense that "the systems are old." *Steps:* pull a month of reconciliation time logs from each site; compute the fully-loaded cost; attach the finding to the Main Project's business case.
-- **Task 3 --- Build the Stakeholder Map.** Every affected function and cohort across the three sites is entered on M4, each with an impact dimension and severity --- Casablanca finance flagged for the deepest tracking, since it loses the most manual workarounds. *Steps:* enter each cohort with site, function, and impact severity; flag Casablanca finance and Kenitra/Settat plant operations as high-impact; save.
-- **Task 4 --- Open the Change Management project; set Lewin.** Driss El Amrani opens the Bouregreg ERP Adoption Program formally and logs Lewin as Unfreeze on M3, with a justification tied to the discovery findings rather than the calendar. *Steps:* create the CM Project record (done in Part 1); set Lewin = Unfreeze; attach a justification note citing the discovery workshops' findings. *journi: M3.*
+**Task 1 --- Run current-state discovery workshops per site.** Meryem Sabri's team runs facilitated workshops at Casablanca HQ, Kenitra, and Settat to document how order management, inventory, and finance actually work today, warts and workarounds included.
+  - *Step 1 --- Schedule and facilitate one workshop per site per function.* Technique: current-state process mapping --- goal: a shared, visual record of how work actually happens today, not how a procedure document says it happens.
+  - *Step 2 --- Capture every manual workaround as a discovery finding.* Technique: structured workaround inventory --- goal: surface the informal fixes staff have built around the legacy systems' gaps, logged neutrally as findings rather than prematurely as resistance entries.
+
+**Task 2 --- Quantify the cost of inaction.** The three legacy systems' manual reconciliation, delayed month-end close, and duplicate data entry are costed out in hours and dirhams, giving the CFO's business case real numbers rather than a general sense that "the systems are old."
+  - *Step 1 --- Pull a month of reconciliation time logs from each site.* Technique: time-and-motion sampling --- goal: an evidence-based hours figure per site, not an estimate.
+  - *Step 2 --- Compute the fully-loaded cost and attach it to the business case.* Technique: cost quantification --- goal: translate hours into a dirham figure the CFO can defend to the Steering Committee.
+
+**Task 3 --- Build the Stakeholder Map.** Every affected function and cohort across the three sites is entered on M4, each with an impact dimension and severity --- Casablanca finance flagged for the deepest tracking, since it loses the most manual workarounds.
+  - *Step 1 --- Enter each cohort with site, function, and impact severity.* Technique: impact/influence mapping --- goal: a complete, dimensioned record of who is affected and how heavily, before any framework scoring begins.
+  - *Step 2 --- Flag Casablanca finance and both plants as high-impact; save.* Technique: severity triage --- goal: tell M14's later tracking depth which cohorts warrant the closest attention.
+
+**Task 4 --- Open the Change Management project; set Lewin.** Driss El Amrani opens the Bouregreg ERP Adoption Program formally and logs Lewin as Unfreeze on M3, with a justification tied to the discovery findings rather than the calendar.
+  - *Step 1 --- Create the CM Project record.* (Done in Part 1.) Technique: initiative registration --- goal: a formally registered project with scope, sponsor, and timeline.
+  - *Step 2 --- Set Lewin = Unfreeze with a justification note.* Technique: evidence-based phase-call review --- goal: the discipline of citing discovery-workshop findings, not program start date, as the reason. *journi: M3.*
 
 **Phase gate (M17):** Discovery closes with a clean Go once the Stakeholder Map, business case, and Lewin baseline are all in place --- the state Part 1's setup checklist ends at.
 
@@ -301,10 +312,21 @@ Discovery is where the business case gets made and the Month-0 baseline gets cap
 
 Design overlaps Discovery's tail: future-state process scope gets drafted while the last discovery findings are still landing.
 
-- **Task 1 --- Draft future-state process scope and design principles.** Meryem Sabri's team and the ITL function agree 5--8 written design principles (for example, "no duplicate approvals across sites") that every later configuration decision must satisfy.
-- **Task 2 --- Launch the first communications wave.** Driss El Amrani opens M8 with the program's first town hall message across all three sites --- why now, what's changing, when --- and an FAQ channel for questions the town hall didn't answer. *journi: M8.*
-- **Task 3 --- Score the baseline ADKAR pulse.** The first real Awareness scores are logged on M5 per cohort; Casablanca finance, further along in the discovery conversation, reads higher than Kenitra and Settat plant floor, who have heard less so far. *journi: M5.*
-- **Task 4 --- Recruit the champion network.** A first cohort of champions --- one per site, per major function --- is recruited and logged against the Stakeholder Map on M4, ahead of their formal briefing in Build. *journi: M4.*
+**Task 1 --- Draft future-state process scope and design principles.** Meryem Sabri's team and the ITL function agree 5--8 written design principles (for example, "no duplicate approvals across sites") that every later configuration decision must satisfy.
+  - *Step 1 --- Facilitate a design-principles workshop.* Technique: design-principles workshop --- goal: agree the non-negotiable constraints before configuration starts, so Build does not re-litigate them sprint by sprint.
+  - *Step 2 --- Circulate the draft for Steering Committee review.* Technique: structured design-review --- goal: sign-off before configuration effort is committed against the wrong assumptions.
+
+**Task 2 --- Launch the first communications wave.** Driss El Amrani opens M8 with the program's first town hall message across all three sites --- why now, what's changing, when --- and an FAQ channel for questions the town hall didn't answer.
+  - *Step 1 --- Deliver the kickoff town hall per site.* Technique: cascading town hall --- goal: a consistent core message, delivered live rather than only in writing.
+  - *Step 2 --- Open and monitor the FAQ channel.* Technique: structured Q&A capture --- goal: surface the specific questions a town hall alone leaves unanswered. *journi: M8.*
+
+**Task 3 --- Score the baseline ADKAR pulse.** The first real Awareness scores are logged on M5 per cohort; Casablanca finance, further along in the discovery conversation, reads higher than Kenitra and Settat plant floor, who have heard less so far.
+  - *Step 1 --- Run a facilitated Awareness pulse per cohort.* Technique: structured pulse scoring --- goal: a defensible first Awareness reading, not a guess.
+  - *Step 2 --- Log any score of 2 or below with a barrier note.* Technique: mandatory barrier-reason capture --- goal: an early warning, not a silent low score. *journi: M5.*
+
+**Task 4 --- Recruit the champion network.** A first cohort of champions --- one per site, per major function --- is recruited and logged against the Stakeholder Map on M4, ahead of their formal briefing in Build.
+  - *Step 1 --- Identify candidate champions per site and function.* Technique: peer-nomination --- goal: champions the floor already trusts, not ones appointed from above.
+  - *Step 2 --- Log the roster against the Stakeholder Map.* Technique: structured roster capture --- goal: a traceable record ahead of Build's formal briefing. *journi: M4.*
 
 **Phase gate:** Design closes once the future-state scope is signed off by the Steering Committee and the baseline Awareness pulse is logged --- this is also the point where, if the program were instead running as the Order-to-Cash Process Redesign of Part 4, the first Resistance-to-Commitment (E2E-03) signals would already be visible in Casablanca finance.
 
@@ -320,10 +342,21 @@ Design overlaps Discovery's tail: future-state process scope gets drafted while 
 
 Build is the longest phase and the one where the Lewin call actually moves --- not because 18 weeks have passed, but because the evidence supports it by the phase's end.
 
-- **Task 1 --- Configure the platform against the approved design.** Iterative configuration sprints run against the Design-phase principles; each sprint's decisions are logged so later audits can trace a configuration choice back to the principle that justified it.
-- **Task 2 --- Brief and activate the champion network.** The champions recruited in Design are formally briefed on what to watch for on the floor and how to log an observation --- this is the point Exception E7 (Part 3's Champion Early-Warning Loop) becomes operational, not just theoretical.
-- **Task 3 --- Re-run the ADKAR pulse; log barrier reasons.** As Awareness gives way to Desire, any block scoring 2 or below is required to carry a barrier-reason note and auto-escalates --- the mechanism that catches a stalling Desire score before it becomes Exception E1 below. *journi: M5.*
-- **Task 4 --- Log the Lewin phase transition.** Once discovery evidence, not the calendar, supports it, Driss El Amrani moves Lewin from Unfreeze to Change on M3, with a justification citing the specific evidence --- configuration sprints landing, Desire trending rather than stalling. *journi: M3.*
+**Task 1 --- Configure the platform against the approved design.** Iterative configuration sprints run against the Design-phase principles; each sprint's decisions are logged so later audits can trace a configuration choice back to the principle that justified it.
+  - *Step 1 --- Run configuration sprints in iterative cycles.* Technique: agile configuration sprints --- goal: a build that can absorb a UAT finding without a full re-plan.
+  - *Step 2 --- Log each sprint's decisions against its justifying design principle.* Technique: decision-traceability logging --- goal: a defensible answer, months later, to "why was it built this way."
+
+**Task 2 --- Brief and activate the champion network.** The champions recruited in Design are formally briefed on what to watch for on the floor and how to log an observation --- this is the point Exception E7 (Part 3's Champion Early-Warning Loop) becomes operational, not just theoretical.
+  - *Step 1 --- Run a champion briefing session per site.* Technique: structured briefing --- goal: champions who know exactly what an "observation worth logging" looks like.
+  - *Step 2 --- Confirm each champion's observation-logging path.* Technique: workflow confirmation --- goal: no ambiguity about where a floor-level observation actually goes.
+
+**Task 3 --- Re-run the ADKAR pulse; log barrier reasons.** As Awareness gives way to Desire, any block scoring 2 or below is required to carry a barrier-reason note and auto-escalates --- the mechanism that catches a stalling Desire score before it becomes Exception E1 below.
+  - *Step 1 --- Re-score Desire per cohort.* Technique: structured re-pulse --- goal: a current reading, not a stale Design-phase one.
+  - *Step 2 --- Log a barrier-reason note on any score ≤ 2.* Technique: mandatory escalation capture --- goal: catch a stall while it is still one cohort's problem, not the whole program's. *journi: M5.*
+
+**Task 4 --- Log the Lewin phase transition.** Once discovery evidence, not the calendar, supports it, Driss El Amrani moves Lewin from Unfreeze to Change on M3, with a justification citing the specific evidence --- configuration sprints landing, Desire trending rather than stalling.
+  - *Step 1 --- Review the evidence against Section 1B.1's signal catalogue.* Technique: evidence-based phase-call review --- goal: a Lewin call the Steering Committee can defend, not assert.
+  - *Step 2 --- Set Lewin = Change with a justification note.* Technique: justified state-change logging --- goal: an auditable record of exactly what evidence supported the call. *journi: M3.*
 
 **Phase gate:** Build closes once the platform configuration is functionally complete and Lewin has moved to Change on real evidence --- a No-Go or Conditional call here (ALT-009, Part 5) means configuration is not ready for Test, and the phase does not advance on schedule alone.
 
@@ -339,10 +372,21 @@ Build is the longest phase and the one where the Lewin call actually moves --- n
 
 Test is the first point a representative slice of end users gets real hands-on exposure --- and the first honest opportunity to run the Divergence Pattern check.
 
-- **Task 1 --- Execute system integration testing.** ITL runs SIT across the configured build before any end user touches it, closing defects that would otherwise surface as usability friction later.
-- **Task 2 --- Recruit a representative UAT cohort.** A cohort spanning Casablanca finance, Kenitra plant operations, and Settat plant operations is recruited on M4 so UAT findings represent all three sites, not just headquarters. *journi: M4.*
-- **Task 3 --- Run UAT sessions; log defects and friction.** Real Knowledge scores are logged as the cohort works through real scenarios; usability friction distinct from outright defects is logged separately so it doesn't get silently fixed by a workaround instead of a design change.
-- **Task 4 --- Cross-check Knowledge/Ability against Bridges.** The Divergence Pattern check runs here for the first time with real data: if a cohort's Knowledge and Ability both read 4 or higher while Bridges still reads Ending, ALT-001 fires --- exactly Exception E2 below. *journi: M6.*
+**Task 1 --- Execute system integration testing.** ITL runs SIT across the configured build before any end user touches it, closing defects that would otherwise surface as usability friction later.
+  - *Step 1 --- Run the SIT test script against the configured build.* Technique: system integration testing --- goal: catch a technical defect before it becomes a end user's bad first impression.
+  - *Step 2 --- Triage and close defects before UAT opens.* Technique: defect triage by severity --- goal: UAT tests the process, not a known technical bug.
+
+**Task 2 --- Recruit a representative UAT cohort.** A cohort spanning Casablanca finance, Kenitra plant operations, and Settat plant operations is recruited on M4 so UAT findings represent all three sites, not just headquarters.
+  - *Step 1 --- Select participants proportionate to each site's population.* Technique: representative sampling --- goal: UAT findings that generalize, not a Casablanca-only view.
+  - *Step 2 --- Log the roster and acceptance criteria.* Technique: structured cohort registration --- goal: a clear, shared definition of what "passing" UAT means. *journi: M4.*
+
+**Task 3 --- Run UAT sessions; log defects and friction.** Real Knowledge scores are logged as the cohort works through real scenarios; usability friction distinct from outright defects is logged separately so it doesn't get silently fixed by a workaround instead of a design change.
+  - *Step 1 --- Run scripted UAT scenarios per cohort.* Technique: scenario-based acceptance testing --- goal: real Knowledge evidence, not a self-reported confidence rating.
+  - *Step 2 --- Log defects and usability friction as distinct categories.* Technique: friction/defect separation --- goal: a friction pattern doesn't get papered over by a workaround instead of a genuine fix.
+
+**Task 4 --- Cross-check Knowledge/Ability against Bridges.** The Divergence Pattern check runs here for the first time with real data: if a cohort's Knowledge and Ability both read 4 or higher while Bridges still reads Ending, ALT-001 fires --- exactly Exception E2 below.
+  - *Step 1 --- Run the Divergence Pattern review against UAT participants' latest scores.* Technique: Divergence Pattern review --- goal: flag strong capability paired with an unmoved Bridges reading before it is mistaken for readiness.
+  - *Step 2 --- Route any flagged case into Exception E2's recovery Tasks.* Technique: exception routing --- goal: a flagged individual does not silently count toward cohort readiness. *journi: M6.*
 
 **Phase gate:** Test closes once SIT and UAT sign-off are both recorded and any Divergence Pattern flags from Task 4 are resolved or explicitly accepted, not silently ignored.
 
@@ -358,10 +402,21 @@ Test is the first point a representative slice of end users gets real hands-on e
 
 Train runs alongside Test rather than strictly after it --- Knowledge becomes Ability under increasingly realistic conditions while Bridges settles into the Neutral Zone.
 
-- **Task 1 --- Deliver role-based training by cohort.** Curriculum built for Casablanca finance, Kenitra plant operations, and Settat plant operations runs through M9, tracked from enrollment through the Certified toggle once a cohort demonstrates real capability, not just attendance. *journi: M9.*
-- **Task 2 --- Deploy job aids and a sandbox practice environment.** Plant-floor staff at Kenitra and Settat get hands-on sandbox practice ahead of go-live rather than a first live transaction being their first real attempt.
-- **Task 3 --- Run readiness assessments per cohort.** Knowledge/Ability scoring by cohort surfaces which sites are ready and which need another training wave --- Settat, further from HQ and later to receive the champion briefing, typically reads behind Casablanca here. *journi: M5.*
-- **Task 4 --- Brief supervisors on floor-coaching expectations.** Kenitra and Settat plant supervisors --- People Manager role --- are briefed on real-time floor coaching for go-live week, using the M11 heatmap to see their own team's weakest ADKAR block before it becomes a go-live incident.
+**Task 1 --- Deliver role-based training by cohort.** Curriculum built for Casablanca finance, Kenitra plant operations, and Settat plant operations runs through M9, tracked from enrollment through the Certified toggle once a cohort demonstrates real capability, not just attendance.
+  - *Step 1 --- Enroll each cohort against its role-based curriculum.* Technique: role-based curriculum mapping --- goal: Casablanca finance and plant-floor staff each get training scoped to what they actually do, not one generic course.
+  - *Step 2 --- Certify only on demonstrated capability.* Technique: capability-based certification --- goal: "trained" and "capable" are not treated as synonyms. *journi: M9.*
+
+**Task 2 --- Deploy job aids and a sandbox practice environment.** Plant-floor staff at Kenitra and Settat get hands-on sandbox practice ahead of go-live rather than a first live transaction being their first real attempt.
+  - *Step 1 --- Publish job aids per role.* Technique: quick-reference job aids --- goal: a fallback reference that doesn't require remembering the full training.
+  - *Step 2 --- Open the sandbox environment for supervised practice.* Technique: sandbox rehearsal --- goal: the first mistake happens in practice, not on a live transaction.
+
+**Task 3 --- Run readiness assessments per cohort.** Knowledge/Ability scoring by cohort surfaces which sites are ready and which need another training wave --- Settat, further from HQ and later to receive the champion briefing, typically reads behind Casablanca here.
+  - *Step 1 --- Score Knowledge and Ability per cohort.* Technique: structured readiness assessment --- goal: a defensible per-cohort score, not a project-wide average that hides a lagging site.
+  - *Step 2 --- Flag any cohort below the benchmark band for a second training wave.* Technique: benchmark-band comparison --- goal: catch a training gap before Train's phase gate, not after. *journi: M5.*
+
+**Task 4 --- Brief supervisors on floor-coaching expectations.** Kenitra and Settat plant supervisors --- People Manager role --- are briefed on real-time floor coaching for go-live week, using the M11 heatmap to see their own team's weakest ADKAR block before it becomes a go-live incident.
+  - *Step 1 --- Walk each supervisor through their team's M11 heatmap.* Technique: team-scoped heatmap review --- goal: a supervisor who knows their team's specific weak block, not a generic coaching reminder.
+  - *Step 2 --- Confirm each supervisor's go-live-week coaching plan.* Technique: coaching-plan confirmation --- goal: a concrete plan in place before go-live week, not improvised during it.
 
 **Phase gate:** Train closes once cohort-level go/no-go readiness is confirmed against benchmarking bands on M14 --- a per-cohort call, not a single project-wide one, since Bouregreg's three sites are not required to reach readiness on the same week.
 
