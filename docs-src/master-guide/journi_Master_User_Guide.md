@@ -432,10 +432,21 @@ Train runs alongside Test rather than strictly after it --- Knowledge becomes Ab
 
 Deploy is a single, sharp week --- the clearest instance in Bouregreg's program of the two-clock problem Exception E3 exists to manage.
 
-- **Task 1 --- Execute the data freeze and final migration.** The last legacy-system data cutover runs against the mock-migration cycles rehearsed in Build.
-- **Task 2 --- Run the cutover runbook and technical validation.** ITL validates the live platform against the runbook before any site is told to start using it.
-- **Task 3 --- Communicate go-live confirmation to all cohorts.** Driss El Amrani sends the go-live confirmation across Casablanca, Kenitra, and Settat --- a single message, timed carefully against M8's saturation detection (ALT-011, Part 5), since this is the highest-traffic communications week in the program.
-- **Task 4 --- Activate hypercare; mark Lewin as provisional.** The hypercare support model goes live on Day 1, and Lewin is marked "Change → Refreeze (provisional)" on M3 rather than called Refreeze outright --- the exact discipline Exception E3 protects. *journi: M3.*
+**Task 1 --- Execute the data freeze and final migration.** The last legacy-system data cutover runs against the mock-migration cycles rehearsed in Build.
+  - *Step 1 --- Freeze legacy-system data entry at the agreed cutoff.* Technique: coordinated data freeze --- goal: a clean, unambiguous migration source.
+  - *Step 2 --- Run the final migration and reconcile the result.* Technique: migration reconciliation --- goal: confirm what moved matches what was frozen, before any site logs in.
+
+**Task 2 --- Run the cutover runbook and technical validation.** ITL validates the live platform against the runbook before any site is told to start using it.
+  - *Step 1 --- Execute the cutover runbook step by step.* Technique: scripted cutover runbook --- goal: a repeatable, auditable go-live rather than an improvised one.
+  - *Step 2 --- Validate the live platform against acceptance criteria.* Technique: go-live technical validation --- goal: confirm the platform is genuinely ready before any end user is told it is.
+
+**Task 3 --- Communicate go-live confirmation to all cohorts.** Driss El Amrani sends the go-live confirmation across Casablanca, Kenitra, and Settat --- a single message, timed carefully against M8's saturation detection (ALT-011, Part 5), since this is the highest-traffic communications week in the program.
+  - *Step 1 --- Draft one confirmation message per site, timed against the saturation check.* Technique: saturation-aware communication timing --- goal: the message lands clearly, not lost in a pile-up of other go-live-week traffic.
+  - *Step 2 --- Send and log the confirmation on M8.* Technique: logged communication dispatch --- goal: an auditable record of exactly when and how go-live was confirmed to each site.
+
+**Task 4 --- Activate hypercare; mark Lewin as provisional.** The hypercare support model goes live on Day 1, and Lewin is marked "Change → Refreeze (provisional)" on M3 rather than called Refreeze outright --- the exact discipline Exception E3 protects.
+  - *Step 1 --- Activate the hypercare support model across all three sites.* Technique: hypercare activation --- goal: visible, elevated support from the first live hour, not a delayed ramp-up.
+  - *Step 2 --- Log Lewin as "Change → Refreeze (provisional)" with a justification.* Technique: provisional phase-call logging --- goal: separate the technical milestone from the emotional-layer evidence still pending. *journi: M3.*
 
 **Phase gate:** Deploy closes on a clean technical go-live; the Lewin call explicitly does not close here, and stays provisional into Hypercare.
 
@@ -451,10 +462,21 @@ Deploy is a single, sharp week --- the clearest instance in Bouregreg's program 
 
 The last mile of adoption is won or lost here, and Kübler-Ross regression during this window is normal, expected behavior, not a data error --- Exception E4 below covers exactly this.
 
-- **Task 1 --- Staff an elevated support desk.** ITL and Driss El Amrani's team staff visibly elevated support for the first weeks post-go-live across all three sites.
-- **Task 2 --- Track adoption metrics daily; triage by severity.** Daily tracking on M14 catches a stalling site early rather than at the 30-day checkpoint.
-- **Task 3 --- Run a Kübler-Ross/Bridges re-pulse at 2 and 4 weeks.** Real post-go-live sentiment is re-scored on M6 --- the number that either confirms the provisional Refreeze call or flags Exception E3 as still active. *journi: M6.*
-- **Task 4 --- Coach any cohort showing regression.** People Managers at Kenitra and Settat run targeted coaching on M11 for any cohort whose re-pulse moved backward rather than forward.
+**Task 1 --- Staff an elevated support desk.** ITL and Driss El Amrani's team staff visibly elevated support for the first weeks post-go-live across all three sites.
+  - *Step 1 --- Staff the support desk at elevated capacity.* Technique: elevated hypercare staffing --- goal: a visibly fast response in the highest-anxiety weeks of the program.
+  - *Step 2 --- Publish the escalation path to every site.* Technique: escalation-path communication --- goal: no site left guessing who to contact when something breaks.
+
+**Task 2 --- Track adoption metrics daily; triage by severity.** Daily tracking on M14 catches a stalling site early rather than at the 30-day checkpoint.
+  - *Step 1 --- Review the M14 adoption dashboard daily.* Technique: daily metric review --- goal: catch a stalling site in days, not weeks.
+  - *Step 2 --- Triage any defect by severity and route it.* Technique: severity-based triage --- goal: a critical defect gets same-day attention; a cosmetic one doesn't crowd it out.
+
+**Task 3 --- Run a Kübler-Ross/Bridges re-pulse at 2 and 4 weeks.** Real post-go-live sentiment is re-scored on M6 --- the number that either confirms the provisional Refreeze call or flags Exception E3 as still active.
+  - *Step 1 --- Re-score Bridges and Kübler-Ross at the 2-week mark.* Technique: scheduled re-pulse --- goal: an early read on whether the emotional layer is moving.
+  - *Step 2 --- Repeat at 4 weeks and compare the trend.* Technique: trend comparison --- goal: distinguish real movement from noise in a single reading. *journi: M6.*
+
+**Task 4 --- Coach any cohort showing regression.** People Managers at Kenitra and Settat run targeted coaching on M11 for any cohort whose re-pulse moved backward rather than forward.
+  - *Step 1 --- Identify any cohort whose re-pulse moved backward.* Technique: regression flagging --- goal: catch a specific cohort's setback before it is averaged away in the project-level number.
+  - *Step 2 --- Run targeted floor coaching on M11.* Technique: in-context coaching --- goal: address the specific step or incident behind the regression, not a general refresher.
 
 **Phase gate:** Hypercare closes once the re-pulse confirms Bridges has genuinely moved to New Beginning and Kübler-Ross reads Exploration or better across all three sites --- not on the calendar alone.
 
@@ -470,10 +492,21 @@ The last mile of adoption is won or lost here, and Kübler-Ross regression durin
 
 Sustain is where Refreeze is called from checkpoint evidence, never the calendar --- the discipline that protects against Exception E5, a Reinforcement gap, below.
 
-- **Task 1 --- Embed new-process metrics into performance management.** The new ERP-based process metrics are embedded into standard performance management with HR support, so the new way of working is measured, not just trained.
-- **Task 2 --- Confirm Reinforcement mechanisms are active.** Recognition, manager check-ins, and revoked legacy-system access are all confirmed active on M12 --- Reinforcement without a revoked fallback option is Reinforcement in name only. *journi: M12.*
-- **Task 3 --- Run 30/60/90-day checkpoint reviews.** Checkpoints against the benchmarking bands on M14 are the evidence base for the eventual Refreeze call --- three consecutive healthy checkpoints, not a date on the calendar. *journi: M14.*
-- **Task 4 --- Call Refreeze; close the CM project.** Once checkpoint evidence supports it, Driss El Amrani formally calls Refreeze on M3 and closes the Bouregreg ERP Adoption Program on M12, handing ongoing ownership to the business-as-usual process owner. *journi: M3, M12.*
+**Task 1 --- Embed new-process metrics into performance management.** The new ERP-based process metrics are embedded into standard performance management with HR support, so the new way of working is measured, not just trained.
+  - *Step 1 --- Agree the new-process metrics with HR.* Technique: performance-metric integration --- goal: the new way of working is what gets measured, not the old one by habit.
+  - *Step 2 --- Confirm the metrics are live in the next review cycle.* Technique: cycle-integration confirmation --- goal: the change survives the program team's own eventual departure.
+
+**Task 2 --- Confirm Reinforcement mechanisms are active.** Recognition, manager check-ins, and revoked legacy-system access are all confirmed active on M12 --- Reinforcement without a revoked fallback option is Reinforcement in name only.
+  - *Step 1 --- Confirm recognition and manager check-in mechanisms are running.* Technique: reinforcement mechanism audit --- goal: verify these exist in practice, not just on a plan document.
+  - *Step 2 --- Confirm legacy-system access is genuinely revoked.* Technique: fallback-access closure --- goal: no quiet path back to the old way of working. *journi: M12.*
+
+**Task 3 --- Run 30/60/90-day checkpoint reviews.** Checkpoints against the benchmarking bands on M14 are the evidence base for the eventual Refreeze call --- three consecutive healthy checkpoints, not a date on the calendar.
+  - *Step 1 --- Run each checkpoint against the benchmarking bands.* Technique: benchmark-band checkpoint review --- goal: an objective pass/fail per checkpoint, not a subjective sense of "things seem fine."
+  - *Step 2 --- Flag any checkpoint carrying a High regression-risk score.* Technique: regression-risk flagging --- goal: this is exactly what blocks ALT-015's sign-off until resolved. *journi: M14.*
+
+**Task 4 --- Call Refreeze; close the CM project.** Once checkpoint evidence supports it, Driss El Amrani formally calls Refreeze on M3 and closes the Bouregreg ERP Adoption Program on M12, handing ongoing ownership to the business-as-usual process owner.
+  - *Step 1 --- Review three consecutive healthy checkpoints before calling Refreeze.* Technique: evidence-based closure review --- goal: Refreeze called from data, never the calendar.
+  - *Step 2 --- Log Refreeze and toggle project sign-off.* Technique: formal project closure --- goal: a clean, auditable handoff to business-as-usual ownership. *journi: M3, M12.*
 
 **Phase gate:** Sustain --- and the program --- closes on the sign-off toggle on M12, blocked by ALT-015 (Part 5) if any checkpoint still carries an open High regression-risk flag.
 
