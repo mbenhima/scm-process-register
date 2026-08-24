@@ -1273,6 +1273,38 @@ Role-code abbreviations used throughout this guide: **ES** Executive Sponsor · 
 - **TPL-ERP-8** --- journi's 8-phase ERP implementation Phase Template (M17): Discovery, Design, Build, Test, Train, Deploy, Hypercare, Sustain.
 - **WBS** --- Work Breakdown Structure, M17's combined Project Management / Change Management schedule.
 
+<a id="a7"></a>
+
+### A.7 Sample journi Entries
+
+The snippets below are the kind of text a Change Manager actually types into journi's justification and note fields --- included here so a first-time user isn't staring at a blank field wondering what "good" looks like.
+
+**A Lewin phase-call justification (M3, Phase 3 --- Build, Part 1B.3):** *"Moving Unfreeze → Change. Configuration sprints 1--4 complete against approved design principles; Desire trending upward across Casablanca and Kenitra (Settat's Desire stall resolved per the Month 5--6 sponsor intervention, see Exception E1 log). Evidence reviewed with Steering Committee 14 [date]; no dissent recorded."*
+
+**An ADKAR barrier-reason note (M5, auto-escalated at Desire = 2, Exception E1):** *"Settat plant-floor cohort, Desire = 2. Listening session (12 [date]) surfaced two themes: (1) low visibility into what the new inventory workflow looks like on Line 2 specifically; (2) unresolved concern about post-go-live staffing levels. Theme 2 confirmed as primary driver. Escalated to CFO for direct response --- see E1 recovery Task 3."*
+
+**A Communications entry (M8, Phase 6 --- Deploy):** *"Go-live confirmation --- all sites. Audience: all 3,400 staff. Channel: email + site noticeboards + supervisor cascade. Timing: Monday W43, 07:00, ahead of first shift. Checked against saturation detection --- no other queued communication this week."*
+
+**A Charter compliance-log entry (M19, Sponsor Charter):** *"CFO delivered Q2 town hall in person at all three sites (Casablanca 14 [date], Kenitra 15 [date], Settat 16 [date]). Visible sponsorship action logged against Sponsor Charter standard 1 (active, visible commitment). Cross-referenced to M7 sponsor roadmap action #4."*
+
+**A Sustainment checkpoint note (M12, 90-day checkpoint, Exception E5):** *"Reinforcement score 2.6, below the 3.0 target. Root cause: manager check-ins tapered off after the 60-day checkpoint once daily hypercare tracking ended. Remediation: CFO re-authorized a further checkpoint cadence at 105 and 120 days; champion network re-chartered for reinforcement specifically. Refreeze call delayed pending two consecutive healthy checkpoints."*
+
+### A.8 Frequently Asked Questions
+
+**Why does journi never auto-compute a Lewin, Bridges, or Kübler-Ross reading, when it does compute the Composite Readiness Index?** Because those three are judgment calls about people's actual lived experience of change, and a wrong automated inference would be worse than a human one arrived at deliberately. The Composite Readiness Index and Divergence Pattern Detector are different: both are pure arithmetic over numbers a human already logged, with no interpretive judgment involved.
+
+**If Bouregreg's program overlaps eight other CM Projects, doesn't ALT-008 (Change Saturation) just fire constantly and become noise?** It fires when a population segment is targeted by two or more *other* concurrent initiatives --- a real signal in a nine-project portfolio, not a bug. Part 5's escalation guidance treats it as a PMO-level review item on a 10-business-day SLA, not an urgent interrupt, which is the right severity for a genuinely common but non-critical condition.
+
+**Why does the 60-week calendar in Part 1B.2 show phases overlapping instead of running strictly one after another?** Because a real ERP program's Project Management and Change Management tracks run in parallel --- Design starting before Discovery formally closes reflects how work actually proceeds, not an inconsistency in the calendar.
+
+**Are the six exceptions in Part 1B.4 the only ways a program can go off track?** No --- they are six realistic, well-evidenced patterns, not an exhaustive list. journi's own documentation is explicit that Exception E8 (the Governance Escalation Loop, Part 3) is its own weakest-evidence entry, included for completeness rather than as strong as the other seven.
+
+**Why does Exception E3 (Two-Clock Problem) matter even for a program with no visible sentiment lag?** Because the discipline --- marking Lewin provisional at go-live rather than confirmed --- costs nothing when there is no lag, and catches the case when there is one. Part 1B.3's Phase 6 Task 4 applies it unconditionally, not only when trouble is already visible.
+
+**Does every Change Management Project need to run through all six exceptions?** No --- the Kenitra Invoice-Matching Automation case in Part 4 is deliberately built to close without any of the 9 live alerts firing. Exceptions are named, realistic possibilities to watch for, not a checklist every program must complete.
+
+**Why does the Restructuring case in Part 4 have no dedicated Phase Template, when eight other archetypes do?** Because that is genuinely how the E2E addendum (CR1) was built --- 8 transformation types got a registered chain and Phase Template; Restructuring and M&A did not. This guide states that gap rather than invent a lifecycle journi doesn't actually have.
+
 ---
 
 *This concludes the journi Complete User Guide --- Parts 1, 1B, and 2 through 5, plus this Appendix.*
