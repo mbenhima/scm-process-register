@@ -4,116 +4,171 @@ import { useAppState } from '../state/AppStateContext.jsx'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
+import ProgressBar from '../components/ProgressBar.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
-import JustifyPanel from '../components/JustifyPanel.jsx'
-import { ADKAR_BLOCKS } from '../data/constants.js'
-import { scoreColor, isBlockStalled } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
+
+const RISK_TONE = { low: 'green', moderate: 'amber', high: 'red' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, logJustifiedChange, currentUser } = useAppState()
+  const { data, updateCheckpoint, addQuickWin, addLesson, updateLesson, toggleSignoff, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const committedReadiness = project.managerReadiness ?? 3
-  const [pendingReadiness, setPendingReadiness] = useState(committedReadiness)
-  const [readinessJustification, setReadinessJustification] = useState('')
-  const readinessDirty = pendingReadiness !== committedReadiness
-  const stalled = ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
+  const [win, setWin] = useState('')
+  const [lesson, setLesson] = useState('')
+  const [lessonLink, setLessonLink] = useState('')
 
-  function saveReadiness() {
-    if (!readinessDirty) return
-    logJustifiedChange(project.id, {
-      module: 'M12 · Manager Enablement',
-      field: 'Manager readiness rating',
-      oldValue: String(committedReadiness),
-      newValue: String(pendingReadiness),
-      justification: readinessJustification,
-      applyPatch: (p) => ({ ...p, managerReadiness: pendingReadiness }),
-    })
-    setReadinessJustification('')
+  function markComplete(chk) {
+    const adoptionRate = Math.round(50 + Math.random() * 40)
+    const regressionRisk = adoptionRate > 80 ? 'low' : adoptionRate > 60 ? 'moderate' : 'high'
+    updateCheckpoint(project.id, chk.id, { adoptionRate, regressionRisk, status: 'complete' })
   }
 
   return (
     <div className="space-y-5">
-      <div className="card p-5">
-        <h3 className="font-semibold text-brand-950 mb-3">Team-scoped ADKAR Heatmap — {project.targetPopulation}</h3>
-        <div className="grid grid-cols-5 gap-2">
-          {ADKAR_BLOCKS.map((b) => (
-            <div key={b} className={`rounded-lg p-3 text-center ${scoreColor(project.adkar[b].score)}`}>
-              <div className="text-xs font-semibold">{t(b)}</div>
-              <div className="text-2xl font-bold">{project.adkar[b].score}</div>
+      <div className="grid md:grid-cols-3 gap-4">
+        {project.sustainment.checkpoints.map((c) => (
+          <div key={c.id} className="card p-4">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-semibold text-brand-950">{c.label}</h4>
+              <Badge tone={c.status === 'complete' ? 'green' : 'gray'}>{c.status.replace('_', ' ')}</Badge>
             </div>
-          ))}
-        </div>
-        <p className="text-xs text-ink/40 mt-2">Restricted to this manager's own reporting line — no org-wide change data exposed.</p>
+            {c.status === 'complete' ? (
+              <>
+                <div className="flex items-center gap-2 mb-2">
+                  <ProgressBar value={c.adoptionRate} />
+                  <span className="text-xs w-10 text-ink/50">{c.adoptionRate}%</span>
+                </div>
+                <Badge tone={RISK_TONE[c.regressionRisk]}>{t('regressionRisk')}: {c.regressionRisk}</Badge>
+              </>
+            ) : canEdit ? (
+              <button className="btn-secondary text-xs" onClick={() => markComplete(c)}>
+                Record checkpoint
+              </button>
+            ) : (
+              <span className="text-xs text-ink/40">{t('noData')}</span>
+            )}
+          </div>
+        ))}
       </div>
 
-      <div className="card p-5">
-        <h3 className="font-semibold text-brand-950 mb-2">{t('managerReadiness')}</h3>
-        <p className="text-xs text-ink/50 mb-3">A manager must be ready to lead the change before their team can be.</p>
-        <div className="flex gap-2">
-          {[1, 2, 3, 4, 5].map((n) => (
-            <button
-              key={n}
-              disabled={!canEdit}
-              onClick={() => setPendingReadiness(n)}
-              className={`flex-1 h-10 rounded-lg text-sm font-semibold ${
-                n === pendingReadiness ? 'bg-brand-600 text-white' : 'bg-brand-50 text-ink/40 hover:bg-brand-100'
-              } ${!canEdit ? 'cursor-default' : ''}`}
-            >
-              {n}
-            </button>
-          ))}
-        </div>
-        {canEdit && readinessDirty && (
-          <div className="mt-3">
-            <JustifyPanel
-              justification={readinessJustification}
-              onJustificationChange={setReadinessJustification}
-              onSave={saveReadiness}
-              onCancel={() => {
-                setPendingReadiness(committedReadiness)
-                setReadinessJustification('')
-              }}
-              placeholder="Why is this manager's readiness rating changing?"
-            />
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="card p-4">
+          <h3 className="font-semibold text-brand-950 mb-3">{t('quickWin')}</h3>
+          <div className="space-y-2 mb-3">
+            {project.sustainment.quickWins.map((w) => (
+              <div key={w.id} className="rounded-lg bg-brand-50/60 p-2 text-sm">
+                🎉 {w.title} <span className="text-xs text-ink/40">— {w.date}</span>
+              </div>
+            ))}
+            {project.sustainment.quickWins.length === 0 && <p className="text-sm text-ink/40 italic">{t('noData')}</p>}
           </div>
-        )}
+          {canEdit && (
+            <div className="flex gap-2">
+              <input className="input" placeholder={t('quickWin')} value={win} onChange={(e) => setWin(e.target.value)} />
+              <button
+                className="btn-primary shrink-0"
+                onClick={() => {
+                  if (!win.trim()) return
+                  addQuickWin(project.id, { title: win, date: new Date().toISOString().slice(0, 10) })
+                  setWin('')
+                }}
+              >
+                {t('add')}
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="card p-4">
+          <h3 className="font-semibold text-brand-950 mb-1">{t('lessonsLearned')}</h3>
+          <p className="text-xs text-ink/40 mb-3">
+            {t('m12_rex_desc')}
+          </p>
+          <div className="space-y-2 mb-3">
+            {project.sustainment.lessonsLearned.map((l) => (
+              <div key={l.id} className="rounded-lg border border-brand-100 p-2 space-y-1.5">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-sm text-ink/70">{l.text}</p>
+                  <Badge tone={l.status === 'applied' ? 'green' : 'amber'}>{l.status === 'applied' ? t('m12_rex_applied') : t('m12_rex_pending')}</Badge>
+                </div>
+                {canEdit ? (
+                  <div className="flex gap-2 items-center">
+                    <input
+                      className="input text-xs py-1"
+                      placeholder={t('m12_rex_link_placeholder')}
+                      value={l.linkedRuleOrControl || ''}
+                      onChange={(e) =>
+                        updateLesson(project.id, l.id, {
+                          linkedRuleOrControl: e.target.value,
+                          status: e.target.value.trim() ? 'applied' : 'pending',
+                        })
+                      }
+                    />
+                  </div>
+                ) : (
+                  l.linkedRuleOrControl && <p className="text-xs text-ink/50">{t('m12_rex_link_label')}: {l.linkedRuleOrControl}</p>
+                )}
+              </div>
+            ))}
+            {project.sustainment.lessonsLearned.length === 0 && <p className="text-sm text-ink/40 italic">{t('noData')}</p>}
+          </div>
+          {canEdit && (
+            <div className="space-y-2">
+              <input className="input" placeholder={t('lessonsLearned')} value={lesson} onChange={(e) => setLesson(e.target.value)} />
+              <div className="flex gap-2">
+                <input
+                  className="input"
+                  placeholder={t('m12_rex_link_placeholder')}
+                  value={lessonLink}
+                  onChange={(e) => setLessonLink(e.target.value)}
+                />
+                <button
+                  className="btn-primary shrink-0"
+                  onClick={() => {
+                    if (!lesson.trim()) return
+                    addLesson(project.id, lesson, lessonLink)
+                    setLesson('')
+                    setLessonLink('')
+                  }}
+                >
+                  {t('add')}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="card p-5 flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h3 className="font-semibold text-brand-950">{t('sustainmentSignoff')}</h3>
+          <p className="text-xs text-ink/50">Formal hand-off to Business-as-Usual ownership — Lewin's Refreeze.</p>
+        </div>
+        <button
+          className={project.sustainment.signoff ? 'btn-primary' : 'btn-secondary'}
+          disabled={!canEdit}
+          onClick={() => toggleSignoff(project.id)}
+        >
+          {project.sustainment.signoff ? '✓ Signed off' : 'Sign off'}
+        </button>
       </div>
 
       <div className="card p-4">
-        <h3 className="font-semibold text-brand-950 mb-2 text-sm">{t('coachingScript')} — Manager Coaching Script Generator</h3>
+        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Regression Risk Predictor</h3>
         <AiSuggestionBox
-          useCaseId="uc-coaching-script"
+          useCaseId="uc-regression-predictor"
           orgId={project.orgId}
           projectId={project.id}
-          ucName="Manager Coaching Script Generator"
-          tier="assistive"
-          buildSuggestion={() =>
-            stalled.length
-              ? `Talking points for a ${t(stalled[0])} barrier 1:1: (1) Ask an open question about what's blocking them specifically. (2) Acknowledge the concern without minimizing it. (3) Connect the change to something they already care about. (4) Agree on one small next step together.`
-              : `No stalled block currently flagged for this team — consider a light-touch check-in to sustain momentum.`
-          }
+          ucName="Regression Risk Predictor"
+          tier="augmented"
+          buildSuggestion={() => {
+            const latest = [...project.sustainment.checkpoints].reverse().find((c) => c.status === 'complete')
+            return latest
+              ? `Early regression-risk score: ${latest.regressionRisk.toUpperCase()}. Adoption trend at ${latest.label} checkpoint is ${latest.adoptionRate}%. Recommend a reinforcement nudge (manager check-in + visible metric) if the next checkpoint doesn't show improvement.`
+              : `Not enough post-go-live data yet to produce a regression-risk score.`
+          }}
         />
-      </div>
-
-      <div className="card p-4">
-        <h3 className="font-semibold text-brand-950 mb-3">{t('coachingNote')}</h3>
-        <div className="space-y-2">
-          {project.coachingNotes.length === 0 && <p className="text-sm text-ink/40 italic">{t('noData')}</p>}
-          {project.coachingNotes.map((n) => (
-            <div key={n.id} className="rounded-lg border border-brand-100 p-3 text-sm">
-              <div className="flex items-center justify-between mb-1">
-                <span className="font-medium text-brand-950">
-                  {n.managerName} → {n.cohort}
-                </span>
-                <Badge tone="sand">{t(n.barrierBlock)}</Badge>
-              </div>
-              <p className="text-ink/70">{n.note}</p>
-            </div>
-          ))}
-        </div>
-        <p className="text-xs text-ink/40 mt-2">Add new coaching notes from M6 · ADKAR Engine.</p>
       </div>
     </div>
   )

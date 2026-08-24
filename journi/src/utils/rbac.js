@@ -92,7 +92,7 @@ export function availableRollupLevels(user, org) {
 /**
  * Resolves the set of CM Projects a "Project / Organization / Group" level
  * selector should aggregate, given the currently scoped Organization. This is
- * the tenant boundary for Module 15 and the Portfolio Dashboard's level
+ * the tenant boundary for Module 14 and the Portfolio Dashboard's level
  * switcher — 'group' never reaches outside the current Organization's own
  * Group, 'organization' never reaches outside the current Organization.
  */

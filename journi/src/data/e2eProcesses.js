@@ -1,4 +1,4 @@
-// Module 19 — End-to-End Process Registry (D32h).
+// Module 18 — End-to-End Process Registry (D32h).
 // Three kinds of entries:
 //  - 'core'   : the 4 originally-registered E2E chains spanning the whole lifecycle.
 //               Compositions/names/RACSI below are D32h's "Corrected" revision,
@@ -58,7 +58,7 @@ const e2eProcesses = [
     orderedMacroProcesses: ['MP-03', 'MP-05', 'MP-07', 'MP-08'],
     trigger: 'New awareness (MP-03) or knowledge/ability (MP-05) signal recorded',
     terminalState: 'Composite Readiness Index (MP-07) recalculated and evaluated by the Divergence Pattern Detector (MP-08)',
-    relatedModules: ['M9', 'M10', 'M6', 'M7', 'M14'],
+    relatedModules: ['M8', 'M9', 'M5', 'M6', 'M13'],
     note: 'Makes explicit a dependency that already exists in journi’s data model (Communications + Training feeding ADKAR, ADKAR feeding the Risk Register); no new data-entry UI required, only traceability.',
   },
   {
@@ -68,8 +68,8 @@ const e2eProcesses = [
     orderedMacroProcesses: ['MP-02', 'MP-08'],
     trigger: 'Main Project schedule slip logged OR Phase Gate checkpoint reached',
     terminalState: 'Joint Decision Record produced (Go / Go with Conditions / No-Go); PM and CM inputs preserved independently; exactly one Accountable role named (selectable, may differ from either input’s author per D32e/JD-05)',
-    relatedModules: ['M8', 'M14', 'M18'],
-    note: 'Cross-references adoption-risk entries (MP-08) against linked Main Project schedule slips. Implemented in M18 as the Phase Gate / Joint Decision Record feature.',
+    relatedModules: ['M7', 'M13', 'M17'],
+    note: 'Cross-references adoption-risk entries (MP-08) against linked Main Project schedule slips. Implemented in M17 as the Phase Gate / Joint Decision Record feature.',
   },
   {
     id: 'E2E-07',
@@ -78,7 +78,7 @@ const e2eProcesses = [
     orderedMacroProcesses: ['MP-06', 'MP-04'],
     trigger: 'Champion floor-level observation logged',
     terminalState: 'Observation formalized into a Resistance Log barrier record',
-    relatedModules: ['M8', 'M11'],
+    relatedModules: ['M7', 'M10'],
     note: 'Traces a champion’s floor-level observation through to a formal barrier record.',
   },
   {
@@ -88,8 +88,8 @@ const e2eProcesses = [
     orderedMacroProcesses: ['MP-02', 'MP-10'],
     trigger: 'Sponsor escalation action logged',
     terminalState: 'Escalation resolved and reflected in the sustainment signoff',
-    relatedModules: ['M8', 'M13'],
-    note: 'Weakest-evidence proposed loop; included for completeness. Largely covered by existing Sponsor Coalition escalation actions (M8) and Sustainment checkpoints (M13).',
+    relatedModules: ['M7', 'M12'],
+    note: 'Weakest-evidence proposed loop; included for completeness. Largely covered by existing Sponsor Coalition escalation actions (M7) and Sustainment checkpoints (M12).',
   },
   {
     id: 'E2E-ERP',

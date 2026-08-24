@@ -1,225 +1,268 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { useScopedOrg, useOrgProjects } from '../utils/useScoped.js'
-import RequireProject from '../components/RequireProject.jsx'
+import { useScopedOrg, useScopedProject } from '../utils/useScoped.js'
+import { canActivateAiForOrg, canRequestProjectAiOverride } from '../utils/rbac.js'
+import { PROVIDERS, MODEL_OPTIONS, recommendedModel, providerLabel } from '../utils/llmProviders.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
-import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
-import { canWrite } from '../utils/rbac.js'
 
-const EVENT_COLOR = {
-  milestone: '#275650',
-  communication: '#b8925a',
-  training: '#3f827b',
-  assessment: '#a67a4a',
-}
+const OUTCOME_TONE = { accepted: 'green', edited: 'amber', rejected: 'red' }
 
-const W = 900
-const H = 220
-const PAD = 50
+function ProviderConnectionPanel({ canEdit }) {
+  const { llmConfig, setLlmConfig, testAndConnectLlm, disconnectLlm } = useAppState()
+  const [testing, setTesting] = useState(false)
+  const providerMeta = PROVIDERS.find((p) => p.id === llmConfig.provider)
+  const modelOptions = MODEL_OPTIONS[llmConfig.provider] || []
+  const isKnownModel = modelOptions.some((m) => m.id === llmConfig.model)
+  const showCustomModelInput = modelOptions.length === 0 || !isKnownModel
 
-function curveY(fracX) {
-  // Ending (high anxiety, low on chart) -> Neutral Zone (trough) -> New Beginning (rising, settled)
-  const y = H / 2 - Math.sin(fracX * Math.PI) * 70 * -1 + Math.sin(fracX * Math.PI * 1.0) * 0
-  // simpler explicit curve: dip then rise
-  return H - PAD - (Math.sin((fracX - 0.15) * Math.PI * 0.9) * 60 + 60)
-}
-
-function JourneyChart({ project, zoom, orgProjects }) {
-  const { t } = useI18n()
-  const projectsToShow = zoom === 'project' ? [project] : orgProjects
-
-  const allEvents = projectsToShow.flatMap((p) => p.journeyEvents.map((e) => ({ ...e, projectName: p.name })))
-  const min = Math.min(0, ...allEvents.map((e) => e.offsetDays))
-  const max = Math.max(1, ...allEvents.map((e) => e.offsetDays))
-  const span = max - min || 1
-
-  function xFor(offset) {
-    return PAD + ((offset - min) / span) * (W - PAD * 2)
+  async function handleConnect() {
+    setTesting(true)
+    await testAndConnectLlm()
+    setTesting(false)
   }
 
-  const pathD = useMemo(() => {
-    const points = []
-    for (let i = 0; i <= 40; i++) {
-      const frac = i / 40
-      const x = PAD + frac * (W - PAD * 2)
-      const y = curveY(frac)
-      points.push(`${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`)
-    }
-    return points.join(' ')
-  }, [])
+  function handleProviderChange(providerId) {
+    setLlmConfig({ provider: providerId, model: recommendedModel(providerId) })
+  }
 
-  const todayX = xFor(0)
+  function handleModelSelect(value) {
+    if (value === '__custom__') {
+      setLlmConfig({ model: '' })
+    } else {
+      setLlmConfig({ model: value })
+    }
+  }
 
   return (
-    <div className="overflow-x-auto">
-      <svg viewBox={`0 0 ${W} ${H + 40}`} className="w-full min-w-[700px]" role="img" aria-label="journey timeline">
-        <line x1={PAD} y1={H - PAD} x2={W - PAD} y2={H - PAD} stroke="#dcebe9" strokeWidth="1" />
-        <text x={PAD} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
-          {t('bridges_ending')}
-        </text>
-        <text x={W / 2 - 30} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
-          {t('bridges_neutral')}
-        </text>
-        <text x={W - PAD - 60} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
-          {t('bridges_beginning')}
-        </text>
-
-        <path d={pathD} fill="none" stroke="#3f827b" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
-
-        {todayX >= PAD && todayX <= W - PAD && (
-          <line x1={todayX} y1={20} x2={todayX} y2={H - PAD} stroke="#a67a4a" strokeWidth="1.5" strokeDasharray="4 3" />
+    <div className="card p-4 mb-4 space-y-3">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h3 className="font-semibold text-brand-950 text-sm">LLM Provider Connection</h3>
+        {llmConfig.connected ? (
+          <Badge tone="green">Connected — {providerLabel(llmConfig.provider)} ({llmConfig.model || providerMeta?.defaultModel})</Badge>
+        ) : (
+          <Badge tone="gray">Not connected — using built-in example generators</Badge>
         )}
-        {todayX >= PAD && todayX <= W - PAD && (
-          <text x={todayX + 4} y={16} fontSize="10" fill="#a67a4a" fontWeight="600">
-            Today
-          </text>
-        )}
-
-        {allEvents.map((e, i) => {
-          const x = xFor(e.offsetDays)
-          const frac = (e.offsetDays - min) / span
-          const y = curveY(frac)
-          return (
-            <g key={e.id + i}>
-              <circle cx={x} cy={y} r={6} fill={EVENT_COLOR[e.type] || '#275650'} stroke="white" strokeWidth="1.5" />
-              <text
-                x={x}
-                y={y - 12}
-                fontSize="9"
-                textAnchor="middle"
-                fill="#16221f"
-                opacity="0.75"
-              >
-                {e.label.length > 26 ? e.label.slice(0, 24) + '…' : e.label}
-              </text>
-            </g>
-          )
-        })}
-      </svg>
-      <div className="flex flex-wrap gap-3 mt-2 px-2">
-        {Object.entries(EVENT_COLOR).map(([type, color]) => (
-          <div key={type} className="flex items-center gap-1.5 text-xs text-ink/50">
-            <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: color }} />
-            {type}
-          </div>
-        ))}
       </div>
+      <p className="text-xs text-ink/50">
+        journi has no backend: connecting sends your API key and every generated prompt directly from this browser to the
+        provider you choose. The key is stored only in this browser's local storage — never in the seeded demo data, and never
+        cleared by "Reset Demo Data." Do not use a production key on a shared or public machine. Once connected, every AI Use
+        Case across the app calls this provider instead of its canned example text; the review/accept/edit/reject checkpoint is
+        unchanged either way.
+      </p>
+
+      {!canEdit ? (
+        <p className="text-xs text-ink/40 italic">Only an Organization Admin or broader can configure this.</p>
+      ) : (
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label className="label">Provider</label>
+            <select className="input" value={llmConfig.provider} onChange={(e) => handleProviderChange(e.target.value)}>
+              {PROVIDERS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="label">Model</label>
+            {modelOptions.length > 0 && (
+              <select className="input" value={showCustomModelInput ? '__custom__' : llmConfig.model} onChange={(e) => handleModelSelect(e.target.value)}>
+                {modelOptions.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.label}
+                    {m.recommended ? ' (recommended for journi)' : ''}
+                  </option>
+                ))}
+                <option value="__custom__">Custom…</option>
+              </select>
+            )}
+            {showCustomModelInput && (
+              <input
+                className="input mt-1.5"
+                placeholder="model id"
+                value={llmConfig.model}
+                onChange={(e) => setLlmConfig({ model: e.target.value })}
+              />
+            )}
+          </div>
+          {llmConfig.provider === 'custom' && (
+            <div>
+              <label className="label">Base URL</label>
+              <input
+                className="input"
+                placeholder="https://your-endpoint.example.com/v1"
+                value={llmConfig.baseUrl}
+                onChange={(e) => setLlmConfig({ baseUrl: e.target.value })}
+              />
+            </div>
+          )}
+          <div>
+            <label className="label">API Key</label>
+            <input
+              className="input"
+              type="password"
+              placeholder={providerMeta?.keyPlaceholder}
+              value={llmConfig.apiKey}
+              onChange={(e) => setLlmConfig({ apiKey: e.target.value })}
+            />
+          </div>
+        </div>
+      )}
+
+      {canEdit && (
+        <div className="flex items-center gap-2 flex-wrap">
+          {!llmConfig.connected ? (
+            <button className="btn-primary text-xs" onClick={handleConnect} disabled={testing}>
+              {testing ? 'Testing connection…' : 'Connect'}
+            </button>
+          ) : (
+            <button className="btn-danger text-xs" onClick={disconnectLlm}>
+              Disconnect
+            </button>
+          )}
+          {llmConfig.lastError && <span className="text-xs text-red-600">{llmConfig.lastError}</span>}
+        </div>
+      )}
     </div>
   )
 }
 
-function Content({ project }) {
-  const { t } = useI18n()
-  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const org = useScopedOrg()
-  const orgProjects = useOrgProjects(org?.id)
-  const [zoom, setZoom] = useState('project')
-  const [shared, setShared] = useState(false)
-  const [newEvent, setNewEvent] = useState({ label: '', offsetDays: 0, type: 'milestone' })
-
+function Toggle({ checked, onChange, disabled }) {
   return (
-    <div className="space-y-5">
-      <div className="card p-5">
-        <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-          <h3 className="font-semibold text-brand-950">{project.name}</h3>
-          <div className="flex items-center gap-2">
-            <select className="input py-1" value={zoom} onChange={(e) => setZoom(e.target.value)}>
-              <option value="project">{t('cmProject')}</option>
-              <option value="org">{t('organization')}</option>
-            </select>
-            <button className="btn-secondary text-xs" onClick={() => setShared(true)}>
-              {t('shareSnapshot')}
-            </button>
-          </div>
-        </div>
-        <JourneyChart project={project} zoom={zoom} orgProjects={orgProjects} />
-        {shared && (
-          <div className="mt-3 text-xs rounded-lg bg-brand-50 text-brand-700 p-2">
-            Snapshot ready — presentation-ready journey view captured for Steering Committee update (demo only).
-          </div>
-        )}
-      </div>
-
-      <div className="card p-4">
-        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Journey Map Annotation Assistant</h3>
-        <AiSuggestionBox
-          useCaseId="uc-journey-annotation"
-          orgId={project.orgId}
-          projectId={project.id}
-          ucName="Journey Map Annotation Assistant"
-          tier="assistive"
-          buildSuggestion={() => `"Sentiment shift observed" — suggested label for the most recent assessment point on this timeline.`}
-          onAccept={(text) => addSubItem(project.id, 'journeyEvents', { offsetDays: 0, label: text, type: 'assessment' })}
-        />
-      </div>
-
-      <div className="card p-4">
-        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Timeline events</h3>
-        <div className="space-y-1">
-          {[...project.journeyEvents]
-            .sort((a, b) => a.offsetDays - b.offsetDays)
-            .map((e) => (
-              <div key={e.id} className="flex items-center gap-2 text-sm py-1 border-b border-brand-50 last:border-0">
-                <Badge tone="sand">{e.offsetDays >= 0 ? `+${e.offsetDays}d` : `${e.offsetDays}d`}</Badge>
-                <span className="flex-1 text-ink/80">{e.label}</span>
-                <span className="text-xs text-ink/40 capitalize">{e.type}</span>
-                {canEdit && (
-                  <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'journeyEvents', e.id)}>
-                    {t('delete')}
-                  </button>
-                )}
-              </div>
-            ))}
-        </div>
-        {canEdit && (
-          <>
-            <div className="grid sm:grid-cols-4 gap-2 mt-3 pt-3 border-t border-brand-50">
-              <input
-                className="input sm:col-span-2"
-                placeholder="Event label, e.g. Go-live, Plant 1"
-                value={newEvent.label}
-                onChange={(e) => setNewEvent({ ...newEvent, label: e.target.value })}
-              />
-              <input
-                type="number"
-                className="input"
-                placeholder="Day offset (+/-)"
-                value={newEvent.offsetDays}
-                onChange={(e) => setNewEvent({ ...newEvent, offsetDays: e.target.value })}
-              />
-              <select className="input" value={newEvent.type} onChange={(e) => setNewEvent({ ...newEvent, type: e.target.value })}>
-                <option value="milestone">milestone</option>
-                <option value="communication">communication</option>
-                <option value="training">training</option>
-                <option value="assessment">assessment</option>
-              </select>
-            </div>
-            <button
-              className="btn-primary text-xs mt-2"
-              onClick={() => {
-                if (!newEvent.label.trim()) return
-                addSubItem(project.id, 'journeyEvents', { label: newEvent.label, offsetDays: Number(newEvent.offsetDays) || 0, type: newEvent.type })
-                setNewEvent({ label: '', offsetDays: 0, type: 'milestone' })
-              }}
-            >
-              {t('add')}
-            </button>
-          </>
-        )}
-      </div>
-    </div>
+    <button
+      disabled={disabled}
+      onClick={() => onChange(!checked)}
+      className={`w-10 rounded-full transition-colors relative shrink-0 ${checked ? 'bg-brand-600' : 'bg-brand-100'} ${disabled ? 'opacity-70 cursor-not-allowed' : ''}`}
+      style={{ height: 22 }}
+    >
+      <span
+        className="absolute rounded-full bg-white shadow transition-transform"
+        style={{ top: 2, left: 0, width: 18, height: 18, transform: checked ? 'translateX(19px)' : 'translateX(2px)' }}
+      />
+    </button>
   )
 }
 
 export default function Module16Page() {
   const { t } = useI18n()
+  const { data, currentUser, toggleAiOrgActivation, toggleAiProjectOverride } = useAppState()
+  const org = useScopedOrg()
+  const project = useScopedProject()
+  const [tab, setTab] = useState('catalog')
+
+  const canOrgToggle = canActivateAiForOrg(currentUser?.role, data.rolePermissions)
+  const canProjectToggle = canRequestProjectAiOverride(currentUser?.role, data.rolePermissions)
+
   return (
     <div>
       <PageHeader title={t('m16_title')} description={t('m16_desc')} />
-      <RequireProject>{(project) => <Content project={project} />}</RequireProject>
+
+      <ProviderConnectionPanel canEdit={canOrgToggle} />
+
+      <div className="flex gap-2 mb-4">
+        <button className={`tab ${tab === 'catalog' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('catalog')}>
+          Catalog & Governance
+        </button>
+        <button className={`tab ${tab === 'log' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('log')}>
+          {t('usageLog')}
+        </button>
+      </div>
+
+      {tab === 'catalog' && (
+        <div className="space-y-3">
+          {!org && <div className="card p-4 text-sm text-ink/50">{t('selectOrg')}</div>}
+          {org &&
+            data.aiUseCaseCatalog.map((uc) => {
+              const orgActive = data.aiOrgActivation[org.id]?.[uc.id]
+              const override = project ? data.aiProjectOverride[project.id]?.[uc.id] : undefined
+              const effective = project ? (override ?? orgActive) : orgActive
+              return (
+                <div key={uc.id} className="card p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="flex-1 min-w-[240px]">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <h4 className="font-semibold text-brand-950">{uc.name}</h4>
+                        <Badge tone={uc.tier === 'augmented' ? 'sand' : 'brand'}>{t(`tier_${uc.tier}`)}</Badge>
+                        <Badge tone="gray">{uc.moduleLabel}</Badge>
+                      </div>
+                      <p className="text-sm text-ink/70">{uc.description}</p>
+                      <div className="grid sm:grid-cols-2 gap-2 mt-2 text-xs text-ink/50">
+                        <div>
+                          <strong className="text-ink/70">{t('triggerInput')}:</strong> {uc.trigger}
+                        </div>
+                        <div>
+                          <strong className="text-ink/70">{t('output')}:</strong> {uc.output}
+                        </div>
+                      </div>
+                      <div className="mt-2 text-xs rounded-lg bg-brand-50/60 px-2 py-1.5 text-brand-800">
+                        <strong>{t('humanCheckpoint')}:</strong> {uc.humanCheckpoint}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-2 shrink-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-ink/50">{t('activateForOrg')}</span>
+                        <Toggle checked={!!orgActive} disabled={!canOrgToggle} onChange={() => toggleAiOrgActivation(org.id, uc.id)} />
+                      </div>
+                      {project && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-ink/50">
+                            {t('activateForProject')}
+                            {override === undefined && <em className="not-italic text-ink/30"> (inherited)</em>}
+                          </span>
+                          <Toggle
+                            checked={effective}
+                            disabled={!canProjectToggle}
+                            onChange={(v) => toggleAiProjectOverride(project.id, uc.id, v)}
+                          />
+                        </div>
+                      )}
+                      <Badge tone={effective ? 'green' : 'gray'}>{effective ? 'Active' : 'Inactive'}</Badge>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+        </div>
+      )}
+
+      {tab === 'log' && (
+        <div className="card overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+              <tr>
+                <th className="text-start px-4 py-2.5">AI Use Case</th>
+                <th className="text-start px-4 py-2.5">{t('output')}</th>
+                <th className="text-start px-4 py-2.5">{t('owner')}</th>
+                <th className="text-start px-4 py-2.5">{t('status')}</th>
+                <th className="text-start px-4 py-2.5">{t('date')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.aiUsageLog
+                .filter((l) => !org || l.orgId === org.id)
+                .slice(0, 60)
+                .map((l) => {
+                  const uc = data.aiUseCaseCatalog.find((u) => u.id === l.useCaseId)
+                  return (
+                    <tr key={l.id} className="border-t border-brand-50">
+                      <td className="px-4 py-2.5 font-medium text-brand-950">{uc?.name}</td>
+                      <td className="px-4 py-2.5 max-w-sm text-ink/60 truncate">{l.outputSummary}</td>
+                      <td className="px-4 py-2.5 text-ink/60">{l.user}</td>
+                      <td className="px-4 py-2.5">
+                        <Badge tone={OUTCOME_TONE[l.outcome]}>{t(`outcome_${l.outcome}`)}</Badge>
+                      </td>
+                      <td className="px-4 py-2.5 text-ink/40 text-xs">{l.timestamp}</td>
+                    </tr>
+                  )
+                })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

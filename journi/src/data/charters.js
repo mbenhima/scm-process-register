@@ -1,7 +1,7 @@
-// Module 20 — Change Management Charter Registry (D31).
+// Module 19 — Change Management Charter Registry (D31).
 // 8 charters, each a signed, trackable behavioral standard (not prose guidance)
 // governing a specific role's expected behavior across the change lifecycle.
-// R/A/C/S/I use the same 7-code RACSI taxonomy as Module 19's E2E chains
+// R/A/C/S/I use the same 7-code RACSI taxonomy as Module 18's E2E chains
 // (D17 CAT-02: ES/CM/PM/FPO/ITL/SUP/EU) — distinct from journi's platform
 // ROLES enum. Governs_OBS_Level mirrors Module 1's Group/Organization/Project
 // hierarchy. Charter-to-task/step mapping lives separately in charterActions.js
@@ -16,9 +16,9 @@ const charters = [
     what: 'Defines the specific, observable sponsorship behaviors expected of the Executive Sponsor and Steering Committee across the initiative lifecycle.',
     who: 'Executive Sponsor (primary subject); Change Manager (facilitates); Steering Committee (co-signs)',
     when: 'Signed at project kickoff; reviewed at every Phase Gate',
-    where: 'Steering Committee governance forum (Module 8)',
+    where: 'Steering Committee governance forum (Module 7)',
     why: 'Prosci research shows active, visible sponsorship is the single largest predictor of change success; an unwritten expectation is an unenforceable one.',
-    how: 'A structured charter document naming specific actions (town halls attended, escalations resolved, communications sent) rather than a generic "be supportive" commitment; tracked via the Sponsor-visibility tracker (Module 8).',
+    how: 'A structured charter document naming specific actions (town halls attended, escalations resolved, communications sent) rather than a generic "be supportive" commitment; tracked via the Sponsor-visibility tracker (Module 7).',
     ownerRole: 'Executive Sponsor',
     racsi: { R: 'CM', A: 'ES', C: 'PM, FPO', S: '-', I: 'SUP, EU' },
     primaryLinkedMacroId: 'MP-02',
@@ -50,7 +50,7 @@ const charters = [
     effectiveDate: '2026-06-09',
     reviewFrequency: 'Quarterly',
     description:
-      'Extends Kotter Step 5 (Enable Action by Removing Barriers) to the supervisor layer; reduces role/will-based resistance surfaced in Module 11.',
+      'Extends Kotter Step 5 (Enable Action by Removing Barriers) to the supervisor layer; reduces role/will-based resistance surfaced in Module 10.',
   },
   {
     id: 'CHTR-03',
@@ -60,7 +60,7 @@ const charters = [
     what: 'Defines the message-audience-channel-timing discipline and the FAQ/reply-protocol standard every communication wave must follow.',
     who: 'Change Manager / Communications Practitioner (primary subject); Executive Sponsor (co-signs key messages)',
     when: 'Signed at communication-plan approval; enforced on every wave thereafter',
-    where: 'Module 9 Communication Planning & Execution',
+    where: 'Module 8 Communication Planning & Execution',
     why: "Ad hoc, inconsistent communication is a leading cause of the Awareness/Desire gap the Interaction Map's Exception E1 describes.",
     how: 'A standing communication matrix (persona x channel x cadence), a mandatory FAQ reply-protocol SLA, and saturation checks (RULE-015) before any wave is scheduled.',
     ownerRole: 'Change Manager',
@@ -82,7 +82,7 @@ const charters = [
     what: 'Defines the methodology and sign-off standard for assessing how the change affects process, technology, role, location and professional identity.',
     who: 'Change Manager (facilitates); Functional Process Owners (validate); Frontline Supervisors (confirm)',
     when: 'Signed at Discovery & Design phase entry; re-validated at every major scope change',
-    where: 'Module 5 Stakeholder & Impact Mapping',
+    where: 'Module 4 Stakeholder & Impact Mapping',
     why: 'An impact assessment done once, informally, and never revisited misses scope creep — the single most common cause of a stale stakeholder map.',
     how: 'A required 5-dimension scoring rubric (RULE-005 human-confirmation gate), mandatory FPO/Supervisor validation sign-off, and a re-validation trigger on scope change.',
     ownerRole: 'Change Manager',
@@ -148,7 +148,7 @@ const charters = [
     who: 'Trainer / designated Mentor (delivers); the mentee (subject); Functional Process Owner (validates competency gates)',
     when: 'Begins at Training & Change Readiness phase; each stage transition is a gated event, not a calendar milestone',
     where: 'Sandbox environment (Trainee), live environment under observation (Observer), live environment unsupervised (Autonomous)',
-    why: "'Trained' and 'capable' are not the same thing — Module 10 explicitly separates attendance from demonstrated competency; a single training event rarely produces autonomous performance.",
+    why: "'Trained' and 'capable' are not the same thing — Module 9 explicitly separates attendance from demonstrated competency; a single training event rarely produces autonomous performance.",
     how: 'A four-part sub-process — Diagnosis (assess starting Knowledge/Ability) -> Training Plan Elaboration (design the stage-gated path) -> Execution (deliver each stage with explicit entry/exit criteria) -> Closure (formal Autonomous sign-off) — see charterActions.js for the full task/step mapping and mentoringStages.js for the three-stage model itself.',
     ownerRole: 'Training Lead',
     racsi: { R: 'CM', A: 'CM', C: 'FPO, ITL', S: 'PM, SUP', I: 'ES, EU' },
@@ -181,7 +181,7 @@ const charters = [
     effectiveDate: '2026-06-09',
     reviewFrequency: 'Per phase gate + ad hoc',
     description:
-      'Standardizes the instruments referenced throughout Module 6/7 and the worked Survey Form exception-handling example under one governing charter.',
+      'Standardizes the instruments referenced throughout Module 5/7 and the worked Survey Form exception-handling example under one governing charter.',
   },
 ]
 

@@ -1,320 +1,225 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { availableRollupLevels, projectsForLevel } from '../utils/rbac.js'
-import { useScopedOrg, useScopedProject } from '../utils/useScoped.js'
+import { useScopedOrg, useOrgProjects } from '../utils/useScoped.js'
+import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
-import ProgressBar from '../components/ProgressBar.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
-import LevelSelector from '../components/LevelSelector.jsx'
-import ExportCsvButton from '../components/ExportCsvButton.jsx'
-import { ADKAR_BLOCKS } from '../data/constants.js'
-import { adkarAverage, readinessIndex, trainingCompletionAvg, inferSentimentStage, scoreColor } from '../utils/compute.js'
-import { readinessBenchmark, benchmarkStanding } from '../data/benchmarks.js'
-import crossTypeMatrix from '../data/crossTypeMatrix.js'
+import { canWrite } from '../utils/rbac.js'
 
-const STANDING_TONE = { ahead: 'green', in_line: 'sand', behind: 'red' }
+const EVENT_COLOR = {
+  milestone: '#275650',
+  communication: '#b8925a',
+  training: '#3f827b',
+  assessment: '#a67a4a',
+}
 
-export default function Module15Page() {
+const W = 900
+const H = 220
+const PAD = 50
+
+function curveY(fracX) {
+  // Ending (high anxiety, low on chart) -> Neutral Zone (trough) -> New Beginning (rising, settled)
+  const y = H / 2 - Math.sin(fracX * Math.PI) * 70 * -1 + Math.sin(fracX * Math.PI * 1.0) * 0
+  // simpler explicit curve: dip then rise
+  return H - PAD - (Math.sin((fracX - 0.15) * Math.PI * 0.9) * 60 + 60)
+}
+
+function JourneyChart({ project, zoom, orgProjects }) {
   const { t } = useI18n()
-  const { data, currentUser, scope } = useAppState()
+  const projectsToShow = zoom === 'project' ? [project] : orgProjects
+
+  const allEvents = projectsToShow.flatMap((p) => p.journeyEvents.map((e) => ({ ...e, projectName: p.name })))
+  const min = Math.min(0, ...allEvents.map((e) => e.offsetDays))
+  const max = Math.max(1, ...allEvents.map((e) => e.offsetDays))
+  const span = max - min || 1
+
+  function xFor(offset) {
+    return PAD + ((offset - min) / span) * (W - PAD * 2)
+  }
+
+  const pathD = useMemo(() => {
+    const points = []
+    for (let i = 0; i <= 40; i++) {
+      const frac = i / 40
+      const x = PAD + frac * (W - PAD * 2)
+      const y = curveY(frac)
+      points.push(`${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`)
+    }
+    return points.join(' ')
+  }, [])
+
+  const todayX = xFor(0)
+
+  return (
+    <div className="overflow-x-auto">
+      <svg viewBox={`0 0 ${W} ${H + 40}`} className="w-full min-w-[700px]" role="img" aria-label="journey timeline">
+        <line x1={PAD} y1={H - PAD} x2={W - PAD} y2={H - PAD} stroke="#dcebe9" strokeWidth="1" />
+        <text x={PAD} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
+          {t('bridges_ending')}
+        </text>
+        <text x={W / 2 - 30} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
+          {t('bridges_neutral')}
+        </text>
+        <text x={W - PAD - 60} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
+          {t('bridges_beginning')}
+        </text>
+
+        <path d={pathD} fill="none" stroke="#3f827b" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
+
+        {todayX >= PAD && todayX <= W - PAD && (
+          <line x1={todayX} y1={20} x2={todayX} y2={H - PAD} stroke="#a67a4a" strokeWidth="1.5" strokeDasharray="4 3" />
+        )}
+        {todayX >= PAD && todayX <= W - PAD && (
+          <text x={todayX + 4} y={16} fontSize="10" fill="#a67a4a" fontWeight="600">
+            Today
+          </text>
+        )}
+
+        {allEvents.map((e, i) => {
+          const x = xFor(e.offsetDays)
+          const frac = (e.offsetDays - min) / span
+          const y = curveY(frac)
+          return (
+            <g key={e.id + i}>
+              <circle cx={x} cy={y} r={6} fill={EVENT_COLOR[e.type] || '#275650'} stroke="white" strokeWidth="1.5" />
+              <text
+                x={x}
+                y={y - 12}
+                fontSize="9"
+                textAnchor="middle"
+                fill="#16221f"
+                opacity="0.75"
+              >
+                {e.label.length > 26 ? e.label.slice(0, 24) + '…' : e.label}
+              </text>
+            </g>
+          )
+        })}
+      </svg>
+      <div className="flex flex-wrap gap-3 mt-2 px-2">
+        {Object.entries(EVENT_COLOR).map(([type, color]) => (
+          <div key={type} className="flex items-center gap-1.5 text-xs text-ink/50">
+            <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: color }} />
+            {type}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function Content({ project }) {
+  const { t } = useI18n()
+  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
+  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const org = useScopedOrg()
-  const project = useScopedProject()
-  const [tab, setTab] = useState('analytics')
-
-  const rollupLevels = availableRollupLevels(currentUser, org)
-  const levels = [...(scope.cmProjectId ? ['project'] : []), ...rollupLevels]
-  const [levelPref, setLevelPref] = useState(null)
-  const level = levels.includes(levelPref) ? levelPref : levels[0] || 'organization'
-
-  const focusProjects = org ? projectsForLevel(data, level, scope, org) : []
-  const showSingleProject = level === 'project' && project
-
-  const ri = focusProjects.length ? Math.round(focusProjects.reduce((a, p) => a + readinessIndex(p), 0) / focusProjects.length) : 0
-  const adkarPct = showSingleProject ? (adkarAverage(project) / 5) * 100 : null
-  const trainingPct = showSingleProject ? trainingCompletionAvg(project) : null
-
-  const withAdoption = focusProjects
-    .map((p) => {
-      const latest = [...p.sustainment.checkpoints].reverse().find((c) => c.status === 'complete')
-      return latest ? { project: p, adoption: latest.adoptionRate, sentiment: inferSentimentStage(p) } : null
-    })
-    .filter(Boolean)
-
-  const levelLabel = level === 'project' ? t('cmProject') : level === 'group' ? t('group') : t('organization')
-  const group = org?.groupId ? data.groups.find((g) => g.id === org.groupId) : null
-  const scopeName = level === 'project' ? project?.name : level === 'group' ? group?.name : org?.name
+  const orgProjects = useOrgProjects(org?.id)
+  const [zoom, setZoom] = useState('project')
+  const [shared, setShared] = useState(false)
+  const [newEvent, setNewEvent] = useState({ label: '', offsetDays: 0, type: 'milestone' })
 
   return (
     <div className="space-y-5">
-      <PageHeader
-        title={t('m15_title')}
-        description={t('m15_desc')}
-        actions={<LevelSelector levels={levels} value={level} onChange={setLevelPref} />}
-      />
-      <p className="text-xs text-ink/40 -mt-4">{t('viewingAtLevel')}: {levelLabel}</p>
-
-      <div className="flex gap-2">
-        <button className={`tab ${tab === 'analytics' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('analytics')}>
-          {t('m15_title')}
-        </button>
-        <button className={`tab ${tab === 'benchmark' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('benchmark')}>
-          {t('benchmarking')}
-        </button>
-        <button className={`tab ${tab === 'crosstype' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('crosstype')}>
-          {t('m15_crosstype_tab')}
-        </button>
+      <div className="card p-5">
+        <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+          <h3 className="font-semibold text-brand-950">{project.name}</h3>
+          <div className="flex items-center gap-2">
+            <select className="input py-1" value={zoom} onChange={(e) => setZoom(e.target.value)}>
+              <option value="project">{t('cmProject')}</option>
+              <option value="org">{t('organization')}</option>
+            </select>
+            <button className="btn-secondary text-xs" onClick={() => setShared(true)}>
+              {t('shareSnapshot')}
+            </button>
+          </div>
+        </div>
+        <JourneyChart project={project} zoom={zoom} orgProjects={orgProjects} />
+        {shared && (
+          <div className="mt-3 text-xs rounded-lg bg-brand-50 text-brand-700 p-2">
+            Snapshot ready — presentation-ready journey view captured for Steering Committee update (demo only).
+          </div>
+        )}
       </div>
 
-      {tab === 'analytics' && (
-        <div className="space-y-5">
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="card p-5 md:col-span-1">
-              <div className="text-xs font-semibold uppercase text-ink/40 mb-1">{t('readinessIndex')}</div>
-              <div className="text-5xl font-bold text-brand-700 mb-3">{ri}%</div>
-              {showSingleProject && (
-                <div className="space-y-2 text-sm">
-                  <div>
-                    <div className="flex justify-between text-xs text-ink/50 mb-0.5">
-                      <span>{t('adkar')}</span>
-                      <span>{Math.round(adkarPct)}%</span>
-                    </div>
-                    <ProgressBar value={adkarPct} />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs text-ink/50 mb-0.5">
-                      <span>{t('kubler')}</span>
-                      <span>{t(`sentiment_${inferSentimentStage(project)}`)}</span>
-                    </div>
-                    <ProgressBar value={{ denial: 20, resistance: 40, exploration: 70, commitment: 100 }[inferSentimentStage(project)]} tone="sand" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs text-ink/50 mb-0.5">
-                      <span>{t('m10_title')}</span>
-                      <span>{Math.round(trainingPct)}%</span>
-                    </div>
-                    <ProgressBar value={trainingPct} tone="amber" />
-                  </div>
-                </div>
-              )}
-              {!showSingleProject && <p className="text-xs text-ink/40">Average across {focusProjects.length} project(s) at {levelLabel} level.</p>}
-            </div>
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Journey Map Annotation Assistant</h3>
+        <AiSuggestionBox
+          useCaseId="uc-journey-annotation"
+          orgId={project.orgId}
+          projectId={project.id}
+          ucName="Journey Map Annotation Assistant"
+          tier="assistive"
+          buildSuggestion={() => `"Sentiment shift observed" — suggested label for the most recent assessment point on this timeline.`}
+          onAccept={(text) => addSubItem(project.id, 'journeyEvents', { offsetDays: 0, label: text, type: 'assessment' })}
+        />
+      </div>
 
-            <div className="card p-5 md:col-span-2">
-              <h3 className="font-semibold text-brand-950 mb-3">{t('adoptionCurve')}</h3>
-              <div className="flex items-end gap-4 h-32">
-                {focusProjects.map((p) => {
-                  const checkpoints = p.sustainment.checkpoints
-                  return (
-                    <div key={p.id} className="flex-1 flex flex-col items-center gap-1">
-                      <div className="flex items-end gap-1 h-24">
-                        {checkpoints.map((c) => (
-                          <div
-                            key={c.id}
-                            title={`${c.label}: ${c.adoptionRate ?? '—'}%`}
-                            className="w-3 rounded-t bg-brand-500"
-                            style={{ height: `${c.adoptionRate || 4}%` }}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-[9px] text-ink/40 text-center leading-tight line-clamp-2">{p.name.split(' ')[0]}</span>
-                    </div>
-                  )
-                })}
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Timeline events</h3>
+        <div className="space-y-1">
+          {[...project.journeyEvents]
+            .sort((a, b) => a.offsetDays - b.offsetDays)
+            .map((e) => (
+              <div key={e.id} className="flex items-center gap-2 text-sm py-1 border-b border-brand-50 last:border-0">
+                <Badge tone="sand">{e.offsetDays >= 0 ? `+${e.offsetDays}d` : `${e.offsetDays}d`}</Badge>
+                <span className="flex-1 text-ink/80">{e.label}</span>
+                <span className="text-xs text-ink/40 capitalize">{e.type}</span>
+                {canEdit && (
+                  <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'journeyEvents', e.id)}>
+                    {t('delete')}
+                  </button>
+                )}
               </div>
-            </div>
-          </div>
-
-          <div className="card p-5 overflow-x-auto">
-            <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-              <h3 className="font-semibold text-brand-950">{t('heatmapByDept')} — {scopeName || 'Portfolio'}</h3>
-              <ExportCsvButton
-                filename={`readiness-heatmap-${level}.csv`}
-                rows={focusProjects}
-                columns={[
-                  { label: t('cmProject'), value: 'name' },
-                  ...ADKAR_BLOCKS.map((b) => ({ label: t(b), value: (p) => p.adkar[b].score })),
-                  { label: t('readinessIndex'), value: (p) => readinessIndex(p) },
-                ]}
-              />
-            </div>
-            <table className="w-full text-sm">
-              <thead className="text-xs uppercase text-ink/40">
-                <tr>
-                  <th className="text-start py-1.5">{t('cmProject')}</th>
-                  {ADKAR_BLOCKS.map((b) => (
-                    <th key={b} className="text-center py-1.5">
-                      {t(b)}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {focusProjects.map((p) => (
-                  <tr key={p.id} className="border-t border-brand-50">
-                    <td className="py-1.5 font-medium text-brand-950">{p.name}</td>
-                    {ADKAR_BLOCKS.map((b) => (
-                      <td key={b} className="py-1.5 text-center">
-                        <span className={`inline-flex w-8 h-8 items-center justify-center rounded-md text-xs font-semibold ${scoreColor(p.adkar[b].score)}`}>
-                          {p.adkar[b].score}
-                        </span>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="card p-5">
-            <h3 className="font-semibold text-brand-950 mb-2">Correlation: sentiment vs. adoption speed</h3>
-            {withAdoption.length === 0 ? (
-              <p className="text-sm text-ink/40 italic">Not enough post-go-live checkpoint data yet at this level.</p>
-            ) : (
-              <ul className="space-y-1 text-sm text-ink/70">
-                {withAdoption.map(({ project: p, adoption, sentiment }) => (
-                  <li key={p.id}>
-                    {p.name}: {t(`sentiment_${sentiment}`)} sentiment ↔ {adoption}% adoption at latest checkpoint
-                    {sentiment === 'exploration' || sentiment === 'commitment' ? (
-                      <span className="text-brand-600"> — positive sentiment tracking with faster adoption</span>
-                    ) : (
-                      <span className="text-amber-600"> — early-warning: cautious sentiment, watch next checkpoint</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {showSingleProject && (
-            <div className="card p-4">
-              <h3 className="font-semibold text-brand-950 mb-2 text-sm">{t('execNarrative')}</h3>
-              <AiSuggestionBox
-                useCaseId="uc-exec-narrative"
-                orgId={project.orgId}
-                projectId={project.id}
-                ucName="Executive Readiness Narrative Generator"
-                tier="augmented"
-                buildSuggestion={() =>
-                  `${project.name} shows a Composite Readiness Index of ${ri}%. The population is in Bridges "${t(`bridges_${project.bridgesPhase}`)}" / Lewin "${t(`lewin_${project.lewinPhase}`)}". Primary attention area: ${
-                    ADKAR_BLOCKS.filter((b) => project.adkar[b].score <= 2)[0] ? t(ADKAR_BLOCKS.filter((b) => project.adkar[b].score <= 2)[0]) : 'no blocking barrier currently'
-                  }. Recommend Sponsor visibility remain a standing agenda item until the next milestone review.`
-                }
-              />
-            </div>
-          )}
+            ))}
         </div>
-      )}
-
-      {tab === 'benchmark' && (
-        <div className="space-y-5">
-          <div className="card p-5">
-            <div className="flex items-start justify-between gap-2 flex-wrap mb-1">
-              <h3 className="font-semibold text-brand-950">{t('benchmarking')} — {levelLabel}</h3>
-              <ExportCsvButton
-                filename={`readiness-benchmark-${level}.csv`}
-                rows={focusProjects}
-                columns={[
-                  { label: t('cmProject'), value: 'name' },
-                  { label: t('lewin'), value: (p) => t(`lewin_${p.lewinPhase}`) },
-                  { label: t('readinessIndex'), value: (p) => readinessIndex(p) },
-                  {
-                    label: t('peerAverage'),
-                    value: (p) => {
-                      const peers = focusProjects.filter((x) => x.id !== p.id)
-                      return peers.length ? Math.round(peers.reduce((a, x) => a + readinessIndex(x), 0) / peers.length) : ''
-                    },
-                  },
-                  {
-                    label: t('referenceBand'),
-                    value: (p) => {
-                      const band = readinessBenchmark(p.lewinPhase)
-                      return `${band.low}-${band.high}`
-                    },
-                  },
-                  {
-                    label: t('status'),
-                    value: (p) => t(`standing_${benchmarkStanding(readinessIndex(p), readinessBenchmark(p.lewinPhase))}`),
-                  },
-                ]}
+        {canEdit && (
+          <>
+            <div className="grid sm:grid-cols-4 gap-2 mt-3 pt-3 border-t border-brand-50">
+              <input
+                className="input sm:col-span-2"
+                placeholder="Event label, e.g. Go-live, Plant 1"
+                value={newEvent.label}
+                onChange={(e) => setNewEvent({ ...newEvent, label: e.target.value })}
               />
+              <input
+                type="number"
+                className="input"
+                placeholder="Day offset (+/-)"
+                value={newEvent.offsetDays}
+                onChange={(e) => setNewEvent({ ...newEvent, offsetDays: e.target.value })}
+              />
+              <select className="input" value={newEvent.type} onChange={(e) => setNewEvent({ ...newEvent, type: e.target.value })}>
+                <option value="milestone">milestone</option>
+                <option value="communication">communication</option>
+                <option value="training">training</option>
+                <option value="assessment">assessment</option>
+              </select>
             </div>
-            <p className="text-xs text-ink/50 mb-4">
-              Each project's Composite Readiness Index compared against a seeded reference band for its current Lewin phase, and against the peer average within this level's scope.
-            </p>
-            <table className="w-full text-sm">
-              <thead className="text-xs uppercase text-ink/40">
-                <tr>
-                  <th className="text-start py-1.5">{t('cmProject')}</th>
-                  <th className="text-start py-1.5">{t('lewin')}</th>
-                  <th className="text-center py-1.5">{t('readinessIndex')}</th>
-                  <th className="text-center py-1.5">{t('peerAverage')}</th>
-                  <th className="text-center py-1.5">{t('referenceBand')}</th>
-                  <th className="text-center py-1.5">{t('status')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {focusProjects.map((p) => {
-                  const pRi = readinessIndex(p)
-                  const band = readinessBenchmark(p.lewinPhase)
-                  const standing = benchmarkStanding(pRi, band)
-                  const peers = focusProjects.filter((x) => x.id !== p.id)
-                  const peerAvg = peers.length ? Math.round(peers.reduce((a, x) => a + readinessIndex(x), 0) / peers.length) : null
-                  return (
-                    <tr key={p.id} className="border-t border-brand-50">
-                      <td className="py-1.5 font-medium text-brand-950">{p.name}</td>
-                      <td className="py-1.5">
-                        <Badge tone="sand">{t(`lewin_${p.lewinPhase}`)}</Badge>
-                      </td>
-                      <td className="py-1.5 text-center font-semibold">{pRi}%</td>
-                      <td className="py-1.5 text-center text-ink/50">{peerAvg == null ? '—' : `${peerAvg}%`}</td>
-                      <td className="py-1.5 text-center text-ink/50">{band.low}–{band.high}%</td>
-                      <td className="py-1.5 text-center">
-                        <Badge tone={STANDING_TONE[standing]}>{t(`standing_${standing}`)}</Badge>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-            {focusProjects.length === 0 && <p className="text-sm text-ink/40 italic mt-2">{t('noData')}</p>}
-          </div>
-        </div>
-      )}
+            <button
+              className="btn-primary text-xs mt-2"
+              onClick={() => {
+                if (!newEvent.label.trim()) return
+                addSubItem(project.id, 'journeyEvents', { label: newEvent.label, offsetDays: Number(newEvent.offsetDays) || 0, type: newEvent.type })
+                setNewEvent({ label: '', offsetDays: 0, type: 'milestone' })
+              }}
+            >
+              {t('add')}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
 
-      {tab === 'crosstype' && (
-        <div className="card p-5 overflow-x-auto">
-          <h3 className="font-semibold text-brand-950 mb-1">{t('m15_crosstype_title')}</h3>
-          <p className="text-xs text-ink/50 mb-4">{t('m15_crosstype_desc')}</p>
-          <table className="w-full text-sm">
-            <thead className="text-xs uppercase text-ink/40">
-              <tr>
-                <th className="text-start py-1.5">{t('type')}</th>
-                <th className="text-start py-1.5">{t('m15_crosstype_duration')}</th>
-                <th className="text-start py-1.5">{t('m15_crosstype_gate')}</th>
-                <th className="text-start py-1.5">{t('m15_crosstype_external')}</th>
-                <th className="text-start py-1.5">{t('m15_crosstype_framework')}</th>
-                <th className="text-start py-1.5">{t('m15_crosstype_reversibility')}</th>
-                <th className="text-start py-1.5">{t('m15_crosstype_example')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {crossTypeMatrix.map((row) => (
-                <tr key={row.transformationType} className="border-t border-brand-50 align-top">
-                  <td className="py-2 pe-3 font-medium text-brand-950 whitespace-nowrap">{t(`archetype_${row.transformationType}`)}</td>
-                  <td className="py-2 pe-3 text-ink/70">{row.typicalDuration}</td>
-                  <td className="py-2 pe-3 text-ink/70">{row.terminalGate}</td>
-                  <td className="py-2 pe-3 text-ink/70">{row.externalPartyInvolvement}</td>
-                  <td className="py-2 pe-3 text-ink/70">{row.dominantFramework}</td>
-                  <td className="py-2 pe-3 text-ink/70">{row.reversibility}</td>
-                  <td className="py-2 text-ink/50 text-xs">{row.seedProjectExample}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+export default function Module15Page() {
+  const { t } = useI18n()
+  return (
+    <div>
+      <PageHeader title={t('m15_title')} description={t('m15_desc')} />
+      <RequireProject>{(project) => <Content project={project} />}</RequireProject>
     </div>
   )
 }

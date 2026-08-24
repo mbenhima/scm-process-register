@@ -43,15 +43,15 @@ layer (Section 3.4--3.5), a Work Breakdown Structure & Gantt module
 that gives Project Management, Change Management and the framework
 milestones a single baseline-vs-actual timeline together with type-specific
 Phase Templates, a generic P1--P7 lifecycle-phase filter, and Phase Gate /
-Joint Decision Records with a selectable Accountable role (Module 18), a
-Macro Process, SIPOC, RACSI & End-to-End Process Registry (Module 19)
+Joint Decision Records with a selectable Accountable role (Module 17), a
+Macro Process, SIPOC, RACSI & End-to-End Process Registry (Module 18)
 that makes the process backbone underneath every other module browsable,
 carries a per-chain RACSI on its four core lifecycle chains, and hosts a
 Cross-Type Comparison Matrix contrasting all eight transformation types
-side by side, a Change Management Charter Registry (Module 20) of eight
+side by side, a Change Management Charter Registry (Module 19) of eight
 signed, trackable sponsorship/coaching/communication standards with their
 concrete action mapping and per-project compliance log, and a Stakeholder
-Journeys, Touchpoints & Analytics module (Module 21) that gives eight
+Journeys, Touchpoints & Analytics module (Module 20) that gives eight
 persona/exception/system journeys a touchpoint-level completion record and
 an experience-centric companion to the score-centric dashboards elsewhere
 in the platform --- and a seed dataset of
@@ -61,7 +61,7 @@ types --- ERP Implementation, Business Process Reengineering, Business
 Process Automation, Integrated Management System (QMS), Cultural /
 Values Transformation, Operating Model Redesign, Compliance-Driven
 Change, and Training & Skills Development --- each mapped to its own
-End-to-End Process lifecycle and Phase Template (Section 4, Module 19).
+End-to-End Process lifecycle and Phase Template (Section 4, Module 18).
 Reporting is rounded out by client-side CSV export on the platform's
 highest-traffic tables (Sponsor Coalition, Communications, Training,
 Risk Register, Analytics) and an in-app Notification Center surfacing the
@@ -92,8 +92,8 @@ with hard data-isolation boundaries between them. A role scoped to one
 Organization can never read or write another Organization\'s data ---
 including a sibling Organization in the same Group --- unless that
 role\'s own scope is explicitly Group-level or platform-level. AI Use
-Case activation (Module 17), language configuration (Section 3.1.1),
-and every roll-up view (Module 15) all respect this same boundary.
+Case activation (Module 16), language configuration (Section 3.1.1),
+and every roll-up view (Module 14) all respect this same boundary.
 
 **2.2 Main Projects vs. Change Management Projects**
 
@@ -189,20 +189,20 @@ production-ready deployment against the requirements above.
 Beyond server-side persistence, a small number of specifically
 backend-dependent capabilities remain out of scope for this client-side
 reference build, by the same design logic: a BPMN/DMN workflow-execution
-engine actually orchestrating the process model Module 19 makes browsable
+engine actually orchestrating the process model Module 18 makes browsable
 (today it is data, not an executable process); a COSO-aligned
 control-testing framework actually evidencing and sampling control
-operation (today Module 14\'s risk register and the justification-log
+operation (today Module 13\'s risk register and the justification-log
 audit trail record the human judgment a control-testing program would
 draw on, but do not run one); real outbound delivery for the sixteen
 alert conditions catalogued in Section 2.6 --- email, push notification
 and Teams channels are named in each alert\'s specification but not
 wired to a real send path, since there is no backend to send from; and
 an NLP embeddings backend actually powering the free-text theme-mining
-and classification AI use cases in Module 17 at scale (today those use
+and classification AI use cases in Module 16 at scale (today those use
 cases run against a deterministic built-in generator or, if configured,
 directly against a third-party LLM provider from the browser --- see
-Module 17\'s Real LLM Provider Connection --- neither of which is a
+Module 16\'s Real LLM Provider Connection --- neither of which is a
 purpose-built embeddings/NLP service). Each of these requires
 platform-level infrastructure a production backend would provide; this
 reference build represents the closest client-side equivalent it can
@@ -214,10 +214,10 @@ as a silent omission.
 journi\'s highest-traffic tables offer a client-side CSV export --- the
 proportionate equivalent of a server-generated Excel/PDF report, built
 entirely in the browser via a Blob download rather than a backend export
-service. Available on the Sponsor Coalition table (Module 8), the
-Communications log (Module 9), the Training & Certification table
-(Module 10), the Risk Register (Module 14), and the Analytics readiness
-heatmap and benchmarking tables (Module 15). Each export reflects
+service. Available on the Sponsor Coalition table (Module 7), the
+Communications log (Module 8), the Training & Certification table
+(Module 9), the Risk Register (Module 13), and the Analytics readiness
+heatmap and benchmarking tables (Module 14). Each export reflects
 exactly the rows and columns currently on screen --- respecting the same
 RBAC and scope filtering as the table itself --- and is written with a
 UTF-8 byte-order mark so accented French and Arabic content opens
@@ -229,7 +229,7 @@ A bell icon in the top bar surfaces the platform\'s defined alert
 conditions as a persistent, dismissible, per-project in-app log --- the
 client-side equivalent of the sixteen alert definitions a production
 backend would deliver by email, push notification and Teams (Section 2.4
-notes why real outbound delivery is out of scope here). Eight of the
+notes why real outbound delivery is out of scope here). Nine of the
 sixteen alerts have a condition directly computable from data journi
 already holds client-side, and fire live whenever that condition is true
 for the scoped Change Management Project: a Divergence Pattern (Knowledge
@@ -238,16 +238,23 @@ a Critical post-go-live regression-risk score, a Sponsor Coverage Gap
 (sponsor visibility rated Weak), a Resistance Escalation Threshold breach
 (three or more open resistance-log entries), a Change Saturation breach
 (two or more other concurrent initiatives targeting the same
-Organization), a Phase Gate closed No-Go or Go-with-Conditions, a Guiding
-Coalition Gap (fewer than two named coalition members), and a blocked
-Sustainment sign-off. Each alert shows its severity, SLA threshold and
-recipient-role list alongside the live message. Dismissing an alert
-persists per Change Management Project and survives a page reload; a
-Restore control brings a dismissed alert back into view. The remaining
-eight alerts --- survey-exception retries, AI-confidence scoring, import
-integrity, administrative account lock-out, GDPR request SLA, and AI
-provider fallback --- depend on backend infrastructure this reference
-build does not have and are catalogued for traceability but never fire.
+Organization), a Communication Overload (more than three not-yet-sent
+communications scheduled across a project and its concurrent
+same-Organization initiatives), a Phase Gate closed No-Go or
+Go-with-Conditions, a Guiding Coalition Gap (fewer than two named
+coalition members), and a blocked Sustainment sign-off. Each alert shows
+its severity, SLA threshold and recipient-role list alongside the live
+message. Dismissing an alert persists per Change Management Project and
+survives a page reload; a Restore control brings a dismissed alert back
+into view. Six of the remaining seven alerts --- survey-exception
+retries, AI-confidence scoring, import integrity, administrative account
+lock-out, GDPR request SLA, and AI provider fallback --- depend on
+backend infrastructure this reference build does not have and are
+catalogued for traceability but never fire. The seventh, Champion
+Coverage Below Target, is excluded for a different reason: journi has no
+structured champion-tracking data model to compute a genuine signal
+against, unlike the other six, which is not a backend gap so much as a
+data model this reference build does not carry.
 
 **3. Multilingual Access & Administration**
 
@@ -425,7 +432,7 @@ pattern: the practitioner stages the new value, writes a justification
 note describing the evidence behind the move, then saves, at which point
 the new value and its justification are appended together, in the same
 atomic update, to that project\'s Change Log audit trail (visible on
-Module 4). A platform-wide \"Require Justification\" toggle, set on
+Module 3). A platform-wide \"Require Justification\" toggle, set on
 Module 2\'s Governance Settings tab (editable by Super Admin, Group
 Admin or Organization Admin, or any role the Permission Matrix grants
 Manage Hierarchy) and mandatory by default, determines whether the
@@ -440,14 +447,15 @@ police its content.
 
 **4. Core Modules**
 
-*Twenty modules in total: three foundation/platform modules covering
-hierarchy, access and localization (detailed in Sections 2--3 above),
-thirteen change-management core modules, one AI Use Case Library &
+*Twenty modules in total: two foundation/platform modules covering
+hierarchy and access (Modules 1--2, detailed in Section 3 above, alongside
+the localization capability that every module shares rather than owns as
+its own page), thirteen change-management core modules, one AI Use Case Library &
 Governance module, one cross-cutting Work Breakdown Structure & Gantt
-module (Module 18), one Macro Process, SIPOC, RACSI & End-to-End
-Process Registry module (Module 19), one Change Management Charter
-Registry module (Module 20), and one Stakeholder Journeys, Touchpoints &
-Analytics module (Module 21). Each core module lists its purpose,
+module (Module 17), one Macro Process, SIPOC, RACSI & End-to-End
+Process Registry module (Module 18), one Change Management Charter
+Registry module (Module 19), and one Stakeholder Journeys, Touchpoints &
+Analytics module (Module 20). Each core module lists its purpose,
 key features, the change management framework(s) it operationalizes, and
 its primary users.*
 
@@ -478,7 +486,7 @@ implementation) and the people-side initiative that manages its adoption
     --- scope, budget band, timeline, delivery vendor, executive
     sponsor. Each of the eight transformation types carries a Default
     End-to-End Process and a matching Phase Template, browsable in
-    Module 19 and selectable from Module 18
+    Module 18 and selectable from Module 17
 
 -   Change Management Project registry: every CM project can link to
     exactly one Main Project, or be created as a fully independent,
@@ -549,7 +557,7 @@ table and Section 3.3 for account-creation and security practices.
 **Primary Users:** Super Admin, Group/Organization Admin, all downstream
 roles
 
-**Module 4 --- Initiative & Portfolio Registry**
+**Module 3 --- Initiative & Portfolio Registry**
 
 The system of record for every change initiative in the organization.
 Each Change Management Project is registered with its scope, sponsor,
@@ -585,7 +593,7 @@ Reinforce) as the default project lifecycle
 
 **Primary Users:** PMO, Change Manager, Sponsor
 
-**Module 5 --- Stakeholder & Impact Mapping**
+**Module 4 --- Stakeholder & Impact Mapping**
 
 Identifies who is affected by a change, how heavily, and in what
 dimension --- process, tools, role, reporting line, or professional
@@ -615,7 +623,7 @@ which cohorts get full ADKAR tracking
 
 **Primary Users:** Change Manager, People Managers, PMO
 
-**Module 6 --- ADKAR Engine (Individual Readiness Core)**
+**Module 5 --- ADKAR Engine (Individual Readiness Core)**
 
 The heart of person-level tracking. Every affected individual or persona
 is scored across the five ADKAR building blocks --- Awareness, Desire,
@@ -651,7 +659,7 @@ individual-level model powering this module
 **Primary Users:** Change Manager, People Manager/Coach, Employee
 (self-report)
 
-**Module 7 --- Emotional & Transition Layer**
+**Module 6 --- Emotional & Transition Layer**
 
 Where ADKAR tells you what capability or motivation is missing, this
 layer tells you what someone is actually feeling. It overlays each
@@ -685,7 +693,7 @@ context)
 
 **Primary Users:** Change Manager, People Manager/Coach
 
-**Module 8 --- Sponsor & Coalition Module**
+**Module 7 --- Sponsor & Coalition Module**
 
 Tracks sponsor roadmap, visible and active sponsorship behaviors, and
 the strength of the guiding coalition around an initiative --- the
@@ -707,7 +715,7 @@ success, and the substance of Kotter\'s Step 2.
     sent, escalations resolved)
 
 -   Alerts when sponsorship visibility drops below the threshold
-    associated with stalled Desire scores in Module 6
+    associated with stalled Desire scores in Module 5
 
 -   CSV export of the guiding-coalition roster (Section 2.5)
 
@@ -716,7 +724,7 @@ sponsorship); Kotter Step 2 --- Build a Guiding Coalition
 
 **Primary Users:** Change Manager, Sponsor, PMO
 
-**Module 9 --- Communication Planning & Execution**
+**Module 8 --- Communication Planning & Execution**
 
 Plans and tracks the message--audience--channel--timing matrix that
 drives Awareness and Desire, and operationalizes Kotter\'s Step 4
@@ -746,7 +754,7 @@ feeds ADKAR Awareness/Desire
 
 **Primary Users:** Change Manager, Communications Practitioner, Sponsor
 
-**Module 10 --- Training & Capability Building**
+**Module 9 --- Training & Capability Building**
 
 Maps directly to ADKAR\'s Knowledge and Ability blocks, tracking
 curriculum coverage, completion and demonstrated capability rather than
@@ -755,7 +763,7 @@ training pipeline such as POWERACT\'s DPSK-style curriculum tracks.
 
 **Key Features**
 
--   Training-needs assessment derived automatically from Module 6
+-   Training-needs assessment derived automatically from Module 5
     Knowledge/Ability gaps
 
 -   Curriculum and session tracker (module, track/level, facilitator,
@@ -777,12 +785,12 @@ training pipeline such as POWERACT\'s DPSK-style curriculum tracks.
 
 **Primary Users:** Change Manager, Trainer/Practitioner, People Manager
 
-**Module 11 --- Resistance Management**
+**Module 10 --- Resistance Management**
 
 Structured logging and resolution of resistance, classified by type ---
 role-based, skill-based, will-based, or systemic --- with root cause and
 mitigation action tracked to closure, linking the emotional read from
-Module 7 to concrete manager interventions.
+Module 6 to concrete manager interventions.
 
 **Key Features**
 
@@ -817,7 +825,7 @@ Step 5
 **Primary Users:** Change Manager, People Manager, Employee (submission
 only)
 
-**Module 12 --- Manager-as-Coach Enablement**
+**Module 11 --- Manager-as-Coach Enablement**
 
 Operationalizes the research finding that the direct manager is the
 single most influential factor in individual adoption. Gives People
@@ -833,7 +841,7 @@ data they don\'t need.
 -   Suggested coaching scripts/talking points per identified barrier,
     pulled from a curated library
 
--   1:1 coaching-note log, timestamped and linked back to Module 6
+-   1:1 coaching-note log, timestamped and linked back to Module 5
     barrier records
 
 -   Manager readiness self-assessment (a manager must be ready to lead
@@ -847,7 +855,7 @@ team level
 
 **Primary Users:** People Manager/Coach
 
-**Module 13 --- Reinforcement & Sustainment**
+**Module 12 --- Reinforcement & Sustainment**
 
 The most commonly neglected stage of change work. Tracks post-go-live
 adoption, celebrates wins (Kotter Steps 6--7), audits for regression to
@@ -868,7 +876,7 @@ Lewin\'s Refreeze.
 -   Formal sustainment sign-off and hand-off to Business-as-Usual
     ownership (Refreeze)
 
--   Lessons-learned repository feeding the next initiative\'s Module 4
+-   Lessons-learned repository feeding the next initiative\'s Module 3
     intake
 
 **Frameworks Integrated:** Lewin Refreeze; Kotter Steps 6 (Generate
@@ -876,7 +884,7 @@ Short-Term Wins) and 8 (Anchor New Approaches)
 
 **Primary Users:** Change Manager, People Manager, Sponsor
 
-**Module 14 --- Change Risk Register**
+**Module 13 --- Change Risk Register**
 
 A risk register purpose-built for the people side of change, distinct
 from generic project risk: adoption risk, sponsor-attrition risk, and
@@ -907,7 +915,7 @@ change-saturation and adoption-risk categories
 
 **Primary Users:** Change Manager, PMO, Sponsor
 
-**Module 15 --- Metrics & Analytics Dashboard**
+**Module 14 --- Metrics & Analytics Dashboard**
 
 The analytical brain of journi: readiness indices, adoption curves,
 ADKAR heatmaps by group, and correlation between sentiment and adoption
@@ -965,7 +973,7 @@ reference bands
 
 **Primary Users:** Change Manager, Sponsor, Executive Viewer, PMO
 
-**Module 16 --- Journey Map / Visual Core**
+**Module 15 --- Journey Map / Visual Core**
 
 The signature interface of journi: a literal, visual timeline per
 person, persona or cohort combining ADKAR stage, Bridges phase and
@@ -995,7 +1003,7 @@ Kübler-Ross on a single timeline
 
 **Primary Users:** All roles, at the scope permitted by RBAC
 
-**Module 17 --- AI Use Case Library & Governance**
+**Module 16 --- AI Use Case Library & Governance**
 
 A governed catalog of pre-built AI use cases that plug into the modules
 above. Every use case in the library is restricted to one of two tiers
@@ -1061,7 +1069,7 @@ explicitly-gated tier rather than folded into this one.
     quality and governance reporting
 
 -   This governance model applies uniformly to the AI Copilot referenced
-    in Module 15\'s Analytics Dashboard, which is itself powered by
+    in Module 14\'s Analytics Dashboard, which is itself powered by
     entries in this library rather than a separate mechanism
 
 **Seeded AI Use Case Catalog**
@@ -1074,83 +1082,83 @@ Augmented; none acts autonomously.
   **AI Use Case**     **Tier**    **Primary Module** **What It Does**             **Human
                                                                                   Checkpoint**
   ------------------- ----------- ------------------ ---------------------------- -----------------
-  Stakeholder Impact  Assistive   M5 Stakeholder &   Drafts suggested impact      Change Manager
+  Stakeholder Impact  Assistive   M4 Stakeholder &   Drafts suggested impact      Change Manager
   Drafting Assistant              Impact Mapping     scores and cohort            confirms or edits
                                                      segmentation from the org    every score
                                                      chart and change scope.      before it is
                                                                                   saved
 
-  ADKAR Barrier       Assistive   M6 ADKAR Engine    Suggests a likely barrier    Change Manager
+  ADKAR Barrier       Assistive   M5 ADKAR Engine    Suggests a likely barrier    Change Manager
   Diagnosis Assistant                                reason code from open-text   confirms or
                                                      survey responses (e.g.       re-codes before
                                                      \"Desire --- fear of role    it enters the
                                                      redundancy\").               record
 
-  Cohort Readiness    Augmented   M6 ADKAR Engine    Auto-drafts a written        Change Manager
+  Cohort Readiness    Augmented   M5 ADKAR Engine    Auto-drafts a written        Change Manager
   Summarizer                                         readiness narrative per      reviews and edits
                                                      cohort from raw ADKAR        before
                                                      scores, for Sponsor          distribution
                                                      reporting.                   
 
-  Sentiment & Emotion Augmented   M7 Emotional &     Classifies free-text pulse   Any individual
+  Sentiment & Emotion Augmented   M6 Emotional &     Classifies free-text pulse   Any individual
   Classifier                      Transition Layer   comments into Kübler-Ross    classification
                                                      sentiment categories at      can be overridden
                                                      scale.                       by the Change
                                                                                   Manager
 
-  Divergence Pattern  Assistive   M7 Emotional &     Flags cohorts where ADKAR    Flag surfaced for
+  Divergence Pattern  Assistive   M6 Emotional &     Flags cohorts where ADKAR    Flag surfaced for
   Detector                        Transition Layer   scores and emotional/Bridges Change Manager
                                                      position diverge (a          review only ---
                                                      hidden-resistance signal).   no automatic
                                                                                   action
 
-  Sponsor Action      Assistive   M8 Sponsor &       Suggests the next best       Sponsor or Change
+  Sponsor Action      Assistive   M7 Sponsor &       Suggests the next best       Sponsor or Change
   Recommender                     Coalition          sponsorship action based on  Manager chooses
                                                      the sponsorship-visibility   whether to act on
                                                      score.                       the suggestion
 
-  Communication Draft Augmented   M9 Communications  Drafts message copy per      Communications
+  Communication Draft Augmented   M8 Communications  Drafts message copy per      Communications
   Generator                                          persona, channel and         Practitioner
                                                      language from the            edits and
                                                      communication matrix.        approves before
                                                                                   send --- no
                                                                                   auto-send
 
-  Change Saturation   Assistive   M9 Communications  Flags scheduling conflicts   Change
-  Advisor                         / M14 Risk         across concurrent            Manager/PMO
+  Change Saturation   Assistive   M8 Communications  Flags scheduling conflicts   Change
+  Advisor                         / M13 Risk         across concurrent            Manager/PMO
                                   Register           communications hitting the   decides whether
                                                      same population and suggests to reschedule
                                                      reschedule windows.          
 
-  Training            Assistive   M10 Training &     Recommends curriculum        Trainer confirms
+  Training            Assistive   M9 Training &     Recommends curriculum        Trainer confirms
   Gap-to-Curriculum               Capability         modules/tracks from          curriculum
   Mapper                                             identified Knowledge/Ability assignment
                                                      gaps.                        
 
-  Manager Coaching    Assistive   M12                Generates a tailored         People Manager
+  Manager Coaching    Assistive   M11                Generates a tailored         People Manager
   Script Generator                Manager-as-Coach   coaching talking-point       chooses to use,
                                                      script per flagged team      adapt, or discard
                                                      barrier.                     the script
 
-  Resistance          Assistive   M11 Resistance     Suggests a resistance type   Change Manager
+  Resistance          Assistive   M10 Resistance     Suggests a resistance type   Change Manager
   Root-Cause                      Management         (role/skill/will/systemic)   confirms
   Classifier                                         from the logged description  classification
                                                      text.                        before closure
                                                                                   tracking begins
 
-  Regression Risk     Augmented   M13 Reinforcement  Analyzes post-go-live usage  Change Manager
+  Regression Risk     Augmented   M12 Reinforcement  Analyzes post-go-live usage  Change Manager
   Predictor                       & Sustainment      trend data and produces an   reviews the flag
                                                      early regression-risk score  and decides on
                                                      with a narrative             intervention
                                                      explanation.                 
 
-  Executive Readiness Augmented   M15 Metrics &      Auto-drafts the              Change
+  Executive Readiness Augmented   M14 Metrics &      Auto-drafts the              Change
   Narrative Generator             Analytics          executive-summary narrative  Manager/Sponsor
                                                      of the reporting pack from   approves before
                                                      the Readiness Index and      the pack is
                                                      underlying data.             distributed
 
-  Journey Map         Assistive   M16 Journey Map    Suggests annotation labels   Any suggested
+  Journey Map         Assistive   M15 Journey Map    Suggests annotation labels   Any suggested
   Annotation                                         for key transition events on annotation can be
   Assistant                                          an individual\'s or          edited or
                                                      cohort\'s visual timeline.   dismissed before
@@ -1162,7 +1170,7 @@ Augmented; none acts autonomously.
 
 By default, every AI use case above runs against a deterministic
 built-in generator, so the library is fully demonstrable with no
-external dependency. Module 17 also offers an optional Provider
+external dependency. Module 16 also offers an optional Provider
 Connection panel that routes the same use cases through a real LLM: pick
 a provider (Anthropic, OpenAI, Google, or a custom OpenAI-compatible
 endpoint), supply an API key, and choose a model from a curated
@@ -1190,7 +1198,7 @@ POWERACT\'s own AI training curriculum
 provider connection); Change Manager, Trainer, Communications
 Practitioner, People Manager (consumption, all modules)
 
-**Module 18 --- Work Breakdown Structure & Gantt**
+**Module 17 --- Work Breakdown Structure & Gantt**
 
 A single Work Breakdown Structure spanning three tracks --- Project
 Management, Change Management, and the Lewin/Prosci/Bridges/ADKAR
@@ -1250,7 +1258,7 @@ average, so schedule risk is visible before it becomes a missed go-live.
     for demonstration
 
 -   **Load Phase Template:** seeds the Project Management track with one
-    skeleton task per phase of a Phase Template (Section 4, Module 19),
+    skeleton task per phase of a Phase Template (Section 4, Module 18),
     spaced evenly from a chosen start date. The template picker defaults
     to the Recommended End-to-End Process\'s template for the project\'s
     linked Main Project type --- e.g. a Business Process Reengineering
@@ -1271,7 +1279,7 @@ average, so schedule risk is visible before it becomes a missed go-live.
     Manager record their inputs independently (a Go / Go with
     Conditions / No-Go recommendation each, with notes), the Change
     Manager\'s input carrying an auto-populated Composite Readiness
-    Index snapshot (Module 15\'s formula), a Phase Checklist completion
+    Index snapshot (Module 14\'s formula), a Phase Checklist completion
     percentage, and any open flags (auto-suggested from the Divergence
     Pattern Detector and stalled ADKAR blocks). The two independent
     inputs are preserved alongside the fused Joint Decision, which
@@ -1282,16 +1290,16 @@ average, so schedule risk is visible before it becomes a missed go-live.
 **Frameworks Integrated:** Cross-cutting --- gives Lewin, Prosci, Bridges
 and ADKAR a shared timeline alongside the Project Management delivery
 track, rather than tracking each in isolation; Phase Gates implement the
-PM ↔ CM Governance Bridge cross-cutting loop (Module 19)
+PM ↔ CM Governance Bridge cross-cutting loop (Module 18)
 
 **Primary Users:** PMO, Change Manager, Sponsor
 
-**Module 19 --- Macro Process, SIPOC, RACSI & End-to-End Registry**
+**Module 18 --- Macro Process, SIPOC, RACSI & End-to-End Registry**
 
 The process backbone every other module is built on, made browsable in
 one place. Ten Macro Processes (MP-01 through MP-10) are the atomic
 units of journi\'s process model; every module owns one or more of them
-(Module 5 owns MP-01, Module 8 owns MP-02 and MP-06, and so on). Sixteen
+(Module 4 owns MP-01, Module 7 owns MP-02 and MP-06, and so on). Sixteen
 End-to-End Process chains are registered against that backbone: four
 core lifecycle chains spanning the whole engagement (Readiness &
 Mobilization, Capability Build, Resistance-to-Commitment, Sustainment &
@@ -1315,7 +1323,7 @@ its own rolled-up SIPOC and linked Phase Template.
     defined; the four core lifecycle chains additionally carry a
     per-chain RACSI (Responsible / Accountable / Consulted / Sign-off /
     Informed, using the same seven role codes --- ES / CM / PM / FPO /
-    ITL / SUP / EU --- as the Phase Gate Accountable role in Module 18);
+    ITL / SUP / EU --- as the Phase Gate Accountable role in Module 17);
     transformation-type entries additionally show their
     rolled-up SIPOC (suppliers and customers) and linked Phase Template
 
@@ -1334,12 +1342,12 @@ its own rolled-up SIPOC and linked Phase Template.
 **Frameworks Integrated:** Cross-cutting --- this module is the
 canonical source for the Macro Process and End-to-End Process vocabulary
 used throughout Sections 4--6 of this document; it also hosts the RACSI
-governance layer referenced by the Phase Gate feature in Module 18
+governance layer referenced by the Phase Gate feature in Module 17
 
 **Primary Users:** All roles (read); Super Admin, Group/Organization
 Admin (RACSI grid edits)
 
-**Module 20 --- Change Management Charter Registry**
+**Module 19 --- Change Management Charter Registry**
 
 Eight signed, trackable behavioral standards --- one per governed
 sponsorship, engagement, communication, impact-assessment, coaching and
@@ -1378,16 +1386,16 @@ aspirational.
 **Frameworks Integrated:** Prosci Sponsor Model and Kotter Step 2 (CHTR-01);
 Kotter Step 5 (CHTR-02); Kotter Step 4 (CHTR-03); Prosci Impact &
 Stakeholder Analysis (CHTR-04); the Framework Interaction Map\'s
-Exception E2 recovery workflow (CHTR-06); Module 10\'s trained-versus-capable
+Exception E2 recovery workflow (CHTR-06); Module 9\'s trained-versus-capable
 distinction (CHTR-07, Mentoring Progression)
 
 **Primary Users:** Change Manager, Training Lead, People Manager
 (compliance logging within scope); all roles (read)
 
-**Module 21 --- Stakeholder Journeys, Touchpoints & Analytics**
+**Module 20 --- Stakeholder Journeys, Touchpoints & Analytics**
 
 The experience-layer companion to the score-centric dashboards elsewhere
-in journi (Module 15): eight persona/exception/system journeys broken
+in journi (Module 14): eight persona/exception/system journeys broken
 into concrete touchpoints with auditable success criteria and evidence,
 five journey-analytics dashboards, and a project-context overlay
 distinguishing each case from the generic journey template.
@@ -1417,25 +1425,25 @@ distinguishing each case from the generic journey template.
     report elsewhere in the platform rather than duplicating it. The End
     User Journey Completion and Sponsor & Charter Compliance dashboards
     compute a live percentage from the scoped project\'s own touchpoint
-    and charter-action logs (Module 20); the Mentoring Progression,
+    and charter-action logs (Module 19); the Mentoring Progression,
     Divergence Case Resolution, and Executive Roll-Up dashboards are
     shown as reference cards, since this reference build does not model
     per-mentee or per-case granularity separately from the underlying
-    Module 20/Module 14 logs a BI-connected deployment would aggregate
+    Module 19/Module 13 logs a BI-connected deployment would aggregate
 
 -   **Project Context Overlay tab:** what makes each of the source
     framework\'s illustrative seed projects distinct from the generic
     journey template --- the specific tension, constraint, or exception
     pattern most likely to fire --- shown as the source framework\'s own
     worked reference set rather than mapped onto journi\'s own seeded
-    demo projects, the same posture Module 19\'s Cross-Type Comparison
+    demo projects, the same posture Module 18\'s Cross-Type Comparison
     Matrix takes with its seed-project examples
 
-**Frameworks Integrated:** Cross-cutting --- realizes Module 16\'s
+**Frameworks Integrated:** Cross-cutting --- realizes Module 15\'s
 Journey Map at the persona-definition and touchpoint level of detail;
 the Divergence Case journey operationalizes the Framework Interaction
 Map\'s Exception E2 recovery path; the Mentee journey operationalizes
-Module 20\'s Mentoring Progression model
+Module 19\'s Mentoring Progression model
 
 **Primary Users:** Change Manager, Training Lead (touchpoint logging
 within scope); all roles (read)
@@ -1450,44 +1458,44 @@ find their vocabulary represented in the tool.
   -------------------------------------------------------------------------------
   **Framework**                  **Primary Level**  **Modules Where Applied**
   ------------------------------ ------------------ -----------------------------
-  ADKAR (Prosci)                 Individual /       M6 ADKAR Engine; M10
-                                 Cohort             Training; M12 Manager Coach;
-                                                    M15 Analytics
+  ADKAR (Prosci)                 Individual /       M5 ADKAR Engine; M9
+                                 Cohort             Training; M11 Manager Coach;
+                                                    M14 Analytics
 
-  Kotter\'s 8 Steps              Organizational     M8 Sponsor & Coalition; M9
-                                                    Communications; M10 Training;
-                                                    M13 Sustainment
+  Kotter\'s 8 Steps              Organizational     M7 Sponsor & Coalition; M8
+                                                    Communications; M9 Training;
+                                                    M12 Sustainment
 
-  Lewin                          Organizational     M4 Initiative Registry; M13
+  Lewin                          Organizational     M3 Initiative Registry; M12
   (Unfreeze--Change--Refreeze)   (macro-state)      Reinforcement & Sustainment
 
-  Bridges Transition Model       Individual /       M7 Emotional & Transition
-                                 Emotional          Layer; M16 Journey Map
+  Bridges Transition Model       Individual /       M6 Emotional & Transition
+                                 Emotional          Layer; M15 Journey Map
 
-  Kübler-Ross Change Curve       Individual /       M7 Emotional & Transition
-                                 Emotional          Layer; M11 Resistance
+  Kübler-Ross Change Curve       Individual /       M6 Emotional & Transition
+                                 Emotional          Layer; M10 Resistance
                                                     Management
 
-  Prosci Sponsor & Manager       Organizational /   M8 Sponsor & Coalition; M12
+  Prosci Sponsor & Manager       Organizational /   M7 Sponsor & Coalition; M11
   Research                       Team               Manager-as-Coach
 
-  AI Tiers --- Assistive &       Cross-cutting      M17 AI Use Case Library;
-  Augmented                                         expressed inside M5, M6, M7,
-                                                    M8, M9, M10, M11, M12, M13,
-                                                    M15, M16
+  AI Tiers --- Assistive &       Cross-cutting      M16 AI Use Case Library;
+  Augmented                                         expressed inside M4, M5, M6,
+                                                    M7, M8, M9, M10, M11, M12,
+                                                    M14, M15
   -------------------------------------------------------------------------------
 
-Module 18 (WBS & Gantt) is deliberately cross-cutting rather than tied to
+Module 17 (WBS & Gantt) is deliberately cross-cutting rather than tied to
 one row above: it is the one place every framework in this table shares
 a single baseline-vs-actual calendar with the Project Management
-delivery track, alongside the Lewin macro-state owned by M4, the
-Bridges/Kübler-Ross position owned by M7, and the ADKAR scores owned by
-M6. Modules 20 (Charter Registry) and 21 (Journeys, Touchpoints &
+delivery track, alongside the Lewin macro-state owned by M3, the
+Bridges/Kübler-Ross position owned by M6, and the ADKAR scores owned by
+M5. Modules 20 (Charter Registry) and 21 (Journeys, Touchpoints &
 Analytics) are cross-cutting in the same sense --- rather than
 introducing frameworks of their own, they operationalize the Prosci and
-Kotter rows above as signed, trackable behavioral standards (M20) and
-give the Bridges/Kübler-Ross journey M16 already visualizes a
-touchpoint-level completion record (M21).
+Kotter rows above as signed, trackable behavioral standards (M19) and
+give the Bridges/Kübler-Ross journey M15 already visualizes a
+touchpoint-level completion record (M20).
 
 **6. Seed Dataset --- Fourteen Illustrative Cases**
 
@@ -1507,7 +1515,7 @@ Development case at a second Manufacturing site. Section 6.4 documents
 these five. Every case pairs a Main Project with a linked Change
 Management Project, illustrating the linkage model described in Section
 2.2. Each Change Management Project also ships with an example set of AI
-use cases pre-activated from the Module 17 library, illustrating how an
+use cases pre-activated from the Module 16 library, illustrating how an
 Organization Admin would tailor the catalog to a given project type ---
 these can be individually deactivated at any time without affecting the
 underlying data. All organizations, individuals and figures below are

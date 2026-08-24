@@ -1,240 +1,355 @@
 import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
+import { useScopedOrg } from '../utils/useScoped.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
-import ProgressBar from '../components/ProgressBar.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import JustifyPanel from '../components/JustifyPanel.jsx'
-import ExportCsvButton from '../components/ExportCsvButton.jsx'
+import { RESISTANCE_TYPES } from '../data/constants.js'
+import { severityColor } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
 
-const LEVELS = ['Foundation', 'Practitioner', 'Advanced']
-const BLANK_FORM = {
-  curriculum: '', track: '', level: 'Foundation', module: '', objectives: '', prerequisites: '',
-  agenda: '', targetAudience: '', expectedResults: '', workshops: '',
-  facilitator: '', format: 'Classroom', completion: 0, certified: false,
-}
-const listify = (text) => (text || '').split('\n').map((s) => s.trim()).filter(Boolean)
+const STATUS_TONE = { open: 'red', in_progress: 'amber', closed: 'green' }
+const STATUS_LABEL = { open: 'open', in_progress: 'in progress', closed: 'closed' }
 
-function CurriculumDetail({ tr }) {
-  const rows = [
-    ['Module', tr.module],
-    ['Objectives', listify(tr.objectives)],
-    ['Prerequisites', listify(tr.prerequisites)],
-    ['Agenda', listify(tr.agenda)],
-    ['Expected Results', listify(tr.expectedResults)],
-    ['Workshops', listify(tr.workshops)],
-  ]
-  return (
-    <div className="bg-brand-50/30 rounded-lg p-3 space-y-2 text-sm">
-      {rows.map(([label, value]) => (
-        <div key={label} className="grid sm:grid-cols-[140px_1fr] gap-1">
-          <div className="text-xs font-semibold text-brand-800 uppercase tracking-wide">{label}</div>
-          {Array.isArray(value) ? (
-            value.length === 0 ? (
-              <span className="text-ink/30 italic text-xs">not specified</span>
-            ) : (
-              <ul className="list-disc pl-4 text-ink/80">
-                {value.map((v, i) => (
-                  <li key={i}>{v}</li>
-                ))}
-              </ul>
-            )
-          ) : (
-            <span className="text-ink/80">{value || <span className="text-ink/30 italic">not specified</span>}</span>
-          )}
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function Content({ project }) {
+function CodingWorkbenchTab({ project, canManage }) {
   const { t } = useI18n()
-  const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const [modal, setModal] = useState(false)
-  const [form, setForm] = useState(BLANK_FORM)
-  const [expanded, setExpanded] = useState(null)
-  const [certJustifyId, setCertJustifyId] = useState(null)
-  const [certJustification, setCertJustification] = useState('')
+  const { data, addCode, removeCode, tagItem, removeCodeTag } = useAppState()
+  const org = useScopedOrg()
+  const codebook = (org && data.codebooks[org.id]) || []
+  const [newCode, setNewCode] = useState({ label: '', description: '' })
+  const [tagSource, setTagSource] = useState(null) // { sourceType, sourceId }
+  const [tagCodeId, setTagCodeId] = useState('')
+  const [tagLinkId, setTagLinkId] = useState('')
 
-  function startCertToggle(tr) {
-    setCertJustifyId(tr.id)
-    setCertJustification('')
+  const codeTags = project.codeTags || []
+  const codeById = Object.fromEntries(codebook.map((c) => [c.id, c]))
+  const frequency = codebook
+    .map((c) => ({ code: c, count: codeTags.filter((tg) => tg.codeId === c.id).length }))
+    .sort((a, b) => b.count - a.count)
+
+  const taggableNotes = [
+    ...project.coachingNotes.map((n) => ({ sourceType: 'coaching', sourceId: n.id, label: `${n.managerName} → ${n.cohort}`, text: n.note })),
+    ...project.resistanceLog.map((r) => ({ sourceType: 'resistance', sourceId: r.id, label: t(`resistance_${r.type}`), text: r.rootCause })),
+  ]
+
+  function openTag(source) {
+    setTagSource(source)
+    setTagCodeId(codebook[0]?.id || '')
+    setTagLinkId('')
   }
-  function cancelCertToggle() {
-    setCertJustifyId(null)
-    setCertJustification('')
-  }
-  function saveCertToggle(tr) {
-    const nextCertified = !tr.certified
-    logJustifiedChange(project.id, {
-      module: 'M10 · Training & Certification',
-      field: `Certification — ${tr.curriculum}`,
-      oldValue: tr.certified ? t('certification') : 'trained only',
-      newValue: nextCertified ? t('certification') : 'trained only',
-      justification: certJustification,
-      applyPatch: (p) => ({ ...p, trainings: p.trainings.map((t2) => (t2.id === tr.id ? { ...t2, certified: nextCertified } : t2)) }),
+
+  function submitTag() {
+    if (!tagCodeId || !tagSource) return
+    tagItem(project.id, {
+      codeId: tagCodeId,
+      sourceType: tagSource.sourceType,
+      sourceId: tagSource.sourceId,
+      linkedResistanceId: tagSource.sourceType === 'coaching' ? tagLinkId || null : null,
     })
-    cancelCertToggle()
+    setTagSource(null)
   }
-
-  function submit() {
-    if (!form.curriculum.trim()) return
-    addSubItem(project.id, 'trainings', form)
-    setModal(false)
-    setForm(BLANK_FORM)
-  }
-
-  const gapBlocks = ['knowledge', 'ability'].filter((b) => project.adkar[b].score <= 2)
 
   return (
-    <div className="space-y-4">
-      {gapBlocks.length > 0 && (
-        <div className="rounded-xl border border-brand-200 bg-brand-50/60 p-4 text-sm text-brand-900">
-          Training-needs assessment: {gapBlocks.map((b) => t(b)).join(' & ')} gap identified from M6 — see recommendation below.
-        </div>
-      )}
+    <div className="space-y-5">
+      <p className="text-xs text-ink/50">{t('m10_qcw_desc')}</p>
 
-      <div className="flex justify-end gap-2">
-        <ExportCsvButton
-          filename={`${project.name.replace(/\s+/g, '_')}-training.csv`}
-          rows={project.trainings}
-          columns={[
-            { label: 'Curriculum', value: 'curriculum' },
-            { label: 'Track', value: 'track' },
-            { label: 'Level', value: (tr) => tr.level || 'Foundation' },
-            { label: 'Target Audience', value: 'targetAudience' },
-            { label: 'Completion %', value: 'completion' },
-            { label: 'Certified', value: (tr) => (tr.certified ? 'Yes' : 'No') },
-          ]}
-        />
-        {canEdit && (
-          <button className="btn-primary" onClick={() => setModal(true)}>
-            + {t('curriculum')}
-          </button>
-        )}
-      </div>
-
-      <div className="card overflow-x-auto">
-        {project.trainings.length === 0 ? (
-          <div className="p-4">
-            <EmptyState />
-          </div>
-        ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
-              <tr>
-                <th className="text-start px-4 py-2.5">{t('curriculum')}</th>
-                <th className="text-start px-4 py-2.5">{t('cohort')}</th>
-                <th className="text-start px-4 py-2.5">Level</th>
-                <th className="text-start px-4 py-2.5">Target Audience</th>
-                <th className="text-start px-4 py-2.5 w-40">{t('completion')}</th>
-                <th className="text-start px-4 py-2.5">{t('certification')}</th>
-                <th className="px-2 py-2.5" />
-                {canEdit && <th className="px-2 py-2.5" />}
-              </tr>
-            </thead>
-            <tbody>
-              {project.trainings.map((tr) => (
-                <React.Fragment key={tr.id}>
-                  <tr className="border-t border-brand-50">
-                    <td className="px-4 py-2.5 font-medium text-brand-950">{tr.curriculum}</td>
-                    <td className="px-4 py-2.5 text-ink/60">{tr.track}</td>
-                    <td className="px-4 py-2.5">
-                      <Badge tone="sand">{tr.level || 'Foundation'}</Badge>
-                    </td>
-                    <td className="px-4 py-2.5 text-ink/60">{tr.targetAudience}</td>
-                    <td className="px-4 py-2.5">
-                      <div className="flex items-center gap-2">
-                        <ProgressBar value={tr.completion} />
-                        <span className="text-xs text-ink/50 w-9">{tr.completion}%</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-2.5">
-                      <button
-                        disabled={!canEdit}
-                        onClick={() => startCertToggle(tr)}
-                        className={canEdit ? 'cursor-pointer' : 'cursor-default'}
-                      >
-                        <Badge tone={tr.certified ? 'green' : 'gray'}>{tr.certified ? t('certification') : 'trained only'}</Badge>
-                      </button>
-                    </td>
-                    <td className="px-2 py-2.5">
-                      <button className="btn-ghost text-xs whitespace-nowrap" onClick={() => setExpanded(expanded === tr.id ? null : tr.id)}>
-                        {expanded === tr.id ? 'Hide' : 'View'} details
-                      </button>
-                    </td>
-                    {canEdit && (
-                      <td className="px-2 py-2.5">
-                        <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'trainings', tr.id)}>
-                          {t('delete')}
-                        </button>
-                      </td>
-                    )}
-                  </tr>
-                  {certJustifyId === tr.id && (
-                    <tr className="border-t border-brand-50">
-                      <td colSpan={canEdit ? 8 : 7} className="px-4 py-3">
-                        <JustifyPanel
-                          justification={certJustification}
-                          onJustificationChange={setCertJustification}
-                          onSave={() => saveCertToggle(tr)}
-                          onCancel={cancelCertToggle}
-                          saveLabel={tr.certified ? 'Revoke certification with justification' : 'Certify with justification'}
-                          placeholder="Why is this cohort's certification status changing?"
-                        />
-                      </td>
-                    </tr>
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-1 text-sm">{t('m10_qcw_codebook')}</h3>
+        <p className="text-xs text-ink/40 mb-3">{t('m10_qcw_codebook_desc')}</p>
+        {!org && <p className="text-xs text-ink/40 italic">{t('selectOrg')}</p>}
+        {org && (
+          <>
+            <div className="space-y-1.5 mb-3">
+              {codebook.map((c) => (
+                <div key={c.id} className="flex items-start justify-between gap-2 rounded-lg border border-brand-100 p-2">
+                  <div>
+                    <span className="font-mono text-xs text-brand-700">{c.label}</span>
+                    <p className="text-xs text-ink/50">{c.description}</p>
+                  </div>
+                  {canManage && (
+                    <button className="text-ink/30 hover:text-red-600 text-xs shrink-0" onClick={() => removeCode(org.id, c.id)}>
+                      ✕
+                    </button>
                   )}
-                  {expanded === tr.id && (
-                    <tr className="border-t border-brand-50">
-                      <td colSpan={canEdit ? 8 : 7} className="px-4 py-3">
-                        <CurriculumDetail tr={tr} />
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
+                </div>
               ))}
-            </tbody>
-          </table>
+              {codebook.length === 0 && <p className="text-xs text-ink/40 italic">{t('noData')}</p>}
+            </div>
+            {canManage && (
+              <div className="flex gap-2 flex-wrap">
+                <input
+                  className="input text-xs py-1 w-40"
+                  placeholder={t('m10_qcw_code_label')}
+                  value={newCode.label}
+                  onChange={(e) => setNewCode({ ...newCode, label: e.target.value })}
+                />
+                <input
+                  className="input text-xs py-1 flex-1 min-w-[10rem]"
+                  placeholder={t('m10_qcw_code_desc')}
+                  value={newCode.description}
+                  onChange={(e) => setNewCode({ ...newCode, description: e.target.value })}
+                />
+                <button
+                  className="btn-secondary text-xs"
+                  onClick={() => {
+                    if (!newCode.label.trim()) return
+                    addCode(org.id, newCode)
+                    setNewCode({ label: '', description: '' })
+                  }}
+                >
+                  + {t('add')}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
 
       <div className="card p-4">
-        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Training Gap-to-Curriculum Mapper</h3>
+        <h3 className="font-semibold text-brand-950 mb-1 text-sm">{t('m10_qcw_tagging')}</h3>
+        <p className="text-xs text-ink/40 mb-3">{t('m10_qcw_tagging_desc')}</p>
+        <div className="space-y-2">
+          {taggableNotes.map((src) => {
+            const tags = codeTags.filter((tg) => tg.sourceType === src.sourceType && tg.sourceId === src.sourceId)
+            return (
+              <div key={`${src.sourceType}-${src.sourceId}`} className="rounded-lg border border-brand-100 p-2.5">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div>
+                    <Badge tone="gray">{src.sourceType === 'coaching' ? t('coachingNote') : t('resistanceType')}</Badge>
+                    <span className="text-xs text-ink/50 ms-1">{src.label}</span>
+                  </div>
+                  {canManage && (
+                    <button className="btn-secondary text-[11px] py-0.5 px-2" onClick={() => openTag(src)}>
+                      + {t('m10_qcw_tag_button')}
+                    </button>
+                  )}
+                </div>
+                <p className="text-xs text-ink/60 mt-1">{src.text}</p>
+                {tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-1.5">
+                    {tags.map((tg) => (
+                      <span key={tg.id} className="inline-flex items-center gap-1 text-[11px] rounded-full bg-brand-50 text-brand-800 px-2 py-0.5">
+                        {codeById[tg.codeId]?.label || '?'}
+                        {tg.linkedResistanceId && <span title={t('m10_qcw_linked')}>🔗</span>}
+                        {canManage && (
+                          <button className="text-brand-400 hover:text-red-600" onClick={() => removeCodeTag(project.id, tg.id)}>✕</button>
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+          {taggableNotes.length === 0 && <p className="text-xs text-ink/40 italic">{t('noData')}</p>}
+        </div>
+      </div>
+
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-1 text-sm">{t('m10_qcw_frequency')}</h3>
+        <p className="text-xs text-ink/40 mb-3">{t('m10_qcw_frequency_desc')}</p>
+        <div className="space-y-1.5">
+          {frequency.map(({ code, count }) => (
+            <div key={code.id} className="flex items-center gap-2">
+              <span className="text-xs text-ink/70 w-40 shrink-0 truncate">{code.label}</span>
+              <div className="flex-1 h-2 rounded-full bg-brand-50 overflow-hidden">
+                <div
+                  className="h-full bg-brand-500"
+                  style={{ width: `${frequency[0]?.count ? (count / frequency[0].count) * 100 : 0}%` }}
+                />
+              </div>
+              <span className="text-xs text-ink/50 w-6 text-end">{count}</span>
+            </div>
+          ))}
+          {frequency.length === 0 && <p className="text-xs text-ink/40 italic">{t('noData')}</p>}
+        </div>
+      </div>
+
+      <Modal
+        open={!!tagSource}
+        onClose={() => setTagSource(null)}
+        title={t('m10_qcw_tag_button')}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setTagSource(null)}>{t('cancel')}</button>
+            <button className="btn-primary" onClick={submitTag}>{t('save')}</button>
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <div>
+            <label className="label">{t('m10_qcw_codebook')}</label>
+            <select className="input" value={tagCodeId} onChange={(e) => setTagCodeId(e.target.value)}>
+              {codebook.map((c) => (
+                <option key={c.id} value={c.id}>{c.label}</option>
+              ))}
+            </select>
+          </div>
+          {tagSource?.sourceType === 'coaching' && (
+            <div>
+              <label className="label">{t('m10_qcw_link_barrier')}</label>
+              <select className="input" value={tagLinkId} onChange={(e) => setTagLinkId(e.target.value)}>
+                <option value="">{t('m10_qcw_flag_new')}</option>
+                {project.resistanceLog.map((r) => (
+                  <option key={r.id} value={r.id}>{r.rootCause.slice(0, 60)}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      </Modal>
+    </div>
+  )
+}
+
+function ResistanceLogTab({ project }) {
+  const { t } = useI18n()
+  const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
+  // Employees may submit a concern (per spec, "submission only") even though they
+  // cannot otherwise write to this project; only full write roles can manage
+  // status, classification, or delete an entry.
+  const canManage = canWrite(currentUser?.role, data.rolePermissions)
+  const canSubmit = canManage || currentUser?.role === 'employee'
+  const [modal, setModal] = useState(false)
+  const [statusJustifyId, setStatusJustifyId] = useState(null)
+  const [statusJustification, setStatusJustification] = useState('')
+  const [form, setForm] = useState({
+    type: 'will',
+    source: '',
+    rootCause: '',
+    severity: 3,
+    mitigation: '',
+    owner: '',
+    dueDate: '',
+    status: 'open',
+    anonymous: false,
+  })
+
+  function submit() {
+    if (!form.rootCause.trim()) return
+    addSubItem(project.id, 'resistanceLog', form)
+    setModal(false)
+    setForm({ type: 'will', source: '', rootCause: '', severity: 3, mitigation: '', owner: '', dueDate: '', status: 'open', anonymous: false })
+  }
+
+  const typeCounts = RESISTANCE_TYPES.map((rt) => ({ type: rt, count: project.resistanceLog.filter((r) => r.type === rt).length }))
+  const systemic = typeCounts.find((tc) => tc.type === 'systemic' && tc.count >= 2)
+
+  function startStatusChange(r) {
+    setStatusJustifyId(r.id)
+    setStatusJustification('')
+  }
+  function cancelStatusChange() {
+    setStatusJustifyId(null)
+    setStatusJustification('')
+  }
+  function saveStatusChange(r) {
+    const nextStatus = r.status === 'open' ? 'in_progress' : 'closed'
+    logJustifiedChange(project.id, {
+      module: 'M10 · Resistance Tracker',
+      field: `Resistance status — ${r.rootCause.slice(0, 40)}`,
+      oldValue: STATUS_LABEL[r.status],
+      newValue: STATUS_LABEL[nextStatus],
+      justification: statusJustification,
+      applyPatch: (p) => ({ ...p, resistanceLog: p.resistanceLog.map((r2) => (r2.id === r.id ? { ...r2, status: nextStatus } : r2)) }),
+    })
+    cancelStatusChange()
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {typeCounts.map((tc) => (
+          <div key={tc.type} className="card p-3 text-center">
+            <div className="text-2xl font-bold text-brand-700">{tc.count}</div>
+            <div className="text-xs text-ink/50">{t(`resistance_${tc.type}`)}</div>
+          </div>
+        ))}
+      </div>
+
+      {systemic && (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+          Pattern detection: {systemic.count} systemic resistance entries logged — this looks organizational, not individual.
+          Consider escalating to the Sponsor & Coalition module (M7).
+        </div>
+      )}
+
+      {canSubmit && (
+        <div className="flex justify-end">
+          <button className="btn-primary" onClick={() => setModal(true)}>
+            + {t('resistanceType')}
+          </button>
+        </div>
+      )}
+
+      <div className="space-y-3">
+        {project.resistanceLog.length === 0 && <EmptyState />}
+        {project.resistanceLog.map((r) => (
+          <div key={r.id} className="card p-4">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <Badge tone="sand">{t(`resistance_${r.type}`)}</Badge>
+              <Badge tone={severityColor(r.severity).includes('red') ? 'red' : severityColor(r.severity).includes('amber') ? 'amber' : 'brand'}>
+                {t('severity')}: {r.severity}/5
+              </Badge>
+              <Badge tone={STATUS_TONE[r.status]}>{r.status}</Badge>
+              {r.anonymous && <Badge tone="gray">{t('anonymous')}</Badge>}
+              <span className="text-xs text-ink/40 ms-auto">{r.source}</span>
+            </div>
+            <p className="text-sm text-ink/80 mb-2">
+              <strong>{t('rootCause')}:</strong> {r.rootCause}
+            </p>
+            <div className="rounded-lg bg-brand-50/60 p-2 text-sm">
+              <strong>{t('mitigationAction')}:</strong> {r.mitigation} — {r.owner} ({r.dueDate})
+            </div>
+            {canManage && (
+              <div className="mt-2 flex gap-2">
+                {r.status !== 'closed' && (
+                  <button className="btn-secondary text-xs" onClick={() => startStatusChange(r)}>
+                    {r.status === 'open' ? 'Mark in progress' : 'Close'}
+                  </button>
+                )}
+                <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'resistanceLog', r.id)}>
+                  {t('delete')}
+                </button>
+              </div>
+            )}
+            {statusJustifyId === r.id && (
+              <div className="mt-2">
+                <JustifyPanel
+                  justification={statusJustification}
+                  onJustificationChange={setStatusJustification}
+                  onSave={() => saveStatusChange(r)}
+                  onCancel={cancelStatusChange}
+                  saveLabel={r.status === 'open' ? 'Mark in progress with justification' : 'Close with justification'}
+                  placeholder="What changed to justify this status move?"
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Resistance Root-Cause Classifier</h3>
         <AiSuggestionBox
-          useCaseId="uc-training-mapper"
+          useCaseId="uc-resistance-classifier"
           orgId={project.orgId}
           projectId={project.id}
-          ucName="Training Gap-to-Curriculum Mapper"
+          ucName="Resistance Root-Cause Classifier"
           tier="assistive"
-          buildSuggestion={() =>
-            gapBlocks.length
-              ? `Recommend adding a hands-on practice track targeting ${gapBlocks.map((b) => t(b)).join(' and ')} — sandbox-based, facilitator-led, 2x 90-minute sessions per cohort.`
-              : `No significant Knowledge/Ability gap detected — current curriculum coverage looks adequate.`
-          }
-          onAccept={(text) =>
-            addSubItem(project.id, 'trainings', {
-              ...BLANK_FORM,
-              curriculum: text.slice(0, 60),
-              track: 'Recommended by AI',
-              facilitator: 'TBD',
-              format: 'Blended',
-            })
-          }
+          buildSuggestion={() => `Suggested classification: will-based — logged description text most closely matches identity/job-security themes.`}
         />
       </div>
 
       <Modal
         open={modal}
         onClose={() => setModal(false)}
-        title={`+ ${t('curriculum')}`}
+        title={`+ ${t('resistanceType')}`}
         footer={
           <>
             <button className="btn-ghost" onClick={() => setModal(false)}>
@@ -247,77 +362,57 @@ function Content({ project }) {
         }
       >
         <div className="space-y-3">
-          <div>
-            <label className="label">Curriculum</label>
-            <input className="input" placeholder={t('curriculum')} value={form.curriculum} onChange={(e) => setForm({ ...form, curriculum: e.target.value })} />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="label">Track</label>
-              <input className="input" placeholder={t('cohort')} value={form.track} onChange={(e) => setForm({ ...form, track: e.target.value })} />
-            </div>
-            <div>
-              <label className="label">Level</label>
-              <select className="input" value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })}>
-                {LEVELS.map((l) => (
-                  <option key={l} value={l}>
-                    {l}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div>
-            <label className="label">Module</label>
-            <input className="input" placeholder="e.g. Module 3 — Order-to-Cash Processing" value={form.module} onChange={(e) => setForm({ ...form, module: e.target.value })} />
-          </div>
-          <div>
-            <label className="label">Objectives (one per line)</label>
-            <textarea className="input" rows={2} value={form.objectives} onChange={(e) => setForm({ ...form, objectives: e.target.value })} />
-          </div>
-          <div>
-            <label className="label">Prerequisites (one per line)</label>
-            <textarea className="input" rows={2} value={form.prerequisites} onChange={(e) => setForm({ ...form, prerequisites: e.target.value })} />
-          </div>
-          <div>
-            <label className="label">Agenda (one item per line)</label>
-            <textarea className="input" rows={2} value={form.agenda} onChange={(e) => setForm({ ...form, agenda: e.target.value })} />
-          </div>
-          <div>
-            <label className="label">Target Audience</label>
-            <input className="input" value={form.targetAudience} onChange={(e) => setForm({ ...form, targetAudience: e.target.value })} />
-          </div>
-          <div>
-            <label className="label">Expected Results (one per line)</label>
-            <textarea className="input" rows={2} value={form.expectedResults} onChange={(e) => setForm({ ...form, expectedResults: e.target.value })} />
-          </div>
-          <div>
-            <label className="label">Workshops (one per line)</label>
-            <textarea className="input" rows={2} value={form.workshops} onChange={(e) => setForm({ ...form, workshops: e.target.value })} />
-          </div>
-          <div>
-            <label className="label">{t('facilitator')}</label>
-            <input className="input" placeholder={t('facilitator')} value={form.facilitator} onChange={(e) => setForm({ ...form, facilitator: e.target.value })} />
-          </div>
-          <select className="input" value={form.format} onChange={(e) => setForm({ ...form, format: e.target.value })}>
-            <option>Classroom</option>
-            <option>Blended</option>
-            <option>Mobile e-learning</option>
-            <option>On-the-floor</option>
+          <select className="input" value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>
+            {RESISTANCE_TYPES.map((rt) => (
+              <option key={rt} value={rt}>
+                {t(`resistance_${rt}`)}
+              </option>
+            ))}
           </select>
+          <input className="input" placeholder={t('source')} value={form.source} onChange={(e) => setForm({ ...form, source: e.target.value })} />
+          <textarea className="input" rows={2} placeholder={t('rootCause')} value={form.rootCause} onChange={(e) => setForm({ ...form, rootCause: e.target.value })} />
           <div>
-            <label className="label">{t('completion')} %</label>
+            <label className="label">{t('severity')} (1-5)</label>
             <input
               type="number"
-              min={0}
-              max={100}
+              min={1}
+              max={5}
               className="input"
-              value={form.completion}
-              onChange={(e) => setForm({ ...form, completion: Number(e.target.value) })}
+              value={form.severity}
+              onChange={(e) => setForm({ ...form, severity: Number(e.target.value) })}
             />
           </div>
+          <input className="input" placeholder={t('mitigationAction')} value={form.mitigation} onChange={(e) => setForm({ ...form, mitigation: e.target.value })} />
+          <input className="input" placeholder={t('owner')} value={form.owner} onChange={(e) => setForm({ ...form, owner: e.target.value })} />
+          <input className="input" placeholder={t('dueDate')} value={form.dueDate} onChange={(e) => setForm({ ...form, dueDate: e.target.value })} />
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={form.anonymous} onChange={(e) => setForm({ ...form, anonymous: e.target.checked })} />
+            {t('anonymous')} ({t('submitConcern')})
+          </label>
         </div>
       </Modal>
+    </div>
+  )
+}
+
+function Content({ project }) {
+  const { t } = useI18n()
+  const { data, currentUser } = useAppState()
+  const canManage = canWrite(currentUser?.role, data.rolePermissions)
+  const [tab, setTab] = useState('log')
+
+  return (
+    <div>
+      <div className="flex gap-2 mb-4">
+        <button className={`tab ${tab === 'log' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('log')}>
+          {t('m10_tab_log')}
+        </button>
+        <button className={`tab ${tab === 'coding' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('coding')}>
+          {t('m10_tab_coding')}
+        </button>
+      </div>
+      {tab === 'log' && <ResistanceLogTab project={project} />}
+      {tab === 'coding' && <CodingWorkbenchTab project={project} canManage={canManage} />}
     </div>
   )
 }

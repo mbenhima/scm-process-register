@@ -1,6 +1,6 @@
 // journi has no backend — every request an AI Use Case makes goes directly
 // from the signed-in user's own browser to the provider's public API, using
-// the API key entered on Module 17's Provider Connection panel. That key is
+// the API key entered on Module 16's Provider Connection panel. That key is
 // stored only in this browser's localStorage (a separate key from the rest
 // of app state, so it survives "Reset Demo Data" and is never bundled into
 // the seeded demo data). This is a reasonable pattern for a personal/demo

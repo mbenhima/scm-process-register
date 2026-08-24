@@ -5,89 +5,73 @@ import { useScopedProject } from '../utils/useScoped.js'
 import { canWrite } from '../utils/rbac.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
-import charters from '../data/charters.js'
+import ProgressBar from '../components/ProgressBar.jsx'
+import journeys from '../data/journeys.js'
+import journeyTouchpoints from '../data/journeyTouchpoints.js'
+import journeyDashboards from '../data/journeyDashboards.js'
+import projectContextOverlay from '../data/projectContextOverlay.js'
 import charterActions from '../data/charterActions.js'
-import mentoringStages from '../data/mentoringStages.js'
 
-const STAGE_TONE = { 1: 'gray', 2: 'amber', 3: 'green' }
-const PDCA_TONE = { Plan: 'gray', Do: 'brand', Check: 'amber', Act: 'green' }
+const TYPE_TONE = { 'Persona Journey': 'brand', 'Exception Journey': 'red', 'Sector-Specific Journey': 'amber', 'System Journey': 'gray' }
+const SUBPHASE_TONE = { Plan: 'gray', Do: 'brand', Check: 'amber', Act: 'green' }
 
-function CharterCard({ charter, expanded, onToggle }) {
+function JourneysTab() {
   const { t } = useI18n()
+  const byId = Object.fromEntries(journeys.map((j) => [j.id, j]))
   return (
-    <div className="card p-4 space-y-2">
-      <button className="w-full flex items-start justify-between gap-3 text-start" onClick={onToggle}>
-        <div>
-          <span className="font-mono text-xs text-brand-700">{charter.id}</span>
-          <h3 className="font-semibold text-brand-950">{charter.name}</h3>
-          <p className="text-xs text-ink/50">{charter.category} · {t('m20_owner')}: {charter.ownerRole}</p>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <Badge tone={charter.status === 'Active' ? 'green' : 'gray'}>{charter.status}</Badge>
-          <span className="text-ink/30 text-xs">{expanded ? '▲' : '▼'}</span>
-        </div>
-      </button>
-      {expanded && (
-        <div className="space-y-2 pt-1 text-sm">
-          <p className="text-ink/70">{charter.description}</p>
-          <div className="grid sm:grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
-            <p><strong className="text-ink/80">{t('m20_what')}:</strong> <span className="text-ink/60">{charter.what}</span></p>
-            <p><strong className="text-ink/80">{t('m20_who')}:</strong> <span className="text-ink/60">{charter.who}</span></p>
-            <p><strong className="text-ink/80">{t('m20_when')}:</strong> <span className="text-ink/60">{charter.when}</span></p>
-            <p><strong className="text-ink/80">{t('m20_where')}:</strong> <span className="text-ink/60">{charter.where}</span></p>
-            <p className="sm:col-span-2"><strong className="text-ink/80">{t('m20_why')}:</strong> <span className="text-ink/60">{charter.why}</span></p>
-            <p className="sm:col-span-2"><strong className="text-ink/80">{t('m20_how')}:</strong> <span className="text-ink/60">{charter.how}</span></p>
+    <div className="grid md:grid-cols-2 gap-3">
+      {journeys.map((j) => (
+        <div key={j.id} className="card p-4 space-y-2">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <span className="font-mono text-xs text-brand-700">{j.id}</span>
+              <h3 className="font-semibold text-brand-950">{j.name}</h3>
+            </div>
+            <Badge tone={TYPE_TONE[j.type]}>{j.type}</Badge>
           </div>
-          <p className="text-xs text-ink/60">
-            <strong className="text-ink/80">{t('m19_chain_racsi')}:</strong> R={charter.racsi.R} · A={charter.racsi.A} · C={charter.racsi.C} · S=
-            {charter.racsi.S} · I={charter.racsi.I}
-          </p>
-          <div className="flex flex-wrap gap-2 text-xs text-ink/40 pt-1">
-            <span>{t('m20_version')}: {charter.version}</span>
-            <span>·</span>
-            <span>{t('m20_effective')}: {charter.effectiveDate}</span>
-            <span>·</span>
-            <span>{t('m20_review')}: {charter.reviewFrequency}</span>
-            <span>·</span>
-            <span>{t('m20_obs_level')}: {charter.governsObsLevel}</span>
-            <span>·</span>
-            <span>{t('m20_linked_macro')}: {charter.primaryLinkedMacroId}</span>
+          {j.predecessorId && (
+            <p className="text-xs text-ink/50">
+              {t('m20_specializes')}: {j.predecessorId} — {byId[j.predecessorId]?.name}
+            </p>
+          )}
+          <p className="text-sm text-ink/70">{j.description}</p>
+          <div className="grid sm:grid-cols-2 gap-x-4 gap-y-1 text-xs text-ink/60">
+            <p><strong className="text-ink/80">{t('m20_trigger')}:</strong> {j.trigger}</p>
+            <p><strong className="text-ink/80">{t('m20_audience')}:</strong> {j.audience}</p>
+            <p><strong className="text-ink/80">{t('m20_duration')}:</strong> {j.duration}</p>
+            <p><strong className="text-ink/80">{t('m20_owner')}:</strong> {j.ownerRole}</p>
+          </div>
+          <div className="flex gap-1 flex-wrap pt-1">
+            {j.linkedModules.map((m) => (
+              <Badge key={m} tone="gray">{m}</Badge>
+            ))}
           </div>
         </div>
-      )}
-    </div>
-  )
-}
-
-function CharterTab() {
-  const { t } = useI18n()
-  const [expandedId, setExpandedId] = useState(null)
-  return (
-    <div className="space-y-3">
-      <p className="text-xs text-ink/50">{t('m20_charter_desc')}</p>
-      {charters.map((c) => (
-        <CharterCard key={c.id} charter={c} expanded={expandedId === c.id} onToggle={() => setExpandedId(expandedId === c.id ? null : c.id)} />
       ))}
     </div>
   )
 }
 
-function ActionMappingTab({ project, canEdit }) {
+function TouchpointsTab({ project, canEdit }) {
   const { t } = useI18n()
-  const { logCharterAction, deleteCharterActionLog } = useAppState()
-  const [filterCharter, setFilterCharter] = useState('all')
-  const rows = charterActions.filter((a) => filterCharter === 'all' || a.charterId === filterCharter)
-  const log = project?.charterActionLog || []
+  const { logTouchpoint, deleteTouchpointLog } = useAppState()
+  const [filterJourney, setFilterJourney] = useState('all')
+  const journeysWithTouchpoints = [...new Set(journeyTouchpoints.map((tp) => tp.journeyId))]
+  const rows = journeyTouchpoints
+    .filter((tp) => filterJourney === 'all' || tp.journeyId === filterJourney)
+    .sort((a, b) => (a.journeyId === b.journeyId ? a.sequence - b.sequence : a.journeyId.localeCompare(b.journeyId)))
+  const log = project?.touchpointLog || []
 
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2 flex-wrap">
-        <label className="text-xs text-ink/50">{t('m20_filter_charter')}</label>
-        <select className="input py-1 text-xs w-auto" value={filterCharter} onChange={(e) => setFilterCharter(e.target.value)}>
-          <option value="all">{t('m20_all_charters')}</option>
-          {charters.map((c) => (
-            <option key={c.id} value={c.id}>{c.id} — {c.name}</option>
-          ))}
+        <label className="text-xs text-ink/50">{t('m20_filter_journey')}</label>
+        <select className="input py-1 text-xs w-auto" value={filterJourney} onChange={(e) => setFilterJourney(e.target.value)}>
+          <option value="all">{t('m20_all_journeys')}</option>
+          {journeysWithTouchpoints.map((jid) => {
+            const j = journeys.find((x) => x.id === jid)
+            return <option key={jid} value={jid}>{jid} — {j?.name}</option>
+          })}
         </select>
       </div>
       {!project && <p className="text-xs text-ink/40 italic">{t('m20_select_project_log')}</p>}
@@ -96,47 +80,40 @@ function ActionMappingTab({ project, canEdit }) {
           <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
             <tr>
               <th className="text-start px-4 py-2.5">ID</th>
-              <th className="text-start px-4 py-2.5">{t('m20_action')}</th>
+              <th className="text-start px-4 py-2.5">{t('m20_touchpoint')}</th>
               <th className="text-start px-4 py-2.5">PDCA</th>
-              <th className="text-start px-4 py-2.5">{t('m20_linked_task')}</th>
-              <th className="text-start px-4 py-2.5">{t('m20_racsi_ra')}</th>
-              <th className="text-start px-4 py-2.5">{t('m20_frequency')}</th>
-              {project && <th className="text-start px-4 py-2.5">{t('m20_compliance')}</th>}
+              <th className="text-start px-4 py-2.5">{t('m20_day')}</th>
+              <th className="text-start px-4 py-2.5">{t('m19_owner')}</th>
+              <th className="text-start px-4 py-2.5">{t('m20_success_criteria')}</th>
+              {project && <th className="text-start px-4 py-2.5">{t('m19_compliance')}</th>}
             </tr>
           </thead>
           <tbody>
-            {rows.map((a) => {
-              const instances = log.filter((l) => l.charterActionId === a.id)
+            {rows.map((tp) => {
+              const instances = log.filter((l) => l.touchpointId === tp.id)
               return (
-                <tr key={a.id} className="border-t border-brand-50 align-top">
-                  <td className="px-4 py-2.5 font-mono text-xs text-brand-700 whitespace-nowrap">{a.id}</td>
-                  <td className="px-4 py-2.5 text-ink/70 max-w-md">{a.name}</td>
-                  <td className="px-4 py-2.5"><Badge tone={PDCA_TONE[a.pdcaStage]}>{a.pdcaStage}</Badge></td>
-                  <td className="px-4 py-2.5 text-xs text-ink/50 whitespace-nowrap">{a.macroId} / {a.taskId}</td>
-                  <td className="px-4 py-2.5 text-xs text-ink/50 whitespace-nowrap">R={a.responsibleRole} · A={a.accountableRole}</td>
-                  <td className="px-4 py-2.5 text-xs text-ink/50 whitespace-nowrap">{a.frequency}</td>
+                <tr key={tp.id} className="border-t border-brand-50 align-top">
+                  <td className="px-4 py-2.5 font-mono text-xs text-brand-700 whitespace-nowrap">{tp.id}</td>
+                  <td className="px-4 py-2.5 text-ink/70 max-w-xs">{tp.name}</td>
+                  <td className="px-4 py-2.5"><Badge tone={SUBPHASE_TONE[tp.pdcaSubphase]}>{tp.pdcaSubphase}</Badge></td>
+                  <td className="px-4 py-2.5 text-xs text-ink/50 whitespace-nowrap">D+{tp.daysFromTrigger}</td>
+                  <td className="px-4 py-2.5 text-xs text-ink/50 whitespace-nowrap">{tp.ownerRole}</td>
+                  <td className="px-4 py-2.5 text-xs text-ink/50 max-w-xs">{tp.successCriteria}</td>
                   {project && (
                     <td className="px-4 py-2.5">
                       <div className="space-y-1">
-                        {instances.slice(0, 3).map((l) => (
+                        {instances.slice(0, 2).map((l) => (
                           <div key={l.id} className="flex items-center gap-1.5 text-xs">
                             <Badge tone="green">{l.date}</Badge>
-                            {l.note && <span className="text-ink/50 truncate max-w-[10rem]" title={l.note}>{l.note}</span>}
                             {canEdit && (
-                              <button className="text-ink/30 hover:text-red-600" onClick={() => deleteCharterActionLog(project.id, l.id)}>
-                                ✕
-                              </button>
+                              <button className="text-ink/30 hover:text-red-600" onClick={() => deleteTouchpointLog(project.id, l.id)}>✕</button>
                             )}
                           </div>
                         ))}
-                        {instances.length > 3 && <p className="text-[10px] text-ink/40">+{instances.length - 3} {t('m20_more')}</p>}
-                        {instances.length === 0 && <span className="text-xs text-ink/30 italic">{t('m20_not_logged')}</span>}
+                        {instances.length === 0 && <span className="text-xs text-ink/30 italic">{t('m19_not_logged')}</span>}
                         {canEdit && (
-                          <button
-                            className="btn-secondary text-[11px] py-0.5 px-2"
-                            onClick={() => logCharterAction(project.id, a.id, '')}
-                          >
-                            {t('m20_log_completion')}
+                          <button className="btn-secondary text-[11px] py-0.5 px-2" onClick={() => logTouchpoint(project.id, tp.id, '')}>
+                            {t('m19_log_completion')}
                           </button>
                         )}
                       </div>
@@ -152,28 +129,87 @@ function ActionMappingTab({ project, canEdit }) {
   )
 }
 
-function MentoringTab() {
+function DashboardsTab({ project }) {
   const { t } = useI18n()
+  const jrn01Touchpoints = journeyTouchpoints.filter((tp) => tp.journeyId === 'JRN-01')
+  const jrn01Log = (project?.touchpointLog || []).filter((l) => jrn01Touchpoints.some((tp) => tp.id === l.touchpointId))
+  const jrn01Rate = jrn01Touchpoints.length ? Math.round((new Set(jrn01Log.map((l) => l.touchpointId)).size / jrn01Touchpoints.length) * 100) : 0
+
+  const charterLog = project?.charterActionLog || []
+  const charterRate = charterActions.length
+    ? Math.round((new Set(charterLog.map((l) => l.charterActionId)).size / charterActions.length) * 100)
+    : 0
+
   return (
     <div className="space-y-3">
-      <p className="text-xs text-ink/50">{t('m20_mentoring_desc')}</p>
-      <div className="grid md:grid-cols-3 gap-3">
-        {mentoringStages.map((s) => (
-          <div key={s.id} className="card p-4 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs text-brand-700">{s.id}</span>
-              <Badge tone={STAGE_TONE[s.order]}>{t('m20_stage')} {s.order}</Badge>
+      <p className="text-xs text-ink/50">{t('m20_dashboard_desc')}</p>
+      <div className="grid md:grid-cols-2 gap-3">
+        {journeyDashboards.map((d) => (
+          <div key={d.id} className="card p-4 space-y-2">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <span className="font-mono text-xs text-brand-700">{d.id}</span>
+                <h3 className="font-semibold text-brand-950">{d.name}</h3>
+              </div>
+              <Badge tone="gray">{d.refreshFrequency}</Badge>
             </div>
-            <h3 className="font-semibold text-brand-950">{s.name}</h3>
-            <p className="text-xs text-ink/60">{s.description}</p>
-            <div className="space-y-1 text-xs">
-              <p><strong className="text-ink/80">{t('m20_entry')}:</strong> <span className="text-ink/60">{s.entryCriteria}</span></p>
-              <p><strong className="text-ink/80">{t('m20_exit')}:</strong> <span className="text-ink/60">{s.exitCriteria}</span></p>
-              <p><strong className="text-ink/80">{t('m20_duration')}:</strong> <span className="text-ink/60">{s.typicalDuration}</span></p>
-              <p><strong className="text-ink/80">{t('m20_setting')}:</strong> <span className="text-ink/60">{s.setting}</span></p>
-              <p><strong className="text-ink/80">{t('m20_mentor_involvement')}:</strong> <span className="text-ink/60">{s.mentorInvolvement}</span></p>
-              <p><strong className="text-ink/80">{t('m20_evidence')}:</strong> <span className="text-ink/60">{s.competencyEvidenceRequired}</span></p>
-              <p className="text-amber-700"><strong>{t('m20_regression')}:</strong> {s.regressionPath}</p>
+            {d.live === 'JRN-01' && project && (
+              <div className="rounded-lg bg-brand-50/60 p-2.5">
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span className="text-brand-800 font-medium">{t('m20_live_metric')}: {t('m20_touchpoint_completion')} ({project.name})</span>
+                  <span className="text-brand-800 font-semibold">{jrn01Rate}%</span>
+                </div>
+                <ProgressBar value={jrn01Rate} />
+              </div>
+            )}
+            {d.live === 'charterActions' && project && (
+              <div className="rounded-lg bg-brand-50/60 p-2.5">
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span className="text-brand-800 font-medium">{t('m20_live_metric')}: {t('m20_charter_completion')} ({project.name})</span>
+                  <span className="text-brand-800 font-semibold">{charterRate}%</span>
+                </div>
+                <ProgressBar value={charterRate} />
+              </div>
+            )}
+            {d.live && !project && <p className="text-xs text-ink/40 italic">{t('m20_select_project_log')}</p>}
+            <p className="text-sm text-ink/70">{d.description}</p>
+            <div className="grid sm:grid-cols-2 gap-x-4 gap-y-1 text-xs text-ink/50">
+              <p><strong className="text-ink/70">{t('m20_kpis')}:</strong> {d.journeyKpis}</p>
+              <p><strong className="text-ink/70">{t('m20_audience')}:</strong> {d.audience}</p>
+              <p><strong className="text-ink/70">{t('m20_visualisation')}:</strong> {d.visualisationTypes}</p>
+              <p><strong className="text-ink/70">{t('m20_linked_report')}:</strong> {d.linkedReport}</p>
+            </div>
+            {!d.live && (
+              <p className="text-xs text-ink/40 italic">{t('m20_reference_only')}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ContextOverlayTab() {
+  const { t } = useI18n()
+  const grouped = {}
+  for (const row of projectContextOverlay) {
+    grouped[row.projectId] = grouped[row.projectId] || []
+    grouped[row.projectId].push(row)
+  }
+  return (
+    <div className="space-y-3">
+      <p className="text-xs text-ink/50">{t('m20_overlay_desc')}</p>
+      <div className="space-y-3">
+        {Object.entries(grouped).map(([projectId, rows]) => (
+          <div key={projectId} className="card p-4">
+            <h3 className="font-mono text-sm text-brand-800 mb-2">{projectId}</h3>
+            <div className="space-y-2">
+              {rows.map((r, i) => (
+                <div key={i} className="text-xs border-t border-brand-50 pt-2 first:border-t-0 first:pt-0">
+                  <p><strong className="text-ink/80">{r.attribute}:</strong> <span className="text-ink/60">{r.value}</span></p>
+                  <p className="text-ink/40 italic">{r.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         ))}
@@ -187,25 +223,29 @@ export default function Module20Page() {
   const { data, currentUser } = useAppState()
   const project = useScopedProject()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const [tab, setTab] = useState('charters')
+  const [tab, setTab] = useState('journeys')
 
   return (
     <div>
       <PageHeader title={t('m20_title')} description={t('m20_desc')} />
       <div className="flex gap-2 mb-4 flex-wrap">
-        <button className={`tab ${tab === 'charters' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('charters')}>
-          {t('m20_tab_charters')}
+        <button className={`tab ${tab === 'journeys' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('journeys')}>
+          {t('m20_tab_journeys')}
         </button>
-        <button className={`tab ${tab === 'actions' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('actions')}>
-          {t('m20_tab_actions')}
+        <button className={`tab ${tab === 'touchpoints' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('touchpoints')}>
+          {t('m20_tab_touchpoints')}
         </button>
-        <button className={`tab ${tab === 'mentoring' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('mentoring')}>
-          {t('m20_tab_mentoring')}
+        <button className={`tab ${tab === 'dashboards' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('dashboards')}>
+          {t('m20_tab_dashboards')}
+        </button>
+        <button className={`tab ${tab === 'overlay' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('overlay')}>
+          {t('m20_tab_overlay')}
         </button>
       </div>
-      {tab === 'charters' && <CharterTab />}
-      {tab === 'actions' && <ActionMappingTab project={project} canEdit={canEdit} />}
-      {tab === 'mentoring' && <MentoringTab />}
+      {tab === 'journeys' && <JourneysTab />}
+      {tab === 'touchpoints' && <TouchpointsTab project={project} canEdit={canEdit} />}
+      {tab === 'dashboards' && <DashboardsTab project={project} />}
+      {tab === 'overlay' && <ContextOverlayTab />}
     </div>
   )
 }

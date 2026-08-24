@@ -1,183 +1,191 @@
 import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
+import { useOrgProjects } from '../utils/useScoped.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
+import Modal from '../components/Modal.jsx'
+import EmptyState from '../components/EmptyState.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
-import JustifyPanel from '../components/JustifyPanel.jsx'
 import ExportCsvButton from '../components/ExportCsvButton.jsx'
-import { VISIBILITY_LEVELS } from '../data/constants.js'
-import { visibilityColor } from '../utils/compute.js'
+import { ADKAR_BLOCKS } from '../data/constants.js'
 import { canWrite } from '../utils/rbac.js'
 
-function visibilityLabel(t, v) {
-  return t(`visibility${v[0].toUpperCase()}${v.slice(1)}`)
-}
+const STATUS_TONE = { sent: 'green', scheduled: 'amber', draft: 'gray' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, toggleSponsorAction, addSponsorAction, logJustifiedChange, currentUser } = useAppState()
+  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const [newAction, setNewAction] = useState('')
-  const [pendingVisibility, setPendingVisibility] = useState(project.sponsor.visibility)
-  const [visibilityJustification, setVisibilityJustification] = useState('')
-  const visibilityDirty = pendingVisibility !== project.sponsor.visibility
+  const orgProjects = useOrgProjects(project.orgId)
+  const otherProjects = orgProjects.filter((p) => p.id !== project.id)
+  const [modal, setModal] = useState(false)
+  const [form, setForm] = useState({ message: '', audience: '', channel: '', sender: '', timing: '', adkarBlock: 'awareness', status: 'draft' })
 
-  function saveVisibility() {
-    if (!visibilityDirty) return
-    logJustifiedChange(project.id, {
-      module: 'M8 · Sponsor & Coalition',
-      field: 'Sponsor visibility',
-      oldValue: visibilityLabel(t, project.sponsor.visibility),
-      newValue: visibilityLabel(t, pendingVisibility),
-      justification: visibilityJustification,
-      applyPatch: (p) => ({ ...p, sponsor: { ...p.sponsor, visibility: pendingVisibility } }),
-    })
-    setVisibilityJustification('')
+  function submit() {
+    if (!form.message.trim()) return
+    addSubItem(project.id, 'communications', form)
+    setModal(false)
+    setForm({ message: '', audience: '', channel: '', sender: '', timing: '', adkarBlock: 'awareness', status: 'draft' })
   }
 
-  return (
-    <div className="space-y-5">
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="card p-5 md:col-span-1">
-          <h3 className="font-semibold text-brand-950 mb-1">{project.sponsor.name}</h3>
-          <p className="text-xs text-ink/50 mb-3">{project.sponsor.visibilityNote}</p>
-          <label className="label">{t('visibility')}</label>
-          <div className="flex gap-2">
-            {VISIBILITY_LEVELS.map((v) => (
-              <button
-                key={v}
-                disabled={!canEdit}
-                onClick={() => setPendingVisibility(v)}
-                className={`flex-1 rounded-lg py-2 text-xs font-semibold ${
-                  pendingVisibility === v ? visibilityColor(v) + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
-                } ${!canEdit ? 'cursor-default' : ''}`}
-              >
-                {visibilityLabel(t, v)}
-              </button>
-            ))}
-          </div>
-          {canEdit && visibilityDirty && (
-            <div className="mt-3">
-              <JustifyPanel
-                justification={visibilityJustification}
-                onJustificationChange={setVisibilityJustification}
-                onSave={saveVisibility}
-                onCancel={() => {
-                  setPendingVisibility(project.sponsor.visibility)
-                  setVisibilityJustification('')
-                }}
-                placeholder="Why is sponsorship visibility moving? Cite the specific evidence."
-              />
-            </div>
-          )}
-          {project.sponsor.visibility === 'weak' && (
-            <div className="mt-3 text-xs rounded-lg bg-red-50 text-red-700 p-2">
-              Alert: sponsorship visibility below threshold — cross-reference with stalled Desire scores in M6.
-            </div>
-          )}
-        </div>
+  const saturationRisk = otherProjects.length > 0
 
-        <div className="card p-5 md:col-span-2">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-brand-950">{t('coalitionMember')}</h3>
-            <ExportCsvButton
-              filename={`${project.name.replace(/\s+/g, '_')}-sponsor-coalition.csv`}
-              rows={project.sponsor.members}
-              columns={[
-                { label: 'Name', value: 'name' },
-                { label: 'Role', value: 'role' },
-                { label: 'Influence', value: 'influence' },
-                { label: 'Engagement', value: 'engagement' },
-              ]}
-            />
+  return (
+    <div className="space-y-4">
+      {saturationRisk && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          <Badge tone="amber">{t('saturationWarning')}</Badge>
+          <p className="mt-1">
+            {otherProjects.length} other active initiative(s) in this organization may be targeting an overlapping population:{' '}
+            {otherProjects.map((p) => p.name).join(', ')}.
+          </p>
+        </div>
+      )}
+
+      <div className="flex justify-end gap-2">
+        <ExportCsvButton
+          filename={`${project.name.replace(/\s+/g, '_')}-communications.csv`}
+          rows={project.communications}
+          columns={[
+            { label: 'Message', value: 'message' },
+            { label: 'Audience', value: 'audience' },
+            { label: 'Channel', value: 'channel' },
+            { label: 'Timing', value: 'timing' },
+            { label: 'ADKAR Block', value: (c) => t(c.adkarBlock) },
+            { label: 'Status', value: 'status' },
+          ]}
+        />
+        {canEdit && (
+          <button className="btn-primary" onClick={() => setModal(true)}>
+            + {t('message')}
+          </button>
+        )}
+      </div>
+
+      <div className="card overflow-x-auto">
+        {project.communications.length === 0 ? (
+          <div className="p-4">
+            <EmptyState />
           </div>
+        ) : (
           <table className="w-full text-sm">
-            <thead className="text-xs uppercase text-ink/40">
+            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
               <tr>
-                <th className="text-start py-1.5">{t('name')}</th>
-                <th className="text-start py-1.5">{t('role')}</th>
-                <th className="text-start py-1.5">{t('influence')}</th>
-                <th className="text-start py-1.5">{t('engagement')}</th>
+                <th className="text-start px-4 py-2.5">{t('message')}</th>
+                <th className="text-start px-4 py-2.5">{t('audience')}</th>
+                <th className="text-start px-4 py-2.5">{t('channel')}</th>
+                <th className="text-start px-4 py-2.5">{t('timing')}</th>
+                <th className="text-start px-4 py-2.5">{t('linkedAdkarBlock')}</th>
+                <th className="text-start px-4 py-2.5">{t('status')}</th>
+                {canEdit && <th className="px-2 py-2.5" />}
               </tr>
             </thead>
             <tbody>
-              {project.sponsor.members.map((m) => (
-                <tr key={m.id} className="border-t border-brand-50">
-                  <td className="py-1.5 font-medium text-brand-950">{m.name}</td>
-                  <td className="py-1.5 text-ink/60">{m.role}</td>
-                  <td className="py-1.5">
-                    <div className="flex gap-0.5">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <span key={i} className={`w-2 h-4 rounded-sm ${i < m.influence ? 'bg-brand-600' : 'bg-brand-100'}`} />
-                      ))}
-                    </div>
+              {project.communications.map((c) => (
+                <tr key={c.id} className="border-t border-brand-50">
+                  <td className="px-4 py-2.5 max-w-xs text-brand-950">{c.message}</td>
+                  <td className="px-4 py-2.5 text-ink/60">{c.audience}</td>
+                  <td className="px-4 py-2.5 text-ink/60">{c.channel}</td>
+                  <td className="px-4 py-2.5 text-ink/60">{c.timing}</td>
+                  <td className="px-4 py-2.5">
+                    <Badge tone="sand">{t(c.adkarBlock)}</Badge>
                   </td>
-                  <td className="py-1.5">
-                    <div className="flex gap-0.5">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <span key={i} className={`w-2 h-4 rounded-sm ${i < m.engagement ? 'bg-sand-500' : 'bg-brand-100'}`} />
-                      ))}
-                    </div>
+                  <td className="px-4 py-2.5">
+                    <Badge tone={STATUS_TONE[c.status]}>{c.status}</Badge>
                   </td>
+                  {canEdit && (
+                    <td className="px-2 py-2.5">
+                      <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'communications', c.id)}>
+                        {t('delete')}
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      <div className="card p-5">
-        <h3 className="font-semibold text-brand-950 mb-3">{t('sponsorAction')} — Roadmap</h3>
-        <div className="space-y-2 mb-3">
-          {project.sponsor.actions.map((a) => (
-            <label key={a.id} className={`flex items-center gap-3 rounded-lg border border-brand-100 px-3 py-2 ${canEdit ? 'cursor-pointer' : ''}`}>
-              <input
-                type="checkbox"
-                checked={a.done}
-                disabled={!canEdit}
-                onChange={() => toggleSponsorAction(project.id, a.id)}
-                className="accent-brand-600"
-              />
-              <span className={`flex-1 text-sm ${a.done ? 'line-through text-ink/40' : 'text-ink/80'}`}>{a.action}</span>
-              <Badge tone="sand">{a.phase}</Badge>
-            </label>
-          ))}
-        </div>
-        {canEdit && (
-          <div className="flex gap-2">
-            <input className="input" placeholder={t('sponsorAction')} value={newAction} onChange={(e) => setNewAction(e.target.value)} />
-            <button
-              className="btn-primary shrink-0"
-              onClick={() => {
-                if (!newAction.trim()) return
-                addSponsorAction(project.id, { action: newAction, phase: 'Manage' })
-                setNewAction('')
-              }}
-            >
-              {t('add')}
-            </button>
-          </div>
         )}
       </div>
 
-      <div className="card p-4">
-        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Sponsor Action Recommender</h3>
-        <AiSuggestionBox
-          useCaseId="uc-sponsor-recommender"
-          orgId={project.orgId}
-          projectId={project.id}
-          ucName="Sponsor Action Recommender"
-          tier="assistive"
-          buildSuggestion={() =>
-            project.sponsor.visibility === 'weak'
-              ? `Sponsorship visibility is weak. Recommend a scheduled floor/site visit by ${project.sponsor.name} within 2 weeks, paired with a short recorded message for the population not reachable in person.`
-              : `Sponsorship visibility is solid. Recommend ${project.sponsor.name} personally recognize an early-adopter team in the next town hall to reinforce momentum.`
-          }
-          onAccept={(text) => addSponsorAction(project.id, { action: text, phase: 'Manage' })}
-        />
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="card p-4">
+          <h3 className="font-semibold text-brand-950 mb-2 text-sm">Communication Draft Generator</h3>
+          <AiSuggestionBox
+            useCaseId="uc-comm-draft"
+            orgId={project.orgId}
+            projectId={project.id}
+            ucName="Communication Draft Generator"
+            tier="augmented"
+            buildSuggestion={() =>
+              `Draft: "As ${project.name} moves forward, here's what's changing for you and why it matters — join us at the next briefing to ask questions directly."`
+            }
+            onAccept={(text) =>
+              addSubItem(project.id, 'communications', {
+                message: text,
+                audience: 'All target population',
+                channel: 'Email',
+                sender: project.changeManager,
+                timing: 'Next cycle',
+                adkarBlock: 'awareness',
+                status: 'draft',
+              })
+            }
+          />
+        </div>
+        <div className="card p-4">
+          <h3 className="font-semibold text-brand-950 mb-2 text-sm">Change Saturation Advisor</h3>
+          <AiSuggestionBox
+            useCaseId="uc-saturation-advisor"
+            orgId={project.orgId}
+            projectId={project.id}
+            ucName="Change Saturation Advisor"
+            tier="assistive"
+            buildSuggestion={() =>
+              saturationRisk
+                ? `Scheduling conflict detected: this population overlaps with ${otherProjects[0].name}. Suggest staggering next communications by 2 weeks to avoid change fatigue.`
+                : `No scheduling conflicts detected across concurrent initiatives for this population.`
+            }
+          />
+        </div>
       </div>
+
+      <Modal
+        open={modal}
+        onClose={() => setModal(false)}
+        title={`+ ${t('message')}`}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setModal(false)}>
+              {t('cancel')}
+            </button>
+            <button className="btn-primary" onClick={submit}>
+              {t('save')}
+            </button>
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <textarea className="input" rows={2} placeholder={t('message')} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+          <input className="input" placeholder={t('audience')} value={form.audience} onChange={(e) => setForm({ ...form, audience: e.target.value })} />
+          <input className="input" placeholder={t('channel')} value={form.channel} onChange={(e) => setForm({ ...form, channel: e.target.value })} />
+          <input className="input" placeholder={t('sender')} value={form.sender} onChange={(e) => setForm({ ...form, sender: e.target.value })} />
+          <input className="input" placeholder={t('timing')} value={form.timing} onChange={(e) => setForm({ ...form, timing: e.target.value })} />
+          <select className="input" value={form.adkarBlock} onChange={(e) => setForm({ ...form, adkarBlock: e.target.value })}>
+            {ADKAR_BLOCKS.map((b) => (
+              <option key={b} value={b}>
+                {t(b)}
+              </option>
+            ))}
+          </select>
+          <select className="input" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
+            <option value="draft">draft</option>
+            <option value="scheduled">scheduled</option>
+            <option value="sent">sent</option>
+          </select>
+        </div>
+      </Modal>
     </div>
   )
 }

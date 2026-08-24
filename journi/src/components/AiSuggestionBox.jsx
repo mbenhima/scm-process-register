@@ -5,12 +5,12 @@ import { providerLabel } from '../utils/llmProviders.js'
 import Badge from './Badge.jsx'
 
 /**
- * Governed AI suggestion widget (Module 17 pattern), reusable across modules.
+ * Governed AI suggestion widget (Module 16 pattern), reusable across modules.
  * Renders nothing but a disabled notice if the use case isn't activated for this scope.
  * Every suggestion is generated on demand, labeled, and requires an explicit
  * human decision (accept / edit&accept / reject) which is written to the AI usage log.
  *
- * When a real LLM provider is connected (Module 17), generation calls it with
+ * When a real LLM provider is connected (Module 16), generation calls it with
  * `promptContext` (or a generic prompt built from `ucName`/`description` if
  * `promptContext` isn't given) instead of the local `buildSuggestion()`
  * function, falling back to `buildSuggestion()` on any provider error so the
@@ -34,7 +34,7 @@ export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSugg
   if (!active) {
     return (
       <div className="rounded-lg border border-dashed border-brand-100 bg-brand-50/40 px-3 py-2 text-xs text-ink/40">
-        {ucName || useCaseId} — not activated for this scope. An Organization Admin can enable it in M17.
+        {ucName || useCaseId} — not activated for this scope. An Organization Admin can enable it in M16.
       </div>
     )
   }

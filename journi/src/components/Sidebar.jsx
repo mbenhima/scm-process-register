@@ -5,8 +5,9 @@ import { useAppState } from '../state/AppStateContext.jsx'
 import { canManageHierarchy, canManageUsers } from '../utils/rbac.js'
 
 const CORE_MODULES = [
+  { path: '/app/m3', key: 'navM3' },
+  { path: '/app/m17', key: 'navM17' },
   { path: '/app/m4', key: 'navM4' },
-  { path: '/app/m18', key: 'navM18' },
   { path: '/app/m5', key: 'navM5' },
   { path: '/app/m6', key: 'navM6' },
   { path: '/app/m7', key: 'navM7' },
@@ -18,7 +19,6 @@ const CORE_MODULES = [
   { path: '/app/m13', key: 'navM13' },
   { path: '/app/m14', key: 'navM14' },
   { path: '/app/m15', key: 'navM15' },
-  { path: '/app/m16', key: 'navM16' },
 ]
 
 export default function Sidebar({ mobileOpen, onNavigate }) {
@@ -76,17 +76,17 @@ export default function Sidebar({ mobileOpen, onNavigate }) {
         <div>
           <div className="label px-3">{t('sectionAI')}</div>
           <div className="space-y-1">
-            <NavLink to="/app/m17" className={linkClass} onClick={onNavigate}>
-              {t('navM17')}
+            <NavLink to="/app/m16" className={linkClass} onClick={onNavigate}>
+              {t('navM16')}
+            </NavLink>
+            <NavLink to="/app/m18" className={linkClass} onClick={onNavigate}>
+              {t('navM18')}
             </NavLink>
             <NavLink to="/app/m19" className={linkClass} onClick={onNavigate}>
               {t('navM19')}
             </NavLink>
             <NavLink to="/app/m20" className={linkClass} onClick={onNavigate}>
               {t('navM20')}
-            </NavLink>
-            <NavLink to="/app/m21" className={linkClass} onClick={onNavigate}>
-              {t('navM21')}
             </NavLink>
           </div>
         </div>

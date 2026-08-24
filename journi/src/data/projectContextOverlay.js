@@ -1,4 +1,4 @@
-// Module 21 — Project Context Overlay (D24): captures exactly what makes each
+// Module 20 — Project Context Overlay (D24): captures exactly what makes each
 // of D21's 13 illustrative seed projects (PRJ-001 through PRJ-013) distinct
 // from the generic J0-J8 journey template — the specific tension, constraint,
 // or exception pattern most likely to fire — without duplicating the shared
@@ -6,7 +6,7 @@
 // own illustrative registry, not to journi's own seeded demo projects (Atlas,
 // Atlas Tangier, Maghreb, Meridia) — shown here as the source documents'
 // worked reference set, the same "not a live project match" posture already
-// used for the Cross-Type Matrix's seedProjectExample column (Module 19).
+// used for the Cross-Type Matrix's seedProjectExample column (Module 18).
 const projectContextOverlay = [
   { projectId: 'PRJ-001', attribute: 'Dominant Tension', value: 'Historical, diffuse skepticism (multi-plant legacy ERP consolidation)', description: "Overlay on the generic J1-J8 template capturing what's specific to this case." },
   { projectId: 'PRJ-001', attribute: 'Exception Pattern Most Likely', value: 'E3 — Two-Clock Problem at Cutover & Go-Live', description: "This is the canonical worked example generalizing to Exception E3." },

@@ -1,4 +1,4 @@
-// Module 19 — RACSI Grid default seed (R = Responsible, A = Accountable,
+// Module 18 — RACSI Grid default seed (R = Responsible, A = Accountable,
 // C = Consulted, S = Sign-off, I = Informed). One row per macro process,
 // one column per role. Editable at runtime by roles with the manageHierarchy
 // capability, mirroring how the Permission Matrix (M2) seeds DEFAULT_ROLE_PERMISSIONS

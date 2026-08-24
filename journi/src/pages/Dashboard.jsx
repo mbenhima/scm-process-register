@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   function openProject(p) {
     setScope({ orgId: p.orgId, cmProjectId: p.id })
-    navigate('/app/m6')
+    navigate('/app/m5')
   }
 
   const levelLabel = level === 'project' ? t('cmProject') : level === 'group' ? t('group') : t('organization')
@@ -89,7 +89,7 @@ export default function Dashboard() {
               <th className="text-start px-4 py-2.5">{t('readinessIndex')}</th>
               <th className="text-start px-4 py-2.5">{t('bridges')}</th>
               <th className="text-start px-4 py-2.5">{t('lewin')}</th>
-              <th className="text-start px-4 py-2.5">{t('m14_title')}</th>
+              <th className="text-start px-4 py-2.5">{t('m13_title')}</th>
               <th className="text-start px-4 py-2.5" />
             </tr>
           </thead>

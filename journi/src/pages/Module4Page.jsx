@@ -1,233 +1,176 @@
 import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { useScopedOrg, useMainProjects } from '../utils/useScoped.js'
-import { visibleProjects, canWrite } from '../utils/rbac.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
-import JustifyPanel from '../components/JustifyPanel.jsx'
-import { readinessIndex } from '../utils/compute.js'
+import Modal from '../components/Modal.jsx'
+import EmptyState from '../components/EmptyState.jsx'
+import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import { isHighImpactLowInfluence } from '../utils/compute.js'
+import { canWrite } from '../utils/rbac.js'
 
-const LEWIN = ['unfreeze', 'change', 'refreeze']
-const CHANGE_TYPES = ['technology', 'process', 'structural', 'cultural']
+const DIMS = ['process', 'tech', 'role', 'location', 'identity']
 
-function Field({ label, children }) {
-  return (
-    <div>
-      <label className="label">{label}</label>
-      {children}
-    </div>
-  )
+function impactCellColor(v) {
+  if (v >= 4) return 'bg-red-500 text-white'
+  if (v === 3) return 'bg-amber-400 text-white'
+  return 'bg-brand-100 text-brand-800'
 }
 
-function ChangeLogTable({ project }) {
-  const entries = [...(project.changeLog || [])].reverse()
-  if (entries.length === 0) {
-    return <p className="text-sm text-ink/40 italic">No justified changes logged yet.</p>
-  }
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
-          <tr>
-            <th className="text-start px-3 py-2">Date</th>
-            <th className="text-start px-3 py-2">Module</th>
-            <th className="text-start px-3 py-2">Field</th>
-            <th className="text-start px-3 py-2">Change</th>
-            <th className="text-start px-3 py-2">Justification</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((e) => (
-            <tr key={e.id} className="border-t border-brand-50 align-top">
-              <td className="px-3 py-2 text-ink/60 whitespace-nowrap">{e.date}</td>
-              <td className="px-3 py-2 text-ink/60 whitespace-nowrap">{e.module}</td>
-              <td className="px-3 py-2 text-brand-950 font-medium capitalize whitespace-nowrap">{e.field}</td>
-              <td className="px-3 py-2 text-ink/70 whitespace-nowrap">
-                {e.oldValue} → <span className="font-semibold text-brand-800">{e.newValue}</span>
-              </td>
-              <td className="px-3 py-2 text-ink/70">{e.justification || <span className="italic text-ink/30">none given</span>}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-function ProjectDetail({ project }) {
+function Content({ project }) {
   const { t } = useI18n()
-  const { data, updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
+  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const mainProjects = useMainProjects(project.mainProjectIds)
-  const [pendingLewin, setPendingLewin] = useState(project.lewinPhase)
-  const [lewinJustification, setLewinJustification] = useState('')
-  const lewinDirty = pendingLewin !== project.lewinPhase
+  const [modal, setModal] = useState(false)
+  const [form, setForm] = useState({ headcount: 50, impact: { process: 3, tech: 3, role: 3, location: 3, identity: 3 }, influence: 3 })
 
-  function saveLewin() {
-    if (!lewinDirty) return
-    logJustifiedChange(project.id, {
-      module: 'M4 · Initiative Registry',
-      field: 'Lewin macro-state',
-      oldValue: t(`lewin_${project.lewinPhase}`),
-      newValue: t(`lewin_${pendingLewin}`),
-      justification: lewinJustification,
-      applyPatch: (p) => ({ ...p, lewinPhase: pendingLewin }),
-    })
-    setLewinJustification('')
+  function submit() {
+    addSubItem(project.id, 'stakeholderGroups', form)
+    setModal(false)
+    setForm({ headcount: 50, impact: { process: 3, tech: 3, role: 3, location: 3, identity: 3 }, influence: 3 })
   }
 
   return (
-    <div className="grid lg:grid-cols-3 gap-4">
-      <div className="lg:col-span-2 card p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-brand-950">{project.name}</h3>
-          <Badge tone="sand">{mainProjects.length > 0 ? t('linkedMainProject') : t('standalone')}</Badge>
+    <div className="space-y-4">
+      {canEdit && (
+        <div className="flex justify-end">
+          <button className="btn-primary" onClick={() => setModal(true)}>
+            + {t('stakeholderGroup')}
+          </button>
         </div>
-        {mainProjects.length > 0 && (
-          <div className="space-y-2">
-            {mainProjects.map((mp) => (
-              <div key={mp.id} className="rounded-lg bg-brand-50/60 p-3 text-sm text-brand-900">
-                <div className="font-medium">{mp.name}</div>
-                <div className="text-xs text-ink/50 mt-1">
-                  {mp.durationMonths}mo · {mp.budgetBand} · {mp.executiveSponsor}
-                </div>
-              </div>
-            ))}
+      )}
+
+      <div className="card overflow-x-auto">
+        {project.stakeholderGroups.length === 0 ? (
+          <div className="p-4">
+            <EmptyState />
           </div>
+        ) : (
+          <table className="w-full text-sm">
+            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+              <tr>
+                <th className="text-start px-4 py-2.5">{t('stakeholderGroup')}</th>
+                <th className="text-start px-4 py-2.5">{t('headcount')}</th>
+                {DIMS.map((d) => (
+                  <th key={d} className="text-center px-2 py-2.5">
+                    {t(`impact${d[0].toUpperCase()}${d.slice(1)}`)}
+                  </th>
+                ))}
+                <th className="text-center px-2 py-2.5">{t('influence')}</th>
+                <th className="text-start px-4 py-2.5">{t('status')}</th>
+                {canEdit && <th className="px-2 py-2.5" />}
+              </tr>
+            </thead>
+            <tbody>
+              {project.stakeholderGroups.map((sh) => (
+                <tr key={sh.id} className="border-t border-brand-50">
+                  <td className="px-4 py-2.5 font-medium text-brand-950">{sh.name}</td>
+                  <td className="px-4 py-2.5 text-ink/60">{sh.headcount}</td>
+                  {DIMS.map((d) => (
+                    <td key={d} className="px-2 py-2.5 text-center">
+                      <span className={`inline-flex w-7 h-7 items-center justify-center rounded-md text-xs font-semibold ${impactCellColor(sh.impact[d])}`}>
+                        {sh.impact[d]}
+                      </span>
+                    </td>
+                  ))}
+                  <td className="px-2 py-2.5 text-center font-semibold text-brand-800">{sh.influence}</td>
+                  <td className="px-4 py-2.5">
+                    {isHighImpactLowInfluence(sh) && <Badge tone="red">{t('highImpactLowInfluence')}</Badge>}
+                  </td>
+                  {canEdit && (
+                    <td className="px-2 py-2.5">
+                      <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'stakeholderGroups', sh.id)}>
+                        {t('delete')}
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
-        <div className="grid sm:grid-cols-2 gap-4">
-          <Field label={t('changeType')}>
-            <select
-              className="input"
-              value={project.changeType}
-              disabled={!canEdit}
-              onChange={(e) => updateProjectMeta(project.id, { changeType: e.target.value })}
-            >
-              {CHANGE_TYPES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <Field label={t('lewin')}>
-            <select
-              className="input"
-              value={pendingLewin}
-              disabled={!canEdit}
-              onChange={(e) => setPendingLewin(e.target.value)}
-            >
-              {LEWIN.map((l) => (
-                <option key={l} value={l}>
-                  {t(`lewin_${l}`)}
-                </option>
-              ))}
-            </select>
-          </Field>
+      </div>
+
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-2 text-sm">{t('navM16')}</h3>
+        <AiSuggestionBox
+          useCaseId="uc-stakeholder-impact"
+          orgId={project.orgId}
+          projectId={project.id}
+          ucName="Stakeholder Impact Drafting Assistant"
+          tier="assistive"
+          buildSuggestion={() =>
+            `Suggested new cohort "Regional Support Staff" — headcount ~${Math.round(30 + Math.random() * 60)}, impact concentrated in Process (4) and Technology (4), low influence (2). Recommend adding to deep ADKAR tracking given high-impact/low-influence pattern.`
+          }
+        />
+      </div>
+
+      <Modal
+        open={modal}
+        onClose={() => setModal(false)}
+        title={`+ ${t('stakeholderGroup')}`}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setModal(false)}>
+              {t('cancel')}
+            </button>
+            <button className="btn-primary" onClick={submit}>
+              {t('save')}
+            </button>
+          </>
+        }
+      >
+        <div className="mb-3">
+          <label className="label">{t('name')}</label>
+          <input className="input" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} />
         </div>
-        {canEdit && lewinDirty && (
-          <JustifyPanel
-            justification={lewinJustification}
-            onJustificationChange={setLewinJustification}
-            onSave={saveLewin}
-            placeholder="Why is the Lewin macro-state moving now? Cite the specific evidence."
-          />
-        )}
-        <Field label={t('businessDriver')}>
-          <textarea
-            className="input"
-            rows={2}
-            value={project.businessDriver}
-            readOnly={!canEdit}
-            onChange={(e) => updateProjectMeta(project.id, { businessDriver: e.target.value })}
-          />
-        </Field>
-        <Field label={t('targetPopulation')}>
+        <div className="mb-3">
+          <label className="label">{t('headcount')}</label>
           <input
+            type="number"
             className="input"
-            value={project.targetPopulation}
-            readOnly={!canEdit}
-            onChange={(e) => updateProjectMeta(project.id, { targetPopulation: e.target.value })}
+            value={form.headcount}
+            onChange={(e) => setForm({ ...form, headcount: Number(e.target.value) })}
           />
-        </Field>
-        <Field label={t('successCriteria')}>
-          <textarea
-            className="input"
-            rows={2}
-            value={project.successCriteria}
-            readOnly={!canEdit}
-            onChange={(e) => updateProjectMeta(project.id, { successCriteria: e.target.value })}
-          />
-        </Field>
-      </div>
-      <div className="card p-5 space-y-3">
-        <h3 className="font-semibold text-brand-950">{t('readinessIndex')}</h3>
-        <div className="text-4xl font-bold text-brand-700">{readinessIndex(project)}%</div>
-        <div className="text-sm text-ink/60">{project.changeManager}</div>
-        <div className="pt-2 border-t border-brand-50 space-y-1 text-sm">
-          <div className="flex justify-between">
-            <span className="text-ink/50">{t('bridges')}</span>
-            <Badge>{t(`bridges_${project.bridgesPhase}`)}</Badge>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-ink/50">{t('lewin')}</span>
-            <Badge tone="sand">{t(`lewin_${project.lewinPhase}`)}</Badge>
+        </div>
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          {DIMS.map((d) => (
+            <div key={d}>
+              <label className="label">{t(`impact${d[0].toUpperCase()}${d.slice(1)}`)} (1-5)</label>
+              <input
+                type="number"
+                min={1}
+                max={5}
+                className="input"
+                value={form.impact[d]}
+                onChange={(e) => setForm({ ...form, impact: { ...form.impact, [d]: Number(e.target.value) } })}
+              />
+            </div>
+          ))}
+          <div>
+            <label className="label">{t('influence')} (1-5)</label>
+            <input
+              type="number"
+              min={1}
+              max={5}
+              className="input"
+              value={form.influence}
+              onChange={(e) => setForm({ ...form, influence: Number(e.target.value) })}
+            />
           </div>
         </div>
-      </div>
-      <div className="lg:col-span-3 card p-5 space-y-3">
-        <h3 className="font-semibold text-brand-950">Justification & Change Log</h3>
-        <p className="text-xs text-ink/50">
-          Every scored or state-changing update to this project's Lewin, ADKAR, Bridges and Kübler-Ross readings, with the evidence recorded behind it.
-        </p>
-        <ChangeLogTable project={project} />
-      </div>
+      </Modal>
     </div>
   )
 }
 
 export default function Module4Page() {
   const { t } = useI18n()
-  const { data, currentUser } = useAppState()
-  const org = useScopedOrg()
-  const projects = org ? visibleProjects(currentUser, data, org.id) : []
-
   return (
     <div>
       <PageHeader title={t('m4_title')} description={t('m4_desc')} />
-      <RequireProject>{(project) => <ProjectDetail project={project} />}</RequireProject>
-
-      {org && (
-        <div className="card mt-6 overflow-x-auto">
-          <div className="px-4 py-3 border-b border-brand-50 font-semibold text-sm text-brand-950">
-            {t('navPortfolio')} — {org.name}
-          </div>
-          <table className="w-full text-sm">
-            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
-              <tr>
-                <th className="text-start px-4 py-2">{t('name')}</th>
-                <th className="text-start px-4 py-2">{t('changeType')}</th>
-                <th className="text-start px-4 py-2">{t('lewin')}</th>
-                <th className="text-start px-4 py-2">{t('readinessIndex')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {projects.map((p) => (
-                <tr key={p.id} className="border-t border-brand-50">
-                  <td className="px-4 py-2 font-medium text-brand-950">{p.name}</td>
-                  <td className="px-4 py-2 text-ink/60 capitalize">{p.changeType}</td>
-                  <td className="px-4 py-2">
-                    <Badge tone="sand">{t(`lewin_${p.lewinPhase}`)}</Badge>
-                  </td>
-                  <td className="px-4 py-2 font-semibold text-brand-700">{readinessIndex(p)}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <RequireProject>{(project) => <Content project={project} />}</RequireProject>
     </div>
   )
 }

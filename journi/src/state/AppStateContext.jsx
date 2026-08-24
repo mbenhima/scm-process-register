@@ -41,7 +41,7 @@ function loadInitialState() {
         if (parsed.requireJustification === undefined) parsed.requireJustification = true
         // A browser session persisted before CR1 (8-type E2E addendum) shipped
         // won't have these reference catalogs — back-fill from the seed rather
-        // than let Module 19 / the phase-template picker render empty.
+        // than let Module 18 / the phase-template picker render empty.
         if (!parsed.macroProcessCatalog) parsed.macroProcessCatalog = macroProcessCatalog
         if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
         if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
@@ -212,7 +212,7 @@ export function AppStateProvider({ children }) {
                 {
                   id: uid('log'),
                   date: new Date().toISOString().slice(0, 10),
-                  module: 'M6 · ADKAR Engine',
+                  module: 'M5 · ADKAR Engine',
                   field: block,
                   oldValue: String(current.score),
                   newValue: String(score),
@@ -229,7 +229,7 @@ export function AppStateProvider({ children }) {
    * General-purpose justified change: applies `applyPatch` to the project and
    * appends one changeLog entry in the same update, so a score/state change
    * and the evidence behind it are always recorded together — never as two
-   * separate, driftable steps. Used by M4 (Lewin), M7 (Bridges / Kübler-Ross).
+   * separate, driftable steps. Used by M3 (Lewin), M6 (Bridges / Kübler-Ross).
    */
   const logJustifiedChange = useCallback((projectId, { module, field, oldValue, newValue, justification, applyPatch }) => {
     setData((prev) => ({
@@ -408,7 +408,7 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // Module 20 — D31a Charter Action Mapping compliance tracking: a Change
+  // Module 19 — D31a Charter Action Mapping compliance tracking: a Change
   // Manager (or, within their module scope, another role per D31b) logs
   // completion of a specific charter-governed action for their project,
   // giving REQ-012's charter compliance something trackable rather than
@@ -436,7 +436,7 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // Module 21 — D28 Journey Touchpoints: records which touchpoints an
+  // Module 20 — D28 Journey Touchpoints: records which touchpoints an
   // employee/cohort actually reached for this project, giving D29's Journey
   // Analytics dashboards a real completion rate to compute rather than a
   // narrative description.
@@ -460,7 +460,7 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // Module 11 — D32k Qualitative Coding Workbench.
+  // Module 10 — D32k Qualitative Coding Workbench.
   // QCW-01: codebook is Organization-scoped, not a fixed platform-wide taxonomy.
   const addCode = useCallback((orgId, code) => {
     setData((prev) => ({

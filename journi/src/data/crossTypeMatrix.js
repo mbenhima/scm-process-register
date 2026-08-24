@@ -1,4 +1,4 @@
-// Module 15 — Cross-Type Comparison Matrix (D32i), extended to all 8 CR1 transformation
+// Module 14 — Cross-Type Comparison Matrix (D32i), extended to all 8 CR1 transformation
 // types. The first 7 rows are transcribed from D32i (itself sourced verbatim from the
 // Transformation Types User Guide §6 and the ERP Implementation User Guide). Training &
 // Skills Development has no D32i row in the source set — see the E2E-01–04/type-count

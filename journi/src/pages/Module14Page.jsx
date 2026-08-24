@@ -1,317 +1,320 @@
 import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { useOrgProjects } from '../utils/useScoped.js'
-import RequireProject from '../components/RequireProject.jsx'
+import { availableRollupLevels, projectsForLevel } from '../utils/rbac.js'
+import { useScopedOrg, useScopedProject } from '../utils/useScoped.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
-import Modal from '../components/Modal.jsx'
-import EmptyState from '../components/EmptyState.jsx'
-import JustifyPanel from '../components/JustifyPanel.jsx'
+import ProgressBar from '../components/ProgressBar.jsx'
+import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import LevelSelector from '../components/LevelSelector.jsx'
 import ExportCsvButton from '../components/ExportCsvButton.jsx'
-import { RISK_CATEGORIES } from '../data/constants.js'
-import { riskScore, isHighSeverityRisk } from '../utils/compute.js'
-import { canWrite } from '../utils/rbac.js'
-import { uid } from '../utils/id.js'
+import { ADKAR_BLOCKS } from '../data/constants.js'
+import { adkarAverage, readinessIndex, trainingCompletionAvg, inferSentimentStage, scoreColor } from '../utils/compute.js'
+import { readinessBenchmark, benchmarkStanding } from '../data/benchmarks.js'
+import crossTypeMatrix from '../data/crossTypeMatrix.js'
 
-const STATUS_TONE = { open: 'red', mitigating: 'amber', closed: 'green' }
-const ACTION_STATUS_TONE = { open: 'red', in_progress: 'amber', closed: 'green' }
-
-function MitigationActions({ project, risk, canEdit }) {
-  const { updateSubItem } = useAppState()
-  const [form, setForm] = useState({ description: '', owner: '', dueDate: '', status: 'open' })
-  const actions = risk.actions || []
-
-  function addAction() {
-    if (!form.description.trim()) return
-    updateSubItem(project.id, 'risks', risk.id, { actions: [...actions, { id: uid('act'), ...form }] })
-    setForm({ description: '', owner: '', dueDate: '', status: 'open' })
-  }
-  function updateAction(actionId, patch) {
-    updateSubItem(project.id, 'risks', risk.id, {
-      actions: actions.map((a) => (a.id === actionId ? { ...a, ...patch } : a)),
-    })
-  }
-  function removeAction(actionId) {
-    updateSubItem(project.id, 'risks', risk.id, { actions: actions.filter((a) => a.id !== actionId) })
-  }
-
-  return (
-    <div className="bg-brand-50/30 rounded-lg p-3 space-y-2">
-      <div className="text-xs font-semibold text-brand-800 uppercase tracking-wide">Mitigation Action Plan</div>
-      {actions.length === 0 && <p className="text-xs text-ink/40 italic">No mitigation actions logged yet.</p>}
-      {actions.length > 0 && (
-        <table className="w-full text-xs">
-          <thead className="text-ink/40 uppercase tracking-wide">
-            <tr>
-              <th className="text-start py-1">Action</th>
-              <th className="text-start py-1">Owner</th>
-              <th className="text-start py-1">Due</th>
-              <th className="text-start py-1">Status</th>
-              {canEdit && <th className="py-1" />}
-            </tr>
-          </thead>
-          <tbody>
-            {actions.map((a) => (
-              <tr key={a.id} className="border-t border-brand-100/60">
-                <td className="py-1.5 pr-2 text-ink/80">{a.description}</td>
-                <td className="py-1.5 pr-2 text-ink/60">{a.owner}</td>
-                <td className="py-1.5 pr-2 text-ink/60 whitespace-nowrap">{a.dueDate}</td>
-                <td className="py-1.5 pr-2">
-                  {canEdit ? (
-                    <select className="input py-0.5 px-1 text-xs w-auto" value={a.status} onChange={(e) => updateAction(a.id, { status: e.target.value })}>
-                      <option value="open">open</option>
-                      <option value="in_progress">in progress</option>
-                      <option value="closed">closed</option>
-                    </select>
-                  ) : (
-                    <Badge tone={ACTION_STATUS_TONE[a.status]}>{a.status.replace('_', ' ')}</Badge>
-                  )}
-                </td>
-                {canEdit && (
-                  <td className="py-1.5">
-                    <button className="btn-danger text-xs" onClick={() => removeAction(a.id)}>
-                      ×
-                    </button>
-                  </td>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {canEdit && (
-        <div className="grid sm:grid-cols-4 gap-1.5 pt-1">
-          <input
-            className="input py-1 text-xs sm:col-span-2"
-            placeholder="Action description"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-          />
-          <input className="input py-1 text-xs" placeholder="Owner" value={form.owner} onChange={(e) => setForm({ ...form, owner: e.target.value })} />
-          <input className="input py-1 text-xs" placeholder="Due date" value={form.dueDate} onChange={(e) => setForm({ ...form, dueDate: e.target.value })} />
-          <button className="btn-secondary text-xs sm:col-span-4" onClick={addAction}>
-            + Add mitigation action
-          </button>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function Content({ project }) {
-  const { t } = useI18n()
-  const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
-  const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const orgProjects = useOrgProjects(project.orgId)
-  const [modal, setModal] = useState(false)
-  const [form, setForm] = useState({ category: 'adoption', description: '', likelihood: 3, impact: 3, owner: '', status: 'open' })
-  const [statusJustifyId, setStatusJustifyId] = useState(null)
-  const [pendingStatus, setPendingStatus] = useState('open')
-  const [statusJustification, setStatusJustification] = useState('')
-
-  function startStatusChange(r, nextStatus) {
-    setStatusJustifyId(r.id)
-    setPendingStatus(nextStatus)
-    setStatusJustification('')
-  }
-  function cancelStatusChange() {
-    setStatusJustifyId(null)
-    setStatusJustification('')
-  }
-  function saveStatusChange(r) {
-    logJustifiedChange(project.id, {
-      module: 'M14 · Risk Register',
-      field: `Risk status — ${r.description.slice(0, 40)}`,
-      oldValue: r.status,
-      newValue: pendingStatus,
-      justification: statusJustification,
-      applyPatch: (p) => ({ ...p, risks: p.risks.map((r2) => (r2.id === r.id ? { ...r2, status: pendingStatus } : r2)) }),
-    })
-    cancelStatusChange()
-  }
-
-  function submit() {
-    if (!form.description.trim()) return
-    addSubItem(project.id, 'risks', form)
-    setModal(false)
-    setForm({ category: 'adoption', description: '', likelihood: 3, impact: 3, owner: '', status: 'open' })
-  }
-
-  const saturationOverlap = orgProjects.filter((p) => p.id !== project.id)
-  const sorted = [...project.risks].sort((a, b) => riskScore(b) - riskScore(a))
-  const [expanded, setExpanded] = useState(null)
-
-  return (
-    <div className="space-y-4">
-      {saturationOverlap.length > 0 && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-          Portfolio cross-reference: population also targeted by {saturationOverlap.map((p) => p.name).join(', ')} — potential
-          saturation risk.
-        </div>
-      )}
-
-      <div className="flex justify-end gap-2">
-        <ExportCsvButton
-          filename={`${project.name.replace(/\s+/g, '_')}-risk-register.csv`}
-          rows={sorted}
-          columns={[
-            { label: 'Category', value: (r) => t(`risk_${r.category}`) },
-            { label: 'Description', value: 'description' },
-            { label: 'Likelihood', value: 'likelihood' },
-            { label: 'Impact', value: 'impact' },
-            { label: 'Risk Score', value: (r) => riskScore(r) },
-            { label: 'Owner', value: 'owner' },
-            { label: 'Status', value: 'status' },
-          ]}
-        />
-        {canEdit && (
-          <button className="btn-primary" onClick={() => setModal(true)}>
-            + {t('riskCategory')}
-          </button>
-        )}
-      </div>
-
-      <div className="card overflow-x-auto">
-        {sorted.length === 0 ? (
-          <div className="p-4">
-            <EmptyState />
-          </div>
-        ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
-              <tr>
-                <th className="text-start px-4 py-2.5">{t('riskCategory')}</th>
-                <th className="text-start px-4 py-2.5">{t('description')}</th>
-                <th className="text-start px-4 py-2.5">{t('likelihood')}</th>
-                <th className="text-start px-4 py-2.5">{t('impact')}</th>
-                <th className="text-start px-4 py-2.5">{t('riskScore')}</th>
-                <th className="text-start px-4 py-2.5">{t('owner')}</th>
-                <th className="text-start px-4 py-2.5">{t('status')}</th>
-                <th className="px-2 py-2.5" />
-                {canEdit && <th className="px-2 py-2.5" />}
-              </tr>
-            </thead>
-            <tbody>
-              {sorted.map((r) => (
-                <React.Fragment key={r.id}>
-                  <tr className="border-t border-brand-50">
-                    <td className="px-4 py-2.5">
-                      <Badge tone="sand">{t(`risk_${r.category}`)}</Badge>
-                    </td>
-                    <td className="px-4 py-2.5 max-w-sm text-ink/80">{r.description}</td>
-                    <td className="px-4 py-2.5 text-center">{r.likelihood}</td>
-                    <td className="px-4 py-2.5 text-center">{r.impact}</td>
-                    <td className="px-4 py-2.5">
-                      <Badge tone={isHighSeverityRisk(r) ? 'red' : riskScore(r) >= 8 ? 'amber' : 'brand'}>{riskScore(r)}</Badge>
-                    </td>
-                    <td className="px-4 py-2.5 text-ink/60">{r.owner}</td>
-                    <td className="px-4 py-2.5">
-                      {canEdit ? (
-                        <select
-                          className="input py-1 text-xs"
-                          value={statusJustifyId === r.id ? pendingStatus : r.status}
-                          onChange={(e) => startStatusChange(r, e.target.value)}
-                        >
-                          <option value="open">open</option>
-                          <option value="mitigating">mitigating</option>
-                          <option value="closed">closed</option>
-                        </select>
-                      ) : (
-                        <Badge tone={STATUS_TONE[r.status]}>{r.status}</Badge>
-                      )}
-                    </td>
-                    <td className="px-2 py-2.5">
-                      <button
-                        className="btn-ghost text-xs whitespace-nowrap"
-                        onClick={() => setExpanded(expanded === r.id ? null : r.id)}
-                      >
-                        {expanded === r.id ? 'Hide' : 'Mitigation'} actions ({(r.actions || []).length})
-                      </button>
-                    </td>
-                    {canEdit && (
-                      <td className="px-2 py-2.5">
-                        <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'risks', r.id)}>
-                          {t('delete')}
-                        </button>
-                      </td>
-                    )}
-                  </tr>
-                  {statusJustifyId === r.id && (
-                    <tr className="border-t border-brand-50">
-                      <td colSpan={canEdit ? 8 : 7} className="px-4 py-3">
-                        <JustifyPanel
-                          justification={statusJustification}
-                          onJustificationChange={setStatusJustification}
-                          onSave={() => saveStatusChange(r)}
-                          onCancel={cancelStatusChange}
-                          saveLabel={`Set to ${pendingStatus} with justification`}
-                          placeholder="Why is this risk's status changing?"
-                        />
-                      </td>
-                    </tr>
-                  )}
-                  {expanded === r.id && (
-                    <tr className="border-t border-brand-50">
-                      <td colSpan={canEdit ? 8 : 7} className="px-4 py-3">
-                        <MitigationActions project={project} risk={r} canEdit={canEdit} />
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      <Modal
-        open={modal}
-        onClose={() => setModal(false)}
-        title={`+ ${t('riskCategory')}`}
-        footer={
-          <>
-            <button className="btn-ghost" onClick={() => setModal(false)}>
-              {t('cancel')}
-            </button>
-            <button className="btn-primary" onClick={submit}>
-              {t('save')}
-            </button>
-          </>
-        }
-      >
-        <div className="space-y-3">
-          <select className="input" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
-            {RISK_CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {t(`risk_${c}`)}
-              </option>
-            ))}
-          </select>
-          <textarea className="input" rows={2} placeholder={t('description')} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="label">{t('likelihood')} (1-5)</label>
-              <input type="number" min={1} max={5} className="input" value={form.likelihood} onChange={(e) => setForm({ ...form, likelihood: Number(e.target.value) })} />
-            </div>
-            <div>
-              <label className="label">{t('impact')} (1-5)</label>
-              <input type="number" min={1} max={5} className="input" value={form.impact} onChange={(e) => setForm({ ...form, impact: Number(e.target.value) })} />
-            </div>
-          </div>
-          <input className="input" placeholder={t('owner')} value={form.owner} onChange={(e) => setForm({ ...form, owner: e.target.value })} />
-        </div>
-      </Modal>
-    </div>
-  )
-}
+const STANDING_TONE = { ahead: 'green', in_line: 'sand', behind: 'red' }
 
 export default function Module14Page() {
   const { t } = useI18n()
+  const { data, currentUser, scope } = useAppState()
+  const org = useScopedOrg()
+  const project = useScopedProject()
+  const [tab, setTab] = useState('analytics')
+
+  const rollupLevels = availableRollupLevels(currentUser, org)
+  const levels = [...(scope.cmProjectId ? ['project'] : []), ...rollupLevels]
+  const [levelPref, setLevelPref] = useState(null)
+  const level = levels.includes(levelPref) ? levelPref : levels[0] || 'organization'
+
+  const focusProjects = org ? projectsForLevel(data, level, scope, org) : []
+  const showSingleProject = level === 'project' && project
+
+  const ri = focusProjects.length ? Math.round(focusProjects.reduce((a, p) => a + readinessIndex(p), 0) / focusProjects.length) : 0
+  const adkarPct = showSingleProject ? (adkarAverage(project) / 5) * 100 : null
+  const trainingPct = showSingleProject ? trainingCompletionAvg(project) : null
+
+  const withAdoption = focusProjects
+    .map((p) => {
+      const latest = [...p.sustainment.checkpoints].reverse().find((c) => c.status === 'complete')
+      return latest ? { project: p, adoption: latest.adoptionRate, sentiment: inferSentimentStage(p) } : null
+    })
+    .filter(Boolean)
+
+  const levelLabel = level === 'project' ? t('cmProject') : level === 'group' ? t('group') : t('organization')
+  const group = org?.groupId ? data.groups.find((g) => g.id === org.groupId) : null
+  const scopeName = level === 'project' ? project?.name : level === 'group' ? group?.name : org?.name
+
   return (
-    <div>
-      <PageHeader title={t('m14_title')} description={t('m14_desc')} />
-      <RequireProject>{(project) => <Content project={project} />}</RequireProject>
+    <div className="space-y-5">
+      <PageHeader
+        title={t('m14_title')}
+        description={t('m14_desc')}
+        actions={<LevelSelector levels={levels} value={level} onChange={setLevelPref} />}
+      />
+      <p className="text-xs text-ink/40 -mt-4">{t('viewingAtLevel')}: {levelLabel}</p>
+
+      <div className="flex gap-2">
+        <button className={`tab ${tab === 'analytics' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('analytics')}>
+          {t('m14_title')}
+        </button>
+        <button className={`tab ${tab === 'benchmark' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('benchmark')}>
+          {t('benchmarking')}
+        </button>
+        <button className={`tab ${tab === 'crosstype' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('crosstype')}>
+          {t('m14_crosstype_tab')}
+        </button>
+      </div>
+
+      {tab === 'analytics' && (
+        <div className="space-y-5">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="card p-5 md:col-span-1">
+              <div className="text-xs font-semibold uppercase text-ink/40 mb-1">{t('readinessIndex')}</div>
+              <div className="text-5xl font-bold text-brand-700 mb-3">{ri}%</div>
+              {showSingleProject && (
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <div className="flex justify-between text-xs text-ink/50 mb-0.5">
+                      <span>{t('adkar')}</span>
+                      <span>{Math.round(adkarPct)}%</span>
+                    </div>
+                    <ProgressBar value={adkarPct} />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs text-ink/50 mb-0.5">
+                      <span>{t('kubler')}</span>
+                      <span>{t(`sentiment_${inferSentimentStage(project)}`)}</span>
+                    </div>
+                    <ProgressBar value={{ denial: 20, resistance: 40, exploration: 70, commitment: 100 }[inferSentimentStage(project)]} tone="sand" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs text-ink/50 mb-0.5">
+                      <span>{t('m9_title')}</span>
+                      <span>{Math.round(trainingPct)}%</span>
+                    </div>
+                    <ProgressBar value={trainingPct} tone="amber" />
+                  </div>
+                </div>
+              )}
+              {!showSingleProject && <p className="text-xs text-ink/40">Average across {focusProjects.length} project(s) at {levelLabel} level.</p>}
+            </div>
+
+            <div className="card p-5 md:col-span-2">
+              <h3 className="font-semibold text-brand-950 mb-3">{t('adoptionCurve')}</h3>
+              <div className="flex items-end gap-4 h-32">
+                {focusProjects.map((p) => {
+                  const checkpoints = p.sustainment.checkpoints
+                  return (
+                    <div key={p.id} className="flex-1 flex flex-col items-center gap-1">
+                      <div className="flex items-end gap-1 h-24">
+                        {checkpoints.map((c) => (
+                          <div
+                            key={c.id}
+                            title={`${c.label}: ${c.adoptionRate ?? '—'}%`}
+                            className="w-3 rounded-t bg-brand-500"
+                            style={{ height: `${c.adoptionRate || 4}%` }}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-[9px] text-ink/40 text-center leading-tight line-clamp-2">{p.name.split(' ')[0]}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="card p-5 overflow-x-auto">
+            <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <h3 className="font-semibold text-brand-950">{t('heatmapByDept')} — {scopeName || 'Portfolio'}</h3>
+              <ExportCsvButton
+                filename={`readiness-heatmap-${level}.csv`}
+                rows={focusProjects}
+                columns={[
+                  { label: t('cmProject'), value: 'name' },
+                  ...ADKAR_BLOCKS.map((b) => ({ label: t(b), value: (p) => p.adkar[b].score })),
+                  { label: t('readinessIndex'), value: (p) => readinessIndex(p) },
+                ]}
+              />
+            </div>
+            <table className="w-full text-sm">
+              <thead className="text-xs uppercase text-ink/40">
+                <tr>
+                  <th className="text-start py-1.5">{t('cmProject')}</th>
+                  {ADKAR_BLOCKS.map((b) => (
+                    <th key={b} className="text-center py-1.5">
+                      {t(b)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {focusProjects.map((p) => (
+                  <tr key={p.id} className="border-t border-brand-50">
+                    <td className="py-1.5 font-medium text-brand-950">{p.name}</td>
+                    {ADKAR_BLOCKS.map((b) => (
+                      <td key={b} className="py-1.5 text-center">
+                        <span className={`inline-flex w-8 h-8 items-center justify-center rounded-md text-xs font-semibold ${scoreColor(p.adkar[b].score)}`}>
+                          {p.adkar[b].score}
+                        </span>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="card p-5">
+            <h3 className="font-semibold text-brand-950 mb-2">Correlation: sentiment vs. adoption speed</h3>
+            {withAdoption.length === 0 ? (
+              <p className="text-sm text-ink/40 italic">Not enough post-go-live checkpoint data yet at this level.</p>
+            ) : (
+              <ul className="space-y-1 text-sm text-ink/70">
+                {withAdoption.map(({ project: p, adoption, sentiment }) => (
+                  <li key={p.id}>
+                    {p.name}: {t(`sentiment_${sentiment}`)} sentiment ↔ {adoption}% adoption at latest checkpoint
+                    {sentiment === 'exploration' || sentiment === 'commitment' ? (
+                      <span className="text-brand-600"> — positive sentiment tracking with faster adoption</span>
+                    ) : (
+                      <span className="text-amber-600"> — early-warning: cautious sentiment, watch next checkpoint</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {showSingleProject && (
+            <div className="card p-4">
+              <h3 className="font-semibold text-brand-950 mb-2 text-sm">{t('execNarrative')}</h3>
+              <AiSuggestionBox
+                useCaseId="uc-exec-narrative"
+                orgId={project.orgId}
+                projectId={project.id}
+                ucName="Executive Readiness Narrative Generator"
+                tier="augmented"
+                buildSuggestion={() =>
+                  `${project.name} shows a Composite Readiness Index of ${ri}%. The population is in Bridges "${t(`bridges_${project.bridgesPhase}`)}" / Lewin "${t(`lewin_${project.lewinPhase}`)}". Primary attention area: ${
+                    ADKAR_BLOCKS.filter((b) => project.adkar[b].score <= 2)[0] ? t(ADKAR_BLOCKS.filter((b) => project.adkar[b].score <= 2)[0]) : 'no blocking barrier currently'
+                  }. Recommend Sponsor visibility remain a standing agenda item until the next milestone review.`
+                }
+              />
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab === 'benchmark' && (
+        <div className="space-y-5">
+          <div className="card p-5">
+            <div className="flex items-start justify-between gap-2 flex-wrap mb-1">
+              <h3 className="font-semibold text-brand-950">{t('benchmarking')} — {levelLabel}</h3>
+              <ExportCsvButton
+                filename={`readiness-benchmark-${level}.csv`}
+                rows={focusProjects}
+                columns={[
+                  { label: t('cmProject'), value: 'name' },
+                  { label: t('lewin'), value: (p) => t(`lewin_${p.lewinPhase}`) },
+                  { label: t('readinessIndex'), value: (p) => readinessIndex(p) },
+                  {
+                    label: t('peerAverage'),
+                    value: (p) => {
+                      const peers = focusProjects.filter((x) => x.id !== p.id)
+                      return peers.length ? Math.round(peers.reduce((a, x) => a + readinessIndex(x), 0) / peers.length) : ''
+                    },
+                  },
+                  {
+                    label: t('referenceBand'),
+                    value: (p) => {
+                      const band = readinessBenchmark(p.lewinPhase)
+                      return `${band.low}-${band.high}`
+                    },
+                  },
+                  {
+                    label: t('status'),
+                    value: (p) => t(`standing_${benchmarkStanding(readinessIndex(p), readinessBenchmark(p.lewinPhase))}`),
+                  },
+                ]}
+              />
+            </div>
+            <p className="text-xs text-ink/50 mb-4">
+              Each project's Composite Readiness Index compared against a seeded reference band for its current Lewin phase, and against the peer average within this level's scope.
+            </p>
+            <table className="w-full text-sm">
+              <thead className="text-xs uppercase text-ink/40">
+                <tr>
+                  <th className="text-start py-1.5">{t('cmProject')}</th>
+                  <th className="text-start py-1.5">{t('lewin')}</th>
+                  <th className="text-center py-1.5">{t('readinessIndex')}</th>
+                  <th className="text-center py-1.5">{t('peerAverage')}</th>
+                  <th className="text-center py-1.5">{t('referenceBand')}</th>
+                  <th className="text-center py-1.5">{t('status')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {focusProjects.map((p) => {
+                  const pRi = readinessIndex(p)
+                  const band = readinessBenchmark(p.lewinPhase)
+                  const standing = benchmarkStanding(pRi, band)
+                  const peers = focusProjects.filter((x) => x.id !== p.id)
+                  const peerAvg = peers.length ? Math.round(peers.reduce((a, x) => a + readinessIndex(x), 0) / peers.length) : null
+                  return (
+                    <tr key={p.id} className="border-t border-brand-50">
+                      <td className="py-1.5 font-medium text-brand-950">{p.name}</td>
+                      <td className="py-1.5">
+                        <Badge tone="sand">{t(`lewin_${p.lewinPhase}`)}</Badge>
+                      </td>
+                      <td className="py-1.5 text-center font-semibold">{pRi}%</td>
+                      <td className="py-1.5 text-center text-ink/50">{peerAvg == null ? '—' : `${peerAvg}%`}</td>
+                      <td className="py-1.5 text-center text-ink/50">{band.low}–{band.high}%</td>
+                      <td className="py-1.5 text-center">
+                        <Badge tone={STANDING_TONE[standing]}>{t(`standing_${standing}`)}</Badge>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+            {focusProjects.length === 0 && <p className="text-sm text-ink/40 italic mt-2">{t('noData')}</p>}
+          </div>
+        </div>
+      )}
+
+      {tab === 'crosstype' && (
+        <div className="card p-5 overflow-x-auto">
+          <h3 className="font-semibold text-brand-950 mb-1">{t('m14_crosstype_title')}</h3>
+          <p className="text-xs text-ink/50 mb-4">{t('m14_crosstype_desc')}</p>
+          <table className="w-full text-sm">
+            <thead className="text-xs uppercase text-ink/40">
+              <tr>
+                <th className="text-start py-1.5">{t('type')}</th>
+                <th className="text-start py-1.5">{t('m14_crosstype_duration')}</th>
+                <th className="text-start py-1.5">{t('m14_crosstype_gate')}</th>
+                <th className="text-start py-1.5">{t('m14_crosstype_external')}</th>
+                <th className="text-start py-1.5">{t('m14_crosstype_framework')}</th>
+                <th className="text-start py-1.5">{t('m14_crosstype_reversibility')}</th>
+                <th className="text-start py-1.5">{t('m14_crosstype_example')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {crossTypeMatrix.map((row) => (
+                <tr key={row.transformationType} className="border-t border-brand-50 align-top">
+                  <td className="py-2 pe-3 font-medium text-brand-950 whitespace-nowrap">{t(`archetype_${row.transformationType}`)}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.typicalDuration}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.terminalGate}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.externalPartyInvolvement}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.dominantFramework}</td>
+                  <td className="py-2 pe-3 text-ink/70">{row.reversibility}</td>
+                  <td className="py-2 text-ink/50 text-xs">{row.seedProjectExample}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

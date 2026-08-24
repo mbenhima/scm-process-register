@@ -30,7 +30,7 @@ This is a self-contained frontend implementation: all data — the seeded organi
 src/
 ├── data/
 │   ├── constants.js        # Enums: roles, ADKAR blocks, Bridges/Kübler-Ross/Lewin stages, risk types...
-│   ├── aiUseCases.js       # Module 17 catalog — 14 seeded Assistive/Augmented use cases
+│   ├── aiUseCases.js       # Module 16 catalog — 14 seeded Assistive/Augmented use cases
 │   ├── seed.js             # Combines everything into the initial app state
 │   └── cases/
 │       ├── atlas.js        # Manufacturing sector — Atlas Industrial Group (3 cases)
@@ -46,7 +46,7 @@ src/
 │   ├── compute.js           # Readiness Index, escalation, divergence, risk scoring
 │   └── useScoped.js         # Hooks for "current org/project" from the top-bar scope switcher
 ├── components/              # Layout, Sidebar, TopBar, AiSuggestionBox, shared widgets
-└── pages/                   # One page per module (Dashboard + M1, M2, M4–M17)
+└── pages/                   # One page per module (Dashboard + M1, M2, M3–M16)
 ```
 
 ### Organizational hierarchy (Module 1)
@@ -55,15 +55,15 @@ src/
 
 ### RBAC (Module 2)
 
-Role × Scope (Group/Organization/Project) determines visibility everywhere — `src/utils/rbac.js` centralizes this so every page (Dashboard, M4, M15, etc.) filters portfolio data through `visibleOrganizations`/`visibleProjects` rather than each page inventing its own rule. M1 (Hierarchy) and M2 (Identity & RBAC) are additionally route-guarded to admin roles.
+Role × Scope (Group/Organization/Project) determines visibility everywhere — `src/utils/rbac.js` centralizes this so every page (Dashboard, M3, M14, etc.) filters portfolio data through `visibleOrganizations`/`visibleProjects` rather than each page inventing its own rule. M1 (Hierarchy) and M2 (Identity & RBAC) are additionally route-guarded to admin roles.
 
-### AI governance (Module 17)
+### AI governance (Module 16)
 
 Every AI-touching feature across the other modules routes through `<AiSuggestionBox>`, which:
 - refuses to render an active suggestion unless the use case is activated for the current Organization (or Project-level override),
 - always labels output "AI-generated — review required,"
 - requires an explicit human Accept / Edit / Reject before anything is written back to the record, and
-- logs every decision to the AI usage/override audit trail (visible in M17 → AI Usage & Override Log).
+- logs every decision to the AI usage/override audit trail (visible in M16 → AI Usage & Override Log).
 
 No use case can take an irreversible action on its own — matching the spec's Assistive/Augmented-only, human-in-the-loop design.
 

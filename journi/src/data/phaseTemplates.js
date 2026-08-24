@@ -1,4 +1,4 @@
-// Module 19 / M18 — Phase Template Library (D32b, CR1 addendum).
+// Module 18 / M17 — Phase Template Library (D32b, CR1 addendum).
 // TPL-ERP-8 mirrors journi's original 8-phase ERP baseline (see utils/wbs.js
 // generateDefaultWbs). The 7 new templates are type-specific variants of the
 // generic "Common Transformation Lifecycle" (Intake & Diagnosis, Case for

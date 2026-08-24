@@ -1,4 +1,4 @@
-// Module 20 — Charter Action Mapping (D31a), the many-to-many relationship
+// Module 19 — Charter Action Mapping (D31a), the many-to-many relationship
 // D31's charter definitions deliberately don't carry directly: a single
 // charter (e.g. CHTR-07 Mentoring) maps to actions across MULTIPLE macro
 // processes, tasks and steps — Diagnosis -> Training Plan Elaboration ->

@@ -21,7 +21,7 @@ export function inferSentimentStage(project) {
   return 'exploration'
 }
 
-/** Composite Readiness Index (0-100), blending ADKAR, sentiment and training completion — Module 15 */
+/** Composite Readiness Index (0-100), blending ADKAR, sentiment and training completion — Module 14 */
 export function readinessIndex(project) {
   const adkarPct = (adkarAverage(project) / 5) * 100
   const sentimentPct = SENTIMENT_SCORE[inferSentimentStage(project)] ?? 50
@@ -33,12 +33,12 @@ export function isBlockStalled(block) {
   return block.score <= 2
 }
 
-/** Module 6: escalation rule — a block stalled at <=2 is flagged to the Change Manager */
+/** Module 5: escalation rule — a block stalled at <=2 is flagged to the Change Manager */
 export function stalledBlocks(project) {
   return ADKAR_BLOCKS.filter((b) => isBlockStalled(project.adkar[b]))
 }
 
-/** Module 7: divergence — strong capability (Knowledge/Ability) but still emotionally "Ending" */
+/** Module 6: divergence — strong capability (Knowledge/Ability) but still emotionally "Ending" */
 export function hasDivergence(project) {
   const strongCapability = project.adkar.knowledge.score >= 3 && project.adkar.ability.score >= 3
   const stillEnding = project.bridgesPhase === 'ending'
@@ -58,7 +58,7 @@ export function isHighImpactLowInfluence(sh) {
   return avgImpact >= 3.6 && sh.influence <= 2
 }
 
-/** Module 14 — flags orgs where >1 concurrent CM project may be hitting overlapping populations */
+/** Module 13 — flags orgs where >1 concurrent CM project may be hitting overlapping populations */
 export function saturationCandidates(cmProjects, orgId) {
   return cmProjects.filter((p) => p.orgId === orgId)
 }

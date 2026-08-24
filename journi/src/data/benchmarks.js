@@ -1,4 +1,4 @@
-// Module 15 — Change Management Benchmarking reference data.
+// Module 14 — Change Management Benchmarking reference data.
 // These are illustrative reference bands seeded for demonstration purposes,
 // not sourced from a real industry study. They exist so a Change Manager,
 // Organization, or Group can see whether their Composite Readiness Index is

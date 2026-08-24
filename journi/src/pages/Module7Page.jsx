@@ -1,183 +1,182 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
-import { BRIDGES_PHASES, SENTIMENT_STAGES } from '../data/constants.js'
-import { inferSentimentStage, hasDivergence } from '../utils/compute.js'
+import JustifyPanel from '../components/JustifyPanel.jsx'
+import ExportCsvButton from '../components/ExportCsvButton.jsx'
+import { VISIBILITY_LEVELS } from '../data/constants.js'
+import { visibilityColor } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
 
-const SENTIMENT_COLOR = { denial: 'bg-red-500', resistance: 'bg-orange-500', exploration: 'bg-amber-400', commitment: 'bg-emerald-500' }
-const BRIDGES_COLOR = { ending: 'bg-red-100 text-red-700', neutral: 'bg-amber-100 text-amber-700', beginning: 'bg-emerald-100 text-emerald-700' }
+function visibilityLabel(t, v) {
+  return t(`visibility${v[0].toUpperCase()}${v.slice(1)}`)
+}
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, updateProjectMeta, logJustifiedChange, currentUser } = useAppState()
+  const { data, toggleSponsorAction, addSponsorAction, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const required = data.requireJustification !== false
-  const sentiment = project.sentimentStage || inferSentimentStage(project)
-  const divergence = hasDivergence(project)
+  const [newAction, setNewAction] = useState('')
+  const [pendingVisibility, setPendingVisibility] = useState(project.sponsor.visibility)
+  const [visibilityJustification, setVisibilityJustification] = useState('')
+  const visibilityDirty = pendingVisibility !== project.sponsor.visibility
 
-  const [pendingBridges, setPendingBridges] = useState(project.bridgesPhase)
-  const bridgesDirty = pendingBridges !== project.bridgesPhase
-  function saveBridges() {
-    if (!bridgesDirty) return
+  function saveVisibility() {
+    if (!visibilityDirty) return
     logJustifiedChange(project.id, {
-      module: 'M7 · Emotional & Transition',
-      field: 'Bridges transition',
-      oldValue: t(`bridges_${project.bridgesPhase}`),
-      newValue: t(`bridges_${pendingBridges}`),
-      justification: project.bridgesNote,
-      applyPatch: (p) => ({ ...p, bridgesPhase: pendingBridges }),
+      module: 'M7 · Sponsor & Coalition',
+      field: 'Sponsor visibility',
+      oldValue: visibilityLabel(t, project.sponsor.visibility),
+      newValue: visibilityLabel(t, pendingVisibility),
+      justification: visibilityJustification,
+      applyPatch: (p) => ({ ...p, sponsor: { ...p.sponsor, visibility: pendingVisibility } }),
     })
-  }
-
-  // sentiment falls back to inferSentimentStage(project), which re-reads the
-  // free-text note live as it's typed — so it must NOT be used as the dirty
-  // baseline: as soon as a typed note happens to contain the target stage's
-  // keyword, the inferred "current" value would silently catch up to
-  // pendingSentiment and the Save button would vanish before the user could
-  // ever click it. baselineSentiment is captured once, on mount, and never
-  // reacts to later note edits, so the comparison stays meaningful.
-  const baselineSentiment = useRef(sentiment).current
-  const [pendingSentiment, setPendingSentiment] = useState(sentiment)
-  const sentimentDirty = pendingSentiment !== baselineSentiment
-  function saveSentiment() {
-    if (!sentimentDirty) return
-    logJustifiedChange(project.id, {
-      module: 'M7 · Emotional & Transition',
-      field: 'Kübler-Ross sentiment',
-      oldValue: t(`sentiment_${baselineSentiment}`),
-      newValue: t(`sentiment_${pendingSentiment}`),
-      justification: project.sentimentSnapshot,
-      applyPatch: (p) => ({ ...p, sentimentStage: pendingSentiment }),
-    })
+    setVisibilityJustification('')
   }
 
   return (
     <div className="space-y-5">
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="card p-5">
-          <h3 className="font-semibold text-brand-950 mb-3">{t('bridges')}</h3>
-          <div className="flex gap-2 mb-3">
-            {BRIDGES_PHASES.map((phase, idx) => (
+      <div className="grid md:grid-cols-3 gap-4">
+        <div className="card p-5 md:col-span-1">
+          <h3 className="font-semibold text-brand-950 mb-1">{project.sponsor.name}</h3>
+          <p className="text-xs text-ink/50 mb-3">{project.sponsor.visibilityNote}</p>
+          <label className="label">{t('visibility')}</label>
+          <div className="flex gap-2">
+            {VISIBILITY_LEVELS.map((v) => (
               <button
-                key={phase}
+                key={v}
                 disabled={!canEdit}
-                onClick={() => setPendingBridges(phase)}
-                className={`flex-1 rounded-lg py-2 text-xs font-semibold transition-colors ${
-                  pendingBridges === phase ? BRIDGES_COLOR[phase] + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
+                onClick={() => setPendingVisibility(v)}
+                className={`flex-1 rounded-lg py-2 text-xs font-semibold ${
+                  pendingVisibility === v ? visibilityColor(v) + ' ring-2 ring-brand-300' : 'bg-brand-50 text-ink/40'
                 } ${!canEdit ? 'cursor-default' : ''}`}
               >
-                {idx + 1}. {t(`bridges_${phase}`)}
+                {visibilityLabel(t, v)}
               </button>
             ))}
           </div>
-          <label className="label">Notes — what you're observing at this stage{required ? '' : ' (optional)'}</label>
-          {canEdit ? (
-            <textarea
-              className="input text-sm"
-              rows={2}
-              placeholder="e.g. Finance team entering Neutral Zone; shop floor still in Ending"
-              value={project.bridgesNote}
-              onChange={(e) => updateProjectMeta(project.id, { bridgesNote: e.target.value })}
-            />
-          ) : (
-            <p className="text-sm text-ink/70">{project.bridgesNote}</p>
+          {canEdit && visibilityDirty && (
+            <div className="mt-3">
+              <JustifyPanel
+                justification={visibilityJustification}
+                onJustificationChange={setVisibilityJustification}
+                onSave={saveVisibility}
+                onCancel={() => {
+                  setPendingVisibility(project.sponsor.visibility)
+                  setVisibilityJustification('')
+                }}
+                placeholder="Why is sponsorship visibility moving? Cite the specific evidence."
+              />
+            </div>
           )}
-          {canEdit && bridgesDirty && (
-            <button
-              className="btn-primary text-xs mt-2"
-              onClick={saveBridges}
-              disabled={required && !project.bridgesNote.trim()}
-              title={required && !project.bridgesNote.trim() ? 'Write a note above justifying this move first' : ''}
-            >
-              Save with justification
-            </button>
+          {project.sponsor.visibility === 'weak' && (
+            <div className="mt-3 text-xs rounded-lg bg-red-50 text-red-700 p-2">
+              Alert: sponsorship visibility below threshold — cross-reference with stalled Desire scores in M5.
+            </div>
           )}
         </div>
 
-        <div className="card p-5">
-          <h3 className="font-semibold text-brand-950 mb-3">{t('kubler')}</h3>
-          <div className="flex gap-2 mb-3">
-            {SENTIMENT_STAGES.map((s) => (
-              <button
-                key={s}
-                disabled={!canEdit}
-                onClick={() => setPendingSentiment(s)}
-                className={`flex-1 rounded-lg py-2 text-[11px] font-semibold text-white transition-opacity ${SENTIMENT_COLOR[s]} ${
-                  pendingSentiment === s ? 'opacity-100 ring-2 ring-offset-1 ring-brand-400' : 'opacity-40 hover:opacity-70'
-                } ${!canEdit ? 'cursor-default' : ''}`}
-              >
-                {t(`sentiment_${s}`)}
-              </button>
-            ))}
-          </div>
-          <label className="label">Notes — sentiment snapshot{required ? '' : ' (optional)'}</label>
-          {canEdit ? (
-            <textarea
-              className="input text-sm"
-              rows={2}
-              placeholder="e.g. Mixed Denial/Resistance among shop-floor supervisors"
-              value={project.sentimentSnapshot}
-              onChange={(e) => updateProjectMeta(project.id, { sentimentSnapshot: e.target.value })}
+        <div className="card p-5 md:col-span-2">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-brand-950">{t('coalitionMember')}</h3>
+            <ExportCsvButton
+              filename={`${project.name.replace(/\s+/g, '_')}-sponsor-coalition.csv`}
+              rows={project.sponsor.members}
+              columns={[
+                { label: 'Name', value: 'name' },
+                { label: 'Role', value: 'role' },
+                { label: 'Influence', value: 'influence' },
+                { label: 'Engagement', value: 'engagement' },
+              ]}
             />
-          ) : (
-            <p className="text-sm text-ink/70">{project.sentimentSnapshot}</p>
-          )}
-          {canEdit && sentimentDirty && (
-            <button
-              className="btn-primary text-xs mt-2"
-              onClick={saveSentiment}
-              disabled={required && !project.sentimentSnapshot.trim()}
-              title={required && !project.sentimentSnapshot.trim() ? 'Write a note above justifying this move first' : ''}
-            >
-              Save with justification
-            </button>
-          )}
+          </div>
+          <table className="w-full text-sm">
+            <thead className="text-xs uppercase text-ink/40">
+              <tr>
+                <th className="text-start py-1.5">{t('name')}</th>
+                <th className="text-start py-1.5">{t('role')}</th>
+                <th className="text-start py-1.5">{t('influence')}</th>
+                <th className="text-start py-1.5">{t('engagement')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {project.sponsor.members.map((m) => (
+                <tr key={m.id} className="border-t border-brand-50">
+                  <td className="py-1.5 font-medium text-brand-950">{m.name}</td>
+                  <td className="py-1.5 text-ink/60">{m.role}</td>
+                  <td className="py-1.5">
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <span key={i} className={`w-2 h-4 rounded-sm ${i < m.influence ? 'bg-brand-600' : 'bg-brand-100'}`} />
+                      ))}
+                    </div>
+                  </td>
+                  <td className="py-1.5">
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <span key={i} className={`w-2 h-4 rounded-sm ${i < m.engagement ? 'bg-sand-500' : 'bg-brand-100'}`} />
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
-      {divergence && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4">
-          <div className="flex items-center gap-2 mb-1">
-            <Badge tone="red">{t('divergenceAlert')}</Badge>
+      <div className="card p-5">
+        <h3 className="font-semibold text-brand-950 mb-3">{t('sponsorAction')} — Roadmap</h3>
+        <div className="space-y-2 mb-3">
+          {project.sponsor.actions.map((a) => (
+            <label key={a.id} className={`flex items-center gap-3 rounded-lg border border-brand-100 px-3 py-2 ${canEdit ? 'cursor-pointer' : ''}`}>
+              <input
+                type="checkbox"
+                checked={a.done}
+                disabled={!canEdit}
+                onChange={() => toggleSponsorAction(project.id, a.id)}
+                className="accent-brand-600"
+              />
+              <span className={`flex-1 text-sm ${a.done ? 'line-through text-ink/40' : 'text-ink/80'}`}>{a.action}</span>
+              <Badge tone="sand">{a.phase}</Badge>
+            </label>
+          ))}
+        </div>
+        {canEdit && (
+          <div className="flex gap-2">
+            <input className="input" placeholder={t('sponsorAction')} value={newAction} onChange={(e) => setNewAction(e.target.value)} />
+            <button
+              className="btn-primary shrink-0"
+              onClick={() => {
+                if (!newAction.trim()) return
+                addSponsorAction(project.id, { action: newAction, phase: 'Manage' })
+                setNewAction('')
+              }}
+            >
+              {t('add')}
+            </button>
           </div>
-          <p className="text-sm text-red-800">{t('divergenceDesc')}</p>
-        </div>
-      )}
+        )}
+      </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="card p-4">
-          <h3 className="font-semibold text-brand-950 mb-2 text-sm">Sentiment & Emotion Classifier</h3>
-          <AiSuggestionBox
-            useCaseId="uc-sentiment-classifier"
-            orgId={project.orgId}
-            projectId={project.id}
-            ucName="Sentiment & Emotion Classifier"
-            tier="augmented"
-            buildSuggestion={() =>
-              `Latest pulse comments classified: 58% ${t('sentiment_resistance')}, 24% ${t('sentiment_denial')}, 18% ${t('sentiment_exploration')} — dominant theme: uncertainty about role continuity.`
-            }
-          />
-        </div>
-        <div className="card p-4">
-          <h3 className="font-semibold text-brand-950 mb-2 text-sm">Divergence Pattern Detector</h3>
-          <AiSuggestionBox
-            useCaseId="uc-divergence-detector"
-            orgId={project.orgId}
-            projectId={project.id}
-            ucName="Divergence Pattern Detector"
-            tier="assistive"
-            buildSuggestion={() =>
-              divergence
-                ? `Divergence detected: Knowledge (${project.adkar.knowledge.score}/5) and Ability (${project.adkar.ability.score}/5) are strong, but the cohort remains in Bridges "Ending". This is a classic hidden-resistance pattern — recommend a listening session before more content-based communication.`
-                : `No divergence pattern detected for this cohort at this time — ADKAR and Bridges/sentiment position are broadly aligned.`
-            }
-          />
-        </div>
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-2 text-sm">Sponsor Action Recommender</h3>
+        <AiSuggestionBox
+          useCaseId="uc-sponsor-recommender"
+          orgId={project.orgId}
+          projectId={project.id}
+          ucName="Sponsor Action Recommender"
+          tier="assistive"
+          buildSuggestion={() =>
+            project.sponsor.visibility === 'weak'
+              ? `Sponsorship visibility is weak. Recommend a scheduled floor/site visit by ${project.sponsor.name} within 2 weeks, paired with a short recorded message for the population not reachable in person.`
+              : `Sponsorship visibility is solid. Recommend ${project.sponsor.name} personally recognize an early-adopter team in the next town hall to reinforce momentum.`
+          }
+          onAccept={(text) => addSponsorAction(project.id, { action: text, phase: 'Manage' })}
+        />
       </div>
     </div>
   )

@@ -125,7 +125,7 @@ export const cmProjects = [
     changeLog: [
       {
         date: '2026-08-04',
-        module: 'M6 · ADKAR Engine',
+        module: 'M5 · ADKAR Engine',
         field: 'awareness',
         oldValue: '1',
         newValue: '2',
@@ -133,7 +133,7 @@ export const cmProjects = [
       },
       {
         date: '2026-08-05',
-        module: 'M6 · ADKAR Engine',
+        module: 'M5 · ADKAR Engine',
         field: 'awareness',
         oldValue: '2',
         newValue: '3',
@@ -141,7 +141,7 @@ export const cmProjects = [
       },
       {
         date: '2026-08-06',
-        module: 'M6 · ADKAR Engine',
+        module: 'M5 · ADKAR Engine',
         field: 'knowledge',
         oldValue: '1',
         newValue: '2',
@@ -149,7 +149,7 @@ export const cmProjects = [
       },
       {
         date: '2026-08-06',
-        module: 'M6 · ADKAR Engine',
+        module: 'M5 · ADKAR Engine',
         field: 'ability',
         oldValue: '1',
         newValue: '2',
@@ -157,7 +157,7 @@ export const cmProjects = [
       },
       {
         date: '2026-08-07',
-        module: 'M6 · ADKAR Engine',
+        module: 'M5 · ADKAR Engine',
         field: 'desire',
         oldValue: '1',
         newValue: '2',
