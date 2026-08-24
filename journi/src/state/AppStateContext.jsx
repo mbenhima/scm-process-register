@@ -4,6 +4,7 @@ import macroProcessCatalog from '../data/macroProcesses.js'
 import e2eProcessCatalog from '../data/e2eProcesses.js'
 import phaseTemplateCatalog from '../data/phaseTemplates.js'
 import defaultRacsiGrid from '../data/racsi.js'
+import defaultCodebook from '../data/defaultCodebook.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
 import { addDays, todayISO } from '../utils/wbs.js'
@@ -45,6 +46,14 @@ function loadInitialState() {
         if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
         if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
         if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
+        // D32k QCW-01: a session persisted before the Qualitative Coding
+        // Workbench shipped won't have a codebook per Organization yet.
+        if (!parsed.codebooks) {
+          parsed.codebooks = {}
+          for (const org of parsed.organizations) {
+            parsed.codebooks[org.id] = defaultCodebook.map((c) => ({ id: uid('code'), ...c }))
+          }
+        }
         if (!parsed.license) {
           parsed.license = {
             mode: 'saas',
@@ -63,6 +72,7 @@ function loadInitialState() {
           phaseChecklists: p.phaseChecklists || [],
           charterActionLog: p.charterActionLog || [],
           touchpointLog: p.touchpointLog || [],
+          codeTags: p.codeTags || [],
         }))
         return parsed
       }
@@ -449,6 +459,48 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // Module 11 — D32k Qualitative Coding Workbench.
+  // QCW-01: codebook is Organization-scoped, not a fixed platform-wide taxonomy.
+  const addCode = useCallback((orgId, code) => {
+    setData((prev) => ({
+      ...prev,
+      codebooks: { ...prev.codebooks, [orgId]: [...(prev.codebooks[orgId] || []), { id: uid('code'), ...code }] },
+    }))
+  }, [])
+
+  const removeCode = useCallback((orgId, codeId) => {
+    setData((prev) => ({
+      ...prev,
+      codebooks: { ...prev.codebooks, [orgId]: (prev.codebooks[orgId] || []).filter((c) => c.id !== codeId) },
+    }))
+  }, [])
+
+  // QCW-02/04: tags a coaching note or resistance-log entry with a code from
+  // the active codebook; linkedResistanceId (QCW-04) optionally cross-references
+  // an existing Resistance Log barrier when the tagged source is a coaching note.
+  const tagItem = useCallback((projectId, { codeId, sourceType, sourceId, linkedResistanceId }) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        codeTags: [
+          { id: uid('ctag'), codeId, sourceType, sourceId, linkedResistanceId: linkedResistanceId || null, date: todayISO() },
+          ...(p.codeTags || []),
+        ],
+      })),
+    }))
+  }, [])
+
+  const removeCodeTag = useCallback((projectId, tagId) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        codeTags: (p.codeTags || []).filter((tg) => tg.id !== tagId),
+      })),
+    }))
+  }, [])
+
   const updateLicense = useCallback((patch) => {
     setData((prev) => ({ ...prev, license: { ...prev.license, ...patch } }))
   }, [])
@@ -558,6 +610,7 @@ export function AppStateProvider({ children }) {
         phaseChecklists: [],
         charterActionLog: [],
         touchpointLog: [],
+        codeTags: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [
@@ -677,6 +730,10 @@ export function AppStateProvider({ children }) {
       deleteCharterActionLog,
       logTouchpoint,
       deleteTouchpointLog,
+      addCode,
+      removeCode,
+      tagItem,
+      removeCodeTag,
       updateLicense,
       setRequireJustification,
       llmConfig,
@@ -728,6 +785,10 @@ export function AppStateProvider({ children }) {
       deleteCharterActionLog,
       logTouchpoint,
       deleteTouchpointLog,
+      addCode,
+      removeCode,
+      tagItem,
+      removeCodeTag,
       updateLicense,
       setRequireJustification,
       llmConfig,

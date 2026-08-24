@@ -5,6 +5,7 @@ import macroProcessCatalog from './macroProcesses.js'
 import e2eProcessCatalog from './e2eProcesses.js'
 import phaseTemplateCatalog from './phaseTemplates.js'
 import defaultRacsiGrid from './racsi.js'
+import defaultCodebook from './defaultCodebook.js'
 import { DEFAULT_ROLE_PERMISSIONS } from './constants.js'
 import * as atlas from './cases/atlas.js'
 import * as atlasTangier from './cases/atlasTangier.js'
@@ -23,6 +24,7 @@ const SUB_COLLECTIONS = [
   'phaseChecklists',
   'charterActionLog',
   'touchpointLog',
+  'codeTags',
 ]
 
 function normalizeCmProject(raw) {
@@ -133,6 +135,13 @@ export function buildSeed() {
     { id: 'u-employee', name: 'Younes Amrani', email: 'younes.amrani@atlas-industrial.example', role: 'employee', scopeType: 'project', scopeId: 'cm-atlas-erp', language: 'ar' },
   ]
 
+  // D32k QCW-01: each Organization gets its own starter codebook, editable
+  // thereafter — not a fixed platform-wide taxonomy.
+  const codebooks = {}
+  for (const org of organizations) {
+    codebooks[org.id] = defaultCodebook.map((c) => ({ id: uid('code'), ...c }))
+  }
+
   const rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
 
   // Platform-wide default: any score/state change requires a justification.
@@ -168,6 +177,7 @@ export function buildSeed() {
     aiOrgActivation,
     aiProjectOverride,
     aiUsageLog,
+    codebooks,
     rolePermissions,
     requireJustification,
     license,

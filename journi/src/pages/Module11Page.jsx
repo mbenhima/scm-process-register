@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
+import { useScopedOrg } from '../utils/useScoped.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
@@ -15,7 +16,198 @@ import { canWrite } from '../utils/rbac.js'
 const STATUS_TONE = { open: 'red', in_progress: 'amber', closed: 'green' }
 const STATUS_LABEL = { open: 'open', in_progress: 'in progress', closed: 'closed' }
 
-function Content({ project }) {
+function CodingWorkbenchTab({ project, canManage }) {
+  const { t } = useI18n()
+  const { data, addCode, removeCode, tagItem, removeCodeTag } = useAppState()
+  const org = useScopedOrg()
+  const codebook = (org && data.codebooks[org.id]) || []
+  const [newCode, setNewCode] = useState({ label: '', description: '' })
+  const [tagSource, setTagSource] = useState(null) // { sourceType, sourceId }
+  const [tagCodeId, setTagCodeId] = useState('')
+  const [tagLinkId, setTagLinkId] = useState('')
+
+  const codeTags = project.codeTags || []
+  const codeById = Object.fromEntries(codebook.map((c) => [c.id, c]))
+  const frequency = codebook
+    .map((c) => ({ code: c, count: codeTags.filter((tg) => tg.codeId === c.id).length }))
+    .sort((a, b) => b.count - a.count)
+
+  const taggableNotes = [
+    ...project.coachingNotes.map((n) => ({ sourceType: 'coaching', sourceId: n.id, label: `${n.managerName} → ${n.cohort}`, text: n.note })),
+    ...project.resistanceLog.map((r) => ({ sourceType: 'resistance', sourceId: r.id, label: t(`resistance_${r.type}`), text: r.rootCause })),
+  ]
+
+  function openTag(source) {
+    setTagSource(source)
+    setTagCodeId(codebook[0]?.id || '')
+    setTagLinkId('')
+  }
+
+  function submitTag() {
+    if (!tagCodeId || !tagSource) return
+    tagItem(project.id, {
+      codeId: tagCodeId,
+      sourceType: tagSource.sourceType,
+      sourceId: tagSource.sourceId,
+      linkedResistanceId: tagSource.sourceType === 'coaching' ? tagLinkId || null : null,
+    })
+    setTagSource(null)
+  }
+
+  return (
+    <div className="space-y-5">
+      <p className="text-xs text-ink/50">{t('m11_qcw_desc')}</p>
+
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-1 text-sm">{t('m11_qcw_codebook')}</h3>
+        <p className="text-xs text-ink/40 mb-3">{t('m11_qcw_codebook_desc')}</p>
+        {!org && <p className="text-xs text-ink/40 italic">{t('selectOrg')}</p>}
+        {org && (
+          <>
+            <div className="space-y-1.5 mb-3">
+              {codebook.map((c) => (
+                <div key={c.id} className="flex items-start justify-between gap-2 rounded-lg border border-brand-100 p-2">
+                  <div>
+                    <span className="font-mono text-xs text-brand-700">{c.label}</span>
+                    <p className="text-xs text-ink/50">{c.description}</p>
+                  </div>
+                  {canManage && (
+                    <button className="text-ink/30 hover:text-red-600 text-xs shrink-0" onClick={() => removeCode(org.id, c.id)}>
+                      ✕
+                    </button>
+                  )}
+                </div>
+              ))}
+              {codebook.length === 0 && <p className="text-xs text-ink/40 italic">{t('noData')}</p>}
+            </div>
+            {canManage && (
+              <div className="flex gap-2 flex-wrap">
+                <input
+                  className="input text-xs py-1 w-40"
+                  placeholder={t('m11_qcw_code_label')}
+                  value={newCode.label}
+                  onChange={(e) => setNewCode({ ...newCode, label: e.target.value })}
+                />
+                <input
+                  className="input text-xs py-1 flex-1 min-w-[10rem]"
+                  placeholder={t('m11_qcw_code_desc')}
+                  value={newCode.description}
+                  onChange={(e) => setNewCode({ ...newCode, description: e.target.value })}
+                />
+                <button
+                  className="btn-secondary text-xs"
+                  onClick={() => {
+                    if (!newCode.label.trim()) return
+                    addCode(org.id, newCode)
+                    setNewCode({ label: '', description: '' })
+                  }}
+                >
+                  + {t('add')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-1 text-sm">{t('m11_qcw_tagging')}</h3>
+        <p className="text-xs text-ink/40 mb-3">{t('m11_qcw_tagging_desc')}</p>
+        <div className="space-y-2">
+          {taggableNotes.map((src) => {
+            const tags = codeTags.filter((tg) => tg.sourceType === src.sourceType && tg.sourceId === src.sourceId)
+            return (
+              <div key={`${src.sourceType}-${src.sourceId}`} className="rounded-lg border border-brand-100 p-2.5">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div>
+                    <Badge tone="gray">{src.sourceType === 'coaching' ? t('coachingNote') : t('resistanceType')}</Badge>
+                    <span className="text-xs text-ink/50 ms-1">{src.label}</span>
+                  </div>
+                  {canManage && (
+                    <button className="btn-secondary text-[11px] py-0.5 px-2" onClick={() => openTag(src)}>
+                      + {t('m11_qcw_tag_button')}
+                    </button>
+                  )}
+                </div>
+                <p className="text-xs text-ink/60 mt-1">{src.text}</p>
+                {tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-1.5">
+                    {tags.map((tg) => (
+                      <span key={tg.id} className="inline-flex items-center gap-1 text-[11px] rounded-full bg-brand-50 text-brand-800 px-2 py-0.5">
+                        {codeById[tg.codeId]?.label || '?'}
+                        {tg.linkedResistanceId && <span title={t('m11_qcw_linked')}>🔗</span>}
+                        {canManage && (
+                          <button className="text-brand-400 hover:text-red-600" onClick={() => removeCodeTag(project.id, tg.id)}>✕</button>
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+          {taggableNotes.length === 0 && <p className="text-xs text-ink/40 italic">{t('noData')}</p>}
+        </div>
+      </div>
+
+      <div className="card p-4">
+        <h3 className="font-semibold text-brand-950 mb-1 text-sm">{t('m11_qcw_frequency')}</h3>
+        <p className="text-xs text-ink/40 mb-3">{t('m11_qcw_frequency_desc')}</p>
+        <div className="space-y-1.5">
+          {frequency.map(({ code, count }) => (
+            <div key={code.id} className="flex items-center gap-2">
+              <span className="text-xs text-ink/70 w-40 shrink-0 truncate">{code.label}</span>
+              <div className="flex-1 h-2 rounded-full bg-brand-50 overflow-hidden">
+                <div
+                  className="h-full bg-brand-500"
+                  style={{ width: `${frequency[0]?.count ? (count / frequency[0].count) * 100 : 0}%` }}
+                />
+              </div>
+              <span className="text-xs text-ink/50 w-6 text-end">{count}</span>
+            </div>
+          ))}
+          {frequency.length === 0 && <p className="text-xs text-ink/40 italic">{t('noData')}</p>}
+        </div>
+      </div>
+
+      <Modal
+        open={!!tagSource}
+        onClose={() => setTagSource(null)}
+        title={t('m11_qcw_tag_button')}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setTagSource(null)}>{t('cancel')}</button>
+            <button className="btn-primary" onClick={submitTag}>{t('save')}</button>
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <div>
+            <label className="label">{t('m11_qcw_codebook')}</label>
+            <select className="input" value={tagCodeId} onChange={(e) => setTagCodeId(e.target.value)}>
+              {codebook.map((c) => (
+                <option key={c.id} value={c.id}>{c.label}</option>
+              ))}
+            </select>
+          </div>
+          {tagSource?.sourceType === 'coaching' && (
+            <div>
+              <label className="label">{t('m11_qcw_link_barrier')}</label>
+              <select className="input" value={tagLinkId} onChange={(e) => setTagLinkId(e.target.value)}>
+                <option value="">{t('m11_qcw_flag_new')}</option>
+                {project.resistanceLog.map((r) => (
+                  <option key={r.id} value={r.id}>{r.rootCause.slice(0, 60)}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      </Modal>
+    </div>
+  )
+}
+
+function ResistanceLogTab({ project }) {
   const { t } = useI18n()
   const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
   // Employees may submit a concern (per spec, "submission only") even though they
@@ -199,6 +391,28 @@ function Content({ project }) {
           </label>
         </div>
       </Modal>
+    </div>
+  )
+}
+
+function Content({ project }) {
+  const { t } = useI18n()
+  const { data, currentUser } = useAppState()
+  const canManage = canWrite(currentUser?.role, data.rolePermissions)
+  const [tab, setTab] = useState('log')
+
+  return (
+    <div>
+      <div className="flex gap-2 mb-4">
+        <button className={`tab ${tab === 'log' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('log')}>
+          {t('m11_tab_log')}
+        </button>
+        <button className={`tab ${tab === 'coding' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('coding')}>
+          {t('m11_tab_coding')}
+        </button>
+      </div>
+      {tab === 'log' && <ResistanceLogTab project={project} />}
+      {tab === 'coding' && <CodingWorkbenchTab project={project} canManage={canManage} />}
     </div>
   )
 }
