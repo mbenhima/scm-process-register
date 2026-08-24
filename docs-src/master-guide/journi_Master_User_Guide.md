@@ -529,11 +529,11 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 **Timeline impact:** Inserted as a 2--4 week parallel track within Build (around W20--24); Train's Task 1 (role-based delivery) does not open for the Settat cohort while their Desire score remains escalated --- Test's Task 2 UAT recruitment (Part 1B.3) is affected in turn if Settat's representative isn't ready to participate meaningfully.
 
 **Recovery Tasks:**
-1. **Cluster barrier-reason notes by root cause.** Houda Zerouali reviews Settat's logged barrier notes and finds the two recurring themes: workflow visibility and position security, not the system itself. *journi: M5.*
-2. **Run targeted listening sessions.** Small-group sessions with the Settat plant-floor cohort validate which of the two themes is actually driving the stall --- in this case, position security, not workflow visibility.
-3. **Design a specific, credible response.** Driss El Amrani and the CFO agree a concrete, verifiable commitment on staffing levels post-go-live --- not a vague reassurance.
-4. **Have the Sponsor deliver the response personally.** The CFO delivers the commitment directly to the Settat cohort, in person, rather than through a written communication alone --- consistent with the CM Charter Sponsor standard (M19).
-5. **Re-score Desire and Kübler-Ross sentiment 2--4 weeks later.** Both scores are re-read on M5/M6 to confirm the intervention actually worked, not just that it happened. *journi: M5--M6.*
+1. **Cluster barrier-reason notes by root cause.** Houda Zerouali reviews Settat's logged barrier notes and finds the two recurring themes: workflow visibility and position security, not the system itself. *journi: M5.* Technique: root-cause clustering --- goal: separate the real driver from the noise before designing any response.
+2. **Run targeted listening sessions.** Small-group sessions with the Settat plant-floor cohort validate which of the two themes is actually driving the stall --- in this case, position security, not workflow visibility. Technique: targeted listening session --- goal: confirm the clustering with the cohort directly, not assume it.
+3. **Design a specific, credible response.** Driss El Amrani and the CFO agree a concrete, verifiable commitment on staffing levels post-go-live --- not a vague reassurance. Technique: credible-response design --- goal: a commitment specific and checkable enough that the cohort can hold the Sponsor to it.
+4. **Have the Sponsor deliver the response personally.** The CFO delivers the commitment directly to the Settat cohort, in person, rather than through a written communication alone --- consistent with the CM Charter Sponsor standard (M19). Technique: sponsor-delivered response --- goal: the weight of a personal, visible commitment, not a memo.
+5. **Re-score Desire and Kübler-Ross sentiment 2--4 weeks later.** Both scores are re-read on M5/M6 to confirm the intervention actually worked, not just that it happened. *journi: M5--M6.* Technique: post-intervention re-scoring --- goal: verify the fix worked, not just that it was attempted.
 
 **Outputs:** root-cause clustering of the Desire stall; a specific, sponsor-delivered response; updated Desire and Kübler-Ross scores; Settat cleared to enter Train's Task 1 on schedule.
 
@@ -548,11 +548,11 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 **Timeline impact:** A targeted, individual-level intervention runs alongside Train; the flagged individual does not count toward Train's Task 3 cohort-readiness call until Bridges moves off Ending.
 
 **Recovery Tasks:**
-1. **Review the alert and confirm it against supervisor observation.** Driss El Amrani checks whether the flagged individual's supervisor has independently noticed anything --- confirming this isn't a false positive from a single bad Bridges reading. *journi: M6.*
-2. **Hold a 1:1 focused on what is being let go of, not on skills.** The conversation deliberately does not revisit training content --- the person already scored Knowledge ≥ 4 and Ability ≥ 4; the gap is emotional, not technical.
-3. **Distinguish a genuine loss concern from simple reluctance.** The 1:1 surfaces whether this is a real identity/loss concern (for example, a role that existed under the legacy system and doesn't exist in the new one) or ordinary change reluctance.
-4. **Provide an explicit closure moment if a genuine loss is identified.** If real, the loss is acknowledged explicitly and directly --- not talked around.
-5. **Re-check the Bridges reading only, at the next scheduled pulse.** Only Bridges is re-scored; Knowledge and Ability are already confirmed and do not need re-testing. *journi: M6.*
+1. **Review the alert and confirm it against supervisor observation.** Driss El Amrani checks whether the flagged individual's supervisor has independently noticed anything --- confirming this isn't a false positive from a single bad Bridges reading. *journi: M6.* Technique: cross-source confirmation --- goal: rule out a false positive before spending a 1:1 on it.
+2. **Hold a 1:1 focused on what is being let go of, not on skills.** The conversation deliberately does not revisit training content --- the person already scored Knowledge ≥ 4 and Ability ≥ 4; the gap is emotional, not technical. Technique: loss-focused 1:1 --- goal: address the actual gap, not the one that's easier to talk about.
+3. **Distinguish a genuine loss concern from simple reluctance.** The 1:1 surfaces whether this is a real identity/loss concern (for example, a role that existed under the legacy system and doesn't exist in the new one) or ordinary change reluctance. Technique: genuine-loss diagnosis --- goal: don't over-treat ordinary reluctance as a structural loss, or under-treat a real one.
+4. **Provide an explicit closure moment if a genuine loss is identified.** If real, the loss is acknowledged explicitly and directly --- not talked around. Technique: explicit closure moment --- goal: name the loss plainly, since an unacknowledged one lingers longer than an acknowledged one.
+5. **Re-check the Bridges reading only, at the next scheduled pulse.** Only Bridges is re-scored; Knowledge and Ability are already confirmed and do not need re-testing. *journi: M6.* Technique: scoped re-check --- goal: confirm movement on the one dimension that was actually in question.
 
 **Outputs:** confirmed or dismissed divergence case; documented loss concern if genuine; updated Bridges reading; the individual cleared for Train's cohort-readiness call once resolved.
 
@@ -567,11 +567,11 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 **Timeline impact:** Does not delay go-live itself; extends the hypercare and reinforcement budget and staffing window by the observed lag --- commonly 2--6 weeks past the original Hypercare end date.
 
 **Recovery Tasks:**
-1. **Separate the technical go-live milestone from the Lewin phase call.** Driss El Amrani and the ITL team agree explicitly: a clean technical cutover is not, by itself, evidence for Refreeze. *journi: M3.*
-2. **Mark Lewin as "provisional Refreeze" pending emotional-layer evidence.** Exactly the Phase 6 Task 4 language --- logged as provisional, with a justification stating what evidence is still pending. *journi: M3.*
-3. **Keep Reinforcement and hypercare fully active.** The hypercare support model (Phase 7 Task 1) is not tapered down just because the Lewin call is provisional rather than confirmed.
-4. **Re-pulse Bridges/Kübler-Ross at 2 and 4 weeks.** Exactly Phase 7's Task 3, run with this exception's resolution specifically in mind. *journi: M6.*
-5. **Confirm or walk back the Refreeze call once evidence supports it.** If the re-pulse shows genuine movement, Refreeze is confirmed; if not, hypercare extends further and the cycle repeats. *journi: M3.*
+1. **Separate the technical go-live milestone from the Lewin phase call.** Driss El Amrani and the ITL team agree explicitly: a clean technical cutover is not, by itself, evidence for Refreeze. *journi: M3.* Technique: milestone/phase-call separation --- goal: prevent a technical success from being mistaken for an emotional one.
+2. **Mark Lewin as "provisional Refreeze" pending emotional-layer evidence.** Exactly the Phase 6 Task 4 language --- logged as provisional, with a justification stating what evidence is still pending. *journi: M3.* Technique: provisional-state logging --- goal: an honest, auditable holding position rather than a premature confirmed one.
+3. **Keep Reinforcement and hypercare fully active.** The hypercare support model (Phase 7 Task 1) is not tapered down just because the Lewin call is provisional rather than confirmed. Technique: sustained support funding --- goal: don't let a budget conversation force the Lewin call before the evidence is ready.
+4. **Re-pulse Bridges/Kübler-Ross at 2 and 4 weeks.** Exactly Phase 7's Task 3, run with this exception's resolution specifically in mind. *journi: M6.* Technique: exception-scoped re-pulse --- goal: the same technique as the normal flow, run with this specific open question in mind.
+5. **Confirm or walk back the Refreeze call once evidence supports it.** If the re-pulse shows genuine movement, Refreeze is confirmed; if not, hypercare extends further and the cycle repeats. *journi: M3.* Technique: evidence-gated confirmation --- goal: no fixed number of cycles guaranteed; the evidence decides when this closes.
 
 **Outputs:** an explicit provisional Lewin phase call rather than a premature confirmed one; sustained hypercare funding through the lag; a confirmed or corrected Lewin phase once the re-pulse lands.
 
@@ -586,11 +586,11 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 **Timeline impact:** A short, contained recovery cycle of days to roughly two weeks; escalated to Steering Committee only if the pattern recurs across multiple cohorts rather than staying isolated to the one affected.
 
 **Recovery Tasks:**
-1. **Confirm the regression is tied to a specific incident.** Houda Zerouali checks whether this is a one-off reaction to the Kenitra defect or a broader readiness failure --- in this case, clearly the former.
-2. **Resolve or clearly communicate the status of the triggering defect.** ITL fixes the inventory-matching defect and Driss El Amrani communicates the fix explicitly to the affected cohort, closing the loop rather than letting it fade unaddressed.
-3. **Have the supervisor directly acknowledge the setback.** The Kenitra plant supervisor acknowledges the incident with the affected team directly, rather than letting the program office's fix announcement stand in for a floor-level conversation.
-4. **Provide targeted, in-context coaching on the specific process step affected.** Coaching is scoped narrowly to the exact inventory-matching step that failed, not a general refresher.
-5. **Re-pulse the affected cohort only, at 1--2 weeks.** Only the Kenitra cohort is re-scored --- this is a localized regression, not a program-wide one. *journi: M6.*
+1. **Confirm the regression is tied to a specific incident.** Houda Zerouali checks whether this is a one-off reaction to the Kenitra defect or a broader readiness failure --- in this case, clearly the former. Technique: incident-scope confirmation --- goal: don't escalate a contained incident into a program-wide panic.
+2. **Resolve or clearly communicate the status of the triggering defect.** ITL fixes the inventory-matching defect and Driss El Amrani communicates the fix explicitly to the affected cohort, closing the loop rather than letting it fade unaddressed. Technique: closed-loop defect communication --- goal: the cohort hears the fix was made, not left to assume nothing happened.
+3. **Have the supervisor directly acknowledge the setback.** The Kenitra plant supervisor acknowledges the incident with the affected team directly, rather than letting the program office's fix announcement stand in for a floor-level conversation. Technique: supervisor-level acknowledgment --- goal: a floor-level conversation carries more weight than a program-office announcement alone.
+4. **Provide targeted, in-context coaching on the specific process step affected.** Coaching is scoped narrowly to the exact inventory-matching step that failed, not a general refresher. Technique: in-context, scoped coaching --- goal: rebuild confidence on the specific step, not a diluted general refresher.
+5. **Re-pulse the affected cohort only, at 1--2 weeks.** Only the Kenitra cohort is re-scored --- this is a localized regression, not a program-wide one. *journi: M6.* Technique: localized re-pulse --- goal: confirm recovery where the regression actually happened.
 
 **Outputs:** the triggering defect resolved and communicated; the regression event and response documented; confirmed recovery, or continued monitoring if the re-pulse doesn't yet show it.
 
@@ -605,11 +605,11 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 **Timeline impact:** Extends the formal project-closure date by however long it takes to accumulate 2--3 consecutive healthy checkpoints on M12 --- commonly 4--8 weeks past the original W60 close.
 
 **Recovery Tasks:**
-1. **Flag the Reinforcement stall explicitly.** Driss El Amrani flags the stall on M5 rather than letting Sustain's Task 4 (call Refreeze; close the project) proceed on schedule regardless. *journi: M5.*
-2. **Reconvene the Sponsor to re-authorize a checkpoint cadence.** The CFO re-authorizes a defined checkpoint cadence beyond the originally planned close date.
-3. **Re-activate or formally re-charter the champion network.** The champion network, which naturally quiets down as a program matures, is re-activated specifically to reinforce the new process on the floor.
-4. **Embed adoption metrics into the next performance-review cycle.** Adoption metrics are explicitly written into HR's next performance-review cycle, giving Reinforcement a structural home beyond the CM project's own lifespan.
-5. **Delay the formal Refreeze/closure call.** Sustain's Task 4 does not run until checkpoints show target Reinforcement, however long that takes. *journi: M3.*
+1. **Flag the Reinforcement stall explicitly.** Driss El Amrani flags the stall on M5 rather than letting Sustain's Task 4 (call Refreeze; close the project) proceed on schedule regardless. *journi: M5.* Technique: explicit stall flagging --- goal: interrupt a default-to-close momentum with a documented, deliberate flag.
+2. **Reconvene the Sponsor to re-authorize a checkpoint cadence.** The CFO re-authorizes a defined checkpoint cadence beyond the originally planned close date. Technique: checkpoint-cadence re-authorization --- goal: a Sponsor-backed extension, not an informal one the team grants itself.
+3. **Re-activate or formally re-charter the champion network.** The champion network, which naturally quiets down as a program matures, is re-activated specifically to reinforce the new process on the floor. Technique: champion network re-activation --- goal: reinforcement needs the same floor-level presence that adoption did.
+4. **Embed adoption metrics into the next performance-review cycle.** Adoption metrics are explicitly written into HR's next performance-review cycle, giving Reinforcement a structural home beyond the CM project's own lifespan. Technique: structural metric embedding --- goal: Reinforcement survives the CM project team's own eventual departure.
+5. **Delay the formal Refreeze/closure call.** Sustain's Task 4 does not run until checkpoints show target Reinforcement, however long that takes. *journi: M3.* Technique: delayed, evidence-gated closure --- goal: closure waits on evidence, not on a project team's patience running out.
 
 **Outputs:** a documented Reinforcement stall and remediation plan; a re-authorized checkpoint cadence; a re-chartered champion network; a delayed but evidence-based Refreeze call rather than a premature one.
 
@@ -624,11 +624,11 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 **Timeline impact:** Runs continuously alongside Test, Train, and Hypercare; enables a cohort-by-cohort go/no-go at Phase 5's gate instead of a single all-or-nothing call for all 3,400 people at once.
 
 **Recovery Tasks:**
-1. **Disaggregate the Composite Readiness Index by site.** Meryem Sabri pulls the blended M14 number apart into three site-level readings, using the Stakeholder Map's site tags on M4. *journi: M4.*
-2. **Identify which cohorts are driving the spread.** Casablanca high, Settat low, Kenitra mid-but-dipping-post-E4 --- named explicitly rather than averaged away.
-3. **Investigate what Casablanca did differently.** Proximity to the program team and an earlier champion briefing are identified as the concrete, transferable factors --- not an unexplained "Casablanca is just more ready."
-4. **Transfer concrete practices to Settat and Kenitra.** The earlier champion briefing timing is applied to the next site rollout in the scenario library (Part 4); Settat's dedicated E1 recovery plan is extended to cover the same visibility gap at Kenitra proactively.
-5. **Continue reporting cohort-level readiness alongside the project-level number.** Every future Steering Committee readout carries the three-site breakdown, not just the blended figure, through Phase 5's cohort-by-cohort gate and beyond.
+1. **Disaggregate the Composite Readiness Index by site.** Meryem Sabri pulls the blended M14 number apart into three site-level readings, using the Stakeholder Map's site tags on M4. *journi: M4.* Technique: site-level disaggregation --- goal: replace one misleading average with three honest readings.
+2. **Identify which cohorts are driving the spread.** Casablanca high, Settat low, Kenitra mid-but-dipping-post-E4 --- named explicitly rather than averaged away. Technique: explicit spread identification --- goal: name which sites are actually driving the number, not just that it's spread out.
+3. **Investigate what Casablanca did differently.** Proximity to the program team and an earlier champion briefing are identified as the concrete, transferable factors --- not an unexplained "Casablanca is just more ready." Technique: root-cause comparison --- goal: a transferable explanation, not an unexplained label.
+4. **Transfer concrete practices to Settat and Kenitra.** The earlier champion briefing timing is applied to the next site rollout in the scenario library (Part 4); Settat's dedicated E1 recovery plan is extended to cover the same visibility gap at Kenitra proactively. Technique: cross-site practice transfer --- goal: apply what worked at the strongest site before the weakest site needs its own separate recovery.
+5. **Continue reporting cohort-level readiness alongside the project-level number.** Every future Steering Committee readout carries the three-site breakdown, not just the blended figure, through Phase 5's cohort-by-cohort gate and beyond. Technique: standing disaggregated reporting --- goal: the site-level view becomes the default, not a one-time analysis.
 
 **Outputs:** a disaggregated, site-level readiness report; a root-cause comparison between Casablanca and the other two sites; a revised, cohort-by-cohort go/no-go recommendation at Phase 5's gate rather than one all-or-nothing call.
 
