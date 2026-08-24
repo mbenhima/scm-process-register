@@ -61,6 +61,13 @@ for t in d.tables:
     elif len(t.columns) == 3 and t.rows[0].cells[0].text.strip() == 'ID':
         set_col_widths(t, ALERT_NONLIVE_WIDTHS)
 
+# ---- Prevent a table row's content from splitting across a page break ----
+for t in d.tables:
+    for row in t.rows:
+        trPr = row._tr.get_or_add_trPr()
+        cant_split = OxmlElement('w:cantSplit')
+        trPr.append(cant_split)
+
 # ---- Title block (paragraphs 0-4) ----
 titles = d.paragraphs[0:5]
 sizes = [30, 15, 11.5, 11.5, 11]
