@@ -222,15 +222,15 @@ journi\'s applied interaction map defines eight implementation phases. This guid
 
 **2.1 Core Modules Referenced Throughout This Guide**
 
--   Module 4 --- Initiative Registry: single-select Lewin phase; drives the Benchmarking reference band in Module 15.
+-   M3 --- Initiative & Portfolio Registry: single-select Lewin phase; drives the Benchmarking reference band in M14 (Metrics & Analytics Dashboard).
 
--   Module 5 --- Stakeholder Map: cohort, site and department structure used for disaggregated readiness views.
+-   M4 --- Stakeholder & Impact Mapping: cohort, site and department structure used for disaggregated readiness views.
 
--   Module 6 --- ADKAR Engine: five 1--5 block scores plus mandatory barrier-reason notes for any score ≤ 2 (auto-escalated).
+-   M5 --- ADKAR Engine: five 1--5 block scores plus mandatory barrier-reason notes for any score ≤ 2 (auto-escalated).
 
--   Module 7 --- Emotional & Transition Layer: Bridges and Kübler-Ross, single-select or inferred from free text; feeds the Divergence Pattern Detector and the Composite Readiness Index.
+-   M6 --- Emotional & Transition Layer: Bridges and Kübler-Ross, single-select or inferred from free text; feeds the Divergence Pattern Detector (Notification Center alert ALT-001, computed from M5 + M6 data) and the Composite Readiness Index.
 
--   Module 15 --- Benchmarking: reference bands used at every go/no-go checkpoint.
+-   M14 --- Metrics & Analytics Dashboard (Benchmarking tab): reference bands used at every go/no-go checkpoint.
 
 **2.2 One Rule Before You Start Logging Anything**
 
@@ -483,17 +483,17 @@ Establishes the business case, opens the journi project, and captures the Month-
   ----------------------------------------------------------------------------------------------------------------------------------------------------
   **Week**   **Action**                                                                                     **journi Module**   **Primary Owner(s)**
   ---------- ---------------------------------------------------------------------------------------------- ------------------- ----------------------
-  W1         Kickoff; confirm Executive Sponsor; open the Initiative Registry and set Lewin = Unfreeze.     Module 4            CM, ES
+  W1         Kickoff; confirm Executive Sponsor; open the Initiative Registry and set Lewin = Unfreeze.     M3            CM, ES
 
   W2--W3     Run current-state discovery workshops per impacted function.                                   ---                 PM, FPO
 
-  W4         Quantify pain points and the cost of inaction; build the Stakeholder Map.                      Module 5            PM, CM
+  W4         Quantify pain points and the cost of inaction; build the Stakeholder Map.                      M4            PM, CM
 
   W5--W6     Draft and review future-state process scope and design principles.                             ---                 PM, FPO, ITL
 
-  W7         Formally open the Change Management project; brief the CM team on Modules 6--7.                Module 6--7         CM
+  W7         Formally open the Change Management project; brief the CM team on Modules M5--M6.                M5--M6         CM
 
-  W8         Run the baseline ADKAR / Bridges / Kübler-Ross pulse (Month-0 reading).                        Module 6--7         CM
+  W8         Run the baseline ADKAR / Bridges / Kübler-Ross pulse (Month-0 reading).                        M5--M6         CM
 
   W9         Review baseline pulse with the Steering Committee; confirm the risk register.                  ---                 CM, ES
 
@@ -501,7 +501,7 @@ Establishes the business case, opens the journi project, and captures the Month-
 
   W11        Buffer / catch-up; finalize the RAID log.                                                      ---                 PM
 
-  W12        Phase 1 gate review --- confirm the Unfreeze reading against the evidence, not the calendar.   Module 4            CM, ES
+  W12        Phase 1 gate review --- confirm the Unfreeze reading against the evidence, not the calendar.   M3            CM, ES
   ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 *Table 5.1 --- Weekly action plan for Discovery & Design.*
@@ -517,13 +517,13 @@ Technical configuration proceeds in parallel with the first communications wave 
 
   W7--W8     Continue configuration; begin design-review checkpoints with functional owners.                     ---                 ITL, FPO
 
-  W9--W10    Recruit change champion network nominees.                                                           Module 5            CM, SUP
+  W9--W10    Recruit change champion network nominees.                                                           M4            CM, SUP
 
   W11--W12   Launch Phase-1 communications (why / what / when) and an FAQ channel.                               ---                 CM
 
   W13--W14   Brief and activate the champion network.                                                            ---                 CM
 
-  W15--W16   Re-run the ADKAR pulse (Awareness / early Desire).                                                  Module 6            CM
+  W15--W16   Re-run the ADKAR pulse (Awareness / early Desire).                                                  M5            CM
 
   W17--W18   Continue design-review checkpoints; resolve open build decisions.                                   ---                 PM, FPO
 
@@ -531,7 +531,7 @@ Technical configuration proceeds in parallel with the first communications wave 
 
   W21--W22   Finalize the configuration decision log.                                                            ---                 ITL
 
-  W23--W24   Phase 2 gate review --- confirm the Awareness → Desire trend with the Steering Committee.           Module 6            CM, PM
+  W23--W24   Phase 2 gate review --- confirm the Awareness → Desire trend with the Steering Committee.           M5            CM, PM
   ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 *Table 5.2 --- Weekly action plan for Build & Configuration.*
@@ -551,11 +551,11 @@ The highest-risk, least-visible phase --- exactly where journi\'s own data shows
 
   W19--W20   Run the first mock migration cycle and reconcile results.                                          ---                 ITL, PM
 
-  W21--W22   Watch for Desire-stall signals from low end-user visibility; log a barrier reason if Desire ≤ 2.   Module 6            CM
+  W21--W22   Watch for Desire-stall signals from low end-user visibility; log a barrier reason if Desire ≤ 2.   M5            CM
 
   W23--W24   Run the second mock migration cycle; prepare data-quality sign-off.                                ---                 ITL
 
-  W25--W26   Update the Composite Readiness Index ahead of the Testing entry gate.                              Module 6--7         CM
+  W25--W26   Update the Composite Readiness Index ahead of the Testing entry gate.                              M5--M6         CM
 
   W27--W28   Data-quality sign-off; Phase 3 gate review.                                                        ---                 FPO, ES
   --------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -571,11 +571,11 @@ The first point where a representative slice of end users gets real hands-on exp
   ---------- ---------------------------------------------------------------------------------------------------------- ------------------- ----------------------
   W25--W26   Execute system integration testing (SIT).                                                                  ---                 ITL
 
-  W27        Recruit a representative UAT cohort.                                                                       Module 5            CM, FPO
+  W27        Recruit a representative UAT cohort.                                                                       M4            CM, FPO
 
   W28--W29   Run UAT sessions; log defects and usability friction.                                                      ---                 FPO, EU
 
-  W30        Cross-check Knowledge / Ability scores against the Bridges reading --- run the Divergence Pattern check.   Module 7            CM
+  W30        Cross-check Knowledge / Ability scores against the Bridges reading --- run the Divergence Pattern check.   M6            CM
 
   W31        Triage and remediate defects before sign-off.                                                              ---                 ITL, PM
 
@@ -597,11 +597,11 @@ Knowledge becomes Ability under increasingly realistic conditions, while Bridges
 
   W31--W32   Deploy the sandbox practice environment; deliver training wave 2.           ---                 CM
 
-  W33--W34   Run readiness assessments per cohort (Knowledge / Ability scoring).         Module 6            CM
+  W33--W34   Run readiness assessments per cohort (Knowledge / Ability scoring).         M5            CM
 
   W35        Brief supervisors on real-time floor-coaching expectations for go-live.     ---                 CM, SUP
 
-  W36        Confirm cohort-level go / no-go readiness against the benchmarking bands.   Module 15           ES, CM, PM
+  W36        Confirm cohort-level go / no-go readiness against the benchmarking bands.   M14           ES, CM, PM
   ---------------------------------------------------------------------------------------------------------------------------------
 
 *Table 5.5 --- Weekly action plan for Training & Change Readiness.*
@@ -619,7 +619,7 @@ The sharpest instance of the two-clock problem: a single-day organizational mile
 
   W37 --- D1   Communicate go-live confirmation to all cohorts.                                         ---                 CM
 
-  W37 --- D1   Activate the hypercare support model; mark Lewin as "Change → Refreeze (provisional)".   Module 4            CM, SUP
+  W37 --- D1   Activate the hypercare support model; mark Lewin as "Change → Refreeze (provisional)".   M3            CM, SUP
   ------------------------------------------------------------------------------------------------------------------------------------------------
 
 *Table 5.6 --- Weekly action plan for Cutover & Go-Live.*
@@ -633,11 +633,11 @@ The last mile of adoption is won or lost here --- and regression is normal, expe
   ---------- -------------------------------------------------------------------------------------- ------------------- ----------------------
   W38        Staff the elevated support desk; begin daily adoption-metric tracking.                 ---                 ITL, CM
 
-  W39--W40   First Kübler-Ross / Bridges re-pulse (2-week mark).                                    Module 7            CM
+  W39--W40   First Kübler-Ross / Bridges re-pulse (2-week mark).                                    M6            CM
 
   W41--W42   Coach any cohort showing regression; continue daily metric triage.                     ---                 SUP, CM
 
-  W43--W44   Second re-pulse (4-week mark); compare against the provisional Lewin call.             Module 7            CM
+  W43--W44   Second re-pulse (4-week mark); compare against the provisional Lewin call.             M6            CM
 
   W45--W46   Begin tapering support toward standard service levels where metrics have stabilized.   ---                 ITL, CM
 
@@ -655,11 +655,11 @@ Refreeze is called from checkpoint evidence, never the calendar --- the discipli
   ---------- ------------------------------------------------------------------------------------------------------ ------------------- ----------------------
   W45--W46   Embed new-process metrics into standard performance management, with HR support.                       ---                 CM
 
-  W47--W48   Confirm Reinforcement mechanisms are active (recognition, manager check-ins, revoked legacy access).   Module 6            CM, SUP
+  W47--W48   Confirm Reinforcement mechanisms are active (recognition, manager check-ins, revoked legacy access).   M5            CM, SUP
 
-  W49--W50   Run the 60-day checkpoint review against the benchmarking bands.                                       Module 15           CM
+  W49--W50   Run the 60-day checkpoint review against the benchmarking bands.                                       M14           CM
 
-  W51--W52   Run the 90-day checkpoint review; call Refreeze formally once evidence supports it.                    Module 4            CM, ES
+  W51--W52   Run the 90-day checkpoint review; call Refreeze formally once evidence supports it.                    M3            CM, ES
 
   W52+       Close the Change Management project; hand off ownership to the business; log lessons learned.          ---                 CM, ES
   ------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -681,17 +681,17 @@ Establishes the business case, opens the journi project, and captures the Month-
   --------------------------------------------------------------------------------------------------------------------------------------------
   **Week**   **Action**                                                                                     **journi Module**   **Owner(s)**
   ---------- ---------------------------------------------------------------------------------------------- ------------------- --------------
-  W1         Kickoff; confirm Executive Sponsor; open the Initiative Registry and set Lewin = Unfreeze.     Module 4            CM, ES
+  W1         Kickoff; confirm Executive Sponsor; open the Initiative Registry and set Lewin = Unfreeze.     M3            CM, ES
 
   W2--W3     Run current-state discovery workshops per impacted function.                                   ---                 PM, FPO
 
-  W4         Quantify pain points and the cost of inaction; build the Stakeholder Map.                      Module 5            PM, CM
+  W4         Quantify pain points and the cost of inaction; build the Stakeholder Map.                      M4            PM, CM
 
   W5--W6     Draft and review future-state process scope and design principles.                             ---                 PM, FPO, ITL
 
-  W7         Formally open the Change Management project; brief the CM team on Modules 6--7.                Module 6--7         CM
+  W7         Formally open the Change Management project; brief the CM team on Modules M5--M6.                M5--M6         CM
 
-  W8         Run the baseline ADKAR / Bridges / Kübler-Ross pulse (Month-0 reading).                        Module 6--7         CM
+  W8         Run the baseline ADKAR / Bridges / Kübler-Ross pulse (Month-0 reading).                        M5--M6         CM
 
   W9         Review baseline pulse with the Steering Committee; confirm the risk register.                  ---                 CM, ES
 
@@ -699,7 +699,7 @@ Establishes the business case, opens the journi project, and captures the Month-
 
   W11        Buffer / catch-up; finalize the RAID log.                                                      ---                 PM
 
-  W12        Phase 1 gate review --- confirm the Unfreeze reading against the evidence, not the calendar.   Module 4            CM, ES
+  W12        Phase 1 gate review --- confirm the Unfreeze reading against the evidence, not the calendar.   M3            CM, ES
   --------------------------------------------------------------------------------------------------------------------------------------------
 
 *Week-by-week timeline for Phase 1 --- Discovery & Design.*
@@ -921,7 +921,7 @@ Design principles exist so that dozens of small configuration decisions later do
 
 **Task 4 --- \[CHANGE\] Open the Change Management project; set the Lewin phase**
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 **Step 1 --- Register the initiative in journi**
 
@@ -950,7 +950,7 @@ Everything else in this guide assumes the initiative already exists as a journi 
   Recommended Open-Source Tool   OpenProject
   --------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 4 --- Initiative Registry.*
+**journi:** *This is entered/updated in journi --- M3 --- Initiative & Portfolio Registry.*
 
 **Step 2 --- Review evidence and set the phase**
 
@@ -979,7 +979,7 @@ Setting Unfreeze here, rather than defaulting to it because the program just sta
   Recommended Open-Source Tool   OpenProject (wiki page for rationale)
   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 4 --- Initiative Registry.*
+**journi:** *This is entered/updated in journi --- M3 --- Initiative & Portfolio Registry.*
 
 *RACSI for Task 4 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -992,7 +992,7 @@ Setting Unfreeze here, rather than defaulting to it because the program just sta
 
 **Task 5 --- \[CHANGE\] Run the baseline ADKAR / Bridges / Kübler-Ross pulse**
 
-**journi:** *This is entered/updated in journi --- Module 6--7.*
+**journi:** *This is entered/updated in journi --- M5--M6.*
 
 **Step 1 --- Survey the full population**
 
@@ -1021,7 +1021,7 @@ Every later comparison in this program --- wave 2, post-go-live, the Meridian-st
   Recommended Open-Source Tool   LimeSurvey
   -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6 --- ADKAR Engine; Module 7 --- Emotional & Transition Layer.*
+**journi:** *This is entered/updated in journi --- M5 --- ADKAR Engine; M6 --- Emotional & Transition Layer.*
 
 **Step 2 --- Mine open comments for themes**
 
@@ -1072,13 +1072,13 @@ Technical configuration proceeds in parallel with the first communications wave 
 
   W7--W8     Continue configuration; begin design-review checkpoints with functional owners.                     ---                 ITL, FPO
 
-  W9--W10    Recruit change champion network nominees.                                                           Module 5            CM, SUP
+  W9--W10    Recruit change champion network nominees.                                                           M4            CM, SUP
 
   W11--W12   Launch Phase-1 communications (why / what / when) and an FAQ channel.                               ---                 CM
 
   W13--W14   Brief and activate the champion network.                                                            ---                 CM
 
-  W15--W16   Re-run the ADKAR pulse (Awareness / early Desire).                                                  Module 6            CM
+  W15--W16   Re-run the ADKAR pulse (Awareness / early Desire).                                                  M5            CM
 
   W17--W18   Continue design-review checkpoints; resolve open build decisions.                                   ---                 PM, FPO
 
@@ -1086,7 +1086,7 @@ Technical configuration proceeds in parallel with the first communications wave 
 
   W21--W22   Finalize the configuration decision log.                                                            ---                 ITL
 
-  W23--W24   Phase 2 gate review --- confirm the Awareness → Desire trend with the Steering Committee.           Module 6            CM, PM
+  W23--W24   Phase 2 gate review --- confirm the Awareness → Desire trend with the Steering Committee.           M5            CM, PM
   -------------------------------------------------------------------------------------------------------------------------------------------------
 
 *Week-by-week timeline for Phase 2 --- Build & Configuration.*
@@ -1308,7 +1308,7 @@ Seeding the FAQ with the actual themes from the Month-0 open-text pulse, rather 
 
 **Task 4 --- \[CHANGE\] Recruit and brief the change champion network**
 
-**journi:** *This is entered/updated in journi --- Module 5.*
+**journi:** *This is entered/updated in journi --- M4.*
 
 **Step 1 --- Nominate credible peer champions**
 
@@ -1337,7 +1337,7 @@ A champion chosen for seniority rather than peer credibility will be politely ig
   Recommended Open-Source Tool   LimeSurvey
   -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 5 --- Stakeholder Map.*
+**journi:** *This is entered/updated in journi --- M4 --- Stakeholder & Impact Mapping.*
 
 **Step 2 --- Brief the champion network**
 
@@ -1377,7 +1377,7 @@ This is the moment the champion network becomes a real early-warning system rath
 
 **Task 5 --- \[CHANGE\] Re-run the ADKAR pulse (Awareness / early Desire)**
 
-**journi:** *This is entered/updated in journi --- Module 6.*
+**journi:** *This is entered/updated in journi --- M5.*
 
 **Step 1 --- Re-survey the population**
 
@@ -1406,7 +1406,7 @@ Using the identical instrument as the baseline is what makes this a genuine wave
   Recommended Open-Source Tool   LimeSurvey
   --------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6 --- ADKAR Engine.*
+**journi:** *This is entered/updated in journi --- M5 --- ADKAR Engine.*
 
 **Step 2 --- Compare wave-over-wave trends**
 
@@ -1461,11 +1461,11 @@ The highest-risk, least-visible phase --- exactly where journi\'s own data shows
 
   W19--W20   Run the first mock migration cycle and reconcile results.                                          ---                 ITL, PM
 
-  W21--W22   Watch for Desire-stall signals from low end-user visibility; log a barrier reason if Desire ≤ 2.   Module 6            CM
+  W21--W22   Watch for Desire-stall signals from low end-user visibility; log a barrier reason if Desire ≤ 2.   M5            CM
 
   W23--W24   Run the second mock migration cycle; prepare data-quality sign-off.                                ---                 ITL
 
-  W25--W26   Update the Composite Readiness Index ahead of the Testing entry gate.                              Module 6--7         CM
+  W25--W26   Update the Composite Readiness Index ahead of the Testing entry gate.                              M5--M6         CM
 
   W27--W28   Data-quality sign-off; Phase 3 gate review.                                                        ---                 FPO, ES
   ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1689,7 +1689,7 @@ This is the last technical checkpoint before the data is treated as trustworthy 
 
 **Task 4 --- \[CHANGE\] Log Desire-block barrier reasons from low end-user visibility**
 
-**journi:** *This is entered/updated in journi --- Module 6.*
+**journi:** *This is entered/updated in journi --- M5.*
 
 **Step 1 --- Log the barrier reason**
 
@@ -1718,7 +1718,7 @@ This is the phase journi\'s own data shows Desire stalling most often, precisely
   Recommended Open-Source Tool   OpenProject (custom field)
   ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6 --- ADKAR Engine (auto-escalated).*
+**journi:** *This is entered/updated in journi --- M5 --- ADKAR Engine (auto-escalated).*
 
 **Step 2 --- Cluster the barrier reasons**
 
@@ -1758,7 +1758,7 @@ Clustering now, before the stall is confirmed, means the E1 playbook can start f
 
 **Task 5 --- \[CHANGE\] Update the Composite Readiness Index ahead of Testing**
 
-**journi:** *This is entered/updated in journi --- Module 6--7.*
+**journi:** *This is entered/updated in journi --- M5--M6.*
 
 **Step 1 --- Recalculate the readiness index**
 
@@ -1787,7 +1787,7 @@ This is the last full Index recalculation before Testing opens, so it functions 
   Recommended Open-Source Tool   Metabase (calculated field)
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6--7.*
+**journi:** *This is entered/updated in journi --- M5--M6.*
 
 **Step 2 --- Publish the readiness dashboard**
 
@@ -1836,11 +1836,11 @@ The first point where a representative slice of end users gets real hands-on exp
   ---------- ---------------------------------------------------------------------------------------------------------- ------------------- --------------
   W25--W26   Execute system integration testing (SIT).                                                                  ---                 ITL
 
-  W27        Recruit a representative UAT cohort.                                                                       Module 5            CM, FPO
+  W27        Recruit a representative UAT cohort.                                                                       M4            CM, FPO
 
   W28--W29   Run UAT sessions; log defects and usability friction.                                                      ---                 FPO, EU
 
-  W30        Cross-check Knowledge / Ability scores against the Bridges reading --- run the Divergence Pattern check.   Module 7            CM
+  W30        Cross-check Knowledge / Ability scores against the Bridges reading --- run the Divergence Pattern check.   M6            CM
 
   W31        Triage and remediate defects before sign-off.                                                              ---                 ITL, PM
 
@@ -1936,7 +1936,7 @@ A same-day triage discipline is what keeps a defect backlog from silently growin
 
 **Task 2 --- \[JOINT\] Recruit a representative cohort for user acceptance testing (UAT)**
 
-**journi:** *This is entered/updated in journi --- Module 5.*
+**journi:** *This is entered/updated in journi --- M4.*
 
 **Step 1 --- Sample a representative cohort**
 
@@ -1965,7 +1965,7 @@ A UAT cohort skewed toward the most confident or most senior employees will pass
   Recommended Open-Source Tool   LibreOffice Calc
   ---------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 5 --- Stakeholder Map.*
+**journi:** *This is entered/updated in journi --- M4 --- Stakeholder & Impact Mapping.*
 
 **Step 2 --- Brief the UAT participants**
 
@@ -2070,7 +2070,7 @@ Sending a training gap to the defect queue wastes a developer\'s time; sending a
 
 **Task 4 --- \[CHANGE\] Cross-check Knowledge / Ability against Bridges (Divergence Pattern check)**
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 **Step 1 --- Run the Divergence Pattern check**
 
@@ -2099,7 +2099,7 @@ UAT is the first point in the program with real Knowledge/Ability scores to chec
   Recommended Open-Source Tool   Metabase (rule-based alert)
   -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 7 --- Emotional & Transition Layer (Divergence Pattern Detector).*
+**journi:** *This is entered/updated in journi --- M6 --- Emotional & Transition Layer. (The Divergence Pattern Detector itself is not a separate sub-page of M6 --- it is Notification Center alert ALT-001, computed live from M5 + M6 data.)*
 
 **Step 2 --- Hold a targeted 1:1**
 
@@ -2217,11 +2217,11 @@ Knowledge becomes Ability under increasingly realistic conditions, while Bridges
 
   W31--W32   Deploy the sandbox practice environment; deliver training wave 2.           ---                 CM
 
-  W33--W34   Run readiness assessments per cohort (Knowledge / Ability scoring).         Module 6            CM
+  W33--W34   Run readiness assessments per cohort (Knowledge / Ability scoring).         M5            CM
 
   W35        Brief supervisors on real-time floor-coaching expectations for go-live.     ---                 CM, SUP
 
-  W36        Confirm cohort-level go / no-go readiness against the benchmarking bands.   Module 15           ES, CM, PM
+  W36        Confirm cohort-level go / no-go readiness against the benchmarking bands.   M14           ES, CM, PM
   -------------------------------------------------------------------------------------------------------------------------------
 
 *Week-by-week timeline for Phase 5 --- Training & Change Readiness.*
@@ -2248,7 +2248,7 @@ Knowledge becomes Ability under increasingly realistic conditions, while Bridges
 
 **Task 1 --- \[JOINT\] Deliver role-based training to all impacted cohorts**
 
-**journi:** *This is entered/updated in journi --- Module 6.*
+**journi:** *This is entered/updated in journi --- M5.*
 
 **Step 1 --- Build the e-learning modules**
 
@@ -2277,7 +2277,7 @@ Splitting the why-and-what into a short e-learning module, ahead of any live ses
   Recommended Open-Source Tool   H5P (interactive content) on Moodle
   ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6 --- ADKAR Engine (training completion feeds Reinforcement tracking).*
+**journi:** *This is entered/updated in journi --- M5 --- ADKAR Engine (training completion feeds Reinforcement tracking).*
 
 **Step 2 --- Deliver the instructor-led session**
 
@@ -2382,7 +2382,7 @@ The single biggest driver of Ability is repetition without fear of consequence, 
 
 **Task 3 --- \[CHANGE\] Run readiness assessments per cohort (Knowledge / Ability scoring)**
 
-**journi:** *This is entered/updated in journi --- Module 6.*
+**journi:** *This is entered/updated in journi --- M5.*
 
 **Step 1 --- Assess skills hands-on**
 
@@ -2411,7 +2411,7 @@ A multiple-choice quiz can confirm Knowledge, but only a hands-on assessment in 
   Recommended Open-Source Tool   Kiwi TCMS (adapted as a checklist tracker)
   --------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6 --- ADKAR Engine.*
+**journi:** *This is entered/updated in journi --- M5 --- ADKAR Engine.*
 
 **Step 2 --- Track training completion**
 
@@ -2516,7 +2516,7 @@ A generic "be supportive" instruction is forgettable; a named list of at-risk in
 
 **Task 5 --- \[JOINT\] Confirm go/no-go readiness by cohort against benchmarking bands**
 
-**journi:** *This is entered/updated in journi --- Module 15.*
+**journi:** *This is entered/updated in journi --- M14.*
 
 **Step 1 --- Review the readiness scorecards**
 
@@ -2538,14 +2538,14 @@ Comparing every cohort against the same benchmarking band, rather than eyeballin
   ------------------------------ -----------------------------------------------------------------------------------------------------------------------------
   Technique Name                 Readiness scorecard review
 
-  Technique Goal                 Compare cohort scores against the Module 15 benchmarking bands.
+  Technique Goal                 Compare cohort scores against the M14 benchmarking bands.
 
   Technique Details              Compile each cohort\'s Knowledge, Ability, and Composite Readiness Index against the benchmarking bands into one scorecard.
 
   Recommended Open-Source Tool   Metabase
   ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 15 --- Benchmarking.*
+**journi:** *This is entered/updated in journi --- M14 --- Metrics & Analytics Dashboard (Benchmarking tab).*
 
 **Step 2 --- Hold the go/no-go workshop**
 
@@ -2598,7 +2598,7 @@ The sharpest instance of the two-clock problem: a single-day organizational mile
 
   W37 --- D1   Communicate go-live confirmation to all cohorts.                                         ---                 CM
 
-  W37 --- D1   Activate the hypercare support model; mark Lewin as "Change → Refreeze (provisional)".   Module 4            CM, SUP
+  W37 --- D1   Activate the hypercare support model; mark Lewin as "Change → Refreeze (provisional)".   M3            CM, SUP
   ----------------------------------------------------------------------------------------------------------------------------------------
 
 *Week-by-week timeline for Phase 6 --- Cutover & Go-Live.*
@@ -2959,11 +2959,11 @@ The last mile of adoption is won or lost here --- and regression is normal, expe
   ---------- -------------------------------------------------------------------------------------- ------------------- --------------
   W38        Staff the elevated support desk; begin daily adoption-metric tracking.                 ---                 ITL, CM
 
-  W39--W40   First Kübler-Ross / Bridges re-pulse (2-week mark).                                    Module 7            CM
+  W39--W40   First Kübler-Ross / Bridges re-pulse (2-week mark).                                    M6            CM
 
   W41--W42   Coach any cohort showing regression; continue daily metric triage.                     ---                 SUP, CM
 
-  W43--W44   Second re-pulse (4-week mark); compare against the provisional Lewin call.             Module 7            CM
+  W43--W44   Second re-pulse (4-week mark); compare against the provisional Lewin call.             M6            CM
 
   W45--W46   Begin tapering support toward standard service levels where metrics have stabilized.   ---                 ITL, CM
 
@@ -3124,7 +3124,7 @@ Fixing tickets in the order they arrived rather than by severity means a minor c
 
 **Task 3 --- \[CHANGE\] Run a Kübler-Ross / Bridges re-pulse at 2 and 4 weeks post-go-live**
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 **Step 1 --- Re-pulse the population post-go-live**
 
@@ -3153,7 +3153,7 @@ Issuing this at exactly weeks 2 and 4 --- not "around" those dates --- is what m
   Recommended Open-Source Tool   LimeSurvey
   ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 7 --- Emotional & Transition Layer.*
+**journi:** *This is entered/updated in journi --- M6 --- Emotional & Transition Layer.*
 
 **Step 2 --- Compare cohort trends to the phase call**
 
@@ -3332,11 +3332,11 @@ Refreeze is called from checkpoint evidence, never the calendar --- the discipli
   ---------- ------------------------------------------------------------------------------------------------------ ------------------- --------------
   W45--W46   Embed new-process metrics into standard performance management, with HR support.                       ---                 CM
 
-  W47--W48   Confirm Reinforcement mechanisms are active (recognition, manager check-ins, revoked legacy access).   Module 6            CM, SUP
+  W47--W48   Confirm Reinforcement mechanisms are active (recognition, manager check-ins, revoked legacy access).   M5            CM, SUP
 
-  W49--W50   Run the 60-day checkpoint review against the benchmarking bands.                                       Module 15           CM
+  W49--W50   Run the 60-day checkpoint review against the benchmarking bands.                                       M14           CM
 
-  W51--W52   Run the 90-day checkpoint review; call Refreeze formally once evidence supports it.                    Module 4            CM, ES
+  W51--W52   Run the 90-day checkpoint review; call Refreeze formally once evidence supports it.                    M3            CM, ES
 
   W52+       Close the Change Management project; hand off ownership to the business; log lessons learned.          ---                 CM, ES
   ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3430,7 +3430,7 @@ A one-page, unambiguous definition sheet is what stops two managers from scoring
 
 **Task 2 --- \[CHANGE\] Confirm Reinforcement mechanisms are active**
 
-**journi:** *This is entered/updated in journi --- Module 6.*
+**journi:** *This is entered/updated in journi --- M5.*
 
 **Step 1 --- Audit the reinforcement mechanisms**
 
@@ -3459,7 +3459,7 @@ A mechanism that exists only on the original plan document, not in weekly practi
   Recommended Open-Source Tool   OpenProject
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6 --- ADKAR Engine (Reinforcement block).*
+**journi:** *This is entered/updated in journi --- M5 --- ADKAR Engine (Reinforcement block).*
 
 **Step 2 --- Verify the check-in cadence**
 
@@ -3499,7 +3499,7 @@ A calendar invite that keeps getting silently declined is not the same thing as 
 
 **Task 3 --- \[CHANGE\] Run 60-day and 90-day checkpoint reviews against benchmarking bands**
 
-**journi:** *This is entered/updated in journi --- Module 15.*
+**journi:** *This is entered/updated in journi --- M14.*
 
 **Step 1 --- Compile the checkpoint scorecard**
 
@@ -3521,14 +3521,14 @@ This is the evidentiary backbone of the eventual Refreeze call, so it is worth c
   ------------------------------ ----------------------------------------------------------------------------------------------------------------------------
   Technique Name                 Benchmarking review
 
-  Technique Goal                 Compare current scores against the Module 15 target bands.
+  Technique Goal                 Compare current scores against the M14 target bands.
 
   Technique Details              Compile Composite Readiness Index, ADKAR and sentiment scores against the target bands for the 60- and 90-day checkpoints.
 
   Recommended Open-Source Tool   Metabase
   -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 15 --- Benchmarking.*
+**journi:** *This is entered/updated in journi --- M14 --- Metrics & Analytics Dashboard (Benchmarking tab).*
 
 **Step 2 --- Deliver the steering readout**
 
@@ -3568,7 +3568,7 @@ A short, evidence-led readout with a clear recommendation respects the Steering 
 
 **Task 4 --- \[CHANGE\] Call Refreeze formally once checkpoint evidence, not the calendar, supports it**
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 **Step 1 --- Review evidence for the phase call**
 
@@ -3597,7 +3597,7 @@ Requiring two to three consecutive healthy checkpoints, not just one good week, 
   Recommended Open-Source Tool   OpenProject (decision log)
   --------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 4 --- Initiative Registry.*
+**journi:** *This is entered/updated in journi --- M3 --- Initiative & Portfolio Registry.*
 
 **Step 2 --- Obtain formal sign-off**
 
@@ -3721,11 +3721,11 @@ Tracking cadence matters as much as tracking content: some signals are meaningfu
   ---------------------------------------------------------------------------------------------------------------------------------
   **What to Track**                                     **Where**                       **Owner**            **Applies During**
   ----------------------------------------------------- ------------------------------- -------------------- ----------------------
-  Barrier-reason notes for any ADKAR block scored ≤ 2   Module 6                        CM                   All phases
+  Barrier-reason notes for any ADKAR block scored ≤ 2   M5                        CM                   All phases
 
   Champion network feedback themes                      CM standup notes                CM                   Phases 2--7
 
-  Training completion percentage                        Module 6 (training curricula)   CM (training lead)   Phase 5
+  Training completion percentage                        M5 (training curricula)   CM (training lead)   Phase 5
 
   Open risk register items tied to framework readings   Risk register                   CM, PM               All phases
   ---------------------------------------------------------------------------------------------------------------------------------
@@ -3735,11 +3735,11 @@ Tracking cadence matters as much as tracking content: some signals are meaningfu
   ----------------------------------------------------------------------------------------------------------------------------------
   **What to Track**                                              **Where**         **Owner**   **Applies During**
   -------------------------------------------------------------- ----------------- ----------- -------------------------------------
-  Kübler-Ross / Bridges re-pulse                                 Module 7          CM          Phase 7 (weeks 2 & 4 post go-live)
+  Kübler-Ross / Bridges re-pulse                                 M6          CM          Phase 7 (weeks 2 & 4 post go-live)
 
-  Divergence Pattern Detector review                             Module 7 alerts   CM          Phases 4--7
+  Divergence Pattern Detector review                             M6 alerts   CM          Phases 4--7
 
-  Cohort-level disaggregation of the Composite Readiness Index   Module 5 + 6--7   CM          Phases 4--7 (before every go/no-go)
+  Cohort-level disaggregation of the Composite Readiness Index   M4 + M5--M6   CM          Phases 4--7 (before every go/no-go)
   ----------------------------------------------------------------------------------------------------------------------------------
 
 **7.4 Monthly**
@@ -3747,13 +3747,13 @@ Tracking cadence matters as much as tracking content: some signals are meaningfu
   ---------------------------------------------------------------------------------------------------------
   **What to Track**                                    **Where**         **Owner**   **Applies During**
   ---------------------------------------------------- ----------------- ----------- ----------------------
-  Composite Readiness Index trend line                 Module 6--7       CM          All phases
+  Composite Readiness Index trend line                 M5--M6       CM          All phases
 
-  Lewin phase justification (evidence, not calendar)   Module 4          CM, ES      All phases
+  Lewin phase justification (evidence, not calendar)   M3          CM, ES      All phases
 
   Steering Committee readout on framework readings     Governance pack   CM          All phases
 
-  Reinforcement score trend as go-live recedes         Module 6          CM          Phases 7--8
+  Reinforcement score trend as go-live recedes         M5          CM          Phases 7--8
   ---------------------------------------------------------------------------------------------------------
 
 **7.5 Escalation Thresholds**
@@ -3763,7 +3763,7 @@ The table below is the bridge between "what you\'re tracking" and "what you do a
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   **Signal Observed**                                             **Threshold**                                            **Action Required**                                          **Linked Exception**
   --------------------------------------------------------------- -------------------------------------------------------- ------------------------------------------------------------ ----------------------
-  Passive-compliance language, low session turnout, no WIIFM      Desire ≤ 2                                               Log barrier-reason note; auto-escalates in Module 6          E1
+  Passive-compliance language, low session turnout, no WIIFM      Desire ≤ 2                                               Log barrier-reason note; auto-escalates in M5          E1
 
   Strong Knowledge/Ability scores, no emotional movement          Bridges = "Ending" with Knowledge ≥ 3 and Ability ≥ 3    Divergence Pattern fires --- hold an identity-focused 1:1    E2
 
@@ -3848,7 +3848,7 @@ Two weeks post go-live (Exception E4): the Distribution site --- not Finance ---
 
 Month 11 (Exception E5 --- caught early): with go-live now three months behind the team and attention shifting to the next initiative, Reinforcement plateaus at 3.0 with no natural forcing deadline to push it further. The Change Manager flags the plateau explicitly rather than letting the project close on schedule with an unresolved gap, and reconvenes the Sponsor to re-authorize checkpoint cadence. Two consecutive healthy checkpoints later, at M12, Reinforcement reaches 4.0 and Refreeze is formally confirmed --- by evidence, not the calendar.
 
-Note also the running E6 thread: Finance and Distribution are visibly in different places on all four frameworks from Month 6 onward. The blended Composite Readiness Index in Table 8.1 is a project-level average --- in a live program, Module 5\'s disaggregated cohort view would show this spread explicitly at every go/no-go checkpoint, exactly as Section 7.3 and Exception E6 require.
+Note also the running E6 thread: Finance and Distribution are visibly in different places on all four frameworks from Month 6 onward. The blended Composite Readiness Index in Table 8.1 is a project-level average --- in a live program, M4\'s disaggregated cohort view would show this spread explicitly at every go/no-go checkpoint, exactly as Section 7.3 and Exception E6 require.
 
 **9. Exception Playbook --- Detailed SIPOC, Tasks, Steps & RACSI**
 
@@ -3861,7 +3861,7 @@ Each exception below follows the same structure as the phase playbooks in Sectio
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   **Element**       **Detail**
   ----------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Trigger           ADKAR Desire score logged at 2 or below on Module 6, auto-escalating; barrier-reason notes cite low visibility into progress and/or unresolved fear.
+  Trigger           ADKAR Desire score logged at 2 or below on M5, auto-escalating; barrier-reason notes cite low visibility into progress and/or unresolved fear.
 
   Timeline Impact   Typically inserted as a 2--4 week parallel track within the Data Migration & Integration window; a training or testing entry gate should not open for a cohort whose Desire remains escalated.
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3890,7 +3890,7 @@ Each exception below follows the same structure as the phase playbooks in Sectio
 
 **Task 1 --- \[CHANGE\] Cluster barrier-reason notes by root cause**
 
-**journi:** *This is entered/updated in journi --- Module 6.*
+**journi:** *This is entered/updated in journi --- M5.*
 
 **Step 1 --- Cluster the barrier reasons**
 
@@ -4044,7 +4044,7 @@ The same commitment lands differently depending on who says it; hearing it direc
 
 **Task 5 --- \[CHANGE\] Re-score Desire and Kübler-Ross sentiment 2--4 weeks after the intervention**
 
-**journi:** *This is entered/updated in journi --- Module 6--7.*
+**journi:** *This is entered/updated in journi --- M5--M6.*
 
 **Step 1 --- Re-score after the intervention**
 
@@ -4073,7 +4073,7 @@ Waiting 2--4 weeks, rather than checking immediately, gives the sponsor\'s commi
   Recommended Open-Source Tool   LimeSurvey
   ----------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6--7.*
+**journi:** *This is entered/updated in journi --- M5--M6.*
 
 *RACSI for Task 5 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4120,7 +4120,7 @@ Waiting 2--4 weeks, rather than checking immediately, gives the sponsor\'s commi
 
 **Task 1 --- \[CHANGE\] Review the alert and confirm it against supervisor observation**
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 **Step 1 --- Triage the automated alert**
 
@@ -4149,7 +4149,7 @@ An automated boolean alert tells you a pattern is possible, not that it is real 
   Recommended Open-Source Tool   Metabase
   -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 7 --- Divergence Pattern Detector.*
+**journi:** *This is entered/updated in journi --- M6 --- Emotional & Transition Layer. (The Divergence Pattern Detector surfaces as Notification Center alert ALT-001, computed live from M5 + M6 data, not as a separate sub-page of M6.)*
 
 *RACSI for Task 1 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4276,7 +4276,7 @@ Bridges\' own research is clear that an unmet need for closure is a common drive
 
 **Task 5 --- \[CHANGE\] Re-check the Bridges reading only, at the next scheduled pulse**
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 **Step 1 --- Re-pulse the Bridges item only**
 
@@ -4305,7 +4305,7 @@ Knowledge and Ability are already known to be strong; re-testing them again wast
   Recommended Open-Source Tool   LimeSurvey
   -------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 *RACSI for Task 5 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4352,7 +4352,7 @@ Knowledge and Ability are already known to be strong; re-testing them again wast
 
 **Task 1 --- \[JOINT\] Separate the technical go-live milestone from the Lewin phase call**
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 **Step 1 --- Clarify the two decision rights**
 
@@ -4381,7 +4381,7 @@ Delivery pressure naturally pushes toward treating the go-live date as proof of 
   Recommended Open-Source Tool   OpenProject
   ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 *RACSI for Task 1 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4394,7 +4394,7 @@ Delivery pressure naturally pushes toward treating the go-live date as proof of 
 
 **Task 2 --- \[CHANGE\] Mark the Lewin phase as "provisional Refreeze" pending emotional-layer evidence**
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 **Step 1 --- Annotate the phase as provisional**
 
@@ -4423,7 +4423,7 @@ A provisional label that only the Change Manager knows about doesn\'t protect an
   Recommended Open-Source Tool   OpenProject wiki
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 *RACSI for Task 2 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4474,7 +4474,7 @@ The single most common way this exception fails in practice is hypercare staffin
 
 **Task 4 --- \[CHANGE\] Re-pulse Bridges / Kübler-Ross at 2 and 4 weeks**
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 **Step 1 --- Gather fresh emotional-layer evidence**
 
@@ -4503,7 +4503,7 @@ This is the same standard post-go-live pulse defined in Phase 7 --- the exceptio
   Recommended Open-Source Tool   LimeSurvey
   -------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 *RACSI for Task 4 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4516,7 +4516,7 @@ This is the same standard post-go-live pulse defined in Phase 7 --- the exceptio
 
 **Task 5 --- \[CHANGE\] Confirm or walk back the Refreeze call once evidence supports it**
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 **Step 1 --- Finalize the phase call from evidence**
 
@@ -4545,7 +4545,7 @@ Walking a phase call back from Refreeze to Change is not a failure to report ---
   Recommended Open-Source Tool   Metabase
   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 *RACSI for Task 5 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4744,7 +4744,7 @@ The same twenty-minute, at-the-desk principle used in Phase 7\'s regular regress
 
 **Task 5 --- \[CHANGE\] Re-pulse the affected cohort only, at 1--2 weeks**
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 **Step 1 --- Re-pulse the affected cohort**
 
@@ -4773,7 +4773,7 @@ Surveying only the affected cohort, rather than the whole population, keeps the 
   Recommended Open-Source Tool   LimeSurvey
   ---------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 7.*
+**journi:** *This is entered/updated in journi --- M6.*
 
 *RACSI for Task 5 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4820,7 +4820,7 @@ Surveying only the affected cohort, rather than the whole population, keeps the 
 
 **Task 1 --- \[CHANGE\] Flag the Reinforcement stall explicitly rather than letting the project close on schedule**
 
-**journi:** *This is entered/updated in journi --- Module 6.*
+**journi:** *This is entered/updated in journi --- M5.*
 
 **Step 1 --- Confirm the Reinforcement flag**
 
@@ -4844,12 +4844,12 @@ Without a natural forcing deadline, this stall is the easiest of all six excepti
 
   Technique Goal                 Surface the stall before the project closes on schedule.
 
-  Technique Details              Confirm the automatic Module 6 flag for Reinforcement \< 3 has been reviewed and is not being silently overridden by the closing deadline.
+  Technique Details              Confirm the automatic M5 flag for Reinforcement \< 3 has been reviewed and is not being silently overridden by the closing deadline.
 
   Recommended Open-Source Tool   OpenProject
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 6.*
+**journi:** *This is entered/updated in journi --- M5.*
 
 *RACSI for Task 1 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -4976,7 +4976,7 @@ A metric that is documented but never actually scheduled into a review cycle pro
 
 **Task 5 --- \[JOINT\] Delay the formal Refreeze / closure call until checkpoints show target Reinforcement**
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 **Step 1 --- Gate the closure decision on evidence**
 
@@ -5005,7 +5005,7 @@ Closing on schedule with an unresolved Reinforcement gap doesn\'t remove the reg
   Recommended Open-Source Tool   OpenProject
   -------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 4.*
+**journi:** *This is entered/updated in journi --- M3.*
 
 *RACSI for Task 5 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -5052,7 +5052,7 @@ Closing on schedule with an unresolved Reinforcement gap doesn\'t remove the reg
 
 **Task 1 --- \[CHANGE\] Disaggregate the Composite Readiness Index by stakeholder group**
 
-**journi:** *This is entered/updated in journi --- Module 5.*
+**journi:** *This is entered/updated in journi --- M4.*
 
 **Step 1 --- Disaggregate the readiness index**
 
@@ -5081,7 +5081,7 @@ A single blended project-level number is exactly what hides the kind of divergen
   Recommended Open-Source Tool   Metabase
   ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**journi:** *This is entered/updated in journi --- Module 5 --- Stakeholder Map.*
+**journi:** *This is entered/updated in journi --- M4 --- Stakeholder & Impact Mapping.*
 
 *RACSI for Task 1 --- multiple roles may share Responsible; exactly one role is Accountable.*
 
@@ -5257,7 +5257,7 @@ A one-time disaggregation exercise doesn\'t protect the rest of the program; mak
 
   Phase Gate Review            End of each phase (Section 5)    ES, PM, CM                          Confirm the phase\'s framework reading against evidence before the next phase opens.
 
-  Go/No-Go Decision            End of Phase 5, and at Cutover   ES, PM, CM, FPOs                    Confirm cohort-level (not just blended) readiness against Module 15 benchmarking bands.
+  Go/No-Go Decision            End of Phase 5, and at Cutover   ES, PM, CM, FPOs                    Confirm cohort-level (not just blended) readiness against M14 benchmarking bands.
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 *Table 10.1 --- Standing governance cadence, cross-referenced to the weekly timeline in Section 5.*
@@ -5446,7 +5446,7 @@ Update the week labels, not the sequence or the RACSI ownership. The dependencie
 
 -   RACSI --- Responsible -- Accountable -- Consulted -- Support -- Informed; defines who does what at each Task. More than one role may be Responsible; exactly one role is Accountable.
 
--   Cohort --- a defined group of end users (by role, site or department) tracked separately in Module 5 so readiness can be disaggregated rather than blended.
+-   Cohort --- a defined group of end users (by role, site or department) tracked separately in M4 so readiness can be disaggregated rather than blended.
 
 **A.9 Technique Reference**
 
