@@ -1388,6 +1388,8 @@ The 60-week program calendar (Part 1B.2), the eight scenario mini-timelines (Par
 
 **What a future version might add:** a second scenario tenant in a different sector (Logistics or Health, the two sectors this version's single Manufacturing tenant does not exercise); a full step-by-step SIPOC/RACSI treatment of the eight Part 4 scenarios at the same depth Part 1B gives the ERP program; and worked examples of the seven catalogued-but-non-live alerts once journi's backend infrastructure exists to compute them for real.
 
+**A closing note on scope discipline.** This guide is long because the request behind it was specific: every module, every registered process, a genuine week-by-week timeline across all four frameworks, and a scenario library broad enough to exercise every live alert --- not because length was a goal in its own right. Every table, worked example, and cross-reference above earns its place by tracing back to a real journi behavior, a real point in Bouregreg's timeline, or a real cross-reference a reader would otherwise have to reconstruct by flipping between Parts. Where this guide could not point to a real, verified journi behavior --- a Restructuring Phase Template that doesn't exist, an alert that never fires, a currency figure this guide itself invented for narrative color --- it says so plainly rather than paper over the gap. That discipline, more than the page count, is what this guide is actually meant to deliver.
+
 ---
 
 *This concludes the journi Complete User Guide --- Parts 1, 1B, and 2 through 5, plus this Appendix.*
