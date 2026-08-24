@@ -160,6 +160,7 @@ const dict = {
   m19_phase_template: { en: 'Phase template', fr: 'Modèle de phases', ar: 'نموذج المراحل' },
   m19_owning_modules: { en: 'Owning module(s)', fr: 'Module(s) propriétaire(s)', ar: 'الوحدة (الوحدات) المالكة' },
   m19_racsi_legend: { en: 'R = Responsible · A = Accountable · C = Consulted · S = Sign-off · I = Informed', fr: 'R = Responsable · A = Redevable · C = Consulté · S = Validateur · I = Informé', ar: 'R = المسؤول التنفيذي · A = المعتمد · C = المستشار · S = المصادق · I = المطلع' },
+  m19_chain_racsi: { en: 'RACSI (ES/CM/PM/FPO/ITL/SUP/EU)', fr: 'RACSI (ES/CM/PM/FPO/ITL/SUP/EU)', ar: 'RACSI (ES/CM/PM/FPO/ITL/SUP/EU)' },
   m19_racsi_readonly: { en: 'Only a Group/Org/Super Admin can edit this grid. Every other role sees it read-only.', fr: 'Seul un administrateur Groupe/Organisation/Super Admin peut modifier cette grille. Tout autre rôle la voit en lecture seule.', ar: 'يمكن فقط لمسؤول المجموعة/المؤسسة/المسؤول الأعلى تعديل هذه الشبكة. تظهر لبقية الأدوار للقراءة فقط.' },
   changeType: { en: 'Change Type', fr: 'Type de changement', ar: 'نوع التغيير' },
   businessDriver: { en: 'Business Driver', fr: 'Moteur métier', ar: 'الدافع التجاري' },

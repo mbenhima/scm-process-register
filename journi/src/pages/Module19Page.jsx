@@ -76,6 +76,12 @@ function E2ECard({ e2e, macroById, phaseTemplateById }) {
         </p>
       )}
       {e2e.note && <p className="text-xs text-ink/40 italic">{e2e.note}</p>}
+      {e2e.racsi && (
+        <p className="text-xs text-ink/60">
+          <strong className="text-ink/80">{t('m19_chain_racsi')}:</strong> R={e2e.racsi.R} · A={e2e.racsi.A} · C={e2e.racsi.C} · S=
+          {e2e.racsi.S} · I={e2e.racsi.I}
+        </p>
+      )}
       {e2e.kind === 'type' && (
         <div className="grid sm:grid-cols-2 gap-2 pt-1 text-xs">
           <p className="text-ink/60">

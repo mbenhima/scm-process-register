@@ -1,43 +1,55 @@
 // Module 19 — End-to-End Process Registry (D32h).
 // Three kinds of entries:
 //  - 'core'   : the 4 originally-registered E2E chains spanning the whole lifecycle.
+//               Compositions/names/RACSI below are D32h's "Corrected" revision,
+//               transcribed verbatim from Framework Interaction Map v2.3 §11 — this
+//               superseded an earlier, narrower reading (MP-01→02→03 etc.) that both
+//               the original Process Catalogue and CR1 addendum had carried forward.
 //  - 'loop'   : 4 cross-cutting chains (added per the E2E addendum) that make an
 //               existing cross-module dependency explicit as its own registered chain.
 //  - 'type'   : the 8 transformation-type lifecycles added by CR1, one per archetype,
 //               each carrying its own Phase Template (see phaseTemplates.js) and a
 //               rolled-up SIPOC.
+// RACSI role codes below (D17 CAT-02) are a separate, more granular 7-code taxonomy
+// from journi's own platform ROLES enum: ES=Executive Sponsor, CM=Change Manager,
+// PM=Program/Project Manager, FPO=Functional Process Owner, ITL=IT/Technical Lead,
+// SUP=Supervisor, EU=End User.
 const e2eProcesses = [
   {
     id: 'E2E-01',
-    name: 'Readiness & Mobilization',
+    name: 'Readiness & Mobilization (Awareness → Launch-Readiness)',
     kind: 'core',
-    orderedMacroProcesses: ['MP-01', 'MP-02', 'MP-03'],
-    trigger: 'Change scope statement approved',
-    terminalState: 'Stakeholder map published, sponsor coalition active, communication cadence running',
+    orderedMacroProcesses: ['MP-01', 'MP-02', 'MP-03', 'MP-06', 'MP-07'],
+    trigger: 'Business case and stakeholder map opened',
+    terminalState: 'Mobilized sponsorship, informed and diagnosed population, active champion network',
+    racsi: { R: 'CM', A: 'ES', C: 'FPO, PM', S: 'SUP', I: 'EU' },
   },
   {
     id: 'E2E-02',
-    name: 'Capability Build',
+    name: 'Capability & Divergence Management (Training → Verified Competence)',
     kind: 'core',
-    orderedMacroProcesses: ['MP-05', 'MP-06', 'MP-07'],
-    trigger: 'Training curriculum approved',
-    terminalState: 'Curriculum delivered, champion network active, Composite Readiness Index established',
+    orderedMacroProcesses: ['MP-05', 'MP-08', 'MP-07'],
+    trigger: 'Curriculum, sandbox, and cohort segmentation confirmed from E2E-01',
+    terminalState: 'Verified capable and emotionally-ready cohorts; Divergence Pattern log',
+    racsi: { R: 'CM', A: 'CM', C: 'FPO, ITL', S: 'PM, SUP', I: 'ES, EU' },
   },
   {
     id: 'E2E-03',
-    name: 'Resistance-to-Commitment',
+    name: 'Resistance-to-Commitment (Barrier Detection → Buy-In)',
     kind: 'core',
-    orderedMacroProcesses: ['MP-04', 'MP-08', 'MP-09'],
-    trigger: 'Resistance signal logged',
-    terminalState: 'Barrier resolved or escalated, divergence pattern cleared, floor coaching confirms commitment',
+    orderedMacroProcesses: ['MP-04', 'MP-06', 'MP-07', 'MP-09'],
+    trigger: 'A stalled Desire score or negative sentiment pulse is first logged',
+    terminalState: 'Resolved barriers; recovered Desire/sentiment scores; sustained commitment',
+    racsi: { R: 'CM', A: 'CM', C: 'ES, SUP', S: 'PM', I: 'FPO, EU' },
   },
   {
     id: 'E2E-04',
-    name: 'Sustainment & Closure',
+    name: 'Adoption-to-Sustainment (Go-Live → Refreeze)',
     kind: 'core',
-    orderedMacroProcesses: ['MP-10'],
-    trigger: 'Go-live hypercare period ends',
-    terminalState: 'Sustainment checkpoints complete, lessons learned logged, project formally closed',
+    orderedMacroProcesses: ['MP-09', 'MP-10', 'MP-07'],
+    trigger: 'Go-live cutover executed',
+    terminalState: 'Stabilized new-normal performance; embedded reinforcement; confirmed Refreeze; closed project',
+    racsi: { R: 'CM', A: 'ES', C: 'PM, FPO', S: 'SUP', I: 'ITL, EU' },
   },
   {
     id: 'E2E-05',
