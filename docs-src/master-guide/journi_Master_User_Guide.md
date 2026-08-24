@@ -1282,24 +1282,24 @@ Role-code abbreviations used throughout this guide: **ES** Executive Sponsor · 
 
 ### A.5 The 16 End-to-End Processes Index
 
-| ID | Name | Kind |
-|---|---|---|
-| E2E-01 | Readiness & Mobilization | Core |
-| E2E-02 | Capability & Divergence Management | Core |
-| E2E-03 | Resistance-to-Commitment | Core |
-| E2E-04 | Adoption-to-Sustainment | Core |
-| E2E-05 | Signal Aggregation Loop | Cross-cutting loop |
-| E2E-06 | PM ↔ CM Governance Bridge | Cross-cutting loop |
-| E2E-07 | Champion Early-Warning Loop | Cross-cutting loop |
-| E2E-08 | Governance Escalation Loop | Cross-cutting loop |
-| E2E-ERP | ERP Implementation Lifecycle | Transformation type |
-| E2E-BPR | Business Process Reengineering Lifecycle | Transformation type |
-| E2E-BPA | Business Process Automation Lifecycle | Transformation type |
-| E2E-IMS | Integrated Management System Lifecycle | Transformation type |
-| E2E-CULT | Cultural / Values Transformation Lifecycle | Transformation type |
-| E2E-OM | Operating Model Redesign Lifecycle | Transformation type |
-| E2E-COMP | Compliance-Driven Change Lifecycle | Transformation type |
-| E2E-TSD | Training & Skills Development Lifecycle | Transformation type |
+| ID | Name | Kind | Bouregreg case |
+|---|---|---|---|
+| E2E-01 | Readiness & Mobilization | Core | ERP Adoption Program, W1--14 |
+| E2E-02 | Capability & Divergence Management | Core | ERP Adoption Program, W28--42 |
+| E2E-03 | Resistance-to-Commitment | Core | ERP (Exception E1); Order-to-Cash; Settat Restructuring |
+| E2E-04 | Adoption-to-Sustainment | Core | ERP Adoption Program, W43--60+ |
+| E2E-05 | Signal Aggregation Loop | Cross-cutting loop | Continuous, all nine cases |
+| E2E-06 | PM ↔ CM Governance Bridge | Cross-cutting loop | Every Phase Gate, Part 1B.3 |
+| E2E-07 | Champion Early-Warning Loop | Cross-cutting loop | ERP Adoption Program, W12+ |
+| E2E-08 | Governance Escalation Loop | Cross-cutting loop | ERP Adoption Program, Exception E5 |
+| E2E-ERP | ERP Implementation Lifecycle | Transformation type | Bouregreg ERP Adoption Program |
+| E2E-BPR | Business Process Reengineering Lifecycle | Transformation type | Order-to-Cash Process Redesign |
+| E2E-BPA | Business Process Automation Lifecycle | Transformation type | Kenitra Invoice-Matching Automation |
+| E2E-IMS | Integrated Management System Lifecycle | Transformation type | ISO 9001/14001 Integrated Management System |
+| E2E-CULT | Cultural / Values Transformation Lifecycle | Transformation type | One Bouregreg: Post-Acquisition Culture Integration |
+| E2E-OM | Operating Model Redesign Lifecycle | Transformation type | Regional Operating Model Redesign |
+| E2E-COMP | Compliance-Driven Change Lifecycle | Transformation type | Loi 09-08 Data Protection Compliance Program |
+| E2E-TSD | Training & Skills Development Lifecycle | Transformation type | Plant Digital Skills Upskilling Program |
 
 ### A.6 Glossary
 
@@ -1365,6 +1365,12 @@ The snippets below are the kind of text a Change Manager actually types into jou
 **Does every Change Management Project need to run through all six exceptions?** No --- the Kenitra Invoice-Matching Automation case in Part 4 is deliberately built to close without any of the 9 live alerts firing. Exceptions are named, realistic possibilities to watch for, not a checklist every program must complete.
 
 **Why does the Restructuring case in Part 4 have no dedicated Phase Template, when eight other archetypes do?** Because that is genuinely how the E2E addendum (CR1) was built --- 8 transformation types got a registered chain and Phase Template; Restructuring and M&A did not. This guide states that gap rather than invent a lifecycle journi doesn't actually have.
+
+### About This Version
+
+This is Version 1.0 of the journi Complete User Guide, built around a single new scenario tenant --- Bouregreg Group --- created specifically for this document and not part of journi's other seeded demo data. Every module, field, RBAC rule, alert trigger, macro process, and end-to-end process composition named in it was verified against journi's actual source code at the time of writing, not assumed from a specification. Where this guide states a constraint --- an Organization's sector being one of exactly three values, a Kübler-Ross model with four stages rather than the textbook seven, an alert that never fires for lack of a real backend --- that constraint reflects journi's real, current behavior.
+
+The 60-week program calendar (Part 1B.2), the eight scenario mini-timelines (Part 4), and the month-by-month narrative (Part 1B.6) are this guide's own illustrative pacing, built for a 3,400-person, three-site organization, and are stated as illustrative rather than implied to be a platform default. Everything else --- module behavior, RBAC gating, alert trigger conditions, macro process compositions, framework stage vocabulary --- is verified journi platform fact.
 
 ---
 
