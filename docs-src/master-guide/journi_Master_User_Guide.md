@@ -198,3 +198,215 @@ A practical note this guide carries over from journi's own behavior rather than 
 - [ ] Project-scoped user accounts finalized against the new Project --- Module 2, Users & Scope
 
 With this checklist complete, Bouregreg Group is a fully operational journi tenant with one live Change Management Project. Part 2 picks up from here and tours all 20 modules against this same, now-real data set.
+
+---
+
+<a id="part-2"></a>
+
+## Part 2 --- Module-by-Module Feature Tour
+
+Each entry below covers one module: its purpose (in journi's own words), how it plays out in the Bouregreg ERP Adoption Program, what a user can create, update, or delete on the page, and who is allowed to do it. General write access --- the ability to log data on most day-to-day Change Management modules --- belongs to five roles: Super Admin, Group Admin, Org Admin, Change Manager, People Manager, and Practitioner/Contributor. Sponsor, Executive, and Employee accounts are read-only on those same modules by default, seeing dashboards and their own assigned items rather than editing scores. Two roles carry a narrower additional restriction worth stating plainly: Practitioner/Contributor can log data but, unlike the other five, is not one of the roles with individual-level visibility --- on modules with named-person detail, a Practitioner sees aggregated cohort views rather than individual scores.
+
+### M1 --- Hierarchy
+
+**Purpose:** Group → Organization → Projects, with every Change Management Project carrying an optional link to zero, one, or more Main Projects.
+
+**In the Bouregreg scenario:** this is the screen Part 1 used to build Bouregreg Group → Bouregreg Manufacturing Maroc → ERP Platform Unification (Main Project) → Bouregreg ERP Adoption Program (CM Project). As Part 4 adds further CM Projects, they all appear as additional cards under the same Organization.
+
+**Create / update / delete:** create and delete Groups; create, edit (including the default-language selector), and delete Organizations; create and delete Main Projects and CM Projects, including editing which Main Projects a CM Project links to.
+
+**Who can edit:** gated to whoever holds hierarchy-management rights on the Permission Matrix --- by default Super Admin, Group Admin, and Org Admin.
+
+### M2 --- Identity & RBAC
+
+**Purpose:** role-based access control scoped to Group / Organization / Project, with four tabs: Users & Scope, Permission Matrix, Governance Settings, and License & Plan.
+
+**In the Bouregreg scenario:** this is where Zineb Alaoui (Super Admin) built out Bouregreg Group's team in Part 1, and where Anas Bouzid (Group Admin) or Meryem Sabri (Org Admin) approve any employee who self-registers rather than being added directly.
+
+**Create / update / delete:** create, edit, and remove user accounts (Users & Scope); toggle any role/capability cell (Permission Matrix, Super Admin only); toggle the justification requirement (Governance Settings); upload a new `.lic` file or revert to SaaS mode (License & Plan, Super Admin only).
+
+**Who can edit:** Users & Scope is gated to whoever holds user-management rights (by default Super Admin, Group Admin, Org Admin); the Permission Matrix and License & Plan tabs are Super-Admin-only regardless of the matrix's own settings, since a role should not be able to grant itself more power through the very table that limits it.
+
+### M3 --- Initiative Registry
+
+**Purpose:** the system of record for every change initiative --- business driver, scope, target population, and Lewin macro-state.
+
+**In the Bouregreg scenario:** the Bouregreg ERP Adoption Program's project detail page. Its Lewin phase opened at **Unfreeze** in Part 1 and is the single field the guide's later Parts watch move through Change and toward Refreeze.
+
+**Create / update / delete:** edit the project's business driver, scope, target population, and Lewin macro-state; the project record itself is created and deleted from M1.
+
+**Who can edit:** general write access; a Lewin phase change is a scored/state change, so under Bouregreg Group's Governance Setting (Part 1, Step 5) it requires a written justification, logged to the project's audit trail.
+
+### M4 --- Stakeholder Mapping
+
+**Purpose:** who is affected, how heavily, and in what dimension --- impact scores drive tracking depth.
+
+**In the Bouregreg scenario:** Meryem Sabri's team maps all three sites' functional groups (Order Management, Inventory, Finance, Plant Operations at Kenitra and Settat) against impact dimension and severity, so the Casablanca finance team --- losing the most manual workarounds --- gets flagged for the deepest tracking.
+
+**Create / update / delete:** add, edit, and remove stakeholder/cohort entries, each with a name, dimension, impact severity, and site/department.
+
+**Who can edit:** general write access; individual-level detail is visible only to the roles with individual visibility (Super Admin, Group Admin, Org Admin, Change Manager, People Manager) --- a Practitioner sees the aggregated map.
+
+### M5 --- ADKAR Engine
+
+**Purpose:** score cohorts across the five ADKAR blocks --- Awareness, Desire, Knowledge, Ability, Reinforcement --- with barrier-point diagnosis.
+
+**In the Bouregreg scenario:** Driss El Amrani logs the Bouregreg program's baseline ADKAR pulse here in Week 1 (Part 1's Step 6), then re-scores each block through Parts 3 and 4 as training and go-live proceed.
+
+**Create / update / delete:** set or update each block's 1--5 score and its note; any score of 2 or below requires a barrier-reason note and auto-escalates.
+
+**Who can edit:** general write access, with a mandatory justification on every score change under Bouregreg Group's Governance Setting.
+
+### M6 --- Emotional & Transition Layer
+
+**Purpose:** Bridges transition position and Kübler-Ross sentiment, cross-referenced with ADKAR.
+
+**In the Bouregreg scenario:** this is where Bouregreg's Divergence Pattern alert (Part 5) actually gets its second input --- if Knowledge and Ability read high here on M5 while Bridges is still logged as "Ending" on M6, the two modules together are what the alert is watching.
+
+**Create / update / delete:** set or update the Bridges transition stage and the Kübler-Ross sentiment reading, each with a justification note.
+
+**Who can edit:** general write access, individual-level detail restricted the same way as M4 and M5.
+
+### M7 --- Sponsor & Coalition
+
+**Purpose:** sponsor roadmap, active-versus-passive sponsorship, and guiding coalition strength.
+
+**In the Bouregreg scenario:** tracks the CFO's (Sponsor) visible actions across the program --- the kickoff town hall, the go-live message, the closing town hall --- and whether the Steering Committee coalition around the CFO is holding or thinning as the program proceeds.
+
+**Create / update / delete:** add sponsor actions to the roadmap and mark each one done; edit sponsorship visibility (active/passive) and coalition-strength notes.
+
+**Who can edit:** general write access for logging and marking actions; the Sponsor role itself can typically mark their own roadmap actions done without needing full write access, since that toggle is a narrower capability than editing every field on the page.
+
+### M8 --- Communications
+
+**Purpose:** a message × audience × channel × timing matrix, with saturation detection.
+
+**In the Bouregreg scenario:** every town hall, FAQ update, and go-live announcement across Casablanca, Kenitra, and Settat is logged here; if the same audience is receiving too many messages in too short a window, journi's saturation detection flags it.
+
+**Create / update / delete:** add a new communication (message, audience, channel, timing); delete an existing one. There is no inline "reschedule" on an existing entry --- a superseding communication is logged as a new entry, consistent with the audit trail this module is built to support.
+
+**Who can edit:** general write access.
+
+### M9 --- Training
+
+**Purpose:** curriculum coverage, completion, and demonstrated capability --- trained versus capable.
+
+**In the Bouregreg scenario:** the curriculum built for Casablanca finance, Kenitra plant operations, and Settat plant operations, each entry tracked from enrollment through the Certified toggle once a cohort demonstrates real capability, not just attendance.
+
+**Create / update / delete:** add a new curriculum entry; toggle Certified on an existing one; delete an entry. Completion percentage is not editable in place on an existing row --- as with Communications, a new entry supersedes rather than silently overwrites.
+
+**Who can edit:** general write access.
+
+### M10 --- Resistance
+
+**Purpose:** log, classify, and resolve resistance, linked to concrete mitigation actions --- with a Qualitative Coding Workbench for tagging interview and free-text evidence.
+
+**In the Bouregreg scenario:** where the Settat plant's early resistance to the new inventory workflow is logged, classified by root cause, and linked to the mitigation actions Houda Zerouali and the plant supervisors run in response; the Coding Workbench is where Ghita Bennis tags supervisor 1:1 notes against a shared codebook so recurring themes surface across entries rather than staying anecdotal.
+
+**Create / update / delete:** log, edit, and resolve resistance entries with linked mitigation actions; add and remove codes from the Organization's codebook; tag and untag evidence against those codes.
+
+**Who can edit:** general write access; the Codebook itself (the set of codes available to tag against) is typically managed by whoever holds hierarchy-management rights, since it is shared across every project in the Organization, not owned by one CM Project.
+
+### M11 --- Manager as Coach
+
+**Purpose:** a team-scoped ADKAR heatmap with suggested coaching actions per barrier.
+
+**In the Bouregreg scenario:** Kenitra and Settat plant supervisors --- People Manager role --- open this to see their own team's ADKAR heatmap (not the whole program's) and a suggested coaching action for whichever block is weakest, without needing to interpret raw scores themselves.
+
+**Create / update / delete:** the heatmap itself is computed from M5/M6 data already logged elsewhere; a People Manager logs their own coaching actions taken against the suggestions shown.
+
+**Who can edit:** People Managers see their own team's view by default; Change Manager and above see across teams.
+
+### M12 --- Sustainment
+
+**Purpose:** post-go-live adoption audits, regression detection, and sustainment sign-off.
+
+**In the Bouregreg scenario:** the module Driss El Amrani uses from go-live onward --- checkpoint reviews at 30/60/90 days, logged quick wins, a running lessons-learned log, and the formal sign-off that closes the program once evidence, not the calendar, supports it.
+
+**Create / update / delete:** log and update sustainment checkpoints; add quick wins; add and edit lessons-learned entries; toggle the sign-off once criteria are met.
+
+**Who can edit:** general write access; sign-off is typically reserved for the Change Manager and above.
+
+### M13 --- Risk Register
+
+**Purpose:** adoption, sponsorship, capacity, and saturation risk --- distinct from generic project risk, which lives in the Main Project's own PM tooling, not in journi.
+
+**In the Bouregreg scenario:** tracks Change-Management-specific risks --- for example, Kenitra's plant-floor capacity to absorb training during peak production weeks --- separately from the ERP Platform Unification Main Project's technical and schedule risk.
+
+**Create / update / delete:** add, edit, and close risk entries, each with a category, severity, and status.
+
+**Who can edit:** general write access.
+
+### M14 --- Analytics
+
+**Purpose:** the Composite Readiness Index, adoption curves, and correlation analysis --- journi's benchmarking dashboard.
+
+**In the Bouregreg scenario:** the dashboard the Steering Committee reviews at every phase gate --- the blended readiness score (ADKAR 50%, Kübler-Ross sentiment 25%, training completion 25%) trending against the benchmark band expected at that point in the program, and the correlation view showing which input is actually driving the trend.
+
+**Create / update / delete:** this module is entirely computed --- there is nothing to create, update, or delete here; it reads live from M5, M6, and M9.
+
+**Who can edit:** read access follows each role's normal visibility; there is no write capability on this module.
+
+### M15 --- Journey Map
+
+**Purpose:** a literal, visual timeline combining ADKAR stage, Bridges phase, and sentiment.
+
+**In the Bouregreg scenario:** the single visual a Steering Committee member glances at to see, at a point in time, where the Bouregreg program actually sits across all three readings at once, rather than checking three separate modules.
+
+**Create / update / delete:** computed from M5/M6 data already logged; nothing is created or edited directly on this page.
+
+**Who can edit:** read-only, following each role's normal visibility.
+
+### M16 --- AI Use Case Library
+
+**Purpose:** a governed catalog of Assistive and Augmented AI use cases. No use case acts autonomously.
+
+**In the Bouregreg scenario:** Meryem Sabri activates the specific AI-assisted use cases Bouregreg Group's contract permits (for example, drafting a first pass of a communication or summarizing coded resistance themes) at the Organization level; a Change Manager can further restrict which of those activated use cases their own project actually uses.
+
+**Create / update / delete:** the catalog of use cases itself is a fixed reference list, not editable; what is editable is the activation toggle per Organization and the override toggle per Project, plus the usage log every actual AI call writes to.
+
+**Who can edit:** activation is gated to Org-Admin-and-above; project-level overrides to the Change Manager on that project.
+
+### M17 --- WBS & Gantt
+
+**Purpose:** one Work Breakdown Structure spanning Project Management, Change Management, and the Lewin/Prosci/Bridges/ADKAR framework milestones --- baseline versus actual dates, with the schedule gap called out task by task.
+
+**In the Bouregreg scenario:** Driss El Amrani loads a phase template at kickoff to seed the 14-month program's baseline schedule, then keeps actual dates and status current against it as Parts 3 and 4 of this guide play out --- so a reader can see, task by task, where the real program has drifted from plan.
+
+**Create / update / delete:** load a phase template to seed the WBS; edit individual task dates and status against the loaded baseline; Phase Gates are the checklist/sign-off items attached to each phase boundary.
+
+**Who can edit:** general write access.
+
+### M18 --- Process Registry
+
+**Purpose:** the process backbone every module is built on --- the 10 macro processes, the 16 registered end-to-end chains (core lifecycle, cross-cutting loops, and one per transformation type), and who is Responsible / Accountable / Consulted / Sign-off / Informed for each.
+
+**In the Bouregreg scenario:** the reference Part 3 of this guide walks in full --- every one of the 16 processes, read here and then exercised against Bouregreg's live data elsewhere in journi.
+
+**Create / update / delete:** the Macro Process and End-to-End Process catalogs are fixed reference content, shared platform-wide and not editable per tenant. The RACSI grid --- who holds each of the five roles for each macro process --- is editable cell by cell.
+
+**Who can edit:** RACSI grid edits are gated to whoever holds that capability on the Permission Matrix, by default Org-Admin-and-above; the process catalogs themselves are read-only for every role.
+
+### M19 --- CM Charters
+
+**Purpose:** the 8 signed, trackable behavioral standards governing sponsorship, frontline engagement, communication, impact assessment, coaching and mentoring, and pulse/interview diagnostics --- with concrete action mapping and a per-project compliance log, so charter governance is trackable, not just aspirational.
+
+**In the Bouregreg scenario:** the CFO's Sponsor Charter is signed at kickoff and its compliance log tracks whether the CFO's actual visible behavior (from M7) matches what was signed up to; new or revised Charters can be drafted here as Bouregreg Group's own governance model matures.
+
+**Create / update / delete:** full Charter CRUD --- create a new Charter, edit an existing one (including its RACSI, status, and review frequency), and delete one, though a Charter must be moved out of Active status (to Draft or Retired) before it can be deleted. Separately, log compliance actions against a Charter's action mapping and delete individual log entries.
+
+**Who can edit:** Charter create/edit is gated to whoever holds Charter-management rights on the Permission Matrix; delete is further restricted to Org-Admin-and-above, matching the sensitivity of removing a governance record outright.
+
+### M20 --- Journeys & Analytics
+
+**Purpose:** the experience-layer companion to the score-centric dashboards elsewhere in journi --- 8 persona/exception/system journeys, their concrete touchpoints with success criteria and evidence, 5 journey analytics dashboards, and a project-context overlay distinguishing each case from the generic template.
+
+**In the Bouregreg scenario:** where a reader sees the End User's actual journey through the ERP rollout --- not as a score, but as a sequence of concrete touchpoints (first town hall, first login, first live transaction, first month using the new system unsupervised) each with its own success criteria and logged evidence, overlaid with Bouregreg's real project context rather than the generic template.
+
+**Create / update / delete:** log evidence and mark success criteria met against a journey's touchpoints for the current project; the 8 journey templates themselves are shared reference content.
+
+**Who can edit:** general write access for logging evidence; the underlying journey templates are read-only for every role.
+
+---
+
+*End of Part 2. Part 3 --- All 16 End-to-End Process Walkthroughs --- follows next.*
