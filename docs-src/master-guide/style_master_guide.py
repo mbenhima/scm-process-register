@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import warnings
 import docx
-from docx.shared import RGBColor, Pt
+from docx.shared import RGBColor, Pt, Inches, Emu
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
@@ -14,6 +15,51 @@ H3_COLOR = RGBColor(0x3F, 0x82, 0x7B)
 HEADER_FILL = '1F4B45'
 
 d = docx.Document('mg-pandoc.docx')
+
+# ---- Narrower margins: more usable width for wide reference tables ----
+for section in d.sections:
+    if section.page_width is None:
+        section.page_width = Inches(8.5)
+    if section.page_height is None:
+        section.page_height = Inches(11)
+    section.left_margin = Inches(0.6)
+    section.right_margin = Inches(0.6)
+    section.top_margin = Inches(0.7)
+    section.bottom_margin = Inches(0.7)
+USABLE_WIDTH = d.sections[0].page_width - d.sections[0].left_margin - d.sections[0].right_margin
+
+# ---- Explicit column widths for the 6-column alert-reference tables ----
+ALERT_TABLE_WIDTHS = [0.09, 0.15, 0.08, 0.38, 0.15, 0.15]  # ID, Name, Severity, Trigger condition, Escalation, SLA
+ALERT_NONLIVE_WIDTHS = [0.09, 0.28, 0.63]  # ID, Name, Why it never fires here
+
+
+def set_col_widths(table, ratios):
+    total = USABLE_WIDTH
+    widths = [Emu(int(total * r)) for r in ratios]
+    table.autofit = False
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    tbl = table._tbl
+    tblGrid = tbl.find(qn('w:tblGrid'))
+    if tblGrid is not None:
+        for gridCol, w in zip(tblGrid.findall(qn('w:gridCol')), widths):
+            gridCol.set(qn('w:w'), str(w))
+    for row in table.rows:
+        for cell, w in zip(row.cells, widths):
+            cell.width = w
+            tcPr = cell._tc.get_or_add_tcPr()
+            tcW = tcPr.find(qn('w:tcW'))
+            if tcW is None:
+                tcW = OxmlElement('w:tcW')
+                tcPr.append(tcW)
+            tcW.set(qn('w:type'), 'dxa')
+            tcW.set(qn('w:w'), str(int(w / 635)))  # EMU -> twentieths of a point (dxa)
+
+
+for t in d.tables:
+    if len(t.columns) == 6 and t.rows[0].cells[0].text.strip() == 'ID':
+        set_col_widths(t, ALERT_TABLE_WIDTHS)
+    elif len(t.columns) == 3 and t.rows[0].cells[0].text.strip() == 'ID':
+        set_col_widths(t, ALERT_NONLIVE_WIDTHS)
 
 # ---- Title block (paragraphs 0-4) ----
 titles = d.paragraphs[0:5]
