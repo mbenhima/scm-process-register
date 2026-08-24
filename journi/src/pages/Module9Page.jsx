@@ -8,6 +8,7 @@ import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
+import ExportCsvButton from '../components/ExportCsvButton.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
 import { canWrite } from '../utils/rbac.js'
 
@@ -43,13 +44,25 @@ function Content({ project }) {
         </div>
       )}
 
-      {canEdit && (
-        <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
+        <ExportCsvButton
+          filename={`${project.name.replace(/\s+/g, '_')}-communications.csv`}
+          rows={project.communications}
+          columns={[
+            { label: 'Message', value: 'message' },
+            { label: 'Audience', value: 'audience' },
+            { label: 'Channel', value: 'channel' },
+            { label: 'Timing', value: 'timing' },
+            { label: 'ADKAR Block', value: (c) => t(c.adkarBlock) },
+            { label: 'Status', value: 'status' },
+          ]}
+        />
+        {canEdit && (
           <button className="btn-primary" onClick={() => setModal(true)}>
             + {t('message')}
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="card overflow-x-auto">
         {project.communications.length === 0 ? (

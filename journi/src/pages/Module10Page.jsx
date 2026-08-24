@@ -9,6 +9,7 @@ import EmptyState from '../components/EmptyState.jsx'
 import ProgressBar from '../components/ProgressBar.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import JustifyPanel from '../components/JustifyPanel.jsx'
+import ExportCsvButton from '../components/ExportCsvButton.jsx'
 import { canWrite } from '../utils/rbac.js'
 
 const LEVELS = ['Foundation', 'Practitioner', 'Advanced']
@@ -100,13 +101,25 @@ function Content({ project }) {
         </div>
       )}
 
-      {canEdit && (
-        <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
+        <ExportCsvButton
+          filename={`${project.name.replace(/\s+/g, '_')}-training.csv`}
+          rows={project.trainings}
+          columns={[
+            { label: 'Curriculum', value: 'curriculum' },
+            { label: 'Track', value: 'track' },
+            { label: 'Level', value: (tr) => tr.level || 'Foundation' },
+            { label: 'Target Audience', value: 'targetAudience' },
+            { label: 'Completion %', value: 'completion' },
+            { label: 'Certified', value: (tr) => (tr.certified ? 'Yes' : 'No') },
+          ]}
+        />
+        {canEdit && (
           <button className="btn-primary" onClick={() => setModal(true)}>
             + {t('curriculum')}
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="card overflow-x-auto">
         {project.trainings.length === 0 ? (

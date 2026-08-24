@@ -243,6 +243,7 @@ const dict = {
   m11_qcw_flag_new: { en: '— Flag as a new barrier (no link) —', fr: '— Signaler comme nouvel obstacle (sans lien) —', ar: '— الإبلاغ كعائق جديد (بدون ربط) —' },
   m11_qcw_frequency: { en: 'Code frequency rollup', fr: 'Cumul de fréquence des codes', ar: 'إجمالي تكرار الرموز' },
   m11_qcw_frequency_desc: { en: 'How often each code has been applied across this project\'s tagged material.', fr: 'Fréquence d\'application de chaque code sur l\'ensemble du matériel étiqueté de ce projet.', ar: 'عدد مرات تطبيق كل رمز على المواد المرمزة في هذا المشروع.' },
+  exportCsv: { en: 'Export CSV', fr: 'Exporter en CSV', ar: 'تصدير CSV' },
   changeType: { en: 'Change Type', fr: 'Type de changement', ar: 'نوع التغيير' },
   businessDriver: { en: 'Business Driver', fr: 'Moteur métier', ar: 'الدافع التجاري' },
   targetPopulation: { en: 'Target Population', fr: 'Population cible', ar: 'الفئة المستهدفة' },

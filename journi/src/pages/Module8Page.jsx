@@ -6,6 +6,7 @@ import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import JustifyPanel from '../components/JustifyPanel.jsx'
+import ExportCsvButton from '../components/ExportCsvButton.jsx'
 import { VISIBILITY_LEVELS } from '../data/constants.js'
 import { visibilityColor } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
@@ -79,7 +80,19 @@ function Content({ project }) {
         </div>
 
         <div className="card p-5 md:col-span-2">
-          <h3 className="font-semibold text-brand-950 mb-3">{t('coalitionMember')}</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-brand-950">{t('coalitionMember')}</h3>
+            <ExportCsvButton
+              filename={`${project.name.replace(/\s+/g, '_')}-sponsor-coalition.csv`}
+              rows={project.sponsor.members}
+              columns={[
+                { label: 'Name', value: 'name' },
+                { label: 'Role', value: 'role' },
+                { label: 'Influence', value: 'influence' },
+                { label: 'Engagement', value: 'engagement' },
+              ]}
+            />
+          </div>
           <table className="w-full text-sm">
             <thead className="text-xs uppercase text-ink/40">
               <tr>

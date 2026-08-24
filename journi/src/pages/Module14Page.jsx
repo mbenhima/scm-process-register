@@ -8,6 +8,7 @@ import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import JustifyPanel from '../components/JustifyPanel.jsx'
+import ExportCsvButton from '../components/ExportCsvButton.jsx'
 import { RISK_CATEGORIES } from '../data/constants.js'
 import { riskScore, isHighSeverityRisk } from '../utils/compute.js'
 import { canWrite } from '../utils/rbac.js'
@@ -150,13 +151,26 @@ function Content({ project }) {
         </div>
       )}
 
-      {canEdit && (
-        <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
+        <ExportCsvButton
+          filename={`${project.name.replace(/\s+/g, '_')}-risk-register.csv`}
+          rows={sorted}
+          columns={[
+            { label: 'Category', value: (r) => t(`risk_${r.category}`) },
+            { label: 'Description', value: 'description' },
+            { label: 'Likelihood', value: 'likelihood' },
+            { label: 'Impact', value: 'impact' },
+            { label: 'Risk Score', value: (r) => riskScore(r) },
+            { label: 'Owner', value: 'owner' },
+            { label: 'Status', value: 'status' },
+          ]}
+        />
+        {canEdit && (
           <button className="btn-primary" onClick={() => setModal(true)}>
             + {t('riskCategory')}
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="card overflow-x-auto">
         {sorted.length === 0 ? (

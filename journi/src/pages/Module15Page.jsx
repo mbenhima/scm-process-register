@@ -8,6 +8,7 @@ import Badge from '../components/Badge.jsx'
 import ProgressBar from '../components/ProgressBar.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import LevelSelector from '../components/LevelSelector.jsx'
+import ExportCsvButton from '../components/ExportCsvButton.jsx'
 import { ADKAR_BLOCKS } from '../data/constants.js'
 import { adkarAverage, readinessIndex, trainingCompletionAvg, inferSentimentStage, scoreColor } from '../utils/compute.js'
 import { readinessBenchmark, benchmarkStanding } from '../data/benchmarks.js'
@@ -126,7 +127,18 @@ export default function Module15Page() {
           </div>
 
           <div className="card p-5 overflow-x-auto">
-            <h3 className="font-semibold text-brand-950 mb-3">{t('heatmapByDept')} — {scopeName || 'Portfolio'}</h3>
+            <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <h3 className="font-semibold text-brand-950">{t('heatmapByDept')} — {scopeName || 'Portfolio'}</h3>
+              <ExportCsvButton
+                filename={`readiness-heatmap-${level}.csv`}
+                rows={focusProjects}
+                columns={[
+                  { label: t('cmProject'), value: 'name' },
+                  ...ADKAR_BLOCKS.map((b) => ({ label: t(b), value: (p) => p.adkar[b].score })),
+                  { label: t('readinessIndex'), value: (p) => readinessIndex(p) },
+                ]}
+              />
+            </div>
             <table className="w-full text-sm">
               <thead className="text-xs uppercase text-ink/40">
                 <tr>
@@ -198,7 +210,36 @@ export default function Module15Page() {
       {tab === 'benchmark' && (
         <div className="space-y-5">
           <div className="card p-5">
-            <h3 className="font-semibold text-brand-950 mb-1">{t('benchmarking')} — {levelLabel}</h3>
+            <div className="flex items-start justify-between gap-2 flex-wrap mb-1">
+              <h3 className="font-semibold text-brand-950">{t('benchmarking')} — {levelLabel}</h3>
+              <ExportCsvButton
+                filename={`readiness-benchmark-${level}.csv`}
+                rows={focusProjects}
+                columns={[
+                  { label: t('cmProject'), value: 'name' },
+                  { label: t('lewin'), value: (p) => t(`lewin_${p.lewinPhase}`) },
+                  { label: t('readinessIndex'), value: (p) => readinessIndex(p) },
+                  {
+                    label: t('peerAverage'),
+                    value: (p) => {
+                      const peers = focusProjects.filter((x) => x.id !== p.id)
+                      return peers.length ? Math.round(peers.reduce((a, x) => a + readinessIndex(x), 0) / peers.length) : ''
+                    },
+                  },
+                  {
+                    label: t('referenceBand'),
+                    value: (p) => {
+                      const band = readinessBenchmark(p.lewinPhase)
+                      return `${band.low}-${band.high}`
+                    },
+                  },
+                  {
+                    label: t('status'),
+                    value: (p) => t(`standing_${benchmarkStanding(readinessIndex(p), readinessBenchmark(p.lewinPhase))}`),
+                  },
+                ]}
+              />
+            </div>
             <p className="text-xs text-ink/50 mb-4">
               Each project's Composite Readiness Index compared against a seeded reference band for its current Lewin phase, and against the peer average within this level's scope.
             </p>
