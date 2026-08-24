@@ -977,11 +977,15 @@ Module 18's Process Registry holds 16 registered end-to-end chains: 4 core chain
 
 **In the Bouregreg scenario:** Meryem Sabri opens the Stakeholder Map (M4) for all three sites (MP-01); the CFO's Sponsor roadmap and Steering Committee are stood up on M7 (MP-02); Driss El Amrani launches the kickoff communications wave on M8 (MP-03); the champion network across Casablanca, Kenitra, and Settat is recruited and logged on M4 (MP-06); and the baseline ADKAR/Bridges/Kübler-Ross pulse is read on M5/M6 (MP-07). The chain closes when the CFO's sponsorship is visibly active, the population is informed, and the champion network is live --- exactly the state Part 1's tenant setup ends at.
 
+**Week reference:** W1--14, spanning Discovery and Design (Part 1B.3, Phases 1--2) --- the same window Part 1B.6's Month 1--3 narrative covers.
+
 #### E2E-02 --- Capability & Divergence Management (Training → Verified Competence)
 
 **Composition:** MP-05 → MP-08 → MP-07 · **Trigger:** curriculum, sandbox, and cohort segmentation confirmed from E2E-01 · **Terminal state:** verified capable and emotionally-ready cohorts; Divergence Pattern log · **RACSI:** R=CM, A=CM, C=FPO/ITL, S=PM/SUP, I=ES/EU
 
 **In the Bouregreg scenario:** the training curriculum built for Casablanca finance, Kenitra plant operations, and Settat plant operations runs through M9 (MP-05); as cohorts show real Knowledge/Ability scores on M5, the Divergence Pattern Detector cross-checks them against the Bridges reading on M6 (MP-08); the result feeds back into the readiness diagnostics on M5/M6/M14 (MP-07). This is the chain a Change Manager runs at UAT time --- the first point a cohort's paper knowledge and their actual emotional readiness can visibly diverge.
+
+**Week reference:** W28--42, spanning Test and Train (Phases 4--5) --- the exact window Exception E2 (Part 1B.4) fires in, Month 8 of Part 1B.6's narrative.
 
 #### E2E-03 --- Resistance-to-Commitment (Barrier Detection → Buy-In)
 
@@ -989,11 +993,15 @@ Module 18's Process Registry holds 16 registered end-to-end chains: 4 core chain
 
 **In the Bouregreg scenario:** when Settat's plant floor logs a Desire score of 2 or below on M5, it auto-escalates and is logged as a barrier on M10 (MP-04); the champion network on M4 surfaces the underlying concern (MP-06); the readiness diagnostics on M5/M6 register the drop (MP-07); and Houda Zerouali's floor-coaching response on M11 is what actually moves the score back up (MP-09). This chain is the backbone of Part 4's compliance and cultural scenarios below, where resistance is the central story rather than a side event.
 
+**Week reference:** first opens W18--22 (Build, Phase 3) with Exception E1, and recurs at any later point a Desire or sentiment score stalls --- see also the Order-to-Cash and Settat Restructuring cases in Part 4, both built around this exact chain.
+
 #### E2E-04 --- Adoption-to-Sustainment (Go-Live → Refreeze)
 
 **Composition:** MP-09 → MP-10 → MP-07 · **Trigger:** go-live cutover executed · **Terminal state:** stabilized new-normal performance; embedded reinforcement; confirmed Refreeze; closed project · **RACSI:** R=CM, A=ES, C=PM/FPO, S=SUP, I=ITL/EU
 
 **In the Bouregreg scenario:** from ERP go-live day, hypercare and floor coaching run on M11/M12 (MP-09); reinforcement mechanisms --- recognition, manager check-ins, revoked legacy-system access --- are confirmed active on M12 (MP-10); and the Lewin phase is only called "Refreeze" on M3 once the readiness diagnostics on M14 support it, not on the calendar date (MP-07). This is the same discipline the ERP User Guide's Exception E3 (Two-Clock Problem) and Exception E5 (Reinforcement Gap) protect against.
+
+**Week reference:** W43 through W60+, spanning Deploy, Hypercare, and Sustain (Phases 6--8) --- the closing third of Part 1B.6's month-by-month narrative, Months 11 through 14.
 
 ### Cross-Cutting Loops (E2E-05 --- E2E-08)
 
@@ -1003,11 +1011,15 @@ Module 18's Process Registry holds 16 registered end-to-end chains: 4 core chain
 
 **In the Bouregreg scenario:** this loop is not a separate data-entry screen --- it is the traceable path from a new Communications entry (M8) or Training completion (M9) through to the Composite Readiness Index recalculation on M14 and a fresh Divergence Pattern check on M6. It makes explicit a dependency that already exists in journi's data model: Communications and Training feed ADKAR, and ADKAR feeds the Risk Register.
 
+**Week reference:** continuous, W1 through close --- this loop has no phase of its own because it is the connective tissue running underneath every phase in Part 1B.3.
+
 #### E2E-06 --- PM ↔ CM Governance Bridge
 
 **Composition:** MP-02 → MP-08 · **Trigger:** Main Project schedule slip logged, or a Phase Gate checkpoint reached · **Terminal state:** a Joint Decision Record (Go / Go with Conditions / No-Go), with PM and CM inputs preserved independently and exactly one Accountable role named --- selectable, and may differ from either input's author
 
 **In the Bouregreg scenario:** when the ERP Platform Unification Main Project's technical schedule slips against a Phase Gate on M17, the Joint Decision Record captures both Driss El Amrani's Change Management read and the Main Project's PM read independently, then names one Accountable role for the actual Go/No-Go call --- so a schedule slip never gets silently resolved by whichever discipline happens to write to the record last.
+
+**Week reference:** most active at each phase gate in Part 1B.3 --- W8, W14, W30, W38, W42, W43, W50, and W60+ --- since a Phase Gate checkpoint is this loop's most common trigger.
 
 #### E2E-07 --- Champion Early-Warning Loop
 
@@ -1015,11 +1027,15 @@ Module 18's Process Registry holds 16 registered end-to-end chains: 4 core chain
 
 **In the Bouregreg scenario:** a Kenitra plant champion notices workaround behavior on the floor before it shows up in any score; logging that observation against the champion network on M4 is what turns it into a formal barrier record on M10 --- the earliest possible point resistance becomes visible to the program, ahead of a score actually moving.
 
+**Week reference:** operational from W12 onward, once Build's Task 2 formally briefs the champion network (Phase 3) --- and the exact mechanism that could have surfaced Exception E1's Settat concern even earlier than the Desire score did.
+
 #### E2E-08 --- Governance Escalation Loop
 
 **Composition:** MP-02 → MP-10 · **Trigger:** a Sponsor escalation action is logged · **Terminal state:** the escalation resolved and reflected in the sustainment sign-off
 
 **In the Bouregreg scenario:** journi's own documentation flags this as its weakest-evidence proposed loop, included for completeness rather than as a distinct workflow --- in practice it is largely covered by the CFO's existing escalation actions on M7 and the sustainment checkpoints on M12, and this guide states that plainly rather than overstate the loop's independence from those two modules.
+
+**Week reference:** no fixed window --- like E2E-05, it runs continuously wherever a Sponsor escalation and a sustainment checkpoint happen to coincide, most plausibly around Exception E5 in Part 1B.6's Month 14.
 
 ### Transformation-Type Lifecycles (8 archetypes, each with its own Phase Template)
 
@@ -1275,7 +1291,23 @@ Role-code abbreviations used throughout this guide: **ES** Executive Sponsor · 
 
 <a id="a7"></a>
 
-### A.7 Sample journi Entries
+### A.7 A Worked RACSI Grid Example (M18)
+
+The RACSI grid on M18 assigns one set of R/A/C/S/I roles per macro process, platform-wide --- editable cell by cell by whoever holds that capability (by default, Org-Admin-and-above). The excerpt below shows how Bouregreg Group's Org Admin, Meryem Sabri, filled in the first five of the ten macro processes after Part 1's tenant setup, before Part 1B's program began:
+
+| Macro Process | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|---|
+| MP-01 Change Impact & Stakeholder Assessment | PM, FPO | ES | CM | SUP | EU |
+| MP-02 Sponsorship & Governance Management | CM | ES | PM | SUP | EU |
+| MP-03 Communication & Awareness Management | CM | CM | FPO | SUP | EU, ES |
+| MP-04 Resistance & Barrier Management | CM | CM | ES, SUP | PM | FPO, EU |
+| MP-05 Training & Capability Enablement | CM, SUP | CM | FPO | PM | ES, EU |
+
+Two things this excerpt is meant to make concrete rather than abstract: first, the Accountable role is not always the Executive Sponsor --- MP-03 through MP-05 name the Change Manager Accountable, since the CFO is Consulted or Informed on communications and training decisions rather than personally accountable for them. Second, the same role can appear in more than one column for the same process only if it is Responsible alongside another Responsible role (M18's own rule, matching A.2) --- Accountable is always exactly one role, with no exception anywhere in this grid.
+
+<a id="a8"></a>
+
+### A.8 Sample journi Entries
 
 The snippets below are the kind of text a Change Manager actually types into journi's justification and note fields --- included here so a first-time user isn't staring at a blank field wondering what "good" looks like.
 
@@ -1289,7 +1321,9 @@ The snippets below are the kind of text a Change Manager actually types into jou
 
 **A Sustainment checkpoint note (M12, 90-day checkpoint, Exception E5):** *"Reinforcement score 2.6, below the 3.0 target. Root cause: manager check-ins tapered off after the 60-day checkpoint once daily hypercare tracking ended. Remediation: CFO re-authorized a further checkpoint cadence at 105 and 120 days; champion network re-chartered for reinforcement specifically. Refreeze call delayed pending two consecutive healthy checkpoints."*
 
-### A.8 Frequently Asked Questions
+<a id="a9"></a>
+
+### A.9 Frequently Asked Questions
 
 **Why does journi never auto-compute a Lewin, Bridges, or Kübler-Ross reading, when it does compute the Composite Readiness Index?** Because those three are judgment calls about people's actual lived experience of change, and a wrong automated inference would be worse than a human one arrived at deliberately. The Composite Readiness Index and Divergence Pattern Detector are different: both are pure arithmetic over numbers a human already logged, with no interpretive judgment involved.
 
