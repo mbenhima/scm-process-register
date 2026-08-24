@@ -1154,6 +1154,8 @@ With nine Change Management Projects now running under one Organization, two ale
 
 Between them, the nine cases above exercise every one of journi's 9 live-computed alerts at least once --- eight through a single project's own data, and the last two only because the portfolio, taken together, is what makes them real. Part 5 covers all 9 in full, plus the 7 reference alerts in journi's D07 catalog that are documented but not live-computed in this build.
 
+This also means Bouregreg Group's Notification Center, viewed from any one project, is genuinely busier than a single-project tenant's would be --- exactly the condition Section 1B.5's weekly-cadence guidance and Section 5.6's cross-reference table exist to help a Change Manager triage rather than be overwhelmed by. A reader working through this guide end to end will notice the same population --- plant-floor staff at Kenitra and Settat, in particular --- named across five or six different cases: the ERP program, the Operating Model redesign, the Training & Skills upskilling program, and potentially the Settat Restructuring case all reach the same people within the same rough window. That overlap is not an oversight in how this library was built; it is the realistic condition ALT-008 and ALT-011 are designed to catch, made visible here rather than left as an abstract rule with no data behind it.
+
 ---
 
 ---
