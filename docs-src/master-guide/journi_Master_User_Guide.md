@@ -286,6 +286,10 @@ Discovery is where the business case gets made and the Month-0 baseline gets cap
 
 **Phase gate (M17):** Discovery closes with a clean Go once the Stakeholder Map, business case, and Lewin baseline are all in place --- the state Part 1's setup checklist ends at.
 
+**SIPOC.** Suppliers: Executive Sponsor (CFO); Functional Process Owners at each site; enterprise IT strategy. · Inputs: Strategic mandate and budget approval; current-state process notes; org chart per site. · Process: this phase's four Tasks in sequence · Outputs: Approved business case; Stakeholder Map; baseline Lewin reading (Unfreeze). · Customers: Steering Committee; Program Manager; Change Manager.
+
+**RACSI for this phase.** R = PM, FPO · A = ES · C = CM, ITL · S = SUP · I = EU
+
 <a id="phase-2"></a>
 
 #### Phase 2 --- Design (W6--14)
@@ -300,6 +304,10 @@ Design overlaps Discovery's tail: future-state process scope gets drafted while 
 - **Task 4 --- Recruit the champion network.** A first cohort of champions --- one per site, per major function --- is recruited and logged against the Stakeholder Map on M4, ahead of their formal briefing in Build. *journi: M4.*
 
 **Phase gate:** Design closes once the future-state scope is signed off by the Steering Committee and the baseline Awareness pulse is logged --- this is also the point where, if the program were instead running as the Order-to-Cash Process Redesign of Part 4, the first Resistance-to-Commitment (E2E-03) signals would already be visible in Casablanca finance.
+
+**SIPOC.** Suppliers: Functional Process Owners; ITL; the champion network's first recruits. · Inputs: Discovery findings; design-principle drafts; first town-hall feedback. · Process: this phase's four Tasks in sequence · Outputs: Signed-off future-state scope; first champion roster; baseline Awareness scores. · Customers: Program Manager; Change Manager; Steering Committee.
+
+**RACSI for this phase.** R = CM, FPO · A = ES · C = PM, ITL · S = SUP · I = EU
 
 <a id="phase-3"></a>
 
@@ -316,6 +324,10 @@ Build is the longest phase and the one where the Lewin call actually moves --- n
 
 **Phase gate:** Build closes once the platform configuration is functionally complete and Lewin has moved to Change on real evidence --- a No-Go or Conditional call here (ALT-009, Part 5) means configuration is not ready for Test, and the phase does not advance on schedule alone.
 
+**SIPOC.** Suppliers: ITL; configuration sprint teams; the champion network. · Inputs: Signed-off future-state scope; design principles; Awareness-stage ADKAR data. · Process: this phase's four Tasks in sequence · Outputs: Functionally complete configured build; briefed champion network; Lewin = Change. · Customers: Program Manager; Change Manager; Test-phase team.
+
+**RACSI for this phase.** R = ITL, CM · A = PM · C = FPO, ES · S = SUP · I = EU
+
 <a id="phase-4"></a>
 
 #### Phase 4 --- Test (W28--38)
@@ -330,6 +342,10 @@ Test is the first point a representative slice of end users gets real hands-on e
 - **Task 4 --- Cross-check Knowledge/Ability against Bridges.** The Divergence Pattern check runs here for the first time with real data: if a cohort's Knowledge and Ability both read 4 or higher while Bridges still reads Ending, ALT-001 fires --- exactly Exception E2 below. *journi: M6.*
 
 **Phase gate:** Test closes once SIT and UAT sign-off are both recorded and any Divergence Pattern flags from Task 4 are resolved or explicitly accepted, not silently ignored.
+
+**SIPOC.** Suppliers: ITL; the recruited UAT cohort across all three sites. · Inputs: Configured build; UAT participant roster; acceptance criteria. · Process: this phase's four Tasks in sequence · Outputs: SIT/UAT sign-off; defect log; first real Knowledge/Ability scores; Divergence Pattern result. · Customers: Program Manager; Change Manager; Train-phase team.
+
+**RACSI for this phase.** R = ITL, FPO · A = PM · C = CM · S = SUP, EU · I = ES
 
 <a id="phase-5"></a>
 
@@ -346,6 +362,10 @@ Train runs alongside Test rather than strictly after it --- Knowledge becomes Ab
 
 **Phase gate:** Train closes once cohort-level go/no-go readiness is confirmed against benchmarking bands on M14 --- a per-cohort call, not a single project-wide one, since Bouregreg's three sites are not required to reach readiness on the same week.
 
+**SIPOC.** Suppliers: Training lead; plant supervisors at Kenitra and Settat; ITL (sandbox environment). · Inputs: Curriculum; UAT findings; per-site Knowledge scores. · Process: this phase's four Tasks in sequence · Outputs: Trained, certified cohorts; deployed job aids; cohort-level go/no-go call. · Customers: Steering Committee; Program Manager; Deploy-phase team.
+
+**RACSI for this phase.** R = CM, SUP · A = CM · C = FPO · S = PM · I = ES, EU
+
 <a id="phase-6"></a>
 
 #### Phase 6 --- Deploy (W43)
@@ -360,6 +380,10 @@ Deploy is a single, sharp week --- the clearest instance in Bouregreg's program 
 - **Task 4 --- Activate hypercare; mark Lewin as provisional.** The hypercare support model goes live on Day 1, and Lewin is marked "Change → Refreeze (provisional)" on M3 rather than called Refreeze outright --- the exact discipline Exception E3 protects. *journi: M3.*
 
 **Phase gate:** Deploy closes on a clean technical go-live; the Lewin call explicitly does not close here, and stays provisional into Hypercare.
+
+**SIPOC.** Suppliers: ITL; Program Manager; Change Manager. · Inputs: Rehearsed migration cycles; cutover runbook; cohort go/no-go calls. · Process: this phase's four Tasks in sequence · Outputs: Live production system; legacy system locked; go-live communication sent; provisional Lewin. · Customers: Steering Committee; all three sites; Hypercare-phase team.
+
+**RACSI for this phase.** R = ITL, PM · A = ES · C = CM · S = SUP · I = EU
 
 <a id="phase-7"></a>
 
@@ -376,6 +400,10 @@ The last mile of adoption is won or lost here, and Kübler-Ross regression durin
 
 **Phase gate:** Hypercare closes once the re-pulse confirms Bridges has genuinely moved to New Beginning and Kübler-Ross reads Exploration or better across all three sites --- not on the calendar alone.
 
+**SIPOC.** Suppliers: Elevated support desk (ITL, CM); plant supervisors. · Inputs: Daily adoption metrics; go-live defect log; provisional Lewin reading. · Process: this phase's four Tasks in sequence · Outputs: Stabilized adoption metrics; confirmed Bridges/Kübler-Ross re-pulse; support taper plan. · Customers: Steering Committee; Sustain-phase team.
+
+**RACSI for this phase.** R = CM, SUP · A = CM · C = ITL, PM · S = FPO · I = ES, EU
+
 <a id="phase-8"></a>
 
 #### Phase 8 --- Sustain (W48--60+)
@@ -390,6 +418,10 @@ Sustain is where Refreeze is called from checkpoint evidence, never the calendar
 - **Task 4 --- Call Refreeze; close the CM project.** Once checkpoint evidence supports it, Driss El Amrani formally calls Refreeze on M3 and closes the Bouregreg ERP Adoption Program on M12, handing ongoing ownership to the business-as-usual process owner. *journi: M3, M12.*
 
 **Phase gate:** Sustain --- and the program --- closes on the sign-off toggle on M12, blocked by ALT-015 (Part 5) if any checkpoint still carries an open High regression-risk flag.
+
+**SIPOC.** Suppliers: HR (performance-management integration); Change Manager; Executive Sponsor. · Inputs: Hypercare's confirmed readings; 30/60/90-day checkpoint data. · Process: this phase's four Tasks in sequence · Outputs: Confirmed Refreeze; embedded reinforcement; closed CM project; lessons-learned log. · Customers: Executive Sponsor; business-as-usual process owner; future Bouregreg CM projects.
+
+**RACSI for this phase.** R = CM · A = ES · C = PM, FPO · S = SUP · I = EU
 
 <a id="p1b-4"></a>
 
@@ -414,6 +446,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 
 **Outputs:** root-cause clustering of the Desire stall; a specific, sponsor-delivered response; updated Desire and Kübler-Ross scores; Settat cleared to enter Train's Task 1 on schedule.
 
+**RACSI for this exception.** R = CM · A = CM · C = ES, SUP · S = PM · I = FPO, EU
+
 <a id="exc-e2"></a>
 
 #### E2 --- Divergence Pattern at UAT (Related to Phases 4--5 --- Test, Train)
@@ -430,6 +464,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 5. **Re-check the Bridges reading only, at the next scheduled pulse.** Only Bridges is re-scored; Knowledge and Ability are already confirmed and do not need re-testing. *journi: M6.*
 
 **Outputs:** confirmed or dismissed divergence case; documented loss concern if genuine; updated Bridges reading; the individual cleared for Train's cohort-readiness call once resolved.
+
+**RACSI for this exception.** R = CM · A = CM · C = SUP · S = FPO · I = ES, EU
 
 <a id="exc-e3"></a>
 
@@ -448,6 +484,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 
 **Outputs:** an explicit provisional Lewin phase call rather than a premature confirmed one; sustained hypercare funding through the lag; a confirmed or corrected Lewin phase once the re-pulse lands.
 
+**RACSI for this exception.** R = CM, ITL · A = ES · C = PM · S = SUP · I = EU
+
 <a id="exc-e4"></a>
 
 #### E4 --- Sentiment Regression During Hypercare (Related to Phase 7 --- Hypercare)
@@ -464,6 +502,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 5. **Re-pulse the affected cohort only, at 1--2 weeks.** Only the Kenitra cohort is re-scored --- this is a localized regression, not a program-wide one. *journi: M6.*
 
 **Outputs:** the triggering defect resolved and communicated; the regression event and response documented; confirmed recovery, or continued monitoring if the re-pulse doesn't yet show it.
+
+**RACSI for this exception.** R = SUP, ITL · A = CM · C = PM · S = FPO · I = ES, EU
 
 <a id="exc-e5"></a>
 
@@ -482,6 +522,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 
 **Outputs:** a documented Reinforcement stall and remediation plan; a re-authorized checkpoint cadence; a re-chartered champion network; a delayed but evidence-based Refreeze call rather than a premature one.
 
+**RACSI for this exception.** R = CM · A = ES · C = SUP, FPO · S = PM · I = EU
+
 <a id="exc-e6"></a>
 
 #### E6 --- Cohort Divergence Across Sites (Cross-Cutting, Phases 4--7 --- Test through Hypercare)
@@ -498,6 +540,8 @@ Every exception below is a realistic, specific way one of the four frameworks' n
 5. **Continue reporting cohort-level readiness alongside the project-level number.** Every future Steering Committee readout carries the three-site breakdown, not just the blended figure, through Phase 5's cohort-by-cohort gate and beyond.
 
 **Outputs:** a disaggregated, site-level readiness report; a root-cause comparison between Casablanca and the other two sites; a revised, cohort-by-cohort go/no-go recommendation at Phase 5's gate rather than one all-or-nothing call.
+
+**RACSI for this exception.** R = CM, FPO · A = CM · C = SUP · S = PM · I = ES, EU
 
 ---
 
