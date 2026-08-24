@@ -77,6 +77,17 @@ Read Part 1 once, at setup time, or skip it if your tenant already exists. From 
 
 Every screen, field, tab, and button named in this guide is verified against journi's actual source code, not assumed from a spec. Where a feature has a real constraint --- for example, that an Organization's sector is one of exactly three values, or that a Change Management Project may link to zero, one, or more Main Projects --- this guide states that constraint rather than working around it. Nothing here describes a feature journi does not actually have.
 
+### Reading paths, by role
+
+This guide is long by design, and no single reader needs all of it at once. A few starting points:
+
+- **A Super Admin setting up a new tenant:** Part 1 in full, then Part 2 as a standing reference once modules are in use.
+- **A Change Manager running a program day to day:** Part 1B in full --- it is written as the operating manual for exactly this role --- then Part 2 for any module whose fields aren't yet familiar, and Part 5 kept open alongside the Notification Center.
+- **A Program/Project Manager focused on the PM ↔ CM boundary:** Part 3's E2E-06 (Governance Bridge), Part 1B.3's eight Phase Gates, and Section 5.6's alert cross-reference, which is PM-facing by design for ALT-008 and ALT-009.
+- **An Executive Sponsor or Steering Committee member:** Part 0 for orientation, Part 1B.2's calendar and 1B.6's month-by-month account for the shape of the program, and Section 5.5 for which alerts name that role directly.
+- **Someone evaluating journi for a new organization, not yet a Change Manager:** Part 0, then Part 4 in full --- the fastest way to see the breadth of what one journi tenant can actually hold.
+- **Someone who just needs one fact fast:** the Appendix, A.1 through A.6, is built as a standalone quick-reference and does not require having read the rest of the guide first.
+
 ---
 
 <a id="part-1"></a>
@@ -1180,6 +1191,22 @@ Two numbers drive several of the alerts and dashboards above, and journi compute
 - **Executive Sponsor / Steering Committee**: M14's benchmarking view for the blended readiness trend; ALT-003, ALT-004, ALT-009, and ALT-010 are the four most likely to name them directly as a recipient.
 - **PMO / Program Manager**: ALT-008 and ALT-009 are PM-facing by design --- saturation and gate outcomes are portfolio- and schedule-level concerns first.
 - **Super Admin**: none of the 9 live alerts route to Super Admin by default; their standing responsibility is Part 1's tenant configuration (License, Permission Matrix, Governance Settings), not day-to-day alert triage.
+
+### 5.6 Alert-to-Scenario Cross-Reference
+
+Part 4's nine-project library was purpose-built so every live alert has a real, traceable origin in this guide rather than existing only as an abstract rule. This table is the index back to where each one actually fires:
+
+| Alert | Fires in | When (approximate week) |
+|---|---|---|
+| ALT-001 Divergence Pattern Detected | Bouregreg ERP Adoption Program | W28--38 (Test), Exception E2 |
+| ALT-002 Regression Risk Score Critical | Regional Operating Model Redesign | ~W56, first 30-day checkpoint |
+| ALT-003 Sponsor Coverage Gap | One Bouregreg: Post-Acquisition Culture Integration | ~W27--30, before the integration Sponsor's first logged action |
+| ALT-004 Resistance Escalation Threshold Breached | Order-to-Cash Process Redesign; Settat Plant Consolidation & Workforce Restructuring | W22--26 (Order-to-Cash pilot); W46 (Settat restructuring) |
+| ALT-008 Change Saturation Threshold Breached | Portfolio-wide (Part 4, "What the portfolio view shows") | Continuous, once 3+ projects run concurrently |
+| ALT-009 Phase Gate No-Go / Conditional | Bouregreg ERP Adoption Program (if triggered); most schedule-sensitive in the Loi 09-08 Compliance Program | Any Phase Gate, Part 1B.3 |
+| ALT-010 Guiding Coalition Gap | ISO 9001/14001 Integrated Management System | ~W26, Implementation phase |
+| ALT-011 Communication Overload Detected | Portfolio-wide (Part 4, "What the portfolio view shows") | Most acute around W43 (ERP go-live week) |
+| ALT-015 Sustainment Sign-Off Blocked | Regional Operating Model Redesign | ~W56, following ALT-002 |
 
 ---
 
