@@ -61,6 +61,7 @@ function loadInitialState() {
           ...p,
           phaseGates: p.phaseGates || [],
           phaseChecklists: p.phaseChecklists || [],
+          charterActionLog: p.charterActionLog || [],
         }))
         return parsed
       }
@@ -395,6 +396,34 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // Module 20 — D31a Charter Action Mapping compliance tracking: a Change
+  // Manager (or, within their module scope, another role per D31b) logs
+  // completion of a specific charter-governed action for their project,
+  // giving REQ-012's charter compliance something trackable rather than
+  // only static reference content.
+  const logCharterAction = useCallback((projectId, charterActionId, note) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        charterActionLog: [
+          { id: uid('chtrlog'), charterActionId, date: todayISO(), note: note || '' },
+          ...(p.charterActionLog || []),
+        ],
+      })),
+    }))
+  }, [])
+
+  const deleteCharterActionLog = useCallback((projectId, logId) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        charterActionLog: (p.charterActionLog || []).filter((l) => l.id !== logId),
+      })),
+    }))
+  }, [])
+
   const updateLicense = useCallback((patch) => {
     setData((prev) => ({ ...prev, license: { ...prev.license, ...patch } }))
   }, [])
@@ -502,6 +531,7 @@ export function AppStateProvider({ children }) {
         wbsTasks: [],
         phaseGates: [],
         phaseChecklists: [],
+        charterActionLog: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [
@@ -617,6 +647,8 @@ export function AppStateProvider({ children }) {
       addSponsorAction,
       updateRolePermission,
       updateRacsiCell,
+      logCharterAction,
+      deleteCharterActionLog,
       updateLicense,
       setRequireJustification,
       llmConfig,
@@ -664,6 +696,8 @@ export function AppStateProvider({ children }) {
       addSponsorAction,
       updateRolePermission,
       updateRacsiCell,
+      logCharterAction,
+      deleteCharterActionLog,
       updateLicense,
       setRequireJustification,
       llmConfig,

@@ -21,6 +21,7 @@ const SUB_COLLECTIONS = [
   'journeyEvents',
   'phaseGates',
   'phaseChecklists',
+  'charterActionLog',
 ]
 
 function normalizeCmProject(raw) {
