@@ -241,7 +241,115 @@ Two things about this calendar are deliberate and worth stating rather than leav
 
 ---
 
-*Continued in the next subsection: 1B.3, the phase-by-phase playbook.*
+### 1B.3 Phase-by-Phase Playbook (Normal Flow)
+
+Each phase below states its weeks, its framework readings at the phase's close, four concrete Tasks with their Steps, and the phase gate outcome recorded on M17. Every journi module reference is real; every Task is written as something Driss El Amrani, Meryem Sabri, Houda Zerouali, or their teams actually do inside the modules toured in Part 2.
+
+#### Phase 1 --- Discovery (W1--8)
+
+**Framework readings at close:** Lewin Unfreeze · ADKAR focus Awareness · Bridges Ending · Kübler-Ross Denial.
+
+Discovery is where the business case gets made and the Month-0 baseline gets captured, before any visible change has reached the plant floor.
+
+- **Task 1 --- Run current-state discovery workshops per site.** Meryem Sabri's team runs facilitated workshops at Casablanca HQ, Kenitra, and Settat to document how order management, inventory, and finance actually work today, warts and workarounds included. *Steps:* schedule one workshop per site per function; capture current-state process maps; log every manual workaround as a discovery finding, not yet as a resistance entry.
+- **Task 2 --- Quantify the cost of inaction.** The three legacy systems' manual reconciliation, delayed month-end close, and duplicate data entry are costed out in hours and dirhams, giving the CFO's business case real numbers rather than a general sense that "the systems are old." *Steps:* pull a month of reconciliation time logs from each site; compute the fully-loaded cost; attach the finding to the Main Project's business case.
+- **Task 3 --- Build the Stakeholder Map.** Every affected function and cohort across the three sites is entered on M4, each with an impact dimension and severity --- Casablanca finance flagged for the deepest tracking, since it loses the most manual workarounds. *Steps:* enter each cohort with site, function, and impact severity; flag Casablanca finance and Kenitra/Settat plant operations as high-impact; save.
+- **Task 4 --- Open the Change Management project; set Lewin.** Driss El Amrani opens the Bouregreg ERP Adoption Program formally and logs Lewin as Unfreeze on M3, with a justification tied to the discovery findings rather than the calendar. *Steps:* create the CM Project record (done in Part 1); set Lewin = Unfreeze; attach a justification note citing the discovery workshops' findings. *journi: M3.*
+
+**Phase gate (M17):** Discovery closes with a clean Go once the Stakeholder Map, business case, and Lewin baseline are all in place --- the state Part 1's setup checklist ends at.
+
+#### Phase 2 --- Design (W6--14)
+
+**Framework readings at close:** Lewin Unfreeze · ADKAR focus Awareness → Desire · Bridges Ending · Kübler-Ross Denial → Resistance/Anger.
+
+Design overlaps Discovery's tail: future-state process scope gets drafted while the last discovery findings are still landing.
+
+- **Task 1 --- Draft future-state process scope and design principles.** Meryem Sabri's team and the ITL function agree 5--8 written design principles (for example, "no duplicate approvals across sites") that every later configuration decision must satisfy.
+- **Task 2 --- Launch the first communications wave.** Driss El Amrani opens M8 with the program's first town hall message across all three sites --- why now, what's changing, when --- and an FAQ channel for questions the town hall didn't answer. *journi: M8.*
+- **Task 3 --- Score the baseline ADKAR pulse.** The first real Awareness scores are logged on M5 per cohort; Casablanca finance, further along in the discovery conversation, reads higher than Kenitra and Settat plant floor, who have heard less so far. *journi: M5.*
+- **Task 4 --- Recruit the champion network.** A first cohort of champions --- one per site, per major function --- is recruited and logged against the Stakeholder Map on M4, ahead of their formal briefing in Build. *journi: M4.*
+
+**Phase gate:** Design closes once the future-state scope is signed off by the Steering Committee and the baseline Awareness pulse is logged --- this is also the point where, if the program were instead running as the Order-to-Cash Process Redesign of Part 4, the first Resistance-to-Commitment (E2E-03) signals would already be visible in Casablanca finance.
+
+#### Phase 3 --- Build (W12--30)
+
+**Framework readings at close:** Lewin Unfreeze → Change · ADKAR focus Desire · Bridges Ending → Neutral Zone · Kübler-Ross Resistance/Anger.
+
+Build is the longest phase and the one where the Lewin call actually moves --- not because 18 weeks have passed, but because the evidence supports it by the phase's end.
+
+- **Task 1 --- Configure the platform against the approved design.** Iterative configuration sprints run against the Design-phase principles; each sprint's decisions are logged so later audits can trace a configuration choice back to the principle that justified it.
+- **Task 2 --- Brief and activate the champion network.** The champions recruited in Design are formally briefed on what to watch for on the floor and how to log an observation --- this is the point Exception E7 (Part 3's Champion Early-Warning Loop) becomes operational, not just theoretical.
+- **Task 3 --- Re-run the ADKAR pulse; log barrier reasons.** As Awareness gives way to Desire, any block scoring 2 or below is required to carry a barrier-reason note and auto-escalates --- the mechanism that catches a stalling Desire score before it becomes Exception E1 below. *journi: M5.*
+- **Task 4 --- Log the Lewin phase transition.** Once discovery evidence, not the calendar, supports it, Driss El Amrani moves Lewin from Unfreeze to Change on M3, with a justification citing the specific evidence --- configuration sprints landing, Desire trending rather than stalling. *journi: M3.*
+
+**Phase gate:** Build closes once the platform configuration is functionally complete and Lewin has moved to Change on real evidence --- a No-Go or Conditional call here (ALT-009, Part 5) means configuration is not ready for Test, and the phase does not advance on schedule alone.
+
+#### Phase 4 --- Test (W28--38)
+
+**Framework readings at close:** Lewin Change · ADKAR focus Knowledge · Bridges Neutral Zone · Kübler-Ross Resistance/Anger → Exploration.
+
+Test is the first point a representative slice of end users gets real hands-on exposure --- and the first honest opportunity to run the Divergence Pattern check.
+
+- **Task 1 --- Execute system integration testing.** ITL runs SIT across the configured build before any end user touches it, closing defects that would otherwise surface as usability friction later.
+- **Task 2 --- Recruit a representative UAT cohort.** A cohort spanning Casablanca finance, Kenitra plant operations, and Settat plant operations is recruited on M4 so UAT findings represent all three sites, not just headquarters. *journi: M4.*
+- **Task 3 --- Run UAT sessions; log defects and friction.** Real Knowledge scores are logged as the cohort works through real scenarios; usability friction distinct from outright defects is logged separately so it doesn't get silently fixed by a workaround instead of a design change.
+- **Task 4 --- Cross-check Knowledge/Ability against Bridges.** The Divergence Pattern check runs here for the first time with real data: if a cohort's Knowledge and Ability both read 4 or higher while Bridges still reads Ending, ALT-001 fires --- exactly Exception E2 below. *journi: M6.*
+
+**Phase gate:** Test closes once SIT and UAT sign-off are both recorded and any Divergence Pattern flags from Task 4 are resolved or explicitly accepted, not silently ignored.
+
+#### Phase 5 --- Train (W30--42)
+
+**Framework readings at close:** Lewin Change · ADKAR focus Knowledge → Ability · Bridges Neutral Zone · Kübler-Ross Exploration.
+
+Train runs alongside Test rather than strictly after it --- Knowledge becomes Ability under increasingly realistic conditions while Bridges settles into the Neutral Zone.
+
+- **Task 1 --- Deliver role-based training by cohort.** Curriculum built for Casablanca finance, Kenitra plant operations, and Settat plant operations runs through M9, tracked from enrollment through the Certified toggle once a cohort demonstrates real capability, not just attendance. *journi: M9.*
+- **Task 2 --- Deploy job aids and a sandbox practice environment.** Plant-floor staff at Kenitra and Settat get hands-on sandbox practice ahead of go-live rather than a first live transaction being their first real attempt.
+- **Task 3 --- Run readiness assessments per cohort.** Knowledge/Ability scoring by cohort surfaces which sites are ready and which need another training wave --- Settat, further from HQ and later to receive the champion briefing, typically reads behind Casablanca here. *journi: M5.*
+- **Task 4 --- Brief supervisors on floor-coaching expectations.** Kenitra and Settat plant supervisors --- People Manager role --- are briefed on real-time floor coaching for go-live week, using the M11 heatmap to see their own team's weakest ADKAR block before it becomes a go-live incident.
+
+**Phase gate:** Train closes once cohort-level go/no-go readiness is confirmed against benchmarking bands on M14 --- a per-cohort call, not a single project-wide one, since Bouregreg's three sites are not required to reach readiness on the same week.
+
+#### Phase 6 --- Deploy (W43)
+
+**Framework readings at close:** Lewin Change (provisional toward Refreeze) · ADKAR focus Ability · Bridges Neutral Zone → New Beginning (provisional) · Kübler-Ross Exploration.
+
+Deploy is a single, sharp week --- the clearest instance in Bouregreg's program of the two-clock problem Exception E3 exists to manage.
+
+- **Task 1 --- Execute the data freeze and final migration.** The last legacy-system data cutover runs against the mock-migration cycles rehearsed in Build.
+- **Task 2 --- Run the cutover runbook and technical validation.** ITL validates the live platform against the runbook before any site is told to start using it.
+- **Task 3 --- Communicate go-live confirmation to all cohorts.** Driss El Amrani sends the go-live confirmation across Casablanca, Kenitra, and Settat --- a single message, timed carefully against M8's saturation detection (ALT-011, Part 5), since this is the highest-traffic communications week in the program.
+- **Task 4 --- Activate hypercare; mark Lewin as provisional.** The hypercare support model goes live on Day 1, and Lewin is marked "Change → Refreeze (provisional)" on M3 rather than called Refreeze outright --- the exact discipline Exception E3 protects. *journi: M3.*
+
+**Phase gate:** Deploy closes on a clean technical go-live; the Lewin call explicitly does not close here, and stays provisional into Hypercare.
+
+#### Phase 7 --- Hypercare (W43--50)
+
+**Framework readings at close:** Lewin Change → Refreeze (provisional, confirming) · ADKAR focus Ability → Reinforcement · Bridges New Beginning · Kübler-Ross Exploration → Commitment.
+
+The last mile of adoption is won or lost here, and Kübler-Ross regression during this window is normal, expected behavior, not a data error --- Exception E4 below covers exactly this.
+
+- **Task 1 --- Staff an elevated support desk.** ITL and Driss El Amrani's team staff visibly elevated support for the first weeks post-go-live across all three sites.
+- **Task 2 --- Track adoption metrics daily; triage by severity.** Daily tracking on M14 catches a stalling site early rather than at the 30-day checkpoint.
+- **Task 3 --- Run a Kübler-Ross/Bridges re-pulse at 2 and 4 weeks.** Real post-go-live sentiment is re-scored on M6 --- the number that either confirms the provisional Refreeze call or flags Exception E3 as still active. *journi: M6.*
+- **Task 4 --- Coach any cohort showing regression.** People Managers at Kenitra and Settat run targeted coaching on M11 for any cohort whose re-pulse moved backward rather than forward.
+
+**Phase gate:** Hypercare closes once the re-pulse confirms Bridges has genuinely moved to New Beginning and Kübler-Ross reads Exploration or better across all three sites --- not on the calendar alone.
+
+#### Phase 8 --- Sustain (W48--60+)
+
+**Framework readings at close:** Lewin Refreeze (confirmed) · ADKAR focus Reinforcement · Bridges New Beginning · Kübler-Ross Commitment.
+
+Sustain is where Refreeze is called from checkpoint evidence, never the calendar --- the discipline that protects against Exception E5, a Reinforcement gap, below.
+
+- **Task 1 --- Embed new-process metrics into performance management.** The new ERP-based process metrics are embedded into standard performance management with HR support, so the new way of working is measured, not just trained.
+- **Task 2 --- Confirm Reinforcement mechanisms are active.** Recognition, manager check-ins, and revoked legacy-system access are all confirmed active on M12 --- Reinforcement without a revoked fallback option is Reinforcement in name only. *journi: M12.*
+- **Task 3 --- Run 30/60/90-day checkpoint reviews.** Checkpoints against the benchmarking bands on M14 are the evidence base for the eventual Refreeze call --- three consecutive healthy checkpoints, not a date on the calendar. *journi: M14.*
+- **Task 4 --- Call Refreeze; close the CM project.** Once checkpoint evidence supports it, Driss El Amrani formally calls Refreeze on M3 and closes the Bouregreg ERP Adoption Program on M12, handing ongoing ownership to the business-as-usual process owner. *journi: M3, M12.*
+
+**Phase gate:** Sustain --- and the program --- closes on the sign-off toggle on M12, blocked by ALT-015 (Part 5) if any checkpoint still carries an open High regression-risk flag.
+
+---
 
 <a id="part-2"></a>
 
