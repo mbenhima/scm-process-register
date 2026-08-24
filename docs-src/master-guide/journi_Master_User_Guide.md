@@ -409,4 +409,98 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 ---
 
-*End of Part 2. Part 3 --- All 16 End-to-End Process Walkthroughs --- follows next.*
+---
+
+<a id="part-3"></a>
+
+## Part 3 --- All 16 End-to-End Process Walkthroughs
+
+Module 18's Process Registry holds 16 registered end-to-end chains: 4 core chains spanning the whole Change Management lifecycle, 4 cross-cutting loops that make an existing cross-module dependency explicit and traceable, and 8 transformation-type lifecycles --- one per archetype, each with its own Phase Template in M17. Every chain is built from journi's 10 Macro Processes (MP-01 through MP-10); this Part walks each of the 16 against Bouregreg Group's data, and for the 8 transformation-type lifecycles, against the specific Change Management Project in Part 4 that archetype belongs to.
+
+### The 10 Macro Processes (reference)
+
+| Code | Macro Process |
+|---|---|
+| MP-01 | Change Impact & Stakeholder Assessment |
+| MP-02 | Sponsorship & Governance Management |
+| MP-03 | Communication & Awareness Management |
+| MP-04 | Resistance & Barrier Management |
+| MP-05 | Training & Capability Enablement |
+| MP-06 | Champion Network Management |
+| MP-07 | Readiness Diagnostics & Signal Capture |
+| MP-08 | Divergence & Risk Detection |
+| MP-09 | Hypercare & Floor Coaching Support |
+| MP-10 | Reinforcement & Sustainment Management |
+
+### Core Chains (E2E-01 --- E2E-04)
+
+#### E2E-01 --- Readiness & Mobilization (Awareness → Launch-Readiness)
+
+**Composition:** MP-01 → MP-02 → MP-03 → MP-06 → MP-07 · **Trigger:** business case and stakeholder map opened · **Terminal state:** mobilized sponsorship, informed and diagnosed population, active champion network · **RACSI:** R=CM, A=ES, C=FPO/PM, S=SUP, I=EU
+
+**In the Bouregreg scenario:** Meryem Sabri opens the Stakeholder Map (M4) for all three sites (MP-01); the CFO's Sponsor roadmap and Steering Committee are stood up on M7 (MP-02); Driss El Amrani launches the kickoff communications wave on M8 (MP-03); the champion network across Casablanca, Kenitra, and Settat is recruited and logged on M4 (MP-06); and the baseline ADKAR/Bridges/Kübler-Ross pulse is read on M5/M6 (MP-07). The chain closes when the CFO's sponsorship is visibly active, the population is informed, and the champion network is live --- exactly the state Part 1's tenant setup ends at.
+
+#### E2E-02 --- Capability & Divergence Management (Training → Verified Competence)
+
+**Composition:** MP-05 → MP-08 → MP-07 · **Trigger:** curriculum, sandbox, and cohort segmentation confirmed from E2E-01 · **Terminal state:** verified capable and emotionally-ready cohorts; Divergence Pattern log · **RACSI:** R=CM, A=CM, C=FPO/ITL, S=PM/SUP, I=ES/EU
+
+**In the Bouregreg scenario:** the training curriculum built for Casablanca finance, Kenitra plant operations, and Settat plant operations runs through M9 (MP-05); as cohorts show real Knowledge/Ability scores on M5, the Divergence Pattern Detector cross-checks them against the Bridges reading on M6 (MP-08); the result feeds back into the readiness diagnostics on M5/M6/M14 (MP-07). This is the chain a Change Manager runs at UAT time --- the first point a cohort's paper knowledge and their actual emotional readiness can visibly diverge.
+
+#### E2E-03 --- Resistance-to-Commitment (Barrier Detection → Buy-In)
+
+**Composition:** MP-04 → MP-06 → MP-07 → MP-09 · **Trigger:** a stalled Desire score or negative sentiment pulse is first logged · **Terminal state:** resolved barriers; recovered Desire/sentiment scores; sustained commitment · **RACSI:** R=CM, A=CM, C=ES/SUP, S=PM, I=FPO/EU
+
+**In the Bouregreg scenario:** when Settat's plant floor logs a Desire score of 2 or below on M5, it auto-escalates and is logged as a barrier on M10 (MP-04); the champion network on M4 surfaces the underlying concern (MP-06); the readiness diagnostics on M5/M6 register the drop (MP-07); and Houda Zerouali's floor-coaching response on M11 is what actually moves the score back up (MP-09). This chain is the backbone of Part 4's compliance and cultural scenarios below, where resistance is the central story rather than a side event.
+
+#### E2E-04 --- Adoption-to-Sustainment (Go-Live → Refreeze)
+
+**Composition:** MP-09 → MP-10 → MP-07 · **Trigger:** go-live cutover executed · **Terminal state:** stabilized new-normal performance; embedded reinforcement; confirmed Refreeze; closed project · **RACSI:** R=CM, A=ES, C=PM/FPO, S=SUP, I=ITL/EU
+
+**In the Bouregreg scenario:** from ERP go-live day, hypercare and floor coaching run on M11/M12 (MP-09); reinforcement mechanisms --- recognition, manager check-ins, revoked legacy-system access --- are confirmed active on M12 (MP-10); and the Lewin phase is only called "Refreeze" on M3 once the readiness diagnostics on M14 support it, not on the calendar date (MP-07). This is the same discipline the ERP User Guide's Exception E3 (Two-Clock Problem) and Exception E5 (Reinforcement Gap) protect against.
+
+### Cross-Cutting Loops (E2E-05 --- E2E-08)
+
+#### E2E-05 --- Signal Aggregation Loop
+
+**Composition:** MP-03 → MP-05 → MP-07 → MP-08 · **Trigger:** new awareness (MP-03) or knowledge/ability (MP-05) signal recorded · **Terminal state:** Composite Readiness Index (MP-07) recalculated and evaluated by the Divergence Pattern Detector (MP-08)
+
+**In the Bouregreg scenario:** this loop is not a separate data-entry screen --- it is the traceable path from a new Communications entry (M8) or Training completion (M9) through to the Composite Readiness Index recalculation on M14 and a fresh Divergence Pattern check on M6. It makes explicit a dependency that already exists in journi's data model: Communications and Training feed ADKAR, and ADKAR feeds the Risk Register.
+
+#### E2E-06 --- PM ↔ CM Governance Bridge
+
+**Composition:** MP-02 → MP-08 · **Trigger:** Main Project schedule slip logged, or a Phase Gate checkpoint reached · **Terminal state:** a Joint Decision Record (Go / Go with Conditions / No-Go), with PM and CM inputs preserved independently and exactly one Accountable role named --- selectable, and may differ from either input's author
+
+**In the Bouregreg scenario:** when the ERP Platform Unification Main Project's technical schedule slips against a Phase Gate on M17, the Joint Decision Record captures both Driss El Amrani's Change Management read and the Main Project's PM read independently, then names one Accountable role for the actual Go/No-Go call --- so a schedule slip never gets silently resolved by whichever discipline happens to write to the record last.
+
+#### E2E-07 --- Champion Early-Warning Loop
+
+**Composition:** MP-06 → MP-04 · **Trigger:** champion floor-level observation logged · **Terminal state:** the observation formalized into a Resistance Log barrier record
+
+**In the Bouregreg scenario:** a Kenitra plant champion notices workaround behavior on the floor before it shows up in any score; logging that observation against the champion network on M4 is what turns it into a formal barrier record on M10 --- the earliest possible point resistance becomes visible to the program, ahead of a score actually moving.
+
+#### E2E-08 --- Governance Escalation Loop
+
+**Composition:** MP-02 → MP-10 · **Trigger:** a Sponsor escalation action is logged · **Terminal state:** the escalation resolved and reflected in the sustainment sign-off
+
+**In the Bouregreg scenario:** journi's own documentation flags this as its weakest-evidence proposed loop, included for completeness rather than as a distinct workflow --- in practice it is largely covered by the CFO's existing escalation actions on M7 and the sustainment checkpoints on M12, and this guide states that plainly rather than overstate the loop's independence from those two modules.
+
+### Transformation-Type Lifecycles (8 archetypes, each with its own Phase Template)
+
+Each of the following pairs one of the 8 registered transformation types with the specific Change Management Project in Part 4 that exercises it. Two of Main Project's ten available archetypes --- Restructuring and M&A --- do not have a dedicated lifecycle or Phase Template of their own; Part 4 states that distinction explicitly where it matters.
+
+| E2E ID | Lifecycle | Composition | Phase Template | Part 4 case |
+|---|---|---|---|---|
+| E2E-ERP | ERP Implementation | MP-01→02→03→05→07→09→10 | TPL-ERP-8 | Bouregreg ERP Adoption Program (Part 1's throughline) |
+| E2E-BPR | Business Process Reengineering | MP-01→02→03→05→07→08→09→10 | TPL-BPR-7 | Order-to-Cash Process Redesign |
+| E2E-BPA | Business Process Automation | MP-01→02→03→05→07→08→09→10 | TPL-BPA-7 | Kenitra Invoice-Matching Automation |
+| E2E-IMS | Integrated Management System | MP-01→02→03→05→07→08→09→10 | TPL-IMS-7 | ISO 9001/14001 Integrated Management System |
+| E2E-CULT | Cultural / Values Transformation | MP-01→02→03→04→06→07→08→09→10 | TPL-CULT-7 | One Bouregreg: Post-Acquisition Culture Integration |
+| E2E-OM | Operating Model Redesign | MP-01→02→03→05→07→08→09→10 | TPL-OM-7 | Regional Operating Model Redesign |
+| E2E-COMP | Compliance-Driven Change | MP-01→02→03→05→07→08→09→10 | TPL-COMP-7 | Loi 09-08 Data Protection Compliance Program |
+| E2E-TSD | Training & Skills Development | MP-01→02→03→05→06→07→08→09→10 | TPL-TSD-7 | Plant Digital Skills Upskilling Program |
+
+Each lifecycle's SIPOC supplier/customer roles are fixed by its type (for example, ERP names the Executive Sponsor, PM, and Change Manager as suppliers and the Steering Committee, End Users, and Sustainment Team as customers; Compliance instead names Legal/Compliance as supplier and the Regulator as customer) --- Part 4 walks each case with its own supplier/customer cast named concretely rather than generically.
+
+---
+
+*End of Part 3. Part 4 --- Change Management Scenario Library --- follows next.*
