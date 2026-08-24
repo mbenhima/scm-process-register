@@ -1077,6 +1077,22 @@ Bouregreg Group's single tenant (Part 1) holds one Organization, Bouregreg Manuf
 
 Each case below states its archetype, business driver, target population, starting readiness pattern, and --- concretely, not abstractly --- which of journi's 9 live-computed alerts it is built to exercise.
 
+### The Scenario Library at a Glance
+
+| Case | Archetype | Population | Weeks | Alert it exercises |
+|---|---|---|---|---|
+| Bouregreg ERP Adoption Program | ERP | 3,400 (all sites) | W1--60+ | ALT-001, ALT-009 |
+| Order-to-Cash Process Redesign | BPR | 140 (Casablanca finance) | W3--52 | ALT-004 |
+| Kenitra Invoice-Matching Automation | Automation | 18 (Kenitra AP) | W20--38 | None (clean-close contrast case) |
+| ISO 9001/14001 Integrated Management System | QMS | 410 (Settat plant + quality) | W1--52+ | ALT-010 |
+| One Bouregreg: Culture Integration | Cultural | 260 + counterparts (Tangier) | W27--58+ | ALT-003 |
+| Regional Operating Model Redesign | Operating Model | 95 (people managers, 3 sites) | W35--60+ | ALT-002, ALT-015 |
+| Loi 09-08 Compliance Program | Compliance | 310 (HR, Sales, CS) | W1--60+ | ALT-009 (schedule-critical) |
+| Plant Digital Skills Upskilling | Training & Skills | 620 (plant floor, 2 sites) | W16--58 | None (independent of a go-live) |
+| Settat Plant Consolidation & Restructuring | Restructuring | 130 (affected line) | W40--60+ | ALT-004 |
+
+Read top to bottom, the table also makes a structural point visible at a glance: eight of the nine cases run on a Phase Template with a registered End-to-End lifecycle behind it (Part 3, Appendix A.5); only the last, Restructuring, runs on the generic core chains because no dedicated lifecycle exists for it --- the same gap the case's own write-up below states directly rather than papers over.
+
 ### Bouregreg ERP Adoption Program *(archetype: ERP --- E2E-ERP)*
 
 Covered in full in Part 1 (setup) and Part 3 (E2E-01 through E2E-04, and E2E-ERP). Target population: all 3,400 staff across Casablanca, Kenitra, and Settat. Starting Lewin phase: Unfreeze. This is the throughline case, and the one most likely to trigger **ALT-001 (Divergence Pattern Detected)** at UAT if a cohort's Knowledge and Ability scores both reach 4 while Bridges still reads Ending --- and **ALT-009 (Phase Gate No-Go / Conditional)** if a Phase Gate closes as anything other than a clean Go.
