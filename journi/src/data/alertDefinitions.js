@@ -1,14 +1,19 @@
 // Module — Notification Center (D07 Alerts, proportionate closure): journi has
 // no backend to send real email/push/Teams notifications, so this is the
 // client-side equivalent — a persistent, dismissible in-app log surfaced from
-// the bell icon in the TopBar. 8 of the 16 alerts have a condition directly
+// the bell icon in the TopBar. 9 of the 16 alerts have a condition directly
 // computable from journi's existing client-side data model (see
-// utils/alertEngine.js); the remaining 8 (survey-exception retries, AI
+// utils/alertEngine.js); 6 of the remaining 7 (survey-exception retries, AI
 // confidence scoring, import integrity, account lockout, GDPR SLA, AI provider
 // fallback) depend on infrastructure journi doesn't have (a real backend, AI
 // confidence scores, auth lockout, a request-tracking system) and are shown
 // here for traceability but never fire — kept in this list rather than
-// silently dropped, so the mapping back to D07 stays complete.
+// silently dropped, so the mapping back to D07 stays complete. The 7th,
+// ALT-006 (Champion Coverage Below Target), is excluded for a different
+// reason — not a backend gap: journi has no structured champion-tracking
+// data model anywhere (sponsor coalition members carry a free-text role
+// field, not a governed Champion entity), so there is no genuine signal to
+// compute against, only one that could be faked.
 const alertDefinitions = [
   { id: 'ALT-001', name: 'Divergence Pattern Detected', severity: 'High', escalationLevel: 'L2 - Change Manager', notificationChannel: 'Dashboard, Email', slaThreshold: 'Acknowledge within 48h', recipientRoles: 'CM' },
   { id: 'ALT-002', name: 'Regression Risk Score Critical', severity: 'Critical', escalationLevel: 'L2 - Change Manager', notificationChannel: 'Dashboard, Email, Push Notification', slaThreshold: 'Acknowledge within 24h', recipientRoles: 'CM, SUP' },

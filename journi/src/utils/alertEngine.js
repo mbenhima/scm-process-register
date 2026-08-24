@@ -2,9 +2,9 @@ import alertDefinitions from '../data/alertDefinitions.js'
 
 export const SEVERITY_TONE = { Critical: 'red', High: 'red', Medium: 'amber', Low: 'sand', Informational: 'gray' }
 
-// The 8 of 16 D07 alerts with a condition directly computable from journi's
+// The 9 of 16 D07 alerts with a condition directly computable from journi's
 // existing client-side data model — see alertDefinitions.js for why the
-// remaining 8 are listed but never fire.
+// remaining 7 are listed but never fire.
 const evaluators = {
   'ALT-001': {
     test: (p) => p.adkar.knowledge.score >= 4 && p.adkar.ability.score >= 4 && p.bridgesPhase === 'ending',
@@ -42,6 +42,17 @@ const evaluators = {
   'ALT-010': {
     test: (p) => (p.sponsor?.members || []).length < 2,
     message: (p) => `Guiding coalition for ${p.name} has fewer than 2 named members.`,
+  },
+  'ALT-011': {
+    test: (p, ctx) => {
+      const queued = (list) => (list || []).filter((c) => c.status !== 'sent').length
+      return queued(p.communications) + (ctx.otherOrgProjects || []).reduce((sum, o) => sum + queued(o.communications), 0) > 3
+    },
+    message: (p, ctx) => {
+      const queued = (list) => (list || []).filter((c) => c.status !== 'sent').length
+      const total = queued(p.communications) + (ctx.otherOrgProjects || []).reduce((sum, o) => sum + queued(o.communications), 0)
+      return `${p.targetPopulation || p.name} is scheduled to receive ${total} communications across concurrent initiatives in this Organization.`
+    },
   },
   'ALT-015': {
     test: (p) => !p.sustainment?.signoff && (p.sustainment?.checkpoints || []).some((c) => c.status === 'complete' && c.regressionRisk === 'high'),
