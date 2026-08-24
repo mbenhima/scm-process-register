@@ -1,0 +1,46 @@
+,journi
+,"Deliverables Structure — Full Specs (D11 to D29, excluding D15 & D26)"
+,Populated Reference Data Set — companion to the D01-D10/D15/D26 PDD workbook
+,POWERACT Consulting
+,August 2026 · Confidential
+,Contents
+,Deliverable
+,"D11 — Tools & Interfaces: journi's native UI/API surfaces plus external integration points (LLM provider, SSO)"
+,"D12 — Physical Data Implementation: Physical DB schema for the highest-traffic D09 entities — tables, PK/FK, partitioning"
+,D13 — Application Requirements: 15 requirements/user stories spanning core MVP through the AI/Charter/Journey extensions
+,D14 — BPMN Workflow Orchestration: 10 macro-process workflows with task-type counts computed from the D01-D10 workbook's D02 data
+,D16 — Tenants / Enterprise Hierarchy: All 13 seed-dataset tenants (3 sector Organizations + 4 illustrative-type Organizations/Groups)
+,"D17 — Catalogs: 12 reusable reference libraries (roles, RACSI, signals, AI use cases, KPIs, charters, journey stages...)"
+,D18 — Components: 11 reusable UI/functional building blocks behind D11's interfaces
+,D19 — Automation Decision Matrix: Human/Workflow/RPA/AI scoring for AI use cases and representative process steps
+,D19b — Formula Registry: 15 versioned formulas — the authoritative backbone behind every D05 KRI and D06 KPI formula
+,"D20 — BPMN Execution Pack: Technical deployment pack (Pool/Lanes/Retry/Escalation) per macro process, consistent with D14"
+,"D21 — Project Registry: All 13 seed-dataset projects, grounded in Section 6 of the functional spec"
+,D22 — Organisation Profile: Attribute/value profile for the Atlas Industrial Group Organization
+,D23 — Journey Stage Templates (J0-J8): 9-stage generic journey template (Trigger through Sustainment & Closure)
+,"D24 — Project Context Overlay: Project-specific context (dominant tension, exception risk, constraints) for 8 seed projects"
+,D25 — REX Institutionalisation Log: All 6 Exception patterns (E1-E6) plus 2 illustrative platform-governance lessons
+,D27 — Stakeholder Journeys: 8 persona/system journeys grounded in Module 16's Journey Map and the E2E process chains
+,D28 — Journey Touchpoints: 24 touchpoints with concrete Success_Criteria/Evidence_Required across 6 journeys
+,D29 — Journey Analytics Dashboard: 5 dashboards giving the score-centric D06/D08 analytics an experience-centric companion view
+,D31 — CM Charters (Master): Change Management Charters — 8 charter types with PDCA + 5W1H (see numbering note below)
+,D31a — Charter Action Mapping: Many-to-many junction mapping each charter's concrete actions to macro process/task/step/phase
+,D31b — Charter RBAC x OBS Matrix: Charter CRUD permissions by role x Organizational Breakdown Structure (Group/Organization/Project)
+,D31c — Mentoring Progression: The Trainee -> Observer -> Autonomous staged competency model referenced by the Mentoring Charter
+,"D32 — Infrastructure & Deployment: NEW (Functional Spec v1.3 gap analysis): server-side persistence, backup/retention, availability, environment separation"
+,"D32a — WBS Schema & Gantt: NEW: consolidated WBS task schema + Gantt rendering spec, closing the Module 18 gap"
+,"D32b — Phase Template Library: NEW: ERP 8-phase + 7-phase Common Lifecycle templates, with a variant per named transformation type"
+,D32c — Phase Checklist Registry: NEW: PM-track and CM-track readiness checklists per phase
+,D32d — Phase Gate Record: NEW: full Go/Go-with-Conditions/No-Go decision record structure
+,D32e — Joint Decision Record: NEW: fused PM+CM decision with a single Accountable role
+,D32f — PMO Import Spec: NEW: CSV import field mapping and validation rules for the PMO Import Hook
+,"D32g — Common-Lifecycle Registry (P1-P7): NEW: cross-module phase tagging registry, mapped to D23's J0-J8 journey stages"
+,"D32h — End-to-End Process Registry: NEW: E2E-01 through E2E-04, ordered compositions of Macro Processes with rolled-up SIPOC"
+,"D32i — Cross-Type Comparison Matrix: NEW: 6 transformation types x 5 dimensions, grounded in the D21 seed projects"
+,D32j — NLP Theme-Mining Engine: NEW: the engine specification behind AIUC-02/04/06
+,D32k — Qualitative Coding Workbench: NEW: the workbench specification behind AIUC-12/13
+,"Scope: this workbook covers D11-D29 from the companion 'Deliverables Structure — Full Specs' PDD, EXCLUDING D15 (AI Use Cases) and D26 (Modules and Tiers), which live in the separate D01-D10/D15/D26 workbook (the 'PDD' document) to keep each source PDD's scope in its own file. Every cross-reference to D01, D02, D03, D04, D05, D06, D08, D09, D15 or D26 in this workbook (e.g., Linked_Macro_ID, Linked_Task_ID, AI_Use_Case_ID) is an ID that resolves in the companion D01-D10/D15/D26 file — the two workbooks are designed to be used side by side."
+,Numbering note — D30 and Change Management Charters
+,"D30 is officially reserved for the 'Licensing Implementation Schema' — a separate, detailed technical source document (LicenceProvider abstraction, SaaS vs. OnPrem implementation, Ed25519 signing, hardware binding, per-platform license-file handling) that is NOT built into this workbook. The Change Management Charters deliverable (Sponsorship, Participative Management, Communication, Organizational Impact, Team/One-to-One Coaching, Mentoring, Pulse/Interview) was previously drafted under a placeholder 'D27' before the official numbering was known, then moved to 'D30' when D27 turned out to be reserved for Stakeholder Journeys. Now that D30 is confirmed as Licensing, Charters has been renumbered a second time to D31/D31a/D31b/D31c. No charter content changed across either rename — only the deliverable prefix."
+,Revision note — journi Functional Specification v1.3 gap analysis
+,"D32 through D32k (12 sheets) are NEW in this revision, added to close gaps identified between this workbook and journi Functional Specification v1.3 — principally Module 18 (Work Breakdown Structure & Gantt, entirely new: D32a-f), Module 19's End-to-End Process Registry and Cross-Type Comparison Matrix (D32h, D32i), Module 17's underlying NLP/coding engines (D32j, D32k), and Section 2.4's server-side persistence requirement (D32). D09/D10 (companion workbook), D11, D13, D18, and D21 in this workbook also gained fields/rows in the same revision — see each sheet's own footnote for what changed. Two items the gap analysis flagged as CRITICAL GAP — macro-level SIPOC and 5-column macro-level RACSI — were found to already be fully covered by D01's existing field structure; see D01's footnote in the companion workbook for confirmation rather than a schema change."

@@ -1,0 +1,14 @@
+D32a — WBS Task Schema & Gantt Specification,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,
+Field_ID,Field_Name,Data_Type,Track,Description,Linked_Object_Class,Gantt_Rendering
+WBS-01,Task_Track,Enum (PROJECT/CHANGE/FRAMEWORK),All,Which of the 3 delivery tracks this task belongs to — see D09 OC-24.Task_Track.,OC-24,Swimlane grouping
+WBS-02,Project_Change_Joint_Tag,Enum (PROJECT/CHANGE/JOINT),All,"The filterable tag realizing D13 REQ-020 — distinct from Task_Track, this flags accountability, not delivery track.",OC-24,Color-coded bar
+WBS-03,Common_Lifecycle_Phase,Enum (P1-P7),All,The cross-module phase tag — see D32g for the full P1-P7 registry.,OC-24,Background phase-band shading
+WBS-04,Baseline_Start / Baseline_Finish,Date pair,All,"The immutable planned-schedule commitment, set once during planning.",OC-24,Ghost/outline bar
+WBS-05,Actual_Start / Actual_Finish,Date pair (nullable),All,Populated as work progresses; null while unstarted.,OC-24,Solid bar
+WBS-06,Schedule_Gap_Days,Computed Integer,All,Baseline_Finish - Actual_Finish (or projected). Positive = behind schedule. See D19b FRM-014.,OC-24,Red/amber/green bar-end indicator
+WBS-07,Macro_Process_Tag,FK to D01 Macro_ID (nullable),"CHANGE, JOINT",Links a WBS task to the macro-process it implements — nullable for pure PROJECT-track tasks with no CM equivalent.,OC-24,"Swimlane sub-grouping, optional"
+WBS-08,Milestone_Flag,Boolean,All,"True for zero-duration Framework-track milestones (e.g., Phase Gate decision dates).",OC-24,"Diamond marker, not a bar"
+WBS-09,Milestone_Type,Enum (nullable),Framework,For milestone tasks: Standard / Mock-up Audit / Certifying Audit / Surveillance Audit / Attestation.,OC-24,Distinct marker icon per type
+WBS-10,Source,Enum (Manual/Imported),PROJECT (primarily),Manual entry vs. arrived via the PMO Import Hook (D32f) — imported rows remain fully editable.,OC-24,Small import-icon badge
+"🔗 Linked_Object_Class → D09 (OC-24 WBS Task). This is the consolidated schema+Gantt specification the gap analysis called for — the underlying fields already exist on D09/D10 (several added in this same revision); this table is the single place that also specifies how each field renders on the Gantt (D11 IFC-GANTT). Realizes D13 REQ-016, REQ-020, REQ-021.",,,,,,

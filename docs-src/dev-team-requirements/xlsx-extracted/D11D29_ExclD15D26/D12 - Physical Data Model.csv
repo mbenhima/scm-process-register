@@ -1,0 +1,34 @@
+D12 — Physical Data Implementation,,,,,,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,,,,,,
+Table_Name,Column_Name,Data_Type,Primary_Key,Foreign_Key,Indexed,Partition_Key,Retention_Period,Linked_Macro_ID,Linked_Task_ID,Linked_Step_ID,Description
+organizations,organization_id,UUID,Yes,No,Yes,No,7 years post-closure,-,-,-,PK; matches D09 OC-02.
+organizations,group_id,UUID,No,Yes -> groups.group_id,Yes,No,7 years post-closure,-,-,-,Nullable for standalone Organizations.
+organizations,default_language,VARCHAR(10),No,No,No,No,N/A,-,-,-,Tenant default language (Section 3.1.1).
+cm_projects,cm_project_id,UUID,Yes,No,Yes,Yes (by organization_id),7 years post-closure,-,-,-,PK; matches D09 OC-04. Partitioned by organization_id for tenant-scoped query performance.
+cm_projects,organization_id,UUID,No,Yes -> organizations.organization_id,Yes,Yes,7 years post-closure,-,-,-,Tenant boundary FK.
+cm_projects,main_project_id,UUID,No,Yes -> main_projects.main_project_id,Yes,No,7 years post-closure,-,-,-,"Nullable, many-to-many by design (Section 2.2)."
+cm_projects,lewin_phase,VARCHAR(20),No,No,Yes,No,7 years post-closure,MP-10,TASK-1004,STEP-10042,"Enum: Unfreeze, Change, Refreeze."
+stakeholders,stakeholder_id,UUID,Yes,No,Yes,Yes (by cm_project_id),5 years post-closure,-,-,-,PK; matches D09 OC-05.
+stakeholders,cm_project_id,UUID,No,Yes -> cm_projects.cm_project_id,Yes,Yes,5 years post-closure,-,-,-,Tenant/project boundary FK.
+stakeholders,email,VARCHAR(254),No,No,Yes,No,5 years post-closure,MP-01,TASK-0101,STEP-01011,PII — column-level encryption at rest recommended.
+adkar_scores,adkar_score_id,UUID,Yes,No,Yes,Yes (by cm_project_id),5 years post-closure,MP-07,TASK-0704,STEP-07041,PK; matches D09 OC-06.
+adkar_scores,stakeholder_id,UUID,No,Yes -> stakeholders.stakeholder_id,Yes,No,5 years post-closure,-,-,-,-
+adkar_scores,building_block,VARCHAR(20),No,No,Yes,No,5 years post-closure,-,-,-,"Enum: Awareness, Desire, Knowledge, Ability, Reinforcement."
+adkar_scores,score_value,SMALLINT,No,No,No,No,5 years post-closure,-,-,-,"Range 1-5, CHECK constraint enforced at DB level."
+adkar_scores,recorded_at,TIMESTAMPTZ,No,No,Yes,Yes (by month),5 years post-closure,-,-,-,Time-partitioned for efficient trend queries (D06 KPI-002).
+risks,risk_id,VARCHAR(10),Yes,No,Yes,No,7 years post-closure,MP-08,TASK-0801,STEP-08012,PK; matches D05/D09 OC-17. Business-key format RISK-###.
+risks,cm_project_id,UUID,No,Yes -> cm_projects.cm_project_id,Yes,Yes,7 years post-closure,-,-,-,-
+risks,residual_score,SMALLINT,No,No,No,No,7 years post-closure,-,-,-,Range 1-25.
+ai_use_case_suggestions,suggestion_id,UUID,Yes,No,Yes,"Yes (by cm_project_id, month)",5 years post-closure,-,-,-,PK; matches D09 OC-21.
+ai_use_case_suggestions,ai_use_case_id,VARCHAR(10),No,Yes -> ai_use_case_catalog.ai_use_case_id,Yes,No,5 years post-closure,-,-,-,Matches D15/D15c AIUC-##/CAIUC-###.
+ai_use_case_suggestions,prompt_template_id,VARCHAR(20),No,Yes -> prompt_templates.prompt_template_id,No,No,5 years post-closure,-,-,-,Matches D15d Prompt_Template_ID.
+ai_use_case_suggestions,outcome,VARCHAR(10),No,No,Yes,No,5 years post-closure,-,-,-,"Enum: Accepted, Edited, Rejected, Pending."
+justification_log,change_log_id,UUID,Yes,No,Yes,"Yes (by cm_project_id, month)",5 years post-closure,-,-,-,PK; matches D09 OC-32.
+justification_log,module_id,VARCHAR(5),No,No,Yes,No,5 years post-closure,-,-,-,"One of M4, M6, M7, M8, M10, M11, M12, M14 (Justification Governance scope, Section 3.5)."
+justification_log,justification_text,TEXT,No,No,No,No,5 years post-closure,-,-,-,Non-empty when Governance Settings toggle is on (RULE-010).
+wbs_tasks,wbs_task_id,UUID,Yes,No,Yes,Yes (by cm_project_id),7 years post-closure,-,-,-,PK; matches D09 OC-24.
+wbs_tasks,project_change_joint_tag,VARCHAR(10),No,No,Yes,No,7 years post-closure,-,-,-,"Enum: PROJECT, CHANGE, JOINT."
+wbs_tasks,schedule_gap_days,INTEGER,No,No,No,No,7 years post-closure,-,-,-,Computed column; positive = behind schedule.
+charters,charter_id,VARCHAR(10),Yes,No,Yes,No,N/A — reference data,-,-,-,"PK; matches D31 (charter master, renumbered from the CM Charters extension)."
+charter_actions,mapping_id,VARCHAR(16),Yes,Yes -> charters.charter_id,Yes,No,7 years post-closure,-,-,-,PK; matches D31a Mapping_ID; junction table realizing the charter-to-task/step many-to-many.
+🔗 Linked_Macro_ID → D01 · Linked_Task_ID → D02 · Linked_Step_ID → D02. Physical realization of D09's Information Class Model for the highest-traffic entities; every table lists its tenant-scoping partition key so multi-tenant query plans stay scoped to organization_id/cm_project_id by default.,,,,,,,,,,,
