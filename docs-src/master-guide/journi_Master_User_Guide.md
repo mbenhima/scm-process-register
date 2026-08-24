@@ -197,9 +197,51 @@ A practical note this guide carries over from journi's own behavior rather than 
 - [ ] First Change Management Project created and linked --- Module 1
 - [ ] Project-scoped user accounts finalized against the new Project --- Module 2, Users & Scope
 
-With this checklist complete, Bouregreg Group is a fully operational journi tenant with one live Change Management Project. Part 2 picks up from here and tours all 20 modules against this same, now-real data set.
+With this checklist complete, Bouregreg Group is a fully operational journi tenant with one live Change Management Project. Part 1B walks that project week by week through all four frameworks, normal flow and exceptions; Part 2 then tours all 20 modules against this same, now-real data set.
 
 ---
+
+<a id="part-1b"></a>
+
+## Part 1B --- Week-by-Week ERP Implementation Timeline: Normal Flow and Exceptions
+
+Part 1 ended with Bouregreg ERP Adoption Program registered and its Lewin phase opened at Unfreeze. This Part runs that program forward, week by week, for its full 14-month (60-week) duration --- against journi's own 8-phase ERP template (M17, TPL-ERP-8: Discovery, Design, Build, Test, Train, Deploy, Hypercare, Sustain) and journi's own framework definitions, verified against source rather than assumed. It covers the normal flow through all four frameworks first, then --- in the same level of detail --- six realistic exception patterns, each tied to a specific point in Bouregreg's timeline where a program's readiness signals genuinely go off track.
+
+### 1B.1 How the Four Frameworks Actually Read in journi
+
+journi tracks four frameworks, each at a different altitude, and this guide states their real stage vocabulary rather than a textbook approximation of it:
+
+| Framework | Altitude | Stages (in journi's own UI, in order) | Logged on |
+|---|---|---|---|
+| Lewin | Organizational --- one reading per project | Unfreeze → Change → Refreeze | M3 |
+| Prosci ADKAR | Individual / cohort --- five independently-scored blocks | Awareness → Desire → Knowledge → Ability → Reinforcement | M5 |
+| Bridges' Transition Model | Individual / cohort --- emotional position | Ending → Neutral Zone → New Beginning | M6 |
+| Kübler-Ross Change Curve | Individual / cohort --- sentiment | Denial → Resistance/Anger → Exploration → Commitment | M6 |
+
+A deliberate design choice in journi is worth stating plainly here: it never auto-computes a Lewin, Bridges, or Kübler-Ross reading. All three remain a Change Manager's evidence-based judgment call, logged with a justification under Bouregreg Group's Governance Setting (Part 1, Step 5). Only two things are ever computed automatically --- the Composite Readiness Index (M14, blending ADKAR 50%, Kübler-Ross sentiment 25%, and training completion 25%) and the Divergence Pattern Detector (ALT-001, firing when Knowledge ≥ 4 and Ability ≥ 4 while Bridges still reads exactly "Ending"). Everything else in the four-framework picture is a human reading, not a system inference --- which is exactly why the timeline below shows a Change Manager actively setting each reading, week by week, rather than journi silently deriving one.
+
+The four frameworks do not move in lockstep, and a well-run program does not expect them to. Lewin is the single organizational headline; ADKAR is where individual barriers actually surface, block by block; Bridges and Kübler-Ross track the emotional undercurrent that a clean ADKAR score can mask entirely --- which is the exact gap the Divergence Pattern Detector exists to catch. The calendar below shows one defensible way these four readings progress together across a normal 60-week ERP program; Section 1B.4's six exceptions show, in detail, the specific and realistic ways that progression stalls, diverges, or reverses.
+
+### 1B.2 The 60-Week Program Calendar
+
+The eight phases below follow M17's TPL-ERP-8 template exactly, in the order journi loads them. Their week ranges are this guide's own illustrative pacing for a 3,400-person, three-site program --- not a value hardcoded anywhere in journi --- built to overlap the way a real ERP program's Project Management and Change Management tracks actually do, and stated as illustrative rather than implied to be a platform default.
+
+| Phase | Weeks | Lewin (at phase end) | ADKAR focus | Bridges (at phase end) | Kübler-Ross (at phase end) |
+|---|---|---|---|---|---|
+| Discovery | W1--8 | Unfreeze | Awareness | Ending | Denial |
+| Design | W6--14 | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger |
+| Build | W12--30 | Unfreeze → Change | Desire | Ending → Neutral Zone | Resistance/Anger |
+| Test | W28--38 | Change | Knowledge | Neutral Zone | Resistance/Anger → Exploration |
+| Train | W30--42 | Change | Knowledge → Ability | Neutral Zone | Exploration |
+| Deploy | W43 | Change | Ability | Neutral Zone → New Beginning (provisional) | Exploration |
+| Hypercare | W43--50 | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration → Commitment |
+| Sustain | W48--60+ | Refreeze (confirmed) | Reinforcement | New Beginning | Commitment |
+
+Two things about this calendar are deliberate and worth stating rather than leaving implicit. First, phases overlap --- Design starts before Discovery formally closes, Test starts before Build formally closes, and so on --- because Bouregreg's Project Management and Change Management tracks run in parallel, not in strict sequence, the same way E2E-06 (the PM ↔ CM Governance Bridge, Part 3) assumes. Second, Lewin is marked "provisional" at Deploy and through most of Hypercare rather than called Refreeze at go-live itself: that gap between the technical go-live milestone and the confirmed Lewin call is Exception E3 below, and this calendar is built to make that gap visible rather than paper over it.
+
+---
+
+*Continued in the next subsection: 1B.3, the phase-by-phase playbook.*
 
 <a id="part-2"></a>
 
