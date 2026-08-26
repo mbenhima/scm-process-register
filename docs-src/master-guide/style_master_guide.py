@@ -83,15 +83,23 @@ for p, size, bold, italic in zip(titles, sizes, bolds, italics):
 d.paragraphs[0].space_before = Pt(100)
 d.paragraphs[4].space_after = Pt(20)
 
-# ---- Heading colors ----
+# ---- Heading colors and sizes (bumped up to stay ahead of the larger body text) ----
+H4_COLOR = RGBColor(0x5A, 0x8F, 0x89)
+HEADING_SPECS = {
+    'Heading 1': (H1_COLOR, Pt(21)),
+    'Heading 2': (H2_COLOR, Pt(17)),
+    'Heading 3': (H3_COLOR, Pt(14.5)),
+    'Heading 4': (H4_COLOR, Pt(13)),
+}
 for p in d.paragraphs:
-    style = p.style.name
-    color = {'Heading 1': H1_COLOR, 'Heading 2': H2_COLOR, 'Heading 3': H3_COLOR}.get(style)
-    if color:
+    spec = HEADING_SPECS.get(p.style.name)
+    if spec:
+        color, size = spec
         for r in p.runs:
             r.bold = True
             r.font.color.rgb = color
-        if style == 'Heading 3':
+            r.font.size = size
+        if p.style.name == 'Heading 3':
             p.space_before = Pt(14)
 
 # ---- Table header-row shading ----
@@ -112,6 +120,31 @@ for t in d.tables:
             for r in p.runs:
                 r.bold = True
                 r.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+# ---- Base body font size increase (readability) ----
+BODY_SIZE = Pt(12.5)
+TABLE_SIZE = Pt(11)
+HEADING_STYLE_NAMES = {'Heading 1', 'Heading 2', 'Heading 3', 'Title'}
+
+for style_name in ('Normal', 'Body Text', 'Compact', 'First Paragraph', 'List Paragraph', 'Block Text'):
+    if style_name in [s.name for s in d.styles]:
+        d.styles[style_name].font.size = BODY_SIZE
+
+for i, p in enumerate(d.paragraphs):
+    if i < 5:
+        continue  # title block already sized explicitly
+    if p.style.name in HEADING_STYLE_NAMES:
+        continue  # headings sized explicitly below
+    for r in p.runs:
+        if r.font.size is None:
+            r.font.size = BODY_SIZE
+
+for t in d.tables:
+    for row in t.rows:
+        for cell in row.cells:
+            for p in cell.paragraphs:
+                for r in p.runs:
+                    r.font.size = TABLE_SIZE
 
 # ---- Header / footer with page numbers ----
 section = d.sections[0]
