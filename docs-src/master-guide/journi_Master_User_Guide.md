@@ -25,7 +25,7 @@ Version 1.0 · August 2026 · Confidential
   - [1.9 Tenant Setup Checklist](#p1-9)
 - [Part 1B --- Week-by-Week ERP Implementation Timeline: Normal Flow and Exceptions](#part-1b)
   - [1B.1 How the Four Frameworks Actually Read in journi](#p1b-1)
-  - [1B.2 The 60-Week Program Calendar](#p1b-2)
+  - [1B.2 The 64-Week Program Calendar --- Week by Week](#p1b-2)
   - [1B.3 Phase-by-Phase Playbook (Normal Flow)](#p1b-3)
     - [Phase 1 --- Discovery (W1--8)](#phase-1)
     - [Phase 2 --- Design (W6--14)](#phase-2)
