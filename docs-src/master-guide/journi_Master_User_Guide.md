@@ -34,7 +34,7 @@ Version 1.0 · August 2026 · Confidential
     - [Phase 5 --- Train (W30--42)](#phase-5)
     - [Phase 6 --- Deploy (W43)](#phase-6)
     - [Phase 7 --- Hypercare (W43--50)](#phase-7)
-    - [Phase 8 --- Sustain (W48--60+)](#phase-8)
+    - [Phase 8 --- Sustain (W48--64)](#phase-8)
   - [1B.4 Six Exception Scenarios, in Detail](#p1b-4)
     - [E1 --- Desire Stall at Settat](#exc-e1)
     - [E2 --- Divergence Pattern at UAT](#exc-e2)
@@ -63,7 +63,7 @@ This is journi's single comprehensive reference: one guide that starts at a genu
 It is organized in five parts:
 
 - **Part 1 --- Tenant and Admin Setup.** How a brand-new journi tenant is actually built, from the License record through the first Change Management Project, using a new scenario organization created for this guide: **Bouregreg Group**, a Moroccan manufacturing group.
-- **Part 1B --- Week-by-Week ERP Implementation Timeline.** The Bouregreg ERP Adoption Program run forward week by week for its full 60-week duration, across all four frameworks' real stage vocabulary, in journi's own 8-phase ERP structure --- normal flow first, then six realistic exception scenarios in the same level of detail.
+- **Part 1B --- Week-by-Week ERP Implementation Timeline.** The Bouregreg ERP Adoption Program run forward week by week for its full 64-week duration, across all four frameworks' real stage vocabulary, in journi's own 8-phase ERP structure --- normal flow first, then six realistic exception scenarios in the same level of detail.
 - **Part 2 --- Module-by-Module Feature Tour.** All 20 modules, each demonstrated against Bouregreg Group's real, growing data set, with CRUD and RBAC behavior called out per role.
 - **Part 3 --- All 16 End-to-End Process Walkthroughs.** Every process in the End-to-End Process Catalogue --- the 4 core Change Management chains, the 4 cross-cutting loops, and the 8 transformation-type lifecycles --- each walked through step by step against Bouregreg Group's data.
 - **Part 4 --- Change Management Scenario Library.** Several distinct Change Management Projects under the same tenant, each a different archetype (technology, structural, cultural, compliance) and a different readiness pattern, so the guide shows more than one way a program can actually unfold.
@@ -239,7 +239,7 @@ With this checklist complete, Bouregreg Group is a fully operational journi tena
 
 ## Part 1B --- Week-by-Week ERP Implementation Timeline: Normal Flow and Exceptions
 
-Part 1 ended with Bouregreg ERP Adoption Program registered and its Lewin phase opened at Unfreeze. This Part runs that program forward, week by week, for its full 14-month (60-week) duration --- against journi's own 8-phase ERP template (M17, TPL-ERP-8: Discovery, Design, Build, Test, Train, Deploy, Hypercare, Sustain) and journi's own framework definitions, verified against source rather than assumed. It covers the normal flow through all four frameworks first, then --- in the same level of detail --- six realistic exception patterns, each tied to a specific point in Bouregreg's timeline where a program's readiness signals genuinely go off track.
+Part 1 ended with Bouregreg ERP Adoption Program registered and its Lewin phase opened at Unfreeze. This Part runs that program forward, week by week, for its full 14-month (64-week) duration --- against journi's own 8-phase ERP template (M17, TPL-ERP-8: Discovery, Design, Build, Test, Train, Deploy, Hypercare, Sustain) and journi's own framework definitions, verified against source rather than assumed. It covers the normal flow through all four frameworks first, then --- in the same level of detail --- six realistic exception patterns, each tied to a specific point in Bouregreg's timeline where a program's readiness signals genuinely go off track.
 
 <a id="p1b-1"></a>
 
@@ -256,26 +256,82 @@ journi tracks four frameworks, each at a different altitude, and this guide stat
 
 A deliberate design choice in journi is worth stating plainly here: it never auto-computes a Lewin, Bridges, or Kübler-Ross reading. All three remain a Change Manager's evidence-based judgment call, logged with a justification under Bouregreg Group's Governance Setting (Part 1, Step 5). Only two things are ever computed automatically --- the Composite Readiness Index (M14, blending ADKAR 50%, Kübler-Ross sentiment 25%, and training completion 25%) and the Divergence Pattern Detector (ALT-001, firing when Knowledge ≥ 4 and Ability ≥ 4 while Bridges still reads exactly "Ending"). Everything else in the four-framework picture is a human reading, not a system inference --- which is exactly why the timeline below shows a Change Manager actively setting each reading, week by week, rather than journi silently deriving one.
 
-The four frameworks do not move in lockstep, and a well-run program does not expect them to. Lewin is the single organizational headline; ADKAR is where individual barriers actually surface, block by block; Bridges and Kübler-Ross track the emotional undercurrent that a clean ADKAR score can mask entirely --- which is the exact gap the Divergence Pattern Detector exists to catch. The calendar below shows one defensible way these four readings progress together across a normal 60-week ERP program; Section 1B.4's six exceptions show, in detail, the specific and realistic ways that progression stalls, diverges, or reverses.
+The four frameworks do not move in lockstep, and a well-run program does not expect them to. Lewin is the single organizational headline; ADKAR is where individual barriers actually surface, block by block; Bridges and Kübler-Ross track the emotional undercurrent that a clean ADKAR score can mask entirely --- which is the exact gap the Divergence Pattern Detector exists to catch. The calendar below shows one defensible way these four readings progress together across a normal 64-week ERP program; Section 1B.4's six exceptions show, in detail, the specific and realistic ways that progression stalls, diverges, or reverses.
 
 <a id="p1b-2"></a>
 
-### 1B.2 The 60-Week Program Calendar
+### 1B.2 The 64-Week Program Calendar --- Week by Week
 
-The eight phases below follow M17's TPL-ERP-8 template exactly, in the order journi loads them. Their week ranges are this guide's own illustrative pacing for a 3,400-person, three-site program --- not a value hardcoded anywhere in journi --- built to overlap the way a real ERP program's Project Management and Change Management tracks actually do, and stated as illustrative rather than implied to be a platform default.
+The eight phases below follow M17 (WBS & Gantt)'s TPL-ERP-8 (ERP Implementation --- 8 Phase) template exactly, in the order journi loads them. Every one of the 64 individual weeks below is listed on its own row --- not as a range --- so a reader can see exactly which week a framework reading, a phase transition, or an exception is active in, rather than inferring it from a span. The values are this guide's own illustrative pacing for a 3,400-person, three-site program --- not a value hardcoded anywhere in journi --- built to overlap the way a real ERP program's Project Management and Change Management tracks actually do, and stated as illustrative rather than implied to be a platform default. The final Exception column cross-references Section 1B.4, where each of the six is covered in full detail.
 
-| Phase | Weeks | Lewin (at phase end) | ADKAR focus | Bridges (at phase end) | Kübler-Ross (at phase end) |
-|---|---|---|---|---|---|
-| Discovery | W1--8 | Unfreeze | Awareness | Ending | Denial |
-| Design | W6--14 | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger |
-| Build | W12--30 | Unfreeze → Change | Desire | Ending → Neutral Zone | Resistance/Anger |
-| Test | W28--38 | Change | Knowledge | Neutral Zone | Resistance/Anger → Exploration |
-| Train | W30--42 | Change | Knowledge → Ability | Neutral Zone | Exploration |
-| Deploy | W43 | Change | Ability | Neutral Zone → New Beginning (provisional) | Exploration |
-| Hypercare | W43--50 | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration → Commitment |
-| Sustain | W48--60+ | Refreeze (confirmed) | Reinforcement | New Beginning | Commitment |
+| Week | Phase(s) Active | Lewin | ADKAR Focus | Bridges | Kübler-Ross | Exception |
+|---|---|---|---|---|---|---|
+| Week 1 | Discovery | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 2 | Discovery | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 3 | Discovery | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 4 | Discovery | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 5 | Discovery | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 6 | Discovery | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 7 | Discovery | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 8 | Discovery | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 9 | Discovery + Design | Unfreeze | Awareness | Ending | Denial | --- |
+| Week 10 | Discovery + Design | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger | --- |
+| Week 11 | Discovery + Design | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger | --- |
+| Week 12 | Design + Build | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger | --- |
+| Week 13 | Design + Build | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger | --- |
+| Week 14 | Design + Build | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger | --- |
+| Week 15 | Design + Build | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger | --- |
+| Week 16 | Design + Build | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger | --- |
+| Week 17 | Design + Build | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger | --- |
+| Week 18 | Build | Unfreeze | Desire | Ending → Neutral Zone | Denial → Resistance/Anger | --- |
+| Week 19 | Build | Unfreeze | Desire | Ending → Neutral Zone | Denial → Resistance/Anger | --- |
+| Week 20 | Build | Unfreeze | Desire | Ending → Neutral Zone | Denial → Resistance/Anger | E1 (Desire Stall at Settat) |
+| Week 21 | Build | Unfreeze | Desire | Ending → Neutral Zone | Resistance/Anger | E1 (Desire Stall at Settat) |
+| Week 22 | Build | Unfreeze | Desire | Ending → Neutral Zone | Resistance/Anger | E1 (Desire Stall at Settat) |
+| Week 23 | Build | Unfreeze | Desire | Ending → Neutral Zone | Resistance/Anger | E1 (Desire Stall at Settat) |
+| Week 24 | Build | Unfreeze | Desire | Ending → Neutral Zone | Resistance/Anger | E1 (Desire Stall at Settat) |
+| Week 25 | Build | Unfreeze | Desire | Ending → Neutral Zone | Resistance/Anger | --- |
+| Week 26 | Build | Change | Desire | Ending → Neutral Zone | Resistance/Anger | --- |
+| Week 27 | Build | Change | Desire | Ending → Neutral Zone | Resistance/Anger | --- |
+| Week 28 | Build + Test | Change | Desire → Knowledge | Ending → Neutral Zone | Resistance/Anger | --- |
+| Week 29 | Build + Test | Change | Desire → Knowledge | Ending → Neutral Zone | Resistance/Anger | --- |
+| Week 30 | Build + Test + Train | Change | Desire → Knowledge | Neutral Zone | Resistance/Anger | --- |
+| Week 31 | Test + Train | Change | Desire → Knowledge | Neutral Zone | Resistance/Anger | E2 (Divergence Pattern at UAT) |
+| Week 32 | Test + Train | Change | Desire → Knowledge | Neutral Zone | Resistance/Anger | E2 (Divergence Pattern at UAT) |
+| Week 33 | Test + Train | Change | Desire → Knowledge | Neutral Zone | Resistance/Anger | E2 (Divergence Pattern at UAT) |
+| Week 34 | Test + Train | Change | Desire → Knowledge | Neutral Zone | Resistance/Anger | --- |
+| Week 35 | Test + Train | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration | --- |
+| Week 36 | Test + Train | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration | E6 (Cohort Divergence Across Sites) |
+| Week 37 | Test + Train | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration | E6 (Cohort Divergence Across Sites) |
+| Week 38 | Test + Train | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration | E6 (Cohort Divergence Across Sites) |
+| Week 39 | Train | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration | E6 (Cohort Divergence Across Sites) |
+| Week 40 | Train | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration | E6 (Cohort Divergence Across Sites) |
+| Week 41 | Train | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration | E6 (Cohort Divergence Across Sites) |
+| Week 42 | Train | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration | E6 (Cohort Divergence Across Sites) |
+| Week 43 | Deploy | Change → Refreeze (provisional) | Ability | Neutral Zone → New Beginning (provisional) | Exploration | E6 (Cohort Divergence Across Sites); E3 (Two-Clock Problem at Deploy) |
+| Week 44 | Hypercare | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration | E6 (Cohort Divergence Across Sites); E3 (Two-Clock Problem at Deploy) |
+| Week 45 | Hypercare | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration | E6 (Cohort Divergence Across Sites); E3 (Two-Clock Problem at Deploy); E4 (Sentiment Regression During Hypercare) |
+| Week 46 | Hypercare | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration | E6 (Cohort Divergence Across Sites); E3 (Two-Clock Problem at Deploy); E4 (Sentiment Regression During Hypercare) |
+| Week 47 | Hypercare | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration | E6 (Cohort Divergence Across Sites); E3 (Two-Clock Problem at Deploy) |
+| Week 48 | Hypercare | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration | E6 (Cohort Divergence Across Sites); E3 (Two-Clock Problem at Deploy) |
+| Week 49 | Hypercare | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration → Commitment | E6 (Cohort Divergence Across Sites); E3 (Two-Clock Problem at Deploy) |
+| Week 50 | Hypercare | Change → Refreeze (provisional) | Ability → Reinforcement | New Beginning | Exploration → Commitment | E6 (Cohort Divergence Across Sites); E3 (Two-Clock Problem at Deploy) |
+| Week 51 | Sustain | Change → Refreeze (provisional) | Reinforcement | New Beginning | Exploration → Commitment | E3 (Two-Clock Problem at Deploy) |
+| Week 52 | Sustain | Change → Refreeze (provisional) | Reinforcement | New Beginning | Exploration → Commitment | --- |
+| Week 53 | Sustain | Change → Refreeze (provisional) | Reinforcement | New Beginning | Exploration → Commitment | --- |
+| Week 54 | Sustain | Change → Refreeze (provisional) | Reinforcement | New Beginning | Exploration → Commitment | --- |
+| Week 55 | Sustain | Change → Refreeze (provisional) | Reinforcement | New Beginning | Exploration → Commitment | --- |
+| Week 56 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
+| Week 57 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
+| Week 58 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
+| Week 59 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
+| Week 60 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
+| Week 61 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
+| Week 62 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
+| Week 63 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
+| Week 64 | Sustain | Refreeze (confirmed) | Reinforcement | New Beginning (confirmed) | Commitment | E5 (Reinforcement Gap at Sustain) |
 
-Two things about this calendar are deliberate and worth stating rather than leaving implicit. First, phases overlap --- Design starts before Discovery formally closes, Test starts before Build formally closes, and so on --- because Bouregreg's Project Management and Change Management tracks run in parallel, not in strict sequence, the same way E2E-06 (the PM ↔ CM Governance Bridge, Part 3) assumes. Second, Lewin is marked "provisional" at Deploy and through most of Hypercare rather than called Refreeze at go-live itself: that gap between the technical go-live milestone and the confirmed Lewin call is Exception E3 below, and this calendar is built to make that gap visible rather than paper over it.
+Two things about this calendar are deliberate and worth stating rather than leaving implicit. First, phases overlap --- Design starts before Discovery formally closes, Test starts before Build formally closes, and so on --- because Bouregreg's Project Management and Change Management tracks run in parallel, not in strict sequence, the same way E2E-06 (PM ↔ CM Governance Bridge, Part 3) assumes. Second, Lewin is marked "provisional" at Deploy and through most of Hypercare rather than called Refreeze at go-live itself: that gap between the technical go-live milestone and the confirmed Lewin call is Exception E3 (Two-Clock Problem at Deploy) below, and this calendar is built to make that gap visible rather than paper over it. Third, more than one exception can be live in the same week --- Weeks 43 through 46, for instance, carry E3, E4, and E6 simultaneously, exactly the kind of overlapping-signal week a Change Manager needs the Notification Center (Part 5) for, not a single linear checklist.
 
 ---
 
@@ -497,7 +553,7 @@ The last mile of adoption is won or lost here, and Kübler-Ross regression durin
 
 <a id="phase-8"></a>
 
-#### Phase 8 --- Sustain (W48--60+)
+#### Phase 8 --- Sustain (W48--64)
 
 **Framework readings at close:** Lewin Refreeze (confirmed) · ADKAR focus Reinforcement · Bridges New Beginning · Kübler-Ross Commitment.
 
@@ -529,7 +585,7 @@ Sustain is where Refreeze is called from checkpoint evidence, never the calendar
 
 ### 1B.4 Six Exception Scenarios, in Detail
 
-Every exception below is a realistic, specific way one of the four frameworks' normal progression (1B.1--1B.3) stalls, diverges, or reverses --- not a hypothetical. Each is tied to a concrete point in Bouregreg's 60-week timeline and a specific site, cohort, or role, with its trigger, timeline impact, recovery Tasks, and outputs stated in the same detail as the normal-flow phases above.
+Every exception below is a realistic, specific way one of the four frameworks' normal progression (1B.1--1B.3) stalls, diverges, or reverses --- not a hypothetical. Each is tied to a concrete point in Bouregreg's 64-week timeline and a specific site, cohort, or role, with its trigger, timeline impact, recovery Tasks, and outputs stated in the same detail as the normal-flow phases above.
 
 <a id="exc-e1"></a>
 
@@ -711,7 +767,7 @@ Sections 1B.3 and 1B.4 gave the Bouregreg ERP Adoption Program's normal flow and
 
 **Month 13 (W48--52).** Hypercare closes: the re-pulse confirms Bridges has genuinely moved to New Beginning and Kübler-Ross reads Exploration or better across all three sites --- **E3 closes**, Lewin's provisional Refreeze is confirmed rather than walked back. Sustain opens. New-process metrics are embedded into performance management with HR's support; the first 30-day checkpoint runs clean.
 
-**Month 14 (W53--60+).** The 60-day checkpoint runs clean. At the 90-day mark, Reinforcement stalls below 3 for the first time --- not a crisis, but exactly the pattern **Exception E5** exists to catch before the program closes on schedule regardless. Driss El Amrani flags it explicitly; the CFO re-authorizes a further checkpoint cadence; the champion network is re-chartered specifically for reinforcement. Two further consecutive healthy checkpoints follow. **E5 closes.** Refreeze is called from that evidence, the Bouregreg ERP Adoption Program's sign-off is recorded on M12, and ongoing ownership passes to the business-as-usual process owner --- the same close Part 1B.3's Phase 8 describes, now with the full story of how the program actually got there.
+**Month 14 (W53--64).** The 60-day checkpoint runs clean. At the 90-day mark, Reinforcement stalls below 3 for the first time --- not a crisis, but exactly the pattern **Exception E5** exists to catch before the program closes on schedule regardless. Driss El Amrani flags it explicitly; the CFO re-authorizes a further checkpoint cadence; the champion network is re-chartered specifically for reinforcement. Two further consecutive healthy checkpoints follow. **E5 closes.** Refreeze is called from that evidence, the Bouregreg ERP Adoption Program's sign-off is recorded on M12, and ongoing ownership passes to the business-as-usual process owner --- the same close Part 1B.3's Phase 8 describes, now with the full story of how the program actually got there.
 
 ---
 
@@ -1018,7 +1074,7 @@ Module 18's Process Registry holds 16 registered end-to-end chains: 4 core chain
 
 **In the Bouregreg scenario:** from ERP go-live day, hypercare and floor coaching run on M11/M12 (MP-09); reinforcement mechanisms --- recognition, manager check-ins, revoked legacy-system access --- are confirmed active on M12 (MP-10); and the Lewin phase is only called "Refreeze" on M3 once the readiness diagnostics on M14 support it, not on the calendar date (MP-07). This is the same discipline the ERP User Guide's Exception E3 (Two-Clock Problem) and Exception E5 (Reinforcement Gap) protect against.
 
-**Week reference:** W43 through W60+, spanning Deploy, Hypercare, and Sustain (Phases 6--8) --- the closing third of Part 1B.6's month-by-month narrative, Months 11 through 14.
+**Week reference:** W43 through W64, spanning Deploy, Hypercare, and Sustain (Phases 6--8) --- the closing third of Part 1B.6's month-by-month narrative, Months 11 through 14.
 
 ### Cross-Cutting Loops (E2E-05 --- E2E-08)
 
@@ -1036,7 +1092,7 @@ Module 18's Process Registry holds 16 registered end-to-end chains: 4 core chain
 
 **In the Bouregreg scenario:** when the ERP Platform Unification Main Project's technical schedule slips against a Phase Gate on M17, the Joint Decision Record captures both Driss El Amrani's Change Management read and the Main Project's PM read independently, then names one Accountable role for the actual Go/No-Go call --- so a schedule slip never gets silently resolved by whichever discipline happens to write to the record last.
 
-**Week reference:** most active at each phase gate in Part 1B.3 --- W8, W14, W30, W38, W42, W43, W50, and W60+ --- since a Phase Gate checkpoint is this loop's most common trigger.
+**Week reference:** most active at each phase gate in Part 1B.3 --- W8, W14, W30, W38, W42, W43, W50, and W64 --- since a Phase Gate checkpoint is this loop's most common trigger.
 
 #### E2E-07 --- Champion Early-Warning Loop
 
@@ -1087,15 +1143,15 @@ Each case below states its archetype, business driver, target population, starti
 
 | Case | Archetype | Population | Weeks | Alert it exercises |
 |---|---|---|---|---|
-| Bouregreg ERP Adoption Program | ERP | 3,400 (all sites) | W1--60+ | ALT-001, ALT-009 |
+| Bouregreg ERP Adoption Program | ERP | 3,400 (all sites) | W1--64 | ALT-001, ALT-009 |
 | Order-to-Cash Process Redesign | BPR | 140 (Casablanca finance) | W3--52 | ALT-004 |
 | Kenitra Invoice-Matching Automation | Automation | 18 (Kenitra AP) | W20--38 | None (clean-close contrast case) |
 | ISO 9001/14001 Integrated Management System | QMS | 410 (Settat plant + quality) | W1--52+ | ALT-010 |
 | One Bouregreg: Culture Integration | Cultural | 260 + counterparts (Tangier) | W27--58+ | ALT-003 |
-| Regional Operating Model Redesign | Operating Model | 95 (people managers, 3 sites) | W35--60+ | ALT-002, ALT-015 |
-| Loi 09-08 Compliance Program | Compliance | 310 (HR, Sales, CS) | W1--60+ | ALT-009 (schedule-critical) |
+| Regional Operating Model Redesign | Operating Model | 95 (people managers, 3 sites) | W35--64 | ALT-002, ALT-015 |
+| Loi 09-08 Compliance Program | Compliance | 310 (HR, Sales, CS) | W1--64 | ALT-009 (schedule-critical) |
 | Plant Digital Skills Upskilling | Training & Skills | 620 (plant floor, 2 sites) | W16--58 | None (independent of a go-live) |
-| Settat Plant Consolidation & Restructuring | Restructuring | 130 (affected line) | W40--60+ | ALT-004 |
+| Settat Plant Consolidation & Restructuring | Restructuring | 130 (affected line) | W40--64 | ALT-004 |
 
 Read top to bottom, the table also makes a structural point visible at a glance: eight of the nine cases run on a Phase Template with a registered End-to-End lifecycle behind it (Part 3, Appendix A.5); only the last, Restructuring, runs on the generic core chains because no dedicated lifecycle exists for it --- the same gap the case's own write-up below states directly rather than papers over.
 
@@ -1131,7 +1187,7 @@ Six months into the ERP program, Bouregreg Group acquires a smaller regional com
 
 Realigns reporting lines across all three sites from a site-based structure to a function-based one --- Finance, Operations, and Quality each reporting centrally rather than to a site director. Business driver: the ERP program exposed how much duplicated decision-making the site-based structure was causing. Target population: all people-manager-level staff across the three sites (95 staff). Starting pattern: this case runs past its first 30-day sustainment checkpoint with regression risk logged as high --- built to fire **ALT-002 (Regression Risk Score Critical)** at that checkpoint, and consequently **ALT-015 (Sustainment Sign-Off Blocked)** until the regression is resolved and a clean checkpoint follows.
 
-**Milestones:** W35 current operating model assessment opens, once the ERP program's own Build phase has exposed the duplication; W42 target operating model design; W48 detailed org design; W52 pilot transition (Casablanca Finance first); W56 full transition, where the 30-day checkpoint lands High regression risk and ALT-002/ALT-015 fire; W60+ governance adoption tracking and standing rhythm handover, resolved only once a clean checkpoint follows.
+**Milestones:** W35 current operating model assessment opens, once the ERP program's own Build phase has exposed the duplication; W42 target operating model design; W48 detailed org design; W52 pilot transition (Casablanca Finance first); W56 full transition, where the 30-day checkpoint lands High regression risk and ALT-002/ALT-015 fire; W64 governance adoption tracking and standing rhythm handover, resolved only once a clean checkpoint follows.
 
 ### Loi 09-08 Data Protection Compliance Program *(archetype: Compliance --- E2E-COMP)*
 
@@ -1149,7 +1205,7 @@ A standalone digital-literacy and systems-skills program for plant-floor staff a
 
 Consolidates two overlapping production lines at the Settat plant into one, with a workforce restructuring as a direct consequence. This case is included deliberately without a dedicated End-to-End lifecycle or Phase Template of its own: Restructuring is one of Main Project's ten available archetypes, but --- unlike ERP, BPR, Automation, QMS, Cultural, Operating Model, Compliance, and Training & Skills --- it is not one of the 8 types the E2E addendum built a registered chain for. It runs on the 4 core chains (E2E-01 through E2E-04) generically instead, and this guide states that gap plainly rather than imply a lifecycle exists where it does not. Business driver: sustained overcapacity on the older of the two lines. Target population: the affected line's 130 staff. Starting pattern: the highest-resistance case in the library by design, expected to cross the resistance threshold early and stay there --- a second, independent source (alongside Order-to-Cash) of **ALT-004** firing in this Organization.
 
-**Milestones:** W40 mobilization (E2E-01, run generically since no dedicated template exists); W44 capability and divergence management as the affected line's staff are assessed for redeployment; W46 resistance crosses the threshold and ALT-004 fires for the second, independent time in the Organization; W50 adoption-to-sustainment begins as the consolidated line stabilizes; W60+ ongoing, since a restructuring's emotional tail is realistically the longest in the library relative to its short technical timeline.
+**Milestones:** W40 mobilization (E2E-01, run generically since no dedicated template exists); W44 capability and divergence management as the affected line's staff are assessed for redeployment; W46 resistance crosses the threshold and ALT-004 fires for the second, independent time in the Organization; W50 adoption-to-sustainment begins as the consolidated line stabilizes; W64 ongoing, since a restructuring's emotional tail is realistically the longest in the library relative to its short technical timeline.
 
 ### What the portfolio view shows
 
@@ -1311,7 +1367,7 @@ Role-code abbreviations used throughout this guide: **ES** Executive Sponsor · 
 | E2E-01 | Readiness & Mobilization | Core | ERP Adoption Program, W1--14 |
 | E2E-02 | Capability & Divergence Management | Core | ERP Adoption Program, W28--42 |
 | E2E-03 | Resistance-to-Commitment | Core | ERP (Exception E1); Order-to-Cash; Settat Restructuring |
-| E2E-04 | Adoption-to-Sustainment | Core | ERP Adoption Program, W43--60+ |
+| E2E-04 | Adoption-to-Sustainment | Core | ERP Adoption Program, W43--64 |
 | E2E-05 | Signal Aggregation Loop | Cross-cutting loop | Continuous, all nine cases |
 | E2E-06 | PM ↔ CM Governance Bridge | Cross-cutting loop | Every Phase Gate, Part 1B.3 |
 | E2E-07 | Champion Early-Warning Loop | Cross-cutting loop | ERP Adoption Program, W12+ |
@@ -1380,7 +1436,7 @@ The snippets below are the kind of text a Change Manager actually types into jou
 
 **If Bouregreg's program overlaps eight other CM Projects, doesn't ALT-008 (Change Saturation) just fire constantly and become noise?** It fires when a population segment is targeted by two or more *other* concurrent initiatives --- a real signal in a nine-project portfolio, not a bug. Part 5's escalation guidance treats it as a PMO-level review item on a 10-business-day SLA, not an urgent interrupt, which is the right severity for a genuinely common but non-critical condition.
 
-**Why does the 60-week calendar in Part 1B.2 show phases overlapping instead of running strictly one after another?** Because a real ERP program's Project Management and Change Management tracks run in parallel --- Design starting before Discovery formally closes reflects how work actually proceeds, not an inconsistency in the calendar.
+**Why does the 64-week calendar in Part 1B.2 show phases overlapping instead of running strictly one after another?** Because a real ERP program's Project Management and Change Management tracks run in parallel --- Design starting before Discovery formally closes reflects how work actually proceeds, not an inconsistency in the calendar.
 
 **Are the six exceptions in Part 1B.4 the only ways a program can go off track?** No --- they are six realistic, well-evidenced patterns, not an exhaustive list. journi's own documentation is explicit that Exception E8 (the Governance Escalation Loop, Part 3) is its own weakest-evidence entry, included for completeness rather than as strong as the other seven.
 
@@ -1406,9 +1462,9 @@ The snippets below are the kind of text a Change Manager actually types into jou
 
 This is Version 1.0 of the journi Complete User Guide, built around a single new scenario tenant --- Bouregreg Group --- created specifically for this document and not part of journi's other seeded demo data. Every module, field, RBAC rule, alert trigger, macro process, and end-to-end process composition named in it was verified against journi's actual source code at the time of writing, not assumed from a specification. Where this guide states a constraint --- an Organization's sector being one of exactly three values, a Kübler-Ross model with four stages rather than the textbook seven, an alert that never fires for lack of a real backend --- that constraint reflects journi's real, current behavior.
 
-The 60-week program calendar (Part 1B.2), the eight scenario mini-timelines (Part 4), and the month-by-month narrative (Part 1B.6) are this guide's own illustrative pacing, built for a 3,400-person, three-site organization, and are stated as illustrative rather than implied to be a platform default. Everything else --- module behavior, RBAC gating, alert trigger conditions, macro process compositions, framework stage vocabulary --- is verified journi platform fact.
+The 64-week program calendar (Part 1B.2), the eight scenario mini-timelines (Part 4), and the month-by-month narrative (Part 1B.6) are this guide's own illustrative pacing, built for a 3,400-person, three-site organization, and are stated as illustrative rather than implied to be a platform default. Everything else --- module behavior, RBAC gating, alert trigger conditions, macro process compositions, framework stage vocabulary --- is verified journi platform fact.
 
-**What this version covers, end to end:** a complete tenant build from a blank deployment (Part 1); a 60-week ERP program run week by week through all four frameworks' real stage vocabulary, normal flow and all six documented exceptions, in full task-and-step detail (Part 1B); every one of journi's 20 modules with its real CRUD and RBAC behavior (Part 2); all 16 registered End-to-End processes, each traced to a real point in the Bouregreg scenario (Part 3); a nine-project scenario library covering eight of journi's ten Main Project archetypes and exercising all 9 live-computed alerts at least once (Part 4); the full alert catalog and the two automated readiness metrics behind it (Part 5); and a nine-section quick-reference appendix, from role and RACSI legends through a worked grid example, sample field entries, and this FAQ.
+**What this version covers, end to end:** a complete tenant build from a blank deployment (Part 1); a 64-week ERP program run week by week through all four frameworks' real stage vocabulary, normal flow and all six documented exceptions, in full task-and-step detail (Part 1B); every one of journi's 20 modules with its real CRUD and RBAC behavior (Part 2); all 16 registered End-to-End processes, each traced to a real point in the Bouregreg scenario (Part 3); a nine-project scenario library covering eight of journi's ten Main Project archetypes and exercising all 9 live-computed alerts at least once (Part 4); the full alert catalog and the two automated readiness metrics behind it (Part 5); and a nine-section quick-reference appendix, from role and RACSI legends through a worked grid example, sample field entries, and this FAQ.
 
 **What a future version might add:** a second scenario tenant in a different sector (Logistics or Health, the two sectors this version's single Manufacturing tenant does not exercise); a full step-by-step SIPOC/RACSI treatment of the eight Part 4 scenarios at the same depth Part 1B gives the ERP program; and worked examples of the seven catalogued-but-non-live alerts once journi's backend infrastructure exists to compute them for real.
 
