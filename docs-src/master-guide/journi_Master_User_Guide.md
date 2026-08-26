@@ -44,6 +44,7 @@ Version 1.0 · August 2026 · Confidential
     - [E6 --- Cohort Divergence Across Sites](#exc-e6)
   - [1B.5 What to Track, by Cadence](#p1b-5)
   - [1B.6 The Program, Month by Month](#p1b-6)
+  - [1B.7 CM Charters Across the Program --- Create, Read, Update, Delete](#p1b-7)
 - [Part 2 --- Module-by-Module Feature Tour](#part-2)
 - [Part 3 --- All 16 End-to-End Process Walkthroughs](#part-3)
 - [Part 4 --- Change Management Scenario Library](#part-4)
@@ -750,6 +751,45 @@ Sections 1B.3 and 1B.4 gave the Bouregreg ERP Adoption Program's normal flow and
 **Month 13 (W48--52).** Hypercare closes: the re-pulse confirms Bridges has genuinely moved to New Beginning and Kübler-Ross reads Exploration or better across all three sites --- **E3 (Two-Clock Problem at Deploy) closes**, Lewin's provisional Refreeze is confirmed rather than walked back. Sustain opens. New-process metrics are embedded into performance management with HR's support; the first 30-day checkpoint runs clean.
 
 **Month 14 (W53--64).** The 60-day checkpoint runs clean. At the 90-day mark, Reinforcement stalls below 3 for the first time --- not a crisis, but exactly the pattern **Exception E5 (Reinforcement Gap at Sustain)** exists to catch before the program closes on schedule regardless. Driss El Amrani flags it explicitly; the CFO re-authorizes a further checkpoint cadence; the champion network is re-chartered specifically for reinforcement. Two further consecutive healthy checkpoints follow. **E5 (Reinforcement Gap at Sustain) closes.** Refreeze is called from that evidence, the Bouregreg ERP Adoption Program's sign-off is recorded on M12 (Sustainment), and ongoing ownership passes to the business-as-usual process owner --- the same close Part 1B.3's Phase 8 describes, now with the full story of how the program actually got there.
+
+<a id="p1b-7"></a>
+
+### 1B.7 CM Charters Across the Program --- Create, Read, Update, Delete
+
+M19 (CM Charters) holds journi's 8 signed, trackable behavioral standards --- not prose guidance, but named actions with an owner role, a governing macro process, and a per-project compliance log. This subsection tracks all 8 charters' full CRUD lifecycle --- create, review, update, and (where it happens) delete --- against Bouregreg's actual 64-week program, phase by phase, rather than describing the CRUD mechanism in the abstract the way Part 2's M19 entry does.
+
+**The 8 charters, their owners, and their governing macro process:**
+
+| Charter | Owner Role | Governs | Created In |
+|---|---|---|---|
+| CHTR-01 (Sponsorship / Leadership Charter) | Executive Sponsor | MP-02 (Sponsorship & Governance Management) | Phase 1, Week 1 |
+| CHTR-04 (Organizational Impact Charter) | Change Manager | MP-01 (Change Impact & Stakeholder Assessment) | Phase 1, Week 6 |
+| CHTR-08 (Pulse / Interview Charter) | Change Manager | MP-07 (Readiness Diagnostics & Signal Capture) | Phase 1, Week 8 |
+| CHTR-03 (Communication Charter) | Change Manager | MP-03 (Communication & Awareness Management) | Phase 2, Week 9 |
+| CHTR-02 (Participative Management Charter) | Frontline Supervisor | MP-04 (Resistance & Barrier Management) | Phase 3, Week 16 |
+| CHTR-06 (One-to-One Coaching Charter) | Change Manager | MP-08 (Divergence & Risk Detection) | Phase 4, Week 34 |
+| CHTR-07 (Mentoring Charter) | Training Lead | MP-05 (Training & Capability Enablement) | Phase 5, Week 30 |
+| CHTR-05 (Team Coaching Charter) | People Manager | MP-09 (Hypercare & Floor Coaching Support) | Phase 7, Week 46 |
+
+**Phase-by-phase CRUD detail:**
+
+**Phase 1 --- Discovery.** *Create.* Week 1: Meryem Sabri creates CHTR-01 (Sponsorship / Leadership Charter) on M19 (CM Charters) at kickoff, co-signed by the CFO --- type in: Owner "Executive Sponsor"; RACSI R=CM, A=ES, C=PM/FPO, I=SUP/EU; Status "Active"; Effective Date "Week 1"; Review Frequency "Per Phase Gate." Week 6: create CHTR-04 (Organizational Impact Charter) alongside the Stakeholder Map, owned by the Change Manager. *Delete (administrative correction).* Also Week 6: Meryem Sabri accidentally saves a duplicate draft of CHTR-04 while the Stakeholder Map is being populated; because the duplicate is still in Draft status, she deletes it immediately --- a real example of M19 (CM Charters)'s delete rule (only non-Active charters can be deleted) operating exactly as designed. Week 8: create CHTR-08 (Pulse / Interview Charter), owned by the Change Manager, ahead of Phase 2's baseline pulse.
+
+**Phase 2 --- Design.** *Create.* Week 9: create CHTR-03 (Communication Charter), owned by the Change Manager, alongside the kickoff town hall. *Read / compliance log.* Week 9: log a compliance action against CHTR-01 --- type in: "CFO delivered kickoff town hall in person at all three sites, 9 [date]. Compliant with Sponsorship Charter standard 1 (visible, active sponsorship)." Week 11: log a compliance action against CHTR-08 --- type in: "Baseline ADKAR pulse run per cohort, 11 [date]. Compliant with Pulse/Interview Charter standard 1 (evidence-based, not assumed, readings)."
+
+**Phase 3 --- Build.** *Create.* Week 16: create CHTR-02 (Participative Management Charter), owned by the Frontline Supervisor role, alongside the champion briefing. *Update / compliance log.* Week 22: log a compliance action against CHTR-01 during Exception E1 (Desire Stall at Settat) --- type in: "CFO delivered the staffing commitment to the Settat cohort in person, 22 [date]. Compliant with Sponsorship Charter standard 3 (direct engagement with an affected cohort during a readiness stall)." Week 16--17: log a compliance action against CHTR-02 --- type in: "Champion briefing held per site; each champion's observation-logging path confirmed. Compliant with Participative Management Charter standard 1 (structured frontline listening channel)." Week 29--30: review CHTR-01 at the Phase 3 gate (per its "Per Phase Gate" review frequency) --- no change to its terms, review noted in the compliance log.
+
+**Phase 4 --- Test.** *Create.* Week 34: create CHTR-06 (One-to-One Coaching Charter), owned by the Change Manager, at the exact moment Exception E2 (Divergence Pattern at UAT) opens. *Read / compliance log.* Week 35: log a compliance action against CHTR-06 --- type in: "Loss-focused 1:1 held with the flagged Casablanca Finance UAT participant, 35 [date]. Compliant with One-to-One Coaching Charter standard 2 (address the emotional gap directly, not a skills refresher)."
+
+**Phase 5 --- Train.** *Create.* Week 30 (overlapping Build): create CHTR-07 (Mentoring Charter), owned by the Training Lead, at the start of role-based training delivery. *Read / compliance log.* Week 31--33: log a compliance action against CHTR-07 for each training wave --- type in: "Casablanca Finance training wave 1 delivered per Mentoring Charter's Trainee → Observer → Autonomous progression, 31 [date]." Week 42: review CHTR-01 at the Phase 5 gate.
+
+**Phase 6 --- Deploy.** *Read / compliance log.* Day 4: log a compliance action against CHTR-01 and CHTR-03 jointly --- type in: "Go-live confirmation sent to all three sites, Day 4. Compliant with Sponsorship Charter standard 1 and Communication Charter standard 2 (saturation-aware, single-message timing)."
+
+**Phase 7 --- Hypercare.** *Create.* Week 46: create CHTR-05 (Team Coaching Charter), owned by the People Manager role, at the exact moment Exception E4 (Sentiment Regression During Hypercare) is resolved --- the Kenitra supervisor's team huddle is the charter's first compliance action, logged the same week: "Team huddle held, Defect #31 fix explained. Compliant with Team Coaching Charter standard 1 (direct acknowledgment of a setback with the affected team)." Week 50: review CHTR-01 at the Phase 7 gate.
+
+**Phase 8 --- Sustain.** *Update.* Week 51--64: all 8 charters reviewed for the program's closing Steering Committee readout; CHTR-08 (Pulse / Interview Charter) is updated from v1.0 to v1.1 --- type in the version-history note: "v1.1, 58 [date]: added a mandatory 90-day-mark readiness pulse to the standard cadence, following the Week 56 Reinforcement Gap (Exception E5)." No charter is deleted at program close --- all 8 remain Active, carried forward as the starting governance baseline for the next Bouregreg CM Project in Part 4's scenario library.
+
+**What this demonstrates.** Across the program, every one of M19 (CM Charters)'s CRUD operations is exercised on real, dated program events, not as an abstract capability: 8 Create actions (one per charter), roughly two dozen Read/compliance-log actions tied to specific weeks and exceptions, at least 5 Update/review actions at Phase Gates, a version Update at Week 58, and one Delete of a mistaken duplicate at Week 6 --- the only kind of delete M19 (CM Charters)'s own rule (Active charters cannot be deleted, only Draft or Retired ones) actually permits.
 
 ---
 
