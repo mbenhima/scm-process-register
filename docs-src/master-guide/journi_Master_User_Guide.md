@@ -492,23 +492,15 @@ Train runs alongside Test rather than strictly after it --- Knowledge becomes Ab
 
 **Framework readings at close:** Lewin Change (provisional toward Refreeze) · ADKAR focus Ability · Bridges Neutral Zone → New Beginning (provisional) · Kübler-Ross Exploration.
 
-Deploy is a single, sharp week --- the clearest instance in Bouregreg's program of the two-clock problem Exception E3 exists to manage.
+Deploy is a single, sharp week --- the clearest instance in Bouregreg's program of the two-clock problem Exception E3 exists to manage. Given its single-week span, the breakdown below runs day by day rather than week by week.
 
-**Task 1 --- Execute the data freeze and final migration.** The last legacy-system data cutover runs against the mock-migration cycles rehearsed in Build.
-  - *Step 1 --- Freeze legacy-system data entry at the agreed cutoff.* Technique: coordinated data freeze --- goal: a clean, unambiguous migration source.
-  - *Step 2 --- Run the final migration and reconcile the result.* Technique: migration reconciliation --- goal: confirm what moved matches what was frozen, before any site logs in.
-
-**Task 2 --- Run the cutover runbook and technical validation.** ITL validates the live platform against the runbook before any site is told to start using it.
-  - *Step 1 --- Execute the cutover runbook step by step.* Technique: scripted cutover runbook --- goal: a repeatable, auditable go-live rather than an improvised one.
-  - *Step 2 --- Validate the live platform against acceptance criteria.* Technique: go-live technical validation --- goal: confirm the platform is genuinely ready before any end user is told it is.
-
-**Task 3 --- Communicate go-live confirmation to all cohorts.** Driss El Amrani sends the go-live confirmation across Casablanca, Kenitra, and Settat --- a single message, timed carefully against M8's saturation detection (ALT-011, Part 5), since this is the highest-traffic communications week in the program.
-  - *Step 1 --- Draft one confirmation message per site, timed against the saturation check.* Technique: saturation-aware communication timing --- goal: the message lands clearly, not lost in a pile-up of other go-live-week traffic.
-  - *Step 2 --- Send and log the confirmation on M8.* Technique: logged communication dispatch --- goal: an auditable record of exactly when and how go-live was confirmed to each site.
-
-**Task 4 --- Activate hypercare; mark Lewin as provisional.** The hypercare support model goes live on Day 1, and Lewin is marked "Change → Refreeze (provisional)" on M3 rather than called Refreeze outright --- the exact discipline Exception E3 protects.
-  - *Step 1 --- Activate the hypercare support model across all three sites.* Technique: hypercare activation --- goal: visible, elevated support from the first live hour, not a delayed ramp-up.
-  - *Step 2 --- Log Lewin as "Change → Refreeze (provisional)" with a justification.* Technique: provisional phase-call logging --- goal: separate the technical milestone from the emotional-layer evidence still pending. *journi: M3.*
+| Day | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry --- What to Type In | Exception |
+|---|---|---|---|---|
+| **Week 43, Day 1 (Mon)** | **[PM]** Freeze legacy-system data entry at the agreed cutoff (Task 1, Step 1) --- type in the freeze notice: "Legacy systems locked for data entry as of 06:00, Day 1. All three sites confirmed." | **[CM]** Stand by; confirm all champions and supervisors are on-site and briefed for go-live week. | M17 (WBS & Gantt) --- task "Data Freeze" marked complete, actual date logged. | --- |
+| **Week 43, Day 2 (Tue)** | **[PM]** Run the final migration and reconcile the result (Task 1, Step 2) --- type in: "Final migration run 02:00--05:00. Reconciliation: 100% of frozen records matched migrated records across Order Management, Inventory, Finance. 0 discrepancies." | **[CM]** Hold; prepare the go-live confirmation message draft for Day 4. | M17 (WBS & Gantt) --- task "Final Migration & Reconciliation" marked complete. | --- |
+| **Week 43, Day 3 (Wed)** | **[PM]** Execute the cutover runbook step by step (Task 2, Step 1); validate the live platform against acceptance criteria (Task 2, Step 2). | **[CM]** Stand by for the technical validation sign-off before finalizing the Day 4 communication. | M17 (WBS & Gantt) --- task "Cutover Runbook & Technical Validation" marked complete; Phase Gate pre-check recorded as Go. | --- |
+| **Week 43, Day 4 (Thu)** | **[PM]** Confirm technical go-live is clean; hand off to Change Management for the go-live announcement. | **[CM]** Draft and send the go-live confirmation to all three sites (Task 3, Steps 1--2), timed against M8's saturation check. | M8 (Communications) --- type in: Message "Bouregreg's unified platform is live as of today. Your training, job aids, and supervisor support are all in place --- use the system for every transaction from now on." · Audience: All 3,400 staff · Channel: Email + site noticeboards + supervisor cascade · Timing: Day 4, 07:00, ahead of first shift · Status: Sent. Checked against M8's saturation detection first --- no other communication queued this week. | --- |
+| **Week 43, Day 5 (Fri)** | **[PM]** Monitor first-week technical stability; log any Day 1--5 defect to the Risk Register. | **[CM]** Activate the hypercare support model (Task 4, Step 1); mark Lewin as provisional on M3 (Initiative Registry) (Task 4, Step 2). | M3 (Initiative Registry) --- type in: "Setting Change → Refreeze (provisional). Technical go-live clean across all three sites (Days 1--4). Emotional-layer evidence (Bridges, Kübler-Ross) still pending re-pulse --- see Exception E3. Not calling confirmed Refreeze on the go-live date alone." | E3 (Two-Clock Problem at Deploy) --- opens |
 
 **Phase gate:** Deploy closes on a clean technical go-live; the Lewin call explicitly does not close here, and stays provisional into Hypercare.
 
