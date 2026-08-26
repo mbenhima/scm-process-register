@@ -55,14 +55,26 @@ def set_col_widths(table, ratios):
             tcW.set(qn('w:w'), str(int(w / 635)))  # EMU -> twentieths of a point (dxa)
 
 
+WEEKLY_TABLE_WIDTHS = [0.09, 0.24, 0.24, 0.31, 0.12]  # Week, PM Track, CM Track, journi Entry, Exception
+
+
+def is_weekly_track_table(t):
+    return len(t.columns) == 5 and 'PM) Track' in t.rows[0].cells[1].text
+
 for t in d.tables:
     if len(t.columns) == 6 and t.rows[0].cells[0].text.strip() == 'ID':
         set_col_widths(t, ALERT_TABLE_WIDTHS)
     elif len(t.columns) == 3 and t.rows[0].cells[0].text.strip() == 'ID':
         set_col_widths(t, ALERT_NONLIVE_WIDTHS)
+    elif is_weekly_track_table(t):
+        set_col_widths(t, WEEKLY_TABLE_WIDTHS)
 
 # ---- Prevent a table row's content from splitting across a page break ----
+# Skip the large PM/CM weekly-track tables: their cells are prose-length, and
+# forcing cantSplit there produces near-one-row-per-page with heavy blank space.
 for t in d.tables:
+    if is_weekly_track_table(t):
+        continue
     for row in t.rows:
         trPr = row._tr.get_or_add_trPr()
         cant_split = OxmlElement('w:cantSplit')
