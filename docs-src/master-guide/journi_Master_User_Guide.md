@@ -330,13 +330,13 @@ Discovery is where the business case gets made and the Month-0 baseline gets cap
 
 **Framework readings at close:** Lewin Unfreeze · ADKAR focus Awareness → Desire · Bridges Ending · Kübler-Ross Denial → Resistance/Anger.
 
-Design overlaps Discovery's tail: future-state process scope gets drafted while the last discovery findings are still landing. The table below breaks the phase into its PM and CM tracks week by week.
+Design overlaps Discovery's tail: design principles get drafted and translated into explicit future-state process maps --- the direct counterpart to Discovery's current-state process maps (Phase 1, Week 2) --- while the last discovery findings are still landing. The table below breaks the phase into its PM and CM tracks week by week.
 
 | Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry --- What to Type In | Exception |
 |---|---|---|---|---|
-| **Week 6** | **[PM]** Facilitate the design-principles workshop with the ITL function and Functional Process Owners --- draft 5--8 non-negotiable constraints. | **[CM]** Attend the design-principles workshop as a Change Management voice; flag any principle likely to conflict with an already-logged workaround from Phase 1. | No journi entry yet --- design principles are drafted outside journi and referenced by name in later M17 (WBS & Gantt) task notes. | --- |
-| **Week 7** | **[PM]** Continue the design-principles workshop across remaining functions; consolidate into a single written list --- type in, for example: "Principle 1: No duplicate approvals across sites"; "Principle 2: One stock-movement record shared by Inventory and Finance"; "Principle 3: Every exception path must be visible to a supervisor, not hidden in a workaround." | **[CM]** Cross-check the consolidated principles against Phase 1's workaround inventory --- confirm Principle 2 directly retires the Kenitra/Settat whiteboard and email-photo workarounds. | No journi entry yet. | --- |
-| **Week 8** | **[PM]** Circulate the draft design principles for Steering Committee review (Task 1, Step 2); collect sign-off. | **[CM]** Prepare the Week 9 kickoff town hall script in parallel, so communications can launch the moment principles are signed off. | No journi entry yet --- Steering Committee sign-off recorded outside journi, referenced in the Week 9 M8 (Communications) entry. | --- |
+| **Week 6** | **[PM]** Facilitate the design-principles workshop with the ITL function and Functional Process Owners --- draft 5--8 non-negotiable constraints (Task 1, Step 1). | **[CM]** Attend the design-principles workshop as a Change Management voice; flag any principle likely to conflict with an already-logged workaround from Phase 1. | No journi entry yet --- design principles are drafted outside journi and referenced by name in later M17 (WBS & Gantt) task notes. | --- |
+| **Week 7** | **[PM]** Consolidate the design principles into a single written list, then translate them into explicit future-state process maps for Order Management, Inventory, and Finance, each map annotated against the specific principle it satisfies (Task 1, Step 2) --- type in, for example: "Principle 1: No duplicate approvals across sites"; "Principle 2: One stock-movement record shared by Inventory and Finance"; "Principle 3: Every exception path must be visible to a supervisor, not hidden in a workaround." Future-state map note: "Order-to-Cash future-state map --- one shared stock-movement record (Principle 2) replaces Casablanca Finance's shadow spreadsheet and the Kenitra/Settat whiteboard and email-photo workarounds; every exception routes to a visible supervisor queue (Principle 3), not a side channel." | **[CM]** Cross-check the consolidated principles and future-state process maps against Phase 1's workaround inventory --- confirm the Order-to-Cash map's Principle 2 routing directly retires the Kenitra/Settat whiteboard and email-photo workarounds, item by item. | M17 (WBS & Gantt) --- task "Future-State Process Mapping (Order Management, Inventory, Finance)" logged; artifact reference: three future-state process maps, each cross-referenced to the design principle(s) it implements and the specific Phase 1 workaround(s) it retires. | --- |
+| **Week 8** | **[PM]** Circulate the design principles and future-state process maps together for Steering Committee review (Task 1, Step 3); collect sign-off on both. | **[CM]** Prepare the Week 9 kickoff town hall script in parallel, so communications can launch the moment principles and maps are signed off. | No journi entry yet --- Steering Committee sign-off recorded outside journi, referenced in the Week 9 M8 (Communications) entry. | --- |
 | **Week 9** | **[PM]** Confirm design principles signed off; hand off to Build's configuration sprint planning. | **[CM]** Deliver the kickoff town hall at all three sites (Task 2, Step 1) --- log the entry on M8 (Communications). | M8 (Communications) --- type in: Message "Why we're changing: three disconnected systems cost Bouregreg Group approximately MAD 220,000/year in manual work. What's changing: one unified platform, live in 34 weeks. What we need from you: attend your site's training when scheduled." · Audience: All 3,400 staff · Channel: In-person town hall + email follow-up · Timing: Week 9, one session per site · Status: Sent. | --- |
 | **Week 10** | **[PM]** Monitor design-principle-related questions surfacing in the FAQ channel; route any scope question back to the Steering Committee. | **[CM]** Open and monitor the FAQ channel (Task 2, Step 2) --- type in and answer, for example: Q: "Will Kenitra lose headcount?" A: "No headcount reductions are planned for this program." Q: "What happens to my login on the old system?" A: "Legacy access is retired only after your site's go-live and a two-week overlap period." | M8 (Communications) --- add a second entry: Message "FAQ digest --- Week 10" · Audience: All 3,400 staff · Channel: Email + site noticeboards · Timing: Week 10 · Status: Sent. | --- |
 | **Week 11** | **[PM]** Begin early Build-phase configuration-environment setup in parallel, ahead of Phase 3's formal start in Week 12. | **[CM]** Run the facilitated baseline Awareness pulse per cohort (Task 3, Step 1). | M5 (ADKAR Engine) --- type in Awareness scores: Casablanca Finance = 3 ("most staff attended the town hall and asked FAQ questions"); Kenitra Plant Operations = 2 ("about half the shift attended; night shift missed it"); Settat Plant Operations = 2 ("same night-shift gap as Kenitra"); Casablanca HQ Leadership = 4. | --- |
@@ -344,9 +344,9 @@ Design overlaps Discovery's tail: future-state process scope gets drafted while 
 | **Week 13** | **[PM]** Continue Build configuration sprint 1 in parallel (see Phase 3, Week 13). | **[CM]** Identify candidate champions per site and function (Task 4, Step 1) --- type in nominees: Casablanca Finance --- Amal Ferhati (Senior Accountant); Kenitra Plant Operations --- Yassine Bouhali (Shift Supervisor, night shift); Settat Plant Operations --- Rania Idrissi (Inventory Lead). | No journi entry yet --- nominees confirmed with their managers before Week 14's roster entry. | --- |
 | **Week 14** | **[PM]** Confirm the Phase 2 gate: design principles signed off, baseline Awareness pulse logged. | **[CM]** Log the champion roster against the Stakeholder Map (Task 4, Step 2). | M4 (Stakeholder Mapping) --- type in, against each cohort entry: Champion "Amal Ferhati" linked to "Casablanca Finance"; Champion "Yassine Bouhali" linked to "Kenitra Plant Operations" (noted: night-shift representative, addressing the Week 12 Awareness gap directly); Champion "Rania Idrissi" linked to "Settat Plant Operations". | --- |
 
-**Phase gate:** Design closes once the future-state scope is signed off by the Steering Committee and the baseline Awareness pulse is logged --- this is also the point where, if the program were instead running as the Order-to-Cash Process Redesign of Part 4, the first Resistance-to-Commitment (E2E-03 (Resistance-to-Commitment)) signals would already be visible in Casablanca finance.
+**Phase gate:** Design closes once the design principles and future-state process maps are both signed off by the Steering Committee and the baseline Awareness pulse is logged --- this is also the point where, if the program were instead running as the Order-to-Cash Process Redesign of Part 4, the first Resistance-to-Commitment (E2E-03 (Resistance-to-Commitment)) signals would already be visible in Casablanca finance.
 
-**SIPOC.** Suppliers: Functional Process Owners; ITL; the champion network's first recruits. · Inputs: Discovery findings; design-principle drafts; first town-hall feedback. · Process: this phase's four Tasks in sequence · Outputs: Signed-off future-state scope; first champion roster; baseline Awareness scores. · Customers: Program Manager; Change Manager; Steering Committee.
+**SIPOC.** Suppliers: Functional Process Owners; ITL; the champion network's first recruits. · Inputs: Discovery findings; current-state process maps; design-principle drafts; first town-hall feedback. · Process: this phase's four Tasks in sequence · Outputs: Signed-off design principles and future-state process maps; first champion roster; baseline Awareness scores. · Customers: Program Manager; Change Manager; Steering Committee.
 
 **RACSI for this phase.** R = CM, FPO · A = ES · C = PM, ITL · S = SUP · I = EU
 
@@ -382,7 +382,7 @@ Build is the longest phase and the one where the Lewin call actually moves --- n
 
 **Phase gate:** Build closes once the platform configuration is functionally complete and Lewin has moved to Change on real evidence --- a No-Go or Conditional call here (ALT-009 (Phase Gate No-Go / Conditional), Part 5) means configuration is not ready for Test, and the phase does not advance on schedule alone.
 
-**SIPOC.** Suppliers: ITL; configuration sprint teams; the champion network. · Inputs: Signed-off future-state scope; design principles; Awareness-stage ADKAR data. · Process: this phase's four Tasks in sequence · Outputs: Functionally complete configured build; briefed champion network; Lewin = Change. · Customers: Program Manager; Change Manager; Test-phase team.
+**SIPOC.** Suppliers: ITL; configuration sprint teams; the champion network. · Inputs: Signed-off future-state process maps; design principles; Awareness-stage ADKAR data. · Process: this phase's four Tasks in sequence · Outputs: Functionally complete configured build; briefed champion network; Lewin = Change. · Customers: Program Manager; Change Manager; Test-phase team.
 
 **RACSI for this phase.** R = ITL, CM · A = PM · C = FPO, ES · S = SUP · I = EU
 
@@ -520,6 +520,113 @@ Sustain is where Refreeze is called from checkpoint evidence, never the calendar
 **SIPOC.** Suppliers: HR (performance-management integration); Change Manager; Executive Sponsor. · Inputs: Hypercare's confirmed readings; 30/60/90-day checkpoint data. · Process: this phase's four Tasks in sequence · Outputs: Confirmed Refreeze; embedded reinforcement; closed CM project; lessons-learned log. · Customers: Executive Sponsor; business-as-usual process owner; future Bouregreg CM projects.
 
 **RACSI for this phase.** R = CM · A = ES · C = PM, FPO · S = SUP · I = EU
+
+<a id="p1b-3-9"></a>
+
+#### Master WBS & Gantt --- Every Task and Step, PM and CM Tracks, Across the Four Frameworks
+
+The table below is the single master schedule for Bouregreg's 64-week program: every Task and Step from all eight phases above, in one place, exactly as M17 (WBS & Gantt)'s real key fields hold them --- **Task name; track (PM/CM/framework); baseline start/end date; actual start/end date; status** (Part 2, M17). Scope is the normal flow only (1B.3): the six exceptions' own Recovery Tasks keep their own numbering in 1B.4 and are cross-referenced here by ID, not re-numbered into this WBS, so the two schemes never collide.
+
+**How to read it.** Each phase's four Tasks appear as a bold row (ID `Pn-Tn`), followed by its Steps (ID `Pn-Tn-Sn`) indented with `↳`. **Track** names who executes it --- PM, CM, or PM+CM where a Task's two Steps split across both. **K-R** is Kübler-Ross. The four framework columns are populated only on the Step that actually sets or moves that framework's reading on M3 (Initiative Registry), M5 (ADKAR Engine), or M6 (Emotional & Transition Layer) --- a blank cell means that Step doesn't touch that framework, not that the framework is undefined at that point in time; read the phase's "Framework readings at close" line (1B.3) for the standing value between movements.
+
+| ID | Task / Step Name | Track | Ph. | Wk(s) | Lewin | ADKAR | Bridges | K-R |
+|---|---|---|---|---|---|---|---|---|
+| **P1-T1** | **Discovery Workshops & Workaround Inventory** | PM+CM | P1 | W2--4 | | | | |
+| P1-T1-S1 | ↳ [PM] Facilitate 3 Discovery Workshops, All Sites | PM | P1 | W2--4 | | | | |
+| P1-T1-S2 | ↳ [CM] Compile Workaround Inventory | CM | P1 | W4 | | | | |
+| **P1-T2** | **Business Case Quantification** | PM | P1 | W5--6 | | | | |
+| P1-T2-S1 | ↳ [PM] Pull Reconciliation Time Logs per Site | PM | P1 | W5 | | | | |
+| P1-T2-S2 | ↳ [PM] Compute Fully-Loaded Cost | PM | P1 | W6 | | | | |
+| **P1-T3** | **Stakeholder Map & Impact Severity** | CM | P1 | W6--7 | | | | |
+| P1-T3-S1 | ↳ [CM] Open Stakeholder Map, Enter Cohorts | CM | P1 | W6 | | | | |
+| P1-T3-S2 | ↳ [CM] Flag High-Impact Cohorts, Finalize Severity | CM | P1 | W7 | | | | |
+| **P1-T4** | **Business Case Sign-Off & Lewin Baseline** | PM+CM | P1 | W7--8 | | | | |
+| P1-T4-S1 | ↳ [PM] Review Business Case & Stakeholder Map with Steering Committee | PM | P1 | W7 | | | | |
+| P1-T4-S2 | ↳ [CM] Set Lewin = Unfreeze, with Justification | CM | P1 | W8 | Unfreeze (baseline) | | | Denial (baseline) |
+| **P2-T1** | **Design Principles & Future-State Process Mapping** | PM | P2 | W6--8 | | | | |
+| P2-T1-S1 | ↳ [PM] Draft Design Principles Workshop | PM | P2 | W6 | | | | |
+| P2-T1-S2 | ↳ [PM] Consolidate Principles; Draft Future-State Process Maps | PM | P2 | W7 | | | | |
+| P2-T1-S3 | ↳ [PM] Circulate Principles & Maps for Steering Committee Sign-Off | PM | P2 | W8 | | | | |
+| **P2-T2** | **Kickoff Communications & FAQ** | CM | P2 | W9--10 | | | | |
+| P2-T2-S1 | ↳ [CM] Deliver Kickoff Town Hall, All 3 Sites | CM | P2 | W9 | | | | |
+| P2-T2-S2 | ↳ [CM] Open & Monitor FAQ Channel | CM | P2 | W10 | | | | |
+| **P2-T3** | **Baseline Awareness Pulse** | CM | P2 | W11--12 | | | | |
+| P2-T3-S1 | ↳ [CM] Run Baseline Awareness Pulse per Cohort | CM | P2 | W11 | | Awareness = 3/2/2/4 (baseline, by cohort) | | |
+| P2-T3-S2 | ↳ [CM] Log Barrier-Reason Notes, Auto-Escalated Cohorts | CM | P2 | W12 | | | | |
+| **P2-T4** | **Champion Recruitment** | CM | P2 | W13--14 | | | | |
+| P2-T4-S1 | ↳ [CM] Identify Candidate Champions per Site | CM | P2 | W13 | | | | |
+| P2-T4-S2 | ↳ [CM] Log Champion Roster Against Stakeholder Map | CM | P2 | W14 | | | | |
+| **P3-T1** | **Configuration Sprint 1 & Principle Traceability** | PM | P3 | W12--14 | | | | |
+| P3-T1-S1 | ↳ [PM] Stand Up Config Environment; Begin Sprint 1 | PM | P3 | W12 | | | | |
+| P3-T1-S2 | ↳ [PM] Close Sprint 1; Log Decisions vs. Principles | PM | P3 | W14 | | | | |
+| **P3-T2** | **Champion Briefing & Observation-Logging Path** | CM | P3 | W16--17 | | | | |
+| P3-T2-S1 | ↳ [CM] Run Champion Briefing per Site | CM | P3 | W16 | | | | |
+| P3-T2-S2 | ↳ [CM] Confirm Observation-Logging Path per Champion | CM | P3 | W17 | | | | |
+| **P3-T3** | **Desire Re-Scoring & Barrier Response (E1)** | CM | P3 | W18--24 | | | | |
+| P3-T3-S1 | ↳ [CM] Re-Score Desire per Cohort | CM | P3 | W18 | | Desire = 3/3/2 (Settat auto-escalates) | | |
+| P3-T3-S2 | ↳ [CM] Log Mandatory Barrier-Reason Note, Settat --- opens E1 (Recovery Tasks 1--5, 1B.4) | CM | P3 | W19--24 | | Desire Settat 2 → 3 (W24, post-E1) | | Settat Denial → Resistance/Anger (W24) |
+| **P3-T4** | **Evidence Review & Lewin = Change Call** | CM | P3 | W28--29 | | | | |
+| P3-T4-S1 | ↳ [CM] Review Evidence Against Signal Catalogue | CM | P3 | W28 | | | | |
+| P3-T4-S2 | ↳ [CM] Set Lewin = Change, with Justification | CM | P3 | W29 | Unfreeze → Change | | | |
+| **P4-T1** | **SIT Execution & Defect Triage** | PM | P4 | W28--29 | | | | |
+| P4-T1-S1 | ↳ [PM] Run SIT Test Script, 40 Scenarios | PM | P4 | W28 | | | | |
+| P4-T1-S2 | ↳ [PM] Triage & Close SIT Defects by Severity | PM | P4 | W29 | | | | |
+| **P4-T2** | **UAT Recruitment & Roster** | CM | P4 | W30--31 | | | | |
+| P4-T2-S1 | ↳ [CM] Select UAT Participants, Proportionate to Site | CM | P4 | W30 | | | | |
+| P4-T2-S2 | ↳ [CM] Log UAT Roster & Acceptance Criteria | CM | P4 | W31 | | | | |
+| **P4-T3** | **UAT Execution & Knowledge Scoring** | CM | P4 | W32--33 | | | | |
+| P4-T3-S1 | ↳ [CM] Run UAT Scenarios, Casablanca Finance | CM | P4 | W32 | | Knowledge = 4 (Casablanca) | | |
+| P4-T3-S2 | ↳ [CM] Run UAT Scenarios, Kenitra/Settat; Log Defects vs. Friction | CM | P4 | W33 | | Knowledge = 4 (Kenitra), 3 (Settat) | | |
+| **P4-T4** | **Divergence Pattern Review (E2)** | CM | P4 | W34--36 | | | | |
+| P4-T4-S1 | ↳ [CM] Run Divergence Pattern Review vs. Bridges --- ALT-001 fires, opens E2 | CM | P4 | W34 | | | Ending (flagged participant, Knowledge/Ability ≥ 4) | |
+| P4-T4-S2 | ↳ [CM] Route Flagged Case into E2 Recovery Tasks 1--5 (1B.4) | CM | P4 | W35--36 | | | Ending → Neutral Zone (W36, post-E2) | |
+| **P5-T1** | **Curriculum Enrollment & Wave-1 Delivery** | CM | P5 | W30--33 | | | | |
+| P5-T1-S1 | ↳ [CM] Enroll Cohorts Against Role-Based Curriculum | CM | P5 | W30 | | | | |
+| P5-T1-S2 | ↳ [CM] Deliver Training Wave 1, All 3 Sites | CM | P5 | W31--33 | | | | |
+| **P5-T2** | **Job Aids & Sandbox Practice** | PM | P5 | W34--35 | | | | |
+| P5-T2-S1 | ↳ [PM] Publish Job Aids per Role | PM | P5 | W34 | | | | |
+| P5-T2-S2 | ↳ [PM] Open Sandbox for Supervised Practice | PM | P5 | W35 | | | | |
+| **P5-T3** | **Knowledge/Ability Scoring & Divergence Flag (E6)** | CM | P5 | W36--39 | | | | |
+| P5-T3-S1 | ↳ [CM] Score Knowledge & Ability per Cohort --- opens E6 | CM | P5 | W36 | | Knowledge/Ability = 4/4 (Casa), 4/3 (Kenitra), 3/2 (Settat) | | |
+| P5-T3-S2 | ↳ [CM] Flag Settat Below Benchmark for Wave 2 --- E6 Recovery Tasks 1--4 (1B.4) | CM | P5 | W37--39 | | Settat Knowledge/Ability 3/2 → 4/3 (W39, post-E6 Recovery Task 4) | | |
+| **P5-T4** | **Coach Readiness & Go/No-Go** | CM | P5 | W40--42 | | | | |
+| P5-T4-S1 | ↳ [CM] Walk People Managers Through M11 Heatmap | CM | P5 | W40 | | | | |
+| P5-T4-S2 | ↳ [CM] Confirm Supervisor Go-Live Coaching Plans | CM | P5 | W41 | | | | |
+| **P6-T1** | **Data Freeze & Migration** | PM | P6 | D1--2 | | | | |
+| P6-T1-S1 | ↳ [PM] Freeze Legacy-System Data Entry | PM | P6 | D1 | | | | |
+| P6-T1-S2 | ↳ [PM] Run Final Migration & Reconcile | PM | P6 | D2 | | | | |
+| **P6-T2** | **Cutover & Technical Validation** | PM | P6 | D3 | | | | |
+| P6-T2-S1 | ↳ [PM] Execute Cutover Runbook | PM | P6 | D3 | | | | |
+| P6-T2-S2 | ↳ [PM] Validate Live Platform vs. Acceptance Criteria | PM | P6 | D3 | | | | |
+| **P6-T3** | **Go-Live Communication** | CM | P6 | D4 | | | | |
+| P6-T3-S1 | ↳ [CM] Draft & Send Go-Live Confirmation, All Sites | CM | P6 | D4 | | | | |
+| **P6-T4** | **Hypercare Activation & Provisional Lewin (opens E3)** | CM | P6 | D5 | | | | |
+| P6-T4-S1 | ↳ [CM] Activate Hypercare Support Model | CM | P6 | D5 | | | | |
+| P6-T4-S2 | ↳ [CM] Mark Lewin Provisional --- opens E3 | CM | P6 | D5 | Change → Refreeze (provisional) | | | |
+| **P7-T1** | **Elevated Support & Escalation Path** | CM | P7 | W44 | | | | |
+| P7-T1-S1 | ↳ [CM] Continue Elevated Support Desk Staffing | CM | P7 | W44 | | | | |
+| P7-T1-S2 | ↳ [CM] Publish Escalation Path, All Sites | CM | P7 | W44 | | | | |
+| **P7-T2** | **Adoption Dashboard & Defect Triage** | PM | P7 | W44--45 | | | | |
+| P7-T2-S1 | ↳ [PM] Review M14 Adoption Dashboard Daily | PM | P7 | W44 | | | | |
+| P7-T2-S2 | ↳ [PM] Triage & Route Defects by Severity | PM | P7 | W45 | | | | |
+| **P7-T3** | **Bridges/Kübler-Ross Re-Pulse (E4)** | CM | P7 | W45--47 | | | | |
+| P7-T3-S1 | ↳ [CM] Re-Score Bridges & Kübler-Ross, 2-Week Mark --- opens E4 | CM | P7 | W45 | | | Casa/Settat New Beginning; Kenitra Neutral Zone (dip) | Casa/Settat Exploration; Kenitra Resistance/Anger (dip) |
+| P7-T3-S2 | ↳ [CM] Repeat Re-Pulse, 4-Week Mark --- E4 closes | CM | P7 | W47 | | | Kenitra Neutral Zone → New Beginning | Kenitra Resistance/Anger → Exploration |
+| **P7-T4** | **Backward-Movement Check & Phase Gate** | CM | P7 | W48--50 | | | | |
+| P7-T4-S1 | ↳ [CM] Identify Any Cohort Moved Backward --- E6 closes | CM | P7 | W48 | | | | |
+| P7-T4-S2 | ↳ [CM] Confirm Bridges/Kübler-Ross, All Sites --- E3 evidence complete | CM | P7 | W50 | | | New Beginning (all sites, confirmed) | Exploration or better (all sites, confirmed) |
+| **P8-T1** | **New-Process Metrics Agreement** | CM | P8 | W51--52 | | | | |
+| P8-T1-S1 | ↳ [CM] Agree New-Process Metrics with HR | CM | P8 | W51 | | | | |
+| P8-T1-S2 | ↳ [CM] Confirm Metrics Live; Run 60-Day Checkpoint | CM | P8 | W52 | | | | |
+| **P8-T2** | **Reinforcement Mechanisms & Legacy Decommission** | CM | P8 | W53--54 | | | | |
+| P8-T2-S1 | ↳ [CM] Confirm Recognition/Check-In Mechanisms Running | CM | P8 | W53 | | | | |
+| P8-T2-S2 | ↳ [CM] Confirm Legacy Access Revoked, All Users | CM | P8 | W54 | | | | |
+| **P8-T3** | **90-Day Checkpoint & Reinforcement Gap (E5)** | CM | P8 | W56--63 | | | | |
+| P8-T3-S1 | ↳ [CM] Run 90-Day Checkpoint Review --- opens E5 | CM | P8 | W56 | | Reinforcement = 2.6 (below 3.0 target) | | |
+| P8-T3-S2 | ↳ [CM] Second Extended Checkpoint, Evidence-Gated --- via E5 Recovery Task 5 (1B.4); E5 closes | CM | P8 | W63 | | Reinforcement = 3.3 | | |
+| **P8-T4** | **Refreeze Confirmation & Program Closure** | CM | P8 | W64 | | | | |
+| P8-T4-S1 | ↳ [CM] Review Three Consecutive Healthy Checkpoints | CM | P8 | W64 | | | | |
+| P8-T4-S2 | ↳ [CM] Log Refreeze; Toggle Sustainment Sign-Off | CM | P8 | W64 | Refreeze (confirmed) | | | |
 
 <a id="p1b-4"></a>
 

@@ -31,6 +31,11 @@ USABLE_WIDTH = d.sections[0].page_width - d.sections[0].left_margin - d.sections
 # ---- Explicit column widths for the 6-column alert-reference tables ----
 ALERT_TABLE_WIDTHS = [0.09, 0.15, 0.08, 0.38, 0.15, 0.15]  # ID, Name, Severity, Trigger condition, Escalation, SLA
 ALERT_NONLIVE_WIDTHS = [0.09, 0.28, 0.63]  # ID, Name, Why it never fires here
+WBS_GANTT_WIDTHS = [0.11, 0.32, 0.06, 0.04, 0.07, 0.08, 0.13, 0.11, 0.08]  # ID, Task/Step Name, Track, Ph., Week(s), Lewin, ADKAR, Bridges, Kubler-Ross
+
+
+def is_wbs_gantt_table(t):
+    return len(t.columns) == 9 and t.rows[0].cells[0].text.strip() == 'ID'
 
 
 def set_col_widths(table, ratios):
@@ -66,6 +71,8 @@ for t in d.tables:
         set_col_widths(t, ALERT_TABLE_WIDTHS)
     elif len(t.columns) == 3 and t.rows[0].cells[0].text.strip() == 'ID':
         set_col_widths(t, ALERT_NONLIVE_WIDTHS)
+    elif is_wbs_gantt_table(t):
+        set_col_widths(t, WBS_GANTT_WIDTHS)
     elif is_weekly_track_table(t):
         set_col_widths(t, WEEKLY_TABLE_WIDTHS)
 
@@ -157,6 +164,25 @@ for t in d.tables:
             for p in cell.paragraphs:
                 for r in p.runs:
                     r.font.size = TABLE_SIZE
+
+# ---- Master WBS & Gantt table: denser font, tighter cell margins (97 rows, 9 narrow columns) ----
+WBS_TABLE_SIZE = Pt(8.5)
+for t in d.tables:
+    if not is_wbs_gantt_table(t):
+        continue
+    for row in t.rows:
+        for cell in row.cells:
+            tcPr = cell._tc.get_or_add_tcPr()
+            tcMar = OxmlElement('w:tcMar')
+            for side, val in (('top', 20), ('bottom', 20), ('left', 40), ('right', 40)):
+                node = OxmlElement(f'w:{side}')
+                node.set(qn('w:w'), str(val))
+                node.set(qn('w:type'), 'dxa')
+                tcMar.append(node)
+            tcPr.append(tcMar)
+            for p in cell.paragraphs:
+                for r in p.runs:
+                    r.font.size = WBS_TABLE_SIZE
 
 # ---- Header / footer with page numbers ----
 section = d.sections[0]
