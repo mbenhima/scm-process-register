@@ -361,7 +361,7 @@ Build is the longest phase and the one where the Lewin call actually moves --- n
 | Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry --- What to Type In | Exception |
 |---|---|---|---|---|
 | **Week 12** | **[PM]** Stand up the configuration environment; begin configuration sprint 1 against the signed-off design principles (Task 1, Step 1). | **[CM]** Monitor the last FAQ-channel questions from Design; hand off the champion nominee list to Build's briefing plan. | No direct journi entry --- configuration sprint decisions are tracked on M17 (WBS & Gantt) task records, not a Change Management module. | --- |
-| **Week 13** | **[PM]** Configuration sprint 1 continues --- Order Management module against Principle 2 (one shared stock-movement record). | **[CM]** Prepare the champion briefing agenda for Week 16. | No journi entry yet. | --- |
+| **Week 13** | **[PM]** Configuration sprint 1 continues --- Order Management module against Principle 2 (one shared stock-movement record). | **[CM]** Prepare the champion briefing agenda for Week 16. | M21 (Field Notes) --- type in: Category: Decision · Title: "Champion Briefing Agenda --- Draft" · Logged by: Driss El Amrani · Body: "Agenda drafted for the Week 16 champion briefing: what floor-level observation is worth logging, how to log it, and the escalation path to M10 (Resistance). Circulated to Amal Ferhati, Yassine Bouhali, and Rania Idrissi ahead of the session." · Related module: M4 (Stakeholder Mapping). | --- |
 | **Week 14** | **[PM]** Configuration sprint 1 closes; log each sprint decision against its justifying design principle (Task 1, Step 2) --- type in, for example: "Decision: single stock-movement table shared by Inventory and Finance modules. Justifying principle: Principle 2." | **[CM]** Confirm champion roster availability for the Week 16 briefing (overlaps Design's Phase 2 gate). | M17 (WBS & Gantt) --- task "Configuration Sprint 1" marked complete, actual end date logged against its baseline. | --- |
 | **Week 15** | **[PM]** Configuration sprint 2 begins --- Inventory module against Principle 2 and Principle 3 (visible exception paths). | **[CM]** No new activity this week --- holding for the Week 16 champion briefing. | No journi entry yet. | --- |
 | **Week 16** | **[PM]** Configuration sprint 2 continues in parallel with the champion briefing below. | **[CM]** Run the champion briefing session per site (Task 2, Step 1) --- brief Amal Ferhati, Yassine Bouhali, and Rania Idrissi on what floor-level observation is worth logging, and how. | M21 (Field Notes) --- type in: Category: Workshop · Title: "Champion Briefing Session, All 3 Sites" · Logged by: Driss El Amrani · Body: "Briefed Amal Ferhati, Yassine Bouhali, and Rania Idrissi on floor-level observation and what's worth logging. Facilitated session; output shows up as future M4 (Stakeholder Mapping) and M10 (Resistance) entries once champions actually log something." · Related module: M4 (Stakeholder Mapping). | --- |
@@ -374,7 +374,7 @@ Build is the longest phase and the one where the Lewin call actually moves --- n
 | **Week 23** | **[PM]** Configuration sprint 4 continues. | **[CM]** Hold --- allow one week for the CFO's commitment to be felt on the floor before re-scoring. | No journi entry this week. | --- |
 | **Week 24** | **[PM]** Configuration sprint 4 closes. | **[CM]** Run E1's Recovery Task 5 --- re-score Desire and Kübler-Ross sentiment for Settat. | M5 (ADKAR Engine) --- Settat Desire re-scored from 2 to 3, with justification: "Recovered following CFO staffing commitment (Week 22). Re-scored 2 weeks later per E1 protocol." M6 (Emotional & Transition Layer) --- Settat Kübler-Ross re-scored from Denial to Resistance/Anger (moving, not yet Exploration). | E1 (Desire Stall at Settat) --- closes |
 | **Week 25** | **[PM]** Configuration sprint 5 begins --- final module: reporting and dashboards. | **[CM]** Confirm Settat's recovery is holding; no further E1 action needed. | No journi entry this week. | --- |
-| **Week 26** | **[PM]** Configuration sprint 5 closes; internal configuration testing begins ahead of formal SIT in Phase 4. | **[CM]** Review the full-phase ADKAR picture across all three sites ahead of the Lewin call. | No journi entry this week. | --- |
+| **Week 26** | **[PM]** Configuration sprint 5 closes; internal configuration testing begins ahead of formal SIT in Phase 4. | **[CM]** Review the full-phase ADKAR picture across all three sites ahead of the Lewin call. | M21 (Field Notes) --- type in: Category: Decision · Title: "Full-Phase ADKAR Review, All Sites" · Logged by: Driss El Amrani · Body: "Reviewed Awareness through Desire trends across Casablanca, Kenitra, and Settat ahead of the Week 29 Lewin call --- confirming the evidence base (including Settat's E1 recovery) is complete before drafting the formal justification in Week 27." · Related module: M5 (ADKAR Engine). | --- |
 | **Week 27** | **[PM]** Internal configuration testing continues; defect list compiled for Phase 4's Task 1. | **[CM]** Draft the Lewin phase-call justification for Steering Committee pre-review. | M21 (Field Notes) --- type in: Category: Decision · Title: "Lewin Phase-Call Draft --- Steering Committee Pre-Review" · Logged by: Driss El Amrani · Body: "Drafted the Unfreeze-to-Change justification ahead of the Week 29 formal call: five configuration sprints complete, Desire trending upward across all three sites including Settat's recovery. Circulated for pre-review, not yet the formal M3 (Initiative Registry) entry." · Related module: M3 (Initiative Registry). | --- |
 | **Week 28** | **[PM]** Configuration functionally complete; hand off to Phase 4's formal SIT (see Phase 4, Week 28). | **[CM]** Review the evidence against Section 1B.1's signal catalogue (Task 4, Step 1) --- confirm configuration sprints landed, Desire trended upward (including Settat's recovery), and no cohort remains below a Desire of 3. | M21 (Field Notes) --- type in: Category: Decision · Title: "Evidence Review vs. Signal Catalogue" · Logged by: Driss El Amrani · Body: "Confirmed against Section 1B.1's signal catalogue: configuration sprints landed, Desire trended upward including Settat's recovery, no cohort remains below a Desire of 3. Facilitated session ahead of the Week 29 formal Lewin call." · Related module: M3 (Initiative Registry). | --- |
 | **Week 29** | **[PM]** Confirm with the Steering Committee that Build's technical scope is complete. | **[CM]** Set Lewin = Change on M3 (Initiative Registry) with a written justification (Task 4, Step 2). | M3 (Initiative Registry) --- type in: "Moving Unfreeze → Change. Configuration sprints 1--5 complete against approved design principles; Desire trending upward across all three sites, including Settat's recovery from the Week 18--24 stall (see E1 log). Evidence reviewed with Steering Committee 29 [date]; no dissent recorded." | --- |
@@ -385,6 +385,18 @@ Build is the longest phase and the one where the Lewin call actually moves --- n
 **SIPOC.** Suppliers: ITL; configuration sprint teams; the champion network. · Inputs: Signed-off future-state process maps; design principles; Awareness-stage ADKAR data. · Process: this phase's four Tasks in sequence · Outputs: Functionally complete configured build; briefed champion network; Lewin = Change. · Customers: Program Manager; Change Manager; Test-phase team.
 
 **RACSI for this phase.** R = ITL, CM · A = PM · C = FPO, ES · S = SUP · I = EU
+
+**Configuration Sprint Index.** Build's five sprints are each scoped to one functional area and justified against specific Phase 2 design principles --- the table below is the single place to see all five, their weeks, and their scope of work in one place, cross-referenced to the Master WBS & Gantt table's Task/Step IDs.
+
+| Sprint | Weeks | Scope of Work | Justifying Principle(s) | Task/Step ID |
+|---|---|---|---|---|
+| Sprint 1 | W12--14 | Order Management module --- one shared stock-movement record replacing Casablanca Finance's shadow spreadsheet. | Principle 2 (one stock-movement record shared by Inventory and Finance) | P3-T1-S1, P3-T1-S2 |
+| Sprint 2 | W15--17 | Inventory module --- stock-movement logic extended to Kenitra/Settat, with every exception path routed to a visible supervisor queue. | Principle 2; Principle 3 (every exception path visible to a supervisor) | P3-T2-S1, P3-T2-S2 (runs alongside the champion briefing) |
+| Sprint 3 | W18--21 | Finance module --- reconciliation logic against the unified stock-movement record. | Principle 1 (no duplicate approvals); Principle 2 | P3-T3-S1, P3-T3-S2 (interleaved with Exception E1, Desire Stall at Settat) |
+| Sprint 4 | W22--24 | Integration testing prep --- cross-module scenario scripts ahead of Phase 4's formal SIT. | Principles 1--3, jointly (integration surfaces every principle at once) | Runs alongside E1's Recovery Tasks 3--5 (no dedicated WBS Task/Step --- prep work between Sprint 3's close and Phase 4) |
+| Sprint 5 | W25--26 | Reporting and dashboards --- the final module, closing configuration; internal configuration testing begins the moment Sprint 5 closes (W26), ahead of Phase 4's formal SIT (W28). | Principle 3 (exception visibility surfaces in reporting) | Closes just before P3-T4-S1 (evidence review) |
+
+**RACSI for the sprint sequence.** R = ITL · A = PM · C = CM (principle traceability), FPO · S = SUP · I = ES, EU --- unchanged from the phase RACSI above; sprints are how Build's R = ITL, CM row is actually executed week by week.
 
 <a id="phase-4"></a>
 
@@ -628,6 +640,32 @@ The table below is the single master schedule for Bouregreg's 64-week program: e
 | P8-T4-S1 | ↳ [CM] Review Three Consecutive Healthy Checkpoints | CM | P8 | W64 | | | | |
 | P8-T4-S2 | ↳ [CM] Log Refreeze; Toggle Sustainment Sign-Off | CM | P8 | W64 | Refreeze (confirmed) | | | |
 
+#### Software Build Task Index --- Every Technical/ITL Task, All Eight Phases
+
+The Master WBS & Gantt table above interleaves PM, CM, and framework rows together; the index below pulls out only the software/technical build work --- the tasks ITL actually executes or supports --- across all eight phases in build order, so a technical lead can see the full build path without reading every PM row. Discovery carries no build task (it is pre-scope); every other phase does.
+
+| ID | Phase | Week(s) | Software / Technical Build Task | Owner |
+|---|---|---|---|---|
+| P2-T1-S2 | P2 --- Design | W7 | Translate design principles into future-state process maps for Order Management, Inventory, and Finance --- the direct input to Build's five sprints. | PM (ITL input) |
+| P3-T1-S1 | P3 --- Build | W12 | Stand up the configuration environment; begin Sprint 1. | ITL/PM |
+| Sprint 1 | P3 --- Build | W12--14 | Order Management module configuration against Principle 2. | ITL |
+| Sprint 2 | P3 --- Build | W15--17 | Inventory module configuration against Principles 2--3. | ITL |
+| Sprint 3 | P3 --- Build | W18--21 | Finance module reconciliation logic. | ITL |
+| Sprint 4 | P3 --- Build | W22--24 | Integration testing prep --- cross-module scenario scripts. | ITL |
+| Sprint 5 | P3 --- Build | W25--26 | Reporting and dashboards module; internal configuration testing begins on close. | ITL |
+| P3-T1-S2 | P3 --- Build | W14 | Log each sprint's configuration decision against its justifying design principle on M17 (WBS & Gantt). | PM/ITL |
+| P4-T1-S1 | P4 --- Test | W28 | Run the System Integration Testing script --- 40 scripted scenarios across Order Management, Inventory, and Finance. | ITL |
+| P4-T1-S2 | P4 --- Test | W29 | Triage and close SIT defects by severity. | ITL/PM |
+| P5-T2-S2 | P5 --- Train | W35 | Open the sandbox environment for supervised practice, all three sites. | ITL |
+| P6-T1-S1 | P6 --- Deploy | D1 | Freeze legacy-system data entry at the agreed cutoff. | ITL/PM |
+| P6-T1-S2 | P6 --- Deploy | D2 | Run the final migration and reconcile --- 100% of frozen records matched, 0 discrepancies. | ITL/PM |
+| P6-T2-S1 | P6 --- Deploy | D3 | Execute the cutover runbook step by step. | ITL/PM |
+| P6-T2-S2 | P6 --- Deploy | D3 | Validate the live platform against acceptance criteria. | ITL/PM |
+| P7-T2-S1 | P7 --- Hypercare | W44 | Review the M14 (Analytics) adoption dashboard daily --- transaction volume and error rate per site. | PM/ITL |
+| P7-T2-S2 | P7 --- Hypercare | W45 | Triage and route go-live defects by severity. | PM/ITL |
+| --- | P7 --- Hypercare | W46 | Resolve Defect #31 (inventory-matching mismatch, root cause: split-shipment edge case not covered in Build's Principle 2 configuration) --- fix deployed and validated. | ITL |
+| P8-T2-S2 | P8 --- Sustain | W54 | Confirm legacy-system access genuinely revoked for all 3,400 users --- verified via ITL access log, 0 active legacy sessions. | ITL |
+
 <a id="p1b-4"></a>
 
 ### 1B.4 Six Exception Scenarios, in Detail
@@ -835,6 +873,34 @@ M19 (CM Charters) holds journi's 8 signed, trackable behavioral standards --- no
 | CHTR-07 (Mentoring Charter) | Training Lead | MP-05 (Training & Capability Enablement) | Phase 5, Week 30 |
 | CHTR-05 (Team Coaching Charter) | People Manager | MP-09 (Hypercare & Floor Coaching Support) | Phase 7, Week 46 |
 
+**Charter × Task/Step cross-reference, all eight phases.** Every charter action below is cross-referenced to the Master WBS & Gantt table's Task/Step ID (1B.3) --- the same ID scheme, so a reader can trace a charter's compliance action back to the exact PM/CM step it rides alongside.
+
+| Charter | Phase | Week(s) | Task/Step ID | CRUD Action |
+|---|---|---|---|---|
+| CHTR-01 (Sponsorship / Leadership) | P1 | W1 | Pre-P1-T1 (program kickoff) | Create |
+| CHTR-04 (Organizational Impact) | P1 | W6 | P1-T3-S1 | Create |
+| CHTR-04 (Organizational Impact) | P1 | W6 | P1-T3-S1 | Delete (duplicate draft, Draft status) |
+| CHTR-08 (Pulse / Interview) | P1 | W8 | P1-T4-S1 | Create |
+| CHTR-01 (Sponsorship / Leadership) | P1 | W7 | P1-T4-S1 | Read (phase-gate review) |
+| CHTR-03 (Communication) | P2 | W9 | P2-T2-S1 | Create |
+| CHTR-01 (Sponsorship / Leadership) | P2 | W9 | P2-T2-S1 | Read (compliance log) |
+| CHTR-08 (Pulse / Interview) | P2 | W11 | P2-T3-S1 | Read (compliance log) |
+| CHTR-02 (Participative Management) | P3 | W16 | P3-T2-S1 | Create |
+| CHTR-02 (Participative Management) | P3 | W16--17 | P3-T2-S1, P3-T2-S2 | Read (compliance log) |
+| CHTR-01 (Sponsorship / Leadership) | P3 | W22 | E1 Recovery Task 4 (1B.4) | Read (compliance log) |
+| CHTR-01 (Sponsorship / Leadership) | P3 | W29--30 | P3-T4-S2 | Read (phase-gate review) |
+| CHTR-06 (One-to-One Coaching) | P4 | W34 | P4-T4-S1 | Create |
+| CHTR-06 (One-to-One Coaching) | P4 | W35 | P4-T4-S2 | Read (compliance log) |
+| CHTR-07 (Mentoring) | P5 | W30 | P5-T1-S1 | Create |
+| CHTR-07 (Mentoring) | P5 | W31--33 | P5-T1-S2 | Read (compliance log) |
+| CHTR-01 (Sponsorship / Leadership) | P5 | W42 | P5-T4-S2 | Read (phase-gate review) |
+| CHTR-01 (Sponsorship / Leadership) | P6 | D4 | P6-T3-S1 | Read (compliance log) |
+| CHTR-03 (Communication) | P6 | D4 | P6-T3-S1 | Read (compliance log) |
+| CHTR-05 (Team Coaching) | P7 | W46 | Within P7-T3 (E4 recovery window) | Create |
+| CHTR-01 (Sponsorship / Leadership) | P7 | W50 | P7-T4-S2 | Read (phase-gate review) |
+| CHTR-08 (Pulse / Interview) | P8 | W58 | E5 Recovery Task 2 (1B.4) | Update (v1.0 → v1.1) |
+| All 8 charters | P8 | W51--64 | P8-T4-S1, P8-T4-S2 | Update (closing Steering Committee review) |
+
 **Phase-by-phase CRUD detail:**
 
 **Phase 1 --- Discovery.** *Create.* Week 1: Meryem Sabri creates CHTR-01 (Sponsorship / Leadership Charter) on M19 (CM Charters) at kickoff, co-signed by the CFO --- type in: Owner "Executive Sponsor"; RACSI R=CM, A=ES, C=PM/FPO, I=SUP/EU; Status "Active"; Effective Date "Week 1"; Review Frequency "Per Phase Gate." Week 6: create CHTR-04 (Organizational Impact Charter) alongside the Stakeholder Map, owned by the Change Manager. *Delete (administrative correction).* Also Week 6: Meryem Sabri accidentally saves a duplicate draft of CHTR-04 while the Stakeholder Map is being populated; because the duplicate is still in Draft status, she deletes it immediately --- a real example of M19 (CM Charters)'s delete rule (only non-Active charters can be deleted) operating exactly as designed. Week 8: create CHTR-08 (Pulse / Interview Charter), owned by the Change Manager, ahead of Phase 2's baseline pulse.
@@ -854,6 +920,46 @@ M19 (CM Charters) holds journi's 8 signed, trackable behavioral standards --- no
 **Phase 8 --- Sustain.** *Update.* Week 51--64: all 8 charters reviewed for the program's closing Steering Committee readout; CHTR-08 (Pulse / Interview Charter) is updated from v1.0 to v1.1 --- type in the version-history note: "v1.1, 58 [date]: added a mandatory 90-day-mark readiness pulse to the standard cadence, following the Week 56 Reinforcement Gap (Exception E5)." No charter is deleted at program close --- all 8 remain Active, carried forward as the starting governance baseline for the next Bouregreg CM Project in Part 4's scenario library.
 
 **What this demonstrates.** Across the program, every one of M19 (CM Charters)'s CRUD operations is exercised on real, dated program events, not as an abstract capability: 8 Create actions (one per charter), roughly two dozen Read/compliance-log actions tied to specific weeks and exceptions, at least 5 Update/review actions at Phase Gates, a version Update at Week 58, and one Delete of a mistaken duplicate at Week 6 --- the only kind of delete M19 (CM Charters)'s own rule (Active charters cannot be deleted, only Draft or Retired ones) actually permits.
+
+---
+
+<a id="p1b-8"></a>
+
+### 1B.8 Phase Checklists --- All Eight ERP Phases
+
+M17 (WBS & Gantt)'s Phase Checklist is a real feature, distinct from WBS tasks --- PM-track and CM-track items, each with a weight percentage, feeding the Phase Gate's checklist-completion figure (Part 2, M17). The table below is a complete, ready-to-enter checklist for all eight of Bouregreg's ERP phases, weights summing to 100% per phase, so a reader can load these directly rather than inventing items from scratch.
+
+| Phase | Track | Checklist Item | Weight % |
+|---|---|---|---|
+| P1 --- Discovery | PM | Business case approved by Steering Committee, cost quantified against named workarounds | 40 |
+| P1 --- Discovery | PM | Stakeholder Map complete, all cohorts scored (severity finalized) | 30 |
+| P1 --- Discovery | CM | Lewin baseline (Unfreeze) logged on M3 with written justification | 30 |
+| P2 --- Design | PM | Design principles signed off by Steering Committee | 35 |
+| P2 --- Design | PM | Future-state process maps complete, each mapped to a justifying principle | 35 |
+| P2 --- Design | CM | Baseline Awareness pulse logged for every cohort | 30 |
+| P3 --- Build | PM | All 5 configuration sprints closed | 40 |
+| P3 --- Build | PM | Every sprint decision traced to a justifying design principle on M17 | 20 |
+| P3 --- Build | CM | Champion network briefed; observation-logging path confirmed per champion | 20 |
+| P3 --- Build | CM | Lewin = Change logged on M3 with evidence-based justification | 20 |
+| P4 --- Test | PM | SIT sign-off recorded, no open Critical or High defect | 35 |
+| P4 --- Test | PM | UAT roster confirmed, proportionate to each site's population | 25 |
+| P4 --- Test | CM | Divergence Pattern review complete, no open ALT-001 flag | 40 |
+| P5 --- Train | CM | All cohorts enrolled against role-based curriculum on M9 | 25 |
+| P5 --- Train | CM | Training wave 1 delivered, all three sites | 25 |
+| P5 --- Train | CM | Cohort-level go/no-go confirmed on M14 (Analytics) | 30 |
+| P5 --- Train | PM | Sandbox environment open; supervised-practice hours logged | 20 |
+| P6 --- Deploy | PM | Data freeze executed, all sites confirmed | 20 |
+| P6 --- Deploy | PM | Final migration reconciled, 0 discrepancies | 25 |
+| P6 --- Deploy | PM | Cutover runbook executed; technical validation recorded Go | 25 |
+| P6 --- Deploy | CM | Go-live communication sent, checked against M8's saturation detector | 30 |
+| P7 --- Hypercare | CM | Elevated support desk staffed; escalation path published to every site | 20 |
+| P7 --- Hypercare | PM | Adoption dashboard reviewed daily; go-live defects triaged | 25 |
+| P7 --- Hypercare | CM | Bridges/Kübler-Ross re-pulse complete at the 2- and 4-week marks | 30 |
+| P7 --- Hypercare | CM | No open Divergence Pattern or regression-risk flag remains | 25 |
+| P8 --- Sustain | CM | New-process metrics agreed with HR and live in the review cycle | 20 |
+| P8 --- Sustain | CM | Legacy-system access revoked, 0 active sessions confirmed | 20 |
+| P8 --- Sustain | CM | 90-day checkpoint healthy (Reinforcement score ≥ 3.0) | 30 |
+| P8 --- Sustain | CM | Refreeze logged (confirmed) on M3; Sustainment sign-off toggled on M12 | 30 |
 
 ---
 
@@ -1047,23 +1153,23 @@ Each entry below covers one module: its purpose (in journi's own words), how it 
 
 **Purpose:** a governed catalog of Assistive and Augmented AI use cases. No use case acts autonomously.
 
-**In the Bouregreg scenario:** Meryem Sabri activates the specific AI-assisted use cases Bouregreg Group's contract permits (for example, drafting a first pass of a communication or summarizing coded resistance themes) at the Organization level; a Change Manager can further restrict which of those activated use cases their own project actually uses.
+**In the Bouregreg scenario:** Meryem Sabri activates the specific AI-assisted use cases Bouregreg Group's contract permits (for example, drafting a first pass of a communication or summarizing coded resistance themes) at the Organization level; a Change Manager can further restrict which of those activated use cases their own project actually uses. When Bouregreg's practice matures, Driss El Amrani edits a Use Case's trigger/output/human-checkpoint wording directly rather than waiting on a platform release --- and if an edit turns out wrong, reverts it from the version history without losing the original definition.
 
-**Create / update / delete:** the catalog of use cases itself is a fixed reference list, not editable; what is editable is the activation toggle per Organization and the override toggle per Project, plus the usage log every actual AI call writes to.
+**Create / update / delete:** full CRUD on the Use Case catalog itself --- create a new Use Case, edit any field, or delete one --- each edit versioned, with a version-history panel per Use Case and a "revert to this version" action against any prior version, including the original (version 1). Separately, and unchanged from before: the activation toggle per Organization, the override toggle per Project, and the usage log every actual AI call writes to.
 
-**Who can edit:** activation is gated to Org-Admin-and-above; project-level overrides to the Change Manager on that project.
+**Who can edit:** catalog CRUD (create/edit/delete/revert) is gated to whoever holds Use-Case-management rights on the Permission Matrix --- by default Super Admin, Group Admin, Org Admin, and Change Manager. Activation stays gated to Org-Admin-and-above; project-level overrides to the Change Manager on that project.
 
-**Key fields:** Use-case activation toggle (per Organization); override toggle (per Project); usage-log entry.
+**Key fields:** Use case name, tier (Assistive/Augmented), module, description, trigger, output, human checkpoint; version number and version history (each entry: version, note, timestamp, full prior snapshot); Use-case activation toggle (per Organization); override toggle (per Project); usage-log entry.
 
 ### M17 --- WBS & Gantt
 
 **Purpose:** one Work Breakdown Structure spanning Project Management, Change Management, and the Lewin/Prosci/Bridges/ADKAR framework milestones --- baseline versus actual dates, with the schedule gap called out task by task.
 
-**In the Bouregreg scenario:** Driss El Amrani loads a phase template at kickoff to seed the 14-month program's baseline schedule, then keeps actual dates and status current against it as Parts 3 and 4 of this guide play out --- so a reader can see, task by task, where the real program has drifted from plan.
+**In the Bouregreg scenario:** Driss El Amrani loads TPL-ERP-8 at kickoff to seed the 64-week program's baseline schedule, then keeps actual dates and status current against it as Parts 3 and 4 of this guide play out --- so a reader can see, task by task, where the real program has drifted from plan. Phase Checklists (1B.8) and Phase Gates carry the per-phase completion and sign-off record; when Bouregreg later needs a template variant TPL-ERP-8 doesn't cover, Driss edits the template library itself rather than working around it, with the same version-history/revert safety net as M16.
 
-**Create / update / delete:** load a phase template to seed the WBS; edit individual task dates and status against the loaded baseline; Phase Gates are the checklist/sign-off items attached to each phase boundary.
+**Create / update / delete:** load a phase template to seed the WBS; edit individual task dates and status against the loaded baseline; log and edit Phase Checklist items (phase, track, item, weight %, done) that feed the Phase Gate's checklist-completion figure; Phase Gates are the joint PM/CM sign-off record attached to each phase boundary. Separately, full CRUD on the Phase Template library itself --- create a new template, edit an existing one's name/transformation-type/phase list, or delete one --- each edit versioned with the same version-history/revert-to-any-prior-version panel as M16's AI Use Cases.
 
-**Who can edit:** general write access.
+**Who can edit:** general write access for WBS tasks, Phase Checklists, and Phase Gates. Phase Template CRUD (create/edit/delete/revert on the shared template library) is gated to whoever holds Template-management rights on the Permission Matrix --- by default Super Admin, Group Admin, Org Admin, and Change Manager.
 
 **Key fields:** Task name; track (PM/CM/framework); baseline start/end date; actual start/end date; status; Phase Gate Joint Decision (Go / Go with Conditions / No-Go).
 
