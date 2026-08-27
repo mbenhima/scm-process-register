@@ -16,6 +16,30 @@ HEADER_FILL = '1F4B45'
 
 d = docx.Document('mg-pandoc.docx')
 
+# ---- Move the native TOC field from the very top of the document (where pandoc
+# ---- puts it) to after the title block, so the reading order is Cover -> TOC ->
+# ---- Part 0, not TOC -> Cover. Page breaks pin the cover to its own page and the
+# ---- TOC to its own page range regardless of how long either renders.
+def make_page_break_para():
+    p = OxmlElement('w:p')
+    r = OxmlElement('w:r')
+    br = OxmlElement('w:br')
+    br.set(qn('w:type'), 'page')
+    r.append(br)
+    p.append(r)
+    return p
+
+body = d.element.body
+sdt = body.find(qn('w:sdt'))
+if sdt is not None:
+    body.remove(sdt)
+    title_end_p = d.paragraphs[4]._p  # 'Version 1.0 ...' -- last title-block paragraph
+    pb_before_toc = make_page_break_para()
+    pb_after_toc = make_page_break_para()
+    title_end_p.addnext(pb_before_toc)
+    pb_before_toc.addnext(sdt)
+    sdt.addnext(pb_after_toc)
+
 # ---- Narrower margins: more usable width for wide reference tables ----
 for section in d.sections:
     if section.page_width is None:
