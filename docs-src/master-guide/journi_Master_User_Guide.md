@@ -10,49 +10,6 @@ Version 1.0 · August 2026 · Confidential
 
 ---
 
-## Table of Contents
-
-- [Part 0 --- Purpose and How to Use This Guide](#part-0)
-- [Part 1 --- Tenant and Admin Setup](#part-1)
-  - [1.1 journi's Tenant Model](#p1-1)
-  - [1.2 The Scenario Organization: Bouregreg Group](#p1-2)
-  - [1.3 Step 1 --- First Access and the License Record (M2)](#p1-3)
-  - [1.4 Step 2 --- Building the Group / Organization Hierarchy (M1)](#p1-4)
-  - [1.5 Step 3 --- Creating User Accounts and Scopes (M2)](#p1-5)
-  - [1.6 Step 4 --- The Permission Matrix (M2)](#p1-6)
-  - [1.7 Step 5 --- Governance Settings (M2)](#p1-7)
-  - [1.8 Step 6 --- Creating the First Main Project and CM Project (M1)](#p1-8)
-  - [1.9 Tenant Setup Checklist](#p1-9)
-- [Part 1B --- Week-by-Week ERP Implementation Timeline: Normal Flow and Exceptions](#part-1b)
-  - [1B.1 How the Four Frameworks Actually Read in journi](#p1b-1)
-  - [1B.2 The 64-Week Program Calendar --- Week by Week](#p1b-2)
-  - [1B.3 Phase-by-Phase Playbook (Normal Flow)](#p1b-3)
-    - [Phase 1 --- Discovery (W1--8)](#phase-1)
-    - [Phase 2 --- Design (W6--14)](#phase-2)
-    - [Phase 3 --- Build (W12--30)](#phase-3)
-    - [Phase 4 --- Test (W28--38)](#phase-4)
-    - [Phase 5 --- Train (W30--42)](#phase-5)
-    - [Phase 6 --- Deploy (W43)](#phase-6)
-    - [Phase 7 --- Hypercare (W43--50)](#phase-7)
-    - [Phase 8 --- Sustain (W48--64)](#phase-8)
-  - [1B.4 Six Exception Scenarios, in Detail](#p1b-4)
-    - [E1 --- Desire Stall at Settat](#exc-e1)
-    - [E2 --- Divergence Pattern at UAT](#exc-e2)
-    - [E3 --- Two-Clock Problem at Deploy](#exc-e3)
-    - [E4 --- Sentiment Regression During Hypercare](#exc-e4)
-    - [E5 --- Reinforcement Gap at Sustain](#exc-e5)
-    - [E6 --- Cohort Divergence Across Sites](#exc-e6)
-  - [1B.5 What to Track, by Cadence](#p1b-5)
-  - [1B.6 The Program, Month by Month](#p1b-6)
-  - [1B.7 CM Charters Across the Program --- Create, Read, Update, Delete](#p1b-7)
-- [Part 2 --- Module-by-Module Feature Tour](#part-2)
-- [Part 3 --- All 16 End-to-End Process Walkthroughs](#part-3)
-- [Part 4 --- Change Management Scenario Library](#part-4)
-- [Part 5 --- Alerts and Analytics Reference](#part-5)
-- [Appendix --- Quick Reference](#appendix)
-
----
-
 <a id="part-0"></a>
 
 ## Part 0 --- Purpose and How to Use This Guide
