@@ -8,7 +8,8 @@ import Modal from '../components/Modal.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import StatCard from '../components/StatCard.jsx'
 import GanttChart from '../components/GanttChart.jsx'
-import { canWrite } from '../utils/rbac.js'
+import { canWrite, canManageTemplates } from '../utils/rbac.js'
+import VersionHistoryPanel from '../components/VersionHistoryPanel.jsx'
 import {
   WBS_TRACKS,
   WBS_STATUSES,
@@ -233,6 +234,128 @@ function TemplateModal({ open, onClose, project, data, loadPhaseTemplate }) {
           </ul>
         )}
       </div>
+    </Modal>
+  )
+}
+
+const TRANSFORMATION_TYPES = ['erp', 'bpr', 'automation', 'qms', 'cultural', 'operating_model', 'compliance', 'training_skills']
+const BLANK_TEMPLATE = { id: '', name: '', transformationType: 'erp', phasesText: '' }
+
+function TemplateForm({ form, setForm, isNew }) {
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
+  return (
+    <div className="space-y-3">
+      {isNew && (
+        <div>
+          <label className="label">Template ID (e.g. TPL-CUSTOM-6)</label>
+          <input className="input" value={form.id} onChange={set('id')} />
+        </div>
+      )}
+      <div>
+        <label className="label">Name</label>
+        <input className="input" value={form.name} onChange={set('name')} />
+      </div>
+      <div>
+        <label className="label">Transformation type</label>
+        <select className="input" value={form.transformationType} onChange={set('transformationType')}>
+          {TRANSFORMATION_TYPES.map((t) => (
+            <option key={t} value={t}>{t}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="label">Phases (one per line, in order)</label>
+        <textarea className="input" rows={8} value={form.phasesText} onChange={set('phasesText')} />
+      </div>
+    </div>
+  )
+}
+
+function TemplateManagerModal({ open, onClose, data, addPhaseTemplate, updatePhaseTemplate, deletePhaseTemplate, revertPhaseTemplate }) {
+  const [editing, setEditing] = useState(null) // { mode: 'add' | 'edit', templateId? } | null
+  const [form, setForm] = useState(BLANK_TEMPLATE)
+  const [historyId, setHistoryId] = useState(null)
+
+  function openAdd() {
+    setForm(BLANK_TEMPLATE)
+    setEditing({ mode: 'add' })
+  }
+  function openEdit(tpl) {
+    setForm({ id: tpl.id, name: tpl.name, transformationType: tpl.transformationType, phasesText: tpl.phases.join('\n') })
+    setEditing({ mode: 'edit', templateId: tpl.id })
+  }
+  function submit() {
+    const phases = form.phasesText.split('\n').map((p) => p.trim()).filter(Boolean)
+    if (!form.name.trim() || phases.length === 0) return
+    if (editing.mode === 'add') {
+      if (!form.id.trim()) return
+      addPhaseTemplate({ id: form.id.trim(), name: form.name, transformationType: form.transformationType, phases })
+    } else {
+      updatePhaseTemplate(editing.templateId, { name: form.name, transformationType: form.transformationType, phases })
+    }
+    setEditing(null)
+  }
+
+  return (
+    <Modal
+      open={open}
+      onClose={() => {
+        setEditing(null)
+        onClose()
+      }}
+      title="Manage Phase Templates"
+      footer={
+        <button className="btn-ghost" onClick={() => {
+          setEditing(null)
+          onClose()
+        }}>
+          Close
+        </button>
+      }
+    >
+      {!editing ? (
+        <div className="space-y-3">
+          <div className="flex justify-end">
+            <button className="btn-primary text-xs" onClick={openAdd}>+ New Template</button>
+          </div>
+          {data.phaseTemplateCatalog.map((tpl) => (
+            <div key={tpl.id} className="border border-brand-100 rounded-lg p-3 space-y-2">
+              <div className="flex items-start justify-between gap-3 flex-wrap">
+                <div>
+                  <span className="font-mono text-xs text-brand-700">{tpl.id}</span>{' '}
+                  <span className="font-semibold text-brand-950">{tpl.name}</span>{' '}
+                  <Badge tone="gray">{tpl.transformationType}</Badge>{' '}
+                  <Badge tone="gray">v{tpl.version || 1}</Badge>{' '}
+                  <span className="text-xs text-ink/40">{tpl.phases.length} phases</span>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button className="btn-secondary text-xs" onClick={() => openEdit(tpl)}>Edit</button>
+                  <button className="btn-ghost text-xs" onClick={() => setHistoryId(historyId === tpl.id ? null : tpl.id)}>
+                    {historyId === tpl.id ? 'Hide history' : `History (${(tpl.versionHistory || []).length + 1})`}
+                  </button>
+                  <button className="text-ink/30 hover:text-red-600 text-xs" onClick={() => deletePhaseTemplate(tpl.id)}>Delete</button>
+                </div>
+              </div>
+              <ul className="text-xs text-ink/60 list-disc ps-4 space-y-0.5">
+                {tpl.phases.map((phase, i) => (
+                  <li key={i}>{phase}</li>
+                ))}
+              </ul>
+              {historyId === tpl.id && (
+                <VersionHistoryPanel entity={tpl} canRevert onRevert={(v) => revertPhaseTemplate(tpl.id, v)} />
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <TemplateForm form={form} setForm={setForm} isNew={editing.mode === 'add'} />
+          <div className="flex items-center justify-end gap-2 pt-1">
+            <button className="btn-ghost" onClick={() => setEditing(null)}>Back to list</button>
+            <button className="btn-primary" onClick={submit}>Save</button>
+          </div>
+        </div>
+      )}
     </Modal>
   )
 }
@@ -595,11 +718,13 @@ function PhaseGateSection({ project, canEdit, phaseFilter }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { addSubItem, updateSubItem, currentUser, data, loadPhaseTemplate } = useAppState()
+  const { addSubItem, updateSubItem, currentUser, data, loadPhaseTemplate, addPhaseTemplate, updatePhaseTemplate, deletePhaseTemplate, revertPhaseTemplate } = useAppState()
   const canEdit = canWrite(currentUser?.role)
+  const canManageTpl = canManageTemplates(currentUser?.role, data.rolePermissions)
   const allTasks = project.wbsTasks || []
   const [modal, setModal] = useState(false)
   const [templateModal, setTemplateModal] = useState(false)
+  const [templateManagerModal, setTemplateManagerModal] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [form, setForm] = useState(BLANK_FORM)
   const [phaseFilter, setPhaseFilter] = useState('all')
@@ -652,6 +777,11 @@ function Content({ project }) {
             <button className="btn-ghost" onClick={() => setTemplateModal(true)}>
               {t('m17_load_template')}
             </button>
+            {canManageTpl && (
+              <button className="btn-ghost" onClick={() => setTemplateManagerModal(true)}>
+                Manage Templates
+              </button>
+            )}
             <button className="btn-primary" onClick={openNew}>
               + Add WBS task
             </button>
@@ -695,6 +825,16 @@ function Content({ project }) {
       </Modal>
 
       <TemplateModal open={templateModal} onClose={() => setTemplateModal(false)} project={project} data={data} loadPhaseTemplate={loadPhaseTemplate} />
+
+      <TemplateManagerModal
+        open={templateManagerModal}
+        onClose={() => setTemplateManagerModal(false)}
+        data={data}
+        addPhaseTemplate={addPhaseTemplate}
+        updatePhaseTemplate={updatePhaseTemplate}
+        deletePhaseTemplate={deletePhaseTemplate}
+        revertPhaseTemplate={revertPhaseTemplate}
+      />
     </div>
   )
 }

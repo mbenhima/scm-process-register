@@ -2,12 +2,41 @@ import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { useScopedOrg, useScopedProject } from '../utils/useScoped.js'
-import { canActivateAiForOrg, canRequestProjectAiOverride } from '../utils/rbac.js'
+import { canActivateAiForOrg, canRequestProjectAiOverride, canManageAiUseCases } from '../utils/rbac.js'
 import { PROVIDERS, MODEL_OPTIONS, recommendedModel, providerLabel } from '../utils/llmProviders.js'
+import { AI_TIERS } from '../data/constants.js'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
+import Modal from '../components/Modal.jsx'
+import VersionHistoryPanel from '../components/VersionHistoryPanel.jsx'
 
 const OUTCOME_TONE = { accepted: 'green', edited: 'amber', rejected: 'red' }
+const TIER_OPTIONS = Object.values(AI_TIERS)
+const BLANK_USE_CASE = {
+  name: '', tier: AI_TIERS.ASSISTIVE, module: '', moduleLabel: '', description: '', trigger: '', output: '', humanCheckpoint: '',
+}
+
+function UseCaseForm({ form, setForm }) {
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
+  return (
+    <div className="space-y-3">
+      <input className="input" placeholder="Use case name" value={form.name} onChange={set('name')} />
+      <div className="grid grid-cols-2 gap-2">
+        <select className="input" value={form.tier} onChange={set('tier')}>
+          {TIER_OPTIONS.map((t) => (
+            <option key={t} value={t}>{t}</option>
+          ))}
+        </select>
+        <input className="input" placeholder="Module code (e.g. M4)" value={form.module} onChange={set('module')} />
+      </div>
+      <input className="input" placeholder="Module label (e.g. M4 Stakeholder & Impact Mapping)" value={form.moduleLabel} onChange={set('moduleLabel')} />
+      <textarea className="input" rows={2} placeholder="Description" value={form.description} onChange={set('description')} />
+      <textarea className="input" rows={2} placeholder="Trigger input" value={form.trigger} onChange={set('trigger')} />
+      <textarea className="input" rows={2} placeholder="Output" value={form.output} onChange={set('output')} />
+      <textarea className="input" rows={2} placeholder="Human checkpoint" value={form.humanCheckpoint} onChange={set('humanCheckpoint')} />
+    </div>
+  )
+}
 
 function ProviderConnectionPanel({ canEdit }) {
   const { llmConfig, setLlmConfig, testAndConnectLlm, disconnectLlm } = useAppState()
@@ -149,13 +178,32 @@ function Toggle({ checked, onChange, disabled }) {
 
 export default function Module16Page() {
   const { t } = useI18n()
-  const { data, currentUser, toggleAiOrgActivation, toggleAiProjectOverride } = useAppState()
+  const { data, currentUser, toggleAiOrgActivation, toggleAiProjectOverride, addAiUseCase, updateAiUseCase, deleteAiUseCase, revertAiUseCase } = useAppState()
   const org = useScopedOrg()
   const project = useScopedProject()
   const [tab, setTab] = useState('catalog')
+  const [modal, setModal] = useState(null) // { mode: 'add' | 'edit', useCaseId? }
+  const [form, setForm] = useState(BLANK_USE_CASE)
+  const [historyId, setHistoryId] = useState(null)
 
   const canOrgToggle = canActivateAiForOrg(currentUser?.role, data.rolePermissions)
   const canProjectToggle = canRequestProjectAiOverride(currentUser?.role, data.rolePermissions)
+  const canManage = canManageAiUseCases(currentUser?.role, data.rolePermissions)
+
+  function openAdd() {
+    setForm(BLANK_USE_CASE)
+    setModal({ mode: 'add' })
+  }
+  function openEdit(uc) {
+    setForm({ ...BLANK_USE_CASE, ...uc })
+    setModal({ mode: 'edit', useCaseId: uc.id })
+  }
+  function submit() {
+    if (!form.name.trim()) return
+    if (modal.mode === 'add') addAiUseCase(form)
+    else updateAiUseCase(modal.useCaseId, form)
+    setModal(null)
+  }
 
   return (
     <div>
@@ -163,13 +211,20 @@ export default function Module16Page() {
 
       <ProviderConnectionPanel canEdit={canOrgToggle} />
 
-      <div className="flex gap-2 mb-4">
-        <button className={`tab ${tab === 'catalog' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('catalog')}>
-          Catalog & Governance
-        </button>
-        <button className={`tab ${tab === 'log' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('log')}>
-          {t('usageLog')}
-        </button>
+      <div className="flex gap-2 mb-4 items-center justify-between flex-wrap">
+        <div className="flex gap-2">
+          <button className={`tab ${tab === 'catalog' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('catalog')}>
+            Catalog & Governance
+          </button>
+          <button className={`tab ${tab === 'log' ? 'tab-active' : 'tab-inactive'}`} onClick={() => setTab('log')}>
+            {t('usageLog')}
+          </button>
+        </div>
+        {tab === 'catalog' && canManage && (
+          <button className="btn-primary text-xs" onClick={openAdd}>
+            + Add AI Use Case
+          </button>
+        )}
       </div>
 
       {tab === 'catalog' && (
@@ -188,6 +243,7 @@ export default function Module16Page() {
                         <h4 className="font-semibold text-brand-950">{uc.name}</h4>
                         <Badge tone={uc.tier === 'augmented' ? 'sand' : 'brand'}>{t(`tier_${uc.tier}`)}</Badge>
                         <Badge tone="gray">{uc.moduleLabel}</Badge>
+                        <Badge tone="gray">v{uc.version || 1}</Badge>
                       </div>
                       <p className="text-sm text-ink/70">{uc.description}</p>
                       <div className="grid sm:grid-cols-2 gap-2 mt-2 text-xs text-ink/50">
@@ -201,6 +257,20 @@ export default function Module16Page() {
                       <div className="mt-2 text-xs rounded-lg bg-brand-50/60 px-2 py-1.5 text-brand-800">
                         <strong>{t('humanCheckpoint')}:</strong> {uc.humanCheckpoint}
                       </div>
+                      {canManage && (
+                        <div className="flex items-center gap-2 mt-2">
+                          <button className="btn-secondary text-xs" onClick={() => openEdit(uc)}>{t('m19_edit')}</button>
+                          <button className="btn-ghost text-xs" onClick={() => setHistoryId(historyId === uc.id ? null : uc.id)}>
+                            {historyId === uc.id ? 'Hide history' : `History (${(uc.versionHistory || []).length + 1})`}
+                          </button>
+                          <button className="text-ink/30 hover:text-red-600 text-xs" onClick={() => deleteAiUseCase(uc.id)}>{t('delete')}</button>
+                        </div>
+                      )}
+                      {historyId === uc.id && (
+                        <div className="mt-2">
+                          <VersionHistoryPanel entity={uc} canRevert={canManage} onRevert={(v) => revertAiUseCase(uc.id, v)} />
+                        </div>
+                      )}
                     </div>
                     <div className="flex flex-col items-end gap-2 shrink-0">
                       <div className="flex items-center gap-2">
@@ -228,6 +298,20 @@ export default function Module16Page() {
             })}
         </div>
       )}
+
+      <Modal
+        open={!!modal}
+        onClose={() => setModal(null)}
+        title={modal?.mode === 'add' ? '+ Add AI Use Case' : t('m19_edit')}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setModal(null)}>{t('cancel')}</button>
+            <button className="btn-primary" onClick={submit}>{t('save')}</button>
+          </>
+        }
+      >
+        {modal && <UseCaseForm form={form} setForm={setForm} />}
+      </Modal>
 
       {tab === 'log' && (
         <div className="card overflow-x-auto">

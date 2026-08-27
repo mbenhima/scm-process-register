@@ -52,18 +52,20 @@ export const CAPABILITIES = [
   { key: 'activateAiForOrg', label: 'Activate AI Use Cases (Org)', description: 'Turn AI use cases on or off for an Organization (Module 16).' },
   { key: 'requestProjectAiOverride', label: 'Override AI Use Cases (Project)', description: 'Override an AI use case’s activation for a single Project (Module 16).' },
   { key: 'manageCharters', label: 'Manage Charters', description: 'Create and edit CM Charter definitions (Module 19). Deleting a Retired charter is Group/Organization Admin and above only, regardless of this setting — see D31b.' },
+  { key: 'manageAiUseCases', label: 'Manage AI Use Cases', description: 'Create, edit, delete, and revert AI Use Case definitions in the shared catalog (Module 16) — distinct from activating/deactivating one for an Organization or Project.' },
+  { key: 'manageTemplates', label: 'Manage Phase Templates', description: 'Create, edit, delete, and revert Phase Template definitions in the shared library (Module 17) — distinct from loading a template into a project’s WBS.' },
 ]
 
 export const DEFAULT_ROLE_PERMISSIONS = {
-  [ROLES.SUPER_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true },
-  [ROLES.GROUP_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true },
-  [ROLES.ORG_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true },
-  [ROLES.SPONSOR]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false },
-  [ROLES.CHANGE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: true, manageCharters: true },
-  [ROLES.PEOPLE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false },
-  [ROLES.PRACTITIONER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false },
-  [ROLES.EMPLOYEE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false },
-  [ROLES.EXECUTIVE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false },
+  [ROLES.SUPER_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true },
+  [ROLES.GROUP_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true },
+  [ROLES.ORG_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true },
+  [ROLES.SPONSOR]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
+  [ROLES.CHANGE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true },
+  [ROLES.PEOPLE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
+  [ROLES.PRACTITIONER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
+  [ROLES.EMPLOYEE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
+  [ROLES.EXECUTIVE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
 }
 
 export const ADKAR_BLOCKS = ['awareness', 'desire', 'knowledge', 'ability', 'reinforcement']

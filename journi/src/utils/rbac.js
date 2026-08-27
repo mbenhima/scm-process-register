@@ -55,6 +55,20 @@ export function canDeleteCharter(role) {
   return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN].includes(role)
 }
 
+// D33/D34: AI Use Case and Phase Template catalogs became full versioned CRUD
+// after shipping read-only/toggle-only — same admin + Change Manager set as
+// canManageCharters, since both are shared platform-wide reference content a
+// Change Manager routinely adapts, not a per-project write.
+export function canManageAiUseCases(role, matrix) {
+  if (matrix) return !!matrix[role]?.manageAiUseCases
+  return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN, ROLES.CHANGE_MANAGER].includes(role)
+}
+
+export function canManageTemplates(role, matrix) {
+  if (matrix) return !!matrix[role]?.manageTemplates
+  return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN, ROLES.CHANGE_MANAGER].includes(role)
+}
+
 // Only used to seed data.rolePermissions at buildSeed() time.
 export { DEFAULT_ROLE_PERMISSIONS }
 

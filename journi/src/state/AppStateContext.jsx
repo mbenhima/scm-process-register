@@ -9,6 +9,7 @@ import defaultCharters from '../data/charters.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
 import { uid } from '../utils/id.js'
 import { addDays, todayISO } from '../utils/wbs.js'
+import { withVersionBump, revertEntityToVersion } from '../utils/versioning.js'
 import { useI18n } from '../i18n/index.jsx'
 import { callLLM, recommendedModel } from '../utils/llmProviders.js'
 
@@ -46,6 +47,19 @@ function loadInitialState() {
         if (!parsed.macroProcessCatalog) parsed.macroProcessCatalog = macroProcessCatalog
         if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
         if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
+        // D33/D34: AI Use Cases and Phase Templates became full versioned CRUD
+        // after these catalogs first shipped — back-fill version/versionHistory
+        // onto every existing entry so the version panel has something to show.
+        parsed.aiUseCaseCatalog = (parsed.aiUseCaseCatalog || []).map((uc) => ({
+          version: 1,
+          versionHistory: [],
+          ...uc,
+        }))
+        parsed.phaseTemplateCatalog = parsed.phaseTemplateCatalog.map((tpl) => ({
+          version: 1,
+          versionHistory: [],
+          ...tpl,
+        }))
         if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
         // D32k QCW-01: a session persisted before the Qualitative Coding
         // Workbench shipped won't have a codebook per Organization yet.
@@ -311,6 +325,41 @@ export function AppStateProvider({ children }) {
         })),
       }
     })
+  }, [])
+
+  // Phase Template Library CRUD (D32b) — templates were previously shared,
+  // read-only reference content; a new template definition now carries its own
+  // version history so a bad edit can be reverted without losing the original.
+  const addPhaseTemplate = useCallback((tpl) => {
+    setData((prev) => ({
+      ...prev,
+      phaseTemplateCatalog: [...prev.phaseTemplateCatalog, { ...tpl, id: tpl.id || uid('tpl'), version: 1, versionHistory: [] }],
+    }))
+  }, [])
+
+  const updatePhaseTemplate = useCallback((templateId, patch, note) => {
+    setData((prev) => ({
+      ...prev,
+      phaseTemplateCatalog: prev.phaseTemplateCatalog.map((tpl) =>
+        tpl.id === templateId ? withVersionBump(tpl, patch, note) : tpl,
+      ),
+    }))
+  }, [])
+
+  const deletePhaseTemplate = useCallback((templateId) => {
+    setData((prev) => ({
+      ...prev,
+      phaseTemplateCatalog: prev.phaseTemplateCatalog.filter((tpl) => tpl.id !== templateId),
+    }))
+  }, [])
+
+  const revertPhaseTemplate = useCallback((templateId, targetVersion) => {
+    setData((prev) => ({
+      ...prev,
+      phaseTemplateCatalog: prev.phaseTemplateCatalog.map((tpl) =>
+        tpl.id === templateId ? revertEntityToVersion(tpl, targetVersion) : tpl,
+      ),
+    }))
   }, [])
 
   const updateSustainment = useCallback((projectId, patchFn) => {
@@ -645,6 +694,57 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // AI Use Case Catalog CRUD (D33) — the catalog was previously a fixed,
+  // read-only list with only per-org/per-project activation toggles; it now
+  // carries full CRUD and the same version-history/revert pattern as Phase
+  // Templates, so a Change Manager can adapt a Use Case's trigger/output/
+  // human-checkpoint wording without losing the original definition.
+  const addAiUseCase = useCallback((uc) => {
+    setData((prev) => {
+      const id = uc.id || uid('uc')
+      return {
+        ...prev,
+        aiUseCaseCatalog: [...prev.aiUseCaseCatalog, { ...uc, id, version: 1, versionHistory: [] }],
+        aiOrgActivation: Object.fromEntries(
+          Object.entries(prev.aiOrgActivation).map(([orgId, flags]) => [orgId, { ...flags, [id]: false }]),
+        ),
+      }
+    })
+  }, [])
+
+  const updateAiUseCase = useCallback((useCaseId, patch, note) => {
+    setData((prev) => ({
+      ...prev,
+      aiUseCaseCatalog: prev.aiUseCaseCatalog.map((uc) => (uc.id === useCaseId ? withVersionBump(uc, patch, note) : uc)),
+    }))
+  }, [])
+
+  const deleteAiUseCase = useCallback((useCaseId) => {
+    setData((prev) => ({
+      ...prev,
+      aiUseCaseCatalog: prev.aiUseCaseCatalog.filter((uc) => uc.id !== useCaseId),
+      aiOrgActivation: Object.fromEntries(
+        Object.entries(prev.aiOrgActivation).map(([orgId, flags]) => {
+          const { [useCaseId]: _removed, ...rest } = flags
+          return [orgId, rest]
+        }),
+      ),
+      aiProjectOverride: Object.fromEntries(
+        Object.entries(prev.aiProjectOverride).map(([projectId, flags]) => {
+          const { [useCaseId]: _removed, ...rest } = flags
+          return [projectId, rest]
+        }),
+      ),
+    }))
+  }, [])
+
+  const revertAiUseCase = useCallback((useCaseId, targetVersion) => {
+    setData((prev) => ({
+      ...prev,
+      aiUseCaseCatalog: prev.aiUseCaseCatalog.map((uc) => (uc.id === useCaseId ? revertEntityToVersion(uc, targetVersion) : uc)),
+    }))
+  }, [])
+
   const logAiUsage = useCallback((entry) => {
     setData((prev) => ({
       ...prev,
@@ -809,6 +909,10 @@ export function AppStateProvider({ children }) {
       updateSubItem,
       removeSubItem,
       loadPhaseTemplate,
+      addPhaseTemplate,
+      updatePhaseTemplate,
+      deletePhaseTemplate,
+      revertPhaseTemplate,
       updateCheckpoint,
       addQuickWin,
       addLesson,
@@ -843,6 +947,10 @@ export function AppStateProvider({ children }) {
       generateWithLlm,
       toggleAiOrgActivation,
       toggleAiProjectOverride,
+      addAiUseCase,
+      updateAiUseCase,
+      deleteAiUseCase,
+      revertAiUseCase,
       logAiUsage,
       addGroup,
       addOrganization,
@@ -872,6 +980,10 @@ export function AppStateProvider({ children }) {
       updateSubItem,
       removeSubItem,
       loadPhaseTemplate,
+      addPhaseTemplate,
+      updatePhaseTemplate,
+      deletePhaseTemplate,
+      revertPhaseTemplate,
       updateCheckpoint,
       addQuickWin,
       addLesson,
@@ -906,6 +1018,10 @@ export function AppStateProvider({ children }) {
       generateWithLlm,
       toggleAiOrgActivation,
       toggleAiProjectOverride,
+      addAiUseCase,
+      updateAiUseCase,
+      deleteAiUseCase,
+      revertAiUseCase,
       logAiUsage,
       addGroup,
       addOrganization,
