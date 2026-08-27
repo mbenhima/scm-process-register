@@ -190,5 +190,13 @@ r2._r.append(instr)
 r2._r.append(fld_sep)
 r2._r.append(fld_end)
 
+# ---- Force Word to recompute TOC / PAGE fields automatically on open ----
+# (native TOC field ships with no cached page numbers; without this the user
+# would need to manually right-click -> Update Field or press F9)
+settings = d.settings.element
+update_fields = OxmlElement('w:updateFields')
+update_fields.set(qn('w:val'), 'true')
+settings.append(update_fields)
+
 d.save('mg-styled.docx')
 print('wrote mg-styled.docx')
