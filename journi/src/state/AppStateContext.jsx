@@ -79,6 +79,9 @@ function loadInitialState() {
           touchpointLog: p.touchpointLog || [],
           codeTags: p.codeTags || [],
           dismissedAlerts: p.dismissedAlerts || [],
+          // Module 21 — Field Notes: a session persisted before this shipped
+          // won't have the array yet.
+          fieldNotes: p.fieldNotes || [],
         }))
         return parsed
       }
@@ -441,6 +444,46 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // Module 21 — Field Notes: a lightweight, freeform log for the knowledge that
+  // every phase's week-by-week table keeps surfacing but no structured module
+  // has a field for yet — a workshop happened, a decision was made outside
+  // journi, a sign-off landed, a nominee list was drafted. Not a substitute for
+  // the structured modules (M4, M5, M8, etc.) — once something becomes a real
+  // record there, it belongs there — this is for the in-between moments that
+  // would otherwise just be lost.
+  const addFieldNote = useCallback((projectId, note) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        fieldNotes: [
+          { id: uid('fnote'), date: todayISO(), category: 'Other', relatedModule: '', title: '', body: '', author: '', ...note },
+          ...(p.fieldNotes || []),
+        ],
+      })),
+    }))
+  }, [])
+
+  const updateFieldNote = useCallback((projectId, noteId, patch) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        fieldNotes: (p.fieldNotes || []).map((n) => (n.id === noteId ? { ...n, ...patch } : n)),
+      })),
+    }))
+  }, [])
+
+  const deleteFieldNote = useCallback((projectId, noteId) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        fieldNotes: (p.fieldNotes || []).filter((n) => n.id !== noteId),
+      })),
+    }))
+  }, [])
+
   // D31b Charter RBAC x OBS CRUD matrix: create/edit charter definitions
   // themselves (distinct from logCharterAction above, which tracks
   // per-project completion of an existing charter's D31a actions).
@@ -659,6 +702,7 @@ export function AppStateProvider({ children }) {
         touchpointLog: [],
         codeTags: [],
         dismissedAlerts: [],
+        fieldNotes: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [
@@ -779,6 +823,9 @@ export function AppStateProvider({ children }) {
       addCharter,
       updateCharter,
       deleteCharter,
+      addFieldNote,
+      updateFieldNote,
+      deleteFieldNote,
       logTouchpoint,
       deleteTouchpointLog,
       addCode,
@@ -839,6 +886,9 @@ export function AppStateProvider({ children }) {
       addCharter,
       updateCharter,
       deleteCharter,
+      addFieldNote,
+      updateFieldNote,
+      deleteFieldNote,
       logTouchpoint,
       deleteTouchpointLog,
       addCode,
