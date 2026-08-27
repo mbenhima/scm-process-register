@@ -644,7 +644,7 @@ The table below is the single master schedule for Bouregreg's 64-week program: e
 
 The Master WBS & Gantt table above interleaves PM, CM, and framework rows together; the index below pulls out only the software/technical build work --- the tasks ITL actually executes or supports --- across all eight phases in build order, so a technical lead can see the full build path without reading every PM row. Discovery carries no build task (it is pre-scope); every other phase does.
 
-| ID | Phase | Week(s) | Software / Technical Build Task | Owner |
+| ID | Phase | Wk(s) | Software / Technical Build Task | Owner |
 |---|---|---|---|---|
 | P2-T1-S2 | P2 --- Design | W7 | Translate design principles into future-state process maps for Order Management, Inventory, and Finance --- the direct input to Build's five sprints. | PM (ITL input) |
 | P3-T1-S1 | P3 --- Build | W12 | Stand up the configuration environment; begin Sprint 1. | ITL/PM |

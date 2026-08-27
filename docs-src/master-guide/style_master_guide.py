@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import copy
 import warnings
 import docx
 from docx.shared import RGBColor, Pt, Inches, Emu
@@ -51,19 +52,47 @@ for section in d.sections:
     section.top_margin = Inches(0.7)
     section.bottom_margin = Inches(0.7)
 USABLE_WIDTH = d.sections[0].page_width - d.sections[0].left_margin - d.sections[0].right_margin
+# Part 1B.2-1B.3 renders in a landscape section (see the section-split below) —
+# same margins, swapped page dimensions, so its tables get ~34% more width.
+LANDSCAPE_USABLE_WIDTH = d.sections[0].page_height - d.sections[0].left_margin - d.sections[0].right_margin
 
 # ---- Explicit column widths for the 6-column alert-reference tables ----
 ALERT_TABLE_WIDTHS = [0.09, 0.15, 0.08, 0.38, 0.15, 0.15]  # ID, Name, Severity, Trigger condition, Escalation, SLA
 ALERT_NONLIVE_WIDTHS = [0.09, 0.28, 0.63]  # ID, Name, Why it never fires here
 WBS_GANTT_WIDTHS = [0.11, 0.32, 0.06, 0.04, 0.07, 0.08, 0.13, 0.11, 0.08]  # ID, Task/Step Name, Track, Ph., Week(s), Lewin, ADKAR, Bridges, Kubler-Ross
+CALENDAR_WIDTHS = [0.07, 0.16, 0.12, 0.16, 0.14, 0.16, 0.19]  # Week, Phase(s) Active, Lewin, ADKAR Focus, Bridges, Kubler-Ross, Exception
+SPRINT_INDEX_WIDTHS = [0.08, 0.08, 0.38, 0.24, 0.22]  # Sprint, Weeks, Scope of Work, Justifying Principle(s), Task/Step ID
+BUILD_INDEX_WIDTHS = [0.10, 0.14, 0.08, 0.52, 0.16]  # ID, Phase, Week(s), Task, Owner
+CHECKLIST_WIDTHS = [0.20, 0.10, 0.55, 0.15]  # Phase, Track, Checklist Item, Weight %
+CHARTER_MATRIX_WIDTHS = [0.28, 0.08, 0.12, 0.30, 0.22]  # Charter, Phase, Week(s), Task/Step ID, CRUD Action
 
 
 def is_wbs_gantt_table(t):
     return len(t.columns) == 9 and t.rows[0].cells[0].text.strip() == 'ID'
 
 
-def set_col_widths(table, ratios):
-    total = USABLE_WIDTH
+def is_calendar_table(t):
+    return len(t.columns) == 7 and t.rows[0].cells[0].text.strip() == 'Week'
+
+
+def is_sprint_index_table(t):
+    return len(t.columns) == 5 and t.rows[0].cells[0].text.strip() == 'Sprint'
+
+
+def is_build_index_table(t):
+    return len(t.columns) == 5 and t.rows[0].cells[0].text.strip() == 'ID' and t.rows[0].cells[1].text.strip() == 'Phase'
+
+
+def is_checklist_table(t):
+    return len(t.columns) == 4 and t.rows[0].cells[0].text.strip() == 'Phase' and t.rows[0].cells[3].text.strip() == 'Weight %'
+
+
+def is_charter_matrix_table(t):
+    return len(t.columns) == 5 and t.rows[0].cells[0].text.strip() == 'Charter' and t.rows[0].cells[4].text.strip() == 'CRUD Action'
+
+
+def set_col_widths(table, ratios, total=None):
+    total = total if total is not None else USABLE_WIDTH
     widths = [Emu(int(total * r)) for r in ratios]
     table.autofit = False
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -96,9 +125,19 @@ for t in d.tables:
     elif len(t.columns) == 3 and t.rows[0].cells[0].text.strip() == 'ID':
         set_col_widths(t, ALERT_NONLIVE_WIDTHS)
     elif is_wbs_gantt_table(t):
-        set_col_widths(t, WBS_GANTT_WIDTHS)
+        set_col_widths(t, WBS_GANTT_WIDTHS, total=LANDSCAPE_USABLE_WIDTH)
+    elif is_calendar_table(t):
+        set_col_widths(t, CALENDAR_WIDTHS, total=LANDSCAPE_USABLE_WIDTH)
+    elif is_sprint_index_table(t):
+        set_col_widths(t, SPRINT_INDEX_WIDTHS, total=LANDSCAPE_USABLE_WIDTH)
+    elif is_build_index_table(t):
+        set_col_widths(t, BUILD_INDEX_WIDTHS, total=LANDSCAPE_USABLE_WIDTH)
     elif is_weekly_track_table(t):
-        set_col_widths(t, WEEKLY_TABLE_WIDTHS)
+        set_col_widths(t, WEEKLY_TABLE_WIDTHS, total=LANDSCAPE_USABLE_WIDTH)
+    elif is_checklist_table(t):
+        set_col_widths(t, CHECKLIST_WIDTHS)
+    elif is_charter_matrix_table(t):
+        set_col_widths(t, CHARTER_MATRIX_WIDTHS)
 
 # ---- Prevent a table row's content from splitting across a page break ----
 # Skip the large PM/CM weekly-track tables: their cells are prose-length, and
@@ -165,8 +204,8 @@ for t in d.tables:
                 r.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
 # ---- Base body font size increase (readability) ----
-BODY_SIZE = Pt(12.5)
-TABLE_SIZE = Pt(11)
+BODY_SIZE = Pt(13)
+TABLE_SIZE = Pt(11.5)
 HEADING_STYLE_NAMES = {'Heading 1', 'Heading 2', 'Heading 3', 'Title'}
 
 for style_name in ('Normal', 'Body Text', 'Compact', 'First Paragraph', 'List Paragraph', 'Block Text'):
@@ -190,7 +229,9 @@ for t in d.tables:
                     r.font.size = TABLE_SIZE
 
 # ---- Master WBS & Gantt table: denser font, tighter cell margins (97 rows, 9 narrow columns) ----
-WBS_TABLE_SIZE = Pt(8.5)
+# Landscape orientation (see section-split below) gives this table ~34% more
+# width than it had in portrait, so the font can go back up close to TABLE_SIZE.
+WBS_TABLE_SIZE = Pt(10.5)
 for t in d.tables:
     if not is_wbs_gantt_table(t):
         continue
@@ -239,6 +280,73 @@ r2._r.append(fld_begin)
 r2._r.append(instr)
 r2._r.append(fld_sep)
 r2._r.append(fld_end)
+
+# ---- Landscape section for Part 1B.2-1B.3 (the calendar, the eight phase
+# ---- tables, the Sprint/Software-Build indexes, and the Master WBS & Gantt
+# ---- table) -- by far the widest, densest tables in the guide. A sectPr
+# ---- embedded in a paragraph's pPr closes the section ending at that
+# ---- paragraph; the very next paragraph starts the next section under
+# ---- whichever sectPr closes it (or the document's trailing body sectPr,
+# ---- for the final section). So: one landscape-closing copy is planted on
+# ---- the last paragraph before "1B.4" (ending the landscape section), and
+# ---- one portrait-closing copy is planted on the last paragraph before
+# ---- "1B.2" (closing the preceding portrait section with unchanged
+# ---- properties) -- everything after "1B.4" then falls through to the
+# ---- document's original trailing sectPr, still portrait.
+def find_heading_para_index(body_children, prefix):
+    for i, el in enumerate(body_children):
+        if el.tag == qn('w:p'):
+            text = ''.join(t.text or '' for t in el.findall('.//' + qn('w:t')))
+            if text.strip().startswith(prefix):
+                return i
+    return None
+
+
+def nearest_preceding_paragraph(body_children, idx):
+    """Walks back from body_children[idx] (exclusive) to the nearest real <w:p> --
+    pandoc's auto-generated heading bookmarks (bookmarkStart/bookmarkEnd) sit
+    between headings and the content before them, so a fixed offset isn't safe."""
+    for j in range(idx - 1, -1, -1):
+        if body_children[j].tag == qn('w:p'):
+            return docx.text.paragraph.Paragraph(body_children[j], d)
+    return None
+
+
+def make_sectPr_copy(base_sectPr, landscape):
+    new_sectPr = copy.deepcopy(base_sectPr)
+    pgSz = new_sectPr.find(qn('w:pgSz'))
+    if pgSz is None:
+        pgSz = OxmlElement('w:pgSz')
+        new_sectPr.insert(0, pgSz)
+    w = int(pgSz.get(qn('w:w')) or Inches(8.5))
+    h = int(pgSz.get(qn('w:h')) or Inches(11))
+    if landscape:
+        pgSz.set(qn('w:w'), str(max(w, h)))
+        pgSz.set(qn('w:h'), str(min(w, h)))
+        pgSz.set(qn('w:orient'), 'landscape')
+    else:
+        pgSz.set(qn('w:w'), str(min(w, h)))
+        pgSz.set(qn('w:h'), str(max(w, h)))
+        if pgSz.get(qn('w:orient')):
+            del pgSz.attrib[qn('w:orient')]
+    return new_sectPr
+
+
+base_sectPr = d.sections[-1]._sectPr  # already carries the header/footer references set above
+body_children = list(d.element.body)
+idx_1b2 = find_heading_para_index(body_children, '1B.2 The 64-Week')
+idx_1b4 = find_heading_para_index(body_children, '1B.4 Six Exception Scenarios')
+p_before_1b2 = nearest_preceding_paragraph(body_children, idx_1b2) if idx_1b2 is not None else None
+p_before_1b4 = nearest_preceding_paragraph(body_children, idx_1b4) if idx_1b4 is not None else None
+
+if p_before_1b2 is not None and p_before_1b4 is not None:
+    portrait_close = make_sectPr_copy(base_sectPr, landscape=False)
+    landscape_close = make_sectPr_copy(base_sectPr, landscape=True)
+    p_before_1b2._p.get_or_add_pPr().append(portrait_close)
+    p_before_1b4._p.get_or_add_pPr().append(landscape_close)
+    print('landscape section inserted: 1B.2 through end of 1B.3')
+else:
+    print('WARNING: could not locate landscape section boundaries -- skipping (found start:', p_before_1b2 is not None, ', end:', p_before_1b4 is not None, ')')
 
 # ---- Force Word to recompute TOC / PAGE fields automatically on open ----
 # (native TOC field ships with no cached page numbers; without this the user
