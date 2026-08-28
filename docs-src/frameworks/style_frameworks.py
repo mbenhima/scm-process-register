@@ -54,9 +54,10 @@ USABLE_WIDTH = d.sections[0].page_width - d.sections[0].left_margin - d.sections
 
 # ---- Explicit column widths per table type ----
 OVERVIEW_WIDTHS = [0.16, 0.30, 0.30, 0.24]          # Framework, Altitude, Question it answers, Logged on
-INTERACTION_MAP_WIDTHS = [0.10, 0.17, 0.15, 0.17, 0.41]  # Lewin Stage, ADKAR Focus, Bridges, Kübler-Ross, What's Happening
+INTERACTION_MAP_WIDTHS = [0.08, 0.12, 0.11, 0.13, 0.30, 0.26]  # Lewin Stage, ADKAR Focus, Bridges, Kübler-Ross, What's Happening, Common Failure
 SIGNALS_WIDTHS = [0.12, 0.22, 0.12, 0.54]           # ID, Name, Type, Detailed Description
-DECISION_MATRIX_WIDTHS = [0.14, 0.13, 0.24, 0.23, 0.26]  # Framework, Transition, Must-Have, Nice-to-Have, Who Decides
+DECISION_MATRIX_WIDTHS = [0.11, 0.11, 0.19, 0.18, 0.17, 0.24]  # Framework, Transition, Must-Have, Nice-to-Have, Who Decides, Exception May Apply
+EXCEPTIONS_WIDTHS = [0.09, 0.20, 0.33, 0.38]        # Exception ID, Applies To, What Changes, Compensating Requirement
 KPI_WIDTHS = [0.16, 0.84]                           # Field, Value
 APPENDIX_WIDTHS = [0.24, 0.76]                      # ID Range, What It Covers
 
@@ -72,7 +73,7 @@ def is_overview_table(t):
 
 def is_interaction_map_table(t):
     h = header_texts(t)
-    return len(t.columns) == 5 and h[0] == 'Lewin Stage'
+    return h[0] == 'Lewin Stage'
 
 
 def is_signals_table(t):
@@ -82,7 +83,12 @@ def is_signals_table(t):
 
 def is_decision_matrix_table(t):
     h = header_texts(t)
-    return len(t.columns) == 5 and h[0] == 'Framework' and h[1] == 'Transition'
+    return h[0] == 'Framework' and h[1] == 'Transition'
+
+
+def is_exceptions_table(t):
+    h = header_texts(t)
+    return len(t.columns) == 4 and h[0] == 'Exception ID'
 
 
 def is_kpi_table(t):
@@ -117,7 +123,7 @@ def set_col_widths(table, ratios, total=None):
             tcW.set(qn('w:w'), str(int(w / 635)))  # EMU -> twentieths of a point (dxa)
 
 
-table_counts = {'overview': 0, 'interaction': 0, 'signals': 0, 'matrix': 0, 'kpi': 0, 'appendix': 0, 'unmatched': 0}
+table_counts = {'overview': 0, 'interaction': 0, 'signals': 0, 'matrix': 0, 'exceptions': 0, 'kpi': 0, 'appendix': 0, 'unmatched': 0}
 for t in d.tables:
     if is_overview_table(t):
         set_col_widths(t, OVERVIEW_WIDTHS)
@@ -131,6 +137,9 @@ for t in d.tables:
     elif is_decision_matrix_table(t):
         set_col_widths(t, DECISION_MATRIX_WIDTHS)
         table_counts['matrix'] += 1
+    elif is_exceptions_table(t):
+        set_col_widths(t, EXCEPTIONS_WIDTHS)
+        table_counts['exceptions'] += 1
     elif is_kpi_table(t):
         set_col_widths(t, KPI_WIDTHS)
         table_counts['kpi'] += 1
