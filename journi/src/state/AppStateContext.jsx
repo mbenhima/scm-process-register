@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { buildSeed } from '../data/seed.js'
 import macroProcessCatalog from '../data/macroProcesses.js'
 import e2eProcessCatalog from '../data/e2eProcesses.js'
@@ -14,10 +14,9 @@ import { useI18n } from '../i18n/index.jsx'
 import { callLLM, recommendedModel } from '../utils/llmProviders.js'
 
 const AppStateContext = createContext(null)
-const STORAGE_KEY = 'journi.state.v1'
-// Deliberately a separate localStorage key from STORAGE_KEY: an LLM connection
-// is a browser-level setting, not seeded demo data, so it must survive
-// Reset Demo Data untouched and never gets bundled into a data export/reset.
+// An LLM connection is a browser-level setting, not seeded demo data — kept in
+// localStorage (not the backend) so it survives Reset Demo Data untouched and
+// never gets bundled into a data export or synced across machines.
 const LLM_CONFIG_KEY = 'journi.llmConfig.v1'
 
 function loadLlmConfig() {
@@ -30,80 +29,116 @@ function loadLlmConfig() {
   return { provider: 'anthropic', apiKey: '', model: recommendedModel('anthropic'), baseUrl: '', connected: false, lastError: null }
 }
 
-function loadInitialState() {
+// journi persists its app-wide state to a small local backend (Express +
+// SQLite, see /server) instead of the browser's localStorage — this is what
+// makes data survive a reinstall, a different browser, or being opened from a
+// second PC on the same network. migrateOrSeed() takes whatever the backend
+// last saved (or null, on a brand-new install) and either back-fills it
+// against every schema change journi has shipped since, or falls back to a
+// fresh demo seed.
+function migrateOrSeed(parsed) {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) {
-      const parsed = JSON.parse(raw)
-      if (parsed && parsed.cmProjects && parsed.organizations) {
-        // A browser session persisted before the Permission Matrix feature shipped
-        // won't have this field — back-fill the default matrix rather than let every
-        // capability check silently fail closed (matrix[role]?.write === undefined).
-        if (!parsed.rolePermissions) parsed.rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
-        if (parsed.requireJustification === undefined) parsed.requireJustification = true
-        // A browser session persisted before CR1 (8-type E2E addendum) shipped
-        // won't have these reference catalogs — back-fill from the seed rather
-        // than let Module 18 / the phase-template picker render empty.
-        if (!parsed.macroProcessCatalog) parsed.macroProcessCatalog = macroProcessCatalog
-        if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
-        if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
-        // D33/D34: AI Use Cases and Phase Templates became full versioned CRUD
-        // after these catalogs first shipped — back-fill version/versionHistory
-        // onto every existing entry so the version panel has something to show.
-        parsed.aiUseCaseCatalog = (parsed.aiUseCaseCatalog || []).map((uc) => ({
-          version: 1,
-          versionHistory: [],
-          ...uc,
-        }))
-        parsed.phaseTemplateCatalog = parsed.phaseTemplateCatalog.map((tpl) => ({
-          version: 1,
-          versionHistory: [],
-          ...tpl,
-        }))
-        if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
-        // D32k QCW-01: a session persisted before the Qualitative Coding
-        // Workbench shipped won't have a codebook per Organization yet.
-        if (!parsed.codebooks) {
-          parsed.codebooks = {}
-          for (const org of parsed.organizations) {
-            parsed.codebooks[org.id] = defaultCodebook.map((c) => ({ id: uid('code'), ...c }))
-          }
+    if (parsed && parsed.cmProjects && parsed.organizations) {
+      // A browser session persisted before the Permission Matrix feature shipped
+      // won't have this field — back-fill the default matrix rather than let every
+      // capability check silently fail closed (matrix[role]?.write === undefined).
+      if (!parsed.rolePermissions) parsed.rolePermissions = JSON.parse(JSON.stringify(DEFAULT_ROLE_PERMISSIONS))
+      if (parsed.requireJustification === undefined) parsed.requireJustification = true
+      // A browser session persisted before CR1 (8-type E2E addendum) shipped
+      // won't have these reference catalogs — back-fill from the seed rather
+      // than let Module 18 / the phase-template picker render empty.
+      if (!parsed.macroProcessCatalog) parsed.macroProcessCatalog = macroProcessCatalog
+      if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
+      if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
+      // D33/D34: AI Use Cases and Phase Templates became full versioned CRUD
+      // after these catalogs first shipped — back-fill version/versionHistory
+      // onto every existing entry so the version panel has something to show.
+      parsed.aiUseCaseCatalog = (parsed.aiUseCaseCatalog || []).map((uc) => ({
+        version: 1,
+        versionHistory: [],
+        ...uc,
+      }))
+      parsed.phaseTemplateCatalog = parsed.phaseTemplateCatalog.map((tpl) => ({
+        version: 1,
+        versionHistory: [],
+        ...tpl,
+      }))
+      if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
+      // D32k QCW-01: a session persisted before the Qualitative Coding
+      // Workbench shipped won't have a codebook per Organization yet.
+      if (!parsed.codebooks) {
+        parsed.codebooks = {}
+        for (const org of parsed.organizations) {
+          parsed.codebooks[org.id] = defaultCodebook.map((c) => ({ id: uid('code'), ...c }))
         }
-        // D31b: a session persisted before Charter CRUD shipped won't have
-        // data.charters yet — back-fill from the same default set Module 19
-        // used to render as a static import.
-        if (!parsed.charters) parsed.charters = JSON.parse(JSON.stringify(defaultCharters))
-        if (!parsed.license) {
-          parsed.license = {
-            mode: 'saas',
-            plan: 'professional',
-            companyName: 'journi Demo Tenant',
-            maxUsers: 50,
-            issueDate: addDays(todayISO(), -90),
-            expiryDate: addDays(todayISO(), 275),
-            features: ['core_cm_modules', 'wbs_gantt', 'ai_use_case_library', 'process_registry_m19'],
-            uploadedFile: null,
-          }
-        }
-        parsed.cmProjects = parsed.cmProjects.map((p) => ({
-          ...p,
-          phaseGates: p.phaseGates || [],
-          phaseChecklists: p.phaseChecklists || [],
-          charterActionLog: p.charterActionLog || [],
-          touchpointLog: p.touchpointLog || [],
-          codeTags: p.codeTags || [],
-          dismissedAlerts: p.dismissedAlerts || [],
-          // Module 21 — Field Notes: a session persisted before this shipped
-          // won't have the array yet.
-          fieldNotes: p.fieldNotes || [],
-        }))
-        return parsed
       }
+      // D31b: a session persisted before Charter CRUD shipped won't have
+      // data.charters yet — back-fill from the same default set Module 19
+      // used to render as a static import.
+      if (!parsed.charters) parsed.charters = JSON.parse(JSON.stringify(defaultCharters))
+      if (!parsed.license) {
+        parsed.license = {
+          mode: 'saas',
+          plan: 'professional',
+          companyName: 'journi Demo Tenant',
+          maxUsers: 50,
+          issueDate: addDays(todayISO(), -90),
+          expiryDate: addDays(todayISO(), 275),
+          features: ['core_cm_modules', 'wbs_gantt', 'ai_use_case_library', 'process_registry_m19'],
+          uploadedFile: null,
+        }
+      }
+      parsed.cmProjects = parsed.cmProjects.map((p) => ({
+        ...p,
+        phaseGates: p.phaseGates || [],
+        phaseChecklists: p.phaseChecklists || [],
+        charterActionLog: p.charterActionLog || [],
+        touchpointLog: p.touchpointLog || [],
+        codeTags: p.codeTags || [],
+        dismissedAlerts: p.dismissedAlerts || [],
+        // Module 21 — Field Notes: a session persisted before this shipped
+        // won't have the array yet.
+        fieldNotes: p.fieldNotes || [],
+      }))
+      return parsed
     }
   } catch {
     // fall through to fresh seed
   }
   return buildSeed()
+}
+
+// The backend (server/index.js) serves both the built frontend and this API
+// from the same origin, so a relative path works whether journi is opened via
+// the production server or the Vite dev server (which proxies /api to it —
+// see vite.config.js). A backend that never responds (not started, or a
+// frontend-only checkout with no /server running) degrades gracefully: these
+// helpers resolve to null / fail silently, and the app keeps running on the
+// in-memory demo seed for that session.
+const API_BASE = '/api'
+
+async function fetchServerState() {
+  try {
+    const res = await fetch(`${API_BASE}/state`)
+    if (!res.ok) return null
+    return await res.json()
+  } catch {
+    return null
+  }
+}
+
+async function saveServerState(payload) {
+  try {
+    await fetch(`${API_BASE}/state`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+  } catch {
+    // Best-effort — a save that can't reach the backend right now is retried
+    // on the next state change (the debounced effect below fires again), so
+    // nothing is lost as long as the tab stays open and the backend recovers.
+  }
 }
 
 function updateProjectIn(list, projectId, fn) {
@@ -112,36 +147,57 @@ function updateProjectIn(list, projectId, fn) {
 
 export function AppStateProvider({ children }) {
   const { setLang } = useI18n()
-  const [data, setData] = useState(loadInitialState)
+  // Renders immediately on a fresh demo seed so there is no loading-spinner
+  // flash; the effect below swaps in the backend's real persisted state (if
+  // any) as soon as it resolves, typically well under 100ms on localhost.
+  const [data, setData] = useState(buildSeed)
   const [llmConfig, setLlmConfigState] = useState(loadLlmConfig)
-  const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('journi.currentUser') || null)
-  const [scope, setScopeState] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('journi.scope') || 'null') || { orgId: null, cmProjectId: null }
-    } catch {
-      return { orgId: null, cmProjectId: null }
+  const [currentUserId, setCurrentUserId] = useState(null)
+  const [scope, setScopeState] = useState({ orgId: null, cmProjectId: null })
+  // Guards the save effect below from firing before we've actually checked
+  // what the backend has — without this, the seed data rendered above could
+  // race a slow-resolving fetch and overwrite real persisted state with it.
+  const [loadedFromServer, setLoadedFromServer] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchServerState().then((server) => {
+      if (cancelled) return
+      if (server && server.data) {
+        setData(migrateOrSeed(server.data))
+        setCurrentUserId(server.currentUserId || null)
+        setScopeState(server.scope || { orgId: null, cmProjectId: null })
+      }
+      // else: first run against a brand-new database, or backend unreachable —
+      // keep the seed already in state; the save effect below pushes it to the
+      // backend as soon as loadedFromServer flips true.
+      setLoadedFromServer(true)
+    })
+    return () => {
+      cancelled = true
     }
-  })
+  }, [])
+
+  const saveTimer = useRef(null)
+  useEffect(() => {
+    if (!loadedFromServer) return
+    if (saveTimer.current) clearTimeout(saveTimer.current)
+    // Debounced: mutators fire in quick succession (e.g. typing a note), and
+    // saving on every keystroke would flood the backend with writes for no
+    // benefit — 400ms coalesces a burst of changes into a single save.
+    saveTimer.current = setTimeout(() => {
+      saveServerState({ data, currentUserId, scope })
+    }, 400)
+    return () => clearTimeout(saveTimer.current)
+  }, [data, currentUserId, scope, loadedFromServer])
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
-  }, [data])
-
-  useEffect(() => {
-    // Never persist a raw API key to disk without the user's own action having
-    // written it — this effect just mirrors whatever setLlmConfigState already
-    // holds, so the key lives only as long as the browser profile does.
+    // Never persist a raw API key to the backend without the user's own action
+    // having written it — an LLM connection is a browser-level setting, kept
+    // in localStorage only, so it survives Reset Demo Data untouched and is
+    // never bundled into a data export or shared across machines.
     localStorage.setItem(LLM_CONFIG_KEY, JSON.stringify(llmConfig))
   }, [llmConfig])
-
-  useEffect(() => {
-    if (currentUserId) localStorage.setItem('journi.currentUser', currentUserId)
-    else localStorage.removeItem('journi.currentUser')
-  }, [currentUserId])
-
-  useEffect(() => {
-    localStorage.setItem('journi.scope', JSON.stringify(scope))
-  }, [scope])
 
   const currentUser = useMemo(() => data.users.find((u) => u.id === currentUserId) || null, [data.users, currentUserId])
 
