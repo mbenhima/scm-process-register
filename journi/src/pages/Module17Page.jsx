@@ -10,6 +10,7 @@ import StatCard from '../components/StatCard.jsx'
 import GanttChart from '../components/GanttChart.jsx'
 import { canWrite, canManageTemplates } from '../utils/rbac.js'
 import VersionHistoryPanel from '../components/VersionHistoryPanel.jsx'
+import charterActions from '../data/charterActions.js'
 import {
   WBS_TRACKS,
   WBS_STATUSES,
@@ -37,6 +38,7 @@ const BLANK_FORM = {
   accountabilityTag: 'PROJECT',
   phase: '',
   name: '',
+  assignedTo: '',
   baselineStart: todayISO(),
   baselineEnd: todayISO(),
   actualStart: '',
@@ -44,7 +46,7 @@ const BLANK_FORM = {
   status: 'planned',
 }
 
-function TaskFormFields({ form, setForm }) {
+function TaskFormFields({ form, setForm, obsEntries }) {
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
@@ -81,6 +83,18 @@ function TaskFormFields({ form, setForm }) {
       <div>
         <label className="label">Task name</label>
         <input className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+      </div>
+      <div>
+        <label className="label">Assigned to</label>
+        <select className="input" value={form.assignedTo || ''} onChange={(e) => setForm({ ...form, assignedTo: e.target.value })}>
+          <option value="">— Unassigned —</option>
+          {(obsEntries || []).map((e) => (
+            <option key={e.id} value={e.id}>
+              {e.role || '(no role)'} — {e.name || '(unnamed)'}
+            </option>
+          ))}
+        </select>
+        <p className="text-[11px] text-ink/40 mt-1">Sourced from this project's OBS (M22) roster.</p>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
@@ -127,6 +141,7 @@ function TaskTable({ project, tasks, canEdit, onEdit }) {
           <th className="text-start px-3 py-2">Phase</th>
           <th className="text-start px-3 py-2">Tag</th>
           <th className="text-start px-3 py-2">Task</th>
+          <th className="text-start px-3 py-2">Assigned</th>
           <th className="text-start px-3 py-2">Baseline</th>
           <th className="text-start px-3 py-2">Actual</th>
           <th className="text-start px-3 py-2">Gap</th>
@@ -146,6 +161,12 @@ function TaskTable({ project, tasks, canEdit, onEdit }) {
               </td>
               <td className="px-3 py-2">{t.accountabilityTag && <Badge tone={TAG_TONE[t.accountabilityTag]}>{t.accountabilityTag}</Badge>}</td>
               <td className="px-3 py-2 text-brand-950 font-medium max-w-xs">{t.name}</td>
+              <td className="px-3 py-2 text-ink/60 whitespace-nowrap text-xs">
+                {(() => {
+                  const resource = (project.obsEntries || []).find((e) => e.id === t.assignedTo)
+                  return resource ? resource.name || resource.role : <span className="text-ink/30 italic">unassigned</span>
+                })()}
+              </td>
               <td className="px-3 py-2 text-ink/60 whitespace-nowrap text-xs">
                 {t.baselineStart}
                 {t.baselineEnd !== t.baselineStart ? ` → ${t.baselineEnd}` : ''}
@@ -706,6 +727,61 @@ function PhaseGateModal({ open, onClose, project }) {
   )
 }
 
+// Consolidates the third track journi tracks against the same phase timeline
+// as PM/CM WBS tasks: logged completions of CM Charter actions (Module 19's
+// charter registry). charterActionLog only carries a single completion
+// date, not a start/end range, so these appear here as a table alongside
+// the PM/CM track tables rather than as Gantt bars — the point is giving a
+// Change Manager or PM one place to see everything active in a phase,
+// without needing to cross-reference Module 19 separately.
+function CharterActionsSection({ project, charters, phaseFilter }) {
+  const allLogs = project.charterActionLog || []
+  const enriched = allLogs.map((log) => {
+    const action = charterActions.find((a) => a.id === log.charterActionId)
+    const charter = action ? charters.find((c) => c.id === action.charterId) : null
+    return { ...log, action, charter }
+  })
+  const rows = phaseFilter === 'all' ? enriched : enriched.filter((r) => r.action?.phase === phaseFilter)
+
+  return (
+    <div className="card overflow-x-auto">
+      <div className="px-4 py-3 border-b border-brand-50 font-semibold text-sm text-brand-950">
+        Charter Actions <span className="font-normal text-ink/40 text-xs">(logged completions — Module 19 Charter Registry)</span>
+      </div>
+      {rows.length === 0 ? (
+        <div className="p-4">
+          <EmptyState text="No charter actions logged yet." />
+        </div>
+      ) : (
+        <table className="w-full text-sm">
+          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+            <tr>
+              <th className="text-start px-3 py-2">Charter</th>
+              <th className="text-start px-3 py-2">Action</th>
+              <th className="text-start px-3 py-2">Phase</th>
+              <th className="text-start px-3 py-2">Date</th>
+              <th className="text-start px-3 py-2">Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.id} className="border-t border-brand-50 align-top">
+                <td className="px-3 py-2 whitespace-nowrap">
+                  <Badge tone="sand">{r.charter?.id || '—'}</Badge> {r.charter?.name}
+                </td>
+                <td className="px-3 py-2">{r.action?.name || '(unknown action)'}</td>
+                <td className="px-3 py-2 text-ink/60 whitespace-nowrap">{r.action?.phase || '—'}</td>
+                <td className="px-3 py-2 text-ink/60 whitespace-nowrap text-xs">{r.date}</td>
+                <td className="px-3 py-2 text-ink/60 max-w-xs">{r.note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  )
+}
+
 function PhaseGateSection({ project, canEdit, phaseFilter }) {
   const { removeSubItem } = useAppState()
   const [modal, setModal] = useState(false)
@@ -853,7 +929,7 @@ function Content({ project }) {
       </div>
       {phaseFilter !== 'all' && (
         <p className="text-xs text-ink/40 -mt-3">
-          Filtering WBS tasks, Phase Checklist items, and Phase Gates to {phaseFilter} — {PHASE_NAMES[phaseFilter]}.
+          Filtering WBS tasks, Charter Actions, Phase Checklist items, and Phase Gates to {phaseFilter} — {PHASE_NAMES[phaseFilter]}.
         </p>
       )}
 
@@ -866,6 +942,7 @@ function Content({ project }) {
         </div>
       ))}
 
+      <CharterActionsSection project={project} charters={data.charters} phaseFilter={phaseFilter} />
       <ChecklistSection project={project} canEdit={canEdit} phaseFilter={phaseFilter} />
       <PhaseGateSection project={project} canEdit={canEdit} phaseFilter={phaseFilter} />
 
@@ -884,7 +961,7 @@ function Content({ project }) {
           </>
         }
       >
-        <TaskFormFields form={form} setForm={setForm} />
+        <TaskFormFields form={form} setForm={setForm} obsEntries={project.obsEntries} />
       </Modal>
 
       <TemplateModal open={templateModal} onClose={() => setTemplateModal(false)} project={project} data={data} loadPhaseTemplate={loadPhaseTemplate} />
