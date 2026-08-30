@@ -251,7 +251,7 @@ function ResistanceLogTab({ project }) {
   function saveStatusChange(r) {
     const nextStatus = r.status === 'open' ? 'in_progress' : 'closed'
     logJustifiedChange(project.id, {
-      module: 'M10 · Resistance Tracker',
+      module: 'M16 · Resistance Tracker',
       field: `Resistance status — ${r.rootCause.slice(0, 40)}`,
       oldValue: STATUS_LABEL[r.status],
       newValue: STATUS_LABEL[nextStatus],
@@ -275,7 +275,7 @@ function ResistanceLogTab({ project }) {
       {systemic && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
           Pattern detection: {systemic.count} systemic resistance entries logged — this looks organizational, not individual.
-          Consider escalating to the Sponsor & Coalition module (M7).
+          Consider escalating to the Sponsor & Coalition module (M13).
         </div>
       )}
 

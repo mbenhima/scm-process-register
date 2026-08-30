@@ -1,4 +1,4 @@
-// Module 20 — Journey Touchpoints (D28). 24 touchpoints across 6 of the 8
+// Module 19 — Journey Touchpoints (D28). 24 touchpoints across 6 of the 8
 // journeys (JRN-01, 02, 04, 05, 06 fully detailed; JRN-03/07/08 would be built
 // out the same way if a future wave needs them). Every touchpoint's
 // successCriteria/evidenceRequired is concrete and auditable — this is what

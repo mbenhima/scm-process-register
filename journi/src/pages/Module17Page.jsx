@@ -94,7 +94,7 @@ function TaskFormFields({ form, setForm, obsEntries }) {
             </option>
           ))}
         </select>
-        <p className="text-[11px] text-ink/40 mt-1">Sourced from this project's OBS (M22) roster.</p>
+        <p className="text-[11px] text-ink/40 mt-1">Sourced from this project's OBS (M3) roster.</p>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
@@ -728,12 +728,12 @@ function PhaseGateModal({ open, onClose, project }) {
 }
 
 // Consolidates the third track journi tracks against the same phase timeline
-// as PM/CM WBS tasks: logged completions of CM Charter actions (Module 19's
+// as PM/CM WBS tasks: logged completions of CM Charter actions (Module 5's
 // charter registry). charterActionLog only carries a single completion
 // date, not a start/end range, so these appear here as a table alongside
 // the PM/CM track tables rather than as Gantt bars — the point is giving a
 // Change Manager or PM one place to see everything active in a phase,
-// without needing to cross-reference Module 19 separately.
+// without needing to cross-reference Module 5 separately.
 function CharterActionsSection({ project, charters, phaseFilter }) {
   const allLogs = project.charterActionLog || []
   const enriched = allLogs.map((log) => {
@@ -746,7 +746,7 @@ function CharterActionsSection({ project, charters, phaseFilter }) {
   return (
     <div className="card overflow-x-auto">
       <div className="px-4 py-3 border-b border-brand-50 font-semibold text-sm text-brand-950">
-        Charter Actions <span className="font-normal text-ink/40 text-xs">(logged completions — Module 19 Charter Registry)</span>
+        Charter Actions <span className="font-normal text-ink/40 text-xs">(logged completions — Module 5 Charter Registry)</span>
       </div>
       {rows.length === 0 ? (
         <div className="p-4">

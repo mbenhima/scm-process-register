@@ -64,25 +64,24 @@ const dict = {
   navPortfolio: { en: 'Portfolio Dashboard', fr: 'Tableau de bord du portefeuille', ar: 'لوحة المحفظة' },
   navM1: { en: 'M1 · Hierarchy', fr: 'M1 · Hiérarchie', ar: 'م1 · الهيكل التنظيمي' },
   navM2: { en: 'M2 · Identity & RBAC', fr: 'M2 · Identité et RBAC', ar: 'م2 · الهوية والصلاحيات' },
-  navM3: { en: 'M3 · Initiative Registry', fr: 'M3 · Registre des initiatives', ar: 'م3 · سجل المبادرات' },
-  navM17: { en: 'M17 · WBS & Gantt', fr: 'M17 · SDP et Gantt', ar: 'م17 · هيكل تجزئة العمل وغانت' },
-  navM4: { en: 'M4 · Stakeholder Mapping', fr: 'M4 · Cartographie des parties prenantes', ar: 'م4 · خريطة أصحاب المصلحة' },
-  navM5: { en: 'M5 · ADKAR Engine', fr: 'M5 · Moteur ADKAR', ar: 'م5 · محرك ADKAR' },
-  navM6: { en: 'M6 · Emotional & Transition', fr: 'M6 · Transition émotionnelle', ar: 'م6 · الانتقال العاطفي' },
-  navM7: { en: 'M7 · Sponsor & Coalition', fr: 'M7 · Sponsor et coalition', ar: 'م7 · الراعي والتحالف' },
-  navM8: { en: 'M8 · Communications', fr: 'M8 · Communications', ar: 'م8 · الاتصالات' },
-  navM9: { en: 'M9 · Training', fr: 'M9 · Formation', ar: 'م9 · التدريب' },
-  navM10: { en: 'M10 · Resistance', fr: 'M10 · Résistance', ar: 'م10 · المقاومة' },
-  navM11: { en: 'M11 · Manager as Coach', fr: 'M11 · Manager-coach', ar: 'م11 · المدير كموجه' },
-  navM12: { en: 'M12 · Sustainment', fr: 'M12 · Pérennisation', ar: 'م12 · الاستدامة' },
-  navM13: { en: 'M13 · Risk Register', fr: 'M13 · Registre des risques', ar: 'م13 · سجل المخاطر' },
-  navM14: { en: 'M14 · Analytics', fr: 'M14 · Analytique', ar: 'م14 · التحليلات' },
-  navM15: { en: 'M15 · Journey Map', fr: 'M15 · Carte du parcours', ar: 'م15 · خريطة الرحلة' },
-  navM16: { en: 'M16 · AI Use Case Library', fr: 'M16 · Bibliothèque de cas d’usage IA', ar: 'م16 · مكتبة حالات استخدام الذكاء الاصطناعي' },
-  navM18: { en: 'M18 · Process Registry', fr: 'M18 · Registre des processus', ar: 'م18 · سجل العمليات' },
-  sectionPlatform: { en: 'Platform', fr: 'Plateforme', ar: 'المنصة' },
-  sectionCore: { en: 'Change Management Modules', fr: 'Modules de gestion du changement', ar: 'وحدات إدارة التغيير' },
-  sectionAI: { en: 'Governance', fr: 'Gouvernance', ar: 'الحوكمة' },
+  navM3: { en: 'M7 · Initiative Registry', fr: 'M7 · Registre des initiatives', ar: 'م7 · سجل المبادرات' },
+  navM17: { en: 'M8 · WBS & Gantt', fr: 'M8 · SDP et Gantt', ar: 'م8 · هيكل تجزئة العمل وغانت' },
+  navM4: { en: 'M9 · Stakeholder Mapping', fr: 'M9 · Cartographie des parties prenantes', ar: 'م9 · خريطة أصحاب المصلحة' },
+  navM5: { en: 'M10 · ADKAR Engine', fr: 'M10 · Moteur ADKAR', ar: 'م10 · محرك ADKAR' },
+  navM6: { en: 'M11 · Emotional & Transition', fr: 'M11 · Transition émotionnelle', ar: 'م11 · الانتقال العاطفي' },
+  navM7: { en: 'M13 · Sponsor & Coalition', fr: 'M13 · Sponsor et coalition', ar: 'م13 · الراعي والتحالف' },
+  navM8: { en: 'M14 · Communications', fr: 'M14 · Communications', ar: 'م14 · الاتصالات' },
+  navM9: { en: 'M15 · Training', fr: 'M15 · Formation', ar: 'م15 · التدريب' },
+  navM10: { en: 'M16 · Resistance', fr: 'M16 · Résistance', ar: 'م16 · المقاومة' },
+  navM11: { en: 'M17 · Manager as Coach', fr: 'M17 · Manager-coach', ar: 'م17 · المدير كموجه' },
+  navM12: { en: 'M21 · Sustainment', fr: 'M21 · Pérennisation', ar: 'م21 · الاستدامة' },
+  navM13: { en: 'M12 · Risk Register', fr: 'M12 · Registre des risques', ar: 'م12 · سجل المخاطر' },
+  navM14: { en: 'M20 · Analytics', fr: 'M20 · Analytique', ar: 'م20 · التحليلات' },
+  navM15: { en: 'M18 · Journey Map', fr: 'M18 · Carte du parcours', ar: 'م18 · خريطة الرحلة' },
+  navM16: { en: 'M6 · AI Use Case Library', fr: 'M6 · Bibliothèque de cas d’usage IA', ar: 'م6 · مكتبة حالات استخدام الذكاء الاصطناعي' },
+  navM18: { en: 'M4 · Process Registry', fr: 'M4 · Registre des processus', ar: 'م4 · سجل العمليات' },
+  sectionPlatform: { en: 'Platform & Governance', fr: 'Plateforme et gouvernance', ar: 'المنصة والحوكمة' },
+  sectionCore: { en: 'Change Management Program', fr: 'Programme de gestion du changement', ar: 'برنامج إدارة التغيير' },
 
   // ---------- Login ----------
   loginTitle: { en: 'Welcome to journi', fr: 'Bienvenue sur journi', ar: 'مرحبًا بك في journi' },
@@ -133,7 +132,7 @@ const dict = {
   tier_augmented: { en: 'Augmented', fr: 'Augmenté', ar: 'معزز' },
   tier_autonomous: { en: 'Autonomous (out of scope)', fr: 'Autonome (hors périmètre)', ar: 'مستقل (خارج النطاق)' },
 
-  // ---------- Module 3 ----------
+  // ---------- Module 7 ----------
   m3_title: { en: 'Initiative & Portfolio Registry', fr: 'Registre des initiatives et du portefeuille', ar: 'سجل المبادرات والمحفظة' },
   m3_desc: { en: 'System of record for every change initiative — business driver, scope, target population, and Lewin macro-state.', fr: 'Registre de toutes les initiatives de changement — moteur métier, périmètre, population cible et état macro de Lewin.', ar: 'سجل شامل لكل مبادرات التغيير — الدافع، النطاق، الفئة المستهدفة، وحالة لوين الكلية.' },
   m17_title: { en: 'Work Breakdown Structure & Gantt', fr: 'Structure de découpage du projet et Gantt', ar: 'هيكل تجزئة العمل ومخطط غانت' },
@@ -162,7 +161,7 @@ const dict = {
   m18_racsi_legend: { en: 'R = Responsible · A = Accountable · C = Consulted · S = Sign-off · I = Informed', fr: 'R = Responsable · A = Redevable · C = Consulté · S = Validateur · I = Informé', ar: 'R = المسؤول التنفيذي · A = المعتمد · C = المستشار · S = المصادق · I = المطلع' },
   m18_chain_racsi: { en: 'RACSI (ES/CM/PM/FPO/ITL/SUP/EU)', fr: 'RACSI (ES/CM/PM/FPO/ITL/SUP/EU)', ar: 'RACSI (ES/CM/PM/FPO/ITL/SUP/EU)' },
   m18_racsi_readonly: { en: 'Only a Group/Org/Super Admin can edit this grid. Every other role sees it read-only.', fr: 'Seul un administrateur Groupe/Organisation/Super Admin peut modifier cette grille. Tout autre rôle la voit en lecture seule.', ar: 'يمكن فقط لمسؤول المجموعة/المؤسسة/المسؤول الأعلى تعديل هذه الشبكة. تظهر لبقية الأدوار للقراءة فقط.' },
-  navM19: { en: 'M19 · CM Charters', fr: 'M19 · Chartes GC', ar: 'م19 · مواثيق إدارة التغيير' },
+  navM19: { en: 'M5 · CM Charters', fr: 'M5 · Chartes GC', ar: 'م5 · مواثيق إدارة التغيير' },
   m19_title: { en: 'Change Management Charter Registry', fr: 'Registre des chartes de gestion du changement', ar: 'سجل مواثيق إدارة التغيير' },
   m19_desc: { en: 'The 8 signed, trackable behavioral standards governing sponsorship, frontline engagement, communication, impact assessment, coaching and mentoring, and pulse/interview diagnostics — with their concrete action mapping and per-project compliance log, so charter governance is trackable, not just aspirational.', fr: 'Les 8 standards comportementaux signés et suivables régissant le sponsoring, l’engagement de première ligne, la communication, l’évaluation d’impact, le coaching et le mentorat, et les diagnostics de type pulse/entretien — avec leur cartographie d’actions concrète et un journal de conformité par projet, afin que la gouvernance des chartes soit suivable, et non simplement aspirationnelle.', ar: 'المعايير السلوكية الثمانية الموقعة والقابلة للتتبع التي تحكم الرعاية، إشراك الخط الأمامي، التواصل، تقييم الأثر، التدريب والتوجيه، وتشخيصات النبض/المقابلات — مع خريطة إجراءاتها الملموسة وسجل امتثال لكل مشروع، بحيث تصبح حوكمة المواثيق قابلة للتتبع لا مجرد تطلع.' },
   m19_tab_charters: { en: 'Charters', fr: 'Chartes', ar: 'المواثيق' },
@@ -208,7 +207,7 @@ const dict = {
   m19_mentor_involvement: { en: 'Mentor involvement', fr: 'Implication du mentor', ar: 'مشاركة الموجّه' },
   m19_evidence: { en: 'Competency evidence', fr: 'Preuve de compétence', ar: 'دليل الكفاءة' },
   m19_regression: { en: 'Regression path', fr: 'Voie de régression', ar: 'مسار التراجع' },
-  navM20: { en: 'M20 · Journeys & Analytics', fr: 'M20 · Parcours & analytique', ar: 'م20 · الرحلات والتحليلات' },
+  navM20: { en: 'M19 · Journeys & Analytics', fr: 'M19 · Parcours & analytique', ar: 'م19 · الرحلات والتحليلات' },
   m20_title: { en: 'Stakeholder Journeys, Touchpoints & Analytics', fr: 'Parcours des parties prenantes, points de contact & analytique', ar: 'رحلات أصحاب المصلحة ونقاط الاتصال والتحليلات' },
   m20_desc: { en: 'The experience-layer companion to the score-centric dashboards elsewhere in journi: 8 persona/exception/system journeys, their concrete touchpoints with success criteria and evidence, 5 journey analytics dashboards, and the project-context overlay distinguishing each case from the generic template.', fr: 'Le complément expérientiel aux tableaux de bord centrés score du reste de journi : 8 parcours (persona/exception/système), leurs points de contact concrets avec critères de succès et preuves, 5 tableaux de bord analytiques de parcours, et la surcouche de contexte projet distinguant chaque cas du modèle générique.', ar: 'المكمل القائم على التجربة للوحات المعلومات القائمة على النقاط في بقية journi: 8 رحلات (شخصية/استثنائية/نظامية)، ونقاط اتصالها الملموسة مع معايير النجاح والأدلة، و5 لوحات تحليلات للرحلات، وطبقة سياق المشروع التي تميز كل حالة عن النموذج العام.' },
   m20_tab_journeys: { en: 'Journeys', fr: 'Parcours', ar: 'الرحلات' },
@@ -226,7 +225,7 @@ const dict = {
   m20_touchpoint: { en: 'Touchpoint', fr: 'Point de contact', ar: 'نقطة الاتصال' },
   m20_day: { en: 'Day', fr: 'Jour', ar: 'اليوم' },
   m20_success_criteria: { en: 'Success criteria', fr: 'Critères de succès', ar: 'معايير النجاح' },
-  m20_dashboard_desc: { en: 'DASH-01 and DASH-02 compute a live metric from this project\'s own touchpoint and charter-action logs. The remaining dashboards are shown as reference cards — this demo does not model per-mentee or per-case granularity separately from the Module 19 / Module 13 logs those dashboards would aggregate in a BI-connected deployment.', fr: 'DASH-01 et DASH-02 calculent une métrique en direct à partir des journaux de points de contact et d\'actions de charte de ce projet. Les autres tableaux de bord sont présentés comme des fiches de référence — cette démonstration ne modélise pas la granularité par mentoré ou par cas séparément des journaux du Module 19 / Module 13 que ces tableaux de bord agrégeraient dans un déploiement connecté à un outil de BI.', ar: 'يحسب DASH-01 وDASH-02 مقياسًا حيًا من سجلات نقاط الاتصال وإجراءات المواثيق الخاصة بهذا المشروع. تُعرض بقية لوحات المعلومات كبطاقات مرجعية — لا يُمثّل هذا العرض التوضيحي التفاصيل الدقيقة لكل متدرب أو حالة بمعزل عن سجلات الوحدة 19 / الوحدة 13 التي كانت هذه اللوحات ستجمعها في نشر متصل بأداة ذكاء أعمال.' },
+  m20_dashboard_desc: { en: 'DASH-01 and DASH-02 compute a live metric from this project\'s own touchpoint and charter-action logs. The remaining dashboards are shown as reference cards — this demo does not model per-mentee or per-case granularity separately from the Module 5 / Module 12 logs those dashboards would aggregate in a BI-connected deployment.', fr: 'DASH-01 et DASH-02 calculent une métrique en direct à partir des journaux de points de contact et d\'actions de charte de ce projet. Les autres tableaux de bord sont présentés comme des fiches de référence — cette démonstration ne modélise pas la granularité par mentoré ou par cas séparément des journaux du Module 5 / Module 12 que ces tableaux de bord agrégeraient dans un déploiement connecté à un outil de BI.', ar: 'يحسب DASH-01 وDASH-02 مقياسًا حيًا من سجلات نقاط الاتصال وإجراءات المواثيق الخاصة بهذا المشروع. تُعرض بقية لوحات المعلومات كبطاقات مرجعية — لا يُمثّل هذا العرض التوضيحي التفاصيل الدقيقة لكل متدرب أو حالة بمعزل عن سجلات الوحدة 19 / الوحدة 13 التي كانت هذه اللوحات ستجمعها في نشر متصل بأداة ذكاء أعمال.' },
   m20_live_metric: { en: 'Live metric', fr: 'Métrique en direct', ar: 'مقياس حي' },
   m20_touchpoint_completion: { en: 'JRN-01 touchpoint completion', fr: 'Réalisation des points de contact JRN-01', ar: 'إنجاز نقاط اتصال JRN-01' },
   m20_charter_completion: { en: 'Charter action completion', fr: 'Réalisation des actions de charte', ar: 'إنجاز إجراءات المواثيق' },
@@ -235,7 +234,7 @@ const dict = {
   m20_linked_report: { en: 'Linked report', fr: 'Rapport lié', ar: 'التقرير المرتبط' },
   m20_reference_only: { en: 'Reference card only — no per-mentee/per-case data model in this demo.', fr: 'Fiche de référence uniquement — aucun modèle de données par mentoré/cas dans cette démonstration.', ar: 'بطاقة مرجعية فقط — لا يوجد نموذج بيانات لكل متدرب/حالة في هذا العرض التوضيحي.' },
   m20_overlay_desc: { en: 'What makes each of the source framework\'s 13 illustrative seed projects distinct from the generic journey template — the specific tension, constraint, or exception pattern most likely to fire. These PRJ-xxx IDs are the source documents\' own worked reference set, not journi\'s seeded demo projects.', fr: 'Ce qui distingue chacun des 13 projets pilotes illustratifs du référentiel source du modèle de parcours générique — la tension, contrainte ou exception spécifique la plus susceptible de se déclencher. Ces identifiants PRJ-xxx appartiennent à l\'ensemble de référence propre aux documents source, et non aux projets de démonstration semés de journi.', ar: 'ما يميز كل مشروع من المشاريع النموذجية التوضيحية الثلاثة عشر للإطار المصدر عن نموذج الرحلة العام — التوتر أو القيد أو نمط الاستثناء المحدد الأكثر احتمالاً للظهور. تنتمي معرّفات PRJ-xxx هذه إلى مجموعة المراجع الخاصة بالوثائق المصدر، وليس إلى مشاريع العرض التوضيحي المزروعة في journi.' },
-  navM21: { en: 'M21 · Field Notes', fr: 'M21 · Notes de terrain', ar: 'م21 · ملاحظات ميدانية' },
+  navM21: { en: 'M22 · Field Notes', fr: 'M22 · Notes de terrain', ar: 'م22 · ملاحظات ميدانية' },
   m21_title: { en: 'Field Notes', fr: 'Notes de terrain', ar: 'ملاحظات ميدانية' },
   m21_desc: { en: 'A lightweight, freeform log for the knowledge that doesn\'t fit a structured module yet — a workshop happened, a decision was made outside journi, a sign-off landed, a nominee list was drafted. Not a substitute for the structured modules: once something becomes a real record there (a Stakeholder Map entry, an ADKAR score, a Communication), it belongs there. This is for the moments in between.', fr: 'Un journal léger et libre pour les connaissances qui ne rentrent pas encore dans un module structuré : un atelier a eu lieu, une décision a été prise hors de journi, une validation est arrivée, une liste de candidats a été rédigée. Ce n\'est pas un substitut aux modules structurés : dès qu\'un élément devient une entrée réelle ailleurs (une fiche de la cartographie des parties prenantes, un score ADKAR, une communication), il y a sa place. Ceci est pour les moments intermédiaires.', ar: 'سجل خفيف وحر للمعرفة التي لا تنتمي بعد إلى وحدة منظمة — عُقدت ورشة عمل، اتُّخذ قرار خارج journi، وصل توقيع اعتماد، أُعدت قائمة مرشحين. ليس بديلاً عن الوحدات المنظمة: بمجرد أن يصبح أي عنصر سجلاً حقيقياً في مكان آخر (بطاقة في خريطة أصحاب المصلحة، درجة ADKAR، اتصال)، فمكانه هناك. هذا للحظات الفاصلة بينهما.' },
   m21_select_project: { en: 'Select a Change Management Project to view or add Field Notes.', fr: 'Sélectionnez un projet de gestion du changement pour consulter ou ajouter des notes de terrain.', ar: 'اختر مشروع إدارة تغيير لعرض أو إضافة ملاحظات ميدانية.' },
@@ -248,7 +247,7 @@ const dict = {
   m21_author: { en: 'Logged by', fr: 'Consigné par', ar: 'سجَّله' },
   m21_related_module_none: { en: 'Not yet linked to a module', fr: 'Pas encore lié à un module', ar: 'غير مرتبط بوحدة بعد' },
   m21_body: { en: 'What happened, and what it feeds into later', fr: 'Ce qui s\'est passé, et ce que cela alimente par la suite', ar: 'ما حدث، وما الذي يغذّيه لاحقًا' },
-  navM22: { en: 'M22 · OBS', fr: 'M22 · OBS', ar: 'م22 · الهيكل التنظيمي' },
+  navM22: { en: 'M3 · OBS', fr: 'M3 · OBS', ar: 'م3 · الهيكل التنظيمي' },
   m22_title: { en: 'Organizational Breakdown Structure', fr: 'Structure organisationnelle du projet (OBS)', ar: 'الهيكل التنظيمي للمشروع' },
   m22_desc: { en: 'The project\'s resourcing roster: who fills which role, and who they report to — distinct from M2 Users, since an OBS entry does not need a journi login at all.', fr: 'Le registre des ressources du projet : qui occupe quel rôle, et à qui il ou elle rend compte — distinct des utilisateurs de M2, une entrée OBS n\'a pas besoin de compte de connexion journi.', ar: 'سجل موارد المشروع: من يشغل أي دور، ولمن يرفع تقاريره — يختلف عن مستخدمي الوحدة M2، إذ لا تحتاج بطاقة الهيكل التنظيمي إلى حساب دخول في journi.' },
   m22_add_entry: { en: 'Add Role', fr: 'Ajouter un rôle', ar: 'إضافة دور' },
@@ -289,7 +288,7 @@ const dict = {
   duration: { en: 'Duration', fr: 'Durée', ar: 'المدة' },
   executiveSponsor: { en: 'Executive Sponsor', fr: 'Sponsor exécutif', ar: 'الراعي التنفيذي' },
 
-  // ---------- Module 4 ----------
+  // ---------- Module 9 ----------
   m4_title: { en: 'Stakeholder & Impact Mapping', fr: 'Cartographie des parties prenantes et de l’impact', ar: 'خريطة أصحاب المصلحة والتأثير' },
   m4_desc: { en: 'Who is affected, how heavily, and in what dimension. Impact scores drive tracking depth.', fr: 'Qui est impacté, à quel degré et selon quelle dimension. Les scores d’impact déterminent le niveau de suivi.', ar: 'من المتأثر، وبأي درجة، وفي أي بُعد. تحدد درجات التأثير مستوى المتابعة.' },
   stakeholderGroup: { en: 'Stakeholder Group', fr: 'Groupe de parties prenantes', ar: 'مجموعة أصحاب المصلحة' },
@@ -303,7 +302,7 @@ const dict = {
   highImpactLowInfluence: { en: 'High-impact / Low-influence', fr: 'Impact élevé / Influence faible', ar: 'تأثر عالٍ / نفوذ منخفض' },
   atRiskFlag: { en: 'At risk of being under-supported', fr: 'Risque de manque de soutien', ar: 'معرّض لخطر نقص الدعم' },
 
-  // ---------- Module 5 ----------
+  // ---------- Module 10 ----------
   m5_title: { en: 'ADKAR Engine — Individual Readiness Core', fr: 'Moteur ADKAR — Cœur de préparation individuelle', ar: 'محرك ADKAR — جاهزية الأفراد' },
   m5_desc: { en: 'Score cohorts across the five ADKAR blocks with barrier-point diagnosis.', fr: 'Évaluez les cohortes sur les cinq blocs ADKAR avec diagnostic des points de blocage.', ar: 'قيّم المجموعات عبر عناصر ADKAR الخمسة مع تشخيص نقاط العائق.' },
   buildingBlock: { en: 'Building Block', fr: 'Bloc', ar: 'العنصر' },
@@ -316,13 +315,13 @@ const dict = {
   coachingNote: { en: 'Coaching Note', fr: 'Note de coaching', ar: 'ملاحظة توجيهية' },
   addCoachingNote: { en: 'Add coaching note', fr: 'Ajouter une note de coaching', ar: 'إضافة ملاحظة توجيهية' },
 
-  // ---------- Module 6 ----------
+  // ---------- Module 11 ----------
   m6_title: { en: 'Emotional & Transition Layer', fr: 'Couche émotionnelle et de transition', ar: 'طبقة الانتقال العاطفي' },
   m6_desc: { en: 'Bridges transition position and Kübler-Ross sentiment, cross-referenced with ADKAR.', fr: 'Position de transition de Bridges et sentiment de Kübler-Ross, croisés avec ADKAR.', ar: 'موقع انتقال بريدجز ومشاعر كوبلر-روس، مقارنة مع ADKAR.' },
   divergenceAlert: { en: 'Divergence Alert', fr: 'Alerte de divergence', ar: 'تنبيه تباين' },
   divergenceDesc: { en: 'Strong ADKAR score but still emotionally in Ending — classic hidden-resistance pattern.', fr: 'Bon score ADKAR mais encore émotionnellement en phase de Fin — signal classique de résistance cachée.', ar: 'درجة ADKAR جيدة لكن لا يزال عاطفيًا في مرحلة الانتهاء — نمط كلاسيكي للمقاومة الخفية.' },
 
-  // ---------- Module 7 ----------
+  // ---------- Module 13 ----------
   m7_title: { en: 'Sponsor & Coalition Module', fr: 'Module Sponsor et coalition', ar: 'وحدة الراعي والتحالف' },
   m7_desc: { en: 'Sponsor roadmap, active-vs-passive sponsorship, and guiding coalition strength.', fr: 'Feuille de route du sponsor, sponsoring actif vs passif, et solidité de la coalition directrice.', ar: 'خارطة طريق الراعي، الرعاية الفعالة مقابل السلبية، وقوة التحالف الموجّه.' },
   coalitionMember: { en: 'Coalition Member', fr: 'Membre de la coalition', ar: 'عضو التحالف' },
@@ -333,7 +332,7 @@ const dict = {
   visibilityModerate: { en: 'Moderate', fr: 'Modéré', ar: 'متوسط' },
   visibilityStrong: { en: 'Strong', fr: 'Fort', ar: 'قوي' },
 
-  // ---------- Module 8 ----------
+  // ---------- Module 14 ----------
   m8_title: { en: 'Communication Planning & Execution', fr: 'Planification et exécution des communications', ar: 'تخطيط وتنفيذ الاتصالات' },
   m8_desc: { en: 'Message × audience × channel × timing matrix, with saturation detection.', fr: 'Matrice message × audience × canal × calendrier, avec détection de saturation.', ar: 'مصفوفة الرسالة × الجمهور × القناة × التوقيت، مع كشف التشبع.' },
   message: { en: 'Message', fr: 'Message', ar: 'الرسالة' },
@@ -344,7 +343,7 @@ const dict = {
   linkedAdkarBlock: { en: 'Linked ADKAR Block', fr: 'Bloc ADKAR lié', ar: 'عنصر ADKAR المرتبط' },
   saturationWarning: { en: 'Change saturation risk — overlapping population', fr: 'Risque de saturation — population qui se chevauche', ar: 'خطر تشبع التغيير — تداخل في الفئة المستهدفة' },
 
-  // ---------- Module 9 ----------
+  // ---------- Module 15 ----------
   m9_title: { en: 'Training & Capability Building', fr: 'Formation et développement des compétences', ar: 'التدريب وبناء القدرات' },
   m9_desc: { en: 'Curriculum coverage, completion, and demonstrated capability — trained vs. capable.', fr: 'Couverture du curriculum, achèvement et capacité démontrée — formé vs. capable.', ar: 'تغطية المنهج، الإتمام، والقدرة الفعلية — مُدرَّب مقابل قادر.' },
   curriculum: { en: 'Curriculum / Track', fr: 'Curriculum / Parcours', ar: 'المنهج / المسار' },
@@ -353,7 +352,7 @@ const dict = {
   completion: { en: 'Completion', fr: 'Achèvement', ar: 'نسبة الإنجاز' },
   certification: { en: 'Certified / Capable', fr: 'Certifié / Capable', ar: 'معتمد / قادر' },
 
-  // ---------- Module 10 ----------
+  // ---------- Module 16 ----------
   m10_title: { en: 'Resistance Management', fr: 'Gestion de la résistance', ar: 'إدارة المقاومة' },
   m10_desc: { en: 'Log, classify and resolve resistance, linked to concrete mitigation actions.', fr: 'Enregistrez, classez et résolvez la résistance, avec des actions de mitigation concrètes.', ar: 'سجّل وصنّف وعالج المقاومة، مع إجراءات تخفيف ملموسة.' },
   resistanceType: { en: 'Type', fr: 'Type', ar: 'النوع' },
@@ -369,13 +368,13 @@ const dict = {
   anonymous: { en: 'Anonymous', fr: 'Anonyme', ar: 'مجهول' },
   submitConcern: { en: 'Submit a concern', fr: 'Signaler une préoccupation', ar: 'إرسال ملاحظة' },
 
-  // ---------- Module 11 ----------
+  // ---------- Module 17 ----------
   m11_title: { en: 'Manager-as-Coach Enablement', fr: 'Activation du manager-coach', ar: 'تمكين المدير كموجه' },
   m11_desc: { en: 'Team-scoped ADKAR heatmap with suggested coaching actions per barrier.', fr: 'Carte thermique ADKAR de l’équipe avec actions de coaching suggérées par blocage.', ar: 'خريطة حرارية لفريقك مع إجراءات توجيهية مقترحة لكل عائق.' },
   managerReadiness: { en: 'Manager Readiness Self-Assessment', fr: 'Auto-évaluation de préparation du manager', ar: 'تقييم ذاتي لجاهزية المدير' },
   coachingScript: { en: 'Suggested Coaching Script', fr: 'Script de coaching suggéré', ar: 'نص توجيه مقترح' },
 
-  // ---------- Module 12 ----------
+  // ---------- Module 21 ----------
   m12_title: { en: 'Reinforcement & Sustainment', fr: 'Renforcement et pérennisation', ar: 'التعزيز والاستدامة' },
   m12_desc: { en: 'Post-go-live adoption audits, regression detection, and sustainment sign-off.', fr: 'Audits d’adoption post-déploiement, détection de régression et validation de pérennisation.', ar: 'تدقيقات التبني بعد الإطلاق، كشف التراجع، والتوقيع على الاستدامة.' },
   checkpoint: { en: 'Checkpoint', fr: 'Point de contrôle', ar: 'نقطة التحقق' },
@@ -394,7 +393,7 @@ const dict = {
   m12_rex_link_placeholder: { en: 'Linked Rule / Control / Charter (e.g. RULE-008, CTRL-012, CHTR-05)', fr: 'Règle / Contrôle / Charte liée (ex. RULE-008, CTRL-012, CHTR-05)', ar: 'القاعدة/الضابط/الميثاق المرتبط (مثال RULE-008, CTRL-012, CHTR-05)' },
   m12_rex_link_label: { en: 'Linked to', fr: 'Liée à', ar: 'مرتبط بـ' },
 
-  // ---------- Module 13 ----------
+  // ---------- Module 12 ----------
   m13_title: { en: 'Change Risk Register', fr: 'Registre des risques de changement', ar: 'سجل مخاطر التغيير' },
   m13_desc: { en: 'Adoption, sponsorship, capacity and saturation risk — distinct from generic project risk.', fr: 'Risques d’adoption, de sponsoring, de capacité et de saturation — distincts du risque projet générique.', ar: 'مخاطر التبني، الرعاية، القدرة والتشبع — مختلفة عن مخاطر المشروع العامة.' },
   riskCategory: { en: 'Category', fr: 'Catégorie', ar: 'الفئة' },
@@ -406,7 +405,7 @@ const dict = {
   impact: { en: 'Impact', fr: 'Impact', ar: 'الأثر' },
   riskScore: { en: 'Risk Score', fr: 'Score de risque', ar: 'درجة الخطر' },
 
-  // ---------- Module 14 ----------
+  // ---------- Module 20 ----------
   m14_title: { en: 'Metrics & Analytics Dashboard', fr: 'Tableau de bord des indicateurs et analyses', ar: 'لوحة المقاييس والتحليلات' },
   m14_desc: { en: 'Composite Readiness Index, adoption curves, and correlation analysis.', fr: 'Indice composite de préparation, courbes d’adoption et analyse de corrélation.', ar: 'مؤشر الجاهزية المركب، منحنيات التبني، وتحليل الارتباط.' },
   m14_crosstype_tab: { en: 'Cross-Type Matrix', fr: 'Matrice comparative des types', ar: 'مصفوفة مقارنة الأنواع' },
@@ -423,13 +422,13 @@ const dict = {
   heatmapByDept: { en: 'ADKAR Heatmap', fr: 'Carte thermique ADKAR', ar: 'خريطة ADKAR الحرارية' },
   execNarrative: { en: 'Executive Readiness Narrative', fr: 'Narratif de préparation exécutif', ar: 'سرد الجاهزية التنفيذي' },
 
-  // ---------- Module 15 ----------
+  // ---------- Module 18 ----------
   m15_title: { en: 'Journey Map / Visual Core', fr: 'Carte du parcours / Cœur visuel', ar: 'خريطة الرحلة / النواة البصرية' },
   m15_desc: { en: 'A literal, visual timeline combining ADKAR stage, Bridges phase and sentiment.', fr: 'Une chronologie visuelle combinant l’étape ADKAR, la phase de Bridges et le sentiment.', ar: 'جدول زمني بصري يجمع مرحلة ADKAR وطور بريدجز والمشاعر.' },
   zoomLevel: { en: 'Zoom Level', fr: 'Niveau de zoom', ar: 'مستوى التكبير' },
   shareSnapshot: { en: 'Share Snapshot', fr: 'Partager l’instantané', ar: 'مشاركة لقطة' },
 
-  // ---------- Module 16 ----------
+  // ---------- Module 6 ----------
   m16_title: { en: 'AI Use Case Library & Governance', fr: 'Bibliothèque et gouvernance des cas d’usage IA', ar: 'مكتبة وحوكمة حالات استخدام الذكاء الاصطناعي' },
   m16_desc: { en: 'A governed catalog of Assistive and Augmented AI use cases. No use case acts autonomously.', fr: 'Un catalogue gouverné de cas d’usage IA assistifs et augmentés. Aucun cas n’agit de façon autonome.', ar: 'كتالوج محكوم لحالات استخدام الذكاء الاصطناعي المساعد والمعزز. لا تعمل أي حالة بشكل مستقل.' },
   activateForOrg: { en: 'Active for this Organization', fr: 'Actif pour cette organisation', ar: 'مفعّل لهذه المؤسسة' },

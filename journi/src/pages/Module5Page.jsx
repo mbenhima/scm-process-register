@@ -205,7 +205,7 @@ function DesireDiagnosisCoach({ project }) {
 
       {!diagnosisUcActive ? (
         <div className="rounded-lg border border-dashed border-brand-100 bg-brand-50/40 px-3 py-2 text-xs text-ink/40">
-          ADKAR Barrier Diagnosis Assistant — not activated for this scope. An Organization Admin can enable it in M16.
+          ADKAR Barrier Diagnosis Assistant — not activated for this scope. An Organization Admin can enable it in M6.
         </div>
       ) : (
         <>
@@ -243,7 +243,7 @@ function DesireDiagnosisCoach({ project }) {
 
       {diagnosisAccepted && !scriptUcActive && (
         <div className="rounded-lg border border-dashed border-brand-100 bg-brand-50/40 px-3 py-2 text-xs text-ink/40">
-          Manager Coaching Script Generator — not activated for this scope. An Organization Admin can enable it in M16.
+          Manager Coaching Script Generator — not activated for this scope. An Organization Admin can enable it in M6.
         </div>
       )}
       {diagnosisAccepted && scriptUcActive && (

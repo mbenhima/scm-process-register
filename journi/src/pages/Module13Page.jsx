@@ -121,7 +121,7 @@ function Content({ project }) {
   }
   function saveStatusChange(r) {
     logJustifiedChange(project.id, {
-      module: 'M13 · Risk Register',
+      module: 'M12 · Risk Register',
       field: `Risk status — ${r.description.slice(0, 40)}`,
       oldValue: r.status,
       newValue: pendingStatus,

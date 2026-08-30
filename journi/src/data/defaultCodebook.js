@@ -1,7 +1,7 @@
-// Module 10 — Qualitative Coding Workbench (D32k QCW-01): starter codebook every
+// Module 16 — Qualitative Coding Workbench (D32k QCW-01): starter codebook every
 // Organization gets, editable thereafter. Not a fixed platform-wide taxonomy —
 // each Organization's Change Managers maintain their own codebook per engagement,
-// matching Module 10's existing role/skill/will/systemic classification philosophy
+// matching Module 16's existing role/skill/will/systemic classification philosophy
 // adapted to context.
 const defaultCodebook = [
   { label: 'fear-of-obsolescence', description: 'Concern that a skill, role, or way of working is being made redundant.' },

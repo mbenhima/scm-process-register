@@ -1,5 +1,5 @@
-// Module 20 — Stakeholder Journeys (D27, "Updated"). 8 persona/exception/system
-// journeys realizing Module 15's Journey Map at the persona-definition level;
+// Module 19 — Stakeholder Journeys (D27, "Updated"). 8 persona/exception/system
+// journeys realizing Module 18's Journey Map at the persona-definition level;
 // concrete touchpoints within each journey are in journeyTouchpoints.js (D28),
 // not duplicated here. Predecessor_Journey_ID shows which journeys specialize
 // a base journey (JRN-05 Mentee and JRN-07 QMS Certification both specialize
@@ -15,10 +15,10 @@ const journeys = [
     audience: 'Employee / End User',
     duration: 'J0-J8 (full project lifecycle)',
     linkedMacroIds: ['MP-01', 'MP-03', 'MP-05', 'MP-07', 'MP-09', 'MP-10'],
-    linkedModules: ['M4', 'M5', 'M6', 'M8', 'M9', 'M15'],
+    linkedModules: ['M9', 'M10', 'M11', 'M14', 'M15', 'M18'],
     ownerRole: 'Change Manager',
     description:
-      "The primary persona journey visualized in Module 15's Journey Map — Ending through New Beginning, overlaid with ADKAR block transitions and key events.",
+      "The primary persona journey visualized in Module 18's Journey Map — Ending through New Beginning, overlaid with ADKAR block transitions and key events.",
   },
   {
     id: 'JRN-02',
@@ -30,7 +30,7 @@ const journeys = [
     audience: 'Executive Sponsor',
     duration: 'J0-J8 (full project lifecycle)',
     linkedMacroIds: ['MP-02', 'MP-10'],
-    linkedModules: ['M3', 'M7'],
+    linkedModules: ['M7', 'M13'],
     ownerRole: 'Change Manager',
     description:
       "Tracks the Sponsor's own journey from initial commitment through visible-sponsorship activity to formal Refreeze sign-off — governed by CHTR-01.",
@@ -45,7 +45,7 @@ const journeys = [
     audience: 'Frontline Supervisor / People Manager',
     duration: 'J3-J8 (Build through Sustainment)',
     linkedMacroIds: ['MP-04', 'MP-09'],
-    linkedModules: ['M10', 'M11'],
+    linkedModules: ['M16', 'M17'],
     ownerRole: 'Change Manager',
     description:
       'Covers participative-management engagement through hypercare floor coaching — governed by CHTR-02 and CHTR-05.',
@@ -60,7 +60,7 @@ const journeys = [
     audience: 'Employee (Champion role)',
     duration: 'J1-J7 (Discovery through Reinforcement)',
     linkedMacroIds: ['MP-06'],
-    linkedModules: ['M7'],
+    linkedModules: ['M13'],
     ownerRole: 'Change Manager',
     description:
       'Recruitment through active listening-session participation to network re-chartering; feeds E2E-01 (Readiness & Mobilization) and E2E-03 (Resistance-to-Commitment).',
@@ -75,7 +75,7 @@ const journeys = [
     audience: 'Employee / End User (in a mentored role)',
     duration: 'J4 (Testing & Training), extending into J6',
     linkedMacroIds: ['MP-05'],
-    linkedModules: ['M9'],
+    linkedModules: ['M15'],
     ownerRole: 'Training Lead',
     description:
       'The Trainee -> Observer -> Autonomous staged journey (see mentoringStages.js); a specialization of JRN-01 for roles requiring hands-on mentoring rather than classroom training alone.',
@@ -90,7 +90,7 @@ const journeys = [
     audience: 'Employee / End User (flagged individual)',
     duration: 'Ad hoc, per triggered case',
     linkedMacroIds: ['MP-08'],
-    linkedModules: ['M6', 'M13'],
+    linkedModules: ['M11', 'M12'],
     ownerRole: 'Change Manager',
     description:
       'The Exception E2 recovery path as a journey in its own right — confirm, identity-focused 1:1, closure moment, Bridges re-check; governed by CHTR-06.',
@@ -105,7 +105,7 @@ const journeys = [
     audience: 'Functional Process Owner / QHSE Champion',
     duration: 'J1-J8, extended by external audit gates',
     linkedMacroIds: ['MP-01', 'MP-06'],
-    linkedModules: ['M4', 'M7'],
+    linkedModules: ['M9', 'M13'],
     ownerRole: 'Change Manager',
     description:
       'Specialization of JRN-01 for QMS Implementation projects — includes mock-up audit and certifying-audit gates not present in the generic journey.',
@@ -120,7 +120,7 @@ const journeys = [
     audience: 'N/A — system/process journey, human-facing at the review step',
     duration: 'Minutes to days per suggestion',
     linkedMacroIds: [],
-    linkedModules: ['M16'],
+    linkedModules: ['M6'],
     ownerRole: 'Super Admin',
     description:
       "Not a persona journey but a tracked artifact journey: generated -> labeled 'AI-generated — review required' -> human decision -> logged outcome.",

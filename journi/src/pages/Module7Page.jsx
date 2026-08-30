@@ -27,7 +27,7 @@ function Content({ project }) {
   function saveVisibility() {
     if (!visibilityDirty) return
     logJustifiedChange(project.id, {
-      module: 'M7 · Sponsor & Coalition',
+      module: 'M13 · Sponsor & Coalition',
       field: 'Sponsor visibility',
       oldValue: visibilityLabel(t, project.sponsor.visibility),
       newValue: visibilityLabel(t, pendingVisibility),
@@ -74,7 +74,7 @@ function Content({ project }) {
           )}
           {project.sponsor.visibility === 'weak' && (
             <div className="mt-3 text-xs rounded-lg bg-red-50 text-red-700 p-2">
-              Alert: sponsorship visibility below threshold — cross-reference with stalled Desire scores in M5.
+              Alert: sponsorship visibility below threshold — cross-reference with stalled Desire scores in M10.
             </div>
           )}
         </div>

@@ -1,11 +1,11 @@
-// Module 20 — Journey Analytics Dashboards (D29): the experience-centric
-// companion to journi's existing score-centric analytics (M5/M13/M14) —
+// Module 19 — Journey Analytics Dashboards (D29): the experience-centric
+// companion to journi's existing score-centric analytics (M10/M12/M20) —
 // showing whether the intended journey actually happened, not just the
 // resulting score. Each extends an existing report rather than duplicating
 // it. DASH-01 and DASH-02 compute a live metric from a project's
 // touchpointLog / charterActionLog (see Module20Page); DASH-03/04/05 are
 // shown as descriptive reference cards — this demo doesn't model per-mentee
-// or per-case granularity separately from the underlying M19/M13 logs.
+// or per-case granularity separately from the underlying M5/M12 logs.
 const journeyDashboards = [
   {
     id: 'DASH-01',
@@ -29,7 +29,7 @@ const journeyDashboards = [
     refreshFrequency: 'Weekly',
     linkedReport: 'RPT-007',
     live: 'charterActions',
-    description: 'Rolls up Charter Action Mapping (M19) completion against the charter each action belongs to, cross-referenced with JRN-02 touchpoints.',
+    description: 'Rolls up Charter Action Mapping (M5) completion against the charter each action belongs to, cross-referenced with JRN-02 touchpoints.',
   },
   {
     id: 'DASH-03',

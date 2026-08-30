@@ -8,7 +8,7 @@ const LABELS = {
 }
 
 /**
- * Tenant-aware roll-up level switcher for Module 14 and the Portfolio
+ * Tenant-aware roll-up level switcher for Module 20 and the Portfolio
  * Dashboard. `levels` is the list of levels available to the current user's
  * role for the current Organization (see rbac.availableRollupLevels) plus
  * 'project' whenever a Project is in scope — the caller decides that part

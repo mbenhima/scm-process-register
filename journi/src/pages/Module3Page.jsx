@@ -68,7 +68,7 @@ function ProjectDetail({ project }) {
   function saveLewin() {
     if (!lewinDirty) return
     logJustifiedChange(project.id, {
-      module: 'M3 · Initiative Registry',
+      module: 'M7 · Initiative Registry',
       field: 'Lewin macro-state',
       oldValue: t(`lewin_${project.lewinPhase}`),
       newValue: t(`lewin_${pendingLewin}`),

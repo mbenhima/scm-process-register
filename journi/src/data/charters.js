@@ -1,7 +1,7 @@
-// Module 19 — Change Management Charter Registry (D31).
+// Module 5 — Change Management Charter Registry (D31).
 // 8 charters, each a signed, trackable behavioral standard (not prose guidance)
 // governing a specific role's expected behavior across the change lifecycle.
-// R/A/C/S/I use the same 7-code RACSI taxonomy as Module 18's E2E chains
+// R/A/C/S/I use the same 7-code RACSI taxonomy as Module 4's E2E chains
 // (D17 CAT-02: ES/CM/PM/FPO/ITL/SUP/EU) — distinct from journi's platform
 // ROLES enum. Governs_OBS_Level mirrors Module 1's Group/Organization/Project
 // hierarchy. Charter-to-task/step mapping lives separately in charterActions.js
@@ -11,7 +11,7 @@
 // Each charter is a named container for one or more entries — a charter can
 // cover more than one specific behavioral commitment (e.g. a distinct
 // category/owner/what/who/when/where/why/how), each independently added,
-// edited, and removed (Module 19's Manage Charters editor). Charter-level
+// edited, and removed (Module 5's Manage Charters editor). Charter-level
 // fields (status, version, RACSI, governance level) describe the charter as
 // a whole; entry-level fields describe one specific commitment within it.
 const charters = [
@@ -34,9 +34,9 @@ const charters = [
         what: 'Defines the specific, observable sponsorship behaviors expected of the Executive Sponsor and Steering Committee across the initiative lifecycle.',
         who: 'Executive Sponsor (primary subject); Change Manager (facilitates); Steering Committee (co-signs)',
         when: 'Signed at project kickoff; reviewed at every Phase Gate',
-        where: 'Steering Committee governance forum (Module 7)',
+        where: 'Steering Committee governance forum (Module 13)',
         why: 'Prosci research shows active, visible sponsorship is the single largest predictor of change success; an unwritten expectation is an unenforceable one.',
-        how: 'A structured charter document naming specific actions (town halls attended, escalations resolved, communications sent) rather than a generic "be supportive" commitment; tracked via the Sponsor-visibility tracker (Module 7).',
+        how: 'A structured charter document naming specific actions (town halls attended, escalations resolved, communications sent) rather than a generic "be supportive" commitment; tracked via the Sponsor-visibility tracker (Module 13).',
         description:
           'Operationalizes the Prosci Sponsor Model and Kotter Step 2 (Build a Guiding Coalition) as a signed, trackable commitment rather than prose guidance.',
       },
@@ -65,7 +65,7 @@ const charters = [
         why: "Resistance rooted in a 'done-to-me' perception of change is materially higher than resistance to a change the team helped shape, even in small ways.",
         how: "Structured participation moments (input sessions, pilot feedback loops, visible 'you said / we did' tracking) built into the Communication and Resistance Management macro processes.",
         description:
-          'Extends Kotter Step 5 (Enable Action by Removing Barriers) to the supervisor layer; reduces role/will-based resistance surfaced in Module 10.',
+          'Extends Kotter Step 5 (Enable Action by Removing Barriers) to the supervisor layer; reduces role/will-based resistance surfaced in Module 16.',
       },
     ],
   },
@@ -88,7 +88,7 @@ const charters = [
         what: 'Defines the message-audience-channel-timing discipline and the FAQ/reply-protocol standard every communication wave must follow.',
         who: 'Change Manager / Communications Practitioner (primary subject); Executive Sponsor (co-signs key messages)',
         when: 'Signed at communication-plan approval; enforced on every wave thereafter',
-        where: 'Module 8 Communication Planning & Execution',
+        where: 'Module 14 Communication Planning & Execution',
         why: "Ad hoc, inconsistent communication is a leading cause of the Awareness/Desire gap the Interaction Map's Exception E1 describes.",
         how: 'A standing communication matrix (persona x channel x cadence), a mandatory FAQ reply-protocol SLA, and saturation checks (RULE-015) before any wave is scheduled.',
         description:
@@ -115,7 +115,7 @@ const charters = [
         what: 'Defines the methodology and sign-off standard for assessing how the change affects process, technology, role, location and professional identity.',
         who: 'Change Manager (facilitates); Functional Process Owners (validate); Frontline Supervisors (confirm)',
         when: 'Signed at Discovery & Design phase entry; re-validated at every major scope change',
-        where: 'Module 4 Stakeholder & Impact Mapping',
+        where: 'Module 9 Stakeholder & Impact Mapping',
         why: 'An impact assessment done once, informally, and never revisited misses scope creep — the single most common cause of a stale stakeholder map.',
         how: 'A required 5-dimension scoring rubric (RULE-005 human-confirmation gate), mandatory FPO/Supervisor validation sign-off, and a re-validation trigger on scope change.',
         description: 'Formalizes Prosci Impact & Stakeholder Analysis as a governed, re-triggerable process rather than a one-time exercise.',
@@ -196,7 +196,7 @@ const charters = [
         who: 'Trainer / designated Mentor (delivers); the mentee (subject); Functional Process Owner (validates competency gates)',
         when: 'Begins at Training & Change Readiness phase; each stage transition is a gated event, not a calendar milestone',
         where: 'Sandbox environment (Trainee), live environment under observation (Observer), live environment unsupervised (Autonomous)',
-        why: "'Trained' and 'capable' are not the same thing — Module 9 explicitly separates attendance from demonstrated competency; a single training event rarely produces autonomous performance.",
+        why: "'Trained' and 'capable' are not the same thing — Module 15 explicitly separates attendance from demonstrated competency; a single training event rarely produces autonomous performance.",
         how: 'A four-part sub-process — Diagnosis (assess starting Knowledge/Ability) -> Training Plan Elaboration (design the stage-gated path) -> Execution (deliver each stage with explicit entry/exit criteria) -> Closure (formal Autonomous sign-off) — see charterActions.js for the full task/step mapping and mentoringStages.js for the three-stage model itself.',
         description:
           "The one charter whose actions span the widest range of tasks/steps — from MP-05 Task 1 (curriculum design) through Task 5 (remediation) — because mentoring is a full-lifecycle discipline, not a single event.",
@@ -226,7 +226,7 @@ const charters = [
         why: 'An inconsistent or overly frequent pulse cadence produces survey fatigue and degrades response quality exactly when the signal matters most (around go-live).',
         how: 'A fixed instrument library (baseline, phase-gate, rapid, interview guide), a maximum-frequency rule per population (ties to RULE-015 saturation logic), and mandatory consolidation into the Composite Readiness Index within a defined SLA.',
         description:
-          'Standardizes the instruments referenced throughout Module 5/7 and the worked Survey Form exception-handling example under one governing charter.',
+          'Standardizes the instruments referenced throughout Module 10/7 and the worked Survey Form exception-handling example under one governing charter.',
       },
     ],
   },

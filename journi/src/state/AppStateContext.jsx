@@ -46,7 +46,7 @@ function migrateOrSeed(parsed) {
       if (parsed.requireJustification === undefined) parsed.requireJustification = true
       // A browser session persisted before CR1 (8-type E2E addendum) shipped
       // won't have these reference catalogs — back-fill from the seed rather
-      // than let Module 18 / the phase-template picker render empty.
+      // than let Module 4 / the phase-template picker render empty.
       if (!parsed.macroProcessCatalog) parsed.macroProcessCatalog = macroProcessCatalog
       if (!parsed.e2eProcessCatalog) parsed.e2eProcessCatalog = e2eProcessCatalog
       if (!parsed.phaseTemplateCatalog) parsed.phaseTemplateCatalog = phaseTemplateCatalog
@@ -84,7 +84,7 @@ function migrateOrSeed(parsed) {
         }
       }
       // D31b: a session persisted before Charter CRUD shipped won't have
-      // data.charters yet — back-fill from the same default set Module 19
+      // data.charters yet — back-fill from the same default set Module 5
       // used to render as a static import.
       if (!parsed.charters) parsed.charters = JSON.parse(JSON.stringify(defaultCharters))
       // A session persisted before a charter could hold multiple entries
@@ -119,7 +119,7 @@ function migrateOrSeed(parsed) {
         touchpointLog: p.touchpointLog || [],
         codeTags: p.codeTags || [],
         dismissedAlerts: p.dismissedAlerts || [],
-        // Module 21 — Field Notes: a session persisted before this shipped
+        // Module 22 — Field Notes: a session persisted before this shipped
         // won't have the array yet. A session persisted before the related-
         // module field became multi-select won't have relatedModules — back-
         // fill it from the old single relatedModule string.
@@ -127,7 +127,7 @@ function migrateOrSeed(parsed) {
           relatedModules: n.relatedModules || (n.relatedModule ? [n.relatedModule] : []),
           ...n,
         })),
-        // Module 22 — OBS (Organizational Breakdown Structure): a session
+        // Module 3 — OBS (Organizational Breakdown Structure): a session
         // persisted before this shipped won't have the array yet.
         obsEntries: p.obsEntries || [],
       }))
@@ -321,7 +321,7 @@ export function AppStateProvider({ children }) {
                 {
                   id: uid('log'),
                   date: new Date().toISOString().slice(0, 10),
-                  module: 'M5 · ADKAR Engine',
+                  module: 'M10 · ADKAR Engine',
                   field: block,
                   oldValue: String(current.score),
                   newValue: String(score),
@@ -338,7 +338,7 @@ export function AppStateProvider({ children }) {
    * General-purpose justified change: applies `applyPatch` to the project and
    * appends one changeLog entry in the same update, so a score/state change
    * and the evidence behind it are always recorded together — never as two
-   * separate, driftable steps. Used by M3 (Lewin), M6 (Bridges / Kübler-Ross).
+   * separate, driftable steps. Used by M7 (Lewin), M11 (Bridges / Kübler-Ross).
    */
   const logJustifiedChange = useCallback((projectId, { module, field, oldValue, newValue, justification, applyPatch }) => {
     setData((prev) => ({
@@ -552,7 +552,7 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // Module 19 — D31a Charter Action Mapping compliance tracking: a Change
+  // Module 5 — D31a Charter Action Mapping compliance tracking: a Change
   // Manager (or, within their module scope, another role per D31b) logs
   // completion of a specific charter-governed action for their project,
   // giving REQ-012's charter compliance something trackable rather than
@@ -580,11 +580,11 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // Module 21 — Field Notes: a lightweight, freeform log for the knowledge that
+  // Module 22 — Field Notes: a lightweight, freeform log for the knowledge that
   // every phase's week-by-week table keeps surfacing but no structured module
   // has a field for yet — a workshop happened, a decision was made outside
   // journi, a sign-off landed, a nominee list was drafted. Not a substitute for
-  // the structured modules (M4, M5, M8, etc.) — once something becomes a real
+  // the structured modules (M9, M10, M14, etc.) — once something becomes a real
   // record there, it belongs there — this is for the in-between moments that
   // would otherwise just be lost.
   const addFieldNote = useCallback((projectId, note) => {
@@ -620,7 +620,7 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // Module 22 — Organizational Breakdown Structure: the project's resourcing
+  // Module 3 — Organizational Breakdown Structure: the project's resourcing
   // roster (role + named person + who they report to), distinct from M2
   // Users (login/RBAC accounts) — an OBS entry does not need a journi login
   // at all. reportsTo is the id of another entry in the same project's OBS
@@ -714,7 +714,7 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // Module 20 — D28 Journey Touchpoints: records which touchpoints an
+  // Module 19 — D28 Journey Touchpoints: records which touchpoints an
   // employee/cohort actually reached for this project, giving D29's Journey
   // Analytics dashboards a real completion rate to compute rather than a
   // narrative description.
@@ -738,7 +738,7 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // Module 10 — D32k Qualitative Coding Workbench.
+  // Module 16 — D32k Qualitative Coding Workbench.
   // QCW-01: codebook is Organization-scoped, not a fixed platform-wide taxonomy.
   const addCode = useCallback((orgId, code) => {
     setData((prev) => ({

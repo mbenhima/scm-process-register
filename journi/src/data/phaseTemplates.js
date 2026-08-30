@@ -1,4 +1,4 @@
-// Module 18 / M17 — Phase Template Library (D32b, CR1 addendum).
+// Module 4 / M8 — Phase Template Library (D32b, CR1 addendum).
 // TPL-ERP-8 mirrors journi's original 8-phase ERP baseline (see utils/wbs.js
 // generateDefaultWbs). The 7 new templates are type-specific variants of the
 // generic "Common Transformation Lifecycle" (Intake & Diagnosis, Case for
@@ -6,7 +6,7 @@
 // Stabilization & Hypercare, Sustainment & Closure).
 //
 // Each phase carries three editable entries alongside its name (full CRUD
-// via M17's Manage Templates > Edit, versioned like the rest of the
+// via M8's Manage Templates > Edit, versioned like the rest of the
 // template): cmTrack (the Change Management actions expected during this
 // phase, distinct from the PM-side build/test work), checklist (concrete
 // exit criteria a Change Manager checks off before calling the phase done),
@@ -25,8 +25,8 @@ const phaseTemplates = [
         name: 'Discovery',
         cmTrack: [
           'Build and get Steering Committee approval for the change management business case',
-          'Populate the Stakeholder Map (M4) with every affected cohort and an initial impact/severity rating',
-          'Name the Executive Sponsor and confirm at least one visible sponsorship action (M7)',
+          'Populate the Stakeholder Map (M9) with every affected cohort and an initial impact/severity rating',
+          'Name the Executive Sponsor and confirm at least one visible sponsorship action (M13)',
         ],
         checklist: [
           'Business case approved, not just drafted',
@@ -42,9 +42,9 @@ const phaseTemplates = [
       {
         name: 'Design',
         cmTrack: [
-          'Run kickoff communications and capture baseline Awareness scores per cohort (M5)',
-          'Recruit and brief the Champion network (M4/M7)',
-          'Log design decisions against the design principles they satisfy (M17)',
+          'Run kickoff communications and capture baseline Awareness scores per cohort (M10)',
+          'Recruit and brief the Champion network (M9/M13)',
+          'Log design decisions against the design principles they satisfy (M8)',
         ],
         checklist: [
           'Design principles signed off, not just drafted',
@@ -61,8 +61,8 @@ const phaseTemplates = [
         name: 'Build',
         cmTrack: [
           'Track ADKAR Desire trend for every cohort; open a recovery response for any stalled block',
-          'Run the first wave of persona/channel communications (M8)',
-          'Log any resistance surfaced during build against a root-cause type (M10)',
+          'Run the first wave of persona/channel communications (M14)',
+          'Log any resistance surfaced during build against a root-cause type (M16)',
         ],
         checklist: [
           'No cohort remains below the stall threshold on Desire without a logged recovery response',
@@ -78,9 +78,9 @@ const phaseTemplates = [
       {
         name: 'Test',
         cmTrack: [
-          'Re-score ADKAR Knowledge/Ability for cohorts participating in UAT (M5)',
-          'Watch for the Divergence Pattern (high capability, unmoved Bridges) and respond with a loss-focused conversation, not more training (M6)',
-          'Confirm training curricula are mapped to the Knowledge/Ability gaps observed in testing (M9)',
+          'Re-score ADKAR Knowledge/Ability for cohorts participating in UAT (M10)',
+          'Watch for the Divergence Pattern (high capability, unmoved Bridges) and respond with a loss-focused conversation, not more training (M11)',
+          'Confirm training curricula are mapped to the Knowledge/Ability gaps observed in testing (M15)',
         ],
         checklist: [
           'UAT participant ADKAR scores re-measured, not assumed from Build',
@@ -96,9 +96,9 @@ const phaseTemplates = [
       {
         name: 'Train',
         cmTrack: [
-          'Deliver training waves and track completion percentage per curriculum (M9)',
-          'Coach people managers on team-level barriers surfaced by training (M11)',
-          'Re-pulse Bridges/Kübler-Ross for cohorts that have completed training (M6)',
+          'Deliver training waves and track completion percentage per curriculum (M15)',
+          'Coach people managers on team-level barriers surfaced by training (M17)',
+          'Re-pulse Bridges/Kübler-Ross for cohorts that have completed training (M11)',
         ],
         checklist: [
           'Training completion tracked per curriculum, not assumed complete',
@@ -132,9 +132,9 @@ const phaseTemplates = [
       {
         name: 'Hypercare',
         cmTrack: [
-          'Re-pulse Bridges and Kübler-Ross at the two-week and four-week marks post-go-live (M6)',
-          'Track defect-linked sentiment regressions as contained, explainable dips, not general program failure (M12)',
-          'Confirm Composite Readiness Index trend by cohort (M14)',
+          'Re-pulse Bridges and Kübler-Ross at the two-week and four-week marks post-go-live (M11)',
+          'Track defect-linked sentiment regressions as contained, explainable dips, not general program failure (M21)',
+          'Confirm Composite Readiness Index trend by cohort (M20)',
         ],
         checklist: [
           'Two-week and four-week re-pulses completed for all affected cohorts',
@@ -150,9 +150,9 @@ const phaseTemplates = [
       {
         name: 'Sustain',
         cmTrack: [
-          'Confirm Bridges/Kübler-Ross reads New Beginning/Commitment across all affected cohorts before calling Refreeze (M6)',
-          'Verify reinforcement mechanisms are actually running, not just designed (M12)',
-          'Run 30/60/90-day sustainment checkpoints and close out lessons learned (M12)',
+          'Confirm Bridges/Kübler-Ross reads New Beginning/Commitment across all affected cohorts before calling Refreeze (M11)',
+          'Verify reinforcement mechanisms are actually running, not just designed (M21)',
+          'Run 30/60/90-day sustainment checkpoints and close out lessons learned (M21)',
         ],
         checklist: [
           'Refreeze called on emotional/behavioral evidence, not the go-live date',

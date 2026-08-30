@@ -1,5 +1,5 @@
 // Second Organization under the Atlas Industrial Group — added specifically to give
-// Group-level roll-up (Module 14 / Dashboard "Group" view) a real second tenant to
+// Group-level roll-up (Module 20 / Dashboard "Group" view) a real second tenant to
 // aggregate, alongside the Casablanca Plant Cluster.
 export const organization = {
   id: 'org-atlas-tangier',

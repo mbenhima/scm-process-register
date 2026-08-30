@@ -9,7 +9,7 @@ import Modal from '../components/Modal.jsx'
 
 const CATEGORIES = ['Workshop', 'Decision', 'Sign-Off', 'Nomination', 'Handoff', 'Other']
 const CATEGORY_TONE = { Workshop: 'brand', Decision: 'green', 'Sign-Off': 'green', Nomination: 'amber', Handoff: 'gray', Other: 'gray' }
-const MODULE_OPTIONS = Array.from({ length: 20 }, (_, i) => `M${i + 1}`)
+const MODULE_NUMS = Array.from({ length: 22 }, (_, i) => i + 1)
 const BLANK_NOTE = { date: '', category: 'Workshop', relatedModules: [], title: '', body: '', author: '' }
 
 function RelatedModulesPicker({ selected, onChange }) {
@@ -27,13 +27,16 @@ function RelatedModulesPicker({ selected, onChange }) {
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute z-20 mt-1 w-full max-h-52 overflow-y-auto rounded-lg border border-brand-100 bg-white shadow-lg p-2 grid grid-cols-3 gap-1">
-            {MODULE_OPTIONS.map((m) => (
-              <label key={m} className="flex items-center gap-1.5 text-sm px-1.5 py-1 rounded hover:bg-brand-50 cursor-pointer">
-                <input type="checkbox" checked={selected.includes(m)} onChange={() => toggle(m)} />
-                {m}
-              </label>
-            ))}
+          <div className="absolute z-20 mt-1 w-full max-h-64 overflow-y-auto rounded-lg border border-brand-100 bg-white shadow-lg p-2 grid grid-cols-2 gap-1">
+            {MODULE_NUMS.map((n) => {
+              const m = `M${n}`
+              return (
+                <label key={m} className="flex items-center gap-1.5 text-xs px-1.5 py-1 rounded hover:bg-brand-50 cursor-pointer">
+                  <input type="checkbox" checked={selected.includes(m)} onChange={() => toggle(m)} />
+                  {t(`navM${n}`)}
+                </label>
+              )
+            })}
           </div>
         </>
       )}

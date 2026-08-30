@@ -44,11 +44,11 @@ function UseCaseForm({ form, setForm }) {
             </select>
           </FormField>
           <FormField label="Module code">
-            <input className="input" placeholder="e.g. M4" value={form.module} onChange={set('module')} />
+            <input className="input" placeholder="e.g. M9" value={form.module} onChange={set('module')} />
           </FormField>
         </div>
         <FormField label="Module label">
-          <input className="input" placeholder="e.g. M4 Stakeholder & Impact Mapping" value={form.moduleLabel} onChange={set('moduleLabel')} />
+          <input className="input" placeholder="e.g. M9 Stakeholder & Impact Mapping" value={form.moduleLabel} onChange={set('moduleLabel')} />
         </FormField>
       </div>
 

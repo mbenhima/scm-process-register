@@ -48,12 +48,12 @@ export const ROLES_WITH_WRITE_ACCESS = new Set([
 export const CAPABILITIES = [
   { key: 'manageHierarchy', label: 'Manage Hierarchy', description: 'Create/delete Groups, Organizations, Main Projects, and Change Management Projects (Module 1).' },
   { key: 'manageUsers', label: 'Manage Users', description: 'Add, edit, or remove users and change their role/scope (Module 2).' },
-  { key: 'write', label: 'Edit CM Project Data', description: 'Edit ADKAR scores, risks, communications, training, and every other Change Management module (M3–M15).' },
-  { key: 'activateAiForOrg', label: 'Activate AI Use Cases (Org)', description: 'Turn AI use cases on or off for an Organization (Module 16).' },
-  { key: 'requestProjectAiOverride', label: 'Override AI Use Cases (Project)', description: 'Override an AI use case’s activation for a single Project (Module 16).' },
-  { key: 'manageCharters', label: 'Manage Charters', description: 'Create and edit CM Charter definitions (Module 19). Deleting a Retired charter is Group/Organization Admin and above only, regardless of this setting — see D31b.' },
-  { key: 'manageAiUseCases', label: 'Manage AI Use Cases', description: 'Create, edit, delete, and revert AI Use Case definitions in the shared catalog (Module 16) — distinct from activating/deactivating one for an Organization or Project.' },
-  { key: 'manageTemplates', label: 'Manage Phase Templates', description: 'Create, edit, delete, and revert Phase Template definitions in the shared library (Module 17) — distinct from loading a template into a project’s WBS.' },
+  { key: 'write', label: 'Edit CM Project Data', description: 'Edit ADKAR scores, risks, communications, training, and every other Change Management module (M7–M18).' },
+  { key: 'activateAiForOrg', label: 'Activate AI Use Cases (Org)', description: 'Turn AI use cases on or off for an Organization (Module 6).' },
+  { key: 'requestProjectAiOverride', label: 'Override AI Use Cases (Project)', description: 'Override an AI use case’s activation for a single Project (Module 6).' },
+  { key: 'manageCharters', label: 'Manage Charters', description: 'Create and edit CM Charter definitions (Module 5). Deleting a Retired charter is Group/Organization Admin and above only, regardless of this setting — see D31b.' },
+  { key: 'manageAiUseCases', label: 'Manage AI Use Cases', description: 'Create, edit, delete, and revert AI Use Case definitions in the shared catalog (Module 6) — distinct from activating/deactivating one for an Organization or Project.' },
+  { key: 'manageTemplates', label: 'Manage Phase Templates', description: 'Create, edit, delete, and revert Phase Template definitions in the shared library (Module 8) — distinct from loading a template into a project’s WBS.' },
 ]
 
 export const DEFAULT_ROLE_PERMISSIONS = {

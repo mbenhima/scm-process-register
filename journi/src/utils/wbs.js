@@ -97,7 +97,7 @@ export function pctForDate(dateISO, range) {
   return Math.min(100, Math.max(0, (pos / total) * 100))
 }
 
-/** Module 17 — Phase Checklist (D32c) completion %, for a given phase, across both PM and CM tracks (or one track if given). */
+/** Module 8 — Phase Checklist (D32c) completion %, for a given phase, across both PM and CM tracks (or one track if given). */
 /** D32c: each item carries a Weight_% (default 100 for items created before
  * weighting existed, or left blank); completion is a weighted average, not a
  * simple item count, so a heavier item blocks the phase more than a light one. */

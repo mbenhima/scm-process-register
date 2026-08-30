@@ -74,7 +74,7 @@ function Content({ project }) {
   function saveCertToggle(tr) {
     const nextCertified = !tr.certified
     logJustifiedChange(project.id, {
-      module: 'M9 · Training & Certification',
+      module: 'M15 · Training & Certification',
       field: `Certification — ${tr.curriculum}`,
       oldValue: tr.certified ? t('certification') : 'trained only',
       newValue: nextCertified ? t('certification') : 'trained only',
@@ -97,7 +97,7 @@ function Content({ project }) {
     <div className="space-y-4">
       {gapBlocks.length > 0 && (
         <div className="rounded-xl border border-brand-200 bg-brand-50/60 p-4 text-sm text-brand-900">
-          Training-needs assessment: {gapBlocks.map((b) => t(b)).join(' & ')} gap identified from M5 — see recommendation below.
+          Training-needs assessment: {gapBlocks.map((b) => t(b)).join(' & ')} gap identified from M10 — see recommendation below.
         </div>
       )}
 

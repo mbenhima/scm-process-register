@@ -23,12 +23,12 @@ export default function NotificationBell() {
       <button className="btn-ghost relative px-2" onClick={() => setOpen((o) => !o)} aria-label={t('notif_title')}>
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
           <path
-            d="M9 2.5c-2.5 0-4.2 2-4.2 4.5v2.6c0 .5-.2 1-.5 1.4l-1 1.3c-.5.6-.1 1.5.6 1.5h10.2c.7 0 1.1-.9.6-1.5l-1-1.3c-.3-.4-.5-.9-.5-1.4V7c0-2.5-1.7-4.5-4.2-4.5Z"
+            d="M15 2.5c-2.5 0-4.2 2-4.2 4.5v2.6c0 .5-.2 1-.5 1.4l-1 1.3c-.5.6-.1 1.5.6 1.5h10.2c.7 0 1.1-.9.6-1.5l-1-1.3c-.3-.4-.5-.9-.5-1.4V7c0-2.5-1.7-4.5-4.2-4.5Z"
             stroke="currentColor"
             strokeWidth="1.4"
             strokeLinejoin="round"
           />
-          <path d="M7.3 15.8a1.9 1.9 0 0 0 3.4 0" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          <path d="M13.3 15.8a1.9 1.9 0 0 0 3.4 0" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
         {active.length > 0 && (
           <span className="absolute top-0.5 end-0.5 min-w-[15px] h-[15px] px-0.5 rounded-full bg-red-600 text-white text-[9px] leading-[15px] text-center">

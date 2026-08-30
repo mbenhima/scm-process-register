@@ -23,7 +23,7 @@ function Content({ project }) {
   function saveReadiness() {
     if (!readinessDirty) return
     logJustifiedChange(project.id, {
-      module: 'M11 · Manager Enablement',
+      module: 'M17 · Manager Enablement',
       field: 'Manager readiness rating',
       oldValue: String(committedReadiness),
       newValue: String(pendingReadiness),
@@ -113,7 +113,7 @@ function Content({ project }) {
             </div>
           ))}
         </div>
-        <p className="text-xs text-ink/40 mt-2">Add new coaching notes from M5 · ADKAR Engine.</p>
+        <p className="text-xs text-ink/40 mt-2">Add new coaching notes from M10 · ADKAR Engine.</p>
       </div>
     </div>
   )

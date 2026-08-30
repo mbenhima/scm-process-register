@@ -25,7 +25,7 @@ function Content({ project }) {
   function saveBridges() {
     if (!bridgesDirty) return
     logJustifiedChange(project.id, {
-      module: 'M6 · Emotional & Transition',
+      module: 'M11 · Emotional & Transition',
       field: 'Bridges transition',
       oldValue: t(`bridges_${project.bridgesPhase}`),
       newValue: t(`bridges_${pendingBridges}`),
@@ -47,7 +47,7 @@ function Content({ project }) {
   function saveSentiment() {
     if (!sentimentDirty) return
     logJustifiedChange(project.id, {
-      module: 'M6 · Emotional & Transition',
+      module: 'M11 · Emotional & Transition',
       field: 'Kübler-Ross sentiment',
       oldValue: t(`sentiment_${baselineSentiment}`),
       newValue: t(`sentiment_${pendingSentiment}`),

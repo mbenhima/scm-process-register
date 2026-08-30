@@ -4,22 +4,36 @@ import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { canManageHierarchy, canManageUsers } from '../utils/rbac.js'
 
-const CORE_MODULES = [
+// Logical flow, tenant creation through sustainment: platform/governance
+// setup first (1-6), then the program lifecycle in order (7-22). The
+// visible "M<n>" numbers (set in i18n/translations.js) follow this same
+// sequence; this array only controls display order, not routing or i18n
+// key names, which stay their original values as permanent internal
+// identifiers.
+const PLATFORM_MODULES = [
+  { path: '/app/m22', key: 'navM22' },
+  { path: '/app/m18', key: 'navM18' },
+  { path: '/app/m19', key: 'navM19' },
+  { path: '/app/m16', key: 'navM16' },
+]
+
+const PROGRAM_MODULES = [
   { path: '/app/m3', key: 'navM3' },
   { path: '/app/m17', key: 'navM17' },
-  { path: '/app/m22', key: 'navM22' },
   { path: '/app/m4', key: 'navM4' },
   { path: '/app/m5', key: 'navM5' },
   { path: '/app/m6', key: 'navM6' },
+  { path: '/app/m13', key: 'navM13' },
   { path: '/app/m7', key: 'navM7' },
   { path: '/app/m8', key: 'navM8' },
   { path: '/app/m9', key: 'navM9' },
   { path: '/app/m10', key: 'navM10' },
   { path: '/app/m11', key: 'navM11' },
-  { path: '/app/m12', key: 'navM12' },
-  { path: '/app/m13', key: 'navM13' },
-  { path: '/app/m14', key: 'navM14' },
   { path: '/app/m15', key: 'navM15' },
+  { path: '/app/m20', key: 'navM20' },
+  { path: '/app/m14', key: 'navM14' },
+  { path: '/app/m12', key: 'navM12' },
+  { path: '/app/m21', key: 'navM21' },
 ]
 
 export default function Sidebar({ mobileOpen, onNavigate }) {
@@ -60,13 +74,7 @@ export default function Sidebar({ mobileOpen, onNavigate }) {
                 {t('navM2')}
               </NavLink>
             )}
-          </div>
-        </div>
-
-        <div>
-          <div className="label px-3">{t('sectionCore')}</div>
-          <div className="space-y-1">
-            {CORE_MODULES.map((m) => (
+            {PLATFORM_MODULES.map((m) => (
               <NavLink key={m.path} to={m.path} className={linkClass} onClick={onNavigate}>
                 {t(m.key)}
               </NavLink>
@@ -75,23 +83,13 @@ export default function Sidebar({ mobileOpen, onNavigate }) {
         </div>
 
         <div>
-          <div className="label px-3">{t('sectionAI')}</div>
+          <div className="label px-3">{t('sectionCore')}</div>
           <div className="space-y-1">
-            <NavLink to="/app/m16" className={linkClass} onClick={onNavigate}>
-              {t('navM16')}
-            </NavLink>
-            <NavLink to="/app/m18" className={linkClass} onClick={onNavigate}>
-              {t('navM18')}
-            </NavLink>
-            <NavLink to="/app/m19" className={linkClass} onClick={onNavigate}>
-              {t('navM19')}
-            </NavLink>
-            <NavLink to="/app/m20" className={linkClass} onClick={onNavigate}>
-              {t('navM20')}
-            </NavLink>
-            <NavLink to="/app/m21" className={linkClass} onClick={onNavigate}>
-              {t('navM21')}
-            </NavLink>
+            {PROGRAM_MODULES.map((m) => (
+              <NavLink key={m.path} to={m.path} className={linkClass} onClick={onNavigate}>
+                {t(m.key)}
+              </NavLink>
+            ))}
           </div>
         </div>
       </nav>
