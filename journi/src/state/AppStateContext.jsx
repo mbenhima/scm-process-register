@@ -115,6 +115,9 @@ function migrateOrSeed(parsed) {
           relatedModules: n.relatedModules || (n.relatedModule ? [n.relatedModule] : []),
           ...n,
         })),
+        // Module 22 — OBS (Organizational Breakdown Structure): a session
+        // persisted before this shipped won't have the array yet.
+        obsEntries: p.obsEntries || [],
       }))
       return parsed
     }
@@ -605,6 +608,46 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // Module 22 — Organizational Breakdown Structure: the project's resourcing
+  // roster (role + named person + who they report to), distinct from M2
+  // Users (login/RBAC accounts) — an OBS entry does not need a journi login
+  // at all. reportsTo is the id of another entry in the same project's OBS
+  // (or null for a top-of-structure role), giving the roster an actual
+  // hierarchy rather than a flat list.
+  const addObsEntry = useCallback((projectId, entry) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        obsEntries: [...(p.obsEntries || []), { id: uid('obs'), role: '', name: '', reportsTo: null, notes: '', ...entry }],
+      })),
+    }))
+  }, [])
+
+  const updateObsEntry = useCallback((projectId, entryId, patch) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        obsEntries: (p.obsEntries || []).map((e) => (e.id === entryId ? { ...e, ...patch } : e)),
+      })),
+    }))
+  }, [])
+
+  const deleteObsEntry = useCallback((projectId, entryId) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
+        ...p,
+        obsEntries: (p.obsEntries || [])
+          .filter((e) => e.id !== entryId)
+          // Orphaned reports move up to whatever the deleted entry itself
+          // reported to, rather than pointing at a now-missing id.
+          .map((e) => (e.reportsTo === entryId ? { ...e, reportsTo: (p.obsEntries.find((x) => x.id === entryId) || {}).reportsTo || null } : e)),
+      })),
+    }))
+  }, [])
+
   // D31b Charter RBAC x OBS CRUD matrix: create/edit charter definitions
   // themselves (distinct from logCharterAction above, which tracks
   // per-project completion of an existing charter's D31a actions).
@@ -875,6 +918,7 @@ export function AppStateProvider({ children }) {
         codeTags: [],
         dismissedAlerts: [],
         fieldNotes: [],
+        obsEntries: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [
@@ -1014,6 +1058,9 @@ export function AppStateProvider({ children }) {
       addFieldNote,
       updateFieldNote,
       deleteFieldNote,
+      addObsEntry,
+      updateObsEntry,
+      deleteObsEntry,
       logTouchpoint,
       deleteTouchpointLog,
       addCode,
@@ -1088,6 +1135,9 @@ export function AppStateProvider({ children }) {
       addFieldNote,
       updateFieldNote,
       deleteFieldNote,
+      addObsEntry,
+      updateObsEntry,
+      deleteObsEntry,
       logTouchpoint,
       deleteTouchpointLog,
       addCode,
