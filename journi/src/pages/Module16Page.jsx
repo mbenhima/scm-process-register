@@ -13,27 +13,85 @@ import VersionHistoryPanel from '../components/VersionHistoryPanel.jsx'
 const OUTCOME_TONE = { accepted: 'green', edited: 'amber', rejected: 'red' }
 const TIER_OPTIONS = Object.values(AI_TIERS)
 const BLANK_USE_CASE = {
-  name: '', tier: AI_TIERS.ASSISTIVE, module: '', moduleLabel: '', description: '', trigger: '', output: '', humanCheckpoint: '',
+  name: '', tier: AI_TIERS.ASSISTIVE, module: '', moduleLabel: '', description: '', trigger: '', output: '', promptTemplate: '', humanCheckpoint: '',
+}
+
+function FormField({ label, hint, children }) {
+  return (
+    <div>
+      <label className="label">{label}</label>
+      {hint && <p className="text-[11px] text-ink/40 mb-1">{hint}</p>}
+      {children}
+    </div>
+  )
 }
 
 function UseCaseForm({ form, setForm }) {
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
   return (
-    <div className="space-y-3">
-      <input className="input" placeholder="Use case name" value={form.name} onChange={set('name')} />
-      <div className="grid grid-cols-2 gap-2">
-        <select className="input" value={form.tier} onChange={set('tier')}>
-          {TIER_OPTIONS.map((t) => (
-            <option key={t} value={t}>{t}</option>
-          ))}
-        </select>
-        <input className="input" placeholder="Module code (e.g. M4)" value={form.module} onChange={set('module')} />
+    <div className="space-y-5">
+      <div className="space-y-3">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink/40">Identity</p>
+        <FormField label="Use case name">
+          <input className="input" placeholder="e.g. Stakeholder Impact Drafting Assistant" value={form.name} onChange={set('name')} />
+        </FormField>
+        <div className="grid grid-cols-2 gap-2">
+          <FormField label="Governance tier">
+            <select className="input" value={form.tier} onChange={set('tier')}>
+              {TIER_OPTIONS.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          </FormField>
+          <FormField label="Module code">
+            <input className="input" placeholder="e.g. M4" value={form.module} onChange={set('module')} />
+          </FormField>
+        </div>
+        <FormField label="Module label">
+          <input className="input" placeholder="e.g. M4 Stakeholder & Impact Mapping" value={form.moduleLabel} onChange={set('moduleLabel')} />
+        </FormField>
       </div>
-      <input className="input" placeholder="Module label (e.g. M4 Stakeholder & Impact Mapping)" value={form.moduleLabel} onChange={set('moduleLabel')} />
-      <textarea className="input" rows={2} placeholder="Description" value={form.description} onChange={set('description')} />
-      <textarea className="input" rows={2} placeholder="Trigger input" value={form.trigger} onChange={set('trigger')} />
-      <textarea className="input" rows={2} placeholder="Output" value={form.output} onChange={set('output')} />
-      <textarea className="input" rows={2} placeholder="Human checkpoint" value={form.humanCheckpoint} onChange={set('humanCheckpoint')} />
+
+      <div className="space-y-3">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink/40">What It Does</p>
+        <FormField label="Description" hint="Shown on the catalog card — what this use case does, in one sentence.">
+          <textarea className="input" rows={2} placeholder="Drafts suggested impact scores from the org chart and change scope." value={form.description} onChange={set('description')} />
+        </FormField>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <FormField label="Trigger input" hint="What data starts this use case.">
+            <textarea className="input" rows={2} placeholder="e.g. Org chart import + change scope definition" value={form.trigger} onChange={set('trigger')} />
+          </FormField>
+          <FormField label="Output" hint="What it produces.">
+            <textarea className="input" rows={2} placeholder="e.g. Suggested per-group impact scores" value={form.output} onChange={set('output')} />
+          </FormField>
+        </div>
+      </div>
+
+      <div className="rounded-lg border-2 border-brand-300 bg-brand-50/50 p-3 space-y-1.5">
+        <div className="flex items-center gap-2">
+          <Badge tone="brand">Prompt</Badge>
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-700">Sent to the LLM provider</p>
+        </div>
+        <FormField
+          label="Prompt template"
+          hint="This exact text is what journi sends to the connected LLM provider (Provider Connection panel above) whenever this use case runs, unless the calling screen supplies its own context. Leave blank to fall back to a generic auto-built prompt."
+        >
+          <textarea
+            className="input font-mono text-xs"
+            rows={5}
+            placeholder="You are ... Given ... below, produce ... Return ..."
+            value={form.promptTemplate}
+            onChange={set('promptTemplate')}
+          />
+        </FormField>
+      </div>
+
+      <div className="space-y-3">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink/40">Governance</p>
+        <FormField label="Human checkpoint" hint="The mandatory human decision point before this use case's output is used for anything.">
+          <textarea className="input" rows={2} placeholder="e.g. Change Manager confirms or edits every score before it is saved" value={form.humanCheckpoint} onChange={set('humanCheckpoint')} />
+        </FormField>
+      </div>
     </div>
   )
 }

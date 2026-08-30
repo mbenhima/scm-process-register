@@ -11,10 +11,12 @@ import Badge from './Badge.jsx'
  * human decision (accept / edit&accept / reject) which is written to the AI usage log.
  *
  * When a real LLM provider is connected (Module 16), generation calls it with
- * `promptContext` (or a generic prompt built from `ucName`/`description` if
- * `promptContext` isn't given) instead of the local `buildSuggestion()`
- * function, falling back to `buildSuggestion()` on any provider error so the
- * box never breaks even if the connection drops mid-session.
+ * a prompt chosen in this order: the caller's own `promptContext` prop, else
+ * the catalog entry's own editable Prompt Template field (Module 16 > Edit),
+ * else a generic prompt built from `ucName`/`description` — instead of the
+ * local `buildSuggestion()` function, falling back to `buildSuggestion()` on
+ * any provider error so the box never breaks even if the connection drops
+ * mid-session.
  */
 export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSuggestion, onAccept, tier, ucName, description, promptContext }) {
   const { t } = useI18n()
@@ -27,6 +29,7 @@ export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSugg
   const [genError, setGenError] = useState(null)
   const [source, setSource] = useState(null) // 'llm' | 'template'
 
+  const catalogEntry = data.aiUseCaseCatalog.find((uc) => uc.id === useCaseId)
   const orgActive = data.aiOrgActivation[orgId]?.[useCaseId]
   const projectOverride = projectId ? data.aiProjectOverride[projectId]?.[useCaseId] : undefined
   const active = projectId ? (projectOverride ?? orgActive) : orgActive
@@ -46,6 +49,7 @@ export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSugg
       try {
         const prompt =
           promptContext ||
+          catalogEntry?.promptTemplate ||
           `You are the "${ucName}" AI use case in a change-management platform. ${description || ''} Produce a realistic, concise example output (under 80 words), in plain prose, no preamble.`
         const s = await generateWithLlm(prompt)
         setSuggestion(s)

@@ -10,7 +10,36 @@ import Modal from '../components/Modal.jsx'
 const CATEGORIES = ['Workshop', 'Decision', 'Sign-Off', 'Nomination', 'Handoff', 'Other']
 const CATEGORY_TONE = { Workshop: 'brand', Decision: 'green', 'Sign-Off': 'green', Nomination: 'amber', Handoff: 'gray', Other: 'gray' }
 const MODULE_OPTIONS = Array.from({ length: 20 }, (_, i) => `M${i + 1}`)
-const BLANK_NOTE = { date: '', category: 'Workshop', relatedModule: '', title: '', body: '', author: '' }
+const BLANK_NOTE = { date: '', category: 'Workshop', relatedModules: [], title: '', body: '', author: '' }
+
+function RelatedModulesPicker({ selected, onChange }) {
+  const { t } = useI18n()
+  const [open, setOpen] = useState(false)
+  function toggle(m) {
+    onChange(selected.includes(m) ? selected.filter((x) => x !== m) : [...selected, m])
+  }
+  return (
+    <div className="relative">
+      <button type="button" className="input text-start flex items-center justify-between gap-2" onClick={() => setOpen((o) => !o)}>
+        <span className="truncate">{selected.length === 0 ? t('m21_related_module_none') : selected.join(', ')}</span>
+        <span className="text-ink/30 text-xs shrink-0">{open ? '▲' : '▼'}</span>
+      </button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+          <div className="absolute z-20 mt-1 w-full max-h-52 overflow-y-auto rounded-lg border border-brand-100 bg-white shadow-lg p-2 grid grid-cols-3 gap-1">
+            {MODULE_OPTIONS.map((m) => (
+              <label key={m} className="flex items-center gap-1.5 text-sm px-1.5 py-1 rounded hover:bg-brand-50 cursor-pointer">
+                <input type="checkbox" checked={selected.includes(m)} onChange={() => toggle(m)} />
+                {m}
+              </label>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
 
 function NoteForm({ form, setForm }) {
   const { t } = useI18n()
@@ -28,12 +57,10 @@ function NoteForm({ form, setForm }) {
       </div>
       <div className="grid grid-cols-2 gap-2">
         <input className="input" placeholder={t('m21_author')} value={form.author} onChange={set('author')} />
-        <select className="input" value={form.relatedModule} onChange={set('relatedModule')}>
-          <option value="">{t('m21_related_module_none')}</option>
-          {MODULE_OPTIONS.map((m) => (
-            <option key={m} value={m}>{m}</option>
-          ))}
-        </select>
+        <RelatedModulesPicker
+          selected={form.relatedModules || []}
+          onChange={(next) => setForm({ ...form, relatedModules: next })}
+        />
       </div>
       <textarea className="input" rows={4} placeholder={t('m21_body')} value={form.body} onChange={set('body')} />
     </div>
@@ -49,7 +76,9 @@ function NoteCard({ note, canEdit, onEdit, onDelete }) {
           <div className="flex items-center gap-2 flex-wrap">
             <Badge tone={CATEGORY_TONE[note.category] || 'gray'}>{note.category}</Badge>
             <span className="text-xs text-ink/40">{note.date}</span>
-            {note.relatedModule && <span className="text-xs text-ink/40">· {note.relatedModule}</span>}
+            {(note.relatedModules || []).length > 0 && (
+              <span className="text-xs text-ink/40">· {note.relatedModules.join(', ')}</span>
+            )}
           </div>
           <h3 className="font-semibold text-brand-950 mt-1">{note.title || t('m21_untitled')}</h3>
         </div>

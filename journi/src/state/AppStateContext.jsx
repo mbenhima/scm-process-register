@@ -56,6 +56,9 @@ function migrateOrSeed(parsed) {
       parsed.aiUseCaseCatalog = (parsed.aiUseCaseCatalog || []).map((uc) => ({
         version: 1,
         versionHistory: [],
+        // A session persisted before the catalog gained an editable prompt
+        // template (Part 4.7-adjacent feature) won't have this field yet.
+        promptTemplate: '',
         ...uc,
       }))
       parsed.phaseTemplateCatalog = parsed.phaseTemplateCatalog.map((tpl) => ({
@@ -97,8 +100,13 @@ function migrateOrSeed(parsed) {
         codeTags: p.codeTags || [],
         dismissedAlerts: p.dismissedAlerts || [],
         // Module 21 — Field Notes: a session persisted before this shipped
-        // won't have the array yet.
-        fieldNotes: p.fieldNotes || [],
+        // won't have the array yet. A session persisted before the related-
+        // module field became multi-select won't have relatedModules — back-
+        // fill it from the old single relatedModule string.
+        fieldNotes: (p.fieldNotes || []).map((n) => ({
+          relatedModules: n.relatedModules || (n.relatedModule ? [n.relatedModule] : []),
+          ...n,
+        })),
       }))
       return parsed
     }
@@ -562,7 +570,7 @@ export function AppStateProvider({ children }) {
       cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({
         ...p,
         fieldNotes: [
-          { id: uid('fnote'), date: todayISO(), category: 'Other', relatedModule: '', title: '', body: '', author: '', ...note },
+          { id: uid('fnote'), date: todayISO(), category: 'Other', relatedModules: [], title: '', body: '', author: '', ...note },
           ...(p.fieldNotes || []),
         ],
       })),

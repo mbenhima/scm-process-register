@@ -11,6 +11,8 @@ const catalog = [
     description: 'Drafts suggested impact scores and cohort segmentation from the org chart and change scope.',
     trigger: 'Org chart import + change scope definition',
     output: 'Suggested per-group impact scores (process/tech/role/location/identity) and cohort segmentation',
+    promptTemplate:
+      'You are a Change Management analyst. Given the attached org chart and the change scope description below, propose per-group impact scores (1-5) across Process, Technology, Role, Location, and Identity, and group affected staff into 3-6 named cohorts. Return a short table, not prose. Do not invent org units not present in the input.',
     humanCheckpoint: 'Change Manager confirms or edits every score before it is saved',
   },
   {
@@ -22,6 +24,8 @@ const catalog = [
     description: 'Suggests a likely barrier reason code from open-text survey responses (e.g. "Desire — fear of role redundancy").',
     trigger: 'Open-text survey / pulse responses',
     output: 'Suggested barrier reason code per stalled ADKAR block',
+    promptTemplate:
+      'Read the open-text survey response below. Identify which single ADKAR block (Awareness, Desire, Knowledge, Ability, or Reinforcement) it most likely reflects a barrier in, and summarize the barrier in one short phrase (e.g. "Desire — fear of role redundancy"). If the text does not clearly indicate a barrier, say so rather than guessing.',
     humanCheckpoint: 'Change Manager confirms or re-codes before it enters the record',
   },
   {
@@ -33,6 +37,8 @@ const catalog = [
     description: 'Auto-drafts a written readiness narrative per cohort from raw ADKAR scores, for Sponsor reporting.',
     trigger: 'Raw ADKAR scores per cohort',
     output: 'Draft written readiness narrative',
+    promptTemplate:
+      'Given the five ADKAR block scores (1-5) for this cohort below, write a 3-4 sentence readiness narrative suitable for a Sponsor update: name the strongest and weakest blocks, state the overall trajectory, and avoid restating the raw numbers verbatim. Plain business prose, no bullet points.',
     humanCheckpoint: 'Change Manager reviews and edits before distribution',
   },
   {
@@ -44,6 +50,8 @@ const catalog = [
     description: 'Classifies free-text pulse comments into Kübler-Ross sentiment categories at scale.',
     trigger: 'Free-text pulse survey comments',
     output: 'Sentiment classification (denial/resistance/exploration/commitment) per response',
+    promptTemplate:
+      'Classify each pulse-survey comment below into exactly one of: Denial, Resistance/Anger, Exploration, Commitment (journi\'s four-stage Kübler-Ross reading — see the Frameworks reference for the exact definitions). Return one classification per comment with a one-line justification quoting the relevant phrase. If a comment is ambiguous between two stages, pick the earlier one.',
     humanCheckpoint: 'Any individual classification can be overridden by the Change Manager',
   },
   {
@@ -55,6 +63,8 @@ const catalog = [
     description: 'Flags cohorts where ADKAR scores and emotional/Bridges position diverge (a hidden-resistance signal).',
     trigger: 'ADKAR scores + Bridges/sentiment position per cohort',
     output: 'Divergence flag with explanation',
+    promptTemplate:
+      'Given a cohort\'s ADKAR Knowledge and Ability scores and its current Bridges transition reading below, state in one sentence whether this looks like the Divergence Pattern (strong demonstrated capability alongside an unmoved "Ending" emotional position) and, if so, recommend a loss-focused conversation rather than additional training.',
     humanCheckpoint: 'Flag surfaced for Change Manager review only — no automatic action',
   },
   {
@@ -66,6 +76,8 @@ const catalog = [
     description: 'Suggests the next best sponsorship action based on the sponsorship-visibility score.',
     trigger: 'Sponsorship visibility score',
     output: 'Suggested next best sponsorship action',
+    promptTemplate:
+      'Given this sponsor\'s current visibility score and their most recent logged sponsorship actions below, suggest one concrete next action (e.g. a town hall appearance, a written note to a specific cohort, a 1:1 with a resistant manager) that would most improve visibility. One sentence, specific, not generic advice.',
     humanCheckpoint: 'Sponsor or Change Manager chooses whether to act on the suggestion',
   },
   {
@@ -77,6 +89,8 @@ const catalog = [
     description: 'Drafts message copy per persona, channel and language from the communication matrix.',
     trigger: 'Communication matrix entry (persona, channel, language)',
     output: 'Draft message copy',
+    promptTemplate:
+      'Draft a message for the persona, channel, and language specified below (e.g. plant-floor supervisor / email / French). Match tone and length to the channel — an email can run 150-200 words, a chat/SMS-style channel under 40. Do not include a subject line unless the channel is email. Plain text only.',
     humanCheckpoint: 'Communications Practitioner edits and approves before send — no auto-send',
   },
   {
@@ -88,6 +102,8 @@ const catalog = [
     description: 'Flags scheduling conflicts across concurrent communications hitting the same population and suggests reschedule windows.',
     trigger: 'Communication calendar across concurrent initiatives',
     output: 'Scheduling-conflict flag + suggested reschedule window',
+    promptTemplate:
+      'Given the list of scheduled communications below (date, target population, initiative), identify any population that would receive more than one significant communication within the same week from different initiatives, and suggest a specific alternate week for the lower-priority one. List conflicts only — do not comment on non-conflicting items.',
     humanCheckpoint: 'Change Manager/PMO decides whether to reschedule',
   },
   {
@@ -99,6 +115,8 @@ const catalog = [
     description: 'Recommends curriculum modules/tracks from identified Knowledge/Ability gaps.',
     trigger: 'Knowledge/Ability gap data from Module 5',
     output: 'Recommended curriculum modules/tracks',
+    promptTemplate:
+      'Given the ADKAR Knowledge and Ability scores below for this cohort, and the list of available curriculum tracks, recommend which 1-3 tracks would most directly close the gap. Reference the track names exactly as given; do not invent tracks that aren\'t in the list.',
     humanCheckpoint: 'Trainer confirms curriculum assignment',
   },
   {
@@ -110,6 +128,8 @@ const catalog = [
     description: 'Generates a tailored coaching talking-point script per flagged team barrier.',
     trigger: 'Flagged team ADKAR barrier',
     output: 'Tailored coaching talking-point script',
+    promptTemplate:
+      'Write a short coaching talking-points script (4-6 bullet points) a people manager could use in a 1:1 to address the flagged ADKAR barrier described below. Tone: supportive, specific to the barrier named, not generic change-management platitudes. Include one open-ended question the manager should ask.',
     humanCheckpoint: 'People Manager chooses to use, adapt, or discard the script',
   },
   {
@@ -121,6 +141,8 @@ const catalog = [
     description: 'Suggests a resistance type (role/skill/will/systemic) from the logged description text.',
     trigger: 'Logged resistance description text',
     output: 'Suggested resistance type classification',
+    promptTemplate:
+      'Classify the logged resistance description below into exactly one of: Role (concern about job/role security), Skill (concern about ability to perform), Will (unwillingness despite capability), or Systemic (structural/process obstacle outside the individual\'s control). One-word classification plus a one-sentence justification quoting the description.',
     humanCheckpoint: 'Change Manager confirms classification before closure tracking begins',
   },
   {
@@ -132,6 +154,8 @@ const catalog = [
     description: 'Analyzes post-go-live usage trend data and produces an early regression-risk score with a narrative explanation.',
     trigger: 'Post-go-live usage trend data',
     output: 'Early regression-risk score + narrative explanation',
+    promptTemplate:
+      'Given the post-go-live usage trend data below (e.g. weekly active-usage percentage since cutover), produce a regression-risk score from 1 (low) to 5 (high) and a two-sentence explanation naming the specific trend that drove the score. Do not score above 3 unless the data shows an actual declining trend, not just a low absolute level.',
     humanCheckpoint: 'Change Manager reviews the flag and decides on intervention',
   },
   {
@@ -143,6 +167,8 @@ const catalog = [
     description: 'Auto-drafts the executive-summary narrative of the reporting pack from the Readiness Index and underlying data.',
     trigger: 'Readiness Index + underlying portfolio data',
     output: 'Draft executive-summary narrative',
+    promptTemplate:
+      'Write a 4-5 sentence executive-summary narrative for a Steering Committee update, given the Composite Readiness Index and the underlying ADKAR/sentiment/training figures below. Lead with the headline number and trend, name the single biggest risk or blocker if one is evident in the data, and close with the recommended next checkpoint. No jargon beyond what a non-CM executive would recognize.',
     humanCheckpoint: 'Change Manager/Sponsor approves before the pack is distributed',
   },
   {
@@ -154,6 +180,8 @@ const catalog = [
     description: "Suggests annotation labels for key transition events on an individual's or cohort's visual timeline.",
     trigger: 'Key transition events on the timeline',
     output: 'Suggested annotation labels',
+    promptTemplate:
+      'Given the timeline event described below (what changed, and when), suggest a short annotation label (under 8 words) suitable for a visual journey map marker. Favor concrete, specific labels ("UAT go-live delayed 2 weeks") over vague ones ("timeline change").',
     humanCheckpoint: 'Any suggested annotation can be edited or dismissed before it is published to the map',
   },
 ]
