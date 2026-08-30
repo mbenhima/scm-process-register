@@ -1,7 +1,11 @@
-// Persistence layer for journi's backend. Uses node:sqlite (built into Node.js
-// 22.5+, no npm dependency, no native compilation) rather than a package like
-// better-sqlite3 — this is what lets the Windows installer be "install Node.js,
-// then npm install", with no C++ build tools ever in the picture.
+// Persistence layer for journi's backend. Uses better-sqlite3 rather than
+// Node's built-in node:sqlite: the built-in module needs Node.js 22.5 or
+// newer, and a plain "install Node.js LTS" from nodejs.org can easily land on
+// Node 20 (still an actively supported LTS) — which crashes at startup with
+// ERR_UNKNOWN_BUILTIN_MODULE. better-sqlite3 ships prebuilt binaries for
+// Windows/macOS/Linux across the Node 18-22 range, so `npm install` doesn't
+// need a C++ compiler and the app runs on whatever reasonably current Node
+// version the user already has.
 //
 // The whole app's state is one JSON blob (the same shape the frontend used to
 // keep in localStorage) rather than a normalized relational schema. journi's
@@ -14,7 +18,7 @@
 // backend a thin, reliable persistence layer and the frontend's existing
 // state logic as the single source of truth for what the data actually looks
 // like.
-import { DatabaseSync } from 'node:sqlite'
+import Database from 'better-sqlite3'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -25,7 +29,8 @@ const DB_PATH = path.join(DATA_DIR, 'journi.db')
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true })
 
-const db = new DatabaseSync(DB_PATH)
+const db = new Database(DB_PATH)
+db.pragma('journal_mode = WAL')
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS app_state (
