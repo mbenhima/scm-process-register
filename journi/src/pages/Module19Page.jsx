@@ -13,10 +13,11 @@ const STAGE_TONE = { 1: 'gray', 2: 'amber', 3: 'green' }
 const PDCA_TONE = { Plan: 'gray', Do: 'brand', Check: 'amber', Act: 'green' }
 const CHARTER_STATUSES = ['Active', 'Draft', 'Retired']
 const BLANK_CHARTER = {
-  name: '', category: '', pdcaCycle: 'Full Cycle (Plan-Do-Check-Act)', what: '', who: '', when: '', where: '', why: '', how: '',
-  ownerRole: '', racsi: { R: '', A: '', C: '', S: '', I: '' }, primaryLinkedMacroId: '', governsObsLevel: 'Project',
-  status: 'Draft', version: 'v1.0', effectiveDate: '', reviewFrequency: '', description: '',
+  name: '', pdcaCycle: 'Full Cycle (Plan-Do-Check-Act)',
+  racsi: { R: '', A: '', C: '', S: '', I: '' }, primaryLinkedMacroId: '', governsObsLevel: 'Project',
+  status: 'Draft', version: 'v1.0', effectiveDate: '', reviewFrequency: '',
 }
+const BLANK_ENTRY = { category: '', owner: '', what: '', who: '', when: '', where: '', why: '', how: '', description: '' }
 
 function CharterForm({ form, setForm }) {
   const { t } = useI18n()
@@ -25,19 +26,6 @@ function CharterForm({ form, setForm }) {
   return (
     <div className="space-y-3">
       <input className="input" placeholder="Charter name" value={form.name} onChange={set('name')} />
-      <div className="grid grid-cols-2 gap-2">
-        <input className="input" placeholder="Category" value={form.category} onChange={set('category')} />
-        <input className="input" placeholder={t('m19_owner')} value={form.ownerRole} onChange={set('ownerRole')} />
-      </div>
-      <textarea className="input" rows={2} placeholder={`${t('m19_what')}`} value={form.what} onChange={set('what')} />
-      <textarea className="input" rows={2} placeholder={`${t('m19_who')}`} value={form.who} onChange={set('who')} />
-      <div className="grid grid-cols-2 gap-2">
-        <input className="input" placeholder={t('m19_when')} value={form.when} onChange={set('when')} />
-        <input className="input" placeholder={t('m19_where')} value={form.where} onChange={set('where')} />
-      </div>
-      <textarea className="input" rows={2} placeholder={t('m19_why')} value={form.why} onChange={set('why')} />
-      <textarea className="input" rows={2} placeholder={t('m19_how')} value={form.how} onChange={set('how')} />
-      <textarea className="input" rows={2} placeholder="Description" value={form.description} onChange={set('description')} />
       <div>
         <label className="label">{t('m18_chain_racsi')}</label>
         <div className="grid grid-cols-5 gap-1.5">
@@ -64,20 +52,76 @@ function CharterForm({ form, setForm }) {
         <input className="input" placeholder={t('m19_effective')} value={form.effectiveDate} onChange={set('effectiveDate')} />
       </div>
       <input className="input" placeholder={t('m19_review')} value={form.reviewFrequency} onChange={set('reviewFrequency')} />
+      <p className="text-[11px] text-ink/40">
+        Category, owner, and the What/Who/When/Where/Why/How/Description content go on this charter's entries — add or edit
+        them from the charter card below once it's saved.
+      </p>
     </div>
   )
 }
 
-function CharterCard({ charter, expanded, onToggle, canManage, canDelete, onEdit, onDelete }) {
+function CharterEntryForm({ form, setForm }) {
+  const { t } = useI18n()
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
+  return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-2">
+        <input className="input" placeholder="Category" value={form.category} onChange={set('category')} />
+        <input className="input" placeholder={t('m19_owner')} value={form.owner} onChange={set('owner')} />
+      </div>
+      <textarea className="input" rows={2} placeholder={`${t('m19_what')}`} value={form.what} onChange={set('what')} />
+      <textarea className="input" rows={2} placeholder={`${t('m19_who')}`} value={form.who} onChange={set('who')} />
+      <div className="grid grid-cols-2 gap-2">
+        <input className="input" placeholder={t('m19_when')} value={form.when} onChange={set('when')} />
+        <input className="input" placeholder={t('m19_where')} value={form.where} onChange={set('where')} />
+      </div>
+      <textarea className="input" rows={2} placeholder={t('m19_why')} value={form.why} onChange={set('why')} />
+      <textarea className="input" rows={2} placeholder={t('m19_how')} value={form.how} onChange={set('how')} />
+      <textarea className="input" rows={2} placeholder="Description" value={form.description} onChange={set('description')} />
+    </div>
+  )
+}
+
+function CharterEntryCard({ entry, canManage, onEdit, onDelete }) {
+  const { t } = useI18n()
+  return (
+    <div className="rounded-lg border border-brand-100 p-3 space-y-1.5">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <span className="font-mono text-[10px] text-brand-700">{entry.id}</span>
+          <p className="text-xs text-ink/50">{entry.category || <span className="italic text-ink/30">no category</span>} · {t('m19_owner')}: {entry.owner || '—'}</p>
+        </div>
+        {canManage && (
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button className="btn-secondary text-[11px] py-0.5 px-2" onClick={onEdit}>{t('m19_edit')}</button>
+            <button className="text-ink/30 hover:text-red-600 text-xs" onClick={onDelete}>✕</button>
+          </div>
+        )}
+      </div>
+      {entry.description && <p className="text-sm text-ink/70">{entry.description}</p>}
+      <div className="grid sm:grid-cols-2 gap-x-4 gap-y-1 text-xs">
+        <p><strong className="text-ink/80">{t('m19_what')}:</strong> <span className="text-ink/60">{entry.what}</span></p>
+        <p><strong className="text-ink/80">{t('m19_who')}:</strong> <span className="text-ink/60">{entry.who}</span></p>
+        <p><strong className="text-ink/80">{t('m19_when')}:</strong> <span className="text-ink/60">{entry.when}</span></p>
+        <p><strong className="text-ink/80">{t('m19_where')}:</strong> <span className="text-ink/60">{entry.where}</span></p>
+        <p className="sm:col-span-2"><strong className="text-ink/80">{t('m19_why')}:</strong> <span className="text-ink/60">{entry.why}</span></p>
+        <p className="sm:col-span-2"><strong className="text-ink/80">{t('m19_how')}:</strong> <span className="text-ink/60">{entry.how}</span></p>
+      </div>
+    </div>
+  )
+}
+
+function CharterCard({ charter, expanded, onToggle, canManage, canDelete, onEdit, onDelete, onAddEntry, onEditEntry, onDeleteEntry }) {
   const { t } = useI18n()
   const deleteBlocked = charter.status === 'Active'
+  const entries = charter.entries || []
   return (
     <div className="card p-4 space-y-2">
       <button className="w-full flex items-start justify-between gap-3 text-start" onClick={onToggle}>
         <div>
           <span className="font-mono text-xs text-brand-700">{charter.id}</span>
           <h3 className="font-semibold text-brand-950">{charter.name}</h3>
-          <p className="text-xs text-ink/50">{charter.category} · {t('m19_owner')}: {charter.ownerRole}</p>
+          <p className="text-xs text-ink/50">{entries.length} {entries.length === 1 ? t('m19_entry_singular') : t('m19_entries')}</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <Badge tone={charter.status === 'Active' ? 'green' : 'gray'}>{charter.status}</Badge>
@@ -86,16 +130,27 @@ function CharterCard({ charter, expanded, onToggle, canManage, canDelete, onEdit
       </button>
       {expanded && (
         <div className="space-y-2 pt-1 text-sm">
-          <p className="text-ink/70">{charter.description}</p>
-          <div className="grid sm:grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
-            <p><strong className="text-ink/80">{t('m19_what')}:</strong> <span className="text-ink/60">{charter.what}</span></p>
-            <p><strong className="text-ink/80">{t('m19_who')}:</strong> <span className="text-ink/60">{charter.who}</span></p>
-            <p><strong className="text-ink/80">{t('m19_when')}:</strong> <span className="text-ink/60">{charter.when}</span></p>
-            <p><strong className="text-ink/80">{t('m19_where')}:</strong> <span className="text-ink/60">{charter.where}</span></p>
-            <p className="sm:col-span-2"><strong className="text-ink/80">{t('m19_why')}:</strong> <span className="text-ink/60">{charter.why}</span></p>
-            <p className="sm:col-span-2"><strong className="text-ink/80">{t('m19_how')}:</strong> <span className="text-ink/60">{charter.how}</span></p>
+          <div className="flex items-center justify-between">
+            <span className="label !mb-0">{t('m19_entries')}</span>
+            {canManage && (
+              <button className="btn-primary text-[11px] py-0.5 px-2" onClick={onAddEntry}>
+                + {t('m19_add_entry')}
+              </button>
+            )}
           </div>
-          <p className="text-xs text-ink/60">
+          {entries.length === 0 && <p className="text-xs text-ink/40 italic">{t('m19_no_entries')}</p>}
+          <div className="space-y-2">
+            {entries.map((entry) => (
+              <CharterEntryCard
+                key={entry.id}
+                entry={entry}
+                canManage={canManage}
+                onEdit={() => onEditEntry(entry)}
+                onDelete={() => onDeleteEntry(entry.id)}
+              />
+            ))}
+          </div>
+          <p className="text-xs text-ink/60 pt-1">
             <strong className="text-ink/80">{t('m18_chain_racsi')}:</strong> R={charter.racsi.R} · A={charter.racsi.A} · C={charter.racsi.C} · S=
             {charter.racsi.S} · I={charter.racsi.I}
           </p>
@@ -135,13 +190,15 @@ function CharterCard({ charter, expanded, onToggle, canManage, canDelete, onEdit
 
 function CharterTab() {
   const { t } = useI18n()
-  const { data, currentUser, addCharter, updateCharter, deleteCharter } = useAppState()
+  const { data, currentUser, addCharter, updateCharter, deleteCharter, addCharterEntry, updateCharterEntry, deleteCharterEntry } = useAppState()
   const charters = data.charters
   const canManage = canManageCharters(currentUser?.role, data.rolePermissions)
   const canDelete = canDeleteCharter(currentUser?.role)
   const [expandedId, setExpandedId] = useState(null)
   const [modal, setModal] = useState(null) // { mode: 'add' | 'edit', charterId? }
   const [form, setForm] = useState(BLANK_CHARTER)
+  const [entryModal, setEntryModal] = useState(null) // { mode: 'add' | 'edit', charterId, entryId? }
+  const [entryForm, setEntryForm] = useState(BLANK_ENTRY)
 
   function openAdd() {
     setForm(BLANK_CHARTER)
@@ -156,6 +213,20 @@ function CharterTab() {
     if (modal.mode === 'add') addCharter(form)
     else updateCharter(modal.charterId, form)
     setModal(null)
+  }
+
+  function openAddEntry(charterId) {
+    setEntryForm(BLANK_ENTRY)
+    setEntryModal({ mode: 'add', charterId })
+  }
+  function openEditEntry(charterId, entry) {
+    setEntryForm({ ...BLANK_ENTRY, ...entry })
+    setEntryModal({ mode: 'edit', charterId, entryId: entry.id })
+  }
+  function submitEntry() {
+    if (entryModal.mode === 'add') addCharterEntry(entryModal.charterId, entryForm)
+    else updateCharterEntry(entryModal.charterId, entryModal.entryId, entryForm)
+    setEntryModal(null)
   }
 
   return (
@@ -178,8 +249,25 @@ function CharterTab() {
           canDelete={canDelete}
           onEdit={() => openEdit(c)}
           onDelete={() => deleteCharter(c.id)}
+          onAddEntry={() => openAddEntry(c.id)}
+          onEditEntry={(entry) => openEditEntry(c.id, entry)}
+          onDeleteEntry={(entryId) => deleteCharterEntry(c.id, entryId)}
         />
       ))}
+
+      <Modal
+        open={!!entryModal}
+        onClose={() => setEntryModal(null)}
+        title={entryModal?.mode === 'add' ? `+ ${t('m19_add_entry')}` : t('m19_edit')}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setEntryModal(null)}>{t('cancel')}</button>
+            <button className="btn-primary" onClick={submitEntry}>{t('save')}</button>
+          </>
+        }
+      >
+        {entryModal && <CharterEntryForm form={entryForm} setForm={setEntryForm} />}
+      </Modal>
 
       <Modal
         open={!!modal}

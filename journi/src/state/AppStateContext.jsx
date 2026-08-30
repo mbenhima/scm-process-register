@@ -87,6 +87,18 @@ function migrateOrSeed(parsed) {
       // data.charters yet — back-fill from the same default set Module 19
       // used to render as a static import.
       if (!parsed.charters) parsed.charters = JSON.parse(JSON.stringify(defaultCharters))
+      // A session persisted before a charter could hold multiple entries
+      // (category/owner/what/who/when/where/why/how/description) kept those
+      // fields directly on the charter itself — move them into the charter's
+      // first entry rather than lose them.
+      parsed.charters = parsed.charters.map((c) => {
+        if (c.entries) return c
+        const { category, ownerRole, what, who, when, where, why, how, description, ...rest } = c
+        return {
+          ...rest,
+          entries: [{ id: `${c.id}-E1`, category: category || '', owner: ownerRole || '', what: what || '', who: who || '', when: when || '', where: where || '', why: why || '', how: how || '', description: description || '' }],
+        }
+      })
       if (!parsed.license) {
         parsed.license = {
           mode: 'saas',
@@ -652,7 +664,7 @@ export function AppStateProvider({ children }) {
   // themselves (distinct from logCharterAction above, which tracks
   // per-project completion of an existing charter's D31a actions).
   const addCharter = useCallback((charter) => {
-    setData((prev) => ({ ...prev, charters: [...prev.charters, { ...charter, id: uid('chtr') }] }))
+    setData((prev) => ({ ...prev, charters: [...prev.charters, { entries: [], ...charter, id: uid('chtr') }] }))
   }, [])
 
   const updateCharter = useCallback((charterId, patch) => {
@@ -664,6 +676,42 @@ export function AppStateProvider({ children }) {
 
   const deleteCharter = useCallback((charterId) => {
     setData((prev) => ({ ...prev, charters: prev.charters.filter((c) => c.id !== charterId) }))
+  }, [])
+
+  // A charter is a named container for one or more entries — each entry is
+  // its own category/owner/what/who/when/where/why/how/description, so a
+  // single charter can cover several distinct behavioral commitments.
+  const addCharterEntry = useCallback((charterId, entry) => {
+    setData((prev) => ({
+      ...prev,
+      charters: prev.charters.map((c) =>
+        c.id === charterId
+          ? {
+              ...c,
+              entries: [
+                ...(c.entries || []),
+                { id: uid('chtre'), category: '', owner: '', what: '', who: '', when: '', where: '', why: '', how: '', description: '', ...entry },
+              ],
+            }
+          : c,
+      ),
+    }))
+  }, [])
+
+  const updateCharterEntry = useCallback((charterId, entryId, patch) => {
+    setData((prev) => ({
+      ...prev,
+      charters: prev.charters.map((c) =>
+        c.id === charterId ? { ...c, entries: (c.entries || []).map((e) => (e.id === entryId ? { ...e, ...patch } : e)) } : c,
+      ),
+    }))
+  }, [])
+
+  const deleteCharterEntry = useCallback((charterId, entryId) => {
+    setData((prev) => ({
+      ...prev,
+      charters: prev.charters.map((c) => (c.id === charterId ? { ...c, entries: (c.entries || []).filter((e) => e.id !== entryId) } : c)),
+    }))
   }, [])
 
   // Module 20 — D28 Journey Touchpoints: records which touchpoints an
@@ -1055,6 +1103,9 @@ export function AppStateProvider({ children }) {
       addCharter,
       updateCharter,
       deleteCharter,
+      addCharterEntry,
+      updateCharterEntry,
+      deleteCharterEntry,
       addFieldNote,
       updateFieldNote,
       deleteFieldNote,
@@ -1132,6 +1183,9 @@ export function AppStateProvider({ children }) {
       addCharter,
       updateCharter,
       deleteCharter,
+      addCharterEntry,
+      updateCharterEntry,
+      deleteCharterEntry,
       addFieldNote,
       updateFieldNote,
       deleteFieldNote,
