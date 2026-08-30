@@ -71,9 +71,12 @@ exit /b 0
 :error
 echo.
 echo Something went wrong during install - see the messages above.
-echo If it mentions Python or a C++ compiler, you can ignore it: journi's
-echo backend does not need one. Otherwise, re-run install.bat after fixing
-echo the reported issue.
+echo If you see a message about Python, a C++ compiler, or Visual Studio,
+echo it's safe to ignore: journi's database driver tries two options and
+echo only needs ONE of them to succeed, so this shouldn't normally stop the
+echo install (that message may just be scrolling by from the one that
+echo didn't work). If install.bat still exits with an error after that,
+echo re-run it after fixing whatever else is reported above.
 echo.
 pause
 exit /b 1

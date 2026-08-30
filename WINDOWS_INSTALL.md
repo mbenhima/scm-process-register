@@ -8,14 +8,17 @@ your machine (or your local network, if you choose to share it — see below).
 ## What you need first
 
 - **Windows 10 or 11.**
-- **Node.js, version 22.5 or newer.** If you don't have it, download the
+- **Node.js, version 18 or newer.** If you don't have it, download the
   **LTS** installer for Windows from **https://nodejs.org/** and run it —
   the defaults are fine. journi's installer checks for this automatically
   and will tell you if it's missing.
 
 You do **not** need Python, Visual Studio Build Tools, Docker, or any
-database software installed separately — journi's database (SQLite) is
-built directly into Node.js.
+database software installed separately. journi's backend picks whichever of
+two SQLite drivers actually works on your installed Node.js version: the one
+built directly into Node 22.5+ (no install step at all), or, on an older
+Node, a small package with a ready-built driver for Windows — either way,
+nothing needs to be compiled on your machine.
 
 ## Installing
 
@@ -95,11 +98,25 @@ https://nodejs.org/ (the LTS version), then run `install.bat` again. If
 you just installed Node.js and still see this, restart your computer once —
 Windows sometimes needs that to pick up the updated PATH.
 
-**`install.bat` mentions Python or a missing compiler.** — journi's backend
-doesn't need either; if you see this, it means npm tried to build a native
-module it shouldn't have needed to. Re-run `install.bat` — if it persists,
-delete the `node_modules` folders inside both `journi\` and `server\` and
-run `install.bat` again.
+**`install.bat` shows red `npm error gyp` lines mentioning Python, a
+compiler, or Visual Studio.** — This is safe to ignore. journi's backend
+tries two database drivers and only needs one to work: the one built
+directly into Node.js 22.5+, or (on an older Node) a small package with a
+ready-built driver for Windows. The messages you're seeing are from an
+attempt to compile that second option from source, which only happens if no
+ready-built version matches your exact Node version — and it's set up so a
+failure there doesn't stop the rest of the install. Look further down the
+output for "Install complete!"; if you see it, everything worked and you
+can ignore the red text above it. If install.bat genuinely stops with
+"Something went wrong during install," the real problem is a different
+line above that message — the same troubleshooting steps here apply, or
+try the fix below (updating Node.js) which sidesteps the compiled-driver
+path entirely.
+
+**Simplest fix if you want to avoid this message altogether:** install the
+latest Node.js **LTS** from https://nodejs.org/ (22.5 or newer) — journi
+then uses the driver built into Node itself and never needs to compile
+anything.
 
 **"Port 4000 is already in use."** — Another program (or another copy of
 journi) is already using port 4000. Close the other program, or edit

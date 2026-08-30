@@ -1,11 +1,21 @@
-// Persistence layer for journi's backend. Uses better-sqlite3 rather than
-// Node's built-in node:sqlite: the built-in module needs Node.js 22.5 or
-// newer, and a plain "install Node.js LTS" from nodejs.org can easily land on
-// Node 20 (still an actively supported LTS) — which crashes at startup with
-// ERR_UNKNOWN_BUILTIN_MODULE. better-sqlite3 ships prebuilt binaries for
-// Windows/macOS/Linux across the Node 18-22 range, so `npm install` doesn't
-// need a C++ compiler and the app runs on whatever reasonably current Node
-// version the user already has.
+// Persistence layer for journi's backend. Two possible SQLite drivers, tried
+// in this order, so the app runs on whatever Node.js version the user
+// already has instead of requiring a specific one:
+//
+//  1. node:sqlite, built into Node.js 22.5+ — zero npm dependency, zero
+//     native compilation, so it's the preferred path whenever it's present
+//     (including on Node versions newer than any native module's prebuilt
+//     binaries yet cover, which is exactly what a very recently installed
+//     Node.js will be).
+//  2. better-sqlite3, an optionalDependency (see package.json — "optional"
+//     specifically so a failed native build there never fails `npm install`
+//     as a whole) — ships prebuilt binaries for common recent Node ABI
+//     versions on Windows/macOS/Linux, covering Node 18 up to whatever
+//     Node 22.4-and-earlier version a user might still have.
+//
+// If neither is available (an old Node version with no matching
+// better-sqlite3 prebuild), readState/writeState throw a clear error at
+// first use rather than the process crashing unintelligibly at import time.
 //
 // The whole app's state is one JSON blob (the same shape the frontend used to
 // keep in localStorage) rather than a normalized relational schema. journi's
@@ -18,10 +28,29 @@
 // backend a thin, reliable persistence layer and the frontend's existing
 // state logic as the single source of truth for what the data actually looks
 // like.
-import Database from 'better-sqlite3'
+import { createRequire } from 'node:module'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+const require = createRequire(import.meta.url)
+
+function loadDriver() {
+  try {
+    const { DatabaseSync } = require('node:sqlite')
+    return { Database: DatabaseSync, name: 'node:sqlite', supportsPragma: false }
+  } catch {
+    // node:sqlite not available on this Node version — fall through.
+  }
+  try {
+    const Database = require('better-sqlite3')
+    return { Database, name: 'better-sqlite3', supportsPragma: true }
+  } catch {
+    return null
+  }
+}
+
+const driver = loadDriver()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DATA_DIR = process.env.JOURNI_DATA_DIR || path.join(__dirname, 'data')
@@ -29,8 +58,18 @@ const DB_PATH = path.join(DATA_DIR, 'journi.db')
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true })
 
-const db = new Database(DB_PATH)
-db.pragma('journal_mode = WAL')
+if (!driver) {
+  throw new Error(
+    'No SQLite driver available. Your Node.js version does not have the built-in node:sqlite module ' +
+      '(needs Node 22.5+), and the better-sqlite3 fallback did not install successfully — check the ' +
+      'install.bat output above for the reason. Easiest fix: install the latest Node.js LTS from ' +
+      'https://nodejs.org/ and run install.bat again.',
+  )
+}
+
+console.log(`Using SQLite driver: ${driver.name}`)
+const db = new driver.Database(DB_PATH)
+if (driver.supportsPragma) db.pragma('journal_mode = WAL')
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS app_state (
