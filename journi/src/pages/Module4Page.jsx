@@ -18,24 +18,35 @@ function impactCellColor(v) {
   return 'bg-brand-100 text-brand-800'
 }
 
+const BLANK_STAKEHOLDER_GROUP = { headcount: 50, impact: { process: 3, tech: 3, role: 3, location: 3, identity: 3 }, influence: 3 }
+
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
+  const { data, addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const [modal, setModal] = useState(false)
-  const [form, setForm] = useState({ headcount: 50, impact: { process: 3, tech: 3, role: 3, location: 3, identity: 3 }, influence: 3 })
+  // modal: { mode: 'add' | 'edit', id? } | null
+  const [modal, setModal] = useState(null)
+  const [form, setForm] = useState(BLANK_STAKEHOLDER_GROUP)
 
+  function openAdd() {
+    setForm(BLANK_STAKEHOLDER_GROUP)
+    setModal({ mode: 'add' })
+  }
+  function openEdit(sh) {
+    setForm({ ...BLANK_STAKEHOLDER_GROUP, ...sh, impact: { ...BLANK_STAKEHOLDER_GROUP.impact, ...sh.impact } })
+    setModal({ mode: 'edit', id: sh.id })
+  }
   function submit() {
-    addSubItem(project.id, 'stakeholderGroups', form)
-    setModal(false)
-    setForm({ headcount: 50, impact: { process: 3, tech: 3, role: 3, location: 3, identity: 3 }, influence: 3 })
+    if (modal.mode === 'add') addSubItem(project.id, 'stakeholderGroups', form)
+    else updateSubItem(project.id, 'stakeholderGroups', modal.id, form)
+    setModal(null)
   }
 
   return (
     <div className="space-y-4">
       {canEdit && (
         <div className="flex justify-end">
-          <button className="btn-primary" onClick={() => setModal(true)}>
+          <button className="btn-primary" onClick={openAdd}>
             + {t('stakeholderGroup')}
           </button>
         </div>
@@ -79,7 +90,10 @@ function Content({ project }) {
                     {isHighImpactLowInfluence(sh) && <Badge tone="red">{t('highImpactLowInfluence')}</Badge>}
                   </td>
                   {canEdit && (
-                    <td className="px-2 py-2.5">
+                    <td className="px-2 py-2.5 whitespace-nowrap">
+                      <button className="btn-secondary text-xs me-1.5" onClick={() => openEdit(sh)}>
+                        {t('m19_edit')}
+                      </button>
                       <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'stakeholderGroups', sh.id)}>
                         {t('delete')}
                       </button>
@@ -107,12 +121,12 @@ function Content({ project }) {
       </div>
 
       <Modal
-        open={modal}
-        onClose={() => setModal(false)}
-        title={`+ ${t('stakeholderGroup')}`}
+        open={!!modal}
+        onClose={() => setModal(null)}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('stakeholderGroup')}`}
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setModal(false)}>
+            <button className="btn-ghost" onClick={() => setModal(null)}>
               {t('cancel')}
             </button>
             <button className="btn-primary" onClick={submit}>

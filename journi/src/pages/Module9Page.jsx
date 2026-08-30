@@ -55,9 +55,10 @@ function CurriculumDetail({ tr }) {
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
+  const { data, addSubItem, updateSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
-  const [modal, setModal] = useState(false)
+  // modal: { mode: 'add' | 'edit', id? } | null
+  const [modal, setModal] = useState(null)
   const [form, setForm] = useState(BLANK_FORM)
   const [expanded, setExpanded] = useState(null)
   const [certJustifyId, setCertJustifyId] = useState(null)
@@ -84,10 +85,19 @@ function Content({ project }) {
     cancelCertToggle()
   }
 
+  function openAdd() {
+    setForm(BLANK_FORM)
+    setModal({ mode: 'add' })
+  }
+  function openEdit(tr) {
+    setForm({ ...BLANK_FORM, ...tr })
+    setModal({ mode: 'edit', id: tr.id })
+  }
   function submit() {
     if (!form.curriculum.trim()) return
-    addSubItem(project.id, 'trainings', form)
-    setModal(false)
+    if (modal.mode === 'add') addSubItem(project.id, 'trainings', form)
+    else updateSubItem(project.id, 'trainings', modal.id, form)
+    setModal(null)
     setForm(BLANK_FORM)
   }
 
@@ -115,7 +125,7 @@ function Content({ project }) {
           ]}
         />
         {canEdit && (
-          <button className="btn-primary" onClick={() => setModal(true)}>
+          <button className="btn-primary" onClick={openAdd}>
             + {t('curriculum')}
           </button>
         )}
@@ -171,7 +181,10 @@ function Content({ project }) {
                       </button>
                     </td>
                     {canEdit && (
-                      <td className="px-2 py-2.5">
+                      <td className="px-2 py-2.5 whitespace-nowrap">
+                        <button className="btn-secondary text-xs me-1.5" onClick={() => openEdit(tr)}>
+                          {t('m19_edit')}
+                        </button>
                         <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'trainings', tr.id)}>
                           {t('delete')}
                         </button>
@@ -232,12 +245,12 @@ function Content({ project }) {
       </div>
 
       <Modal
-        open={modal}
-        onClose={() => setModal(false)}
-        title={`+ ${t('curriculum')}`}
+        open={!!modal}
+        onClose={() => setModal(null)}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('curriculum')}`}
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setModal(false)}>
+            <button className="btn-ghost" onClick={() => setModal(null)}>
               {t('cancel')}
             </button>
             <button className="btn-primary" onClick={submit}>

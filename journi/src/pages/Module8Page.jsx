@@ -16,18 +16,28 @@ const STATUS_TONE = { sent: 'green', scheduled: 'amber', draft: 'gray' }
 
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
+  const { data, addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const orgProjects = useOrgProjects(project.orgId)
   const otherProjects = orgProjects.filter((p) => p.id !== project.id)
-  const [modal, setModal] = useState(false)
-  const [form, setForm] = useState({ message: '', audience: '', channel: '', sender: '', timing: '', adkarBlock: 'awareness', status: 'draft' })
+  const BLANK_COMM = { message: '', audience: '', channel: '', sender: '', timing: '', adkarBlock: 'awareness', status: 'draft' }
+  // modal: { mode: 'add' | 'edit', id? } | null
+  const [modal, setModal] = useState(null)
+  const [form, setForm] = useState(BLANK_COMM)
 
+  function openAdd() {
+    setForm(BLANK_COMM)
+    setModal({ mode: 'add' })
+  }
+  function openEdit(c) {
+    setForm({ ...BLANK_COMM, ...c })
+    setModal({ mode: 'edit', id: c.id })
+  }
   function submit() {
     if (!form.message.trim()) return
-    addSubItem(project.id, 'communications', form)
-    setModal(false)
-    setForm({ message: '', audience: '', channel: '', sender: '', timing: '', adkarBlock: 'awareness', status: 'draft' })
+    if (modal.mode === 'add') addSubItem(project.id, 'communications', form)
+    else updateSubItem(project.id, 'communications', modal.id, form)
+    setModal(null)
   }
 
   const saturationRisk = otherProjects.length > 0
@@ -58,7 +68,7 @@ function Content({ project }) {
           ]}
         />
         {canEdit && (
-          <button className="btn-primary" onClick={() => setModal(true)}>
+          <button className="btn-primary" onClick={openAdd}>
             + {t('message')}
           </button>
         )}
@@ -96,7 +106,10 @@ function Content({ project }) {
                     <Badge tone={STATUS_TONE[c.status]}>{c.status}</Badge>
                   </td>
                   {canEdit && (
-                    <td className="px-2 py-2.5">
+                    <td className="px-2 py-2.5 whitespace-nowrap">
+                      <button className="btn-secondary text-xs me-1.5" onClick={() => openEdit(c)}>
+                        {t('m19_edit')}
+                      </button>
                       <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'communications', c.id)}>
                         {t('delete')}
                       </button>
@@ -152,12 +165,12 @@ function Content({ project }) {
       </div>
 
       <Modal
-        open={modal}
-        onClose={() => setModal(false)}
-        title={`+ ${t('message')}`}
+        open={!!modal}
+        onClose={() => setModal(null)}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('message')}`}
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setModal(false)}>
+            <button className="btn-ghost" onClick={() => setModal(null)}>
               {t('cancel')}
             </button>
             <button className="btn-primary" onClick={submit}>

@@ -5,6 +5,7 @@ import { useScopedOrg, useOrgProjects } from '../utils/useScoped.js'
 import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
+import Modal from '../components/Modal.jsx'
 import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { canWrite } from '../utils/rbac.js'
 
@@ -110,15 +111,30 @@ function JourneyChart({ project, zoom, orgProjects }) {
   )
 }
 
+const BLANK_EVENT = { label: '', offsetDays: 0, type: 'milestone' }
+
 function Content({ project }) {
   const { t } = useI18n()
-  const { data, addSubItem, removeSubItem, currentUser } = useAppState()
+  const { data, addSubItem, updateSubItem, removeSubItem, currentUser } = useAppState()
   const canEdit = canWrite(currentUser?.role, data.rolePermissions)
   const org = useScopedOrg()
   const orgProjects = useOrgProjects(org?.id)
   const [zoom, setZoom] = useState('project')
   const [shared, setShared] = useState(false)
-  const [newEvent, setNewEvent] = useState({ label: '', offsetDays: 0, type: 'milestone' })
+  const [newEvent, setNewEvent] = useState(BLANK_EVENT)
+  // editModal: { id } | null
+  const [editModal, setEditModal] = useState(null)
+  const [editForm, setEditForm] = useState(BLANK_EVENT)
+
+  function openEdit(e) {
+    setEditForm({ label: e.label, offsetDays: e.offsetDays, type: e.type })
+    setEditModal({ id: e.id })
+  }
+  function submitEdit() {
+    if (!editForm.label.trim()) return
+    updateSubItem(project.id, 'journeyEvents', editModal.id, { ...editForm, offsetDays: Number(editForm.offsetDays) || 0 })
+    setEditModal(null)
+  }
 
   return (
     <div className="space-y-5">
@@ -167,9 +183,14 @@ function Content({ project }) {
                 <span className="flex-1 text-ink/80">{e.label}</span>
                 <span className="text-xs text-ink/40 capitalize">{e.type}</span>
                 {canEdit && (
-                  <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'journeyEvents', e.id)}>
-                    {t('delete')}
-                  </button>
+                  <>
+                    <button className="btn-secondary text-xs" onClick={() => openEdit(e)}>
+                      {t('m19_edit')}
+                    </button>
+                    <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'journeyEvents', e.id)}>
+                      {t('delete')}
+                    </button>
+                  </>
                 )}
               </div>
             ))}
@@ -202,7 +223,7 @@ function Content({ project }) {
               onClick={() => {
                 if (!newEvent.label.trim()) return
                 addSubItem(project.id, 'journeyEvents', { label: newEvent.label, offsetDays: Number(newEvent.offsetDays) || 0, type: newEvent.type })
-                setNewEvent({ label: '', offsetDays: 0, type: 'milestone' })
+                setNewEvent(BLANK_EVENT)
               }}
             >
               {t('add')}
@@ -210,6 +231,44 @@ function Content({ project }) {
           </>
         )}
       </div>
+
+      <Modal
+        open={!!editModal}
+        onClose={() => setEditModal(null)}
+        title={t('m19_edit')}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setEditModal(null)}>
+              {t('cancel')}
+            </button>
+            <button className="btn-primary" onClick={submitEdit}>
+              {t('save')}
+            </button>
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <input
+            className="input"
+            placeholder="Event label, e.g. Go-live, Plant 1"
+            value={editForm.label}
+            onChange={(e) => setEditForm({ ...editForm, label: e.target.value })}
+          />
+          <input
+            type="number"
+            className="input"
+            placeholder="Day offset (+/-)"
+            value={editForm.offsetDays}
+            onChange={(e) => setEditForm({ ...editForm, offsetDays: e.target.value })}
+          />
+          <select className="input" value={editForm.type} onChange={(e) => setEditForm({ ...editForm, type: e.target.value })}>
+            <option value="milestone">milestone</option>
+            <option value="communication">communication</option>
+            <option value="training">training</option>
+            <option value="assessment">assessment</option>
+          </select>
+        </div>
+      </Modal>
     </div>
   )
 }

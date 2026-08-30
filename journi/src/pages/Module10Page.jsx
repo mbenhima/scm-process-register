@@ -209,16 +209,13 @@ function CodingWorkbenchTab({ project, canManage }) {
 
 function ResistanceLogTab({ project }) {
   const { t } = useI18n()
-  const { data, addSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
+  const { data, addSubItem, updateSubItem, removeSubItem, logJustifiedChange, currentUser } = useAppState()
   // Employees may submit a concern (per spec, "submission only") even though they
   // cannot otherwise write to this project; only full write roles can manage
   // status, classification, or delete an entry.
   const canManage = canWrite(currentUser?.role, data.rolePermissions)
   const canSubmit = canManage || currentUser?.role === 'employee'
-  const [modal, setModal] = useState(false)
-  const [statusJustifyId, setStatusJustifyId] = useState(null)
-  const [statusJustification, setStatusJustification] = useState('')
-  const [form, setForm] = useState({
+  const BLANK_RESISTANCE = {
     type: 'will',
     source: '',
     rootCause: '',
@@ -228,13 +225,27 @@ function ResistanceLogTab({ project }) {
     dueDate: '',
     status: 'open',
     anonymous: false,
-  })
+  }
+  // modal: { mode: 'add' | 'edit', id? } | null
+  const [modal, setModal] = useState(null)
+  const [statusJustifyId, setStatusJustifyId] = useState(null)
+  const [statusJustification, setStatusJustification] = useState('')
+  const [form, setForm] = useState(BLANK_RESISTANCE)
 
+  function openAdd() {
+    setForm(BLANK_RESISTANCE)
+    setModal({ mode: 'add' })
+  }
+  function openEdit(r) {
+    setForm({ ...BLANK_RESISTANCE, ...r })
+    setModal({ mode: 'edit', id: r.id })
+  }
   function submit() {
     if (!form.rootCause.trim()) return
-    addSubItem(project.id, 'resistanceLog', form)
-    setModal(false)
-    setForm({ type: 'will', source: '', rootCause: '', severity: 3, mitigation: '', owner: '', dueDate: '', status: 'open', anonymous: false })
+    if (modal.mode === 'add') addSubItem(project.id, 'resistanceLog', form)
+    else updateSubItem(project.id, 'resistanceLog', modal.id, form)
+    setModal(null)
+    setForm(BLANK_RESISTANCE)
   }
 
   const typeCounts = RESISTANCE_TYPES.map((rt) => ({ type: rt, count: project.resistanceLog.filter((r) => r.type === rt).length }))
@@ -281,7 +292,7 @@ function ResistanceLogTab({ project }) {
 
       {canSubmit && (
         <div className="flex justify-end">
-          <button className="btn-primary" onClick={() => setModal(true)}>
+          <button className="btn-primary" onClick={openAdd}>
             + {t('resistanceType')}
           </button>
         </div>
@@ -313,6 +324,9 @@ function ResistanceLogTab({ project }) {
                     {r.status === 'open' ? 'Mark in progress' : 'Close'}
                   </button>
                 )}
+                <button className="btn-secondary text-xs" onClick={() => openEdit(r)}>
+                  {t('m19_edit')}
+                </button>
                 <button className="btn-danger text-xs" onClick={() => removeSubItem(project.id, 'resistanceLog', r.id)}>
                   {t('delete')}
                 </button>
@@ -347,12 +361,12 @@ function ResistanceLogTab({ project }) {
       </div>
 
       <Modal
-        open={modal}
-        onClose={() => setModal(false)}
-        title={`+ ${t('resistanceType')}`}
+        open={!!modal}
+        onClose={() => setModal(null)}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('resistanceType')}`}
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setModal(false)}>
+            <button className="btn-ghost" onClick={() => setModal(null)}>
               {t('cancel')}
             </button>
             <button className="btn-primary" onClick={submit}>
