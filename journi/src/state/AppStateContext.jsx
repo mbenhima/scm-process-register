@@ -65,6 +65,14 @@ function migrateOrSeed(parsed) {
         version: 1,
         versionHistory: [],
         ...tpl,
+        // A session persisted before phases gained a CM track / checklist /
+        // gate criteria won't have those fields yet, and older sessions kept
+        // each phase as a plain name string rather than an object.
+        phases: (tpl.phases || []).map((phase) =>
+          typeof phase === 'string'
+            ? { name: phase, cmTrack: [], checklist: [], gate: [] }
+            : { cmTrack: [], checklist: [], gate: [], ...phase },
+        ),
       }))
       if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
       // D32k QCW-01: a session persisted before the Qualitative Coding
@@ -373,8 +381,8 @@ export function AppStateProvider({ children }) {
         id: uid('wbsTasks'),
         track: 'pm',
         accountabilityTag: 'PROJECT',
-        phase,
-        name: phase,
+        phase: phase.name,
+        name: phase.name,
         baselineStart: addDays(startISO, i * phaseDurationDays),
         baselineEnd: addDays(startISO, (i + 1) * phaseDurationDays - 1),
         actualStart: null,

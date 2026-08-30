@@ -229,7 +229,7 @@ function TemplateModal({ open, onClose, project, data, loadPhaseTemplate }) {
         {template && (
           <ul className="text-xs text-ink/60 list-disc ps-4 space-y-0.5">
             {template.phases.map((phase) => (
-              <li key={phase}>{phase}</li>
+              <li key={phase.name}>{phase.name}</li>
             ))}
           </ul>
         )}
@@ -240,6 +240,48 @@ function TemplateModal({ open, onClose, project, data, loadPhaseTemplate }) {
 
 const TRANSFORMATION_TYPES = ['erp', 'bpr', 'automation', 'qms', 'cultural', 'operating_model', 'compliance', 'training_skills']
 const BLANK_TEMPLATE = { id: '', name: '', transformationType: 'erp', phasesText: '' }
+
+// Phase templates are edited as one plain-text block rather than a nested
+// form — a phase name starts at the left margin; an indented "CM:",
+// "CHECKLIST:", or "GATE:" line adds one entry of that kind to the phase
+// above it. This keeps editing (including reordering, and adding/removing
+// items freely) a single textarea rather than a deeply nested per-phase
+// form, while still round-tripping the same structured data the rest of
+// the app reads (Change Management track, checklist, gate criteria).
+function serializePhasesText(phases) {
+  return phases
+    .map((phase) => {
+      const lines = [phase.name]
+      for (const item of phase.cmTrack || []) lines.push(`  CM: ${item}`)
+      for (const item of phase.checklist || []) lines.push(`  CHECKLIST: ${item}`)
+      for (const item of phase.gate || []) lines.push(`  GATE: ${item}`)
+      return lines.join('\n')
+    })
+    .join('\n')
+}
+
+function parsePhasesText(text) {
+  const phases = []
+  let current = null
+  for (const rawLine of text.split('\n')) {
+    if (!rawLine.trim()) continue
+    const indented = /^\s/.test(rawLine)
+    const line = rawLine.trim()
+    if (!indented) {
+      current = { name: line, cmTrack: [], checklist: [], gate: [] }
+      phases.push(current)
+      continue
+    }
+    if (!current) continue
+    const cmMatch = line.match(/^CM:\s*(.*)$/i)
+    const checklistMatch = line.match(/^CHECKLIST:\s*(.*)$/i)
+    const gateMatch = line.match(/^GATE:\s*(.*)$/i)
+    if (cmMatch && cmMatch[1]) current.cmTrack.push(cmMatch[1])
+    else if (checklistMatch && checklistMatch[1]) current.checklist.push(checklistMatch[1])
+    else if (gateMatch && gateMatch[1]) current.gate.push(gateMatch[1])
+  }
+  return phases
+}
 
 function TemplateForm({ form, setForm, isNew }) {
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
@@ -264,8 +306,20 @@ function TemplateForm({ form, setForm, isNew }) {
         </select>
       </div>
       <div>
-        <label className="label">Phases (one per line, in order)</label>
-        <textarea className="input" rows={8} value={form.phasesText} onChange={set('phasesText')} />
+        <label className="label">Phases</label>
+        <p className="text-[11px] text-ink/40 mb-1">
+          One phase name per line, at the left margin. Under each phase, add indented lines starting with{' '}
+          <code className="text-[10px]">CM:</code> for a Change Management track action, <code className="text-[10px]">CHECKLIST:</code> for an
+          exit-criteria checklist item, or <code className="text-[10px]">GATE:</code> for a Phase Gate review question. Any number of each, any
+          order — none are required.
+        </p>
+        <textarea
+          className="input font-mono text-xs"
+          rows={14}
+          placeholder={'Discovery\n  CM: Populate the Stakeholder Map\n  CHECKLIST: Business case approved\n  GATE: Is the business case approved?\nDesign\n  CM: ...'}
+          value={form.phasesText}
+          onChange={set('phasesText')}
+        />
       </div>
     </div>
   )
@@ -281,11 +335,11 @@ function TemplateManagerModal({ open, onClose, data, addPhaseTemplate, updatePha
     setEditing({ mode: 'add' })
   }
   function openEdit(tpl) {
-    setForm({ id: tpl.id, name: tpl.name, transformationType: tpl.transformationType, phasesText: tpl.phases.join('\n') })
+    setForm({ id: tpl.id, name: tpl.name, transformationType: tpl.transformationType, phasesText: serializePhasesText(tpl.phases) })
     setEditing({ mode: 'edit', templateId: tpl.id })
   }
   function submit() {
-    const phases = form.phasesText.split('\n').map((p) => p.trim()).filter(Boolean)
+    const phases = parsePhasesText(form.phasesText)
     if (!form.name.trim() || phases.length === 0) return
     if (editing.mode === 'add') {
       if (!form.id.trim()) return
@@ -336,9 +390,18 @@ function TemplateManagerModal({ open, onClose, data, addPhaseTemplate, updatePha
                   <button className="text-ink/30 hover:text-red-600 text-xs" onClick={() => deletePhaseTemplate(tpl.id)}>Delete</button>
                 </div>
               </div>
-              <ul className="text-xs text-ink/60 list-disc ps-4 space-y-0.5">
+              <ul className="text-xs text-ink/60 list-disc ps-4 space-y-1">
                 {tpl.phases.map((phase, i) => (
-                  <li key={i}>{phase}</li>
+                  <li key={i}>
+                    {phase.name}
+                    {(phase.cmTrack?.length || phase.checklist?.length || phase.gate?.length) ? (
+                      <span className="ms-1.5 space-x-1">
+                        {phase.cmTrack?.length > 0 && <Badge tone="brand">CM {phase.cmTrack.length}</Badge>}
+                        {phase.checklist?.length > 0 && <Badge tone="green">Checklist {phase.checklist.length}</Badge>}
+                        {phase.gate?.length > 0 && <Badge tone="amber">Gate {phase.gate.length}</Badge>}
+                      </span>
+                    ) : null}
+                  </li>
                 ))}
               </ul>
               {historyId === tpl.id && (
