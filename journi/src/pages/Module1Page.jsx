@@ -22,6 +22,7 @@ export default function Module1Page() {
     data,
     currentUser,
     addGroup,
+    updateGroup,
     addOrganization,
     updateOrganization,
     deleteGroup,
@@ -29,26 +30,72 @@ export default function Module1Page() {
     deleteMainProject,
     deleteCmProject,
     addMainProject,
+    updateMainProject,
     addCmProject,
+    updateCmProject,
   } = useAppState()
+  // modal: { kind: 'group'|'org'|'mp'|'cm', mode: 'add'|'edit', id? }
   const [modal, setModal] = useState(null)
   const [form, setForm] = useState({})
   const canEdit = canManageHierarchy(currentUser?.role, data.rolePermissions)
 
   const orgs = visibleOrganizations(currentUser, data)
 
-  function openModal(kind, defaults = {}) {
+  function openAdd(kind, defaults = {}) {
     setForm(defaults)
-    setModal(kind)
+    setModal({ kind, mode: 'add' })
+  }
+  function openEditGroup(g) {
+    setForm({ name: g.name })
+    setModal({ kind: 'group', mode: 'edit', id: g.id })
+  }
+  function openEditOrg(org) {
+    setForm({
+      name: org.name,
+      groupId: org.groupId || '',
+      sector: org.sector || 'manufacturing',
+      employeeCount: org.employeeCount || 0,
+      sites: (org.sites || []).join(', '),
+      languages: (org.languages || ['en']).join(', '),
+      defaultLanguage: org.defaultLanguage || 'en',
+    })
+    setModal({ kind: 'org', mode: 'edit', id: org.id })
+  }
+  function openEditMp(mp) {
+    setForm({
+      name: mp.name,
+      type: mp.type || 'erp',
+      scope: mp.scope || '',
+      durationMonths: mp.durationMonths || 6,
+      budgetBand: mp.budgetBand || '',
+      executiveSponsor: mp.executiveSponsor || '',
+    })
+    setModal({ kind: 'mp', mode: 'edit', id: mp.id })
+  }
+  function openEditCm(cm) {
+    setForm({
+      orgId: cm.orgId,
+      mainProjectIds: cm.mainProjectIds || [],
+      name: cm.name,
+      changeManager: cm.changeManager || '',
+      changeType: cm.changeType || 'technology',
+      targetPopulation: cm.targetPopulation || '',
+      businessDriver: cm.businessDriver || '',
+    })
+    setModal({ kind: 'cm', mode: 'edit', id: cm.id })
   }
   function closeModal() {
     setModal(null)
     setForm({})
   }
   function submit() {
-    if (modal === 'group') addGroup({ name: form.name })
-    if (modal === 'org')
-      addOrganization({
+    const { kind, mode, id } = modal
+    if (kind === 'group') {
+      const payload = { name: form.name }
+      mode === 'add' ? addGroup(payload) : updateGroup(id, payload)
+    }
+    if (kind === 'org') {
+      const payload = {
         groupId: form.groupId || null,
         name: form.name,
         sector: form.sector || 'manufacturing',
@@ -56,9 +103,11 @@ export default function Module1Page() {
         sites: (form.sites || '').split(',').map((s) => s.trim()).filter(Boolean),
         languages: (form.languages || 'en').split(',').map((s) => s.trim()),
         defaultLanguage: form.defaultLanguage || 'en',
-      })
-    if (modal === 'mp')
-      addMainProject({
+      }
+      mode === 'add' ? addOrganization(payload) : updateOrganization(id, payload)
+    }
+    if (kind === 'mp') {
+      const payload = {
         orgId: form.orgId,
         name: form.name,
         type: form.type || 'erp',
@@ -66,9 +115,11 @@ export default function Module1Page() {
         durationMonths: Number(form.durationMonths) || 6,
         budgetBand: form.budgetBand || '',
         executiveSponsor: form.executiveSponsor || '',
-      })
-    if (modal === 'cm')
-      addCmProject({
+      }
+      mode === 'add' ? addMainProject(payload) : updateMainProject(id, payload)
+    }
+    if (kind === 'cm') {
+      const payload = {
         orgId: form.orgId,
         mainProjectIds: form.mainProjectIds || [],
         name: form.name,
@@ -76,8 +127,9 @@ export default function Module1Page() {
         changeType: form.changeType || 'technology',
         targetPopulation: form.targetPopulation || '',
         businessDriver: form.businessDriver || '',
-        successCriteria: form.successCriteria || '',
-      })
+      }
+      mode === 'add' ? addCmProject({ ...payload, successCriteria: form.successCriteria || '' }) : updateCmProject(id, payload)
+    }
     closeModal()
   }
 
@@ -89,10 +141,10 @@ export default function Module1Page() {
         actions={
           canEdit && (
             <>
-              <button className="btn-secondary" onClick={() => openModal('group')}>
+              <button className="btn-secondary" onClick={() => openAdd('group')}>
                 + {t('group')}
               </button>
-              <button className="btn-secondary" onClick={() => openModal('org')}>
+              <button className="btn-secondary" onClick={() => openAdd('org')}>
                 + {t('organization')}
               </button>
             </>
@@ -109,9 +161,14 @@ export default function Module1Page() {
                 <h3 className="font-semibold text-brand-950">{g.name}</h3>
               </div>
               {canEdit && (
-                <button className="btn-danger text-xs" onClick={() => deleteGroup(g.id)}>
-                  {t('delete')}
-                </button>
+                <div className="flex items-center gap-1.5">
+                  <button className="btn-secondary text-xs" onClick={() => openEditGroup(g)}>
+                    {t('m19_edit')}
+                  </button>
+                  <button className="btn-danger text-xs" onClick={() => deleteGroup(g.id)}>
+                    {t('delete')}
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -153,10 +210,13 @@ export default function Module1Page() {
                 </div>
                 {canEdit && (
                   <div className="flex gap-2">
-                    <button className="btn-ghost text-xs" onClick={() => openModal('mp', { orgId: org.id })}>
+                    <button className="btn-secondary text-xs" onClick={() => openEditOrg(org)}>
+                      {t('m19_edit')}
+                    </button>
+                    <button className="btn-ghost text-xs" onClick={() => openAdd('mp', { orgId: org.id })}>
                       + {t('mainProject')}
                     </button>
-                    <button className="btn-ghost text-xs" onClick={() => openModal('cm', { orgId: org.id })}>
+                    <button className="btn-ghost text-xs" onClick={() => openAdd('cm', { orgId: org.id })}>
                       + {t('cmProject')}
                     </button>
                     <button className="btn-danger text-xs" onClick={() => deleteOrganization(org.id)}>
@@ -180,9 +240,14 @@ export default function Module1Page() {
                             <div className="flex items-center gap-1.5">
                               <Badge tone="sand">{t(`archetype_${mp.type}`)}</Badge>
                               {canEdit && (
-                                <button className="btn-danger text-xs" onClick={() => deleteMainProject(mp.id)}>
-                                  {t('delete')}
-                                </button>
+                                <>
+                                  <button className="btn-secondary text-xs" onClick={() => openEditMp(mp)}>
+                                    {t('m19_edit')}
+                                  </button>
+                                  <button className="btn-danger text-xs" onClick={() => deleteMainProject(mp.id)}>
+                                    {t('delete')}
+                                  </button>
+                                </>
                               )}
                             </div>
                           </div>
@@ -212,9 +277,14 @@ export default function Module1Page() {
                             <div className="flex items-center gap-1.5">
                               <Badge tone="sand">{t(`lewin_${cm.lewinPhase}`)}</Badge>
                               {canEdit && (
-                                <button className="btn-danger text-xs" onClick={() => deleteCmProject(cm.id)}>
-                                  {t('delete')}
-                                </button>
+                                <>
+                                  <button className="btn-secondary text-xs" onClick={() => openEditCm(cm)}>
+                                    {t('m19_edit')}
+                                  </button>
+                                  <button className="btn-danger text-xs" onClick={() => deleteCmProject(cm.id)}>
+                                    {t('delete')}
+                                  </button>
+                                </>
                               )}
                             </div>
                           </div>
@@ -236,9 +306,9 @@ export default function Module1Page() {
       </div>
 
       <Modal
-        open={modal === 'group'}
+        open={modal?.kind === 'group'}
         onClose={closeModal}
-        title={`+ ${t('group')}`}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('group')}`}
         footer={
           <>
             <button className="btn-ghost" onClick={closeModal}>
@@ -256,9 +326,9 @@ export default function Module1Page() {
       </Modal>
 
       <Modal
-        open={modal === 'org'}
+        open={modal?.kind === 'org'}
         onClose={closeModal}
-        title={`+ ${t('organization')}`}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('organization')}`}
         footer={
           <>
             <button className="btn-ghost" onClick={closeModal}>
@@ -314,9 +384,9 @@ export default function Module1Page() {
       </Modal>
 
       <Modal
-        open={modal === 'mp'}
+        open={modal?.kind === 'mp'}
         onClose={closeModal}
-        title={`+ ${t('mainProject')}`}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('mainProject')}`}
         footer={
           <>
             <button className="btn-ghost" onClick={closeModal}>
@@ -369,9 +439,9 @@ export default function Module1Page() {
       </Modal>
 
       <Modal
-        open={modal === 'cm'}
+        open={modal?.kind === 'cm'}
         onClose={closeModal}
-        title={`+ ${t('cmProject')}`}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('cmProject')}`}
         footer={
           <>
             <button className="btn-ghost" onClick={closeModal}>

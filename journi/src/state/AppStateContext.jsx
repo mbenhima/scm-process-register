@@ -892,6 +892,18 @@ export function AppStateProvider({ children }) {
     setData((prev) => ({ ...prev, organizations: prev.organizations.map((o) => (o.id === orgId ? { ...o, ...patch } : o)) }))
   }, [])
 
+  const updateGroup = useCallback((groupId, patch) => {
+    setData((prev) => ({ ...prev, groups: prev.groups.map((g) => (g.id === groupId ? { ...g, ...patch } : g)) }))
+  }, [])
+
+  const updateMainProject = useCallback((mainProjectId, patch) => {
+    setData((prev) => ({ ...prev, mainProjects: prev.mainProjects.map((mp) => (mp.id === mainProjectId ? { ...mp, ...patch } : mp)) }))
+  }, [])
+
+  const updateCmProject = useCallback((cmProjectId, patch) => {
+    setData((prev) => ({ ...prev, cmProjects: prev.cmProjects.map((cm) => (cm.id === cmProjectId ? { ...cm, ...patch } : cm)) }))
+  }, [])
+
   const deleteGroup = useCallback((groupId) => {
     setData((prev) => ({
       ...prev,
@@ -1019,6 +1031,9 @@ export function AppStateProvider({ children }) {
       addGroup,
       addOrganization,
       updateOrganization,
+      updateGroup,
+      updateMainProject,
+      updateCmProject,
       deleteGroup,
       deleteOrganization,
       deleteMainProject,
@@ -1090,6 +1105,9 @@ export function AppStateProvider({ children }) {
       addGroup,
       addOrganization,
       updateOrganization,
+      updateGroup,
+      updateMainProject,
+      updateCmProject,
       deleteGroup,
       deleteOrganization,
       deleteMainProject,
