@@ -16,7 +16,7 @@ function trainingsOf(levelId) { return TRAININGS.filter((t) => t.level === level
   s.addText('journi Academy', { x: 0.7, y: 2.35, w: 11, h: 1.1, fontFace: FONT, fontSize: 50, bold: true, color: WHITE });
   s.addText('A Detailed Curriculum for Human Change Management', { x: 0.75, y: 3.35, w: 10.5, h: 0.55, fontFace: FONT, fontSize: 20, italic: true, color: 'B8D4CE' });
   s.addText('Delivered through hands-on workshops in journi', { x: 0.75, y: 3.9, w: 9, h: 0.45, fontFace: FONT, fontSize: 14, color: '9FC2BC' });
-  const stats = [['3', 'Levels'], ['9', 'Trainings'], ['20', 'Half-Days'], ['20', 'Workshops'], ['12', 'Exams']];
+  const stats = [['3', 'Levels'], ['9', 'Trainings'], ['36', 'Half-Days'], ['36', 'Workshops'], ['12', 'Exams']];
   let x = 0.75;
   for (const [n, l] of stats) {
     s.addText(n, { x, y: 4.7, w: 1.9, h: 0.75, fontFace: FONT, fontSize: 32, bold: true, color: ORANGE });
@@ -99,9 +99,9 @@ function trainingsOf(levelId) { return TRAININGS.filter((t) => t.level === level
     { text: 'Retake Policy', options: { fill: { color: TEAL_DEEP }, color: WHITE, bold: true, fontSize: 12 } },
   ];
   const rows = [
-    ['Quiz', '1 per half-day (20 total)', '8 MCQ, closed-book, 15 min', 'Formative — no pass mark', 'N/A — for facilitator pacing only'],
-    ['Training Exam', '1 per training (9 total)', '25–30 MCQ + 1 practical/case', '75%', 'One free retake after 48h review'],
-    ['Level Exam', '1 per level (3 total)', '40–60 MCQ + integrated practical', '80%', 'One retake after a 1-week remediation plan'],
+    ['Quiz', '1 per half-day (36 total)', '8 MCQ, closed-book, 15 min', 'Formative — no pass mark', 'N/A — for facilitator pacing only'],
+    ['Training Exam', '1 per training (9 total)', '35–45 MCQ + 1 practical/case', '75%', 'One free retake after 48h review'],
+    ['Level Exam', '1 per level (3 total)', '60–80 MCQ + integrated practical', '80%', 'One retake after a 1-week remediation plan'],
     ['Capstone Rubric', 'TRN-A3 only', 'Facilitator-scored, 4 × 25 pts', '75 / 100', 'Re-attempt at next capstone cohort'],
   ];
   const table = [headRow];
@@ -165,19 +165,20 @@ function trainingProfileSlide(t) {
   s.addText('TARGET AUDIENCE', { x: 0.6, y: gy + 0.08, w: 5.7, h: 0.3, fontFace: FONT, fontSize: 11, bold: true, color: ORANGE, charSpacing: 1 });
   s.addText(t.audience, { x: 0.6, y: gy + 0.4, w: 5.75, h: 0.85, fontFace: FONT, fontSize: 10.8, color: MUTED, lineSpacingMultiple: 1.2 });
 
-  // half-day agenda table on the right — compact spacing when a training runs more than 2 half-days (the capstone)
+  // half-day agenda table on the right — compact spacing when a training runs more than 2 half-days (every training now runs 4)
   const compact = t.halfDays.length > 2;
   const hFont = compact ? 9.8 : 10.8, bFont = compact ? 8.3 : 9;
-  const headH = compact ? 0.26 : 0.32, lineH = compact ? 0.24 : 0.3, examLineH = compact ? 0.22 : 0.28, blockGap = compact ? 0.06 : 0.1;
+  const headH = compact ? 0.22 : 0.32, lineH = compact ? 0.24 : 0.3, examLineH = compact ? 0.2 : 0.28, blockGap = compact ? 0.05 : 0.1;
+  const examH = compact ? 0.5 : 0.55;
   const tx = 6.55, tw = 6.15;
   s.addText('DETAILED AGENDA', { x: tx, y: 1.65, w: tw, h: 0.3, fontFace: FONT, fontSize: 11, bold: true, color: ORANGE, charSpacing: 1 });
-  let y = 2.0;
+  let y = compact ? 1.95 : 2.0;
   for (const hd of t.halfDays) {
     const blockH = headH + hd.sessions.length * lineH + examLineH * 2;
     card(s, tx, y, tw, blockH, { fill: lvl.tint, shadow: false });
     s.addText([{ text: hd.label + '  ', options: { bold: true, color: lvl.color } }, { text: hd.theme, options: { color: INK, bold: true } }],
-      { x: tx + 0.15, y: y + 0.04, w: tw - 0.3, h: headH, fontFace: FONT, fontSize: hFont });
-    let sy = y + headH + 0.02;
+      { x: tx + 0.15, y: y + 0.03, w: tw - 0.3, h: headH, fontFace: FONT, fontSize: hFont });
+    let sy = y + headH + 0.01;
     for (const [title, dur] of hd.sessions) {
       s.addText(`• ${title} (${dur}m)`, { x: tx + 0.2, y: sy, w: tw - 0.4, h: lineH, fontFace: FONT, fontSize: bFont, color: MUTED, lineSpacingMultiple: 1.0 });
       sy += lineH;
@@ -189,9 +190,9 @@ function trainingProfileSlide(t) {
       { x: tx + 0.2, y: sy, w: tw - 0.4, h: examLineH, fontFace: FONT, fontSize: bFont });
     y += blockH + blockGap;
   }
-  card(s, tx, y, tw, 0.55, { fill: TEAL_DEEP, shadow: false });
+  card(s, tx, y, tw, examH, { fill: TEAL_DEEP, shadow: false });
   s.addText([{ text: `${t.exam.id}  `, options: { bold: true, color: ORANGE } }, { text: `${t.exam.format} · ${t.exam.duration ? t.exam.duration + ' min · ' : ''}pass mark ${t.exam.passMark}${t.exam.rubric ? '/100' : '%'}`, options: { color: WHITE } }],
-    { x: tx + 0.15, y, w: tw - 0.3, h: 0.55, fontFace: FONT, fontSize: 10, valign: 'middle', lineSpacingMultiple: 1.05 });
+    { x: tx + 0.15, y, w: tw - 0.3, h: examH, fontFace: FONT, fontSize: 10, valign: 'middle', lineSpacingMultiple: 1.05 });
   footer(s);
 }
 
