@@ -311,5 +311,8 @@ for (const lvl of LEVELS) {
   s.addText('POWERACT Consulting  ·  Confidential', { x: 0.75, y: 6.75, w: 10, h: 0.4, fontFace: FONT, fontSize: 11.5, color: '7FA39A' });
 }
 
-pptx.writeFile({ fileName: path_out() }).then(() => console.log('wrote', path_out()));
+pptx.writeFile({ fileName: path_out() }).then(async () => {
+  console.log('wrote', path_out());
+  await require('./fix-pptx.js').fixPptx(path_out());
+});
 function path_out() { return require('path').join(__dirname, 'journi_Curriculum_HCM.pptx'); }

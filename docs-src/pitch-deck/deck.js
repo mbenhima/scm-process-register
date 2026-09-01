@@ -629,6 +629,7 @@ rowListSlide('Value Map', 'Gain creators — not just features', [
   s.addText('POWERACT Consulting  ·  Confidential', { x: 0.75, y: 6.75, w: 10, h: 0.4, fontFace: FONT, fontSize: 11.5, color: '7FA39A' });
 }
 
-pptx.writeFile({ fileName: path.join(__dirname, 'journi_Value_Proposition.pptx') }).then(() => {
+pptx.writeFile({ fileName: path.join(__dirname, 'journi_Value_Proposition.pptx') }).then(async () => {
   console.log('wrote journi_Value_Proposition.pptx');
+  await require('./fix-pptx.js').fixPptx(path.join(__dirname, 'journi_Value_Proposition.pptx'));
 });
