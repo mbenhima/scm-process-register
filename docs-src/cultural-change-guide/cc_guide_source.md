@@ -214,3 +214,215 @@ Deliberately overlaps Phase 6 by several months: policy and hiring-criteria chan
 | T7.1 Policy & Hiring Criteria Institutionalization | 77–90 | HRBP |
 | T7.2 Refreeze Justification & Steering Committee Sign-Off | 88–96 | Joint |
 | T7.3 Governance Handover & Benefits Realization Report | 94–96+ | PM |
+
+
+## 6. Detailed Phase Playbooks — SIPOC, Timeline, Tasks, Steps & RACSI
+
+### 6.1 Phase 1 — Diagnosis (Months 1–3)
+
+Establishes, in evidence rather than assumption, how deep Cedarbrook's blame-oriented reporting culture actually runs before anyone designs a replacement for it. Nothing in this phase touches the future state; its only job is to make the current state impossible to argue with.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Board mandate; External safety review; HR disciplinary records; Incident-reporting system | Board resolution and budget approval; 24 months of incident/near-miss data; org chart across 3 hospitals and 11 clinics | 1. Baseline Culture & Values Diagnosis<br>2. Blame-Incident & Near-Miss Pattern Review<br>3. Diagnosis Readout & Sponsor Commitment | Quantified culture baseline; incident-vs-report gap analysis; signed Sponsorship Charter | Executive team; Board; Change Manager; HR Business Partner |
+
+*SIPOC for Phase 1 — Diagnosis. The Process column lists this phase's three Tasks in sequence.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task T1.1 — [CM] Baseline Culture & Values Diagnosis**
+
+**Step 1 — Org-wide culture assessment survey**
+
+The first data point has to be quantitative and anonymous, or staff who have spent years learning that reporting is unsafe will not tell the truth in it.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Validated safety-climate survey |
+| Technique Goal | Quantify the current blame-versus-safety orientation, org-wide and by unit. |
+| Technique Details | Administer an anonymous survey built on a validated safety-culture instrument (modeled on the AHRQ Hospital Survey on Patient Safety Culture), stratified by unit, role, and tenure; target a minimum 60% response rate before treating results as representative. |
+| Recommended Tool | LimeSurvey (open-source) |
+
+**Step 2 — Cross-seniority focus groups**
+
+Junior staff routinely under-report candor in a survey their manager might plausibly see the aggregate of; focus groups stratified by seniority band recover what the survey alone will miss.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Structured, seniority-stratified focus groups |
+| Technique Goal | Surface the qualitative texture behind the survey numbers, especially from junior staff. |
+| Technique Details | Run 6–8 cross-unit focus groups of 6–8 participants each, grouped so no one shares a room with their own direct supervisor; use a fixed discussion guide and code transcripts for recurring themes. |
+| Recommended Tool | Taguette (open-source qualitative coding) |
+
+*RACSI for Task T1.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | HRBP, SUP | ES | EU |
+
+**Task T1.2 — [CM] Blame-Incident & Near-Miss Pattern Review**
+
+**Step 1 — Incident-report archive cross-reference**
+
+The single most important number in this whole program is the gap between incidents staff privately admit happened and incidents that were ever formally reported — and whether reporting has historically correlated with disciplinary action against the reporter.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Retrospective data cross-reference |
+| Technique Goal | Quantify the reporting-versus-true-incident gap, and whether reporting has predicted disciplinary consequences. |
+| Technique Details | Pull 24 months of incident-reporting system records and HR disciplinary records; cross-tabulate to see whether staff who filed a report were more likely to face subsequent disciplinary action than staff who did not. |
+| Recommended Tool | Metabase (open-source BI/cross-tab tool) |
+
+**Step 2 — "Near-miss silence" interviews**
+
+The cross-reference gives you the shape of the problem; these interviews give you the mechanism — the exact moment a staff member decided not to report, and what they were afraid would happen if they did.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Critical-incident interview |
+| Technique Goal | Map the actual decision process behind a withheld near-miss report. |
+| Technique Details | From survey and focus-group respondents who admitted anonymously to withholding a report, recruit a willing subset for confidential 1:1 interviews under a strict non-disciplinary protocol, agreed with HR and the Union/staff-association in advance. |
+| Recommended Tool | Nextcloud Forms (consent tracking) + Taguette (coding) |
+
+*RACSI for Task T1.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | HRBP | SUP | ES, EU |
+
+**Task T1.3 — [Joint] Diagnosis Readout & Sponsor Commitment**
+
+**Step 1 — Evidence-based executive readout**
+
+The readout has to make the cost of the status quo impossible to wave away — patient-safety exposure and litigation risk land harder with a Board than an engagement score does.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Evidence-based briefing |
+| Technique Goal | Convert diagnosis findings into a business case the executive team cannot dismiss as anecdote. |
+| Technique Details | Present the quantified survey scores, the incident-versus-report gap, and 3–5 anonymized illustrative quotes, framed explicitly against patient-safety exposure and litigation cost rather than morale alone. |
+| Recommended Tool | Metabase for the data; LibreOffice Impress for the briefing deck |
+
+**Step 2 — Sponsorship charter signing**
+
+Verbal executive agreement is not sponsorship. A specific, personally-owned behavior commitment, logged and revisited at every Phase Gate, is.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Charter co-signing session |
+| Technique Goal | Convert verbal buy-in into a documented, individually-owned commitment before design work begins. |
+| Technique Details | Walk the CEO and executive team through CHTR-01 (Sponsorship / Leadership Charter) line by line; ask each executive to name one specific behavior they will personally change, and log each commitment in journi's Charter Registry. |
+| Recommended Tool | journi M5 — CM Charters |
+
+*RACSI for Task T1.3.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, ES | ES | HRBP, SUP | CM | EU |
+
+
+### 6.2 Phase 2 — Target Values Design (Months 2–5)
+
+Turns the diagnosis into four named, behaviorally-specific values — not a poster. This phase's most important design constraint: values imposed top-down by the executive team, without frontline input, reliably produce exactly the cynicism Phase 6 of this guide exists to manage. Co-design is not a nicety here; it is risk mitigation for eighteen months from now.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Phase 1 diagnosis findings; Executive team; Frontline staff volunteers | Quantified culture baseline; incident-vs-report gap analysis; illustrative quotes | 1. Values Co-Design Workshops<br>2. Sponsorship & Governance Charter Set-Up<br>3. Values Definition & Behavior Anchors | Four named target values; activated Charter Registry; behaviorally-anchored value definitions | Executive team; Steering Committee; Unit Leaders; Change Manager |
+
+*SIPOC for Phase 2 — Target Values Design.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task T2.1 — [CM] Values Co-Design Workshops**
+
+**Step 1 — Cross-level co-design workshop series**
+
+A value staff helped name survives contact with a bad shift far better than one handed down in a memo; the workshop series exists to make co-authorship real, not ceremonial.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Cross-level co-design workshop |
+| Technique Goal | Generate candidate values and behavioral language directly from staff across every seniority band, not just leadership. |
+| Technique Details | Run a series of half-day workshops mixing frontline staff, Unit Leaders, and executives in fixed small groups; each group proposes candidate values with a one-sentence behavioral description, then the full set is affinity-mapped for overlap. |
+| Recommended Tool | Excalidraw (affinity mapping) + BigBlueButton (remote sessions for smaller clinic sites) |
+
+**Step 2 — Candidate values prioritization and narrowing**
+
+Twenty candidate values is not a values program; narrowing to four forces the organization to actually choose what matters most, rather than trying to be everything to everyone.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Weighted prioritization exercise |
+| Technique Goal | Narrow the affinity-mapped candidates to four final target values with broad cross-level support. |
+| Technique Details | Score the shortlisted candidate clusters against diagnosis-derived criteria (directly addresses the reporting-gap finding, is behaviorally observable, is distinct from the others); Steering Committee ratifies the final four. |
+| Recommended Tool | LibreOffice Calc (scoring matrix) |
+
+*RACSI for Task T2.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP, EU | HRBP | ES |
+
+**Task T2.2 — [Joint] Sponsorship & Governance Charter Set-Up**
+
+**Step 1 — Charter Registry activation**
+
+Seven of journi's eight charters govern this archetype; activating them together, rather than one at a time as needed, means governance structure is in place before Phase 3's higher-stakes leadership work begins.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Charter Registry activation |
+| Technique Goal | Formally activate every Charter Registry entry this archetype uses, with a named accountable role per charter. |
+| Technique Details | For each applicable charter, work with the role journi's default RACSI names as Accountable to complete Cedarbrook-specific What/Who/When/Where/Why/How detail, then formally activate it. |
+| Recommended Tool | journi M5 — CM Charters |
+
+**Step 2 — Steering Committee charter and cadence formation**
+
+The Steering Committee's own governance rhythm has to exist before the first Phase Gate decision, not be improvised at the gate itself.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Steering Committee formation |
+| Technique Goal | Stand up the Steering Committee's membership, decision rights, and meeting cadence ahead of the first Phase Gate. |
+| Technique Details | Confirm Steering Committee membership (Executive Sponsor, Change Manager, Program Manager, HR Business Partner, and two rotating Unit Leaders), and set the governance cadence detailed in Section 10. |
+| Recommended Tool | journi M9/M11 — Governance Dashboards & Phase Gates |
+
+*RACSI for Task T2.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, ES | ES | HRBP, PM | SUP | EU |
+
+**Task T2.3 — [CM] Values Definition & Behavior Anchors**
+
+**Step 1 — Behavioral anchor drafting**
+
+"Radical Transparency" means nothing operational until someone can say exactly what doing it, and not doing it, looks like on an ordinary Tuesday shift.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Behaviorally-anchored value definition |
+| Technique Goal | Convert each of the four values into 3–5 concrete, observable "looks like / does not look like" behavior statements. |
+| Technique Details | For each value, run a working session with a mixed group of Unit Leaders and frontline staff to draft specific behavior anchors, tested against real incidents surfaced in Phase 1 rather than hypothetical scenarios. |
+| Recommended Tool | BookStack (behavior anchor documentation) |
+
+**Step 2 — Definition publication and feedback loop**
+
+Publishing without a feedback channel turns co-design into theater at the last step; a short open-comment window before final lock-in keeps it real.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Open-comment publication cycle |
+| Technique Goal | Publish draft behavior anchors org-wide and incorporate feedback before final lock-in. |
+| Technique Details | Publish drafts to all staff with a two-week open-comment window via a structured feedback form; Change Manager triages comments and brings material revisions back to the co-design group before the Steering Committee locks the final language. |
+| Recommended Tool | Nextcloud Forms + BookStack |
+
+*RACSI for Task T2.3.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP, EU, HRBP | ES | EU |
