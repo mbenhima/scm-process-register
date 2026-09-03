@@ -1292,3 +1292,40 @@ A silent leadership transition reads to staff as quiet abandonment; a visible on
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | ES, CM | ES | PM, HRBP | SUP | EU |
+
+
+## 10. Governance & Reporting Cadence
+
+### 10.1 Steering Committee
+
+Formed under Section 6.2's Task T2.2, the Steering Committee — Executive Sponsor, Change Manager, Program Manager, HR Business Partner, and two rotating Unit Leaders — is Project Concord's single governance body from Phase 2 through the Section 6.7 handover. It meets monthly throughout the program, per Section 7.3, with three of its sessions carrying formal Phase Gate authority: the Diagnosis Readout (end of Phase 1), the Pilot Go/No-Go (end of Phase 4), and the Refreeze sign-off (end of Phase 7). Every other monthly session reviews the Section 7.6 dashboard and any open escalations from Section 7.5.
+
+### 10.2 Divergence Review Board
+
+A standing sub-body of the Steering Committee, active from Phase 6 onward (Section 6.6, Task T6.2): Change Manager, one rotating Unit Leader, and HR Business Partner, meeting weekly to keep every open Divergence Pattern alert inside its five-business-day SLA. The Board reports its own trend — alert volume, resolution time, recurrence rate — into every monthly Steering Committee session.
+
+### 10.3 Charter Registry Review Cadence
+
+Seven of journi's eight charters are active for this archetype (Section 4.1). Each carries its own default review frequency; in practice, Project Concord batches the quarterly-cadence charters into the same Steering Committee session as the quarterly CRI and Benchmarking report (Section 6.6, Task T6.2), and reviews any charter with a per-Phase-Gate cadence at that Phase Gate specifically, rather than scheduling a separate charter-only meeting.
+
+### 10.4 Board Reporting
+
+The Board receives the full quarterly report compiled under Task T6.2 — Composite Readiness Index, Bridges/Kübler-Ross readings, and Benchmarking standing, framed against journi's cultural reference band rather than a straight-line target — at the same cadence throughout Phases 2 through 7. Two sessions carry additional weight: the Phase 1 Diagnosis Readout (Task T1.3), which sets the original business case, and the Phase 7 Benefits Realization Report (Task T7.3), which closes the loop against it.
+
+### 10.5 Escalation Chain
+
+Section 7.5's six escalation thresholds each name a specific responder and a specific time window; none of them route through the monthly Steering Committee cycle, because a monthly cadence is too slow for any of the six. The Steering Committee's role in escalations is retrospective, not first-response: it reviews, at its next regular session, how each out-of-cycle escalation in the prior month was resolved, and whether the underlying pattern requires a structural fix beyond the individual incident.
+
+### 10.6 Reporting Ownership Summary
+
+**Table 10.1 — Who owns each recurring governance artifact.**
+
+| Artifact | Cadence | Owner | Reviewed By |
+|---|---|---|---|
+| Cynicism pulse trend | Monthly | Change Manager | Steering Committee |
+| Divergence Pattern alert log | Weekly | Divergence Review Board | Steering Committee (monthly) |
+| Manager readiness ratings | Monthly | Change Manager | Steering Committee |
+| Composite Readiness Index & Benchmarking report | Quarterly | Change Manager | Steering Committee, Board |
+| Charter Registry status | Quarterly / per Phase Gate | Executive Sponsor | Steering Committee |
+| Phase Gate decision record | Per Phase Gate | Change Manager, Executive Sponsor | Steering Committee, Board |
+| Benefits realization report | End of program (Phase 7) | Program Manager | Steering Committee, Board |
