@@ -1,6 +1,6 @@
 POWERACT CONSULTING
 
-# Leading a Cultural & Values Transformation on journi
+Leading a Cultural & Values Transformation on journi
 
 A Practical User Guide
 
