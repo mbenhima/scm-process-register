@@ -951,3 +951,75 @@ The Board mandated this program on a patient-safety and litigation-risk business
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | PM | PM | CM, HRBP | ES | SUP, EU |
+
+
+## 7. What to Track — By Cadence
+
+### 7.1 Daily
+
+- Incident-reporting system volume and tone, spot-checked by the Change Manager for early signs of a form or process becoming punitive to use (the pattern behind the Q5 night-shift fix in Section 8.1).
+- Non-disciplinary escalation path (Section 6.3, Task T3.2) intake, reviewed same-day to keep the response-time SLA honest.
+
+### 7.2 Weekly
+
+- Pilot pulse check during Phase 4 (Section 6.4, Task T4.2) and, once org-wide, a rolling sample of site-level sentiment.
+- Resistance-entry log review for any category approaching the systemic-pattern threshold before it formally trips.
+- Champion Network coverage check — any unit that has gone quiet (no logged observations in 10+ days) flagged for a check-in call, not assumed to be problem-free.
+
+### 7.3 Monthly
+
+- Cynicism pulse survey administration and trend review, from Phase 6 onward (Section 6.6, Task T6.1).
+- Divergence Review Board session (Section 6.6, Task T6.2).
+- Manager readiness rating review across all Unit Leaders (M17).
+- Steering Committee governance meeting, per the cadence defined in Section 6.2's Task T2.2.
+
+### 7.4 Quarterly
+
+- Full Composite Readiness Index and Benchmarking trend report to the Board, explicitly framed against the cultural reference band (Section 6.6, Task T6.2).
+- Charter review cycle — most of the seven active charters carry a quarterly or per-Phase-Gate review frequency; batch the quarterly-cadence charters into one Steering Committee session.
+- Champion Network health check — recruitment gaps, burnout risk, and rotation of long-serving champions.
+
+### 7.5 Escalation Thresholds
+
+| Signal | Threshold | Escalation |
+|---|---|---|
+| Cynicism pulse score | Drops below the defined floor for 2 consecutive months | Executive Sponsor hosts an unscripted open Q&A within 2 weeks (Section 6.6, T6.1) |
+| Divergence Pattern alert | Any single alert older than 5 business days without a logged response plan | Change Manager escalates directly to the Divergence Review Board, out of cycle |
+| Site Benchmarking standing | "Behind" for 2 consecutive weeks during rollout | Site added to the following week's Steering Committee agenda by name |
+| Manager readiness rating | Declining for 2 consecutive months for the same Unit Leader | Intensive coaching sprint triggered (Section 6.6, T6.3) |
+| Resistance systemic-pattern banner | 3 or more similarly-coded entries within a 30-day window | Root-cause structural response convened within 5 business days (Section 6.4, T4.2) |
+| Champion silence | No logged observation from a champion for 10+ days | Change Manager places a direct, non-disciplinary check-in call |
+
+### 7.6 Monthly Dashboard — What a Healthy Month Looks Like
+
+A month should show: a stable or improving cynicism pulse score; zero Divergence Pattern alerts older than five business days; no site reading "Behind" on Benchmarking for more than one consecutive week; at least one Champion Network case shared and discussed at the community-of-practice forum; and no Unit Leader newly flagged on a declining manager-readiness trend without an already-assigned coaching plan. A month that is missing one of these is not automatically a crisis — Section 9's exception patterns cover the recognizable, recoverable ways a month goes wrong — but a month missing two or more at once is the trigger for an out-of-cycle Steering Committee review.
+
+
+## 8. Simulated Data Walkthrough — Project Concord
+
+Project Concord is Cedarbrook Health Network's internal name for its 24-month Cultural / Values Transformation program. This section walks through what the framework readings, the Composite Readiness Index, and journi's alerts actually looked like quarter over quarter — including a real setback in Quarter 6, because a walkthrough with no setback in it would not prepare a reader for the one their own program will have.
+
+| Quarter | Months | Lewin State | Bridges Position (org avg.) | Dominant Sentiment | Composite Readiness Index | Benchmarking |
+|---|---|---|---|---|---|---|
+| Q1 | 1–3 | Unfreeze | Ending | Denial | 32 | In Line |
+| Q2 | 4–6 | Unfreeze | Ending | Denial → Resistance | 36 | In Line |
+| Q3 | 7–9 | Unfreeze → Change | Ending (org); Neutral Zone (pilot units) | Resistance | 41 | In Line |
+| Q4 | 10–12 | Change | Neutral Zone (pilot); Ending (rest) | Exploration (pilot); Resistance (rest) | 47 | In Line |
+| Q5 | 13–15 | Change | Neutral Zone | Exploration | 52 | In Line |
+| Q6 | 16–18 | Change | Neutral Zone, with regression risk flagged | Exploration dipping toward Resistance | 49 | In Line |
+| Q7 | 19–21 | Change | Neutral Zone → New Beginning (early cohorts) | Exploration; Commitment (early cohorts) | 58 | Ahead |
+| Q8 | 22–24 | Change → Refreeze | New Beginning (org avg.) | Commitment | 64 | Ahead |
+
+*Table 8.1 — Project Concord's quarter-over-quarter framework readings across the full 24-month program.*
+
+### 8.1 Reading the Simulation
+
+**Q1–Q2 (Diagnosis and Target Values Design).** The Composite Readiness Index climbs slowly and unremarkably, from 32 to 36 — exactly as expected for a phase that is measuring the current state, not yet changing it. The Sponsorship Charter is signed at the end of Q1 with eleven specific, named executive commitments logged in M5; by the end of Q2, four target values are finalized and behaviorally anchored.
+
+**Q3–Q4 (Leadership Modeling, Pilot Cohort).** The Bridges position begins to diverge visibly between the two pilot units and the rest of the organization — exactly what a pilot is supposed to produce. By the Q4 Go/No-Go decision, the pilot units read Neutral Zone with Exploration-stage sentiment, while the remaining twelve sites are still reading Ending with Resistance. The Steering Committee's Go decision at the end of Q4 is made on this evidence, not on the calendar.
+
+**Q5 (Organization-Wide Rollout).** The Champion Network scales from 45 to roughly 95 people. The first enterprise-wide systemic-pattern alert fires mid-quarter — three near-identical resistance entries from night-shift staff at three different sites, all describing the incident-report form itself as feeling punitive to fill out during a night shift with no supervisor immediately available to co-sign. The structural fix (a night-shift-appropriate reporting path that does not require same-shift co-signature) ships within the five-business-day SLA, and the pattern does not recur.
+
+**Q6 (the dip).** The Composite Readiness Index falls for the only time in the program, from 52 to 49, and the monthly cynicism pulse crosses its threshold. This is the "flavor of the month" moment Section 6.6 is built around, and it is documented in full as Exception E3 in Section 9.3. The Executive Sponsor's unscripted Q&A session, run within the two-week escalation window, directly names a specific incident where Cedarbrook fell short — a case where a well-known, high-performing surgeon's disclosure was quietly waived through the new process without the same scrutiny an ordinary staff member's would receive. Naming it, rather than avoiding it, is what starts the index moving upward again the following quarter; the incident itself becomes the basis for Exception E4 in Section 9.4.
+
+**Q7–Q8 (Reinforcement, Institutionalization).** The Benchmarking standing crosses from "In Line" to "Ahead" in Q7 — not because the program accelerated, but because journi's cultural reference band already expects a Q5–Q6 dip for this archetype, and Cedarbrook's recovery from it outpaces the reference curve. By Q8, the org-wide Bridges average reads New Beginning with Commitment-stage sentiment, hiring and onboarding criteria have been permanently updated, and the Steering Committee signs a written Refreeze justification at Month 24 — citing the full evidentiary record, not the launch-event enthusiasm from eighteen months earlier.
