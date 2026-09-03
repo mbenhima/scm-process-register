@@ -97,3 +97,110 @@ M14's blended score (ADKAR 50% / Kübler-Ross 25% / training completion 25%) was
 ### 2.4 Benchmarking, for an Acquisition-Driven Case
 
 journi's Benchmarking view compares this program's trajectory against its archetype's expected reference band. Because this case combines the Cultural archetype's already-long horizon with a starting Sponsor Coverage Gap and a structural trust deficit (Section 1.1), this guide's own Benchmarking reading (Section 4.1) expects — and is built to show — a slower-than-typical opening quarter before the trajectory catches the Cultural reference band, rather than treat any early "Behind" reading as itself a crisis.
+
+
+## Part 3 — Tenant and Admin Setup
+
+### 3.1 journi's Tenant Model, Restated
+
+journi is deployed one tenant at a time, holding everything a tenant contains — Groups, Organizations, Main Projects, Change Management Projects, users, role permissions, and license terms — in a single record. A tenant can hold more than one Organization: one License is tenant-wide, while Module 1's Group → Organization hierarchy underneath it can hold several distinct Organizations, each with its own sector, employee count, sites, and default language. This Part uses exactly that capacity: **One Bouregreg** adds a second Organization to an existing tenant rather than requiring a second deployment.
+
+### 3.2 The Existing Tenant: Bouregreg Group
+
+This program runs inside the same tenant journi's own Master User Guide builds for the Bouregreg ERP Adoption Program. A reader starting fresh, with no existing tenant, follows Steps 1–2 below to create it; a reader who already has this tenant from the ERP program skips to Section 3.3.
+
+| Element | Value |
+|---|---|
+| Group | Bouregreg Group |
+| Organization | Bouregreg Manufacturing Maroc |
+| Sector | Manufacturing |
+| Employees | 3,400 |
+| Sites | Casablanca HQ; Kenitra Plant; Settat Plant |
+| Languages | French, Arabic |
+| Default language | French |
+| License plan | Professional |
+| License user cap | 60 |
+
+**Step 1 — License and hierarchy (M2, M1).** Super Admin Zineb Alaoui uploads the `.lic` file (companyName "Bouregreg Group", plan "professional", maxUsers 60), then creates the Group ("Bouregreg Group") and the Organization ("Bouregreg Manufacturing Maroc", sector Manufacturing, 3,400 employees, sites and languages as above) on Module 1.
+
+**Step 2 — Base users (M2).** Group Admin Anas Bouzid and Organization Admin Meryem Sabri are created with Group- and Organization-level scope respectively, per journi's Users & Scope tab.
+
+### 3.3 Step 3 — Adding the Acquired Organization: Bouregreg Tangier Distribution (M1)
+
+Six months into the ERP program, Bouregreg Group acquires a smaller regional competitor's Tangier distribution operation. In journi's data model, this is a second Organization under the same Group and the same License — not a second tenant, and not a sub-unit folded into the existing Manufacturing Organization, since Tangier's own sector is genuinely different from Bouregreg's plants.
+
+1. Open **Module 1 — Group / Organization / Projects**.
+2. On the Bouregreg Group card, click **+ Organization**. Fill in:
+   - Name: "Bouregreg Tangier Distribution"
+   - Group: Bouregreg Group
+   - Type (sector): **Logistics** (journi's Organization sector is one of exactly three values — Manufacturing, Logistics, or Health; Tangier's distribution operation is genuinely Logistics, distinct from the Manufacturing sector Bouregreg's own plants use)
+   - Employees: 260
+   - Sites: "Tangier Distribution Center"
+   - Language(s): "fr, ar"
+   - Default language: French
+3. Save. Bouregreg Group's hierarchy now shows two Organizations side by side under one Group — Bouregreg Manufacturing Maroc (Manufacturing) and Bouregreg Tangier Distribution (Logistics) — sharing the same License and Permission Matrix, each with its own sector, sites, and employee count.
+
+### 3.4 Step 4 — Onboarding the Integration Team (M2)
+
+Open **Module 2 — Users & Roles**, **Users & Scope** tab, and add the team this program runs on. Each row states both the journi RBAC role Part 3 creates the account with and the RACSI code Part 4's tables use for the same person — the two are related but distinct, per Part 0's note.
+
+| Name | journi Role (RBAC) | Scope type | Scope | RACSI Code | Notes |
+|---|---|---|---|---|---|
+| Laila Mernissi | Org Admin | Organization | Bouregreg Tangier Distribution | — | Newly created alongside the Organization itself |
+| Karim Fassi | Sponsor | Project | One Bouregreg: Culture Integration *(created in Step 6)* | ES | Newly appointed integration Sponsor; starts with zero logged M7 actions |
+| Nadia Chraibi | Change Manager | Project | One Bouregreg: Culture Integration | CM | Owns day-to-day program execution |
+| Youssef Idrissi | Practitioner / Contributor | Project | One Bouregreg: Culture Integration | PM | Integration Program Manager; PM-track coordination, WBS & Gantt (M17) |
+| Amal Ziani | People Manager | Project | One Bouregreg: Culture Integration | FPO | HR Business Partner for the integration |
+| Hicham Bennani | Practitioner / Contributor | Project | One Bouregreg: Culture Integration | ITL | Systems/tooling lead (survey platform, journi data hygiene) |
+| Fatima-Zahra Idrissi | People Manager | Project | One Bouregreg: Culture Integration | SUP | Tangier Distribution Center site lead |
+| Rachid Amrani | People Manager | Project | One Bouregreg: Culture Integration | SUP | Casablanca supply chain / logistics team lead (Bouregreg counterpart side) |
+
+Per journi's own account rule, the six Project-scoped rows above are created (or their scope corrected) once the One Bouregreg CM Project exists in Step 6 — in practice, Laila Mernissi's Organization-level account is created first, then the project-scoped team is finalized after Step 6.
+
+### 3.5 Step 5 — Permission Matrix and Governance Settings (M2)
+
+Both are already set tenant-wide from the base ERP setup and require no new configuration for this program:
+
+- **Permission Matrix** (Super-Admin-only, platform-wide): unchanged — hierarchy management stays with Super Admin, Group Admin, and Org Admin; general write access on Change Management modules stays with Super Admin, Group Admin, Org Admin, Change Manager, and People Manager/Practitioner-Contributor.
+- **Governance Setting — "Require justification for score/state changes"**: left **on**. This program's every Lewin, ADKAR, Bridges, and Kübler-Ross reading in Part 4 carries a real, logged justification, not a bare number — the same discipline the ERP program runs under.
+
+### 3.6 Step 6 — Creating the One Bouregreg Change Management Project (M1)
+
+1. On the Bouregreg Tangier Distribution Organization card (or the Bouregreg Manufacturing Maroc card — either works, since the CM Project's population spans both), click **+ CM Project**. Fill in:
+   - Name: "One Bouregreg: Culture Integration"
+   - Linked Main Project: **none** (this CM Project links to zero Main Projects — the acquisition itself is a corporate transaction outside journi's Main Project model, not a system or process rollout)
+   - Owner: "Nadia Chraibi"
+   - Change type: **Cultural**
+   - Target population: "Tangier Distribution Center (260) + Casablanca-based supply chain, sales, and customer-facing counterparts (140) — 400 total"
+   - Business driver: "The acquisition's stated synergies — one combined distribution network, one set of customer commitments — depend on the two workforces actually operating as one company within 18 months, not remaining two cultures under one letterhead."
+2. Save. The Lewin macro-state opens at **Unfreeze** (M3, Initiative Registry), with a justification note: "Opening Unfreeze at program start. Acquisition closed; integration Sponsor appointed; Phase 1 (Diagnosis) begins Week 1 of this program (Bouregreg org-calendar Week 27)."
+3. On **Module 17 — WBS & Gantt**, load the **TPL-CULT-7** phase template (Diagnosis → Target Values Design → Leadership Modeling & Reinforcement Build → Pilot Cohort → Organization-Wide Rollout → Reinforcement Through Skepticism → Institutionalization) to seed the program's baseline schedule — the same action Driss El Amrani takes for TPL-ERP-8 at the start of the ERP program.
+
+### 3.7 Step 7 — Activating the Charter Registry for This Program (M19)
+
+Seven of journi's eight standing Charters govern this archetype's Macro Processes; the eighth, CHTR-07 (Mentoring Charter), governs MP-05 (Training & Capability Enablement) — the one Macro Process the E2E-CULT chain does not use — and stays dormant for the life of this program.
+
+| Charter | Accountable (this program) | Review cadence |
+|---|---|---|
+| CHTR-01 Sponsorship / Leadership Charter | Karim Fassi (ES) | Per Phase Gate |
+| CHTR-02 Participative Management Charter | Nadia Chraibi (CM) | Quarterly |
+| CHTR-03 Communication Charter | Nadia Chraibi (CM) | Per communication wave |
+| CHTR-04 Organizational Impact Charter | Nadia Chraibi (CM) | On scope change |
+| CHTR-05 Team Coaching Charter | Nadia Chraibi (CM) | Per reinforcement cycle |
+| CHTR-06 One-to-One Coaching Charter | Nadia Chraibi (CM) | Per triggered case |
+| CHTR-07 Mentoring Charter | — dormant, MP-05 not used | N/A |
+| CHTR-08 Pulse / Interview Charter | Nadia Chraibi (CM) | Per phase gate + ad hoc |
+
+Karim Fassi signs CHTR-01 at program kickoff (Part 4, Section 4.1, Week 1) with specific, individually-owned behavior commitments — the single action that most directly determines whether the Sponsor Coverage Gap (Section 1.1) closes quickly or lingers.
+
+### 3.8 Setup Checklist
+
+- [ ] Base tenant confirmed or created (License, Group, Bouregreg Manufacturing Maroc Organization) — Sections 3.1–3.2
+- [ ] Bouregreg Tangier Distribution Organization created (sector Logistics, 260 employees, Tangier site) — Section 3.3
+- [ ] Integration team accounts created with correct RBAC role, scope, and RACSI code — Section 3.4
+- [ ] Permission Matrix and Governance Setting confirmed unchanged — Section 3.5
+- [ ] One Bouregreg: Culture Integration CM Project created, Lewin opened at Unfreeze — Section 3.6
+- [ ] TPL-CULT-7 phase template loaded on M17 — Section 3.6
+- [ ] Seven applicable Charters reviewed and accountable owners confirmed; CHTR-07 left dormant — Section 3.7
+
+With this checklist complete, Bouregreg Group's tenant now holds a second, Logistics-sector Organization and a live Cultural archetype Change Management Project. Part 4 runs it forward, week by week, from here.
