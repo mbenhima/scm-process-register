@@ -17,13 +17,14 @@ Version 1.0 · September 2026 · Confidential
 
 This guide is a single, focused companion to journi's cultural / values transformation archetype — the one journi's own Cross-Type Comparison Matrix rates as its longest-running, least externally-forced, and most reversibility-fragile transformation type, and the only one of journi's ten archetypes whose end-to-end process chain skips Macro Process 5 (Training & Capability Enablement) entirely. Rather than tour all of journi's modules and archetypes at once, it follows one real, complex Change Management Project — **One Bouregreg: Post-Acquisition Culture Integration** — from a genuinely new tenant setup through institutionalization, week by week, in the same operational depth a Change Manager would actually need to run it.
 
-It is organized in five parts:
+It is organized in six parts:
 
 - **Part 0 — Purpose and How to Use This Guide.** This part.
 - **Part 1 — Executive Summary.** Why this specific case is journi's most complex cultural transformation to run, and what this guide's own numbers say about it.
 - **Part 2 — The Four Frameworks and What Is Specific to Cultural / Values Change.** journi's four change frameworks, re-weighted for an archetype where Bridges and Kübler-Ross dominate over ADKAR, and where a merger of two workforces raises the emotional stakes further still.
 - **Part 3 — Tenant and Admin Setup.** Building the journi tenant this program runs in, from the License record through the live Change Management Project, using journi's own manufacturing-sector scenario organization, Bouregreg Group, and the new Organization this acquisition adds to it.
 - **Part 4 — Week-by-Week Cultural / Values Timeline: Normal Flow and Exceptions.** The full 78-week program run forward week by week, Project Manager and Change Manager tracks side by side, with the exact journi entries to type in; then, in the same level of detail, six realistic exception patterns; then two Master WBS & Gantt views of the whole program's task and step structure.
+- **Part 5 — Training Program: Strategic, Operational, and Frontline Tiers.** The genuine operational and functional training this integration requires — distinct in kind from the values-adoption work in Part 4 — logged on M9 (Training) across three cohorts.
 
 ### How to use it
 
@@ -40,9 +41,10 @@ Part 4's RACSI tables use journi's separate 7-code RACSI role taxonomy (ES/CM/PM
 ### Reading paths, by role
 
 - **A Change Manager running this program day to day:** Part 2 once for orientation, then Part 4 in full — it is written as the operating manual for exactly this role.
-- **A Program/Project Manager focused on the PM ↔ CM boundary:** Part 4's PM Track column throughout, and the Master WBS & Gantt (Section 4.6).
+- **A Program/Project Manager focused on the PM ↔ CM boundary:** Part 4's PM Track column throughout, and the Master WBS & Gantt (Sections 4.2–4.3).
 - **An Executive Sponsor or Steering Committee member:** Part 1 for the business case, then Part 4's phase-opening narratives for the shape of the program without needing every weekly row.
 - **A Super Admin or Org Admin setting up the tenant:** Part 3 in full.
+- **An HR Business Partner or Training Lead planning the integration's actual curricula:** Part 5 in full — it does not require having read Part 4's week-by-week detail first.
 
 
 ## Part 1 — Executive Summary
@@ -88,11 +90,11 @@ An ERP program like Bouregreg's own is read almost entirely through Lewin and AD
 - **Bridges dominates.** For Tangier's staff, this program is not a new tool to learn — it is the end of being a separate company. Ending is not metaphorical here: real reporting lines, a real company name, and real local autonomy are actually ending. Bridges' three stages track that loss directly in a way ADKAR's competence-oriented blocks were never built to.
 - **Kübler-Ross dominates alongside it.** The emotional register of "our company was bought" is closer to grief than to a training gap. Denial, Resistance/Anger, Exploration, and Commitment are the honest emotional sequence this program expects to see — not a shortcut to skip past.
 - **ADKAR still matters, but differently.** Awareness and Desire carry the real weight here (does Tangier's team understand what "One Bouregreg" actually changes for them day to day, and do they want it), while Knowledge and Ability — usually ERP's hardest blocks — are comparatively light, since this program is not teaching a new system.
-- **MP-05 (Training & Capability Enablement) is absent from the process chain entirely.** journi's E2E-CULT chain (MP-01→02→03→04→06→07→08→09→10) is the only one of its ten archetype chains without a training Macro Process. You cannot train a Tangier employee into believing "One Bouregreg" is genuine; every mechanism in Part 4 exists because that lever is unavailable.
+- **MP-05 (Training & Capability Enablement) is absent from the process chain entirely.** journi's E2E-CULT chain (MP-01→02→03→04→06→07→08→09→10) is the only one of its ten archetype chains without a training Macro Process. You cannot train a Tangier employee into believing "One Bouregreg" is genuine; every mechanism in Part 4 exists because that lever is unavailable. That claim is specifically about values adoption, and it stands throughout this guide — it is not a claim that no training happens anywhere in this program. Part 5 covers the genuine operational and functional training the acquisition itself requires (shared systems, unified procedures, supervisory skills), logged on M9 as a distinct, parallel track that is not part of the E2E-CULT chain or the TPL-CULT-7 template.
 
 ### 2.3 The Composite Readiness Index, Read for This Case
 
-M14's blended score (ADKAR 50% / Kübler-Ross 25% / training completion 25%) was designed with a system-rollout program in mind, where training completion is a meaningful third of readiness. For **One Bouregreg**, the training-completion term stays structurally near zero for the program's whole life — there is no curriculum to complete — so this guide reads the Composite Readiness Index for this case as effectively an ADKAR/Kübler-Ross blend, and states that reading plainly in Section 4.1 rather than let a flat training term quietly understate the score's real meaning.
+M14's blended score (ADKAR 50% / Kübler-Ross 25% / training completion 25%) was designed with a system-rollout program in mind, where training completion is a meaningful third of readiness. Through most of **One Bouregreg**'s early phases, before Part 5's curricula begin, the training-completion term stays structurally near zero — there is no values curriculum to complete — so this guide reads the Composite Readiness Index for this case as effectively an ADKAR/Kübler-Ross blend during that window, and states that reading plainly in Section 4.1 rather than let a flat training term quietly understate the score's real meaning. From the point Part 5's tiers go live, the training-completion term reflects real, trackable operational-curriculum completion — a genuine input, but still a distinct thing from cultural adoption, and this guide is careful in Section 4.1 and Section 5.5 not to let a completed operational curriculum stand in as evidence that the values themselves have taken hold.
 
 ### 2.4 Benchmarking, for an Acquisition-Driven Case
 
