@@ -531,3 +531,108 @@ Section 7's monthly manager-readiness cadence, and Exception E6's succession pro
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | CM, SUP | CM | ES | HRBP | EU |
+
+
+### 6.4 Phase 4 — Pilot Cohort (Months 7–12)
+
+Proves the model on two units before the org-wide rollout multiplies any design flaw across fourteen sites. This is also where the resistance systemic-pattern threshold from Section 7.5 is first exercised for real, and where Exception E2 (Section 9.2) most often surfaces.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Phase 3 reinforcement system; Unit Leader readiness ratings; candidate pilot units | Behavior anchors; recognition and escalation systems; manager readiness baseline | 1. Pilot Unit Selection & Baseline<br>2. Pilot Execution & Resistance Pattern Monitoring<br>3. Pilot Go/No-Go Readout | Two live pilot units; resistance pattern log; documented Go/No-Go decision | Steering Committee; remaining twelve sites; Change Manager |
+
+*SIPOC for Phase 4 — Pilot Cohort.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task T4.1 — [CM] Pilot Unit Selection & Baseline**
+
+**Step 1 — Pilot unit selection**
+
+Choosing the friendliest unit produces a pilot that tells you nothing about the fourteen sites that are not friendly; choosing on readiness spread instead produces evidence that actually generalizes.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Readiness-spread pilot selection |
+| Technique Goal | Select two pilot units that together represent Cedarbrook's real range of readiness, not its two most favorable units. |
+| Technique Details | Rank all fourteen sites' units by Phase 1 diagnosis scores and Phase 3 manager readiness ratings; select one above-median and one below-median unit, avoiding the single most enthusiastic or most resistant outliers at either end. |
+| Recommended Tool | LibreOffice Calc (ranking matrix) |
+
+**Step 2 — Pilot baseline capture**
+
+Without a clean pre-pilot baseline, the Go/No-Go readout in Step 2 of Task T4.3 has nothing rigorous to compare against.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Pilot baseline capture |
+| Technique Goal | Capture each pilot unit's pre-pilot readings across every metric the pilot will later be judged against. |
+| Technique Details | Log each pilot unit's current Bridges position, dominant sentiment, incident-reporting volume, and manager readiness rating in journi immediately before pilot launch. |
+| Recommended Tool | journi M7 — Readiness Assessment |
+
+*RACSI for Task T4.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | PM | ES, HRBP |
+
+**Task T4.2 — [CM] Pilot Execution & Resistance Pattern Monitoring**
+
+**Step 1 — Weekly pilot pulse check**
+
+A monthly check leaves too much room for a small, fixable problem to compound into a resistance pattern before anyone notices; weekly is the minimum cadence for a live pilot.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Weekly pilot pulse check |
+| Technique Goal | Track pilot-unit sentiment and behavior-anchor adoption on a tight enough cadence to catch problems while they are still small. |
+| Technique Details | Short weekly pulse survey to pilot unit staff (3–4 questions, under two minutes), reviewed by the Change Manager every Friday alongside that week's incident-reporting volume. |
+| Recommended Tool | LimeSurvey + Metabase |
+
+**Step 2 — Resistance entry coding and pattern detection**
+
+An individual complaint and an emerging systemic pattern look identical as single entries; coding every entry consistently is what lets journi's threshold logic (Section 7.5) tell them apart.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Structured resistance-entry coding |
+| Technique Goal | Log every resistance signal from the pilot in a consistent, structured format so systemic patterns are detectable rather than anecdotal. |
+| Technique Details | Every resistance signal — a complaint, a pulse-survey flag, a manager observation — is logged with a standard category code; three or more similarly-coded entries within 30 days trigger the systemic-pattern threshold defined in Section 7.5. |
+| Recommended Tool | journi M16 — Resistance Management |
+
+*RACSI for Task T4.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | HRBP | ES, EU |
+
+**Task T4.3 — [Joint] Pilot Go/No-Go Readout**
+
+**Step 1 — Baseline-to-current comparison analysis**
+
+The whole point of Task T4.1's baseline capture is spent here: the Go/No-Go decision has to rest on the measured delta, not on how the pilot felt to the people running it.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Baseline-to-current comparison analysis |
+| Technique Goal | Quantify the pilot's actual movement on every metric captured at baseline. |
+| Technique Details | Compare each pilot unit's current Bridges position, sentiment, incident-reporting volume, and manager readiness rating against its Task T4.1 baseline; present the delta, not just the current state. |
+| Recommended Tool | Metabase |
+
+**Step 2 — Steering Committee Go/No-Go decision**
+
+A pilot that produced real evidence — including real resistance, honestly logged — is worth more to this decision than one that looked clean because problems went unreported.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Evidence-based Go/No-Go decision |
+| Technique Goal | Make an explicit, minuted Steering Committee decision to proceed to org-wide rollout, extend the pilot, or revise the design. |
+| Technique Details | Present the comparison analysis and the full resistance-entry log, including any systemic-pattern alerts and how they were resolved, to the Steering Committee for a documented Phase Gate decision. |
+| Recommended Tool | journi M9/M11 — Governance Dashboards & Phase Gates |
+
+*RACSI for Task T4.3.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, ES | ES | PM, HRBP, SUP | CM | EU |
