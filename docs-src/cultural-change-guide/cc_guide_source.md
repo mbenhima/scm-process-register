@@ -2130,3 +2130,43 @@ Treat it as a manager-readiness signal in its own right — log it, and route it
 | Steering Committee continuity decision | E5.1 | Make an explicit decision on how a merger affects the program. |
 | Accelerated successor charter onboarding | E6.1 | Get a new sponsor's commitment captured before drift compounds. |
 | Visible recommitment event | E6.1 | Make a leadership transition a visible commitment, not a silent gap. |
+| Per-site score disaggregation | T1.4 | Reveal which sites diverge most from the org-wide diagnosis average. |
+| Outlier-site root-cause follow-up | T1.4 | Understand the local factors behind a sharply divergent site. |
+| Legal review of non-disciplinary protocol | T1.5 | Obtain documented legal sign-off that interview content is protected. |
+| Joint staff-association briefing | T1.5 | Introduce the interview protocol jointly, not as management-only. |
+| Site-type language review | T2.4 | Confirm behavior anchors read as concrete across hospital and clinic settings. |
+| Targeted anchor revision | T2.4 | Revise anchors flagged as setting-specific without losing a shared definition. |
+| Shared launch narrative drafting | T2.5 | Give every leader one consistent story before public communication begins. |
+| Small-sample message testing | T2.5 | Confirm the launch narrative lands with frontline staff before scale-up. |
+| Board behavior-commitment session | T3.4 | Extend specific, observable behavior commitments to the Board itself. |
+| Board commitment visibility briefing | T3.4 | Make Board-level modeling commitments visible to staff in outline. |
+| Single-unit usability test | T3.5 | Catch reinforcement-system usability problems before the pilot's own data is affected. |
+| Pre-pilot system fix and hand-off | T3.5 | Finalize the reinforcement system before the pilot baseline is captured. |
+| Mid-pilot evidence review | T4.4 | Review pilot evidence at its mid-point to catch fixable problems early. |
+| Logged design adjustment | T4.4 | Make any mid-pilot design change explicit and dated. |
+| Simulated case walkthrough | T4.5 | Exercise the accountability process against a realistic case before relying on it. |
+| Process gap remediation | T4.5 | Close any gap the dry-run surfaced before pilot units go live. |
+| Site-type risk profiling | T5.4 | Identify sites carrying elevated launch risk before their wave launches. |
+| Adapted launch approach | T5.4 | Adjust the launch approach for flagged sites without changing the core design. |
+| Post-wave retrospective | T5.5 | Formally capture what worked and what did not from each launch wave. |
+| Next-wave briefing update | T5.5 | Incorporate retrospective lessons into the next wave's actual briefing. |
+| Site recovery plan drafting | T6.4 | Give every Behind-Benchmarking site a specific, time-bound recovery plan. |
+| Recovery plan tracking | T6.4 | Track each recovery plan to a defined close against the same metric. |
+| Scheduled equal-application audit | T6.5 | Proactively check accountability outcomes for status correlation on a fixed schedule. |
+| Divergence Review Board reporting | T6.5 | Route scheduled audit findings into existing governance, not a new channel. |
+| Site-by-site adoption verification | T7.4 | Confirm every site actually applies the updated hiring/review criteria. |
+| Targeted site-level remediation | T7.4 | Close adoption gaps through direct local follow-up. |
+| Post-handover checkpoint design | T7.5 | Define a fixed schedule of post-handover reviews to confirm institutionalization holds. |
+| Checkpoint ownership assignment | T7.5 | Name a specific accountable owner for each post-handover checkpoint. |
+| Cross-executive gap logging | E1.2 | Track say-do gap findings across executives to detect a broader pattern. |
+| Charter specificity revision | E1.2 | Revise charter language if gap findings recur across multiple executives. |
+| Signature-based proactive scan | E2.2 | Check every rolled-out site for a divergence signature already diagnosed once. |
+| Pre-emptive job aid distribution | E2.2 | Distribute a proven fix before other sites independently rediscover it. |
+| Post-forum weekly pulse re-check | E3.2 | Confirm the open forum actually moved the cynicism pulse. |
+| Second-round escalation | E3.2 | Escalate with a different intervention if the pulse has not recovered in four weeks. |
+| Seniority-routing vulnerability review | E4.2 | Identify discretion points where status can influence process routing. |
+| Discretion-point removal redesign | E4.2 | Redesign the process so no step depends on informal discretion. |
+| Rapid initial champion recruitment | E5.2 | Give an incoming population its own champions immediately. |
+| Community-of-practice integration | E5.2 | Fold new champions into the existing cross-site forum rather than a separate group. |
+| Broader leadership disengagement check | E6.2 | Determine whether a sponsor departure signals wider leadership disengagement. |
+| Preventive executive engagement | E6.2 | Proactively re-engage any executive trending toward disengagement. |
