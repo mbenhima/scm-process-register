@@ -1329,3 +1329,176 @@ Section 7.5's six escalation thresholds each name a specific responder and a spe
 | Charter Registry status | Quarterly / per Phase Gate | Executive Sponsor | Steering Committee |
 | Phase Gate decision record | Per Phase Gate | Change Manager, Executive Sponsor | Steering Committee, Board |
 | Benefits realization report | End of program (Phase 7) | Program Manager | Steering Committee, Board |
+
+
+## Appendix — Quick Reference
+
+### A.1 Role Legend
+
+| Code | Role | One-line description |
+|---|---|---|
+| ES | Executive Sponsor | Personally models the values; owns the Sponsorship Charter (CHTR-01) and every Refreeze decision. |
+| CM | Change Manager | Owns day-to-day design and execution of nearly every Task in this guide. |
+| PM | Program Manager | Owns cross-program continuity, governance handover, and benefits realization. |
+| HRBP | HR Business Partner | Co-owns accountability-process design, equal-application review, and policy institutionalization. |
+| ITL | IT Lead | Supports the journi modules, survey tooling, and data cross-references this program depends on. |
+| SUP | Unit Leaders / Supervisors | The primary channel through which values become daily, observed behavior. |
+| EU | End User | Frontline staff — both the subject of diagnosis and the evidence of eventual success. |
+
+### A.2 RACSI Legend
+
+| Code | Meaning |
+|---|---|
+| R | Responsible — does the work. More than one role may be Responsible for a given Task. |
+| A | Accountable — owns the outcome and answers for it. Exactly one role per Task. |
+| C | Consulted — provides input before the work is finalized. |
+| S | Support — assists execution without owning the outcome. |
+| I | Informed — kept aware of progress and outcome, not actively involved. |
+
+### A.3 Task-Nature Tag Legend
+
+| Tag | Meaning |
+|---|---|
+| [ES] | Task the Executive Sponsor personally owns and drives. |
+| [CM] | Task the Change Manager drives day to day. |
+| [HRBP] | Task HR Business Partner co-owns. |
+| [PM] | Program Manager–owned continuity or governance task. |
+| [Joint] | Task requiring shared, simultaneous ownership across two or more roles. |
+
+### A.4 Blank Monthly Tracker Template
+
+Copy this table monthly, per Section 7.6's healthy-month definition.
+
+| Metric | This Month | Prior Month | Trend | Flag? |
+|---|---|---|---|---|
+| Cynicism pulse score | | | | |
+| Open Divergence Pattern alerts (>5 business days) | | | | |
+| Sites reading "Behind" on Benchmarking (>1 consecutive week) | | | | |
+| Champion Network cases shared this month | | | | |
+| Unit Leaders newly flagged, declining readiness, no coaching plan assigned | | | | |
+| Composite Readiness Index (quarterly cell only) | | | | |
+
+### A.5 Consolidated Tool Reference
+
+| Tool | Type | Used In |
+|---|---|---|
+| LimeSurvey | Open-source survey platform | T1.1, T3.1, T4.2, T5.3 (indirect), T6.1, E1.1, E3.1, E5.1 |
+| Taguette | Open-source qualitative coding | T1.1, T1.2, E2.1, E3.1 |
+| Metabase | Open-source BI / cross-tab tool | T1.2, T1.3, T4.3, T5.3, T6.2, E1.1, E4.1, E5.1 |
+| Excalidraw | Diagramming / affinity mapping | T2.1, E2.1 |
+| BookStack | Open-source documentation wiki | T2.3, T5.1, T7.1, T7.3, E2.1 |
+| Nextcloud Forms | Consent tracking and structured intake | T1.2, T2.3, T3.2, T3.2 (escalation path) |
+| BigBlueButton / Jitsi | Open-source video conferencing | T2.1, T3.3, T5.1, T6.1, T6.3, E1.1, E3.1, E4.1, E6.1 |
+| LibreOffice Calc | Spreadsheet / scoring matrices | T2.1, T4.1, T7.1 |
+| LibreOffice Impress | Presentation decks for briefings and Board reporting | T1.3, T6.2, T7.2, T7.3, E5.1 |
+| journi M5 — Charters | Charter Registry | T1.3, T2.2, T7.1, E1.1, E4.1, E6.1 |
+| journi M7 — Readiness Assessment | Readiness scoring | T4.1 |
+| journi M9/M11 — Governance Dashboards & Phase Gates | Steering Committee governance | T2.2, T4.3, T5.2, T7.2, E5.1 |
+| journi M13 — Communications | Site launch messaging | T2.1, T5.2 |
+| journi M14 — Champion Network | Champion recruitment and tracking | T3.2, T5.1 |
+| journi M16 — Resistance Management | Resistance and escalation logging | T3.2, T4.2, T5.3 |
+| journi M17 — Manager Readiness Tracking | Manager readiness ratings | T3.1, T3.3, T6.3 |
+| journi M20 — Metrics & Benchmarking | CRI and Benchmarking computation | T1.2 (indirect), T6.2, T7.2, T7.3 |
+
+### A.6 Recommended Reading Order by Role
+
+| Role | Read first | Then |
+|---|---|---|
+| Executive Sponsor | Executive Summary, Section 1, Section 6.1 (T1.3), Section 6.3 (T3.1) | Section 9.1, Section 9.3, Section 9.4, Section 9.6, Section 10.1 |
+| Change Manager | All of Section 1–8 in order | Section 9 in full, Section 10 |
+| HR Business Partner | Executive Summary, Section 6.1 (T1.2), Section 6.3 (T3.2), Section 6.7 (T7.1) | Section 9.4, Appendix A.1–A.2 |
+| Unit Leaders / Supervisors | Section 1.2, Section 6.3 (T3.3), Section 6.6 (T6.3), Section 7 | Appendix A.4 |
+| Program Manager | Section 1.3, Section 4, Section 5, Section 6.7 (T7.3) | Section 9.5, Section 10 |
+| End User (staff-facing summary) | Executive Summary only, plus their own site's launch communication (Section 6.5, T5.2) | — |
+
+### A.7 FAQ
+
+**Q: Why is there no training phase at all?**
+The E2E-CULT process chain (MP-01 → MP-02 → MP-03 → MP-04 → MP-06 → MP-07 → MP-08 → MP-09 → MP-10) is the only one of journi's ten archetype chains that skips MP-05, Training & Capability Enablement, because a values program's core problem — staff do not believe it is safe to act differently — is not a knowledge gap a course can close.
+
+**Q: What if our cynicism pulse score never crosses the threshold in Section 7.5?**
+That is a good outcome, not a sign the metric is broken — but Section 8.1's Q6 dip shows a threshold crossing is common enough at this point in a program that its absence is still worth a specific look: confirm response rates on the pulse survey have not quietly dropped, which can mask a real decline as a stable one.
+
+**Q: Can Project Concord's 24 months be compressed?**
+journi's cultural archetype range is 18–36 months; compressing meaningfully below 18 months generally means skipping the Pilot Cohort phase's evidence gathering, which removes the Go/No-Go decision's evidentiary basis and raises the risk of a premature Refreeze — the exact failure Section 2.2's justified-change-pattern rule exists to prevent.
+
+**Q: What happens if the Board wants faster visible results than the framework readings show?**
+Redirect the conversation to the Phase 1 business case (Task T1.3): the metrics that matter to the Board — incident-versus-report gap, patient-safety exposure, litigation risk — move on the same timeline as the culture itself, and a faster-looking proxy metric (survey completion rates, town-hall attendance) is not evidence of the underlying change.
+
+**Q: How is this different from a routine engagement or morale survey program?**
+An engagement survey measures sentiment; this program is built around measuring and changing behavior, with an explicit accountability mechanism (Exceptions E1 and E4) for when leadership's own behavior does not match the stated values.
+
+**Q: What if a Unit Leader refuses to participate in the peer coaching circles (Section 6.3, Task T3.3)?**
+Treat it as a manager-readiness signal in its own right — log it, and route it through the same Task T6.3 coaching-sprint process used for a declining readiness rating, rather than treating it as a disciplinary matter.
+
+### A.8 Glossary
+
+| Term | Definition |
+|---|---|
+| Bridges Position | A unit or org's current stage in Bridges' Transition Model: Ending, Neutral Zone, or New Beginning. |
+| Dominant Sentiment | The Kübler-Ross Change Curve stage journi reads as most prevalent for a unit or org at a point in time: Denial, Resistance, Exploration, or Commitment. |
+| Composite Readiness Index (CRI) | journi's single 0–100 score blending framework-position readings with behavioral evidence for this archetype. |
+| Benchmarking | journi's cultural reference band, expressing a site's or org's CRI trajectory as Behind, In Line, or Ahead of comparable historical cultural programs. |
+| Divergence Pattern | journi's alert for high stated awareness of a value with no corresponding measured behavior change. |
+| Systemic-Pattern Alert | journi's alert firing when three or more similarly-coded resistance entries occur within a 30-day window. |
+| Refreeze | Lewin's final stage: the point at which a changed state is deliberately locked in as the new normal, justified by evidence rather than the calendar. |
+| Charter Registry | journi's set of governance charters (CHTR-01 through CHTR-08); seven of eight apply to this archetype. |
+| Champion Network | The distributed peer-volunteer network (scaled to ~95 people in Project Concord) that surfaces frontline observations continuously. |
+| Say-Do Gap | A visible mismatch between an executive's stated commitment to a value and their own observed behavior; the subject of Exception E1. |
+
+### A.9 Technique Reference
+
+| Technique | First Used In | Purpose |
+|---|---|---|
+| Validated safety-climate survey | T1.1 | Quantify current blame-versus-safety orientation. |
+| Structured, seniority-stratified focus groups | T1.1 | Surface qualitative texture a survey alone misses. |
+| Retrospective data cross-reference | T1.2 | Quantify the incident-versus-report gap. |
+| Critical-incident interview | T1.2 | Map the decision process behind a withheld report. |
+| Evidence-based briefing | T1.3 | Convert findings into a business case leadership cannot dismiss. |
+| Charter co-signing session | T1.3 | Convert verbal buy-in into a documented, individual commitment. |
+| Cross-level co-design workshop | T2.1 | Generate candidate values directly from staff at every level. |
+| Weighted prioritization exercise | T2.1 | Narrow candidate values to the final four. |
+| Charter Registry activation | T2.2 | Formally activate every applicable Charter Registry entry. |
+| Steering Committee formation | T2.2 | Stand up governance membership and cadence. |
+| Behaviorally-anchored value definition | T2.3 | Convert values into concrete, observable behaviors. |
+| Open-comment publication cycle | T2.3 | Incorporate org-wide feedback before final lock-in. |
+| Specific behavior-commitment drafting | T3.1 | Convert charter commitments into observable executive behaviors. |
+| Self-vs-peer 360 modeling assessment | T3.1, E1.1 | Detect the gap between self-rated and team-rated modeling. |
+| Peer-nominated recognition system | T3.2 | Reinforce value-aligned behavior frequently and visibly. |
+| Non-disciplinary escalation path | T3.2 | Protect staff who speak up from retaliation. |
+| Peer coaching circles | T3.3 | Build manager capability without a formal training curriculum. |
+| Manager readiness baseline rating | T3.3 | Establish a documented rating to measure decline against later. |
+| Readiness-spread pilot selection | T4.1 | Select pilot units that represent the org's real readiness range. |
+| Pilot baseline capture | T4.1 | Capture pre-pilot readings for later comparison. |
+| Weekly pilot pulse check | T4.2 | Track pilot sentiment on a tight enough cadence. |
+| Structured resistance-entry coding | T4.2 | Make systemic patterns detectable rather than anecdotal. |
+| Baseline-to-current comparison analysis | T4.3 | Quantify the pilot's actual measured movement. |
+| Evidence-based Go/No-Go decision | T4.3 | Make an explicit, minuted rollout decision. |
+| Structured champion recruitment | T5.1 | Scale the champion network with credible, not just enthusiastic, volunteers. |
+| Champion community-of-practice forum | T5.1 | Sustain champion momentum across sites. |
+| Wave-based launch sequencing | T5.2 | Let early-wave lessons reach later waves before they launch. |
+| Evidence-based site launch briefing | T5.2 | Introduce each site using real pilot evidence, not generic messaging. |
+| Cross-site systemic-pattern triage | T5.3 | Distinguish a structural pattern from unrelated local issues. |
+| Rapid structural fix | T5.3 | Ship a fix to a confirmed systemic pattern within SLA. |
+| Monthly cynicism pulse survey | T6.1 | Track belief the program is genuine, monthly. |
+| Threshold-triggered executive open forum | T6.1, E3.1 | Guarantee a fast, visible response to a cynicism spike. |
+| Divergence Pattern alert triage | T6.2 | Keep every open alert inside its SLA. |
+| Quarterly CRI and Benchmarking report | T6.2 | Give governance a full quarterly trend view. |
+| Manager readiness trend review | T6.3 | Detect two-consecutive-month readiness decline. |
+| Intensive coaching sprint | T6.3 | Reverse a declining readiness trend quickly. |
+| Behavior-anchored hiring criteria redesign | T7.1 | Embed values into hiring and onboarding going forward. |
+| Performance-review criteria integration | T7.1 | Embed values into standing evaluation systems. |
+| Full evidentiary record compilation | T7.2 | Assemble the whole 24-month record for the Refreeze decision. |
+| Documented Refreeze sign-off | T7.2 | Obtain an explicit, evidence-based lock-in decision. |
+| Site-level ownership handover | T7.3 | Transfer reinforcement ownership to standing site leadership. |
+| Benefits realization report | T7.3 | Close the loop against the original Phase 1 business case. |
+| Divergence root-cause interview | E2.1 | Classify an awareness-behavior gap by root cause. |
+| Behavior-specific micro-practice redesign | E2.1 | Replace abstract language with one concrete next behavior. |
+| Cynicism pulse free-text triage | E3.1 | Separate generic fatigue from a specific, credible complaint. |
+| Unscripted executive open Q&A | E3.1 | Directly name the incident driving a cynicism spike. |
+| Equal-application audit | E4.1 | Check whether unequal accountability is isolated or a pattern. |
+| Corrective re-application + visible policy statement | E4.1 | Re-apply the standard and state it applies to every role. |
+| Rapid re-baseline survey | E5.1 | Establish an incoming population's baseline against the org's own. |
+| Steering Committee continuity decision | E5.1 | Make an explicit decision on how a merger affects the program. |
+| Accelerated successor charter onboarding | E6.1 | Get a new sponsor's commitment captured before drift compounds. |
+| Visible recommitment event | E6.1 | Make a leadership transition a visible commitment, not a silent gap. |
