@@ -1493,6 +1493,36 @@ A gap raised by HR lands as compliance; the same gap raised by a peer executive,
 |---|---|---|---|---|
 | ES | ES | CM, HRBP | SUP | EU |
 
+**Task E1.2 — [HRBP] Say-Do Gap Pattern Tracking**
+
+**Step 1 — Cross-executive gap logging**
+
+One executive with a flagged gap is an individual coaching need; two or three executives flagged in the same quarter is a sign the charter commitments themselves were too vague to hold anyone to — and only logging every instance in one place, rather than handling each conversation separately, can tell the difference.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Cross-executive gap logging |
+| Technique Goal | Track every Task E1.1 gap finding in one place to detect whether say-do gaps are isolated to individuals or a broader pattern. |
+| Technique Details | HR Business Partner logs every flagged 360 modeling gap and its resolution in the Charter Registry against CHTR-01, tagged by executive and by value, reviewed quarterly for repeat flags across more than one executive. |
+| Recommended Tool | journi M5 — CM Charters; Metabase |
+
+**Step 2 — Charter language revision if the pattern is systemic**
+
+If the pattern is systemic rather than individual, coaching the individuals again will not fix it; the charter's own behavior commitments need to be more specific, not the executives.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Charter specificity revision |
+| Technique Goal | Revise CHTR-01's behavior-commitment language if gap findings recur across multiple executives rather than one. |
+| Technique Details | If two or more executives are flagged for the same value within a rolling two-quarter window, HR Business Partner brings a proposal to the Steering Committee to make that value's charter commitment more specific and observable, rather than re-running Task E1.1 indefinitely on individuals. |
+| Recommended Tool | journi M5 — CM Charters |
+
+*RACSI for Task E1.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| HRBP | HRBP | ES, CM | PM | SUP |
+
 ### 9.2 Exception E2 — Divergence Pattern: High Awareness, Zero Behavior Change
 
 **Pattern.** Pilot units score high on "I understand what Radical Transparency means" while showing no measurable change in incident-report tone or volume — the classic ADKAR Knowledge-without-Ability-or-Reinforcement gap, and precisely what journi's Divergence Pattern alert exists to catch during Phase 4's Pilot Cohort.
@@ -1536,6 +1566,36 @@ Abstract value language does not tell anyone what to do differently at 2am on a 
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | CM | CM | SUP, HRBP | ITL | ES, EU |
+
+**Task E2.2 — [Joint] Divergence Pattern Org-Wide Scan**
+
+**Step 1 — Signature-based proactive scan**
+
+Once Task E2.1 has identified the specific root cause behind one pilot unit's divergence, the same signature — high stated awareness, flat behavior-log metrics — is worth checking for at every rolled-out site proactively, rather than waiting for each site to independently trip its own Divergence Pattern alert.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Signature-based proactive scan |
+| Technique Goal | Check every rolled-out site for the same awareness-behavior divergence signature already diagnosed in the pilot, before each site's own alert fires independently. |
+| Technique Details | Change Manager runs the same awareness-versus-behavior-log comparison used in Task E2.1 across all currently rolled-out sites on a monthly basis, rather than waiting for journi's per-site Divergence Pattern alert threshold to trip individually. |
+| Recommended Tool | journi M20 — Metrics & Benchmarking |
+
+**Step 2 — Pre-emptive job aid distribution**
+
+If the pilot's root cause was a reinforcement-design gap rather than something local to that unit, the same redesigned job aid from Task E2.1 likely applies everywhere else too, and distributing it pre-emptively is faster than rediscovering the same fix fourteen times.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Pre-emptive job aid distribution |
+| Technique Goal | Distribute a proven fix from one site to others showing the same divergence signature, before each independently rediscovers it. |
+| Technique Details | Where the scan finds the same signature at another site, and the pilot's root cause was reinforcement-design rather than site-specific, distribute the Task E2.1 job aid redesign directly rather than re-running the full root-cause interview process at each site. |
+| Recommended Tool | BookStack |
+
+*RACSI for Task E2.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, SUP | CM | HRBP | ITL | ES, EU |
 
 ### 9.3 Exception E3 — Backlash / Cynicism Spike at Org-Wide Rollout
 
@@ -1581,6 +1641,36 @@ A generic reassurance message reads as confirmation that leadership is dodging t
 |---|---|---|---|---|
 | ES, CM | ES | HRBP | SUP | EU |
 
+**Task E3.2 — [CM] Post-Spike Trust Recovery Tracking**
+
+**Step 1 — Weekly pulse re-check after the forum**
+
+Holding the open forum is the response, not proof the response worked; only tracking the cynicism pulse specifically in the weeks immediately after it tells the Change Manager whether trust is actually recovering or whether the forum itself landed badly.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Post-forum weekly pulse re-check |
+| Technique Goal | Confirm the executive open forum actually moved the cynicism pulse, rather than assuming it did because it happened. |
+| Technique Details | Run the cynicism pulse survey weekly, rather than the normal monthly cadence, for the four weeks immediately following the Task E3.1 open forum, watching specifically for a reversal of the downward trend. |
+| Recommended Tool | LimeSurvey + Metabase |
+
+**Step 2 — Second-round response if trust does not recover**
+
+If the pulse does not recover within four weeks, the forum did not work, and repeating the same response a second time will not either; the Steering Committee needs a different lever, most often addressing whatever new concern the free text raises about the forum itself.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Second-round escalation |
+| Technique Goal | Escalate to the Steering Committee with a different intervention if the pulse has not recovered within four weeks of the open forum. |
+| Technique Details | If the weekly pulse has not shown clear improvement within four weeks, Change Manager brings the free-text themes from those four weeks to the Steering Committee as a distinct, second-round problem, rather than repeating Task E3.1's open forum unchanged. |
+| Recommended Tool | Metabase |
+
+*RACSI for Task E3.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | ES | HRBP | SUP, EU |
+
 ### 9.4 Exception E4 — Star Performer Exempted from New Values
 
 **Pattern.** A high-status individual is quietly waived through the accountability process everyone else is held to — the specific incident behind Section 8.1's Q6 dip, where a well-known, high-performing surgeon's disclosure was processed with visibly less scrutiny than an ordinary staff member's would receive. This is often the single most credibility-destroying event in a values program: it proves the say-do gap at a personal, gossiped-about level rather than an abstract policy level, and it is exactly the kind of evidence a cynical staff member needed to conclude the values are aspirational rather than real.
@@ -1624,6 +1714,36 @@ Quietly fixing the one case without saying anything leaves the rumor uncorrected
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | HRBP, ES | ES | CM | SUP | EU |
+
+**Task E4.2 — [HRBP] Accountability Process Redesign to Prevent Recurrence**
+
+**Step 1 — Seniority-routing vulnerability review**
+
+Correcting the one incident under Task E4.1 fixes the outcome but not the mechanism; if the process itself has a point where a senior staff member's case can be quietly routed differently from an ordinary staff member's, that point will be found again.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Seniority-routing vulnerability review |
+| Technique Goal | Identify any point in the accountability process where seniority or status can influence routing or scrutiny, beyond the one flagged incident. |
+| Technique Details | HR Business Partner maps every decision point in the accountability process end to end, specifically checking whether any step allows discretion based on who the staff member reporting or being reported on is, rather than the facts of the case. |
+| Recommended Tool | Excalidraw (process map) |
+
+**Step 2 — Process redesign to remove discretion points**
+
+Removing the discretion point itself — not just training people not to use it — is what actually prevents a repeat, because the redesign that let Exception E4 happen was probably never a written rule to begin with.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Discretion-point removal redesign |
+| Technique Goal | Redesign the process so no step depends on informal discretion about who the staff member involved is. |
+| Technique Details | For every discretion point found in Step 1, redesign the process step to route on a fixed rule (case type, not staff identity) instead, and have the Steering Committee formally approve the redesigned process before the next quarterly audit under Task T6.5. |
+| Recommended Tool | BookStack |
+
+*RACSI for Task E4.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| HRBP | HRBP | ES, CM | PM | SUP, EU |
 
 ### 9.5 Exception E5 — Merger/Reorg Interrupts the Culture Program
 
@@ -1669,6 +1789,36 @@ Left unaddressed, a merger does not pause a culture program cleanly — it lets 
 |---|---|---|---|---|
 | PM, CM | ES | HRBP, SUP | ITL | EU |
 
+**Task E5.2 — [CM] Incoming-Population Champion Seeding**
+
+**Step 1 — Initial champion recruitment for the incoming population**
+
+Waiting for the main Champion Network (Section 6.5, Task T5.1) to organically expand into a newly-merged unit leaves that unit without any peer voice for the program for months; seeding a small initial group immediately closes that gap right away.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Rapid initial champion recruitment |
+| Technique Goal | Give the incoming population its own peer champions immediately, rather than waiting for organic network growth to reach it. |
+| Technique Details | Within two weeks of the Steering Committee's Task E5.1 continuity decision, recruit 3–5 initial champions from the incoming population, using the same credibility-over-enthusiasm screening as Task T5.1. |
+| Recommended Tool | journi M14 — Champion Network |
+
+**Step 2 — Integration into the existing community of practice**
+
+An isolated new champion group, kept separate from the existing network, misses exactly the peer support that makes the champion role sustainable elsewhere in the program; folding them into the existing forum from day one avoids recreating a second, smaller network.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Community-of-practice integration |
+| Technique Goal | Fold the incoming population's new champions into the existing cross-site community of practice rather than running them as a separate group. |
+| Technique Details | Invite the newly-recruited champions to the next scheduled Task T5.1 community-of-practice session, and pair each with an existing champion as an informal point of contact for their first two months. |
+| Recommended Tool | BigBlueButton / Jitsi |
+
+*RACSI for Task E5.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | PM | ES, HRBP |
+
 ### 9.6 Exception E6 — Regression After Sponsor Departure or Turnover
 
 **Pattern.** The Executive Sponsor leaves — resignation, promotion, reassignment — before Month 24, and Bridges and Kübler-Ross readings begin drifting backward within weeks. Per the Cross-Type Comparison Matrix, cultural change is journi's most reversibility-fragile archetype: high reversibility risk that is slow, not fast, to fix once it starts — which is exactly why a sponsor gap cannot be left to resolve itself.
@@ -1712,6 +1862,36 @@ A silent leadership transition reads to staff as quiet abandonment; a visible on
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | ES, CM | ES | PM, HRBP | SUP | EU |
+
+**Task E6.2 — [PM] Sponsor Transition Risk Audit**
+
+**Step 1 — Broader leadership disengagement check**
+
+A sponsor's departure is sometimes a single, unrelated career event — and sometimes an early, visible symptom of a broader leadership-team disengagement from the program that has not yet produced anyone else's resignation; only checking is what tells the difference.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Broader leadership disengagement check |
+| Technique Goal | Determine whether the sponsor's departure is an isolated event or an early signal of wider leadership-team disengagement from the program. |
+| Technique Details | Program Manager reviews the remaining executive team's recent Task T3.1 modeling scores and Task E1.1 gap history for any other executive trending toward disengagement, alongside informal 1:1 check-ins with each remaining executive. |
+| Recommended Tool | Metabase |
+
+**Step 2 — Preventive engagement for at-risk executives**
+
+Finding a second at-risk executive now, rather than after their own departure, is what actually keeps a single sponsor transition from becoming a pattern of departures across the life of the program.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Preventive executive engagement |
+| Technique Goal | Proactively re-engage any executive the audit finds trending toward disengagement, before it becomes a second departure. |
+| Technique Details | For any executive flagged in Step 1, the new Executive Sponsor holds a direct 1:1 conversation addressing their specific disengagement signals and reconfirming their own Charter Registry commitments under CHTR-01. |
+| Recommended Tool | journi M5 — CM Charters |
+
+*RACSI for Task E6.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| PM | PM | ES | CM | HRBP |
 
 
 ## 10. Governance & Reporting Cadence
