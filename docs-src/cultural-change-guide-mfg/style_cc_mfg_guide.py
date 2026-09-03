@@ -234,22 +234,45 @@ body_children = list(d.element.body)
 idx_part4 = find_heading_para_index(body_children, 'Part 4')
 p_before_part4 = nearest_preceding_paragraph(body_children, idx_part4) if idx_part4 is not None else None
 
+idx_part5 = find_heading_para_index(body_children, 'Part 5')
+p_before_part5 = nearest_preceding_paragraph(body_children, idx_part5) if idx_part5 is not None else None
+
 if p_before_part4 is not None:
     # Close the section before Part 4 as portrait (a copy, unchanged orientation).
     portrait_close = make_sectPr_copy(base_sectPr, landscape=False)
     p_before_part4._p.get_or_add_pPr().append(portrait_close)
-    # Flip the document's own trailing sectPr to landscape IN PLACE -- this is
-    # the section that now runs from Part 4 to the end of the document.
-    pgSz = base_sectPr.find(qn('w:pgSz'))
-    if pgSz is None:
-        pgSz = OxmlElement('w:pgSz')
-        base_sectPr.insert(0, pgSz)
-    w = int(pgSz.get(qn('w:w')) or Inches(8.5))
-    h = int(pgSz.get(qn('w:h')) or Inches(11))
-    pgSz.set(qn('w:w'), str(max(w, h)))
-    pgSz.set(qn('w:h'), str(min(w, h)))
-    pgSz.set(qn('w:orient'), 'landscape')
-    print('landscape section inserted: Part 4 through end of document')
+
+    if p_before_part5 is not None:
+        # Close the Part 4 section as landscape (a copy) right before Part 5,
+        # then flip the document's own trailing sectPr back to portrait IN
+        # PLACE -- it now governs Part 5 through the end of the document,
+        # since training tables don't need landscape width.
+        landscape_close = make_sectPr_copy(base_sectPr, landscape=True)
+        p_before_part5._p.get_or_add_pPr().append(landscape_close)
+        pgSz = base_sectPr.find(qn('w:pgSz'))
+        if pgSz is None:
+            pgSz = OxmlElement('w:pgSz')
+            base_sectPr.insert(0, pgSz)
+        w = int(pgSz.get(qn('w:w')) or Inches(8.5))
+        h = int(pgSz.get(qn('w:h')) or Inches(11))
+        pgSz.set(qn('w:w'), str(min(w, h)))
+        pgSz.set(qn('w:h'), str(max(w, h)))
+        if pgSz.get(qn('w:orient')):
+            del pgSz.attrib[qn('w:orient')]
+        print('landscape section inserted: Part 4 through end of Part 4; portrait resumes at Part 5')
+    else:
+        # No Part 5 found -- fall back to the old behavior: landscape runs
+        # from Part 4 to the end of the document.
+        pgSz = base_sectPr.find(qn('w:pgSz'))
+        if pgSz is None:
+            pgSz = OxmlElement('w:pgSz')
+            base_sectPr.insert(0, pgSz)
+        w = int(pgSz.get(qn('w:w')) or Inches(8.5))
+        h = int(pgSz.get(qn('w:h')) or Inches(11))
+        pgSz.set(qn('w:w'), str(max(w, h)))
+        pgSz.set(qn('w:h'), str(min(w, h)))
+        pgSz.set(qn('w:orient'), 'landscape')
+        print('WARNING: could not locate Part 5 heading -- landscape runs to end of document')
 else:
     print('WARNING: could not locate Part 4 heading -- skipping landscape section')
 
