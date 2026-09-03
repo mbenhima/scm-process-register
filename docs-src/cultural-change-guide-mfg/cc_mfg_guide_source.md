@@ -583,3 +583,54 @@ Each exception below is real evidence this program's own record produces, not a 
 **Outputs.** A documented root-cause finding; a targeted Tangier reinforcement plan; a confirmed, sustained narrowing trend cited directly in the final Refreeze justification.
 
 **RACSI.** R = CM, SUP · A = CM · C = FPO, PM · S = ITL · I = ES, EU
+
+
+## Part 5 — Training Program: Strategic, Operational, and Frontline Tiers
+
+### 5.1 Why Training Appears Here, and What It Is Not
+
+Part 2.2 states plainly that MP-05 (Training & Capability Enablement) does not appear in journi's E2E-CULT chain, and that claim stands: nothing in this Part is an attempt to train anyone into believing Equal Standing, One Way of Working, Shared Ownership, or Speak Plainly Across Sites. Those four values are built the way Part 4 builds them — modeling, reinforcement, paired exposure, and evidence — not a curriculum.
+
+What this Part covers is different in kind: the acquisition itself creates real operational and functional knowledge gaps that have nothing to do with belief. Tangier's staff genuinely do not yet know Bouregreg's shared systems. Bouregreg's own People Managers genuinely have not previously supervised a newly-merged team. The Steering Committee genuinely has not previously governed a two-Organization Change Management Project inside journi. These are capability gaps, not values gaps, and journi's M9 (Training) module — a standing platform module, independent of any one archetype's registered template — is the right place to track closing them. This Part runs as a parallel track alongside Part 4, not inside the E2E-CULT chain or the TPL-CULT-7 template, and this guide states that distinction here rather than let the two tracks blur together.
+
+Three tiers are covered, matched to the three points in Part 4's timeline where a real capability gap becomes operationally urgent: Strategic Management, ahead of the Steering Committee's active governance work; Operational Management, ahead of Phase 3's manager coaching circles; and Frontline Operations, aligned with Phase 5's two rollout waves.
+
+### 5.2 Tier 1 — Strategic Management (Weeks 10–14)
+
+**Cohort.** The Steering Committee: Karim Fassi, Nadia Chraibi, Youssef Idrissi, Meryem Sabri, Laila Mernissi (5 people).
+
+**Why this window.** The Steering Committee is formally seated at Week 10 (Section 4.1, Phase 2) and takes its first real governance decisions from Week 12 onward (Phase 3's leadership modeling begins). This curriculum runs in the two-week gap between seating and first real decision, so the Committee is equipped before it is tested, not while it is already mid-decision.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Leading a Two-Culture Organization | Governing an integration where neither culture is the default — avoiding acquirer/acquired language even unintentionally, reading Bridges and Kübler-Ross as leadership signals, not just Change Manager reporting. | 10–11 | Curriculum: "Leading a Two-Culture Organization" · Cohort: "Steering Committee" · Completion: track per member. | 100% before Week 12 |
+| journi Governance for Multi-Organization Programs | Reading a Stakeholder Map, Composite Readiness Index, and Phase Gate record that span two Organizations under one Group, rather than the single-Organization view most Steering Committee members are used to. | 11–12 | Curriculum: "journi Governance for Multi-Organization Programs" · Cohort: "Steering Committee." | 100% before Week 12 |
+| Communicating Through an Acquisition | Practical media, investor, and internal-communication discipline for an active integration — directly informed by, and delivered ahead of, the Two-Clock Problem this program later hits at Week 56 (Exception E4, Section 4.4). | 13–14 | Curriculum: "Communicating Through an Acquisition" · Cohort: "Steering Committee." | 100% before Week 15 |
+
+### 5.3 Tier 2 — Operational Management (Weeks 18–24)
+
+**Cohort.** People Managers across both Organizations, twelve in total, including Fatima-Zahra Idrissi (Tangier) and Rachid Amrani (Casablanca counterparts).
+
+**Why this window.** Phase 3's manager coaching circles (Section 4.1, Task 3.3) begin at Week 22. This curriculum runs immediately before and alongside that start, so People Managers arrive at their first coaching circle with real supervisory and procedural grounding, not just the cultural coaching content Part 4 itself provides.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Managing a Newly-Merged Team | Practical supervisory skills specific to managing staff from the other company's original workforce — distinct from, and a prerequisite to, Part 4's cultural coaching circles. | 18–20 | Curriculum: "Managing a Newly-Merged Team" · Cohort: "People Managers, both sites." | 100% before Week 22 |
+| Unified Operating Procedures — Distribution & Logistics | The actual functional/systems training: harmonized standard operating procedures between Tangier's distribution operation and Bouregreg's own logistics-adjacent processes, so managers can supervise a mixed team on one shared procedure, not two. | 19–22 | Curriculum: "Unified Operating Procedures — Distribution & Logistics" · Cohort: "People Managers, both sites." | 100% before Week 23 |
+| Coaching Fundamentals for People Managers | General supervisory coaching skill-building, feeding directly into M11 (Manager as Coach)'s team-scoped heatmap once managers begin using it in Phase 3. | 22–24 | Curriculum: "Coaching Fundamentals for People Managers" · Cohort: "People Managers, both sites." | 100% before Week 25 |
+
+### 5.4 Tier 3 — Operations (Frontline) (Weeks 35–47)
+
+**Cohort.** All 400 target staff, split by Phase 5's two rollout waves (Section 4.1): Wave 1 (Weeks 35–39), Wave 2 (Weeks 40–47).
+
+**Why this window.** Aligning operational training with each rollout wave, rather than running it all at once before Week 32, means staff receive the practical systems knowledge right when the values program itself reaches them — not months in advance, where it would be forgotten, and not after, where staff would be asked to work under new values with systems they haven't yet been shown.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Bouregreg Shared Systems & Tools Orientation | Practical onboarding to the shared operational systems the acquisition brings — order tracking, shared dispatch tooling, and the reporting/escalation tools introduced in Part 4 (Task 3.2). | 35–46 (per wave) | Curriculum: "Bouregreg Shared Systems & Tools Orientation" · Cohort: "Wave 1" / "Wave 2." | 100% within 2 weeks of each wave's launch |
+| Unified Safety & Quality Procedures | Harmonized safety and quality standards across both sites' operations — a genuine compliance-adjacent need, independent of whether staff have adopted the four target values yet. | 36–47 (per wave) | Curriculum: "Unified Safety & Quality Procedures" · Cohort: "Wave 1" / "Wave 2." | 100% within 2 weeks of each wave's launch |
+| Customer Commitment Standards — One Bouregreg | Unified customer-facing service standards, directly supporting the "one set of customer commitments" business driver named in Section 1.2. | 37–47 (per wave) | Curriculum: "Customer Commitment Standards — One Bouregreg" · Cohort: "Wave 1" / "Wave 2." | 100% within 2 weeks of each wave's launch |
+
+### 5.5 Training Completion Tracking and the Composite Readiness Index
+
+Each curriculum entry above is logged on M9 (Training) with a completion percentage and, once a cohort demonstrates real capability rather than attendance alone, the Certified toggle — the same trained-versus-capable distinction journi's ERP program uses. From the point each tier's curricula are substantially complete, the Composite Readiness Index's training-completion term (Section 2.3) begins reflecting real numbers rather than sitting near zero. This guide is deliberate about what that does and does not mean: a high training-completion reading confirms Tangier and Casablanca staff can use the shared systems and follow the unified procedures. It does not, on its own, confirm the four values have taken hold — that evidence still comes from Bridges, Kübler-Ross, and the specific mechanisms Part 4 builds, not from a completed curriculum. A Change Manager reading the Composite Readiness Index from Week 35 onward should expect its training term to rise well ahead of its Bridges/Kübler-Ross-driven cultural terms, and should not read that gap as a problem — it is exactly the pattern this two-track design predicts.
