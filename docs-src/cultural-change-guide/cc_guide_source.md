@@ -1023,3 +1023,272 @@ Project Concord is Cedarbrook Health Network's internal name for its 24-month Cu
 **Q6 (the dip).** The Composite Readiness Index falls for the only time in the program, from 52 to 49, and the monthly cynicism pulse crosses its threshold. This is the "flavor of the month" moment Section 6.6 is built around, and it is documented in full as Exception E3 in Section 9.3. The Executive Sponsor's unscripted Q&A session, run within the two-week escalation window, directly names a specific incident where Cedarbrook fell short — a case where a well-known, high-performing surgeon's disclosure was quietly waived through the new process without the same scrutiny an ordinary staff member's would receive. Naming it, rather than avoiding it, is what starts the index moving upward again the following quarter; the incident itself becomes the basis for Exception E4 in Section 9.4.
 
 **Q7–Q8 (Reinforcement, Institutionalization).** The Benchmarking standing crosses from "In Line" to "Ahead" in Q7 — not because the program accelerated, but because journi's cultural reference band already expects a Q5–Q6 dip for this archetype, and Cedarbrook's recovery from it outpaces the reference curve. By Q8, the org-wide Bridges average reads New Beginning with Commitment-stage sentiment, hiring and onboarding criteria have been permanently updated, and the Steering Committee signs a written Refreeze justification at Month 24 — citing the full evidentiary record, not the launch-event enthusiasm from eighteen months earlier.
+
+
+## 9. Exception Playbook — Six Patterns Specific to Cultural Change
+
+The Cross-Type Comparison Matrix (SRS 10.6.14) rates cultural change as journi's most reversibility-fragile archetype — "High, but slow to fix." A missed ERP cutover or a failed automation pilot is usually visible and correctable within days. A values program that quietly drifts backward is neither: the drift is gradual, socially invisible until it is not, and expensive in trust to reverse once staff have concluded the new values were a phase rather than a commitment. The six patterns below are not hypothetical; each is either the general shape of, or (Exceptions E3 and E4) the exact incident behind, an event already narrated in Section 8's Project Concord walkthrough.
+
+### 9.1 Exception E1 — Values Espoused But Not Modeled by Leadership (Say-Do Gap)
+
+**Pattern.** An executive publicly champions a value — most often during Phase 3, Leadership Modeling & Reinforcement Build — while their own visible behavior contradicts it: praising "Radical Transparency" in a town hall, then privately reprimanding a manager for surfacing a bad number in the next leadership meeting. Nothing damages a values program faster than its own sponsors being the first visible counter-example, because staff read leadership behavior, not leadership language, as the real policy.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Champion Network observation log; Peer/360 modeling assessment | Self-vs-peer modeling score gap; specific witnessed incident | 1. Say-Do Gap Detection & Corrective Reset | Verified gap finding; logged charter breach; witnessed corrective behavior | Executive Sponsor; Change Manager; affected unit staff |
+
+*SIPOC for Exception E1.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task E1.1 — [ES] Say-Do Gap Detection & Corrective Reset**
+
+**Step 1 — Self-vs-peer modeling gap detection**
+
+An executive is structurally the worst-positioned person to notice their own gap; only a peer/team comparison reliably surfaces it before staff have already drawn their own conclusions.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Self-vs-peer 360 modeling assessment |
+| Technique Goal | Quantify the gap between an executive's self-rated value-modeling and how their own team actually rates them, per behavior anchor. |
+| Technique Details | Run the quarterly journi-tracked modeling survey comparing each executive's self-score against their team's average score on every behaviorally-anchored value definition from Section 6.2; any anchor with a gap beyond the defined threshold auto-flags for review. |
+| Recommended Tool | LimeSurvey + Metabase |
+
+**Step 2 — Sponsor-to-sponsor accountability conversation**
+
+A gap raised by HR lands as compliance; the same gap raised by a peer executive, referencing the specific incident, lands as accountability — and where staff visibly saw the contradiction, only a visible acknowledgment repairs it.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Sponsor-to-sponsor accountability conversation |
+| Technique Goal | Convert a flagged gap into a specific, witnessed behavior change, with public repair where the incident was public. |
+| Technique Details | The Executive Sponsor — not HRBP — has the conversation directly with the flagged executive, citing the specific Champion Network entry; where staff visibly witnessed the contradiction, the executive is asked to acknowledge it in that same forum, not a private one. |
+| Recommended Tool | journi M5 — CM Charters (breach logged); BigBlueButton for the public forum |
+
+*RACSI for Task E1.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| ES | ES | CM, HRBP | SUP | EU |
+
+### 9.2 Exception E2 — Divergence Pattern: High Awareness, Zero Behavior Change
+
+**Pattern.** Pilot units score high on "I understand what Radical Transparency means" while showing no measurable change in incident-report tone or volume — the classic ADKAR Knowledge-without-Ability-or-Reinforcement gap, and precisely what journi's Divergence Pattern alert exists to catch during Phase 4's Pilot Cohort.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Pilot unit behavior logs; Divergence Pattern alert | High-awareness/zero-behavior-change sample | 1. Divergence Root-Cause Interview & Micro-Practice Redesign | Root-cause classification (capability / permission / reinforcement); redesigned job aids | Change Manager; Unit Leaders; pilot staff |
+
+*SIPOC for Exception E2.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task E2.1 — [CM] Divergence Root-Cause Interview & Micro-Practice Redesign**
+
+**Step 1 — Divergence root-cause interviews**
+
+Awareness-without-behavior has three very different causes — staff cannot, staff do not feel safe to, or the reinforcement design never asked for a concrete action — and each needs a different fix, so guessing which one applies wastes the pilot's remaining runway.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Divergence root-cause interview |
+| Technique Goal | Distinguish whether the awareness-behavior gap is a capability, permission, or reinforcement-design failure. |
+| Technique Details | From the flagged high-awareness/zero-behavior-change sample, run structured 1:1 interviews using a fixed "what stopped you" prompt set, sorting responses into capability, permission, or reinforcement-design buckets. |
+| Recommended Tool | Taguette |
+
+**Step 2 — Behavior-specific micro-practice redesign**
+
+Abstract value language does not tell anyone what to do differently at 2am on a busy ward; a redesigned job aid that names the single next concrete behavior does.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Behavior-specific micro-practice redesign |
+| Technique Goal | Replace abstract value language in unit job aids with the single concrete next behavior expected in the moment. |
+| Technique Details | Rewrite the affected unit's job aids and prompts to name one specific next action per scenario; re-test against the same behavior-log metric two weeks later before scaling the fix beyond the pilot. |
+| Recommended Tool | BookStack (job aid authoring) + Excalidraw (behavior-flow diagram) |
+
+*RACSI for Task E2.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP, HRBP | ITL | ES, EU |
+
+### 9.3 Exception E3 — Backlash / Cynicism Spike at Org-Wide Rollout
+
+**Pattern.** The monthly cynicism pulse crosses its threshold for two consecutive months during Organization-Wide Rollout — the exact pattern narrated in Section 8.1 as Project Concord's Q6 dip, where the Composite Readiness Index fell from 52 to 49. This is Section 6.6's "flavor of the month" moment: staff conclude the values program is a phase, not a commitment, unless leadership visibly names and answers the specific thing that triggered the spike.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Monthly cynicism pulse survey; free-text comments | Two consecutive below-floor pulse readings; coded free-text themes | 1. Cynicism Source Triage & Executive Open Forum | Triaged incident list; recorded, unscripted Q&A response | Executive Sponsor; Change Manager; all staff |
+
+*SIPOC for Exception E3.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task E3.1 — [Joint] Cynicism Source Triage & Executive Open Forum**
+
+**Step 1 — Cynicism pulse free-text triage**
+
+A generic "change fatigue" reading and a specific, credible say-do-gap complaint look identical in the topline score; only the free text tells you which one you actually have, and they need completely different responses.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Cynicism pulse free-text triage |
+| Technique Goal | Separate generic change fatigue from a specific, credible incident-based complaint before responding. |
+| Technique Details | Code every free-text comment attached to the monthly cynicism pulse survey; any comment referencing a specific named incident, rather than a generic complaint, is escalated directly to the Executive Sponsor within 48 hours. |
+| Recommended Tool | LimeSurvey (free text) + Taguette (coding) |
+
+**Step 2 — Unscripted executive open Q&A**
+
+A generic reassurance message reads as confirmation that leadership is dodging the real issue; naming the specific incident, inside the escalation window Section 7.5 defines, is what actually starts trust moving back up.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Unscripted executive open Q&A |
+| Technique Goal | Directly name the specific incident driving the cynicism spike, and state what is changing as a result. |
+| Technique Details | Within the two-week escalation window, the Executive Sponsor runs a live, unscripted, org-wide Q&A that explicitly names the triggering incident and the concrete response to it; the session is recorded for staff who could not attend live. |
+| Recommended Tool | BigBlueButton / Jitsi (live session) + Nextcloud (recording archive) |
+
+*RACSI for Task E3.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| ES, CM | ES | HRBP | SUP | EU |
+
+### 9.4 Exception E4 — Star Performer Exempted from New Values
+
+**Pattern.** A high-status individual is quietly waived through the accountability process everyone else is held to — the specific incident behind Section 8.1's Q6 dip, where a well-known, high-performing surgeon's disclosure was processed with visibly less scrutiny than an ordinary staff member's would receive. This is often the single most credibility-destroying event in a values program: it proves the say-do gap at a personal, gossiped-about level rather than an abstract policy level, and it is exactly the kind of evidence a cynical staff member needed to conclude the values are aspirational rather than real.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Accountability process outcome records; the flagged incident report | Reported instance of unequal application; 6 months of process outcomes | 1. Equal-Application Review & Public Correction | Equal-application audit finding; corrected process outcome; public standard statement | HR Business Partner; Executive Sponsor; all staff |
+
+*SIPOC for Exception E4.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task E4.1 — [Joint] Equal-Application Review & Public Correction**
+
+**Step 1 — Equal-application audit**
+
+One reported incident could be a genuine one-off or the first visible instance of a pattern; the difference matters enormously to what the correction needs to say.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Equal-application audit |
+| Technique Goal | Verify whether accountability process outcomes correlate with staff seniority or status, not just confirm the single reported incident. |
+| Technique Details | Cross-tabulate the last six months of accountability-process outcomes triggered by the new values framework against staff seniority, tenure, and status proxies, to determine whether the flagged incident is isolated or part of a pattern. |
+| Recommended Tool | Metabase |
+
+**Step 2 — Corrective re-application and public standard statement**
+
+Quietly fixing the one case without saying anything leaves the rumor uncorrected; the correction has to be at least as visible as the original waiver was, without turning into a public identification of the individual involved.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Corrective re-application + visible policy statement |
+| Technique Goal | Re-apply the accountability process to the flagged incident without exception, and state publicly that the standard applies regardless of seniority. |
+| Technique Details | HR Business Partner and Executive Sponsor jointly re-run the waived process to its normal conclusion; the Executive Sponsor states at the next open forum — this can be the same forum as Exception E3 — that the standard applies to every role, without naming the individual involved. |
+| Recommended Tool | journi M5 — CM Charters (breach and remediation logged); BigBlueButton |
+
+*RACSI for Task E4.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| HRBP, ES | ES | CM | SUP | EU |
+
+### 9.5 Exception E5 — Merger/Reorg Interrupts the Culture Program
+
+**Pattern.** An external structural event — Cedarbrook announcing the acquisition of an additional clinic network, for example — forces the culture program to either pause or absorb a new, unassessed population mid-program. Unlike a training rollout, which can simply be re-run for new hires, a values program's Neutral Zone and Bridges progress cannot be handed to a newly-merged unit that never went through Phase 1 with everyone else.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Corporate development / M&A announcement; incoming unit's own culture data (if any) | Merger/reorg announcement; incoming population headcount and site list | 1. Program Continuity Reassessment | Incoming-population re-baseline; minuted Steering Committee continuity decision | Steering Committee; Program Manager; Change Manager |
+
+*SIPOC for Exception E5.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task E5.1 — [PM] Program Continuity Reassessment**
+
+**Step 1 — Rapid re-baseline of the incoming population**
+
+Assuming the new population starts wherever Cedarbrook's original sites currently are is the single most common way a merger quietly resets eighteen months of progress; a fast, direct comparison against the original Q1 baseline prevents that assumption from going unchecked.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Rapid re-baseline survey |
+| Technique Goal | Establish whether the incoming population's baseline culture is close enough to proceed at the current pace, or needs a compressed diagnosis of its own. |
+| Technique Details | Administer the Phase 1 safety-climate survey (Section 6.1, Task T1.1) to the incoming population only, on an accelerated two-week timeline, and compare the result directly against Cedarbrook's own Q1 baseline. |
+| Recommended Tool | LimeSurvey + Metabase |
+
+**Step 2 — Steering Committee continuity decision**
+
+Left unaddressed, a merger does not pause a culture program cleanly — it lets it drift while everyone assumes someone else is handling it; an explicit, minuted decision is what actually prevents that drift.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Steering Committee continuity decision |
+| Technique Goal | Make an explicit, documented decision to absorb at pace, insert a compressed onboarding track, or formally pause the org-wide timeline. |
+| Technique Details | The Steering Committee reviews the re-baseline data against Table 1.1's original timeline and the merger's own integration schedule, and issues one of the three documented decisions before the next Phase Gate. |
+| Recommended Tool | journi M9/M11 governance dashboards; LibreOffice Impress for the decision brief |
+
+*RACSI for Task E5.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| PM, CM | ES | HRBP, SUP | ITL | EU |
+
+### 9.6 Exception E6 — Regression After Sponsor Departure or Turnover
+
+**Pattern.** The Executive Sponsor leaves — resignation, promotion, reassignment — before Month 24, and Bridges and Kübler-Ross readings begin drifting backward within weeks. Per the Cross-Type Comparison Matrix, cultural change is journi's most reversibility-fragile archetype: high reversibility risk that is slow, not fast, to fix once it starts — which is exactly why a sponsor gap cannot be left to resolve itself.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| HR executive transition record; Charter Registry (CHTR-01) | Confirmed sponsor departure; diagnosis-to-date program history | 1. Sponsor Succession & Recommitment | Re-signed Sponsorship Charter; visible recommitment event | Incoming Executive Sponsor; Change Manager; all staff |
+
+*SIPOC for Exception E6.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task E6.1 — [ES] Sponsor Succession & Recommitment**
+
+**Step 1 — Accelerated successor onboarding to the Charter Registry**
+
+A gap of even a few weeks with no visible sponsor is long enough for the Bridges position to start sliding backward, so the new sponsor's own commitment has to be captured before the drift compounds, not once things "settle down."
+
+| Element | Detail |
+|---|---|
+| Technique Name | Accelerated successor charter onboarding |
+| Technique Goal | Get the incoming Executive Sponsor to personally re-sign and re-own CHTR-01 within days of the departure being confirmed. |
+| Technique Details | Within five business days of a confirmed sponsor departure, walk the incoming executive — interim or permanent — through the full Sponsorship Charter and the program's diagnosis-to-date history, and ask them to name their own specific behavior commitments, exactly as in Section 6.1's Task T1.3. |
+| Recommended Tool | journi M5 — CM Charters |
+
+**Step 2 — Visible recommitment event**
+
+A silent leadership transition reads to staff as quiet abandonment; a visible one, referencing the program's actual evidence, reads as continuity.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Visible recommitment event |
+| Technique Goal | Make the leadership transition itself a visible recommitment moment rather than a gap staff notice and interpret as abandonment. |
+| Technique Details | The new sponsor holds a short, live all-hands or unit-by-unit session within three weeks of onboarding, explicitly reaffirming the four target values and referencing the program's evidence to date. |
+| Recommended Tool | BigBlueButton / Jitsi |
+
+*RACSI for Task E6.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| ES, CM | ES | PM, HRBP | SUP | EU |
