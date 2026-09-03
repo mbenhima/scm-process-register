@@ -982,6 +982,66 @@ Cedarbrook's actual Q5 example — night-shift staff across three sites all desc
 |---|---|---|---|---|
 | CM | CM | SUP, HRBP | ITL | ES, EU |
 
+**Task T5.4 — [Joint] Site-Specific Launch Risk Triage**
+
+**Step 1 — Site-type risk profiling**
+
+A hospital ward and an eleven-person clinic do not carry the same rollout risk: shift coverage, supervisor-to-staff ratios, and physical layout all change how the four values land day to day; treating all fourteen sites as interchangeable in the launch plan is exactly what Task T5.2's wave sequencing exists to avoid, and this task is the analysis that feeds it.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Site-type risk profiling |
+| Technique Goal | Identify which upcoming sites carry elevated launch risk because of staffing pattern, shift structure, or physical layout, before their wave launches. |
+| Technique Details | For each site in an upcoming wave, score staffing ratio, shift-coverage gaps, and physical layout against a simple risk rubric; flag any site scoring in the highest risk band for extra attention in its launch briefing. |
+| Recommended Tool | LibreOffice Calc |
+
+**Step 2 — Adapted launch approach for flagged sites**
+
+A flagged site does not need a different program — it needs the same program delivered with an adaptation, most often to when and how champions and Unit Leaders reach night-shift or understaffed periods.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Adapted launch approach |
+| Technique Goal | Adjust the launch approach for flagged sites without changing the underlying program design. |
+| Technique Details | For any site flagged in Step 1, add a specific adaptation to its launch briefing — most commonly an additional night-shift or weekend champion, or a staggered rather than single-day launch communication — agreed with that site's Unit Leader. |
+| Recommended Tool | journi M13 — Communications |
+
+*RACSI for Task T5.4.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, SUP | CM | HRBP | PM | ES, EU |
+
+**Task T5.5 — [CM] Rollout Wave Retrospective**
+
+**Step 1 — Post-wave retrospective session**
+
+Section 6.5's own design claim — that early waves' lessons reach later waves before they launch — is only true if someone actually captures those lessons formally after each wave, rather than relying on informal word of mouth between Unit Leaders.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Post-wave retrospective |
+| Technique Goal | Formally capture what worked and what did not from each completed launch wave before the next wave's briefing is finalized. |
+| Technique Details | Within one week of each wave's launch, run a short retrospective with that wave's Unit Leaders and champions, capturing specific, actionable lessons rather than general sentiment. |
+| Recommended Tool | BookStack |
+
+**Step 2 — Next-wave briefing update**
+
+A lesson that stays in a retrospective document nobody reads before the next launch has not actually reduced any risk; it has to make it back into the next wave's actual briefing material.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Next-wave briefing update |
+| Technique Goal | Incorporate the retrospective's specific lessons directly into the next wave's launch briefing, per Task T5.2. |
+| Technique Details | Change Manager updates the next wave's launch briefing package with the retrospective's specific lessons before that wave's Task T5.2 communications go out, and confirms with the next wave's Unit Leaders that the update was received. |
+| Recommended Tool | journi M13 — Communications |
+
+*RACSI for Task T5.5.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | HRBP | ES, EU |
+
 
 ### 6.6 Phase 6 — Reinforcement Through Skepticism (Months 15–22)
 
@@ -1087,6 +1147,66 @@ A declining manager is often the earliest visible warning of a site-level proble
 |---|---|---|---|---|
 | CM | CM | SUP | HRBP | ES, EU |
 
+**Task T6.4 — [CM] Site Benchmarking Recovery Plan**
+
+**Step 1 — Recovery plan drafting for flagged sites**
+
+Section 7.5's escalation rule puts a "Behind" site on the Steering Committee agenda by name; naming the problem is not the same as fixing it, and without a formal recovery plan a flagged site can stay on that agenda, unresolved, for months.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Site recovery plan drafting |
+| Technique Goal | Give every site that trips the Behind-Benchmarking escalation threshold a specific, time-bound recovery plan rather than repeated agenda visibility alone. |
+| Technique Details | Within one week of a site's escalation, Change Manager and that site's Unit Leader jointly draft a recovery plan naming the specific gap (champion coverage, resistance-entry pattern, manager readiness) and a 30-day target. |
+| Recommended Tool | journi M20 — Metrics & Benchmarking |
+
+**Step 2 — Recovery plan tracking to close**
+
+A recovery plan that is drafted and then never checked again is functionally identical to no plan at all; tracking it to a defined close is what makes the Steering Committee's escalation mean something.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Recovery plan tracking |
+| Technique Goal | Track each site recovery plan to a defined close, confirmed against the same Benchmarking metric that triggered it. |
+| Technique Details | Change Manager reviews open recovery plans weekly until the site's Benchmarking standing clears "Behind"; any plan still open after 60 days is escalated to the Steering Committee as a standing agenda item, not just a one-time mention. |
+| Recommended Tool | journi M20 — Metrics & Benchmarking |
+
+*RACSI for Task T6.4.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, SUP | CM | HRBP | PM | ES |
+
+**Task T6.5 — [HRBP] Mid-Program Accountability Process Audit**
+
+**Step 1 — Scheduled equal-application audit**
+
+Exception E4's equal-application audit (Section 9.4) is reactive — triggered by a reported incident. A scheduled version of the same audit, run before any incident is reported, is what actually catches an unequal-application pattern before it becomes the kind of story staff tell each other for months.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Scheduled equal-application audit |
+| Technique Goal | Proactively check whether accountability process outcomes correlate with seniority or status, on a fixed schedule rather than only after an incident is reported. |
+| Technique Details | Run the same cross-tabulation technique used reactively in Exception E4 (Task E4.1) on a fixed quarterly schedule from Phase 6 onward, regardless of whether any specific incident has been reported. |
+| Recommended Tool | Metabase |
+
+**Step 2 — Findings reported to the Divergence Review Board**
+
+Folding this into the Divergence Review Board's existing weekly and monthly cadence (Section 6.6, Task T6.2), rather than creating a separate reporting line, keeps accountability findings visible to the same body already watching for divergence between stated and actual behavior.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Divergence Review Board reporting |
+| Technique Goal | Route the scheduled audit's findings into existing governance rather than a separate, easily-missed reporting channel. |
+| Technique Details | HR Business Partner presents each quarterly audit's findings to the Divergence Review Board at its regular session; any correlation found is treated with the same urgency as an Exception E4 case, even with no specific incident behind it. |
+| Recommended Tool | journi M9 — Governance Dashboards |
+
+*RACSI for Task T6.5.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| HRBP | HRBP | CM | ES | SUP, EU |
+
 
 ### 6.7 Phase 7 — Institutionalization (Months 20–24, open-ended beyond)
 
@@ -1191,6 +1311,66 @@ The Board mandated this program on a patient-safety and litigation-risk business
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | PM | PM | CM, HRBP | ES | SUP, EU |
+
+**Task T7.4 — [PM] Cross-Site Institutionalization Consistency Check**
+
+**Step 1 — Site-by-site adoption verification**
+
+Task T7.1 updates hiring and performance-review criteria at the organizational level; nothing about that update guarantees all fourteen sites actually apply the updated criteria in practice rather than defaulting to whatever their own hiring manager has always done.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Site-by-site adoption verification |
+| Technique Goal | Confirm every site is actually applying the updated hiring and performance-review criteria, not just headquarters. |
+| Technique Details | Program Manager samples recent hiring files and completed performance reviews from each of the 14 sites, checking specifically for the presence of the new behavior-anchored criteria from Task T7.1. |
+| Recommended Tool | BookStack + LibreOffice Calc |
+
+**Step 2 — Site-level remediation for gaps**
+
+A site quietly not applying the new criteria is not defiance in most cases — it is usually a hiring manager who was never directly walked through the change; a short, direct remediation closes that gap faster than a policy reminder email would.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Targeted site-level remediation |
+| Technique Goal | Close any gap found in Step 1 through direct, local follow-up rather than a blanket org-wide reminder. |
+| Technique Details | For any site with a gap, Program Manager and that site's HR contact run a short working session walking through the updated interview guide and review template directly, and re-sample 60 days later to confirm adoption. |
+| Recommended Tool | BigBlueButton / Jitsi |
+
+*RACSI for Task T7.4.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| PM | PM | HRBP, SUP | CM | ES |
+
+**Task T7.5 — [Joint] Post-Program Sustainment Review Schedule**
+
+**Step 1 — 6/12/18-month checkpoint design**
+
+Institutionalization is a claim until it is checked; without a scheduled post-handover review, "the values are now embedded" is exactly the kind of unverified assertion Section 2.2's justified-change-pattern rule was built to prevent.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Post-handover checkpoint design |
+| Technique Goal | Define a fixed schedule of post-handover reviews to confirm institutionalization holds after the central program team stands down. |
+| Technique Details | Design three checkpoints — 6, 12, and 18 months after the Task T7.3 handover — each re-running a lightweight version of the Composite Readiness Index and Benchmarking check against the site-level owners who received the handover. |
+| Recommended Tool | journi M20 — Metrics & Benchmarking |
+
+**Step 2 — Checkpoint ownership assignment**
+
+A checkpoint with no named owner quietly does not happen; assigning it now, while the original Steering Committee still exists, is what keeps it from being forgotten once the program team has moved on.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Checkpoint ownership assignment |
+| Technique Goal | Name a specific accountable owner for each of the three post-handover checkpoints before the Steering Committee itself stands down. |
+| Technique Details | Steering Committee formally assigns ownership of each checkpoint — typically HR Business Partner for the 6- and 12-month checks, and the Board for the 18-month check — and logs the assignment in journi before the program formally closes. |
+| Recommended Tool | journi M9 — Governance Dashboards |
+
+*RACSI for Task T7.5.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, HRBP | ES | PM | SUP | EU |
 
 
 ## 7. What to Track — By Cadence
