@@ -636,3 +636,108 @@ A pilot that produced real evidence — including real resistance, honestly logg
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | CM, ES | ES | PM, HRBP, SUP | CM | EU |
+
+
+### 6.5 Phase 5 — Organization-Wide Rollout (Months 11–17)
+
+Extends the pilot's proven design to all fourteen sites, sequenced rather than launched all at once, so the Champion Network and the systemic-pattern alert process can absorb what the earliest sites surface before the last sites go live. This is the phase in which the Champion Network scales from 45 to roughly 95 people, and in which Section 8.1's Q5 night-shift-reporting-form incident occurs.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Pilot Go decision; remaining twelve sites; pilot-tested reinforcement system | Documented Go decision; pilot resistance-entry log; behavior anchors | 1. Champion Network Scale-Up<br>2. Org-Wide Launch Sequencing by Site<br>3. Systemic-Pattern Alert Response | Scaled Champion Network (~95 people); sequenced 14-site launch; resolved systemic-pattern alerts | All 14 sites; Steering Committee; Change Manager |
+
+*SIPOC for Phase 5 — Organization-Wide Rollout.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task T5.1 — [CM] Champion Network Scale-Up**
+
+**Step 1 — Champion recruitment and role definition**
+
+Forty-five champions from two pilot units does not cover fourteen sites; recruitment has to happen deliberately, site by site, not by hoping volunteers surface on their own.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Structured champion recruitment |
+| Technique Goal | Recruit and onboard enough champions, distributed across all 14 sites, to sustain org-wide coverage. |
+| Technique Details | Each Unit Leader nominates 2–3 champion candidates per site; Change Manager screens for credibility with peers (not just enthusiasm) and onboards roughly 50 additional champions, bringing the network to approximately 95. |
+| Recommended Tool | journi M14 — Champion Network |
+
+**Step 2 — Champion community of practice**
+
+An isolated champion at a single clinic site loses momentum fast; a shared forum across all 95 keeps the role visible and mutually reinforcing.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Champion community-of-practice forum |
+| Technique Goal | Give the scaled champion network a shared space to share observations and sustain momentum across sites. |
+| Technique Details | Stand up a monthly cross-site community-of-practice session where champions share real observations (the source of Section 7.6's "at least one case shared" healthy-month signal) and troubleshoot together. |
+| Recommended Tool | BigBlueButton / Jitsi + BookStack (shared case log) |
+
+*RACSI for Task T5.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | HRBP | ES, EU |
+
+**Task T5.2 — [Joint] Org-Wide Launch Sequencing by Site**
+
+**Step 1 — Site sequencing plan**
+
+Launching all fourteen sites on one date means any design flaw the pilot did not catch gets multiplied everywhere simultaneously; sequencing in waves lets the first wave's lessons reach the last wave before it launches.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Wave-based launch sequencing |
+| Technique Goal | Sequence the 14 remaining sites into launch waves that let early lessons reach later waves before they go live. |
+| Technique Details | Group the twelve remaining sites into three waves of roughly four sites each, spaced six weeks apart; each wave's launch briefing includes a summary of what the previous wave's first two weeks surfaced. |
+| Recommended Tool | journi M11 — Steering & Phase Gates |
+
+**Step 2 — Site launch communications**
+
+The four values need to arrive at each site as a continuation of the pilot's evidence, not as a fresh corporate announcement — otherwise sites treat it as this quarter's initiative rather than a program that already has a track record.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Evidence-based site launch briefing |
+| Technique Goal | Introduce each launching site to the program using the pilot's actual evidence, not generic messaging. |
+| Technique Details | Each site's launch communication package includes the pilot's real before/after data and at least one named pilot-unit staff testimonial, delivered by that site's own Unit Leader rather than a corporate email. |
+| Recommended Tool | journi M13 — Communications |
+
+*RACSI for Task T5.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, SUP | CM | ES | PM | EU |
+
+**Task T5.3 — [CM] Systemic-Pattern Alert Response**
+
+**Step 1 — Cross-site pattern triage**
+
+A single site's complaint is a local issue; the same complaint from three different sites in the same window is a structural design flaw — and only cross-site triage, not per-site triage, can tell the difference.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Cross-site systemic-pattern triage |
+| Technique Goal | Detect when resistance entries from multiple sites describe the same structural problem, not three unrelated local issues. |
+| Technique Details | When journi's systemic-pattern threshold fires (three or more similarly-coded entries within 30 days, per Section 7.5), Change Manager pulls the full entry set across all reporting sites to confirm whether it is one structural cause. |
+| Recommended Tool | journi M16 — Resistance Management + Metabase |
+
+**Step 2 — Structural fix within SLA**
+
+Cedarbrook's actual Q5 example — night-shift staff across three sites all describing the incident-report form as punitive to fill out without a same-shift co-signer — was fixed inside this five-day window precisely because the fix targeted the form, not the staff who complained about it.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Rapid structural fix |
+| Technique Goal | Ship a structural fix to a confirmed systemic pattern within a defined service-level window, and confirm it does not recur. |
+| Technique Details | Design and ship the structural fix within five business days of confirmation (per Section 9's escalation discipline); monitor the same entry category for 30 days afterward to confirm the pattern does not recur. |
+| Recommended Tool | journi M16 — Resistance Management |
+
+*RACSI for Task T5.3.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP, HRBP | ITL | ES, EU |
