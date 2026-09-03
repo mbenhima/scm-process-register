@@ -741,3 +741,108 @@ Cedarbrook's actual Q5 example — night-shift staff across three sites all desc
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | CM | CM | SUP, HRBP | ITL | ES, EU |
+
+
+### 6.6 Phase 6 — Reinforcement Through Skepticism (Months 15–22)
+
+The phase this entire guide is built around. Every archetype eventually meets a "flavor of the month" moment — the point where the launch-event enthusiasm has worn off and staff start testing, consciously or not, whether the new values actually hold under pressure. For cultural change this moment is not a risk to be avoided; it is a structurally certain, plannable event, which is exactly why journi tracks a dedicated cynicism pulse metric and a Divergence Review Board rather than leaving Phase 6 to informal monitoring. Section 8.1's Q6 dip and Exceptions E3 and E4 (Sections 9.3–9.4) are this phase's data, not an aberration from it.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| All 14 rolled-out sites; Champion Network; Divergence Pattern alerts | Org-wide behavior-anchor adoption data; resistance-entry log; manager readiness ratings | 1. Cynicism Pulse Monitoring & Response<br>2. Divergence Review Board Operations<br>3. Manager Coaching Sprint for Declining Readiness | Monthly cynicism trend; resolved divergence cases; recovered manager readiness ratings | Executive Sponsor; Steering Committee; all staff |
+
+*SIPOC for Phase 6 — Reinforcement Through Skepticism.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task T6.1 — [CM] Cynicism Pulse Monitoring & Response**
+
+**Step 1 — Monthly cynicism pulse survey**
+
+A quarterly reading is too slow to catch a spike before it hardens into settled disbelief; monthly is the minimum cadence once org-wide rollout is complete.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Monthly cynicism pulse survey |
+| Technique Goal | Track org-wide belief that the values program is genuine, on a cadence tight enough to catch a spike early. |
+| Technique Details | Short monthly survey (4–5 items plus free text) measuring perceived leadership sincerity and perceived durability of the program, trended by site and org-wide against the defined floor threshold from Section 7.5. |
+| Recommended Tool | LimeSurvey + Metabase |
+
+**Step 2 — Threshold-triggered executive response**
+
+The response protocol exercised in Exception E3 (Section 9.3) is defined here, not improvised in the moment it is needed.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Threshold-triggered executive open forum |
+| Technique Goal | Guarantee a fast, visible executive response the moment the cynicism pulse crosses its defined floor. |
+| Technique Details | When the pulse score drops below the defined floor for two consecutive months, the Executive Sponsor is contractually committed (via CHTR-01) to an unscripted open Q&A within two weeks, following the protocol detailed as Exception E3. |
+| Recommended Tool | BigBlueButton / Jitsi |
+
+*RACSI for Task T6.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | ES | HRBP, SUP | EU |
+
+**Task T6.2 — [Joint] Divergence Review Board Operations**
+
+**Step 1 — Divergence Pattern alert triage**
+
+High stated awareness with zero measured behavior change (the pattern behind Exception E2, Section 9.2) can originate anywhere across fourteen sites; a standing board, not an ad hoc response, is what keeps triage consistent.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Divergence Pattern alert triage |
+| Technique Goal | Review every journi Divergence Pattern alert (high awareness, no measured behavior change) within its 5-business-day SLA. |
+| Technique Details | A standing Divergence Review Board — Change Manager, one rotating Unit Leader, and HR Business Partner — reviews every open alert weekly, ensuring none ages past the 5-business-day threshold defined in Section 7.5. |
+| Recommended Tool | journi M20 — Metrics & Benchmarking |
+
+**Step 2 — Quarterly Composite Readiness Index and Benchmarking report**
+
+The Board's real product, beyond individual alerts, is the quarterly trend line that tells the Steering Committee whether Phase 6 as a whole is on track — this is where Section 8's own Table 8.1 data would be assembled inside Cedarbrook's own program.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Quarterly CRI and Benchmarking report |
+| Technique Goal | Give the Steering Committee and the Board a full quarterly trend view against journi's cultural reference band. |
+| Technique Details | Compile the quarter's Composite Readiness Index, Bridges/Kübler-Ross readings, and Benchmarking standing into a single report, explicitly framed against the cultural reference band rather than a straight-line target. |
+| Recommended Tool | journi M20 — Metrics & Benchmarking; LibreOffice Impress for the Board deck |
+
+*RACSI for Task T6.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, HRBP | CM | SUP | ES | EU |
+
+**Task T6.3 — [CM] Manager Coaching Sprint for Declining Readiness**
+
+**Step 1 — Declining-trend detection**
+
+A single bad month is noise; two consecutive declining months for the same Unit Leader is the signal Section 7.5 defines as the trigger for intervention.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Manager readiness trend review |
+| Technique Goal | Detect any Unit Leader whose readiness rating has declined for two consecutive months. |
+| Technique Details | Monthly automated review of every Unit Leader's readiness rating trend against their own Phase 3 baseline; any two-consecutive-month decline auto-flags for the coaching sprint. |
+| Recommended Tool | journi M17 — Manager Readiness Tracking |
+
+**Step 2 — Intensive coaching sprint**
+
+A declining manager is often the earliest visible warning of a site-level problem the pulse survey has not caught yet; the sprint exists to catch and correct it before it becomes a site-wide pattern.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Intensive coaching sprint |
+| Technique Goal | Reverse a declining manager readiness trend through focused, short-cycle coaching before it becomes a site-wide pattern. |
+| Technique Details | Change Manager runs a focused three-session coaching sprint with the flagged Unit Leader over two weeks, addressing their specific declining behaviors directly, then re-rates readiness at the end of the sprint. |
+| Recommended Tool | BigBlueButton / Jitsi |
+
+*RACSI for Task T6.3.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | HRBP | ES, EU |
