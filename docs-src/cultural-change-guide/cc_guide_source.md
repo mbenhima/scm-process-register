@@ -108,9 +108,9 @@ The ERP guide tags every Task Project, Change, or Joint. For a cultural transfor
 
 ## 4. Process Map
 
-### 4.1 The 21 Tasks Across journi's E2E-CULT Chain
+### 4.1 The 35 Tasks Across journi's E2E-CULT Chain
 
-Project Concord's full operational scope is 21 Tasks across the seven TPL-CULT-7 phases — three Tasks per phase, each broken into two Steps in Section 6. Table 4.1 maps every Task to its owning Macro Process, its Program/Change-Manager/Joint nature tag, its phase, and the journi module it is logged against.
+Project Concord's full operational scope is 35 Tasks across the seven TPL-CULT-7 phases — five Tasks per phase, each broken into two Steps in Section 6, matching the same Task density the ERP Implementation User Guide uses per phase. Table 4.1 maps every Task to its owning Macro Process, its Program/Change-Manager/Joint nature tag, its phase, and the journi module it is logged against.
 
 **Table 4.1 — Full process map.**
 
@@ -119,24 +119,38 @@ Project Concord's full operational scope is 21 Tasks across the seven TPL-CULT-7
 | T1.1 Baseline Culture & Values Diagnosis | MP-01 Discovery & Diagnosis | CM | 1. Diagnosis | M7 |
 | T1.2 Blame-Incident & Near-Miss Pattern Review | MP-01 Discovery & Diagnosis | CM | 1. Diagnosis | M7, M20 |
 | T1.3 Diagnosis Readout & Sponsor Commitment | MP-01 Discovery & Diagnosis | Joint | 1. Diagnosis | M5, M9 |
+| T1.4 Site-by-Site Diagnosis Variance Mapping | MP-01 Discovery & Diagnosis | CM | 1. Diagnosis | M7, M20 |
+| T1.5 Legal & Staff-Association Pre-Briefing | MP-01 Discovery & Diagnosis | HRBP | 1. Diagnosis | M5 |
 | T2.1 Values Co-Design Workshops | MP-02 Design | CM | 2. Target Values Design | M12, M13 |
 | T2.2 Sponsorship & Governance Charter Set-Up | MP-02 Design | Joint | 2. Target Values Design | M5 |
 | T2.3 Values Definition & Behavior Anchors | MP-02 Design | CM | 2. Target Values Design | M10, M13 |
+| T2.4 Cross-Site Values Consistency Check | MP-02 Design | CM | 2. Target Values Design | M13 |
+| T2.5 Communications & Launch Narrative Design | MP-02 Design | Joint | 2. Target Values Design | M13 |
 | T3.1 Executive Modeling Commitment & 360 Baseline | MP-03 Build & Prepare | ES | 3. Leadership Modeling | M5, M17 |
 | T3.2 Reinforcement System Design | MP-03 Build & Prepare | CM | 3. Leadership Modeling | M14, M16 |
 | T3.3 Manager Readiness Enablement | MP-03 Build & Prepare | Joint | 3. Leadership Modeling | M17 |
+| T3.4 Board-Level Modeling Extension | MP-03 Build & Prepare | ES | 3. Leadership Modeling | M5 |
+| T3.5 Reinforcement System Pilot Test | MP-03 Build & Prepare | CM | 3. Leadership Modeling | M14, M16 |
 | T4.1 Pilot Unit Selection & Baseline | MP-04 Pilot | CM | 4. Pilot Cohort | M7, M11 |
 | T4.2 Pilot Execution & Resistance Pattern Monitoring | MP-04 Pilot | CM | 4. Pilot Cohort | M16, M20 |
 | T4.3 Pilot Go/No-Go Readout | MP-04 Pilot | Joint | 4. Pilot Cohort | M9, M11 |
+| T4.4 Mid-Pilot Course Correction Cycle | MP-04 Pilot | CM | 4. Pilot Cohort | M16, M20 |
+| T4.5 Pilot-Specific Accountability Process Dry-Run | MP-04 Pilot | HRBP | 4. Pilot Cohort | M16 |
 | T5.1 Champion Network Scale-Up | MP-06 Rollout | CM | 5. Organization-Wide Rollout | M14 |
 | T5.2 Org-Wide Launch Sequencing by Site | MP-06 Rollout | Joint | 5. Organization-Wide Rollout | M11, M13 |
 | T5.3 Systemic-Pattern Alert Response | MP-06 Rollout | CM | 5. Organization-Wide Rollout | M16, M20 |
+| T5.4 Site-Specific Launch Risk Triage | MP-06 Rollout | Joint | 5. Organization-Wide Rollout | M11, M13 |
+| T5.5 Rollout Wave Retrospective | MP-06 Rollout | CM | 5. Organization-Wide Rollout | M13 |
 | T6.1 Cynicism Pulse Monitoring & Response | MP-07 Reinforcement & Resistance Mgmt. | CM | 6. Reinforcement Through Skepticism | M16, M20 |
 | T6.2 Divergence Review Board Operations | MP-07 Reinforcement & Resistance Mgmt. | Joint | 6. Reinforcement Through Skepticism | M9, M20 |
 | T6.3 Manager Coaching Sprint for Declining Readiness | MP-07 Reinforcement & Resistance Mgmt. | CM | 6. Reinforcement Through Skepticism | M17 |
+| T6.4 Site Benchmarking Recovery Plan | MP-07 Reinforcement & Resistance Mgmt. | CM | 6. Reinforcement Through Skepticism | M20 |
+| T6.5 Mid-Program Accountability Process Audit | MP-07 Reinforcement & Resistance Mgmt. | HRBP | 6. Reinforcement Through Skepticism | M9, M20 |
 | T7.1 Policy & Hiring Criteria Institutionalization | MP-08/09 Sustainment & Governance Handover | HRBP | 7. Institutionalization | M5, M10 |
 | T7.2 Refreeze Justification & Steering Committee Sign-Off | MP-09 Governance Handover | Joint | 7. Institutionalization | M9, M11 |
 | T7.3 Governance Handover & Benefits Realization Report | MP-10 Closure & Benefits Realization | PM | 7. Institutionalization | M9, M20 |
+| T7.4 Cross-Site Institutionalization Consistency Check | MP-08/09 Sustainment & Governance Handover | PM | 7. Institutionalization | M10 |
+| T7.5 Post-Program Sustainment Review Schedule | MP-09 Governance Handover | Joint | 7. Institutionalization | M9, M20 |
 
 *Table 4.1 — Every Task in Section 6, mapped to Macro Process, nature, phase, and journi module. MP-05 (Training & Capability Enablement) does not appear: it is the one Macro Process the E2E-CULT chain skips.*
 
@@ -147,13 +161,15 @@ Seven of journi's eight Charter Registry entries actively govern this archetype'
 
 ### 5.1 Phase 1 — Diagnosis (Months 1–3)
 
-Establishes the evidence base before any design work starts. All three Tasks run inside a tight twelve-week window because a slow diagnosis lets the Board's mandate lose momentum before Phase 2 even begins.
+Establishes the evidence base before any design work starts. All five Tasks run inside a tight twelve-week window because a slow diagnosis lets the Board's mandate lose momentum before Phase 2 even begins.
 
 | Task | Weeks | Nature |
 |---|---|---|
 | T1.1 Baseline Culture & Values Diagnosis | 1–5 | CM |
 | T1.2 Blame-Incident & Near-Miss Pattern Review | 4–9 | CM |
 | T1.3 Diagnosis Readout & Sponsor Commitment | 9–12 | Joint |
+| T1.4 Site-by-Site Diagnosis Variance Mapping | 3–8 | CM |
+| T1.5 Legal & Staff-Association Pre-Briefing | 1–4 | HRBP |
 
 ### 5.2 Phase 2 — Target Values Design (Months 2–5)
 
@@ -164,6 +180,8 @@ Overlaps Phase 1 deliberately: co-design workshops can begin on partial diagnosi
 | T2.1 Values Co-Design Workshops | 5–10 | CM |
 | T2.2 Sponsorship & Governance Charter Set-Up | 8–14 | Joint |
 | T2.3 Values Definition & Behavior Anchors | 12–20 | CM |
+| T2.4 Cross-Site Values Consistency Check | 18–20 | CM |
+| T2.5 Communications & Launch Narrative Design | 19–22 | Joint |
 
 ### 5.3 Phase 3 — Leadership Modeling & Reinforcement Build (Months 4–8)
 
@@ -174,6 +192,8 @@ The longest single-phase overlap in the program: executive modeling commitments 
 | T3.1 Executive Modeling Commitment & 360 Baseline | 13–18 | ES |
 | T3.2 Reinforcement System Design | 16–26 | CM |
 | T3.3 Manager Readiness Enablement | 24–32 | Joint |
+| T3.4 Board-Level Modeling Extension | 17–20 | ES |
+| T3.5 Reinforcement System Pilot Test | 26–30 | CM |
 
 ### 5.4 Phase 4 — Pilot Cohort (Months 7–12)
 
@@ -184,6 +204,8 @@ Two units carry the pilot; everything the rest of the organization eventually re
 | T4.1 Pilot Unit Selection & Baseline | 25–30 | CM |
 | T4.2 Pilot Execution & Resistance Pattern Monitoring | 28–44 | CM |
 | T4.3 Pilot Go/No-Go Readout | 42–48 | Joint |
+| T4.4 Mid-Pilot Course Correction Cycle | 35–38 | CM |
+| T4.5 Pilot-Specific Accountability Process Dry-Run | 29–31 | HRBP |
 
 ### 5.5 Phase 5 — Organization-Wide Rollout (Months 11–17)
 
@@ -194,16 +216,20 @@ Sequenced by site rather than launched everywhere on one date, so the systemic-p
 | T5.1 Champion Network Scale-Up | 41–48 | CM |
 | T5.2 Org-Wide Launch Sequencing by Site | 46–60 | Joint |
 | T5.3 Systemic-Pattern Alert Response | 50–68 | CM |
+| T5.4 Site-Specific Launch Risk Triage | 45–58 | Joint |
+| T5.5 Rollout Wave Retrospective | 49–62 | CM |
 
 ### 5.6 Phase 6 — Reinforcement Through Skepticism (Months 15–22)
 
-The phase built to absorb Section 8's Q6 dip and Section 9's Exceptions E1 through E4; all three Tasks run continuously rather than sequentially, since skepticism does not arrive on a schedule.
+The phase built to absorb Section 8's Q6 dip and Section 9's Exceptions E1 through E4; all five Tasks run continuously rather than sequentially, since skepticism does not arrive on a schedule.
 
 | Task | Weeks | Nature |
 |---|---|---|
 | T6.1 Cynicism Pulse Monitoring & Response | 57–88 | CM |
 | T6.2 Divergence Review Board Operations | 60–88 | Joint |
 | T6.3 Manager Coaching Sprint for Declining Readiness | 65–88 | CM |
+| T6.4 Site Benchmarking Recovery Plan | 60–88 | CM |
+| T6.5 Mid-Program Accountability Process Audit | 65–88 | HRBP |
 
 ### 5.7 Phase 7 — Institutionalization (Months 20–24, open-ended beyond)
 
@@ -214,6 +240,8 @@ Deliberately overlaps Phase 6 by several months: policy and hiring-criteria chan
 | T7.1 Policy & Hiring Criteria Institutionalization | 77–90 | HRBP |
 | T7.2 Refreeze Justification & Steering Committee Sign-Off | 88–96 | Joint |
 | T7.3 Governance Handover & Benefits Realization Report | 94–96+ | PM |
+| T7.4 Cross-Site Institutionalization Consistency Check | 82–92 | PM |
+| T7.5 Post-Program Sustainment Review Schedule | 90–96+ | Joint |
 
 
 ## 6. Detailed Phase Playbooks — SIPOC, Timeline, Tasks, Steps & RACSI
@@ -226,9 +254,9 @@ Establishes, in evidence rather than assumption, how deep Cedarbrook's blame-ori
 
 | Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
 |---|---|---|---|---|
-| Board mandate; External safety review; HR disciplinary records; Incident-reporting system | Board resolution and budget approval; 24 months of incident/near-miss data; org chart across 3 hospitals and 11 clinics | 1. Baseline Culture & Values Diagnosis<br>2. Blame-Incident & Near-Miss Pattern Review<br>3. Diagnosis Readout & Sponsor Commitment | Quantified culture baseline; incident-vs-report gap analysis; signed Sponsorship Charter | Executive team; Board; Change Manager; HR Business Partner |
+| Board mandate; External safety review; HR disciplinary records; Incident-reporting system | Board resolution and budget approval; 24 months of incident/near-miss data; org chart across 3 hospitals and 11 clinics | 1. Baseline Culture & Values Diagnosis<br>2. Blame-Incident & Near-Miss Pattern Review<br>3. Diagnosis Readout & Sponsor Commitment<br>4. Site-by-Site Diagnosis Variance Mapping<br>5. Legal & Staff-Association Pre-Briefing | Quantified culture baseline; incident-vs-report gap analysis; signed Sponsorship Charter | Executive team; Board; Change Manager; HR Business Partner |
 
-*SIPOC for Phase 1 — Diagnosis. The Process column lists this phase's three Tasks in sequence.*
+*SIPOC for Phase 1 — Diagnosis. The Process column lists this phase's five Tasks in sequence.*
 
 **Tasks, Steps, Techniques & RACSI**
 
@@ -391,7 +419,7 @@ Turns the diagnosis into four named, behaviorally-specific values — not a post
 
 | Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
 |---|---|---|---|---|
-| Phase 1 diagnosis findings; Executive team; Frontline staff volunteers | Quantified culture baseline; incident-vs-report gap analysis; illustrative quotes | 1. Values Co-Design Workshops<br>2. Sponsorship & Governance Charter Set-Up<br>3. Values Definition & Behavior Anchors | Four named target values; activated Charter Registry; behaviorally-anchored value definitions | Executive team; Steering Committee; Unit Leaders; Change Manager |
+| Phase 1 diagnosis findings; Executive team; Frontline staff volunteers | Quantified culture baseline; incident-vs-report gap analysis; illustrative quotes | 1. Values Co-Design Workshops<br>2. Sponsorship & Governance Charter Set-Up<br>3. Values Definition & Behavior Anchors<br>4. Cross-Site Values Consistency Check<br>5. Communications & Launch Narrative Design | Four named target values; activated Charter Registry; behaviorally-anchored value definitions | Executive team; Steering Committee; Unit Leaders; Change Manager |
 
 *SIPOC for Phase 2 — Target Values Design.*
 
@@ -556,7 +584,7 @@ Builds the two structures a values program cannot survive without: visible, meas
 
 | Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
 |---|---|---|---|---|
-| Executive team; Phase 2 behavior anchors; Champion Network volunteers | Four behaviorally-anchored values; signed Sponsorship Charter | 1. Executive Modeling Commitment & 360 Baseline<br>2. Reinforcement System Design<br>3. Manager Readiness Enablement | Executive 360 modeling baseline; recognition and escalation reinforcement system; enabled Unit Leader cohort | Executive team; Unit Leaders; Champion Network; Change Manager |
+| Executive team; Phase 2 behavior anchors; Champion Network volunteers | Four behaviorally-anchored values; signed Sponsorship Charter | 1. Executive Modeling Commitment & 360 Baseline<br>2. Reinforcement System Design<br>3. Manager Readiness Enablement<br>4. Board-Level Modeling Extension<br>5. Reinforcement System Pilot Test | Executive 360 modeling baseline; recognition and escalation reinforcement system; enabled Unit Leader cohort | Executive team; Unit Leaders; Champion Network; Change Manager |
 
 *SIPOC for Phase 3 — Leadership Modeling & Reinforcement Build.*
 
@@ -721,7 +749,7 @@ Proves the model on two units before the org-wide rollout multiplies any design 
 
 | Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
 |---|---|---|---|---|
-| Phase 3 reinforcement system; Unit Leader readiness ratings; candidate pilot units | Behavior anchors; recognition and escalation systems; manager readiness baseline | 1. Pilot Unit Selection & Baseline<br>2. Pilot Execution & Resistance Pattern Monitoring<br>3. Pilot Go/No-Go Readout | Two live pilot units; resistance pattern log; documented Go/No-Go decision | Steering Committee; remaining twelve sites; Change Manager |
+| Phase 3 reinforcement system; Unit Leader readiness ratings; candidate pilot units | Behavior anchors; recognition and escalation systems; manager readiness baseline | 1. Pilot Unit Selection & Baseline<br>2. Pilot Execution & Resistance Pattern Monitoring<br>3. Pilot Go/No-Go Readout<br>4. Mid-Pilot Course Correction Cycle<br>5. Pilot-Specific Accountability Process Dry-Run | Two live pilot units; resistance pattern log; documented Go/No-Go decision | Steering Committee; remaining twelve sites; Change Manager |
 
 *SIPOC for Phase 4 — Pilot Cohort.*
 
@@ -886,7 +914,7 @@ Extends the pilot's proven design to all fourteen sites, sequenced rather than l
 
 | Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
 |---|---|---|---|---|
-| Pilot Go decision; remaining twelve sites; pilot-tested reinforcement system | Documented Go decision; pilot resistance-entry log; behavior anchors | 1. Champion Network Scale-Up<br>2. Org-Wide Launch Sequencing by Site<br>3. Systemic-Pattern Alert Response | Scaled Champion Network (~95 people); sequenced 14-site launch; resolved systemic-pattern alerts | All 14 sites; Steering Committee; Change Manager |
+| Pilot Go decision; remaining twelve sites; pilot-tested reinforcement system | Documented Go decision; pilot resistance-entry log; behavior anchors | 1. Champion Network Scale-Up<br>2. Org-Wide Launch Sequencing by Site<br>3. Systemic-Pattern Alert Response<br>4. Site-Specific Launch Risk Triage<br>5. Rollout Wave Retrospective | Scaled Champion Network (~95 people); sequenced 14-site launch; resolved systemic-pattern alerts | All 14 sites; Steering Committee; Change Manager |
 
 *SIPOC for Phase 5 — Organization-Wide Rollout.*
 
@@ -1051,7 +1079,7 @@ The phase this entire guide is built around. Every archetype eventually meets a 
 
 | Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
 |---|---|---|---|---|
-| All 14 rolled-out sites; Champion Network; Divergence Pattern alerts | Org-wide behavior-anchor adoption data; resistance-entry log; manager readiness ratings | 1. Cynicism Pulse Monitoring & Response<br>2. Divergence Review Board Operations<br>3. Manager Coaching Sprint for Declining Readiness | Monthly cynicism trend; resolved divergence cases; recovered manager readiness ratings | Executive Sponsor; Steering Committee; all staff |
+| All 14 rolled-out sites; Champion Network; Divergence Pattern alerts | Org-wide behavior-anchor adoption data; resistance-entry log; manager readiness ratings | 1. Cynicism Pulse Monitoring & Response<br>2. Divergence Review Board Operations<br>3. Manager Coaching Sprint for Declining Readiness<br>4. Site Benchmarking Recovery Plan<br>5. Mid-Program Accountability Process Audit | Monthly cynicism trend; resolved divergence cases; recovered manager readiness ratings | Executive Sponsor; Steering Committee; all staff |
 
 *SIPOC for Phase 6 — Reinforcement Through Skepticism.*
 
@@ -1216,7 +1244,7 @@ Locks the four values into the systems that outlast any individual sponsor or ch
 
 | Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
 |---|---|---|---|---|
-| HR policy and hiring functions; Phase 6 quarterly reports; full 24-month evidence record | Recovered readiness trend; Q7–Q8 Benchmarking data; behavior anchors | 1. Policy & Hiring Criteria Institutionalization<br>2. Refreeze Justification & Steering Committee Sign-Off<br>3. Governance Handover & Benefits Realization Report | Updated hiring/onboarding criteria; signed Refreeze justification; governance handover package | HR; Steering Committee; Board; incoming site-level owners |
+| HR policy and hiring functions; Phase 6 quarterly reports; full 24-month evidence record | Recovered readiness trend; Q7–Q8 Benchmarking data; behavior anchors | 1. Policy & Hiring Criteria Institutionalization<br>2. Refreeze Justification & Steering Committee Sign-Off<br>3. Governance Handover & Benefits Realization Report<br>4. Cross-Site Institutionalization Consistency Check<br>5. Post-Program Sustainment Review Schedule | Updated hiring/onboarding criteria; signed Refreeze justification; governance handover package | HR; Steering Committee; Board; incoming site-level owners |
 
 *SIPOC for Phase 7 — Institutionalization.*
 
