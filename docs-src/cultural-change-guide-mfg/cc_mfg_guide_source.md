@@ -387,3 +387,56 @@ Deliberately overlaps Phase 6 by several weeks: HR policy integration begins whi
 | **Week 78** | Confirm program close — governance formally handed to standing site leadership. | Toggle the sustainment sign-off; the dedicated program closes this week, with reinforcement continuing as standing site operations rather than a dedicated program team. | M12 (Sustainment) — sign-off toggle: **set**. M17 (WBS & Gantt) — final Phase Gate Joint Decision: **Go**. | — | Sustainment sign-off (toggled); 6/12-month checkpoints scheduled |
 
 *Phase gate: Institutionalization — and the program itself — closes once the Refreeze justification is signed on evidence rather than the acquisition's own announcement timeline, and governance is handed to standing site leadership with a defined post-handover checkpoint schedule. Reinforcement continues beyond Week 78 as standing operations, consistent with journi's Cross-Type Comparison Matrix rating this archetype's institutionalization as open-ended rather than date-bound.*
+
+### 4.2 Master WBS & Gantt — Every Task and Step, PM and CM Tracks, Across the Four Frameworks
+
+The table below lists every Task and Step from the 78-week program above at its own granularity — not a week-by-week repeat of Section 4.1, but the task/step structure Section 4.1's weeks are built from, cross-referenced against journi's four frameworks at the point each step closes.
+
+| ID | Task / Step Name | Track | Week(s) | Lewin | ADKAR | Bridges | Kübler-Ross |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Dual-site discovery workshops (Tangier + Casablanca) | Joint | 2–3 | Unfreeze | Awareness | Ending | Denial |
+| T1.1-S2 | Dual-culture baseline diagnosis compiled | CM | 4 | Unfreeze | Awareness | Ending | Denial |
+| T1.2-S1 | Sponsor Coverage Gap detected (ALT-003) | CM | 1–4 | Unfreeze | Awareness | Ending | Denial |
+| T1.2-S2 | Sponsor Coverage Gap closed — kickoff town hall delivered | Joint | 5–6 | Unfreeze | Awareness | Ending | Denial |
+| T1.3-S1 | Power-imbalance / trust-risk stratified interviews | CM | 7 | Unfreeze | Awareness | Ending | Denial |
+| T1.3-S2 | Trust-deficit finding confirmed — Tangier mid-management | CM | 8 | Unfreeze | Awareness | Ending | Denial |
+| T1.4-S1 | Diagnosis readout to Steering Committee | PM | 9 | Unfreeze | Awareness | Ending | Denial |
+| T1.4-S2 | CHTR-01 signed with 3 specific commitments | CM | 10 | Unfreeze | Awareness → Desire | Ending | Denial |
+| T2.1-S1 | Cross-company co-design workshop series (3 sessions) | Joint | 5–7 | Unfreeze | Desire | Ending | Denial → Resistance/Anger |
+| T2.1-S2 | Candidates scored; 4 target values ratified | CM | 8–9 | Unfreeze | Desire | Ending | Resistance/Anger |
+| T2.2-S1 | Steering Committee membership confirmed | PM | 6 | Unfreeze | Desire | Ending | Resistance/Anger |
+| T2.2-S2 | Steering Committee formally seated, cadence set | PM | 10 | Unfreeze | Desire | Ending | Resistance/Anger |
+| T2.3-S1 | Behavior anchors drafted and bilingual-tested | CM | 9–12 | Unfreeze | Desire | Ending | Resistance/Anger |
+| T2.3-S2 | Open-comment cycle; final anchor language locked | Joint | 13–16 | Unfreeze | Desire | Ending → Neutral Zone | Resistance/Anger |
+| T3.1-S1 | Dual-leadership modeling commitment sessions (8 leaders) | CM | 13–15 | Unfreeze | Desire | Neutral Zone | Resistance/Anger |
+| T3.1-S2 | Baseline peer-modeling read, 8 leaders | CM | 18 | Unfreeze | Desire | Neutral Zone | Resistance/Anger |
+| T3.2-S1 | Recognition + escalation system designed and pilot-tested | CM | 16–19 | Unfreeze | Desire → Knowledge | Neutral Zone | Resistance/Anger |
+| T3.2-S2 | Reinforcement system launched org-wide | CM | 20–24 | Change | Knowledge | Neutral Zone | Resistance/Anger → Exploration |
+| T3.3-S1 | Manager coaching circles begin, readiness baselined | CM | 22–23 | Change | Knowledge | Neutral Zone | Exploration |
+| T3.3-S2 | Cross-site manager coaching focus | CM | 25–26 | Change | Knowledge | Neutral Zone | Exploration |
+| T4.1-S1 | Pilot pair selected — Tangier Dispatch + Casablanca Liaison | PM | 20 | Change | Knowledge | Neutral Zone | Exploration |
+| T4.1-S2 | Pilot baseline captured, both teams | CM | 21 | Change | Knowledge | Neutral Zone | Exploration |
+| T4.2-S1 | Weekly pilot pulse monitoring begins | CM | 23–25 | Change | Knowledge | Neutral Zone | Exploration |
+| T4.2-S2 | Desire Stall (E2) detected, root-caused, and resolved | CM | 25–30 | Change | Knowledge → Ability | Neutral Zone | Exploration → Resistance/Anger (Tangier, temporary) |
+| T4.3-S1 | Baseline-to-current pilot comparison analysis | PM | 32–33 | Change | Ability | Neutral Zone | Exploration |
+| T4.3-S2 | Documented Go decision | Joint | 34 | Change | Ability | Neutral Zone | Exploration |
+| T5.1-S1 | Champion recruitment, dual-site | CM | 32–33 | Change | Ability | Neutral Zone | Exploration |
+| T5.1-S2 | Champion parity confirmed (20 Tangier / 20 Bouregreg) | CM | 34 | Change | Ability | Neutral Zone | Exploration |
+| T5.2-S1 | Wave 1 launch — Tangier remainder + adjacent Casablanca | Joint | 35–39 | Change | Ability | Neutral Zone | Exploration |
+| T5.2-S2 | Wave 2 launch — broader Casablanca counterparts | Joint | 40–47 | Change | Ability → Reinforcement | Neutral Zone | Exploration |
+| T5.3-S1 | Divergence Pattern (E3, ALT-001) detected and root-caused | CM | 42–44 | Change | Ability | Ending (flagged cohort) | Exploration |
+| T5.3-S2 | Paired-exposure fix deployed; E3 resolved; playbook documented | CM | 45–50 | Change | Reinforcement | Neutral Zone (recovered) | Exploration |
+| T6.1-S1 | Monthly cynicism/trust pulse monitoring established | CM | 45–55 | Change | Reinforcement | Neutral Zone | Exploration |
+| T6.1-S2 | Premature "Integration Complete" narrative (E4) managed | Joint | 56–60 | Change → Refreeze (provisional) | Reinforcement | Neutral Zone | Exploration |
+| T6.2-S1 | Divergence Review Board formed and operating | Joint | 50–51 | Change → Refreeze (provisional) | Reinforcement | Neutral Zone | Exploration |
+| T6.2-S2 | Cross-Site Cohort Divergence (E6) detected and root-caused | CM | 61–64 | Change → Refreeze (provisional) | Reinforcement | Neutral Zone | Exploration |
+| T6.3-S1 | Sentiment Regression (E5) incident investigated | CM | 65–66 | Change → Refreeze (provisional) | Reinforcement | Neutral Zone | Exploration → Resistance/Anger (Tangier, temporary) |
+| T6.3-S2 | Cross-site-posting policy fix; E5 and E6 resolved | Joint | 67–68 | Change → Refreeze (provisional) | Reinforcement | New Beginning (trending) | Exploration (recovering) |
+| T7.1-S1 | HR policy integration (hiring, review, posting criteria) | CM | 62–64 | Refreeze (provisional) | Reinforcement | New Beginning (trending) | Exploration |
+| T7.1-S2 | Policy integration complete and spot-check confirmed | CM | 68–72 | Refreeze (provisional) | Reinforcement | New Beginning | Commitment (trending) |
+| T7.2-S1 | Full evidentiary record compiled | CM | 69–75 | Refreeze (provisional) | Reinforcement | New Beginning | Commitment |
+| T7.2-S2 | Refreeze justification signed — Lewin confirmed | Joint | 76 | **Refreeze (confirmed)** | Reinforcement | New Beginning | Commitment |
+| T7.3-S1 | Governance handover package finalized | PM | 77 | Refreeze (confirmed) | Reinforcement | New Beginning | Commitment |
+| T7.3-S2 | Sustainment sign-off toggled; program closes | Joint | 78 | Refreeze (confirmed) | Reinforcement | New Beginning | Commitment |
+
+*Table 4.2.1 — Master WBS & Gantt, framework view. All 44 Task/Step rows, both PM and CM tracks, across the full 78-week program.*
