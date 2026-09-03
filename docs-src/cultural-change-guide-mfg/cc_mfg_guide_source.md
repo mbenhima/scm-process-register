@@ -493,3 +493,91 @@ The same 44 Task/Step rows as Section 4.2, this time with the technique used at 
 | T7.3-S2 | Sustainment sign-off; program closes | Joint | 78 | Sustainment sign-off | Formally close the program once evidence, not the calendar, supports it. | Toggle the M12 sign-off; log the final Phase Gate as Go. | journi M12 / M17 |
 
 *Table 4.3.1 — Master WBS & Gantt, technique view. Same 44 rows as Table 4.2.1, with the operational detail behind each step.*
+
+### 4.4 Six Exceptions, in Detail
+
+Each exception below is real evidence this program's own record produces, not a hypothetical — every one is cross-referenced back to its specific week(s) in Section 4.1 and its specific row(s) in Sections 4.2–4.3.
+
+#### E1 — Sponsor Coverage Gap (Phase 1, Weeks 1–6)
+
+**Detailed description.** Karim Fassi, newly appointed as this program's integration Sponsor, logged zero visible actions on M7 (Sponsor & Coalition) through the program's first four weeks — exactly the condition journi's ALT-003 alert exists to detect. For a cultural program, an invisible Sponsor is more damaging than for a system rollout: Bridges and Kübler-Ross, this archetype's dominant frameworks (Section 2.2), read leadership visibility as the primary evidence of whether the company means what it says, not a training-completion metric.
+
+**Trigger.** Four consecutive weeks with zero logged M7 Sponsor actions.
+
+**Timeline impact.** None to the Phase 1 gate date — the gap closed within the same phase, by Week 6, four weeks ahead of the Week 10 gate — but its recovery speed became the first real evidence, cited repeatedly in later phases, that this program's escalation mechanism actually works under pressure.
+
+**Recovery tasks.** Escalate to the Change Manager and Steering Committee (Week 5); secure a specific, dated Sponsor commitment; deliver that commitment in the highest-credibility setting available — in person, at Tangier, not Casablanca (Week 6).
+
+**Outputs.** A logged M7 roadmap action, marked done; a CHTR-01 compliance entry; a Sponsor visibility rating upgraded to "Active."
+
+**RACSI.** R = CM, PM · A = ES · C = FPO · S = SUP · I = EU
+
+#### E2 — Desire Stall at Tangier Pilot (Phase 4, Weeks 25–30)
+
+**Detailed description.** Tangier Dispatch's ADKAR Desire score dropped to 2 out of 5 during pilot execution, triggering journi's mandatory barrier-reason note. The root cause was not generic pilot fatigue but a specific, unconfirmed rumor that Tangier's dispatch function would be consolidated into Casablanca within a year — the exact kind of acquisition-specific fear a single-organization values program never has to plan for.
+
+**Trigger.** ADKAR Desire score ≤ 2 on M5, auto-escalating per journi's own scoring rule.
+
+**Timeline impact.** Consumed roughly five weeks of dedicated resolution work inside the Pilot Cohort phase's already-planned window; resolution completed by Week 30, four weeks ahead of the Week 34 gate, so the phase-gate date itself did not move, but the schedule buffer that would otherwise have supported an early gate close was used instead.
+
+**Recovery tasks.** A targeted listening session to surface the real root cause (Week 27); escalation to the Sponsor (Week 28); a direct, specific, in-person Sponsor response confirming no consolidation is planned (Week 29); a re-score confirming recovery two weeks later (Week 30).
+
+**Outputs.** The M10 resistance entry closed with a linked mitigation action; an ADKAR Desire re-score of 4; the M7 Sponsor roadmap action marked done.
+
+**RACSI.** R = CM · A = CM · C = ES, SUP · S = PM · I = FPO, EU
+
+#### E3 — Divergence Pattern at Rollout (Phase 5, Weeks 42–47)
+
+**Detailed description.** A Wave 2 cohort of Casablanca counterparts — staff with markedly less direct Tangier contact than the pilot teams or Wave 1 — showed ADKAR Knowledge and Ability both at 4 or above while Bridges still read exactly "Ending," meeting journi's own ALT-001 (Divergence Pattern Detected) condition precisely. The root cause: this cohort understood the values intellectually but had never had them tested against a real cross-site relationship.
+
+**Trigger.** journi's own ALT-001 condition: Knowledge ≥ 4 and Ability ≥ 4 while Bridges still reads exactly "Ending."
+
+**Timeline impact.** None to the Phase 5 gate date — resolution completed by Week 47, three weeks ahead of the Week 50 gate — but it produced the paired-exposure technique later formalized (Week 48) as a standing, reusable playbook for any future divergence signal.
+
+**Recovery tasks.** Root-cause investigation distinguishing a genuine divergence from a data-quality artifact (Week 43); design of a structured paired-exposure intervention (Week 44); deployment to the flagged cohort (Week 45); a Bridges re-check confirming recovery to Neutral Zone (Week 47).
+
+**Outputs.** M6 Bridges reading recovered to Neutral Zone for the flagged cohort; a documented, reusable systemic-pattern-response playbook.
+
+**RACSI.** R = CM · A = CM · C = SUP, FPO · S = ITL · I = ES, EU
+
+#### E4 — Premature "Integration Complete" Declaration (Phase 6, Weeks 56–60)
+
+**Detailed description.** Bouregreg Group's Board issued a public "One Bouregreg — Integration Complete" statement timed to the fiscal year-end, while journi's own Lewin reading remained "Change," not Refreeze. This is this program's own version of a two-clock problem: a real, positive corporate and brand milestone is not the same clock as journi's own evidence-based Refreeze call, and left unaddressed, the gap between them risks staff reading the announcement as either premature spin or license to stop the reinforcement work already in progress.
+
+**Trigger.** A corporate or external milestone announcement that outpaces the program's own logged evidence.
+
+**Timeline impact.** No phase-gate delay — the response was purely communicative — but it forced an explicit "Change → Refreeze (provisional)" annotation on M3 sixteen weeks before the eventual, evidence-based confirmed Refreeze at Week 76, which itself becomes a directly citable fact in that final justification.
+
+**Recovery tasks.** Flag the gap immediately (Week 56); draft and deliver a clarifying internal communication distinguishing the two milestones (Weeks 57–58); monitor the cynicism pulse for any resulting spike (Week 59); formally annotate Lewin as provisional rather than leave the state ambiguous (Week 60).
+
+**Outputs.** A clarifying communication delivered to all 400 staff; M3's Lewin state explicitly marked provisional; confirmation that no material cynicism spike resulted.
+
+**RACSI.** R = CM · A = ES · C = PM · S = FPO · I = SUP, EU
+
+#### E5 — Sentiment Regression (Phase 6, Weeks 65–68)
+
+**Detailed description.** A newly created "combined regional" role passed over a tenured Tangier candidate in favor of a less-tenured Bouregreg-side candidate, and Tangier's Kübler-Ross sentiment regressed sharply from Exploration back toward Resistance/Anger — read, specifically and directly, as evidence that "Equal Standing" was not real in practice. The transparent review that followed found a genuine procedural gap (the role was never posted at Tangier before the decision was made), not necessarily deliberate bias — but the effect on trust was identical either way, which is the finding this guide states plainly rather than use the procedural explanation to minimize the impact.
+
+**Trigger.** A specific, named incident perceived as violating a target value, producing a measurable Kübler-Ross regression in the affected cohort.
+
+**Timeline impact.** A deliberate one-week pause in unrelated HR-policy communications (Weeks 65–66), to avoid compounding the incident with unconnected news, absorbed inside Phase 7's already-planned overlap window without moving the Phase 6 gate date.
+
+**Recovery tasks.** A transparent review of the actual decision criteria and process (Week 66); the procedural finding logged regardless of how it reflected on the decision (Week 66); a structural policy fix — mandatory cross-site posting for all combined roles going forward, not only a correction to the one case (Week 67); transparent communication of the fix (Week 67).
+
+**Outputs.** The specific role reopened with proper cross-site posting; a new standing policy for all future combined roles; Tangier's Kübler-Ross reading trending back toward Exploration by the Phase 6 gate.
+
+**RACSI.** R = FPO, ES · A = ES · C = CM · S = SUP · I = EU
+
+#### E6 — Cross-Site Cohort Divergence (Cross-Cutting, Phases 4–7)
+
+**Detailed description.** Across three consecutive Composite Readiness Index readings, Tangier's cohort score consistently trailed the Casablanca-counterpart cohort by a real, non-noise margin — a slower-moving, structural pattern rather than a single-week trigger, tracing back to Tangier's later program-relative start and the deeper trust deficit named from Section 1.1 onward. This is the one exception in this guide that is cross-cutting by nature: it is visible as early as the pilot (Phase 4) and is not formally addressed until Phase 6, and its trend is still being tracked as Phase 7 closes.
+
+**Trigger.** A sustained Composite Readiness Index gap between the two site cohorts across three or more consecutive readings.
+
+**Timeline impact.** No single phase-gate delay, but it justified a dedicated, ongoing targeted-reinforcement effort that ran in parallel with E5's resolution (Weeks 65–68) and continued into Phase 7's evidentiary compilation, where its narrowing — not closing — trend became one of the specific facts cited in the Week 73 Refreeze justification draft.
+
+**Recovery tasks.** Confirm the gap is real, not a measurement artifact (Week 61); root-cause it to program-start timing and the acquisition's structural trust deficit rather than treat it as a new failure (Weeks 62–63); design and deploy additional Tangier-specific champion capacity and a dedicated listening session (Week 64); track the gap's trend through Phase 7 rather than declare it closed on a single favorable reading (Week 71).
+
+**Outputs.** A documented root-cause finding; a targeted Tangier reinforcement plan; a confirmed, sustained narrowing trend cited directly in the final Refreeze justification.
+
+**RACSI.** R = CM, SUP · A = CM · C = FPO, PM · S = ITL · I = ES, EU
