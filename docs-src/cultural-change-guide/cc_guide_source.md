@@ -322,6 +322,66 @@ Verbal executive agreement is not sponsorship. A specific, personally-owned beha
 |---|---|---|---|---|
 | CM, ES | ES | HRBP, SUP | CM | EU |
 
+**Task T1.4 — [CM] Site-by-Site Diagnosis Variance Mapping**
+
+**Step 1 — Per-site score disaggregation**
+
+An org-wide average of 14 sites can hide a single dangerously low-scoring clinic behind twelve healthy ones; disaggregating by site before design work starts is what keeps Phase 2 from designing for an organization that does not actually exist anywhere.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Per-site score disaggregation |
+| Technique Goal | Reveal which of the 14 sites diverge most from the org-wide diagnosis average, in either direction. |
+| Technique Details | Break every Task T1.1 survey metric and Task T1.2 incident-versus-report gap out by individual site rather than reporting only the org-wide average; rank sites from most to least blame-oriented. |
+| Recommended Tool | Metabase |
+
+**Step 2 — Outlier-site root-cause follow-up**
+
+A site sitting far outside the org-wide pattern — in either direction — usually has a specific local explanation (a particular manager, a specific incident, an unusually strong existing safety culture) worth understanding before Phase 4 has to pick pilot units.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Outlier-site root-cause follow-up |
+| Technique Goal | Understand the specific local factors behind any site that diverges sharply from the org-wide pattern. |
+| Technique Details | For the highest- and lowest-scoring site, run one additional short on-site listening session with the Change Manager present in person, specifically probing what is locally different rather than assuming the org-wide narrative applies. |
+| Recommended Tool | Taguette |
+
+*RACSI for Task T1.4.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | HRBP | ES, EU |
+
+**Task T1.5 — [HRBP] Legal & Staff-Association Pre-Briefing**
+
+**Step 1 — Legal review of the non-disciplinary interview protocol**
+
+Cedarbrook's near-miss silence interviews (Task T1.2) only work if staff genuinely believe nothing they say can be used against them; that belief has to be backed by an actual legal sign-off, not just a verbal assurance.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Legal review of non-disciplinary protocol |
+| Technique Goal | Obtain a documented legal sign-off that diagnosis-phase interview content cannot be used in a disciplinary process. |
+| Technique Details | HR Business Partner works with Cedarbrook's legal counsel to review and formally approve the non-disciplinary interview protocol before any Task T1.2 interviews are scheduled, and documents the approval in writing for staff-facing use. |
+| Recommended Tool | BookStack (protocol documentation) |
+
+**Step 2 — Staff-association co-briefing**
+
+A protocol staff hear about only from management, however well-intentioned, is read with suspicion; the same protocol introduced jointly with the staff association is read as credible.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Joint staff-association briefing |
+| Technique Goal | Introduce the diagnosis phase's interview and confidentiality protocol jointly with the staff association, not as a management-only announcement. |
+| Technique Details | HR Business Partner and a staff-association representative co-present the approved protocol at a joint session before Task T1.1 launches, with the staff association free to raise concerns before, not after, staff are asked to participate. |
+| Recommended Tool | BigBlueButton / Jitsi |
+
+*RACSI for Task T1.5.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| HRBP | HRBP | CM | SUP | ES, EU |
+
 
 ### 6.2 Phase 2 — Target Values Design (Months 2–5)
 
@@ -426,6 +486,66 @@ Publishing without a feedback channel turns co-design into theater at the last s
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | CM | CM | SUP, EU, HRBP | ES | EU |
+
+**Task T2.4 — [CM] Cross-Site Values Consistency Check**
+
+**Step 1 — Site-type language review**
+
+"Speak up in the moment" reads differently to a clinic receptionist working alone at a front desk than to a hospital ICU nurse working in a team of six; the behavior anchors have to hold up in both settings, not just the setting the co-design workshops happened to draw the most participants from.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Site-type language review |
+| Technique Goal | Confirm the four behavior anchors read as concrete and applicable across both hospital and clinic work settings. |
+| Technique Details | Convene a short review session with staff from at least two clinics and one hospital who did not participate in the original co-design workshops; walk each behavior anchor and ask directly whether it makes sense in their specific work setting. |
+| Recommended Tool | BigBlueButton / Jitsi |
+
+**Step 2 — Anchor revision for site-type gaps**
+
+An anchor that only makes sense in a hospital setting will quietly get ignored at the eleven clinics once rollout reaches them in Phase 5; catching that now is far cheaper than discovering it mid-rollout.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Targeted anchor revision |
+| Technique Goal | Revise any behavior anchor the site-type review flagged as hospital-specific or clinic-specific language. |
+| Technique Details | For any anchor flagged in Step 1, work with the original co-design group to add a second, setting-specific example rather than replacing the anchor outright, preserving one shared definition with two illustrations. |
+| Recommended Tool | BookStack |
+
+*RACSI for Task T2.4.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP, EU | HRBP | ES |
+
+**Task T2.5 — [Joint] Communications & Launch Narrative Design**
+
+**Step 1 — Launch narrative arc drafting**
+
+Leadership improvising the "why now" story live, per executive, per site, is exactly how the say-do gap Exception E1 describes gets its first foothold; a single, agreed narrative removes that risk before Phase 3 modeling begins.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Shared launch narrative drafting |
+| Technique Goal | Give every executive and Unit Leader one consistent, agreed story connecting the Phase 1 diagnosis to the four values, before any of them speaks publicly about the program. |
+| Technique Details | Change Manager drafts a single narrative arc — the diagnosis finding, why these four values specifically, what changes for staff day to day — and walks every Steering Committee member through delivering it in their own words before Phase 3 begins. |
+| Recommended Tool | journi M13 — Communications; LibreOffice Impress |
+
+**Step 2 — Message testing with a small staff sample**
+
+A narrative that sounds right in an executive meeting can still land as corporate-speak on the floor; testing it with a small staff sample before it goes org-wide catches that gap while it is still cheap to fix.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Small-sample message testing |
+| Technique Goal | Confirm the launch narrative lands as intended with frontline staff before it is used at scale. |
+| Technique Details | Read the draft narrative aloud to a small, mixed-seniority staff sample not involved in drafting it, and ask them to repeat back in their own words what it means for their daily work; revise any phrase that comes back garbled or corporate-sounding. |
+| Recommended Tool | Taguette |
+
+*RACSI for Task T2.5.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, ES | CM | SUP | HRBP | EU |
 
 
 ### 6.3 Phase 3 — Leadership Modeling & Reinforcement Build (Months 4–8)
@@ -532,6 +652,66 @@ Section 7's monthly manager-readiness cadence, and Exception E6's succession pro
 |---|---|---|---|---|
 | CM, SUP | CM | ES | HRBP | EU |
 
+**Task T3.4 — [ES] Board-Level Modeling Extension**
+
+**Step 1 — Board behavior-commitment session**
+
+Board members visit sites, review incident data, and sit in on Steering Committee sessions; if their own visible behavior does not match the four values, staff notice a second, harder-to-reach say-do gap that Task T3.1's executive-only commitments never touch.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Board behavior-commitment session |
+| Technique Goal | Extend the same specific, observable behavior commitments from Task T3.1 to the Board itself. |
+| Technique Details | Change Manager and Executive Sponsor jointly present the four behavior anchors to the Board and ask each Board member to name one specific behavior they will change in how they engage with staff and site visits, logged against CHTR-01 alongside the executive commitments. |
+| Recommended Tool | journi M5 — CM Charters |
+
+**Step 2 — Board modeling visibility to staff**
+
+A Board commitment nobody below the executive team ever hears about does nothing for trust; making it visible, at least in outline, closes the loop the same way Task T3.1's executive commitments are meant to.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Board commitment visibility briefing |
+| Technique Goal | Make the Board's own modeling commitments visible to staff in outline, without turning it into a publicity exercise. |
+| Technique Details | Include a short, plain-language summary of the Board's commitments in the next all-staff communication under Task T2.5's narrative, framed as evidence the values apply at every level, not just to frontline staff and middle managers. |
+| Recommended Tool | journi M13 — Communications |
+
+*RACSI for Task T3.4.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| ES | ES | CM | HRBP | SUP, EU |
+
+**Task T3.5 — [CM] Reinforcement System Pilot Test**
+
+**Step 1 — Single-unit usability test**
+
+Rolling the recognition and escalation systems designed in Task T3.2 straight to the two-unit Phase 4 pilot, with no smaller test first, means any usability bug — a confusing form, an unclear routing rule — gets discovered on data that is also being used for the Go/No-Go decision.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Single-unit usability test |
+| Technique Goal | Catch usability problems in the recognition and escalation systems before they contaminate the Phase 4 pilot's own evidence. |
+| Technique Details | Run the recognition-nomination form and the non-disciplinary escalation path with one small, willing unit for two weeks, watching specifically for confusion, drop-off, or misrouted submissions rather than for sentiment change. |
+| Recommended Tool | Nextcloud Forms + Metabase |
+
+**Step 2 — System fix and hand-off to Phase 4**
+
+A fix made now, before the pilot's baseline is captured under Task T4.1, is invisible in the pilot's own data; a fix made mid-pilot shows up as a confusing discontinuity in the readiness trend.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Pre-pilot system fix and hand-off |
+| Technique Goal | Resolve any usability issues found in the single-unit test and finalize the reinforcement system before the Phase 4 baseline is captured. |
+| Technique Details | Fix any issues surfaced in Step 1, confirm the corrected forms and routing with the test unit, and hand the finalized system to the Phase 4 Change Manager team before Task T4.1's baseline capture begins. |
+| Recommended Tool | Nextcloud Forms |
+
+*RACSI for Task T3.5.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | ITL | ES, HRBP |
+
 
 ### 6.4 Phase 4 — Pilot Cohort (Months 7–12)
 
@@ -636,6 +816,66 @@ A pilot that produced real evidence — including real resistance, honestly logg
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | CM, ES | ES | PM, HRBP, SUP | CM | EU |
+
+**Task T4.4 — [CM] Mid-Pilot Course Correction Cycle**
+
+**Step 1 — Mid-point evidence review**
+
+Waiting until the full pilot ends to look at the evidence means any fixable design flaw runs at full strength for the whole pilot instead of half of it; a formal mid-point check gives Task T4.2's weekly monitoring somewhere real to feed into.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Mid-pilot evidence review |
+| Technique Goal | Review the pilot's evidence at its approximate mid-point, not only at the final Go/No-Go, to catch fixable problems early. |
+| Technique Details | At roughly the pilot's mid-point, Change Manager compiles the resistance-entry log, pulse trend, and any systemic-pattern alerts so far, and reviews them specifically for fixable design issues rather than as a readiness verdict. |
+| Recommended Tool | Metabase |
+
+**Step 2 — Design adjustment and re-baseline note**
+
+An adjustment made mid-pilot has to be logged as exactly that, or the Task T4.3 Go/No-Go comparison ends up silently comparing pre- and post-adjustment data as if they were the same thing.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Logged design adjustment |
+| Technique Goal | Make any mid-pilot design change explicit and dated, so the final Go/No-Go comparison accounts for it. |
+| Technique Details | Any change made as a result of the mid-point review is logged with its effective date in journi; the Task T4.3 comparison analysis explicitly notes which weeks of data reflect the adjusted design. |
+| Recommended Tool | journi M16 — Resistance Management |
+
+*RACSI for Task T4.4.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | SUP | PM | ES, HRBP |
+
+**Task T4.5 — [HRBP] Pilot-Specific Accountability Process Dry-Run**
+
+**Step 1 — Simulated case walkthrough**
+
+The non-disciplinary escalation path designed in Task T3.2 has never been exercised against a real or realistic case before the pilot; discovering a gap in it during the actual org-wide rollout, against a real case with real consequences, is a far more expensive way to find the same gap.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Simulated case walkthrough |
+| Technique Goal | Exercise the full non-disciplinary escalation and accountability process against a realistic case before it is relied on in a real one. |
+| Technique Details | HR Business Partner and Change Manager walk a realistic, anonymized case scenario through the entire escalation path step by step, timing each stage against its defined SLA and noting any point where the process is ambiguous. |
+| Recommended Tool | Nextcloud Forms |
+
+**Step 2 — Process gap remediation**
+
+Any gap found here is fixed on paper, before the pilot; the same gap found during Phase 5's org-wide rollout would be fixed in public, in the middle of a live case someone is watching the outcome of.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Process gap remediation |
+| Technique Goal | Close any gap or ambiguity the dry-run surfaced before the pilot units go live. |
+| Technique Details | Revise the escalation path documentation and routing rules to close any gap found in Step 1, and re-confirm the corrected version with the pilot units' Unit Leaders before Task T4.2 execution begins. |
+| Recommended Tool | BookStack |
+
+*RACSI for Task T4.5.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| HRBP | HRBP | CM, SUP | ITL | ES |
 
 
 ### 6.5 Phase 5 — Organization-Wide Rollout (Months 11–17)
