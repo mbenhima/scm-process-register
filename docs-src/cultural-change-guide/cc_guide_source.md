@@ -846,3 +846,108 @@ A declining manager is often the earliest visible warning of a site-level proble
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | CM | CM | SUP | HRBP | ES, EU |
+
+
+### 6.7 Phase 7 — Institutionalization (Months 20–24, open-ended beyond)
+
+Locks the four values into the systems that outlast any individual sponsor or champion — hiring, onboarding, and policy — and produces the evidentiary record the Steering Committee needs to justify a Refreeze that will actually hold. This phase deliberately overlaps Phase 6: institutionalizing hiring criteria begins while reinforcement work against skepticism is still active, because waiting for skepticism to fully resolve before institutionalizing anything would mean never starting.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| HR policy and hiring functions; Phase 6 quarterly reports; full 24-month evidence record | Recovered readiness trend; Q7–Q8 Benchmarking data; behavior anchors | 1. Policy & Hiring Criteria Institutionalization<br>2. Refreeze Justification & Steering Committee Sign-Off<br>3. Governance Handover & Benefits Realization Report | Updated hiring/onboarding criteria; signed Refreeze justification; governance handover package | HR; Steering Committee; Board; incoming site-level owners |
+
+*SIPOC for Phase 7 — Institutionalization.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task T7.1 — [HRBP] Policy & Hiring Criteria Institutionalization**
+
+**Step 1 — Hiring and onboarding criteria redesign**
+
+A values program that never touches hiring is only managing the population it already has; new hires who were never assessed against the four values quietly dilute five years of reinforcement work.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Behavior-anchored hiring criteria redesign |
+| Technique Goal | Embed the four behavior anchors into hiring interview guides and onboarding curricula going forward. |
+| Technique Details | HR Business Partner redesigns interview guides to include a structured behavioral question per value, and rewrites the new-hire onboarding package to introduce the values through the same behavior anchors used org-wide, not fresh corporate language. |
+| Recommended Tool | BookStack |
+
+**Step 2 — Policy and performance-review integration**
+
+Institutionalization is not complete until the values appear in the systems staff are actually evaluated against — a poster in the break room does not survive a leadership transition; a performance-review criterion does.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Performance-review criteria integration |
+| Technique Goal | Embed the four values into the standing performance-review process so they persist independent of any single program owner. |
+| Technique Details | Add one behavior-anchored rating item per value to the standard performance-review template, effective the next full review cycle, with calibration guidance for Unit Leaders. |
+| Recommended Tool | BookStack + LibreOffice Calc (calibration guide) |
+
+*RACSI for Task T7.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| HRBP | HRBP | CM, SUP | ES | EU |
+
+**Task T7.2 — [Joint] Refreeze Justification & Steering Committee Sign-Off**
+
+**Step 1 — Full evidentiary record compilation**
+
+The justified-change-pattern rule (Section 2.2) exists precisely to stop this decision from being made on launch-event memory; the record compiled here has to span the whole 24 months, Q6 dip included, not just the strongest quarter.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Full evidentiary record compilation |
+| Technique Goal | Assemble the complete 24-month evidence record — including the Q6 setback and its resolution — into a single Refreeze justification package. |
+| Technique Details | Compile every quarterly CRI and Benchmarking reading, the Q6 dip and its documented resolution, the resistance-entry and Divergence Pattern logs, and current hiring/policy institutionalization status into one package. |
+| Recommended Tool | journi M20 — Metrics & Benchmarking; LibreOffice Impress |
+
+**Step 2 — Steering Committee Refreeze sign-off**
+
+Signing off on the evidence, including the setback, is what makes this Refreeze different from a premature one signed on launch-day enthusiasm — the exact trap Section 2.2 warns against.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Documented Refreeze sign-off |
+| Technique Goal | Obtain an explicit, minuted Steering Committee and Board decision to formally Refreeze, citing the full evidentiary record. |
+| Technique Details | Present the full record to the Steering Committee and Board; the Refreeze justification is signed only once Benchmarking has read "Ahead" for at least two consecutive quarters and no open systemic-pattern alerts remain unresolved. |
+| Recommended Tool | journi M9/M11 — Governance Dashboards & Phase Gates |
+
+*RACSI for Task T7.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, ES | ES | PM, HRBP, SUP | CM | EU |
+
+**Task T7.3 — [PM] Governance Handover & Benefits Realization Report**
+
+**Step 1 — Site-level ownership handover**
+
+A central Change Management team cannot sustain fourteen sites' values reinforcement indefinitely; ownership has to transfer to standing site leadership before the program team stands down.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Site-level ownership handover |
+| Technique Goal | Transfer day-to-day values reinforcement ownership from the central program team to standing Unit Leader and HR structures. |
+| Technique Details | Formal handover package per site documenting the local champion roster, open items, and the standing monthly/quarterly cadence from Section 10, signed off by the receiving Unit Leader. |
+| Recommended Tool | BookStack |
+
+**Step 2 — Benefits realization report**
+
+The Board mandated this program on a patient-safety and litigation-risk business case in Phase 1; closing the loop against that same case, not a generic culture narrative, is what proves the eighteen months delivered what was promised.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Benefits realization report |
+| Technique Goal | Report the program's outcomes against the original Phase 1 diagnosis business case. |
+| Technique Details | Report the final incident-versus-report gap, patient-safety-relevant metrics, and CRI/Benchmarking trajectory directly against the baseline and business case established in Section 6.1, Task T1.3. |
+| Recommended Tool | journi M20 — Metrics & Benchmarking; LibreOffice Impress |
+
+*RACSI for Task T7.3.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| PM | PM | CM, HRBP | ES | SUP, EU |
