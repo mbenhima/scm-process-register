@@ -2170,3 +2170,53 @@ Treat it as a manager-readiness signal in its own right — log it, and route it
 | Community-of-practice integration | E5.2 | Fold new champions into the existing cross-site forum rather than a separate group. |
 | Broader leadership disengagement check | E6.2 | Determine whether a sponsor departure signals wider leadership disengagement. |
 | Preventive executive engagement | E6.2 | Proactively re-engage any executive trending toward disengagement. |
+
+### A.10 Charter Registry Cross-Reference
+
+journi's Charter Registry (SRS 10.6.6) defines eight standing charters. Seven govern this archetype's Macro Processes; the eighth, CHTR-07, governs MP-05 Training & Capability Enablement — the one Macro Process the E2E-CULT chain does not use — and stays dormant for the life of Project Concord.
+
+| Charter | Defines | Governs (Macro Process) | Primary Task Cross-References | Review Cadence |
+|---|---|---|---|---|
+| CHTR-01 Sponsorship / Leadership Charter | The specific, observable sponsorship behaviors expected of the Executive Sponsor, Board, and Steering Committee. | MP-02 Design (ongoing) | T1.3, T2.2, T3.1, T3.4, T7.2, E1.1, E1.2, E6.1, E6.2 | Per Phase Gate |
+| CHTR-02 Participative Management Charter | How Unit Leaders involve their teams in decisions that affect them, rather than announcing top-down. | MP-02 Design | T2.1, T2.3 | Quarterly |
+| CHTR-03 Communication Charter | The message-audience-channel-timing discipline every communication wave follows. | MP-03 Build & Prepare | T2.5, T5.2, T5.5, E3.1 | Per communication wave |
+| CHTR-04 Organizational Impact Charter | The methodology and sign-off standard for assessing how the change affects process, role, and professional identity. | MP-01 Discovery & Diagnosis | T1.1, T1.2, T1.4 | On scope change |
+| CHTR-05 Team Coaching Charter | The standard for group/team-level floor coaching delivered by Unit Leaders. | MP-07 Reinforcement & Resistance Mgmt. | T6.3, T6.4 | Per reinforcement cycle |
+| CHTR-06 One-to-One Coaching Charter | The standard for individual, identity-focused coaching conversations, including divergence-case 1:1s. | MP-07 Reinforcement & Resistance Mgmt. | T3.3, E1.1, E2.1 | Per triggered case |
+| CHTR-07 Mentoring Charter | The 3-stage progressive mentoring model (Trainee, Observer, Autonomous). | MP-05 Training & Capability Enablement — **dormant for this archetype** | None — E2E-CULT skips MP-05 | N/A |
+| CHTR-08 Pulse / Interview Charter | The cadence, instrument standard, and consent protocol for every pulse survey and structured interview. | MP-01 / MP-07 | T1.1, T3.1, T6.1, T6.2, E3.2 | Per phase gate + ad hoc |
+
+*Table A.10.1 — journi's full Charter Registry, mapped to this archetype's Macro Processes and this guide's Tasks. Source: journi SRS 10.6.6.*
+
+### A.11 Month-by-Month Operational Calendar
+
+A single-page view of the full 24-month program, cross-referencing the phase overlaps from Table 1.1 with the Lewin readings from Table 8.1.
+
+| Month | Phase(s) Active | Lewin State | Primary Framework Focus | Key journi Modules | Milestone / Checkpoint |
+|---|---|---|---|---|---|
+| 1 | 1 | Unfreeze | Diagnosis baseline (Bridges: Ending) | M7, M20 | Board mandate signed; diagnosis launches |
+| 2 | 1, 2 | Unfreeze | Diagnosis continues; co-design begins | M7, M12 | Baseline survey closes |
+| 3 | 1, 2 | Unfreeze | Diagnosis readout | M5, M9 | Sponsorship Charter signed — Phase Gate 1 |
+| 4 | 2, 3 | Unfreeze | Values design; executive modeling begins | M5, M13 | Four target values drafted |
+| 5 | 2, 3 | Unfreeze → Change | Values lock-in | M10, M13 | Behavior anchors finalized — Phase Gate 2 |
+| 6 | 3 | Unfreeze → Change | Reinforcement system build | M14, M16 | Recognition/escalation systems designed |
+| 7 | 3, 4 | Change | Leadership modeling continues; pilot prep | M17, M7 | Pilot units selected |
+| 8 | 3, 4 | Change | Reinforcement build complete | M17 | Manager coaching circles begin — Phase Gate 3 |
+| 9 | 4 | Change | Pilot execution | M16, M20 | First pilot pulse checks |
+| 10 | 4 | Change | Pilot execution | M16, M20 | Mid-pilot course correction |
+| 11 | 4, 5 | Change | Pilot close; rollout prep | M9, M11 | Pilot Go/No-Go decision — Phase Gate 4 |
+| 12 | 4, 5 | Change | Rollout wave 1 begins | M14, M11 | Champion Network scale-up begins |
+| 13 | 5 | Change | Rollout waves 1–2 | M11, M13 | First systemic-pattern alert (Q5 case) |
+| 14 | 5 | Change | Rollout wave 2 | M16, M20 | — |
+| 15 | 5, 6 | Change | Rollout wave 3; reinforcement begins | M16, M20 | Cynicism pulse monitoring begins |
+| 16 | 5, 6 | Change | Org-wide rollout completes | M11, M13 | All 14 sites live |
+| 17 | 5, 6 | Change | Reinforcement through skepticism | M16, M20 | Champion Network reaches ~95 |
+| 18 | 6 | Change | Cynicism spike response | M16, M20 | Q6 dip; Exceptions E3/E4 triggered |
+| 19 | 6 | Change | Post-spike recovery tracking | M20 | Trust recovery confirmed |
+| 20 | 6, 7 | Change | Reinforcement continues; institutionalization begins | M5, M10 | Hiring/policy criteria redesign begins |
+| 21 | 6, 7 | Change | Institutionalization | M5, M10 | Performance-review criteria updated |
+| 22 | 6, 7 | Change | Reinforcement closes | M20 | Benchmarking crosses to "Ahead" |
+| 23 | 7 | Change → Refreeze | Evidentiary record compilation | M20 | Full 24-month record compiled |
+| 24 | 7 | Refreeze | Refreeze sign-off; governance handover | M9, M11 | Refreeze justification signed; handover complete |
+
+*Table A.11.1 — Project Concord's month-by-month calendar. Phase numbers reference Table 1.1; Lewin states reference Table 8.1's quarterly readings.*
