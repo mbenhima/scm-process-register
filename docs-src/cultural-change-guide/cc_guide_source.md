@@ -426,3 +426,108 @@ Publishing without a feedback channel turns co-design into theater at the last s
 | R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
 |---|---|---|---|---|
 | CM | CM | SUP, EU, HRBP | ES | EU |
+
+
+### 6.3 Phase 3 — Leadership Modeling & Reinforcement Build (Months 4–8)
+
+Builds the two structures a values program cannot survive without: visible, measured executive modeling, and a reinforcement system that rewards the new behaviors before the org-wide rollout gives everyone a reason to test whether leadership means it. This is also where Exception E1 (Section 9.1) most often first appears, and where the 360 baseline this phase establishes becomes that exception's detection mechanism.
+
+**SIPOC**
+
+| Suppliers | Inputs | Process (Tasks) | Outputs | Customers |
+|---|---|---|---|---|
+| Executive team; Phase 2 behavior anchors; Champion Network volunteers | Four behaviorally-anchored values; signed Sponsorship Charter | 1. Executive Modeling Commitment & 360 Baseline<br>2. Reinforcement System Design<br>3. Manager Readiness Enablement | Executive 360 modeling baseline; recognition and escalation reinforcement system; enabled Unit Leader cohort | Executive team; Unit Leaders; Champion Network; Change Manager |
+
+*SIPOC for Phase 3 — Leadership Modeling & Reinforcement Build.*
+
+**Tasks, Steps, Techniques & RACSI**
+
+**Task T3.1 — [ES] Executive Modeling Commitment & 360 Baseline**
+
+**Step 1 — Behavior-specific executive commitments**
+
+A generic "I will champion transparency" commitment cannot be measured and cannot be held to; a specific one — naming a recurring meeting, a recurring decision, a recurring moment — can.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Specific behavior-commitment drafting |
+| Technique Goal | Convert each executive's Phase 1 charter commitment into a specific, observable behavior tied to a recurring situation. |
+| Technique Details | One-on-one session between the Change Manager and each executive to name one concrete, recurring behavior per value (for example, publicly naming their own near-miss in the next three leadership meetings); log each in the Charter Registry against CHTR-01. |
+| Recommended Tool | journi M5 — CM Charters |
+
+**Step 2 — Baseline 360 modeling assessment**
+
+Establishing the baseline now, before the org-wide rollout, is what makes Exception E1's detection mechanism (Section 9.1) possible eighteen months from now — you cannot flag a gap against a baseline that was never measured.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Self-vs-peer 360 modeling assessment |
+| Technique Goal | Establish each executive's baseline self-vs-team modeling score before rollout begins. |
+| Technique Details | Administer the quarterly self-vs-peer modeling survey (the same instrument Exception E1 later uses to detect drift) to every executive and their direct team, per behavior anchor. |
+| Recommended Tool | LimeSurvey + Metabase |
+
+*RACSI for Task T3.1.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| ES | ES | CM | HRBP | SUP, EU |
+
+**Task T3.2 — [CM] Reinforcement System Design**
+
+**Step 1 — Recognition system design**
+
+Reinforcement has to be visible and frequent, not an annual award, or ADKAR's Reinforcement stage never actually gets built — it stays a slide in a deck.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Peer-nominated recognition system |
+| Technique Goal | Design a lightweight, frequent recognition mechanism tied directly to the four behavior anchors. |
+| Technique Details | Build a simple peer-nomination form where any staff member can log a specific instance of a colleague demonstrating one of the four values; nominations are reviewed weekly by Unit Leaders and shared at unit huddles. |
+| Recommended Tool | Nextcloud Forms |
+
+**Step 2 — Non-disciplinary escalation path design**
+
+The reinforcement system also has to include the mirror case — what happens when someone speaks up and it goes badly — or Psychological Safety stays theoretical the first time it is tested.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Non-disciplinary escalation path |
+| Technique Goal | Design and publish a clear path for staff to escalate a case where speaking up was met with retaliation or blame, protected from the normal disciplinary chain. |
+| Technique Details | Design an escalation path routing directly to HR Business Partner and the Change Manager rather than the reporting staff member's own chain of command, with a defined response-time SLA. |
+| Recommended Tool | Nextcloud Forms + journi M16 — Resistance Management |
+
+*RACSI for Task T3.2.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM | CM | HRBP, SUP | ES | EU |
+
+**Task T3.3 — [Joint] Manager Readiness Enablement**
+
+**Step 1 — Coaching-based readiness sessions**
+
+This is deliberately not training: MP-05 does not exist in this chain, and a lecture on "how to model psychological safety" would itself contradict the value it is trying to teach. Coaching, built around the manager's own real situations, is the substitute.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Peer coaching circles |
+| Technique Goal | Build Unit Leaders' capability to model and reinforce the new values through practice on their own real situations, without a formal training curriculum. |
+| Technique Details | Group Unit Leaders into small peer coaching circles that meet biweekly through the rest of the program, working through real, current situations from their own units against the behavior anchors, facilitated by the Change Manager for the first two sessions only. |
+| Recommended Tool | BigBlueButton / Jitsi |
+
+**Step 2 — Manager readiness baseline rating**
+
+Section 7's monthly manager-readiness cadence, and Exception E6's succession protocol, both depend on a baseline rating existing before rollout — otherwise "declining" has nothing to be measured against.
+
+| Element | Detail |
+|---|---|
+| Technique Name | Manager readiness baseline rating |
+| Technique Goal | Establish a documented readiness rating for every Unit Leader before the pilot begins. |
+| Technique Details | Change Manager rates each Unit Leader on a defined readiness rubric (modeling behavior, coaching capability, escalation-path fluency), logged in journi and revisited monthly from Phase 4 onward. |
+| Recommended Tool | journi M17 — Manager Readiness Tracking |
+
+*RACSI for Task T3.3.*
+
+| R (Responsible) | A (Accountable) | C (Consulted) | S (Support) | I (Informed) |
+|---|---|---|---|---|
+| CM, SUP | CM | ES | HRBP | EU |
