@@ -272,3 +272,89 @@ A rehearsal audit against both standards, run internally, before the real certif
 | T7.1-S2 | First cycle closes clean; Refreeze confirmed | CM | 56–60 | Confirmed Refreeze | Confirm the system holds through a real cycle, and that the coalition survived beyond the audit. | Verify the Phase 3 coalition is still active before confirming Refreeze — a reverted-to-Sponsor-alone coalition would mean Refreeze isn't earned yet. | journi M3 / M7 |
 
 *Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
+
+### 4.4 Six Exceptions, in Detail
+
+#### E1 — Guiding Coalition Gap (Phase 3, Weeks 28–31)
+
+**Detailed description.** Five weeks into Implementation, Nadia Fassi's Sponsor & Coalition record still showed zero named coalition members, and procurement/HR rollout had stalled outside her direct authority — journi's ALT-010 condition met exactly.
+
+**Trigger.** Fewer than two named coalition members logged on M7 during an active implementation phase.
+
+**Timeline impact.** No Phase 3 gate delay — resolution completed by Week 31, seven weeks ahead of the Week 38 gate — but it exposed a structural gap that, left open, would have blocked certification entirely.
+
+**Recovery tasks.** Escalate the authority gap explicitly to the Steering Committee (Week 29); recruit the Procurement Director and HR Business Partner as named coalition members with real standing in their own functions (Week 31); resume rollout with their direct backing rather than the Sponsor alone.
+
+**Outputs.** Two new named coalition members on M7; resumed procurement and HR rollout.
+
+**RACSI.** R = CM, ES · A = ES · C = PM · S = FPO · I = SUP, EU
+
+#### E2 — Mock-up Audit Finds a Systemic Documentation Gap (Phase 4, Weeks 40–43)
+
+**Detailed description.** The mock-up audit finds that the Design phase's procedure set never fully addressed ISO 14001's waste-handling documentation clause — not a single missed document, but a systemic gap across the whole environmental half of the integrated system.
+
+**Trigger.** A mock-up audit finding pattern spanning multiple clauses within the same standard, rather than isolated findings.
+
+**Timeline impact.** Would add two to three weeks to Mock-up Audit while the gap is closed, and risks compressing the buffer before the certifying audit if not caught this early.
+
+**Recovery tasks.** Confirm the gap is systemic, not isolated, before treating it as a single finding; return to a focused re-design of the waste-handling documentation specifically, rather than the whole procedure set; re-test the fix against the same mock-up audit criteria before declaring the finding closed.
+
+**Outputs.** A revised waste-handling documentation set; a confirmed, re-tested closure.
+
+**RACSI.** R = FPO, ITL · A = CM · C = PM · S = SUP · I = ES, EU
+
+#### E3 — External Auditor Flags a Nonconformity During Certification (Phase 5, Week 47)
+
+**Detailed description.** The certifying body's own auditor, independent of the mock-up audit, flags a minor nonconformity during the real certifying audit — a specific procedure followed correctly on paper but not consistently in observed practice on the plant floor.
+
+**Trigger.** A nonconformity finding from the external certifying auditor during the live audit.
+
+**Timeline impact.** Minor nonconformities typically allow certification to proceed conditionally, with a defined corrective-action deadline — would add a defined follow-up window (commonly 60–90 days) rather than delaying the Week 50 certification decision itself.
+
+**Recovery tasks.** Accept the finding directly rather than dispute it defensively; design and implement the corrective action within the certifying body's own deadline; document the fix for the first surveillance cycle to verify.
+
+**Outputs.** A documented corrective action with a confirmed deadline; conditional certification proceeding on schedule.
+
+**RACSI.** R = FPO, SUP · A = CM · C = ES · S = PM · I = ITL, EU
+
+#### E4 — A Function Reverts to Old Practice Once the Auditor Leaves (Phase 7, Weeks 54–58)
+
+**Detailed description.** A surveillance spot-check finds that one function — commonly the one furthest from quality's own daily oversight — has quietly reverted to a pre-certification shortcut once the pressure of the audit itself passed, the classic "audit theater" risk every certification program has to guard against.
+
+**Trigger.** A surveillance spot-check finding a documented procedure not actually followed in practice, in a function with no other open issues.
+
+**Timeline impact.** Would not delay the surveillance cycle's own schedule, but requires an out-of-cycle corrective conversation before the next scheduled spot-check.
+
+**Recovery tasks.** Address the reversion directly and specifically with that function's named coalition-era owner, not a general reminder to everyone; investigate whether the reversion reflects a genuine practical problem with the procedure itself, not just non-compliance, and adjust the procedure if the concern is legitimate.
+
+**Outputs.** A closed reversion finding; either confirmed re-compliance or a revised procedure addressing a legitimate practical issue.
+
+**RACSI.** R = FPO, SUP · A = CM · C = ES · S = PM · I = ITL, EU
+
+#### E5 — Environmental Requirements Conflict With an Existing Operations Practice (Phase 2–3, Weeks 18–26)
+
+**Detailed description.** A specific ISO 14001 waste-handling requirement conflicts directly with an existing, longstanding operations practice that was never a problem for ISO 9001 alone — the specific complication a genuinely *integrated* certification introduces that a single-standard program wouldn't face.
+
+**Trigger.** A design-phase or early-implementation conflict between the two standards' requirements and current practice, surfaced during procedure drafting.
+
+**Timeline impact.** Would add one to two weeks to Design while operations and the environmental requirement's actual intent are reconciled, rather than simply picking one standard's letter over the other's.
+
+**Recovery tasks.** Bring Operations directly into resolving the conflict rather than having quality dictate a solution; confirm the actual regulatory intent behind the environmental requirement, since a literal reading and its real intent sometimes diverge; document the resolution as a case study for future integrated-standard conflicts.
+
+**Outputs.** A resolved procedure satisfying both standards' actual intent; a documented resolution case study.
+
+**RACSI.** R = FPO, SUP · A = CM · C = ITL · S = PM · I = ES, EU
+
+#### E6 — A Coalition Member Departs During Surveillance (Phase 7, Weeks 56+)
+
+**Detailed description.** The HR Business Partner recruited as a coalition member during Phase 3's recovery (Exception E1) leaves the organization during Ongoing Surveillance, risking a quiet reversion to the exact structural gap the program worked to close.
+
+**Trigger.** A confirmed departure of a named coalition member during an active surveillance cycle.
+
+**Timeline impact.** No impact to the surveillance calendar itself if the coalition seat is refilled promptly; a genuine risk of ALT-010 firing a second time if it is not.
+
+**Recovery tasks.** Treat the coalition seat, not just the person, as the standing requirement — identify and onboard a successor from the same function before the departure takes effect, not after; confirm the successor has the same real authority the departing member had, not just the title.
+
+**Outputs.** A refilled coalition seat with confirmed real authority; a coalition-continuity practice logged for future departures.
+
+**RACSI.** R = CM, ES · A = ES · C = FPO · S = PM · I = SUP, ITL, EU
