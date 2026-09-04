@@ -80,3 +80,57 @@ Every claim above is traceable to a real journi record this guide builds: a Spon
 ### 2.3 The Composite Readiness Index and Benchmarking, Read for This Case
 
 This program's Composite Readiness Index shows steady, unremarkable growth through Design and early Implementation, then a visible plateau once the coalition gap is logged — Benchmarking correspondingly reads "Behind" for several weeks until the coalition-building response takes hold, a slower recovery than the Automation or BPR cases in this series, consistent with a structural gap taking longer to close than an individual resistance case.
+
+
+## Part 3 — Tenant and Admin Setup
+
+### 3.1 The Existing Tenant: Bouregreg Group
+
+This program runs inside the same tenant journi's Master User Guide builds, under the existing Bouregreg Manufacturing Maroc Organization. No new Organization is needed — Settat plant already sits inside it.
+
+### 3.2 Step 1 — Onboarding the Certification Team (M2)
+
+| Name | journi Role (RBAC) | Scope type | Scope | RACSI Code | Notes |
+|---|---|---|---|---|---|
+| Nadia Fassi | Sponsor | Project | ISO 9001/14001 Integrated Management System *(created in Step 2)* | ES | Quality Manager; sponsors alone at program start, without a named coalition |
+| Rania Bensouda | Change Manager | Project | ISO 9001/14001 Integrated Management System | CM | Owns day-to-day program execution |
+| Samir Chraibi | Practitioner / Contributor | Project | ISO 9001/14001 Integrated Management System | PM | Certification program lead |
+| Mehdi Ouahbi | People Manager | Project | ISO 9001/14001 Integrated Management System | FPO | Settat Plant Quality Lead |
+| Yasmine Kadiri | Practitioner / Contributor | Project | ISO 9001/14001 Integrated Management System | ITL | QMS documentation systems |
+| Aziz Berrada | People Manager | Project | ISO 9001/14001 Integrated Management System | SUP | Settat Operations Supervisor |
+
+### 3.3 Step 2 — Creating the CM Project (M1)
+
+1. On the Bouregreg Manufacturing Maroc Organization card, click **+ CM Project**. Fill in:
+   - Name: "ISO 9001/14001 Integrated Management System"
+   - Linked Main Project: **none**
+   - Owner: "Rania Bensouda"
+   - Change type: **QMS**
+   - Target population: "Settat plant operations and quality function (410)"
+   - Business driver: "A customer contract requires certified quality management (ISO 9001); a parallel environmental certification (ISO 14001) is bundled on the same management system for efficiency."
+2. Save. Lewin opens at **Unfreeze**, justification: "Opening Unfreeze at program start, Week 1, alongside the ERP program's own kickoff."
+3. On **Module 17 — WBS & Gantt**, load the **TPL-IMS-7** phase template (Intake & Diagnosis → Design → Implementation → Mock-up Audit → Certifying Audit → Surveillance Prep → Ongoing Surveillance).
+
+### 3.4 Step 3 — Governance (M2)
+
+Permission Matrix and the Governance Setting stay unchanged tenant-wide.
+
+### 3.5 Step 4 — Charters for This Program (M19)
+
+| Charter | Accountable (this program) | Review cadence |
+|---|---|---|
+| CHTR-01 Sponsorship / Leadership Charter | Nadia Fassi (ES) | Per Phase Gate |
+| CHTR-03 Communication Charter | Rania Bensouda (CM) | Per communication wave |
+| CHTR-04 Organizational Impact Charter | Rania Bensouda (CM) | On scope change |
+| CHTR-05 Team Coaching Charter | Aziz Berrada (SUP) | Per reinforcement cycle |
+| CHTR-08 Pulse / Interview Charter | Rania Bensouda (CM) | Per phase gate + ad hoc |
+
+### 3.6 Setup Checklist
+
+- [ ] Base tenant confirmed (Bouregreg Group, Bouregreg Manufacturing Maroc Organization)
+- [ ] Certification team accounts created — Section 3.2
+- [ ] CM Project created, Lewin opened at Unfreeze — Section 3.3
+- [ ] TPL-IMS-7 phase template loaded on M17 — Section 3.3
+- [ ] Five applicable Charters reviewed and accountable owners confirmed — Section 3.5
+
+With this checklist complete, Part 4 runs the program forward, week by week.
