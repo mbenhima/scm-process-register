@@ -143,3 +143,94 @@ The remaining four charters (CHTR-02, CHTR-05, CHTR-06, CHTR-07) stay dormant fo
 - [ ] Four applicable Charters reviewed and accountable owners confirmed — Section 3.5
 
 With this checklist complete, Bouregreg Group's tenant holds a live Automation archetype Change Management Project. Part 4 runs it forward, week by week, from here.
+
+
+## Part 4 — Week-by-Week Automation Timeline: Normal Flow and Contingencies
+
+Part 3 ended with Kenitra Invoice-Matching Automation registered and its Lewin phase opened at Unfreeze, program Week 1. This Part runs that program forward for its full 19-week duration, against journi's TPL-BPA-7 template. Program Week 1 corresponds to Bouregreg Group's own org-calendar Week 20 — inside the ERP program's own Build/Test window — so add 19 to convert a program week to its org-calendar equivalent.
+
+### 4.1 Normal Flow, Phase by Phase
+
+#### Phase 1 — Automation-Opportunity Assessment (Weeks 1–4)
+
+Confirms Kenitra invoice-matching actually meets RPA's real suitability criteria — repetitive, rules-based, high-volume, low exception rate — before any design work starts, so the program isn't automating a process that turns out to need judgment after all.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 1** | Amine Sqalli holds program kickoff; confirms Hakim Berrada's active sponsorship and the AP team's availability for the assessment. | Salma Ouazzani runs the baseline ADKAR pulse for Kenitra AP (18 staff) — expected high from the start, given the task's low judgment content. | M5 (ADKAR Engine) — Awareness 4, Desire 4 (baseline, both already high). | — | Baseline ADKAR scores |
+| **Week 2** | Run a time-and-motion study quantifying hours spent on manual invoice-to-PO matching. | Log Hakim Berrada's first visible sponsor action — already active, unlike a program that opens with a coverage gap to close. | M7 (Sponsor & Coalition) — first action logged, Week 2: "Attended AP team briefing, personally explained the automation's purpose." | — | Sponsor first-action timing (Week 2, no gap) |
+| **Week 3** | Confirm RPA suitability against journi's own criteria: repetitive, rules-based, high-volume, low exception rate. | Map the Kenitra AP cohort on the Stakeholder Map. | M4 (Stakeholder Mapping) — "Kenitra Accounts Payable" (dimension: Process, severity: Low — deliberately low, given the task's minimal disruption risk). | — | — |
+| **Week 4** | Confirm the Phase 1 gate: opportunity assessment signed off. | Hakim Berrada signs CHTR-01 with a specific commitment: personally introducing the bot's exception-handling workflow at the next AP team meeting. | M19 (CM Charters) — CHTR-01 status Active, one named commitment logged. | — | — |
+
+*Phase gate: Automation-Opportunity Assessment closes once RPA suitability is confirmed against journi's own criteria and the Sponsor has a logged commitment, not just a title.*
+
+#### Phase 2 — Architecture Design (Weeks 4–9)
+
+Designs the bot's matching rules, exception thresholds, and integration points — and, just as importantly, drafts the exception-handling workflow the 18 AP staff will actually need to learn, since that workflow (not the bot itself) is where their real Knowledge and Ability gap sits.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 4** | Begin bot architecture design: matching rules, exception thresholds, integration points. | Draft the exception-handling workflow documentation AP staff will use once the bot is live. | M21 (Field Notes) — Category: Decision · Title: "Bot Architecture Design Begun." | (Phase 1 gate also closes this week) | — |
+| **Week 5** | Continue matching-rule design; confirm the exception threshold (any invoice-PO variance above a defined tolerance routes to a human). | Share the draft exception-handling workflow with Nawal Fassi for AP-team review. | M21 (Field Notes) — Category: Other · Title: "Exception Threshold Confirmed with AP Team." | — | — |
+| **Week 6** | Design the bot's integration points with the legacy invoice and purchase-order systems. | — | M21 — routine log. | — | — |
+| **Week 7** | Review the full architecture with Yassine Kabbaj and IT. | — | M21 — routine log. | — | — |
+| **Week 8** | Finalize the architecture document ahead of sign-off. | Re-score ADKAR — Awareness and Desire holding at 4; Knowledge beginning to build as staff review the exception-workflow draft. | M5 (ADKAR Engine) — Awareness 4, Desire 4, Knowledge 3. | — | Knowledge score trend |
+| **Week 9** | Confirm the Phase 2 gate: architecture signed off. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Architecture Design closes once the matching rules, exception thresholds, and integration points are signed off, and the exception-handling workflow AP staff will use has already been reviewed with them — not written in isolation and handed over later.*
+
+#### Phase 3 — Build (Weeks 9–12)
+
+The bot itself gets built and tested internally against historical invoice data, before any AP staff interact with it directly.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 9** | Yassine Kabbaj begins bot development against the signed-off architecture. | — | M17 (WBS & Gantt) — task status updated to "In Progress." | (Phase 2 gate also closes this week) | — |
+| **Week 10** | Continue bot development. | — | M21 — routine log. | — | — |
+| **Week 11** | Internal testing against six months of historical invoice data; log match-accuracy results. | — | M21 (Field Notes) — Category: Other · Title: "Internal Test — 97% Match Accuracy Against Historical Data." | — | Internal test match-accuracy rate |
+| **Week 12** | Confirm build complete, ready for UAT. | Prepare the UAT/shadow-mode plan with the AP team. | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Build closes once the bot clears internal testing against historical data at a defined accuracy threshold.*
+
+#### Phase 4 — UAT & Shadow-Mode (Weeks 12–14)
+
+The bot runs alongside the manual process for two weeks — its real first contact with the 18 AP staff, who verify its outputs daily rather than trusting it blind.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 12** | Launch UAT: bot runs alongside the manual process; AP staff verify bot output against their own manual match each day. | Re-score ADKAR as staff work directly with the bot's output for the first time. | M5 (ADKAR Engine) — Knowledge 4, Ability 3. | — | — |
+| **Week 13** | Continue shadow-mode; log any discrepancy between bot output and manual match. | Confirm the resistance log stays empty — no entries logged, by design. | M10 (Resistance) — no entries. Field Note: "Zero resistance entries through Week 13 of shadow-mode, consistent with this program's low-disruption profile." | — | Resistance-entry count (0) |
+| **Week 14** | Confirm shadow-mode results: bot output matched manual output on 99% of invoices, all discrepancies explainable. | Final pre-go-live ADKAR re-score — Ability now 4. | M5 (ADKAR Engine) — Ability 4. | — | Shadow-mode accuracy rate |
+
+*Phase gate: UAT & Shadow-Mode closes once two full weeks of shadow-mode confirm the bot's output reliably matches the manual process.*
+
+#### Phase 5 — Production Go-Live (Weeks 14–16)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 14** | Confirm go-live readiness against the shadow-mode results. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | (Phase 4 gate also closes this week) | — |
+| **Week 15** | Finalize go-live communications and cutover timing with the AP team. | Prepare Lewin transition to Change, effective go-live. | M8 (Communications) — Message: "Invoice-matching bot goes live Monday — manual process retired for standard-format invoices." | — | — |
+| **Week 16** | Production go-live: the bot takes over invoice matching for real. | Set Lewin to **Change**. | M3 (Initiative Registry) — Lewin: "Change." Justification: "Production go-live, Week 16; shadow-mode results support the transition." | — | — |
+
+*Phase gate: Production Go-Live closes once the bot is live and handling real invoices, with the manual process formally retired for standard-format cases.*
+
+#### Phase 6 — Exception Tuning (Weeks 16–18)
+
+Real production volume surfaces edge cases shadow-mode's smaller sample didn't — normal for any new automation, and this phase exists specifically to absorb it.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 16** | Monitor bot performance in production; log any edge case the exception rules don't yet handle cleanly. | — | M21 (Field Notes) — Category: Other · Title: "Production Edge Cases Logged for Tuning." | — | Exception rate (production) |
+| **Week 17** | Tune the exception-handling rules based on real production edge cases. | — | M21 — routine log. | — | — |
+| **Week 18** | Confirm the exception rate has stabilized below the defined threshold. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Exception rate vs. threshold |
+
+*Phase gate: Exception Tuning closes once the production exception rate stabilizes below the threshold set in Phase 2.*
+
+#### Phase 7 — CoE Handover (Weeks 18–19)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 18** | Prepare the Center of Excellence handover package — bot ownership, monitoring dashboard, and escalation path. | — | M12 (Sustainment) — log the first sustainment checkpoint. | (Phase 6 gate also closes this week) | — |
+| **Week 19** | Confirm program close — bot ownership formally transferred to the Center of Excellence. | Set Lewin to **Refreeze**; toggle the sustainment sign-off. | M3 (Initiative Registry) — Lewin: "Refreeze." M12 (Sustainment) — sign-off toggle: **set**. | — | Sustainment sign-off (toggled) |
+
+*Phase gate: CoE Handover — and the program itself — closes once bot ownership is formally with the Center of Excellence and the sustainment sign-off is set. Total program length: 19 weeks, no live alert fired.*
