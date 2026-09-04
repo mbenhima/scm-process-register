@@ -254,3 +254,45 @@ Extends the redesigned process, including the accuracy safeguard the pilot's res
 | **Week 50** | Confirm program close. | Set Lewin to **Refreeze**; toggle the sustainment sign-off. | M3 (Initiative Registry) — Lewin: "Refreeze." M12 (Sustainment) — sign-off toggle: **set**. | — | Sustainment sign-off (toggled) |
 
 *Phase gate: Sustainment — and the program itself — closes once the reconciliation-time reduction holds for two consecutive cycles and the sign-off is set. Total program length: 50 weeks, one resistance-escalation alert fired and resolved.*
+
+### 4.2 Master WBS & Gantt — Every Task and Step, PM and CM Tracks, Across the Four Frameworks
+
+| ID | Task / Step Name | Track | Week(s) | Lewin | ADKAR | Bridges | Kübler-Ross |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Interviews and workaround inventory | Joint | 1–4 | Unfreeze | Awareness | Ending | Denial |
+| T1.1-S2 | Business case and stakeholder map | CM | 5–7 | Unfreeze | Awareness | Ending | Denial |
+| T2.1-S1 | Co-design workshops with workaround-owners | Joint | 5–7 | Unfreeze | Awareness → Desire | Ending | Denial → Resistance/Anger |
+| T2.1-S2 | Design sign-off | PM | 8 | Unfreeze | Desire | Ending → Neutral Zone | Resistance/Anger |
+| T3.1-S1 | Process and tooling configuration | PM | 8–13 | Unfreeze | Desire | Neutral Zone | Resistance/Anger |
+| T3.1-S2 | Job aids and build complete | CM | 14–16 | Unfreeze | Desire → Knowledge | Neutral Zone | Resistance/Anger |
+| T4.1-S1 | Pilot launch and weekly monitoring | CM | 14–19 | Unfreeze | Knowledge | Neutral Zone | Resistance/Anger |
+| T4.1-S2 | Resistance escalation (ALT-004) detected and resolved | CM | 20–24 | Unfreeze | Knowledge → Ability | Neutral Zone | Resistance/Anger |
+| T5.1-S1 | AR rollout | Joint | 22–27 | Unfreeze | Ability | Neutral Zone | Resistance/Anger → Exploration |
+| T5.1-S2 | AP rollout and completion | Joint | 28–32 | Unfreeze → Change | Ability | Neutral Zone | Exploration |
+| T6.1-S1 | Reconciliation-time monitoring | CM | 30–38 | Change | Ability → Reinforcement | Neutral Zone | Exploration |
+| T6.1-S2 | Change state confirmed | CM | 40–42 | Change | Reinforcement | Neutral Zone → New Beginning | Exploration → Commitment |
+| T7.1-S1 | Sustainment checkpoints and quick wins | CM | 40–48 | Change | Reinforcement | New Beginning | Commitment |
+| T7.1-S2 | Refreeze confirmed; sustainment sign-off | Joint | 50 | **Refreeze** | Reinforcement | New Beginning | Commitment |
+
+*Table 4.2.1 — Master WBS & Gantt, framework view. All 14 Task/Step rows across the full 50-week program.*
+
+### 4.3 Master WBS & Gantt — Every Task and Step, Techniques and Tools
+
+| ID | Task / Step Name | Track | Week(s) | Technique Name | Technique Goal | Technique Details | Recommended Tool |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Interviews and workaround inventory | Joint | 1–4 | Structured process interviews | Capture the current process and its workarounds directly from the staff who run it. | Step-by-step interviews across the full AR/AP cycle; each workaround logged with its specific process gap. | Taguette |
+| T1.1-S2 | Business case and stakeholder map | CM | 5–7 | Quantified business case | Convert traced workarounds into a business case with no ambiguity about the problem's reality. | Time-and-motion study across the full monthly cycle; three weeks/month traced to four named workarounds, not estimated. | LibreOffice Calc |
+| T2.1-S1 | Co-design workshops with workaround-owners | Joint | 5–7 | Clean-slate co-design | Design the future state from the workaround-owners' own expertise, not around them. | Workshops explicitly not anchored to the current process; workaround-owning staff recruited directly into the design work. | Excalidraw |
+| T2.1-S2 | Design sign-off | PM | 8 | Future-state process map sign-off | Confirm the redesigned process end to end before build begins. | Steering Committee review of the full process map, with the co-design group's direct input already incorporated. | BookStack |
+| T3.1-S1 | Process and tooling configuration | PM | 8–13 | Iterative build | Configure the new process steps and supporting tooling against the signed-off design. | Standard build cycle; status tracked against baseline dates. | journi M17 — WBS & Gantt |
+| T3.1-S2 | Job aids and build complete | CM | 14–16 | Staff-facing job aid development | Give staff a clear, reviewed reference for the new process before the pilot. | Draft job aids reviewed directly with Salwa Tazi (Process Owner) for accuracy. | BookStack |
+| T4.1-S1 | Pilot launch and weekly monitoring | CM | 14–19 | Single-step pilot with weekly pulse | Test the redesigned process on one real, bounded step before wider rollout. | Credit-note issuance run on the new process with the AR team; weekly ADKAR pulse. | LimeSurvey + Metabase |
+| T4.1-S2 | Resistance escalation detected and resolved | CM | 20–24 | Individual conversation + co-designed safeguard | Resolve resistance rooted in a real, rational concern rather than override it. | Direct 1:1 conversations with each resisting staff member; a secondary accuracy-review step co-designed with them as the actual mitigation. | journi M10 — Resistance |
+| T5.1-S1 | AR rollout | Joint | 22–27 | Evidence-based rollout | Extend the redesigned process, including the pilot's safeguard, to the rest of AR. | Rollout communications cite the pilot's real resolution, not a generic announcement. | journi M8 — Communications |
+| T5.1-S2 | AP rollout and completion | Joint | 28–32 | Sequenced rollout | Complete rollout across the remaining finance sub-teams. | AP rollout follows AR, in the same sequence order set during Phase 3. | journi M8 — Communications |
+| T6.1-S1 | Reconciliation-time monitoring | CM | 30–38 | Baseline-to-current comparison | Confirm the business case's promised reduction is actually materializing. | Monthly reconciliation-time reading compared against the Phase 1 baseline. | journi M14 — Analytics |
+| T6.1-S2 | Change state confirmed | CM | 40–42 | Lewin state confirmation | Move the organizational reading forward once evidence, not the calendar, supports it. | Confirm reconciliation-time reduction holds for a full cycle before setting Lewin to Change. | journi M3 — Initiative Registry |
+| T7.1-S1 | Sustainment checkpoints and quick wins | CM | 40–48 | Standing checkpoint cadence | Confirm the reduction holds beyond the first favorable reading. | Checkpoints logged at defined intervals; quick wins captured as evidence for the eventual sign-off. | journi M12 — Sustainment |
+| T7.1-S2 | Refreeze confirmed; sustainment sign-off | Joint | 50 | Sustainment sign-off | Formally close the program once two consecutive cycles confirm the reduction holds. | Toggle the M12 sign-off; set Lewin to Refreeze with the two-cycle evidence as justification. | journi M12 / M3 |
+
+*Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
