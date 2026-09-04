@@ -379,3 +379,40 @@ The regression's real root cause and correction — the phase this program's hon
 **Outputs.** A confirmed-working standing governance rhythm; a closed partial-regression finding, resolved without reconvening the original program team.
 
 **RACSI.** R = SUP, FPO · A = ES · C = CM · S = PM · I = ITL, EU
+
+
+## Part 5 — Training Program: Reporting-Line Literacy Across Three Tiers
+
+### 5.1 What This Training Covers
+
+Per the E2E-OM chain, MP-05 is present — this training focuses on the new reporting-line mechanics and decision rights, not on convincing anyone the structure is correct, logged on M9.
+
+### 5.2 Tier 1 — Strategic Management (Weeks 1–14)
+
+**Cohort.** Yassine Berrada (Sponsor).
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Sponsoring a Reporting-Line Change | Why an operating model redesign needs sustained reinforcement, not a one-time announcement, to actually hold. | 1–6 | Curriculum: "Sponsoring a Reporting-Line Change" · Cohort: "Sponsor." | 100% before Week 8 |
+| Reading M12's Regression-Risk Flag | How to read a sustainment checkpoint as real evidence, not a formality — and why a blocked sign-off is the system working, not failing. | 10–14 | Curriculum: "Reading M12's Regression-Risk Flag" · Cohort: "Sponsor." | 100% before Week 21 |
+
+### 5.3 Tier 2 — Operational Management (Weeks 8–22)
+
+**Cohort.** Amina Sqalli (FPO), Loubna Tazi (SUP), and the other two site directors' successors.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Operating the New Decision-Rights Matrix | Practical training on exactly which decisions route where under the new structure — the direct prerequisite to avoiding Exception E1's reversion pattern. | 15–18 | Curriculum: "Operating the New Decision-Rights Matrix" · Cohort: "Function Heads, Site Directors." | 100% before Week 19 |
+| Redirecting Under Pressure | Specific coaching for the exact moment E1's regression happens — a real operational-pressure escalation — practicing the new routing rather than defaulting to habit. | 19–22 | Curriculum: "Redirecting Under Pressure" · Cohort: "Function Heads, Site Directors." | 100% before Week 23 |
+
+### 5.4 Tier 3 — Operations (Frontline) (Weeks 15–25)
+
+**Cohort.** All 95 people-manager-level staff.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Using the New Reporting Structure | Practical training on who to escalate to under the new model, reinforced with the same decision-rights reference card later redeployed in Exception E1's recovery. | 15–24 (per site) | Curriculum: "Using the New Reporting Structure" · Cohort: "Casablanca" / "Kenitra" / "Settat." | 100% within 2 weeks of each site's transition |
+
+### 5.5 Training Completion and the Composite Readiness Index
+
+This program's training-completion term reaches 100% by Week 25 — before the Week 26 checkpoint reveals the regression. This is the clearest illustration in this whole series of Section 2.3's core point: a fully trained population can still regress under real operational pressure, because Knowledge and Ability were never this case's binding constraint — Reinforcement was, and reinforcement is not something a completed curriculum alone provides.
