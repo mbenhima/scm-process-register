@@ -230,3 +230,45 @@ A rehearsal audit against both standards, run internally, before the real certif
 | **Week 60** | First full surveillance cycle closes clean. | Set Lewin to **Refreeze** — the confirmed call this guide reserves until the system has actually held through a real cycle. | M3 (Initiative Registry) — Lewin: "Refreeze." Justification: "First full surveillance cycle closed clean, Week 60; coalition sustained beyond the certifying audit." | — | Lewin state (confirmed Refreeze) |
 
 *Phase gate: Ongoing Surveillance has no formal close — this guide narrates through the first full cycle (Week 60) as the point Lewin's Refreeze call becomes genuinely confirmed, consistent with journi's own framing of certification maintenance as a standing condition, not a project outcome.*
+
+### 4.2 Master WBS & Gantt — Every Task and Step, PM and CM Tracks, Across the Four Frameworks
+
+| ID | Task / Step Name | Track | Week(s) | Lewin | ADKAR | Bridges | Kübler-Ross |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Dual-standard gap analysis | Joint | 1–7 | Unfreeze | Awareness | Ending | Denial |
+| T1.1-S2 | Stakeholder mapping and Phase 1 sign-off | CM | 7–12 | Unfreeze | Awareness | Ending | Denial |
+| T2.1-S1 | Integrated procedure set design | PM | 10–18 | Unfreeze | Awareness → Knowledge | Ending | Denial |
+| T2.1-S2 | Design sign-off | PM | 18–26 | Unfreeze | Knowledge | Ending → Neutral Zone | Denial → Resistance/Anger |
+| T3.1-S1 | Operations rollout; coalition gap detected (ALT-010) | CM | 24–29 | Unfreeze | Knowledge | Neutral Zone | Resistance/Anger |
+| T3.1-S2 | Coalition built; procurement and HR rollout resumed | Joint | 29–38 | Unfreeze | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration |
+| T4.1-S1 | Mock-up audit conducted | PM | 36–40 | Unfreeze | Ability | Neutral Zone | Exploration |
+| T4.1-S2 | Mock-up findings closed | PM | 40–46 | Unfreeze | Ability | Neutral Zone | Exploration |
+| T5.1-S1 | Certifying audit conducted | Joint | 44–47 | Unfreeze | Ability | Neutral Zone | Exploration |
+| T5.1-S2 | Certification granted | Joint | 47–50 | Change | Ability → Reinforcement | Neutral Zone → New Beginning | Exploration → Commitment |
+| T6.1-S1 | Surveillance schedule designed | PM | 48–50 | Change | Reinforcement | New Beginning | Commitment |
+| T6.1-S2 | Per-function surveillance owners confirmed | Joint | 50–52 | Change | Reinforcement | New Beginning | Commitment |
+| T7.1-S1 | First surveillance cycle opens | CM | 52–56 | Change | Reinforcement | New Beginning | Commitment |
+| T7.1-S2 | First cycle closes clean; Refreeze confirmed | CM | 56–60 | **Refreeze** | Reinforcement | New Beginning | Commitment |
+
+*Table 4.2.1 — Master WBS & Gantt, framework view. All 14 Task/Step rows through the first full surveillance cycle.*
+
+### 4.3 Master WBS & Gantt — Every Task and Step, Techniques and Tools
+
+| ID | Task / Step Name | Track | Week(s) | Technique Name | Technique Goal | Technique Details | Recommended Tool |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Dual-standard gap analysis | Joint | 1–7 | Combined ISO 9001/14001 gap assessment | Assess current practice against both standards on one pass, not two separate audits. | Cross-reference current documented and observed practice against both standards' clauses simultaneously. | LibreOffice Calc |
+| T1.1-S2 | Stakeholder mapping and sign-off | CM | 7–12 | Cross-functional stakeholder mapping | Identify every function certification actually touches, before design work assumes it's quality's problem alone. | Map Operations, Quality, Procurement, and HR as distinct cohorts with their own impact severity. | journi M4 — Stakeholder Mapping |
+| T2.1-S1 | Integrated procedure set design | PM | 10–18 | Single-system procedure design | Design one set of procedures serving both standards, not parallel document sets. | Identify which existing procedures adapt versus need to be written new. | BookStack |
+| T2.1-S2 | Design sign-off | PM | 18–26 | Design review and sign-off | Confirm the procedure set before implementation begins. | Review with the Quality Lead; sign off per function. | journi M17 — WBS & Gantt |
+| T3.1-S1 | Operations rollout; coalition gap detected | CM | 24–29 | Coalition-status monitoring | Detect a structural sponsorship gap directly from the M7 record, not assume authority scales automatically. | Check M7 coalition-member count at each phase checkpoint; confirm the gap once implementation stalls outside quality's own authority. | journi M7 — Sponsor & Coalition |
+| T3.1-S2 | Coalition built; rollout resumed | Joint | 29–38 | Cross-functional coalition recruitment | Recruit named allies with real authority in the functions the Sponsor alone cannot compel. | Recruit the Procurement Director and HR Business Partner as named coalition members; resume rollout with their direct backing. | journi M7 — Sponsor & Coalition |
+| T4.1-S1 | Mock-up audit conducted | PM | 36–40 | Internal rehearsal audit | Find and fix findings before the real certifying audit, not during it. | Run an internal audit against both standards' full clause set, across all four functions. | journi M21 — Field Notes |
+| T4.1-S2 | Mock-up findings closed | PM | 40–46 | Corrective action tracking | Close every mock-up finding with a real corrective action, not just a logged note. | Track each finding to closure with an owner and a date, separate from the resistance log. | LibreOffice Calc |
+| T5.1-S1 | Certifying audit conducted | Joint | 44–47 | External certifying audit | Pass the real, external audit with the coalition present, not the Sponsor alone. | Host the certifying body across all four functions; coalition members present for their own function's review. | journi M21 — Field Notes |
+| T5.1-S2 | Certification granted | Joint | 47–50 | Lewin state transition (deliberately not Refreeze) | Move to Change, reserving Refreeze for evidence the system holds beyond the audit pass itself. | Set Lewin to Change with a justification explicitly naming why Refreeze is reserved. | journi M3 — Initiative Registry |
+| T6.1-S1 | Surveillance schedule designed | PM | 48–50 | Standing surveillance calendar | Design a surveillance cadence before certification is granted, not after. | Define per-function spot-check intervals for the ongoing surveillance cycle. | journi M17 — WBS & Gantt |
+| T6.1-S2 | Per-function surveillance owners confirmed | Joint | 50–52 | Distributed ownership confirmation | Name a standing owner per function, avoiding a single centralized owner who eventually moves on. | Confirm and log one named owner per function for their own surveillance obligations. | journi M12 — Sustainment |
+| T7.1-S1 | First surveillance cycle opens | CM | 52–56 | Surveillance cycle execution | Begin the standing surveillance obligation the certification actually requires. | Open cycle 1 on the M12 sustainment record, tied to the calendar, not a one-time close. | journi M12 — Sustainment |
+| T7.1-S2 | First cycle closes clean; Refreeze confirmed | CM | 56–60 | Confirmed Refreeze | Confirm the system holds through a real cycle, and that the coalition survived beyond the audit. | Verify the Phase 3 coalition is still active before confirming Refreeze — a reverted-to-Sponsor-alone coalition would mean Refreeze isn't earned yet. | journi M3 / M7 |
+
+*Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
