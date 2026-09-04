@@ -296,3 +296,89 @@ Extends the redesigned process, including the accuracy safeguard the pilot's res
 | T7.1-S2 | Refreeze confirmed; sustainment sign-off | Joint | 50 | Sustainment sign-off | Formally close the program once two consecutive cycles confirm the reduction holds. | Toggle the M12 sign-off; set Lewin to Refreeze with the two-cycle evidence as justification. | journi M12 / M3 |
 
 *Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
+
+### 4.4 Six Exceptions, in Detail
+
+#### E1 — Resistance Escalation Threshold Breached (Phase 4, Weeks 20–24)
+
+**Detailed description.** Three AR staff, each defending the manual-control expertise the redesigned process removes, logged individually-coded resistance entries within a three-week window during the pilot — journi's ALT-004 condition met exactly, not approximated.
+
+**Trigger.** Three or more open resistance entries accumulated within journi's rolling window.
+
+**Timeline impact.** No Phase 4 gate delay — resolution completed within the same phase, by Week 24 — but it consumed the pilot's evaluation buffer.
+
+**Recovery tasks.** Direct, individual conversations with each of the three staff (Week 23); a secondary accuracy-review safeguard co-designed with them, not imposed on them; all three entries closed with that safeguard as the linked mitigation (Week 24).
+
+**Outputs.** Three closed resistance entries; a co-designed accuracy safeguard that becomes part of the standing rollout design.
+
+**RACSI.** R = CM · A = CM · C = FPO, SUP · S = PM · I = ES, EU
+
+#### E2 — A Workaround Champion Undermines the New Process Informally (Phase 5, Weeks 26–28)
+
+**Detailed description.** A senior AR staff member who was not one of the three pilot resisters — and who never logged a formal resistance entry — quietly tells newer colleagues to keep a personal shadow spreadsheet "just in case," undermining rollout adoption without ever surfacing as a trackable entry.
+
+**Trigger.** Adoption metrics (M5 Ability scores) lag in a specific sub-team despite no open resistance entries there — a gap between the resistance log and the real adoption picture.
+
+**Timeline impact.** Would add roughly one week to that sub-team's rollout confirmation while the informal pattern is traced and addressed directly.
+
+**Recovery tasks.** Investigate the adoption lag directly with the sub-team rather than assume the metric is simply slow; identify the informal influence through direct conversation; have the senior staff member's own concerns heard and addressed the same way the three formal pilot resisters' were, converting an informal undermining pattern into a formal, resolvable one.
+
+**Outputs.** A newly logged resistance entry for the previously-informal concern; a closed loop once addressed; a standing practice of checking adoption metrics against the resistance log, not assuming they always agree.
+
+**RACSI.** R = CM, SUP · A = CM · C = FPO · S = PM · I = ES, EU
+
+#### E3 — The Co-Designed Safeguard Slows Down AP More Than Expected (Phase 5–6, Weeks 28–36)
+
+**Detailed description.** The accuracy safeguard co-designed with AR's three resisting staff (E1) — a secondary review step — was tested only against AR's volume during the pilot; rolled out to AP, whose transaction volume is significantly higher, it adds more processing time than the redesign was meant to save.
+
+**Trigger.** Reconciliation-time monitoring (M14) shows AP's readings trending against the business case's own target, not toward it.
+
+**Timeline impact.** Would extend Phase 6 (Stabilization) by two to three weeks while the safeguard is re-tuned specifically for AP's volume.
+
+**Recovery tasks.** Confirm the safeguard's cost specifically in AP, not assume the AR-tested design generalizes; redesign the safeguard's trigger threshold for AP's higher volume rather than removing it outright, since the underlying accuracy concern it addresses is still real; re-test before declaring Phase 6 complete.
+
+**Outputs.** An AP-specific safeguard threshold; a documented reason the AR-tested design didn't directly generalize; a revised reconciliation-time reading confirming the fix.
+
+**RACSI.** R = PM, FPO · A = CM · C = SUP · S = ITL · I = ES, EU
+
+#### E4 — A Legacy System Constraint Blocks a Required Data Field (Phase 3, Weeks 8–13)
+
+**Detailed description.** The redesigned process requires a new data field (a credit-note reason code) that the legacy finance system, still in use pending the separate ERP program's own migration, does not natively support.
+
+**Trigger.** A build-phase technical constraint discovered when the new field's configuration is attempted.
+
+**Timeline impact.** Would add one to two weeks to Build while a workaround (a parallel lightweight tracking field, not a full legacy-system change) is designed and validated.
+
+**Recovery tasks.** Confirm the constraint is real and not a configuration error; design a bounded workaround that does not require touching the legacy system directly, given the separate ERP program's own migration timeline; validate the workaround doesn't reintroduce the kind of manual step the redesign is meant to eliminate.
+
+**Outputs.** A documented technical constraint and its bounded workaround; confirmation the workaround does not compromise the redesign's own goals.
+
+**RACSI.** R = ITL, PM · A = PM · C = CM · S = FPO · I = ES, SUP, EU
+
+#### E5 — Reconciliation-Time Reduction Stalls Below Target (Phase 6, Weeks 34–42)
+
+**Detailed description.** The business case targeted a reduction from three weeks to one week of monthly reconciliation work; Stabilization's readings hold at a reduction to two weeks, not one — real progress, but short of the original target.
+
+**Trigger.** Two consecutive monthly readings below the business-case target, without further improving trend.
+
+**Timeline impact.** Would extend Phase 6 by one monitoring cycle while the shortfall is root-caused, rather than close the phase gate on a partial result presented as full success.
+
+**Recovery tasks.** Disaggregate the remaining two weeks of work by root cause — likely a mix of E3's AP-specific safeguard cost and residual manual steps the redesign didn't fully eliminate; decide explicitly whether to invest further (closing the gap to the original target) or revise the business case's own target with a documented reason, rather than let the number quietly drift.
+
+**Outputs.** A disaggregated root-cause finding; either a closed gap or an explicitly revised, documented target.
+
+**RACSI.** R = CM, FPO · A = ES · C = PM · S = ITL · I = SUP, EU
+
+#### E6 — The Process Owner Departs Mid-Rollout (Phase 5, Weeks 26–30)
+
+**Detailed description.** Salwa Tazi, the Casablanca Finance Process Owner and the person who did the most direct co-design work with the pilot's resisting staff, accepts a role elsewhere mid-rollout, risking a loss of the institutional knowledge behind the redesign's own key decisions.
+
+**Trigger.** A confirmed departure notice from the named Functional Process Owner during an active phase.
+
+**Timeline impact.** Would add roughly two weeks to Phase 5 for a structured handover before the departure takes effect, to avoid losing the reasoning behind design decisions that aren't fully captured in the process map alone.
+
+**Recovery tasks.** A structured handover specifically capturing the *why* behind key design decisions (particularly the accuracy safeguard's origin story), not just the *what*; identify and onboard a successor Process Owner before the departure, not after; log the handover itself as a Field Note so the reasoning survives even if the successor later has questions the original documentation doesn't answer.
+
+**Outputs.** A documented decision-rationale handover; a successor Process Owner onboarded and RACSI-updated before the departure.
+
+**RACSI.** R = CM, FPO · A = ES · C = PM · S = SUP · I = ITL, EU
