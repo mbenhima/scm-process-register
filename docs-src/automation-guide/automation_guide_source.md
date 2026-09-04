@@ -234,3 +234,45 @@ Real production volume surfaces edge cases shadow-mode's smaller sample didn't �
 | **Week 19** | Confirm program close — bot ownership formally transferred to the Center of Excellence. | Set Lewin to **Refreeze**; toggle the sustainment sign-off. | M3 (Initiative Registry) — Lewin: "Refreeze." M12 (Sustainment) — sign-off toggle: **set**. | — | Sustainment sign-off (toggled) |
 
 *Phase gate: CoE Handover — and the program itself — closes once bot ownership is formally with the Center of Excellence and the sustainment sign-off is set. Total program length: 19 weeks, no live alert fired.*
+
+### 4.2 Master WBS & Gantt — Every Task and Step, PM and CM Tracks, Across the Four Frameworks
+
+| ID | Task / Step Name | Track | Week(s) | Lewin | ADKAR | Bridges | Kübler-Ross |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Kickoff and baseline ADKAR pulse | Joint | 1 | Unfreeze | Awareness | Neutral Zone | Exploration |
+| T1.1-S2 | RPA suitability confirmed; CHTR-01 signed | CM | 2–4 | Unfreeze | Awareness → Desire | Neutral Zone | Exploration |
+| T2.1-S1 | Bot architecture and integration design | PM | 4–7 | Unfreeze | Desire | Neutral Zone | Exploration |
+| T2.1-S2 | Exception-handling workflow drafted and reviewed | CM | 5–9 | Unfreeze | Desire → Knowledge | Neutral Zone | Exploration |
+| T3.1-S1 | Bot development | PM | 9–11 | Unfreeze | Knowledge | Neutral Zone | Exploration |
+| T3.1-S2 | Internal testing vs. historical data (97% accuracy) | PM | 11–12 | Unfreeze | Knowledge | Neutral Zone | Exploration |
+| T4.1-S1 | UAT / shadow-mode launched | Joint | 12–13 | Unfreeze → Change | Knowledge → Ability | Neutral Zone | Exploration |
+| T4.1-S2 | Shadow-mode results confirmed (99% match) | CM | 14 | Change | Ability | Neutral Zone | Exploration |
+| T5.1-S1 | Go-live readiness and communications | Joint | 14–15 | Change | Ability | Neutral Zone | Exploration |
+| T5.1-S2 | Production go-live | CM | 16 | Change | Ability → Reinforcement | Neutral Zone | Exploration → Commitment |
+| T6.1-S1 | Production edge cases logged | PM | 16–17 | Change | Reinforcement | Neutral Zone | Commitment |
+| T6.1-S2 | Exception rate stabilized below threshold | PM | 18 | Change | Reinforcement | Neutral Zone | Commitment |
+| T7.1-S1 | CoE handover package prepared | PM | 18 | Change | Reinforcement | New Beginning | Commitment |
+| T7.1-S2 | Sustainment sign-off; Lewin confirmed Refreeze | Joint | 19 | **Refreeze** | Reinforcement | New Beginning | Commitment |
+
+*Table 4.2.1 — Master WBS & Gantt, framework view. All 14 Task/Step rows across the full 19-week program.*
+
+### 4.3 Master WBS & Gantt — Every Task and Step, Techniques and Tools
+
+| ID | Task / Step Name | Track | Week(s) | Technique Name | Technique Goal | Technique Details | Recommended Tool |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Kickoff and baseline ADKAR | Joint | 1 | Baseline readiness pulse | Establish a starting ADKAR reading before any design work. | Short survey to all 18 AP staff; expect high Awareness/Desire given low task judgment content. | LimeSurvey |
+| T1.1-S2 | RPA suitability confirmed | CM | 2–4 | Suitability criteria checklist | Confirm the task genuinely fits RPA before committing design effort. | Score against: repetitive, rules-based, high-volume, low exception rate; time-and-motion study quantifies current manual hours. | LibreOffice Calc |
+| T2.1-S1 | Bot architecture design | PM | 4–7 | Rules-based architecture design | Define the bot's matching rules, exception thresholds, and system integration points. | Design session with IT covering legacy invoice/PO system connection points and the variance-tolerance rule. | BookStack |
+| T2.1-S2 | Exception-handling workflow drafted | CM | 5–9 | Staff-facing workflow documentation | Give AP staff a clear, reviewed procedure for what happens when the bot flags an exception. | Draft the workflow, review it directly with the AP team lead before architecture sign-off, not after. | BookStack |
+| T3.1-S1 | Bot development | PM | 9–11 | Iterative bot build | Build the bot against the signed-off architecture. | Standard RPA development cycle; status tracked on the WBS against baseline dates. | journi M17 — WBS & Gantt |
+| T3.1-S2 | Internal testing | PM | 11–12 | Historical-data regression test | Validate match accuracy against real historical invoices before any live staff exposure. | Six months of historical invoice/PO data run through the bot; accuracy logged. | Metabase |
+| T4.1-S1 | UAT / shadow-mode launch | Joint | 12–13 | Parallel shadow-mode run | Let staff verify the bot's real output against their own manual match, daily. | Bot runs alongside the manual process; AP staff check every match for two weeks before go-live. | journi M5 — ADKAR Engine |
+| T4.1-S2 | Shadow-mode results confirmed | CM | 14 | Shadow-mode accuracy review | Confirm the bot is ready for production based on real parallel-run evidence. | Review the two-week discrepancy log; confirm all discrepancies are explainable, not systemic. | Metabase |
+| T5.1-S1 | Go-live readiness and comms | Joint | 14–15 | Go-live communication | Tell the AP team plainly when the manual process stops and the bot takes over. | Single, clear communication naming the cutover date. | journi M8 — Communications |
+| T5.1-S2 | Production go-live | CM | 16 | Lewin state transition | Move the organizational reading from Unfreeze to Change at the real cutover point. | Set Lewin to Change with a justification citing the shadow-mode evidence, not the calendar date alone. | journi M3 — Initiative Registry |
+| T6.1-S1 | Production edge cases logged | PM | 16–17 | Production exception logging | Capture real edge cases shadow-mode's smaller sample didn't surface. | Log each production exception with its specific cause. | journi M21 — Field Notes |
+| T6.1-S2 | Exception rate stabilized | PM | 18 | Threshold confirmation | Confirm tuning has brought the exception rate below the Phase 2 threshold. | Compare current exception rate against the threshold set during architecture design. | Metabase |
+| T7.1-S1 | CoE handover package | PM | 18 | Standing ownership handover | Transfer bot ownership to a permanent owner before the program team stands down. | Package includes the monitoring dashboard, escalation path, and named CoE owner. | journi M12 — Sustainment |
+| T7.1-S2 | Sustainment sign-off | Joint | 19 | Sustainment sign-off | Formally close the program once evidence supports it. | Toggle the M12 sign-off; set Lewin to Refreeze. | journi M12 / M3 |
+
+*Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
