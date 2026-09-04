@@ -325,3 +325,91 @@ Confirms the controls hold under real operating conditions, not just at the mome
 | T7.1-S2 | Refreeze confirmed; program closes | Joint | 63–64 | Confirmed Refreeze | Formally close the program while standing compliance monitoring continues indefinitely. | Set Lewin to Refreeze; toggle sustainment sign-off. | journi M3 / M12 |
 
 *Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
+
+### 4.4 Six Contingency Patterns, in Detail
+
+None of the six patterns below actually occurred in Loi 09-08 Data Protection Compliance Program's own record — Section 4.1 and journi's own scenario library are explicit that every Phase Gate in this program closed Go, on schedule, with ALT-009 never firing. What follows is a contingency playbook: six realistic ways a Phase Gate here could have closed as Conditional or No-Go, written in the same operational detail as this series' other exception sections — and, because this program's deadline is externally fixed, each carries a schedule-impact statement more consequential than in any other guide in this series, since there is no buffer to absorb it.
+
+#### C1 — A Regulatory Clause Misread During Gap Analysis (would map to Phase 1, Weeks 5–14)
+
+**Detailed description.** The gap analysis initially reads a Loi 09-08 retention-period clause more leniently than the CNDP's own published guidance actually requires, a misreading that would only surface when Legal's own independent review catches it late in Phase 1.
+
+**Trigger.** A Legal review during Phase 1 sign-off (Week 13) finding a regulatory interpretation gap in the draft report.
+
+**Timeline impact.** With no schedule buffer, this would force compressing Phase 2's own start by the exact number of days needed to correct the interpretation and re-run the affected part of the gap analysis — the single most damaging possible timing for a finding like this in the whole program.
+
+**Recovery tasks.** Correct the interpretation directly against CNDP's own published guidance, not an internal assumption; re-run only the specifically affected part of the gap analysis; compress, rather than skip, the Phase 1 sign-off review to absorb the correction within the existing Week 14 gate date.
+
+**Outputs.** A corrected regulatory interpretation; a gap analysis re-validated against CNDP's actual guidance; the Week 14 gate held without slippage.
+
+**RACSI.** R = CM, ES · A = ES · C = FPO · S = PM · I = ITL, SUP, EU
+
+#### C2 — Control Design Insufficient for a Specific Data Type (would map to Phase 2, Weeks 15–23)
+
+**Detailed description.** The general control catalogue, designed for standard HR and customer data, turns out insufficient for a narrower category — health-related data HR holds for occupational-medicine purposes — which Loi 09-08 treats with stricter requirements the general catalogue didn't anticipate.
+
+**Trigger.** A control-design review finding one data category requires materially stricter controls than the catalogue's general design.
+
+**Timeline impact.** Would require a targeted, parallel design sprint for the narrower data category rather than redesigning the whole catalogue, ideally absorbed within Phase 2's existing window rather than delaying Phase 2's own gate.
+
+**Recovery tasks.** Identify every data category the general catalogue doesn't adequately cover, not just the one found; design category-specific controls in parallel with the general catalogue's own remaining design work; confirm with Legal that the stricter controls actually satisfy the specific requirement.
+
+**Outputs.** Category-specific controls added to the catalogue; a documented category-by-category sufficiency check for future compliance programs to reuse.
+
+**RACSI.** R = FPO, ITL · A = CM · C = ES · S = PM · I = SUP, EU
+
+#### C3 — A Third-Party Data Processor Missed From Scope (would map to Phase 1–2, Weeks 5–20)
+
+**Detailed description.** A payroll vendor processing HR personal data on Bouregreg's behalf is missed from the original scope, discovered only when the control catalogue's access-restriction design realizes it has no way to actually govern a third party's own systems.
+
+**Trigger.** A control-design gap specifically pointing to a data flow the program's scope never named.
+
+**Timeline impact.** Would require an out-of-cycle vendor-contract review (adding data-processing terms if the existing contract lacks them) that could realistically run past this program's own Phase 4 gate, given third-party legal negotiation timelines are outside the program's direct control.
+
+**Recovery tasks.** Confirm every third party touching personal data as part of Phase 1's own scope-setting, not discovered downstream; if a vendor is missed, prioritize the contractual fix immediately given its longer lead time; consider a documented, time-bound risk acceptance for the CNDP audit if the vendor fix genuinely cannot complete before the fixed deadline, rather than let it silently block the whole program.
+
+**Outputs.** A complete third-party processor inventory; either a completed contract amendment or a documented, time-bound risk acceptance.
+
+**RACSI.** R = ES, ITL · A = ES · C = CM · S = PM · I = FPO, SUP, EU
+
+#### C4 — The Independent Testing Team Isn't Genuinely Independent (would map to Phase 4, Weeks 40–45)
+
+**Detailed description.** A staff member assigned to the "independent" testing team turns out to have also done configuration work on one of the controls being tested — a genuine independence failure that would undermine the audit-readiness value of the whole testing exercise if it went unnoticed.
+
+**Trigger.** A pre-testing conflict-of-interest check (or its absence) revealing overlap between the testing team and the implementation team.
+
+**Timeline impact.** Would require reassigning the affected control's testing to a genuinely independent reviewer and re-running just that control's test — a targeted delay, not a full Phase 4 restart, if caught early in the phase.
+
+**Recovery tasks.** Run an explicit conflict-of-interest check before testing begins, not assume independence by role title alone; reassign and re-test only the specifically affected control; document the independence check itself as part of the audit evidence package, since CNDP auditors may ask how independence was actually verified.
+
+**Outputs.** A documented independence-verification process; a re-tested control with confirmed independent review.
+
+**RACSI.** R = CM · A = CM · C = ES · S = PM · I = FPO, ITL, SUP, EU
+
+#### C5 — A Data Incident During Implementation, Before Controls Are Live (would map to Phase 3, Weeks 26–37)
+
+**Detailed description.** A data-handling incident (not necessarily a full breach — a misdirected email containing personal data, for example) occurs while implementation is still in progress and the new controls aren't live yet, forcing an unplanned test of whether the program's own incident-response process works before it was scheduled to be tested.
+
+**Trigger.** A reportable data-handling incident during the Implementation phase, before Controls Go Live.
+
+**Timeline impact.** Would not delay the program's own schedule directly, but would force an immediate, out-of-cycle incident response running in parallel with ongoing implementation work — a real capacity strain on the same team.
+
+**Recovery tasks.** Run the incident response using whatever process exists at that point, even if not the final designed one, rather than wait for Phase 3 to formally complete; document the incident and response as direct evidence the organization takes data protection seriously even before formal go-live; accelerate implementation of whichever specific control would have prevented this particular incident.
+
+**Outputs.** A documented incident response; an accelerated fix for the specific control gap the incident exposed; a real (not hypothetical) incident-response case for the audit evidence package.
+
+**RACSI.** R = ITL, FPO · A = ES · C = CM · S = PM · I = SUP, EU
+
+#### C6 — CNDP Shifts the Audit Date or Scope Mid-Program (would map to any phase, Weeks 1–64)
+
+**Detailed description.** The CNDP itself moves the audit date earlier, or expands its stated scope, partway through the program — an external schedule shock this program's own design has no control over, testing whether the program's schedule discipline (Section 2.2) can actually absorb a change to the one constraint it was built entirely around.
+
+**Trigger.** A formal notice from CNDP changing the audit date or scope.
+
+**Timeline impact.** Depends entirely on the direction and size of the change; an earlier date would force compressing every remaining phase proportionally, the single hardest scenario in this whole contingency list, since there is no reserve schedule to draw on.
+
+**Recovery tasks.** Immediately re-baseline the WBS against the new date, identifying which phases can compress without losing real content versus which cannot; escalate to the Sponsor and Steering Committee for an explicit decision on which lower-priority controls, if any, get deferred past the new audit date with a documented risk acceptance, rather than silently under-deliver across everything equally.
+
+**Outputs.** A re-baselined schedule; an explicit, documented prioritization decision if full scope cannot be met by the new date.
+
+**RACSI.** R = PM, CM · A = ES · C = FPO, ITL · S = SUP · I = EU
