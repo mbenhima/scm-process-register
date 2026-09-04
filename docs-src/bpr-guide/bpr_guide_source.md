@@ -80,3 +80,60 @@ Every claim above is traceable to a real journi record this guide builds: a quan
 ### 2.3 The Composite Readiness Index and Benchmarking, Read for This Case
 
 This program's Composite Readiness Index (Section 4.1) shows a real, visible dip during the pilot phase, coinciding with the resistance-escalation threshold crossing — an honest reading this guide narrates directly rather than smooth over. Benchmarking correspondingly reads "Behind" briefly during the pilot before recovering to "In Line" once the mitigation response closes the open resistance entries.
+
+
+## Part 3 — Tenant and Admin Setup
+
+### 3.1 The Existing Tenant: Bouregreg Group
+
+This program runs inside the same tenant journi's Master User Guide builds, under the existing Bouregreg Manufacturing Maroc Organization. No new Organization is needed — Casablanca finance already sits inside it.
+
+### 3.2 Step 1 — Onboarding the Redesign Team (M2)
+
+| Name | journi Role (RBAC) | Scope type | Scope | RACSI Code | Notes |
+|---|---|---|---|---|---|
+| Karim Zniber | Sponsor | Project | Order-to-Cash Process Redesign *(created in Step 2)* | ES | VP Finance |
+| Imane Berrada | Change Manager | Project | Order-to-Cash Process Redesign | CM | Owns day-to-day program execution |
+| Othmane Rifai | Practitioner / Contributor | Project | Order-to-Cash Process Redesign | PM | Process redesign and build lead |
+| Salwa Tazi | People Manager | Project | Order-to-Cash Process Redesign | FPO | Casablanca Finance Process Owner |
+| Karim Alami | Practitioner / Contributor | Project | Order-to-Cash Process Redesign | ITL | IT liaison for tooling changes |
+| Amina Sebti | People Manager | Project | Order-to-Cash Process Redesign | SUP | AP/AR team lead |
+
+### 3.3 Step 2 — Creating the Order-to-Cash Process Redesign CM Project (M1)
+
+1. On the Bouregreg Manufacturing Maroc Organization card, click **+ CM Project**. Fill in:
+   - Name: "Order-to-Cash Process Redesign"
+   - Linked Main Project: **none**
+   - Owner: "Imane Berrada"
+   - Change type: **BPR**
+   - Target population: "Casablanca Finance (140)"
+   - Business driver: "Three weeks of month-end reconciliation work per cycle, self-inflicted by the current order-to-cash process design, not by any tooling limitation."
+2. Save. Lewin opens at **Unfreeze**, justification: "Opening Unfreeze at program start, Week 1 (org Week 3), alongside the ERP program's own Discovery phase."
+3. On **Module 17 — WBS & Gantt**, load the **TPL-BPR-7** phase template (Intake & Diagnosis → Clean-Slate Design → Build → Pilot → Rollout → Stabilization → Sustainment).
+
+### 3.4 Step 3 — Governance (M2)
+
+Permission Matrix and the Governance Setting stay unchanged tenant-wide.
+
+### 3.5 Step 4 — Charters for This Program (M19)
+
+| Charter | Accountable (this program) | Review cadence |
+|---|---|---|
+| CHTR-01 Sponsorship / Leadership Charter | Karim Zniber (ES) | Per Phase Gate |
+| CHTR-02 Participative Management Charter | Amina Sebti (SUP) | Quarterly |
+| CHTR-03 Communication Charter | Imane Berrada (CM) | Per communication wave |
+| CHTR-04 Organizational Impact Charter | Imane Berrada (CM) | On scope change |
+| CHTR-06 One-to-One Coaching Charter | Imane Berrada (CM) | Per triggered case — directly relevant given this case's expected resistance |
+| CHTR-08 Pulse / Interview Charter | Imane Berrada (CM) | Per phase gate + ad hoc |
+
+CHTR-05 (Team Coaching, hypercare-specific) and CHTR-07 (Mentoring) stay dormant — this program has no hypercare phase of its own and does not run a mentoring cohort.
+
+### 3.6 Setup Checklist
+
+- [ ] Base tenant confirmed (Bouregreg Group, Bouregreg Manufacturing Maroc Organization)
+- [ ] Redesign team accounts created — Section 3.2
+- [ ] Order-to-Cash Process Redesign CM Project created, Lewin opened at Unfreeze — Section 3.3
+- [ ] TPL-BPR-7 phase template loaded on M17 — Section 3.3
+- [ ] Six applicable Charters reviewed and accountable owners confirmed — Section 3.5
+
+With this checklist complete, Part 4 runs the program forward, week by week.
