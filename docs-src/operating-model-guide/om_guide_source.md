@@ -138,7 +138,7 @@ With this checklist complete, Part 4 runs the program forward, week by week.
 
 ## Part 4 — Week-by-Week Operating Model Timeline: Normal Flow and Exceptions
 
-Part 3 ended with Regional Operating Model Redesign registered and its Lewin phase opened at Unfreeze, program Week 1. This Part runs that program forward for its full duration, against journi's TPL-OM-7 template. Program Week 1 corresponds to Bouregreg Group's own org-calendar Week 35 — add 34 to convert a program week to its org-calendar equivalent. Every week carrying a phase transition, a Phase Gate, or an exception gets its own row; a pure-monitoring stretch is shown at a lighter, regular cadence.
+Part 3 ended with Regional Operating Model Redesign registered and its Lewin phase opened at Unfreeze, program Week 1. This Part runs that program forward for its full duration, against journi's TPL-OM-7 template. Program Week 1 corresponds to Bouregreg Group's own org-calendar Week 35 — add 34 to convert a program week to its org-calendar equivalent. Every one of the program's 34 individual weeks is listed on its own row, so a reader can see exactly which week a framework reading, a phase transition, or an exception is active in.
 
 ### 4.1 Normal Flow, Phase by Phase
 
