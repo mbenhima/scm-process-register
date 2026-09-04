@@ -134,3 +134,99 @@ Permission Matrix and the Governance Setting stay unchanged tenant-wide.
 - [ ] Five applicable Charters reviewed and accountable owners confirmed — Section 3.5
 
 With this checklist complete, Part 4 runs the program forward, week by week.
+
+
+## Part 4 — Week-by-Week QMS Timeline: Normal Flow and Exceptions
+
+Part 3 ended with ISO 9001/14001 Integrated Management System registered and its Lewin phase opened at Unfreeze, program Week 1 — the same week as Bouregreg Group's own org calendar, since this program opens alongside the ERP program's own kickoff. Every week carrying a phase transition, a Phase Gate, or an exception gets its own row; a pure-monitoring stretch is shown at a lighter, regular cadence.
+
+### 4.1 Normal Flow, Phase by Phase
+
+#### Phase 1 — Intake & Diagnosis (Weeks 1–12)
+
+Diagnoses Settat's current quality and environmental practices against both ISO 9001 and ISO 14001 requirements before any design work starts — a dual-standard gap analysis, not two separate ones.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 1** | Samir Chraibi holds program kickoff; confirms Nadia Fassi's sponsorship. | Rania Bensouda briefs the team; plans the dual-standard gap analysis. | M1 (Hierarchy) — verify the CM Project record matches the kickoff agreement. | — | — |
+| **Week 3** | Begin the ISO 9001/14001 gap analysis against current Settat practices. | Baseline ADKAR pulse for plant operations and quality staff. | M5 (ADKAR Engine) — Awareness 3, Desire 3. | — | — |
+| **Week 5** | Continue gap analysis across operations, procurement, and HR touchpoints. | Log Nadia Fassi's coalition status: zero named coalition members beyond herself. | M7 (Sponsor & Coalition) — coalition member count: 0. | — | Coalition member count |
+| **Week 7** | Continue gap analysis. | Map stakeholder cohorts across the four functions certification touches. | M4 (Stakeholder Mapping) — "Settat Operations," "Quality Function," "Procurement," "HR" cohorts logged. | — | — |
+| **Week 9** | Consolidate gap analysis findings into a single dual-standard report. | — | M21 (Field Notes) — Category: Decision · Title: "Gap Analysis Consolidated." | — | — |
+| **Week 12** | Confirm the Phase 1 gate: gap analysis signed off. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Intake & Diagnosis closes once the dual-standard gap analysis is signed off across all four touched functions.*
+
+#### Phase 2 — Design (Weeks 10–26)
+
+Designs the integrated management system's documented procedures — one system serving both ISO 9001 and ISO 14001, not two parallel document sets.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 10** | Begin designing the integrated management system's procedure set. | — | M21 — routine log. | — | — |
+| **Week 14** | Continue procedure design; confirm which existing procedures can be adapted versus written new. | — | M21 — routine log. | — | — |
+| **Week 18** | Continue procedure design across operations and environmental controls. | Re-score ADKAR — Knowledge beginning to build as draft procedures circulate. | M5 (ADKAR Engine) — Knowledge 3. | — | — |
+| **Week 22** | Review the draft procedure set with Mehdi Ouahbi. | Coalition status unchanged: still zero named members beyond the Sponsor. | M7 (Sponsor & Coalition) — coalition member count: 0. | — | Coalition member count (unchanged) |
+| **Week 26** | Confirm the Phase 2 gate: procedure set signed off. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Design closes once the integrated procedure set is signed off — still with no named coalition beyond the Sponsor, a gap Phase 3 makes impossible to ignore.*
+
+#### Phase 3 — Implementation (Weeks 24–38)
+
+Rolls the new procedures into daily practice across operations, procurement, and HR — the exact point where a Sponsor with real authority only inside quality's own function runs out of road.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 24** | Begin implementation: new procedures roll out to plant operations first. | — | M21 — routine log. | (Phase 2 gate also closes this week) | — |
+| **Week 26** | Continue operations rollout. | — | M5 — routine update. | — | — |
+| **Week 28** | Attempt procurement rollout — stalls, since procurement reports to a different function head Nadia Fassi has no authority over. | **Confirm the coalition gap directly: still zero named coalition members. journi's ALT-010 (Guiding Coalition Gap) fires.** | M7 (Sponsor & Coalition) — coalition member count: 0, five weeks into Implementation. | **ALT-010 fires this week** (Section 4.2) | Coalition member count (0) |
+| **Week 29** | Escalate to the Steering Committee: procurement and HR rollout both blocked without cross-functional authority. | Begin actively recruiting named coalition members from Procurement and HR leadership. | M21 (Field Notes) — Category: Decision · Title: "Coalition-Building Response Initiated." | ALT-010 resolution in progress | — |
+| **Week 31** | Support onboarding the two new coalition members into the program's governance. | Log the Procurement Director and HR Business Partner as named coalition members. | M7 (Sponsor & Coalition) — coalition member count: 2. | **ALT-010 resolved this week** | Coalition member count (2) |
+| **Week 33** | Resume procurement rollout with the Procurement Director's direct backing. | — | M5 — routine update, procurement cohort. | — | — |
+| **Week 35** | Resume HR rollout with the HR Business Partner's direct backing. | — | M5 — routine update, HR cohort. | — | — |
+| **Week 38** | Confirm the Phase 3 gate: implementation complete across all four functions. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Implementation closes once all four functions have adopted the new procedures — with a real coalition behind it, not the Sponsor working alone.*
+
+#### Phase 4 — Mock-up Audit (Weeks 36–46)
+
+A rehearsal audit against both standards, run internally, before the real certifying audit.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 36** | Prepare the mock-up audit scope and schedule. | — | M21 — routine log. | (Phase 3 active) | — |
+| **Week 40** | Run the mock-up audit across operations, procurement, and HR. | Log findings by function, distinguishing documentation gaps from practice gaps. | M21 (Field Notes) — Category: Other · Title: "Mock-up Audit Findings Logged." | — | Mock-up audit finding count |
+| **Week 43** | Close mock-up audit findings with corrective actions. | — | M10 (Resistance) — n/a; findings tracked separately as corrective actions, not resistance. | — | — |
+| **Week 46** | Confirm the Phase 4 gate: mock-up findings closed. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Mock-up Audit closes once every finding has a closed corrective action, not just a logged one.*
+
+#### Phase 5 — Certifying Audit (Weeks 44–50)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 44** | Confirm certifying audit readiness against mock-up results. | — | M21 — routine log. | (Phase 4 active) | — |
+| **Week 47** | Host the certifying body's audit across all four functions, with the full coalition present. | — | M21 (Field Notes) — Category: Other · Title: "Certifying Audit Conducted." | — | — |
+| **Week 50** | Confirm the Phase 5 gate: certification granted for both ISO 9001 and ISO 14001. | Set Lewin to **Change** — deliberately not Refreeze, since the system's real test is the first surveillance cycle. | M3 (Initiative Registry) — Lewin: "Change." Justification: "Certification granted; Refreeze reserved for after the first surveillance cycle confirms the system holds." | — | Certification status (granted) |
+
+*Phase gate: Certifying Audit closes once certification is granted for both standards.*
+
+#### Phase 6 — Surveillance Prep (Weeks 48–52)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 48** | Prepare the standing surveillance schedule alongside the final certifying-audit weeks. | — | M21 — routine log. | (Phase 5 active) | — |
+| **Week 50** | Confirm the surveillance schedule and named ongoing owners per function. | — | M12 (Sustainment) — first standing checkpoint logged, tied to the surveillance calendar rather than a one-time close. | (Phase 5 gate also closes this week) | — |
+| **Week 52** | Confirm the Phase 6 gate: surveillance schedule and owners confirmed. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Surveillance Prep closes once every function has a named, standing owner for its own surveillance obligations — not a single centralized owner who eventually moves on.*
+
+#### Phase 7 — Ongoing Surveillance (Weeks 52 onward, open-ended)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 52** | Confirm the first surveillance cycle begins on schedule. | — | M12 (Sustainment) — surveillance cycle 1 opened. | (Phase 6 gate also closes this week) | — |
+| **Week 56** | First surveillance spot-check, procurement function. | Confirm the coalition built in Phase 3 is still active, not quietly reverted to the Sponsor alone. | M7 (Sponsor & Coalition) — coalition member count: still 2 or more. | — | Coalition member count (sustained) |
+| **Week 60** | First full surveillance cycle closes clean. | Set Lewin to **Refreeze** — the confirmed call this guide reserves until the system has actually held through a real cycle. | M3 (Initiative Registry) — Lewin: "Refreeze." Justification: "First full surveillance cycle closed clean, Week 60; coalition sustained beyond the certifying audit." | — | Lewin state (confirmed Refreeze) |
+
+*Phase gate: Ongoing Surveillance has no formal close — this guide narrates through the first full cycle (Week 60) as the point Lewin's Refreeze call becomes genuinely confirmed, consistent with journi's own framing of certification maintenance as a standing condition, not a project outcome.*
