@@ -89,3 +89,57 @@ None of the four is auto-computed. All four remain a Change Manager's evidence-b
 ### 2.3 The Composite Readiness Index and Benchmarking, Read for This Case
 
 M14's blended score (ADKAR 50% / Kübler-Ross sentiment 25% / training completion 25%) was built for exactly this kind of program, and this guide's own Composite Readiness Index reading (Section 4.1) moves smoothly upward with no dip worth narrating — the honest, if less dramatic, reading this program's real evidence supports. Benchmarking reads "In Line" or "Ahead" throughout; this guide does not manufacture a "Behind" reading to give Benchmarking something to recover from.
+
+
+## Part 3 — Tenant and Admin Setup
+
+### 3.1 The Existing Tenant: Bouregreg Group
+
+This program runs inside the same tenant journi's Master User Guide builds for the Bouregreg ERP Adoption Program, under the existing Bouregreg Manufacturing Maroc Organization (Manufacturing sector, 3,400 employees, sites including Kenitra Plant). No new Organization is needed — unlike the Cultural archetype guide's Tangier acquisition, Kenitra's accounts-payable function already sits inside the existing Organization. A reader without this tenant yet follows journi's Master User Guide, Part 1, before continuing here.
+
+### 3.2 Step 1 — Onboarding the Automation Team (M2)
+
+| Name | journi Role (RBAC) | Scope type | Scope | RACSI Code | Notes |
+|---|---|---|---|---|---|
+| Hakim Berrada | Sponsor | Project | Kenitra Invoice-Matching Automation *(created in Step 2)* | ES | Kenitra Plant Controller; volunteered as Sponsor |
+| Salma Ouazzani | Change Manager | Project | Kenitra Invoice-Matching Automation | CM | Owns day-to-day program execution |
+| Amine Sqalli | Practitioner / Contributor | Project | Kenitra Invoice-Matching Automation | PM | RPA build and technical delivery lead |
+| Yassine Kabbaj | Practitioner / Contributor | Project | Kenitra Invoice-Matching Automation | ITL | Systems integration, bot deployment |
+| Nawal Fassi | People Manager | Project | Kenitra Invoice-Matching Automation | FPO, SUP | Kenitra AP team lead; both functional owner and on-site supervisor given the team's small size |
+
+### 3.3 Step 2 — Creating the Kenitra Invoice-Matching Automation CM Project (M1)
+
+1. On the Bouregreg Manufacturing Maroc Organization card, click **+ CM Project**. Fill in:
+   - Name: "Kenitra Invoice-Matching Automation"
+   - Linked Main Project: **none** — this program's technical build is small and self-contained enough to run entirely inside this CM Project's own PM track, unlike the ERP program's dedicated Main Project.
+   - Owner: "Salma Ouazzani"
+   - Change type: **Automation**
+   - Target population: "Kenitra Accounts Payable (18)"
+   - Business driver: "Manual invoice-to-purchase-order matching is a repetitive, judgment-free task with no upside performed by hand — a strong RPA candidate with minimal disruption risk to the wider AP function."
+2. Save. Lewin opens at **Unfreeze**, justification: "Opening Unfreeze at program start, Week 20. Sponsor active from day one; no diagnosis-phase resistance expected given the task's low judgment content."
+3. On **Module 17 — WBS & Gantt**, load the **TPL-BPA-7** phase template (Automation-Opportunity Assessment → Architecture Design → Build → UAT & Shadow-Mode → Production Go-Live → Exception Tuning → CoE Handover).
+
+### 3.4 Step 3 — Governance (M2)
+
+Permission Matrix and the Governance Setting ("Require justification for score/state changes") stay unchanged tenant-wide from the base ERP setup — this program adds no new governance configuration.
+
+### 3.5 Step 4 — Charters for This Program (M19)
+
+| Charter | Accountable (this program) | Review cadence |
+|---|---|---|
+| CHTR-01 Sponsorship / Leadership Charter | Hakim Berrada (ES) | Per Phase Gate |
+| CHTR-03 Communication Charter | Salma Ouazzani (CM) | Per communication wave |
+| CHTR-04 Organizational Impact Charter | Salma Ouazzani (CM) | On scope change |
+| CHTR-08 Pulse / Interview Charter | Salma Ouazzani (CM) | Per phase gate + ad hoc |
+
+The remaining four charters (CHTR-02, CHTR-05, CHTR-06, CHTR-07) stay dormant for this program — its scope is too narrow and its population too small to justify a participative-management charter, dedicated coaching charters, or a mentoring program; this guide states that plainly rather than force charters onto a program too small to need them.
+
+### 3.6 Setup Checklist
+
+- [ ] Base tenant confirmed (Bouregreg Group, Bouregreg Manufacturing Maroc Organization)
+- [ ] Automation team accounts created with correct RBAC role, scope, and RACSI code — Section 3.2
+- [ ] Kenitra Invoice-Matching Automation CM Project created, Lewin opened at Unfreeze — Section 3.3
+- [ ] TPL-BPA-7 phase template loaded on M17 — Section 3.3
+- [ ] Four applicable Charters reviewed and accountable owners confirmed — Section 3.5
+
+With this checklist complete, Bouregreg Group's tenant holds a live Automation archetype Change Management Project. Part 4 runs it forward, week by week, from here.
