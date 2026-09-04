@@ -80,3 +80,57 @@ Every claim above is traceable to a real journi record this guide builds: a 30-d
 ### 2.3 The Composite Readiness Index and Benchmarking, Read for This Case
 
 This program's Composite Readiness Index reads strong through Full Transition, then drops sharply at the Week 26 checkpoint reading — the exact moment ALT-002 fires — before recovering once the regression is addressed. Benchmarking reads "Behind" for the weeks the sign-off stays blocked, a deliberate, honest reading this guide narrates directly rather than treat the pre-checkpoint reading as the program's real final state.
+
+
+## Part 3 — Tenant and Admin Setup
+
+### 3.1 The Existing Tenant: Bouregreg Group
+
+This program runs inside the same tenant journi's Master User Guide builds, under the existing Bouregreg Manufacturing Maroc Organization, spanning all three of its existing sites (Casablanca HQ, Kenitra Plant, Settat Plant). No new Organization is needed.
+
+### 3.2 Step 1 — Onboarding the Redesign Team (M2)
+
+| Name | journi Role (RBAC) | Scope type | Scope | RACSI Code | Notes |
+|---|---|---|---|---|---|
+| Yassine Berrada | Sponsor | Project | Regional Operating Model Redesign *(created in Step 2)* | ES | COO |
+| Salma Idrissi | Change Manager | Project | Regional Operating Model Redesign | CM | Owns day-to-day program execution |
+| Rachid Alaoui | Practitioner / Contributor | Project | Regional Operating Model Redesign | PM | Org design and transition lead |
+| Amina Sqalli | People Manager | Project | Regional Operating Model Redesign | FPO | Finance Function Head |
+| Nabil Ouazzani | Practitioner / Contributor | Project | Regional Operating Model Redesign | ITL | Reporting-line systems updates |
+| Loubna Tazi | People Manager | Project | Regional Operating Model Redesign | SUP | Casablanca Finance People Manager (pilot site) |
+
+### 3.3 Step 2 — Creating the CM Project (M1)
+
+1. On the Bouregreg Manufacturing Maroc Organization card, click **+ CM Project**. Fill in:
+   - Name: "Regional Operating Model Redesign"
+   - Linked Main Project: **none**
+   - Owner: "Salma Idrissi"
+   - Change type: **Operating Model**
+   - Target population: "All people-manager-level staff, 3 sites (95)"
+   - Business driver: "The ERP program's own Build phase exposed how much duplicated decision-making the site-based structure causes; Finance, Operations, and Quality will report centrally by function rather than to each site's director."
+2. Save. Lewin opens at **Unfreeze**, justification: "Opening Unfreeze at program start, Week 1 (org Week 35), once the ERP program's Build phase evidence was confirmed."
+3. On **Module 17 — WBS & Gantt**, load the **TPL-OM-7** phase template (Current Operating Model Assessment → TOM Design → Detailed Org Design → Pilot Transition → Full Transition → Governance Adoption Tracking → Standing Rhythm Handover).
+
+### 3.4 Step 3 — Governance (M2)
+
+Permission Matrix and the Governance Setting stay unchanged tenant-wide.
+
+### 3.5 Step 4 — Charters for This Program (M19)
+
+| Charter | Accountable (this program) | Review cadence |
+|---|---|---|
+| CHTR-01 Sponsorship / Leadership Charter | Yassine Berrada (ES) | Per Phase Gate |
+| CHTR-02 Participative Management Charter | Loubna Tazi (SUP) | Quarterly |
+| CHTR-03 Communication Charter | Salma Idrissi (CM) | Per communication wave |
+| CHTR-04 Organizational Impact Charter | Salma Idrissi (CM) | On scope change |
+| CHTR-05 Team Coaching Charter | Loubna Tazi (SUP) | Per reinforcement cycle — directly relevant given this case's regression risk |
+
+### 3.6 Setup Checklist
+
+- [ ] Base tenant confirmed (Bouregreg Group, Bouregreg Manufacturing Maroc Organization)
+- [ ] Redesign team accounts created — Section 3.2
+- [ ] CM Project created, Lewin opened at Unfreeze — Section 3.3
+- [ ] TPL-OM-7 phase template loaded on M17 — Section 3.3
+- [ ] Five applicable Charters reviewed and accountable owners confirmed — Section 3.5
+
+With this checklist complete, Part 4 runs the program forward, week by week.
