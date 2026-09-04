@@ -364,3 +364,41 @@ None of the six patterns below actually occurred in Kenitra Invoice-Matching Aut
 **Outputs.** A confirmed, capacity-backed CoE ownership; a scheduled post-handover checkpoint (30/90 days) to verify it holds.
 
 **RACSI.** R = FPO · A = ES · C = PM, ITL · S = CM · I = SUP, EU
+
+
+## Part 5 — Training Program: RPA Literacy Across Three Tiers
+
+### 5.1 Why Training Looks Different Here Than in the Cultural Archetype Guide
+
+Unlike the Cultural archetype, where MP-05 (Training & Capability Enablement) is absent from the process chain entirely, journi's E2E-BPA chain (MP-01→02→03→05→07→08→09→10) uses MP-05 directly — training is not a parallel track bolted onto this program, it is part of the registered chain itself. What follows is that training, logged on M9, timed against the same phases Section 4.1 already walks through.
+
+### 5.2 Tier 1 — Strategic Management (Weeks 1–3)
+
+**Cohort.** Hakim Berrada (Sponsor).
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Sponsoring an RPA Program | What active, credible sponsorship looks like for a small, technical automation program — distinct from a large system rollout's sponsorship demands. | 1–2 | Curriculum: "Sponsoring an RPA Program" · Cohort: "Sponsor." | 100% before Week 3 |
+| Reading journi's Automation Readiness Dashboards | How to read M14's Composite Readiness Index and M10's resistance log for a program this size, without over-interpreting a small population's normal statistical noise. | 2–3 | Curriculum: "Reading journi's Automation Readiness Dashboards" · Cohort: "Sponsor." | 100% before Week 4 |
+
+### 5.3 Tier 2 — Operational Management (Weeks 3–6)
+
+**Cohort.** Nawal Fassi (AP team lead, FPO/SUP).
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Managing a Team Through Automation | Practical supervisory skills for a team whose task is being automated — distinct from a layoff conversation, since no roles are eliminated here, only a repetitive task. | 3–4 | Curriculum: "Managing a Team Through Automation" · Cohort: "AP Team Lead." | 100% before Week 5 |
+| Exception-Escalation Ownership | Practical ownership of the new exception-handling workflow once the bot is live — who decides, who escalates, and when. | 5–6 | Curriculum: "Exception-Escalation Ownership" · Cohort: "AP Team Lead." | 100% before Week 9 |
+
+### 5.4 Tier 3 — Operations (Frontline) (Weeks 5–13)
+
+**Cohort.** All 18 Kenitra AP staff.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Using the New Exception-Handling Workflow | Practical training on the workflow drafted in Phase 2 — what to do when the bot flags an invoice, not abstract process theory. | 5–9 | Curriculum: "Using the New Exception-Handling Workflow" · Cohort: "Kenitra AP (18)." | 100% before Week 12 |
+| Verifying Bot Output During Shadow-Mode | Hands-on training for the specific daily verification task shadow-mode requires (Section 4.1, Phase 4). | 12–13 | Curriculum: "Verifying Bot Output During Shadow-Mode" · Cohort: "Kenitra AP (18)." | 100% before shadow-mode begins, Week 12 |
+
+### 5.5 Training Completion and the Composite Readiness Index
+
+Because this archetype's chain uses MP-05 directly, M14's training-completion term reflects real numbers from early in the program, unlike the Cultural archetype's guide, where it stays near zero until a parallel track is introduced. Given the small, well-defined curricula above, this program's training-completion term is expected to reach 100% well before go-live (Week 16) — consistent with, and one of the concrete reasons behind, this program's clean-close, zero-alert profile.
