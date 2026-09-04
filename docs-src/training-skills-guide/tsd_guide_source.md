@@ -403,3 +403,45 @@ This program's real record shows no alert firing across its 43 weeks — not bec
 **Outputs.** A refresher-coaching record; a root-cause diagnosis; a confirmed clean sustainment check before program closure.
 
 **RACSI.** R = CM, SUP · A = ES · C = FPO, PM · S = ITL · I = EU
+
+
+## Part 5 — Curriculum Reference: The Full Course Catalog by Tier
+
+### 5.1 What This Reference Covers
+
+Every other guide in this series uses Part 5 to lay out a training curriculum that runs *alongside* the program Part 4 already narrated. This guide cannot do that, because training is not a supporting track here — it is the entire content of Part 4's seven phases. Part 5 instead does something more useful for this specific archetype: it consolidates every course that appeared across Part 4's 43 weeks into one standing catalog, organized by tier, so a Learning & Development team can keep using it as a reference long after the program itself closes on Week 43 — the one deliverable in this guide meant to outlive the program, not just document it.
+
+### 5.2 Tier 1 — Strategic Management
+
+**Cohort.** Fouad Belghazi (Sponsor, VP Manufacturing Operations) and the Kenitra and Settat plant directors.
+
+| Curriculum Entry | Content Focus | Week(s) Delivered | M9 Entry — What to Log |
+|---|---|---|---|
+| Sponsoring a Standalone Skills Program | Why a program with no go-live of its own still needs sustained sponsorship, not a one-time launch announcement, to hold through 43 weeks. | 1 | Curriculum: "Sponsoring a Standalone Skills Program" · Cohort: "Sponsor, Plant Directors." |
+| Reading a Sustainment Checkpoint as Real Evidence | How to read Phase 7's two sustainment checks as accountable evidence of retained skill, not a closeout formality. | 36 | Curriculum: "Reading a Sustainment Checkpoint as Real Evidence" · Cohort: "Sponsor, Plant Directors." |
+
+### 5.3 Tier 2 — Operational Management
+
+**Cohort.** Karima Semlali (Kenitra Plant Floor Supervisor), Mustapha Idrissi (Settat Plant Floor Supervisor), and the delivery team.
+
+| Curriculum Entry | Content Focus | Week(s) Delivered | M9 Entry — What to Log |
+|---|---|---|---|
+| Train-the-Trainer, Digital Skills Program | Preparing the delivery team to teach the finalized curriculum consistently across both plants. | 14 | Curriculum: "Train-the-Trainer, Digital Skills Program" · Cohort: "Delivery Team." |
+| Coaching the New Skill On the Floor | Preparing shift supervisors to run structured, observation-based coaching rounds rather than informal check-ins. | 31 | Curriculum: "Coaching the New Skill On the Floor" · Cohort: "Kenitra, Settat Supervisors." |
+| Targeted Coaching Follow-Up | A further session for supervisors addressing recurring skill gaps found during coaching rounds. | 37 | Curriculum: "Targeted Coaching Follow-Up" · Cohort: as identified. |
+
+### 5.4 Tier 3 — Operations (Frontline)
+
+**Cohort.** All 620 plant-floor staff at Kenitra and Settat.
+
+| Curriculum Entry | Content Focus | Week(s) Delivered | M9 Entry — What to Log |
+|---|---|---|---|
+| Module 1: Systems Navigation Basics | Core digital-systems navigation for staff without prior systems training. | 15 (pilot), 24–27 (full deployment) | Curriculum: "Module 1: Systems Navigation Basics" · Cohort: "Kenitra Pilot" / "Kenitra, Wave 1–2" / "Settat, Wave 1–2." |
+| Module 2: Digital Data Entry | Practical, checkable data-entry steps on the systems staff use daily. | 16 (pilot), 24–27 (full deployment) | Curriculum: "Module 2: Digital Data Entry" · Cohort: as above. |
+| Module 3: Digital Work Instructions | Reading and following digital work instructions in place of paper-based ones. | 17 (pilot), 24–27 (full deployment) | Curriculum: "Module 3: Digital Work Instructions" · Cohort: as above. |
+| Modules 1–3, Make-Up Session | Full curriculum delivered to staff absent from their scheduled wave. | 28 | Curriculum: "Modules 1–3, Make-Up Session" · Cohort: "Kenitra, Settat." |
+| Targeted Refresher | A short, focused session for staff or modules where competency verification found a gap. | 30 | Curriculum: "Targeted Refresher" · Cohort: as identified by verification results. |
+
+### 5.5 Why a Course Catalog, Not a Persuasion Curriculum, Closes This Guide
+
+Every other guide in this series closes Part 5 with a training program built to move people through a change they didn't choose — sponsoring it, operating under it, or living with its day-to-day consequences. This program has no such change to sell; its entire purpose from Week 1 was building a skill, and Part 4 already carried that work in full operational detail. What a reader needs from Part 5 here is not another curriculum, but a single place to find every course this program ever ran, by tier, with the week it ran and the exact M9 entry that logged it — the reference an L&D team reaches for on Week 60, Week 100, or two years later, when Kenitra and Settat's plant floor keeps changing and this catalog is the record of where the workforce's digital-skills baseline actually came from.
