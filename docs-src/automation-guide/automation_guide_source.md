@@ -276,3 +276,91 @@ Real production volume surfaces edge cases shadow-mode's smaller sample didn't �
 | T7.1-S2 | Sustainment sign-off | Joint | 19 | Sustainment sign-off | Formally close the program once evidence supports it. | Toggle the M12 sign-off; set Lewin to Refreeze. | journi M12 / M3 |
 
 *Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
+
+### 4.4 Six Contingency Patterns, in Detail
+
+None of the six patterns below actually occurred in Kenitra Invoice-Matching Automation's own record — Section 4.1 and journi's own scenario library are explicit that this program closed clean, with zero live alerts fired. What follows is a contingency playbook: six realistic ways an automation program of this type *could* go off track, written in the same operational detail as this series' other guides, so a Change Manager running a similar program has a real recovery plan ready rather than discovering the need for one mid-crisis. Each pattern names where in this program's own timeline it would most plausibly have appeared, had it happened.
+
+#### C1 — Hidden Exception Volume Underestimated (would map to Phase 3, Weeks 9–12)
+
+**Detailed description.** The Phase 1 suitability assessment concludes the task is low-exception; internal testing then reveals the real exception rate is meaningfully higher than assumed, because the historical data sample under-represented a seasonal invoice pattern (for example, year-end bulk supplier invoices with irregular formatting).
+
+**Trigger.** Internal test exception rate exceeds the threshold set during architecture design.
+
+**Timeline impact.** Would delay the Phase 3 gate by one to two weeks while the exception-handling rules are redesigned for the newly discovered pattern, and would likely push UAT's shadow-mode window from two weeks to three, to capture the seasonal case directly.
+
+**Recovery tasks.** Re-run the historical-data sample across a full 12-month cycle rather than six months; redesign the exception rules for the newly found pattern; extend shadow-mode to directly observe the seasonal case if the redesign can't be validated from historical data alone.
+
+**Outputs.** A revised exception-rate threshold; an updated architecture document; a documented reason for the extended shadow-mode window.
+
+**RACSI.** R = PM, ITL · A = CM · C = FPO · S = ES · I = SUP, EU
+
+#### C2 — Shadow-Mode Discrepancy Traced to a Data Quality Issue, Not the Bot (would map to Phase 4, Weeks 12–14)
+
+**Detailed description.** A shadow-mode discrepancy initially looks like a bot logic error; investigation instead finds the discrepancy traces to inconsistent supplier-name formatting in the source purchase-order system — a data quality issue the bot correctly flagged, not a bot defect.
+
+**Trigger.** A shadow-mode discrepancy rate above the expected noise floor.
+
+**Timeline impact.** No phase-gate delay if resolved within shadow-mode's existing window, but it would consume investigation time that would otherwise go toward confirming a clean result early.
+
+**Recovery tasks.** Root-cause each discrepancy before assuming bot error; where the cause is upstream data quality, log it as a data-quality finding, not a bot defect, and route it to the system-of-record owner rather than the automation team.
+
+**Outputs.** A discrepancy log correctly attributing cause; a data-quality finding routed to its actual owner.
+
+**RACSI.** R = ITL · A = CM · C = FPO · S = PM · I = ES, SUP
+
+#### C3 — A Single Vocal Staff Member Resists Despite Overall Buy-In (would map to Phase 2–4, Weeks 4–14)
+
+**Detailed description.** One of the 18 AP staff — often the person who has done the manual match longest and takes the most pride in their accuracy — resists the automation individually, even though the rest of the team and the Sponsor are genuinely supportive. Unlike the Cultural archetype's population-wide patterns, this is a single-person case that a program this small could plausibly still hit.
+
+**Trigger.** A single resistance entry from one staff member, with no similar entries from the rest of the cohort.
+
+**Timeline impact.** None to the program timeline if handled directly and early; risks becoming a Phase 5 go-live morale issue if left unaddressed.
+
+**Recovery tasks.** A direct, individual conversation — not a team-wide response to what is genuinely an individual concern; consider offering the individual a role in UAT verification specifically, converting their expertise into a program asset rather than leaving it as a source of resistance.
+
+**Outputs.** A closed, individually-resolved resistance entry; where used, a logged UAT verification role for the individual.
+
+**RACSI.** R = CM, FPO · A = CM · C = ES · S = SUP · I = PM, EU
+
+#### C4 — IT Change-Freeze Delays Integration (would map to Phase 3, Weeks 9–12)
+
+**Detailed description.** Bouregreg Group's IT function declares a change freeze — commonly tied to a fiscal period close or an unrelated system event — that blocks the bot's integration work during the Build phase.
+
+**Trigger.** An IT-declared change freeze overlapping the Build phase's planned integration window.
+
+**Timeline impact.** A direct delay equal to the freeze's duration, typically one to three weeks, pushed straight through to the UAT and go-live dates rather than absorbed elsewhere, since Build's integration work has no slack to compress.
+
+**Recovery tasks.** Confirm the freeze's exact end date early; resequence non-integration Build tasks (internal logic testing against historical data) to run during the freeze so the delay isn't pure dead time; communicate the revised go-live date to the Sponsor and AP team as soon as the freeze is confirmed, not after it lifts.
+
+**Outputs.** A revised WBS schedule reflecting the freeze; non-integration work completed during the freeze window; an updated go-live communication.
+
+**RACSI.** R = PM, ITL · A = PM · C = CM · S = ES · I = FPO, SUP, EU
+
+#### C5 — Platform Licensing or Technical Limitation Discovered Mid-Build (would map to Phase 3, Weeks 9–12)
+
+**Detailed description.** The RPA platform's licensing terms or a technical limitation (for example, a rate limit on the legacy system's API) is discovered mid-Build to constrain the bot's design in a way the Architecture Design phase didn't anticipate.
+
+**Trigger.** A platform constraint discovered during active development that the signed-off architecture didn't account for.
+
+**Timeline impact.** Would reopen part of the Architecture Design phase gate, typically adding one to two weeks while the design is adjusted within the newly discovered constraint.
+
+**Recovery tasks.** Confirm the exact nature and scope of the constraint; redesign only the affected portion of the architecture rather than the whole document; re-confirm the revised design with IT before resuming Build.
+
+**Outputs.** A documented constraint and its resolution; a revised (not fully rewritten) architecture document; a reopened-and-reclosed Phase 2 gate entry on the WBS.
+
+**RACSI.** R = ITL · A = PM · C = CM · S = FPO · I = ES, SUP, EU
+
+#### C6 — Post-Go-Live Complacency: CoE Ownership Never Really Transfers (would map to Phase 7, Weeks 18–19)
+
+**Detailed description.** The Center of Excellence handover happens on paper — the package is delivered, the sign-off is toggled — but the bot's actual day-to-day monitoring quietly stays with Yassine Kabbaj rather than genuinely transferring, because the CoE was never given real capacity for it. Six months later, a bot failure goes unnoticed for days because no one was actually watching.
+
+**Trigger.** A sustainment checkpoint (M12) shows the named CoE owner has logged no monitoring activity since handover.
+
+**Timeline impact.** No impact to this program's own 19-week timeline, since it manifests after formal close — but it is exactly the kind of finding a post-handover checkpoint (following this series' own precedent from the Cultural archetype guide) exists to catch.
+
+**Recovery tasks.** Confirm the CoE genuinely has assigned capacity for this bot, not just nominal ownership; if it does not, escalate to the CoE's own management for a real capacity commitment rather than let ownership stay silently with the original build team.
+
+**Outputs.** A confirmed, capacity-backed CoE ownership; a scheduled post-handover checkpoint (30/90 days) to verify it holds.
+
+**RACSI.** R = FPO · A = ES · C = PM, ITL · S = CM · I = SUP, EU
