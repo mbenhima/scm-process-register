@@ -133,3 +133,153 @@ Permission Matrix and the Governance Setting stay unchanged tenant-wide.
 - [ ] Four applicable Charters reviewed and accountable owners confirmed — Section 3.5
 
 With this checklist complete, Part 4 runs the program forward, week by week.
+
+
+## Part 4 — Week-by-Week Compliance Timeline: Normal Flow and Exceptions
+
+Part 3 ended with Loi 09-08 Data Protection Compliance Program registered and its Lewin phase opened at Unfreeze, program Week 1 — the same week as Bouregreg Group's own org calendar, run from the very start of the tenant's life given the fixed external deadline. Every one of the program's 64 individual weeks is listed on its own row, so a reader can see exactly which week a framework reading, a phase transition, or an exception is active in.
+
+### 4.1 Normal Flow, Phase by Phase
+
+#### Phase 1 — Regulatory Requirement & Gap Analysis (Weeks 1–14)
+
+Establishes exactly what Loi 09-08 requires and where Bouregreg Group's current data-handling practice falls short, across HR, Sales, and Customer Service.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 1** | Hamza Alaoui holds program kickoff; confirms Karim Idrissi's sponsorship and the fixed CNDP audit deadline. | Sanaa Bouzoubaa briefs the team; confirms the regulatory scope against Loi 09-08's actual text. | M1 (Hierarchy) — verify the CM Project record matches the kickoff agreement. | — | — |
+| **Week 2** | Confirm the CNDP audit's fixed date and work backward to set every phase gate's own hard deadline. | — | M17 (WBS & Gantt) — baseline schedule loaded from TPL-COMP-7, every phase gate dated against the fixed audit deadline. | — | — |
+| **Week 3** | Begin the regulatory requirement mapping against Loi 09-08's specific articles. | Baseline ADKAR pulse for HR, Sales, and Customer Service staff. | M5 (ADKAR Engine) — Awareness 3, Ability 2. | — | — |
+| **Week 4** | Continue regulatory mapping. | — | M21 — routine log. | — | — |
+| **Week 5** | Begin the current-state gap analysis: where existing data-handling practice falls short of Loi 09-08. | Map stakeholder cohorts across the three functions. | M4 (Stakeholder Mapping) — "HR," "Sales," "Customer Service" cohorts logged. | — | — |
+| **Week 6** | Continue gap analysis. | — | M21 — routine log. | — | — |
+| **Week 7** | Continue gap analysis; catalogue specific data-handling practices requiring change. | — | M21 — routine log. | — | — |
+| **Week 8** | Continue gap analysis. | — | M21 — routine log. | — | — |
+| **Week 9** | Consolidate gap analysis findings by function. | — | M21 (Field Notes) — Category: Decision · Title: "Gap Analysis Consolidated by Function." | — | — |
+| **Week 10** | Draft the gap analysis report for Legal review. | — | M21 — routine log. | (Phase 2 also begins this week) | — |
+| **Week 11** | Review the draft report with Karim Idrissi and Legal. | — | M21 — routine log. | — | — |
+| **Week 12** | Finalize the gap analysis report. | — | M21 — routine log. | — | — |
+| **Week 13** | Present the gap analysis to the Steering Committee ahead of sign-off. | — | M21 — routine log. | — | — |
+| **Week 14** | Confirm the Phase 1 gate: gap analysis signed off, on schedule against the fixed deadline. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Schedule variance vs. fixed deadline (0) |
+
+*Phase gate: Regulatory Requirement & Gap Analysis closes once the gap analysis is signed off exactly against its dated milestone — no schedule slippage, since none is available.*
+
+#### Phase 2 — Control Design (Weeks 12–28)
+
+Designs the specific controls — data retention rules, access restrictions, consent and subject-access-request processes — that close the gaps Phase 1 found.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 12** | Begin control design against the gap analysis findings. | — | M21 — routine log. | — | — |
+| **Week 13** | Continue control design. | — | M21 — routine log. | — | — |
+| **Week 14** | Continue control design. | — | M21 — routine log. | (Phase 1 gate also closes this week) | — |
+| **Week 15** | Design data-retention controls for HR personnel records. | — | M21 — routine log. | — | — |
+| **Week 16** | Design data-retention controls for Sales and Customer Service records. | — | M21 — routine log. | — | — |
+| **Week 17** | Design access-restriction controls across all three functions. | — | M21 — routine log. | — | — |
+| **Week 18** | Continue access-control design; confirm technical feasibility with Reda Fassi. | — | M21 — routine log. | — | — |
+| **Week 19** | Design the subject-access-request process — how an individual requests their own data. | — | M21 — routine log. | — | — |
+| **Week 20** | Continue subject-access-request process design. | Re-score ADKAR — Knowledge building as control designs circulate for review. | M5 (ADKAR Engine) — Knowledge 3. | — | — |
+| **Week 21** | Design the consent-management process for new data collection. | — | M21 — routine log. | — | — |
+| **Week 22** | Continue consent-management design. | — | M21 — routine log. | — | — |
+| **Week 23** | Consolidate all designed controls into a single control catalogue. | — | M21 — routine log. | — | — |
+| **Week 24** | Review the control catalogue with Legal for regulatory sufficiency. | — | M21 — routine log. | (Phase 3 also begins this week) | — |
+| **Week 25** | Incorporate Legal's review feedback. | — | M21 — routine log. | — | — |
+| **Week 26** | Finalize the control catalogue. | — | M21 — routine log. | — | — |
+| **Week 27** | Present the control catalogue to the Steering Committee. | — | M21 — routine log. | — | — |
+| **Week 28** | Confirm the Phase 2 gate: control catalogue signed off, on schedule. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Schedule variance vs. fixed deadline (0) |
+
+*Phase gate: Control Design closes once every control in the catalogue is specific enough to implement directly — no design ambiguity carried into Phase 3.*
+
+#### Phase 3 — Control Implementation (Weeks 26–40)
+
+Builds and configures the designed controls across HR, Sales, and Customer Service systems and processes.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 26** | Begin implementing data-retention controls in HR systems. | — | M21 — routine log. | — | — |
+| **Week 27** | Continue HR retention-control implementation. | — | M21 — routine log. | — | — |
+| **Week 28** | Continue HR retention-control implementation. | — | M21 — routine log. | (Phase 2 gate also closes this week) | — |
+| **Week 29** | Begin implementing retention controls in Sales and Customer Service systems. | — | M21 — routine log. | — | — |
+| **Week 30** | Continue Sales/CS retention-control implementation. | — | M21 — routine log. | — | — |
+| **Week 31** | Implement access-restriction controls across all three functions. | — | M21 — routine log. | — | — |
+| **Week 32** | Continue access-restriction implementation. | — | M21 — routine log. | — | — |
+| **Week 33** | Implement the subject-access-request process end to end. | — | M21 — routine log. | — | — |
+| **Week 34** | Test the subject-access-request process with a simulated request. | — | M21 (Field Notes) — Category: Other · Title: "Subject-Access-Request Process Tested." | — | — |
+| **Week 35** | Implement the consent-management process. | — | M21 — routine log. | — | — |
+| **Week 36** | Continue consent-management implementation. | — | M21 — routine log. | (Phase 4 also begins this week) | — |
+| **Week 37** | Confirm all designed controls are implemented across all three functions. | — | M21 — routine log. | — | — |
+| **Week 38** | Run an internal readiness check across all controls. | — | M21 — routine log. | — | — |
+| **Week 39** | Address any readiness-check findings. | — | M21 — routine log. | — | — |
+| **Week 40** | Confirm the Phase 3 gate: implementation complete, on schedule. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Schedule variance vs. fixed deadline (0) |
+
+*Phase gate: Control Implementation closes once every control in the catalogue is live in the actual systems and processes, not just designed.*
+
+#### Phase 4 — Internal Audit / Independent Testing (Weeks 38–48)
+
+An internal, independent test of every implemented control before the real CNDP audit — independent specifically meaning run by staff not involved in implementation.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 38** | Confirm the independent testing team, drawn from outside the implementation team. | — | M21 — routine log. | (Phase 3 active) | — |
+| **Week 39** | Finalize the independent test plan against every control in the catalogue. | — | M21 — routine log. | — | — |
+| **Week 40** | Begin independent testing of HR controls. | — | M21 — routine log. | (Phase 3 gate also closes this week) | — |
+| **Week 41** | Continue HR control testing. | — | M21 — routine log. | — | — |
+| **Week 42** | Test Sales and Customer Service controls. | — | M21 — routine log. | — | — |
+| **Week 43** | Continue Sales/CS control testing. | — | M21 — routine log. | — | — |
+| **Week 44** | Test the subject-access-request and consent-management processes end to end. | — | M21 (Field Notes) — Category: Other · Title: "Process Controls Independently Tested." | — | — |
+| **Week 45** | Consolidate independent testing findings. | — | M21 — routine log. | — | — |
+| **Week 46** | Close any testing findings with corrective actions. | — | M10 (Resistance) — n/a; findings tracked as corrective actions. | — | — |
+| **Week 47** | Confirm all findings closed ahead of Controls Go Live. | — | M21 — routine log. | — | — |
+| **Week 48** | Confirm the Phase 4 gate: independent testing complete, all findings closed, on schedule. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Schedule variance vs. fixed deadline (0) |
+
+*Phase gate: Internal Audit / Independent Testing closes once every control has been tested by staff independent of its own implementation, and every finding closed.*
+
+#### Phase 5 — Controls Go Live (Weeks 46–52)
+
+Controls go live for real — sequenced deliberately relative to the ERP program's own critical weeks so the two programs never compete for the same Legal/Compliance attention.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 46** | Confirm go-live readiness against the closed testing findings. | — | M21 — routine log. | (Phase 4 active) | — |
+| **Week 47** | Finalize go-live communications to all three functions. | — | M8 (Communications) — go-live briefing drafted. | (Phase 4 gate also closes this week) | — |
+| **Week 48** | Controls go live across HR, Sales, and Customer Service. | Set Lewin to **Change**. | M3 (Initiative Registry) — Lewin: "Change." Justification: "Controls live, Week 48, sequenced against the ERP program's own critical weeks to avoid competing for Legal/Compliance attention." | — | — |
+| **Week 49** | Monitor go-live for immediate issues. | — | M21 — routine log. | — | — |
+| **Week 50** | Continue monitoring. | — | M21 — routine log. | — | — |
+| **Week 51** | Confirm no unresolved go-live issues remain. | — | M21 — routine log. | — | — |
+| **Week 52** | Confirm the Phase 5 gate: controls live and stable, on schedule. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Schedule variance vs. fixed deadline (0) |
+
+*Phase gate: Controls Go Live closes once every control is confirmed live and stable across all three functions.*
+
+#### Phase 6 — First Monitoring Cycle (Weeks 50–58)
+
+Confirms the controls hold under real operating conditions, not just at the moment of go-live — the evidence base for the CNDP audit itself.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 50** | Begin the first monitoring cycle alongside the final go-live weeks. | — | M21 — routine log. | (Phase 5 active) | — |
+| **Week 51** | Continue monitoring. | — | M21 — routine log. | (Phase 5 active) | — |
+| **Week 52** | Log the first formal monitoring checkpoint. | — | M12 (Sustainment) — checkpoint 1 logged, no control failures. | (Phase 5 gate also closes this week) | — |
+| **Week 53** | Continue monitoring across all three functions. | — | M21 — routine log. | — | — |
+| **Week 54** | Continue monitoring. | — | M21 — routine log. | — | — |
+| **Week 55** | Spot-check the subject-access-request process against a real request. | — | M21 — routine log. | — | — |
+| **Week 56** | Continue monitoring. | — | M21 — routine log. | — | — |
+| **Week 57** | Compile the first monitoring cycle's results ahead of the CNDP audit. | — | M21 — routine log. | — | — |
+| **Week 58** | Confirm the Phase 6 gate: first monitoring cycle complete, controls confirmed holding. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Control failure count (0) |
+
+*Phase gate: First Monitoring Cycle closes once a full cycle confirms the controls hold under real conditions — the direct evidentiary basis for the CNDP audit.*
+
+#### Phase 7 — Ongoing Compliance Handover (Weeks 56–64, open-ended beyond)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 56** | Begin drafting the ongoing compliance handover package alongside the final monitoring weeks. | — | M21 — routine log. | (Phase 6 active) | — |
+| **Week 57** | Continue drafting the handover package. | — | M21 — routine log. | (Phase 6 active) | — |
+| **Week 58** | Finalize named ongoing owners per function for standing compliance monitoring. | — | M21 — routine log. | (Phase 6 gate also closes this week) | — |
+| **Week 59** | Confirm the standing monitoring cadence for the handover. | — | M21 — routine log. | — | — |
+| **Week 60** | Present the handover package to the Steering Committee. | — | M21 — routine log. | — | — |
+| **Week 61** | Incorporate Steering Committee feedback into the handover package. | — | M21 — routine log. | — | — |
+| **Week 62** | Confirm the CNDP audit is scheduled and the program's evidentiary record is complete. | — | M21 (Field Notes) — Category: Decision · Title: "CNDP Audit Readiness Confirmed." | — | — |
+| **Week 63** | Finalize governance transfer to standing function owners. | — | M21 — routine log. | — | — |
+| **Week 64** | Confirm program close. | Set Lewin to **Refreeze**; toggle the sustainment sign-off. | M3 (Initiative Registry) — Lewin: "Refreeze." M12 (Sustainment) — sign-off toggle: **set**. | — | Sustainment sign-off (toggled) |
+
+*Phase gate: Ongoing Compliance Handover — and the program itself — closes once governance transfers to standing function owners. Total program length: 64 weeks, seven consecutive clean Phase Gate decisions, no ALT-009 firing. Standing compliance monitoring continues beyond Week 64, consistent with a regulatory obligation that does not have a project end date.*
