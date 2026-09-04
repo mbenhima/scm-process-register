@@ -134,3 +134,98 @@ Permission Matrix and the Governance Setting stay unchanged tenant-wide.
 - [ ] Five applicable Charters reviewed and accountable owners confirmed — Section 3.5
 
 With this checklist complete, Part 4 runs the program forward, week by week.
+
+
+## Part 4 — Week-by-Week Operating Model Timeline: Normal Flow and Exceptions
+
+Part 3 ended with Regional Operating Model Redesign registered and its Lewin phase opened at Unfreeze, program Week 1. This Part runs that program forward for its full duration, against journi's TPL-OM-7 template. Program Week 1 corresponds to Bouregreg Group's own org-calendar Week 35 — add 34 to convert a program week to its org-calendar equivalent. Every week carrying a phase transition, a Phase Gate, or an exception gets its own row; a pure-monitoring stretch is shown at a lighter, regular cadence.
+
+### 4.1 Normal Flow, Phase by Phase
+
+#### Phase 1 — Current Operating Model Assessment (Weeks 1–8)
+
+Documents the duplicated decision-making the ERP program's own Build phase exposed — borrowed evidence from a sibling program, not a fresh diagnosis.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 1** | Rachid Alaoui holds program kickoff; confirms Yassine Berrada's sponsorship. | Salma Idrissi briefs the team; pulls the ERP program's own Build-phase duplication findings as the starting evidence base. | M1 (Hierarchy) — verify the CM Project record matches the kickoff agreement. | — | — |
+| **Week 3** | Interview site directors and function heads across all three sites about current decision-making duplication. | Baseline ADKAR pulse for the 95-person people-manager population. | M5 (ADKAR Engine) — Awareness 3, Desire 3. | — | — |
+| **Week 5** | Quantify the duplication: decisions currently made twice — once per site, once per function — with specific examples per site. | Map the people-manager cohort by site and function. | M4 (Stakeholder Mapping) — "Casablanca," "Kenitra," "Settat" people-manager cohorts logged. | — | — |
+| **Week 8** | Confirm the Phase 1 gate: current-state assessment signed off. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Current Operating Model Assessment closes once the duplication is quantified with specific, site-attributed examples.*
+
+#### Phase 2 — TOM Design (Weeks 6–14)
+
+Designs the target operating model — function-based reporting — at the conceptual level before detailed org design begins.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 6** | Begin target operating model design workshops with the Steering Committee. | — | M21 — routine log. | (Phase 1 gate also closes this week) | — |
+| **Week 10** | Continue TOM design; confirm which decisions move to central function heads versus stay site-local. | — | M21 — routine log. | — | — |
+| **Week 14** | Confirm the Phase 2 gate: target operating model signed off. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: TOM Design closes once the target operating model — which decisions centralize, which stay site-local — is signed off at the conceptual level.*
+
+#### Phase 3 — Detailed Org Design (Weeks 12–18)
+
+Translates the target operating model into specific reporting lines, named roles, and decision rights.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 12** | Begin detailed org design: specific reporting lines per function per site. | — | M21 — routine log. | — | — |
+| **Week 15** | Confirm decision-rights matrix — who decides what, under the new model, without ambiguity. | Re-score ADKAR — Knowledge building as the detailed design circulates. | M5 (ADKAR Engine) — Knowledge 3. | — | — |
+| **Week 18** | Confirm the Phase 3 gate: detailed org design and decision-rights matrix signed off. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Detailed Org Design closes once every reporting line and decision right is named specifically, with no ambiguity left for Pilot Transition to surface.*
+
+#### Phase 4 — Pilot Transition (Weeks 17–22)
+
+Casablanca Finance transitions first — a single function, single site, before the full three-site, three-function transition.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 17** | Prepare the Casablanca Finance pilot transition. | — | M21 — routine log. | (Phase 3 gate also closes this week) | — |
+| **Week 19** | Execute the Casablanca Finance pilot: reporting line moves from site director to central Finance Function Head. | Weekly pulse check begins for the pilot cohort. | M5 (ADKAR Engine) — Casablanca Finance: Ability 3. | — | — |
+| **Week 22** | Confirm the Phase 4 gate: pilot transition stable. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Pilot cohort stability |
+
+*Phase gate: Pilot Transition closes once Casablanca Finance's new reporting line is confirmed stable — the evidence base for the Full Transition decision.*
+
+#### Phase 5 — Full Transition (Weeks 21–27)
+
+Extends the new reporting structure to all three functions across all three sites — the phase that, per journi's own scenario library, closes looking clean right before the regression surfaces.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 21** | Begin full transition planning across all three functions and sites. | — | M21 — routine log. | (Phase 4 active) | — |
+| **Week 23** | Execute full transition: Operations and Quality functions, all three sites, move to central function-head reporting. | — | M8 (Communications) — full-transition announcement, all 95 staff. | — | — |
+| **Week 25** | Confirm all 95 people-managers report against the new structure. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Transition completion (95/95) |
+| **Week 26** | — | Log the program's first 30-day sustainment checkpoint. **The checkpoint lands High regression risk: several sites' day-to-day decisions are quietly reverting to the old site-director escalation path under real operational pressure. journi's ALT-002 (Regression Risk Score Critical) fires, and ALT-015 (Sustainment Sign-Off Blocked) follows automatically.** | M12 (Sustainment) — Checkpoint 1: regression-risk flag **High**. Sign-off toggle: blocked. | **ALT-002 fires this week, ALT-015 follows** (Section 4.2) | Regression-risk flag (High) |
+| **Week 27** | Escalate to the Steering Committee: the checkpoint finding, not the Week 25 transition-completion reading, is the program's real current state. | Begin root-cause investigation into which specific decisions are reverting and why. | M21 (Field Notes) — Category: Decision · Title: "Regression Root-Cause Investigation Opened." | ALT-002/015 active | — |
+
+*Phase gate: Full Transition's own completion (Week 25) is not the same as this phase closing — the phase remains open, and the program's sign-off blocked, until the regression identified at the Week 26 checkpoint is resolved.*
+
+#### Phase 6 — Governance Adoption Tracking (Weeks 26–32)
+
+The regression's real root cause and correction — the phase this program's honesty actually depends on.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 27** | Support the root-cause investigation logistics across all three sites. | (investigation opened — see Phase 5, Week 27) | M21 — routine log. | (see Phase 5, Week 27) | — |
+| **Week 28** | — | Confirm the root cause: under real operational pressure (a production issue, a customer escalation), people-managers default to the fastest known path — the old site director — rather than the new, less-practiced central function head. | M21 (Field Notes) — Category: Decision · Title: "Root Cause Confirmed: Pressure-Driven Reversion to Old Escalation Habit." | ALT-002/015 active | — |
+| **Week 29** | Support rollout of a reinforcement fix: a simple, visible decision-rights reference card for exactly the pressure moments where reversion happened. | Coach site directors specifically to redirect escalations to the new function-head path rather than quietly absorb them. | M21 (Field Notes) — Category: Decision · Title: "Reinforcement Fix Deployed — Decision-Rights Reference Card." | ALT-002/015 active | — |
+| **Week 30** | — | Monitor decision-routing for two weeks against the fix. | M10 (Resistance) — n/a; tracked as adoption metric, not resistance. | ALT-002/015 active | Correct-routing rate |
+| **Week 31** | — | Confirm correct-routing rate has recovered across all three sites. | M12 (Sustainment) — pre-checkpoint-2 monitoring reading, trending clean. | ALT-002/015 active (pending second checkpoint) | — |
+| **Week 32** | Confirm the Phase 6 gate: a second, clean 30-day-equivalent checkpoint. | Log Checkpoint 2: regression-risk flag downgraded to **Low**. Toggle the sustainment sign-off. | M12 (Sustainment) — Checkpoint 2: regression-risk flag **Low**. Sign-off toggle: **set**. | **ALT-002/015 resolved this week** | Regression-risk flag (Low) |
+
+*Phase gate: Governance Adoption Tracking closes only once a second, independent checkpoint confirms the regression is resolved — not on the corrective action being deployed alone.*
+
+#### Phase 7 — Standing Rhythm Handover (Weeks 30–34)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 30** | Begin drafting the standing governance rhythm handover package alongside the final Phase 6 monitoring weeks. | — | M21 — routine log. | (Phase 6 active) | — |
+| **Week 32** | Finalize the handover package: standing monthly function-head governance meeting, replacing the program's own weekly cadence. | — | M21 — routine log. | (Phase 6 gate also closes this week) | — |
+| **Week 34** | Confirm program close. | Set Lewin to **Refreeze**, justification citing the second, clean checkpoint. | M3 (Initiative Registry) — Lewin: "Refreeze." Justification: "Two consecutive checkpoints confirm the new reporting structure holds under real pressure, not only in the immediate post-transition weeks." | — | Lewin state (confirmed Refreeze) |
+
+*Phase gate: Standing Rhythm Handover — and the program itself — closes once governance ownership transfers to the standing monthly function-head rhythm. Total program length: 34 weeks, one regression detected and resolved, exactly as journi's own scenario library states.*
