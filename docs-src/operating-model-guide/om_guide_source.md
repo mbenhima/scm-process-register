@@ -229,3 +229,45 @@ The regression's real root cause and correction — the phase this program's hon
 | **Week 34** | Confirm program close. | Set Lewin to **Refreeze**, justification citing the second, clean checkpoint. | M3 (Initiative Registry) — Lewin: "Refreeze." Justification: "Two consecutive checkpoints confirm the new reporting structure holds under real pressure, not only in the immediate post-transition weeks." | — | Lewin state (confirmed Refreeze) |
 
 *Phase gate: Standing Rhythm Handover — and the program itself — closes once governance ownership transfers to the standing monthly function-head rhythm. Total program length: 34 weeks, one regression detected and resolved, exactly as journi's own scenario library states.*
+
+### 4.2 Master WBS & Gantt — Every Task and Step, PM and CM Tracks, Across the Four Frameworks
+
+| ID | Task / Step Name | Track | Week(s) | Lewin | ADKAR | Bridges | Kübler-Ross |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Interviews; duplication quantified | Joint | 1–5 | Unfreeze | Awareness | Ending | Denial |
+| T1.1-S2 | Phase 1 sign-off | PM | 8 | Unfreeze | Awareness | Ending | Denial |
+| T2.1-S1 | TOM design workshops | Joint | 6–10 | Unfreeze | Awareness → Desire | Ending | Denial |
+| T2.1-S2 | TOM sign-off | PM | 14 | Unfreeze | Desire | Ending → Neutral Zone | Denial → Resistance/Anger |
+| T3.1-S1 | Reporting lines and decision rights designed | PM | 12–15 | Unfreeze | Desire → Knowledge | Neutral Zone | Resistance/Anger |
+| T3.1-S2 | Detailed org design sign-off | PM | 18 | Unfreeze | Knowledge | Neutral Zone | Resistance/Anger |
+| T4.1-S1 | Casablanca Finance pilot executed | CM | 17–19 | Unfreeze | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration |
+| T4.1-S2 | Pilot stability confirmed | PM | 22 | Change | Ability | Neutral Zone | Exploration |
+| T5.1-S1 | All functions/sites transition | Joint | 21–25 | Change | Ability | Neutral Zone | Exploration |
+| T5.1-S2 | Checkpoint 1: regression detected (ALT-002/015) | CM | 26–27 | Change | Ability | Neutral Zone | Exploration → Resistance/Anger (pressure-driven) |
+| T6.1-S1 | Root cause confirmed; reinforcement fix deployed | CM | 28–29 | Change | Ability → Reinforcement | Neutral Zone | Resistance/Anger → Exploration |
+| T6.1-S2 | Checkpoint 2 clean; sign-off set | Joint | 30–32 | Change | Reinforcement | Neutral Zone → New Beginning | Exploration → Commitment |
+| T7.1-S1 | Standing rhythm handover package | PM | 30–32 | Change | Reinforcement | New Beginning | Commitment |
+| T7.1-S2 | Refreeze confirmed; program closes | Joint | 34 | **Refreeze** | Reinforcement | New Beginning | Commitment |
+
+*Table 4.2.1 — Master WBS & Gantt, framework view. All 14 Task/Step rows across the full 34-week program.*
+
+### 4.3 Master WBS & Gantt — Every Task and Step, Techniques and Tools
+
+| ID | Task / Step Name | Track | Week(s) | Technique Name | Technique Goal | Technique Details | Recommended Tool |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Interviews; duplication quantified | Joint | 1–5 | Cross-site duplication interview | Borrow and confirm the ERP program's own Build-phase duplication evidence directly from site leaders. | Interview site directors and function heads across all three sites; quantify specific duplicated decisions per site. | Taguette |
+| T1.1-S2 | Phase 1 sign-off | PM | 8 | Evidence-based sign-off | Confirm the current-state assessment before design work starts. | Steering Committee review of the quantified duplication findings. | LibreOffice Impress |
+| T2.1-S1 | TOM design workshops | Joint | 6–10 | Target operating model design | Define which decisions centralize and which stay site-local, at the conceptual level. | Structured workshops with the Steering Committee, working from the Phase 1 evidence. | Excalidraw |
+| T2.1-S2 | TOM sign-off | PM | 14 | Design review and sign-off | Confirm the target operating model before detailed design begins. | Steering Committee sign-off on the conceptual model. | journi M17 — WBS & Gantt |
+| T3.1-S1 | Reporting lines and decision rights designed | PM | 12–15 | Decision-rights matrix design | Remove ambiguity about who decides what before transition, not during it. | Name every reporting line and decision right specifically, per function, per site. | BookStack |
+| T3.1-S2 | Detailed org design sign-off | PM | 18 | Design review and sign-off | Confirm the detailed design is unambiguous before Pilot Transition. | Steering Committee review; no open decision-rights questions carried into Phase 4. | journi M17 — WBS & Gantt |
+| T4.1-S1 | Casablanca Finance pilot executed | CM | 17–19 | Single-function, single-site pilot | Test the new reporting line on one bounded case before the full three-site transition. | Casablanca Finance moves from site-director to central Finance Function Head reporting. | journi M8 — Communications |
+| T4.1-S2 | Pilot stability confirmed | PM | 22 | Pilot stability confirmation | Confirm the pilot holds before using it as evidence for the full transition. | Weekly pulse check across the pilot cohort; stability confirmed before Phase 5 begins. | journi M5 — ADKAR Engine |
+| T5.1-S1 | All functions/sites transition | Joint | 21–25 | Full-population transition | Extend the new reporting structure to all 95 people-managers across all three sites and functions. | Org-wide announcement; new reporting lines take effect for Operations and Quality alongside Finance. | journi M8 — Communications |
+| T5.1-S2 | Checkpoint 1: regression detected | CM | 26–27 | 30-day sustainment checkpoint | Catch a real regression before it's mistaken for a stable new normal. | Log the first sustainment checkpoint per journi's standard cadence; the regression-risk flag is set from real evidence, not assumed clean. | journi M12 — Sustainment |
+| T6.1-S1 | Root cause confirmed; fix deployed | CM | 28–29 | Pressure-moment root-cause analysis | Find the specific moments the reversion happens in, not a general resistance explanation. | Trace reversions to real operational-pressure moments (production issues, customer escalations) where the old path was faster and more familiar. | journi M21 — Field Notes |
+| T6.1-S2 | Checkpoint 2 clean; sign-off set | Joint | 30–32 | Second independent checkpoint | Confirm the fix holds under real conditions, not just immediately after deployment. | A second, independently-run checkpoint at the same rigor as the first, not a lighter confirmatory check. | journi M12 — Sustainment |
+| T7.1-S1 | Standing rhythm handover package | PM | 30–32 | Standing governance rhythm design | Replace the program's own weekly cadence with a sustainable standing rhythm. | Design a monthly function-head governance meeting as the ongoing home for decisions the program's weekly cadence used to hold. | journi M17 — WBS & Gantt |
+| T7.1-S2 | Refreeze confirmed; program closes | Joint | 34 | Confirmed Refreeze | Confirm the structure holds under real pressure, not only in the immediate post-transition weeks. | Set Lewin to Refreeze citing both checkpoints, not the Week 25 transition-completion reading alone. | journi M3 — Initiative Registry |
+
+*Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
