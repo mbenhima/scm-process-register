@@ -273,3 +273,133 @@ Confirms the skill holds without active coaching — this program's actual close
 | **Week 43** | Confirm the Phase 7 gate: skills sustainment confirmed, program closes. | Close Lewin at **Refreeze**, justification: "Two consecutive sustainment checks confirm the skill holds without active coaching — the program's own milestone, in the absence of a go-live to anchor to." | M3 (Initiative Registry) — Lewin: **Refreeze**. M17 — Phase Gate Joint Decision: **Go**. | — | Two-check sustained retention rate |
 
 *Phase gate: Skills Sustainment closes, and the program closes with it, once two consecutive checkpoints confirm the skill holds without active coaching.*
+
+### 4.2 Master WBS & Gantt — Every Task and Step, PM and CM Tracks, Across the Four Frameworks
+
+| ID | Task / Step Name | Track | Week(s) | Lewin | ADKAR | Bridges | Kübler-Ross |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Plant-floor skills assessment, both plants | PM | 1–5 | Unfreeze | Awareness | Ending | Denial |
+| T1.1-S2 | Skills-gap findings consolidated and signed off | Joint | 6–7 | Unfreeze | Awareness | Ending | Denial |
+| T2.1-S1 | Curriculum drafted, AI-assisted via M16 | PM | 8–12 | Unfreeze | Awareness → Knowledge | Ending → Neutral Zone | Denial → Resistance/Anger |
+| T2.1-S2 | Curriculum finalized, trainer readiness confirmed | Joint | 13–15 | Unfreeze | Knowledge | Neutral Zone | Resistance/Anger |
+| T3.1-S1 | Pilot cohort delivered and validated | CM | 15–23 | Change | Knowledge → Ability | Neutral Zone | Resistance/Anger → Exploration |
+| T3.1-S2 | Full two-plant deployment delivered | CM | 24–29 | Change | Ability | Neutral Zone | Exploration |
+| T4.1-S1 | Hands-on competency verification, pilot and full waves | PM | 23–29 | Change | Ability | Neutral Zone | Exploration |
+| T4.1-S2 | Refresher sessions run, 100% certification confirmed | Joint | 30–31 | Change | Ability | Neutral Zone | Exploration |
+| T5.1-S1 | Structured practical-application monitoring, both plants | CM | 29–34 | Change | Ability → Reinforcement | Neutral Zone | Exploration → Commitment |
+| T5.1-S2 | Daily active system-use confirmed | Joint | 35 | Change | Reinforcement | Neutral Zone → New Beginning | Commitment |
+| T6.1-S1 | Supervisor coaching rounds, both plants | CM | 31–38 | Change | Reinforcement | New Beginning | Commitment |
+| T6.1-S2 | Independent-use rate confirmed | Joint | 39 | Change | Reinforcement | New Beginning | Commitment |
+| T7.1-S1 | Sustainment checkpoints, two checks, both plants | CM | 36–42 | Change → Refreeze | Reinforcement | New Beginning | Commitment |
+| T7.1-S2 | Program closes; Refreeze confirmed | Joint | 43 | **Refreeze** | Reinforcement | New Beginning | Commitment |
+
+*Table 4.2.1 — Master WBS & Gantt, framework view. All 14 Task/Step rows across the full 43-week program.*
+
+### 4.3 Master WBS & Gantt — Every Task and Step, Techniques and Tools
+
+| ID | Task / Step Name | Track | Week(s) | Technique Name | Technique Goal | Technique Details | Recommended Tool |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Plant-floor skills assessment, both plants | PM | 1–5 | Plant-floor skills survey | Establish exactly which digital and systems skills 620 staff currently lack. | Structured hands-on observation plus short interviews across both plants, not a self-report survey alone. | On-site observation checklist |
+| T1.1-S2 | Skills-gap findings consolidated and signed off | Joint | 6–7 | Cross-plant gap consolidation | Produce one unified skills-gap picture across Kenitra and Settat. | Compare findings by role and task; flag any site-specific gap rather than average it away. | LibreOffice Calc |
+| T2.1-S1 | Curriculum drafted, AI-assisted via M16 | PM | 8–12 | AI-assisted curriculum drafting | Draft usable module content quickly without a dedicated instructional-design team. | Use M16's AI Use Case Library to draft each module from the skills-gap findings, then human-review for plant-floor accuracy. | journi M16 (AI Use Case Library) |
+| T2.1-S2 | Curriculum finalized, trainer readiness confirmed | Joint | 13–15 | Train-the-trainer | Confirm the delivery team can teach the finalized curriculum consistently across both plants. | Hands-on rehearsal of every module with the actual delivery team before pilot delivery. | journi M9 (Training) |
+| T3.1-S1 | Pilot cohort delivered and validated | CM | 15–23 | Pilot-then-refine delivery | Validate the curriculum against a real cohort before committing both plants' full population to it. | Deliver to a 40-person Kenitra pilot cohort, gather feedback, refine before full deployment. | journi M9 (Training) |
+| T3.1-S2 | Full two-plant deployment delivered | CM | 24–29 | Staggered wave deployment | Deliver to 620 staff across two plants without pulling the whole floor off task at once. | Deploy in scheduled waves by plant, with make-up sessions for absences. | journi M9 (Training) |
+| T4.1-S1 | Hands-on competency verification, pilot and full waves | PM | 23–29 | Hands-on competency test | Verify actual usable skill, not just attendance. | A practical systems test per staff member, distinct from a written quiz. | journi M9 (Training) — competency record |
+| T4.1-S2 | Refresher sessions run, 100% certification confirmed | Joint | 30–31 | Targeted refresher | Close specific competency gaps found by verification without re-running the whole curriculum. | Short, targeted sessions for only the staff and modules where verification found a gap. | journi M9 (Training) |
+| T5.1-S1 | Structured practical-application monitoring, both plants | CM | 29–34 | Real-world use monitoring | Confirm the verified skill is actually used daily on the floor, not just demonstrated once. | Structured floor observation across both plants over several weeks. | journi M21 (Field Notes) |
+| T5.1-S2 | Daily active system-use confirmed | Joint | 35 | Daily active-use confirmation | Formally close the practical-application phase against a measurable usage rate. | Compare observed daily use against the phase's own target rate. | journi M17 (WBS & Gantt) |
+| T6.1-S1 | Supervisor coaching rounds, both plants | CM | 31–38 | Supervisor-led on-the-job coaching | Lock in the skill through direct floor supervision, not just self-practice. | Trained shift supervisors run structured coaching rounds with staff still short of independent use. | journi M9 (Training) |
+| T6.1-S2 | Independent-use rate confirmed | Joint | 39 | Independent-use verification | Confirm staff no longer need active coaching to use the skill correctly. | Supervisor sign-off per staff member against a simple independent-use checklist. | journi M21 (Field Notes) |
+| T7.1-S1 | Sustainment checkpoints, two checks, both plants | CM | 36–42 | Two-checkpoint sustainment tracking | Confirm the skill holds without active coaching, not just immediately after it ends. | Two sustainment checks spaced several weeks apart, both plants. | journi M12 (Sustainment) |
+| T7.1-S2 | Program closes; Refreeze confirmed | Joint | 43 | Program closure and Refreeze confirmation | Formally close the program against a genuine sustained-skill milestone, not a calendar date. | Confirm two consecutive clean sustainment checks before closing Lewin at Refreeze. | journi M3 (Initiative Registry) |
+
+*Table 4.3.1 — Master WBS & Gantt, techniques and tools view. Same 14 Task/Step rows as Table 4.2.1.*
+
+### 4.4 Six Contingency Patterns, in Detail
+
+This program's real record shows no alert firing across its 43 weeks — not because nothing could go wrong, but because none of it did. The six patterns below are realistic ways this specific program could have gone differently, in the same operational detail as this series' other exception sections, each explicitly noted as **not having occurred** in this program's real record.
+
+#### C1 — Skills-Gap Assessment Misses a Real Gap (would map to Phase 1, Weeks 1–7)
+
+**Detailed description.** The plant-floor assessment undercounts a specific skill gap — staff can navigate a screen but cannot correctly interpret an error message, for example — because observation and interview don't surface a gap that only appears under real operating pressure. This did not occur; Phase 1's consolidated findings held through the rest of the program.
+
+**Trigger.** The gap surfaces later, during Training Delivery or Practical Application, as unexpectedly slow module completion or unusually high friction on one specific skill.
+
+**Timeline impact.** Would require reopening Phase 1's findings for the specific skill area and adding a module or module segment mid-curriculum — a targeted addition, not a full restart.
+
+**Recovery tasks.** Re-assess the specific skill area with a more targeted method (hands-on task simulation, not interview alone); add a short curriculum module bridging the gap; re-verify competency for the affected skill only.
+
+**Outputs.** A corrected skills-gap record; an added curriculum module; a re-verified competency record for the specific skill.
+
+**RACSI.** R = PM, FPO · A = CM · C = ITL · S = SUP · I = ES, EU
+
+#### C2 — AI-Drafted Curriculum Content Is Technically Inaccurate (would map to Phase 2, Weeks 9–12)
+
+**Detailed description.** M16's AI-assisted drafting produces module content that is fluent but technically wrong for Bouregreg Group's specific systems configuration — a generic answer where a plant-specific one was needed. This did not occur; Phase 2's human-review step caught nothing requiring correction.
+
+**Trigger.** Human review during Phase 2 (or, worse, plant-floor feedback during pilot delivery) catches a factual error in drafted content.
+
+**Timeline impact.** Minor if caught during Phase 2's own review step; more disruptive if it reaches pilot delivery, since it would require pulling the affected module and re-delivering it.
+
+**Recovery tasks.** Strengthen the human-review step between AI drafting and finalization, with Younes Berrada specifically validating systems-configuration accuracy; if the error reached delivery, issue a correction session for the affected cohort.
+
+**Outputs.** A corrected module; a strengthened review step for the remaining modules; if needed, a correction-session record for any affected cohort.
+
+**RACSI.** R = ITL, FPO · A = CM · C = PM · S = SUP · I = ES, EU
+
+#### C3 — Pilot Cohort Reveals the Curriculum Doesn't Work As Designed (would map to Phase 3, Weeks 15–23)
+
+**Detailed description.** The pilot cohort's feedback, or its own competency results, shows the curriculum's pacing, format, or sequencing doesn't actually work for plant-floor learners — not a content error, a design one. This did not occur; the pilot cohort validated the curriculum as designed.
+
+**Trigger.** Pilot cohort feedback (Week 19) or pilot competency results (Weeks 23–24) showing a pattern of difficulty that traces to curriculum design, not individual skill gaps.
+
+**Timeline impact.** Would delay full deployment by however long a redesign of the affected portion takes — a real cost against the ERP program's own stagger, but exactly the cost Phase 3's pilot-before-full-deployment sequencing exists to absorb before it reaches all 620 staff.
+
+**Recovery tasks.** Redesign the affected curriculum portion based on specific pilot feedback; re-pilot the redesigned portion with a small group before committing to full deployment; only then proceed to full-plant delivery.
+
+**Outputs.** A redesigned curriculum portion; a re-piloted and confirmed design; an on-schedule, or minimally delayed, full deployment.
+
+**RACSI.** R = FPO, PM · A = CM · C = ITL · S = SUP · I = ES, EU
+
+#### C4 — Competency Verification Reveals Widespread Certification Failure (would map to Phase 4, Weeks 25–29)
+
+**Detailed description.** A large share of one wave's staff fail the hands-on competency test — not an individual gap but a systemic one, suggesting either the delivery or the test itself has a problem. This did not occur; every wave's verification results cleared cleanly.
+
+**Trigger.** A verification pass rate well below the near-100% Phase 4 is designed to produce.
+
+**Timeline impact.** Would pause the affected wave's Phase 4 close and require diagnosing whether the problem is in delivery or in the test itself before proceeding — a delay contained to the affected wave, not the whole program.
+
+**Recovery tasks.** Diagnose whether the failure traces to delivery quality or test design; re-deliver the affected module if it is a delivery problem, or redesign the test if it is a test-validity problem; re-verify only the affected wave.
+
+**Outputs.** A diagnosis record distinguishing delivery failure from test failure; a corrected delivery or test; a re-verified affected wave.
+
+**RACSI.** R = PM, FPO · A = CM · C = ITL · S = SUP · I = ES, EU
+
+#### C5 — Practical Application Reveals the Skill Doesn't Transfer to Real Conditions (would map to Phase 5, Weeks 29–35)
+
+**Detailed description.** Staff pass competency verification in a controlled setting but struggle to apply the skill under real plant-floor conditions — noise, time pressure, interruptions — a transfer gap distinct from a competency gap. This did not occur; floor observation confirmed the verified skill transferred directly into daily use.
+
+**Trigger.** Floor observation during Phase 5 showing verified-competent staff still defaulting to old methods under real operating pressure.
+
+**Timeline impact.** Would extend Phase 5's own monitoring period and pull forward some of Phase 6's coaching content earlier than planned — a sequencing adjustment more than a hard delay.
+
+**Recovery tasks.** Identify the specific real-condition factors causing the transfer gap; adjust practical-application support (job aids, quick-reference cards) for those conditions specifically; begin targeted coaching earlier than the formal Phase 6 start for the affected group.
+
+**Outputs.** A documented transfer-gap diagnosis; condition-specific job aids; an accelerated coaching start for the affected group.
+
+**RACSI.** R = CM, SUP · A = CM · C = FPO · S = PM · I = ES, ITL, EU
+
+#### C6 — Sustainment Check Reveals Skill Decay Months Later (would map to Phase 7, Weeks 37–41)
+
+**Detailed description.** The first or second sustainment checkpoint finds that skill use has genuinely decayed — staff have quietly reverted to old methods once active coaching stopped, the exact risk Phases 5 and 6 were designed against. This did not occur; both sustainment checkpoints logged regression risk as Low.
+
+**Trigger.** A sustainment checkpoint (Week 37, 38, or 41) logging regression risk as Medium or High rather than Low.
+
+**Timeline impact.** Would delay program closure past Week 43 while a refresher-coaching cycle runs, and would push the second sustainment check out to confirm the refresher actually held — a real, if bounded, extension.
+
+**Recovery tasks.** Run a short refresher-coaching cycle for the specific group and skill showing decay; identify whether the decay traces to a specific root cause (turnover, a system change, insufficient initial reinforcement) and address that cause directly, not just the symptom; re-run the sustainment check before closing the program.
+
+**Outputs.** A refresher-coaching record; a root-cause diagnosis; a confirmed clean sustainment check before program closure.
+
+**RACSI.** R = CM, SUP · A = ES · C = FPO, PM · S = ITL · I = EU
