@@ -80,3 +80,56 @@ Every claim above is traceable to a real journi record this guide builds: seven 
 ### 2.3 The Composite Readiness Index and Benchmarking, Read for This Case
 
 This program's Composite Readiness Index reads high and stable throughout — Knowledge and Ability both clear quickly against specific, checkable rules, and there is no real emotional undercurrent for Bridges or Kübler-Ross to track. Benchmarking reads "In Line" or "Ahead" for the program's whole life, and this guide's own honesty standard applies here just as it did for the Automation archetype guide: a clean record is reported as a clean record, not dramatized.
+
+
+## Part 3 — Tenant and Admin Setup
+
+### 3.1 The Existing Tenant: Bouregreg Group
+
+This program runs inside the same tenant journi's Master User Guide builds, under the existing Bouregreg Manufacturing Maroc Organization. No new Organization is needed — HR, Sales, and Customer Service already sit inside it.
+
+### 3.2 Step 1 — Onboarding the Compliance Team (M2)
+
+| Name | journi Role (RBAC) | Scope type | Scope | RACSI Code | Notes |
+|---|---|---|---|---|---|
+| Karim Idrissi | Sponsor | Project | Loi 09-08 Data Protection Compliance Program *(created in Step 2)* | ES | General Counsel / Chief Compliance Officer |
+| Sanaa Bouzoubaa | Change Manager | Project | Loi 09-08 Data Protection Compliance Program | CM | Owns day-to-day program execution |
+| Hamza Alaoui | Practitioner / Contributor | Project | Loi 09-08 Data Protection Compliance Program | PM | Compliance program lead |
+| Nadia Squalli | People Manager | Project | Loi 09-08 Data Protection Compliance Program | FPO | HR Data Privacy Lead |
+| Reda Fassi | Practitioner / Contributor | Project | Loi 09-08 Data Protection Compliance Program | ITL | Data systems and access-control lead |
+| Amine Tazi | People Manager | Project | Loi 09-08 Data Protection Compliance Program | SUP | Sales Operations Manager |
+
+### 3.3 Step 2 — Creating the CM Project (M1)
+
+1. On the Bouregreg Manufacturing Maroc Organization card, click **+ CM Project**. Fill in:
+   - Name: "Loi 09-08 Data Protection Compliance Program"
+   - Linked Main Project: **none**
+   - Owner: "Sanaa Bouzoubaa"
+   - Change type: **Compliance**
+   - Target population: "Any function touching personal data — HR, Sales, Customer Service (310)"
+   - Business driver: "A scheduled CNDP audit against Morocco's Loi n° 09-08 carries a fixed external deadline, not a discretionary program timeline."
+2. Save. Lewin opens at **Unfreeze**, justification: "Opening Unfreeze at program start, Week 1, run from the very start of the tenant's life given the fixed external deadline."
+3. On **Module 17 — WBS & Gantt**, load the **TPL-COMP-7** phase template (Regulatory Requirement & Gap Analysis → Control Design → Control Implementation → Internal Audit/Independent Testing → Controls Go Live → First Monitoring Cycle → Ongoing Compliance Handover).
+
+### 3.4 Step 3 — Governance (M2)
+
+Permission Matrix and the Governance Setting stay unchanged tenant-wide.
+
+### 3.5 Step 4 — Charters for This Program (M19)
+
+| Charter | Accountable (this program) | Review cadence |
+|---|---|---|
+| CHTR-01 Sponsorship / Leadership Charter | Karim Idrissi (ES) | Per Phase Gate |
+| CHTR-03 Communication Charter | Sanaa Bouzoubaa (CM) | Per communication wave |
+| CHTR-04 Organizational Impact Charter | Sanaa Bouzoubaa (CM) | On scope change |
+| CHTR-08 Pulse / Interview Charter | Sanaa Bouzoubaa (CM) | Per phase gate + ad hoc |
+
+### 3.6 Setup Checklist
+
+- [ ] Base tenant confirmed (Bouregreg Group, Bouregreg Manufacturing Maroc Organization)
+- [ ] Compliance team accounts created — Section 3.2
+- [ ] CM Project created, Lewin opened at Unfreeze — Section 3.3
+- [ ] TPL-COMP-7 phase template loaded on M17 — Section 3.3
+- [ ] Four applicable Charters reviewed and accountable owners confirmed — Section 3.5
+
+With this checklist complete, Part 4 runs the program forward, week by week.
