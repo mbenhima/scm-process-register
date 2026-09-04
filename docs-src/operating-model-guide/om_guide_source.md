@@ -293,3 +293,89 @@ The regression's real root cause and correction — the phase this program's hon
 | T7.1-S2 | Refreeze confirmed; program closes | Joint | 34 | Confirmed Refreeze | Confirm the structure holds under real pressure, not only in the immediate post-transition weeks. | Set Lewin to Refreeze citing both checkpoints, not the Week 25 transition-completion reading alone. | journi M3 — Initiative Registry |
 
 *Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
+
+### 4.4 Six Exceptions, in Detail
+
+#### E1 — Regression Risk Score Critical / Sustainment Sign-Off Blocked (Phase 5–6, Weeks 26–32)
+
+**Detailed description.** The program's first 30-day sustainment checkpoint found decisions at several sites quietly reverting to the old site-director escalation path under real operational pressure — journi's ALT-002 condition met exactly, with ALT-015 following automatically to block sign-off.
+
+**Trigger.** A sustainment checkpoint logging a High regression-risk flag.
+
+**Timeline impact.** Added six weeks to the program (Phase 6 in full) before sign-off, though it did not delay the Full Transition phase's own Week 25 completion.
+
+**Recovery tasks.** Root-cause the reversion to specific pressure moments (Week 28); deploy a visible decision-rights reference card and coach site directors to redirect rather than absorb escalations (Week 29); confirm correct-routing recovery over two weeks (Weeks 30–31); pass a second, independent checkpoint before setting sign-off (Week 32).
+
+**Outputs.** A downgraded Low regression-risk flag; a set sustainment sign-off; a documented root cause available for future operating-model programs.
+
+**RACSI.** R = CM, SUP · A = CM · C = FPO · S = PM · I = ES, EU
+
+#### E2 — Pilot Success Masks a Site-Specific Risk (Phase 4–5, Weeks 22–25)
+
+**Detailed description.** Casablanca Finance's pilot succeeds cleanly, but Casablanca's own operational pressure profile — steady, predictable finance-cycle deadlines — doesn't resemble Kenitra or Settat's plant-floor pressure profile (production incidents, unpredictable timing), the exact difference that later drives E1's regression at those sites specifically.
+
+**Trigger.** A pilot success reading generalized to Full Transition without checking whether the pilot site's pressure profile represents the others.
+
+**Timeline impact.** Would add one week to Phase 4 for a targeted pressure-profile comparison across all three sites before declaring the pilot sufficient evidence for Full Transition.
+
+**Recovery tasks.** Compare the pilot site's operational pressure pattern against the other two sites explicitly, not assume Casablanca's clean result generalizes; if profiles differ meaningfully, add a site-specific reinforcement plan to Full Transition's own design rather than wait for a checkpoint to find it.
+
+**Outputs.** A documented pressure-profile comparison; site-specific reinforcement plans built into Full Transition rather than discovered after the fact.
+
+**RACSI.** R = CM, PM · A = CM · C = SUP · S = FPO · I = ES, EU
+
+#### E3 — A Function Head Overwhelmed by Centralized Decision Volume (Phase 5, Weeks 23–26)
+
+**Detailed description.** The Finance Function Head, now receiving escalations from all three sites rather than one, cannot process the real decision volume alone — a capacity problem distinct from E1's habit-reversion problem, though both can look similar from the outside (decisions not reaching the new central path).
+
+**Trigger.** Escalation response-time data showing a genuine backlog at the Function Head level, not staff bypassing the new path.
+
+**Timeline impact.** Would add capacity-planning work to Phase 5, typically resolved by adding a deputy or a defined delegation rule rather than reversing the centralization itself.
+
+**Recovery tasks.** Distinguish a capacity problem from a habit problem before applying E1's reinforcement fix, since the two need different responses; add a delegation rule or deputy capacity where volume genuinely exceeds one person's throughput.
+
+**Outputs.** A capacity-adjusted decision-rights matrix; a documented distinction between this pattern and E1's, so future checkpoints correctly diagnose which one they're seeing.
+
+**RACSI.** R = FPO, PM · A = CM · C = ES · S = SUP · I = ITL, EU
+
+#### E4 — A Site Director Continues Deciding Unofficially (Phase 5–6, Weeks 24–30)
+
+**Detailed description.** A site director who lost formal decision authority continues making the same decisions informally — staff still bring them the question out of habit and relationship, and the director, not wanting to seem unhelpful, answers rather than redirecting.
+
+**Trigger.** A pattern where a specific site director's own team shows no adoption lag in surveys but the formal decision log shows no activity either — a gap between reported and actual routing.
+
+**Timeline impact.** Would add a direct one-on-one conversation cycle to Phase 6, similar in shape to E1's response but rooted in the departing authority-holder's own behavior, not staff habit.
+
+**Recovery tasks.** Address the site director directly and specifically — this is a leadership behavior question, not a staff training question; make the new routing structurally easier to follow than the informal one (for example, removing the director from a distribution list that made the informal path effortless).
+
+**Outputs.** A closed informal-routing pattern; a structural change removing the path of least resistance back to the old habit.
+
+**RACSI.** R = CM, ES · A = ES · C = FPO · S = PM · I = SUP, EU
+
+#### E5 — Reporting-Line Systems Lag Behind the Organizational Change (Phase 5, Weeks 23–26)
+
+**Detailed description.** HR and IT systems still show the old site-based reporting lines for several weeks after the organizational change takes effect, creating confusion about who formally approves what in systems that haven't caught up to the new structure.
+
+**Trigger.** A discrepancy between the announced new reporting lines and what HRIS or approval-workflow systems actually reflect.
+
+**Timeline impact.** Would add one to two weeks to Full Transition for a coordinated systems update, ideally planned into Phase 3's design work rather than discovered at go-live.
+
+**Recovery tasks.** Confirm which systems carry reporting-line data as a Phase 3 design task, not a Phase 5 afterthought; coordinate a single cutover date for all systems together rather than let them drift out of sync with each other.
+
+**Outputs.** A systems-cutover checklist added to future operating-model programs' Phase 3 design work; confirmed system-to-reality alignment.
+
+**RACSI.** R = ITL · A = PM · C = CM · S = FPO · I = ES, SUP, EU
+
+#### E6 — A Second, Smaller Regression Signal After Handover (Phase 7, Weeks 34+)
+
+**Detailed description.** A follow-up check three months after Standing Rhythm Handover finds a partial slip at one site — not the full reversion E1 caught, but a specific decision type quietly drifting back, testing whether the standing monthly governance rhythm actually catches what the dedicated program team used to.
+
+**Trigger.** A finding at a post-handover governance meeting that doesn't rise to a formal checkpoint but resembles E1's pattern at a smaller scale.
+
+**Timeline impact.** No impact to this program's own closed timeline, but it is exactly the test of whether Phase 7's handover actually transferred real ownership, not just a document.
+
+**Recovery tasks.** Treat the finding with the same rigor as E1, at the standing governance meeting rather than escalating it back to a since-disbanded program team; confirm the monthly rhythm itself, not the original program's mechanisms, is what catches and fixes it — the real proof the handover worked.
+
+**Outputs.** A confirmed-working standing governance rhythm; a closed partial-regression finding, resolved without reconvening the original program team.
+
+**RACSI.** R = SUP, FPO · A = ES · C = CM · S = PM · I = ITL, EU
