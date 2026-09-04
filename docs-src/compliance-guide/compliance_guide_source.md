@@ -283,3 +283,45 @@ Confirms the controls hold under real operating conditions, not just at the mome
 | **Week 64** | Confirm program close. | Set Lewin to **Refreeze**; toggle the sustainment sign-off. | M3 (Initiative Registry) — Lewin: "Refreeze." M12 (Sustainment) — sign-off toggle: **set**. | — | Sustainment sign-off (toggled) |
 
 *Phase gate: Ongoing Compliance Handover — and the program itself — closes once governance transfers to standing function owners. Total program length: 64 weeks, seven consecutive clean Phase Gate decisions, no ALT-009 firing. Standing compliance monitoring continues beyond Week 64, consistent with a regulatory obligation that does not have a project end date.*
+
+### 4.2 Master WBS & Gantt — Every Task and Step, PM and CM Tracks, Across the Four Frameworks
+
+| ID | Task / Step Name | Track | Week(s) | Lewin | ADKAR | Bridges | Kübler-Ross |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Regulatory requirement mapping | PM | 1–4 | Unfreeze | Awareness | Neutral Zone | Exploration |
+| T1.1-S2 | Gap analysis and Phase 1 sign-off | Joint | 5–14 | Unfreeze | Awareness | Neutral Zone | Exploration |
+| T2.1-S1 | Controls designed | PM | 12–23 | Unfreeze | Awareness → Knowledge | Neutral Zone | Exploration |
+| T2.1-S2 | Control catalogue sign-off | PM | 24–28 | Unfreeze | Knowledge | Neutral Zone | Exploration |
+| T3.1-S1 | Controls implemented | PM | 26–37 | Unfreeze | Knowledge → Ability | Neutral Zone | Exploration |
+| T3.1-S2 | Internal readiness check | CM | 38–40 | Unfreeze | Ability | Neutral Zone | Exploration |
+| T4.1-S1 | Independent testing conducted | CM | 40–45 | Unfreeze | Ability | Neutral Zone | Exploration |
+| T4.1-S2 | Testing findings closed | CM | 46–48 | Unfreeze | Ability | Neutral Zone | Exploration |
+| T5.1-S1 | Controls go live | CM | 46–48 | Change | Ability | Neutral Zone | Exploration |
+| T5.1-S2 | Go-live stability confirmed | PM | 49–52 | Change | Ability → Reinforcement | Neutral Zone | Exploration |
+| T6.1-S1 | First monitoring cycle conducted | CM | 50–56 | Change | Reinforcement | Neutral Zone → New Beginning | Exploration → Commitment |
+| T6.1-S2 | Monitoring cycle closed clean | CM | 57–58 | Change | Reinforcement | New Beginning | Commitment |
+| T7.1-S1 | Ongoing handover package | PM | 56–62 | Change | Reinforcement | New Beginning | Commitment |
+| T7.1-S2 | Refreeze confirmed; program closes | Joint | 63–64 | **Refreeze** | Reinforcement | New Beginning | Commitment |
+
+*Table 4.2.1 — Master WBS & Gantt, framework view. All 14 Task/Step rows across the full 64-week program.*
+
+### 4.3 Master WBS & Gantt — Every Task and Step, Techniques and Tools
+
+| ID | Task / Step Name | Track | Week(s) | Technique Name | Technique Goal | Technique Details | Recommended Tool |
+|---|---|---|---|---|---|---|---|
+| T1.1-S1 | Regulatory requirement mapping | PM | 1–4 | Statutory clause mapping | Establish exactly what Loi 09-08 requires before assessing current practice against it. | Map every relevant Loi 09-08 article to a specific business process it governs. | LibreOffice Calc |
+| T1.1-S2 | Gap analysis and sign-off | Joint | 5–14 | Cross-functional gap analysis | Quantify exactly where current practice falls short, by function. | Assess HR, Sales, and CS data-handling practice against every mapped requirement; consolidate into one report for Legal review. | Taguette |
+| T2.1-S1 | Controls designed | PM | 12–23 | Control catalogue design | Design specific, implementable controls closing every gap found. | Retention, access-restriction, subject-access-request, and consent-management controls, each specific enough to implement directly. | BookStack |
+| T2.1-S2 | Control catalogue sign-off | PM | 24–28 | Legal sufficiency review | Confirm every designed control actually satisfies the regulatory requirement it targets. | Legal review of the full control catalogue before implementation begins. | journi M17 — WBS & Gantt |
+| T3.1-S1 | Controls implemented | PM | 26–37 | Phased control implementation | Build and configure controls in the real systems and processes, function by function. | HR first, then Sales/CS, then process controls (subject-access-request, consent). | journi M17 — WBS & Gantt |
+| T3.1-S2 | Internal readiness check | CM | 38–40 | Pre-audit readiness review | Confirm implementation completeness before independent testing begins. | Internal check across all controls against the signed-off catalogue. | LibreOffice Calc |
+| T4.1-S1 | Independent testing conducted | CM | 40–45 | Independent control testing | Test every control with staff not involved in its own implementation. | Structured test plan against the full control catalogue, run by an independent team. | journi M21 — Field Notes |
+| T4.1-S2 | Testing findings closed | CM | 46–48 | Corrective action tracking | Close every testing finding before Controls Go Live, not after. | Track each finding to closure with an owner and a date. | LibreOffice Calc |
+| T5.1-S1 | Controls go live | CM | 46–48 | Sequenced go-live | Launch controls at a date deliberately sequenced against the ERP program's own critical weeks. | Controls go live for all three functions on one confirmed date. | journi M8 — Communications |
+| T5.1-S2 | Go-live stability confirmed | PM | 49–52 | Post-go-live stability monitoring | Confirm no immediate control failures before declaring the phase closed. | Monitor for issues in the first weeks after go-live. | journi M21 — Field Notes |
+| T6.1-S1 | First monitoring cycle conducted | CM | 50–56 | Standing monitoring cycle | Confirm controls hold under real operating conditions, not just at go-live. | Monthly-equivalent monitoring across all three functions, including a real subject-access-request spot-check. | journi M12 — Sustainment |
+| T6.1-S2 | Monitoring cycle closed clean | CM | 57–58 | Cycle closure and evidence compilation | Compile the monitoring cycle's results as direct evidence for the CNDP audit. | Consolidate all monitoring findings into the audit evidence package. | journi M12 — Sustainment |
+| T7.1-S1 | Ongoing handover package | PM | 56–62 | Standing ownership handover | Transfer ongoing compliance monitoring to named function owners before the program team stands down. | Package names owners per function and a standing monitoring cadence. | BookStack |
+| T7.1-S2 | Refreeze confirmed; program closes | Joint | 63–64 | Confirmed Refreeze | Formally close the program while standing compliance monitoring continues indefinitely. | Set Lewin to Refreeze; toggle sustainment sign-off. | journi M3 / M12 |
+
+*Table 4.3.1 — Master WBS & Gantt, technique view. Same 14 rows as Table 4.2.1, with the operational detail behind each step.*
