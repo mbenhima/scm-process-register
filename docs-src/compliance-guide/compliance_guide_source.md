@@ -413,3 +413,44 @@ None of the six patterns below actually occurred in Loi 09-08 Data Protection Co
 **Outputs.** A re-baselined schedule; an explicit, documented prioritization decision if full scope cannot be met by the new date.
 
 **RACSI.** R = PM, CM · A = ES · C = FPO, ITL · S = SUP · I = EU
+
+
+## Part 5 — Training Program: Checkable Compliance Behaviors Across Three Tiers
+
+### 5.1 What This Training Covers
+
+Per the E2E-COMP chain, MP-05 is present — but unlike the Cultural-change archetype's persuasion-focused curriculum, this training is built entirely around specific, checkable compliance behaviors: what a person handling personal data must actually do differently, verifiable against the same control checklist Phase 4's independent testers use, logged on M9. Nobody in this program is trained to *believe* in data protection; everyone who touches personal data is trained to *do* a defined set of things correctly, and the First Monitoring Cycle (Phase 7) checks that they still do.
+
+### 5.2 Tier 1 — Strategic Management (Weeks 1–16)
+
+**Cohort.** Karim Idrissi (Sponsor, General Counsel/Chief Compliance Officer), the HR, Sales, and Customer Service function heads.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Sponsoring a Fixed-Deadline Compliance Program | Why a CNDP-facing program cannot treat its own schedule as negotiable, and what sponsoring that discipline requires in practice — not general data-protection awareness. | 1–6 | Curriculum: "Sponsoring a Fixed-Deadline Compliance Program" · Cohort: "Sponsor." | 100% before Week 8 |
+| Reading a Phase Gate Decision Record | How to read Phase 1–3's Go/Conditional/No-Go decisions as accountable evidence, and what a Conditional or No-Go would actually require of the Sponsor if one occurred. | 12–16 | Curriculum: "Reading a Phase Gate Decision Record" · Cohort: "Sponsor, Function Heads." | 100% before Week 17 |
+
+### 5.3 Tier 2 — Operational Management (Weeks 14–52)
+
+**Cohort.** Nadia Squalli (FPO, HR Data Privacy Lead), Amine Tazi (SUP, Sales Operations Manager), and the Customer Service function's own designated data-privacy coordinator.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Operating the Control Design Checklist | How to apply Phase 2's designed controls to day-to-day HR, Sales, and Customer Service workflows — consent capture, data minimization, and retention limits as specific, checkable steps, not general principles. | 14–28 | Curriculum: "Operating the Control Design Checklist" · Cohort: "Function Owners." | 100% before Week 29 |
+| Preparing a Function for Independent Testing | What Phase 4's independent testers will actually check, and how to have the function's own evidence ready rather than reconstructed under audit pressure. | 38–48 | Curriculum: "Preparing a Function for Independent Testing" · Cohort: "Function Owners." | 100% before Week 49 |
+| Running the First Monitoring Cycle | How to keep the checklist live after Controls Go Live, not just at the moment of testing — the direct mechanism behind this program's seven consecutive clean Phase Gate decisions. | 50–58 | Curriculum: "Running the First Monitoring Cycle" · Cohort: "Function Owners." | 100% before Week 52 |
+
+### 5.4 Tier 3 — Operations (Frontline) (Weeks 40–52)
+
+**Cohort.** All 310 HR, Sales, and Customer Service staff who handle customer or employee personal data directly.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Handling a Data Subject Access Request | The specific, checkable steps for receiving, verifying, and responding to a request within the legally required window — not a general awareness session. | 40–44 | Curriculum: "Handling a Data Subject Access Request" · Cohort: "HR." | 100% before Week 45 |
+| Data Minimization in Daily Sales and CRM Entry | Exactly what personal-data fields are and are not to be captured or retained in day-to-day sales and customer-service work, checkable against the same fields Phase 4's testers inspect. | 40–44 | Curriculum: "Data Minimization in Daily Sales and CRM Entry" · Cohort: "Sales, Customer Service." | 100% before Week 45 |
+| Recognizing and Reporting a Suspected Data Incident | How to recognize a reportable incident and who to notify within the program's own incident-response window, rehearsed as a specific action sequence rather than a general "be careful" message. | 46–50 | Curriculum: "Recognizing and Reporting a Suspected Data Incident" · Cohort: "HR, Sales, Customer Service." | 100% before Week 51 |
+| Retention Schedule Compliance | The specific retention periods and deletion triggers for each personal-data category the function handles, checkable line-by-line against the retention schedule Phase 2 designed. | 48–52 | Curriculum: "Retention Schedule Compliance" · Cohort: "HR, Sales, Customer Service." | 100% before Week 53 |
+
+### 5.5 Why Checkable Behaviors, Not Persuasion, Is This Archetype's Training Model
+
+Every other guide in this series trains people to adopt a new way of working and then measures whether the adoption holds under pressure. This program measures something narrower and more binding: whether a defined set of actions — capture this field, retain data this long, report an incident within this window — is performed correctly, verified the same way Phase 4's independent testers verify it and the First Monitoring Cycle re-verifies it. Training completion here is not a proxy for confidence in the new structure, as it is in the Operating Model case; it is a direct, auditable input to the same evidence package CNDP itself may review. That is also why this program's training curriculum, unlike the Cultural or Operating Model guides in this series, carries no coaching or reinforcement track of its own: the recurring check is the First Monitoring Cycle, not a people-manager conversation, because a compliance behavior either happened correctly or it did not.
