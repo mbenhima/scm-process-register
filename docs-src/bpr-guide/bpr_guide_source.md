@@ -382,3 +382,41 @@ Extends the redesigned process, including the accuracy safeguard the pilot's res
 **Outputs.** A documented decision-rationale handover; a successor Process Owner onboarded and RACSI-updated before the departure.
 
 **RACSI.** R = CM, FPO · A = ES · C = PM · S = SUP · I = ITL, EU
+
+
+## Part 5 — Training Program: Process Literacy Across Three Tiers
+
+### 5.1 What This Training Covers
+
+Per the E2E-BPR chain, MP-05 is present and directly relevant here — unlike the Cultural archetype guide's parallel track, this training is squarely about the new process's mechanics, logged on M9.
+
+### 5.2 Tier 1 — Strategic Management (Weeks 1–4)
+
+**Cohort.** Karim Zniber (Sponsor).
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Sponsoring a Process Redesign That Costs Staff Real Expertise | Why generic sponsorship visibility isn't enough here — the specific credibility a Sponsor needs when the redesign genuinely obsoletes staff-built expertise. | 1–2 | Curriculum: "Sponsoring a Process Redesign" · Cohort: "Sponsor." | 100% before Week 5 |
+| Reading M14 for a BPR Program | How to read the Composite Readiness Index's expected dip during pilot without over-reacting to it. | 3–4 | Curriculum: "Reading M14 for a BPR Program" · Cohort: "Sponsor." | 100% before Week 8 |
+
+### 5.3 Tier 2 — Operational Management (Weeks 4–14)
+
+**Cohort.** Salwa Tazi (FPO), Amina Sebti (SUP).
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Leading Co-Design Without Groupthink | Practical facilitation skill for running the Phase 2 co-design workshops so the result reflects genuine expertise, not the loudest voice in the room — directly relevant to Exception E3's root cause. | 4–7 | Curriculum: "Leading Co-Design Without Groupthink" · Cohort: "Process Owner, Team Leads." | 100% before Week 8 |
+| Managing a Team Through a Redesign That Costs Real Expertise | Supervisory skills specific to a team whose valued expertise is being redesigned away, distinct from a generic change-management course. | 10–14 | Curriculum: "Managing a Team Through a Redesign" · Cohort: "Process Owner, Team Leads." | 100% before Week 16 |
+
+### 5.4 Tier 3 — Operations (Frontline) (Weeks 12–28)
+
+**Cohort.** All 140 Casablanca finance staff.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Using the Redesigned Order-to-Cash Process | Practical, step-by-step training on the new process, using the job aids drafted in Phase 3. | 12–24 (per sub-team rollout wave) | Curriculum: "Using the Redesigned Order-to-Cash Process" · Cohort: "AR" / "AP." | 100% within 2 weeks of each sub-team's rollout |
+| The New Accuracy Safeguard — When and Why | Practical training on the co-designed safeguard from Exception E1 — not just how to use it, but why it exists, so staff understand it as a real answer to a real concern. | 20–28 (per sub-team rollout wave) | Curriculum: "The New Accuracy Safeguard" · Cohort: "AR" / "AP." | 100% within 2 weeks of each sub-team's rollout |
+
+### 5.5 Training Completion and the Composite Readiness Index
+
+This program's training-completion term rises steadily through Phases 3–5, tracking each sub-team's rollout wave — a real, gradual curve rather than the Automation guide's near-immediate 100%, consistent with a program whose staff need genuine time to trust, not just learn, the new process.
