@@ -358,3 +358,41 @@ A rehearsal audit against both standards, run internally, before the real certif
 **Outputs.** A refilled coalition seat with confirmed real authority; a coalition-continuity practice logged for future departures.
 
 **RACSI.** R = CM, ES · A = ES · C = FPO · S = PM · I = SUP, ITL, EU
+
+
+## Part 5 — Training Program: Certification Literacy Across Three Tiers
+
+### 5.1 What This Training Covers
+
+Per the E2E-IMS chain, MP-05 is present and directly relevant — certification depends on staff correctly following documented procedures, which is fundamentally a training question, logged on M9.
+
+### 5.2 Tier 1 — Strategic Management (Weeks 1–10)
+
+**Cohort.** Nadia Fassi (Sponsor), and — once recruited — the Procurement Director and HR Business Partner coalition members.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Sponsoring a Cross-Functional Certification | Why quality-function authority alone doesn't extend to procurement or HR, and what a real coalition requires structurally, not just personally. | 1–4 | Curriculum: "Sponsoring a Cross-Functional Certification" · Cohort: "Sponsor." | 100% before Week 5 |
+| Coalition Governance for New Members | Onboarding for the coalition members recruited in Exception E1 — their real role, not a ceremonial title. | 29–31 | Curriculum: "Coalition Governance for New Members" · Cohort: "Procurement Director, HR Business Partner." | 100% before Week 33 |
+
+### 5.3 Tier 2 — Operational Management (Weeks 10–36)
+
+**Cohort.** Mehdi Ouahbi (FPO), Aziz Berrada (SUP).
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Leading Integrated Procedure Rollout | Practical rollout leadership for a single procedure set serving two standards, distinct from a single-standard certification. | 10–24 | Curriculum: "Leading Integrated Procedure Rollout" · Cohort: "Quality Lead, Operations Supervisor." | 100% before Week 26 |
+| Preparing a Team for Audit — Mock-up Through Certifying | Practical audit-readiness coaching, distinguishing documentation compliance from demonstrated practice. | 32–36 | Curriculum: "Preparing a Team for Audit" · Cohort: "Quality Lead, Operations Supervisor." | 100% before Week 38 |
+
+### 5.4 Tier 3 — Operations (Frontline) (Weeks 20–46)
+
+**Cohort.** All 410 Settat plant operations and quality staff.
+
+| Curriculum Entry | Content Focus | Weeks | M9 Entry — What to Log | Completion Target |
+|---|---|---|---|---|
+| Following the Integrated Management System | Practical training on the new procedures, using real plant-floor scenarios, not abstract standard language. | 20–34 (per function rollout wave) | Curriculum: "Following the Integrated Management System" · Cohort: "Operations" / "Procurement" / "HR." | 100% within 2 weeks of each function's rollout |
+| Sustaining Practice Beyond the Audit | Directly addresses Exception E4's audit-theater risk — why the procedure matters after the auditor leaves, not only during the audit. | 44–46 | Curriculum: "Sustaining Practice Beyond the Audit" · Cohort: "All 410." | 100% before certification, Week 50 |
+
+### 5.5 Training Completion and the Composite Readiness Index
+
+This program's training-completion term rises through Design and Implementation, then plateaus alongside the coalition gap (Section 2.3) — procurement and HR staff cannot meaningfully complete training on procedures their own function hasn't yet adopted. The term resumes climbing once the coalition is built and rollout resumes, a pattern this guide reads as confirming, not contradicting, the M7 coalition record.
