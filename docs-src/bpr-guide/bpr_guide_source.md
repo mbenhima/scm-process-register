@@ -137,3 +137,120 @@ CHTR-05 (Team Coaching, hypercare-specific) and CHTR-07 (Mentoring) stay dormant
 - [ ] Six applicable Charters reviewed and accountable owners confirmed — Section 3.5
 
 With this checklist complete, Part 4 runs the program forward, week by week.
+
+
+## Part 4 — Week-by-Week BPR Timeline: Normal Flow and Exceptions
+
+Part 3 ended with Order-to-Cash Process Redesign registered and its Lewin phase opened at Unfreeze, program Week 1. This Part runs that program forward for its full 50-week duration, against journi's TPL-BPR-7 template. Program Week 1 corresponds to Bouregreg Group's own org-calendar Week 3 — add 2 to convert a program week to its org-calendar equivalent. Every week carrying a phase transition, a Phase Gate, or an exception gets its own row; a pure-monitoring stretch with no distinct activity is shown at a lighter, still-regular cadence rather than repeating an identical row every single week — the same economy journi's own Master User Guide calendar uses for its steadier stretches.
+
+### 4.1 Normal Flow, Phase by Phase
+
+#### Phase 1 — Intake & Diagnosis (Weeks 1–7)
+
+Quantifies the real cost of the current process before any redesign work starts — the business case this program runs on has to be unambiguous, since the redesign will ask staff to give up real expertise.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 1** | Othmane Rifai holds program kickoff; confirms Karim Zniber's sponsorship. | Imane Berrada briefs the team; plans the workaround-inventory capture method. | M1 (Hierarchy) — verify the CM Project record matches the kickoff agreement. | — | — |
+| **Week 2** | Interview finance staff (AR and AP) about the current order-to-cash process, step by step. | Begin logging workaround findings neutrally, not yet as resistance entries. | M21 (Field Notes) — Category: Workshop · Title: "Order-to-Cash Interviews Begin." | — | — |
+| **Week 3** | Continue interviews across the full AR/AP cycle. | Compile the workaround inventory: manual credit-note re-keying, whiteboard-tracked partial shipments, manual bank-reconciliation matching. | M21 (Field Notes) — Body: "Four distinct workarounds identified, each traced to a specific process gap." | — | Workaround count |
+| **Week 4** | Pull reconciliation time logs across the full monthly cycle. | Quantify: three weeks of reconciliation work per month, traced to the four named workarounds. | M21 (Field Notes) — Body: "3 weeks/month, all four workarounds implicated, fully traced not estimated." | — | — |
+| **Week 5** | Draft the business case. | Begin stakeholder mapping. | M4 (Stakeholder Mapping) — "Casablanca Finance — AR" and "Casablanca Finance — AP" (dimension: Process, severity: High). | — | — |
+| **Week 6** | Present the draft business case to the Steering Committee. | Flag which sub-team (AR or AP) carries the deepest workaround exposure for the design phase's priority order. | M4 (Stakeholder Mapping) — AR cohort severity updated to Critical. | — | — |
+| **Week 7** | Finalize the business case for sign-off — Phase 1 gate. | Prepare for the design phase's co-design recruitment. | M21 (Field Notes) — Category: Decision · Title: "Business Case Finalized." | — | — |
+
+*Phase gate: Intake & Diagnosis closes once the business case is quantified against named, traced workarounds — not a general estimate.*
+
+#### Phase 2 — Clean-Slate Design (Weeks 5–8)
+
+Deliberately designs from the ideal future state, not the current process — and deliberately recruits the workaround-owning staff themselves into the design work, converting the program's biggest resistance risk into design expertise instead of excluding it.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 5** | Launch clean-slate design workshops, explicitly not anchored to the current process. | Recruit the workaround-owning staff into the design workshops directly — the core mitigation for this program's central risk. | M21 (Field Notes) — Category: Workshop · Title: "Clean-Slate Design Workshops Begin, Workaround-Owners Included." | (Phase 1 gate also closes this week) | — |
+| **Week 6** | Continue design workshops; map the future-state process end to end. | — | M21 — routine log. | — | — |
+| **Week 7** | Draft the future-state process map for review. | — | M21 — routine log. | — | — |
+| **Week 8** | Confirm the Phase 2 gate: clean-slate design signed off. | Log Lewin justification citing the co-designed process map. | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Clean-Slate Design closes once the future-state process is mapped end to end and signed off — with the same staff who built today's workarounds having helped design its replacement.*
+
+#### Phase 3 — Build (Weeks 8–16)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 8** | Begin build: configure the new process steps and any supporting tooling changes. | — | M17 (WBS & Gantt) — task status "In Progress." | (Phase 2 gate also closes this week) | — |
+| **Week 9** | Continue build; confirm integration points with existing finance systems. | — | M21 — routine log. | — | — |
+| **Week 10** | Continue build. | — | M21 — routine log. | — | — |
+| **Week 11** | Continue build; draft the new process's job aids. | — | M21 — routine log. | — | — |
+| **Week 12** | Continue build. | Review the draft job aids with Salwa Tazi for accuracy. | M21 — routine log. | — | — |
+| **Week 13** | Continue build; internal review of the configured process against the design map. | — | M21 — routine log. | — | — |
+| **Week 14** | Finalize build; select the single process step (credit-note issuance) for the Phase 4 pilot. | Capture the pilot baseline: current resistance log at zero, current cycle time for credit-note issuance. | M10 (Resistance) — baseline: 0 open entries. | — | Baseline resistance-entry count (0) |
+| **Week 15** | — | — | M21 — routine log. | — | — |
+| **Week 16** | Confirm the Phase 3 gate: build complete. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | — |
+
+*Phase gate: Build closes once the new process is fully configured and its job aids reviewed with the Process Owner.*
+
+#### Phase 4 — Pilot (Weeks 14–24)
+
+Runs the new process on a single step — credit-note issuance — with the AR team who most directly owns today's manual workaround for it. This is where the program's central risk actually surfaces, on schedule.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 14** | Prepare the pilot launch with the AR credit-note team. | — | M21 — routine log. | (Phase 3 gate also closes this week) | — |
+| **Week 15** | — | — | M21 — routine log. | — | — |
+| **Week 16** | Launch the pilot: credit-note issuance runs on the new process. | Weekly pulse check begins. | M5 (ADKAR Engine) — Awareness 4, Desire 3. | — | — |
+| **Week 17** | — | Continue weekly monitoring. | M5 — routine update. | — | — |
+| **Week 18** | — | — | M5 — routine update. | — | — |
+| **Week 19** | — | — | M5 — routine update. | — | — |
+| **Week 20** | — | First resistance entry logged: a senior AR staff member objects to losing manual control over credit-note approval, citing accuracy concerns. | M10 (Resistance) — Entry 1: "Manual-control loss objection, senior AR staff — accuracy concern cited." | — | Open resistance-entry count (1) |
+| **Week 21** | — | Second resistance entry logged: a related objection from a second AR staff member, same root theme. | M10 (Resistance) — Entry 2: "Same root theme — accuracy concern, second AR staff member." | — | Open resistance-entry count (2) |
+| **Week 22** | Escalate to Imane Berrada and the Steering Committee. | Third resistance entry lands — **journi's ALT-004 (Resistance Escalation Threshold Breached) fires**, three open entries within the pilot. | M10 (Resistance) — Entry 3: "Same root theme, third AR staff member — threshold crossed." | **ALT-004 fires this week** (Section 4.2) | Open resistance-entry count (3) |
+| **Week 23** | Support the mitigation response logistics. | Run direct, individual conversations with all three staff; co-design an accuracy safeguard (a secondary review step) directly with them rather than overriding the objection. | M21 (Field Notes) — Category: Decision · Title: "Accuracy Safeguard Co-Designed With Resisting Staff." | ALT-004 resolution in progress | — |
+| **Week 24** | Confirm the Phase 4 gate: pilot complete, resistance entries closed. | Close all three resistance entries, each linked to the new safeguard as its mitigation action. | M10 (Resistance) — all 3 entries: status "Closed," linked mitigation: "Secondary accuracy review step added." | **ALT-004 resolved this week** | Open resistance-entry count (0) |
+
+*Phase gate: Pilot closes once the resistance entries are not just counted but closed, each with a real, co-designed mitigation — not simply overridden.*
+
+#### Phase 5 — Rollout (Weeks 22–32)
+
+Extends the redesigned process, including the accuracy safeguard the pilot's resistance directly produced, to the remaining Casablanca finance population.
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 22** | Begin rollout planning, incorporating the pilot's accuracy safeguard into the rollout design. | (ALT-004 active — see Phase 4, Week 22) | M21 — routine log. | (see Phase 4, Week 22) | — |
+| **Week 23** | Continue rollout planning. | (ALT-004 resolution in progress — see Phase 4, Week 23) | M21 — routine log. | (see Phase 4, Week 23) | — |
+| **Week 24** | Confirm rollout plan, sequenced by finance sub-team. | (ALT-004 resolved — see Phase 4, Week 24) | M17 (WBS & Gantt) — rollout sequence logged. | (see Phase 4, Week 24) | — |
+| **Week 25** | Prepare rollout communications for the AR function beyond the pilot team. | — | M8 (Communications) — rollout announcement drafted. | — | — |
+| **Week 26** | Launch rollout to the AR function beyond the pilot team. | Monitor resistance log — none of the pilot's three closed entries recur elsewhere in AR. | M10 (Resistance) — 0 open entries, AR rollout. | — | — |
+| **Week 27** | Continue AR rollout monitoring. | — | M5 — routine update. | — | — |
+| **Week 28** | Begin rollout to the AP function. | — | M5 — routine update, AP cohort. | — | — |
+| **Week 29** | Continue AP rollout. | — | M5 — routine update. | — | — |
+| **Week 30** | Continue rollout across remaining AP teams. | — | M5 — routine update. | — | — |
+| **Week 31** | Confirm all sub-teams live on the redesigned process. | — | M21 — routine log. | — | — |
+| **Week 32** | Confirm the Phase 5 gate: rollout complete across all 140 finance staff. | — | M17 (WBS & Gantt) — Phase Gate Joint Decision: **Go**. | — | Rollout completion (140/140) |
+
+*Phase gate: Rollout closes once the redesigned process — including the safeguard the pilot's resistance produced — is live across all of Casablanca finance.*
+
+#### Phase 6 — Stabilization (Weeks 30–42)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 30** | Begin stabilization monitoring alongside the final rollout weeks. | — | M21 — routine log. | (Phase 5 active) | — |
+| **Week 32** | Continue monitoring. | — | M21 — routine log. | (Phase 5 gate also closes this week) | — |
+| **Week 34** | Monitor reconciliation cycle time against the pre-redesign baseline. | — | M14 (Analytics) — first post-rollout reconciliation-time reading. | — | Reconciliation time vs. baseline |
+| **Week 36** | Continue monitoring; confirm the accuracy safeguard has not introduced a new bottleneck. | — | M21 — routine log. | — | — |
+| **Week 38** | Continue monitoring; confirm the accuracy safeguard is being used correctly, not skipped. | — | M21 — routine log. | — | — |
+| **Week 40** | Continue monitoring alongside Phase 7's own start (Section 4.1, Phase 7). | — | M14 (Analytics) — second reconciliation-time reading, trending favorably. | — | — |
+| **Week 42** | Confirm the Phase 6 gate: reconciliation time reduced and holding, no new resistance patterns. | Set Lewin to **Change**. | M3 (Initiative Registry) — Lewin: "Change." | — | Reconciliation time reduction (weeks/month) |
+
+*Phase gate: Stabilization closes once the reduced reconciliation time holds for a full monthly cycle, not just a single favorable reading.*
+
+#### Phase 7 — Sustainment (Weeks 40–50)
+
+| Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
+|---|---|---|---|---|---|
+| **Week 40** | Begin sustainment planning alongside the final stabilization weeks. | Log the first sustainment checkpoint. | M12 (Sustainment) — first checkpoint logged. | (Phase 6 active) | — |
+| **Week 45** | — | Log quick wins from the redesigned process's first full quarter. | M12 (Sustainment) — quick wins logged. | — | — |
+| **Week 48** | Finalize the sustainment handover package. | Confirm the reconciliation-time reduction holds for a second consecutive cycle. | M14 (Analytics) — second consecutive favorable reading. | — | — |
+| **Week 50** | Confirm program close. | Set Lewin to **Refreeze**; toggle the sustainment sign-off. | M3 (Initiative Registry) — Lewin: "Refreeze." M12 (Sustainment) — sign-off toggle: **set**. | — | Sustainment sign-off (toggled) |
+
+*Phase gate: Sustainment — and the program itself — closes once the reconciliation-time reduction holds for two consecutive cycles and the sign-off is set. Total program length: 50 weeks, one resistance-escalation alert fired and resolved.*
