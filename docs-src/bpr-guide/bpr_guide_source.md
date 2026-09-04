@@ -141,7 +141,7 @@ With this checklist complete, Part 4 runs the program forward, week by week.
 
 ## Part 4 — Week-by-Week BPR Timeline: Normal Flow and Exceptions
 
-Part 3 ended with Order-to-Cash Process Redesign registered and its Lewin phase opened at Unfreeze, program Week 1. This Part runs that program forward for its full 50-week duration, against journi's TPL-BPR-7 template. Program Week 1 corresponds to Bouregreg Group's own org-calendar Week 3 — add 2 to convert a program week to its org-calendar equivalent. Every week carrying a phase transition, a Phase Gate, or an exception gets its own row; a pure-monitoring stretch with no distinct activity is shown at a lighter, still-regular cadence rather than repeating an identical row every single week — the same economy journi's own Master User Guide calendar uses for its steadier stretches.
+Part 3 ended with Order-to-Cash Process Redesign registered and its Lewin phase opened at Unfreeze, program Week 1. This Part runs that program forward for its full 50-week duration, against journi's TPL-BPR-7 template. Program Week 1 corresponds to Bouregreg Group's own org-calendar Week 3 — add 2 to convert a program week to its org-calendar equivalent. Every one of the program's 50 individual weeks is listed on its own row, so a reader can see exactly which week a framework reading, a phase transition, or an exception is active in.
 
 ### 4.1 Normal Flow, Phase by Phase
 
@@ -235,11 +235,17 @@ Extends the redesigned process, including the accuracy safeguard the pilot's res
 | Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
 |---|---|---|---|---|---|
 | **Week 30** | Begin stabilization monitoring alongside the final rollout weeks. | — | M21 — routine log. | (Phase 5 active) | — |
+| **Week 31** | Continue monitoring. | — | M21 — routine log. | — | — |
 | **Week 32** | Continue monitoring. | — | M21 — routine log. | (Phase 5 gate also closes this week) | — |
+| **Week 33** | Continue monitoring; no new resistance entries logged across any sub-team. | — | M10 (Resistance) — 0 open entries. | — | — |
 | **Week 34** | Monitor reconciliation cycle time against the pre-redesign baseline. | — | M14 (Analytics) — first post-rollout reconciliation-time reading. | — | Reconciliation time vs. baseline |
+| **Week 35** | Continue monitoring. | — | M21 — routine log. | — | — |
 | **Week 36** | Continue monitoring; confirm the accuracy safeguard has not introduced a new bottleneck. | — | M21 — routine log. | — | — |
+| **Week 37** | Continue monitoring. | — | M21 — routine log. | — | — |
 | **Week 38** | Continue monitoring; confirm the accuracy safeguard is being used correctly, not skipped. | — | M21 — routine log. | — | — |
+| **Week 39** | Continue monitoring. | — | M21 — routine log. | — | — |
 | **Week 40** | Continue monitoring alongside Phase 7's own start (Section 4.1, Phase 7). | — | M14 (Analytics) — second reconciliation-time reading, trending favorably. | — | — |
+| **Week 41** | Continue monitoring. | — | M21 — routine log. | — | — |
 | **Week 42** | Confirm the Phase 6 gate: reconciliation time reduced and holding, no new resistance patterns. | Set Lewin to **Change**. | M3 (Initiative Registry) — Lewin: "Change." | — | Reconciliation time reduction (weeks/month) |
 
 *Phase gate: Stabilization closes once the reduced reconciliation time holds for a full monthly cycle, not just a single favorable reading.*
@@ -249,8 +255,15 @@ Extends the redesigned process, including the accuracy safeguard the pilot's res
 | Week | Project Manager (PM) Track | Change Manager (CM) Track | journi Entry — What to Type In | Exception | What to Track |
 |---|---|---|---|---|---|
 | **Week 40** | Begin sustainment planning alongside the final stabilization weeks. | Log the first sustainment checkpoint. | M12 (Sustainment) — first checkpoint logged. | (Phase 6 active) | — |
+| **Week 41** | Continue sustainment planning. | — | M21 — routine log. | (Phase 6 active) | — |
+| **Week 42** | Continue sustainment planning. | — | M21 — routine log. | (Phase 6 gate also closes this week) | — |
+| **Week 43** | — | Log the second sustainment checkpoint; reconciliation time holding steady. | M12 (Sustainment) — checkpoint 2 logged, no regression flagged. | — | — |
+| **Week 44** | — | Continue monitoring. | M21 — routine log. | — | — |
 | **Week 45** | — | Log quick wins from the redesigned process's first full quarter. | M12 (Sustainment) — quick wins logged. | — | — |
+| **Week 46** | — | Continue monitoring. | M21 — routine log. | — | — |
+| **Week 47** | — | Continue monitoring ahead of the handover package. | M21 — routine log. | — | — |
 | **Week 48** | Finalize the sustainment handover package. | Confirm the reconciliation-time reduction holds for a second consecutive cycle. | M14 (Analytics) — second consecutive favorable reading. | — | — |
+| **Week 49** | Present the handover package to the Steering Committee. | — | M21 — routine log. | — | — |
 | **Week 50** | Confirm program close. | Set Lewin to **Refreeze**; toggle the sustainment sign-off. | M3 (Initiative Registry) — Lewin: "Refreeze." M12 (Sustainment) — sign-off toggle: **set**. | — | Sustainment sign-off (toggled) |
 
 *Phase gate: Sustainment — and the program itself — closes once the reconciliation-time reduction holds for two consecutive cycles and the sign-off is set. Total program length: 50 weeks, one resistance-escalation alert fired and resolved.*
