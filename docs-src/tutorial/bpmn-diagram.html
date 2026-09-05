@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; font-family: Arial, Helvetica, sans-serif; }
+  #stage { display: inline-block; background: #ffffff; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const BRAND = '#1F4B45'
+const BRAND_MID = '#275650'
+const SAND = '#B8925A'
+const TEAL = '#3F827B'
+const RED = '#B5533C'
+const LANE_BG = '#F7F8F7'
+const LANE_BG_ALT = '#EEF3F2'
+
+const LANES = ['Sponsor', 'Platform / Super Admin', 'PMO / Program Manager', 'Change Manager', 'People Manager']
+
+const PHASES = [
+  { id: 'Phase 0', name: 'Set Up Multi-\nTenant Structure' },
+  { id: 'Phase 1', name: 'Initiate &\nDiagnose' },
+  { id: 'Phase 2', name: 'Plan &\nPrepare' },
+  { id: 'Phase 3', name: 'Mobilize &\nExecute' },
+  { id: 'Phase 4', name: 'Reinforce &\nAdopt' },
+  { id: 'Phase 5', name: 'Sustain, Analyze\n& Benchmark' },
+  { id: 'Phase 6', name: 'Governance,\nRBAC & Language' },
+  { id: 'Phase 7', name: 'Justification, AI\n& LLM Connection' },
+]
+
+// lane index -> { phaseIdx -> [{id, kind}] }  kind: 'pm' | 'cm'
+const TASKS = {
+  0: {
+    0: [{ id: 'PM0.2', name: 'Register Main Project', kind: 'pm' }],
+    1: [{ id: 'PM1.1', name: 'Initiative profile', kind: 'pm' }, { id: 'CM1.2', name: 'Sponsor visibility baseline', kind: 'cm' }],
+    3: [{ id: 'CM3.3', name: 'Resistance logged & mitigated', kind: 'cm' }],
+  },
+  1: {
+    0: [{ id: 'PM0.1', name: 'Stand up hierarchy', kind: 'pm' }],
+    6: [
+      { id: 'PM6.2', name: 'Provision users / RBAC', kind: 'pm' },
+      { id: 'PM6.3', name: 'Language precedence', kind: 'pm' },
+      { id: 'PM6.4', name: 'Delete / cascade verify', kind: 'pm' },
+    ],
+    7: [{ id: 'PM7.1', name: 'Permission Matrix / justification', kind: 'pm' }],
+  },
+  2: {
+    0: [{ id: 'Start', kind: 'start' }],
+    1: [{ id: 'PM1.2', name: 'WBS & Gantt baseline', kind: 'pm' }],
+    2: [
+      { id: 'PM2.1', name: 'WBS actuals — training curriculum', kind: 'pm' },
+      { id: 'PM2.2', name: 'Review M4 Change Log', kind: 'pm' },
+    ],
+    3: [
+      { id: 'PM3.1', name: 'WBS actuals — Desire diagnosis', kind: 'pm' },
+      { id: 'PM3.2', name: 'Stage Lewin to Change', kind: 'pm' },
+    ],
+    4: [
+      { id: 'PM4.1', name: 'WBS actuals — go-live milestone', kind: 'pm' },
+      { id: 'PM4.2', name: 'Stage Lewin to Refreeze', kind: 'pm' },
+    ],
+    5: [
+      { id: 'PM5.1', name: 'Expand portfolio', kind: 'pm' },
+      { id: 'PM5.2', name: 'Confirm Readiness Index', kind: 'pm' },
+      { id: 'PM5.3', name: 'Benchmark peers', kind: 'pm' },
+      { id: 'PM5.4', name: 'Review WBS schedule gap', kind: 'pm' },
+    ],
+    6: [{ id: 'PM6.1', name: 'AI governance review', kind: 'pm' }],
+    7: [
+      { id: 'PM7.2', name: 'Activate AI use cases', kind: 'pm' },
+      { id: 'PM7.3', name: 'Connect LLM provider', kind: 'pm' },
+      { id: 'End', kind: 'end' },
+    ],
+  },
+  3: {
+    0: [{ id: 'CM0.1', name: 'Register & link CM Project', kind: 'cm' }],
+    1: [{ id: 'CM1.1', name: 'Map stakeholders', kind: 'cm' }],
+    2: [
+      { id: 'CM2.1', name: 'Score Awareness', kind: 'cm' },
+      { id: 'CM2.2', name: 'Log adoption risk', kind: 'cm' },
+      { id: 'CM2.4', name: 'Training curriculum', kind: 'cm' },
+      { id: 'CM2.3', name: 'Plan communication', kind: 'cm' },
+    ],
+    3: [
+      { id: 'CM3.1', name: 'Score Desire & diagnose', kind: 'cm' },
+      { id: 'CM3.2', name: 'Bridges & sentiment', kind: 'cm' },
+    ],
+    4: [
+      { id: 'CM4.2', name: 'Sustainment checkpoints reviewed', kind: 'cm' },
+      { id: 'CM4.3', name: 'Go-live milestone (journey map)', kind: 'cm' },
+    ],
+    5: [
+      { id: 'CM5.1', name: 'Sustainment checkpoint logged', kind: 'cm' },
+      { id: 'CM5.2', name: 'Score Awareness — Warehouse project', kind: 'cm' },
+    ],
+    7: [
+      { id: 'CM7.1', name: 'Risk mitigation + justified status', kind: 'cm' },
+      { id: 'CM7.2', name: 'Divergence detection', kind: 'cm' },
+      { id: 'CM7.3', name: 'Desire diagnosis & coaching', kind: 'cm' },
+    ],
+  },
+  4: {
+    4: [{ id: 'CM4.1', name: 'Manager readiness', kind: 'cm' }],
+    6: [
+      { id: 'CM6.1', name: 'Scoped resistance signal (People Mgr)', kind: 'cm' },
+      { id: 'CM6.2', name: 'Stakeholder group — Tangier project', kind: 'cm' },
+    ],
+  },
+}
+
+const LABEL_W = 190
+const COL_W = 330
+const HEADER_H = 150
+const LANE_H = 118
+const TOTAL_W = LABEL_W + COL_W * PHASES.length + 90
+const TOTAL_H = HEADER_H + LANE_H * LANES.length + 60
+
+const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+svg.setAttribute('width', TOTAL_W)
+svg.setAttribute('height', TOTAL_H)
+svg.setAttribute('viewBox', `0 0 ${TOTAL_W} ${TOTAL_H}`)
+document.getElementById('stage').appendChild(svg)
+
+function el(tag, attrs, text) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag)
+  for (const k in attrs) e.setAttribute(k, attrs[k])
+  if (text !== undefined) e.textContent = text
+  return e
+}
+
+function multilineText(x, y, lines, attrs) {
+  const g = el('text', { x, y, 'text-anchor': attrs['text-anchor'] || 'middle', 'font-size': attrs['font-size'] || 11, fill: attrs.fill || '#16221f', 'font-weight': attrs['font-weight'] || 'normal' })
+  lines.forEach((line, i) => {
+    const tspan = el('tspan', { x, dy: i === 0 ? 0 : (attrs.lineHeight || 13) })
+    tspan.textContent = line
+    g.appendChild(tspan)
+  })
+  return g
+}
+
+// ---- Title ----
+svg.appendChild(el('text', { x: TOTAL_W / 2, y: 32, 'text-anchor': 'middle', 'font-size': 20, 'font-weight': 'bold', fill: BRAND }, 'Change Management End-to-End Process — Kenitra Precision Manufacturing'))
+svg.appendChild(el('text', { x: TOTAL_W / 2, y: 52, 'text-anchor': 'middle', 'font-size': 11.5, fill: '#666666' }, 'BPMN pool: swimlanes = RACSI role; horizontal flow = Phase 0 → Phase 7; each Go/No-Go gateway is that phase’s Change Management Exit Checklist'))
+
+// ---- Phase header band ----
+PHASES.forEach((p, i) => {
+  const x = LABEL_W + i * COL_W
+  svg.appendChild(el('rect', { x, y: 68, width: COL_W - 6, height: 70, rx: 6, fill: i % 2 === 0 ? BRAND : BRAND_MID }))
+  svg.appendChild(el('text', { x: x + (COL_W - 6) / 2, y: 88, 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 'bold', fill: '#ffffff' }, p.id))
+  svg.appendChild(multilineText(x + (COL_W - 6) / 2, 105, p.name.split('\n'), { 'font-size': 10.5, fill: '#EAF3F1', lineHeight: 13 }))
+})
+
+// ---- Lane backgrounds + labels ----
+LANES.forEach((lane, li) => {
+  const y = HEADER_H + li * LANE_H
+  svg.appendChild(el('rect', { x: 0, y, width: TOTAL_W, height: LANE_H, fill: li % 2 === 0 ? LANE_BG : LANE_BG_ALT }))
+  svg.appendChild(el('rect', { x: 0, y, width: LABEL_W - 6, height: LANE_H, fill: BRAND }))
+  svg.appendChild(multilineText(LABEL_W / 2 - 3, y + LANE_H / 2 - 4, lane.split(' / '), { 'font-size': 11.5, 'font-weight': 'bold', fill: '#ffffff', lineHeight: 15 }))
+  svg.appendChild(el('line', { x1: 0, x2: TOTAL_W, y1: y, y2: y, stroke: '#ffffff', 'stroke-width': 1 }))
+})
+svg.appendChild(el('line', { x1: LABEL_W - 6, x2: LABEL_W - 6, y1: HEADER_H, y2: HEADER_H + LANE_H * LANES.length, stroke: BRAND, 'stroke-width': 2 }))
+
+// ---- Vertical phase separators ----
+PHASES.forEach((p, i) => {
+  const x = LABEL_W + i * COL_W
+  svg.appendChild(el('line', { x1: x, x2: x, y1: HEADER_H, y2: HEADER_H + LANE_H * LANES.length, stroke: '#ffffff', 'stroke-width': 1.5 }))
+})
+
+// ---- Go/No-Go gateways in PMO lane, between phases ----
+const pmoY = HEADER_H + 2 * LANE_H + LANE_H / 2
+for (let i = 0; i < PHASES.length; i++) {
+  const gx = LABEL_W + i * COL_W + COL_W - 3
+  const size = 13
+  svg.appendChild(el('rect', { x: gx - size, y: pmoY - size, width: size * 2, height: size * 2, fill: '#ffffff', stroke: RED, 'stroke-width': 2, transform: `rotate(45 ${gx} ${pmoY})` }))
+  svg.appendChild(el('text', { x: gx, y: pmoY - 18, 'text-anchor': 'middle', 'font-size': 8.5, 'font-weight': 'bold', fill: RED }, 'Go /'))
+  svg.appendChild(el('text', { x: gx, y: pmoY - 9, 'text-anchor': 'middle', 'font-size': 8.5, 'font-weight': 'bold', fill: RED }, 'No-Go'))
+  if (i < PHASES.length - 1) {
+    svg.appendChild(el('line', { x1: gx + 13, x2: LABEL_W + (i + 1) * COL_W, y1: pmoY, y2: pmoY, stroke: BRAND, 'stroke-width': 1.5, 'marker-end': 'url(#arrow)' }))
+  }
+}
+// arrow marker
+const defs = el('defs', {})
+const marker = el('marker', { id: 'arrow', viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' })
+marker.appendChild(el('path', { d: 'M0,0 L10,5 L0,10 z', fill: BRAND }))
+defs.appendChild(marker)
+svg.appendChild(defs)
+
+// start circle
+svg.appendChild(el('circle', { cx: LABEL_W + 24, cy: pmoY, r: 12, fill: '#ffffff', stroke: BRAND, 'stroke-width': 2.5 }))
+svg.appendChild(el('text', { x: LABEL_W + 24, y: pmoY + 26, 'text-anchor': 'middle', 'font-size': 9, fill: BRAND }, 'Start'))
+svg.appendChild(el('line', { x1: LABEL_W + 36, x2: LABEL_W + COL_W - 16, y1: pmoY, y2: pmoY, stroke: BRAND, 'stroke-width': 1.5, 'marker-end': 'url(#arrow)' }))
+
+// end event
+const endX = LABEL_W + PHASES.length * COL_W - 3 + 40
+svg.appendChild(el('circle', { cx: endX, cy: pmoY, r: 13, fill: BRAND, stroke: BRAND, 'stroke-width': 4 }))
+svg.appendChild(el('line', { x1: LABEL_W + PHASES.length * COL_W - 3 + 13, x2: endX - 13, y1: pmoY, y2: pmoY, stroke: BRAND, 'stroke-width': 1.5, 'marker-end': 'url(#arrow)' }))
+svg.appendChild(multilineText(endX, pmoY + 30, ['CM record/audit-', 'trail complete'], { 'font-size': 8.5, fill: '#666666', lineHeight: 11 }))
+
+// ---- Task boxes — one line per task, showing its exact ID and name ----
+const BOX_W = COL_W - 40
+const LINE_H = 13
+const PAD_Y = 6
+function taskColor(kind) {
+  return kind === 'pm' ? SAND : TEAL
+}
+Object.entries(TASKS).forEach(([laneIdx, byPhase]) => {
+  const li = Number(laneIdx)
+  const laneY = HEADER_H + li * LANE_H
+  Object.entries(byPhase).forEach(([phaseIdx, tasks]) => {
+    const pi = Number(phaseIdx)
+    const colX = LABEL_W + pi * COL_W
+    const realTasks = tasks.filter((t) => t.kind === 'pm' || t.kind === 'cm')
+    if (realTasks.length === 0) return
+    const boxH = realTasks.length * LINE_H + PAD_Y * 2
+    const bx = colX + 20
+    const by = laneY + LANE_H / 2 - boxH / 2
+    const color = taskColor(realTasks[0].kind)
+    svg.appendChild(el('rect', { x: bx, y: by, width: BOX_W, height: boxH, rx: 5, fill: '#ffffff', stroke: color, 'stroke-width': 2 }))
+    realTasks.forEach((task, ti) => {
+      const ty = by + PAD_Y + LINE_H * ti + LINE_H - 3
+      svg.appendChild(el('text', { x: bx + 8, y: ty, 'text-anchor': 'start', 'font-size': 9.5, fill: color }, `${task.id}  ${task.name}`))
+    })
+  })
+})
+
+// ---- Legend ----
+const legendY = HEADER_H + LANE_H * LANES.length + 20
+svg.appendChild(el('rect', { x: LABEL_W - 6, y: legendY - 12, width: 16, height: 12, fill: '#ffffff', stroke: SAND, 'stroke-width': 2 }))
+svg.appendChild(el('text', { x: LABEL_W + 14, y: legendY - 2, 'font-size': 10, fill: '#16221f' }, 'Project Management task'))
+svg.appendChild(el('rect', { x: LABEL_W + 190, y: legendY - 12, width: 16, height: 12, fill: '#ffffff', stroke: TEAL, 'stroke-width': 2 }))
+svg.appendChild(el('text', { x: LABEL_W + 210, y: legendY - 2, 'font-size': 10, fill: '#16221f' }, 'Change Management task'))
+const gx2 = LABEL_W + 420
+svg.appendChild(el('rect', { x: gx2 - 6, y: legendY - 12, width: 12, height: 12, fill: '#ffffff', stroke: RED, 'stroke-width': 2, transform: `rotate(45 ${gx2} ${legendY - 6})` }))
+svg.appendChild(el('text', { x: gx2 + 14, y: legendY - 2, 'font-size': 10, fill: '#16221f' }, 'Go/No-Go gateway — see that phase’s Exit Checklist'))
+</script>
+</body>
+</html>

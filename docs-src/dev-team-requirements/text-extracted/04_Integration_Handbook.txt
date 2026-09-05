@@ -1,0 +1,1348 @@
+INTEGRATION HANDBOOK
+
+Reference-Quality Integrator Document
+
+Endpoints, Events, Data Model, Licensing & Governance — Sourced Entirely
+from D01–D32k
+
+Application-agnostic reference. Describes the architecture of an
+enterprise platform following the D01–D32k deliverable structure;
+illustrated throughout with one fully-built reference implementation's
+real, validated data.
+
+Version 1.0 · Prepared for Integration Engineering & Solution
+Architecture teams
+
+Table of Contents
+
+1. Introduction & How to Use This Document
+
+This handbook collects, in one document, every technical detail an
+external system needs to integrate with the platform. Every endpoint,
+event topic, table, control, risk, and field in this document traces
+back to a specific source deliverable in the D01–D32k governing set (46
+deliverables total, including the D32 series added to close gaps against
+Functional Specification v1.3).
+
+1.1 Document Organization
+
+-   Sections 2–4 cover architecture, tenancy, and identity — read once,
+    before any integration work begins.
+
+-   Sections 5–8 are the technical reference: API surface, events,
+    connectors, and the canonical data model.
+
+-   Sections 9–12 cover licensing, rate limits, governance, and
+    internationalization — consult per deployment.
+
+-   Appendix A is a single consolidated endpoint table for quick lookup
+    or import into API-testing tooling.
+
+-   Appendix B is the glossary of every ID pattern used across this
+    handbook.
+
+1.2 How to Read IDs
+
+Every technical artifact in this handbook carries a prefixed ID that
+resolves to exactly one source deliverable. See Appendix B for the
+complete pattern glossary — the short version:
+
+  ------------------------------------------------------------------------
+  Pattern        Meaning                           Source
+  -------------- --------------------------------- -----------------------
+  MP-xx          Macro-Process                     D01
+
+  M-xx           Module                            D26
+
+  OC-xx          Object Class                      D09
+
+  REQ-xxx        Application Requirement           D13
+
+  CTRL-xxx       Control                           D04
+
+  RISK-xxx       Risk                              D05
+
+  RULE-xxx       Business Rule                     D03
+
+  T-xx           Tool / Connector                  D11
+  ------------------------------------------------------------------------
+
+1.3 Traceability Guarantee
+
+Nothing in this handbook is asserted without a source. Where a claim
+cannot be traced to a specific deliverable ID, it is marked as an
+architectural pattern (illustrative) rather than a documented
+capability.
+
+2. Integration Architecture Overview
+
+The platform packages 18 licensable modules (D26) across 4 tiers. Every
+integration surface is gated by module tier — an integrator's available
+endpoints are a direct function of which modules the customer's license
+activates. Twelve additional specifications (D32-D32k, covering
+infrastructure, WBS/Gantt, phase governance, and two AI-engine
+specifications) are not separately licensable — they are cross-cutting
+architecture that Module 18 (WBS & Gantt) and Module 19 (Macro Process,
+SIPOC, RACSI & End-to-End Registry) already license as part of the
+Professional tier.
+
+2.1 Licensable Modules
+
+  -----------------------------------------------------------------------------
+  Module   Name                     Tier           Licensing Model  Rate
+                                                                    Limit/Day
+  -------- ------------------------ -------------- ---------------- -----------
+  M-01     Organization, Group &    Standard       User-based       100,000
+           Project Hierarchy                                        
+
+  M-02     Identity, Access & RBAC  Standard       User-based       100,000
+
+  M-04     Initiative & Portfolio   Standard       User-based       100,000
+           Registry                                                 
+
+  M-05     Stakeholder & Impact     Standard       User-based       100,000
+           Mapping                                                  
+
+  M-06     ADKAR Engine (Individual Professional   User + AI/API    1,000,000
+           Readiness Core)                         capacity         
+
+  M-07     Emotional & Transition   Professional   User + AI/API    1,000,000
+           Layer                                   capacity         
+
+  M-08     Sponsor & Coalition      Standard       User-based       100,000
+           Module                                                   
+
+  M-09     Communication Planning & Standard       User-based       100,000
+           Execution                                                
+
+  M-10     Training & Capability    Standard       User-based       100,000
+           Building                                                 
+
+  M-11     Resistance Management    Professional   User + AI/API    1,000,000
+                                                   capacity         
+
+  M-12     Manager-as-Coach         Professional   User + AI/API    1,000,000
+           Enablement                              capacity         
+
+  M-13     Reinforcement &          Professional   User + AI/API    1,000,000
+           Sustainment                             capacity         
+
+  M-14     Change Risk Register     Standard       User-based       100,000
+
+  M-15     Metrics & Analytics      Enterprise     Capacity-based   Unlimited
+           Dashboard                               (Perpetual or    
+                                                   Term)            
+
+  M-16     Journey Map / Visual     Professional   User-based       1,000,000
+           Core                                                     
+
+  M-17     AI Use Case Library &    Enterprise     User + AI/API    Unlimited
+           Governance               (Add-on)       capacity         
+
+  M-18     Work Breakdown Structure Professional   User-based       1,000,000
+           & Gantt                                                  
+
+  M-19     Macro Process, SIPOC,    Professional   User-based       1,000,000
+           RACSI & End-to-End                                       
+           Registry                                                 
+  -----------------------------------------------------------------------------
+
+2.2 Module-to-Macro-Process Mapping
+
+Each module's Included_Macro_IDs field (D26) is the authoritative map
+from a licensable capability to the process backbone it implements. A
+module with no Included_Macro_IDs (e.g., cross-cutting modules like
+Identity & RBAC) governs every macro-process rather than owning a
+specific one.
+
+  -------------------------------------------------------------------------
+  Module   Name                      Owns Macro-Process(es)
+  -------- ------------------------- --------------------------------------
+  M-04     Initiative & Portfolio    MP-02, MP-10
+           Registry                  
+
+  M-05     Stakeholder & Impact      MP-01
+           Mapping                   
+
+  M-06     ADKAR Engine (Individual  MP-07
+           Readiness Core)           
+
+  M-07     Emotional & Transition    MP-07, MP-08
+           Layer                     
+
+  M-08     Sponsor & Coalition       MP-02, MP-06
+           Module                    
+
+  M-09     Communication Planning &  MP-03
+           Execution                 
+
+  M-10     Training & Capability     MP-05
+           Building                  
+
+  M-11     Resistance Management     MP-04
+
+  M-12     Manager-as-Coach          MP-09
+           Enablement                
+
+  M-13     Reinforcement &           MP-09, MP-10
+           Sustainment               
+
+  M-14     Change Risk Register      MP-08
+
+  M-19     Macro Process, SIPOC,     MP-01, MP-02, MP-03, MP-04, MP-05,
+           RACSI & End-to-End        MP-06, MP-07, MP-08, MP-09, MP-10
+           Registry                  
+  -------------------------------------------------------------------------
+
+2.3 Rate Limits per Tier
+
+Rate limits are cumulative with tier — see Section 10 for the full
+packaging table.
+
+3. Multi-Tenancy & Data Isolation
+
+3.1 Tenant Hierarchy
+
+The platform's tenant hierarchy is Group (optional) → Organization →
+Project. This is the same structure that scopes role-based access — a
+role granted in one Organization or Project never grants visibility into
+another (see Section 4).
+
+3.2 Isolation Guarantee
+
+CTRL-008 — Role x Scope Least-Privilege Enforcement (D04) — is the
+platform's isolation control: it verifies that permissions are always
+the product of role × scope, never a single global role, and that a role
+assigned in one Project never grants visibility into a different
+Project's data. Tested quarterly, automated.
+
+3.3 Risk: Unauthorized Data Access
+
+RISK-011 — Unauthorized Data Access / Privilege Escalation (D05) —
+carries an inherent score of 20, mitigated to a residual score of 6 by
+CTRL-007, CTRL-008, and CTRL-014 (Data-Visibility Aggregation for
+Sponsor/Executive Roles). Detection is automated and continuous.
+
+3.4 Integration Safety Note
+
+Any integration credential (API key, service-account token) is scoped to
+exactly one Organization and, where applicable, one Project. An
+integrator should never request or expect a credential with cross-tenant
+reach — if one is issued, treat it as a CTRL-008 test failure and report
+it.
+
+4. Authentication, Identity & Access for Integrators
+
+4.1 Roles Available for Integration Service Accounts
+
+The platform defines ten roles (Section 3.2 of the functional
+specification): Super Admin, Group Admin, Organization Admin, Project
+Sponsor, Change Manager/Lead, Program/Project Manager, People
+Manager/Coach, Practitioner/Contributor, Employee/End User, and
+Executive Viewer. Integration service accounts should be provisioned
+against the narrowest role that satisfies the integration's actual
+read/write needs — never Super Admin.
+
+4.2 Permission Matrix (CTRL-007)
+
+Every page-access, write, and delete check across the platform reads
+from one runtime-configurable Permission Matrix grid — a Super Admin can
+adjust an integration service account's capabilities without a code
+deployment. This is the same control that governs human user access;
+integrators are not a special case.
+
+4.3 Service Account Pattern
+
+-   Provision a dedicated account per integration, scoped to
+    Organization or Project level — never share a human user's
+    credentials.
+
+-   Grant only the capabilities the integration exercises (e.g., Read on
+    Risks, Write on WBS Tasks) — verify against the Permission Matrix
+    before go-live.
+
+-   Enable MFA/SSO where the account has any write capability (CTRL-009
+    — MFA/SSO Enforcement for Administrative Roles).
+
+5. REST API Reference, by Domain
+
+Endpoints are grouped by macro-process domain (D01). Each table lists
+the step's BPMN element type (D02), retry policy, and originating
+macro-process. Endpoint paths follow the pattern
+/api/{resource}/{id}/{action} and are illustrative of the platform's
+REST surface — exact paths are finalized during integration scoping.
+
+5.1 Change Impact & Stakeholder Assessment (MP-01)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-01011   Import Org Chart & Change     Service Task   None
+               Scope                                        
+
+  STEP-01012   Confirm Stakeholder Group     User Task      None
+               List                                         
+
+  STEP-01021   Draft Impact Scores           Service Task   None
+               (AI-Assisted)                                
+
+  STEP-01022   Change Manager Confirms       User Task      None
+               Impact Scores                                
+
+  STEP-01031   Publish Stakeholder Map       Service Task   None
+
+  STEP-01032   Review & Version Stakeholder  User Task      None
+               Map                                          
+  -------------------------------------------------------------------------
+
+5.2 Sponsorship & Governance Management (MP-02)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-02011   Log Sponsor                   User Task      None
+               Visible-Sponsorship Activity                 
+
+  STEP-02012   Evaluate Sponsor Coverage     Service Task   None
+               Gate                                         
+
+  STEP-02021   Configure Steering Committee  User Task      None
+               Cadence                                      
+
+  STEP-02022   Publish Governance Cadence    Service Task   None
+
+  STEP-02031   Suggest Next Sponsorship      Service Task   None
+               Action (AI-Assisted)                         
+
+  STEP-02032   Sponsor/CM Confirms Action    User Task      None
+  -------------------------------------------------------------------------
+
+5.3 Communication & Awareness Management (MP-03)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-03011   Draft Communication Plan      Service Task   None
+               (AI-Assisted)                                
+
+  STEP-03012   Communications Lead Approves  User Task      None
+               Plan                                         
+
+  STEP-03021   Publish FAQ Channel           Service Task   None
+
+  STEP-03022   Assign Reply/Response Owner   User Task      None
+
+  STEP-03031   Collect Channel Performance   Service Task   None
+               Analytics                                    
+
+  STEP-03032   Flag Saturation / Overload    Service Task   None
+               (AI-Assisted)                                
+  -------------------------------------------------------------------------
+
+5.4 Resistance & Barrier Management (MP-04)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-04011   Evaluate Desire Score         Service Task   None
+               Threshold                                    
+
+  STEP-04012   Suggest Barrier Reason Code   Service Task   None
+               (AI-Assisted)                                
+
+  STEP-04021   Suggest Root-Cause            Service Task   None
+               Classification (AI-Assisted)                 
+
+  STEP-04022   Change Manager Confirms       User Task      None
+               Classification                               
+
+  STEP-04031   Draft Targeted Intervention   User Task      None
+
+  STEP-04032   Route Gateway: Escalate or    Gateway        None
+               Coach                                        
+  -------------------------------------------------------------------------
+
+5.5 Training & Capability Enablement (MP-05)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-05011   Map Training Gaps to          Service Task   None
+               Curriculum (AI-Assisted)                     
+
+  STEP-05012   Trainer Approves Curriculum   User Task      None
+               Design                                       
+
+  STEP-05021   Assign Curriculum by Persona  Service Task   None
+
+  STEP-05022   Trainer Confirms Delivery     User Task      None
+
+  STEP-05031   Publish Job Aids              Service Task   None
+
+  STEP-05032   Provision Sandbox Environment Service Task   None
+  -------------------------------------------------------------------------
+
+5.6 Champion Network Management (MP-06)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-06011   Confirm Coverage Against      Service Task   None
+               Target Ratio                                 
+
+  STEP-06012   Onboard Nominated Champion    User Task      None
+
+  STEP-06021   Publish Champion Onboarding   Service Task   None
+               Kit                                          
+
+  STEP-06022   Grant Early-Access            User Task      None
+               Permissions                                  
+
+  STEP-06031   Schedule Listening Session    User Task      None
+
+  STEP-06032   Mine Session Themes           Service Task   None
+               (AI-Assisted)                                
+  -------------------------------------------------------------------------
+
+5.7 Readiness Diagnostics & Signal Capture (MP-07)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-0001    Enter Personal Information    User Task      None
+
+  STEP-0002    Enter Employment Details      User Task      None
+
+  STEP-0003    Review and Confirm            User Task      Exponential
+                                                            backoff, max 3
+                                                            attempts
+
+  STEP-0004    Submit Survey                 Service Task   None
+
+  STEP-0005    End: Response Recorded /      End Event      None
+               Escalated                                    
+
+  STEP-07011   Launch Baseline Pulse Survey  Service Task   None
+  -------------------------------------------------------------------------
+
+5.8 Divergence & Risk Detection (MP-08)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-08011   Evaluate Divergence Rule      Service Task   None
+
+  STEP-08012   Gateway: Pattern Detected?    Gateway        None
+
+  STEP-08021   Route Alert for Supervisor    Service Task   None
+               Triage                                       
+
+  STEP-08022   Supervisor Confirms or        User Task      None
+               Dismisses                                    
+
+  STEP-08031   Schedule Identity-Focused 1:1 User Task      None
+
+  STEP-08032   Log 1:1 Outcome (Qualitative  Service Task   None
+               Coding)                                      
+  -------------------------------------------------------------------------
+
+5.9 Hypercare & Floor Coaching Support (MP-09)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-09011   Activate Hypercare Cadence    Service Task   None
+
+  STEP-09012   Notify Frontline Supervisors  Service Task   None
+
+  STEP-09021   Generate Coaching Script      Service Task   None
+               (AI-Assisted)                                
+
+  STEP-09022   People Manager Delivers       User Task      None
+               Coaching                                     
+
+  STEP-09031   Correlate Regression to       Service Task   None
+               Incident Log                                 
+
+  STEP-09032   Confirm Regression Cause      User Task      None
+  -------------------------------------------------------------------------
+
+5.10 Reinforcement & Sustainment Management (MP-10)
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                       Task Type      Retry Policy
+  ------------ ----------------------------- -------------- ---------------
+  STEP-10011   Confirm HR Policy Integration User Task      None
+
+  STEP-10012   Log Embedded Metric           Service Task   None
+               Confirmation                                 
+
+  STEP-10021   Audit Reinforcement Mechanism Service Task   None
+               Status                                       
+
+  STEP-10022   Sponsor Confirms Mechanisms   User Task      None
+               Active                                       
+
+  STEP-10031   Audit for Regression          Service Task   None
+               (AI-Assisted)                                
+
+  STEP-10032   Change Manager Reviews        User Task      None
+               Checkpoint                                   
+  -------------------------------------------------------------------------
+
+5.11 Cross-Cutting: WBS, Phase Gates & PMO Import (NEW)
+
+Unlike Sections 5.1-5.10, these endpoints don't belong to one
+macro-process domain — they span all ten, operating on the WBS/Gantt
+layer (D32a) that sits above the process backbone. Added in this
+revision to close a gap identified against Functional Specification v1.3
+Module 18 (Work Breakdown Structure & Gantt), which was entirely
+unrepresented in the prior edition of this handbook.
+
+  -----------------------------------------------------------------------------------------------
+  Endpoint                               Method    Purpose                              Source
+  -------------------------------------- --------- ------------------------------------ ---------
+  /api/wbs-tasks                         GET       List WBS tasks, filterable by track, D32a
+                                                   phase (P1-P7), or                    
+                                                   [PROJECT]/[CHANGE]/[JOINT] tag       
+
+  /api/wbs-tasks/{id}                    PATCH     Update baseline/actual dates, track, D09/D10
+                                                   or tags on a single task             OC-24
+
+  /api/wbs-tasks/import                  POST      One-way CSV import from an external  D32f
+                                                   PMO tool — see Section 5.11.1        
+
+  /api/phase-gates/{id}/decision         POST      Record a Go / Go with Conditions /   D32d
+                                                   No-Go decision, bundling checklist   
+                                                   %, readiness index, and open flags   
+
+  /api/phase-gates/{id}/joint-decision   POST      Record the fused PM+CM Joint         D32e
+                                                   Decision behind a Phase Gate —       
+                                                   independent inputs preserved, single 
+                                                   Accountable role                     
+
+  /api/phase-checklists/{id}             GET,      Read or update a PM-track or         D32c
+                                         PATCH     CM-track phase checklist item        
+
+  /api/e2e-processes                     GET       List the 4 End-to-End process chains D32h
+                                                   (ordered macro-process compositions) 
+                                                   with rolled-up SIPOC                 
+
+  /api/cross-type-matrix                 GET       The 6-transformation-type x          D32i
+                                                   5-dimension comparison matrix        
+  -----------------------------------------------------------------------------------------------
+
+5.11.1 PMO Import — Field Mapping
+
+The CSV import endpoint expects the following columns; unmapped columns
+are ignored, not rejected:
+
+  ------------------------------------------------------------------------
+  CSV Column          Maps To                            Required
+  ------------------- ---------------------------------- -----------------
+  task_name           WBS task display name              Yes
+
+  track               Task_Track (Project Management /   Yes
+                      Change Management / Framework)     
+
+  baseline_start /    Baseline_Start / Baseline_Finish   Yes
+  baseline_finish                                        
+
+  actual_start /      Actual_Start / Actual_Finish       No
+  actual_finish                                          
+
+  external_task_id    External_Reference_ID (round-trip  No
+                      reconciliation)                    
+
+  macro_process_tag   Macro_Process_Tag — must resolve   No
+                      to MP-01..MP-10 or be blank        
+  ------------------------------------------------------------------------
+
+Every imported row is tagged Source = Imported and remains fully
+editable post-import — this is a one-way sync at import time, not a live
+bidirectional integration.
+
+6. Event & Webhook Interface
+
+6.1 Retry & Resilience Policy
+
+The platform's exception-handling pattern (documented in D02's worked
+example, and reused throughout D03a's Retry_Policy field) is exponential
+backoff with a bounded maximum attempt count — e.g., 3 attempts on a
+validation failure before escalation, 2 attempts on a remedial-training
+retry. Webhook delivery should follow the same pattern: exponential
+backoff, capped retries, then a dead-letter queue rather than silent
+drop.
+
+6.2 Alert-Triggered Event Catalog
+
+Every D07 Alert is a natural webhook/event trigger candidate — each
+names a firing condition (Rule_Condition), a severity, and an escalation
+path an external system can subscribe to.
+
+  -----------------------------------------------------------------------------
+  Alert ID  Event Name                Severity        Firing Condition
+  --------- ------------------------- --------------- -------------------------
+  ALT-001   Divergence Pattern        High            RULE-008 = true
+            Detected                                  
+
+  ALT-002   Regression Risk Score     Critical        RULE-002 = true
+            Critical                                  
+
+  ALT-003   Sponsor Coverage Gap      Medium          RULE-003 = true
+
+  ALT-004   Resistance Escalation     High            RULE-004 = true
+            Threshold Breached                        
+
+  ALT-005   Survey Exception          Medium          RULE-001 = false after 3
+            Escalated to Admin                        attempts
+
+  ALT-006   Champion Coverage Below   Low             RULE-007 = true
+            Target                                    
+
+  ALT-007   AI Use Case Confidence    Informational   RULE-011 = true
+            Below Threshold                           (AI_Confidence <
+                                                      threshold)
+
+  ALT-008   Change Saturation         Medium          RULE-012 = true
+            Threshold Breached                        
+
+  ALT-009   Phase Gate No-Go /        High            RULE-013 != Go
+            Conditional                               
+
+  ALT-010   Guiding Coalition Gap     Medium          RULE-014 = true
+
+  ALT-011   Communication Overload    Low             RULE-015 = true
+            Detected                                  
+
+  ALT-012   Import Integrity Check    Medium          RULE-016 = false
+            Failed                                    
+
+  ALT-013   Administrative Account    High            RULE-018 = true
+            Locked                                    
+
+  ALT-014   GDPR Request SLA at Risk  High            RULE-024 = true,
+                                                      elapsed > 20 days
+
+  ALT-015   Sustainment Sign-Off      Medium          RULE-021 = true
+            Blocked                                   
+
+  ALT-016   AI Provider Fallback      Informational   CTRL-017 test — AI call
+            Triggered                                 failure detected
+  -----------------------------------------------------------------------------
+
+6.3 Governance Coverage
+
+CTRL-004 — Divergence Pattern Detector Alert Routing — is the platform's
+model for event-delivery governance: every detection is confirmed to
+reach its target recipient within a defined SLA, tested weekly,
+automated.
+
+7. Pre-Built External Connectors
+
+D11 inventories every tool and interface, native and external. The table
+below lists connectors relevant to external integration.
+
+  -----------------------------------------------------------------------------------------
+  Tool ID   Interface          Type              CRUD      Purpose
+  --------- ------------------ ----------------- --------- --------------------------------
+  TOOL-01   Survey Form        Web UI (React)    C,R,U     Renders the multi-step survey
+            Renderer                                       form used for baseline/pulse
+                                                           capture, including inline
+                                                           validation (RULE-001).
+
+  TOOL-01   ADKAR Scoring Grid Web UI (React)    C,R,U,D   Editable 1-5 scoring grid per
+                                                           building block, per
+                                                           stakeholder/cohort, feeding
+                                                           OC-06.
+
+  TOOL-01   Journey Map        Web UI (D3.js)    R         Visual per-person/cohort
+            Timeline                                       timeline (Module 16) combining
+                                                           ADKAR stage, Bridges phase and
+                                                           sentiment.
+
+  TOOL-01   RACSI Grid Editor  Web UI (React)    C,R,U     Five-column R/A/C/S/I editable
+                                                           grid used on WBS tasks, Joint
+                                                           Decisions and Macro Process
+                                                           records (Section 3.6).
+
+  TOOL-01   Phase Gate         Web UI (React)    C,R,U     Bundles Phase Checklist
+            Decision Widget                                completion, Composite Readiness
+                                                           Index and open flags into a
+                                                           Go/Go-with-Conditions/No-Go
+                                                           decision (RULE-013).
+
+  TOOL-01   AI Suggestion      Web UI (React)    R,U       Displays 'AI-generated — review
+            Review Panel                                   required' suggestions with
+                                                           Accept/Edit/Reject controls
+                                                           (CTRL-006).
+
+  TOOL-01   Permission Matrix  Web UI (React)    R,U       Super-Admin-editable nine-role x
+            Grid                                           five-capability runtime override
+                                                           grid (Section 3.4).
+
+  TOOL-01   Metrics &          Web UI (Chart.js) R         Composite Readiness Index, ADKAR
+            Analytics                                      heatmaps, adoption curves and
+            Dashboard                                      benchmarking views (Module 15).
+
+  TOOL-01   WBS / Gantt Board  Web UI (React,    C,R,U,D   Baseline-vs-actual schedule
+                               Gantt lib)                  editor across PM/CM/Framework
+                                                           tracks (Module 18).
+
+  TOOL-01   Divergence & Risk  Web UI (React)    R,U       Risk register, alert queue and
+            Cockpit                                        Divergence Pattern Log
+                                                           consolidated view (Module 14).
+
+  TOOL-02   Rapid Pulse Widget Mobile Web UI     C,R       Lightweight emoji/slider pulse
+                                                           for high-anxiety moments,
+                                                           optimized for phone use on the
+                                                           shop floor.
+
+  TOOL-03   REST API           REST/JSON over    C,R,U,D   Programmatic access to every
+                               HTTPS                       journi object class (D09) for
+                                                           the PMO import hook and external
+                                                           BI tools.
+
+  TOOL-04   Provider           Web UI + External C,R,U     Optional Module 17 panel routing
+            Connection Panel   API                         seeded/custom AI use cases
+                                                           through
+                                                           Anthropic/OpenAI/Google/custom
+                                                           endpoints; browser-local key
+                                                           storage (CTRL-016).
+
+  TOOL-05   SSO Login          SAML 2.0 / OIDC   R         Optional enterprise single
+                                                           sign-on for larger deployments
+                                                           (Section 3.3).
+  -----------------------------------------------------------------------------------------
+
+7.1 Integration Patterns by Category
+
+PPM / Data Warehouse Integration
+
+The REST API (IFC-12) is the general-purpose integration point for both
+categories: PPM tools typically consume WBS/schedule data (read/write);
+data warehouses typically consume report/dashboard exports (read-only,
+scheduled or on-demand).
+
+AI Provider Integration
+
+IFC-13 (Provider Connection Panel) is a special case: it's an outbound
+integration where the platform calls an external LLM provider, not an
+inbound one. Credentials are isolated to browser-local storage
+(CTRL-016) and never transit the platform's own backend.
+
+8. Canonical Data Model for Integration Payloads
+
+The platform defines 35 object classes (D09). The table below lists
+every class relevant to an external integration payload, with its
+data-sensitivity classification — respect this classification in any
+exported payload.
+
+  -----------------------------------------------------------------------
+  Class ID  Name                                  Sensitivity
+  --------- ------------------------------------- -----------------------
+  OC-01     Group                                 Internal
+
+  OC-02     Organization                          Confidential
+
+  OC-03     Main Project                          Confidential
+
+  OC-04     Change Management Project             Confidential
+
+  OC-05     Stakeholder / Persona                 Restricted
+
+  OC-06     ADKAR Score                           Restricted
+
+  OC-07     Emotional/Transition Reading          Restricted
+
+  OC-08     Barrier / Resistance Log Entry        Restricted
+
+  OC-09     Sponsor / Coalition Record            Confidential
+
+  OC-10     Champion                              Internal
+
+  OC-11     Champion Feedback / Listening Session Internal
+
+  OC-12     Communication                         Internal
+
+  OC-13     Training Curriculum / Session         Internal
+
+  OC-14     Manager Coaching Note                 Restricted
+
+  OC-15     Sustainment Checkpoint                Internal
+
+  OC-16     Journey Map Event                     Internal
+
+  OC-17     Risk                                  Confidential
+
+  OC-18     Control                               Internal
+
+  OC-19     Alert                                 Internal
+
+  OC-20     KPI Reading                           Internal
+
+  OC-21     AI Use Case Suggestion                Confidential
+
+  OC-22     AI Use Case Catalog Entry             Internal
+
+  OC-23     AI Provider Connection                Confidential
+
+  OC-24     WBS Task                              Internal
+
+  OC-25     Phase Gate / Joint Decision           Confidential
+
+  OC-26     Phase Template                        Internal
+
+  OC-27     Macro Process                         Internal
+
+  OC-28     End-to-End Process                    Internal
+
+  OC-29     User Account                          Restricted
+
+  OC-30     Role                                  Internal
+
+  OC-31     Permission Matrix Entry               Confidential
+
+  OC-32     Justification / Change Log Entry      Confidential
+
+  OC-33     FPO / ITL Contact Record              Internal
+
+  OC-34     Signal Observation                    Restricted
+
+  OC-35     Lewin Macro-State                     Internal
+  -----------------------------------------------------------------------
+
+8.1 Field-Level Reference (Excerpt)
+
+D10 defines every attribute of every object class with Mandatory,
+Unique, PII_Flag and Validation_Rule. Excerpt for the Change Management
+Project class:
+
+  ----------------------------------------------------------------------------------
+  Attribute                   Type           Notes
+  --------------------------- -------------- ---------------------------------------
+  CM_Project_ID               UUID           PK, indexed
+
+  Lewin_Phase                 Enum           Unfreeze / Change / Refreeze
+
+  Composite_Readiness_Index   Decimal        0–100, computed, not directly writable
+
+  Linked_Main_Project_ID      UUID           Nullable FK, many-to-many by design
+  ----------------------------------------------------------------------------------
+
+8.2 Physical Schema (Excerpt)
+
+D12 realizes the class model as physical tables. Every table lists its
+partition key so integration query plans stay tenant-scoped by default.
+
+  ------------------------------------------------------------------------
+  Table             Column                   Type           Key
+  ----------------- ------------------------ -------------- --------------
+  organizations     organization_id          UUID           PK
+
+  organizations     group_id                 UUID           FK
+
+  organizations     default_language         VARCHAR(10)    FK
+
+  cm_projects       cm_project_id            UUID           PK
+
+  cm_projects       organization_id          UUID           FK
+
+  cm_projects       main_project_id          UUID           FK
+
+  cm_projects       lewin_phase              VARCHAR(20)    FK
+
+  stakeholders      stakeholder_id           UUID           PK
+
+  stakeholders      cm_project_id            UUID           FK
+
+  stakeholders      email                    VARCHAR(254)   FK
+
+  adkar_scores      adkar_score_id           UUID           PK
+
+  adkar_scores      stakeholder_id           UUID           FK
+  ------------------------------------------------------------------------
+
+9. Licensing & Entitlement Interface
+
+9.1 The .lic License Record Schema
+
+For OnPrem deployments, the platform validates against a signed local
+license file rather than a cloud record. Every field:
+
+{
+
+"version": 1,
+
+"companyId": "comp_123",
+
+"companyName": "Acme Corp",
+
+"hardwareId": "CPU-ABC123-MAC-DEF456",
+
+"expiryDate": "2027-06-17T23:59:59Z",
+
+"maxUsers": 10,
+
+"plan": "enterprise",
+
+"features": ["analytics", "export", "api"],
+
+"issueDate": "2026-06-17T00:00:00Z",
+
+"signature": "abc123def456..."
+
+}
+
+9.2 Platform Validation Summary — SaaS vs. OnPrem
+
+  -----------------------------------------------------------------------
+  Aspect            SaaS                       OnPrem
+  ----------------- -------------------------- --------------------------
+  Validation target Cloud API / database       Local signed .lic file
+                    record                     
+
+  Signing algorithm HMAC (server-side)         Ed25519
+                                               (client-verifiable)
+
+  Customer installs Nothing — browser or       Application + one .lic
+                    app-store access           file
+
+  maxUsers          Security rules + API on    App logic on every
+  enforcement       every write                authenticated request
+  -----------------------------------------------------------------------
+
+9.3 Entitlement Evaluation Flow
+
+-   1. License → validate signature and expiry
+
+-   2. Features → check the requested capability against the license's
+    features array
+
+-   3. Rate Limit → check the tier's daily API budget (Section 10)
+
+-   4. RBAC → check the requesting account's role x scope permission
+    (Section 4)
+
+9.4 Troubleshooting
+
+On a 403 or 429 response, check GET /api/license/check first — the
+majority of integration failures in early deployments trace back to an
+expired license, an exhausted rate-limit budget, or a feature not
+included in the current plan, not a code defect.
+
+10. Rate Limits & Tier Packaging
+
+  --------------------------------------------------------------------------
+  Tier           Modules (sample)               Licensing Model  Rate Limit
+                                                                 / Day
+  -------------- ------------------------------ ---------------- -----------
+  Standard       M-01, M-02, M-04, M-05, M-08,  User-based       100,000
+                 M-09, M-10, M-14 (8 modules)                    
+
+  Professional   Standard + M-06, M-07, M-11,   User-based +     1,000,000
+                 M-12, M-13, M-16, M-17, M-19   AI/API capacity  
+                 (8 modules)                                     
+
+  Enterprise     Professional + M-15            Capacity-based   Unlimited
+                                                (Perpetual or    
+                                                Term)            
+
+  Enterprise     M-17 (AI Use Case Library &    User + AI/API    Unlimited
+  Add-on         Governance) stacks onto any    capacity         
+                 tier                                            
+  --------------------------------------------------------------------------
+
+Tier composition is cumulative by construction — Professional includes
+every Standard module; the Enterprise tier includes every Professional
+module plus Module 15 (Metrics & Analytics Dashboard).
+
+11. Controls & Risks Relevant to Integrators
+
+11.1 Controls
+
+  ------------------------------------------------------------------------
+  Control    Name                            Type          Automation
+  ---------- ------------------------------- ------------- ---------------
+  CTRL-002   Org Chart / HRIS Import         Detective     Automated
+             Integrity Check                               
+
+  CTRL-007   Permission Matrix Runtime       Preventive    Automated
+             Override Integrity                            
+
+  CTRL-008   Role x Scope Least-Privilege    Preventive    Automated
+             Enforcement                                   
+
+  CTRL-009   MFA / SSO Enforcement for       Preventive    Automated
+             Administrative Roles                          
+
+  CTRL-016   AI Provider API Key Isolation   Preventive    Automated
+
+  CTRL-017   Fallback to Built-In Generator  Preventive    Automated
+             on AI Call Failure                            
+  ------------------------------------------------------------------------
+
+11.2 Risks
+
+  ------------------------------------------------------------------------
+  Risk       Name                            Category      Inherent →
+                                                           Residual
+  ---------- ------------------------------- ------------- ---------------
+  RISK-005   Change Saturation from          Operational   12 → 8
+             Concurrent Initiatives                        
+
+  RISK-011   Unauthorized Data Access /      Security      20 → 6
+             Privilege Escalation                          
+
+  RISK-012   Account Compromise via Weak     Security      16 → 5
+             Authentication                                
+
+  RISK-013   GDPR / Data-Subject Rights      Compliance    15 → 5
+             Non-Compliance                                
+
+  RISK-015   AI Provider Credential Exposure Security      12 → 3
+  ------------------------------------------------------------------------
+
+12. Internationalization & Multi-Currency Considerations
+
+12.1 Localized Fields
+
+Object classes carrying human-readable text expose a
+Multi_Language_Supported flag (D09) — 18 of 35 classes are localized. A
+tenant sets a Default_Language (Section 3.1.1); individual users may
+override it in-session, but the override never persists across tenants
+(CTRL-018).
+
+12.2 Currency
+
+KPI and financial fields carry an explicit KPI_Currency (D06) — MAD is
+the reference-market default; the field is present specifically so
+integration payloads never assume a fixed currency.
+
+12.3 AI Channel Locale Handling
+
+AI Use Case Library outputs (D15) inherit the requesting user's or
+tenant's locale by default — an integrator invoking an AI-assisted
+endpoint on behalf of a user should pass that user's locale explicitly
+rather than relying on a server-side default.
+
+Appendix A — Condensed Endpoint Catalog (All Domains)
+
+Single consolidated reference across all ten macro-process domains, for
+quick lookup or import into API-testing tooling.
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-01011   Import Org Chart & Change Scope                MP-01
+
+  STEP-01012   Confirm Stakeholder Group List                 MP-01
+
+  STEP-01021   Draft Impact Scores (AI-Assisted)              MP-01
+
+  STEP-01022   Change Manager Confirms Impact Scores          MP-01
+
+  STEP-01031   Publish Stakeholder Map                        MP-01
+
+  STEP-01032   Review & Version Stakeholder Map               MP-01
+
+  STEP-01041   Segment Cohorts by Trajectory                  MP-01
+
+  STEP-01042   Change Manager Confirms Segmentation           MP-01
+
+  STEP-01051   Route Assessment for FPO/Supervisor Revi       MP-01
+
+  STEP-01052   Log Validation Sign-Off                        MP-01
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-02011   Log Sponsor Visible-Sponsorship Activity       MP-02
+
+  STEP-02012   Evaluate Sponsor Coverage Gate                 MP-02
+
+  STEP-02021   Configure Steering Committee Cadence           MP-02
+
+  STEP-02022   Publish Governance Cadence                     MP-02
+
+  STEP-02031   Suggest Next Sponsorship Action (AI-Assi       MP-02
+
+  STEP-02032   Sponsor/CM Confirms Action                     MP-02
+
+  STEP-02041   Package Risk Escalation Brief                  MP-02
+
+  STEP-02042   Sponsor Reviews & Directs Intervention         MP-02
+
+  STEP-02051   Log Steering Committee Decision                MP-02
+
+  STEP-02052   Publish to Change Log                          MP-02
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-03011   Draft Communication Plan (AI-Assisted)         MP-03
+
+  STEP-03012   Communications Lead Approves Plan              MP-03
+
+  STEP-03021   Publish FAQ Channel                            MP-03
+
+  STEP-03022   Assign Reply/Response Owner                    MP-03
+
+  STEP-03031   Collect Channel Performance Analytics          MP-03
+
+  STEP-03032   Flag Saturation / Overload (AI-Assisted)       MP-03
+
+  STEP-03041   Review Awareness/Denial Trend                  MP-03
+
+  STEP-03042   Publish Revised Messaging                      MP-03
+
+  STEP-03051   Send Scheduled Communication                   MP-03
+
+  STEP-03052   Confirm Delivery & Log                         MP-03
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-04011   Evaluate Desire Score Threshold                MP-04
+
+  STEP-04012   Suggest Barrier Reason Code (AI-Assisted       MP-04
+
+  STEP-04021   Suggest Root-Cause Classification (AI-As       MP-04
+
+  STEP-04022   Change Manager Confirms Classification         MP-04
+
+  STEP-04031   Draft Targeted Intervention                    MP-04
+
+  STEP-04032   Route Gateway: Escalate or Coach               MP-04
+
+  STEP-04041   Assign Delivery Owner (Sponsor/Manager)        MP-04
+
+  STEP-04042   Log Intervention Delivered                     MP-04
+
+  STEP-04051   Re-Run Desire/Sentiment Pulse                  MP-04
+
+  STEP-04052   Close or Re-Escalate Barrier Record            MP-04
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-05011   Map Training Gaps to Curriculum (AI-Assi       MP-05
+
+  STEP-05012   Trainer Approves Curriculum Design             MP-05
+
+  STEP-05021   Assign Curriculum by Persona                   MP-05
+
+  STEP-05022   Trainer Confirms Delivery                      MP-05
+
+  STEP-05031   Publish Job Aids                               MP-05
+
+  STEP-05032   Provision Sandbox Environment                  MP-05
+
+  STEP-05041   Capture UAT / Assessment Result                MP-05
+
+  STEP-05042   Evaluate Competency Pass Threshold             MP-05
+
+  STEP-05051   Assign Remedial Training Module                MP-05
+
+  STEP-05052   Verify Competency Re-Test                      MP-05
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-06011   Confirm Coverage Against Target Ratio          MP-06
+
+  STEP-06012   Onboard Nominated Champion                     MP-06
+
+  STEP-06021   Publish Champion Onboarding Kit                MP-06
+
+  STEP-06022   Grant Early-Access Permissions                 MP-06
+
+  STEP-06031   Schedule Listening Session                     MP-06
+
+  STEP-06032   Mine Session Themes (AI-Assisted)              MP-06
+
+  STEP-06041   Evaluate Feedback as Leading Indicator         MP-06
+
+  STEP-06042   Raise Early-Warning Flag                       MP-06
+
+  STEP-06051   Detect Champion Inactivity                     MP-06
+
+  STEP-06052   Re-Charter Champion Network                    MP-06
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-0001    Enter Personal Information                     MP-07
+
+  STEP-0002    Enter Employment Details                       MP-07
+
+  STEP-0003    Review and Confirm                             MP-07
+
+  STEP-0004    Submit Survey                                  MP-07
+
+  STEP-0005    End: Response Recorded / Escalated             MP-07
+
+  STEP-07011   Launch Baseline Pulse Survey                   MP-07
+
+  STEP-07012   Capture Baseline Responses                     MP-07
+
+  STEP-07021   Trigger Phase-Gate Pulse Survey                MP-07
+
+  STEP-07022   Validate Response Completeness                 MP-07
+
+  STEP-07031   Launch Rapid Pulse (Survey Form)               MP-07
+
+  STEP-07032   Review and Confirm Submission                  MP-07
+
+  STEP-07041   Mine Open-Text Themes (AI-Assisted)            MP-07
+
+  STEP-07042   Compute Composite Readiness Index              MP-07
+
+  STEP-07051   Draft Cohort Readiness Narrative (AI-Ass       MP-07
+
+  STEP-07052   Change Manager Approves & Distributes          MP-07
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-08011   Evaluate Divergence Rule                       MP-08
+
+  STEP-08012   Gateway: Pattern Detected?                     MP-08
+
+  STEP-08021   Route Alert for Supervisor Triage              MP-08
+
+  STEP-08022   Supervisor Confirms or Dismisses               MP-08
+
+  STEP-08031   Schedule Identity-Focused 1:1                  MP-08
+
+  STEP-08032   Log 1:1 Outcome (Qualitative Coding)           MP-08
+
+  STEP-08041   Deliver Closure Moment                         MP-08
+
+  STEP-08042   Log Closure Action                             MP-08
+
+  STEP-08051   Re-Check Bridges Reading Only                  MP-08
+
+  STEP-08052   Close Divergence Case & Log Pattern            MP-08
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-09011   Activate Hypercare Cadence                     MP-09
+
+  STEP-09012   Notify Frontline Supervisors                   MP-09
+
+  STEP-09021   Generate Coaching Script (AI-Assisted)         MP-09
+
+  STEP-09022   People Manager Delivers Coaching               MP-09
+
+  STEP-09031   Correlate Regression to Incident Log           MP-09
+
+  STEP-09032   Confirm Regression Cause                       MP-09
+
+  STEP-09041   Evaluate Taper Readiness                       MP-09
+
+  STEP-09042   Confirm Taper Schedule                         MP-09
+
+  STEP-09051   Log Regression Event                           MP-09
+
+  STEP-09052   Publish to Lessons-Learned Record              MP-09
+  -------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------
+  Step ID      Purpose                                        Domain
+  ------------ ---------------------------------------------- -------------
+  STEP-10011   Confirm HR Policy Integration                  MP-10
+
+  STEP-10012   Log Embedded Metric Confirmation               MP-10
+
+  STEP-10021   Audit Reinforcement Mechanism Status           MP-10
+
+  STEP-10022   Sponsor Confirms Mechanisms Active             MP-10
+
+  STEP-10031   Audit for Regression (AI-Assisted)             MP-10
+
+  STEP-10032   Change Manager Reviews Checkpoint              MP-10
+
+  STEP-10041   Compile Refreeze Evidence Pack                 MP-10
+
+  STEP-10042   Sponsor Confirms Sustainment Sign-Off          MP-10
+
+  STEP-10051   Publish Lessons-Learned Log                    MP-10
+
+  STEP-10052   Hand Off to Business-as-Usual Owner            MP-10
+  -------------------------------------------------------------------------
+
+Appendix B — Glossary of ID Schemes
+
+  -----------------------------------------------------------------------
+  ID Pattern        Meaning                       Root Deliverable
+  ----------------- ----------------------------- -----------------------
+  D0x / D1x / D2x / Deliverable number            Root deliverable file
+  D3x                                             (D01–D32k)
+
+  MP-xx             Macro-Process                 D01
+
+  TASK-xxxx         Task                          D02
+
+  STEP-xxxxx        Process Step                  D02
+
+  RULE-xxx          Business Rule                 D03
+
+  ACT-xxx           Action                        D03a
+
+  CTRL-xxx          Control                       D04
+
+  RISK-xxx          Risk                          D05
+
+  KPI-xxx           Key Performance Indicator     D06
+
+  ALT-xxx           Alert                         D07
+
+  RPT-xxx           Report / Dashboard            D08
+
+  OC-xx             Object Class                  D09
+
+  T-xx / IFC-xx     Tool / Interface              D11
+
+  REQ-xxx           Application Requirement       D13
+
+  WF-xxx            BPMN Workflow                 D14
+
+  AIUC-xx /         AI Use Case                   D15
+  CAIUC-xxx                                       
+
+  M-xx              Module                        D26
+
+  JRN-xx            Stakeholder Journey           D27
+
+  TP-xxxx           Journey Touchpoint            D28
+
+  DASH-xx           Analytics Dashboard           D29
+
+  CHTR-xx           Change Management Charter     D31 (charter extension)
+
+  INFRA-xxx         Infrastructure/Deployment     D32
+                    Spec (NEW)                    
+
+  WBS-xx            WBS Schema Field (NEW)        D32a
+
+  TPL-xxx           Phase Template (NEW)          D32b
+
+  CHK-xxx           Phase Checklist Item (NEW)    D32c
+
+  PG-xx             Phase Gate Record Field (NEW) D32d
+
+  JD-xx             Joint Decision Record Field   D32e
+                    (NEW)                         
+
+  E2E-xx            End-to-End Process (NEW)      D32h
+  -----------------------------------------------------------------------

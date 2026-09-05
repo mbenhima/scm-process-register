@@ -1,0 +1,526 @@
+import React, { useState } from 'react'
+import { useI18n } from '../i18n/index.jsx'
+import { useAppState } from '../state/AppStateContext.jsx'
+import { visibleOrganizations, canManageHierarchy } from '../utils/rbac.js'
+import PageHeader from '../components/PageHeader.jsx'
+import Badge from '../components/Badge.jsx'
+import Modal from '../components/Modal.jsx'
+import EmptyState from '../components/EmptyState.jsx'
+
+function Field({ label, children }) {
+  return (
+    <div className="mb-3">
+      <label className="label">{label}</label>
+      {children}
+    </div>
+  )
+}
+
+export default function Module1Page() {
+  const { t } = useI18n()
+  const {
+    data,
+    currentUser,
+    addGroup,
+    updateGroup,
+    addOrganization,
+    updateOrganization,
+    deleteGroup,
+    deleteOrganization,
+    deleteMainProject,
+    deleteCmProject,
+    addMainProject,
+    updateMainProject,
+    addCmProject,
+    updateCmProject,
+  } = useAppState()
+  // modal: { kind: 'group'|'org'|'mp'|'cm', mode: 'add'|'edit', id? }
+  const [modal, setModal] = useState(null)
+  const [form, setForm] = useState({})
+  const canEdit = canManageHierarchy(currentUser?.role, data.rolePermissions)
+
+  const orgs = visibleOrganizations(currentUser, data)
+
+  function openAdd(kind, defaults = {}) {
+    setForm(defaults)
+    setModal({ kind, mode: 'add' })
+  }
+  function openEditGroup(g) {
+    setForm({ name: g.name })
+    setModal({ kind: 'group', mode: 'edit', id: g.id })
+  }
+  function openEditOrg(org) {
+    setForm({
+      name: org.name,
+      groupId: org.groupId || '',
+      sector: org.sector || 'manufacturing',
+      employeeCount: org.employeeCount || 0,
+      sites: (org.sites || []).join(', '),
+      languages: (org.languages || ['en']).join(', '),
+      defaultLanguage: org.defaultLanguage || 'en',
+    })
+    setModal({ kind: 'org', mode: 'edit', id: org.id })
+  }
+  function openEditMp(mp) {
+    setForm({
+      name: mp.name,
+      type: mp.type || 'erp',
+      scope: mp.scope || '',
+      durationMonths: mp.durationMonths || 6,
+      budgetBand: mp.budgetBand || '',
+      executiveSponsor: mp.executiveSponsor || '',
+    })
+    setModal({ kind: 'mp', mode: 'edit', id: mp.id })
+  }
+  function openEditCm(cm) {
+    setForm({
+      orgId: cm.orgId,
+      mainProjectIds: cm.mainProjectIds || [],
+      name: cm.name,
+      changeManager: cm.changeManager || '',
+      changeType: cm.changeType || 'technology',
+      targetPopulation: cm.targetPopulation || '',
+      businessDriver: cm.businessDriver || '',
+    })
+    setModal({ kind: 'cm', mode: 'edit', id: cm.id })
+  }
+  function closeModal() {
+    setModal(null)
+    setForm({})
+  }
+  function submit() {
+    const { kind, mode, id } = modal
+    if (kind === 'group') {
+      const payload = { name: form.name }
+      mode === 'add' ? addGroup(payload) : updateGroup(id, payload)
+    }
+    if (kind === 'org') {
+      const payload = {
+        groupId: form.groupId || null,
+        name: form.name,
+        sector: form.sector || 'manufacturing',
+        employeeCount: Number(form.employeeCount) || 0,
+        sites: (form.sites || '').split(',').map((s) => s.trim()).filter(Boolean),
+        languages: (form.languages || 'en').split(',').map((s) => s.trim()),
+        defaultLanguage: form.defaultLanguage || 'en',
+      }
+      mode === 'add' ? addOrganization(payload) : updateOrganization(id, payload)
+    }
+    if (kind === 'mp') {
+      const payload = {
+        orgId: form.orgId,
+        name: form.name,
+        type: form.type || 'erp',
+        scope: form.scope || '',
+        durationMonths: Number(form.durationMonths) || 6,
+        budgetBand: form.budgetBand || '',
+        executiveSponsor: form.executiveSponsor || '',
+      }
+      mode === 'add' ? addMainProject(payload) : updateMainProject(id, payload)
+    }
+    if (kind === 'cm') {
+      const payload = {
+        orgId: form.orgId,
+        mainProjectIds: form.mainProjectIds || [],
+        name: form.name,
+        changeManager: form.changeManager || '',
+        changeType: form.changeType || 'technology',
+        targetPopulation: form.targetPopulation || '',
+        businessDriver: form.businessDriver || '',
+      }
+      mode === 'add' ? addCmProject({ ...payload, successCriteria: form.successCriteria || '' }) : updateCmProject(id, payload)
+    }
+    closeModal()
+  }
+
+  return (
+    <div>
+      <PageHeader
+        title={t('navM1')}
+        description="Group → Organization → Projects. Every Change Management Project carries an optional link to zero, one, or more Main Projects."
+        actions={
+          canEdit && (
+            <>
+              <button className="btn-secondary" onClick={() => openAdd('group')}>
+                + {t('group')}
+              </button>
+              <button className="btn-secondary" onClick={() => openAdd('org')}>
+                + {t('organization')}
+              </button>
+            </>
+          )
+        }
+      />
+
+      <div className="space-y-4">
+        {data.groups.map((g) => (
+          <div key={g.id} className="card p-4">
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <div className="flex items-center gap-2">
+                <Badge tone="sand">{t('group')}</Badge>
+                <h3 className="font-semibold text-brand-950">{g.name}</h3>
+              </div>
+              {canEdit && (
+                <div className="flex items-center gap-1.5">
+                  <button className="btn-secondary text-xs" onClick={() => openEditGroup(g)}>
+                    {t('m19_edit')}
+                  </button>
+                  <button className="btn-danger text-xs" onClick={() => deleteGroup(g.id)}>
+                    {t('delete')}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+
+        {orgs.map((org) => {
+          const mps = data.mainProjects.filter((mp) => mp.orgId === org.id)
+          const cms = data.cmProjects.filter((cm) => cm.orgId === org.id)
+          const group = data.groups.find((g) => g.id === org.groupId)
+          return (
+            <div key={org.id} className="card p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Badge>{t('organization')}</Badge>
+                    {group ? <Badge tone="sand">{group.name}</Badge> : <Badge tone="gray">{t('noGroup')}</Badge>}
+                  </div>
+                  <h3 className="font-semibold text-brand-950 text-lg mt-1">{org.name}</h3>
+                  <p className="text-xs text-ink/50 mt-1">
+                    {t(`sector_${org.sector}`)} · {org.employeeCount.toLocaleString()} employees · {org.sites?.length || 0} sites ·{' '}
+                    {org.languages?.join(', ').toUpperCase()}
+                  </p>
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    <span className="text-[11px] text-ink/40">{t('defaultLanguage')}:</span>
+                    {canEdit ? (
+                      <select
+                        className="input py-0.5 px-1.5 text-xs w-auto"
+                        value={org.defaultLanguage || 'en'}
+                        onChange={(e) => updateOrganization(org.id, { defaultLanguage: e.target.value })}
+                      >
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                        <option value="ar">AR</option>
+                      </select>
+                    ) : (
+                      <Badge tone="gray">{(org.defaultLanguage || 'en').toUpperCase()}</Badge>
+                    )}
+                  </div>
+                </div>
+                {canEdit && (
+                  <div className="flex gap-2">
+                    <button className="btn-secondary text-xs" onClick={() => openEditOrg(org)}>
+                      {t('m19_edit')}
+                    </button>
+                    <button className="btn-ghost text-xs" onClick={() => openAdd('mp', { orgId: org.id })}>
+                      + {t('mainProject')}
+                    </button>
+                    <button className="btn-ghost text-xs" onClick={() => openAdd('cm', { orgId: org.id })}>
+                      + {t('cmProject')}
+                    </button>
+                    <button className="btn-danger text-xs" onClick={() => deleteOrganization(org.id)}>
+                      {t('delete')}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <div className="label">{t('mainProject')}</div>
+                  {mps.length === 0 && <EmptyState />}
+                  <div className="space-y-2">
+                    {mps.map((mp) => {
+                      const linked = cms.filter((cm) => (cm.mainProjectIds || []).includes(mp.id))
+                      return (
+                        <div key={mp.id} className="rounded-lg border border-brand-100 p-3">
+                          <div className="flex items-center justify-between">
+                            <span className="font-medium text-sm text-brand-950">{mp.name}</span>
+                            <div className="flex items-center gap-1.5">
+                              <Badge tone="sand">{t(`archetype_${mp.type}`)}</Badge>
+                              {canEdit && (
+                                <>
+                                  <button className="btn-secondary text-xs" onClick={() => openEditMp(mp)}>
+                                    {t('m19_edit')}
+                                  </button>
+                                  <button className="btn-danger text-xs" onClick={() => deleteMainProject(mp.id)}>
+                                    {t('delete')}
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <p className="text-xs text-ink/50 mt-1">
+                            {mp.durationMonths}mo · {mp.budgetBand} · {mp.executiveSponsor}
+                          </p>
+                          {linked.length > 0 && (
+                            <p className="text-[11px] text-brand-600 mt-1">
+                              ↳ {linked.length} linked CM project{linked.length > 1 ? 's' : ''}
+                            </p>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+                <div>
+                  <div className="label">{t('cmProject')}</div>
+                  {cms.length === 0 && <EmptyState />}
+                  <div className="space-y-2">
+                    {cms.map((cm) => {
+                      const linkedMps = data.mainProjects.filter((m) => (cm.mainProjectIds || []).includes(m.id))
+                      return (
+                        <div key={cm.id} className="rounded-lg border border-brand-100 p-3">
+                          <div className="flex items-center justify-between">
+                            <span className="font-medium text-sm text-brand-950">{cm.name}</span>
+                            <div className="flex items-center gap-1.5">
+                              <Badge tone="sand">{t(`lewin_${cm.lewinPhase}`)}</Badge>
+                              {canEdit && (
+                                <>
+                                  <button className="btn-secondary text-xs" onClick={() => openEditCm(cm)}>
+                                    {t('m19_edit')}
+                                  </button>
+                                  <button className="btn-danger text-xs" onClick={() => deleteCmProject(cm.id)}>
+                                    {t('delete')}
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <p className="text-xs text-ink/50 mt-1">{cm.changeManager}</p>
+                          <p className="text-[11px] mt-1">
+                            {linkedMps.length > 0
+                              ? `↳ ${t('linkedMainProject')}: ${linkedMps.map((m) => m.name).join(', ')}`
+                              : `↳ ${t('standalone')}`}
+                          </p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      <Modal
+        open={modal?.kind === 'group'}
+        onClose={closeModal}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('group')}`}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={closeModal}>
+              {t('cancel')}
+            </button>
+            <button className="btn-primary" onClick={submit}>
+              {t('save')}
+            </button>
+          </>
+        }
+      >
+        <Field label={t('name')}>
+          <input className="input" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+        </Field>
+      </Modal>
+
+      <Modal
+        open={modal?.kind === 'org'}
+        onClose={closeModal}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('organization')}`}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={closeModal}>
+              {t('cancel')}
+            </button>
+            <button className="btn-primary" onClick={submit}>
+              {t('save')}
+            </button>
+          </>
+        }
+      >
+        <Field label={t('name')}>
+          <input className="input" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+        </Field>
+        <Field label={t('group')}>
+          <select className="input" value={form.groupId || ''} onChange={(e) => setForm({ ...form, groupId: e.target.value })}>
+            <option value="">{t('noGroup')}</option>
+            {data.groups.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={t('type')}>
+          <select className="input" value={form.sector || 'manufacturing'} onChange={(e) => setForm({ ...form, sector: e.target.value })}>
+            <option value="manufacturing">{t('sector_manufacturing')}</option>
+            <option value="logistics">{t('sector_logistics')}</option>
+            <option value="health">{t('sector_health')}</option>
+          </select>
+        </Field>
+        <Field label="Employees">
+          <input
+            type="number"
+            className="input"
+            value={form.employeeCount || ''}
+            onChange={(e) => setForm({ ...form, employeeCount: e.target.value })}
+          />
+        </Field>
+        <Field label="Sites (comma separated)">
+          <input className="input" value={form.sites || ''} onChange={(e) => setForm({ ...form, sites: e.target.value })} />
+        </Field>
+        <Field label={`${t('language')} (en,fr,ar)`}>
+          <input className="input" value={form.languages || 'en'} onChange={(e) => setForm({ ...form, languages: e.target.value })} />
+        </Field>
+        <Field label={t('defaultLanguage')}>
+          <select className="input" value={form.defaultLanguage || 'en'} onChange={(e) => setForm({ ...form, defaultLanguage: e.target.value })}>
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="ar">AR</option>
+          </select>
+        </Field>
+      </Modal>
+
+      <Modal
+        open={modal?.kind === 'mp'}
+        onClose={closeModal}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('mainProject')}`}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={closeModal}>
+              {t('cancel')}
+            </button>
+            <button className="btn-primary" onClick={submit}>
+              {t('save')}
+            </button>
+          </>
+        }
+      >
+        <Field label={t('name')}>
+          <input className="input" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+        </Field>
+        <Field label={t('type')}>
+          <select className="input" value={form.type || 'erp'} onChange={(e) => setForm({ ...form, type: e.target.value })}>
+            <option value="erp">{t('archetype_erp')}</option>
+            <option value="automation">{t('archetype_automation')}</option>
+            <option value="qms">{t('archetype_qms')}</option>
+            <option value="bpr">{t('archetype_bpr')}</option>
+            <option value="cultural">{t('archetype_cultural')}</option>
+            <option value="operating_model">{t('archetype_operating_model')}</option>
+            <option value="compliance">{t('archetype_compliance')}</option>
+            <option value="training_skills">{t('archetype_training_skills')}</option>
+            <option value="restructuring">Restructuring</option>
+            <option value="ma">M&A</option>
+          </select>
+        </Field>
+        <Field label={t('description')}>
+          <textarea className="input" rows={2} value={form.scope || ''} onChange={(e) => setForm({ ...form, scope: e.target.value })} />
+        </Field>
+        <Field label={`${t('duration')} (months)`}>
+          <input
+            type="number"
+            className="input"
+            value={form.durationMonths || ''}
+            onChange={(e) => setForm({ ...form, durationMonths: e.target.value })}
+          />
+        </Field>
+        <Field label={t('budgetBand')}>
+          <input className="input" value={form.budgetBand || ''} onChange={(e) => setForm({ ...form, budgetBand: e.target.value })} />
+        </Field>
+        <Field label={t('executiveSponsor')}>
+          <input
+            className="input"
+            value={form.executiveSponsor || ''}
+            onChange={(e) => setForm({ ...form, executiveSponsor: e.target.value })}
+          />
+        </Field>
+      </Modal>
+
+      <Modal
+        open={modal?.kind === 'cm'}
+        onClose={closeModal}
+        title={modal?.mode === 'edit' ? t('m19_edit') : `+ ${t('cmProject')}`}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={closeModal}>
+              {t('cancel')}
+            </button>
+            <button className="btn-primary" onClick={submit}>
+              {t('save')}
+            </button>
+          </>
+        }
+      >
+        <Field label={t('name')}>
+          <input className="input" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+        </Field>
+        <Field label={t('linkedMainProject')}>
+          {(() => {
+            const orgMainProjects = data.mainProjects.filter((mp) => mp.orgId === form.orgId)
+            if (orgMainProjects.length === 0) {
+              return <p className="text-xs text-ink/40 italic">{t('standalone')} — no Main Project exists yet for this Organization.</p>
+            }
+            const selected = form.mainProjectIds || []
+            return (
+              <>
+                <div className="space-y-1.5 rounded-lg border border-brand-100 p-2 max-h-40 overflow-y-auto">
+                  {orgMainProjects.map((mp) => {
+                    const checked = selected.includes(mp.id)
+                    return (
+                      <label key={mp.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(e) => {
+                            const next = e.target.checked ? [...selected, mp.id] : selected.filter((id) => id !== mp.id)
+                            setForm({ ...form, mainProjectIds: next })
+                          }}
+                        />
+                        {mp.name}
+                      </label>
+                    )
+                  })}
+                </div>
+                <p className="text-[11px] text-ink/40 mt-1">
+                  Select zero, one, or more Main Projects. Leave all unchecked for a standalone Change Management Project.
+                </p>
+              </>
+            )
+          })()}
+        </Field>
+        <Field label={t('owner')}>
+          <input
+            className="input"
+            value={form.changeManager || ''}
+            onChange={(e) => setForm({ ...form, changeManager: e.target.value })}
+          />
+        </Field>
+        <Field label={t('changeType')}>
+          <select className="input" value={form.changeType || 'technology'} onChange={(e) => setForm({ ...form, changeType: e.target.value })}>
+            <option value="technology">Technology</option>
+            <option value="process">Process</option>
+            <option value="structural">Structural</option>
+            <option value="cultural">Cultural</option>
+          </select>
+        </Field>
+        <Field label={t('targetPopulation')}>
+          <input
+            className="input"
+            value={form.targetPopulation || ''}
+            onChange={(e) => setForm({ ...form, targetPopulation: e.target.value })}
+          />
+        </Field>
+        <Field label={t('businessDriver')}>
+          <textarea
+            className="input"
+            rows={2}
+            value={form.businessDriver || ''}
+            onChange={(e) => setForm({ ...form, businessDriver: e.target.value })}
+          />
+        </Field>
+      </Modal>
+    </div>
+  )
+}
