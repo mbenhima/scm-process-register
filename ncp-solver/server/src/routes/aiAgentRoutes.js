@@ -1,13 +1,21 @@
 import { Router } from 'express';
 import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
-import { runContainmentAdvisor, runRootCauseMining, runActionRecommendation } from '../services/aiAgents.js';
+import { runClassificationAgent, runContainmentAdvisor, runRootCauseMining, runActionRecommendation } from '../services/aiAgents.js';
 
 const router = Router();
 
 function getFiche(req) {
   return db.prepare('SELECT * FROM ncp_fiches WHERE id = ? AND organization_id = ?').get(req.params.ficheId, req.user.organizationId);
 }
+
+// E1: (re-)run the Classification Agent on demand — e.g. for fiches seeded/imported
+// without an initial classification pass, or to refresh suggestions after an edit.
+router.post('/:ficheId/classification', requirePermission('fiche.view'), (req, res) => {
+  const fiche = getFiche(req);
+  if (!fiche) return res.status(404).json({ error: 'not_found' });
+  res.json(runClassificationAgent(req, fiche));
+});
 
 router.post('/:ficheId/containment-advisor', requirePermission('action.view'), (req, res) => {
   const fiche = getFiche(req);

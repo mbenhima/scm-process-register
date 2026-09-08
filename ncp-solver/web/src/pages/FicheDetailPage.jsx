@@ -5,9 +5,56 @@ import { useI18n } from '../context/I18nContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, CriticalityBadge, StatusBadge, StageProgress, EmptyState } from '../components/ui.jsx';
 
-const TABS = ['detail', 'understanding', 'immediate', 'rootcause', 'corrective', 'rex'];
+// One tab per NCP Solver process stage (E1-E7, KB-003..KB-009).
+const TABS = ['detail', 'understanding', 'immediate', 'rootcause', 'corrective', 'evaluation', 'rex'];
 
-function ActionCard({ action, users, hasPermission, currentUserId, onChanged, ficheId }) {
+function EvidenceList({ actionId, canAdd, defaultType }) {
+  const { t } = useI18n();
+  const [items, setItems] = useState([]);
+  const [fileName, setFileName] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const load = useCallback(() => {
+    api.get(`/actions/${actionId}/evidence`).then(setItems).catch(() => {});
+  }, [actionId]);
+  useEffect(() => { load(); }, [load]);
+
+  async function add(e) {
+    e.preventDefault();
+    if (!fileName.trim()) return;
+    await api.post(`/actions/${actionId}/evidence`, { file_name: fileName, evidence_type: defaultType });
+    setFileName('');
+    setOpen(false);
+    load();
+  }
+
+  return (
+    <div className="mt-2 border-t border-grey-line pt-2">
+      <div className="text-[11px] font-semibold uppercase tracking-wide text-grey-medium mb-1">{t('action.evidence')}</div>
+      {items.length > 0 && (
+        <ul className="text-xs text-grey-ink space-y-0.5 mb-1">
+          {items.map((ev) => (
+            <li key={ev.id} className="flex items-center gap-2">
+              📎 {ev.file_name}
+              <span className="badge bg-grey-light text-grey-medium">{t(ev.evidence_type === 'evaluation_proof' ? 'action.evaluationProof' : 'action.executionProof')}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {canAdd && !open && (
+        <button onClick={() => setOpen(true)} className="text-xs text-orange-deep font-semibold">+ {t('action.addEvidence')}</button>
+      )}
+      {canAdd && open && (
+        <form onSubmit={add} className="flex gap-2 mt-1">
+          <input className="input !py-1 text-xs" placeholder={t('action.evidenceFileName')} value={fileName} onChange={(e) => setFileName(e.target.value)} autoFocus />
+          <button type="submit" className="btn-primary !py-1 !px-2 text-xs">{t('common.save')}</button>
+        </form>
+      )}
+    </div>
+  );
+}
+
+function ActionCard({ action, users, hasPermission, currentUserId, onChanged, allowExecute = true }) {
   const { t } = useI18n();
   const owner = users.find((u) => u.id === action.responsible_owner_id);
   const [evalOpen, setEvalOpen] = useState(false);
@@ -17,8 +64,8 @@ function ActionCard({ action, users, hasPermission, currentUserId, onChanged, fi
     efficiency_criteria: action.evaluation?.efficiency_criteria || '',
   });
   const isOwner = action.responsible_owner_id === currentUserId;
-  const canUpdateOwn = isOwner && hasPermission('action.updateOwn');
-  const canEvaluate = hasPermission('action.evaluate') && action.responsible_owner_id !== currentUserId;
+  const canUpdateOwn = allowExecute && isOwner && hasPermission('action.updateOwn');
+  const canEvaluate = allowExecute && hasPermission('action.evaluate') && action.responsible_owner_id !== currentUserId;
 
   async function markDone() {
     await api.put(`/actions/${action.id}/progress`, { status: 'done', actual_completion_date: new Date().toISOString().slice(0, 10) });
@@ -48,14 +95,16 @@ function ActionCard({ action, users, hasPermission, currentUserId, onChanged, fi
           )}
         </div>
       </div>
-      <div className="flex gap-2 mt-3">
-        {canUpdateOwn && action.status !== 'done' && (
-          <button onClick={markDone} className="btn-secondary !py-1 !px-2 text-xs">{t('action.status.done')}</button>
-        )}
-        {canEvaluate && (
-          <button onClick={() => setEvalOpen((o) => !o)} className="btn-secondary !py-1 !px-2 text-xs">{t('action.reviewResult')}</button>
-        )}
-      </div>
+      {allowExecute && (
+        <div className="flex gap-2 mt-3">
+          {canUpdateOwn && action.status !== 'done' && (
+            <button onClick={markDone} className="btn-secondary !py-1 !px-2 text-xs">{t('action.status.done')}</button>
+          )}
+          {canEvaluate && (
+            <button onClick={() => setEvalOpen((o) => !o)} className="btn-secondary !py-1 !px-2 text-xs">{t('action.reviewResult')}</button>
+          )}
+        </div>
+      )}
       {evalOpen && (
         <form onSubmit={saveEvaluation} className="mt-3 border-t border-grey-line pt-3 space-y-2">
           <select className="input" value={evalForm.review_result} onChange={(e) => setEvalForm((f) => ({ ...f, review_result: e.target.value }))}>
@@ -65,6 +114,38 @@ function ActionCard({ action, users, hasPermission, currentUserId, onChanged, fi
           <input className="input" placeholder={t('action.reviewResult')} value={evalForm.review_comments} onChange={(e) => setEvalForm((f) => ({ ...f, review_comments: e.target.value }))} />
           <button type="submit" className="btn-primary !py-1 !px-3 text-xs">{t('common.save')}</button>
         </form>
+      )}
+      {allowExecute && (
+        <EvidenceList
+          actionId={action.id}
+          canAdd={canUpdateOwn || canEvaluate}
+          defaultType={canEvaluate && !canUpdateOwn ? 'evaluation_proof' : 'execution_proof'}
+        />
+      )}
+    </div>
+  );
+}
+
+function AiPanel({ label, onRun, render }) {
+  const { t } = useI18n();
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  return (
+    <div className="mb-3">
+      <button
+        disabled={loading}
+        onClick={async () => { setLoading(true); try { setResult(await onRun()); } finally { setLoading(false); } }}
+        className="btn-secondary text-xs"
+      >
+        🤖 {label}
+      </button>
+      {result && (
+        <div className="mt-3 text-sm bg-orange-tint/50 rounded-md p-3">
+          {render(result)}
+          {result.sourceFiches?.length > 0 && (
+            <div className="mt-2 text-xs text-grey-medium">{t('fiche.aiSimilar')}: {result.sourceFiches.join(', ')}</div>
+          )}
+        </div>
       )}
     </div>
   );
@@ -78,8 +159,6 @@ export default function FicheDetailPage() {
   const [fiche, setFiche] = useState(null);
   const [tab, setTab] = useState('detail');
   const [users, setUsers] = useState([]);
-  const [aiResult, setAiResult] = useState(null);
-  const [aiLoading, setAiLoading] = useState(false);
 
   const load = useCallback(() => {
     api.get(`/fiches/${id}`).then(setFiche).catch(() => {});
@@ -105,6 +184,7 @@ export default function FicheDetailPage() {
 
   const immediateActions = fiche.actions.filter((a) => a.action_type === 'immediate');
   const correctiveActions = fiche.actions.filter((a) => a.action_type === 'corrective');
+  const lastClassification = fiche.aiLogs?.find((l) => l.agent_name === 'Classification Agent');
 
   return (
     <div className="space-y-4">
@@ -153,43 +233,95 @@ export default function FicheDetailPage() {
             <div><span className="text-grey-medium">{t('fiche.team')}:</span> {fiche.team.map((m) => `${m.first_name} ${m.last_name}`).join(', ') || '—'}</div>
           </div>
           <div className="mt-5 border-t border-grey-line pt-4">
-            <button
-              disabled={aiLoading}
-              onClick={async () => {
-                setAiLoading(true);
-                try { setAiResult(await api.post(`/ai-agents/${id}/root-cause-mining`, {})); } finally { setAiLoading(false); }
-              }}
-              className="btn-secondary text-xs"
-            >
-              🤖 {t('fiche.aiSuggest')}
-            </button>
-            {aiResult && (
-              <div className="mt-3 text-sm bg-orange-tint/50 rounded-md p-3">
-                <div className="font-semibold text-orange-deep mb-1">{t('fiche.aiSimilar')}</div>
-                <ul className="list-disc ps-5 space-y-1">
-                  {(aiResult.sourceFiches || []).map((f, i) => <li key={i}>{f}</li>)}
-                  {(aiResult.suggestedCauses || []).map((c, i) => <li key={`c${i}`} className="text-grey-ink">{c}</li>)}
-                </ul>
-              </div>
+            <AiPanel
+              label={t('fiche.aiClassification')}
+              onRun={() => api.post(`/ai-agents/${id}/classification`, {}).then((r) => { load(); return r; })}
+              render={(r) => (
+                <>
+                  <div className="font-semibold text-orange-deep mb-1">
+                    {t('fiche.criticality')}: {t(`fiche.criticality.${r.suggestedCriticality}`)} · {t('fiche.priority')}: P{r.suggestedPriority}
+                  </div>
+                  {r.similarPastFiches?.length > 0 && (
+                    <ul className="list-disc ps-5 space-y-1 text-grey-ink">
+                      {r.similarPastFiches.map((f, i) => <li key={i}>{f.ficheNumber} — {f.title}</li>)}
+                    </ul>
+                  )}
+                </>
+              )}
+            />
+            {lastClassification && (
+              <div className="text-[11px] text-grey-medium">Last run: {new Date(lastClassification.created_at).toLocaleString()} · confidence {Math.round((lastClassification.confidence_score || 0) * 100)}%</div>
             )}
           </div>
         </Card>
       )}
 
       {tab === 'understanding' && <UnderstandingTab fiche={fiche} onSaved={load} />}
+
       {tab === 'immediate' && (
-        <ActionsTab
-          actions={immediateActions} actionType="immediate" ficheId={id} users={users}
-          hasPermission={hasPermission} currentUserId={user.id} onChanged={load}
-        />
+        <div className="space-y-3">
+          <AiPanel
+            label={t('fiche.aiContainment')}
+            onRun={() => api.post(`/ai-agents/${id}/containment-advisor`, {})}
+            render={(r) => (
+              <ul className="list-disc ps-5 space-y-1 text-grey-ink">
+                {r.suggestions.map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            )}
+          />
+          <ActionsTab
+            actions={immediateActions} actionType="immediate" ficheId={id} users={users}
+            hasPermission={hasPermission} currentUserId={user.id} onChanged={load} allowCreate allowExecute
+          />
+        </div>
       )}
-      {tab === 'rootcause' && <RootCausesTab fiche={fiche} onSaved={load} hasPermission={hasPermission} />}
+
+      {tab === 'rootcause' && (
+        <div className="space-y-3">
+          <AiPanel
+            label={t('fiche.aiRootCause')}
+            onRun={() => api.post(`/ai-agents/${id}/root-cause-mining`, {})}
+            render={(r) => (
+              <ul className="list-disc ps-5 space-y-1 text-grey-ink">
+                {r.suggestedCauses.map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            )}
+          />
+          <RootCausesTab fiche={fiche} onSaved={load} hasPermission={hasPermission} />
+        </div>
+      )}
+
       {tab === 'corrective' && (
-        <ActionsTab
-          actions={correctiveActions} actionType="corrective" ficheId={id} users={users}
-          hasPermission={hasPermission} currentUserId={user.id} onChanged={load} rootCauses={fiche.rootCauses}
-        />
+        <div className="space-y-3">
+          <p className="text-xs text-grey-ink italic">{t('fiche.planOnly')}</p>
+          <AiPanel
+            label={t('fiche.aiActionRecommendation')}
+            onRun={() => api.post(`/ai-agents/${id}/action-recommendation`, { root_cause_text: fiche.rootCauses.map((rc) => rc.description).join(' ') || fiche.description })}
+            render={(r) => (
+              <ul className="list-disc ps-5 space-y-1 text-grey-ink">
+                {r.suggestions.map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            )}
+          />
+          <ActionsTab
+            actions={correctiveActions} actionType="corrective" ficheId={id} users={users}
+            hasPermission={hasPermission} currentUserId={user.id} onChanged={load} rootCauses={fiche.rootCauses}
+            allowCreate allowExecute={false}
+          />
+        </div>
       )}
+
+      {tab === 'evaluation' && (
+        <div className="space-y-3">
+          <p className="text-xs text-grey-ink italic">{t('fiche.evaluationIntro')}</p>
+          <ActionsTab
+            actions={correctiveActions} actionType="corrective" ficheId={id} users={users}
+            hasPermission={hasPermission} currentUserId={user.id} onChanged={load}
+            allowCreate={false} allowExecute
+          />
+        </div>
+      )}
+
       {tab === 'rex' && <RexTab fiche={fiche} onSaved={load} hasPermission={hasPermission} />}
     </div>
   );
@@ -226,10 +358,11 @@ function UnderstandingTab({ fiche, onSaved }) {
   );
 }
 
-function ActionsTab({ actions, actionType, ficheId, users, hasPermission, currentUserId, onChanged, rootCauses = [] }) {
+function ActionsTab({ actions, actionType, ficheId, users, hasPermission, currentUserId, onChanged, rootCauses = [], allowCreate = true, allowExecute = true }) {
   const { t } = useI18n();
   const [form, setForm] = useState({ description: '', responsible_owner_id: '', planned_completion_date: '', root_cause_id: '' });
   const [showForm, setShowForm] = useState(false);
+  const canCreate = allowCreate && hasPermission('action.create');
 
   async function create(e) {
     e.preventDefault();
@@ -241,12 +374,12 @@ function ActionsTab({ actions, actionType, ficheId, users, hasPermission, curren
 
   return (
     <div className="space-y-3">
-      {hasPermission('action.create') && (
+      {canCreate && (
         <div className="flex justify-end">
           <button onClick={() => setShowForm((s) => !s)} className="btn-secondary text-xs">+ {t('action.new')}</button>
         </div>
       )}
-      {showForm && (
+      {canCreate && showForm && (
         <Card>
           <form onSubmit={create} className="space-y-2">
             <Field label={t('common.description')}><textarea className="input" value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} required /></Field>
@@ -275,7 +408,7 @@ function ActionsTab({ actions, actionType, ficheId, users, hasPermission, curren
       )}
       <div className="grid gap-3">
         {actions.map((a) => (
-          <ActionCard key={a.id} action={a} users={users} hasPermission={hasPermission} currentUserId={currentUserId} onChanged={onChanged} ficheId={ficheId} />
+          <ActionCard key={a.id} action={a} users={users} hasPermission={hasPermission} currentUserId={currentUserId} onChanged={onChanged} allowExecute={allowExecute} />
         ))}
         {actions.length === 0 && <EmptyState message={t('common.noResults')} />}
       </div>
