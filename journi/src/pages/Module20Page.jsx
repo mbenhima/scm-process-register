@@ -24,7 +24,7 @@ function JourneysTab() {
         <div key={j.id} className="card p-4 space-y-2">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
-              <span className="font-mono text-xs text-brand-700">{j.id}</span>
+              <span className="font-mono text-xs text-ink/60">{j.id}</span>
               <h3 className="font-semibold text-brand-950">{j.name}</h3>
             </div>
             <Badge tone={TYPE_TONE[j.type]}>{j.type}</Badge>
@@ -77,7 +77,7 @@ function TouchpointsTab({ project, canEdit }) {
       {!project && <p className="text-xs text-ink/40 italic">{t('m20_select_project_log')}</p>}
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+          <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
             <tr>
               <th className="text-start px-4 py-2.5">ID</th>
               <th className="text-start px-4 py-2.5">{t('m20_touchpoint')}</th>
@@ -93,7 +93,7 @@ function TouchpointsTab({ project, canEdit }) {
               const instances = log.filter((l) => l.touchpointId === tp.id)
               return (
                 <tr key={tp.id} className="border-t border-brand-50 align-top">
-                  <td className="px-4 py-2.5 font-mono text-xs text-brand-700 whitespace-nowrap">{tp.id}</td>
+                  <td className="px-4 py-2.5 font-mono text-xs text-ink/60 whitespace-nowrap">{tp.id}</td>
                   <td className="px-4 py-2.5 text-ink/70 max-w-xs">{tp.name}</td>
                   <td className="px-4 py-2.5"><Badge tone={SUBPHASE_TONE[tp.pdcaSubphase]}>{tp.pdcaSubphase}</Badge></td>
                   <td className="px-4 py-2.5 text-xs text-ink/50 whitespace-nowrap">D+{tp.daysFromTrigger}</td>
@@ -148,7 +148,7 @@ function DashboardsTab({ project }) {
           <div key={d.id} className="card p-4 space-y-2">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
-                <span className="font-mono text-xs text-brand-700">{d.id}</span>
+                <span className="font-mono text-xs text-ink/60">{d.id}</span>
                 <h3 className="font-semibold text-brand-950">{d.name}</h3>
               </div>
               <Badge tone="gray">{d.refreshFrequency}</Badge>

@@ -50,7 +50,7 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <StatCard label={t('activeInitiatives')} value={projects.length} />
-        <StatCard label={t('avgReadiness')} value={`${avgReadiness}%`} tone={avgReadiness < 50 ? 'red' : avgReadiness < 70 ? 'amber' : 'brand'} />
+        <StatCard label={t('avgReadiness')} value={`${avgReadiness}%`} tone={avgReadiness < 50 ? 'red' : avgReadiness < 70 ? 'amber' : 'green'} />
         <StatCard label={t('openRisks')} value={openRisks} tone={openRisks > 5 ? 'red' : 'amber'} />
         <StatCard label={t('peopleInScope')} value={totalPeople.toLocaleString()} />
       </div>
@@ -82,7 +82,7 @@ export default function Dashboard() {
 
       <div className="card overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+          <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
             <tr>
               <th className="text-start px-4 py-2.5">{t('cmProject')}</th>
               <th className="text-start px-4 py-2.5">{t('organization')}</th>
@@ -104,7 +104,7 @@ export default function Dashboard() {
                   <td className="px-4 py-2.5 font-medium text-brand-950">{p.name}</td>
                   <td className="px-4 py-2.5 text-ink/60">{projOrg?.name}</td>
                   <td className="px-4 py-2.5">
-                    <span className={`font-semibold ${ri < 50 ? 'text-red-600' : ri < 70 ? 'text-amber-600' : 'text-brand-700'}`}>{ri}%</span>
+                    <span className={`font-semibold ${ri < 50 ? 'text-red-600' : ri < 70 ? 'text-amber-600' : 'text-emerald-700'}`}>{ri}%</span>
                   </td>
                   <td className="px-4 py-2.5">
                     <Badge>{t(`bridges_${p.bridgesPhase}`)}</Badge>

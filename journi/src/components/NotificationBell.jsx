@@ -50,7 +50,7 @@ export default function NotificationBell() {
                 <div key={a.id} className="rounded-lg border border-brand-100 p-2">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono text-[10px] text-brand-700">{a.id}</span>
+                      <span className="font-mono text-[10px] text-ink/60">{a.id}</span>
                       <Badge tone={SEVERITY_TONE[a.severity]}>{a.severity}</Badge>
                     </div>
                     <button className="text-ink/30 hover:text-red-600 text-xs shrink-0" onClick={() => dismissAlert(project.id, a.id)}>

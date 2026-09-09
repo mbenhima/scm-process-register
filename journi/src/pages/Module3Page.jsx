@@ -29,7 +29,7 @@ function ChangeLogTable({ project }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
-        <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+        <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
           <tr>
             <th className="text-start px-3 py-2">Date</th>
             <th className="text-start px-3 py-2">Module</th>
@@ -205,7 +205,7 @@ export default function Module3Page() {
             {t('navPortfolio')} — {org.name}
           </div>
           <table className="w-full text-sm">
-            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+            <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
               <tr>
                 <th className="text-start px-4 py-2">{t('name')}</th>
                 <th className="text-start px-4 py-2">{t('changeType')}</th>

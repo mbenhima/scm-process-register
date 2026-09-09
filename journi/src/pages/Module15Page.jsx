@@ -10,10 +10,10 @@ import AiSuggestionBox from '../components/AiSuggestionBox.jsx'
 import { canWrite } from '../utils/rbac.js'
 
 const EVENT_COLOR = {
-  milestone: '#275650',
-  communication: '#b8925a',
-  training: '#3f827b',
-  assessment: '#a67a4a',
+  milestone: '#e07b00',
+  communication: '#3a6ea5',
+  training: '#5aa469',
+  assessment: '#58595b',
 }
 
 const W = 900
@@ -56,24 +56,24 @@ function JourneyChart({ project, zoom, orgProjects }) {
   return (
     <div className="overflow-x-auto">
       <svg viewBox={`0 0 ${W} ${H + 40}`} className="w-full min-w-[700px]" role="img" aria-label="journey timeline">
-        <line x1={PAD} y1={H - PAD} x2={W - PAD} y2={H - PAD} stroke="#dcebe9" strokeWidth="1" />
-        <text x={PAD} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
+        <line x1={PAD} y1={H - PAD} x2={W - PAD} y2={H - PAD} stroke="#e3e3e4" strokeWidth="1" />
+        <text x={PAD} y={H - PAD + 18} fontSize="10" fill="#808184">
           {t('bridges_ending')}
         </text>
-        <text x={W / 2 - 30} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
+        <text x={W / 2 - 30} y={H - PAD + 18} fontSize="10" fill="#808184">
           {t('bridges_neutral')}
         </text>
-        <text x={W - PAD - 60} y={H - PAD + 18} fontSize="10" fill="#5f9d97">
+        <text x={W - PAD - 60} y={H - PAD + 18} fontSize="10" fill="#808184">
           {t('bridges_beginning')}
         </text>
 
-        <path d={pathD} fill="none" stroke="#3f827b" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
+        <path d={pathD} fill="none" stroke="#808184" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
 
         {todayX >= PAD && todayX <= W - PAD && (
-          <line x1={todayX} y1={20} x2={todayX} y2={H - PAD} stroke="#a67a4a" strokeWidth="1.5" strokeDasharray="4 3" />
+          <line x1={todayX} y1={20} x2={todayX} y2={H - PAD} stroke="#f87171" strokeWidth="1.5" strokeDasharray="4 3" />
         )}
         {todayX >= PAD && todayX <= W - PAD && (
-          <text x={todayX + 4} y={16} fontSize="10" fill="#a67a4a" fontWeight="600">
+          <text x={todayX + 4} y={16} fontSize="10" fill="#dc2626" fontWeight="600">
             Today
           </text>
         )}
@@ -84,13 +84,13 @@ function JourneyChart({ project, zoom, orgProjects }) {
           const y = curveY(frac)
           return (
             <g key={e.id + i}>
-              <circle cx={x} cy={y} r={6} fill={EVENT_COLOR[e.type] || '#275650'} stroke="white" strokeWidth="1.5" />
+              <circle cx={x} cy={y} r={6} fill={EVENT_COLOR[e.type] || '#58595b'} stroke="white" strokeWidth="1.5" />
               <text
                 x={x}
                 y={y - 12}
                 fontSize="9"
                 textAnchor="middle"
-                fill="#16221f"
+                fill="#3a3a3c"
                 opacity="0.75"
               >
                 {e.label.length > 26 ? e.label.slice(0, 24) + '…' : e.label}

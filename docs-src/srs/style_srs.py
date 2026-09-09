@@ -9,11 +9,11 @@ from docx.oxml import OxmlElement
 
 warnings.filterwarnings('ignore', category=UserWarning)
 
-H1_COLOR = RGBColor(0x1F, 0x4B, 0x45)
-H2_COLOR = RGBColor(0x27, 0x56, 0x50)
-H3_COLOR = RGBColor(0x3F, 0x82, 0x7B)
-H4_COLOR = RGBColor(0x5A, 0x8F, 0x89)
-HEADER_FILL = '1F4B45'
+H1_COLOR = RGBColor(0xE0, 0x7B, 0x00)  # POWERACT Orange Deep
+H2_COLOR = RGBColor(0x3A, 0x3A, 0x3C)  # POWERACT Grey Dark
+H3_COLOR = RGBColor(0x58, 0x59, 0x5B)  # POWERACT Grey Ink
+H4_COLOR = RGBColor(0x80, 0x81, 0x84)  # POWERACT Grey Medium
+HEADER_FILL = 'F8931D'  # POWERACT Orange Primary
 
 d = docx.Document('srs-pandoc.docx')
 
@@ -64,7 +64,7 @@ for p, size, bold, italic in zip(titles, sizes, bolds, italics):
         r.font.size = Pt(size)
         r.bold = bold
         r.italic = italic
-        r.font.color.rgb = H1_COLOR if size == 30 else RGBColor(0x33, 0x33, 0x33)
+        r.font.color.rgb = H1_COLOR if size == 30 else RGBColor(0x3A, 0x3A, 0x3C)
 d.paragraphs[0].space_before = Pt(100)
 d.paragraphs[4].space_after = Pt(20)
 

@@ -88,7 +88,7 @@ function CharterEntryCard({ entry, canManage, onEdit, onDelete }) {
     <div className="rounded-lg border border-brand-100 p-3 space-y-1.5">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <span className="font-mono text-[10px] text-brand-700">{entry.id}</span>
+          <span className="font-mono text-[10px] text-ink/60">{entry.id}</span>
           <p className="text-xs text-ink/50">{entry.category || <span className="italic text-ink/30">no category</span>} · {t('m19_owner')}: {entry.owner || '—'}</p>
         </div>
         {canManage && (
@@ -119,7 +119,7 @@ function CharterCard({ charter, expanded, onToggle, canManage, canDelete, onEdit
     <div className="card p-4 space-y-2">
       <button className="w-full flex items-start justify-between gap-3 text-start" onClick={onToggle}>
         <div>
-          <span className="font-mono text-xs text-brand-700">{charter.id}</span>
+          <span className="font-mono text-xs text-ink/60">{charter.id}</span>
           <h3 className="font-semibold text-brand-950">{charter.name}</h3>
           <p className="text-xs text-ink/50">{entries.length} {entries.length === 1 ? t('m19_entry_singular') : t('m19_entries')}</p>
         </div>
@@ -308,7 +308,7 @@ function ActionMappingTab({ project, canEdit }) {
       {!project && <p className="text-xs text-ink/40 italic">{t('m19_select_project_log')}</p>}
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+          <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
             <tr>
               <th className="text-start px-4 py-2.5">ID</th>
               <th className="text-start px-4 py-2.5">{t('m19_action')}</th>
@@ -324,7 +324,7 @@ function ActionMappingTab({ project, canEdit }) {
               const instances = log.filter((l) => l.charterActionId === a.id)
               return (
                 <tr key={a.id} className="border-t border-brand-50 align-top">
-                  <td className="px-4 py-2.5 font-mono text-xs text-brand-700 whitespace-nowrap">{a.id}</td>
+                  <td className="px-4 py-2.5 font-mono text-xs text-ink/60 whitespace-nowrap">{a.id}</td>
                   <td className="px-4 py-2.5 text-ink/70 max-w-md">{a.name}</td>
                   <td className="px-4 py-2.5"><Badge tone={PDCA_TONE[a.pdcaStage]}>{a.pdcaStage}</Badge></td>
                   <td className="px-4 py-2.5 text-xs text-ink/50 whitespace-nowrap">{a.macroId} / {a.taskId}</td>
@@ -376,7 +376,7 @@ function MentoringTab() {
         {mentoringStages.map((s) => (
           <div key={s.id} className="card p-4 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs text-brand-700">{s.id}</span>
+              <span className="font-mono text-xs text-ink/60">{s.id}</span>
               <Badge tone={STAGE_TONE[s.order]}>{t('m19_stage')} {s.order}</Badge>
             </div>
             <h3 className="font-semibold text-brand-950">{s.name}</h3>

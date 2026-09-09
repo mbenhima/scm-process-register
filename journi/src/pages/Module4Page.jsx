@@ -59,7 +59,7 @@ function Content({ project }) {
           </div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+            <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
               <tr>
                 <th className="text-start px-4 py-2.5">{t('stakeholderGroup')}</th>
                 <th className="text-start px-4 py-2.5">{t('headcount')}</th>

@@ -74,17 +74,17 @@ export function bridgesOrder(phase) {
 export function scoreColor(score) {
   if (score <= 2) return 'text-red-600 bg-red-50'
   if (score === 3) return 'text-amber-600 bg-amber-50'
-  return 'text-brand-700 bg-brand-50'
+  return 'text-emerald-700 bg-emerald-50'
 }
 
 export function visibilityColor(level) {
   if (level === 'weak') return 'text-red-600 bg-red-50'
   if (level === 'moderate') return 'text-amber-600 bg-amber-50'
-  return 'text-brand-700 bg-brand-50'
+  return 'text-emerald-700 bg-emerald-50'
 }
 
 export function severityColor(n) {
   if (n >= 4) return 'text-red-600 bg-red-50'
   if (n === 3) return 'text-amber-600 bg-amber-50'
-  return 'text-brand-700 bg-brand-50'
+  return 'text-emerald-700 bg-emerald-50'
 }

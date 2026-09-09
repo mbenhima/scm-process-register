@@ -40,19 +40,19 @@ body {
     @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all disabled:opacity-50 disabled:pointer-events-none;
   }
   .btn-primary {
-    @apply btn bg-brand-600 text-white shadow-sm hover:bg-brand-700 hover:shadow active:bg-brand-800;
+    @apply btn bg-brand-600 text-white shadow-sm hover:bg-brand-700 hover:shadow active:bg-brand-700;
   }
   .btn-secondary {
-    @apply btn bg-brand-50 text-brand-800 hover:bg-brand-100;
+    @apply btn bg-brand-100 text-brand-900 hover:bg-brand-200;
   }
   .btn-ghost {
-    @apply btn text-brand-700 hover:bg-brand-50;
+    @apply btn text-ink/70 hover:bg-brand-50 hover:text-brand-900;
   }
   .btn-danger {
     @apply btn bg-red-50 text-red-700 hover:bg-red-100;
   }
   .btn-accent {
-    @apply btn bg-sand-500 text-white shadow-sm hover:bg-sand-600 hover:shadow;
+    @apply btn bg-brand-700 text-white shadow-sm hover:bg-brand-600 hover:shadow;
   }
 
   .input {
@@ -73,7 +73,7 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23275650' stroke-width='1.5'%3E%3Cpath d='M6 8l4 4 4-4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2358595b' stroke-width='1.5'%3E%3Cpath d='M6 8l4 4 4-4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.6rem center;
     background-size: 14px 14px;

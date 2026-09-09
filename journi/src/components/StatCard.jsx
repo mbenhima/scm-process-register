@@ -5,6 +5,7 @@ export default function StatCard({ label, value, sub, tone = 'brand', icon }) {
     brand: 'text-brand-700',
     red: 'text-red-600',
     amber: 'text-amber-600',
+    green: 'text-emerald-700',
     sand: 'text-sand-700',
   }
   return (

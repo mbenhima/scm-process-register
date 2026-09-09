@@ -103,7 +103,7 @@ export default function Module22Page() {
             <p className="text-xs text-ink/40 italic p-4">{t('m22_empty')}</p>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+              <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
                 <tr>
                   <th className="text-start px-4 py-2.5">{t('m22_role')}</th>
                   <th className="text-start px-4 py-2.5">{t('name')}</th>

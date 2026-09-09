@@ -136,7 +136,7 @@ function TaskTable({ project, tasks, canEdit, onEdit }) {
   if (tasks.length === 0) return <EmptyState text="No tasks logged in this track yet." />
   return (
     <table className="w-full text-sm">
-      <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+      <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
         <tr>
           <th className="text-start px-3 py-2">Phase</th>
           <th className="text-start px-3 py-2">Tag</th>
@@ -397,7 +397,7 @@ function TemplateManagerModal({ open, onClose, data, addPhaseTemplate, updatePha
             <div key={tpl.id} className="border border-brand-100 rounded-lg p-3 space-y-2">
               <div className="flex items-start justify-between gap-3 flex-wrap">
                 <div>
-                  <span className="font-mono text-xs text-brand-700">{tpl.id}</span>{' '}
+                  <span className="font-mono text-xs text-ink/60">{tpl.id}</span>{' '}
                   <span className="font-semibold text-brand-950">{tpl.name}</span>{' '}
                   <Badge tone="gray">{tpl.transformationType}</Badge>{' '}
                   <Badge tone="gray">v{tpl.version || 1}</Badge>{' '}
@@ -470,7 +470,7 @@ function ChecklistSection({ project, canEdit, phaseFilter }) {
         </div>
       ) : (
         <table className="w-full text-sm">
-          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+          <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
             <tr>
               <th className="text-start px-3 py-2">Phase</th>
               <th className="text-start px-3 py-2">Track</th>
@@ -754,7 +754,7 @@ function CharterActionsSection({ project, charters, phaseFilter }) {
         </div>
       ) : (
         <table className="w-full text-sm">
-          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+          <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
             <tr>
               <th className="text-start px-3 py-2">Charter</th>
               <th className="text-start px-3 py-2">Action</th>
@@ -806,7 +806,7 @@ function PhaseGateSection({ project, canEdit, phaseFilter }) {
         </div>
       ) : (
         <table className="w-full text-sm">
-          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+          <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
             <tr>
               <th className="text-start px-3 py-2">Phase</th>
               <th className="text-start px-3 py-2">Date</th>
@@ -896,9 +896,9 @@ function Content({ project }) {
     <div className="space-y-5">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total tasks" value={tasks.length} tone="brand" />
-        <StatCard label="On track / ahead" value={onTrack} tone="brand" sub="gap ≤ 0 days" />
+        <StatCard label="On track / ahead" value={onTrack} tone="green" sub="gap ≤ 0 days" />
         <StatCard label="At risk (>7d slip)" value={atRisk} tone="red" />
-        <StatCard label="Avg. schedule gap" value={`${avgGap >= 0 ? '+' : ''}${avgGap}d`} tone={avgGap > 7 ? 'red' : avgGap > 0 ? 'amber' : 'brand'} />
+        <StatCard label="Avg. schedule gap" value={`${avgGap >= 0 ? '+' : ''}${avgGap}d`} tone={avgGap > 7 ? 'red' : avgGap > 0 ? 'amber' : 'green'} />
       </div>
 
       <div className="flex justify-end gap-2 items-center">

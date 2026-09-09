@@ -68,7 +68,7 @@ function CodingWorkbenchTab({ project, canManage }) {
               {codebook.map((c) => (
                 <div key={c.id} className="flex items-start justify-between gap-2 rounded-lg border border-brand-100 p-2">
                   <div>
-                    <span className="font-mono text-xs text-brand-700">{c.label}</span>
+                    <span className="font-mono text-xs text-ink/60">{c.label}</span>
                     <p className="text-xs text-ink/50">{c.description}</p>
                   </div>
                   {canManage && (
@@ -304,7 +304,7 @@ function ResistanceLogTab({ project }) {
           <div key={r.id} className="card p-4">
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <Badge tone="sand">{t(`resistance_${r.type}`)}</Badge>
-              <Badge tone={severityColor(r.severity).includes('red') ? 'red' : severityColor(r.severity).includes('amber') ? 'amber' : 'brand'}>
+              <Badge tone={severityColor(r.severity).includes('red') ? 'red' : severityColor(r.severity).includes('amber') ? 'amber' : 'green'}>
                 {t('severity')}: {r.severity}/5
               </Badge>
               <Badge tone={STATUS_TONE[r.status]}>{r.status}</Badge>

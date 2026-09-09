@@ -49,12 +49,10 @@ export default function Sidebar({ mobileOpen, onNavigate }) {
     <aside
       className={`${mobileOpen ? 'block' : 'hidden'} md:block w-64 shrink-0 border-e border-brand-100 bg-white h-full overflow-y-auto`}
     >
-      <div className="px-4 py-5 flex items-center gap-2 border-b border-brand-100">
-        <div className="w-8 h-8 rounded-lg bg-brand-700 flex items-center justify-center text-white font-bold">j</div>
-        <div>
-          <div className="font-bold text-brand-950 leading-tight">{t('appName')}</div>
-          <div className="text-[10px] text-ink/40 leading-tight">{t('poweredBy')}</div>
-        </div>
+      <div className="px-4 py-5 border-b border-brand-100">
+        <img src="/poweract-logo.png" alt="POWERACT Consulting" className="w-36 h-auto" />
+        <div className="font-bold text-brand-950 leading-tight mt-2">{t('appName')}</div>
+        <div className="text-[10px] text-ink/40 leading-tight">{t('poweredBy')}</div>
       </div>
 
       <nav className="p-3 space-y-4">

@@ -15,7 +15,7 @@ export default function VersionHistoryPanel({ entity, onRevert, canRevert }) {
       {rows.map((r) => (
         <div key={r.version} className="flex items-center justify-between gap-2 text-xs border-t border-brand-100/70 pt-1.5 first:border-0 first:pt-0">
           <div>
-            <span className="font-mono text-brand-700">v{r.version}</span>{' '}
+            <span className="font-mono text-ink/60">v{r.version}</span>{' '}
             <span className="text-ink/60">{r.note}</span>
             {r.savedAt && <span className="text-ink/30"> · {new Date(r.savedAt).toLocaleString()}</span>}
           </div>

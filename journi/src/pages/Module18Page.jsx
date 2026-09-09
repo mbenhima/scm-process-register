@@ -13,7 +13,7 @@ function MacroProcessTab({ data }) {
   return (
     <div className="card overflow-x-auto">
       <table className="w-full text-sm">
-        <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+        <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
           <tr>
             <th className="text-start px-4 py-2.5">ID</th>
             <th className="text-start px-4 py-2.5">Name</th>
@@ -24,7 +24,7 @@ function MacroProcessTab({ data }) {
         <tbody>
           {data.macroProcessCatalog.map((mp) => (
             <tr key={mp.id} className="border-t border-brand-50 align-top">
-              <td className="px-4 py-2.5 font-mono text-xs text-brand-700 whitespace-nowrap">{mp.id}</td>
+              <td className="px-4 py-2.5 font-mono text-xs text-ink/60 whitespace-nowrap">{mp.id}</td>
               <td className="px-4 py-2.5 font-medium text-brand-950 whitespace-nowrap">{mp.name}</td>
               <td className="px-4 py-2.5 text-ink/60 max-w-lg">{mp.description}</td>
               <td className="px-4 py-2.5 whitespace-nowrap">
@@ -50,7 +50,7 @@ function E2ECard({ e2e, macroById, phaseTemplateById }) {
     <div className="card p-4 space-y-2">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <span className="font-mono text-xs text-brand-700">{e2e.id}</span>
+          <span className="font-mono text-xs text-ink/60">{e2e.id}</span>
           <h3 className="font-semibold text-brand-950">{e2e.name}</h3>
         </div>
         <Badge tone={KIND_TONE[e2e.kind]}>{t(`m18_kind_${e2e.kind}`)}</Badge>
@@ -140,7 +140,7 @@ function RacsiTab({ data, canEdit }) {
       {!canEdit && <p className="text-xs text-ink/40 italic">{t('m18_racsi_readonly')}</p>}
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+          <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
             <tr>
               <th className="text-start px-4 py-2.5">Macro Process</th>
               {RACSI_ROLES.map((role) => (
@@ -154,7 +154,7 @@ function RacsiTab({ data, canEdit }) {
             {data.macroProcessCatalog.map((mp) => (
               <tr key={mp.id} className="border-t border-brand-50">
                 <td className="px-4 py-2.5 font-medium text-brand-950 whitespace-nowrap">
-                  <span className="font-mono text-xs text-brand-700">{mp.id}</span> {mp.name}
+                  <span className="font-mono text-xs text-ink/60">{mp.id}</span> {mp.name}
                 </td>
                 {RACSI_ROLES.map((role) => {
                   const value = data.racsiGrid[mp.id]?.[role] || ''

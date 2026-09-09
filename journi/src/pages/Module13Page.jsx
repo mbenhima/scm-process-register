@@ -179,7 +179,7 @@ function Content({ project }) {
           </div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-brand-50/70 text-brand-800 text-xs uppercase tracking-wide">
+            <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
               <tr>
                 <th className="text-start px-4 py-2.5">{t('riskCategory')}</th>
                 <th className="text-start px-4 py-2.5">{t('description')}</th>
@@ -203,7 +203,7 @@ function Content({ project }) {
                     <td className="px-4 py-2.5 text-center">{r.likelihood}</td>
                     <td className="px-4 py-2.5 text-center">{r.impact}</td>
                     <td className="px-4 py-2.5">
-                      <Badge tone={isHighSeverityRisk(r) ? 'red' : riskScore(r) >= 8 ? 'amber' : 'brand'}>{riskScore(r)}</Badge>
+                      <Badge tone={isHighSeverityRisk(r) ? 'red' : riskScore(r) >= 8 ? 'amber' : 'green'}>{riskScore(r)}</Badge>
                     </td>
                     <td className="px-4 py-2.5 text-ink/60">{r.owner}</td>
                     <td className="px-4 py-2.5">

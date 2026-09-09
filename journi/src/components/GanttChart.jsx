@@ -2,9 +2,13 @@ import React from 'react'
 import { dateRangeForTasks, monthTicks, pctForDate, taskGapDays, gapTone, todayISO } from '../utils/wbs.js'
 
 const TRACK_LABEL = { pm: 'Project Management', cm: 'Change Management', framework: 'Frameworks' }
-const TRACK_COLOR = { pm: 'bg-sand-500', cm: 'bg-brand-600', framework: 'bg-violet-500' }
-const TRACK_BORDER = { pm: 'border-sand-500', cm: 'border-brand-500', framework: 'border-violet-500' }
-const TRACK_HEADER = { pm: 'bg-sand-600', cm: 'bg-brand-700', framework: 'bg-violet-600' }
+// Three parallel workstreams on one Gantt = a multi-series overlay: per the
+// brand guide, that means brand orange for the primary series (Change
+// Management, journi's own subject) plus the guide's muted blue and muted
+// green for the other two — never a third bright, competing hue.
+const TRACK_COLOR = { pm: 'bg-chartblue-500', cm: 'bg-brand-600', framework: 'bg-chartgreen-500' }
+const TRACK_BORDER = { pm: 'border-chartblue-500', cm: 'border-brand-600', framework: 'border-chartgreen-500' }
+const TRACK_HEADER = { pm: 'bg-chartblue-600', cm: 'bg-brand-700', framework: 'bg-chartgreen-600' }
 const GAP_TONE_CLASS = { green: 'text-emerald-600', amber: 'text-amber-600', red: 'text-red-600', gray: 'text-ink/30' }
 const GRID_COLS = 'grid-cols-[minmax(160px,220px)_1fr_56px]'
 
