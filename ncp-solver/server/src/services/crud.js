@@ -48,8 +48,12 @@ export function makeCrudRouter({
     let body = { ...req.body };
     if (beforeCreate) body = beforeCreate(body, req);
     const id = body.id || randomUUID();
-    const cols = ['id', tenantColumn, ...fields];
-    const vals = [id, req.user.organizationId, ...fields.map((f) => body[f] ?? null)];
+    // Only bind fields actually present in the payload, so an omitted field
+    // (e.g. is_active) falls back to the column's own SQL DEFAULT instead of
+    // being explicitly overwritten with NULL (which fails on NOT NULL columns).
+    const providedFields = fields.filter((f) => f in body);
+    const cols = ['id', tenantColumn, ...providedFields];
+    const vals = [id, req.user.organizationId, ...providedFields.map((f) => body[f])];
     const placeholders = cols.map(() => '?').join(',');
     db.prepare(`INSERT INTO ${table} (${cols.join(',')}) VALUES (${placeholders})`).run(...vals);
     const row = db.prepare(`SELECT * FROM ${table} WHERE id = ?`).get(id);

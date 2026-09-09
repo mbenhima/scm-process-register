@@ -11,23 +11,22 @@ sectors.
 
 ## Stack
 
-- **Backend**: Node.js + Express + `better-sqlite3` (single-file relational DB, zero
-  external services required). JWT auth, bcrypt password hashing, a permission-catalog
-  RBAC layer, and a dependency-free TF-IDF/cosine-similarity RAG engine standing in for a
-  vector-DB + embedding pipeline (see `server/src/services/rag.js` and `aiAgents.js`).
+- **Backend**: Node.js + Express + Node's built-in `node:sqlite` module (single-file
+  relational DB, zero external services and zero native/compiled dependencies — nothing to
+  build). JWT auth, bcrypt password hashing, a permission-catalog RBAC layer, and a
+  dependency-free TF-IDF/cosine-similarity RAG engine standing in for a vector-DB +
+  embedding pipeline (see `server/src/services/rag.js` and `aiAgents.js`).
 - **Frontend**: React 18 + Vite + Tailwind CSS, styled to the POWERACT Consulting
   graphical chart (orange `#F8931D` primary, Cambria/Calibri type, RAG status scale, card
   layout). Custom EN/FR/AR i18n context with full RTL support for Arabic.
 
 ## Requirements
 
-- **Node.js 20 or newer** (Node 22 recommended) and npm — check with `node --version`.
-  Download from [nodejs.org](https://nodejs.org) if needed.
-- A C/C++ build toolchain is normally **not** required — `better-sqlite3` ships prebuilt
-  binaries for common platforms. If `npm install` tries to compile from source on your
-  machine, install "build tools" for your OS (e.g. Xcode Command Line Tools on macOS,
-  `build-essential` on Debian/Ubuntu, or the "Desktop development with C++" workload of
-  Visual Studio Build Tools on Windows).
+- **Node.js 22.5 or newer** (Node 22 LTS recommended; Node 24 also works) and npm — check
+  with `node --version`. Download from [nodejs.org](https://nodejs.org) if needed. This is
+  the *only* requirement: the database layer (`node:sqlite`) is built into Node itself, so
+  there is nothing to compile and no C/C++ build toolchain, Visual Studio, or Xcode Command
+  Line Tools is ever needed — `npm install` only downloads plain JavaScript packages.
 - No database server, Docker, or external API key is required — everything runs locally.
 
 ## Installation
@@ -93,9 +92,13 @@ and `server/src/index.js`).
 - **Port already in use**: another process is using 4000 or 5173. Stop it, or set
   `PORT=4001 npm run dev` for the API (and update `web/vite.config.js`'s proxy target to
   match).
-- **`npm install` fails to build `better-sqlite3`**: see the build-toolchain note under
-  Requirements above, or install a Node.js version with prebuilt binary support (Node 20/22
-  LTS).
+- **`Invalid email or password` on every login attempt**: this almost always means the demo
+  data was never seeded (or `npm install` in `server/` never completed). Re-run
+  `npm install` in `server/` and watch for errors, then `npm run seed`, and confirm you see
+  `Seed complete.` before retrying the login.
+- **`node:internal/... SQLite is an experimental feature` warning**: harmless — `node:sqlite`
+  prints this on every start. If instead you get an error saying `node:sqlite` cannot be
+  found, your Node.js version is older than 22.5; upgrade Node (see Requirements above).
 - **Blank page / API errors in the browser console**: confirm the backend terminal shows
   "listening on http://localhost:4000" before opening the web app.
 

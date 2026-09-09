@@ -100,7 +100,7 @@ router.post('/:id/assignments', requirePermission('racsi.edit'), (req, res) => {
     db.prepare('INSERT INTO racsi_assignments (id, activity_id, racsi_type, role_id, user_id) VALUES (?, ?, ?, ?, ?)')
       .run(id, activity.id, racsi_type, role_id || null, user_id || null);
   } catch (err) {
-    if (err.code === 'SQLITE_CONSTRAINT_UNIQUE' || err.code === 'SQLITE_CONSTRAINT') {
+    if (err.code === 'SQLITE_CONSTRAINT_UNIQUE' || err.code === 'SQLITE_CONSTRAINT' || String(err.message).includes('UNIQUE constraint failed')) {
       return res.status(409).json({ error: 'accountable_already_assigned', message: 'This activity already has an Accountable (A). Remove it before assigning a new one.' });
     }
     throw err;
