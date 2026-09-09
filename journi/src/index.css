@@ -33,14 +33,14 @@ body {
    Organization/Project selectors next to it). */
 @layer components {
   .card {
-    @apply bg-white rounded-xl border border-brand-100/70 shadow-sm;
+    @apply bg-white rounded-2xl border border-brand-100/70 shadow-sm transition-shadow;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all disabled:opacity-50 disabled:pointer-events-none;
   }
   .btn-primary {
-    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+    @apply btn bg-brand-600 text-white shadow-sm hover:bg-brand-700 hover:shadow active:bg-brand-800;
   }
   .btn-secondary {
     @apply btn bg-brand-50 text-brand-800 hover:bg-brand-100;
@@ -51,9 +51,12 @@ body {
   .btn-danger {
     @apply btn bg-red-50 text-red-700 hover:bg-red-100;
   }
+  .btn-accent {
+    @apply btn bg-sand-500 text-white shadow-sm hover:bg-sand-600 hover:shadow;
+  }
 
   .input {
-    @apply w-full rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent;
+    @apply w-full rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink/40 transition-shadow focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent;
   }
 
   /* select elements keep their native browser dropdown arrow on top of the
