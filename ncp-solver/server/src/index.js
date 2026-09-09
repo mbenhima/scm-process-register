@@ -24,6 +24,7 @@ import businessRulesRoutes from './routes/businessRules.js';
 import controlsRoutes from './routes/controls.js';
 import risksRoutes from './routes/risks.js';
 import racsiRoutes from './routes/racsi.js';
+import bpmnRoutes from './routes/bpmn.js';
 
 if (isEmpty()) {
   console.log('Empty database detected - running seed...');
@@ -59,6 +60,7 @@ app.use('/api/business-rules', businessRulesRoutes);
 app.use('/api/controls', controlsRoutes);
 app.use('/api/risks', risksRoutes);
 app.use('/api/racsi', racsiRoutes);
+app.use('/api/bpmn', bpmnRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

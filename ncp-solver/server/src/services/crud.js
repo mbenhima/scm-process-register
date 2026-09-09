@@ -4,6 +4,11 @@ import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { writeAudit } from './audit.js';
 
+// An empty string from an unselected <select> (e.g. an optional OBS Unit / owner
+// picker) must become NULL, not '', or it violates FOREIGN KEY / type constraints
+// on columns that reference another table.
+const normalize = (v) => (v === '' ? null : v);
+
 /**
  * Generic CRUD router factory for simple tenant-scoped tables.
  * Handles list/get/create/update/delete with RBAC + audit logging.
@@ -53,7 +58,7 @@ export function makeCrudRouter({
     // being explicitly overwritten with NULL (which fails on NOT NULL columns).
     const providedFields = fields.filter((f) => f in body);
     const cols = ['id', tenantColumn, ...providedFields];
-    const vals = [id, req.user.organizationId, ...providedFields.map((f) => body[f])];
+    const vals = [id, req.user.organizationId, ...providedFields.map((f) => normalize(body[f]))];
     const placeholders = cols.map(() => '?').join(',');
     db.prepare(`INSERT INTO ${table} (${cols.join(',')}) VALUES (${placeholders})`).run(...vals);
     const row = db.prepare(`SELECT * FROM ${table} WHERE id = ?`).get(id);
@@ -71,7 +76,7 @@ export function makeCrudRouter({
       const setClause = setCols.map((f) => `${f} = ?`).join(', ');
       const hasUpdatedAt = db.prepare(`PRAGMA table_info(${table})`).all().some((c) => c.name === 'updated_at');
       const sql = `UPDATE ${table} SET ${setClause}${hasUpdatedAt ? ", updated_at = datetime('now')" : ''} WHERE id = ?`;
-      db.prepare(sql).run(...setCols.map((f) => body[f]), req.params.id);
+      db.prepare(sql).run(...setCols.map((f) => normalize(body[f])), req.params.id);
     }
     const row = db.prepare(`SELECT * FROM ${table} WHERE id = ?`).get(req.params.id);
     writeAudit(req, 'UPDATE', entityType, req.params.id, existing, row);

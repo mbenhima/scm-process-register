@@ -59,7 +59,7 @@ router.put('/:id', requirePermission('action.edit'), (req, res) => {
   res.json(row);
 });
 
-// Action Owner (RR) self-service update: status + completion date only.
+// Action Owner (AR) self-service update: status + completion date only.
 router.put('/:id/progress', requirePermission('action.updateOwn'), (req, res) => {
   const existing = db.prepare('SELECT * FROM actions WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!existing) return res.status(404).json({ error: 'not_found' });
@@ -82,7 +82,7 @@ router.delete('/:id', requirePermission('action.delete'), (req, res) => {
   res.status(204).end();
 });
 
-// --- Evaluation (RE) ---
+// --- Evaluation (AE) ---
 router.put('/:id/evaluation', requirePermission('action.evaluate'), (req, res) => {
   const action = db.prepare('SELECT * FROM actions WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!action) return res.status(404).json({ error: 'not_found' });

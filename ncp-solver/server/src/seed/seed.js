@@ -5,6 +5,7 @@ import { PERMISSIONS, ROLE_TEMPLATES } from './rbacCatalog.js';
 import { SECTOR_TEMPLATES, SECTOR_LABELS } from './sectorTemplates.js';
 import { AI_USE_CASE_TEMPLATES } from './aiUseCaseTemplates.js';
 import { BUSINESS_RULE_TEMPLATES, CONTROL_TEMPLATES, RISK_TEMPLATES } from './grcTemplates.js';
+import { NCP_PROCESS_BPMN_XML } from './bpmnTemplates.js';
 
 export const DEMO_PASSWORD = 'Ncp#2026Demo';
 
@@ -13,7 +14,7 @@ const TABLES_IN_DELETE_ORDER = [
   'action_evidence', 'action_evaluations', 'actions',
   'rex_entries', 'root_causes', 'problem_understanding', 'ncp_team_assignments', 'ncp_fiches',
   'ai_use_case_versions', 'ai_use_cases',
-  'racsi_assignments', 'racsi_activities',
+  'racsi_assignments', 'racsi_activities', 'bpmn_diagrams',
   'risk_controls', 'risks_opportunities', 'controls', 'business_rules',
   'standards',
   'governance_settings', 'licenses',
@@ -162,9 +163,9 @@ function nextActionNumber(orgId) {
 function insertFiche(orgId, obsId, users, standardIds, tpl, detectionDaysAgo, plan) {
   const ficheId = randomUUID();
   const detectionDate = daysAgoISO(detectionDaysAgo);
-  const status = plan === 'closed' ? 'closed' : (plan === 'E1' ? 'open' : 'in_progress');
+  const status = plan === 'closed' ? 'closed' : (plan === 'S1' ? 'open' : 'in_progress');
   const closureDate = plan === 'closed' ? daysAgoISO(Math.max(1, detectionDaysAgo - 20)) : null;
-  const stage = plan === 'closed' ? 'E7' : plan;
+  const stage = plan === 'closed' ? 'S7' : plan;
   const standardId = tpl.standard ? standardIds[tpl.standard] : null;
 
   db.prepare(`
@@ -180,15 +181,15 @@ function insertFiche(orgId, obsId, users, standardIds, tpl, detectionDaysAgo, pl
 
   db.prepare('INSERT INTO ncp_team_assignments (id, fiche_id, user_id, assigned_by) VALUES (?, ?, ?, ?)')
     .run(randomUUID(), ficheId, users.team1, users.cipilot);
-  if (plan !== 'E1') {
+  if (plan !== 'S1') {
     db.prepare('INSERT INTO ncp_team_assignments (id, fiche_id, user_id, assigned_by) VALUES (?, ?, ?, ?)')
       .run(randomUUID(), ficheId, users.cipilot, users.cipilot);
   }
 
-  const stageOrder = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7'];
+  const stageOrder = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
   const reached = (s) => plan === 'closed' || stageOrder.indexOf(plan) >= stageOrder.indexOf(s);
 
-  if (reached('E2')) {
+  if (reached('S2')) {
     db.prepare(`
       INSERT INTO problem_understanding (id, fiche_id, what, who_detected, where_, when_, how_detected, why_problem, how_much, frequency_analysis, objectives)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -198,9 +199,9 @@ function insertFiche(orgId, obsId, users, standardIds, tpl, detectionDaysAgo, pl
   }
 
   let immediateActionId = null;
-  if (reached('E3')) {
+  if (reached('S3')) {
     immediateActionId = randomUUID();
-    const done = reached('E4');
+    const done = reached('S4');
     db.prepare(`
       INSERT INTO actions (id, organization_id, fiche_id, action_number, action_type, description, tasks, required_means,
         responsible_owner_id, planned_completion_date, status, actual_completion_date)
@@ -220,7 +221,7 @@ function insertFiche(orgId, obsId, users, standardIds, tpl, detectionDaysAgo, pl
   }
 
   let rootCauseId = null;
-  if (reached('E4')) {
+  if (reached('S4')) {
     rootCauseId = randomUUID();
     db.prepare(`
       INSERT INTO root_causes (id, fiche_id, description, cause_category, rca_method_used, validated_at, validated_by, standard_id)
@@ -229,9 +230,9 @@ function insertFiche(orgId, obsId, users, standardIds, tpl, detectionDaysAgo, pl
   }
 
   let correctiveActionId = null;
-  if (reached('E5')) {
+  if (reached('S5')) {
     correctiveActionId = randomUUID();
-    const done = reached('E6');
+    const done = reached('S6');
     db.prepare(`
       INSERT INTO actions (id, organization_id, fiche_id, action_number, action_type, root_cause_id, description, tasks,
         required_means, responsible_owner_id, planned_completion_date, status, actual_completion_date)
@@ -274,7 +275,7 @@ function insertFiche(orgId, obsId, users, standardIds, tpl, detectionDaysAgo, pl
 
 function seedFichesForOrg(orgId, sector, obsByName, users, standardIds) {
   const templates = SECTOR_TEMPLATES[sector];
-  const plans = ['closed', 'closed', 'E5', 'E3', 'E1', 'E2'];
+  const plans = ['closed', 'closed', 'S5', 'S3', 'S1', 'S2'];
   const detectionDays = [60, 45, 20, 4, 0, 2];
   templates.forEach((tpl, i) => {
     const obsId = obsByName[tpl.department] || governanceObsId(obsByName);
@@ -353,7 +354,7 @@ function seedRisksForOrg(orgId, users, controlIds, obsNodeId) {
   return ids;
 }
 
-// Seeds the RACSI accountability matrix: one activity per NCP process step (E1-E7), plus a
+// Seeds the RACSI accountability matrix: one activity per NCP process step (S1-S7), plus a
 // handful of governance activities linked directly to a Business Rule, a Control and a
 // Risk/Opportunity record. Assignees mix ROLES (org-wide accountability) and NAMED people
 // (specific users), all drawn from the org's OBS-scoped roles/users. Exactly one Accountable.
@@ -380,9 +381,9 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
   const role = (code) => ({ roleId: roleIds[code] });
   const user = (id) => ({ userId: id });
 
-  // E1-E7: one activity per NCP Solver process step.
+  // S1-S7: one activity per NCP Solver process step.
   activity({
-    code: 'RACSI-E1', title: 'E1 — Detection & Alert', ncpStage: 'E1', moduleRef: 'ncp_process', obsNodeId: govObsId,
+    code: 'RACSI-S1', title: 'S1 — Detection & Alert', ncpStage: 'S1', moduleRef: 'ncp_process', obsNodeId: govObsId,
     description: 'Log the non-conformity, capture immediate facts, and trigger the initial alert.',
     assignments: [
       { type: 'A', ...role('quality_manager') },
@@ -393,7 +394,7 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
     ],
   });
   activity({
-    code: 'RACSI-E2', title: 'E2 — Problem Understanding (5W2H)', ncpStage: 'E2', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
+    code: 'RACSI-S2', title: 'S2 — Problem Understanding (5W2H)', ncpStage: 'S2', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
     description: 'Structure the problem statement (What/Who/Where/When/How/How much) before any containment.',
     assignments: [
       { type: 'A', ...role('ci_pilot') },
@@ -404,7 +405,7 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
     ],
   });
   activity({
-    code: 'RACSI-E3', title: 'E3 — Immediate / Containment Actions', ncpStage: 'E3', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
+    code: 'RACSI-S3', title: 'S3 — Immediate / Containment Actions', ncpStage: 'S3', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
     description: 'Contain the non-conformity and protect the customer/process from further exposure.',
     assignments: [
       { type: 'A', ...role('quality_manager') },
@@ -415,7 +416,7 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
     ],
   });
   activity({
-    code: 'RACSI-E4', title: 'E4 — Root Cause Analysis', ncpStage: 'E4', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
+    code: 'RACSI-S4', title: 'S4 — Root Cause Analysis', ncpStage: 'S4', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
     description: 'Identify and validate the root cause(s) using 5-Why or Ishikawa.',
     assignments: [
       { type: 'A', ...role('ci_pilot') },
@@ -426,7 +427,7 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
     ],
   });
   activity({
-    code: 'RACSI-E5', title: 'E5 — Corrective Action Plan', ncpStage: 'E5', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
+    code: 'RACSI-S5', title: 'S5 — Corrective Action Plan', ncpStage: 'S5', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
     description: 'Define, resource and implement the permanent corrective action.',
     assignments: [
       { type: 'A', ...role('quality_manager') },
@@ -437,7 +438,7 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
     ],
   });
   activity({
-    code: 'RACSI-E6', title: 'E6 — Effectiveness Evaluation', ncpStage: 'E6', moduleRef: 'ncp_process', obsNodeId: govObsId,
+    code: 'RACSI-S6', title: 'S6 — Effectiveness Evaluation', ncpStage: 'S6', moduleRef: 'ncp_process', obsNodeId: govObsId,
     description: 'Verify, after the monitoring period, that the corrective action actually worked.',
     assignments: [
       { type: 'A', ...user(users.evaluator) },
@@ -448,7 +449,7 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
     ],
   });
   activity({
-    code: 'RACSI-E7', title: 'E7 — Capitalization (REX)', ncpStage: 'E7', moduleRef: 'ncp_process', obsNodeId: govObsId,
+    code: 'RACSI-S7', title: 'S7 — Capitalization (REX)', ncpStage: 'S7', moduleRef: 'ncp_process', obsNodeId: govObsId,
     description: 'Publish lessons learned to the Capitalization Library; decide on standardization/generalization.',
     assignments: [
       { type: 'A', ...role('quality_manager') },
@@ -460,12 +461,12 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
   });
 
   // Governance activities linked directly to a Business Rule, a Control and a Risk/Opportunity,
-  // so RACSI (item 3/4) is visibly tied into the other GRC modules (item 2), not just the E1-E7 flow.
+  // so RACSI (item 3/4) is visibly tied into the other GRC modules (item 2), not just the S1-S7 flow.
   if (businessRuleIds['BR-001']) {
     activity({
-      code: 'RACSI-BR-001', title: 'Governance: Enforce BR-001 (RR/RE Segregation)', moduleRef: 'business_rule',
+      code: 'RACSI-BR-001', title: 'Governance: Enforce BR-001 (AR/AE Segregation)', moduleRef: 'business_rule',
       linkedRecordId: businessRuleIds['BR-001'], obsNodeId: govObsId,
-      description: 'Own the ongoing enforcement and periodic review of the RR/RE segregation-of-duties business rule.',
+      description: 'Own the ongoing enforcement and periodic review of the AR/AE segregation-of-duties business rule.',
       assignments: [
         { type: 'A', ...user(users.quality) },
         { type: 'R', ...role('ci_pilot') },
@@ -491,7 +492,7 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
   }
   if (riskIds['R-001']) {
     activity({
-      code: 'RACSI-R-001', title: 'Governance: Mitigate R-001 (Skipping E7 Capitalization)', moduleRef: 'risk_opportunity',
+      code: 'RACSI-R-001', title: 'Governance: Mitigate R-001 (Skipping S7 Capitalization)', moduleRef: 'risk_opportunity',
       linkedRecordId: riskIds['R-001'], obsNodeId: govObsId,
       description: 'Own the mitigation plan and residual-risk monitoring for R-001.',
       assignments: [
@@ -503,6 +504,17 @@ function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, cont
       ],
     });
   }
+}
+
+function seedBpmnForOrg(orgId, users, obsNodeId) {
+  db.prepare(`
+    INSERT INTO bpmn_diagrams (id, organization_id, code, title, description, xml, obs_node_id, updated_by)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    randomUUID(), orgId, 'BPMN-NCP-01', 'NCP Solver Process (S1-S7)',
+    'The end-to-end non-conformity resolution process, from detection through capitalization, including the effectiveness-evaluation loop back to the corrective action plan.',
+    NCP_PROCESS_BPMN_XML, obsNodeId, users.quality,
+  );
 }
 
 function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorType, country, planTier, deploymentModel, domain, language }) {
@@ -526,6 +538,7 @@ function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorT
   const controlIds = seedControlsForOrg(id, users, govObsId);
   const riskIds = seedRisksForOrg(id, users, controlIds, govObsId);
   seedRacsiForOrg(id, users, roleIds, obsByName, businessRuleIds, controlIds, riskIds);
+  seedBpmnForOrg(id, users, govObsId);
   return { id, users, roleIds };
 }
 

@@ -21,6 +21,10 @@ function withScores(row) {
   };
 }
 
+// An empty string from an unselected <select> (e.g. the optional OBS Unit picker)
+// must become NULL, not '', or it violates the FOREIGN KEY constraint on obs_node_id.
+const normalize = (v) => (v === '' ? null : v);
+
 function linkedControls(riskId) {
   return db.prepare(`
     SELECT c.* FROM risk_controls rc JOIN controls c ON c.id = rc.control_id WHERE rc.risk_id = ?
@@ -48,7 +52,7 @@ router.post('/', requirePermission('riskOpportunity.create'), (req, res) => {
   if (!body.title) return res.status(400).json({ error: 'title_required' });
   const id = randomUUID();
   const cols = ['id', 'organization_id', ...FIELDS];
-  const vals = [id, req.user.organizationId, ...FIELDS.map((f) => body[f] ?? null)];
+  const vals = [id, req.user.organizationId, ...FIELDS.map((f) => normalize(body[f] ?? null))];
   db.prepare(`INSERT INTO risks_opportunities (${cols.join(',')}) VALUES (${cols.map(() => '?').join(',')})`).run(...vals);
   if (Array.isArray(body.control_ids)) {
     const ins = db.prepare('INSERT INTO risk_controls (risk_id, control_id) VALUES (?, ?)');
@@ -67,7 +71,7 @@ router.put('/:id', requirePermission('riskOpportunity.edit'), (req, res) => {
   if (setCols.length) {
     const setClause = setCols.map((f) => `${f} = ?`).join(', ');
     db.prepare(`UPDATE risks_opportunities SET ${setClause}, updated_at = datetime('now') WHERE id = ?`)
-      .run(...setCols.map((f) => body[f]), req.params.id);
+      .run(...setCols.map((f) => normalize(body[f])), req.params.id);
   }
   if (Array.isArray(body.control_ids)) {
     db.prepare('DELETE FROM risk_controls WHERE risk_id = ?').run(req.params.id);

@@ -4,13 +4,13 @@
 
 export const BUSINESS_RULE_TEMPLATES = [
   {
-    code: 'BR-001', title: 'RR and RE Must Differ', rule_type: 'validation', applies_to_module: 'action', severity: 'blocking',
-    condition_text: "An Evaluator (RE) is being assigned or recorded on an action's effectiveness review.",
-    action_text: 'Block the evaluation if the RE is the same user as the action\'s Responsible (RR); objectivity requires an independent reviewer.',
+    code: 'BR-001', title: 'AR and AE Must Differ', rule_type: 'validation', applies_to_module: 'action', severity: 'blocking',
+    condition_text: "An Evaluator (AE) is being assigned or recorded on an action's effectiveness review.",
+    action_text: 'Block the evaluation if the AE is the same user as the action\'s Action Responsible (AR); objectivity requires an independent reviewer.',
   },
   {
     code: 'BR-002', title: 'REX Required Before Closure', rule_type: 'workflow', applies_to_module: 'fiche', severity: 'blocking',
-    condition_text: 'An NCP sheet is being moved to status CLOSED (E7).',
+    condition_text: 'An NCP sheet is being moved to status CLOSED (S7).',
     action_text: 'Require a completed REX entry (lessons learned) before the status change is allowed, unless disabled in Governance Settings.',
   },
   {
@@ -21,7 +21,7 @@ export const BUSINESS_RULE_TEMPLATES = [
   {
     code: 'BR-004', title: 'Root Cause Analysis Deadline', rule_type: 'threshold', applies_to_module: 'fiche', severity: 'warning',
     condition_text: '48 hours have elapsed since detection and no root cause has been recorded.',
-    action_text: 'Trigger Alert D to the CI Pilot to prompt root cause analysis (E4) to start.',
+    action_text: 'Trigger Alert D to the CI Pilot to prompt root cause analysis (S4) to start.',
   },
   {
     code: 'BR-005', title: 'Sheet Numbering Convention', rule_type: 'naming', applies_to_module: 'fiche', severity: 'info',
@@ -30,15 +30,15 @@ export const BUSINESS_RULE_TEMPLATES = [
   },
   {
     code: 'BR-006', title: 'Mandatory 5W2H Before Containment', rule_type: 'approval', applies_to_module: 'fiche', severity: 'warning',
-    condition_text: 'A team attempts to advance a sheet from E1 (Detection) to E3 (Immediate Actions).',
-    action_text: 'Require the E2 Problem Understanding (5W2H) section to be completed first, so containment actions are grounded in a clear problem definition.',
+    condition_text: 'A team attempts to advance a sheet from S1 (Detection) to S3 (Immediate Actions).',
+    action_text: 'Require the S2 Problem Understanding (5W2H) section to be completed first, so containment actions are grounded in a clear problem definition.',
   },
 ];
 
 export const CONTROL_TEMPLATES = [
   {
     code: 'C-001', title: 'Segregation of Duties: Execution vs. Evaluation', coso_component: 'control_activities', control_type: 'preventive', frequency: 'continuous',
-    effectiveness: 'effective', evidence_notes: 'Enforced by RBAC and the RR ≠ RE system validation on every action evaluation (BR-001).',
+    effectiveness: 'effective', evidence_notes: 'Enforced by RBAC and the AR ≠ AE system validation on every action evaluation (BR-001).',
   },
   {
     code: 'C-002', title: 'Tenant Data Isolation Review', coso_component: 'control_environment', control_type: 'preventive', frequency: 'quarterly',
@@ -68,8 +68,8 @@ export const CONTROL_TEMPLATES = [
 
 export const RISK_TEMPLATES = [
   {
-    code: 'R-001', title: 'Skipping E7 Capitalization', item_type: 'risk', category: 'operational', likelihood: 3, impact: 4,
-    description: 'Teams reach E6 (actions effective) and treat the problem as closed without completing E7, so lessons learned are lost and the Capitalization Library / RAG suggestions stay weak.',
+    code: 'R-001', title: 'Skipping S7 Capitalization', item_type: 'risk', category: 'operational', likelihood: 3, impact: 4,
+    description: 'Teams reach S6 (actions effective) and treat the problem as closed without completing S7, so lessons learned are lost and the Capitalization Library / RAG suggestions stay weak.',
     response_strategy: 'reduce', mitigation_plan: 'Enforce BR-002 (REX required before closure) and monitor via control C-007; the REX Generation Agent auto-drafts the narrative to lower the effort barrier.',
     status: 'monitoring', controls: ['C-007'],
   },

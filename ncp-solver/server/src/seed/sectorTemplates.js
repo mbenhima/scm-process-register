@@ -1,5 +1,5 @@
 // Simulated non-compliance / problem scenarios per sector, used to seed
-// realistic demo data. Each entry drives one NCP Fiche end-to-end (E1-E7).
+// realistic demo data. Each entry drives one NCP Fiche end-to-end (S1-S7).
 
 export const SECTOR_TEMPLATES = {
   public_infrastructure: [

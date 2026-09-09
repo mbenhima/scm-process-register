@@ -2,7 +2,8 @@ import { randomUUID } from 'node:crypto';
 import db from '../db/index.js';
 import { RagIndex } from './rag.js';
 
-// Rule-based + RAG-grounded simulations of the 8 NCP Solver AI agents (KB-010).
+// Rule-based + RAG-grounded simulations of the NCP Solver AI agents (KB-010):
+// one per process step (S1-S7) plus Monitoring & Alert and an Orchestrator.
 // No external LLM is called: everything here is deterministic, explainable,
 // and grounded in the tenant's own data - honoring the "AI Assists, Humans
 // Decide" and "RBAC-aware retrieval" principles from KB-010/KB-014 without an
@@ -75,6 +76,22 @@ export function runClassificationAgent(req, fiche) {
   return response;
 }
 
+export function runProblemStructuringAgent(req, fiche) {
+  const index = buildCapitalizationIndex(req.user.organizationId);
+  const results = index.search(`${fiche.title} ${fiche.description}`, { topK: 3 });
+  const suggestions = [
+    `What: ${fiche.description}`,
+    `When: detected ${fiche.detection_date}`,
+    'Where: confirm the OBS unit/department where this occurred.',
+    'Who detected: confirm the reporting user or team.',
+    "Why is it a problem: compare against the applicable standard or target objective.",
+    'How much: quantify the gap (rate, cost, downtime) — see similar past sheets below for reference.',
+  ];
+  const response = { suggestions, sourceFiches: results.map((r) => r.meta.ficheNumber) };
+  logAgent(req, fiche.id, 'Problem Structuring Agent', fiche.description, null, response, results[0]?.score || 0.4);
+  return response;
+}
+
 export function runContainmentAdvisor(req, fiche) {
   const index = buildCapitalizationIndex(req.user.organizationId);
   const results = index.search(`${fiche.title} ${fiche.description}`, { topK: 5 });
@@ -129,6 +146,35 @@ export function runRexGenerationAgent(req, fiche) {
     needs_generalization: effective.length > 1,
   };
   logAgent(req, fiche.id, 'REX Generation Agent', fiche.description, { rootCauses, actions }, response, 0.8);
+  return response;
+}
+
+export function runEvaluationAssistant(req, fiche) {
+  const rootCauses = db.prepare('SELECT * FROM root_causes WHERE fiche_id = ?').all(fiche.id);
+  const correctiveActions = db.prepare("SELECT * FROM actions WHERE fiche_id = ? AND action_type = 'corrective'").all(fiche.id);
+  const orgId = req.user.organizationId;
+
+  const evalStats = db.prepare(`
+    SELECT ae.review_result, COUNT(*) c FROM action_evaluations ae
+    JOIN actions a ON a.id = ae.action_id
+    WHERE a.organization_id = ? AND a.action_type = 'corrective' AND ae.review_result IN ('effective', 'not_effective')
+    GROUP BY ae.review_result
+  `).all(orgId);
+  const effective = evalStats.find((r) => r.review_result === 'effective')?.c || 0;
+  const notEffective = evalStats.find((r) => r.review_result === 'not_effective')?.c || 0;
+  const sampleSize = effective + notEffective;
+  const historicalEffectivenessRate = sampleSize ? Math.round((effective / sampleSize) * 100) : null;
+
+  const suggestions = correctiveActions.map((a) => {
+    const rc = rootCauses.find((r) => r.id === a.root_cause_id);
+    return `For "${a.description}": verify the specific root cause${rc ? ` ("${rc.description}")` : ''} no longer recurs over the monitoring period before recording "Effective".`;
+  });
+  if (historicalEffectivenessRate !== null) {
+    suggestions.push(`Historical effectiveness rate for corrective actions in this organization: ${historicalEffectivenessRate}% (${effective}/${sampleSize} evaluated).`);
+  }
+
+  const response = { suggestions, historicalEffectivenessRate, sampleSize };
+  logAgent(req, fiche.id, 'Evaluation Assistant Agent', fiche.description, { rootCauses, correctiveActions }, response, sampleSize > 0 ? 0.6 : 0.4);
   return response;
 }
 

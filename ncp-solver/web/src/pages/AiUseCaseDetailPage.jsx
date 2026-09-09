@@ -109,7 +109,24 @@ function MetadataCard({ data, canEdit, onSave, t }) {
   });
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   return (
-    <Card title={t('aiUseCase.metadata')}>
+    <Card
+      title={t('aiUseCase.metadata')}
+      action={
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-grey-medium">{data.is_active ? t('aiUseCase.active') : t('aiUseCase.inactive')}</span>
+          {canEdit && (
+            <button
+              type="button"
+              onClick={() => onSave({ is_active: data.is_active ? 0 : 1 })}
+              title={data.is_active ? t('aiUseCase.deactivate') : t('aiUseCase.activate')}
+              className={`relative w-9 h-5 rounded-full transition-colors shrink-0 ${data.is_active ? 'bg-orange' : 'bg-grey-line'}`}
+            >
+              <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${data.is_active ? 'translate-x-4' : 'translate-x-0.5'}`} />
+            </button>
+          )}
+        </div>
+      }
+    >
       <form onSubmit={(e) => { e.preventDefault(); onSave(form); }}>
         <Field label={t('common.name')}><input className="input" value={form.title} onChange={set('title')} disabled={!canEdit} /></Field>
         <Field label={t('common.description')}><textarea className="input" value={form.description} onChange={set('description')} disabled={!canEdit} /></Field>

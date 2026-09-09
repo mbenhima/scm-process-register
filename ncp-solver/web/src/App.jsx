@@ -17,6 +17,8 @@ import BusinessRulesPage from './pages/BusinessRulesPage.jsx';
 import ControlsPage from './pages/ControlsPage.jsx';
 import RisksPage from './pages/RisksPage.jsx';
 import RacsiPage from './pages/RacsiPage.jsx';
+import BpmnPage from './pages/BpmnPage.jsx';
+import BpmnDiagramPage from './pages/BpmnDiagramPage.jsx';
 import HelpPage from './pages/HelpPage.jsx';
 import ReportsPage from './pages/ReportsPage.jsx';
 import AlertsPage from './pages/AlertsPage.jsx';
@@ -59,6 +61,8 @@ function AppRoutes() {
         <Route path="controls" element={<PermissionGate permission="control.view"><ControlsPage /></PermissionGate>} />
         <Route path="risks" element={<PermissionGate permission="riskOpportunity.view"><RisksPage /></PermissionGate>} />
         <Route path="racsi" element={<PermissionGate permission="racsi.view"><RacsiPage /></PermissionGate>} />
+        <Route path="bpmn" element={<PermissionGate permission="bpmn.view"><BpmnPage /></PermissionGate>} />
+        <Route path="bpmn/:id" element={<PermissionGate permission="bpmn.view"><BpmnDiagramPage /></PermissionGate>} />
         <Route path="help" element={<HelpPage />} />
         <Route path="reports" element={<PermissionGate permission="report.view"><ReportsPage /></PermissionGate>} />
         <Route path="alerts" element={<PermissionGate permission="alert.view"><AlertsPage /></PermissionGate>} />

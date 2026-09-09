@@ -8,11 +8,11 @@ export const PERMISSIONS = [
   ['help', 'view', 'help.view', 'View the in-app help & user guide'],
 
   ['fiche', 'view', 'fiche.view', 'View NCP fiches'],
-  ['fiche', 'create', 'fiche.create', 'Create NCP fiches (E1)'],
-  ['fiche', 'edit', 'fiche.edit', 'Edit NCP fiche content (E2-E7)'],
+  ['fiche', 'create', 'fiche.create', 'Create NCP fiches (S1)'],
+  ['fiche', 'edit', 'fiche.edit', 'Edit NCP fiche content (S2-S7)'],
   ['fiche', 'delete', 'fiche.delete', 'Delete NCP fiches'],
   ['fiche', 'validate', 'fiche.validate', 'Validate stage completion'],
-  ['fiche', 'close', 'fiche.close', 'Close NCP fiches (E7)'],
+  ['fiche', 'close', 'fiche.close', 'Close NCP fiches (S7)'],
   ['fiche', 'assignTeam', 'fiche.assignTeam', 'Assign NCP team members'],
 
   ['action', 'view', 'action.view', 'View actions'],
@@ -89,6 +89,11 @@ export const PERMISSIONS = [
   ['racsi', 'edit', 'racsi.edit', 'Edit RACSI activities and manage assignments'],
   ['racsi', 'delete', 'racsi.delete', 'Delete RACSI activities'],
 
+  ['bpmn', 'view', 'bpmn.view', 'View BPMN process diagrams'],
+  ['bpmn', 'create', 'bpmn.create', 'Create BPMN process diagrams'],
+  ['bpmn', 'edit', 'bpmn.edit', 'Edit BPMN process diagrams in the modeler'],
+  ['bpmn', 'delete', 'bpmn.delete', 'Delete BPMN process diagrams'],
+
   ['report', 'view', 'report.view', 'View reports'],
   ['report', 'export', 'report.export', 'Export reports'],
 
@@ -100,7 +105,7 @@ export const PERMISSIONS = [
 
 export const ALL_CODES = PERMISSIONS.map((p) => p[2]);
 
-const dept = ['dashboard.view', 'help.view', 'report.view', 'obs.view', 'alert.view', 'fiche.view'];
+const dept = ['dashboard.view', 'help.view', 'report.view', 'obs.view', 'alert.view', 'fiche.view', 'bpmn.view'];
 
 export const ROLE_TEMPLATES = {
   admin: {
@@ -121,6 +126,7 @@ export const ROLE_TEMPLATES = {
       'control.view', 'control.create', 'control.edit', 'control.delete',
       'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit', 'riskOpportunity.delete',
       'racsi.view', 'racsi.create', 'racsi.edit', 'racsi.delete',
+      'bpmn.view', 'bpmn.create', 'bpmn.edit', 'bpmn.delete',
     ],
   },
   ci_pilot: {
@@ -136,24 +142,25 @@ export const ROLE_TEMPLATES = {
       'businessRule.view', 'businessRule.create', 'businessRule.edit',
       'control.view', 'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit',
       'racsi.view', 'racsi.create', 'racsi.edit',
+      'bpmn.view', 'bpmn.create', 'bpmn.edit',
     ],
   },
   ncp_team_member: {
     name: 'NCP Team Member', name_fr: 'Membre équipe MRP', name_ar: 'عضو فريق حل المشكلات',
-    description: 'View and edit assigned fiches; complete E2/E4/E5 stages; add root causes and actions.',
+    description: 'View and edit assigned fiches; complete S2/S4/S5 stages; add root causes and actions.',
     permissions: [
       'dashboard.view', 'help.view', 'fiche.view', 'fiche.edit', 'action.view', 'action.create', 'action.edit',
       'rootcause.view', 'rootcause.create', 'rootcause.edit', 'rex.view', 'rex.create',
-      'capitalization.view', 'standard.view', 'obs.view', 'racsi.view',
+      'capitalization.view', 'standard.view', 'obs.view', 'racsi.view', 'bpmn.view',
     ],
   },
   action_owner: {
-    name: 'Action Owner (RR)', name_fr: 'Responsable Réalisation', name_ar: 'مسؤول التنفيذ',
+    name: 'Action Owner (AR)', name_fr: 'Responsable Réalisation', name_ar: 'مسؤول التنفيذ',
     description: 'Update own action status; enter completion date; upload evidence.',
     permissions: ['dashboard.view', 'help.view', 'fiche.view', 'action.view', 'action.updateOwn'],
   },
   evaluator: {
-    name: 'Evaluator (RE)', name_fr: 'Responsable Évaluation', name_ar: 'مسؤول التقييم',
+    name: 'Evaluator (AE)', name_fr: 'Responsable Évaluation', name_ar: 'مسؤول التقييم',
     description: 'View pending evaluations; record effectiveness verdict and date; upload evaluation evidence.',
     permissions: ['dashboard.view', 'help.view', 'fiche.view', 'action.view', 'action.evaluate'],
   },
@@ -164,7 +171,7 @@ export const ROLE_TEMPLATES = {
   },
   reporter: {
     name: 'Reporter', name_fr: 'Déclarant', name_ar: 'المبلّغ',
-    description: 'Create new fiches (E1 only); view own submitted fiches; no edit rights after submission.',
+    description: 'Create new fiches (S1 only); view own submitted fiches; no edit rights after submission.',
     permissions: ['dashboard.view', 'help.view', 'fiche.view', 'fiche.create'],
   },
   auditor: {
@@ -173,7 +180,7 @@ export const ROLE_TEMPLATES = {
     permissions: [
       'dashboard.view', 'help.view', 'fiche.view', 'action.view', 'rootcause.view', 'rex.view',
       'standard.view', 'capitalization.view', 'report.view', 'audit.view', 'obs.view', 'hierarchy.view',
-      'businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view',
+      'businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view', 'bpmn.view',
     ],
   },
 };

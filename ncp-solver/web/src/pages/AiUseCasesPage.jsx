@@ -27,6 +27,13 @@ export default function AiUseCasesPage() {
     load();
   }
 
+  async function toggleActive(e, row) {
+    e.preventDefault();
+    e.stopPropagation();
+    await api.put(`/ai-use-cases/${row.id}`, { is_active: row.is_active ? 0 : 1 });
+    load();
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -40,10 +47,22 @@ export default function AiUseCasesPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {rows.map((r) => (
           <Link key={r.id} to={`/ai-use-cases/${r.id}`}>
-            <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+            <Card className={`h-full hover:shadow-lg transition-shadow cursor-pointer ${!r.is_active ? 'opacity-60' : ''}`}>
               <div className="flex items-start justify-between mb-2">
                 <div className={`h-3 w-3 rounded-full mt-1 ${MATURITY_COLORS[r.maturity_stage] || 'bg-grey-line'}`} title={`Maturity ${r.maturity_stage}/5`} />
-                <span className="badge bg-grey-light text-grey-ink">{t(`aiUseCase.status.${r.status}`)}</span>
+                <div className="flex items-center gap-2">
+                  <span className="badge bg-grey-light text-grey-ink">{t(`aiUseCase.status.${r.status}`)}</span>
+                  {!r.is_active && <span className="badge bg-grey-line text-grey-medium">{t('aiUseCase.inactive')}</span>}
+                  {hasPermission('aiUseCase.edit') && (
+                    <button
+                      onClick={(e) => toggleActive(e, r)}
+                      title={r.is_active ? t('aiUseCase.deactivate') : t('aiUseCase.activate')}
+                      className={`relative w-9 h-5 rounded-full transition-colors shrink-0 ${r.is_active ? 'bg-orange' : 'bg-grey-line'}`}
+                    >
+                      <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${r.is_active ? 'translate-x-4' : 'translate-x-0.5'}`} />
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="font-title font-bold text-grey-dark">{r.title}</div>
               <div className="text-xs text-grey-medium mb-2">{r.business_function} · {r.ai_technique}</div>

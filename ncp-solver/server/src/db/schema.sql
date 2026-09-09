@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS ncp_fiches (
   frequency TEXT,                             -- first_time | recurring
   target_objective TEXT,
   applicable_standards TEXT,                  -- comma separated standard ids
-  current_stage TEXT NOT NULL DEFAULT 'E1',   -- E1..E7
+  current_stage TEXT NOT NULL DEFAULT 'S1',   -- S1..S7
   status TEXT NOT NULL DEFAULT 'open',        -- open | in_progress | closed | cancelled
   closure_date TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -328,6 +328,7 @@ CREATE TABLE IF NOT EXISTS ai_use_cases (
   expected_impact TEXT,
   estimated_roi TEXT,
   tags TEXT,
+  is_active INTEGER NOT NULL DEFAULT 1, -- toggle: 1 = active, 0 = deactivated (kept for history, hidden from active use)
   current_version_id TEXT, -- FK to ai_use_case_versions(id), set after first version is created
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -432,7 +433,7 @@ CREATE TABLE IF NOT EXISTS risk_controls (
 
 -- =========================================================================
 -- RACSI (Responsible / Accountable / Consulted / Support / Informed) matrix
--- Each activity is either a fixed NCP Solver process step (E1-E7) or a
+-- Each activity is either a fixed NCP Solver process step (S1-S7) or a
 -- governance item linked to a Business Rule, Control or Risk/Opportunity.
 -- Assignees are drawn from OBS: either a role (org-wide accountability) or a
 -- specific named person (a user). Exactly one Accountable (A) per activity;
@@ -446,7 +447,7 @@ CREATE TABLE IF NOT EXISTS racsi_activities (
   description TEXT,
   module_ref TEXT NOT NULL DEFAULT 'general', -- ncp_process | business_rule | control | risk_opportunity | general
   linked_record_id TEXT, -- id in business_rules / controls / risks_opportunities, when module_ref points to one
-  ncp_stage TEXT,        -- E1..E7, only when module_ref = 'ncp_process'
+  ncp_stage TEXT,        -- S1..S7, only when module_ref = 'ncp_process'
   obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, -- owning org unit (OBS)
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -467,6 +468,24 @@ CREATE TABLE IF NOT EXISTS racsi_assignments (
 CREATE UNIQUE INDEX IF NOT EXISTS idx_racsi_one_accountable ON racsi_assignments(activity_id) WHERE racsi_type = 'A';
 
 -- =========================================================================
+-- BPMN: process diagrams (BPMN 2.0 XML), full CRUD via RBAC. Seeded with the
+-- NCP Solver process itself (S1-S7); editable in-app via a real BPMN modeler.
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS bpmn_diagrams (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  xml TEXT NOT NULL, -- BPMN 2.0 XML (process + bpmndi diagram layout)
+  obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL,
+  updated_by TEXT REFERENCES users(id) ON DELETE SET NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(organization_id, code)
+);
+
+-- =========================================================================
 -- Indices
 -- =========================================================================
 CREATE INDEX IF NOT EXISTS idx_fiches_org ON ncp_fiches(organization_id);
@@ -482,6 +501,7 @@ CREATE INDEX IF NOT EXISTS idx_controls_org ON controls(organization_id);
 CREATE INDEX IF NOT EXISTS idx_risks_org ON risks_opportunities(organization_id);
 CREATE INDEX IF NOT EXISTS idx_racsi_activities_org ON racsi_activities(organization_id);
 CREATE INDEX IF NOT EXISTS idx_racsi_assignments_activity ON racsi_assignments(activity_id);
+CREATE INDEX IF NOT EXISTS idx_bpmn_org ON bpmn_diagrams(organization_id);
 CREATE INDEX IF NOT EXISTS idx_business_rules_obs ON business_rules(obs_node_id);
 CREATE INDEX IF NOT EXISTS idx_controls_obs ON controls(obs_node_id);
 CREATE INDEX IF NOT EXISTS idx_risks_obs ON risks_opportunities(obs_node_id);

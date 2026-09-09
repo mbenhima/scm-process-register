@@ -5,14 +5,14 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, Modal, EmptyState } from '../components/ui.jsx';
 
 const MODULE_REFS = ['ncp_process', 'business_rule', 'control', 'risk_opportunity', 'general'];
-const NCP_STAGES = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7'];
+const NCP_STAGES = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
 const RACSI_TYPES = ['R', 'A', 'C', 'S', 'I'];
 const RACSI_COLOR = {
   A: 'bg-orange text-white', R: 'bg-overlayBlue/15 text-overlayBlue', C: 'bg-status-amber text-amber-900',
   S: 'bg-status-green text-green-900', I: 'bg-grey-light text-grey-ink',
 };
 
-const EMPTY = { code: '', title: '', description: '', module_ref: 'ncp_process', ncp_stage: 'E1', linked_record_id: '', obs_node_id: '' };
+const EMPTY = { code: '', title: '', description: '', module_ref: 'ncp_process', ncp_stage: 'S1', linked_record_id: '', obs_node_id: '' };
 
 const LINKED_LIST_ENDPOINT = { business_rule: '/business-rules', control: '/controls', risk_opportunity: '/risks' };
 
@@ -234,7 +234,7 @@ function ActivityForm({ initial, obsFlat, onSave, onClose, t }) {
           </Field>
           {form.module_ref === 'ncp_process' && (
             <Field label={t('racsi.ncpStage')}>
-              <select className="input" value={form.ncp_stage || 'E1'} onChange={set('ncp_stage')}>
+              <select className="input" value={form.ncp_stage || 'S1'} onChange={set('ncp_stage')}>
                 {NCP_STAGES.map((v) => <option key={v} value={v}>{v}</option>)}
               </select>
             </Field>

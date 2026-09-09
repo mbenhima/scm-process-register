@@ -57,13 +57,13 @@ export function StatusBadge({ value, label }) {
 }
 
 export function StageProgress({ stage, total = 7 }) {
-  const idx = Number(String(stage).replace('E', '')) || 1;
+  const idx = Number(String(stage).replace('S', '')) || 1;
   return (
     <div className="flex items-center gap-1">
       {Array.from({ length: total }).map((_, i) => (
         <div key={i} className={`h-1.5 flex-1 rounded-full ${i < idx ? 'bg-orange' : 'bg-grey-line'}`} />
       ))}
-      <span className="ms-2 text-xs font-semibold text-grey-medium whitespace-nowrap">E{idx}/{total}</span>
+      <span className="ms-2 text-xs font-semibold text-grey-medium whitespace-nowrap">S{idx}/{total}</span>
     </div>
   );
 }

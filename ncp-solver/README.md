@@ -2,7 +2,7 @@
 
 A full-stack **Non-Conformity & Problem Resolution** platform, built from the NCP Solver
 project scope, definition & design (PDD), information model, and knowledge-base
-documents. It implements the complete E1→E7 resolution workflow on an **NCP Sheet**
+documents. It implements the complete S1→S7 resolution workflow on an **NCP Sheet**
 (the non-conformity/problem record — called "NCP Fiche" in the source specification),
 role-based access control, multi-tenant hierarchy, an organizational breakdown structure,
 a RAG-powered Capitalization Library, an AI Use Cases Library, and governance/licensing
@@ -120,26 +120,29 @@ account per standard role: `admin@`, `quality@`, `cipilot@`, `team1@`/`team2@`,
 
 Each organization is seeded with its own OBS (site/department tree), standards, license &
 governance settings, an AI Use Cases Library, and 6 realistic NCP Sheets spanning the full
-E1–E7 lifecycle (open, mid-workflow, and closed-with-REX) so the Capitalization Library RAG
+S1–S7 lifecycle (open, mid-workflow, and closed-with-REX) so the Capitalization Library RAG
 search, KPIs, and alerts all have real data to work with.
 
-## The NCP Sheet — full E1→E7 process coverage
+## The NCP Sheet — full S1→S7 process coverage
 
 Every NCP Sheet detail page exposes all seven process stages as dedicated tabs, each wired
-to the stage-appropriate AI agent from the Knowledge Base (KB-010):
+to its own stage-specific AI agent from the Knowledge Base (KB-010) — every step has one:
 
 | Tab | Stage | What it covers | AI Agent |
 |---|---|---|---|
-| E1 - Detail | Detection & Registration | Header fields, criticality/priority, detector, NCP team | Classification Agent (criticality/priority suggestion + similar past sheets) |
-| E2 - Understanding | Problem Understanding | 5W2H / QQOQCCP structured analysis | Problem Structuring (via 5W2H form) |
-| E3 - Immediate Actions | Immediate Containment | Create, execute, evidence, effectiveness evaluation | Containment Advisor (suggests actions from similar past sheets) |
-| E4 - Root Causes | Root Cause Analysis | 6M-categorized root causes, RCA method | Root Cause Mining (suggests probable causes) |
-| E5 - Corrective Action Plan | Corrective Action Plan | Define actions linked to root causes (planning only) | Action Recommendation (proven corrective actions for similar causes) |
-| E6 - Execution & Evaluation | Execution & Monitoring | Mark actions done, upload evidence, record RR/RE effectiveness verdict | Monitoring & Alert Agent (via the Alerts module, always on) |
-| E7 - Capitalization (REX) | Capitalization | Lessons learned, standardization/generalization decisions | REX Generation Agent (auto-drafts the narrative) |
+| S1 - Detail | Detection & Registration | Header fields, criticality/priority, detector, NCP team | Classification Agent (criticality/priority suggestion + similar past sheets) |
+| S2 - Understanding | Problem Understanding | 5W2H / QQOQCCP structured analysis | Problem Structuring Agent (structures What/Where/When/Who/Why/How-Much from similar past sheets) |
+| S3 - Immediate Actions | Immediate Containment | Create, execute, evidence, effectiveness evaluation | Containment Advisor (suggests actions from similar past sheets) |
+| S4 - Root Causes | Root Cause Analysis | 6M-categorized root causes, RCA method | Root Cause Mining (suggests probable causes) |
+| S5 - Corrective Action Plan | Corrective Action Plan | Define actions linked to root causes (planning only) | Action Recommendation (proven corrective actions for similar causes) |
+| S6 - Execution & Evaluation | Execution & Monitoring | Mark actions done, upload evidence, record AR/AE effectiveness verdict | Evaluation Assistant (root-cause reminders + historical effectiveness rate) |
+| S7 - Capitalization (REX) | Capitalization | Lessons learned, standardization/generalization decisions | REX Generation Agent (auto-drafts the narrative) |
+
+The always-on Monitoring & Alert Agent runs independently of any single tab (via the Alerts
+module), and an Orchestrator agent coordinates the others.
 
 Advancing a sheet through the stages, closing it (REX required by default — configurable
-in Governance Settings), team assignment, and the RR/RE separation rule (an evaluator can
+in Governance Settings), team assignment, and the AR/AE separation rule (an evaluator can
 never be the same person as the action owner) are all enforced server-side.
 
 ## Modules
@@ -147,11 +150,11 @@ never be the same person as the action owner) are all enforced server-side.
 | Module | Notes |
 |---|---|
 | Dashboard | Role-aware KPI tiles, recent NCP sheets, unread alerts, department chart |
-| NCP Sheets | Full E1–E7 workflow — see table above |
-| My Actions | Action Owner (RR) / Evaluator (RE) task queues |
+| NCP Sheets | Full S1–S7 workflow — see table above |
+| My Actions | Action Owner (AR) / Evaluator (AE) task queues |
 | Capitalization Library | RAG semantic search over closed NCP sheets |
 | Standards | Standards knowledge base (ISO, internal procedures) |
-| AI Use Cases Library | Full CRUD, RBAC-gated; versioned edit history (default v1, labeled sections, revert to any version) |
+| AI Use Cases Library | Full CRUD, RBAC-gated; versioned edit history (default v1, labeled sections, revert to any version); Active/Inactive toggle |
 | Reports | The 4 standard reports (Operational, Action Plan, Strategic Scorecard, Capitalization Log) + 10 KPIs |
 | Alerts | Alerts A–J, computed by the rule-based Monitoring Agent |
 | Hierarchy | Group (optional) → Organization → Project (optional) |
@@ -161,7 +164,8 @@ never be the same person as the action owner) are all enforced server-side.
 | Business Rules | Full CRUD, RBAC-gated; validation/workflow/approval/naming/threshold/escalation rules with severity, owned by an OBS unit |
 | Controls | Full CRUD, RBAC-gated; COSO Internal Control – Integrated Framework (5 components), type/frequency/effectiveness tracking |
 | Risks & Opportunities | Full CRUD, RBAC-gated; 5×5 likelihood × impact matrix, linked Controls, inherent/residual scoring |
-| RACSI Matrix | Full CRUD, RBAC-gated; Responsible/Accountable/Consulted/Support/Informed per NCP process step (E1–E7) or per Business Rule/Control/Risk record; assignees are OBS roles or named people; exactly one Accountable enforced client- and server-side |
+| RACSI Matrix | Full CRUD, RBAC-gated; Responsible/Accountable/Consulted/Support/Informed per NCP process step (S1–S7) or per Business Rule/Control/Risk record; assignees are OBS roles or named people; exactly one Accountable enforced client- and server-side |
+| BPMN Process | Full CRUD, RBAC-gated; real BPMN 2.0 diagrams rendered/edited in-browser with [bpmn.io](https://bpmn.io)'s `bpmn-js`; seeded with the NCP Solver process itself (S1–S7, including the effectiveness-evaluation loop back to S5); users without `bpmn.edit` get a read-only, pan/zoom viewer, editors get the full modeler palette |
 | Governance Settings | KPI thresholds, alert toggles, default RCA method, REX-before-close policy |
 | License & Plan | SaaS/OnPrem, plan tier, seats, billing cycle |
 | Help | In-app, searchable multi-language user guide covering every module |
@@ -169,10 +173,13 @@ never be the same person as the action owner) are all enforced server-side.
 ## Notes on the "AI" layer
 
 There is no external LLM API call in this build (no key is configured in this
-environment). The 8 AI agents described in the NCP Solver Knowledge Base are implemented
-as deterministic, explainable, RAG-grounded services (`server/src/services/aiAgents.js`):
-keyword/rule-based classification, TF-IDF similarity search over the tenant's own closed
-sheets for containment/root-cause/action suggestions, and template-based REX drafting.
+environment). AI agents are implemented as deterministic, explainable, RAG-grounded
+services (`server/src/services/aiAgents.js`), with one agent for every NCP process step
+(S1 Classification, S2 Problem Structuring, S3 Containment Advisor, S4 Root Cause Mining,
+S5 Action Recommendation, S6 Evaluation Assistant, S7 REX Generation) plus the always-on
+Monitoring & Alert agent: keyword/rule-based classification, TF-IDF similarity search over
+the tenant's own closed sheets for containment/root-cause/action suggestions, and
+template-based REX drafting.
 Every suggestion is logged to `ai_agent_logs` with a confidence score, exactly as the
 information model's `AIAgentLog` entity specifies, so the mechanism can be swapped for a
 real LLM/vector-DB call later without changing the API contract.

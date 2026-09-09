@@ -5,7 +5,7 @@ import { useI18n } from '../context/I18nContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, CriticalityBadge, StatusBadge, StageProgress, EmptyState } from '../components/ui.jsx';
 
-// One tab per NCP Solver process stage (E1-E7, KB-003..KB-009).
+// One tab per NCP Solver process stage (S1-S7, KB-003..KB-009).
 const TABS = ['detail', 'understanding', 'immediate', 'rootcause', 'corrective', 'evaluation', 'rex'];
 
 function EvidenceList({ actionId, canAdd, defaultType }) {
@@ -178,7 +178,7 @@ export default function FicheDetailPage() {
       await api.post(`/fiches/${id}/close`, {});
       load();
     } catch (err) {
-      alert(err.data?.error === 'rex_required_before_close' ? 'Please complete the E7 REX entry before closing.' : err.message);
+      alert(err.data?.error === 'rex_required_before_close' ? 'Please complete the S7 REX entry before closing.' : err.message);
     }
   }
 
@@ -200,7 +200,7 @@ export default function FicheDetailPage() {
           </div>
         </div>
         <div className="flex gap-2">
-          {hasPermission('fiche.validate') && fiche.current_stage !== 'E7' && (
+          {hasPermission('fiche.validate') && fiche.current_stage !== 'S7' && (
             <button onClick={advanceStage} className="btn-secondary">{t('fiche.advanceStage')}</button>
           )}
           {hasPermission('fiche.close') && fiche.status !== 'closed' && (
@@ -256,7 +256,20 @@ export default function FicheDetailPage() {
         </Card>
       )}
 
-      {tab === 'understanding' && <UnderstandingTab fiche={fiche} onSaved={load} />}
+      {tab === 'understanding' && (
+        <div className="space-y-3">
+          <AiPanel
+            label={t('fiche.aiProblemStructuring')}
+            onRun={() => api.post(`/ai-agents/${id}/problem-structuring`, {})}
+            render={(r) => (
+              <ul className="list-disc ps-5 space-y-1 text-grey-ink">
+                {r.suggestions.map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            )}
+          />
+          <UnderstandingTab fiche={fiche} onSaved={load} />
+        </div>
+      )}
 
       {tab === 'immediate' && (
         <div className="space-y-3">
@@ -314,6 +327,20 @@ export default function FicheDetailPage() {
       {tab === 'evaluation' && (
         <div className="space-y-3">
           <p className="text-xs text-grey-ink italic">{t('fiche.evaluationIntro')}</p>
+          <AiPanel
+            label={t('fiche.aiEvaluationAssistant')}
+            onRun={() => api.post(`/ai-agents/${id}/evaluation-assistant`, {})}
+            render={(r) => (
+              <>
+                <ul className="list-disc ps-5 space-y-1 text-grey-ink">
+                  {r.suggestions.map((s, i) => <li key={i}>{s}</li>)}
+                </ul>
+                {r.historicalEffectivenessRate !== null && (
+                  <div className="mt-2 text-xs text-grey-medium">{t('fiche.aiHistoricalRate')}: {r.historicalEffectivenessRate}% ({r.sampleSize} {t('fiche.aiEvaluated')})</div>
+                )}
+              </>
+            )}
+          />
           <ActionsTab
             actions={correctiveActions} actionType="corrective" ficheId={id} users={users}
             hasPermission={hasPermission} currentUserId={user.id} onChanged={load}

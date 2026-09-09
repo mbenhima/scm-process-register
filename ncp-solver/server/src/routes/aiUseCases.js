@@ -8,7 +8,7 @@ const router = Router();
 
 const METADATA_FIELDS = [
   'title', 'title_fr', 'title_ar', 'description', 'sector', 'business_function',
-  'ai_technique', 'maturity_stage', 'status', 'owner_id', 'expected_impact', 'estimated_roi', 'tags',
+  'ai_technique', 'maturity_stage', 'status', 'owner_id', 'expected_impact', 'estimated_roi', 'tags', 'is_active',
 ];
 const VERSION_FIELDS = ['inputs', 'prompt', 'expected_output', 'constraints_guardrails', 'model_technique_notes'];
 
@@ -68,8 +68,11 @@ router.post('/', requirePermission('aiUseCase.create'), (req, res) => {
   const body = req.body || {};
   if (!body.title || !body.description) return res.status(400).json({ error: 'title_and_description_required' });
   const id = randomUUID();
-  const cols = ['id', 'organization_id', ...METADATA_FIELDS];
-  const vals = [id, req.user.organizationId, ...METADATA_FIELDS.map((f) => body[f] ?? null)];
+  // Only bind fields actually present in the payload, so an omitted field (e.g. is_active)
+  // falls back to the column's own SQL DEFAULT instead of being overwritten with NULL.
+  const providedFields = METADATA_FIELDS.filter((f) => f in body);
+  const cols = ['id', 'organization_id', ...providedFields];
+  const vals = [id, req.user.organizationId, ...providedFields.map((f) => body[f])];
   db.prepare(`INSERT INTO ai_use_cases (${cols.join(',')}) VALUES (${cols.map(() => '?').join(',')})`).run(...vals);
   const version = createVersion(id, body, req.user.id, 'Initial version');
   const row = db.prepare('SELECT * FROM ai_use_cases WHERE id = ?').get(id);

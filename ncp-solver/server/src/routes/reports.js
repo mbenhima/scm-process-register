@@ -4,7 +4,7 @@ import { requirePermission } from '../middleware/rbac.js';
 
 const router = Router();
 
-const STAGES = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7'];
+const STAGES = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
 const pct = (num, den) => (den > 0 ? Math.round((num / den) * 1000) / 10 : 0);
 
 function computeKPIs(orgId) {

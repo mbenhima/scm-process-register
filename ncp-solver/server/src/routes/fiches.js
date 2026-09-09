@@ -7,7 +7,7 @@ import { runClassificationAgent, runRexGenerationAgent } from '../services/aiAge
 
 const router = Router();
 
-const STAGES = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7'];
+const STAGES = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
 
 function nextFicheNumber(orgId) {
   const year = new Date().getFullYear();
@@ -62,7 +62,7 @@ router.post('/', requirePermission('fiche.create'), (req, res) => {
     INSERT INTO ncp_fiches (
       id, organization_id, project_id, fiche_number, title, description, detector_id, detection_date,
       obs_node_id, criticality, priority, frequency, target_objective, applicable_standards, current_stage, status
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'E1', 'open')
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'S1', 'open')
   `).run(
     id, req.user.organizationId, project_id || null, ficheNumber, title, description, req.user.id,
     detection_date || new Date().toISOString().slice(0, 10), obs_node_id || null,
@@ -107,14 +107,14 @@ router.delete('/:id', requirePermission('fiche.delete'), (req, res) => {
   res.status(204).end();
 });
 
-// --- Stage transitions (E1 -> E7) ---
+// --- Stage transitions (S1 -> S7) ---
 router.post('/:id/transition', requirePermission('fiche.validate'), (req, res) => {
   const fiche = db.prepare('SELECT * FROM ncp_fiches WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!fiche) return res.status(404).json({ error: 'not_found' });
   const idx = STAGES.indexOf(fiche.current_stage);
   if (idx === STAGES.length - 1) return res.status(400).json({ error: 'already_at_final_stage' });
   const nextStage = STAGES[idx + 1];
-  const status = nextStage === 'E7' && req.body?.close ? fiche.status : (fiche.status === 'open' ? 'in_progress' : fiche.status);
+  const status = nextStage === 'S7' && req.body?.close ? fiche.status : (fiche.status === 'open' ? 'in_progress' : fiche.status);
   db.prepare(`UPDATE ncp_fiches SET current_stage = ?, status = ?, updated_at = datetime('now') WHERE id = ?`)
     .run(nextStage, status, fiche.id);
   const row = db.prepare('SELECT * FROM ncp_fiches WHERE id = ?').get(fiche.id);
@@ -129,14 +129,14 @@ router.post('/:id/close', requirePermission('fiche.close'), (req, res) => {
   const requireRex = gov ? !!gov.require_rex_before_close : true;
   const rex = db.prepare('SELECT * FROM rex_entries WHERE fiche_id = ?').get(fiche.id);
   if (requireRex && !rex) return res.status(400).json({ error: 'rex_required_before_close' });
-  db.prepare(`UPDATE ncp_fiches SET status = 'closed', current_stage = 'E7', closure_date = date('now'), updated_at = datetime('now') WHERE id = ?`)
+  db.prepare(`UPDATE ncp_fiches SET status = 'closed', current_stage = 'S7', closure_date = date('now'), updated_at = datetime('now') WHERE id = ?`)
     .run(fiche.id);
   const row = db.prepare('SELECT * FROM ncp_fiches WHERE id = ?').get(fiche.id);
   writeAudit(req, 'UPDATE', 'NCPFicheClose', fiche.id, fiche, row);
   res.json(row);
 });
 
-// --- E2: Problem Understanding (5W2H) ---
+// --- S2: Problem Understanding (5W2H) ---
 router.put('/:id/understanding', requirePermission('fiche.edit'), (req, res) => {
   const fiche = db.prepare('SELECT * FROM ncp_fiches WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!fiche) return res.status(404).json({ error: 'not_found' });
@@ -171,7 +171,7 @@ router.put('/:id/team', requirePermission('fiche.assignTeam'), (req, res) => {
   res.json({ ok: true });
 });
 
-// --- E4: Root causes ---
+// --- S4: Root causes ---
 router.get('/:id/root-causes', requirePermission('rootcause.view'), (req, res) => {
   res.json(db.prepare('SELECT * FROM root_causes WHERE fiche_id = ? ORDER BY created_at').all(req.params.id));
 });
@@ -211,7 +211,7 @@ router.delete('/:id/root-causes/:rcId', requirePermission('rootcause.delete'), (
   res.status(204).end();
 });
 
-// --- E7: REX / Capitalization ---
+// --- S7: REX / Capitalization ---
 router.put('/:id/rex', requirePermission('rex.edit'), (req, res) => {
   const fiche = db.prepare('SELECT * FROM ncp_fiches WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!fiche) return res.status(404).json({ error: 'not_found' });
