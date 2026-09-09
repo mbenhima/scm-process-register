@@ -92,6 +92,18 @@ export default function Sidebar({ mobileOpen, onNavigate }) {
             ))}
           </div>
         </div>
+
+        <div>
+          <div className="label px-3">{t('sectionAsk')}</div>
+          <div className="space-y-1">
+            <NavLink to="/app/query-data" className={linkClass} onClick={onNavigate}>
+              {t('navQueryData')}
+            </NavLink>
+            <NavLink to="/app/query-features" className={linkClass} onClick={onNavigate}>
+              {t('navQueryFeatures')}
+            </NavLink>
+          </div>
+        </div>
       </nav>
     </aside>
   )

@@ -27,6 +27,8 @@ import Module19Page from './pages/Module19Page.jsx'
 import Module20Page from './pages/Module20Page.jsx'
 import Module21Page from './pages/Module21Page.jsx'
 import Module22Page from './pages/Module22Page.jsx'
+import QueryDataPage from './pages/QueryDataPage.jsx'
+import QueryFeaturesPage from './pages/QueryFeaturesPage.jsx'
 
 export default function App() {
   return (
@@ -71,6 +73,8 @@ export default function App() {
         <Route path="m20" element={<Module20Page />} />
         <Route path="m21" element={<Module21Page />} />
         <Route path="m22" element={<Module22Page />} />
+        <Route path="query-data" element={<QueryDataPage />} />
+        <Route path="query-features" element={<QueryFeaturesPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
     </Routes>

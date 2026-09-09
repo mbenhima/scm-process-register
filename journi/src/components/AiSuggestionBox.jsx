@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 import { providerLabel } from '../utils/llmProviders.js'
+import { aiSuggest } from '../utils/api.js'
 import Badge from './Badge.jsx'
 
 /**
@@ -10,13 +11,17 @@ import Badge from './Badge.jsx'
  * Every suggestion is generated on demand, labeled, and requires an explicit
  * human decision (accept / edit&accept / reject) which is written to the AI usage log.
  *
- * When a real LLM provider is connected (Module 6), generation calls it with
- * a prompt chosen in this order: the caller's own `promptContext` prop, else
- * the catalog entry's own editable Prompt Template field (Module 6 > Edit),
- * else a generic prompt built from `ucName`/`description` — instead of the
- * local `buildSuggestion()` function, falling back to `buildSuggestion()` on
- * any provider error so the box never breaks even if the connection drops
- * mid-session.
+ * Three-tier fallback, in order, so the box never breaks even if a layer is
+ * unavailable:
+ *   1. The backend's RAG pipeline (server/routes/aiSuggest.js) — retrieves
+ *      journi's own methodology definitions before generating, so the
+ *      output stays grounded in journi's actual ADKAR/Bridges/Kübler-Ross/
+ *      Lewin vocabulary. Works even without a Module 6 connection if the
+ *      server has its own ANTHROPIC_API_KEY configured.
+ *   2. If the backend is unreachable (or has no LLM available either), and
+ *      a provider is connected on Module 6: the direct browser-to-provider
+ *      call this box always used before the backend existed.
+ *   3. The catalog's own built-in canned example (`buildSuggestion()`).
  */
 export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSuggestion, onAccept, tier, ucName, description, promptContext }) {
   const { t } = useI18n()
@@ -27,7 +32,8 @@ export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSugg
   const [resolved, setResolved] = useState(null) // 'accepted' | 'edited' | 'rejected'
   const [loading, setLoading] = useState(false)
   const [genError, setGenError] = useState(null)
-  const [source, setSource] = useState(null) // 'llm' | 'template'
+  const [source, setSource] = useState(null) // 'rag' | 'llm' | 'template'
+  const [ragSources, setRagSources] = useState([])
 
   const catalogEntry = data.aiUseCaseCatalog.find((uc) => uc.id === useCaseId)
   const orgActive = data.aiOrgActivation[orgId]?.[useCaseId]
@@ -42,39 +48,54 @@ export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSugg
     )
   }
 
+  function settle(text, src, sources = []) {
+    setSuggestion(text)
+    setDraft(text)
+    setResolved(null)
+    setEditing(false)
+    setSource(src)
+    setRagSources(sources)
+  }
+
   async function handleGenerate() {
     setGenError(null)
+    setLoading(true)
+
+    // Tier 1: the backend's RAG pipeline — grounds the output in journi's
+    // own methodology definitions, and works even without a Module 6
+    // connection if the server has its own fallback key configured.
+    const llm = llmConfig.connected ? { provider: llmConfig.provider, apiKey: llmConfig.apiKey, model: llmConfig.model, baseUrl: llmConfig.baseUrl } : undefined
+    const rag = await aiSuggest(useCaseId, promptContext || description, llm)
+    if (rag.reachable && rag.text) {
+      settle(rag.text, 'rag', rag.sources || [])
+      setLoading(false)
+      return
+    }
+
+    // Tier 2: the direct browser-to-provider call this box always used
+    // before the backend existed — still real generation, just ungrounded.
     if (llmConfig.connected) {
-      setLoading(true)
       try {
         const prompt =
           promptContext ||
           catalogEntry?.promptTemplate ||
           `You are the "${ucName}" AI use case in a change-management platform. ${description || ''} Produce a realistic, concise example output (under 80 words), in plain prose, no preamble.`
         const s = await generateWithLlm(prompt)
-        setSuggestion(s)
-        setDraft(s)
-        setResolved(null)
-        setEditing(false)
-        setSource('llm')
+        settle(s, 'llm')
+        setLoading(false)
+        return
       } catch (err) {
         setGenError(`${providerLabel(llmConfig.provider)} error — showing the built-in example instead. (${err.message})`)
-        const s = buildSuggestion()
-        setSuggestion(s)
-        setDraft(s)
-        setResolved(null)
-        setEditing(false)
-        setSource('template')
       }
-      setLoading(false)
-    } else {
-      const s = buildSuggestion()
-      setSuggestion(s)
-      setDraft(s)
-      setResolved(null)
-      setEditing(false)
-      setSource('template')
+    } else if (!rag.reachable) {
+      setGenError(null) // backend down + no Module 6 connection: the template fallback below is the expected path, not an error
+    } else if (rag.generationError) {
+      setGenError(`${rag.generationError.message} — showing the built-in example instead.`)
     }
+
+    // Tier 3: the catalog's own built-in canned example.
+    settle(buildSuggestion(), 'template')
+    setLoading(false)
   }
 
   function record(outcome, finalValue) {
@@ -93,7 +114,7 @@ export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSugg
       </div>
       {!suggestion && (
         <button className="btn-secondary text-xs" onClick={handleGenerate} disabled={loading}>
-          {loading ? 'Generating…' : `${t('generate')} — ${ucName}`}
+          {loading ? t('generating') : `${t('generate')} — ${ucName}`}
         </button>
       )}
       {genError && <p className="text-[11px] text-red-600">{genError}</p>}
@@ -101,8 +122,22 @@ export default function AiSuggestionBox({ useCaseId, orgId, projectId, buildSugg
         <div className="space-y-2">
           {source && (
             <span className="text-[10px] text-ink/40">
-              {source === 'llm' ? `Generated by ${providerLabel(llmConfig.provider)}` : 'Built-in example (no LLM connected)'}
+              {source === 'rag'
+                ? `Grounded (RAG) · ${providerLabel(llmConfig.provider) || 'server-configured provider'}`
+                : source === 'llm'
+                  ? `Generated by ${providerLabel(llmConfig.provider)}`
+                  : 'Built-in example (no LLM connected)'}
             </span>
+          )}
+          {source === 'rag' && ragSources.length > 0 && (
+            <details className="text-[10px] text-ink/50">
+              <summary className="cursor-pointer select-none">Retrieved grounding ({ragSources.length})</summary>
+              <ul className="mt-1 space-y-0.5 ps-3 list-disc">
+                {ragSources.map((s) => (
+                  <li key={s.id}>{s.text}</li>
+                ))}
+              </ul>
+            </details>
           )}
           {editing ? (
             <textarea className="input text-sm" rows={3} value={draft} onChange={(e) => setDraft(e.target.value)} />

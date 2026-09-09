@@ -82,6 +82,7 @@ const dict = {
   navM18: { en: 'M4 · Process Registry', fr: 'M4 · Registre des processus', ar: 'م4 · سجل العمليات' },
   sectionPlatform: { en: 'Platform & Governance', fr: 'Plateforme et gouvernance', ar: 'المنصة والحوكمة' },
   sectionCore: { en: 'Change Management Program', fr: 'Programme de gestion du changement', ar: 'برنامج إدارة التغيير' },
+  sectionAsk: { en: 'Ask journi', fr: 'Demander à journi', ar: 'اسأل journi' },
 
   // ---------- Login ----------
   loginTitle: { en: 'Welcome to journi', fr: 'Bienvenue sur journi', ar: 'مرحبًا بك في journi' },
@@ -460,6 +461,26 @@ const dict = {
   archetype_operating_model: { en: 'Operating Model Redesign', fr: 'Refonte du modèle opérationnel', ar: 'إعادة تصميم نموذج التشغيل' },
   archetype_compliance: { en: 'Compliance-Driven Change', fr: 'Changement réglementaire / de conformité', ar: 'التغيير المدفوع بالامتثال' },
   archetype_training_skills: { en: 'Training & Skills Development', fr: 'Formation et développement des compétences', ar: 'التدريب وتطوير المهارات' },
+
+  // Query Data / Query Features (RAG)
+  navQueryData: { en: 'Query Data', fr: 'Interroger les données', ar: 'استعلام عن البيانات' },
+  navQueryFeatures: { en: 'Query Features', fr: 'Rechercher une fonctionnalité', ar: 'البحث عن ميزة' },
+  queryDataDesc: { en: 'Ask a plain-language question about this tenant\'s own data — the answer is scoped to exactly what your role can see.', fr: 'Posez une question en langage naturel sur les données de ce tenant — la réponse est limitée à ce que votre rôle peut voir.', ar: 'اطرح سؤالاً بلغة طبيعية حول بيانات هذا المستأجر — تقتصر الإجابة على ما يمكن لدورك رؤيته فقط.' },
+  queryFeaturesDesc: { en: 'Ask what journi can do, in plain language, and get pointed at the right module.', fr: 'Demandez ce que journi peut faire, en langage naturel, et soyez orienté vers le bon module.', ar: 'اسأل عمّا يمكن أن يفعله journi بلغة طبيعية، وستُوجَّه إلى الوحدة المناسبة.' },
+  rbacScoped: { en: 'RBAC-scoped', fr: 'Limité par RBAC', ar: 'محدود حسب الصلاحيات' },
+  roleFiltered: { en: 'Role-filtered', fr: 'Filtré par rôle', ar: 'مُصفّى حسب الدور' },
+  queryDataPlaceholder: { en: 'e.g. How many active projects are there?', fr: 'p. ex. Combien de projets actifs y a-t-il ?', ar: 'مثال: كم عدد المشاريع النشطة؟' },
+  queryFeaturesPlaceholder: { en: 'e.g. Where do I score someone stuck on desire?', fr: 'p. ex. Où puis-je noter une personne bloquée sur le Désir ?', ar: 'مثال: أين يمكنني تقييم شخص متوقف عند مرحلة الرغبة؟' },
+  ask: { en: 'Ask', fr: 'Demander', ar: 'اسأل' },
+  generating: { en: 'Thinking…', fr: 'Réflexion…', ar: 'جارٍ التفكير…' },
+  previousQuestions: { en: 'Previous questions', fr: 'Questions précédentes', ar: 'الأسئلة السابقة' },
+  backendUnreachable: { en: 'Backend not reachable.', fr: 'Backend injoignable.', ar: 'تعذّر الوصول إلى الخادم.' },
+  backendUnreachableHint: { en: 'Start the journi server (see server/README or WINDOWS_INSTALL.md) to use Query Data and Query Features.', fr: 'Démarrez le serveur journi (voir server/README ou WINDOWS_INSTALL.md) pour utiliser ces fonctionnalités.', ar: 'شغّل خادم journi (راجع server/README أو WINDOWS_INSTALL.md) لاستخدام هذه الميزات.' },
+  modeAggregate: { en: 'Computed answer', fr: 'Réponse calculée', ar: 'إجابة محسوبة' },
+  modeRetrieval: { en: 'Retrieved from records', fr: 'Extrait des enregistrements', ar: 'مستخرج من السجلات' },
+  modeNone: { en: 'No match', fr: 'Aucune correspondance', ar: 'لا تطابق' },
+  generationUnavailable: { en: 'Connect an AI provider on M6 for a phrased answer', fr: 'Connectez un fournisseur IA sur M6 pour une réponse rédigée', ar: 'اربط مزوّد ذكاء اصطناعي في M6 للحصول على إجابة مصاغة' },
+  sources: { en: 'Sources', fr: 'Sources', ar: 'المصادر' },
 }
 
 export default dict
