@@ -28,7 +28,7 @@ In scope for this document: the full functional behavior of all 22 modules; the 
 
 In scope, in addition to the above: a full-page screenshot of every module (Section 10.7) as a visual reference alongside the prose UI conventions; the complete i18n string catalog in English/French/Arabic (Section 10.5); the complete content of every shared reference/catalog dataset (Macro Processes, E2E chains, Phase Templates, Charters, Journeys, Touchpoints, AI Use Case prompt templates, alert definitions, and more — Section 10.6); a recommended target REST API design for a rebuild, since the reference build's own API is a whole-state store not meant to be replicated (Section 5.2.2); and one acceptance test case per functional requirement (Section 10.8).
 
-Out of scope: pixel-level visual design beyond the screenshots in Section 10.7 (see the companion UI Palette artifact for a proposed alternative color direction, not yet adopted), the illustrative seed-data narratives' full prose form (Section 9 and 10.6 give structured/condensed content; full narratives live in the Master User Guide), and any integration with a specific third-party PMO, HRIS, or LMS system (journi exposes CSV export and a documented API surface as its integration points, but ships no pre-built connector).
+Out of scope: pixel-level visual design beyond the screenshots in Section 10.7 and the palette tokens in Section 5.1 — the POWERACT color direction once proposed as a separate companion artifact is now adopted directly in `journi/tailwind.config.js` and `journi/src/index.css` (Section 5.1), so no separate palette artifact remains outstanding; the illustrative seed-data narratives' full prose form (Section 9 and 10.6 give structured/condensed content; full narratives live in the Master User Guide), and any integration with a specific third-party PMO, HRIS, or LMS system (journi exposes CSV export and a documented API surface as its integration points, but ships no pre-built connector).
 
 ### 1.3 Intended Audience
 
@@ -90,7 +90,7 @@ journi's 22 modules are organized into one continuous logical sequence, M1 throu
 | M21 | Reinforcement & Sustainment | `Module12Page.jsx` |
 | M22 | Field Notes | `Module21Page.jsx` |
 
-The sidebar groups these into two sections: **Platform & Governance** (M1–M6 — tenant setup, identity, and the reference data every project draws on) and **Change Management Program** (M7–M22 — the working lifecycle of a single Change Management Project, in the order a practitioner actually touches them).
+The sidebar groups these into three sections: **Platform & Governance** (M1–M6 — tenant setup, identity, and the reference data every project draws on), **Change Management Program** (M7–M22 — the working lifecycle of a single Change Management Project, in the order a practitioner actually touches them), and **Ask journi** — Query Data and Query Features (Section 6.3), two cross-application capabilities deliberately left outside the M1–M22 sequence since neither belongs to one module: both query across the whole tenant, RBAC-scoped to whoever is asking, rather than operate within a single module's own data.
 
 ---
 
@@ -218,6 +218,22 @@ Every user-facing string is keyed in `journi/src/i18n/translations.js` with `en`
 
 See Section 6.6.1–6.6.3 (M2) for the full Permission Matrix and Justification Governance functional requirements; this section summarizes the architecture. RBAC is enforced **entirely client-side** (`journi/src/utils/rbac.js`) — the API itself performs no authorization check of any kind (Section 5.2, Section 8.2). Nine roles (`super_admin, group_admin, org_admin, sponsor, change_manager, people_manager, practitioner, employee, executive`) are each scoped to one level of the Group → Organization → Project hierarchy. Each write/manage capability check (`canWrite`, `canManageHierarchy`, `canManageUsers`, `canActivateAiForOrg`, `canManageCharters`, `canManageAiUseCases`, `canManageTemplates`, `canRequestProjectAiOverride`) reads first from the runtime-editable Permission Matrix (`data.rolePermissions`, a role × capability grid seeded with sensible defaults and editable in place by a Super Admin on M2), falling back to hardcoded default logic only where a matrix entry is missing — so the matrix is a fail-safe override, never a bypass of the underlying model.
 
+### 3.8 Retrieval-Augmented Generation (RAG) Architecture
+
+Three capabilities — Query Data, Query Features (Section 6.3), and the AI Use Case Library's own generation (Section 6.1.6) — are served by a real RAG pipeline added to the same Express process described in Section 3.3, under `server/lib/` and `server/routes/`. This is the one place in journi's backend that does more than store and return a JSON blob; the design intent, in each of its three parts, is stated below rather than left to be reverse-engineered from the code.
+
+**Retrieval** (`server/lib/retrieval.js`). A real TF-IDF (term frequency, log-normalized) + cosine-similarity search over a bag-of-words vector space — not a neural embeddings model and not a vector database. This is a deliberate choice: it needs no network call and no API key to run, so it works fully offline, is exactly reproducible, and can be verified without ever touching a provider's API (Section 8.6's Windows-installability requirement extends naturally to this: retrieval has zero new runtime dependency). Every consumer treats the index as an opaque `{ search(query, k) }` capability, so swapping in a real embeddings provider later is a contained change to this one file.
+
+**Corpora** (`server/lib/corpus/`). Two static reference corpora ship with the server: `features.js` (one entry per routed module plus Query Data/Query Features themselves, used by Query Features) and `methodology.js` (25 short definitions of journi's own Lewin/ADKAR/Bridges/Kübler-Ross stage vocabulary and alert conditions, used to ground the AI Use Case Library). Query Data has no static corpus of its own — see below.
+
+**Query Data's grounding is computed, not retrieved, wherever possible** (`server/lib/queryData.js`). A fixed set of deterministic aggregation functions (project counts, open Resistance Log entries, open risks by category, ADKAR averages, currently-firing alerts) pattern-match the question and compute the answer directly from the request's data payload — the frontend sends the same `{ data }` object it already holds in memory (Section 4), not a copy held server-side. The LLM's only role, when one of these matches, is to phrase the already-computed fact into a sentence; it is explicitly instructed never to state a number not given to it. Retrieval only takes over for a question no aggregator recognizes, searching a corpus built on the fly from the visible projects' own risk/resistance/business-driver text, and even then the model is told to answer from the retrieved records alone.
+
+**RBAC enforcement is server-side, reusing the real rule, not a copy of it.** `queryData.js` imports `visibleOrganizations`/`visibleProjects` from `journi/src/utils/rbac.js` and `ROLES_WITH_INDIVIDUAL_VISIBILITY` from `journi/src/data/constants.js` directly — there is no second, hand-maintained visibility rule to drift out of sync with the one the frontend itself enforces (Section 3.7). `queryFeatures.js` filters the module catalog against the same role gates `<RequireRole>` enforces in `App.jsx`, so a search can never point a caller at a module their own role would be blocked from opening.
+
+**Generation** (`server/lib/llmProxy.js`) calls the same four providers as Module 6's Real LLM Provider Connection (Anthropic, OpenAI, Google, or a custom OpenAI-compatible endpoint), using whichever `{ provider, apiKey, model, baseUrl }` the frontend forwards from that same connection, per request. The key is used once, for that one call, and is never written to disk, logged, or cached server-side — the pass-through, not-persisted contract FR-M6-08 already requires stays true. This closes the exact gap the frontend's own `llmProviders.js` flags in comment: a browser-direct call exposes the key to anyone with devtools access to that origin; proxied through this server, it does not. A server operator may also set `ANTHROPIC_API_KEY` in `server/.env` as a fallback so Query Data and Query Features work before anyone connects a provider on Module 6 — the AI Use Case Library never uses this fallback; it always prefers the signed-in user's own Module 6 connection (Section 8.2, NFR-19).
+
+**Graceful degradation, at every layer.** If the backend cannot be reached at all, or generation fails for any reason (no key configured anywhere, a network error, a malformed provider response), every one of the three routes still returns its real retrieval result — the computed fact, the matched module, the retrieved methodology snippets — with a `generationError` field, rather than fail the request outright. `AiSuggestionBox` (Section 3.2) layers this into a three-tier fallback: the RAG backend first, then the pre-existing direct-browser-to-provider call if a Module 6 connection exists, then the deterministic built-in example — the same never-break contract FR-M6-09 already specifies, now with a grounded option ahead of both fallbacks rather than instead of them.
+
 ---
 
 ## 4. Data Model
@@ -314,6 +330,7 @@ No sub-collection item is ever referenced from more than one `cmProject` — eve
 - **CRUD pattern**: every module's Add/Edit flow opens the shared `Modal` component; every list view pairs an `Edit` (secondary-style) and `Delete` (danger-style) button per row, gated by the same role/capability check as the module's own write access (Section 3.7).
 - **Status encoding**: the shared `Badge` component renders a colored pill (tone: brand/green/amber/red/gray/sand) for every status, severity, or classification field across all 22 modules — journi's shared visual vocabulary for "attention needed."
 - **RTL**: every layout listed above mirrors correctly under Arabic (Section 3.6), not just inline text.
+- **Visual identity**: journi's Tailwind color tokens (`journi/tailwind.config.js`) are pinned to POWERACT Consulting's own palette — the same one used across every journi deliverable (guides, decks, this SRS's own reference material): deep teal `#15423A` (`brand-700`), teal `#1F6459` (`brand-600`, the primary interactive color), and an orange accent `#C2661C` (`sand-500`, used for the "AI-generated" and tier badges and other accent labeling) — so the running application and the surrounding documentation set read as one product, not two differently-branded artifacts. `journi/src/index.css`'s shared component layer (`.card`, `.btn-*`, `.input`, `.badge`, `.label`) is the single place these tokens are consumed; no module page hardcodes a color outside this layer (Section 8.7, NFR-16).
 
 ### 5.2 API Interface
 
@@ -323,12 +340,15 @@ The backend exposes exactly two functional endpoints — this is a whole-state s
 
 | Method | Path | Request Body | Response | Notes |
 |---|---|---|---|---|
-| GET | `/api/health` | — | `{ ok: true }` | Liveness check. |
+| GET | `/api/health` | — | `{ ok: true, serverFallbackKeyConfigured: boolean }` | Liveness check; the second field tells the frontend whether `ANTHROPIC_API_KEY` is set in `server/.env` (Section 3.8). |
 | GET | `/api/state` | — | `{ data, currentUserId, scope }`, or `{ data: null, currentUserId: null, scope: { orgId: null, cmProjectId: null } }` on an empty database; `500 { error }` on failure | Reads the entire application state. No authentication, no scoping/filtering by caller — returns everything. |
 | PUT | `/api/state` | `{ data, currentUserId, scope }` (the client's entire in-memory state) | `{ ok: true }`; `500 { error }` on failure | Full blind overwrite of the single stored row — no merge, no shape validation, no optimistic-locking/versioning. |
+| POST | `/api/query-data` | `{ question, user: { role, scopeType, scopeId }, data, llm? }` | `{ answer, mode: 'aggregate'\|'retrieval'\|'none', fact, sources, generationError? }` | Section 6.3.1. `data` is the caller's own current state (no server-side copy); RBAC-scoped and computed/retrieved server-side per Section 3.8. |
+| POST | `/api/query-features` | `{ question, user: { role }, llm? }` | `{ answer, sources }` | Section 6.3.2. `sources` are role-filtered module matches, each with a `path` the frontend can navigate to directly. |
+| POST | `/api/ai-suggest` | `{ useCaseId, recordContext?, llm? }` | `{ text, tier, humanCheckpoint, sources, generationError? }` | RAG upgrade for M6 (FR-M6-11): retrieves methodology grounding for the named use case before generating. |
 | GET | `*` | — | Static file from `journi/dist` if present, else `index.html` (SPA fallback) | Frontend hosting; if `journi/dist` is missing, returns `500` with an actionable build-reminder message instead. |
 
-This is sufficient for the reference build's single-machine, single-tenant-session usage pattern, but is explicitly not a target to replicate for a multi-user or production rebuild (Section 8.2, NFR-05, NFR-09). Section 5.2.2 specifies the resource-oriented API a rebuild should implement instead.
+This is sufficient for the reference build's single-machine, single-tenant-session usage pattern, but is explicitly not a target to replicate for a multi-user or production rebuild (Section 8.2, NFR-05, NFR-09). Section 5.2.2 specifies the resource-oriented API a rebuild should implement instead; the three RAG routes above are the one part of the reference API already resource-appropriate as-is — a rebuild should keep their shape and simply add the auth/scoping middleware Section 5.2.2 specifies around them.
 
 #### 5.2.2 Recommended Target API for a Rebuild
 
@@ -393,7 +413,7 @@ None. journi is a standard web application with no direct hardware interface req
 
 - **Node.js** ≥ 18 runtime (Section 2.4).
 - **SQLite**, via `node:sqlite` or `better-sqlite3` (Section 3.3) — no external database server.
-- **Optional**: a third-party LLM provider (Anthropic, OpenAI, Google, or a custom OpenAI-compatible endpoint) for M6's Real LLM Provider Connection, called directly from the browser — deliberately bypassing journi's own backend even though one now exists for state persistence, so that a production, multi-user deployment is not forced to store third-party API keys server-side; the connection is opt-in and every AI use case falls back to a deterministic built-in generator if it is not configured or a call fails.
+- **Optional**: a third-party LLM provider (Anthropic, OpenAI, Google, or a custom OpenAI-compatible endpoint) for M6's Real LLM Provider Connection. Two call paths now exist, in the order `AiSuggestionBox` tries them (Section 3.8): (1) proxied through journi's own backend (`server/lib/llmProxy.js`) — the key is forwarded once per request and never persisted server-side; (2) the original direct-from-browser call, used automatically if the backend cannot be reached. Query Data and Query Features (Section 6.3) only ever use path (1), since they require server-side RBAC enforcement (Section 3.8) that a browser-direct call cannot provide. The connection itself remains opt-in, and every AI use case still falls back to a deterministic built-in generator if no path succeeds.
 
 ---
 
@@ -510,6 +530,7 @@ Each module below lists: its purpose and the framework(s) it operationalizes; th
 - FR-M6-08: The Real LLM Provider Connection shall store its configuration, including the API key, only in the browser's `localStorage`, under a key namespace separate from the rest of the application's data, so it is never included in a data export, never synced to the backend, and survives a "Reset Demo Data" action untouched (Section 4.1, Section 5.4).
 - FR-M6-09: If a configured LLM call fails for any reason (missing key, network/CORS error, unexpected response), the calling use case shall fall back to its deterministic built-in generator automatically, so a misconfigured or absent connection never blocks a workflow.
 - FR-M6-10: An AI use case shall never grant a user visibility they would not otherwise have under RBAC — it operates strictly within the data-visibility boundary of the module it plugs into.
+- FR-M6-11: Before generating output, an AI use case shall retrieve the methodology reference definitions most relevant to its own prompt template and any supplied record context (Section 3.8), and the generation prompt shall instruct the model to stay within journi's own stage vocabulary and to state no number, score, or name absent from that context; the retrieved definitions shall be disclosed to the user alongside the generated output, not hidden.
 
 **Frameworks integrated.** Cross-cutting — accelerates the analysis/drafting work within every framework-bearing module; tier discipline follows POWERACT's own AI-training-curriculum vocabulary.
 
@@ -776,6 +797,44 @@ Each module below lists: its purpose and the framework(s) it operationalizes; th
 
 **Primary users.** All roles with project write access.
 
+### 6.3 Cross-Application Query & Retrieval (RAG)
+
+Two capabilities, reached from the sidebar's third section ("Ask journi," Section 1.6) rather than any single M1–M22 module, since both query across the whole tenant rather than operate within one module's own data. Both are backed by the RAG architecture in Section 3.8.
+
+#### 6.3.1 Query Data
+
+**Purpose.** Ask a plain-language question about the signed-in user's own tenant data — project counts, ADKAR trends, open Resistance Log entries, risk exposure, currently-firing alerts — and receive an answer scoped to exactly what that user's role and scope allow, with the specific records or computed fact behind the answer disclosed alongside it.
+
+**Data captured.** Not persisted — each request is answered from the caller's own in-memory `data` (Section 4) plus the question text; nothing about a Query Data session is written back to the state document or logged.
+
+**Functional requirements.**
+- FR-QD-01: The system shall accept a free-text question and the caller's role/scope, and shall compute or retrieve its answer only from records that role/scope may see under the same visibility rule the rest of the application enforces (Section 3.7, Section 3.8) — never from another tenant's, organization's, or project's data.
+- FR-QD-02: A question matching a known aggregation pattern (project counts, resistance/risk counts, ADKAR averages, firing alerts) shall have its numeric answer computed deterministically in code; the LLM's role is limited to phrasing that computed fact in prose, and shall be instructed never to state a number not given to it.
+- FR-QD-03: A question matching no known aggregation shall fall back to retrieval over the visible projects' own record text (business drivers, risk descriptions, resistance root causes); the answer shall be generated only from the retrieved records, and the system shall say plainly when nothing relevant is found rather than guess.
+- FR-QD-04: Individual-level detail (e.g. named coaching notes) shall only be included in a Query Data response for a role in `ROLES_WITH_INDIVIDUAL_VISIBILITY` (Section 3.7, FR-M6-10, NFR-07); every other role receives the aggregate-only view.
+- FR-QD-05: If no LLM is reachable (no Module 6 connection and no server fallback key), the response shall still return the computed fact or retrieved records with a `generationError`, rather than fail outright (Section 3.8).
+- FR-QD-06: The interface shall display, alongside every answer, the specific sources (project names, record ids) the answer was computed or retrieved from — an answer with no disclosed source shall not be presented as authoritative.
+
+**Frameworks integrated.** None directly — a cross-cutting analytics utility over the data every framework-bearing module already produces.
+
+**Primary users.** All roles; the answer's own scope is what changes per role, not access to the feature itself.
+
+#### 6.3.2 Query Features
+
+**Purpose.** Ask what journi can do, in plain language, and be pointed at the specific module that answers it — a natural-language front end to Section 1.6's module list, filtered to what the asking role can actually open.
+
+**Data captured.** Not persisted — the module/feature catalog (`server/lib/corpus/features.js`) is static reference content, not tenant data.
+
+**Functional requirements.**
+- FR-QF-01: The system shall retrieve, for a free-text question, the modules whose description best matches it, and shall exclude any module the asking role is not permitted to open (the same roles `<RequireRole>` enforces for M1/M2, Section 3.7) before ranking or returning results.
+- FR-QF-02: Each returned match shall carry a direct link (route path) the interface can navigate to immediately, not just a module name.
+- FR-QF-03: If no LLM is reachable, the response shall still return the raw retrieval matches with a `generationError`, rather than fail outright (Section 3.8).
+- FR-QF-04: A question matching no module above a minimal relevance threshold shall say so plainly rather than force a low-confidence suggestion.
+
+**Frameworks integrated.** None directly — a cross-cutting discoverability utility.
+
+**Primary users.** All roles, especially a new user or a role encountering a module for the first time.
+
 ---
 
 ## 7. Cross-Cutting Functional Requirements
@@ -842,6 +901,7 @@ M8 (WBS & Gantt) is deliberately cross-cutting rather than tied to one row above
 - NFR-05: The API performs no request-body shape validation on `PUT /api/state` — a malformed body will overwrite the stored state with whatever was sent. A production rebuild should validate the body against the Section 4 schema before persisting it.
 - NFR-06: An AI use case shall never grant a user visibility they would not otherwise have (FR-M6-10); the Real LLM Provider Connection's API key shall never be persisted server-side or included in any data export (FR-M6-08).
 - NFR-07: Individual-level ADKAR scores and sentiment data shall be restricted, by RBAC default, to roles in `ROLES_WITH_INDIVIDUAL_VISIBILITY` (Super Admin, Group Admin, Organization Admin, Change Manager, People Manager); Sponsors and Executives see aggregated, de-identified views only, per M20's roll-up logic.
+- NFR-19: The RAG routes' LLM proxy (`server/lib/llmProxy.js`, Section 3.8) shall use a forwarded API key exactly once, for the single request it arrived with, and shall never write it to disk, log it, or hold it in memory beyond that request's lifetime — the same never-persisted contract FR-M6-08 requires of the browser-direct path applies equally to the proxied one. An optional server-side `ANTHROPIC_API_KEY` (`server/.env`) is a deployment convenience for Query Data/Query Features only, not a shared credential the AI Use Case Library draws on — that capability always prefers the signed-in user's own Module 6 connection.
 
 ### 8.3 Reliability & Data Integrity
 
@@ -1756,7 +1816,7 @@ Standing formula: below `low` = "behind"; between `low` and `high` = "in line"; 
 
 ### 10.7 UI Visual Reference
 
-Full-page screenshots of every one of journi's 22 modules, captured against the seeded Atlas Industrial Group demo tenant, plus one showing the shared Add/Edit modal pattern (Section 3.2) in use. These give a rebuild team an actual visual reference to match — layout, density, the Sidebar/TopBar shell, table and badge styling — alongside the prose UI conventions in Section 5.1. The current color palette is the one described in Section 5.1; a proposed alternative palette direction was shared separately with the client and is not yet adopted, so it is not reflected here.
+Full-page screenshots of every one of journi's 22 modules, the two Query Data/Query Features pages (Section 6.3), and one showing the shared Add/Edit modal pattern (Section 3.2) in use — all captured against the seeded Atlas Industrial Group demo tenant. These give a rebuild team an actual visual reference to match — layout, density, the Sidebar/TopBar shell, table and badge styling — alongside the prose UI conventions in Section 5.1. The palette shown is POWERACT Consulting's own (Section 5.1) — the alternative color direction once proposed as a separate companion artifact is what these screenshots now show, adopted directly, not a pending proposal.
 
 **M1 — Tenant & Org Hierarchy**
 
@@ -1846,7 +1906,15 @@ Full-page screenshots of every one of journi's 22 modules, captured against the 
 
 ![M22 Field Notes](screenshots/m22.png)
 
-**Shared CRUD modal pattern** (illustrated on M9's "+ Stakeholder Group" Add dialog — every module's Add/Edit flow uses this same shell, per Section 3.2)
+**Query Data** (Section 6.3.1)
+
+![Query Data](screenshots/query-data.png)
+
+**Query Features** (Section 6.3.2)
+
+![Query Features](screenshots/query-features.png)
+
+**Shared CRUD modal pattern** (illustrated on M1's "+ Group" Add dialog — every module's Add/Edit flow uses this same shell, per Section 3.2)
 
 ![Shared Add/Edit modal example](screenshots/modal-example.png)
 
