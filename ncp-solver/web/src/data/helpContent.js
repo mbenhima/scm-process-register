@@ -91,6 +91,15 @@ export const HELP_TOPICS = {
       ],
     },
     {
+      id: 'ai-assistant-llm',
+      title: 'AI Assistant & LLM Configuration',
+      body: [
+        'The AI Assistant (sidebar, top section) answers two kinds of questions in a chat-style interface, with no AI use case activation needed. "Query My Data" answers questions about your own organization\'s data — counts of open NCP sheets, overdue actions, high-severity risks, active AI use cases, and more — computed live from the database and strictly limited by your role\'s permissions (RBAC-enforced): the same question asked by two different roles can return different results, or a polite refusal, never leaked data.',
+        '"Ask About the Application" answers "Can it…?" and "How do I…?" questions about NCP Solver itself, drawn from a built-in application help knowledge base searched with the same lightweight retrieval engine (RAG) used by the Capitalization Library.',
+        'LLM Configuration (Governance group in the sidebar, visible to roles with the llmConfig permission) is where an administrator selects the Large Language Model provider intended to power future generative features — a predefined list of the ten most common providers (Anthropic, OpenAI, Google, Azure OpenAI, AWS Bedrock, Mistral, Cohere, Meta Llama, Ollama, or a custom OpenAI-compatible endpoint), plus model name, endpoint URL where relevant, and an API key. The API key is never displayed once saved — only a confirmation that one is configured and its last four characters are shown — and this screen does not itself place any live call to the provider.',
+      ],
+    },
+    {
       id: 'faq',
       title: 'FAQ',
       body: [
@@ -190,6 +199,15 @@ export const HELP_TOPICS = {
       ],
     },
     {
+      id: 'ai-assistant-llm',
+      title: 'Assistant IA & Configuration LLM',
+      body: [
+        "L'Assistant IA (menu latéral, section supérieure) répond à deux types de questions dans une interface de type discussion, sans nécessiter l'activation d'un cas d'usage IA. « Interroger mes données » répond aux questions sur les données de votre propre organisation — nombre de fiches NCP ouvertes, actions en retard, risques à sévérité élevée, cas d'usage IA actifs, etc. — calculées en direct à partir de la base de données et strictement limitées par les permissions de votre rôle (contrôle RBAC) : la même question posée par deux rôles différents peut renvoyer des résultats différents, ou un refus poli, jamais de données divulguées.",
+        "« Question sur l'application » répond aux questions du type « Est-ce que… ? » et « Comment… ? » sur NCP Solver lui-même, à partir d'une base de connaissances d'aide intégrée interrogée avec le même moteur de recherche léger (RAG) que la Bibliothèque de Capitalisation.",
+        "La Configuration LLM (groupe Gouvernance du menu latéral, visible aux rôles disposant de la permission llmConfig) est l'écran où un administrateur sélectionne le fournisseur de modèle de langage (LLM) destiné à alimenter les futures fonctionnalités génératives — une liste prédéfinie des dix fournisseurs les plus courants (Anthropic, OpenAI, Google, Azure OpenAI, AWS Bedrock, Mistral, Cohere, Meta Llama, Ollama, ou un point de terminaison compatible OpenAI personnalisé), ainsi que le nom du modèle, l'URL du point de terminaison le cas échéant, et une clé API. La clé API n'est jamais réaffichée une fois enregistrée — seule une confirmation qu'elle est configurée et ses quatre derniers caractères sont affichés — et cet écran n'effectue lui-même aucun appel en direct au fournisseur.",
+      ],
+    },
+    {
       id: 'faq',
       title: 'FAQ',
       body: [
@@ -286,6 +304,15 @@ export const HELP_TOPICS = {
       body: [
         'تُخطرك التنبيهات عندما يحتاج عنصر ما في العملية إلى الانتباه — إجراءات متأخرة، تقييمات معلقة، بطاقات عالية الأولوية، تجاوزات في عتبات مؤشرات الأداء، وغير ذلك. يعرض رمز الجرس في القائمة الجانبية عدد الإشعارات غير المقروءة.',
         'توفر التقارير ولوحات التحكم رؤية على مستوى مؤشرات الأداء: أعداد البطاقات المفتوحة/قيد التنفيذ/المغلقة، معدلات إنجاز الإجراءات، أزمنة دورة كل مرحلة، وتحليلات حسب القطاع أو القسم، قابلة للتصدير لمراجعة الإدارة.',
+      ],
+    },
+    {
+      id: 'ai-assistant-llm',
+      title: 'المساعد الذكي وإعدادات نموذج اللغة (LLM)',
+      body: [
+        'يجيب المساعد الذكي (القائمة الجانبية، القسم العلوي) على نوعين من الأسئلة عبر واجهة دردشة، دون الحاجة لتفعيل أي حالة استخدام ذكاء اصطناعي. يجيب "استعلام عن بياناتي" على أسئلة حول بيانات مؤسستك — عدد بطاقات NCP المفتوحة، الإجراءات المتأخرة، المخاطر ذات الشدة العالية، حالات استخدام الذكاء الاصطناعي النشطة، وغيرها — محسوبة مباشرة من قاعدة البيانات ومحدودة بصرامة حسب صلاحيات دورك (تحكم قائم على RBAC): قد يعطي نفس السؤال المطروح من دورين مختلفين نتائج مختلفة، أو رفضًا مهذبًا، ولا يُسرَّب أي بيانات أبدًا.',
+        'يجيب "سؤال عن التطبيق" على أسئلة مثل "هل يمكن…؟" و"كيف…؟" حول NCP Solver نفسه، بالاستناد إلى قاعدة معرفة مساعدة مدمجة يتم البحث فيها بنفس محرك البحث الخفيف (RAG) المستخدم في مكتبة الرسملة.',
+        'إعدادات نموذج اللغة (LLM) (مجموعة الحوكمة في القائمة الجانبية، مرئية للأدوار التي تملك صلاحية llmConfig) هي الشاشة التي يختار فيها المسؤول مزوّد نموذج اللغة الكبير المخصص لتشغيل الميزات التوليدية المستقبلية — قائمة محددة مسبقًا لأكثر عشرة مزوّدين شيوعًا (Anthropic وOpenAI وGoogle وAzure OpenAI وAWS Bedrock وMistral وCohere وMeta Llama وOllama، أو نقطة نهاية مخصصة متوافقة مع OpenAI)، بالإضافة إلى اسم النموذج، ورابط نقطة النهاية عند الحاجة، ومفتاح API. لا يُعرض مفتاح API مطلقًا بعد حفظه — يظهر فقط تأكيد بأنه تم تكوينه مع آخر أربعة أحرف منه — ولا تُجري هذه الشاشة بحد ذاتها أي اتصال مباشر بالمزوّد.',
       ],
     },
     {

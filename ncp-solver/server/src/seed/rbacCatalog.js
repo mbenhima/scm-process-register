@@ -94,6 +94,11 @@ export const PERMISSIONS = [
   ['bpmn', 'edit', 'bpmn.edit', 'Edit BPMN process diagrams in the modeler'],
   ['bpmn', 'delete', 'bpmn.delete', 'Delete BPMN process diagrams'],
 
+  ['llmConfig', 'view', 'llmConfig.view', 'View the configured LLM / AI provider'],
+  ['llmConfig', 'manage', 'llmConfig.manage', 'Configure the LLM / AI provider (Anthropic, OpenAI, etc.)'],
+
+  ['assistant', 'view', 'assistant.view', 'Use the AI Assistant (data queries + application help)'],
+
   ['report', 'view', 'report.view', 'View reports'],
   ['report', 'export', 'report.export', 'Export reports'],
 
@@ -105,7 +110,7 @@ export const PERMISSIONS = [
 
 export const ALL_CODES = PERMISSIONS.map((p) => p[2]);
 
-const dept = ['dashboard.view', 'help.view', 'report.view', 'obs.view', 'alert.view', 'fiche.view', 'bpmn.view'];
+const dept = ['dashboard.view', 'help.view', 'assistant.view', 'report.view', 'obs.view', 'alert.view', 'fiche.view', 'bpmn.view'];
 
 export const ROLE_TEMPLATES = {
   admin: {
@@ -117,7 +122,7 @@ export const ROLE_TEMPLATES = {
     name: 'Quality Manager', name_fr: 'Responsable Qualité', name_ar: 'مدير الجودة',
     description: 'Validate and close all fiches; configure KPI thresholds; compliance reports.',
     permissions: [
-      'dashboard.view', 'help.view', 'fiche.view', 'fiche.validate', 'fiche.close',
+      'dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'fiche.validate', 'fiche.close',
       'action.view', 'action.evaluate', 'rootcause.view', 'rootcause.validate',
       'rex.view', 'rex.validate', 'standard.view', 'standard.create', 'standard.edit', 'standard.delete',
       'capitalization.view', 'governance.view', 'governance.manage', 'report.view', 'report.export',
@@ -127,13 +132,14 @@ export const ROLE_TEMPLATES = {
       'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit', 'riskOpportunity.delete',
       'racsi.view', 'racsi.create', 'racsi.edit', 'racsi.delete',
       'bpmn.view', 'bpmn.create', 'bpmn.edit', 'bpmn.delete',
+      'llmConfig.view', 'llmConfig.manage',
     ],
   },
   ci_pilot: {
     name: 'CI Pilot', name_fr: 'Pilote AC', name_ar: 'قائد التحسين المستمر',
     description: 'Create/edit/validate all fiches in scope; approve action plans; manage REX; all dashboards.',
     permissions: [
-      'dashboard.view', 'help.view', 'fiche.view', 'fiche.create', 'fiche.edit', 'fiche.validate', 'fiche.assignTeam',
+      'dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'fiche.create', 'fiche.edit', 'fiche.validate', 'fiche.assignTeam',
       'action.view', 'action.create', 'action.edit', 'action.delete',
       'rootcause.view', 'rootcause.create', 'rootcause.edit', 'rootcause.validate',
       'rex.view', 'rex.create', 'rex.edit', 'standard.view', 'capitalization.view',
@@ -143,13 +149,14 @@ export const ROLE_TEMPLATES = {
       'control.view', 'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit',
       'racsi.view', 'racsi.create', 'racsi.edit',
       'bpmn.view', 'bpmn.create', 'bpmn.edit',
+      'llmConfig.view',
     ],
   },
   ncp_team_member: {
     name: 'NCP Team Member', name_fr: 'Membre équipe MRP', name_ar: 'عضو فريق حل المشكلات',
     description: 'View and edit assigned fiches; complete S2/S4/S5 stages; add root causes and actions.',
     permissions: [
-      'dashboard.view', 'help.view', 'fiche.view', 'fiche.edit', 'action.view', 'action.create', 'action.edit',
+      'dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'fiche.edit', 'action.view', 'action.create', 'action.edit',
       'rootcause.view', 'rootcause.create', 'rootcause.edit', 'rex.view', 'rex.create',
       'capitalization.view', 'standard.view', 'obs.view', 'racsi.view', 'bpmn.view',
     ],
@@ -157,12 +164,12 @@ export const ROLE_TEMPLATES = {
   action_owner: {
     name: 'Action Owner (AR)', name_fr: 'Responsable Réalisation', name_ar: 'مسؤول التنفيذ',
     description: 'Update own action status; enter completion date; upload evidence.',
-    permissions: ['dashboard.view', 'help.view', 'fiche.view', 'action.view', 'action.updateOwn'],
+    permissions: ['dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'action.view', 'action.updateOwn'],
   },
   evaluator: {
     name: 'Evaluator (AE)', name_fr: 'Responsable Évaluation', name_ar: 'مسؤول التقييم',
     description: 'View pending evaluations; record effectiveness verdict and date; upload evaluation evidence.',
-    permissions: ['dashboard.view', 'help.view', 'fiche.view', 'action.view', 'action.evaluate'],
+    permissions: ['dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'action.view', 'action.evaluate'],
   },
   department_head: {
     name: 'Department Head', name_fr: 'Chef de Département', name_ar: 'رئيس القسم',
@@ -172,15 +179,15 @@ export const ROLE_TEMPLATES = {
   reporter: {
     name: 'Reporter', name_fr: 'Déclarant', name_ar: 'المبلّغ',
     description: 'Create new fiches (S1 only); view own submitted fiches; no edit rights after submission.',
-    permissions: ['dashboard.view', 'help.view', 'fiche.view', 'fiche.create'],
+    permissions: ['dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'fiche.create'],
   },
   auditor: {
     name: 'Read-Only / Auditor', name_fr: 'Auditeur (lecture seule)', name_ar: 'مدقق (قراءة فقط)',
     description: 'Read-only access to fiches and reports; full audit trail view; no create/edit/delete.',
     permissions: [
-      'dashboard.view', 'help.view', 'fiche.view', 'action.view', 'rootcause.view', 'rex.view',
+      'dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'action.view', 'rootcause.view', 'rex.view',
       'standard.view', 'capitalization.view', 'report.view', 'audit.view', 'obs.view', 'hierarchy.view',
-      'businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view', 'bpmn.view',
+      'businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view', 'bpmn.view', 'llmConfig.view',
     ],
   },
 };

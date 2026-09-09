@@ -486,6 +486,26 @@ CREATE TABLE IF NOT EXISTS bpmn_diagrams (
 );
 
 -- =========================================================================
+-- LLM PROVIDER CONFIGURATION: which large-language-model backend the AI
+-- Assistant / agents should call (one row per Organization). The API key is
+-- never returned by the API (see routes/llmConfig.js) — only a redacted
+-- last-4 and a boolean "configured" flag are exposed to the client.
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS llm_configurations (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL UNIQUE REFERENCES organizations(id) ON DELETE CASCADE,
+  provider TEXT NOT NULL DEFAULT 'anthropic',
+    -- anthropic | openai | google | azure_openai | aws_bedrock | mistral | cohere | meta_llama | ollama | custom
+  model TEXT,               -- e.g. "claude-sonnet-5", "gpt-5", "gemini-2.5-pro" (free text; providers evolve)
+  api_key TEXT,              -- stored as-is in this demo (no KMS available); see NFR-SEC in the SRS
+  endpoint_url TEXT,         -- required for azure_openai / aws_bedrock / ollama / custom
+  is_enabled INTEGER NOT NULL DEFAULT 0,
+  updated_by TEXT REFERENCES users(id) ON DELETE SET NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- =========================================================================
 -- Indices
 -- =========================================================================
 CREATE INDEX IF NOT EXISTS idx_fiches_org ON ncp_fiches(organization_id);

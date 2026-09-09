@@ -74,6 +74,7 @@ export default function Layout() {
             {hasPermission('capitalization.view') && <NavItem to="/capitalization" label={t('nav.capitalization')} icon="🔍" />}
             {hasPermission('standard.view') && <NavItem to="/standards" label={t('nav.standards')} icon="📘" />}
             {hasPermission('aiUseCase.view') && <NavItem to="/ai-use-cases" label={t('nav.aiUseCases')} icon="✦" />}
+            {hasPermission('assistant.view') && <NavItem to="/assistant" label={t('nav.assistant')} icon="💬" />}
             {hasPermission('report.view') && <NavItem to="/reports" label={t('nav.reports')} icon="📊" />}
             {hasPermission('alert.view') && (
               <NavItem
@@ -105,10 +106,11 @@ export default function Layout() {
             </NavSection>
           )}
 
-          {hasAnyPermission('governance.view', 'license.view') && (
+          {hasAnyPermission('governance.view', 'license.view', 'llmConfig.view') && (
             <NavSection title={t('nav.governanceGroup')}>
               {hasPermission('governance.view') && <NavItem to="/governance" label={t('nav.governance')} icon="⚙" />}
               {hasPermission('license.view') && <NavItem to="/license" label={t('nav.license')} icon="🔑" />}
+              {hasPermission('llmConfig.view') && <NavItem to="/llm-settings" label={t('nav.llmSettings')} icon="🧠" />}
             </NavSection>
           )}
 
