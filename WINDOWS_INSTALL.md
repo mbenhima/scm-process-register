@@ -82,6 +82,23 @@ This is a single shared instance, not a multi-tenant server — everyone
 connecting sees and edits the same data, the same way multiple browser tabs
 on one PC would.
 
+## Enabling AI features (optional)
+
+journi's AI Use Case Library, Query Data, and Query Features pages work out
+of the box for search and exact data lookups — no setup needed. To also get
+AI-generated written answers (rather than just the underlying facts), give
+the backend an API key for one LLM provider:
+
+1. In the `server` folder, copy `.env.example` to a new file named `.env`.
+2. Open `.env` in Notepad and fill in the key for whichever provider you
+   have an account with (Anthropic, OpenAI, or Google) — leave the others
+   blank.
+3. Save the file and restart journi (close the command-prompt window, then
+   double-click `start-journi.bat` again).
+
+Without a key, these pages still return real, RBAC-scoped answers computed
+directly from your data — they just skip the extra AI-written phrasing.
+
 ## Stopping / uninstalling
 
 - **To stop journi:** close its command-prompt window, or press Ctrl+C
