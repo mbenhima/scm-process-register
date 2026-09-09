@@ -91,6 +91,15 @@ export const HELP_TOPICS = {
       ],
     },
     {
+      id: 'bpmn',
+      title: 'BPMN Process Diagrams',
+      body: [
+        'The BPMN module (sidebar, Governance/Risk/Compliance group) stores and renders real BPMN 2.0 process diagrams using a genuine, in-browser BPMN modeler — not a screenshot or static image. It is seeded with a diagram of the NCP Solver process itself, S1 through S7, including the loop back to S5 when an S6 effectiveness evaluation comes back Not Effective.',
+        'Access follows RBAC like every other module: anyone with bpmn.view can open a diagram and pan/zoom it read-only; only users holding bpmn.edit see the full editing palette (drag on tasks, gateways, and flows) and the Save Diagram button. Creating, editing, and deleting diagrams are full CRUD operations, each gated by its own permission (bpmn.create / bpmn.edit / bpmn.delete), exactly like Business Rules, Controls, or Risks & Opportunities.',
+        'Use it to model the NCP Solver workflow as shipped, or to document any other process your organization wants a shared, versioned, visual reference for.',
+      ],
+    },
+    {
       id: 'ai-assistant-llm',
       title: 'AI Assistant & LLM Configuration',
       body: [
@@ -199,6 +208,15 @@ export const HELP_TOPICS = {
       ],
     },
     {
+      id: 'bpmn',
+      title: 'Diagrammes de Processus BPMN',
+      body: [
+        "Le module BPMN (menu latéral, groupe Gouvernance/Risques/Conformité) stocke et affiche de véritables diagrammes de processus BPMN 2.0 grâce à un modeleur BPMN authentique intégré au navigateur — et non une capture d'écran ou une image statique. Il est initialisé avec un diagramme du processus NCP Solver lui-même, de S1 à S7, incluant la boucle de retour vers S5 lorsqu'une évaluation S6 de l'efficacité revient « Non Efficace ».",
+        "L'accès suit le RBAC comme tout autre module : toute personne disposant de bpmn.view peut ouvrir un diagramme et le parcourir en lecture seule (zoom/déplacement) ; seuls les utilisateurs disposant de bpmn.edit voient la palette d'édition complète (glisser des tâches, passerelles et flux) et le bouton Enregistrer le Diagramme. La création, la modification et la suppression de diagrammes sont des opérations CRUD complètes, chacune protégée par sa propre permission (bpmn.create / bpmn.edit / bpmn.delete), exactement comme les Règles Métier, les Contrôles ou les Risques & Opportunités.",
+        "Utilisez-le pour modéliser le workflow NCP Solver tel que livré, ou pour documenter tout autre processus pour lequel votre organisation souhaite une référence visuelle partagée et versionnée.",
+      ],
+    },
+    {
       id: 'ai-assistant-llm',
       title: 'Assistant IA & Configuration LLM',
       body: [
@@ -304,6 +322,15 @@ export const HELP_TOPICS = {
       body: [
         'تُخطرك التنبيهات عندما يحتاج عنصر ما في العملية إلى الانتباه — إجراءات متأخرة، تقييمات معلقة، بطاقات عالية الأولوية، تجاوزات في عتبات مؤشرات الأداء، وغير ذلك. يعرض رمز الجرس في القائمة الجانبية عدد الإشعارات غير المقروءة.',
         'توفر التقارير ولوحات التحكم رؤية على مستوى مؤشرات الأداء: أعداد البطاقات المفتوحة/قيد التنفيذ/المغلقة، معدلات إنجاز الإجراءات، أزمنة دورة كل مرحلة، وتحليلات حسب القطاع أو القسم، قابلة للتصدير لمراجعة الإدارة.',
+      ],
+    },
+    {
+      id: 'bpmn',
+      title: 'مخططات عملية BPMN',
+      body: [
+        'تخزّن وحدة BPMN (القائمة الجانبية، مجموعة الحوكمة/المخاطر/الامتثال) وتعرض مخططات عملية حقيقية بمعيار BPMN 2.0 باستخدام محرر BPMN فعلي مدمج في المتصفح — وليس لقطة شاشة أو صورة ثابتة. تم تهيئتها بمخطط لعملية NCP Solver نفسها، من S1 إلى S7، بما في ذلك حلقة العودة إلى S5 عندما يكون تقييم فعالية S6 "غير فعّال".',
+        'يتبع الوصول نظام RBAC مثل أي وحدة أخرى: يمكن لأي شخص لديه صلاحية bpmn.view فتح مخطط وتصفحه للقراءة فقط (تكبير/تنقل)؛ فقط المستخدمون الذين لديهم صلاحية bpmn.edit يرون لوحة التحرير الكاملة (سحب المهام والبوابات والتدفقات) وزر حفظ المخطط. يُعد الإنشاء والتعديل والحذف عمليات CRUD كاملة، كل منها محمي بصلاحيته الخاصة (bpmn.create / bpmn.edit / bpmn.delete)، تمامًا مثل قواعد العمل والضوابط والمخاطر والفرص.',
+        'استخدمه لتصميم سير عمل NCP Solver كما تم تسليمه، أو لتوثيق أي عملية أخرى تريد مؤسستك مرجعًا مرئيًا مشتركًا ومُصدَّرًا له.',
       ],
     },
     {
