@@ -7,8 +7,20 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import fs from 'node:fs'
 import { readState, writeState, dbFilePath } from './db.js'
+import queryDataRouter from './routes/queryData.js'
+import queryFeaturesRouter from './routes/queryFeatures.js'
+import aiSuggestRouter from './routes/aiSuggest.js'
+import { hasServerFallbackKey } from './lib/llmProxy.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const envPath = path.join(__dirname, '.env')
+if (fs.existsSync(envPath)) {
+  try {
+    process.loadEnvFile(envPath)
+  } catch (err) {
+    console.warn('Could not load server/.env:', err.message)
+  }
+}
 const DIST_DIR = path.join(__dirname, '..', 'journi', 'dist')
 const PORT = process.env.PORT || 4000
 
@@ -19,7 +31,7 @@ const app = express()
 app.use(express.json({ limit: '25mb' }))
 
 app.get('/api/health', (req, res) => {
-  res.json({ ok: true })
+  res.json({ ok: true, serverFallbackKeyConfigured: hasServerFallbackKey() })
 })
 
 app.get('/api/state', (req, res) => {
@@ -41,6 +53,14 @@ app.put('/api/state', (req, res) => {
   }
 })
 
+// Real retrieval-augmented generation for Query Data, Query Features, and
+// the AI Use Case Library — see RAG.md. These three routes hold no state of
+// their own; Query Data reads the same app-state blob the two routes above
+// persist, passed in on each request.
+app.use('/api/query-data', queryDataRouter)
+app.use('/api/query-features', queryFeaturesRouter)
+app.use('/api/ai-suggest', aiSuggestRouter)
+
 if (fs.existsSync(DIST_DIR)) {
   app.use(express.static(DIST_DIR))
   // Client-side routing (react-router) — any non-API path falls through to
@@ -60,4 +80,9 @@ if (fs.existsSync(DIST_DIR)) {
 app.listen(PORT, () => {
   console.log(`journi is running — open http://localhost:${PORT} in your browser`)
   console.log(`Data is stored in ${dbFilePath()}`)
+  console.log(
+    hasServerFallbackKey()
+      ? 'ANTHROPIC_API_KEY found — Query Data/Features work without a Module 6 connection.'
+      : 'No server-side API key configured — Query Data/Features use whatever provider is connected on Module 6 (see server/.env.example).',
+  )
 })
