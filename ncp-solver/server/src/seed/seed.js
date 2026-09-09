@@ -4,6 +4,7 @@ import db from '../db/index.js';
 import { PERMISSIONS, ROLE_TEMPLATES } from './rbacCatalog.js';
 import { SECTOR_TEMPLATES, SECTOR_LABELS } from './sectorTemplates.js';
 import { AI_USE_CASE_TEMPLATES } from './aiUseCaseTemplates.js';
+import { BUSINESS_RULE_TEMPLATES, CONTROL_TEMPLATES, RISK_TEMPLATES } from './grcTemplates.js';
 
 export const DEMO_PASSWORD = 'Ncp#2026Demo';
 
@@ -11,7 +12,9 @@ const TABLES_IN_DELETE_ORDER = [
   'audit_logs', 'ai_agent_logs', 'notification_alerts',
   'action_evidence', 'action_evaluations', 'actions',
   'rex_entries', 'root_causes', 'problem_understanding', 'ncp_team_assignments', 'ncp_fiches',
-  'ai_use_cases', 'standards',
+  'ai_use_case_versions', 'ai_use_cases',
+  'risk_controls', 'risks_opportunities', 'controls', 'business_rules',
+  'standards',
   'governance_settings', 'licenses',
   'role_permissions', 'user_roles', 'roles', 'users',
   'permissions', 'obs_nodes', 'projects', 'organizations', 'groups',
@@ -258,12 +261,64 @@ function seedFichesForOrg(orgId, sector, obsByName, users, standardIds) {
 function seedAiUseCasesForOrg(orgId, sector, users) {
   const templates = AI_USE_CASE_TEMPLATES[sector] || [];
   for (const t of templates) {
+    const useCaseId = randomUUID();
     db.prepare(`
       INSERT INTO ai_use_cases (id, organization_id, title, description, sector, business_function, ai_technique,
         maturity_stage, status, owner_id, expected_impact, estimated_roi, tags)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(randomUUID(), orgId, t.title, t.expected_impact, sector, t.business_function, t.ai_technique,
+    `).run(useCaseId, orgId, t.title, t.expected_impact, sector, t.business_function, t.ai_technique,
       t.maturity_stage, t.status, users.cipilot, t.expected_impact, t.maturity_stage >= 3 ? 'Medium-High' : 'To be assessed', t.ai_technique);
+
+    const versionId = randomUUID();
+    db.prepare(`
+      INSERT INTO ai_use_case_versions (id, use_case_id, version_number, inputs, prompt, expected_output,
+        constraints_guardrails, model_technique_notes, change_note, is_current, created_by)
+      VALUES (?, ?, 1, ?, ?, ?, ?, ?, 'Initial version', 1, ?)
+    `).run(versionId, useCaseId, t.inputs, t.prompt, t.expected_output, t.constraints_guardrails, t.model_technique_notes, users.cipilot);
+    db.prepare('UPDATE ai_use_cases SET current_version_id = ? WHERE id = ?').run(versionId, useCaseId);
+  }
+}
+
+function seedBusinessRulesForOrg(orgId, users) {
+  for (const r of BUSINESS_RULE_TEMPLATES) {
+    db.prepare(`
+      INSERT INTO business_rules (id, organization_id, code, title, description, rule_type, applies_to_module,
+        condition_text, action_text, severity, owner_id, is_active)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+    `).run(randomUUID(), orgId, r.code, r.title, r.action_text, r.rule_type, r.applies_to_module,
+      r.condition_text, r.action_text, r.severity, users.cipilot);
+  }
+}
+
+function seedControlsForOrg(orgId, users) {
+  const ids = {};
+  for (const c of CONTROL_TEMPLATES) {
+    const id = randomUUID();
+    db.prepare(`
+      INSERT INTO controls (id, organization_id, code, title, description, coso_component, control_type, frequency,
+        control_owner_id, effectiveness, last_tested_date, next_test_date, evidence_notes, is_active)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+    `).run(id, orgId, c.code, c.title, c.evidence_notes, c.coso_component, c.control_type, c.frequency,
+      users.quality, c.effectiveness, daysAgoISO(30), daysAgoISO(-60), c.evidence_notes);
+    ids[c.code] = id;
+  }
+  return ids;
+}
+
+function seedRisksForOrg(orgId, users, controlIds) {
+  for (const r of RISK_TEMPLATES) {
+    const id = randomUUID();
+    db.prepare(`
+      INSERT INTO risks_opportunities (id, organization_id, code, title, description, item_type, category,
+        likelihood, impact, response_strategy, mitigation_plan, owner_id, status,
+        residual_likelihood, residual_impact, target_date)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(id, orgId, r.code, r.title, r.description, r.item_type, r.category, r.likelihood, r.impact,
+      r.response_strategy, r.mitigation_plan, users.quality, r.status,
+      Math.max(1, r.likelihood - 1), Math.max(1, r.impact - 1), daysAgoISO(-90));
+    for (const controlCode of r.controls || []) {
+      if (controlIds[controlCode]) db.prepare('INSERT INTO risk_controls (risk_id, control_id) VALUES (?, ?)').run(id, controlIds[controlCode]);
+    }
   }
 }
 
@@ -283,6 +338,9 @@ function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorT
   seedLicenseAndGovernance(id, planTier, deploymentModel);
   seedFichesForOrg(id, sector, obsByName, users, standardIds);
   seedAiUseCasesForOrg(id, sector, users);
+  seedBusinessRulesForOrg(id, users);
+  const controlIds = seedControlsForOrg(id, users);
+  seedRisksForOrg(id, users, controlIds);
   return { id, users, roleIds };
 }
 

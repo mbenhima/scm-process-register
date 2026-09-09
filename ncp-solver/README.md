@@ -1,4 +1,4 @@
-# NCP Solver
+# NCP Solver — DynamicMS Suite
 
 A full-stack **Non-Conformity & Problem Resolution** platform, built from the NCP Solver
 project scope, definition & design (PDD), information model, and knowledge-base

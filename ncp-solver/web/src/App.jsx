@@ -12,6 +12,10 @@ import ActionsPage from './pages/ActionsPage.jsx';
 import CapitalizationPage from './pages/CapitalizationPage.jsx';
 import StandardsPage from './pages/StandardsPage.jsx';
 import AiUseCasesPage from './pages/AiUseCasesPage.jsx';
+import AiUseCaseDetailPage from './pages/AiUseCaseDetailPage.jsx';
+import BusinessRulesPage from './pages/BusinessRulesPage.jsx';
+import ControlsPage from './pages/ControlsPage.jsx';
+import RisksPage from './pages/RisksPage.jsx';
 import ReportsPage from './pages/ReportsPage.jsx';
 import AlertsPage from './pages/AlertsPage.jsx';
 import HierarchyPage from './pages/HierarchyPage.jsx';
@@ -48,6 +52,10 @@ function AppRoutes() {
         <Route path="capitalization" element={<PermissionGate permission="capitalization.view"><CapitalizationPage /></PermissionGate>} />
         <Route path="standards" element={<PermissionGate permission="standard.view"><StandardsPage /></PermissionGate>} />
         <Route path="ai-use-cases" element={<PermissionGate permission="aiUseCase.view"><AiUseCasesPage /></PermissionGate>} />
+        <Route path="ai-use-cases/:id" element={<PermissionGate permission="aiUseCase.view"><AiUseCaseDetailPage /></PermissionGate>} />
+        <Route path="business-rules" element={<PermissionGate permission="businessRule.view"><BusinessRulesPage /></PermissionGate>} />
+        <Route path="controls" element={<PermissionGate permission="control.view"><ControlsPage /></PermissionGate>} />
+        <Route path="risks" element={<PermissionGate permission="riskOpportunity.view"><RisksPage /></PermissionGate>} />
         <Route path="reports" element={<PermissionGate permission="report.view"><ReportsPage /></PermissionGate>} />
         <Route path="alerts" element={<PermissionGate permission="alert.view"><AlertsPage /></PermissionGate>} />
         <Route path="hierarchy" element={<PermissionGate permission="hierarchy.view"><HierarchyPage /></PermissionGate>} />

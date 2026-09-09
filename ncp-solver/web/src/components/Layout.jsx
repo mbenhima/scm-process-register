@@ -95,6 +95,14 @@ export default function Layout() {
             </NavSection>
           )}
 
+          {hasAnyPermission('businessRule.view', 'control.view', 'riskOpportunity.view') && (
+            <NavSection title={t('nav.grcGroup')}>
+              {hasPermission('businessRule.view') && <NavItem to="/business-rules" label={t('nav.businessRules')} icon="📋" />}
+              {hasPermission('control.view') && <NavItem to="/controls" label={t('nav.controls')} icon="✅" />}
+              {hasPermission('riskOpportunity.view') && <NavItem to="/risks" label={t('nav.risks')} icon="⚠" />}
+            </NavSection>
+          )}
+
           {hasAnyPermission('governance.view', 'license.view') && (
             <NavSection title={t('nav.governanceGroup')}>
               {hasPermission('governance.view') && <NavItem to="/governance" label={t('nav.governance')} icon="⚙" />}

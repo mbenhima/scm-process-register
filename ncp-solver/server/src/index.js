@@ -20,6 +20,9 @@ import aiAgentRoutes from './routes/aiAgentRoutes.js';
 import capitalizationRoutes from './routes/capitalization.js';
 import reportsRoutes from './routes/reports.js';
 import dashboardRoutes from './routes/dashboard.js';
+import businessRulesRoutes from './routes/businessRules.js';
+import controlsRoutes from './routes/controls.js';
+import risksRoutes from './routes/risks.js';
 
 if (isEmpty()) {
   console.log('Empty database detected - running seed...');
@@ -51,6 +54,9 @@ app.use('/api/ai-agents', aiAgentRoutes);
 app.use('/api/capitalization', capitalizationRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/business-rules', businessRulesRoutes);
+app.use('/api/controls', controlsRoutes);
+app.use('/api/risks', risksRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

@@ -49,7 +49,8 @@ export default function LoginPage() {
         <div className="flex flex-col items-center mb-6">
           <div className="h-14 w-14 rounded-xl bg-orange flex items-center justify-center text-white font-title font-bold text-2xl mb-3">N</div>
           <h1 className="font-title font-bold text-2xl text-grey-dark">{t('appName')}</h1>
-          <p className="text-sm text-grey-ink">{t('tagline')}</p>
+          <p className="text-sm font-semibold text-orange-deep">{t('tagline')}</p>
+          <p className="text-xs text-grey-ink mt-0.5">{t('taglineLong')}</p>
         </div>
 
         <form onSubmit={onSubmit} className="card p-6">

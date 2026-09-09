@@ -65,8 +65,23 @@ export const PERMISSIONS = [
 
   ['aiUseCase', 'view', 'aiUseCase.view', 'View AI use cases library'],
   ['aiUseCase', 'create', 'aiUseCase.create', 'Create AI use cases'],
-  ['aiUseCase', 'edit', 'aiUseCase.edit', 'Edit AI use cases'],
+  ['aiUseCase', 'edit', 'aiUseCase.edit', 'Edit AI use cases (incl. new versions and reverting)'],
   ['aiUseCase', 'delete', 'aiUseCase.delete', 'Delete AI use cases'],
+
+  ['businessRule', 'view', 'businessRule.view', 'View business rules'],
+  ['businessRule', 'create', 'businessRule.create', 'Create business rules'],
+  ['businessRule', 'edit', 'businessRule.edit', 'Edit business rules'],
+  ['businessRule', 'delete', 'businessRule.delete', 'Delete business rules'],
+
+  ['control', 'view', 'control.view', 'View controls (COSO framework)'],
+  ['control', 'create', 'control.create', 'Create controls'],
+  ['control', 'edit', 'control.edit', 'Edit controls'],
+  ['control', 'delete', 'control.delete', 'Delete controls'],
+
+  ['riskOpportunity', 'view', 'riskOpportunity.view', 'View risks & opportunities'],
+  ['riskOpportunity', 'create', 'riskOpportunity.create', 'Create risks & opportunities'],
+  ['riskOpportunity', 'edit', 'riskOpportunity.edit', 'Edit risks & opportunities'],
+  ['riskOpportunity', 'delete', 'riskOpportunity.delete', 'Delete risks & opportunities'],
 
   ['report', 'view', 'report.view', 'View reports'],
   ['report', 'export', 'report.export', 'Export reports'],
@@ -96,6 +111,9 @@ export const ROLE_TEMPLATES = {
       'rex.view', 'rex.validate', 'standard.view', 'standard.create', 'standard.edit', 'standard.delete',
       'capitalization.view', 'governance.view', 'governance.manage', 'report.view', 'report.export',
       'alert.view', 'aiUseCase.view', 'audit.view', 'obs.view', 'hierarchy.view',
+      'businessRule.view', 'businessRule.create', 'businessRule.edit', 'businessRule.delete',
+      'control.view', 'control.create', 'control.edit', 'control.delete',
+      'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit', 'riskOpportunity.delete',
     ],
   },
   ci_pilot: {
@@ -108,6 +126,8 @@ export const ROLE_TEMPLATES = {
       'rex.view', 'rex.create', 'rex.edit', 'standard.view', 'capitalization.view',
       'report.view', 'report.export', 'alert.view', 'alert.manage',
       'aiUseCase.view', 'aiUseCase.create', 'aiUseCase.edit', 'obs.view', 'hierarchy.view', 'user.view',
+      'businessRule.view', 'businessRule.create', 'businessRule.edit',
+      'control.view', 'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit',
     ],
   },
   ncp_team_member: {
@@ -132,7 +152,7 @@ export const ROLE_TEMPLATES = {
   department_head: {
     name: 'Department Head', name_fr: 'Chef de Département', name_ar: 'رئيس القسم',
     description: 'View all fiches in own department; department dashboard and reports; receive dept-level alerts.',
-    permissions: [...dept, 'action.view', 'rootcause.view', 'rex.view'],
+    permissions: [...dept, 'action.view', 'rootcause.view', 'rex.view', 'riskOpportunity.view'],
   },
   reporter: {
     name: 'Reporter', name_fr: 'Déclarant', name_ar: 'المبلّغ',
@@ -145,6 +165,7 @@ export const ROLE_TEMPLATES = {
     permissions: [
       'dashboard.view', 'fiche.view', 'action.view', 'rootcause.view', 'rex.view',
       'standard.view', 'capitalization.view', 'report.view', 'audit.view', 'obs.view', 'hierarchy.view',
+      'businessRule.view', 'control.view', 'riskOpportunity.view',
     ],
   },
 };

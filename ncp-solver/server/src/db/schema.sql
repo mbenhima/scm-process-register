@@ -328,8 +328,103 @@ CREATE TABLE IF NOT EXISTS ai_use_cases (
   expected_impact TEXT,
   estimated_roi TEXT,
   tags TEXT,
+  current_version_id TEXT, -- FK to ai_use_case_versions(id), set after first version is created
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Versioned, labeled content of an AI use case (definition/spec), independent of the
+-- stable metadata above. Every save creates a new immutable version; "revert" duplicates
+-- an old version's content into a brand-new version and re-points current_version_id at it,
+-- so the full history is always preserved (never edited or deleted in place).
+CREATE TABLE IF NOT EXISTS ai_use_case_versions (
+  id TEXT PRIMARY KEY,
+  use_case_id TEXT NOT NULL REFERENCES ai_use_cases(id) ON DELETE CASCADE,
+  version_number INTEGER NOT NULL,
+  inputs TEXT,                 -- labeled section: data/inputs the use case consumes
+  prompt TEXT,                 -- labeled section: prompt / instruction template
+  expected_output TEXT,        -- labeled section: expected output / deliverable
+  constraints_guardrails TEXT, -- labeled section: constraints, guardrails, human-in-the-loop notes
+  model_technique_notes TEXT,  -- labeled section: model/technique implementation notes for this version
+  change_note TEXT,            -- what changed vs. the previous version
+  is_current INTEGER NOT NULL DEFAULT 0,
+  created_by TEXT REFERENCES users(id) ON DELETE SET NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(use_case_id, version_number)
+);
+
+-- =========================================================================
+-- BUSINESS RULES (full CRUD via RBAC)
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS business_rules (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  rule_type TEXT NOT NULL DEFAULT 'workflow', -- validation | workflow | approval | naming | threshold | escalation
+  applies_to_module TEXT NOT NULL DEFAULT 'fiche', -- fiche | action | rootcause | rex | standard | general
+  condition_text TEXT, -- "IF" — when the rule applies
+  action_text TEXT,    -- "THEN" — what the system/process must do
+  severity TEXT NOT NULL DEFAULT 'warning', -- blocking | warning | info
+  owner_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- =========================================================================
+-- CONTROLS (COSO Internal Control - Integrated Framework)
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS controls (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  coso_component TEXT NOT NULL DEFAULT 'control_activities',
+    -- control_environment | risk_assessment | control_activities | information_communication | monitoring_activities
+  control_type TEXT NOT NULL DEFAULT 'preventive', -- preventive | detective | corrective
+  frequency TEXT NOT NULL DEFAULT 'monthly', -- continuous | daily | weekly | monthly | quarterly | annual
+  control_owner_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+  effectiveness TEXT NOT NULL DEFAULT 'not_tested', -- effective | partially_effective | ineffective | not_tested
+  last_tested_date TEXT,
+  next_test_date TEXT,
+  evidence_notes TEXT,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- =========================================================================
+-- RISKS & OPPORTUNITIES
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS risks_opportunities (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  item_type TEXT NOT NULL DEFAULT 'risk', -- risk | opportunity
+  category TEXT NOT NULL DEFAULT 'operational', -- strategic | operational | compliance | financial | reputational | technology
+  likelihood INTEGER NOT NULL DEFAULT 3, -- 1-5
+  impact INTEGER NOT NULL DEFAULT 3,     -- 1-5
+  response_strategy TEXT, -- risk: avoid|reduce|transfer|accept — opportunity: exploit|enhance|share|ignore (free text/select)
+  mitigation_plan TEXT,
+  owner_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+  status TEXT NOT NULL DEFAULT 'identified', -- identified | assessing | mitigating | monitoring | closed
+  residual_likelihood INTEGER,
+  residual_impact INTEGER,
+  target_date TEXT,
+  related_fiche_id TEXT REFERENCES ncp_fiches(id) ON DELETE SET NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS risk_controls (
+  risk_id TEXT NOT NULL REFERENCES risks_opportunities(id) ON DELETE CASCADE,
+  control_id TEXT NOT NULL REFERENCES controls(id) ON DELETE CASCADE,
+  PRIMARY KEY (risk_id, control_id)
 );
 
 -- =========================================================================
@@ -342,3 +437,7 @@ CREATE INDEX IF NOT EXISTS idx_obs_org ON obs_nodes(organization_id);
 CREATE INDEX IF NOT EXISTS idx_roots_fiche ON root_causes(fiche_id);
 CREATE INDEX IF NOT EXISTS idx_alerts_org ON notification_alerts(organization_id);
 CREATE INDEX IF NOT EXISTS idx_usecases_org ON ai_use_cases(organization_id);
+CREATE INDEX IF NOT EXISTS idx_usecase_versions_usecase ON ai_use_case_versions(use_case_id);
+CREATE INDEX IF NOT EXISTS idx_business_rules_org ON business_rules(organization_id);
+CREATE INDEX IF NOT EXISTS idx_controls_org ON controls(organization_id);
+CREATE INDEX IF NOT EXISTS idx_risks_org ON risks_opportunities(organization_id);
