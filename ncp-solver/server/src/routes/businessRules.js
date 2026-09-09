@@ -5,7 +5,7 @@ export default makeCrudRouter({
   entityType: 'BusinessRule',
   fields: [
     'code', 'title', 'description', 'rule_type', 'applies_to_module',
-    'condition_text', 'action_text', 'severity', 'owner_id', 'is_active',
+    'condition_text', 'action_text', 'severity', 'owner_id', 'obs_node_id', 'is_active',
   ],
   permView: 'businessRule.view',
   permCreate: 'businessRule.create',

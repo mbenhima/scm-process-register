@@ -13,6 +13,7 @@ const TABLES_IN_DELETE_ORDER = [
   'action_evidence', 'action_evaluations', 'actions',
   'rex_entries', 'root_causes', 'problem_understanding', 'ncp_team_assignments', 'ncp_fiches',
   'ai_use_case_versions', 'ai_use_cases',
+  'racsi_assignments', 'racsi_activities',
   'risk_controls', 'risks_opportunities', 'controls', 'business_rules',
   'standards',
   'governance_settings', 'licenses',
@@ -50,50 +51,73 @@ function seedRolesForOrg(orgId) {
   return roleIds;
 }
 
-function createUser(orgId, { username, email, firstName, lastName, language, roleId }) {
+function createUser(orgId, { username, email, firstName, lastName, language, roleId, obsNodeId }) {
   const id = randomUUID();
   const hash = bcrypt.hashSync(DEMO_PASSWORD, 10);
   db.prepare(`
     INSERT INTO users (id, organization_id, username, email, password_hash, first_name, last_name, language_preference)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `).run(id, orgId, username, email, hash, firstName, lastName, language);
-  if (roleId) db.prepare('INSERT INTO user_roles (id, user_id, role_id) VALUES (?, ?, ?)').run(randomUUID(), id, roleId);
+  if (roleId) db.prepare('INSERT INTO user_roles (id, user_id, role_id, obs_node_id) VALUES (?, ?, ?, ?)').run(randomUUID(), id, roleId, obsNodeId || null);
   return id;
 }
 
-function seedUsersForOrg(orgId, domain, roleIds, language) {
+// Picks the OBS node most relevant to quality/compliance/governance for an org,
+// falling back to the first department, then the site root.
+function governanceObsId(obsByName) {
+  const preferred = ['Quality Assurance', 'Quality Control', 'Quality', 'Compliance', 'HSE'];
+  for (const name of preferred) if (obsByName[name]) return obsByName[name];
+  const values = Object.values(obsByName);
+  return values[0] || null;
+}
+
+function seedUsersForOrg(orgId, domain, roleIds, language, obsByName) {
+  const deptValues = Object.values(obsByName);
+  const firstDept = deptValues[0] || null;
+  const govDept = governanceObsId(obsByName);
   const specs = [
-    ['admin', 'Amina', 'Idrissi', roleIds.admin],
-    ['quality', 'Karim', 'Benali', roleIds.quality_manager],
-    ['cipilot', 'Laila', 'Ouazzani', roleIds.ci_pilot],
-    ['team1', 'Youssef', 'El Amrani', roleIds.ncp_team_member],
-    ['team2', 'Sara', 'Bouzid', roleIds.ncp_team_member],
-    ['owner1', 'Hicham', 'Tazi', roleIds.action_owner],
-    ['owner2', 'Nadia', 'Chraibi', roleIds.action_owner],
-    ['evaluator', 'Rachid', 'Fassi', roleIds.evaluator],
-    ['depthead', 'Meryem', 'Alaoui', roleIds.department_head],
-    ['reporter', 'Omar', 'Kabbaj', roleIds.reporter],
-    ['auditor', 'Zineb', 'Haddad', roleIds.auditor],
+    // key, first, last, roleId, obsNodeId — mixes site/department/service/team scoping so
+    // OBS genuinely carries "roles and names" that RACSI (and other modules) can point back to.
+    ['admin', 'Amina', 'Idrissi', roleIds.admin, obsByName.__site],
+    ['quality', 'Karim', 'Benali', roleIds.quality_manager, govDept],
+    ['cipilot', 'Laila', 'Ouazzani', roleIds.ci_pilot, obsByName.__ciTeam || govDept],
+    ['team1', 'Youssef', 'El Amrani', roleIds.ncp_team_member, obsByName.__ciTeam || firstDept],
+    ['team2', 'Sara', 'Bouzid', roleIds.ncp_team_member, firstDept],
+    ['owner1', 'Hicham', 'Tazi', roleIds.action_owner, firstDept],
+    ['owner2', 'Nadia', 'Chraibi', roleIds.action_owner, firstDept],
+    ['evaluator', 'Rachid', 'Fassi', roleIds.evaluator, govDept],
+    ['depthead', 'Meryem', 'Alaoui', roleIds.department_head, firstDept],
+    ['reporter', 'Omar', 'Kabbaj', roleIds.reporter, firstDept],
+    ['auditor', 'Zineb', 'Haddad', roleIds.auditor, obsByName.__site],
   ];
   const users = {};
-  for (const [key, first, last, roleId] of specs) {
+  for (const [key, first, last, roleId, obsNodeId] of specs) {
     users[key] = createUser(orgId, {
       username: `${key}.${domain}`, email: `${key}@${domain}.ncpsolver.demo`,
-      firstName: first, lastName: last, language, roleId,
+      firstName: first, lastName: last, language, roleId, obsNodeId,
     });
   }
   return users;
 }
 
+// Builds a Site -> Departments -> (Service -> Team) hierarchy. The first department gets one
+// extra Service and Team level so OBS demonstrates its full depth, not just a flat department list.
 function seedObsForOrg(orgId, departments) {
   const siteId = randomUUID();
   db.prepare(`INSERT INTO obs_nodes (id, organization_id, parent_id, node_type, name, code) VALUES (?, ?, NULL, 'site', 'Main Site', 'SITE-01')`).run(siteId, orgId);
-  const byName = {};
-  for (const dep of departments) {
+  const byName = { __site: siteId };
+  departments.forEach((dep, i) => {
     const id = randomUUID();
     db.prepare(`INSERT INTO obs_nodes (id, organization_id, parent_id, node_type, name) VALUES (?, ?, ?, 'department', ?)`).run(id, orgId, siteId, dep);
     byName[dep] = id;
-  }
+    if (i === 0) {
+      const serviceId = randomUUID();
+      db.prepare(`INSERT INTO obs_nodes (id, organization_id, parent_id, node_type, name) VALUES (?, ?, ?, 'service', ?)`).run(serviceId, orgId, id, `${dep} Operations`);
+      const teamId = randomUUID();
+      db.prepare(`INSERT INTO obs_nodes (id, organization_id, parent_id, node_type, name) VALUES (?, ?, ?, 'team', 'Continuous Improvement Team')`).run(teamId, orgId, serviceId);
+      byName.__ciTeam = teamId;
+    }
+  });
   return byName;
 }
 
@@ -253,7 +277,7 @@ function seedFichesForOrg(orgId, sector, obsByName, users, standardIds) {
   const plans = ['closed', 'closed', 'E5', 'E3', 'E1', 'E2'];
   const detectionDays = [60, 45, 20, 4, 0, 2];
   templates.forEach((tpl, i) => {
-    const obsId = obsByName[tpl.department] || Object.values(obsByName)[0];
+    const obsId = obsByName[tpl.department] || governanceObsId(obsByName);
     insertFiche(orgId, obsId, users, standardIds, tpl, detectionDays[i], plans[i]);
   });
 }
@@ -279,46 +303,205 @@ function seedAiUseCasesForOrg(orgId, sector, users) {
   }
 }
 
-function seedBusinessRulesForOrg(orgId, users) {
+function seedBusinessRulesForOrg(orgId, users, obsNodeId) {
+  const ids = {};
   for (const r of BUSINESS_RULE_TEMPLATES) {
+    const id = randomUUID();
     db.prepare(`
       INSERT INTO business_rules (id, organization_id, code, title, description, rule_type, applies_to_module,
-        condition_text, action_text, severity, owner_id, is_active)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
-    `).run(randomUUID(), orgId, r.code, r.title, r.action_text, r.rule_type, r.applies_to_module,
-      r.condition_text, r.action_text, r.severity, users.cipilot);
+        condition_text, action_text, severity, owner_id, obs_node_id, is_active)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+    `).run(id, orgId, r.code, r.title, r.action_text, r.rule_type, r.applies_to_module,
+      r.condition_text, r.action_text, r.severity, users.cipilot, obsNodeId);
+    ids[r.code] = id;
   }
+  return ids;
 }
 
-function seedControlsForOrg(orgId, users) {
+function seedControlsForOrg(orgId, users, obsNodeId) {
   const ids = {};
   for (const c of CONTROL_TEMPLATES) {
     const id = randomUUID();
     db.prepare(`
       INSERT INTO controls (id, organization_id, code, title, description, coso_component, control_type, frequency,
-        control_owner_id, effectiveness, last_tested_date, next_test_date, evidence_notes, is_active)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+        control_owner_id, effectiveness, last_tested_date, next_test_date, evidence_notes, obs_node_id, is_active)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
     `).run(id, orgId, c.code, c.title, c.evidence_notes, c.coso_component, c.control_type, c.frequency,
-      users.quality, c.effectiveness, daysAgoISO(30), daysAgoISO(-60), c.evidence_notes);
+      users.quality, c.effectiveness, daysAgoISO(30), daysAgoISO(-60), c.evidence_notes, obsNodeId);
     ids[c.code] = id;
   }
   return ids;
 }
 
-function seedRisksForOrg(orgId, users, controlIds) {
+function seedRisksForOrg(orgId, users, controlIds, obsNodeId) {
+  const ids = {};
   for (const r of RISK_TEMPLATES) {
     const id = randomUUID();
     db.prepare(`
       INSERT INTO risks_opportunities (id, organization_id, code, title, description, item_type, category,
         likelihood, impact, response_strategy, mitigation_plan, owner_id, status,
-        residual_likelihood, residual_impact, target_date)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        residual_likelihood, residual_impact, target_date, obs_node_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(id, orgId, r.code, r.title, r.description, r.item_type, r.category, r.likelihood, r.impact,
       r.response_strategy, r.mitigation_plan, users.quality, r.status,
-      Math.max(1, r.likelihood - 1), Math.max(1, r.impact - 1), daysAgoISO(-90));
+      Math.max(1, r.likelihood - 1), Math.max(1, r.impact - 1), daysAgoISO(-90), obsNodeId);
+    ids[r.code] = id;
     for (const controlCode of r.controls || []) {
       if (controlIds[controlCode]) db.prepare('INSERT INTO risk_controls (risk_id, control_id) VALUES (?, ?)').run(id, controlIds[controlCode]);
     }
+  }
+  return ids;
+}
+
+// Seeds the RACSI accountability matrix: one activity per NCP process step (E1-E7), plus a
+// handful of governance activities linked directly to a Business Rule, a Control and a
+// Risk/Opportunity record. Assignees mix ROLES (org-wide accountability) and NAMED people
+// (specific users), all drawn from the org's OBS-scoped roles/users. Exactly one Accountable.
+function seedRacsiForOrg(orgId, users, roleIds, obsByName, businessRuleIds, controlIds, riskIds) {
+  const govObsId = governanceObsId(obsByName);
+  const ciTeamObsId = obsByName.__ciTeam || govObsId;
+
+  const insertActivity = db.prepare(`
+    INSERT INTO racsi_activities (id, organization_id, code, title, description, module_ref, linked_record_id, ncp_stage, obs_node_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+  const insertAssignment = db.prepare(`
+    INSERT INTO racsi_assignments (id, activity_id, racsi_type, role_id, user_id) VALUES (?, ?, ?, ?, ?)
+  `);
+
+  function activity({ code, title, description, moduleRef, linkedRecordId, ncpStage, obsNodeId, assignments }) {
+    const id = randomUUID();
+    insertActivity.run(id, orgId, code, title, description, moduleRef, linkedRecordId || null, ncpStage || null, obsNodeId || null);
+    for (const a of assignments) {
+      insertAssignment.run(randomUUID(), id, a.type, a.roleId || null, a.userId || null);
+    }
+    return id;
+  }
+  const role = (code) => ({ roleId: roleIds[code] });
+  const user = (id) => ({ userId: id });
+
+  // E1-E7: one activity per NCP Solver process step.
+  activity({
+    code: 'RACSI-E1', title: 'E1 — Detection & Alert', ncpStage: 'E1', moduleRef: 'ncp_process', obsNodeId: govObsId,
+    description: 'Log the non-conformity, capture immediate facts, and trigger the initial alert.',
+    assignments: [
+      { type: 'A', ...role('quality_manager') },
+      { type: 'R', ...role('reporter') }, { type: 'R', ...role('ncp_team_member') },
+      { type: 'C', ...role('department_head') },
+      { type: 'S', ...role('ci_pilot') },
+      { type: 'I', ...role('auditor') },
+    ],
+  });
+  activity({
+    code: 'RACSI-E2', title: 'E2 — Problem Understanding (5W2H)', ncpStage: 'E2', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
+    description: 'Structure the problem statement (What/Who/Where/When/How/How much) before any containment.',
+    assignments: [
+      { type: 'A', ...role('ci_pilot') },
+      { type: 'R', ...role('ncp_team_member') },
+      { type: 'C', ...role('quality_manager') },
+      { type: 'S', ...role('department_head') },
+      { type: 'I', ...role('auditor') },
+    ],
+  });
+  activity({
+    code: 'RACSI-E3', title: 'E3 — Immediate / Containment Actions', ncpStage: 'E3', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
+    description: 'Contain the non-conformity and protect the customer/process from further exposure.',
+    assignments: [
+      { type: 'A', ...role('quality_manager') },
+      { type: 'R', ...role('action_owner') }, { type: 'R', ...role('ncp_team_member') },
+      { type: 'C', ...role('ci_pilot') },
+      { type: 'S', ...role('department_head') },
+      { type: 'I', ...role('auditor') },
+    ],
+  });
+  activity({
+    code: 'RACSI-E4', title: 'E4 — Root Cause Analysis', ncpStage: 'E4', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
+    description: 'Identify and validate the root cause(s) using 5-Why or Ishikawa.',
+    assignments: [
+      { type: 'A', ...role('ci_pilot') },
+      { type: 'R', ...role('ncp_team_member') },
+      { type: 'C', ...role('quality_manager') },
+      { type: 'S', ...role('department_head') },
+      { type: 'I', ...role('auditor') },
+    ],
+  });
+  activity({
+    code: 'RACSI-E5', title: 'E5 — Corrective Action Plan', ncpStage: 'E5', moduleRef: 'ncp_process', obsNodeId: ciTeamObsId,
+    description: 'Define, resource and implement the permanent corrective action.',
+    assignments: [
+      { type: 'A', ...role('quality_manager') },
+      { type: 'R', ...role('action_owner') },
+      { type: 'C', ...role('ci_pilot') },
+      { type: 'S', ...role('department_head') },
+      { type: 'I', ...role('auditor') },
+    ],
+  });
+  activity({
+    code: 'RACSI-E6', title: 'E6 — Effectiveness Evaluation', ncpStage: 'E6', moduleRef: 'ncp_process', obsNodeId: govObsId,
+    description: 'Verify, after the monitoring period, that the corrective action actually worked.',
+    assignments: [
+      { type: 'A', ...user(users.evaluator) },
+      { type: 'R', ...user(users.evaluator) },
+      { type: 'C', ...role('ci_pilot') },
+      { type: 'S', ...role('quality_manager') },
+      { type: 'I', ...role('auditor') },
+    ],
+  });
+  activity({
+    code: 'RACSI-E7', title: 'E7 — Capitalization (REX)', ncpStage: 'E7', moduleRef: 'ncp_process', obsNodeId: govObsId,
+    description: 'Publish lessons learned to the Capitalization Library; decide on standardization/generalization.',
+    assignments: [
+      { type: 'A', ...role('quality_manager') },
+      { type: 'R', ...role('ci_pilot') }, { type: 'R', ...user(users.team1) },
+      { type: 'C', ...user(users.depthead) },
+      { type: 'S', ...user(users.admin) },
+      { type: 'I', ...role('auditor') },
+    ],
+  });
+
+  // Governance activities linked directly to a Business Rule, a Control and a Risk/Opportunity,
+  // so RACSI (item 3/4) is visibly tied into the other GRC modules (item 2), not just the E1-E7 flow.
+  if (businessRuleIds['BR-001']) {
+    activity({
+      code: 'RACSI-BR-001', title: 'Governance: Enforce BR-001 (RR/RE Segregation)', moduleRef: 'business_rule',
+      linkedRecordId: businessRuleIds['BR-001'], obsNodeId: govObsId,
+      description: 'Own the ongoing enforcement and periodic review of the RR/RE segregation-of-duties business rule.',
+      assignments: [
+        { type: 'A', ...user(users.quality) },
+        { type: 'R', ...role('ci_pilot') },
+        { type: 'C', ...role('auditor') },
+        { type: 'S', ...user(users.cipilot) },
+        { type: 'I', ...role('department_head') },
+      ],
+    });
+  }
+  if (controlIds['C-001']) {
+    activity({
+      code: 'RACSI-C-001', title: 'Governance: Test Control C-001 (Segregation of Duties)', moduleRef: 'control',
+      linkedRecordId: controlIds['C-001'], obsNodeId: govObsId,
+      description: 'Perform and document the periodic effectiveness test of Control C-001.',
+      assignments: [
+        { type: 'A', ...user(users.quality) },
+        { type: 'R', ...role('auditor') },
+        { type: 'C', ...user(users.cipilot) },
+        { type: 'S', ...role('department_head') },
+        { type: 'I', ...role('admin') },
+      ],
+    });
+  }
+  if (riskIds['R-001']) {
+    activity({
+      code: 'RACSI-R-001', title: 'Governance: Mitigate R-001 (Skipping E7 Capitalization)', moduleRef: 'risk_opportunity',
+      linkedRecordId: riskIds['R-001'], obsNodeId: govObsId,
+      description: 'Own the mitigation plan and residual-risk monitoring for R-001.',
+      assignments: [
+        { type: 'A', ...user(users.quality) },
+        { type: 'R', ...user(users.cipilot) },
+        { type: 'C', ...role('auditor') },
+        { type: 'S', ...role('department_head') },
+        { type: 'I', ...role('admin') },
+      ],
+    });
   }
 }
 
@@ -329,18 +512,20 @@ function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorT
   `).run(id, groupId || null, name, name_fr || null, name_ar || null, sector, sectorType, country);
 
   const roleIds = seedRolesForOrg(id);
-  const users = seedUsersForOrg(id, domain, roleIds, language);
   const templates = SECTOR_TEMPLATES[sector];
   const departments = [...new Set(templates.map((t) => t.department))];
   const obsByName = seedObsForOrg(id, departments);
+  const users = seedUsersForOrg(id, domain, roleIds, language, obsByName);
   const standardTitles = [...new Set(templates.map((t) => t.standard).filter(Boolean))];
   const standardIds = seedStandardsForOrg(id, standardTitles.length ? standardTitles : ['ISO 9001:2015 Quality Management']);
   seedLicenseAndGovernance(id, planTier, deploymentModel);
   seedFichesForOrg(id, sector, obsByName, users, standardIds);
   seedAiUseCasesForOrg(id, sector, users);
-  seedBusinessRulesForOrg(id, users);
-  const controlIds = seedControlsForOrg(id, users);
-  seedRisksForOrg(id, users, controlIds);
+  const govObsId = governanceObsId(obsByName);
+  const businessRuleIds = seedBusinessRulesForOrg(id, users, govObsId);
+  const controlIds = seedControlsForOrg(id, users, govObsId);
+  const riskIds = seedRisksForOrg(id, users, controlIds, govObsId);
+  seedRacsiForOrg(id, users, roleIds, obsByName, businessRuleIds, controlIds, riskIds);
   return { id, users, roleIds };
 }
 

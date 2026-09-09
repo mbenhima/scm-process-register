@@ -5,6 +5,7 @@
 export const PERMISSIONS = [
   // module, action, code, description
   ['dashboard', 'view', 'dashboard.view', 'View dashboards'],
+  ['help', 'view', 'help.view', 'View the in-app help & user guide'],
 
   ['fiche', 'view', 'fiche.view', 'View NCP fiches'],
   ['fiche', 'create', 'fiche.create', 'Create NCP fiches (E1)'],
@@ -83,6 +84,11 @@ export const PERMISSIONS = [
   ['riskOpportunity', 'edit', 'riskOpportunity.edit', 'Edit risks & opportunities'],
   ['riskOpportunity', 'delete', 'riskOpportunity.delete', 'Delete risks & opportunities'],
 
+  ['racsi', 'view', 'racsi.view', 'View the RACSI accountability matrix'],
+  ['racsi', 'create', 'racsi.create', 'Create RACSI activities'],
+  ['racsi', 'edit', 'racsi.edit', 'Edit RACSI activities and manage assignments'],
+  ['racsi', 'delete', 'racsi.delete', 'Delete RACSI activities'],
+
   ['report', 'view', 'report.view', 'View reports'],
   ['report', 'export', 'report.export', 'Export reports'],
 
@@ -94,7 +100,7 @@ export const PERMISSIONS = [
 
 export const ALL_CODES = PERMISSIONS.map((p) => p[2]);
 
-const dept = ['dashboard.view', 'report.view', 'obs.view', 'alert.view', 'fiche.view'];
+const dept = ['dashboard.view', 'help.view', 'report.view', 'obs.view', 'alert.view', 'fiche.view'];
 
 export const ROLE_TEMPLATES = {
   admin: {
@@ -106,7 +112,7 @@ export const ROLE_TEMPLATES = {
     name: 'Quality Manager', name_fr: 'Responsable Qualité', name_ar: 'مدير الجودة',
     description: 'Validate and close all fiches; configure KPI thresholds; compliance reports.',
     permissions: [
-      'dashboard.view', 'fiche.view', 'fiche.validate', 'fiche.close',
+      'dashboard.view', 'help.view', 'fiche.view', 'fiche.validate', 'fiche.close',
       'action.view', 'action.evaluate', 'rootcause.view', 'rootcause.validate',
       'rex.view', 'rex.validate', 'standard.view', 'standard.create', 'standard.edit', 'standard.delete',
       'capitalization.view', 'governance.view', 'governance.manage', 'report.view', 'report.export',
@@ -114,13 +120,14 @@ export const ROLE_TEMPLATES = {
       'businessRule.view', 'businessRule.create', 'businessRule.edit', 'businessRule.delete',
       'control.view', 'control.create', 'control.edit', 'control.delete',
       'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit', 'riskOpportunity.delete',
+      'racsi.view', 'racsi.create', 'racsi.edit', 'racsi.delete',
     ],
   },
   ci_pilot: {
     name: 'CI Pilot', name_fr: 'Pilote AC', name_ar: 'قائد التحسين المستمر',
     description: 'Create/edit/validate all fiches in scope; approve action plans; manage REX; all dashboards.',
     permissions: [
-      'dashboard.view', 'fiche.view', 'fiche.create', 'fiche.edit', 'fiche.validate', 'fiche.assignTeam',
+      'dashboard.view', 'help.view', 'fiche.view', 'fiche.create', 'fiche.edit', 'fiche.validate', 'fiche.assignTeam',
       'action.view', 'action.create', 'action.edit', 'action.delete',
       'rootcause.view', 'rootcause.create', 'rootcause.edit', 'rootcause.validate',
       'rex.view', 'rex.create', 'rex.edit', 'standard.view', 'capitalization.view',
@@ -128,44 +135,45 @@ export const ROLE_TEMPLATES = {
       'aiUseCase.view', 'aiUseCase.create', 'aiUseCase.edit', 'obs.view', 'hierarchy.view', 'user.view',
       'businessRule.view', 'businessRule.create', 'businessRule.edit',
       'control.view', 'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit',
+      'racsi.view', 'racsi.create', 'racsi.edit',
     ],
   },
   ncp_team_member: {
     name: 'NCP Team Member', name_fr: 'Membre équipe MRP', name_ar: 'عضو فريق حل المشكلات',
     description: 'View and edit assigned fiches; complete E2/E4/E5 stages; add root causes and actions.',
     permissions: [
-      'dashboard.view', 'fiche.view', 'fiche.edit', 'action.view', 'action.create', 'action.edit',
+      'dashboard.view', 'help.view', 'fiche.view', 'fiche.edit', 'action.view', 'action.create', 'action.edit',
       'rootcause.view', 'rootcause.create', 'rootcause.edit', 'rex.view', 'rex.create',
-      'capitalization.view', 'standard.view', 'obs.view',
+      'capitalization.view', 'standard.view', 'obs.view', 'racsi.view',
     ],
   },
   action_owner: {
     name: 'Action Owner (RR)', name_fr: 'Responsable Réalisation', name_ar: 'مسؤول التنفيذ',
     description: 'Update own action status; enter completion date; upload evidence.',
-    permissions: ['dashboard.view', 'fiche.view', 'action.view', 'action.updateOwn'],
+    permissions: ['dashboard.view', 'help.view', 'fiche.view', 'action.view', 'action.updateOwn'],
   },
   evaluator: {
     name: 'Evaluator (RE)', name_fr: 'Responsable Évaluation', name_ar: 'مسؤول التقييم',
     description: 'View pending evaluations; record effectiveness verdict and date; upload evaluation evidence.',
-    permissions: ['dashboard.view', 'fiche.view', 'action.view', 'action.evaluate'],
+    permissions: ['dashboard.view', 'help.view', 'fiche.view', 'action.view', 'action.evaluate'],
   },
   department_head: {
     name: 'Department Head', name_fr: 'Chef de Département', name_ar: 'رئيس القسم',
     description: 'View all fiches in own department; department dashboard and reports; receive dept-level alerts.',
-    permissions: [...dept, 'action.view', 'rootcause.view', 'rex.view', 'riskOpportunity.view'],
+    permissions: [...dept, 'action.view', 'rootcause.view', 'rex.view', 'riskOpportunity.view', 'racsi.view'],
   },
   reporter: {
     name: 'Reporter', name_fr: 'Déclarant', name_ar: 'المبلّغ',
     description: 'Create new fiches (E1 only); view own submitted fiches; no edit rights after submission.',
-    permissions: ['dashboard.view', 'fiche.view', 'fiche.create'],
+    permissions: ['dashboard.view', 'help.view', 'fiche.view', 'fiche.create'],
   },
   auditor: {
     name: 'Read-Only / Auditor', name_fr: 'Auditeur (lecture seule)', name_ar: 'مدقق (قراءة فقط)',
     description: 'Read-only access to fiches and reports; full audit trail view; no create/edit/delete.',
     permissions: [
-      'dashboard.view', 'fiche.view', 'action.view', 'rootcause.view', 'rex.view',
+      'dashboard.view', 'help.view', 'fiche.view', 'action.view', 'rootcause.view', 'rex.view',
       'standard.view', 'capitalization.view', 'report.view', 'audit.view', 'obs.view', 'hierarchy.view',
-      'businessRule.view', 'control.view', 'riskOpportunity.view',
+      'businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view',
     ],
   },
 };

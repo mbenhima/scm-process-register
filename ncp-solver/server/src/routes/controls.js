@@ -6,7 +6,7 @@ export default makeCrudRouter({
   fields: [
     'code', 'title', 'description', 'coso_component', 'control_type', 'frequency',
     'control_owner_id', 'effectiveness', 'last_tested_date', 'next_test_date',
-    'evidence_notes', 'is_active',
+    'evidence_notes', 'obs_node_id', 'is_active',
   ],
   permView: 'control.view',
   permCreate: 'control.create',

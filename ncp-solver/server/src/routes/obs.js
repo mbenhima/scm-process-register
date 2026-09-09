@@ -16,8 +16,40 @@ function buildTree(nodes) {
   return roots;
 }
 
+function withLinkedCounts(nodes, orgId) {
+  const countBy = (table) => {
+    const rows = db.prepare(`SELECT obs_node_id AS id, COUNT(*) AS c FROM ${table} WHERE organization_id = ? AND obs_node_id IS NOT NULL GROUP BY obs_node_id`).all(orgId);
+    return Object.fromEntries(rows.map((r) => [r.id, r.c]));
+  };
+  const fiches = countBy('ncp_fiches');
+  const businessRules = countBy('business_rules');
+  const controls = countBy('controls');
+  const risks = countBy('risks_opportunities');
+  const racsi = countBy('racsi_activities');
+  const users = Object.fromEntries(
+    db.prepare(`
+      SELECT ur.obs_node_id AS id, COUNT(DISTINCT ur.user_id) AS c FROM user_roles ur
+      JOIN users u ON u.id = ur.user_id WHERE u.organization_id = ? AND ur.obs_node_id IS NOT NULL GROUP BY ur.obs_node_id
+    `).all(orgId).map((r) => [r.id, r.c]),
+  );
+  return nodes.map((n) => ({
+    ...n,
+    linked_counts: {
+      fiches: fiches[n.id] || 0,
+      businessRules: businessRules[n.id] || 0,
+      controls: controls[n.id] || 0,
+      risks: risks[n.id] || 0,
+      racsi: racsi[n.id] || 0,
+      users: users[n.id] || 0,
+    },
+  }));
+}
+
 router.get('/', requirePermission('obs.view'), (req, res) => {
-  const nodes = db.prepare('SELECT * FROM obs_nodes WHERE organization_id = ? ORDER BY node_type, name').all(req.user.organizationId);
+  const nodes = withLinkedCounts(
+    db.prepare('SELECT * FROM obs_nodes WHERE organization_id = ? ORDER BY node_type, name').all(req.user.organizationId),
+    req.user.organizationId,
+  );
   res.json({ flat: nodes, tree: buildTree(nodes) });
 });
 

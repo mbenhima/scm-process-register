@@ -17,7 +17,7 @@ const EFFECTIVENESS_COLOR = {
 
 const EMPTY = {
   code: '', title: '', description: '', coso_component: 'control_activities', control_type: 'preventive',
-  frequency: 'monthly', control_owner_id: '', effectiveness: 'not_tested', last_tested_date: '', next_test_date: '', evidence_notes: '',
+  frequency: 'monthly', control_owner_id: '', effectiveness: 'not_tested', last_tested_date: '', next_test_date: '', evidence_notes: '', obs_node_id: '',
 };
 
 export default function ControlsPage() {
@@ -25,12 +25,15 @@ export default function ControlsPage() {
   const { hasPermission } = useAuth();
   const [rows, setRows] = useState([]);
   const [users, setUsers] = useState([]);
+  const [obsFlat, setObsFlat] = useState([]);
   const [modal, setModal] = useState(null);
   const [filter, setFilter] = useState('');
 
   function load() { api.get('/controls').then(setRows).catch(() => {}); }
   useEffect(load, []);
   useEffect(() => { api.get('/users/directory').then(setUsers).catch(() => {}); }, []);
+  useEffect(() => { api.get('/obs').then((d) => setObsFlat(d.flat)).catch(() => {}); }, []);
+  const obsName = (id) => obsFlat.find((n) => n.id === id)?.name || '—';
 
   async function save(form) {
     if (modal === 'new') await api.post('/controls', form);
@@ -71,7 +74,7 @@ export default function ControlsPage() {
           <thead>
             <tr>
               <th>{t('control.code')}</th><th>{t('common.name')}</th><th>{t('control.cosoComponent')}</th>
-              <th>{t('control.controlType')}</th><th>{t('control.frequency')}</th><th>{t('control.effectiveness')}</th><th>{t('control.owner')}</th><th></th>
+              <th>{t('control.controlType')}</th><th>{t('control.frequency')}</th><th>{t('control.effectiveness')}</th><th>{t('control.owner')}</th><th>{t('common.obsUnit')}</th><th></th>
             </tr>
           </thead>
           <tbody>
@@ -84,6 +87,7 @@ export default function ControlsPage() {
                 <td>{t(`control.frequency.${c.frequency}`)}</td>
                 <td><span className={`badge ${EFFECTIVENESS_COLOR[c.effectiveness]}`}>{t(`control.effectiveness.${c.effectiveness}`)}</span></td>
                 <td>{ownerName(c.control_owner_id)}</td>
+                <td>{obsName(c.obs_node_id)}</td>
                 <td className="text-end whitespace-nowrap">
                   {hasPermission('control.edit') && <button onClick={() => setModal(c)} className="text-xs text-orange-deep font-semibold me-3">{t('common.edit')}</button>}
                   {hasPermission('control.delete') && <button onClick={() => remove(c.id)} className="text-xs text-red-600 font-semibold">{t('common.delete')}</button>}
@@ -95,12 +99,12 @@ export default function ControlsPage() {
         {filtered.length === 0 && <EmptyState message={t('common.noResults')} />}
       </Card>
 
-      {modal && <ControlForm initial={modal === 'new' ? EMPTY : modal} users={users} onSave={save} onClose={() => setModal(null)} t={t} />}
+      {modal && <ControlForm initial={modal === 'new' ? EMPTY : modal} users={users} obsFlat={obsFlat} onSave={save} onClose={() => setModal(null)} t={t} />}
     </div>
   );
 }
 
-function ControlForm({ initial, users, onSave, onClose, t }) {
+function ControlForm({ initial, users, obsFlat, onSave, onClose, t }) {
   const [form, setForm] = useState(initial);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   return (
@@ -145,6 +149,12 @@ function ControlForm({ initial, users, onSave, onClose, t }) {
           </Field>
         </div>
         <Field label={t('control.evidence')}><textarea className="input" value={form.evidence_notes || ''} onChange={set('evidence_notes')} /></Field>
+        <Field label={t('common.obsUnit')}>
+          <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
+            <option value="">—</option>
+            {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
+          </select>
+        </Field>
         <div className="flex justify-end gap-2 mt-3">
           <button type="button" onClick={onClose} className="btn-secondary">{t('common.cancel')}</button>
           <button type="submit" className="btn-primary">{t('common.save')}</button>

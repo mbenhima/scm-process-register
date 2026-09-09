@@ -368,6 +368,7 @@ CREATE TABLE IF NOT EXISTS business_rules (
   action_text TEXT,    -- "THEN" — what the system/process must do
   severity TEXT NOT NULL DEFAULT 'warning', -- blocking | warning | info
   owner_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+  obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, -- owning org unit
   is_active INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -391,6 +392,7 @@ CREATE TABLE IF NOT EXISTS controls (
   last_tested_date TEXT,
   next_test_date TEXT,
   evidence_notes TEXT,
+  obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, -- owning org unit
   is_active INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -417,6 +419,7 @@ CREATE TABLE IF NOT EXISTS risks_opportunities (
   residual_impact INTEGER,
   target_date TEXT,
   related_fiche_id TEXT REFERENCES ncp_fiches(id) ON DELETE SET NULL,
+  obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, -- owning org unit
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -426,6 +429,42 @@ CREATE TABLE IF NOT EXISTS risk_controls (
   control_id TEXT NOT NULL REFERENCES controls(id) ON DELETE CASCADE,
   PRIMARY KEY (risk_id, control_id)
 );
+
+-- =========================================================================
+-- RACSI (Responsible / Accountable / Consulted / Support / Informed) matrix
+-- Each activity is either a fixed NCP Solver process step (E1-E7) or a
+-- governance item linked to a Business Rule, Control or Risk/Opportunity.
+-- Assignees are drawn from OBS: either a role (org-wide accountability) or a
+-- specific named person (a user). Exactly one Accountable (A) per activity;
+-- Responsible/Consulted/Support/Informed accept multiple assignees.
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS racsi_activities (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  module_ref TEXT NOT NULL DEFAULT 'general', -- ncp_process | business_rule | control | risk_opportunity | general
+  linked_record_id TEXT, -- id in business_rules / controls / risks_opportunities, when module_ref points to one
+  ncp_stage TEXT,        -- E1..E7, only when module_ref = 'ncp_process'
+  obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, -- owning org unit (OBS)
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(organization_id, code)
+);
+
+CREATE TABLE IF NOT EXISTS racsi_assignments (
+  id TEXT PRIMARY KEY,
+  activity_id TEXT NOT NULL REFERENCES racsi_activities(id) ON DELETE CASCADE,
+  racsi_type TEXT NOT NULL CHECK (racsi_type IN ('R', 'A', 'C', 'S', 'I')),
+  role_id TEXT REFERENCES roles(id) ON DELETE CASCADE, -- assignee given by ROLE (from OBS/RBAC roles)
+  user_id TEXT REFERENCES users(id) ON DELETE CASCADE, -- assignee given by NAME (a specific person)
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  CHECK ((role_id IS NOT NULL AND user_id IS NULL) OR (role_id IS NULL AND user_id IS NOT NULL))
+);
+
+-- Enforce exactly one Accountable (A) per activity; R/C/S/I may repeat freely.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_racsi_one_accountable ON racsi_assignments(activity_id) WHERE racsi_type = 'A';
 
 -- =========================================================================
 -- Indices
@@ -441,3 +480,8 @@ CREATE INDEX IF NOT EXISTS idx_usecase_versions_usecase ON ai_use_case_versions(
 CREATE INDEX IF NOT EXISTS idx_business_rules_org ON business_rules(organization_id);
 CREATE INDEX IF NOT EXISTS idx_controls_org ON controls(organization_id);
 CREATE INDEX IF NOT EXISTS idx_risks_org ON risks_opportunities(organization_id);
+CREATE INDEX IF NOT EXISTS idx_racsi_activities_org ON racsi_activities(organization_id);
+CREATE INDEX IF NOT EXISTS idx_racsi_assignments_activity ON racsi_assignments(activity_id);
+CREATE INDEX IF NOT EXISTS idx_business_rules_obs ON business_rules(obs_node_id);
+CREATE INDEX IF NOT EXISTS idx_controls_obs ON controls(obs_node_id);
+CREATE INDEX IF NOT EXISTS idx_risks_obs ON risks_opportunities(obs_node_id);

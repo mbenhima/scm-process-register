@@ -9,16 +9,19 @@ const MODULES = ['fiche', 'action', 'rootcause', 'rex', 'standard', 'general'];
 const SEVERITIES = ['blocking', 'warning', 'info'];
 const SEVERITY_BADGE = { blocking: 'not_effective', warning: 'pending', info: 'to_do' };
 
-const EMPTY = { code: '', title: '', rule_type: 'workflow', applies_to_module: 'fiche', condition_text: '', action_text: '', severity: 'warning' };
+const EMPTY = { code: '', title: '', rule_type: 'workflow', applies_to_module: 'fiche', condition_text: '', action_text: '', severity: 'warning', obs_node_id: '' };
 
 export default function BusinessRulesPage() {
   const { t } = useI18n();
   const { hasPermission } = useAuth();
   const [rows, setRows] = useState([]);
+  const [obsFlat, setObsFlat] = useState([]);
   const [modal, setModal] = useState(null);
 
   function load() { api.get('/business-rules').then(setRows).catch(() => {}); }
   useEffect(load, []);
+  useEffect(() => { api.get('/obs').then((d) => setObsFlat(d.flat)).catch(() => {}); }, []);
+  const obsName = (id) => obsFlat.find((n) => n.id === id)?.name || '—';
 
   async function save(form) {
     if (modal === 'new') await api.post('/business-rules', form);
@@ -47,7 +50,7 @@ export default function BusinessRulesPage() {
           <Card key={r.id}>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-xs text-grey-medium font-semibold">{r.code} · {t(`businessRule.ruleType.${r.rule_type}`)} · {r.applies_to_module}</div>
+                <div className="text-xs text-grey-medium font-semibold">{r.code} · {t(`businessRule.ruleType.${r.rule_type}`)} · {r.applies_to_module} · {t('common.obsUnit')}: {obsName(r.obs_node_id)}</div>
                 <div className="font-title font-bold text-grey-dark">{r.title}</div>
               </div>
               <StatusBadge value={SEVERITY_BADGE[r.severity]} label={t(`businessRule.severity.${r.severity}`)} />
@@ -67,12 +70,12 @@ export default function BusinessRulesPage() {
         {rows.length === 0 && <EmptyState message={t('common.noResults')} />}
       </div>
 
-      {modal && <RuleForm initial={modal === 'new' ? EMPTY : modal} onSave={save} onClose={() => setModal(null)} t={t} />}
+      {modal && <RuleForm initial={modal === 'new' ? EMPTY : modal} obsFlat={obsFlat} onSave={save} onClose={() => setModal(null)} t={t} />}
     </div>
   );
 }
 
-function RuleForm({ initial, onSave, onClose, t }) {
+function RuleForm({ initial, obsFlat, onSave, onClose, t }) {
   const [form, setForm] = useState(initial);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   return (
@@ -101,6 +104,12 @@ function RuleForm({ initial, onSave, onClose, t }) {
         </div>
         <Field label={t('businessRule.condition')}><textarea className="input" value={form.condition_text || ''} onChange={set('condition_text')} /></Field>
         <Field label={t('businessRule.actionText')}><textarea className="input" value={form.action_text || ''} onChange={set('action_text')} /></Field>
+        <Field label={t('common.obsUnit')}>
+          <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
+            <option value="">—</option>
+            {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
+          </select>
+        </Field>
         <div className="flex justify-end gap-2 mt-3">
           <button type="button" onClick={onClose} className="btn-secondary">{t('common.cancel')}</button>
           <button type="submit" className="btn-primary">{t('common.save')}</button>

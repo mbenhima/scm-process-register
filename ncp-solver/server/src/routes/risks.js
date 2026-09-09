@@ -9,7 +9,7 @@ const router = Router();
 const FIELDS = [
   'code', 'title', 'description', 'item_type', 'category', 'likelihood', 'impact',
   'response_strategy', 'mitigation_plan', 'owner_id', 'status',
-  'residual_likelihood', 'residual_impact', 'target_date', 'related_fiche_id',
+  'residual_likelihood', 'residual_impact', 'target_date', 'related_fiche_id', 'obs_node_id',
 ];
 
 function withScores(row) {

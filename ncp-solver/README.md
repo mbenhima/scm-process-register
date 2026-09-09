@@ -148,15 +148,20 @@ never be the same person as the action owner) are all enforced server-side.
 | My Actions | Action Owner (RR) / Evaluator (RE) task queues |
 | Capitalization Library | RAG semantic search over closed NCP sheets |
 | Standards | Standards knowledge base (ISO, internal procedures) |
-| AI Use Cases Library | Full CRUD, RBAC-gated, independent of the NCP capitalization library |
+| AI Use Cases Library | Full CRUD, RBAC-gated; versioned edit history (default v1, labeled sections, revert to any version) |
 | Reports | The 4 standard reports (Operational, Action Plan, Strategic Scorecard, Capitalization Log) + 10 KPIs |
 | Alerts | Alerts A–J, computed by the rule-based Monitoring Agent |
 | Hierarchy | Group (optional) → Organization → Project (optional) |
-| OBS | Organizational breakdown structure (site/department/service/team tree) |
-| Users & Scope | User directory + role assignment |
-| Permission Matrix | Full role × permission grid (9 roles, ~50 permission codes) |
+| OBS | Organizational breakdown structure (site → department → service → team); every node shows linked-item counts (people, sheets, business rules, controls, risks, RACSI activities) |
+| Users & Scope | User directory + role assignment, scoped to an OBS node |
+| Permission Matrix | Full role × permission grid (9 roles, ~55 permission codes) |
+| Business Rules | Full CRUD, RBAC-gated; validation/workflow/approval/naming/threshold/escalation rules with severity, owned by an OBS unit |
+| Controls | Full CRUD, RBAC-gated; COSO Internal Control – Integrated Framework (5 components), type/frequency/effectiveness tracking |
+| Risks & Opportunities | Full CRUD, RBAC-gated; 5×5 likelihood × impact matrix, linked Controls, inherent/residual scoring |
+| RACSI Matrix | Full CRUD, RBAC-gated; Responsible/Accountable/Consulted/Support/Informed per NCP process step (E1–E7) or per Business Rule/Control/Risk record; assignees are OBS roles or named people; exactly one Accountable enforced client- and server-side |
 | Governance Settings | KPI thresholds, alert toggles, default RCA method, REX-before-close policy |
 | License & Plan | SaaS/OnPrem, plan tier, seats, billing cycle |
+| Help | In-app, searchable multi-language user guide covering every module |
 
 ## Notes on the "AI" layer
 

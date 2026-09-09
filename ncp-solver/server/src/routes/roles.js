@@ -6,6 +6,15 @@ import { writeAudit } from '../services/audit.js';
 
 const router = Router();
 
+// Minimal directory (id/code/name only) so any authenticated user can assign a
+// RACSI role-based accountability without needing full role.view rights.
+router.get('/directory', (req, res) => {
+  const rows = db.prepare(`
+    SELECT id, code, name, name_fr, name_ar FROM roles WHERE organization_id = ? ORDER BY name
+  `).all(req.user.organizationId);
+  res.json(rows);
+});
+
 router.get('/', requirePermission('role.view'), (req, res) => {
   const roles = db.prepare('SELECT * FROM roles WHERE organization_id = ? ORDER BY is_system_role DESC, name').all(req.user.organizationId);
   res.json(roles);

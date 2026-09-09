@@ -4,13 +4,30 @@ import { useI18n } from '../context/I18nContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, Modal, EmptyState } from '../components/ui.jsx';
 
-function TreeNode({ node, depth = 0, onEdit, onDelete, canManage }) {
+const LINK_ICON = { users: '👤', fiches: '📄', businessRules: '📋', controls: '✅', risks: '⚠', racsi: '🧩' };
+
+function LinkedCounts({ counts, t }) {
+  const entries = Object.entries(counts || {}).filter(([, c]) => c > 0);
+  if (entries.length === 0) return null;
+  return (
+    <div className="flex items-center gap-2 ms-2">
+      {entries.map(([key, c]) => (
+        <span key={key} title={t(`obs.linked.${key}`)} className="text-[10px] bg-grey-light text-grey-ink rounded px-1.5 py-0.5">
+          {LINK_ICON[key]} {c}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function TreeNode({ node, depth = 0, onEdit, onDelete, canManage, t }) {
   return (
     <div>
       <div className="flex items-center justify-between py-1.5 border-b border-grey-line" style={{ paddingInlineStart: depth * 20 }}>
         <div className="flex items-center gap-2">
           <span className="badge bg-grey-light text-grey-ink">{node.node_type}</span>
           <span className="text-sm text-grey-dark font-medium">{node.name}</span>
+          <LinkedCounts counts={node.linked_counts} t={t} />
         </div>
         {canManage && (
           <div className="flex gap-2">
@@ -19,7 +36,7 @@ function TreeNode({ node, depth = 0, onEdit, onDelete, canManage }) {
           </div>
         )}
       </div>
-      {node.children?.map((c) => <TreeNode key={c.id} node={c} depth={depth + 1} onEdit={onEdit} onDelete={onDelete} canManage={canManage} />)}
+      {node.children?.map((c) => <TreeNode key={c.id} node={c} depth={depth + 1} onEdit={onEdit} onDelete={onDelete} canManage={canManage} t={t} />)}
     </div>
   );
 }
@@ -56,8 +73,9 @@ export default function ObsPage() {
         </div>
         {hasPermission('obs.manage') && <button onClick={() => setModal('new')} className="btn-primary">+ {t('obs.new')}</button>}
       </div>
+      <p className="text-xs text-grey-medium italic">{t('obs.linkedItems')}: 👤 {t('obs.linked.users')} · 📄 {t('obs.linked.fiches')} · 📋 {t('obs.linked.businessRules')} · ✅ {t('obs.linked.controls')} · ⚠ {t('obs.linked.risks')} · 🧩 {t('obs.linked.racsi')}</p>
       <Card>
-        {data.tree.map((n) => <TreeNode key={n.id} node={n} onEdit={setModal} onDelete={remove} canManage={hasPermission('obs.manage')} />)}
+        {data.tree.map((n) => <TreeNode key={n.id} node={n} onEdit={setModal} onDelete={remove} canManage={hasPermission('obs.manage')} t={t} />)}
         {data.tree.length === 0 && <EmptyState message={t('common.noResults')} />}
       </Card>
       {modal && (

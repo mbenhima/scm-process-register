@@ -95,11 +95,12 @@ export default function Layout() {
             </NavSection>
           )}
 
-          {hasAnyPermission('businessRule.view', 'control.view', 'riskOpportunity.view') && (
+          {hasAnyPermission('businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view') && (
             <NavSection title={t('nav.grcGroup')}>
               {hasPermission('businessRule.view') && <NavItem to="/business-rules" label={t('nav.businessRules')} icon="📋" />}
               {hasPermission('control.view') && <NavItem to="/controls" label={t('nav.controls')} icon="✅" />}
               {hasPermission('riskOpportunity.view') && <NavItem to="/risks" label={t('nav.risks')} icon="⚠" />}
+              {hasPermission('racsi.view') && <NavItem to="/racsi" label={t('nav.racsi')} icon="🧩" />}
             </NavSection>
           )}
 
@@ -109,6 +110,10 @@ export default function Layout() {
               {hasPermission('license.view') && <NavItem to="/license" label={t('nav.license')} icon="🔑" />}
             </NavSection>
           )}
+
+          <NavSection>
+            <NavItem to="/help" label={t('nav.help')} icon="❓" />
+          </NavSection>
         </nav>
 
         <div className="px-4 py-3 border-t border-grey-line text-[10px] text-grey-medium">{t('poweredBy')}</div>

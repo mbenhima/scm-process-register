@@ -19,7 +19,7 @@ function bandColor(score) {
 const EMPTY = {
   code: '', title: '', description: '', item_type: 'risk', category: 'operational',
   likelihood: 3, impact: 3, response_strategy: '', mitigation_plan: '', status: 'identified',
-  residual_likelihood: '', residual_impact: '', target_date: '', control_ids: [],
+  residual_likelihood: '', residual_impact: '', target_date: '', control_ids: [], obs_node_id: '',
 };
 
 function RiskMatrix({ risks, t }) {
@@ -66,12 +66,15 @@ export default function RisksPage() {
   const { hasPermission } = useAuth();
   const [rows, setRows] = useState([]);
   const [controls, setControls] = useState([]);
+  const [obsFlat, setObsFlat] = useState([]);
   const [modal, setModal] = useState(null);
   const [typeFilter, setTypeFilter] = useState('');
 
   function load() { api.get('/risks').then(setRows).catch(() => {}); }
   useEffect(load, []);
   useEffect(() => { api.get('/controls').then(setControls).catch(() => {}); }, []);
+  useEffect(() => { api.get('/obs').then((d) => setObsFlat(d.flat)).catch(() => {}); }, []);
+  const obsName = (id) => obsFlat.find((n) => n.id === id)?.name || '—';
 
   async function openEdit(row) {
     const full = await api.get(`/risks/${row.id}`);
@@ -116,7 +119,7 @@ export default function RisksPage() {
           <Card key={r.id}>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-xs text-grey-medium font-semibold">{r.code} · {t(`risk.category.${r.category}`)} · {t(`risk.itemType.${r.item_type}`)}</div>
+                <div className="text-xs text-grey-medium font-semibold">{r.code} · {t(`risk.category.${r.category}`)} · {t(`risk.itemType.${r.item_type}`)} · {t('common.obsUnit')}: {obsName(r.obs_node_id)}</div>
                 <div className="font-title font-bold text-grey-dark">{r.title}</div>
                 <p className="text-sm text-grey-ink mt-1">{r.description}</p>
               </div>
@@ -137,12 +140,12 @@ export default function RisksPage() {
         {filtered.length === 0 && <EmptyState message={t('common.noResults')} />}
       </div>
 
-      {modal && <RiskForm initial={modal === 'new' ? EMPTY : modal} controls={controls} onSave={save} onClose={() => setModal(null)} t={t} />}
+      {modal && <RiskForm initial={modal === 'new' ? EMPTY : modal} controls={controls} obsFlat={obsFlat} onSave={save} onClose={() => setModal(null)} t={t} />}
     </div>
   );
 }
 
-function RiskForm({ initial, controls, onSave, onClose, t }) {
+function RiskForm({ initial, controls, obsFlat, onSave, onClose, t }) {
   const [form, setForm] = useState(initial);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   function toggleControl(id) {
@@ -196,6 +199,12 @@ function RiskForm({ initial, controls, onSave, onClose, t }) {
               </label>
             ))}
           </div>
+        </Field>
+        <Field label={t('common.obsUnit')}>
+          <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
+            <option value="">—</option>
+            {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
+          </select>
         </Field>
         <div className="flex justify-end gap-2 mt-3">
           <button type="button" onClick={onClose} className="btn-secondary">{t('common.cancel')}</button>
