@@ -4,10 +4,12 @@ import { api } from '../lib/api.js';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, Modal, EmptyState } from '../components/ui.jsx';
+import { TierBadge } from '../components/AiGovernance.jsx';
+import LlmConnectionPanel from '../components/LlmConnectionPanel.jsx';
 
 const EMPTY = {
-  title: '', description: '', business_function: 'quality', ai_technique: 'rag',
-  maturity_stage: 1, status: 'idea', expected_impact: '', estimated_roi: '', tags: '',
+  title: '', description: '', tier: 'assistive', module_key: '', trigger_desc: '', output_desc: '', human_checkpoint: '',
+  business_function: 'quality', ai_technique: 'rag', maturity_stage: 1, status: 'idea', expected_impact: '', estimated_roi: '', tags: '',
   inputs: '', prompt: '', expected_output: '', constraints_guardrails: '', model_technique_notes: '',
 };
 const MATURITY_COLORS = { 1: 'bg-status-red', 2: 'bg-status-amber', 3: 'bg-status-yellow', 4: 'bg-status-green', 5: 'bg-status-darkgreen' };
@@ -30,7 +32,7 @@ export default function AiUseCasesPage() {
   async function toggleActive(e, row) {
     e.preventDefault();
     e.stopPropagation();
-    await api.put(`/ai-use-cases/${row.id}`, { is_active: row.is_active ? 0 : 1 });
+    await api.put(`/ai-use-cases/${row.id}/activation`, { is_active: row.is_active ? 0 : 1 });
     load();
   }
 
@@ -40,9 +42,12 @@ export default function AiUseCasesPage() {
         <div>
           <div className="eyebrow">{t('nav.aiUseCases')}</div>
           <h1 className="font-title font-bold text-2xl text-grey-dark">{t('aiUseCase.title')}</h1>
+          <p className="text-sm text-grey-ink mt-1 max-w-2xl">{t('aiUseCase.governanceIntro')}</p>
         </div>
         {hasPermission('aiUseCase.create') && <button onClick={() => setModal('new')} className="btn-primary">+ {t('aiUseCase.new')}</button>}
       </div>
+
+      <LlmConnectionPanel />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {rows.map((r) => (
@@ -51,9 +56,10 @@ export default function AiUseCasesPage() {
               <div className="flex items-start justify-between mb-2">
                 <div className={`h-3 w-3 rounded-full mt-1 ${MATURITY_COLORS[r.maturity_stage] || 'bg-grey-line'}`} title={`Maturity ${r.maturity_stage}/5`} />
                 <div className="flex items-center gap-2">
+                  <TierBadge tier={r.tier} />
                   <span className="badge bg-grey-light text-grey-ink">{t(`aiUseCase.status.${r.status}`)}</span>
                   {!r.is_active && <span className="badge bg-grey-line text-grey-medium">{t('aiUseCase.inactive')}</span>}
-                  {hasPermission('aiUseCase.edit') && (
+                  {hasPermission('aiUseCase.activate') && (
                     <button
                       onClick={(e) => toggleActive(e, r)}
                       title={r.is_active ? t('aiUseCase.deactivate') : t('aiUseCase.activate')}
@@ -65,8 +71,9 @@ export default function AiUseCasesPage() {
                 </div>
               </div>
               <div className="font-title font-bold text-grey-dark">{r.title}</div>
-              <div className="text-xs text-grey-medium mb-2">{r.business_function} · {r.ai_technique}</div>
+              <div className="text-xs text-grey-medium mb-2">{r.business_function} · {r.ai_technique}{r.module_key ? ` · ${r.module_key}` : ''}</div>
               <p className="text-sm text-grey-ink">{r.description}</p>
+              {r.trigger_desc && <div className="mt-2 text-xs text-grey-ink"><span className="font-semibold text-grey-medium">{t('aiUseCase.trigger')}:</span> {r.trigger_desc}</div>}
               {r.current_version_number && (
                 <div className="mt-3 text-[11px] text-grey-medium">{t('aiUseCase.version')} {r.current_version_number} <span className="badge bg-orange-tint text-orange-deep ms-1">{t('aiUseCase.default')}</span></div>
               )}
@@ -90,6 +97,18 @@ function UseCaseForm({ initial, onSave, onClose, t }) {
         <div className="eyebrow mb-2">{t('aiUseCase.metadata')}</div>
         <Field label={t('common.name')}><input className="input" value={form.title} onChange={set('title')} required /></Field>
         <Field label={t('common.description')}><textarea className="input" value={form.description} onChange={set('description')} required /></Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label={t('aiUseCase.tier')}>
+            <select className="input" value={form.tier} onChange={set('tier')}>
+              <option value="assistive">{t('aiUseCase.tier.assistive')}</option>
+              <option value="augmented">{t('aiUseCase.tier.augmented')}</option>
+            </select>
+          </Field>
+          <Field label={t('aiUseCase.moduleKey')}><input className="input" value={form.module_key} onChange={set('module_key')} placeholder="e.g. control, businessRule" /></Field>
+        </div>
+        <Field label={t('aiUseCase.trigger')}><textarea className="input" rows={2} value={form.trigger_desc} onChange={set('trigger_desc')} /></Field>
+        <Field label={t('aiUseCase.output')}><textarea className="input" rows={2} value={form.output_desc} onChange={set('output_desc')} /></Field>
+        <Field label={t('aiUseCase.humanCheckpoint')}><textarea className="input" rows={2} value={form.human_checkpoint} onChange={set('human_checkpoint')} /></Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label={t('aiUseCase.businessFunction')}>
             <select className="input" value={form.business_function} onChange={set('business_function')}>

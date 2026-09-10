@@ -64,10 +64,13 @@ export const PERMISSIONS = [
   ['governance', 'view', 'governance.view', 'View governance settings'],
   ['governance', 'manage', 'governance.manage', 'Manage governance settings (KPI thresholds, alerts, RCA defaults)'],
 
-  ['aiUseCase', 'view', 'aiUseCase.view', 'View AI use cases library'],
-  ['aiUseCase', 'create', 'aiUseCase.create', 'Create AI use cases'],
+  ['aiUseCase', 'view', 'aiUseCase.view', 'View the AI Use Case Library'],
+  ['aiUseCase', 'create', 'aiUseCase.create', 'Create AI use cases in the catalog'],
   ['aiUseCase', 'edit', 'aiUseCase.edit', 'Edit AI use cases (incl. new versions and reverting)'],
-  ['aiUseCase', 'delete', 'aiUseCase.delete', 'Delete AI use cases'],
+  ['aiUseCase', 'delete', 'aiUseCase.delete', 'Delete AI use cases from the catalog'],
+  ['aiUseCase', 'activate', 'aiUseCase.activate', 'Activate/deactivate an AI use case for the Organization'],
+  ['aiUseCase', 'projectOverride', 'aiUseCase.projectOverride', 'Override an AI use case\'s activation state for a single Project'],
+  ['aiUseCase', 'viewUsageLog', 'aiUseCase.viewUsageLog', 'View the AI Usage Log (accepted/edited/rejected outcomes)'],
 
   ['businessRule', 'view', 'businessRule.view', 'View business rules'],
   ['businessRule', 'create', 'businessRule.create', 'Create business rules'],
@@ -93,9 +96,6 @@ export const PERMISSIONS = [
   ['bpmn', 'create', 'bpmn.create', 'Create BPMN process diagrams'],
   ['bpmn', 'edit', 'bpmn.edit', 'Edit BPMN process diagrams in the modeler'],
   ['bpmn', 'delete', 'bpmn.delete', 'Delete BPMN process diagrams'],
-
-  ['llmConfig', 'view', 'llmConfig.view', 'View the configured LLM / AI provider'],
-  ['llmConfig', 'manage', 'llmConfig.manage', 'Configure the LLM / AI provider (Anthropic, OpenAI, etc.)'],
 
   ['assistant', 'view', 'assistant.view', 'Use the AI Assistant (data queries + application help)'],
 
@@ -126,13 +126,14 @@ export const ROLE_TEMPLATES = {
       'action.view', 'action.evaluate', 'rootcause.view', 'rootcause.validate',
       'rex.view', 'rex.validate', 'standard.view', 'standard.create', 'standard.edit', 'standard.delete',
       'capitalization.view', 'governance.view', 'governance.manage', 'report.view', 'report.export',
-      'alert.view', 'aiUseCase.view', 'audit.view', 'obs.view', 'hierarchy.view',
+      'alert.view', 'aiUseCase.view', 'aiUseCase.create', 'aiUseCase.edit', 'aiUseCase.delete',
+      'aiUseCase.activate', 'aiUseCase.projectOverride', 'aiUseCase.viewUsageLog',
+      'audit.view', 'obs.view', 'hierarchy.view',
       'businessRule.view', 'businessRule.create', 'businessRule.edit', 'businessRule.delete',
       'control.view', 'control.create', 'control.edit', 'control.delete',
       'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit', 'riskOpportunity.delete',
       'racsi.view', 'racsi.create', 'racsi.edit', 'racsi.delete',
       'bpmn.view', 'bpmn.create', 'bpmn.edit', 'bpmn.delete',
-      'llmConfig.view', 'llmConfig.manage',
     ],
   },
   ci_pilot: {
@@ -144,12 +145,12 @@ export const ROLE_TEMPLATES = {
       'rootcause.view', 'rootcause.create', 'rootcause.edit', 'rootcause.validate',
       'rex.view', 'rex.create', 'rex.edit', 'standard.view', 'capitalization.view',
       'report.view', 'report.export', 'alert.view', 'alert.manage',
-      'aiUseCase.view', 'aiUseCase.create', 'aiUseCase.edit', 'obs.view', 'hierarchy.view', 'user.view',
+      'aiUseCase.view', 'aiUseCase.create', 'aiUseCase.edit', 'aiUseCase.projectOverride', 'aiUseCase.viewUsageLog',
+      'obs.view', 'hierarchy.view', 'user.view',
       'businessRule.view', 'businessRule.create', 'businessRule.edit',
       'control.view', 'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit',
       'racsi.view', 'racsi.create', 'racsi.edit',
       'bpmn.view', 'bpmn.create', 'bpmn.edit',
-      'llmConfig.view',
     ],
   },
   ncp_team_member: {
@@ -187,7 +188,8 @@ export const ROLE_TEMPLATES = {
     permissions: [
       'dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'action.view', 'rootcause.view', 'rex.view',
       'standard.view', 'capitalization.view', 'report.view', 'audit.view', 'obs.view', 'hierarchy.view',
-      'businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view', 'bpmn.view', 'llmConfig.view',
+      'businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view', 'bpmn.view',
+      'aiUseCase.view', 'aiUseCase.viewUsageLog',
     ],
   },
 };

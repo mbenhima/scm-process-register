@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import db from '../db/index.js';
 import { RagIndex } from './rag.js';
+import { augmentWithLlm } from './aiGeneration.js';
 
 // Rule-based + RAG-grounded simulations of the NCP Solver AI agents (KB-010):
 // one per process step (S1-S7) plus Monitoring & Alert and an Orchestrator.
@@ -58,7 +59,7 @@ export function searchCapitalization(organizationId, query, topK = 5) {
 const CRITICAL_KEYWORDS = ['safety', 'injury', 'hazard', 'accident', 'fire', 'collapse', 'contamination', 'toxic', 'leak', 'explosion', 'fatal', 'sécurité', 'danger', 'incendie'];
 const MAJOR_KEYWORDS = ['non-compliant', 'non-conform', 'defect', 'delay', 'breach', 'failure', 'deviation', 'shortage'];
 
-export function runClassificationAgent(req, fiche) {
+export async function runClassificationAgent(req, fiche, connection) {
   const text = `${fiche.title} ${fiche.description}`.toLowerCase();
   let suggestedCriticality = 'low';
   if (CRITICAL_KEYWORDS.some((k) => text.includes(k))) suggestedCriticality = 'high';
@@ -72,11 +73,15 @@ export function runClassificationAgent(req, fiche) {
     suggestedPriority: suggestedCriticality === 'high' ? 1 : suggestedCriticality === 'medium' ? 2 : 3,
     similarPastFiches: similar,
   };
+  Object.assign(response, await augmentWithLlm({
+    organizationId: req.user.organizationId, queryText: text, agentName: 'Classification Agent',
+    recordContext: { title: fiche.title, description: fiche.description, suggestedCriticality }, connection,
+  }));
   logAgent(req, fiche.id, 'Classification Agent', text, null, response, confidence);
   return response;
 }
 
-export function runProblemStructuringAgent(req, fiche) {
+export async function runProblemStructuringAgent(req, fiche, connection) {
   const index = buildCapitalizationIndex(req.user.organizationId);
   const results = index.search(`${fiche.title} ${fiche.description}`, { topK: 3 });
   const suggestions = [
@@ -88,39 +93,55 @@ export function runProblemStructuringAgent(req, fiche) {
     'How much: quantify the gap (rate, cost, downtime) — see similar past sheets below for reference.',
   ];
   const response = { suggestions, sourceFiches: results.map((r) => r.meta.ficheNumber) };
+  Object.assign(response, await augmentWithLlm({
+    organizationId: req.user.organizationId, queryText: fiche.description, agentName: 'Problem Structuring Agent',
+    recordContext: { title: fiche.title, description: fiche.description, detectionDate: fiche.detection_date }, connection,
+  }));
   logAgent(req, fiche.id, 'Problem Structuring Agent', fiche.description, null, response, results[0]?.score || 0.4);
   return response;
 }
 
-export function runContainmentAdvisor(req, fiche) {
+export async function runContainmentAdvisor(req, fiche, connection) {
   const index = buildCapitalizationIndex(req.user.organizationId);
   const results = index.search(`${fiche.title} ${fiche.description}`, { topK: 5 });
   const suggestions = results.flatMap((r) => r.meta.immediateActions).slice(0, 5);
   const response = { suggestions, sourceFiches: results.map((r) => r.meta.ficheNumber) };
+  Object.assign(response, await augmentWithLlm({
+    organizationId: req.user.organizationId, queryText: `${fiche.title} ${fiche.description}`, agentName: 'Containment Advisor Agent',
+    recordContext: { title: fiche.title, description: fiche.description }, connection,
+  }));
   logAgent(req, fiche.id, 'Containment Advisor Agent', fiche.description, null, response, results[0]?.score || 0.4);
   return response;
 }
 
-export function runRootCauseMining(req, fiche) {
+export async function runRootCauseMining(req, fiche, connection) {
   const index = buildCapitalizationIndex(req.user.organizationId);
   const results = index.search(`${fiche.title} ${fiche.description}`, { topK: 5 });
   const suggestions = results.flatMap((r) => r.meta.rootCauses).slice(0, 5);
   const categories = ['man', 'machine', 'method', 'material', 'measurement', 'milieu'];
   const response = { suggestedCauses: suggestions, suggestedCategories: categories, sourceFiches: results.map((r) => r.meta.ficheNumber) };
+  Object.assign(response, await augmentWithLlm({
+    organizationId: req.user.organizationId, queryText: `${fiche.title} ${fiche.description}`, agentName: 'Root Cause Mining Agent',
+    recordContext: { title: fiche.title, description: fiche.description, candidateCauses: suggestions }, connection,
+  }));
   logAgent(req, fiche.id, 'Root Cause Mining Agent', fiche.description, null, response, results[0]?.score || 0.4);
   return response;
 }
 
-export function runActionRecommendation(req, fiche, rootCauseText) {
+export async function runActionRecommendation(req, fiche, rootCauseText, connection) {
   const index = buildCapitalizationIndex(req.user.organizationId);
   const results = index.search(rootCauseText, { topK: 5 });
   const suggestions = results.flatMap((r) => r.meta.correctiveActions).slice(0, 5);
   const response = { suggestions, sourceFiches: results.map((r) => r.meta.ficheNumber) };
+  Object.assign(response, await augmentWithLlm({
+    organizationId: req.user.organizationId, queryText: rootCauseText, agentName: 'Action Recommendation Agent',
+    recordContext: { rootCause: rootCauseText, candidateActions: suggestions }, connection,
+  }));
   logAgent(req, fiche.id, 'Action Recommendation Agent', rootCauseText, null, response, results[0]?.score || 0.4);
   return response;
 }
 
-export function runRexGenerationAgent(req, fiche) {
+export async function runRexGenerationAgent(req, fiche, connection) {
   const rootCauses = db.prepare('SELECT * FROM root_causes WHERE fiche_id = ?').all(fiche.id);
   const actions = db.prepare('SELECT * FROM actions WHERE fiche_id = ?').all(fiche.id);
   const corrective = actions.filter((a) => a.action_type === 'corrective');
@@ -145,11 +166,15 @@ export function runRexGenerationAgent(req, fiche) {
     needs_standardization: effective.length > 0,
     needs_generalization: effective.length > 1,
   };
+  Object.assign(response, await augmentWithLlm({
+    organizationId: req.user.organizationId, queryText: lessonsLearned, agentName: 'REX Generation Agent',
+    recordContext: { title: fiche.title, rootCauses: rootCauses.map((r) => r.description), correctiveActions: corrective.map((a) => a.description) }, connection,
+  }));
   logAgent(req, fiche.id, 'REX Generation Agent', fiche.description, { rootCauses, actions }, response, 0.8);
   return response;
 }
 
-export function runEvaluationAssistant(req, fiche) {
+export async function runEvaluationAssistant(req, fiche, connection) {
   const rootCauses = db.prepare('SELECT * FROM root_causes WHERE fiche_id = ?').all(fiche.id);
   const correctiveActions = db.prepare("SELECT * FROM actions WHERE fiche_id = ? AND action_type = 'corrective'").all(fiche.id);
   const orgId = req.user.organizationId;
@@ -174,6 +199,10 @@ export function runEvaluationAssistant(req, fiche) {
   }
 
   const response = { suggestions, historicalEffectivenessRate, sampleSize };
+  Object.assign(response, await augmentWithLlm({
+    organizationId: req.user.organizationId, queryText: fiche.description, agentName: 'Evaluation Assistant Agent',
+    recordContext: { correctiveActions: correctiveActions.map((a) => a.description), historicalEffectivenessRate }, connection,
+  }));
   logAgent(req, fiche.id, 'Evaluation Assistant Agent', fiche.description, { rootCauses, correctiveActions }, response, sampleSize > 0 ? 0.6 : 0.4);
   return response;
 }

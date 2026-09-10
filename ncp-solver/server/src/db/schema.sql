@@ -324,11 +324,16 @@ CREATE TABLE IF NOT EXISTS ai_use_cases (
   ai_technique TEXT,      -- predictive_analytics | nlp | computer_vision | rag | optimization | anomaly_detection
   maturity_stage INTEGER NOT NULL DEFAULT 1, -- 1..5 (Red..DarkGreen scale)
   status TEXT NOT NULL DEFAULT 'idea', -- idea | pilot | production | retired
+  tier TEXT NOT NULL DEFAULT 'assistive', -- assistive | augmented (Autonomous AI is explicitly out of scope)
+  module_key TEXT,           -- which NCP Solver module this use case belongs to (fiche_s1 .. fiche_s7, assistant, riskOpportunity, control, businessRule, racsi, bpmn, ...)
+  trigger_desc TEXT,         -- what causes this use case to fire (event/screen/user action)
+  output_desc TEXT,          -- what it produces, in one line
+  human_checkpoint TEXT,     -- the required human review/approval step before the output is used
   owner_id TEXT REFERENCES users(id) ON DELETE SET NULL,
   expected_impact TEXT,
   estimated_roi TEXT,
   tags TEXT,
-  is_active INTEGER NOT NULL DEFAULT 1, -- toggle: 1 = active, 0 = deactivated (kept for history, hidden from active use)
+  is_active INTEGER NOT NULL DEFAULT 1, -- Organization-level activation toggle (canActivateAiForOrg): 1 = active, 0 = deactivated (kept for history, hidden from active use)
   current_version_id TEXT, -- FK to ai_use_case_versions(id), set after first version is created
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -352,6 +357,36 @@ CREATE TABLE IF NOT EXISTS ai_use_case_versions (
   created_by TEXT REFERENCES users(id) ON DELETE SET NULL,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   UNIQUE(use_case_id, version_number)
+);
+
+-- Project-level tri-state override of a use case's Organization-level activation
+-- (canRequestProjectAiOverride). "inherit" defers to the Organization's is_active;
+-- "on"/"off" force the state for that Project regardless of the Organization setting.
+-- Effective state = project override if a row exists and is not 'inherit', else org is_active.
+CREATE TABLE IF NOT EXISTS ai_use_case_project_overrides (
+  id TEXT PRIMARY KEY,
+  use_case_id TEXT NOT NULL REFERENCES ai_use_cases(id) ON DELETE CASCADE,
+  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  override TEXT NOT NULL DEFAULT 'inherit', -- inherit | on | off
+  updated_by TEXT REFERENCES users(id) ON DELETE SET NULL,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(use_case_id, project_id)
+);
+
+-- Append-only usage log: what a suggestion produced and what the human did with it.
+-- No UPDATE/DELETE route is ever exposed for this table - it is a durable audit trail
+-- of AI Use Case Library outcomes, distinct from the lower-level ai_agent_logs table.
+CREATE TABLE IF NOT EXISTS ai_usage_log (
+  id TEXT PRIMARY KEY,
+  use_case_id TEXT NOT NULL REFERENCES ai_use_cases(id) ON DELETE CASCADE,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  project_id TEXT REFERENCES projects(id) ON DELETE SET NULL,
+  fiche_id TEXT REFERENCES ncp_fiches(id) ON DELETE SET NULL, -- record context, when applicable
+  output_summary TEXT NOT NULL,
+  outcome TEXT NOT NULL, -- accepted | edited | rejected
+  generated_by TEXT NOT NULL DEFAULT 'deterministic', -- deterministic | llm (which path actually produced the output)
+  user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 -- =========================================================================
@@ -485,25 +520,13 @@ CREATE TABLE IF NOT EXISTS bpmn_diagrams (
   UNIQUE(organization_id, code)
 );
 
--- =========================================================================
--- LLM PROVIDER CONFIGURATION: which large-language-model backend the AI
--- Assistant / agents should call (one row per Organization). The API key is
--- never returned by the API (see routes/llmConfig.js) — only a redacted
--- last-4 and a boolean "configured" flag are exposed to the client.
--- =========================================================================
-CREATE TABLE IF NOT EXISTS llm_configurations (
-  id TEXT PRIMARY KEY,
-  organization_id TEXT NOT NULL UNIQUE REFERENCES organizations(id) ON DELETE CASCADE,
-  provider TEXT NOT NULL DEFAULT 'anthropic',
-    -- anthropic | openai | google | azure_openai | aws_bedrock | mistral | cohere | meta_llama | ollama | custom
-  model TEXT,               -- e.g. "claude-sonnet-5", "gpt-5", "gemini-2.5-pro" (free text; providers evolve)
-  api_key TEXT,              -- stored as-is in this demo (no KMS available); see NFR-SEC in the SRS
-  endpoint_url TEXT,         -- required for azure_openai / aws_bedrock / ollama / custom
-  is_enabled INTEGER NOT NULL DEFAULT 0,
-  updated_by TEXT REFERENCES users(id) ON DELETE SET NULL,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
-);
+-- NOTE: there is deliberately no server-side LLM provider configuration table.
+-- The optional Real LLM Provider Connection (provider, apiKey, model, baseUrl)
+-- lives in the browser's own localStorage only (see web/src/lib/llmConnection.js)
+-- and is never persisted, logged, or exported by the backend. A configured
+-- connection is forwarded once per request to POST /api/ai-generate, which uses
+-- it for that single outbound call and never writes it anywhere. See AI Use
+-- Cases Library section of the SRS for the full rationale.
 
 -- =========================================================================
 -- Indices
@@ -516,6 +539,9 @@ CREATE INDEX IF NOT EXISTS idx_roots_fiche ON root_causes(fiche_id);
 CREATE INDEX IF NOT EXISTS idx_alerts_org ON notification_alerts(organization_id);
 CREATE INDEX IF NOT EXISTS idx_usecases_org ON ai_use_cases(organization_id);
 CREATE INDEX IF NOT EXISTS idx_usecase_versions_usecase ON ai_use_case_versions(use_case_id);
+CREATE INDEX IF NOT EXISTS idx_usecase_overrides_project ON ai_use_case_project_overrides(project_id);
+CREATE INDEX IF NOT EXISTS idx_usage_log_usecase ON ai_usage_log(use_case_id);
+CREATE INDEX IF NOT EXISTS idx_usage_log_org ON ai_usage_log(organization_id);
 CREATE INDEX IF NOT EXISTS idx_business_rules_org ON business_rules(organization_id);
 CREATE INDEX IF NOT EXISTS idx_controls_org ON controls(organization_id);
 CREATE INDEX IF NOT EXISTS idx_risks_org ON risks_opportunities(organization_id);

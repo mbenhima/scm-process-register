@@ -154,40 +154,51 @@ never be the same person as the action owner) are all enforced server-side.
 | My Actions | Action Owner (AR) / Evaluator (AE) task queues |
 | Capitalization Library | RAG semantic search over closed NCP sheets |
 | Standards | Standards knowledge base (ISO, internal procedures) |
-| AI Use Cases Library | Full CRUD, RBAC-gated; versioned edit history (default v1, labeled sections, revert to any version); Active/Inactive toggle |
+| AI Use Cases Library | The governed catalog and control plane for every AI capability in NCP Solver — 14 use cases (one per S1–S7 process agent, the 2 AI Assistant agents, and 5 more across BPMN/Risks/Controls/Business Rules/RACSI), each tiered Assistive or Augmented (Autonomous AI is out of scope); full CRUD + versioning (`aiUseCase.create/edit/delete`); Organization-level activate/deactivate (`aiUseCase.activate`) with a per-Project tri-state override (`aiUseCase.projectOverride`); an append-only AI Usage Log of every accept/edit/reject outcome (`aiUseCase.viewUsageLog`); and the optional, browser-local Real LLM Provider Connection — see below |
 | Reports | The 4 standard reports (Operational, Action Plan, Strategic Scorecard, Capitalization Log) + 10 KPIs |
 | Alerts | Alerts A–J, computed by the rule-based Monitoring Agent |
 | Hierarchy | Group (optional) → Organization → Project (optional) |
 | OBS | Organizational breakdown structure (site → department → service → team); every node shows linked-item counts (people, sheets, business rules, controls, risks, RACSI activities) |
 | Users & Scope | User directory + role assignment, scoped to an OBS node |
-| Permission Matrix | Full role × permission grid (9 roles, 79 permission codes across 25 modules) |
+| Permission Matrix | Full role × permission grid (9 roles, 80 permission codes across 24 modules) |
 | Business Rules | Full CRUD, RBAC-gated; validation/workflow/approval/naming/threshold/escalation rules with severity, owned by an OBS unit |
 | Controls | Full CRUD, RBAC-gated; COSO Internal Control – Integrated Framework (5 components), type/frequency/effectiveness tracking |
 | Risks & Opportunities | Full CRUD, RBAC-gated; 5×5 likelihood × impact matrix, linked Controls, inherent/residual scoring |
 | RACSI Matrix | Full CRUD, RBAC-gated; Responsible/Accountable/Consulted/Support/Informed per NCP process step (S1–S7) or per Business Rule/Control/Risk record; assignees are OBS roles or named people; exactly one Accountable enforced client- and server-side |
 | BPMN Process | Full CRUD, RBAC-gated; real BPMN 2.0 diagrams rendered/edited in-browser with [bpmn.io](https://bpmn.io)'s `bpmn-js`; seeded with the NCP Solver process itself (S1–S7, including the effectiveness-evaluation loop back to S5); users without `bpmn.edit` get a read-only, pan/zoom viewer, editors get the full modeler palette |
 | AI Assistant | Chat-style Q&A with two modes: **Query My Data** (answers computed live from the tenant's own database, strictly scoped to the asking user's RBAC permissions — the same question from two different roles can return different data, or a transparent refusal, never a leak) and **Ask About the Application** (RAG search over a 47-entry built-in FAQ knowledge base answering "Can it…?" / "How do I…?" questions about every module) |
-| LLM Configuration | Governance-group screen (`llmConfig.view`/`.manage`), singleton per organization; predefined list of the 10 most common LLM providers (Anthropic, OpenAI, Google, Azure OpenAI, AWS Bedrock, Mistral, Cohere, Meta Llama, Ollama, Custom/OpenAI-compatible) with example-model suggestions, endpoint URL, API key (write-only — only `has_api_key`/last-4 are ever returned), and an enable toggle |
 | Governance Settings | KPI thresholds, alert toggles, default RCA method, REX-before-close policy |
 | License & Plan | SaaS/OnPrem, plan tier, seats, billing cycle |
 | Help | In-app, searchable multi-language user guide covering every module |
 
 ## Notes on the "AI" layer
 
-There is no external LLM API call in this build (no key is configured in this
-environment, and the LLM Configuration screen itself never places a live call — it is a
-storage point for future use). AI agents are implemented as deterministic, explainable,
-RAG-grounded services (`server/src/services/aiAgents.js`), with one agent for every NCP
-process step (S1 Classification, S2 Problem Structuring, S3 Containment Advisor,
-S4 Root Cause Mining, S5 Action Recommendation, S6 Evaluation Assistant, S7 REX
-Generation) plus the always-on Monitoring & Alert agent: keyword/rule-based
-classification, TF-IDF similarity search over the tenant's own closed sheets for
-containment/root-cause/action suggestions, and template-based REX drafting. The same
-philosophy powers the **AI Assistant**: `runDataQueryAgent` matches the question to one
-of a dozen intents, each declaring the RBAC permission it requires, checked *before* any
-query runs; `runAppFeatureQueryAgent` reuses the `RagIndex` TF-IDF engine (the same one
-behind Capitalization Library search) over `server/src/data/appFaq.js`.
+AI agents are implemented as deterministic, explainable, RAG-grounded services
+(`server/src/services/aiAgents.js`), with one agent for every NCP process step
+(S1 Classification, S2 Problem Structuring, S3 Containment Advisor, S4 Root Cause
+Mining, S5 Action Recommendation, S6 Evaluation Assistant, S7 REX Generation) plus
+the always-on Monitoring & Alert agent: keyword/rule-based classification, TF-IDF
+similarity search over the tenant's own closed sheets for containment/root-cause/action
+suggestions, and template-based REX drafting. The same philosophy powers the
+**AI Assistant**: `runDataQueryAgent` matches the question to one of a dozen intents,
+each declaring the RBAC permission it requires, checked *before* any query runs;
+`runAppFeatureQueryAgent` reuses the `RagIndex` TF-IDF engine (the same one behind
+Capitalization Library search) over `server/src/data/appFaq.js`.
 Every suggestion is logged to `ai_agent_logs` with a confidence score, exactly as the
-information model's `AIAgentLog` entity specifies, so the mechanism can be swapped for a
-real LLM/vector-DB call later — via the provider configured in LLM Configuration —
-without changing the API contract.
+information model's `AIAgentLog` entity specifies.
+
+**Real LLM Provider Connection (optional).** Unlike an earlier design that stored an LLM
+configuration server-side (and never actually called it), the current design lets a user
+optionally configure a Real LLM Provider Connection — provider, model, API key, base
+URL — that lives **only in their own browser's localStorage** (`web/src/lib/llmConnection.js`),
+in a namespace never touched by any export or by resetting server-side data. When
+configured, it is forwarded once per request to the S1–S7 agents, which attempt a real
+call (`server/src/services/aiGeneration.js` — Anthropic, OpenAI, Azure OpenAI, Mistral,
+Ollama, and custom OpenAI-compatible endpoints are actually wired up; a few other listed
+providers are not) to produce a supplementary narrative, grounded in the organization's
+own Standards Knowledge Base via a RAG lookup disclosed alongside the output. **Any**
+failure — no connection, unsupported provider, network error, bad key, timeout — falls
+back to the deterministic generator automatically and silently; nothing in the app ever
+depends on a real key being configured. Every AI-generated output is labeled
+"AI-generated — review before use," and every Accept/Edit/Reject decision a user makes
+on one is written to the append-only `ai_usage_log` table via the AI Use Cases Library.

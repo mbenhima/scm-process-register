@@ -4,6 +4,7 @@ import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { writeAudit } from '../services/audit.js';
 import { runClassificationAgent, runRexGenerationAgent } from '../services/aiAgents.js';
+import { requireActiveUseCase } from '../services/aiActivation.js';
 
 const router = Router();
 
@@ -50,7 +51,7 @@ router.get('/:id', requirePermission('fiche.view'), (req, res) => {
   res.json({ ...fiche, understanding, team, rootCauses, actions, rex, aiLogs });
 });
 
-router.post('/', requirePermission('fiche.create'), (req, res) => {
+router.post('/', requirePermission('fiche.create'), async (req, res) => {
   const {
     title, description, detection_date, obs_node_id, criticality, priority,
     frequency, target_objective, project_id, applicable_standards,
@@ -73,7 +74,7 @@ router.post('/', requirePermission('fiche.create'), (req, res) => {
   writeAudit(req, 'CREATE', 'NCPFiche', id, null, row);
 
   // Classification Agent: suggests criticality/priority + similar past fiches, logged for traceability.
-  runClassificationAgent(req, row);
+  await runClassificationAgent(req, row);
 
   maybeRaiseAlertA(req, row);
   res.status(201).json(row);
@@ -240,11 +241,11 @@ router.put('/:id/rex', requirePermission('rex.edit'), (req, res) => {
 });
 
 // REX Generation Agent: auto-drafts the lessons-learned narrative from the fiche's own data.
-router.post('/:id/rex/generate-draft', requirePermission('rex.create'), (req, res) => {
+router.post('/:id/rex/generate-draft', requirePermission('rex.create'), requireActiveUseCase('fiche_s7'), async (req, res) => {
   const fiche = db.prepare('SELECT * FROM ncp_fiches WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!fiche) return res.status(404).json({ error: 'not_found' });
-  const draft = runRexGenerationAgent(req, fiche);
-  res.json(draft);
+  const draft = await runRexGenerationAgent(req, fiche, req.body?.connection);
+  res.json({ useCaseId: req.aiUseCase?.id, ...draft });
 });
 
 function maybeRaiseAlertA(req, fiche) {

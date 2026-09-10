@@ -107,11 +107,10 @@ export default function Layout() {
             </NavSection>
           )}
 
-          {hasAnyPermission('governance.view', 'license.view', 'llmConfig.view') && (
+          {hasAnyPermission('governance.view', 'license.view') && (
             <NavSection title={t('nav.governanceGroup')}>
               {hasPermission('governance.view') && <NavItem to="/governance" label={t('nav.governance')} icon="⚙" />}
               {hasPermission('license.view') && <NavItem to="/license" label={t('nav.license')} icon="🔑" />}
-              {hasPermission('llmConfig.view') && <NavItem to="/llm-settings" label={t('nav.llmSettings')} icon="🧠" />}
             </NavSection>
           )}
 

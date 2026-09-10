@@ -20,7 +20,6 @@ import RacsiPage from './pages/RacsiPage.jsx';
 import BpmnPage from './pages/BpmnPage.jsx';
 import BpmnDiagramPage from './pages/BpmnDiagramPage.jsx';
 import AiAssistantPage from './pages/AiAssistantPage.jsx';
-import LlmSettingsPage from './pages/LlmSettingsPage.jsx';
 import HelpPage from './pages/HelpPage.jsx';
 import ReportsPage from './pages/ReportsPage.jsx';
 import AlertsPage from './pages/AlertsPage.jsx';
@@ -74,7 +73,6 @@ function AppRoutes() {
         <Route path="permissions" element={<PermissionGate permission="role.view"><PermissionMatrixPage /></PermissionGate>} />
         <Route path="governance" element={<PermissionGate permission="governance.view"><GovernancePage /></PermissionGate>} />
         <Route path="license" element={<PermissionGate permission="license.view"><LicensePage /></PermissionGate>} />
-        <Route path="llm-settings" element={<PermissionGate permission="llmConfig.view"><LlmSettingsPage /></PermissionGate>} />
         <Route path="assistant" element={<PermissionGate permission="assistant.view"><AiAssistantPage /></PermissionGate>} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

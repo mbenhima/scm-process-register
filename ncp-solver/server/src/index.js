@@ -25,8 +25,8 @@ import controlsRoutes from './routes/controls.js';
 import risksRoutes from './routes/risks.js';
 import racsiRoutes from './routes/racsi.js';
 import bpmnRoutes from './routes/bpmn.js';
-import llmConfigRoutes from './routes/llmConfig.js';
 import assistantRoutes from './routes/assistant.js';
+import aiUsageLogRoutes from './routes/aiUsageLog.js';
 
 if (isEmpty()) {
   console.log('Empty database detected - running seed...');
@@ -63,8 +63,8 @@ app.use('/api/controls', controlsRoutes);
 app.use('/api/risks', risksRoutes);
 app.use('/api/racsi', racsiRoutes);
 app.use('/api/bpmn', bpmnRoutes);
-app.use('/api/llm-config', llmConfigRoutes);
 app.use('/api/assistant', assistantRoutes);
+app.use('/api/ai-usage-log', aiUsageLogRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

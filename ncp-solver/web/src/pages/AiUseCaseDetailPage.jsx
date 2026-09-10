@@ -4,6 +4,7 @@ import { api } from '../lib/api.js';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, EmptyState } from '../components/ui.jsx';
+import { TierBadge } from '../components/AiGovernance.jsx';
 
 export default function AiUseCaseDetailPage() {
   const { id } = useParams();
@@ -46,12 +47,17 @@ export default function AiUseCaseDetailPage() {
         &larr; {t('aiUseCase.backToLibrary')}
       </button>
 
-      <div>
-        <div className="eyebrow">{t('aiUseCase.title')}</div>
-        <h1 className="font-title font-bold text-2xl text-grey-dark">{data.title}</h1>
+      <div className="flex items-center gap-2 flex-wrap">
+        <div>
+          <div className="eyebrow">{t('aiUseCase.title')}</div>
+          <h1 className="font-title font-bold text-2xl text-grey-dark">{data.title}</h1>
+        </div>
+        <TierBadge tier={data.tier} />
       </div>
 
       <MetadataCard data={data} canEdit={canEdit} onSave={saveMetadata} t={t} />
+
+      <ActivationCard useCase={data} onChanged={load} t={t} hasPermission={hasPermission} />
 
       <VersionEditorCard version={data.currentVersion} canEdit={canEdit} onSave={saveNewVersion} t={t} />
 
@@ -85,6 +91,8 @@ export default function AiUseCaseDetailPage() {
           <ReadOnlySections version={viewingVersion} t={t} />
         </Card>
       )}
+
+      {hasPermission('aiUseCase.viewUsageLog') && <UsageLogCard useCaseId={id} t={t} />}
     </div>
   );
 }
@@ -105,31 +113,28 @@ function MetadataCard({ data, canEdit, onSave, t }) {
   const [form, setForm] = useState({
     title: data.title, description: data.description, business_function: data.business_function,
     ai_technique: data.ai_technique, maturity_stage: data.maturity_stage, status: data.status,
+    tier: data.tier || 'assistive', module_key: data.module_key || '', trigger_desc: data.trigger_desc || '',
+    output_desc: data.output_desc || '', human_checkpoint: data.human_checkpoint || '',
     expected_impact: data.expected_impact || '', estimated_roi: data.estimated_roi || '', tags: data.tags || '',
   });
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   return (
-    <Card
-      title={t('aiUseCase.metadata')}
-      action={
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-grey-medium">{data.is_active ? t('aiUseCase.active') : t('aiUseCase.inactive')}</span>
-          {canEdit && (
-            <button
-              type="button"
-              onClick={() => onSave({ is_active: data.is_active ? 0 : 1 })}
-              title={data.is_active ? t('aiUseCase.deactivate') : t('aiUseCase.activate')}
-              className={`relative w-9 h-5 rounded-full transition-colors shrink-0 ${data.is_active ? 'bg-orange' : 'bg-grey-line'}`}
-            >
-              <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${data.is_active ? 'translate-x-4' : 'translate-x-0.5'}`} />
-            </button>
-          )}
-        </div>
-      }
-    >
+    <Card title={t('aiUseCase.metadata')}>
       <form onSubmit={(e) => { e.preventDefault(); onSave(form); }}>
         <Field label={t('common.name')}><input className="input" value={form.title} onChange={set('title')} disabled={!canEdit} /></Field>
         <Field label={t('common.description')}><textarea className="input" value={form.description} onChange={set('description')} disabled={!canEdit} /></Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label={t('aiUseCase.tier')}>
+            <select className="input" value={form.tier} onChange={set('tier')} disabled={!canEdit}>
+              <option value="assistive">{t('aiUseCase.tier.assistive')}</option>
+              <option value="augmented">{t('aiUseCase.tier.augmented')}</option>
+            </select>
+          </Field>
+          <Field label={t('aiUseCase.moduleKey')}><input className="input" value={form.module_key} onChange={set('module_key')} disabled={!canEdit} /></Field>
+        </div>
+        <Field label={t('aiUseCase.trigger')}><textarea className="input" rows={2} value={form.trigger_desc} onChange={set('trigger_desc')} disabled={!canEdit} /></Field>
+        <Field label={t('aiUseCase.output')}><textarea className="input" rows={2} value={form.output_desc} onChange={set('output_desc')} disabled={!canEdit} /></Field>
+        <Field label={t('aiUseCase.humanCheckpoint')}><textarea className="input" rows={2} value={form.human_checkpoint} onChange={set('human_checkpoint')} disabled={!canEdit} /></Field>
         <div className="grid grid-cols-4 gap-3">
           <Field label={t('aiUseCase.businessFunction')}>
             <select className="input" value={form.business_function} onChange={set('business_function')} disabled={!canEdit}>
@@ -158,6 +163,96 @@ function MetadataCard({ data, canEdit, onSave, t }) {
         </div>
         {canEdit && <button type="submit" className="btn-secondary text-xs">{t('common.save')}</button>}
       </form>
+    </Card>
+  );
+}
+
+// canActivateAiForOrg (org-level) + canRequestProjectAiOverride (per-Project tri-state).
+// Deliberately separate from MetadataCard: activation is a distinct capability from
+// editing the catalog's content (FR-M6-01 vs FR-M6-03/04).
+function ActivationCard({ useCase, onChanged, t, hasPermission }) {
+  const [projects, setProjects] = useState([]);
+  const canActivate = hasPermission('aiUseCase.activate');
+  const canOverride = hasPermission('aiUseCase.projectOverride');
+
+  useEffect(() => {
+    if (canOverride) api.get('/hierarchy/projects').then(setProjects).catch(() => {});
+  }, [canOverride]);
+
+  async function toggleOrgActivation() {
+    await api.put(`/ai-use-cases/${useCase.id}/activation`, { is_active: useCase.is_active ? 0 : 1 });
+    onChanged();
+  }
+  async function setOverride(projectId, override) {
+    await api.put(`/ai-use-cases/${useCase.id}/project-override/${projectId}`, { override });
+    onChanged();
+  }
+
+  if (!canActivate && !canOverride) return null;
+
+  return (
+    <Card title={t('aiUseCase.activation')}>
+      {canActivate && (
+        <div className="flex items-center gap-3 mb-4">
+          <button
+            type="button"
+            onClick={toggleOrgActivation}
+            className={`relative w-9 h-5 rounded-full transition-colors shrink-0 ${useCase.is_active ? 'bg-orange' : 'bg-grey-line'}`}
+          >
+            <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${useCase.is_active ? 'translate-x-4' : 'translate-x-0.5'}`} />
+          </button>
+          <span className="text-sm text-grey-dark">{useCase.is_active ? t('aiUseCase.active') : t('aiUseCase.inactive')} {t('aiUseCase.forOrg')}</span>
+        </div>
+      )}
+      {canOverride && (
+        <div>
+          <div className="label mb-2">{t('aiUseCase.projectOverrides')}</div>
+          {projects.length === 0 && <p className="text-xs text-grey-medium">{t('common.noResults')}</p>}
+          <div className="space-y-2">
+            {projects.map((p) => {
+              const existing = useCase.projectOverrides?.find((o) => o.project_id === p.id);
+              return (
+                <div key={p.id} className="flex items-center justify-between gap-3 text-sm">
+                  <span className="text-grey-ink">{p.name}</span>
+                  <select
+                    className="input !w-40 !py-1 text-xs"
+                    value={existing?.override || 'inherit'}
+                    onChange={(e) => setOverride(p.id, e.target.value)}
+                  >
+                    <option value="inherit">{t('aiUseCase.override.inherit')}</option>
+                    <option value="on">{t('aiUseCase.override.on')}</option>
+                    <option value="off">{t('aiUseCase.override.off')}</option>
+                  </select>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+function UsageLogCard({ useCaseId, t }) {
+  const [rows, setRows] = useState([]);
+  useEffect(() => { api.get(`/ai-usage-log?useCaseId=${useCaseId}`).then(setRows).catch(() => {}); }, [useCaseId]);
+  const OUTCOME_STYLES = { accepted: 'bg-status-green text-green-900', edited: 'bg-status-amber text-amber-900', rejected: 'bg-status-red text-red-800' };
+  return (
+    <Card title={t('aiUseCase.usageLog')} subtitle={t('aiUseCase.usageLogSubtitle')}>
+      {rows.length === 0 && <p className="text-xs text-grey-medium">{t('common.noResults')}</p>}
+      <div className="divide-y divide-grey-line">
+        {rows.map((r) => (
+          <div key={r.id} className="py-2 flex items-center justify-between gap-3 text-sm">
+            <div>
+              <div className="text-grey-dark">{r.output_summary}</div>
+              <div className="text-xs text-grey-medium">
+                {r.first_name ? `${r.first_name} ${r.last_name}` : t('common.noResults')} · {new Date(r.created_at).toLocaleString()} · {r.generated_by}
+              </div>
+            </div>
+            <span className={`badge ${OUTCOME_STYLES[r.outcome] || 'bg-grey-light text-grey-ink'}`}>{t(`aiGov.outcome.${r.outcome}`)}</span>
+          </div>
+        ))}
+      </div>
     </Card>
   );
 }

@@ -289,10 +289,12 @@ function seedAiUseCasesForOrg(orgId, sector, users) {
     const useCaseId = randomUUID();
     db.prepare(`
       INSERT INTO ai_use_cases (id, organization_id, title, description, sector, business_function, ai_technique,
-        maturity_stage, status, owner_id, expected_impact, estimated_roi, tags)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        maturity_stage, status, tier, module_key, trigger_desc, output_desc, human_checkpoint,
+        owner_id, expected_impact, estimated_roi, tags)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(useCaseId, orgId, t.title, t.description, sector, t.business_function, t.ai_technique,
-      t.maturity_stage, t.status, users.cipilot, t.expected_impact, t.maturity_stage >= 3 ? 'Medium-High' : 'To be assessed', t.stage);
+      t.maturity_stage, t.status, t.tier, t.module_key, t.trigger_desc, t.output_desc, t.human_checkpoint,
+      users.cipilot, t.expected_impact, t.maturity_stage >= 3 ? 'Medium-High' : 'To be assessed', t.module_key);
 
     const versionId = randomUUID();
     db.prepare(`

@@ -3,12 +3,15 @@ import { randomUUID } from 'node:crypto';
 import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { writeAudit } from '../services/audit.js';
+import { LLM_PROVIDERS } from '../services/aiGeneration.js';
 
 const router = Router();
 
+// canManageAiUseCases: full catalog CRUD + versioning (aiUseCase.create/edit/delete).
 const METADATA_FIELDS = [
   'title', 'title_fr', 'title_ar', 'description', 'sector', 'business_function',
-  'ai_technique', 'maturity_stage', 'status', 'owner_id', 'expected_impact', 'estimated_roi', 'tags', 'is_active',
+  'ai_technique', 'maturity_stage', 'status', 'tier', 'module_key', 'trigger_desc',
+  'output_desc', 'human_checkpoint', 'owner_id', 'expected_impact', 'estimated_roi', 'tags',
 ];
 const VERSION_FIELDS = ['inputs', 'prompt', 'expected_output', 'constraints_guardrails', 'model_technique_notes'];
 
@@ -40,6 +43,12 @@ function createVersion(useCaseId, body, userId, changeNote) {
   return db.prepare('SELECT * FROM ai_use_case_versions WHERE id = ?').get(id);
 }
 
+// Predefined provider list for the browser-local Real LLM Provider Connection
+// panel hosted by this module (FR-M6-08). No server state involved.
+router.get('/providers', requirePermission('aiUseCase.view'), (req, res) => {
+  res.json(LLM_PROVIDERS);
+});
+
 router.get('/', requirePermission('aiUseCase.view'), (req, res) => {
   const rows = db.prepare(`
     SELECT uc.*, v.version_number AS current_version_number, v.change_note AS current_change_note
@@ -61,14 +70,18 @@ router.get('/:id', requirePermission('aiUseCase.view'), (req, res) => {
     FROM ai_use_case_versions v LEFT JOIN users u ON u.id = v.created_by
     WHERE v.use_case_id = ? ORDER BY v.version_number DESC
   `).all(useCase.id);
-  res.json({ ...useCase, currentVersion, versions });
+  const projectOverrides = db.prepare(`
+    SELECT o.*, p.name AS project_name FROM ai_use_case_project_overrides o
+    JOIN projects p ON p.id = o.project_id WHERE o.use_case_id = ? ORDER BY p.name
+  `).all(useCase.id);
+  res.json({ ...useCase, currentVersion, versions, projectOverrides });
 });
 
 router.post('/', requirePermission('aiUseCase.create'), (req, res) => {
   const body = req.body || {};
   if (!body.title || !body.description) return res.status(400).json({ error: 'title_and_description_required' });
   const id = randomUUID();
-  // Only bind fields actually present in the payload, so an omitted field (e.g. is_active)
+  // Only bind fields actually present in the payload, so an omitted field (e.g. tier)
   // falls back to the column's own SQL DEFAULT instead of being overwritten with NULL.
   const providedFields = METADATA_FIELDS.filter((f) => f in body);
   const cols = ['id', 'organization_id', ...providedFields];
@@ -84,6 +97,9 @@ router.put('/:id', requirePermission('aiUseCase.edit'), (req, res) => {
   const existing = getUseCase(req);
   if (!existing) return res.status(404).json({ error: 'not_found' });
   const body = req.body || {};
+  // is_active is deliberately excluded here - it has its own dedicated,
+  // separately-permissioned endpoint (PUT /:id/activation) because "manage
+  // the catalog" and "activate for the Organization" are distinct capabilities.
   const setCols = METADATA_FIELDS.filter((f) => f in body);
   if (setCols.length) {
     const setClause = setCols.map((f) => `${f} = ?`).join(', ');
@@ -95,12 +111,48 @@ router.put('/:id', requirePermission('aiUseCase.edit'), (req, res) => {
   res.json(row);
 });
 
+// canActivateAiForOrg: Organization-level activate/deactivate, independent of
+// catalog-editing rights (FR-M6-03). Deactivating stops new suggestions in
+// scope immediately; it never touches content already approved by a human
+// (FR-M6-05) - that lives on the Sheet/record itself, untouched by this flag.
+router.put('/:id/activation', requirePermission('aiUseCase.activate'), (req, res) => {
+  const existing = getUseCase(req);
+  if (!existing) return res.status(404).json({ error: 'not_found' });
+  const isActive = req.body?.is_active ? 1 : 0;
+  db.prepare(`UPDATE ai_use_cases SET is_active = ?, updated_at = datetime('now') WHERE id = ?`).run(isActive, req.params.id);
+  const row = db.prepare('SELECT * FROM ai_use_cases WHERE id = ?').get(req.params.id);
+  writeAudit(req, 'UPDATE', 'AIUseCaseActivation', req.params.id, { is_active: existing.is_active }, { is_active: isActive });
+  res.json(row);
+});
+
 router.delete('/:id', requirePermission('aiUseCase.delete'), (req, res) => {
   const existing = getUseCase(req);
   if (!existing) return res.status(404).json({ error: 'not_found' });
+  // ON DELETE CASCADE on ai_use_case_project_overrides and ai_usage_log purges
+  // this use case's keys from the organization/project activation maps and
+  // usage history in the same statement (FR-M6-02).
   db.prepare('DELETE FROM ai_use_cases WHERE id = ?').run(req.params.id);
   writeAudit(req, 'DELETE', 'AIUseCase', req.params.id, existing, null);
   res.status(204).end();
+});
+
+// --- Project-level tri-state override (canRequestProjectAiOverride, FR-M6-04) ---
+router.put('/:id/project-override/:projectId', requirePermission('aiUseCase.projectOverride'), (req, res) => {
+  const useCase = getUseCase(req);
+  if (!useCase) return res.status(404).json({ error: 'not_found' });
+  const project = db.prepare('SELECT * FROM projects WHERE id = ? AND organization_id = ?').get(req.params.projectId, req.user.organizationId);
+  if (!project) return res.status(404).json({ error: 'project_not_found' });
+  const override = ['inherit', 'on', 'off'].includes(req.body?.override) ? req.body.override : 'inherit';
+  const existing = db.prepare('SELECT * FROM ai_use_case_project_overrides WHERE use_case_id = ? AND project_id = ?').get(useCase.id, req.params.projectId);
+  if (existing) {
+    db.prepare(`UPDATE ai_use_case_project_overrides SET override = ?, updated_by = ?, updated_at = datetime('now') WHERE id = ?`)
+      .run(override, req.user.id, existing.id);
+  } else {
+    db.prepare(`INSERT INTO ai_use_case_project_overrides (id, use_case_id, project_id, override, updated_by) VALUES (?, ?, ?, ?, ?)`)
+      .run(randomUUID(), useCase.id, req.params.projectId, override, req.user.id);
+  }
+  writeAudit(req, 'UPDATE', 'AIUseCaseProjectOverride', useCase.id, existing, { project_id: req.params.projectId, override });
+  res.json({ use_case_id: useCase.id, project_id: req.params.projectId, override });
 });
 
 // --- Version history ---

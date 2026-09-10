@@ -4,6 +4,8 @@ import { api } from '../lib/api.js';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, CriticalityBadge, StatusBadge, StageProgress, EmptyState } from '../components/ui.jsx';
+import { AiGeneratedNotice, GroundingDisclosure, OutcomeButtons } from '../components/AiGovernance.jsx';
+import { getLlmConnection } from '../lib/llmConnection.js';
 
 // One tab per NCP Solver process stage (S1-S7, KB-003..KB-009).
 const TABS = ['detail', 'understanding', 'immediate', 'rootcause', 'corrective', 'evaluation', 'rex'];
@@ -126,25 +128,46 @@ function ActionCard({ action, users, hasPermission, currentUserId, onChanged, al
   );
 }
 
-function AiPanel({ label, onRun, render }) {
+function AiPanel({ label, onRun, render, ficheId, summarize }) {
   const { t } = useI18n();
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function run() {
+    setLoading(true);
+    setError(null);
+    try {
+      const connection = getLlmConnection();
+      setResult(await onRun(connection));
+    } catch (err) {
+      if (err.data?.error === 'ai_use_case_deactivated') setError(t('aiGov.deactivated'));
+      else setError(err.message || t('assistant.error'));
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="mb-3">
-      <button
-        disabled={loading}
-        onClick={async () => { setLoading(true); try { setResult(await onRun()); } finally { setLoading(false); } }}
-        className="btn-secondary text-xs"
-      >
+      <button disabled={loading} onClick={run} className="btn-secondary text-xs">
         🤖 {label}
       </button>
+      {error && <div className="mt-2 text-xs text-red-600">{error}</div>}
       {result && (
         <div className="mt-3 text-sm bg-orange-tint/50 rounded-md p-3">
+          <AiGeneratedNotice generatedBy={result.generatedBy} />
           {render(result)}
           {result.sourceFiches?.length > 0 && (
             <div className="mt-2 text-xs text-grey-medium">{t('fiche.aiSimilar')}: {result.sourceFiches.join(', ')}</div>
           )}
+          <GroundingDisclosure grounding={result.grounding} llmNarrative={result.llmNarrative} />
+          <OutcomeButtons
+            useCaseId={result.useCaseId}
+            outputSummary={summarize ? summarize(result) : label}
+            generatedBy={result.generatedBy}
+            ficheId={ficheId}
+          />
         </div>
       )}
     </div>
@@ -235,7 +258,9 @@ export default function FicheDetailPage() {
           <div className="mt-5 border-t border-grey-line pt-4">
             <AiPanel
               label={t('fiche.aiClassification')}
-              onRun={() => api.post(`/ai-agents/${id}/classification`, {}).then((r) => { load(); return r; })}
+              ficheId={id}
+              onRun={(connection) => api.post(`/ai-agents/${id}/classification`, { connection }).then((r) => { load(); return r; })}
+              summarize={(r) => `Suggested ${r.suggestedCriticality}/P${r.suggestedPriority}`}
               render={(r) => (
                 <>
                   <div className="font-semibold text-orange-deep mb-1">
@@ -260,7 +285,9 @@ export default function FicheDetailPage() {
         <div className="space-y-3">
           <AiPanel
             label={t('fiche.aiProblemStructuring')}
-            onRun={() => api.post(`/ai-agents/${id}/problem-structuring`, {})}
+            ficheId={id}
+            onRun={(connection) => api.post(`/ai-agents/${id}/problem-structuring`, { connection })}
+            summarize={(r) => r.suggestions?.[0] || 'Problem structuring draft'}
             render={(r) => (
               <ul className="list-disc ps-5 space-y-1 text-grey-ink">
                 {r.suggestions.map((s, i) => <li key={i}>{s}</li>)}
@@ -275,7 +302,9 @@ export default function FicheDetailPage() {
         <div className="space-y-3">
           <AiPanel
             label={t('fiche.aiContainment')}
-            onRun={() => api.post(`/ai-agents/${id}/containment-advisor`, {})}
+            ficheId={id}
+            onRun={(connection) => api.post(`/ai-agents/${id}/containment-advisor`, { connection })}
+            summarize={(r) => r.suggestions?.[0] || 'Containment suggestion'}
             render={(r) => (
               <ul className="list-disc ps-5 space-y-1 text-grey-ink">
                 {r.suggestions.map((s, i) => <li key={i}>{s}</li>)}
@@ -293,7 +322,9 @@ export default function FicheDetailPage() {
         <div className="space-y-3">
           <AiPanel
             label={t('fiche.aiRootCause')}
-            onRun={() => api.post(`/ai-agents/${id}/root-cause-mining`, {})}
+            ficheId={id}
+            onRun={(connection) => api.post(`/ai-agents/${id}/root-cause-mining`, { connection })}
+            summarize={(r) => r.suggestedCauses?.[0] || 'Root cause suggestion'}
             render={(r) => (
               <ul className="list-disc ps-5 space-y-1 text-grey-ink">
                 {r.suggestedCauses.map((s, i) => <li key={i}>{s}</li>)}
@@ -309,7 +340,11 @@ export default function FicheDetailPage() {
           <p className="text-xs text-grey-ink italic">{t('fiche.planOnly')}</p>
           <AiPanel
             label={t('fiche.aiActionRecommendation')}
-            onRun={() => api.post(`/ai-agents/${id}/action-recommendation`, { root_cause_text: fiche.rootCauses.map((rc) => rc.description).join(' ') || fiche.description })}
+            ficheId={id}
+            onRun={(connection) => api.post(`/ai-agents/${id}/action-recommendation`, {
+              root_cause_text: fiche.rootCauses.map((rc) => rc.description).join(' ') || fiche.description, connection,
+            })}
+            summarize={(r) => r.suggestions?.[0] || 'Corrective action suggestion'}
             render={(r) => (
               <ul className="list-disc ps-5 space-y-1 text-grey-ink">
                 {r.suggestions.map((s, i) => <li key={i}>{s}</li>)}
@@ -329,7 +364,9 @@ export default function FicheDetailPage() {
           <p className="text-xs text-grey-ink italic">{t('fiche.evaluationIntro')}</p>
           <AiPanel
             label={t('fiche.aiEvaluationAssistant')}
-            onRun={() => api.post(`/ai-agents/${id}/evaluation-assistant`, {})}
+            ficheId={id}
+            onRun={(connection) => api.post(`/ai-agents/${id}/evaluation-assistant`, { connection })}
+            summarize={(r) => r.suggestions?.[0] || 'Evaluation context'}
             render={(r) => (
               <>
                 <ul className="list-disc ps-5 space-y-1 text-grey-ink">
@@ -496,6 +533,7 @@ function RexTab({ fiche, onSaved, hasPermission }) {
     needs_standardization: false, needs_generalization: false, tags: '',
   });
   const [generating, setGenerating] = useState(false);
+  const [draftMeta, setDraftMeta] = useState(null);
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const setBool = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.checked }));
@@ -503,8 +541,13 @@ function RexTab({ fiche, onSaved, hasPermission }) {
   async function generateDraft() {
     setGenerating(true);
     try {
-      const draft = await api.post(`/fiches/${fiche.id}/rex/generate-draft`, {});
-      setForm((f) => ({ ...f, ...draft }));
+      const connection = getLlmConnection();
+      const draft = await api.post(`/fiches/${fiche.id}/rex/generate-draft`, { connection });
+      const { useCaseId, generatedBy, grounding, llmNarrative, ...fields } = draft;
+      setForm((f) => ({ ...f, ...fields }));
+      setDraftMeta({ useCaseId, generatedBy, grounding, llmNarrative });
+    } catch {
+      setDraftMeta(null);
     } finally { setGenerating(false); }
   }
 
@@ -517,7 +560,16 @@ function RexTab({ fiche, onSaved, hasPermission }) {
   return (
     <Card>
       {hasPermission('rex.create') && (
-        <button onClick={generateDraft} disabled={generating} className="btn-secondary text-xs mb-3">🤖 {t('rex.generateDraft')}</button>
+        <div className="mb-3">
+          <button onClick={generateDraft} disabled={generating} className="btn-secondary text-xs">🤖 {t('rex.generateDraft')}</button>
+          {draftMeta && (
+            <div className="mt-2 bg-orange-tint/50 rounded-md p-3">
+              <AiGeneratedNotice generatedBy={draftMeta.generatedBy} />
+              <GroundingDisclosure grounding={draftMeta.grounding} llmNarrative={draftMeta.llmNarrative} />
+              <OutcomeButtons useCaseId={draftMeta.useCaseId} outputSummary={form.lessons_learned} generatedBy={draftMeta.generatedBy} ficheId={fiche.id} />
+            </div>
+          )}
+        </div>
       )}
       <form onSubmit={save} className="space-y-3">
         <Field label={t('rex.lessonsLearned')}><textarea className="input" rows={3} value={form.lessons_learned || ''} onChange={set('lessons_learned')} disabled={!hasPermission('rex.edit')} /></Field>
