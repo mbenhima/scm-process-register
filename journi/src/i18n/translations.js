@@ -13,9 +13,19 @@ const dict = {
   role: { en: 'Role', fr: 'Rôle', ar: 'الدور' },
   scope: { en: 'Scope', fr: 'Périmètre', ar: 'النطاق' },
   viewingAtLevel: { en: 'Viewing at', fr: 'Vue au niveau', ar: 'العرض على مستوى' },
+  averageAcrossProjects: {
+    en: 'Average across {count} project(s) at {level} level.',
+    fr: 'Moyenne sur {count} projet(s) au niveau {level}.',
+    ar: 'المتوسط عبر {count} مشروع (مشاريع) على مستوى {level}.',
+  },
   benchmarking: { en: 'Benchmarking', fr: 'Analyse comparative', ar: 'المقارنة المرجعية' },
   peerAverage: { en: 'Peer average', fr: 'Moyenne des pairs', ar: 'متوسط الأقران' },
   referenceBand: { en: 'Reference band', fr: 'Fourchette de référence', ar: 'النطاق المرجعي' },
+  readinessBenchmarkingDesc: {
+    en: 'Each project’s Composite Readiness Index compared against a seeded reference band for its current Lewin phase, and against the peer average within this level’s scope.',
+    fr: 'L’Indice composite de préparation de chaque projet comparé à une fourchette de référence pour sa phase Lewin actuelle, et à la moyenne des pairs dans le périmètre de ce niveau.',
+    ar: 'مؤشر الجاهزية المركب لكل مشروع مقارنة بنطاق مرجعي محدد مسبقًا لمرحلته الحالية في نموذج لوين، وبمتوسط الأقران ضمن نطاق هذا المستوى.',
+  },
   standing_ahead: { en: 'Ahead of reference', fr: 'Au-dessus de la référence', ar: 'أعلى من المرجع' },
   standing_in_line: { en: 'In line with reference', fr: 'Conforme à la référence', ar: 'مطابق للمرجع' },
   standing_behind: { en: 'Behind reference', fr: 'En retard sur la référence', ar: 'أقل من المرجع' },
@@ -546,6 +556,18 @@ const dict = {
   m14_crosstype_example: { en: 'Seed Project Example', fr: 'Exemple de projet type', ar: 'مثال مشروع نموذجي' },
   readinessIndex: { en: 'Composite Readiness Index', fr: 'Indice composite de préparation', ar: 'مؤشر الجاهزية المركب' },
   adoptionCurve: { en: 'Adoption Curve', fr: 'Courbe d’adoption', ar: 'منحنى التبني' },
+  adoptionCurveDesc: {
+    en: 'Post-go-live adoption rate at each sustainment checkpoint, colored by standing against the reference band for that checkpoint.',
+    fr: 'Taux d’adoption après le déploiement à chaque point de contrôle de pérennisation, coloré selon la position par rapport à la fourchette de référence de ce point de contrôle.',
+    ar: 'معدل التبني بعد الإطلاق عند كل نقطة تفتيش للاستدامة، مع تلوين يعكس الموقع مقابل النطاق المرجعي لتلك النقطة.',
+  },
+  notDueYet: { en: 'Not due yet', fr: 'Pas encore échu', ar: 'لم يحن موعده بعد' },
+  adoptionBenchmarking: { en: 'Adoption Rate Benchmarking', fr: 'Analyse comparative du taux d’adoption', ar: 'المقارنة المرجعية لمعدل التبني' },
+  adoptionBenchmarkingDesc: {
+    en: 'Each project’s adoption rate at every completed sustainment checkpoint, compared against a seeded reference band for that checkpoint.',
+    fr: 'Le taux d’adoption de chaque projet à chaque point de contrôle de pérennisation terminé, comparé à une fourchette de référence pour ce point de contrôle.',
+    ar: 'معدل تبني كل مشروع عند كل نقطة تفتيش مكتملة للاستدامة، مقارنة بنطاق مرجعي محدد مسبقًا لتلك النقطة.',
+  },
   heatmapByDept: { en: 'ADKAR Heatmap', fr: 'Carte thermique ADKAR', ar: 'خريطة ADKAR الحرارية' },
   execNarrative: { en: 'Executive Readiness Narrative', fr: 'Narratif de préparation exécutif', ar: 'سرد الجاهزية التنفيذي' },
 
