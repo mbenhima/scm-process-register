@@ -88,7 +88,7 @@ function MitigationActions({ project, risk, canEdit }) {
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
-          <input className="input py-1 text-xs" placeholder="Owner" value={form.owner} onChange={(e) => setForm({ ...form, owner: e.target.value })} />
+          <input className="input py-1 text-xs" placeholder="Owner" list="obs-roster" value={form.owner} onChange={(e) => setForm({ ...form, owner: e.target.value })} />
           <input className="input py-1 text-xs" placeholder="Due date" value={form.dueDate} onChange={(e) => setForm({ ...form, dueDate: e.target.value })} />
           <button className="btn-secondary text-xs sm:col-span-4" onClick={addAction}>
             + Add mitigation action
@@ -299,9 +299,21 @@ function Content({ project }) {
               <input type="number" min={1} max={5} className="input" value={form.impact} onChange={(e) => setForm({ ...form, impact: Number(e.target.value) })} />
             </div>
           </div>
-          <input className="input" placeholder={t('owner')} value={form.owner} onChange={(e) => setForm({ ...form, owner: e.target.value })} />
+          <input className="input" placeholder={t('owner')} list="obs-roster" value={form.owner} onChange={(e) => setForm({ ...form, owner: e.target.value })} />
         </div>
       </Modal>
+      {/* Suggests names/roles from this project's own OBS roster (M3, FR-M3-04)
+          for the free-text Owner fields above, without forcing a rigid pick —
+          a risk can still be owned by someone outside the roster (e.g. "PMO"
+          as a role rather than a named person). */}
+      <datalist id="obs-roster">
+        {(project.obsEntries || []).map((e) => (
+          <React.Fragment key={e.id}>
+            {e.name && <option value={e.name} />}
+            {e.role && <option value={e.role} />}
+          </React.Fragment>
+        ))}
+      </datalist>
     </div>
   )
 }

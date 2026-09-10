@@ -1,12 +1,14 @@
-// journi has no backend — every request an AI Use Case makes goes directly
-// from the signed-in user's own browser to the provider's public API, using
-// the API key entered on Module 6's Provider Connection panel. That key is
-// stored only in this browser's localStorage (a separate key from the rest
-// of app state, so it survives "Reset Demo Data" and is never bundled into
-// the seeded demo data). This is a reasonable pattern for a personal/demo
-// deployment; it is not a substitute for a real backend proxy in a
-// multi-user production deployment, since every user with browser devtools
-// access can read the stored key.
+// This is the direct-from-browser fallback path: an AI Use Case call made
+// straight from the signed-in user's own browser to the provider's public
+// API, using the API key entered on Module 6's Provider Connection panel
+// (server/lib/llmProxy.js is the preferred, proxied path — see Section 3.8
+// of the SRS). The key is stored only in this browser's localStorage (a
+// separate key from the rest of app state, so it is never bundled into a
+// data export or the seeded demo data). This direct path is a reasonable
+// fallback for a personal/demo deployment when the backend is unreachable;
+// it is not a substitute for the proxy in a multi-user production
+// deployment, since every user with browser devtools access can read the
+// stored key.
 
 export const PROVIDERS = [
   { id: 'anthropic', label: 'Anthropic (Claude)', defaultModel: 'claude-sonnet-4-5', keyPlaceholder: 'sk-ant-...' },

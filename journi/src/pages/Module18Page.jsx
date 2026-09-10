@@ -9,15 +9,15 @@ import { RACSI_ROLES, RACSI_VALUES } from '../data/racsi.js'
 const KIND_TONE = { core: 'brand', loop: 'amber', type: 'green' }
 
 function MacroProcessTab({ data }) {
-  const { t } = useI18n()
+  const { t, tv } = useI18n()
   return (
     <div className="card overflow-x-auto">
       <table className="w-full text-sm">
         <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
           <tr>
             <th className="text-start px-4 py-2.5">ID</th>
-            <th className="text-start px-4 py-2.5">Name</th>
-            <th className="text-start px-4 py-2.5">Description</th>
+            <th className="text-start px-4 py-2.5">{t('m18_col_name')}</th>
+            <th className="text-start px-4 py-2.5">{t('m18_col_description')}</th>
             <th className="text-start px-4 py-2.5">{t('m18_owning_modules')}</th>
           </tr>
         </thead>
@@ -25,8 +25,8 @@ function MacroProcessTab({ data }) {
           {data.macroProcessCatalog.map((mp) => (
             <tr key={mp.id} className="border-t border-brand-50 align-top">
               <td className="px-4 py-2.5 font-mono text-xs text-ink/60 whitespace-nowrap">{mp.id}</td>
-              <td className="px-4 py-2.5 font-medium text-brand-950 whitespace-nowrap">{mp.name}</td>
-              <td className="px-4 py-2.5 text-ink/60 max-w-lg">{mp.description}</td>
+              <td className="px-4 py-2.5 font-medium text-brand-950 whitespace-nowrap">{tv(mp.name)}</td>
+              <td className="px-4 py-2.5 text-ink/60 max-w-lg">{tv(mp.description)}</td>
               <td className="px-4 py-2.5 whitespace-nowrap">
                 <div className="flex gap-1 flex-wrap">
                   {mp.primaryModules.map((m) => (
@@ -45,13 +45,13 @@ function MacroProcessTab({ data }) {
 }
 
 function E2ECard({ e2e, macroById, phaseTemplateById }) {
-  const { t } = useI18n()
+  const { t, tv } = useI18n()
   return (
     <div className="card p-4 space-y-2">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <span className="font-mono text-xs text-ink/60">{e2e.id}</span>
-          <h3 className="font-semibold text-brand-950">{e2e.name}</h3>
+          <h3 className="font-semibold text-brand-950">{tv(e2e.name)}</h3>
         </div>
         <Badge tone={KIND_TONE[e2e.kind]}>{t(`m18_kind_${e2e.kind}`)}</Badge>
       </div>
@@ -59,7 +59,7 @@ function E2ECard({ e2e, macroById, phaseTemplateById }) {
         {e2e.orderedMacroProcesses.map((mpId, i) => (
           <React.Fragment key={mpId}>
             {i > 0 && <span className="text-ink/30">→</span>}
-            <span className="px-2 py-0.5 rounded-full bg-brand-50 text-brand-800" title={macroById[mpId]?.name}>
+            <span className="px-2 py-0.5 rounded-full bg-brand-50 text-brand-800" title={tv(macroById[mpId]?.name)}>
               {mpId}
             </span>
           </React.Fragment>
@@ -91,7 +91,7 @@ function E2ECard({ e2e, macroById, phaseTemplateById }) {
             <strong className="text-ink/80">{t('m18_sipoc_customer')}:</strong> {e2e.sipocCustomer.join(', ')}
           </p>
           <p className="text-ink/60 sm:col-span-2">
-            <strong className="text-ink/80">{t('m18_phase_template')}:</strong> {e2e.phaseTemplateId} — {phaseTemplateById[e2e.phaseTemplateId]?.name}
+            <strong className="text-ink/80">{t('m18_phase_template')}:</strong> {e2e.phaseTemplateId} — {tv(phaseTemplateById[e2e.phaseTemplateId]?.name)}
           </p>
         </div>
       )}
@@ -132,7 +132,7 @@ function E2ETab({ data }) {
 }
 
 function RacsiTab({ data, canEdit }) {
-  const { t } = useI18n()
+  const { t, tv } = useI18n()
   const { updateRacsiCell } = useAppState()
   return (
     <div className="space-y-3">
@@ -142,7 +142,7 @@ function RacsiTab({ data, canEdit }) {
         <table className="w-full text-sm">
           <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
             <tr>
-              <th className="text-start px-4 py-2.5">Macro Process</th>
+              <th className="text-start px-4 py-2.5">{t('m18_col_macroProcess')}</th>
               {RACSI_ROLES.map((role) => (
                 <th key={role} className="text-start px-3 py-2.5 whitespace-nowrap">
                   {t(roleLabelKey(role))}
@@ -154,7 +154,7 @@ function RacsiTab({ data, canEdit }) {
             {data.macroProcessCatalog.map((mp) => (
               <tr key={mp.id} className="border-t border-brand-50">
                 <td className="px-4 py-2.5 font-medium text-brand-950 whitespace-nowrap">
-                  <span className="font-mono text-xs text-ink/60">{mp.id}</span> {mp.name}
+                  <span className="font-mono text-xs text-ink/60">{mp.id}</span> {tv(mp.name)}
                 </td>
                 {RACSI_ROLES.map((role) => {
                   const value = data.racsiGrid[mp.id]?.[role] || ''

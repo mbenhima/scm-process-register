@@ -1,12 +1,13 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { useI18n, LANGUAGES } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { visibleOrganizations, visibleProjects, roleLabelKey, canManageHierarchy } from '../utils/rbac.js'
+import { visibleOrganizations, visibleProjects, roleLabelKey } from '../utils/rbac.js'
 import NotificationBell from './NotificationBell.jsx'
 
 export default function TopBar({ onMenuClick }) {
   const { t, lang, setLang } = useI18n()
-  const { data, currentUser, scope, setScope, signOut, resetDemoData } = useAppState()
+  const { data, currentUser, scope, setScope, signOut } = useAppState()
 
   const orgs = visibleOrganizations(currentUser, data)
   const projects = scope.orgId ? visibleProjects(currentUser, data, scope.orgId) : []
@@ -14,10 +15,6 @@ export default function TopBar({ onMenuClick }) {
   function handleOrgChange(orgId) {
     const projs = visibleProjects(currentUser, data, orgId)
     setScope({ orgId, cmProjectId: projs[0]?.id || null })
-  }
-
-  function handleResetDemoData() {
-    if (window.confirm(t('resetDemoDataConfirm'))) resetDemoData()
   }
 
   return (
@@ -71,11 +68,18 @@ export default function TopBar({ onMenuClick }) {
         <span className="text-sm font-semibold text-brand-950">{currentUser?.name}</span>
         <span className="text-[11px] text-ink/50">{t(roleLabelKey(currentUser?.role))}</span>
       </div>
-      {canManageHierarchy(currentUser?.role) && (
-        <button className="btn-ghost text-sm hidden md:inline-flex" onClick={handleResetDemoData} title={t('resetDemoDataConfirm')}>
-          {t('resetDemoData')}
-        </button>
-      )}
+      <NavLink to="/app/help" className="btn-ghost px-2" title={t('help')} aria-label={t('help')}>
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5" />
+          <path
+            d="M7.6 7.8c0-1.3 1-2.3 2.4-2.3s2.4.9 2.4 2.1c0 1-.6 1.5-1.4 2.1-.7.5-1 .9-1 1.6"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <circle cx="10" cy="14.2" r="0.9" fill="currentColor" />
+        </svg>
+      </NavLink>
       <button className="btn-ghost text-sm" onClick={signOut}>
         {t('logout')}
       </button>

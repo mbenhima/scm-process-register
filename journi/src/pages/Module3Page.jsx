@@ -7,6 +7,7 @@ import RequireProject from '../components/RequireProject.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import JustifyPanel from '../components/JustifyPanel.jsx'
+import VersionHistoryPanel from '../components/VersionHistoryPanel.jsx'
 import { readinessIndex } from '../utils/compute.js'
 
 const LEWIN = ['unfreeze', 'change', 'refreeze']
@@ -22,20 +23,21 @@ function Field({ label, children }) {
 }
 
 function ChangeLogTable({ project }) {
+  const { t } = useI18n()
   const entries = [...(project.changeLog || [])].reverse()
   if (entries.length === 0) {
-    return <p className="text-sm text-ink/40 italic">No justified changes logged yet.</p>
+    return <p className="text-sm text-ink/40 italic">{t('noJustifiedChangesLogged')}</p>
   }
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead className="bg-brand-600 text-white text-xs uppercase tracking-wide font-semibold">
           <tr>
-            <th className="text-start px-3 py-2">Date</th>
-            <th className="text-start px-3 py-2">Module</th>
-            <th className="text-start px-3 py-2">Field</th>
-            <th className="text-start px-3 py-2">Change</th>
-            <th className="text-start px-3 py-2">Justification</th>
+            <th className="text-start px-3 py-2">{t('date')}</th>
+            <th className="text-start px-3 py-2">{t('clModule')}</th>
+            <th className="text-start px-3 py-2">{t('clField')}</th>
+            <th className="text-start px-3 py-2">{t('clChange')}</th>
+            <th className="text-start px-3 py-2">{t('clJustification')}</th>
           </tr>
         </thead>
         <tbody>
@@ -47,11 +49,46 @@ function ChangeLogTable({ project }) {
               <td className="px-3 py-2 text-ink/70 whitespace-nowrap">
                 {e.oldValue} → <span className="font-semibold text-brand-800">{e.newValue}</span>
               </td>
-              <td className="px-3 py-2 text-ink/70">{e.justification || <span className="italic text-ink/30">none given</span>}</td>
+              <td className="px-3 py-2 text-ink/70">{e.justification || <span className="italic text-ink/30">{t('clNoneGiven')}</span>}</td>
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
+  )
+}
+
+function ProjectVersionPanel({ project, canEdit }) {
+  const { t } = useI18n()
+  const { saveProjectVersion, revertProjectToVersion } = useAppState()
+  const [note, setNote] = useState('')
+
+  function handleSave() {
+    saveProjectVersion(project.id, note.trim() || undefined)
+    setNote('')
+  }
+
+  function handleRevert(targetVersion) {
+    if (window.confirm(t('versionRevertConfirm'))) revertProjectToVersion(project.id, targetVersion)
+  }
+
+  return (
+    <div className="lg:col-span-3 card p-5 space-y-3">
+      <p className="text-xs text-ink/50">{t('saveVersionHint')}</p>
+      {canEdit && (
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input
+            className="input flex-1"
+            placeholder={t('saveVersionNotePlaceholder')}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
+          <button className="btn-secondary text-sm shrink-0" onClick={handleSave}>
+            {t('saveVersion')}
+          </button>
+        </div>
+      )}
+      <VersionHistoryPanel entity={project} canRevert={canEdit} onRevert={handleRevert} />
     </div>
   )
 }
@@ -178,12 +215,11 @@ function ProjectDetail({ project }) {
         </div>
       </div>
       <div className="lg:col-span-3 card p-5 space-y-3">
-        <h3 className="font-semibold text-brand-950">Justification & Change Log</h3>
-        <p className="text-xs text-ink/50">
-          Every scored or state-changing update to this project's Lewin, ADKAR, Bridges and Kübler-Ross readings, with the evidence recorded behind it.
-        </p>
+        <h3 className="font-semibold text-brand-950">{t('justificationChangeLog')}</h3>
+        <p className="text-xs text-ink/50">{t('justificationChangeLogDesc')}</p>
         <ChangeLogTable project={project} />
       </div>
+      <ProjectVersionPanel project={project} canEdit={canEdit} />
     </div>
   )
 }

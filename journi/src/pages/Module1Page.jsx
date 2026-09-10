@@ -137,7 +137,7 @@ export default function Module1Page() {
     <div>
       <PageHeader
         title={t('navM1')}
-        description="Group → Organization → Projects. Every Change Management Project carries an optional link to zero, one, or more Main Projects."
+        description={t('m1_desc')}
         actions={
           canEdit && (
             <>

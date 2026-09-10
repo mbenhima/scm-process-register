@@ -70,6 +70,11 @@ export const cmProjects = [
     mainProjectIds: ['mp-maghreb-erp'],
     name: 'Maghreb ERP Transition Program',
     changeManager: 'Change Manager, Maghreb ERP Program',
+    obsEntries: [
+      { id: 'obs-maghreb-cm', role: 'Change Manager, Maghreb ERP Program', name: 'Nawal Idghri', reportsTo: null, notes: 'Day-to-day owner of readiness tracking across all 5 hubs.' },
+      { id: 'obs-maghreb-trainer', role: 'Trainer', name: 'Yassira Toumi', reportsTo: 'obs-maghreb-cm', notes: 'Owns the multilingual, mixed-digital-literacy training curriculum.' },
+      { id: 'obs-maghreb-hub', role: 'Hub Coordinator', name: 'Mehdi Ansari', reportsTo: 'obs-maghreb-cm', notes: 'Coordinates message delivery and scheduling across the remote hubs (Fes, Agadir).' },
+    ],
     changeType: 'technology',
     businessDriver: 'Replace fragmented hub-level billing/dispatch systems with one Oracle Fusion instance to enable network-wide visibility.',
     targetPopulation: '~650 dispatch, warehouse and finance staff across 5 hubs',

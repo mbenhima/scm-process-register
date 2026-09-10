@@ -15,8 +15,8 @@ import { callLLM, recommendedModel } from '../utils/llmProviders.js'
 
 const AppStateContext = createContext(null)
 // An LLM connection is a browser-level setting, not seeded demo data — kept in
-// localStorage (not the backend) so it survives Reset Demo Data untouched and
-// never gets bundled into a data export or synced across machines.
+// localStorage (not the backend) so it is never bundled into a data export or
+// synced across machines.
 const LLM_CONFIG_KEY = 'journi.llmConfig.v1'
 
 function loadLlmConfig() {
@@ -74,6 +74,10 @@ function migrateOrSeed(parsed) {
             : { cmTrack: [], checklist: [], gate: [], ...phase },
         ),
       }))
+      // A session persisted before CM Projects gained their own version
+      // history (the replacement for the removed "Reset Demo Data" button)
+      // won't have these fields yet.
+      parsed.cmProjects = (parsed.cmProjects || []).map((p) => ({ version: 1, versionHistory: [], ...p }))
       if (!parsed.racsiGrid) parsed.racsiGrid = JSON.parse(JSON.stringify(defaultRacsiGrid))
       // D32k QCW-01: a session persisted before the Qualitative Coding
       // Workbench shipped won't have a codebook per Organization yet.
@@ -225,8 +229,8 @@ export function AppStateProvider({ children }) {
   useEffect(() => {
     // Never persist a raw API key to the backend without the user's own action
     // having written it — an LLM connection is a browser-level setting, kept
-    // in localStorage only, so it survives Reset Demo Data untouched and is
-    // never bundled into a data export or shared across machines.
+    // in localStorage only, so it is never bundled into a data export or
+    // shared across machines.
     localStorage.setItem(LLM_CONFIG_KEY, JSON.stringify(llmConfig))
   }, [llmConfig])
 
@@ -283,16 +287,32 @@ export function AppStateProvider({ children }) {
 
   const signOut = useCallback(() => setCurrentUserId(null), [])
 
-  const resetDemoData = useCallback(() => {
-    const fresh = buildSeed()
-    setData(fresh)
-  }, [])
-
   // ---------- Mutators ----------
   const updateProjectMeta = useCallback((projectId, patch) => {
     setData((prev) => ({
       ...prev,
       cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => ({ ...p, ...patch })),
+    }))
+  }, [])
+
+  // Explicit, user-triggered checkpoints — the replacement for the removed
+  // "Reset Demo Data" button. Rather than version-bumping on every keystroke
+  // (updateProjectMeta above fires on every field edit), a project only gains
+  // a new version when the user deliberately saves one; an empty patch here
+  // snapshots the project's *current* state into history, matching the same
+  // withVersionBump/revertEntityToVersion pattern already used for the AI Use
+  // Case and Phase Template catalogs (utils/versioning.js).
+  const saveProjectVersion = useCallback((projectId, note) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => withVersionBump(p, {}, note)),
+    }))
+  }, [])
+
+  const revertProjectToVersion = useCallback((projectId, targetVersion) => {
+    setData((prev) => ({
+      ...prev,
+      cmProjects: updateProjectIn(prev.cmProjects, projectId, (p) => revertEntityToVersion(p, targetVersion)),
     }))
   }, [])
 
@@ -967,6 +987,8 @@ export function AppStateProvider({ children }) {
         dismissedAlerts: [],
         fieldNotes: [],
         obsEntries: [],
+        version: 1,
+        versionHistory: [],
         sponsor: { name: '', visibility: 'weak', visibilityNote: '', members: [], actions: [] },
         sustainment: {
           checkpoints: [
@@ -1077,8 +1099,9 @@ export function AppStateProvider({ children }) {
       setScope,
       signIn,
       signOut,
-      resetDemoData,
       updateProjectMeta,
+      saveProjectVersion,
+      revertProjectToVersion,
       updateAdkar,
       logJustifiedChange,
       addSubItem,
@@ -1157,8 +1180,9 @@ export function AppStateProvider({ children }) {
       setScope,
       signIn,
       signOut,
-      resetDemoData,
       updateProjectMeta,
+      saveProjectVersion,
+      revertProjectToVersion,
       updateAdkar,
       logJustifiedChange,
       addSubItem,

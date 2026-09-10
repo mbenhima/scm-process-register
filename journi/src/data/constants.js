@@ -45,15 +45,18 @@ export const ROLES_WITH_WRITE_ACCESS = new Set([
 // below is that same function's original hardcoded logic, expressed as data
 // so it can be seeded into app state and edited at runtime by a Super Admin
 // instead of requiring a code change.
+// Display label/description for each lives in i18n/translations.js as
+// cap_<key>_label / cap_<key>_desc, resolved via t() at render time
+// (Module2Page) — this array only carries the stable identifiers.
 export const CAPABILITIES = [
-  { key: 'manageHierarchy', label: 'Manage Hierarchy', description: 'Create/delete Groups, Organizations, Main Projects, and Change Management Projects (Module 1).' },
-  { key: 'manageUsers', label: 'Manage Users', description: 'Add, edit, or remove users and change their role/scope (Module 2).' },
-  { key: 'write', label: 'Edit CM Project Data', description: 'Edit ADKAR scores, risks, communications, training, and every other Change Management module (M7–M18).' },
-  { key: 'activateAiForOrg', label: 'Activate AI Use Cases (Org)', description: 'Turn AI use cases on or off for an Organization (Module 6).' },
-  { key: 'requestProjectAiOverride', label: 'Override AI Use Cases (Project)', description: 'Override an AI use case’s activation for a single Project (Module 6).' },
-  { key: 'manageCharters', label: 'Manage Charters', description: 'Create and edit CM Charter definitions (Module 5). Deleting a Retired charter is Group/Organization Admin and above only, regardless of this setting — see D31b.' },
-  { key: 'manageAiUseCases', label: 'Manage AI Use Cases', description: 'Create, edit, delete, and revert AI Use Case definitions in the shared catalog (Module 6) — distinct from activating/deactivating one for an Organization or Project.' },
-  { key: 'manageTemplates', label: 'Manage Phase Templates', description: 'Create, edit, delete, and revert Phase Template definitions in the shared library (Module 8) — distinct from loading a template into a project’s WBS.' },
+  { key: 'manageHierarchy' },
+  { key: 'manageUsers' },
+  { key: 'write' },
+  { key: 'activateAiForOrg' },
+  { key: 'requestProjectAiOverride' },
+  { key: 'manageCharters' },
+  { key: 'manageAiUseCases' },
+  { key: 'manageTemplates' },
 ]
 
 export const DEFAULT_ROLE_PERMISSIONS = {

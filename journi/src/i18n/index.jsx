@@ -31,7 +31,14 @@ export function I18nProvider({ children }) {
     [lang],
   )
 
-  const value = useMemo(() => ({ lang, setLang, dir, t, languages: LANGUAGES }), [lang, dir, t])
+  // Resolves a catalog data field (data/*.js — macro processes, AI use cases,
+  // charters, etc.) rather than a translations.js dictionary key. A field is
+  // either a plain string (not yet translated — returned as-is, so migrating
+  // a catalog to {en,fr,ar} can happen incrementally without breaking pages
+  // that haven't been updated yet) or an {en,fr,ar} object.
+  const tv = useCallback((value) => (value && typeof value === 'object' ? value[lang] ?? value.en ?? '' : value), [lang])
+
+  const value = useMemo(() => ({ lang, setLang, dir, t, tv, languages: LANGUAGES }), [lang, dir, t, tv])
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
 }

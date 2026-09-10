@@ -201,8 +201,8 @@ function PermissionMatrix({ canEditMatrix }) {
             <tr>
               <th className="text-start px-4 py-2.5">{t('role')}</th>
               {CAPABILITIES.map((c) => (
-                <th key={c.key} className="text-start px-4 py-2.5" title={c.description}>
-                  {c.label}
+                <th key={c.key} className="text-start px-4 py-2.5" title={t(`cap_${c.key}_desc`)}>
+                  {t(`cap_${c.key}_label`)}
                 </th>
               ))}
             </tr>
@@ -233,7 +233,7 @@ function PermissionMatrix({ canEditMatrix }) {
       <div className="text-xs text-ink/40 space-y-1">
         {CAPABILITIES.map((c) => (
           <div key={c.key}>
-            <strong className="text-ink/60">{c.label}:</strong> {c.description}
+            <strong className="text-ink/60">{t(`cap_${c.key}_label`)}:</strong> {t(`cap_${c.key}_desc`)}
           </div>
         ))}
       </div>
@@ -282,7 +282,7 @@ export default function Module2Page() {
     <div>
       <PageHeader
         title={t('navM2')}
-        description="Role-based access control scoped to Group / Organization / Project. Self-service sign-ups land as pending Employee accounts until approved."
+        description={t('m2_desc')}
         actions={
           tab === 'users' &&
           canEdit && (

@@ -60,6 +60,11 @@ export const cmProjects = [
     mainProjectIds: ['mp-meridia-erp'],
     name: 'Meridia Health ERP Adoption Program',
     changeManager: 'Change Manager, Meridia ERP Program',
+    obsEntries: [
+      { id: 'obs-meridia-cm', role: 'Change Manager, Meridia ERP Program', name: 'Rita Belghazi', reportsTo: null, notes: 'Day-to-day owner of readiness tracking; balances clinical and administrative stakeholders.' },
+      { id: 'obs-meridia-it', role: 'IT Director', name: 'Samir Bouzidi', reportsTo: 'obs-meridia-cm', notes: 'Owns the ERP/Hospital Information System integration risk.' },
+      { id: 'obs-meridia-clinical', role: 'Clinical Liaison', name: 'Nawel Fathi', reportsTo: 'obs-meridia-cm', notes: 'Represents clinical staff concerns about non-clinical administrative load.' },
+    ],
     changeType: 'technology',
     businessDriver: 'Integrate finance, HR and supply chain into one ERP tightly linked to the live Hospital Information System.',
     targetPopulation: '~2,000 clinical and administrative staff across 3 hospitals',

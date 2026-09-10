@@ -42,6 +42,11 @@ export const cmProjects = [
     mainProjectIds: ['mp-atlas-tangier-erp'],
     name: 'Tangier Plant Adoption Program',
     changeManager: 'Change Manager, Tangier Plant Program',
+    obsEntries: [
+      { id: 'obs-tangier-cm', role: 'Change Manager, Tangier Plant Program', name: 'Karim Ouahbi', reportsTo: null, notes: 'Day-to-day owner of the Tangier site readiness workstream.' },
+      { id: 'obs-tangier-pmo', role: 'PMO', name: 'Fouad Zerouali', reportsTo: 'obs-tangier-cm', notes: 'Coordinates schedule with the group-wide S/4HANA delivery team.' },
+      { id: 'obs-tangier-plant', role: 'Plant Director, Tangier Free Zone', name: 'Salma Rifai', reportsTo: 'obs-tangier-cm', notes: 'Local sponsor; balances group-wide standardization against site autonomy concerns.' },
+    ],
     changeType: 'technology',
     businessDriver: 'Bring the recently-acquired Tangier plant onto the same group-wide ERP backbone as the Casablanca cluster ahead of consolidated group reporting.',
     targetPopulation: '~600 plant and back-office staff at the Tangier Free Zone site',

@@ -30,7 +30,7 @@ const SUB_COLLECTIONS = [
 ]
 
 function normalizeCmProject(raw) {
-  const project = { ...raw }
+  const project = { version: 1, versionHistory: [], ...raw }
   for (const key of SUB_COLLECTIONS) {
     project[key] = (raw[key] || []).map((item) => ({ id: uid(key), ...item }))
   }
@@ -62,6 +62,23 @@ function normalizeCmProject(raw) {
   // timeline anchored 90 days before "today", so the demo shows a mix of done, in-progress
   // and planned-only tasks with realistic baseline/actual gaps out of the box.
   project.wbsTasks = (raw.wbsTasks || generateDefaultWbs(addDays(todayISO(), -90))).map((t) => ({ id: uid('wbs'), ...t }))
+  // FR-M3-04: OBS is meant to be consumable as an "Assigned to" source by
+  // other modules (M8's WBS tasks, at minimum). For a case file that supplies
+  // its own OBS roster but relies on the generated default WBS (no custom
+  // wbsTasks of its own), auto-wire each track to whichever OBS entry's role
+  // matches it, so the demo actually shows the linkage rather than an empty
+  // "Assigned to" column. A case file with its own hand-authored wbsTasks is
+  // left alone — it can set assignedTo explicitly per task if it wants to.
+  if (!raw.wbsTasks && (raw.obsEntries || []).length > 0) {
+    const cmLead = raw.obsEntries.find((e) => /change manager/i.test(e.role))
+    const pmLead = raw.obsEntries.find((e) => /pmo|project manager/i.test(e.role))
+    project.wbsTasks = project.wbsTasks.map((t) => {
+      if (t.assignedTo) return t
+      if (t.track === 'cm' && cmLead) return { ...t, assignedTo: cmLead.id }
+      if (t.track === 'pm' && pmLead) return { ...t, assignedTo: pmLead.id }
+      return t
+    })
+  }
   return project
 }
 

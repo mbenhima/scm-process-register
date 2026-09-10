@@ -133,11 +133,11 @@ function ProviderConnectionPanel({ canEdit }) {
         )}
       </div>
       <p className="text-xs text-ink/50">
-        journi has no backend: connecting sends your API key and every generated prompt directly from this browser to the
-        provider you choose. The key is stored only in this browser's local storage — never in the seeded demo data, and never
-        cleared by "Reset Demo Data." Do not use a production key on a shared or public machine. Once connected, every AI Use
-        Case across the app calls this provider instead of its canned example text; the review/accept/edit/reject checkpoint is
-        unchanged either way.
+        Connecting stores your API key only in this browser's local storage — never in the seeded demo data or synced to the
+        server. Do not use a production key on a shared or public machine. Once connected, journi's backend proxies every
+        generated prompt through this provider on your behalf instead of using the canned example text; if the backend is
+        ever unreachable, journi falls back to calling the provider directly from this browser. Either way, the
+        review/accept/edit/reject checkpoint is unchanged.
       </p>
 
       {!canEdit ? (

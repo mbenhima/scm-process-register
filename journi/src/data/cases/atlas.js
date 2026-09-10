@@ -60,6 +60,13 @@ export const cmProjects = [
     mainProjectIds: ['mp-atlas-erp'],
     name: 'Atlas ERP People Readiness Program',
     changeManager: 'Change Manager, Atlas ERP Program',
+    obsEntries: [
+      { id: 'obs-atlas-erp-cm', role: 'Change Manager, Atlas ERP Program', name: 'Hicham Sabri', reportsTo: null, notes: 'Day-to-day owner of the people-readiness workstream — ADKAR, risk, and resistance tracking.' },
+      { id: 'obs-atlas-erp-pmo', role: 'PMO', name: 'Meryem Bencherif', reportsTo: 'obs-atlas-erp-cm', notes: 'Coordinates the Project Management track schedule with the S/4HANA delivery team.' },
+      { id: 'obs-atlas-erp-hrbp', role: 'HR Business Partner', name: 'Othmane Benkirane', reportsTo: 'obs-atlas-erp-cm', notes: 'Leads union liaison and headcount-perception mitigation.' },
+      { id: 'obs-atlas-erp-training', role: 'Training Lead', name: 'Ghita Cherkaoui', reportsTo: 'obs-atlas-erp-cm', notes: 'Owns the finance/procurement training curriculum and sandbox sessions.' },
+      { id: 'obs-atlas-erp-comms', role: 'Communications Lead', name: 'Anas Bensaid', reportsTo: 'obs-atlas-erp-cm', notes: 'Drafts town hall and toolbox-talk materials for plant-floor audiences.' },
+    ],
     changeType: 'technology',
     businessDriver: 'Unify fragmented plant-level ERPs into a single source of truth ahead of group-wide reporting consolidation.',
     targetPopulation: '~1,200 plant and back-office staff (finance, procurement, planning, warehouse supervisors)',
