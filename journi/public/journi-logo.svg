@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="ring" x1="30" y1="10" x2="170" y2="190" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f5a623"/>
+      <stop offset="0.5" stop-color="#8a8f6e"/>
+      <stop offset="1" stop-color="#1c8fd6"/>
+    </linearGradient>
+    <linearGradient id="orangeDot" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb648"/>
+      <stop offset="1" stop-color="#e8792a"/>
+    </linearGradient>
+    <linearGradient id="blueDot" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4db8ea"/>
+      <stop offset="1" stop-color="#1c6fbf"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="100" cy="100" r="94" fill="url(#ring)"/>
+  <circle cx="100" cy="100" r="80" fill="#ffffff"/>
+
+  <!-- cycle arrows -->
+  <path d="M 103 34 A 68 68 0 0 0 40 87" fill="none" stroke="url(#orangeDot)" stroke-width="10" stroke-linecap="round"/>
+  <polygon points="38,72 32,90 50,93" fill="#e8792a"/>
+
+  <path d="M 97 166 A 68 68 0 0 0 160 113" fill="none" stroke="url(#blueDot)" stroke-width="10" stroke-linecap="round"/>
+  <polygon points="162,128 168,110 150,107" fill="#1c6fbf"/>
+
+  <!-- small orbiting dot at each arrow's tail -->
+  <circle cx="103" cy="34" r="8" fill="url(#orangeDot)"/>
+  <circle cx="97" cy="166" r="8" fill="url(#blueDot)"/>
+
+  <!-- flanking mini people -->
+  <g>
+    <circle cx="62" cy="88" r="9" fill="url(#orangeDot)"/>
+    <path d="M 62 97 L 50 118 M 62 97 L 62 122 M 62 97 L 74 118" fill="none" stroke="url(#orangeDot)" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g>
+    <circle cx="138" cy="88" r="9" fill="url(#blueDot)"/>
+    <path d="M 138 97 L 126 118 M 138 97 L 138 122 M 138 97 L 150 118" fill="none" stroke="url(#blueDot)" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- central figure: arms-up celebrating person -->
+  <circle cx="100" cy="70" r="13" fill="url(#blueDot)"/>
+  <path d="M 100 85 L 78 62 M 100 85 L 122 62 M 100 85 L 100 108 M 100 108 L 82 138 M 100 108 L 118 138"
+        fill="none" stroke="url(#blueDot)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

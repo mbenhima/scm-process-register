@@ -36,8 +36,8 @@ export default function LoginPage() {
 
       <div className="w-full max-w-2xl">
         <div className="text-center mb-8">
-          <div className="inline-flex bg-white rounded-2xl px-5 py-3 shadow-lg mb-4">
-            <img src="/poweract-logo.png" alt="POWERACT Consulting" className="h-9 w-auto" />
+          <div className="inline-flex bg-white rounded-full p-3 shadow-lg mb-4">
+            <img src="/journi-logo.svg" alt="journi" className="h-16 w-16" />
           </div>
           <h1 className="text-3xl font-bold text-white">{t('loginTitle')}</h1>
           <p className="text-brand-100 mt-2 italic">{t('appTagline')}</p>
