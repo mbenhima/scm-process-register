@@ -1,0 +1,14 @@
+D32d — Phase Gate Record Specification,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,
+Field_ID,Field_Name,Data_Type,Description,Source
+PG-01,Phase_Gate_ID,UUID,Primary key.,-
+PG-02,Phase,Enum (P1-P7),Which Common-Lifecycle phase this gate closes.,D32g
+PG-03,PM_Checklist_Completion_Pct,Decimal (0-100),Rolled up from D32c PM-track items for this phase.,D32c
+PG-04,CM_Checklist_Completion_Pct,Decimal (0-100),Rolled up from D32c CM-track items for this phase.,D32c
+PG-05,Composite_Readiness_Index,Decimal (0-100),Snapshot of D09 OC-04's readiness index at gate time.,D06 KPI-001
+PG-06,Open_Divergence_Flags,Integer,Count of open RULE-008 detections for the affected cohort.,D08 RPT-003
+PG-07,Decision,Enum (Go / Go with Conditions / No-Go),The gate outcome. See RULE-013 for the deterministic threshold logic behind the default recommendation.,D03 RULE-013
+PG-08,Accountable_Role,Role (single value),"Exactly one role — never ""the system"" (CTRL-012).",D04 CTRL-012
+PG-09,Conditions,Text (nullable),"Required only when Decision = Go with Conditions — named, trackable conditions.",-
+PG-10,Joint_Decision_Record_ID,UUID (FK),Every Phase Gate decision is realized as a Joint Decision Record. See D32e.,D32e
+🔗 Realizes D13's REQ-011 (already in D13) at full field-level detail — the gap analysis noted RULE-013 covers the decision logic but no full record structure existed until now. Every Phase Gate decision IS a Joint Decision Record (D32e) — PG-10 is not optional.,,,,

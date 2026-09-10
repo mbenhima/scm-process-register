@@ -1,0 +1,79 @@
+D10 — Data Dictionary (Exhaustive),,,,,,,,,,,,,,,,,
+"POWERACT Consulting · journi Deliverables Structure (PDD — D01-D10, D15 & D26)",,,,,,,,,,,,,,,,,
+Object_Class_ID,Attribute_Name,Data_Type,Description,Mandatory,Unique,Max_Length,Default_Value,Validation_Rule,Multi_Language_Supported,PII_Flag,Indexed,Foreign_Key_Reference,Sample_Value,Notes,Linked_Macro_ID,Linked_Task_ID,Linked_Step_ID
+OC-01,Group_ID,UUID,Unique identifier for a Group.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,g1a2b3c4-...,Primary key.,-,-,-
+OC-01,Group_Name,String,Display name of the holding company / multi-entity group.,Yes,Yes,150,-,"Non-empty, unique per platform",Yes,No,Yes,-,Atlas Industrial Group,-,-,-,-
+OC-02,Organization_ID,UUID,Unique identifier for an Organization.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,o1a2b3c4-...,Primary key.,-,-,-
+OC-02,Organization_Name,String,Display name of the company / autonomous business unit.,Yes,Yes,150,-,"Non-empty, unique within Group",Yes,No,Yes,-,Atlas Industrial Group — Casablanca Plant Cluster,-,-,-,-
+OC-02,Group_ID,UUID,"Foreign key to the parent Group, if any.",No,No,36,null,UUID v4 format or null,No,No,Yes,OC-01,g1a2b3c4-...,Null for standalone Organizations.,-,-,-
+OC-02,Default_Language,Enum,Tenant-level default language governing the precedence rule (Section 3.1.1).,Yes,No,-,en,One of the platform's supported languages,No,No,No,-,fr,-,-,-,-
+OC-02,Sector,String,"Business sector of the Organization (e.g., Manufacturing, Logistics, Health).",No,No,100,-,Free text or controlled list,Yes,No,Yes,-,Manufacturing,-,-,-,-
+OC-03,Main_Project_ID,UUID,Unique identifier for a Main Project.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,p1a2b3c4-...,Primary key.,-,-,-
+OC-03,Project_Type,Enum,Type of business initiative.,Yes,No,-,-,"One of: ERP, Process Automation, QMS, Restructuring, M&A, Other",Yes,No,Yes,-,ERP Implementation,-,-,-,-
+OC-03,Budget_Band,String,Approximate budget range for the initiative.,No,No,50,-,"Free text (e.g., '€3.1M band')",No,No,No,-,€3.1M band,-,-,-,-
+OC-03,Executive_Sponsor_Name,String,Name of the Executive Sponsor for the Main Project.,No,No,150,-,Free text,No,Yes,No,-,"COO, Atlas Industrial Group",PII — masked outside Restricted-scope roles.,-,-,-
+OC-04,CM_Project_ID,UUID,Unique identifier for a Change Management Project.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,a1b2c3d4-...,Primary key.,-,-,-
+OC-04,Lewin_Phase,Enum,Current macro-state of the initiative.,Yes,No,-,Unfreeze,"One of: Unfreeze, Change, Refreeze",Yes,No,Yes,-,Change,Auto-updated as the project progresses.,MP-10,TASK-1004,STEP-10042
+OC-04,Linked_Main_Project_ID,UUID,"Foreign key to the linked Main Project, if any.",No,No,36,null,UUID v4 format or null,No,No,Yes,OC-03,f9e8d7c6-...,Null for freestanding OCM initiatives; many-to-many by design.,-,-,-
+OC-04,Target_Population,Integer,Approximate number of employees targeted by this CM Project.,No,No,-,0,Non-negative integer,No,No,No,-,3100,-,-,-,-
+OC-04,Composite_Readiness_Index,Decimal,Current rolled-up readiness score (0-100).,No,No,-,0,Range 0-100,No,No,No,-,72.5,Computed by Module 15; see D06 KPI-001.,MP-07,TASK-0705,STEP-07052
+OC-05,Stakeholder_ID,UUID,Unique identifier for a stakeholder or persona record.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,b2c3d4e5-...,Primary key.,-,-,-
+OC-05,Impact_Score_Process,Integer,Impact score (1-5) on the process dimension.,Yes,No,-,0,Range 1-5,No,No,No,-,4,"One of five impact dimensions (process, technology, role, location, identity).",MP-01,TASK-0102,STEP-01021
+OC-05,Impact_Score_Identity,Integer,Impact score (1-5) on the professional-identity dimension.,No,No,-,0,Range 1-5,No,No,No,-,3,-,MP-01,TASK-0102,STEP-01021
+OC-05,Readiness_Trajectory_Segment,Enum,Expected readiness trajectory segment.,No,No,-,Neutral,"One of: Early Adopter, Neutral, Resistant",Yes,No,Yes,-,Neutral,-,MP-01,TASK-0104,STEP-01041
+OC-05,Email,Email,"Stakeholder's work email address, used for survey/communication targeting.",No,Yes,254,-,RFC 5322 email format,No,Yes,Yes,-,j.doe@atlasindustrial.example,PII — masked outside Restricted-scope roles.,MP-01,TASK-0101,STEP-01011
+OC-06,ADKAR_Score_ID,UUID,Unique identifier for a single ADKAR score record.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,c3d4e5f6-...,Primary key.,-,-,-
+OC-06,Building_Block,Enum,Which ADKAR block this score record covers.,Yes,No,-,-,"One of: Awareness, Desire, Knowledge, Ability, Reinforcement",Yes,No,Yes,-,Desire,-,MP-07,TASK-0704,STEP-07041
+OC-06,Score_Value,Integer,The 1-5 score for the building block.,Yes,No,-,-,Range 1-5,No,No,No,-,3,"Sourced from surveys, manager assessment, or self-report pulse.",MP-07,TASK-0704,STEP-07041
+OC-06,Barrier_Reason_Code,String,Structured reason code when the block is stalled.,No,No,64,null,"Free-coded, AI-suggested (ADKAR Barrier Diagnosis Assistant, AIUC-02)",Yes,No,No,-,Desire - fear of role redundancy,Confirmed or re-coded by Change Manager before saving.,MP-04,TASK-0401,STEP-04011
+OC-07,Reading_ID,UUID,Unique identifier for an emotional/transition reading.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,d4e5f6a7-...,Primary key.,-,-,-
+OC-07,Bridges_Phase,Enum,Bridges Transition Model position.,Yes,No,-,-,"One of: Ending, Neutral Zone, New Beginning",Yes,No,Yes,-,Ending,-,MP-08,TASK-0801,STEP-08011
+OC-07,Kubler_Ross_Stage,Enum,Kübler-Ross Change Curve position.,No,No,-,-,"One of: Denial, Resistance, Anger, Exploration, Commitment",Yes,No,Yes,-,Exploration,-,MP-07,TASK-0703,STEP-07031
+OC-08,Barrier_ID,UUID,Unique identifier for a barrier/resistance log entry.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,e5f6a7b8-...,Primary key.,-,-,-
+OC-08,Root_Cause_Type,Enum,Classified resistance root cause.,No,No,-,-,"One of: Role, Skill, Will, Systemic",Yes,No,Yes,-,Will,"AI-suggested (Resistance Root-Cause Classifier, AIUC-12); Change Manager confirms.",MP-04,TASK-0402,STEP-04021
+OC-08,Closure_Status,Enum,Current closure status of the resistance record.,Yes,No,-,Open,"One of: Open, In Progress, Resolved, Escalated",Yes,No,Yes,-,In Progress,-,MP-04,TASK-0405,STEP-04052
+OC-09,Sponsor_Activity_ID,UUID,Unique identifier for a logged sponsor visible-sponsorship activity.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,f6a7b8c9-...,Primary key.,-,-,-
+OC-09,Activity_Type,Enum,Type of visible-sponsorship activity logged.,Yes,No,-,-,"One of: Town Hall, Communication, Escalation Resolved, 1:1",Yes,No,Yes,-,Town Hall,-,MP-02,TASK-0201,STEP-02011
+OC-10,Champion_ID,UUID,Unique identifier for a champion record.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,a7b8c9d0-...,Primary key.,-,-,-
+OC-10,Champion_Status,Enum,Current activation status of the champion.,Yes,No,-,Active,"One of: Active, Inactive, Re-Chartered",Yes,No,Yes,-,Active,-,MP-06,TASK-0601,STEP-06012
+OC-12,Communication_ID,UUID,Unique identifier for a communication record.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,b8c9d0e1-...,Primary key.,-,-,-
+OC-12,Channel,Enum,Delivery channel for the communication.,Yes,No,-,-,"One of: Email, SMS, Intranet, Town Hall, Poster, Video",Yes,No,Yes,-,Email,-,MP-03,TASK-0305,STEP-03051
+OC-12,Open_Rate,Decimal,"Measured open/read rate for the communication, where the channel supports it.",No,No,-,null,Range 0.0-1.0,No,No,No,-,0.78,-,MP-03,TASK-0303,STEP-03031
+OC-13,Curriculum_ID,UUID,Unique identifier for a curriculum/session record.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,c9d0e1f2-...,Primary key.,-,-,-
+OC-13,Completion_Status,Enum,Trainee completion status for the assigned curriculum.,Yes,No,-,Not Started,"One of: Not Started, In Progress, Completed, Remediation Required",Yes,No,Yes,-,Completed,-,MP-05,TASK-0502,STEP-05022
+OC-13,UAT_Score,Decimal,Competency verification score (0-100).,No,No,-,null,Range 0-100,No,No,No,-,86,Feeds RULE-006 Competency Pass Threshold.,MP-05,TASK-0504,STEP-05041
+OC-17,Risk_ID,String,"Business identifier for a risk record (e.g., RISK-001).",Yes,Yes,10,-,Pattern RISK-###,No,No,Yes,-,RISK-001,Matches D05 Risk_ID.,-,-,-
+OC-17,Likelihood,Enum,Qualitative likelihood rating.,Yes,No,-,-,"One of: Very Low, Low, Medium, High, Very High",Yes,No,No,-,High,-,-,-,-
+OC-17,Residual_Score,Integer,"Post-mitigation risk score (Likelihood x Impact, numeric scale).",Yes,No,-,-,Range 1-25,No,No,No,-,9,Recalculated after every mitigation action.,-,-,-
+OC-19,Alert_Instance_ID,UUID,Unique identifier for a single alert instance (as opposed to the D07 Alert_ID definition).,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,d0e1f2a3-...,Primary key; foreign key to D07 Alert_ID definition.,-,-,-
+OC-19,Acknowledged_By,UUID,User account that acknowledged the alert.,No,No,36,null,UUID v4 format referencing OC-29,No,No,No,OC-29,e1f2a3b4-...,-,-,-,-
+OC-19,Acknowledged_At,DateTime,Timestamp of acknowledgment.,No,No,-,null,ISO 8601 datetime,No,No,No,-,2026-08-14T09:32:00Z,-,-,-,-
+OC-20,KPI_Reading_ID,UUID,Unique identifier for a single computed KPI value.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,f2a3b4c5-...,Primary key.,-,-,-
+OC-20,Reading_Value,Decimal,The computed KPI value at this point in time.,Yes,No,-,-,"Numeric, unit per KPI_Type",No,No,No,-,72.5,-,-,-,-
+OC-20,Heatmap_Status,Enum,Current RAG status of the KPI reading.,Yes,No,-,-,"One of: Green, Yellow, Red",Yes,No,Yes,-,Yellow,-,-,-,-
+OC-21,Suggestion_ID,UUID,Unique identifier for a single AI-generated suggestion instance.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,a3b4c5d6-...,Primary key.,-,-,-
+OC-21,Outcome,Enum,Human decision outcome for this AI suggestion.,Yes,No,-,Pending,"One of: Accepted, Edited, Rejected, Pending",Yes,No,Yes,-,Edited,Drives the AI usage/override audit trail.,-,-,-
+OC-21,Confidence_Score,Decimal,AI-reported confidence score at generation time.,No,No,-,null,Range 0.0-1.0,No,No,No,-,0.72,Compared to D15 Confidence_Threshold via RULE-011.,-,-,-
+OC-22,AI_Use_Case_ID,String,"Business identifier for an AI Use Case catalog entry (e.g., AIUC-01).",Yes,Yes,10,-,Pattern AIUC-##,No,No,Yes,-,AIUC-01,Matches D15 AI_Use_Case_ID.,-,-,-
+OC-22,Is_Globally_Enabled,Boolean,Whether Super Admin has enabled this use case in the global catalog.,Yes,No,-,true,Boolean,No,No,No,-,true,-,-,-,-
+OC-23,Provider_Name,Enum,Selected Real LLM Provider for this Organization.,No,No,-,null,"One of: Anthropic, OpenAI, Google, Custom",No,No,No,-,Anthropic,API key is never stored here — browser local storage only (CTRL-016).,-,-,-
+OC-23,Model_Name,String,Selected model from the curated per-provider shortlist.,No,No,100,null,"Free text, validated against provider shortlist",No,No,No,-,claude-sonnet-5,-,-,-,-
+OC-24,Task_Track,Enum,Which delivery track this WBS task belongs to.,Yes,No,-,-,"One of: Project Management, Change Management, Framework",Yes,No,Yes,-,Change Management,-,-,-,-
+OC-24,Baseline_Start,Date,"Planned start date, set once during planning.",Yes,No,-,-,ISO 8601 date,No,No,No,-,2026-09-01,-,-,-,-
+OC-24,Baseline_Finish,Date,"Planned finish date, set once during planning.",Yes,No,-,-,"ISO 8601 date, >= Baseline_Start",No,No,No,-,2026-09-15,"Together with Baseline_Start, the immutable schedule commitment a Phase Gate decision is measured against.",-,-,-
+OC-24,Actual_Start,Date,Actual start date once work begins; null while still planned.,No,No,-,null,ISO 8601 date or null,No,No,No,-,2026-09-03,-,-,-,-
+OC-24,Actual_Finish,Date,Actual finish date once work completes; null while in progress.,No,No,-,null,ISO 8601 date or null,No,No,No,-,null,Feeds Schedule_Gap_Days once populated (D19b FRM-014).,-,-,-
+OC-24,Schedule_Gap_Days,Integer,Computed gap between baseline and actual finish.,No,No,-,0,"Integer, positive = behind schedule",No,No,No,-,3,-,-,-,-
+OC-24,Project_Change_Joint_Tag,Enum,The [PROJECT]/[CHANGE]/[JOINT] tag for this task.,Yes,No,-,-,"One of: PROJECT, CHANGE, JOINT",Yes,No,Yes,-,CHANGE,-,-,-,-
+OC-24,Common_Lifecycle_Phase,Enum,"The P1-P7 Common-Lifecycle phase this task belongs to, for cross-module phase filtering.",Yes,No,-,-,One of: P1 Intake & Diagnosis ... P7 Sustainment & Closure — see D32g,No,No,Yes,D32g,P4 Validation,"NEW — closes the gap between per-macro-process PDCA tagging (D01) and the Functional Spec's cross-module P1-P7 lifecycle filter (Section 3.6 / Module 18). Sample value corrected to match D32g's authoritative phase name (P4 = Validation, per journi Transformation Types Guide Section 3) — a prior revision's sample mismatched P4's ID to a different phase's name.",-,-,-
+OC-25,Gate_Decision,Enum,The Go/Go-with-Conditions/No-Go decision recorded at this Phase Gate.,Yes,No,-,-,"One of: Go, Go with Conditions, No-Go",Yes,No,Yes,-,Go with Conditions,RULE-013.,-,-,-
+OC-25,Accountable_Role,String,The single role Accountable for this Phase Gate decision.,Yes,No,-,-,One of the 7 delivery-relevant role codes (Section 3.6),No,No,No,-,PM,Exactly one — never 'the system' (CTRL-012).,-,-,-
+OC-29,User_ID,UUID,Unique identifier for a journi login account.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,b4c5d6e7-...,Primary key.,-,-,-
+OC-29,Account_Creation_Path,Enum,How the account was created.,Yes,No,-,-,"One of: Admin-Provisioned, Self-Service",No,No,No,-,Admin-Provisioned,-,-,-,-
+OC-29,MFA_Enabled,Boolean,Whether multi-factor authentication is enabled for this account.,Yes,No,-,false,Boolean,No,No,No,-,true,Mandatory for administrative roles (RULE-017).,-,-,-
+OC-30,Role_Name,Enum,The named role.,Yes,Yes,-,-,One of the ten roles in Section 3.2 (Super Admin ... Executive Viewer),Yes,No,Yes,-,Change Manager,-,-,-,-
+OC-32,Change_Log_ID,UUID,Unique identifier for a justification/change log entry.,Yes,Yes,36,-,UUID v4 format,No,No,Yes,-,c5d6e7f8-...,Primary key.,-,-,-
+OC-32,Old_Value,String,The value before the change.,Yes,No,500,-,Free text / JSON snapshot,No,Yes,No,-,Desire = 2,-,-,-,-
+OC-32,New_Value,String,The value after the change.,Yes,No,500,-,Free text / JSON snapshot,No,Yes,No,-,Desire = 3,-,-,-,-
+OC-32,Justification_Text,Text,The mandatory justification for the change (Section 3.5).,Yes,No,2000,-,Non-empty when Governance Settings toggle is on (RULE-010),Yes,No,No,-,Barrier addressed via targeted 1:1 coaching session on 2026-08-10.,-,-,-,-
+"🔗 Object_Class_ID → D09 · Foreign_Key_Reference → D10 (self) · Linked_Macro_ID → D01 · Linked_Task_ID → D02 · Linked_Step_ID → D02. 55 attribute rows spanning 21 of D09's 35 object classes — the full hierarchy chain (Group → Organization → Project → CM Project) plus every module-specific entity that carries a governance, PII, or cross-linkage-relevant attribute.",,,,,,,,,,,,,,,,,

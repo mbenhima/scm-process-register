@@ -1,0 +1,11 @@
+import { chromium } from 'playwright'
+const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', headless: true })
+const page = await browser.newPage({ viewport: { width: 2400, height: 1600 } })
+await page.goto('file://' + process.cwd() + '/gantt-diagram.html')
+await page.waitForTimeout(300)
+const box = await page.locator('#stage').boundingBox()
+await page.setViewportSize({ width: Math.ceil(box.width) + 20, height: Math.ceil(box.height) + 20 })
+await page.waitForTimeout(150)
+await page.locator('#stage').screenshot({ path: 'shots/00b-gantt-wbs-timeline.png' })
+console.log('bbox', box.width, box.height)
+await browser.close()

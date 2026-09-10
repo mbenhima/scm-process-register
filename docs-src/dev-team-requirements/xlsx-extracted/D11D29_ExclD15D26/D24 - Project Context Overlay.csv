@@ -1,0 +1,16 @@
+D24 — Project Context Overlay,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,
+Project_ID,Attribute,Value,Description,Linked_Macro_ID,Linked_Task_ID,Linked_Step_ID
+PRJ-001,Dominant_Tension,"Historical, diffuse skepticism (multi-plant legacy ERP consolidation)",Overlay on the generic J1-J8 template capturing what's specific to this case.,MP-07,TASK-0701,STEP-07011
+PRJ-001,Exception_Pattern_Most_Likely,E3 — Two-Clock Problem at Cutover & Go-Live,This is the canonical 'Manufacturer A' worked example generalizing to Exception E3.,MP-09,TASK-0901,STEP-09011
+PRJ-002,Dominant_Tension,"Concrete, specific fear of headcount reduction (RPA automation of transaction processing)",Strong fear of role redundancy is the top ADKAR Desire barrier.,MP-04,TASK-0401,STEP-04011
+PRJ-002,Exception_Pattern_Most_Likely,E1 — Desire Stall During Data Migration & Integration,Generalizes 'Logistics Provider B' — ADKAR and Kübler-Ross unstick together once the fear is directly addressed.,MP-04,TASK-0403,STEP-04033
+PRJ-003,Dominant_Tension,"Low — job doesn't fundamentally change, but certification adds external audit pressure",Clean convergence expected; cohort-specific readings differ by site (Exception E6).,MP-07,TASK-0701,STEP-07011
+PRJ-003,Exception_Pattern_Most_Likely,E6 — Cohort Divergence Across Sites or Departments,Generalizes 'Health System C' — different cohorts genuinely in different places across all four frameworks simultaneously.,MP-07,TASK-0704,STEP-07041
+PRJ-004,Digital_Literacy_Risk,"High — 24/7 operations, mixed digital-literacy driver and dispatch workforce",Overlay flagging a Knowledge/Ability barrier distinct from Awareness/Desire.,MP-05,TASK-0501,STEP-05011
+PRJ-006,Constraint_Type,24/7 shift-based operations complicate synchronized training delivery,"Overlay on J4 Testing & Training — training must be delivered across staggered shifts, not one cohort at a time.",MP-05,TASK-0502,STEP-05021
+PRJ-007,Constraint_Type,Patient-safety-critical cutover windows severely constrain go-live timing,Overlay on J5 Deployment — cutover cannot follow a standard weekend-window pattern.,MP-09,TASK-0901,STEP-09011
+PRJ-009,Certification_Anchor,"JCI accreditation — external pass/fail gate, not an internal go/no-go call",Overlay distinguishing QMS-type projects: the final gate is made by an external body (per the Integrated Management System type definition).,MP-01,TASK-0102,STEP-01021
+PRJ-011,Timeline_Risk,No forcing deadline at all — 18-36 month standalone culture program,Overlay flagging highest Exception E5 (Reinforcement Gap) risk of the seed set — risk of calling Refreeze too late.,MP-10,TASK-1004,STEP-10041
+PRJ-013,Timeline_Risk,Deadline is fixed and non-negotiable — regulatory compliance deadline,Overlay requiring risk scoring to weight time-to-remediate as heavily as severity (see D19b FRM-005 pattern applied to compliance risk).,MP-08,TASK-0802,STEP-08022
+"🔗 Linked_Macro_ID → D01 · Linked_Task_ID → D02 · Linked_Step_ID → D02 · Project_ID → D21. Captures exactly what makes each seed project distinct from the generic D23 journey template — the specific tension, constraint, or exception pattern most likely to fire — without duplicating the shared template itself.",,,,,,

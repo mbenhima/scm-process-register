@@ -1,0 +1,8 @@
+D32j — NLP Theme-Mining Engine Specification,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,
+Spec_ID,Capability,Input,Output,Powers_AI_Use_Case,Confidence_Reporting,Description
+NLP-01,Open-text ingestion,"Free-text survey responses, interview transcripts, barrier descriptions","Tokenized, cleaned text corpus","AIUC-02, AIUC-06",N/A (preprocessing),"Normalizes free text across all AI use cases that consume it, so downstream models see consistent input."
+NLP-02,Keyword/theme extraction,Cleaned text corpus,Ranked list of recurring themes with frequency and example quotes,AIUC-06,Per-theme confidence score,"The core engine behind AIUC-06 — previously referenced only as the use case's description, never specified as its own capability."
+NLP-03,Sentiment/emotion classification,Cleaned text corpus,Kübler-Ross stage classification per passage,AIUC-04,Per-classification confidence score,-
+NLP-04,Barrier reason-code suggestion,A single barrier description passage,Suggested reason code from the controlled taxonomy (D03 barrier taxonomy),AIUC-02,"Per-suggestion confidence score, compared against RULE-011 threshold",-
+"🔗 Powers_AI_Use_Case → D15. Closes the CRITICAL GAP flagged against Module 17: the 16 seeded AI use cases were fully specified in D15, but the underlying NLP engine capability that AIUC-02/04/06 actually run on had never been specified as its own deliverable. This is that specification — one engine, several use cases built on top of it, consistent with how a real implementation would share the capability rather than reimplementing NLP three times.",,,,,,

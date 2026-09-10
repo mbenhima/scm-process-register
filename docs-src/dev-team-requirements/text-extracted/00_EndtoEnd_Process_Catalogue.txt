@@ -1,0 +1,2890 @@
+END-TO-END PROCESS CATALOGUE
+
+Platform: journi
+
+Prepared For: journi Programme
+
+Prepared By: POWERACT Consulting
+
+Date: August 2026
+
+Version: 1.1
+
+Classification: Confidential
+
+Note on scope: this catalogue documents 16 End-to-End (E2E) processes —
+the 4 currently registered in D32h (the End-to-End Process Registry), 4
+proposed extensions surfaced by analysis of the macro processes' own
+cross-references, and 8 further proposed extensions, one for each of the
+transformation project types defined in the journi Functional
+Specification v1.3 and the Transformation Types User Guide. Each process
+is clearly marked with its status.
+
+Table of Contents
+
+Table of Contents 2
+
+Executive Summary 6
+
+Executive Summary Table 6
+
+Functional Requirement Coverage 7
+
+End-to-End Process Details 8
+
+E2E-01 — Readiness & Mobilization 8
+
+Detailed Description 8
+
+Related Macro Processes 8
+
+Related Modules 8
+
+Main Stakeholders 8
+
+BPMN Diagram — Process Flow 8
+
+BPMN Diagram — RASCI 9
+
+E2E-02 — Capability Build 10
+
+Detailed Description 10
+
+Related Macro Processes 10
+
+Related Modules 10
+
+Main Stakeholders 10
+
+BPMN Diagram — Process Flow 10
+
+BPMN Diagram — RASCI 11
+
+E2E-03 — Resistance-to-Commitment 12
+
+Detailed Description 12
+
+Related Macro Processes 12
+
+Related Modules 12
+
+Main Stakeholders 12
+
+BPMN Diagram — Process Flow 12
+
+BPMN Diagram — RASCI 13
+
+E2E-04 — Sustainment & Closure 14
+
+Detailed Description 14
+
+Related Macro Processes 14
+
+Related Modules 14
+
+Main Stakeholders 14
+
+BPMN Diagram — Process Flow 14
+
+BPMN Diagram — RASCI 14
+
+E2E-05 — Signal Aggregation Loop 15
+
+Detailed Description 15
+
+Related Macro Processes 15
+
+Related Modules 15
+
+Main Stakeholders 15
+
+BPMN Diagram — Process Flow 15
+
+BPMN Diagram — RASCI 16
+
+E2E-06 — PM↔CM Governance Bridge 17
+
+Detailed Description 17
+
+Related Macro Processes 17
+
+Related Modules 17
+
+Main Stakeholders 17
+
+BPMN Diagram — Process Flow 17
+
+BPMN Diagram — RASCI 18
+
+E2E-07 — Champion Early-Warning Loop 19
+
+Detailed Description 19
+
+Related Macro Processes 19
+
+Related Modules 19
+
+Main Stakeholders 19
+
+BPMN Diagram — Process Flow 19
+
+BPMN Diagram — RASCI 20
+
+E2E-08 — Governance Escalation Loop 21
+
+Detailed Description 21
+
+Related Macro Processes 21
+
+Related Modules 21
+
+Main Stakeholders 21
+
+BPMN Diagram — Process Flow 21
+
+BPMN Diagram — RASCI 22
+
+E2E-ERP — ERP Implementation Lifecycle 23
+
+Detailed Description 23
+
+Related Macro Processes 23
+
+Related Modules 23
+
+Main Stakeholders 24
+
+BPMN Diagram — Process Flow 24
+
+BPMN Diagram — RASCI 25
+
+E2E-BPR — Business Process Reengineering Lifecycle 27
+
+Detailed Description 27
+
+Related Macro Processes 27
+
+Related Modules 27
+
+Main Stakeholders 28
+
+BPMN Diagram — Process Flow 28
+
+BPMN Diagram — RASCI 28
+
+E2E-BPA — Business Process Automation (Full Track) Lifecycle 29
+
+Detailed Description 29
+
+Related Macro Processes 29
+
+Related Modules 29
+
+Main Stakeholders 30
+
+BPMN Diagram — Process Flow 30
+
+BPMN Diagram — RASCI 30
+
+E2E-IMS — Integrated Management System (QHSE) Lifecycle 32
+
+Detailed Description 32
+
+Related Macro Processes 32
+
+Related Modules 32
+
+Main Stakeholders 33
+
+BPMN Diagram — Process Flow 33
+
+BPMN Diagram — RASCI 33
+
+E2E-CULT — Cultural / Values Transformation Lifecycle 34
+
+Detailed Description 34
+
+Related Macro Processes 34
+
+Related Modules 35
+
+Main Stakeholders 35
+
+BPMN Diagram — Process Flow 35
+
+BPMN Diagram — RASCI 35
+
+E2E-OM — Operating Model Redesign Lifecycle 37
+
+Detailed Description 37
+
+Related Macro Processes 37
+
+Related Modules 37
+
+Main Stakeholders 38
+
+BPMN Diagram — Process Flow 38
+
+BPMN Diagram — RASCI 38
+
+E2E-COMP — Compliance-Driven Change Lifecycle 40
+
+Detailed Description 40
+
+Related Macro Processes 40
+
+Related Modules 40
+
+Main Stakeholders 41
+
+BPMN Diagram — Process Flow 41
+
+BPMN Diagram — RASCI 41
+
+E2E-TSD — Training & Skills Development Lifecycle 42
+
+Detailed Description 42
+
+Related Macro Processes 42
+
+Related Modules 42
+
+Main Stakeholders 43
+
+BPMN Diagram — Process Flow 43
+
+BPMN Diagram — RASCI 43
+
+Document Control 45
+
+Version History 45
+
+Source Deliverables 45
+
+Approval 45
+
+Executive Summary
+
+This catalogue is the single reference for every End-to-End (E2E)
+process that composes journi's ten macro processes (D01) into complete,
+cross-cutting business flows. Four E2E processes are formally registered
+today in D32h, the End-to-End Process Registry; four additional
+processes are proposed here as extensions, each grounded in a
+cross-reference already written into the affected macro processes' own
+descriptions rather than invented independently; and eight further
+processes are proposed as transformation-type-specific extensions, one
+for each of the project archetypes defined in the journi Functional
+Specification v1.3 and the Transformation Types User Guide. Every macro
+process (MP-01 through MP-10) appears in at least one E2E chain — no
+macro process is orphaned from an end-to-end narrative.
+
+Executive Summary Table
+
+  ----------------------------------------------------------------------------------------
+  E2E ID     Name                       Objective               Related      Related Macro
+                                                                Modules      Processes
+  ---------- -------------------------- ----------------------- ------------ -------------
+  E2E-01     Readiness & Mobilization   Stakeholder map         M-05, M-08,  MP-01 → MP-02
+                                        published, sponsor      M-09         → MP-03
+                                        coalition active,                    
+                                        communication ...                    
+
+  E2E-02     Capability Build           Cohorts trained,        M-10, M-08,  MP-05 → MP-06
+                                        champion network        M-06         → MP-07
+                                        active, readiness                    
+                                        signal flowing                       
+
+  E2E-03     Resistance-to-Commitment   Cohort re-scored above  M-11, M-14,  MP-04 → MP-08
+                                        threshold or formally   M-12         → MP-09
+                                        closed as resolved                   
+
+  E2E-04     Sustainment & Closure      Project formally        M-13         MP-10
+                                        closed, Refreeze                     
+                                        confirmed, lessons                   
+                                        logged                               
+
+  E2E-05     Signal Aggregation Loop    Consolidated            M-09, M-10,  MP-03 → MP-05
+                                        ADKAR/Bridges signal    M-06, M-14   → MP-07 →
+                                        evaluated against the                MP-08
+                                        Divergence ...                       
+
+  E2E-06     PM↔CM Governance Bridge    Joint Decision Record   M-08, M-14,  MP-02 → MP-08
+                                        produced (Go / Go with  M-18         
+                                        Conditions / No-Go)                  
+
+  E2E-07     Champion Early-Warning     Barrier record opened   M-08, M-11   MP-06 → MP-04
+             Loop                       in the Resistance Log,               
+                                        or confirmed as noise                
+                                        ...                                  
+
+  E2E-08     Governance Escalation Loop Sponsor decision        M-08, M-13,  MP-02 → MP-10
+                                        recorded / Sustainment  M-18         
+                                        sign-off confirmed                   
+
+  E2E-ERP    ERP Implementation         Production system live, M-05, M-06,  MP-01 → MP-02
+             Lifecycle                  all cohorts trained and M-07, M-08,  → MP-03 →
+                                        capable, hypercare      M-09, M-10,  MP-05 → MP-07
+                                        complete, Refreeze      M-13         → MP-09 →
+                                        confirmed from evidence              MP-10
+
+  E2E-BPR    Business Process           New process rolled out  M-05 through MP-01 → MP-02
+             Reengineering Lifecycle    across all sites, old   M-11, M-13   → MP-03 →
+                                        process formally                     MP-05 → MP-07
+                                        retired, performance                 → MP-08 →
+                                        gains confirmed across               MP-09 → MP-10
+                                        multiple reporting                   
+                                        cycles                               
+
+  E2E-BPA    Business Process           Automated workflow live M-05 through MP-01 → MP-02
+             Automation (Full Track)    at full volume, human   M-13         → MP-03 →
+             Lifecycle                  review stepped down to               MP-05 → MP-07
+                                        steady state, Center of              → MP-08 →
+                                        Excellence handover                  MP-09 → MP-10
+                                        complete                             
+
+  E2E-IMS    Integrated Management      Certification achieved  M-05 through MP-01 → MP-02
+             System (QHSE) Lifecycle    (or "pass with minor    M-11, M-13   → MP-03 →
+                                        nonconformities"),                   MP-05 → MP-07
+                                        surveillance cycle                   → MP-08 →
+                                        active                               MP-09 → MP-10
+
+  E2E-CULT   Cultural / Values          Target behaviors        M-05 through MP-01 → MP-02
+             Transformation Lifecycle   embedded in leadership  M-09, M-11,  → MP-03 →
+                                        development and HR      M-12, M-13   MP-04 → MP-06
+                                        practice, Refreeze                   → MP-07 →
+                                        confirmed provisionally              MP-08 → MP-09
+                                        with ongoing monitoring              → MP-10
+
+  E2E-OM     Operating Model Redesign   New structure and       M-05 through MP-01 → MP-02
+             Lifecycle                  governance operational, M-13         → MP-03 →
+                                        stable across a full                 MP-05 → MP-07
+                                        planning or budget                   → MP-08 →
+                                        cycle, Refreeze                      MP-09 → MP-10
+                                        confirmed                            
+
+  E2E-COMP   Compliance-Driven Change   Controls live and       M-05 through MP-01 → MP-02
+             Lifecycle                  enforceable, first      M-11, M-13,  → MP-03 →
+                                        compliance-monitoring   M-14         MP-05 → MP-07
+                                        cycle complete, ongoing              → MP-08 →
+                                        monitoring handed to                 MP-09 → MP-10
+                                        permanent owner                      
+
+  E2E-TSD    Training & Skills          Target population       M-05 through MP-01 → MP-02
+             Development Lifecycle      competent (verified by  M-10, M-12,  → MP-03 →
+                                        assessment),            M-13         MP-05 → MP-06
+                                        performance sustained,               → MP-07 →
+                                        training embedded in                 MP-08 → MP-09
+                                        ongoing development                  → MP-10
+  ----------------------------------------------------------------------------------------
+
+Functional Requirement Coverage
+
+Collectively, the 16 E2E processes exercise every functional requirement
+domain defined in D13 (Application Requirements):
+
+-   Stakeholder & Impact, Sponsorship, and Communication domains
+    (REQ-001, REQ-002, REQ-014) — exercised by E2E-01.
+
+-   ADKAR Engine, Training, and Champion Network domains (REQ-002,
+    REQ-016) — exercised by E2E-02, and its signal-consolidation
+    dependency made explicit by E2E-05.
+
+-   Resistance Management and Divergence Detection domains (REQ-003,
+    REQ-004) — exercised by E2E-03, with the champion-to-resistance
+    hand-off made explicit by E2E-07.
+
+-   Sustainment and Reinforcement domains (REQ-005) — exercised by
+    E2E-04, with the governance-escalation thread made explicit by
+    E2E-08.
+
+-   WBS, Phase Gate, and Joint Decision domains (REQ-011, REQ-016,
+    REQ-017, REQ-018) — exercised directly by E2E-06, the only chain
+    that bridges the change-management and project-management sides of
+    the platform.
+
+-   AI Governance domain (REQ-006, REQ-007, REQ-008) — exercised
+    indirectly across every chain that includes an AI-assisted task (see
+    each process's Process Flow table for AI Task rows).
+
+-   Training & Skills, QHSE Certification, and Cultural/Behavioral
+    domains — exercised by the eight transformation-type-specific chains
+    (E2E-ERP through E2E-TSD), each composed from the same ten macro
+    processes.
+
+No functional requirement domain in D13 is left unexercised by at least
+one of the 16 chains above.
+
+End-to-End Process Details
+
+This is the core of the catalogue. Each of the 16 processes below is
+documented identically: a detailed description, its related macro
+processes, related modules, main stakeholders, a BPMN-style process-flow
+table of sequential steps, and a RASCI table.
+
+E2E-01 — Readiness & Mobilization
+
+  Status: Registered in D32h
+
+Detailed Description
+
+The mobilization chain carries an initiative from an approved change
+scope through to a fully mobilized organization: the stakeholder impact
+assessment (MP-01) identifies who is affected and how; sponsorship and
+governance (MP-02) secures the executive backing and decision cadence
+the initiative needs; and communication and awareness (MP-03) ensures
+the affected population actually hears — and understands — what is
+changing and why. This is the platform's front door: almost every later
+process assumes E2E-01 has already produced a confirmed stakeholder map
+and an active sponsor.
+
+Trigger: Change scope statement approved
+
+Terminal State: Stakeholder map published, sponsor coalition active,
+communication cadence running
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+Main Stakeholders
+
+Change Manager (CM), Program/Project Manager (PM), Functional Process
+Owner (FPO), Frontline Supervisor (SUP), IT/Technical Lead (ITL),
+Executive Sponsor (ES)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-01.1   Identify all stakeholder groups and cohorts Change Impact &
+            impacted by the change                      Stakeholder
+                                                        Assessment
+
+  MP-01.2   Assess the size, nature, and severity of    Change Impact &
+            impact per cohort (process, role, systems,  Stakeholder
+            location)                                   Assessment
+
+  MP-01.3   Build and maintain the stakeholder map      Change Impact &
+                                                        Stakeholder
+                                                        Assessment
+
+  MP-01.4   Segment cohorts by expected readiness       Change Impact &
+            trajectory (early adopter, neutral,         Stakeholder
+            resistant)                                  Assessment
+
+  MP-01.5   Validate the impact assessment with         Change Impact &
+            Functional Process Owners and Frontline     Stakeholder
+            Supervisors                                 Assessment
+
+  MP-02.1   Secure and maintain visible, active         Sponsorship &
+            executive sponsorship throughout the        Governance
+            initiative                                  Management
+
+  MP-02.2   Establish and run a recurring               Sponsorship &
+            steering-committee cadence for change       Governance
+            decisions                                   Management
+
+  MP-02.3   Coach the sponsor on specific, personal     Sponsorship &
+            communication moments                       Governance
+                                                        Management
+
+  MP-02.4   Escalate unresolved Change-Management risks Sponsorship &
+            to the sponsor for direct intervention      Governance
+                                                        Management
+
+  MP-02.5   Maintain the escalation and decision log    Sponsorship &
+                                                        Governance
+                                                        Management
+
+  MP-03.1   Develop the phased communication plan       Communication &
+            (why/what/when) aligned to the timeline     Awareness
+                                                        Management
+
+  MP-03.2   Publish and maintain an FAQ channel and     Communication &
+            reply/response protocol                     Awareness
+                                                        Management
+
+  MP-03.3   Track open/read/click-through and           Communication &
+            FAQ-traffic analytics                       Awareness
+                                                        Management
+
+  MP-03.4   Adjust messaging based on Awareness/Denial  Communication &
+            signal trends                               Awareness
+                                                        Management
+
+  MP-03.5   Deliver milestone communications (kickoff,  Communication &
+            go-live, closure)                           Awareness
+                                                        Management
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-02 — Capability Build
+
+  Status: Registered in D32h
+
+Detailed Description
+
+The capability chain turns a mobilized organization into a capable one.
+Training and capability enablement (MP-05) builds Knowledge and Ability
+against the future-state process; the champion network (MP-06) extends
+the Change Manager's reach onto the floor and surfaces early sentiment
+signals; and readiness diagnostics (MP-07) continuously measures whether
+the organization is actually becoming ready, not just attending
+sessions. The three run largely in parallel rather than strictly
+sequentially — training completion and champion coverage both feed the
+same readiness signal MP-07 consolidates.
+
+Trigger: Persona segments confirmed from E2E-01
+
+Terminal State: Cohorts trained, champion network active, readiness
+signal flowing
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-05       Training &           Design role-based training content and
+              Capability           assessments aligned to the future-state
+              Enablement           process
+
+  MP-06       Champion Network     Recruit a representative champion
+              Management           network across cohorts, sites, and
+                                   shifts
+
+  MP-07       Readiness            Run the baseline ADKAR / Bridges /
+              Diagnostics & Signal Kübler-Ross pulse at project start
+              Capture              
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-10 Training & Capability Building
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-06 ADKAR Engine / M-07 Emotional & Transition Layer
+
+Main Stakeholders
+
+Change Manager (CM), Functional Process Owner (FPO), IT/Technical Lead
+(ITL), Program/Project Manager (PM), Frontline Supervisor (SUP)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-05.1   Design role-based training content and      Training &
+            assessments aligned to the future-state     Capability
+            process                                     Enablement
+
+  MP-05.2   Deliver instructor-led and/or e-learning    Training &
+            training to all impacted cohorts            Capability
+                                                        Enablement
+
+  MP-05.3   Publish job aids and quick-reference        Training &
+            guides, and maintain a practice sandbox     Capability
+                                                        Enablement
+
+  MP-05.4   Run Knowledge/Ability assessments per       Training &
+            cohort and log scores                       Capability
+                                                        Enablement
+
+  MP-05.5   Identify and remediate cohorts scoring      Training &
+            below the readiness threshold before        Capability
+            go-live                                     Enablement
+
+  MP-06.1   Recruit a representative champion network   Champion Network
+            across cohorts, sites, and shifts           Management
+
+  MP-06.2   Brief and equip champions with early        Champion Network
+            access, talking points, and feedback        Management
+            channels                                    
+
+  MP-06.3   Run regular champion listening sessions /   Champion Network
+            focus groups                                Management
+
+  MP-06.4   Use champion feedback as a leading          Champion Network
+            indicator for Desire- and sentiment-related Management
+            risk                                        
+
+  MP-06.5   Re-charter or refresh the network if it     Champion Network
+            dissolves or goes inactive post-go-live     Management
+
+  MP-07.1   Run the baseline ADKAR / Bridges /          Readiness
+            Kübler-Ross pulse at project start          Diagnostics &
+                                                        Signal Capture
+
+  MP-07.2   Run recurring structured pulse surveys at   Readiness
+            each major phase gate                       Diagnostics &
+                                                        Signal Capture
+
+  MP-07.3   Run rapid emoji / slider pulses around      Readiness
+            high-anxiety moments (e.g., go-live)        Diagnostics &
+                                                        Signal Capture
+
+  MP-07.4   Consolidate survey, interview, and          Readiness
+            observation data into the Composite         Diagnostics &
+            Readiness Index                             Signal Capture
+
+  MP-07.5   Report readiness trends to the Change       Readiness
+            Manager and Steering Committee at each      Diagnostics &
+            checkpoint                                  Signal Capture
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-06        CM          CM          SUP         FPO         ES, PM, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+  ------------------------------------------------------------------------
+
+E2E-03 — Resistance-to-Commitment
+
+  Status: Registered in D32h
+
+Detailed Description
+
+The recovery chain is triggered reactively — by a logged barrier or a
+detected divergence pattern — rather than running on a fixed schedule.
+Resistance and barrier management (MP-04) classifies and responds to a
+named barrier; divergence and risk detection (MP-08) catches the
+harder-to-see case where a person or cohort is technically capable but
+not yet emotionally transitioned; and hypercare and floor coaching
+(MP-09) provides the sustained, in-context support that converts either
+case into genuine commitment. This chain can fire many times across a
+single initiative's lifecycle, each time closing with a re-score rather
+than a calendar date.
+
+Trigger: A barrier or divergence pattern is first logged
+
+Terminal State: Cohort re-scored above threshold or formally closed as
+resolved
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-04       Resistance & Barrier Monitor Desire scores and escalate any
+              Management           score ≤2 with a required barrier-reason
+                                   note
+
+  MP-08       Divergence & Risk    Run the Divergence Pattern check
+              Detection            (Knowledge ≥3 and Ability ≥3 with
+                                   Bridges = Ending) at each assessment
+                                   point
+
+  MP-09       Hypercare & Floor    Activate the elevated hypercare support
+              Coaching Support     model on go-live day
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-11 Resistance Management
+
+-   M-14 Change Risk Register
+
+-   M-12 Manager-as-Coach Enablement / M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Frontline Supervisor (SUP), Functional Process
+Owner (FPO), Program/Project Manager (PM), IT/Technical Lead (ITL)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-04.1   Monitor Desire scores and escalate any      Resistance &
+            score ≤2 with a required barrier-reason     Barrier Management
+            note                                        
+
+  MP-04.2   Cluster barrier reasons by root cause       Resistance &
+            (fear, historical skepticism, WIIFM gap)    Barrier Management
+
+  MP-04.3   Design a specific, credible response to     Resistance &
+            each named root cause                       Barrier Management
+
+  MP-04.4   Coordinate sponsor or manager delivery of   Resistance &
+            the response directly to the affected       Barrier Management
+            cohort                                      
+
+  MP-04.5   Re-score Desire and sentiment after the     Resistance &
+            intervention and close or re-escalate       Barrier Management
+
+  MP-08.1   Run the Divergence Pattern check (Knowledge Divergence & Risk
+            ≥3 and Ability ≥3 with Bridges = Ending) at Detection
+            each assessment point                       
+
+  MP-08.2   Validate flagged cases against direct       Divergence & Risk
+            supervisor observation                      Detection
+
+  MP-08.3   Hold identity-focused 1:1 conversations for Divergence & Risk
+            confirmed cases                             Detection
+
+  MP-08.4   Provide an explicit closure moment where a  Divergence & Risk
+            genuine loss is identified                  Detection
+
+  MP-08.5   Track flagged cases to resolution and log   Divergence & Risk
+            the pattern for lessons learned             Detection
+
+  MP-09.1   Activate the elevated hypercare support     Hypercare & Floor
+            model on go-live day                        Coaching Support
+
+  MP-09.2   Coach cohorts showing sentiment regression  Hypercare & Floor
+            with targeted, incident-linked coaching     Coaching Support
+
+  MP-09.3   Distinguish incident-driven regression from Hypercare & Floor
+            a general readiness failure before          Coaching Support
+            responding                                  
+
+  MP-09.4   Taper support toward standard service       Hypercare & Floor
+            levels as metrics stabilize                 Coaching Support
+
+  MP-09.5   Log regression events and recovery actions  Hypercare & Floor
+            for the lessons-learned record              Coaching Support
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-04        CM          CM          SUP, FPO    PM          ES, ITL, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+  ------------------------------------------------------------------------
+
+E2E-04 — Sustainment & Closure
+
+  Status: Registered in D32h
+
+Detailed Description
+
+The closure chain is the only E2E process built from a single macro
+process rather than a multi-process composition — it is registered as
+its own E2E entry because its SIPOC is materially different (a closing
+initiative rather than an active one) from every other chain.
+Reinforcement and sustainment management (MP-10) runs the 60/90-day
+audit cadence, confirms Lewin Refreeze from evidence rather than the
+calendar, and formally hands the initiative off to Business-as-Usual
+ownership.
+
+Trigger: 60-day checkpoint reached
+
+Terminal State: Project formally closed, Refreeze confirmed, lessons
+logged
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-10       Reinforcement &      Embed new-process metrics into standard
+              Sustainment          performance management
+              Management           
+
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Executive Sponsor (ES), Program/Project Manager
+(PM), Functional Process Owner (FPO), Frontline Supervisor (SUP)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-10.1   Embed new-process metrics into standard     Reinforcement &
+            performance management                      Sustainment
+                                                        Management
+
+  MP-10.2   Confirm recognition, coaching, and          Reinforcement &
+            access-revocation mechanisms are active,    Sustainment
+            not just planned                            Management
+
+  MP-10.3   Run 60-day and 90-day checkpoint reviews    Reinforcement &
+            against benchmarking bands                  Sustainment
+                                                        Management
+
+  MP-10.4   Call Refreeze formally only once checkpoint Reinforcement &
+            evidence, not the calendar, supports it     Sustainment
+                                                        Management
+
+  MP-10.5   Close the Change Management Project and     Reinforcement &
+            hand off ownership to the business          Sustainment
+                                                        Management
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+
+  ------------------------------------------------------------------------
+
+E2E-05 — Signal Aggregation Loop
+
+  Status: Proposed extension (not yet in D32h)
+
+Detailed Description
+
+This chain makes explicit a data dependency already written into three
+macro processes' own descriptions: MP-03 states it "feeds Awareness
+scoring back into the ADKAR Engine," and MP-05 states it "feeds
+Knowledge/Ability scores back into the ADKAR Engine for divergence
+cross-checking." Both signals land in MP-07's Composite Readiness Index,
+which MP-08's Divergence Pattern Detector then evaluates. Today this
+flow is split silently across three separate registered E2E chains
+(E2E-01, E2E-02, E2E-03) with no single artifact describing the loop end
+to end.
+
+Trigger: Awareness (MP-03) and Knowledge/Ability (MP-05) scores are
+recorded
+
+Terminal State: Consolidated ADKAR/Bridges signal evaluated against the
+Divergence Pattern check, confirmed aligned or escalated
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-05       Training &           Design role-based training content and
+              Capability           assessments aligned to the future-state
+              Enablement           process
+
+  MP-07       Readiness            Run the baseline ADKAR / Bridges /
+              Diagnostics & Signal Kübler-Ross pulse at project start
+              Capture              
+
+  MP-08       Divergence & Risk    Run the Divergence Pattern check
+              Detection            (Knowledge ≥3 and Ability ≥3 with
+                                   Bridges = Ending) at each assessment
+                                   point
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-09 Communication Planning & Execution
+
+-   M-10 Training & Capability Building
+
+-   M-06 ADKAR Engine / M-07 Emotional & Transition Layer
+
+-   M-14 Change Risk Register
+
+Main Stakeholders
+
+Change Manager (CM), Program/Project Manager (PM), Functional Process
+Owner (FPO), Frontline Supervisor (SUP), IT/Technical Lead (ITL)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-03.1   Develop the phased communication plan       Communication &
+            (why/what/when) aligned to the timeline     Awareness
+                                                        Management
+
+  MP-03.2   Publish and maintain an FAQ channel and     Communication &
+            reply/response protocol                     Awareness
+                                                        Management
+
+  MP-03.3   Track open/read/click-through and           Communication &
+            FAQ-traffic analytics                       Awareness
+                                                        Management
+
+  MP-03.4   Adjust messaging based on Awareness/Denial  Communication &
+            signal trends                               Awareness
+                                                        Management
+
+  MP-03.5   Deliver milestone communications (kickoff,  Communication &
+            go-live, closure)                           Awareness
+                                                        Management
+
+  MP-05.1   Design role-based training content and      Training &
+            assessments aligned to the future-state     Capability
+            process                                     Enablement
+
+  MP-05.2   Deliver instructor-led and/or e-learning    Training &
+            training to all impacted cohorts            Capability
+                                                        Enablement
+
+  MP-05.3   Publish job aids and quick-reference        Training &
+            guides, and maintain a practice sandbox     Capability
+                                                        Enablement
+
+  MP-05.4   Run Knowledge/Ability assessments per       Training &
+            cohort and log scores                       Capability
+                                                        Enablement
+
+  MP-05.5   Identify and remediate cohorts scoring      Training &
+            below the readiness threshold before        Capability
+            go-live                                     Enablement
+
+  MP-07.1   Run the baseline ADKAR / Bridges /          Readiness
+            Kübler-Ross pulse at project start          Diagnostics &
+                                                        Signal Capture
+
+  MP-07.2   Run recurring structured pulse surveys at   Readiness
+            each major phase gate                       Diagnostics &
+                                                        Signal Capture
+
+  MP-07.3   Run rapid emoji / slider pulses around      Readiness
+            high-anxiety moments (e.g., go-live)        Diagnostics &
+                                                        Signal Capture
+
+  MP-07.4   Consolidate survey, interview, and          Readiness
+            observation data into the Composite         Diagnostics &
+            Readiness Index                             Signal Capture
+
+  MP-07.5   Report readiness trends to the Change       Readiness
+            Manager and Steering Committee at each      Diagnostics &
+            checkpoint                                  Signal Capture
+
+  MP-08.1   Run the Divergence Pattern check (Knowledge Divergence & Risk
+            ≥3 and Ability ≥3 with Bridges = Ending) at Detection
+            each assessment point                       
+
+  MP-08.2   Validate flagged cases against direct       Divergence & Risk
+            supervisor observation                      Detection
+
+  MP-08.3   Hold identity-focused 1:1 conversations for Divergence & Risk
+            confirmed cases                             Detection
+
+  MP-08.4   Provide an explicit closure moment where a  Divergence & Risk
+            genuine loss is identified                  Detection
+
+  MP-08.5   Track flagged cases to resolution and log   Divergence & Risk
+            the pattern for lessons learned             Detection
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+  ------------------------------------------------------------------------
+
+E2E-06 — PM↔CM Governance Bridge
+
+  Status: Proposed extension (not yet in D32h)
+
+Detailed Description
+
+MP-08's own description states it "cross-references adoption-risk
+entries against linked Main Project schedule slips" — the only place in
+the platform's ten macro processes where a change-readiness process
+explicitly depends on project-management schedule data. This chain
+formalizes that dependency: sponsorship and governance (MP-02) provides
+the decision-making forum, divergence and risk detection (MP-08)
+supplies the readiness evidence, and the result is recorded as a Phase
+Gate / Joint Decision Record (D32d/D32e) with exactly one Accountable
+role, per CTRL-012. No registered E2E chain currently represents this
+bridge between the change-management side of the platform and its
+project-management (WBS/Gantt) side.
+
+Trigger: A Main Project schedule slip is logged, or a Phase Gate
+checkpoint is reached
+
+Terminal State: Joint Decision Record produced (Go / Go with Conditions
+/ No-Go), PM and CM inputs preserved, one Accountable role named
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-08       Divergence & Risk    Run the Divergence Pattern check
+              Detection            (Knowledge ≥3 and Ability ≥3 with
+                                   Bridges = Ending) at each assessment
+                                   point
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-14 Change Risk Register
+
+-   M-18 Work Breakdown Structure & Gantt (Phase Gate governance)
+
+Main Stakeholders
+
+Change Manager (CM), Executive Sponsor (ES), Program/Project Manager
+(PM), Functional Process Owner (FPO), IT/Technical Lead (ITL)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-02.1   Secure and maintain visible, active         Sponsorship &
+            executive sponsorship throughout the        Governance
+            initiative                                  Management
+
+  MP-02.2   Establish and run a recurring               Sponsorship &
+            steering-committee cadence for change       Governance
+            decisions                                   Management
+
+  MP-02.3   Coach the sponsor on specific, personal     Sponsorship &
+            communication moments                       Governance
+                                                        Management
+
+  MP-02.4   Escalate unresolved Change-Management risks Sponsorship &
+            to the sponsor for direct intervention      Governance
+                                                        Management
+
+  MP-02.5   Maintain the escalation and decision log    Sponsorship &
+                                                        Governance
+                                                        Management
+
+  MP-08.1   Run the Divergence Pattern check (Knowledge Divergence & Risk
+            ≥3 and Ability ≥3 with Bridges = Ending) at Detection
+            each assessment point                       
+
+  MP-08.2   Validate flagged cases against direct       Divergence & Risk
+            supervisor observation                      Detection
+
+  MP-08.3   Hold identity-focused 1:1 conversations for Divergence & Risk
+            confirmed cases                             Detection
+
+  MP-08.4   Provide an explicit closure moment where a  Divergence & Risk
+            genuine loss is identified                  Detection
+
+  MP-08.5   Track flagged cases to resolution and log   Divergence & Risk
+            the pattern for lessons learned             Detection
+
+  GATE      Phase Gate Decision Recorded (D32d/D32e)    Accountable: PM
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+  ------------------------------------------------------------------------
+
+Phase Gate closing decision: exactly one Accountable role (PM) per
+CTRL-012 — never "the system."
+
+E2E-07 — Champion Early-Warning Loop
+
+  Status: Proposed extension (not yet in D32h)
+
+Detailed Description
+
+MP-06's own description states the champion network "routes floor-level
+sentiment and barrier signals back through the network" — but the
+current E2E composition places MP-06 in the Capability Build chain
+(E2E-02) and MP-04 in the separate Resistance-to-Commitment chain
+(E2E-03), leaving the specific hand-off between the two undocumented as
+its own process. This chain traces a single signal from a champion's
+floor-level observation through to a formal barrier record (or a
+confirmed non-event), making the network's early-warning function
+visible as a process in its own right rather than an implied side effect
+of two other chains.
+
+Trigger: A champion logs floor-level sentiment or a barrier signal
+
+Terminal State: Barrier record opened in the Resistance Log, or
+confirmed as noise with no barrier opened
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-06       Champion Network     Recruit a representative champion
+              Management           network across cohorts, sites, and
+                                   shifts
+
+  MP-04       Resistance & Barrier Monitor Desire scores and escalate any
+              Management           score ≤2 with a required barrier-reason
+                                   note
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-11 Resistance Management
+
+Main Stakeholders
+
+Change Manager (CM), Frontline Supervisor (SUP), Functional Process
+Owner (FPO), Program/Project Manager (PM)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-06.1   Recruit a representative champion network   Champion Network
+            across cohorts, sites, and shifts           Management
+
+  MP-06.2   Brief and equip champions with early        Champion Network
+            access, talking points, and feedback        Management
+            channels                                    
+
+  MP-06.3   Run regular champion listening sessions /   Champion Network
+            focus groups                                Management
+
+  MP-06.4   Use champion feedback as a leading          Champion Network
+            indicator for Desire- and sentiment-related Management
+            risk                                        
+
+  MP-06.5   Re-charter or refresh the network if it     Champion Network
+            dissolves or goes inactive post-go-live     Management
+
+  MP-04.1   Monitor Desire scores and escalate any      Resistance &
+            score ≤2 with a required barrier-reason     Barrier Management
+            note                                        
+
+  MP-04.2   Cluster barrier reasons by root cause       Resistance &
+            (fear, historical skepticism, WIIFM gap)    Barrier Management
+
+  MP-04.3   Design a specific, credible response to     Resistance &
+            each named root cause                       Barrier Management
+
+  MP-04.4   Coordinate sponsor or manager delivery of   Resistance &
+            the response directly to the affected       Barrier Management
+            cohort                                      
+
+  MP-04.5   Re-score Desire and sentiment after the     Resistance &
+            intervention and close or re-escalate       Barrier Management
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-06        CM          CM          SUP         FPO         ES, PM, EU
+
+  MP-04        CM          CM          SUP, FPO    PM          ES, ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-08 — Governance Escalation Loop
+
+  Status: Proposed extension — weaker evidence than E2E-05/06/07
+
+Detailed Description
+
+This chain is the weakest of the four proposed extensions and is
+included for completeness rather than strong textual evidence. MP-02's
+own Task 4 — "Escalate unresolved Change-Management risks to the sponsor
+for direct intervention" — and MP-10's requirement for Executive Sponsor
+sign-off at closure both place the Executive Sponsor in a recurring
+decision role that spans the initiative's full lifecycle, not just its
+opening (E2E-01). Whether this warrants its own registered E2E entry, or
+is better understood as a role-level thread running through the other
+seven chains, is a design judgment call rather than a clear
+specification gap.
+
+Trigger: A go/no-go input is required from governance, or the 90-day
+sustainment checkpoint is reached
+
+Terminal State: Sponsor decision recorded / Sustainment sign-off
+confirmed
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-10       Reinforcement &      Embed new-process metrics into standard
+              Sustainment          performance management
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-13 Reinforcement & Sustainment
+
+-   M-18 Work Breakdown Structure & Gantt (Phase Gate governance)
+
+Main Stakeholders
+
+Change Manager (CM), Executive Sponsor (ES), Program/Project Manager
+(PM), Functional Process Owner (FPO), Frontline Supervisor (SUP)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-02.1   Secure and maintain visible, active         Sponsorship &
+            executive sponsorship throughout the        Governance
+            initiative                                  Management
+
+  MP-02.2   Establish and run a recurring               Sponsorship &
+            steering-committee cadence for change       Governance
+            decisions                                   Management
+
+  MP-02.3   Coach the sponsor on specific, personal     Sponsorship &
+            communication moments                       Governance
+                                                        Management
+
+  MP-02.4   Escalate unresolved Change-Management risks Sponsorship &
+            to the sponsor for direct intervention      Governance
+                                                        Management
+
+  MP-02.5   Maintain the escalation and decision log    Sponsorship &
+                                                        Governance
+                                                        Management
+
+  MP-10.1   Embed new-process metrics into standard     Reinforcement &
+            performance management                      Sustainment
+                                                        Management
+
+  MP-10.2   Confirm recognition, coaching, and          Reinforcement &
+            access-revocation mechanisms are active,    Sustainment
+            not just planned                            Management
+
+  MP-10.3   Run 60-day and 90-day checkpoint reviews    Reinforcement &
+            against benchmarking bands                  Sustainment
+                                                        Management
+
+  MP-10.4   Call Refreeze formally only once checkpoint Reinforcement &
+            evidence, not the calendar, supports it     Sustainment
+                                                        Management
+
+  MP-10.5   Close the Change Management Project and     Reinforcement &
+            hand off ownership to the business          Sustainment
+                                                        Management
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-ERP — ERP Implementation Lifecycle
+
+  Status: Proposed extension
+
+Detailed Description
+
+The ERP Implementation lifecycle tracks the human side of a large-scale
+enterprise system rollout — the most common transformation archetype in
+the journi seed dataset (PRJ-001, PRJ-004, PRJ-007). Where the project
+management track tracks technical configuration, data migration and
+cutover, this E2E chain tracks the parallel people journey: stakeholder
+impact assessment (MP-01) identifies which roles and sites are affected;
+sponsorship and governance (MP-02) secures executive backing through the
+long implementation window; communication (MP-03) builds Awareness
+across the full population; training and capability (MP-05) builds
+Knowledge and Ability against the new system; readiness diagnostics
+(MP-07) provides the Composite Readiness Index that gates each phase;
+hypercare (MP-09) provides floor-level coaching immediately
+post-go-live; and sustainment (MP-10) confirms the new system is the
+durable new normal. This is the canonical “ERP adoption” chain — every
+ERP implementation is, at its heart, a people transformation as much as
+a technical one.
+
+Trigger: ERP project charter approved, Executive Sponsor confirmed
+
+Terminal State: Production system live, all cohorts trained and capable,
+hypercare complete, Refreeze confirmed from evidence
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-05       Training &           Design and deliver role-based training
+              Capability           against the new workflows
+              Enablement           
+
+  MP-07       Readiness            Run the baseline and recurring ADKAR /
+              Diagnostics & Signal Bridges / Kübler-Ross pulses
+              Capture              
+
+  MP-09       Hypercare & Floor    Activate elevated support on go-live
+              Coaching Support     day and coach cohorts showing
+                                   regression
+
+  MP-10       Reinforcement &      Embed new-process metrics, run
+              Sustainment          60/90-day checkpoints, confirm Refreeze
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-06 ADKAR Engine
+
+-   M-07 Emotional & Transition Layer
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+-   M-10 Training & Capability Building
+
+-   M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Program/Project Manager (PM), Executive Sponsor
+(ES), Functional Process Owner (FPO), IT/Technical Lead (ITL), Frontline
+Supervisor (SUP), End User (EU)
+
+BPMN Diagram — Process Flow
+
+  -------------------------------------------------------------------------
+  Step      Sequential Activity                         Macro Process /
+                                                        Note
+  --------- ------------------------------------------- -------------------
+  MP-01.1   Identify all stakeholder groups and cohorts Change Impact &
+            impacted by the ERP rollout                 Stakeholder
+                                                        Assessment
+
+  MP-01.2   Assess the size, nature, and severity of    Change Impact &
+            impact per cohort (process, role, systems,  Stakeholder
+            location)                                   Assessment
+
+  MP-01.3   Build and maintain the stakeholder map      Change Impact &
+                                                        Stakeholder
+                                                        Assessment
+
+  MP-01.4   Segment cohorts by expected readiness       Change Impact &
+            trajectory (early adopter, neutral,         Stakeholder
+            resistant)                                  Assessment
+
+  MP-01.5   Validate the impact assessment with         Change Impact &
+            Functional Process Owners and Frontline     Stakeholder
+            Supervisors                                 Assessment
+
+  MP-02.1   Secure and maintain visible, active         Sponsorship &
+            executive sponsorship throughout the ERP    Governance
+            initiative                                  Management
+
+  MP-02.2   Establish and run a recurring               Sponsorship &
+            steering-committee cadence for ERP          Governance
+            decisions                                   Management
+
+  MP-02.3   Coach the sponsor on specific, personal     Sponsorship &
+            communication moments (town halls, direct   Governance
+            sponsor actions)                            Management
+
+  MP-02.4   Escalate unresolved Change-Management risks Sponsorship &
+            to the sponsor for direct intervention      Governance
+                                                        Management
+
+  MP-02.5   Maintain the escalation and decision log    Sponsorship &
+                                                        Governance
+                                                        Management
+
+  MP-03.1   Develop the phased communication plan       Communication &
+            (why/what/when) aligned to the ERP timeline Awareness
+                                                        Management
+
+  MP-03.2   Publish and maintain an FAQ channel and     Communication &
+            reply/response protocol                     Awareness
+                                                        Management
+
+  MP-03.3   Track open/read/click-through and           Communication &
+            FAQ-traffic analytics                       Awareness
+                                                        Management
+
+  MP-03.4   Adjust messaging based on Awareness/Denial  Communication &
+            signal trends                               Awareness
+                                                        Management
+
+  MP-03.5   Deliver milestone communications (kickoff,  Communication &
+            go-live, closure)                           Awareness
+                                                        Management
+
+  MP-05.1   Design role-based training content and      Training &
+            assessments aligned to the new ERP          Capability
+            workflows                                   Enablement
+
+  MP-05.2   Deliver instructor-led and/or e-learning    Training &
+            training to all impacted cohorts            Capability
+                                                        Enablement
+
+  MP-05.3   Publish job aids and quick-reference        Training &
+            guides, and maintain a practice sandbox     Capability
+                                                        Enablement
+
+  MP-05.4   Run Knowledge/Ability assessments per       Training &
+            cohort and log scores                       Capability
+                                                        Enablement
+
+  MP-05.5   Identify and remediate cohorts scoring      Training &
+            below the readiness threshold before        Capability
+            go-live                                     Enablement
+
+  MP-07.1   Run the baseline ADKAR / Bridges /          Readiness
+            Kübler-Ross pulse at ERP project start      Diagnostics &
+                                                        Signal Capture
+
+  MP-07.2   Run recurring structured pulse surveys at   Readiness
+            each major ERP phase gate                   Diagnostics &
+                                                        Signal Capture
+
+  MP-07.3   Run rapid emoji / slider pulses around      Readiness
+            go-live                                     Diagnostics &
+                                                        Signal Capture
+
+  MP-07.4   Consolidate survey, interview, and          Readiness
+            observation data into the Composite         Diagnostics &
+            Readiness Index                             Signal Capture
+
+  MP-07.5   Report readiness trends to the Change       Readiness
+            Manager and Steering Committee at each      Diagnostics &
+            checkpoint                                  Signal Capture
+
+  MP-09.1   Activate the elevated hypercare support     Hypercare & Floor
+            model on ERP go-live day                    Coaching Support
+
+  MP-09.2   Coach cohorts showing sentiment regression  Hypercare & Floor
+            with targeted, incident-linked coaching     Coaching Support
+
+  MP-09.3   Distinguish incident-driven regression from Hypercare & Floor
+            a general readiness failure before          Coaching Support
+            responding                                  
+
+  MP-09.4   Taper support toward standard service       Hypercare & Floor
+            levels as metrics stabilize                 Coaching Support
+
+  MP-09.5   Log regression events and recovery actions  Hypercare & Floor
+            for the lessons-learned record              Coaching Support
+
+  MP-10.1   Embed new-process metrics into standard     Reinforcement &
+            performance management                      Sustainment
+                                                        Management
+
+  MP-10.2   Confirm recognition, coaching, and          Reinforcement &
+            access-revocation mechanisms are active,    Sustainment
+            not just planned                            Management
+
+  MP-10.3   Run 60-day and 90-day checkpoint reviews    Reinforcement &
+            against benchmarking bands                  Sustainment
+                                                        Management
+
+  MP-10.4   Call Refreeze formally only once checkpoint Reinforcement &
+            evidence, not the calendar, supports it     Sustainment
+                                                        Management
+
+  MP-10.5   Close the Change Management Project and     Reinforcement &
+            hand off ownership to the business          Sustainment
+                                                        Management
+  -------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-BPR — Business Process Reengineering Lifecycle
+
+  Status: Proposed extension
+
+Detailed Description
+
+The Business Process Reengineering lifecycle tracks a clean-slate
+redesign of an end-to-end business process — explicitly not an
+incremental fix to the existing process. Where ERP implementation works
+within an existing process framework, BPR starts from a blank page. The
+human change challenge is correspondingly larger: roles, reporting lines
+and even professional identities may be redesigned alongside the process
+itself. Stakeholder impact assessment (MP-01) must explicitly bracket
+“why it’s done this way” to avoid anchoring the redesign to the old
+process. Sponsorship (MP-02) must sustain backing through the ambiguity
+of clean-slate design. Communication (MP-03) must address role-change
+anxiety early. Training (MP-05) builds capability against a
+fundamentally new way of working. Divergence detection (MP-08) is
+critical here — a cohort can score well on new-process Knowledge/Ability
+while still grieving the old identity (the classic “compliance without
+commitment” trap). Hypercare (MP-09) provides floor-level coaching
+through the highest-disruption period, and sustainment (MP-10) confirms
+the new process has genuinely replaced the old one. This chain
+operationalizes the BPR-specific failure mode warning from the
+Transformation Types Guide: “Redesign anchored to the old process” is
+explicitly guarded against by MP-01’s clean-slate framing.
+
+Trigger: Process redesign mandate approved, clean-slate approach
+confirmed
+
+Terminal State: New process rolled out across all sites, old process
+formally retired, performance gains confirmed across multiple reporting
+cycles
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-05       Training &           Design and deliver role-based training
+              Capability           against the new workflows
+              Enablement           
+
+  MP-07       Readiness            Run the baseline and recurring ADKAR /
+              Diagnostics & Signal Bridges / Kübler-Ross pulses
+              Capture              
+
+  MP-08       Divergence & Risk    Cross-reference delivery-track progress
+              Detection            against people-track readiness and
+                                   escalate divergence
+
+  MP-09       Hypercare & Floor    Activate elevated support on go-live
+              Coaching Support     day and coach cohorts showing
+                                   regression
+
+  MP-10       Reinforcement &      Embed new-process metrics, run
+              Sustainment          60/90-day checkpoints, confirm Refreeze
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-06 ADKAR Engine
+
+-   M-07 Emotional & Transition Layer
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+-   M-10 Training & Capability Building
+
+-   M-11 Resistance Management
+
+-   M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Program/Project Manager (PM), Executive Sponsor
+(ES), Functional Process Owner (FPO), Frontline Supervisor (SUP), End
+User (EU)
+
+BPMN Diagram — Process Flow
+
+  ---------------------------------------------------------------------------
+  Step        Sequential Activity                         Macro Process /
+                                                          Note
+  ----------- ------------------------------------------- -------------------
+  MP-01.1-5   Identify all stakeholder groups —           Change Impact &
+              explicitly bracket "why it’s done this way" Stakeholder
+              to avoid anchoring                          Assessment
+
+  MP-02.1-5   Secure and maintain visible executive       Sponsorship &
+              sponsorship through the ambiguity of        Governance
+              clean-slate design                          Management
+
+  MP-03.1-5   Address role-change anxiety early;          Communication &
+              communicate what is ending, not just what   Awareness
+              is new                                      Management
+
+  MP-05.1-5   Build Knowledge and Ability against the new Training &
+              process; job aids are critical for          Capability
+              transition                                  Enablement
+
+  MP-07.1-5   Track ADKAR and emotional-layer movement;   Readiness
+              the Bridges reading carries extra weight in Diagnostics &
+              BPR                                         Signal Capture
+
+  MP-08.1-5   Run Divergence Pattern checks — this is     Divergence & Risk
+              where "compliance without commitment" is    Detection
+              most likely to appear                       
+
+  MP-09.1-5   Provide floor-level coaching through the    Hypercare & Floor
+              highest-disruption period post-rollout      Coaching Support
+
+  MP-10.1-5   Confirm the new process has genuinely       Reinforcement &
+              replaced the old one; Refreeze from         Sustainment
+              evidence, not the rollout date              Management
+  ---------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-BPA — Business Process Automation (Full Track) Lifecycle
+
+  Status: Proposed extension
+
+Detailed Description
+
+The Business Process Automation (Full Track) lifecycle tracks the human
+side of automating a defined workflow that orchestrates four kinds of
+“worker” in the same process: RPA bots for repetitive rules-based steps,
+AI/ML models for judgment-based decisioning, humans for exceptions and
+complex judgment, and system integrations connecting the platforms
+involved. The human change challenge is distinct from ERP or BPR:
+automation directly triggers job-security anxiety, and the human role
+shifts from performing the work to overseeing the automation.
+Stakeholder impact assessment (MP-01) must identify which roles are most
+affected by automation. Sponsorship (MP-02) must address headcount
+concerns directly — generic reassurance doesn’t move Desire.
+Communication (MP-03) must be explicit about what is and isn’t changing
+about people’s roles. Training (MP-05) builds capability not just in the
+new workflow but in exception-handling and oversight. Divergence
+detection (MP-08) catches the pattern of technical competence paired
+with resentment about reduced autonomy. Hypercare (MP-09) provides
+support through the transition from “doing” to “overseeing.” Sustainment
+(MP-10) hands the automated assets to a permanent Center of Excellence.
+This chain operationalizes the BPA-specific failure mode: “Stepping down
+human review too early” is guarded against by MP-09’s evidence-gated
+taper and MP-08’s divergence checks.
+
+Trigger: Automation opportunity confirmed, automation architecture
+approved
+
+Terminal State: Automated workflow live at full volume, human review
+stepped down to steady state, Center of Excellence handover complete
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-05       Training &           Design and deliver role-based training
+              Capability           against the new workflows
+              Enablement           
+
+  MP-07       Readiness            Run the baseline and recurring ADKAR /
+              Diagnostics & Signal Bridges / Kübler-Ross pulses
+              Capture              
+
+  MP-08       Divergence & Risk    Cross-reference delivery-track progress
+              Detection            against people-track readiness and
+                                   escalate divergence
+
+  MP-09       Hypercare & Floor    Activate elevated support on go-live
+              Coaching Support     day and coach cohorts showing
+                                   regression
+
+  MP-10       Reinforcement &      Embed new-process metrics, run
+              Sustainment          60/90-day checkpoints, confirm Refreeze
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-06 ADKAR Engine
+
+-   M-07 Emotional & Transition Layer
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+-   M-10 Training & Capability Building
+
+-   M-11 Resistance Management
+
+-   M-12 Manager-as-Coach Enablement
+
+-   M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Program/Project Manager (PM), Executive Sponsor
+(ES), Functional Process Owner (FPO), IT/Technical Lead (ITL), Frontline
+Supervisor (SUP), End User (EU)
+
+BPMN Diagram — Process Flow
+
+  ---------------------------------------------------------------------------
+  Step        Sequential Activity                         Macro Process /
+                                                          Note
+  ----------- ------------------------------------------- -------------------
+  MP-01.1-5   Identify stakeholder groups; flag           Change Impact &
+              automation-impacted roles with              Stakeholder
+              identity-loss risk                          Assessment
+
+  MP-02.1-5   Address headcount concerns directly —       Sponsorship &
+              generic reassurance doesn’t move Desire     Governance
+                                                          Management
+
+  MP-03.1-5   Be explicit about what is and isn’t         Communication &
+              changing; job-security communication is     Awareness
+              critical                                    Management
+
+  MP-05.1-5   Build capability in exception-handling and  Training &
+              oversight, not just the automated workflow  Capability
+                                                          Enablement
+
+  MP-07.1-5   Track ADKAR and emotional-layer movement;   Readiness
+              Desire is the critical block in automation  Diagnostics &
+                                                          Signal Capture
+
+  MP-08.1-5   Catch technical competence paired with      Divergence & Risk
+              resentment about reduced autonomy           Detection
+
+  MP-09.1-5   Provide support through the transition from Hypercare & Floor
+              "doing" to "overseeing"                     Coaching Support
+
+  MP-10.1-5   Hand automated assets to a permanent Center Reinforcement &
+              of Excellence; Refreeze means CoE           Sustainment
+              governance is stable                        Management
+  ---------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-IMS — Integrated Management System (QHSE) Lifecycle
+
+  Status: Proposed extension
+
+Detailed Description
+
+The Integrated Management System (QHSE) lifecycle tracks the human side
+of designing and certifying a unified management system against
+international standards (ISO 9001, ISO 45001, ISO 14001, etc.) —
+integrating policy, process and controls into a single auditable system.
+The human change challenge is distinctive: the final gate is an external
+certification body’s pass/fail decision, not an internal go/no-go call.
+Stakeholder impact assessment (MP-01) must identify which sites,
+processes and business units are in certification scope. Sponsorship
+(MP-02) must sustain backing through the long certification window.
+Communication (MP-03) must frame certification as risk reduction and
+customer trust, not “more paperwork.” Training (MP-05) must build
+procedural discipline and record-keeping habits. Readiness diagnostics
+(MP-07) must track the “documentation without daily practice” risk.
+Divergence detection (MP-08) catches staff who can recite the procedure
+flawlessly while still resenting “all this paperwork.” Hypercare (MP-09)
+provides support through the mock-up and certifying audits. Sustainment
+(MP-10) hands the system to the standing quality function for the
+ongoing surveillance-audit cycle. This chain operationalizes the
+IMS-specific failure mode: “Documentation without daily practice” is
+guarded against by MP-07’s observation-based signals and MP-08’s
+divergence checks.
+
+Trigger: Certification requirement confirmed, target standard(s)
+identified
+
+Terminal State: Certification achieved (or "pass with minor
+nonconformities"), surveillance cycle active
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-05       Training &           Design and deliver role-based training
+              Capability           against the new workflows
+              Enablement           
+
+  MP-07       Readiness            Run the baseline and recurring ADKAR /
+              Diagnostics & Signal Bridges / Kübler-Ross pulses
+              Capture              
+
+  MP-08       Divergence & Risk    Cross-reference delivery-track progress
+              Detection            against people-track readiness and
+                                   escalate divergence
+
+  MP-09       Hypercare & Floor    Activate elevated support on go-live
+              Coaching Support     day and coach cohorts showing
+                                   regression
+
+  MP-10       Reinforcement &      Embed new-process metrics, run
+              Sustainment          60/90-day checkpoints, confirm Refreeze
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-06 ADKAR Engine
+
+-   M-07 Emotional & Transition Layer
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+-   M-10 Training & Capability Building
+
+-   M-11 Resistance Management
+
+-   M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Program/Project Manager (PM), Executive Sponsor
+(ES), Functional Process Owner (FPO), Internal Audit Lead, Certification
+Body (external), Frontline Supervisor (SUP)
+
+BPMN Diagram — Process Flow
+
+  ---------------------------------------------------------------------------
+  Step        Sequential Activity                         Macro Process /
+                                                          Note
+  ----------- ------------------------------------------- -------------------
+  MP-01.1-5   Identify certification scope; document      Change Impact &
+              boundary statement per standard             Stakeholder
+              requirements                                Assessment
+
+  MP-02.1-5   Sustain backing through the long            Sponsorship &
+              certification window                        Governance
+                                                          Management
+
+  MP-03.1-5   Frame certification as risk reduction and   Communication &
+              customer trust                              Awareness
+                                                          Management
+
+  MP-05.1-5   Build procedural discipline and             Training &
+              record-keeping habits; train on             Capability
+              documentation, not just process             Enablement
+
+  MP-07.1-5   Track the "documentation without daily      Readiness
+              practice" risk — observation signals are    Diagnostics &
+              critical                                    Signal Capture
+
+  MP-08.1-5   Catch staff who can recite the procedure    Divergence & Risk
+              but resent "all this paperwork"             Detection
+
+  MP-09.1-5   Provide support through the mock-up audit   Hypercare & Floor
+              and the certifying audit                    Coaching Support
+
+  MP-10.1-5   Hand the system to the standing quality     Reinforcement &
+              function; Refreeze means the surveillance   Sustainment
+              cycle is running                            Management
+  ---------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-CULT — Cultural / Values Transformation Lifecycle
+
+  Status: Proposed extension
+
+Detailed Description
+
+The Cultural / Values Transformation lifecycle tracks a deliberate shift
+in an organization’s shared values, norms and behaviors — how people
+actually act, not merely what they are told. This is the longest and
+most fragile transformation type in the journi catalogue (18-36 months).
+The object of change is behavioral and identity-based rather than
+procedural, so Bridges and Kübler-Ross carry proportionally more
+analytical weight than ADKAR’s Knowledge/Ability blocks. Stakeholder
+impact assessment (MP-01) must combine survey data with direct
+behavioral observation — the gap between stated and lived values is
+rarely visible from survey data alone. Sponsorship (MP-02) must model
+the target behaviors visibly, not just endorse them. Communication
+(MP-03) must frame the change as an invitation to participate, backed by
+visible leadership modeling. Resistance management (MP-04) must address
+skepticism about genuine commitment — “this is just corporate talk” is
+the most common barrier reason. The champion network (MP-06) must extend
+to the middle-manager layer, where the gap between senior rhetoric and
+daily reality is most keenly felt. Readiness diagnostics (MP-07) must
+track behavioral observation data alongside survey scores. Divergence
+detection (MP-08) catches the pattern of people who have learned to say
+the right things while still operating by the old norms. Hypercare
+(MP-09) provides sustained coaching through the organization-wide
+rollout. Sustainment (MP-10) must be deliberately provisional — culture
+work never truly ends. This chain operationalizes the Culture-specific
+failure mode: “Values as posters, not practice” is guarded against by
+MP-01’s behavioral observation and MP-07’s observation-based signals.
+
+Trigger: Culture gap diagnosed, target values and behaviors defined
+
+Terminal State: Target behaviors embedded in leadership development and
+HR practice, Refreeze confirmed provisionally with ongoing monitoring
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-04       Resistance & Barrier Detect, classify and resolve resistance
+              Management           and adoption barriers before they
+                                   harden
+
+  MP-06       Champion Network     Recruit, equip and coordinate a peer
+              Management           champion network
+
+  MP-07       Readiness            Run the baseline and recurring ADKAR /
+              Diagnostics & Signal Bridges / Kübler-Ross pulses
+              Capture              
+
+  MP-08       Divergence & Risk    Cross-reference delivery-track progress
+              Detection            against people-track readiness and
+                                   escalate divergence
+
+  MP-09       Hypercare & Floor    Activate elevated support on go-live
+              Coaching Support     day and coach cohorts showing
+                                   regression
+
+  MP-10       Reinforcement &      Embed new-process metrics, run
+              Sustainment          60/90-day checkpoints, confirm Refreeze
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-06 ADKAR Engine
+
+-   M-07 Emotional & Transition Layer
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+-   M-11 Resistance Management
+
+-   M-12 Manager-as-Coach Enablement
+
+-   M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Executive Sponsor (ES), HR Business Partner,
+Frontline Supervisor (SUP), End User (EU), Program/Project Manager (PM)
+
+BPMN Diagram — Process Flow
+
+  ---------------------------------------------------------------------------
+  Step        Sequential Activity                         Macro Process /
+                                                          Note
+  ----------- ------------------------------------------- -------------------
+  MP-01.1-5   Combine survey data with direct behavioral  Change Impact &
+              observation — the gap between stated and    Stakeholder
+              lived values is critical                    Assessment
+
+  MP-02.1-5   Model target behaviors visibly, not just    Sponsorship &
+              endorse them; leadership modeling is the    Governance
+              primary driver                              Management
+
+  MP-03.1-5   Frame the change as an invitation to        Communication &
+              participate, backed by visible leadership   Awareness
+              modeling                                    Management
+
+  MP-04.1-5   Address skepticism about genuine commitment Resistance &
+              — "this is just corporate talk" is the most Barrier Management
+              common barrier                              
+
+  MP-06.1-5   Extend the champion network to the          Champion Network
+              middle-manager layer                        Management
+
+  MP-07.1-5   Track behavioral observation data alongside Readiness
+              survey scores                               Diagnostics &
+                                                          Signal Capture
+
+  MP-08.1-5   Catch people who have learned to say the    Divergence & Risk
+              right things while still operating by the   Detection
+              old norms                                   
+
+  MP-09.1-5   Provide sustained coaching through the      Hypercare & Floor
+              organization-wide rollout                   Coaching Support
+
+  MP-10.1-5   Refreeze is deliberately provisional —      Reinforcement &
+              culture work never truly ends               Sustainment
+                                                          Management
+  ---------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-04        CM          CM          SUP, FPO    PM          ES, ITL, EU
+
+  MP-06        CM          CM          SUP         FPO         ES, PM, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-OM — Operating Model Redesign Lifecycle
+
+  Status: Proposed extension
+
+Detailed Description
+
+The Operating Model Redesign lifecycle tracks the human side of
+redesigning how the organization is structured and coordinated to
+deliver its strategy — org structure, governance, decision rights,
+capabilities, locations and ways of working. This typically spans
+multiple functions at once. The human change challenge is structural:
+people’s roles, reporting lines and decision authority change, and
+persistent cross-functional friction is often a symptom of unclear
+decision rights rather than a personality conflict. Stakeholder impact
+assessment (MP-01) must assess the current operating model across
+structure, governance, decision rights, capabilities and locations.
+Sponsorship (MP-02) must sustain backing through the detailed org
+design. Communication (MP-03) must be honest about what is and isn’t yet
+decided. Training (MP-05) must build capability in the new governance
+forums and decision-rights model. Readiness diagnostics (MP-07) must
+track whether decisions are actually flowing through the new structure,
+not just whether the org chart has updated. Divergence detection (MP-08)
+catches managers who operate the new structure competently while still
+emotionally tied to the old one. Hypercare (MP-09) provides support
+through the full organizational transition. Sustainment (MP-10) confirms
+the new structure has survived at least one full planning or budget
+cycle without reverting. This chain operationalizes the Operating
+Model-specific failure mode: “Structure changes on paper, decisions
+don’t change in practice” is guarded against by MP-07’s
+governance-adoption tracking and MP-08’s divergence checks.
+
+Trigger: Operating model redesign mandate approved, target operating
+model (TOM) blueprint selected
+
+Terminal State: New structure and governance operational, stable across
+a full planning or budget cycle, Refreeze confirmed
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-05       Training &           Design and deliver role-based training
+              Capability           against the new workflows
+              Enablement           
+
+  MP-07       Readiness            Run the baseline and recurring ADKAR /
+              Diagnostics & Signal Bridges / Kübler-Ross pulses
+              Capture              
+
+  MP-08       Divergence & Risk    Cross-reference delivery-track progress
+              Detection            against people-track readiness and
+                                   escalate divergence
+
+  MP-09       Hypercare & Floor    Activate elevated support on go-live
+              Coaching Support     day and coach cohorts showing
+                                   regression
+
+  MP-10       Reinforcement &      Embed new-process metrics, run
+              Sustainment          60/90-day checkpoints, confirm Refreeze
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-06 ADKAR Engine
+
+-   M-07 Emotional & Transition Layer
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+-   M-10 Training & Capability Building
+
+-   M-11 Resistance Management
+
+-   M-12 Manager-as-Coach Enablement
+
+-   M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Program/Project Manager (PM), Executive Sponsor
+(ES), Functional Process Owner (FPO), HR Business Partner, Frontline
+Supervisor (SUP)
+
+BPMN Diagram — Process Flow
+
+  ---------------------------------------------------------------------------
+  Step        Sequential Activity                         Macro Process /
+                                                          Note
+  ----------- ------------------------------------------- -------------------
+  MP-01.1-5   Assess the current operating model across   Change Impact &
+              structure, governance, decision rights,     Stakeholder
+              capabilities and locations                  Assessment
+
+  MP-02.1-5   Sustain backing through the detailed org    Sponsorship &
+              design                                      Governance
+                                                          Management
+
+  MP-03.1-5   Be honest about what is and isn’t yet       Communication &
+              decided                                     Awareness
+                                                          Management
+
+  MP-05.1-5   Build capability in the new governance      Training &
+              forums and decision-rights model            Capability
+                                                          Enablement
+
+  MP-07.1-5   Track whether decisions are actually        Readiness
+              flowing through the new structure           Diagnostics &
+                                                          Signal Capture
+
+  MP-08.1-5   Catch managers who operate the new          Divergence & Risk
+              structure competently while still           Detection
+              emotionally tied to the old one             
+
+  MP-09.1-5   Provide support through the full            Hypercare & Floor
+              organizational transition                   Coaching Support
+
+  MP-10.1-5   Confirm the new structure has survived a    Reinforcement &
+              full planning or budget cycle without       Sustainment
+              reverting                                   Management
+  ---------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-COMP — Compliance-Driven Change Lifecycle
+
+  Status: Proposed extension
+
+Detailed Description
+
+The Compliance-Driven Change lifecycle tracks the human side of change
+mandated by an external regulatory, legal or contractual requirement —
+implemented to bring the organization into, and keep it in, compliance.
+The human change challenge is distinctive: an externally fixed deadline
+carries real legal, financial or licensing consequences for missing it,
+which shifts the change-management emphasis toward Awareness and
+mandatory Knowledge — rules must be followed exactly. Stakeholder impact
+assessment (MP-01) must assess current controls against the regulatory
+requirement, not just processes. Sponsorship (MP-02) must sustain
+backing through the fixed deadline. Communication (MP-03) must be honest
+that the change is not optional. Training (MP-05) must produce
+demonstrable Knowledge, not just attendance — a completion checkbox
+alone will not satisfy a regulator. Readiness diagnostics (MP-07) must
+track control operation, not just sentiment. Divergence detection
+(MP-08) catches resentment at a mandatory change rather than genuine
+loss. Hypercare (MP-09) provides support through the first live
+compliance-monitoring cycle. Sustainment (MP-10) hands ongoing
+monitoring to the permanent control owner. This chain operationalizes
+the Compliance-specific failure mode: “Training completion mistaken for
+compliance” is guarded against by MP-07’s control-operation tracking and
+MP-09’s first live monitoring cycle.
+
+Trigger: Regulatory requirement identified with fixed, enforceable
+deadline
+
+Terminal State: Controls live and enforceable, first
+compliance-monitoring cycle complete, ongoing monitoring handed to
+permanent owner
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-05       Training &           Design and deliver role-based training
+              Capability           against the new workflows
+              Enablement           
+
+  MP-07       Readiness            Run the baseline and recurring ADKAR /
+              Diagnostics & Signal Bridges / Kübler-Ross pulses
+              Capture              
+
+  MP-08       Divergence & Risk    Cross-reference delivery-track progress
+              Detection            against people-track readiness and
+                                   escalate divergence
+
+  MP-09       Hypercare & Floor    Activate elevated support on go-live
+              Coaching Support     day and coach cohorts showing
+                                   regression
+
+  MP-10       Reinforcement &      Embed new-process metrics, run
+              Sustainment          60/90-day checkpoints, confirm Refreeze
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-06 ADKAR Engine
+
+-   M-07 Emotional & Transition Layer
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+-   M-10 Training & Capability Building
+
+-   M-11 Resistance Management
+
+-   M-13 Reinforcement & Sustainment
+
+-   M-14 Change Risk Register
+
+Main Stakeholders
+
+Change Manager (CM), Program/Project Manager (PM), Executive Sponsor
+(ES), Legal/Compliance Lead, Functional Process Owner (FPO), Frontline
+Supervisor (SUP)
+
+BPMN Diagram — Process Flow
+
+  ---------------------------------------------------------------------------
+  Step        Sequential Activity                         Macro Process /
+                                                          Note
+  ----------- ------------------------------------------- -------------------
+  MP-01.1-5   Assess current controls against the         Change Impact &
+              regulatory requirement — not just processes Stakeholder
+                                                          Assessment
+
+  MP-02.1-5   Sustain backing through the fixed,          Sponsorship &
+              non-negotiable deadline                     Governance
+                                                          Management
+
+  MP-03.1-5   Be honest that the change is not optional   Communication &
+                                                          Awareness
+                                                          Management
+
+  MP-05.1-5   Produce demonstrable Knowledge — attendance Training &
+              alone is not enough                         Capability
+                                                          Enablement
+
+  MP-07.1-5   Track control operation, not just sentiment Readiness
+                                                          Diagnostics &
+                                                          Signal Capture
+
+  MP-08.1-5   Catch resentment at a mandatory change      Divergence & Risk
+              rather than genuine loss                    Detection
+
+  MP-09.1-5   Provide support through the first live      Hypercare & Floor
+              compliance-monitoring cycle                 Coaching Support
+
+  MP-10.1-5   Hand ongoing monitoring to the permanent    Reinforcement &
+              control owner; Refreeze means the           Sustainment
+              monitoring cadence is sustainable           Management
+  ---------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+E2E-TSD — Training & Skills Development Lifecycle
+
+  Status: Proposed extension
+
+Detailed Description
+
+The Training & Skills Development lifecycle tracks capability-building
+as the primary transformation vehicle — where the change itself is
+fundamentally about equipping people with new skills, rather than
+changing a system, process, structure or culture. This archetype is
+distinctive because the “what” of the change (the new capability) is
+also the primary mechanism of adoption: people become ready for the
+change by acquiring the skills the change requires. Stakeholder impact
+assessment (MP-01) must identify skills gaps and training needs by role.
+Sponsorship (MP-02) must sustain backing through the training rollout.
+Communication (MP-03) must frame the training as an opportunity, not a
+burden. Training and capability enablement (MP-05) is the core of this
+chain — curriculum design, delivery, competency verification and
+remediation. The champion network (MP-06) extends peer support and
+coaching. Readiness diagnostics (MP-07) tracks training completion and
+competency verification — the Composite Readiness Index’s training
+component carries extra weight. Divergence detection (MP-08) catches the
+“trained but not capable” pattern. Hypercare (MP-09) provides on-the-job
+coaching and reinforcement. Sustainment (MP-10) embeds the new skills
+into performance management and ongoing development. This chain
+operationalizes the Training-specific reality: “Trained” and “capable”
+are not the same thing — Module 10 explicitly separates attendance from
+demonstrated competency.
+
+Trigger: Skills gap identified, new capability required, or training
+mandate approved
+
+Terminal State: Target population competent (verified by assessment),
+performance sustained, training embedded in ongoing development
+
+Related Macro Processes
+
+  ------------------------------------------------------------------------
+  Macro       Name                 Description
+  Process                          
+  ----------- -------------------- ---------------------------------------
+  MP-01       Change Impact &      Identify all stakeholder groups and
+              Stakeholder          cohorts impacted by the change
+              Assessment           
+
+  MP-02       Sponsorship &        Secure and maintain visible, active
+              Governance           executive sponsorship throughout the
+              Management           initiative
+
+  MP-03       Communication &      Develop the phased communication plan
+              Awareness Management (why/what/when) aligned to the timeline
+
+  MP-05       Training &           Design and deliver role-based training
+              Capability           against the new workflows
+              Enablement           
+
+  MP-06       Champion Network     Recruit, equip and coordinate a peer
+              Management           champion network
+
+  MP-07       Readiness            Run the baseline and recurring ADKAR /
+              Diagnostics & Signal Bridges / Kübler-Ross pulses
+              Capture              
+
+  MP-08       Divergence & Risk    Cross-reference delivery-track progress
+              Detection            against people-track readiness and
+                                   escalate divergence
+
+  MP-09       Hypercare & Floor    Activate elevated support on go-live
+              Coaching Support     day and coach cohorts showing
+                                   regression
+
+  MP-10       Reinforcement &      Embed new-process metrics, run
+              Sustainment          60/90-day checkpoints, confirm Refreeze
+              Management           
+  ------------------------------------------------------------------------
+
+Related Modules
+
+-   M-05 Stakeholder & Impact Mapping
+
+-   M-06 ADKAR Engine
+
+-   M-07 Emotional & Transition Layer
+
+-   M-08 Sponsor & Coalition Module
+
+-   M-09 Communication Planning & Execution
+
+-   M-10 Training & Capability Building
+
+-   M-12 Manager-as-Coach Enablement
+
+-   M-13 Reinforcement & Sustainment
+
+Main Stakeholders
+
+Change Manager (CM), Training Lead, Functional Process Owner (FPO),
+Program/Project Manager (PM), Frontline Supervisor (SUP), End User (EU),
+Executive Sponsor (ES)
+
+BPMN Diagram — Process Flow
+
+  ---------------------------------------------------------------------------
+  Step        Sequential Activity                         Macro Process /
+                                                          Note
+  ----------- ------------------------------------------- -------------------
+  MP-01.1-5   Identify skills gaps and training needs by  Change Impact &
+              role                                        Stakeholder
+                                                          Assessment
+
+  MP-02.1-5   Sustain backing through the training        Sponsorship &
+              rollout                                     Governance
+                                                          Management
+
+  MP-03.1-5   Frame training as an opportunity, not a     Communication &
+              burden                                      Awareness
+                                                          Management
+
+  MP-05.1     Design role-based training content and      Training &
+              assessments — the core of this chain        Capability
+                                                          Enablement
+
+  MP-05.2     Deliver instructor-led and/or e-learning    Training &
+              training to all impacted cohorts            Capability
+                                                          Enablement
+
+  MP-05.3     Publish job aids and quick-reference        Training &
+              guides, and maintain a practice sandbox     Capability
+                                                          Enablement
+
+  MP-05.4     Run Knowledge/Ability assessments per       Training &
+              cohort and log scores — "trained" vs        Capability
+              "capable"                                   Enablement
+
+  MP-05.5     Identify and remediate cohorts scoring      Training &
+              below the readiness threshold               Capability
+                                                          Enablement
+
+  MP-06.1-5   Extend peer support and coaching through    Champion Network
+              the champion network                        Management
+
+  MP-07.1-5   Track training completion and competency    Readiness
+              verification                                Diagnostics &
+                                                          Signal Capture
+
+  MP-08.1-5   Catch the "trained but not capable" pattern Divergence & Risk
+                                                          Detection
+
+  MP-09.1-5   Provide on-the-job coaching and             Hypercare & Floor
+              reinforcement                               Coaching Support
+
+  MP-10.1-5   Embed new skills into performance           Reinforcement &
+              management and ongoing development          Sustainment
+                                                          Management
+  ---------------------------------------------------------------------------
+
+BPMN Diagram — RASCI
+
+R = Responsible · A = Accountable · C = Consulted · S = Supervised (kept
+informed and monitors execution) · I = Informed
+
+  ------------------------------------------------------------------------
+  Macro        R           A           C           S           I
+  Process                                                      
+  ------------ ----------- ----------- ----------- ----------- -----------
+  MP-01        CM          CM          PM, FPO     SUP, ITL    ES, EU
+
+  MP-02        CM          ES          PM          FPO         SUP, ITL,
+                                                               EU
+
+  MP-03        CM          CM          PM, FPO     SUP         ITL, EU
+
+  MP-05        CM          CM          FPO, ITL    PM, SUP     ES, EU
+
+  MP-06        CM          CM          SUP         FPO         ES, PM, EU
+
+  MP-07        CM          CM          FPO, ITL    PM          ES, SUP, EU
+
+  MP-08        CM          CM          ITL, FPO    PM          ES, SUP, EU
+
+  MP-09        SUP         CM          FPO, ITL    PM          ES, EU
+
+  MP-10        CM          ES          PM, FPO     SUP         ITL, EU
+  ------------------------------------------------------------------------
+
+Document Control
+
+Version History
+
+  --------------------------------------------------------------------------
+  Version   Date         Author               Summary of Changes
+  --------- ------------ -------------------- ------------------------------
+  1.0       August 2026  POWERACT Consulting  Initial catalogue: 4
+                                              registered E2E processes
+                                              (D32h) plus 4 proposed
+                                              extensions (E2E-05 through
+                                              E2E-08), each grounded in
+                                              cross-references already
+                                              present in the D01
+                                              macro-process descriptions.
+
+  1.1       August 2026  POWERACT Consulting  Removed all references to the
+                                              journi Development Readme (the
+                                              "Related Phase (Readme)"
+                                              subsections, the Readme
+                                              development-phase table, and
+                                              the associated
+                                              source-deliverable entry).
+                                              Added 8
+                                              transformation-type-specific
+                                              E2E processes (E2E-ERP,
+                                              E2E-BPR, E2E-BPA, E2E-IMS,
+                                              E2E-CULT, E2E-OM, E2E-COMP,
+                                              E2E-TSD), bringing the
+                                              catalogue to 16 total E2E
+                                              processes.
+  --------------------------------------------------------------------------
+
+Source Deliverables
+
+  -----------------------------------------------------------------------
+  Deliverable               Role in This Catalogue
+  ------------------------- ---------------------------------------------
+  D01 — Macro Processes     Source of macro-process names, RACSI, and
+                            Associated_Module fields used throughout.
+
+  D02 — Tasks and Steps     Source of the canonical 5-task sequence per
+                            macro process used in every Process Flow
+                            table.
+
+  D26 — Modules and Tiers   Source of module names referenced in Related
+                            Modules.
+
+  D32h — End-to-End Process Source of the 4 formally registered E2E
+  Registry                  processes (E2E-01 through E2E-04).
+
+  D32d / D32e — Phase Gate  Source of the governance artifact referenced
+  / Joint Decision Record   by E2E-06's extra terminal step.
+
+  D21 — Project Registry    Source of the 13 seed projects that ground
+                            the transformation-type examples.
+
+  journi Functional         Source of the seven transformation project
+  Specification v1.3        types (Section 6) behind the new extensions.
+
+  journi Transformation     Source of type-specific phase sequences and
+  Types User Guide          failure modes (Sections 3, 4, 5) behind the
+                            new extensions.
+  -----------------------------------------------------------------------
+
+Approval
+
+  ------------------------------------------------------------------------
+  Role              Name              Signature         Date
+  ----------------- ----------------- ----------------- ------------------
+  Prepared By                                           
+
+  Reviewed By                                           
+
+  Approved By                                           
+  ------------------------------------------------------------------------

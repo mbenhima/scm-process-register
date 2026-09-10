@@ -1,0 +1,13 @@
+D23 — Journey Stage Templates (J0-J8),,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,
+Stage_ID,Stage_Name,Description,Linked_Macro_ID,Linked_Task_ID,Linked_Step_ID
+J0,Trigger & Awareness,"The pre-phase: a business driver, mandate, or event creates the initial case for change, before formal Discovery begins.",MP-01,TASK-0101,STEP-01011
+J1,Discovery & Diagnosis,"Current-state discovery, pain-point quantification, and future-state scope definition; baseline framework pulse.",MP-07,TASK-0701,STEP-07011
+J2,Design & Planning,"Future-state design, governance charter set-up, communication plan and stakeholder map construction.",MP-01,TASK-0103,STEP-01031
+J3,Build & Configuration,Technical build/configuration proceeds alongside participative-management and communication cadence.,MP-03,TASK-0301,STEP-03011
+J4,Testing & Training,SIT/UAT testing runs alongside training delivery and Knowledge/Ability assessment; Divergence Pattern checks begin.,MP-05,TASK-0504,STEP-05041
+J5,Deployment / Go-Live,"Cutover execution, go-live communication, and hypercare activation — the sharpest instance of the two-clock problem (Exception E3).",MP-09,TASK-0901,STEP-09011
+J6,Stabilization & Hypercare,"Elevated floor-coaching support, sentiment-regression monitoring and incident-linked coaching, tapering as metrics stabilize.",MP-09,TASK-0903,STEP-09031
+J7,Reinforcement,Reinforcement mechanisms embedded into standard performance management; 60/90-day checkpoint audits begin.,MP-10,TASK-1002,STEP-10021
+J8,Sustainment & Closure,"Formal Refreeze confirmation from evidence, sustainment sign-off, and hand-off to Business-as-Usual ownership.",MP-10,TASK-1005,STEP-10051
+🔗 Linked_Macro_ID → D01 · Linked_Task_ID → D02 · Linked_Step_ID → D02. Nine stages (J0-J8) mapping cleanly onto the ERP Guide's 8-phase model plus a J0 pre-phase; used to seed new D27 Stakeholder Journeys via D17 CAT-12.,,,,,

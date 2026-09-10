@@ -1,0 +1,18 @@
+D19 — Automation Decision Matrix (Updated),,,,,,,,,,,,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,,,,,,,,,,,,
+Level,Object_ID,Human_Score,Workflow_Score,RPA_Score,AI_Score,HITL_Required,HITL_Checkpoint_Type,Final_Mode,Technical_Feasibility,Implementation_Complexity,Priority,Wave,Forecast_ROI,Forecast_VOI,Realized_ROI,Realized_VOI,Heatmap_Quadrant
+UseCase,AIUC-01,2,3,1,5,Yes,Post-generation review (Assistive),AI + HITL,High,Medium,P1,Wave 1,6000,9000,5200,8100,High Value / High Feasibility
+UseCase,AIUC-02,2,2,1,5,Yes,Post-generation review (Assistive),AI + HITL,High,Low,P1,Wave 1,4000,7000,3600,6400,High Value / High Feasibility
+UseCase,AIUC-05,1,4,1,5,Yes,Post-generation review (Assistive),AI + HITL,High,Medium,P0,Wave 1,5500,9500,5000,8600,High Value / High Feasibility
+UseCase,AIUC-08,2,3,1,4,Yes,Pre-send review (Augmented),AI + HITL,Medium,Medium,P1,Wave 1,4500,7500,4000,6900,High Value / Medium Feasibility
+UseCase,AIUC-14,1,3,1,5,Yes,Post-generation review (Augmented),AI + HITL,High,High,P0,Wave 1,7000,11000,6400,9800,High Value / Medium Feasibility
+UseCase,AIUC-15,2,2,1,4,Yes,Pre-distribution review (Augmented),AI + HITL,Medium,Medium,P2,Wave 2,5000,9000,4600,8200,Medium Value / Medium Feasibility
+UseCase,AIUC-16,3,2,1,3,Yes,Post-generation review (Assistive),AI + HITL,Medium,Low,P3,Wave 2,2500,4000,2100,3600,Low Value / High Feasibility
+Step,STEP-01011,1,4,2,1,No,N/A — pure system import,Workflow,High,Low,P1,Wave 1,-,-,-,-,High Feasibility / Low AI Fit
+Step,STEP-07031,4,2,1,1,No,N/A — human survey response,Human,High,Low,P1,Wave 1,-,-,-,-,High Feasibility / Low AI Fit
+Step,STEP-05041,1,4,1,2,No,N/A — deterministic threshold check,Workflow,High,Low,P0,Wave 1,-,-,-,-,High Feasibility / Low AI Fit
+Step,STEP-08011,1,3,1,4,Yes,Post-detection review before escalation,Workflow + AI + HITL,High,Medium,P0,Wave 1,-,-,-,-,High Value / High Feasibility
+Step,STEP-0003,2,4,1,1,No,N/A — deterministic validation rule (RULE-001),Workflow,High,Low,P0,Wave 1,-,-,-,-,High Feasibility / Low AI Fit
+Task,TASK-0301,2,4,1,3,Yes,Pre-approval review of AI-drafted copy,Workflow + AI + HITL,Medium,Medium,P1,Wave 1,-,-,-,-,Medium Value / Medium Feasibility
+Task,TASK-1003,1,3,1,4,Yes,Review before checkpoint sign-off,Workflow + AI + HITL,High,Medium,P0,Wave 1,-,-,-,-,High Value / High Feasibility
+"Level = Step | Task | UseCase; Object_ID references D02 (Step_ID/Task_ID) or D15/D15c (AI_Use_Case_ID/Custom_AIUC_ID). HITL_Required = Yes wherever Final_Mode includes AI, consistent with journi's platform-wide rule that no AI Use Case Library output acts without a human checkpoint (CTRL-006) — the matrix never recommends a pure-AI Final_Mode for that reason. RPA_Score is uniformly low: journi has no unattended-bot execution surface (see D14 RPA_Tasks_Count = 0 note).",,,,,,,,,,,,,,,,,

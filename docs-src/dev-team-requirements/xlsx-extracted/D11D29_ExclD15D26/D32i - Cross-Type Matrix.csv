@@ -1,0 +1,11 @@
+D32i — Cross-Type Comparison Matrix — Corrected,,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,,
+Transformation_Type,Typical_Duration,Terminal_Gate,External_Party_Involvement,Dominant_Framework,Reversibility,Source_Guide,Seed_Project_Example
+ERP Implementation,12 months (illustrative),"Cutover & Go-Live (Phase 6, Week 37)",Not typically,Knowledge / Ability (balanced across both),Low once live — data migration and cutover are costly to reverse,journi ERP Implementation User Guide,"PRJ-001, PRJ-004, PRJ-007"
+Business Process Reengineering,6-12 months per major process,Full rollout,Not typically,Ability,Moderate,"journi Transformation Types Guide, §4.1 / §6",PRJ-010
+Business Process Automation (Full Track),3-9 months per workflow,Production go-live,Not typically,Ability / Reinforcement,Low once live,"journi Transformation Types Guide, §4.2 / §6","PRJ-002, PRJ-005, PRJ-008"
+"Integrated Management System (e.g., QHSE)",6-14 months,Certifying audit (external),Yes — certification body,Knowledge,Low — the audit is external,"journi Transformation Types Guide, §4.3 / §6","PRJ-003, PRJ-006, PRJ-009"
+Cultural / Values Transformation,18-36 months,Org-wide rollout,Not typically,Bridges / Kübler-Ross,High — but slow to fix,"journi Transformation Types Guide, §4.4 / §6",PRJ-011
+Operating Model Redesign,9-18 months from diagnosis,Full transition,Not typically,Awareness / Ability,Low once transitioned,"journi Transformation Types Guide, §4.5 / §6",PRJ-012
+Compliance-Driven Change,Driven by the external deadline,Enforceable date (external),Often — regulator,Awareness / Knowledge,None — fixed deadline,"journi Transformation Types Guide, §4.6 / §6",PRJ-013
+"Realizes D13 REQ-023. SOURCE: journi Transformation Types Guide, Section 6 (Cross-Type Comparison Matrix, 6 types) plus the ERP Implementation User Guide (ERP), transcribed verbatim — CORRECTED from the prior revision, which estimated these values before the authoritative source guides had been read. Every Seed_Project_Example references an actual D21 project. Surfaces as a filterable comparison view on the Module 15 (D08 RPT-006 Change Management Benchmarking) dashboard.",,,,,,,

@@ -1,0 +1,24 @@
+,journi
+,"Deliverables Structure — D01 to D10, D15 & D26"
+,Populated Reference Data Set — companion to the D11-D29 Full Specs workbook
+,POWERACT Consulting
+,August 2026 · Confidential
+,Contents
+,Deliverable
+,"D01 — Macro Processes: 10 macro processes (MP-01 – MP-10) with SIPOC, RACSI, BPMN & governance metadata"
+,"D02 — Tasks and Steps: All 50 canonical tasks (5 per macro process) decomposed into steps, plus the PDD's worked exception example"
+,"D03 — Business Rules + DMN: 24 decision-table rules governing readiness gates, escalation and validation"
+,"D03a — Actions Registry: 26 actions triggered by rules, controls, risks, alerts, AI detections"
+,"D04 — Controls: 18 governance, security and process controls with COSO mapping"
+,"D05 — Risks: 16 risks spanning adoption, sponsorship, saturation, security and compliance categories"
+,"D06 — KPI + Automation KPI Library: 20 readiness, adoption and automation KPIs with formulas and thresholds"
+,"D07 — Alerts: 16 trigger-based alerts with severity, escalation and notification routing"
+,D08 — Reports / Cockpits: 14 dashboards and reporting packs by audience and refresh cadence
+,"D09 — Information Class Model: 35 core journi data entities (object classes), at least one per module"
+,D10 — Data Dictionary: 71 attribute-level definitions spanning 21 of D09's object classes
+,D15 — AI Use Cases: All 16 seeded AI Use Case Library entries (Assistive/Augmented) verbatim from Module 17
+,D15b — AI Governance Matrix: Activate/deactivate/add/customize capability — what's in base spec vs. extended in this design
+,"D15c — Custom AI Use Cases: Org/Project-authored AI use cases beyond the 16 seeded ones, with approval workflow"
+,"D15d — AI Prompt Template Registry: Versioned, scoped prompt/instruction templates per AI use case (global default + org/project overrides)"
+,"D26 — Modules and Tiers: journi's 19 functional modules mapped to packaging tier, licensing model and API rate limit"
+,"Scope: this workbook covers exactly D01-D10, D15 and D26 from the 'Deliverables Structure — PDD' source document. D11-D29 (excluding D15/D26, already here) live in the separate companion workbook so each source PDD's scope stays in its own file. D15's AI Use Case Library carries three companion sheets (D15b/c/d) added in a later turn to support activate/deactivate/add/customize AI use case capability — these extend D15 directly, so they stayed with D15 in this file rather than moving to the D11-D29 workbook. D30 (Licensing Implementation Schema) and the D31 Change Management Charters series are NOT part of this file — see the D11-D29 workbook's cover sheet for the charters numbering note."
