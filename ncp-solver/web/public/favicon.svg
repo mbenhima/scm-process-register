@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="NCP Solver">
+  <defs>
+    <linearGradient id="ncpRing" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#F5C518"/>
+      <stop offset="30%" stop-color="#F8931D"/>
+      <stop offset="55%" stop-color="#5AA469"/>
+      <stop offset="78%" stop-color="#3AA6A0"/>
+      <stop offset="100%" stop-color="#3A6EA5"/>
+    </linearGradient>
+    <linearGradient id="ncpMark" x1="20%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#5AA9E6"/>
+      <stop offset="100%" stop-color="#1D4E89"/>
+    </linearGradient>
+    <radialGradient id="dotOrange" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#FDC073"/>
+      <stop offset="100%" stop-color="#E07B00"/>
+    </radialGradient>
+    <radialGradient id="dotBlue" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#8FC1F2"/>
+      <stop offset="100%" stop-color="#1D4E89"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="50" cy="50" r="41" fill="none" stroke="url(#ncpRing)" stroke-width="7"/>
+
+  <circle cx="50" cy="10.5" r="6.2" fill="url(#dotOrange)"/>
+  <circle cx="17" cy="36" r="5.4" fill="url(#dotOrange)"/>
+  <circle cx="83" cy="36" r="5.6" fill="url(#dotBlue)"/>
+
+  <path d="M35 68 L35 33 L61 63 L61 30" fill="none" stroke="url(#ncpMark)" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M55 22 L69 19 L66 33" fill="none" stroke="url(#ncpMark)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

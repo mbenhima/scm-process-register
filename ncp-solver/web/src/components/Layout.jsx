@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { api } from '../lib/api.js';
+import logoMark from '../assets/ncp-solver-logo.svg';
 
 function NavItem({ to, label, icon }) {
   return (
@@ -58,7 +59,7 @@ export default function Layout() {
       <aside className="w-64 shrink-0 border-e border-grey-line bg-white flex flex-col">
         <div className="px-4 py-5 border-b border-grey-line">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-md bg-orange flex items-center justify-center text-white font-title font-bold text-lg">N</div>
+            <img src={logoMark} alt="NCP Solver" className="h-9 w-9 shrink-0" />
             <div>
               <div className="font-title font-bold text-grey-dark leading-tight">{t('appName')}</div>
               <div className="text-[11px] text-grey-medium leading-tight">{t('tagline')}</div>
