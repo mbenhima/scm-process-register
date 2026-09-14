@@ -1,0 +1,20 @@
+{
+  "name": "journi-server",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "journi backend — Express API + SQLite persistence; also serves the built frontend.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^11.3.0"
+  }
+}

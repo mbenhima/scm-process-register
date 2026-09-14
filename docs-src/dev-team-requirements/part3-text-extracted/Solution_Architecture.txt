@@ -1,0 +1,787 @@
+=== SLIDE 1 ===
+Part 1 — Introduction
+1
+SOLUTION ARCHITECTURE
+An Application-Agnostic Deep-Dive into a Fully Traceable Platform Architecture
+Synthesizing 46 governing deliverables (D01–D32k, incl. D03a, D19b & the D32 infrastructure series) into one coherent architecture narrative.
+Senior Technical Architect & Principal Consultant  ·  Six Parts
+[NOTES] Title slide. Emphasize: this deck is application-agnostic by design — describing an architecture pattern any platform following this deliverable structure could implement, illustrated here with one fully-built reference implementation's real data.
+=== SLIDE 2 ===
+Part 1 — Introduction
+2
+AGENDA
+Six Parts, One Traceability Chain
+1
+Introduction & Solution Overview
+Scope, headline metrics, how 46 deliverables fit together
+2
+Deliverables D01 → D10
+Business architecture — process, rules, controls, risk, KPIs, data
+3
+Deliverables D11 → D20
+Integration, requirements, workflow orchestration, AI, tenancy
+4
+Deliverables D21 → D30
+Project governance, adoption journeys, packaging, licensing
+5
+Integration & Data Architecture
+Connectors, event flow, data foundations
+6
+Closing & Next Steps
+Key takeaways, metrics summary, roadmap
+[NOTES] Walk the six-part structure. Part 2-4 map directly onto the deliverable numbering so the audience can navigate back to source data at any point.
+=== SLIDE 3 ===
+Part 1 — Introduction
+3
+SOLUTION AT A GLANCE
+46 Governing Deliverables, One Data Model
+10
+Macro-Processes
+105
+Process Steps
+24
+Business Rules
+18
+Controls
+16
+Risks Tracked
+20
+KPIs
+35
+Object Classes
+16
+AI Use Cases
+18
+Licensable Modules
+Every requirement, rule, control, and KPI traces back to a macro-process, a task, or a step — nothing in the platform exists without a documented reason.
+16
+Alerts Defined
+14
+Reports/Cockpits
+15
+Requirements
+106
+BPMN Tasks
+8
+Stakeholder Journeys
+13
+Seed Projects
+12
+Reusable Catalogs
+[NOTES] Headline dashboard. All figures pulled directly from the validated deliverable set — reuse these exact numbers on every later slide (checklist requirement: metric consistency).
+=== SLIDE 4 ===
+Part 1 — Introduction
+4
+TRACEABILITY
+How the 46 Deliverables Fit Together
+D01
+Macro-
+Processes
+→
+D02
+Tasks &
+Steps
+→
+D03/03a
+Rules &
+Actions
+→
+D04/05
+Controls &
+Risks
+→
+D06-08
+KPIs, Alerts,
+Reports
+→
+D09/10
+Data
+Model
+→
+D11-20
+Interfaces,
+AI, Workflow
+→
+D21-29
+Projects &
+Journeys
+→
+D30
+Licensing
+→
+D32-32k
+Infra & WBS
+(NEW)
+A macro-process (D01) decomposes into tasks and steps (D02); each step may trigger a business rule (D03) executing an action (D03a); actions are governed by controls (D04) and mitigate risks (D05); outcomes are measured by KPIs (D06) and surfaced via alerts (D07) and reports (D08) built on a canonical data model (D09/D10). That same process backbone drives the integration surface, AI use cases and requirements (D11-D20), governs how it's delivered, adopted and licensed (D21-D30), and — added in this revision to close gaps against Functional Specification v1.3 — is scheduled, gated and infrastructure-hardened by the D32 series.
+[NOTES] The single most important slide in Part 1 — establishes that nothing is orphaned. Point to this diagram again in Part 6's takeaways slide.
+=== SLIDE 5 ===
+Part 2
+5
+PART 2
+Deliverables D01 → D10
+Business architecture: process definition, rules, controls, risk, performance, and data
+[NOTES] Section divider for Part 2.
+=== SLIDE 6 ===
+Part 2 — D01-D10
+6
+BUSINESS ARCHITECTURE
+D01 — Macro-Processes
+10 macro-processes | 6 Operational · 2 Management · 2 Support
+Breakdown
+Operational (6)
+Management (2)
+Support (2)
+Representative Detail
+▸  MP-01 Change Impact & Stakeholder Assessment — Operational — scores impact across 5 dimensions, gated by human confirmation
+▸  MP-07 Readiness Diagnostics & Signal Capture — Support — consolidates every framework reading into one Composite Readiness Index
+▸  MP-10 Reinforcement & Sustainment Management — Management — confirms Refreeze from evidence, not the calendar
+[NOTES] 10 macro-processes form the entire process backbone — every other deliverable in the D01-D10 range traces back to one of these 10 IDs.
+=== SLIDE 7 ===
+Part 2 — D01-D10
+7
+BUSINESS ARCHITECTURE
+D02 — Tasks & Steps
+50 tasks | 105 steps | 47 Service · 41 User · 14 AI · 2 Gateway · 1 End Event
+Breakdown
+Service Task (47)
+User Task (41)
+AI Task (14)
+Gateway (2)
+End Event (1)
+Representative Detail
+▸  Sample decomposition — MP-07 Readiness Diagnostics & Signal Capture — 5 tasks, 10 steps
+▸  Task 1: Run the baseline pulse (Start Event -> Capture Responses)
+▸  Task 3: Run rapid pulse around go-live (the platform's own worked exception-handling example — postal-code validation, 3-attempt retry, Admin escalation)
+▸  Task 5: Report readiness trends (AI-drafted narrative -> human approval before distribution)
+[NOTES] Decomposition pattern: Macro-Process -> Tasks (5 per process, canonical) -> Steps (2 per task, plus the platform's own worked exception-handling example). BPMN element type is assigned per step.
+=== SLIDE 8 ===
+Part 2 — D01-D10
+8
+BUSINESS ARCHITECTURE
+D03 — Business Rules (DMN)
+24 business rules | 8 Gate · 4 Validation · 3 Scoring · 3 Quota · 2 Detective · 2 Enforcement · 2 Compliance
+Breakdown
+Gate (8)
+Validation (4)
+Scoring (3)
+Quota (3)
+Detective (2)
+Enforcement (2)
+Compliance (2)
+Representative Detail
+▸  Sample: RULE-008 Divergence Pattern Detection
+▸  Input: Knowledge score >= 3 AND Ability score >= 3 AND Emotional-transition reading = 'Ending'
+▸  Output: DivergenceDetected = true/false — Detects a person or cohort who is technically capable but not yet emotionally transitioned — a hidden-resistance signal invisible to skills data alone.
+[NOTES] Every rule is a DMN-style decision table: named inputs, a condition expression, and a typed output, with linked actions for both the true and false outcome.
+=== SLIDE 9 ===
+Part 2 — D01-D10
+9
+BUSINESS ARCHITECTURE
+D04 — Controls
+18 controls | 15 Preventive · 3 Detective
+Breakdown
+Preventive (15)
+Detective (3)
+Representative Detail
+▸  CTRL-003 Justification Governance on Score Changes — Blocks any state-changing save across 8 core modules without a logged justification
+▸  CTRL-006 AI Human-in-the-Loop Checkpoint Enforcement — No AI output takes effect until a human accepts, edits, or rejects it
+▸  CTRL-012 Phase Gate Single-Accountable Enforcement — Every governance decision names exactly one Accountable role — never 'the system'
+[NOTES] Control lifecycle fields include type, frequency, owner, test script, automation status and measured effectiveness — every control maps to a COSO component.
+=== SLIDE 10 ===
+Part 2 — D01-D10
+10
+BUSINESS ARCHITECTURE
+D05 — Risks
+16 risks | 8 Operational · 3 Compliance · 3 Security · 2 Strategic
+Breakdown
+Operational (8)
+Compliance (3)
+Security (3)
+Strategic (2)
+Representative Detail
+▸  RISK-001 Widespread Resistance Undermines Adoption — Inherent 16 → Residual 9
+▸  RISK-011 Unauthorized Data Access / Privilege Escalation — Inherent 20 → Residual 6
+▸  RISK-003 Sponsor Disengagement / Attrition — Inherent 15 → Residual 8
+▸  RISK-006 Ungoverned AI-Generated Content Reaches Stakeholders — Inherent 16 → Residual 4
+[NOTES] Risk scoring shows inherent vs. residual score explicitly — the delta is the demonstrated value of the control set, not just a static rating.
+=== SLIDE 11 ===
+Part 2 — D01-D10
+11
+BUSINESS ARCHITECTURE
+D06 — KPIs
+20 KPIs | 14 Operational · 5 Strategic · 1 Middle
+Breakdown
+Operational (14)
+Strategic (5)
+Middle (1)
+Representative Detail
+▸  Survey Exception Automation Rate — Forecast ROI 12,500 → Actual 11,800 (92% of forecast realized)
+▸  AI Suggestion Acceptance Rate — Forecast ROI 8,000 → Actual 7,400 (88% of forecast realized)
+▸  Value Leakage Prevented (Automation-Wide) — Forecast ROI 40,500 → Actual 37,200 (90% of forecast realized)
+[NOTES] Automation-flagged KPIs carry Forecast vs. Actual ROI/VOI side by side — this is the same ROI discipline referenced again in D15 (AI) and D19 (automation matrix) for consistency.
+=== SLIDE 12 ===
+Part 2 — D01-D10
+12
+BUSINESS ARCHITECTURE
+D07 — Alerts
+16 alerts | 5 High · 6 Medium · 2 Low · 2 Informational · 1 Critical
+Breakdown
+Critical (1)
+High (5)
+Medium (6)
+Low (2)
+Informational (2)
+Representative Detail
+▸  ALT-002 Regression Risk Score Critical -> RULE-002 = true -> escalates to Change Manager + Supervisor (24h SLA) -> Sponsor if unresolved 7 days
+▸  Every alert names a Rule_Condition (D03), a Linked_Action_ID (D03a), and an explicit multi-level escalation path.
+[NOTES] Alert flow: Trigger -> Severity -> Escalation Level -> Notification Channel -> SLA Breach Threshold, always resolving to a named recipient role.
+=== SLIDE 13 ===
+Part 2 — D01-D10
+13
+BUSINESS ARCHITECTURE
+D08 — Reports / Dashboards
+14 reports | 9 Operational · 3 Tactical · 1 Executive · 1 Strategic
+Breakdown
+Operational (9)
+Tactical (3)
+Executive (1)
+Strategic (1)
+Representative Detail
+▸  RPT-001 Executive Readiness Dashboard — Sponsor, Executive Viewer (Gauge, KPI Cards, Line)
+▸  RPT-003 Change Risk & Divergence Cockpit — Change Manager, PMO (Bar, Heatmap)
+▸  RPT-014 WBS / Phase Gate Cockpit — Program/Project Manager, PMO (Gantt, KPI Cards)
+[NOTES] Reports are organized by audience, not just by data source — the same underlying KPI can surface differently for an Executive Viewer than for a Change Manager.
+=== SLIDE 14 ===
+Part 2 — D01-D10
+14
+BUSINESS ARCHITECTURE
+D09 — Information Class Model
+35 object classes | 18 Internal · 10 Confidential · 7 Restricted
+Breakdown
+Internal (18)
+Confidential (10)
+Restricted (7)
+Representative Detail
+▸  Core entities: Organization, Change Management Project, Stakeholder / Persona, Readiness Score, Risk...
+▸  Multi_Language_Supported flag on every entity carrying human-readable text (18 of 35 classes) — governed by a tenant default with per-user override.
+[NOTES] 35 object classes span the full hierarchy — from the tenant root down to a single AI suggestion instance — each with an explicit Data_Sensitivity classification.
+=== SLIDE 15 ===
+Part 2 — D01-D10
+15
+BUSINESS ARCHITECTURE
+D10 — Data Dictionary
+71 attributes across 21 of the 35 object classes
+Representative Detail
+▸  Sample — Change Management Project:
+▸  CM_Project_ID (UUID) — PK, indexed
+▸  Lewin_Phase (Enum) — Unfreeze / Change / Refreeze
+▸  Composite_Readiness_Index (Decimal) — 0-100, computed
+[NOTES] Every attribute carries Mandatory, Unique, PII_Flag, and Validation_Rule — the field-level contract every downstream integration payload (D12, Part 5) is built against.
+=== SLIDE 16 ===
+Part 3
+16
+PART 3
+Deliverables D11 → D20
+Integration, requirements, workflow orchestration, AI, tenancy, and reusable-catalog layer
+[NOTES] Section divider for Part 3.
+=== SLIDE 17 ===
+Part 3 — D11-D20
+17
+INTEGRATION LAYER
+D11 — Tools & Interfaces
+14 tools/interfaces — 12 native UI/API, 2 external integration points (LLM provider, SSO)
+Representative Detail
+▸  12 native UI/API surfaces (survey renderer, scoring grid, journey timeline, RACSI editor, Phase Gate widget...)
+▸  2 external integration points: a Real LLM Provider endpoint and Enterprise SSO
+[NOTES] The interface inventory distinguishes native platform surfaces from external integration points explicitly — useful for scoping any integration effort.
+=== SLIDE 18 ===
+Part 3 — D11-D20
+18
+INTEGRATION LAYER
+D12 — Physical Data Implementation
+30 physical columns across the highest-traffic tables — every table partitioned by tenant/project by default
+Representative Detail
+▸  Table: cm_projects
+▸  Table: risks
+▸  Table: ai_use_case_suggestions
+▸  Table: justification_log
+▸  Table: wbs_tasks
+▸  Table: charter_actions
+[NOTES] Design principles: multi-tenant partitioning by default, time-series-aware indexing on trend tables, and a defined retention period on every table — not bolted on after the fact.
+=== SLIDE 19 ===
+Part 3 — D11-D20
+19
+INTEGRATION LAYER
+D13 — Application Requirements
+15 requirements | 7 P0 · 3 P1 · 5 P2 | 9 Wave 1 · 1 Wave 2 · 5 Wave 3
+Breakdown
+P0 (7)
+P1 (3)
+P2 (5)
+Representative Detail
+▸  User story format: role -> capability -> reason, with linked UI/API/Workflow/AI/BPMN components
+▸  7 P0 requirements form the core MVP surface; 5 P2 items are the newer AI-extensibility and journey-tracking capabilities
+[NOTES] Wave assignment separates the core backbone (Wave 1, 9 requirements) from governance/orchestration extensions and the newer AI/journey capabilities (Wave 3, 5 requirements).
+=== SLIDE 20 ===
+Part 3 — D11-D20
+20
+INTEGRATION LAYER
+D14 — BPMN Workflow Orchestration
+11 executable workflows | 106 total tasks — 44 User, 48 Service, 14 AI, 0 RPA
+Breakdown
+Service Task (48)
+User Task (44)
+AI Task (14)
+Representative Detail
+▸  0 RPA tasks by design — every AI use case carries a mandatory human checkpoint, never an unattended-bot action.
+▸  10 workflows, each with exactly one Start Event and one End Event, gateway types (Exclusive) where a decision point exists
+[NOTES] Task-type counts are computed directly from the D02 task/step decomposition, not estimated separately — the two deliverables are guaranteed consistent by construction.
+=== SLIDE 21 ===
+Part 3 — D11-D20
+21
+INTEGRATION LAYER
+D15 — AI Use Cases
+16 AI use cases | 10 Assistive · 6 Augmented | 16 of 16 require human validation
+Breakdown
+Assistive (10)
+Augmented (6)
+Representative Detail
+▸  Every entry is Assistive or Augmented — Autonomous AI is explicitly out of scope. No AI output is permitted to take an irreversible action on its own.
+▸  16 of 16 use cases require human validation before output takes effect — 0 operate autonomously
+[NOTES] AI risk profile fields: Confidence_Threshold, Hallucination_Risk, Bias_Risk_Level, and Human_Validation_Required — every use case is governed the same way regardless of tier.
+=== SLIDE 22 ===
+Part 3 — D11-D20
+22
+INTEGRATION LAYER
+D16 — Tenants & Hierarchy
+9 tenants — 3 primary sector Organizations (Manufacturing, Logistics, Health) + 4 additional transformation-type Organizations + 2 Groups
+Representative Detail
+▸  Hierarchy: Group (optional) -> Organization -> Project, matching the platform's native RBAC scope model
+▸  Sample spans 3 sectors (Manufacturing, Logistics, Health) plus 4 additional named transformation types
+[NOTES] Tenant hierarchy is the same structure used for RBAC scope (Part 5, Section 4) — one model serves both organizational structure and access control.
+=== SLIDE 23 ===
+Part 3 — D11-D20
+23
+INTEGRATION LAYER
+D17 — Catalogs
+12 reusable catalogs (roles, RACSI codes, signal library, AI use cases, KPIs, risk taxonomy, charters, journey stages...)
+Representative Detail
+▸  12 catalogs: roles, RACSI codes, signal library, AI use cases, risk taxonomy, KPI library, phase templates, communication channels, charters, journey stages...
+▸  Each catalog flagged Common (platform-wide) or Tenant-overridable, with a Reuse_Score
+[NOTES] Catalogs are the reference-data layer every other deliverable draws controlled vocabulary from — this is what keeps D03 Rule_Type, D04 Control_Type, etc. consistent platform-wide.
+=== SLIDE 24 ===
+Part 3 — D11-D20
+24
+INTEGRATION LAYER
+D18 — Components
+11 reusable UI/functional components behind the 14 interfaces in D11
+Representative Detail
+▸  11 reusable UI/functional building blocks: scoring sliders, RAG heatmap cells, AI suggestion cards, RACSI grids, Phase Gate decision cards, prompt-template diff viewers...
+▸  Each component lists which of the 14 D11 interfaces reuse it
+[NOTES] Most interfaces compose 2-4 of these components rather than being built as one monolithic screen — this is the reuse layer behind the UI inventory.
+=== SLIDE 25 ===
+Part 3 — D11-D20
+25
+INTEGRATION LAYER
+D19 — Automation Decision Matrix
+15 scored items | 7 AI+HITL · 3 Workflow · 3 Workflow+AI+HITL · 1 Human-only | 12 Wave 1
+Breakdown
+AI + HITL (7)
+Workflow (3)
+Workflow + AI + HITL (3)
+Human (1)
+Representative Detail
+▸  Scoring dimensions: Human / Workflow / RPA / AI, each 1-5
+▸  HITL_Required = Yes wherever Final_Mode includes AI — no exceptions in the scored set
+▸  12 of 15 scored items are Wave 1 priority
+[NOTES] Final_Mode is never a pure-AI recommendation — the matrix encodes the platform's human-in-the-loop policy directly into the automation scoring logic itself.
+=== SLIDE 26 ===
+Part 3 — D11-D20
+26
+INTEGRATION LAYER
+D19b — Formula Registry
+15 versioned formulas — the single authoritative backbone behind every KRI (D05) and KPI (D06) formula
+Representative Detail
+▸  Sample: Composite Readiness Index = 0.4×ADKAR + 0.3×sentiment + 0.3×training_completion
+▸  Every D05 KRI_Formula and D06 Formula column resolves to exactly one row here
+[NOTES] Centralizing formulas prevents the classic drift where two dashboards report the same-named metric computed two different ways.
+=== SLIDE 27 ===
+Part 3 — D11-D20
+27
+INTEGRATION LAYER
+D20 — BPMN Execution Pack
+10 execution packs — one per macro-process, consistent task-type counts with D14
+Representative Detail
+▸  10 diagrams, each naming Pool, Lanes, Retry policy, and Escalation path — the operational detail a BPMN engine deployment needs beyond D14's readiness view
+▸  Compensation: No across the board — no macro-process currently requires a compensating transaction
+[NOTES] This is the execution-ready companion to D14 — same task-type counts, plus the engine-specific fields (Camunda/Flowable-style) a deployment actually consumes.
+=== SLIDE 28 ===
+Part 4
+28
+PART 4
+Deliverables D21 → D30
+Project governance, adoption journeys, product packaging, and licensing layer
+[NOTES] Section divider for Part 4.
+=== SLIDE 29 ===
+Part 4 — D21-D30
+29
+GOVERNANCE & LICENSING
+D21 — Project Registry
+13 seed projects | 3 ERP · 3 Process Automation · 3 QMS · 4 additional transformation types
+Breakdown
+ERP Implementation (3)
+Process Automation (3)
+QMS Implementation (3)
+Other named types (4)
+Representative Detail
+▸  Structure: Project_ID, name, type, status, dates, budget, owner
+▸  13 seed entries span 3 sectors x 3 archetypes, plus 4 additional named transformation types
+[NOTES] Every seed project links to D01 macro-processes and D02 tasks/steps — the registry isn't a flat list, it's wired into the same process backbone as everything else.
+=== SLIDE 30 ===
+Part 4 — D21-D30
+30
+GOVERNANCE & LICENSING
+D22 — Organization Profile
+11 profile attributes per Organization — sector, headcount, sites, languages, default language, active projects
+Representative Detail
+▸  11 attributes per Organization: sector, headcount, sites, languages, default language, Group membership, active projects, activated AI use cases
+▸  Profile-driven behavior: default language drives i18n; sector drives which templates/curricula pre-load
+[NOTES] The profile is what makes a tenant's defaults concrete — everything downstream (localization, template selection) reads from this one record.
+=== SLIDE 31 ===
+Part 4 — D21-D30
+31
+GOVERNANCE & LICENSING
+D23 — Journey Stage Templates (J0-J8)
+9 journey stages (J0-J8) — Trigger & Awareness through Sustainment & Closure
+Representative Detail
+▸  J0 Trigger & Awareness -> J1 Discovery -> J2 Design -> J3 Build -> J4 Testing & Training -> J5 Deployment -> J6 Stabilization -> J7 Reinforcement -> J8 Sustainment & Closure
+▸  Maps cleanly onto an 8-phase delivery model plus one pre-phase
+[NOTES] This 9-stage template seeds every new Stakeholder Journey (D27) — a generic scaffold, not a one-off narrative.
+=== SLIDE 32 ===
+Part 4 — D21-D30
+32
+GOVERNANCE & LICENSING
+D24 — Project Context Overlay
+12 project-specific context overlays across 8 seed projects — dominant tension, exception risk, constraints
+Representative Detail
+▸  Overlay pattern: inherits from the generic J0-J8 template, selectively overrides with project-specific context
+▸  Sample override: a healthcare project flags 'patient-safety-critical cutover windows' as a J5 Deployment constraint
+[NOTES] Overlay — not duplication — is the point: 8 seed projects each carry only what's distinct about them, not a full copy of the shared template.
+=== SLIDE 33 ===
+Part 4 — D21-D30
+33
+GOVERNANCE & LICENSING
+D25 — REX Institutionalization Log
+8 institutionalized lessons — all 6 canonical exception patterns + 2 platform-governance lessons, all Applied
+Representative Detail
+▸  8 entries, 8 of 8 status = Applied — every logged lesson has already been folded into a standing rule, control, or charter
+▸  3-4 representative: two-clock problem at cutover, divergence pattern detection, cohort disaggregation before go/no-go
+[NOTES] Feedback loop: a REX entry doesn't just get filed — it names exactly which Rule, Control, or Charter now encodes the lesson, closing the loop.
+=== SLIDE 34 ===
+Part 4 — D21-D30
+34
+GOVERNANCE & LICENSING
+D26 — Product Module Catalog
+18 modules | 8 Standard · 8 Professional · 1 Enterprise · 1 Enterprise Add-on
+Breakdown
+Standard (8)
+Professional (8)
+Enterprise (1)
+Enterprise (Add-on) (1)
+Representative Detail
+▸  User-based: 11 modules
+▸  User + AI/API capacity: 6 modules
+▸  Capacity-based (Perpetual/Term): 1 modules
+[NOTES] Tier composition is cumulative — Professional includes every Standard module, Enterprise includes every Professional module, plus the Enterprise Add-on stacking on top of any tier.
+=== SLIDE 35 ===
+Part 4 — D21-D30
+35
+GOVERNANCE & LICENSING
+D27 — Stakeholder Journeys
+8 stakeholder journeys — End User, Sponsor, Supervisor, Champion, Mentee, Divergence Case, Sector-Specific, AI Suggestion Lifecycle
+Representative Detail
+▸  8 journeys: End User Adoption, Executive Sponsor, Frontline Supervisor, Champion, Mentee, Divergence Case, Sector-Specific (QMS Certification), AI Suggestion Lifecycle
+▸  Each journey names its PDCA phase, target audience, and typical duration
+[NOTES] Journeys specialize from a base template where relevant — the Mentee and QMS Certification journeys both extend the base End User Adoption journey rather than duplicating it.
+=== SLIDE 36 ===
+Part 4 — D21-D30
+36
+GOVERNANCE & LICENSING
+D28 — Journey Touchpoints
+23 touchpoints | 19 Human · 3 Semi-Automated · 1 Automated
+Breakdown
+Human (19)
+Semi-Automated (3)
+Automated (1)
+Representative Detail
+▸  23 touchpoints across 6 of the 8 journeys, each with explicit Success_Criteria and Evidence_Required
+▸  19 of 23 touchpoints are Human-owned — automation is the exception, not the default, in the adoption journey
+[NOTES] Every touchpoint links back to a specific D02 task/step — this is what lets journey analytics (D29) report real completion rates instead of a narrative description.
+=== SLIDE 37 ===
+Part 4 — D21-D30
+37
+GOVERNANCE & LICENSING
+D29 — Journey Analytics
+5 journey analytics dashboards — each extends an existing score-centric report with a journey/touchpoint drill-down
+Representative Detail
+▸  5 dashboards, each explicitly extending an existing D08 report with a journey/touchpoint drill-down layer rather than duplicating it
+▸  Covers: End User completion, Charter compliance, Mentoring progression, Divergence resolution, Executive roll-up
+[NOTES] Why journey-centric metrics matter: a module can show 100% feature usage while the intended human experience still failed at a specific touchpoint — journey analytics catches that gap.
+=== SLIDE 38 ===
+Part 4 — D21-D30
+38
+GOVERNANCE & LICENSING
+D30 — Licensing Implementation Schema
+Dual-mode licensing — SaaS (centralized) and OnPrem (signed file) implementations across 5 platform families
+Representative Detail
+▸  Ed25519-signed .lic file with hardwareId, maxUsers, plan, features, expiryDate — one file per customer, zero third-party licensing servers, $0 recurring cost.
+▸  Platforms covered: Web (Browser), Desktop (.NET/Java/C++/Electron), Mobile (iOS/Android), CLI/Backend, Embedded/IoT
+▸  Enforcement points: user registration, concurrent login, every authenticated REST call, and the Admin UI usage display
+[NOTES] Licensing built in, not bolted on: a single LicenceProvider abstraction with SaaS and OnPrem implementations, selected by one configuration flag — no scattered if(onPrem) branches across the codebase.
+=== SLIDE 39 ===
+Part 4b — D32 Series (NEW)
+39
+NEW IN THIS REVISION
+D32 → D32k: 12 Deliverables Closing the v1.3 Gap
+Added against a gap analysis comparing this architecture to the platform's Functional Specification v1.3 — principally Module 18 (Work Breakdown Structure & Gantt, entirely new), Module 19's End-to-End Process Registry, and the underlying AI engines Module 17's use cases actually run on.
+D32
+Infrastructure & Deployment Specification
+D32a
+WBS Task Schema & Gantt Specification
+D32b
+Phase Template Library
+D32c
+Phase Checklist Registry
+D32d
+Phase Gate Record Specification
+D32e
+Joint Decision Record Specification
+D32f
+PMO Import Specification
+D32g
+Common-Lifecycle Phase Registry (P1-P7)
+D32h
+End-to-End Process Registry
+D32i
+Cross-Type Comparison Matrix
+D32j
+NLP Theme-Mining Engine Specification
+D32k
+Qualitative Coding Workbench Specification
+[NOTES] 12 new deliverables in one overview — the detail slide that follows drills into the 3 with the largest footprint (D32a WBS/Gantt, D32h End-to-End Registry, D32j/k AI engines).
+=== SLIDE 40 ===
+Part 4b — D32 Series (NEW)
+40
+NEW — MODULE 18 (WBS & GANTT)
+D32a — WBS Task Schema & Gantt
+10 fields | Consolidates schema already on D09 OC-24 with Gantt rendering rules
+Representative Detail
+▸  [PROJECT]/[CHANGE]/[JOINT] tag, Baseline vs. Actual dates, Schedule_Gap_Days (D19b FRM-014), Common_Lifecycle_Phase (P1-P7)
+▸  Realizes D13 REQ-016, REQ-020, REQ-021 and D11 IFC-GANTT
+▸  Entirely new module in v1.3 (Module 18) — this was the largest single gap identified
+[NOTES] The underlying fields already existed on D09/D10 from earlier revisions — D32a is the consolidated schema+rendering specification the gap analysis said was missing, not a data-model rebuild.
+=== SLIDE 41 ===
+Part 4b — D32 Series (NEW)
+41
+NEW — MODULE 18 (WBS & GANTT)
+D32d + D32e — Phase Gates & Joint Decisions
+Full record structures for Go/Go-with-Conditions/No-Go decisions with independent PM+CM inputs
+Representative Detail
+▸  D32d bundles Checklist %, Composite Readiness Index, and open Divergence flags into one gate decision (RULE-013's full data structure)
+▸  D32e keeps PM_Input and CM_Input independently auditable — never merged — while still producing exactly one Fused_Decision with one Accountable role (CTRL-012)
+▸  Every Phase Gate decision IS a Joint Decision Record — not two parallel sign-offs
+[NOTES] Distinguishes 'the rule exists' (RULE-013, already in the platform) from 'the full record exists' (D32d/e, new in this revision) — a subtle but real gap the analysis caught.
+=== SLIDE 42 ===
+Part 4b — D32 Series (NEW)
+42
+NEW — MODULE 19 (MACRO PROCESS, SIPOC, RACSI & E2E REGISTRY)
+D32h + D32i — End-to-End Registry & Cross-Type Matrix
+4 E2E process chains | 6 transformation types × 5 comparison dimensions
+Representative Detail
+▸  E2E-01 through E2E-04 are ordered macro-process compositions (e.g., E2E-01 Readiness & Mobilization = MP-01 -> MP-02 -> MP-03) with rolled-up SIPOC — not just an inferred reading of 10 separate macro-process definitions
+▸  The Cross-Type Comparison Matrix scores all 6 transformation types on Duration, Terminal Gate, External Party Involvement, Framework Weight, and Reversibility — every example grounded in a real seed project (D21)
+[NOTES] Both close CRITICAL GAPs the analysis flagged against Module 19 — the macro processes themselves (D01) were always well covered; the cross-cutting reference layer above them was not, until this revision.
+=== SLIDE 43 ===
+Part 4b — D32 Series (NEW)
+43
+NEW — MODULE 17 (AI USE CASE LIBRARY, ENHANCED)
+D32j + D32k — The AI Engines Behind 5 Use Cases
+The NLP theme-mining engine and qualitative coding workbench, specified for the first time
+Representative Detail
+▸  D32j (NLP Theme-Mining Engine) is the actual capability behind AIUC-02, AIUC-04, and AIUC-06 — previously only described in each use case's own summary text, never specified as shared infrastructure
+▸  D32k (Qualitative Coding Workbench) is the actual capability behind AIUC-12 and AIUC-13, including a per-Organization configurable codebook, not a fixed platform-wide taxonomy
+▸  The 16-use-case count in D15 is unchanged — this is the engine layer underneath 5 of them, made explicit
+[NOTES] A concrete instance of the pattern from the Integration Handbook and Value Proposition decks: 'described in a use case's prose' is not the same as 'specified as its own capability' — the gap analysis caught exactly this distinction twice (here, and in D32a/D09).
+=== SLIDE 44 ===
+Part 5
+44
+PART 5
+Integration & Data Architecture
+How the platform connects outward, and the data foundations underneath everything above
+[NOTES] Section divider for Part 5.
+=== SLIDE 45 ===
+Part 5 — Integration & Data
+45
+INTEGRATION & DATA ARCHITECTURE
+Integration Philosophy
+▸  API-first, event-driven surface — every object class in D09 is reachable via the platform's API gateway (D11 IFC-12)
+▸  An Integration Hub concept acts as the dedicated gateway/broker between internal domain events and external systems
+▸  No integration surface is licensing-invisible — every external call resolves through the same entitlement checks as internal use (see D30)
+[NOTES] Frame integration as a first-class architectural concern, not an afterthought bolted on post-launch.
+=== SLIDE 46 ===
+Part 5 — Integration & Data
+46
+INTEGRATION & DATA ARCHITECTURE
+Native Connector Inventory
+▸  PPM/project-management tool connectivity (D11 IFC-09 WBS/Gantt board is the internal analog; external PPM sync is the natural extension point)
+▸  Real LLM Provider connector (D11 IFC-13) — Anthropic / OpenAI / Google / custom OpenAI-compatible endpoint, browser-local credential isolation
+▸  Enterprise SSO (D11 IFC-14) — SAML 2.0 / OIDC for larger deployments
+▸  Data warehouse / BI export pattern — every D08/D29 report is exportable (Excel, PDF, CSV) as a baseline, with a REST API path for direct pull
+[NOTES] Keep this generic — connector examples are illustrative categories (CRM, data warehouse) rather than named vendor commitments, consistent with the application-agnostic language rule.
+=== SLIDE 47 ===
+Part 5 — Integration & Data
+47
+INTEGRATION & DATA ARCHITECTURE
+Integration Pattern — Outbound Event Flow
+▸  Domain Event (e.g., a D07 Alert firing, a D25 REX lesson applied) → Integration Hub → Retry Policy → Dead-Letter Queue (on exhausted retries) → External System
+▸  Retry and fallback handling is explicit at every step — no silent event loss
+▸  The same pattern that governs D03a Action retry policies internally (e.g., ACT-001's exponential backoff) is reused for outbound event delivery
+[NOTES] This slide should carry a flow diagram: 4 boxes left-to-right with a dead-letter branch below the retry box.
+=== SLIDE 48 ===
+Part 5 — Integration & Data
+48
+INTEGRATION & DATA ARCHITECTURE
+Integration with PPM Tools
+▸  Bi-directional sync pattern: D21 Project Registry and D28 WBS-style task data as the sync surface
+▸  Impact score export — D09 Stakeholder/Impact data available for portfolio-level PPM risk views
+▸  Gate/milestone mapping — D02 Phase Gate decisions (RULE-013) map cleanly onto standard PPM milestone objects
+[NOTES] Position PPM integration as read/write on schedule data, read-only on the deeper change-readiness signals — protects the platform's core differentiation.
+=== SLIDE 49 ===
+Part 5 — Integration & Data
+49
+INTEGRATION & DATA ARCHITECTURE
+Integration with Analytics & BI Platforms
+▸  Data export patterns: scheduled export (D08/D29 refresh cadence) or on-demand API pull
+▸  Schema mapping: D09/D10's canonical object-class/attribute structure is the mapping source of truth for any external BI schema
+▸  Every exported field respects its D09 Data_Sensitivity classification (Internal / Confidential / Restricted) — export never silently escalates access
+[NOTES] Emphasize that exports are governed by the same sensitivity model as internal access — this reassures a security-conscious buyer.
+=== SLIDE 50 ===
+Part 5 — Integration & Data
+50
+INTEGRATION & DATA ARCHITECTURE
+Integration with Enterprise Identity & Security
+▸  SSO/MFA patterns via D11 IFC-14 (SAML 2.0/OIDC)
+▸  Directory sync — role and scope provisioning aligned to the platform's own role x scope RBAC model
+▸  Audit log export — every justified score/state change (the platform's Justification Governance layer) is exportable to a SIEM/audit pipeline
+[NOTES] This is the slide a CISO will scrutinize hardest — keep it factual and specific to what's actually built (D11 IFC-14, the Justification Governance audit trail).
+=== SLIDE 51 ===
+Part 5 — Integration & Data
+51
+INTEGRATION & DATA ARCHITECTURE
+Integration Architecture Patterns by Deployment Mode
+▸  SaaS: centralized API/database, licensing validated against a cloud record — the customer installs nothing
+▸  OnPrem: signed .lic file, platform-adapted file reading (upload for web, direct filesystem for desktop/mobile/CLI, filesystem/EEPROM for embedded)
+▸  Both modes share one LicenceProvider interface (D30) — the integration surface itself doesn't change shape between modes, only where licensing validates against
+[NOTES] Directly ties back to D30 — reinforce that dual-mode deployment was designed in from the data-model level, not patched on.
+=== SLIDE 52 ===
+Part 5 — Integration & Data
+52
+INTEGRATION & DATA ARCHITECTURE
+Data Architecture Foundations
+▸  Canonical data model: D09 (35 object classes) / D10 (71 attributes) as the single source of truth for every payload shape
+▸  Multi-tenant partitioning: every high-traffic table (D12) partitions by organization_id / cm_project_id by default
+▸  Retention-aware exports: every D09 object class carries an explicit Retention_Period — exports respect it, they don't bypass it
+▸  License-gated integration tier: API rate limits (10,000 / 100,000 / 1,000,000 / Unlimited per day) are enforced at the same layer as feature entitlement (D30)
+[NOTES] Closing slide of Part 5 — ties D09/D10/D12/D30 together as one coherent data foundation before moving to the closing section.
+=== SLIDE 53 ===
+Part 6
+53
+PART 6
+Closing & Next Steps
+Synthesis, final metrics, and what comes next
+[NOTES] Section divider for Part 6.
+=== SLIDE 54 ===
+Part 6 — Closing
+54
+KEY TAKEAWAYS
+Six Things Worth Remembering
+Fully traceable
+Every requirement, rule, control, and KPI traces back to a macro-process, task, or step — 24 rules, 18 controls, 20 KPIs, all wired to D01/D02.
+AI-augmented, human-governed
+16 of 16 AI use cases carry an explicit human validation checkpoint. 0 operate autonomously.
+Licensing built in, not bolted on
+Designed at the class-model level (D09) with a single dual-mode LicenceProvider abstraction (D30).
+Integration-ready
+REST API, event/webhook interface, and SSO as first-class citizens (D11, Part 5) — not a v2 roadmap item.
+Value is measured
+Forecast vs. realized ROI/VOI tracked consistently across D06 (KPIs), D15 (AI), and D19 (automation matrix).
+Journey-centric
+8 stakeholder journeys and 23 touchpoints (D27/D28) keep the design human-centered, not just feature-centered.
+[NOTES] Recap slide — read straight through the six items, each backed by a specific number already shown earlier in the deck.
+=== SLIDE 55 ===
+Part 6 — Closing
+55
+METRICS SUMMARY
+The Full Numbers, One Slide
+10
+Macro-Processes
+50 / 105
+Tasks / Steps
+24
+Business Rules
+18
+Controls
+16
+Risks
+20
+KPIs
+16
+Alerts
+14
+Reports
+35
+Object Classes
+75
+Attributes
+24
+Requirements
+11
+Workflows
+16
+AI Use Cases
+18
+Licensable Modules
+8
+Stakeholder Journeys
+23
+Journey Touchpoints
+16
+Interfaces
+12
+D32 Series (NEW)
+46
+Total Deliverables
+[NOTES] Every number here matches exactly what was shown in Parts 2-4 — this is the consistency check the quality checklist calls for.
+=== SLIDE 56 ===
+Part 6 — Closing
+56
+IMPLEMENTATION ROADMAP (OPTIONAL)
+Wave Prioritization, From the Automation Matrix
+Wave 1
+12 of 15 scored automation items; 9 of 15 requirements
+Core process backbone, human-in-the-loop AI, base licensing enforcement
+Wave 2
+1 automation item; 1 requirement
+Governance/orchestration extensions — Phase Gates, runtime permission overrides
+Wave 3
+5 requirements
+AI extensibility (custom use cases, prompt templates), charter tracking, journey analytics
+Critical path for licensing (D30): LicenceProvider abstraction and signing tool are Wave 1 dependencies for every other wave — nothing ships without entitlement enforcement in place first.
+[NOTES] Optional per the brief — include if the audience is implementation-focused (engineering leadership) rather than purely strategic.
+=== SLIDE 57 ===
+Part 6 — Closing
+57
+Questions & Discussion
+46 deliverables. One traceability chain. Every claim in this deck is backed by a specific ID.
+[Contact / Next Steps Placeholder]
+[NOTES] Closing slide — leave the traceability chain diagram (Part 1) as the mental model the audience carries out of the room.

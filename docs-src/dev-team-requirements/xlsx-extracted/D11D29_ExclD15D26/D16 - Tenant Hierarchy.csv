@@ -1,0 +1,13 @@
+D16 — Tenants / Enterprise Hierarchy,,,,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,,,,
+Tenant_ID,Tenant_Name,Group_Name,Organization_Name,Sector,Industry,Country,Parent_Tenant_ID,Hierarchy_Level,Description
+TEN-001,Atlas Industrial Group,Atlas Industrial Group,-,Manufacturing,Industrial Manufacturing,Morocco,-,Group,"Multi-site industrial manufacturer, ~3,100 employees across 3 plants and a shared services center."
+TEN-002,Atlas Industrial Group — Casablanca Plant Cluster,Atlas Industrial Group,Atlas Industrial Group — Casablanca Plant Cluster,Manufacturing,Industrial Manufacturing,Morocco,TEN-001,Organization,"Primary Organization tenant under the Atlas Group, host of 3 seeded projects (S/4HANA, Order-to-Cash RPA, ISO 9001 QMS)."
+TEN-003,Maghreb Logistics Hub,-,Maghreb Logistics Hub,Logistics and Transportation,Freight & Logistics,Morocco,-,Organization,"Standalone Organization, no Group above it — 5-hub freight and dispatch operator."
+TEN-004,Meridia Health Network,-,Meridia Health Network,Health,Hospital & Health Systems,Morocco,-,Organization,"Standalone Organization, no Group above it — 3-facility hospital network."
+TEN-005,Order Fulfillment Redesign Co. (Illustrative),-,Order Fulfillment Redesign Co.,Retail / Distribution,E-Commerce Fulfillment,Morocco,-,Organization,Seeded Section 6.4.1 case — Business Process Reengineering — 'Order Fulfillment Clean-Slate Redesign'.
+TEN-006,Just-Culture Health System (Illustrative),-,Just-Culture Health System,Health,Hospital & Health Systems,Morocco,-,Organization,Seeded Section 6.4.2 case — Cultural / Values Transformation — 'Just-Culture Patient-Safety Program'.
+TEN-007,Regional Hub Group (Illustrative),Regional Hub Group,-,Diversified Holding,Multi-Sector Holding,Morocco,-,Group,Seeded Section 6.4.3 case parent Group — 'Regional Hub Governance Redesign' (Operating Model Redesign).
+TEN-008,Regional Hub Group — Governance Redesign Entity,Regional Hub Group,Regional Hub Group — Governance Redesign Entity,Diversified Holding,Multi-Sector Holding,Morocco,TEN-007,Organization,Organization under TEN-007 hosting the Operating Model Redesign initiative.
+TEN-009,Cross-Border Logistics Compliance Co. (Illustrative),-,Cross-Border Logistics Compliance Co.,Logistics and Transportation,Freight & Logistics,Morocco,-,Organization,Seeded Section 6.4.4 case — Compliance-Driven Change — 'Cross-Border Data Protection Compliance'.
+"🔗 Parent_Tenant_ID → D16 (self). Grounded directly in the journi Functional Spec Section 6 seed dataset — 3 sector-paired Organizations (Manufacturing/Logistics/Health, each carrying 3 project archetypes) plus the 4 additional Section 6.4 illustrative cases, one per remaining named transformation type.",,,,,,,,,
