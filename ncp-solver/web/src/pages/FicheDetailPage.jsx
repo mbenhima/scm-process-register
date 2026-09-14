@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, CriticalityBadge, StatusBadge, StageProgress, EmptyState } from '../components/ui.jsx';
 import { AiGeneratedNotice, GroundingDisclosure, OutcomeButtons } from '../components/AiGovernance.jsx';
 import { getLlmConnection } from '../lib/llmConnection.js';
+import StageGovernancePanel from '../components/StageGovernancePanel.jsx';
 
 // One tab per NCP Solver process stage (S1-S7, KB-003..KB-009).
 const TABS = ['detail', 'understanding', 'immediate', 'rootcause', 'corrective', 'evaluation', 'rex'];
@@ -278,6 +279,7 @@ export default function FicheDetailPage() {
               <div className="text-[11px] text-grey-medium">Last run: {new Date(lastClassification.created_at).toLocaleString()} · confidence {Math.round((lastClassification.confidence_score || 0) * 100)}%</div>
             )}
           </div>
+          <StageGovernancePanel stage="S1" />
         </Card>
       )}
 
@@ -295,6 +297,7 @@ export default function FicheDetailPage() {
             )}
           />
           <UnderstandingTab fiche={fiche} onSaved={load} />
+          <StageGovernancePanel stage="S2" />
         </div>
       )}
 
@@ -315,6 +318,7 @@ export default function FicheDetailPage() {
             actions={immediateActions} actionType="immediate" ficheId={id} users={users}
             hasPermission={hasPermission} currentUserId={user.id} onChanged={load} allowCreate allowExecute
           />
+          <StageGovernancePanel stage="S3" />
         </div>
       )}
 
@@ -332,6 +336,7 @@ export default function FicheDetailPage() {
             )}
           />
           <RootCausesTab fiche={fiche} onSaved={load} hasPermission={hasPermission} />
+          <StageGovernancePanel stage="S4" />
         </div>
       )}
 
@@ -356,6 +361,7 @@ export default function FicheDetailPage() {
             hasPermission={hasPermission} currentUserId={user.id} onChanged={load} rootCauses={fiche.rootCauses}
             allowCreate allowExecute={false}
           />
+          <StageGovernancePanel stage="S5" />
         </div>
       )}
 
@@ -383,10 +389,16 @@ export default function FicheDetailPage() {
             hasPermission={hasPermission} currentUserId={user.id} onChanged={load}
             allowCreate={false} allowExecute
           />
+          <StageGovernancePanel stage="S6" />
         </div>
       )}
 
-      {tab === 'rex' && <RexTab fiche={fiche} onSaved={load} hasPermission={hasPermission} />}
+      {tab === 'rex' && (
+        <div className="space-y-3">
+          <RexTab fiche={fiche} onSaved={load} hasPermission={hasPermission} />
+          <StageGovernancePanel stage="S7" />
+        </div>
+      )}
     </div>
   );
 }

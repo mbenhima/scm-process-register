@@ -15,9 +15,11 @@ const EFFECTIVENESS_COLOR = {
   not_tested: 'bg-grey-light text-grey-ink',
 };
 
+const NCP_STAGES = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
+
 const EMPTY = {
   code: '', title: '', description: '', coso_component: 'control_activities', control_type: 'preventive',
-  frequency: 'monthly', control_owner_id: '', effectiveness: 'not_tested', last_tested_date: '', next_test_date: '', evidence_notes: '', obs_node_id: '',
+  frequency: 'monthly', control_owner_id: '', effectiveness: 'not_tested', last_tested_date: '', next_test_date: '', evidence_notes: '', obs_node_id: '', ncp_stage: '',
 };
 
 export default function ControlsPage() {
@@ -74,7 +76,7 @@ export default function ControlsPage() {
           <thead>
             <tr>
               <th>{t('control.code')}</th><th>{t('common.name')}</th><th>{t('control.cosoComponent')}</th>
-              <th>{t('control.controlType')}</th><th>{t('control.frequency')}</th><th>{t('control.effectiveness')}</th><th>{t('control.owner')}</th><th>{t('common.obsUnit')}</th><th></th>
+              <th>{t('control.controlType')}</th><th>{t('control.frequency')}</th><th>{t('control.effectiveness')}</th><th>{t('control.owner')}</th><th>{t('common.obsUnit')}</th><th>{t('common.ncpStage')}</th><th></th>
             </tr>
           </thead>
           <tbody>
@@ -88,6 +90,7 @@ export default function ControlsPage() {
                 <td><span className={`badge ${EFFECTIVENESS_COLOR[c.effectiveness]}`}>{t(`control.effectiveness.${c.effectiveness}`)}</span></td>
                 <td>{ownerName(c.control_owner_id)}</td>
                 <td>{obsName(c.obs_node_id)}</td>
+                <td>{c.ncp_stage && <span className="badge bg-orange-tint text-orange-deep">{c.ncp_stage}</span>}</td>
                 <td className="text-end whitespace-nowrap">
                   {hasPermission('control.edit') && <button onClick={() => setModal(c)} className="text-xs text-orange-deep font-semibold me-3">{t('common.edit')}</button>}
                   {hasPermission('control.delete') && <button onClick={() => remove(c.id)} className="text-xs text-red-600 font-semibold">{t('common.delete')}</button>}
@@ -149,12 +152,20 @@ function ControlForm({ initial, users, obsFlat, onSave, onClose, t }) {
           </Field>
         </div>
         <Field label={t('control.evidence')}><textarea className="input" value={form.evidence_notes || ''} onChange={set('evidence_notes')} /></Field>
-        <Field label={t('common.obsUnit')}>
-          <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
-            <option value="">—</option>
-            {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
-          </select>
-        </Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label={t('common.obsUnit')}>
+            <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
+              <option value="">—</option>
+              {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
+            </select>
+          </Field>
+          <Field label={t('common.ncpStage')}>
+            <select className="input" value={form.ncp_stage || ''} onChange={set('ncp_stage')}>
+              <option value="">—</option>
+              {NCP_STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </Field>
+        </div>
         <div className="flex justify-end gap-2 mt-3">
           <button type="button" onClick={onClose} className="btn-secondary">{t('common.cancel')}</button>
           <button type="submit" className="btn-primary">{t('common.save')}</button>

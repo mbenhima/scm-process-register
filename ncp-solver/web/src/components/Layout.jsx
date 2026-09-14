@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { api } from '../lib/api.js';
 import logoMark from '../assets/ncp-solver-logo.svg';
+import ChatbotWidget from './ChatbotWidget.jsx';
 
 function NavItem({ to, label, icon }) {
   return (
@@ -31,7 +32,8 @@ function NavSection({ title, children }) {
 }
 
 export default function Layout() {
-  const { user, logout, hasPermission, hasAnyPermission } = useAuth();
+  const { user, logout, hasPermission, hasAnyPermission, hasPackFeature, packConfig } = useAuth();
+  const bpmnIncluded = !packConfig || packConfig.bpmnMode !== 'none';
   const { t, lang, setLang, languages, dir } = useI18n();
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
@@ -72,10 +74,10 @@ export default function Layout() {
             <NavItem to="/dashboard" label={t('nav.dashboard')} icon="◧" />
             {hasPermission('fiche.view') && <NavItem to="/fiches" label={t('nav.fiches')} icon="📄" />}
             {hasPermission('action.view') && <NavItem to="/actions" label={t('nav.actions')} icon="✓" />}
-            {hasPermission('capitalization.view') && <NavItem to="/capitalization" label={t('nav.capitalization')} icon="🔍" />}
+            {hasPermission('capitalization.view') && hasPackFeature('capitalization') && <NavItem to="/capitalization" label={t('nav.capitalization')} icon="🔍" />}
             {hasPermission('standard.view') && <NavItem to="/standards" label={t('nav.standards')} icon="📘" />}
             {hasPermission('aiUseCase.view') && <NavItem to="/ai-use-cases" label={t('nav.aiUseCases')} icon="✦" />}
-            {hasPermission('assistant.view') && <NavItem to="/assistant" label={t('nav.assistant')} icon="💬" />}
+            {hasPermission('assistant.view') && hasPackFeature('aiAssistant') && <NavItem to="/assistant" label={t('nav.assistant')} icon="💬" />}
             {hasPermission('report.view') && <NavItem to="/reports" label={t('nav.reports')} icon="📊" />}
             {hasPermission('alert.view') && (
               <NavItem
@@ -97,13 +99,15 @@ export default function Layout() {
             </NavSection>
           )}
 
-          {hasAnyPermission('businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view', 'bpmn.view') && (
+          {hasAnyPermission('businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view', 'bpmn.view', 'customKpi.view', 'sheetTemplate.view') && (
             <NavSection title={t('nav.grcGroup')}>
-              {hasPermission('businessRule.view') && <NavItem to="/business-rules" label={t('nav.businessRules')} icon="📋" />}
-              {hasPermission('control.view') && <NavItem to="/controls" label={t('nav.controls')} icon="✅" />}
-              {hasPermission('riskOpportunity.view') && <NavItem to="/risks" label={t('nav.risks')} icon="⚠" />}
-              {hasPermission('racsi.view') && <NavItem to="/racsi" label={t('nav.racsi')} icon="🧩" />}
-              {hasPermission('bpmn.view') && <NavItem to="/bpmn" label={t('nav.bpmn')} icon="🔀" />}
+              {hasPermission('businessRule.view') && hasPackFeature('grcModules') && <NavItem to="/business-rules" label={t('nav.businessRules')} icon="📋" />}
+              {hasPermission('control.view') && hasPackFeature('grcModules') && <NavItem to="/controls" label={t('nav.controls')} icon="✅" />}
+              {hasPermission('riskOpportunity.view') && hasPackFeature('grcModules') && <NavItem to="/risks" label={t('nav.risks')} icon="⚠" />}
+              {hasPermission('racsi.view') && hasPackFeature('grcModules') && <NavItem to="/racsi" label={t('nav.racsi')} icon="🧩" />}
+              {hasPermission('bpmn.view') && bpmnIncluded && <NavItem to="/bpmn" label={t('nav.bpmn')} icon="🔀" />}
+              {hasPermission('customKpi.view') && <NavItem to="/custom-kpis" label={t('nav.customKpis')} icon="📈" />}
+              {hasPermission('sheetTemplate.view') && <NavItem to="/sheet-templates" label={t('nav.sheetTemplates')} icon="🗒" />}
             </NavSection>
           )}
 
@@ -154,6 +158,7 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
+      <ChatbotWidget />
     </div>
   );
 }

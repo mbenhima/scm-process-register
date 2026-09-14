@@ -118,10 +118,16 @@ account per standard role: `admin@`, `quality@`, `cipilot@`, `team1@`/`team2@`,
   Industrial Manufacturing, Meridian AgroBusiness, Meridian Real Estate Development —
   demonstrating the optional Group → Organization → Project hierarchy.
 
-Each organization is seeded with its own OBS (site/department tree), standards, license &
-governance settings, an AI Use Cases Library, and 6 realistic NCP Sheets spanning the full
-S1–S7 lifecycle (open, mid-workflow, and closed-with-REX) so the Capitalization Library RAG
-search, KPIs, and alerts all have real data to work with.
+Each organization is seeded with its own OBS (site/department tree), Standards Knowledge
+Base, Configuration Management license (a Solution Pack — Resolve, Govern, or Assure —
+plus a realistic mix of Add-Ons and Compliance Modules), an AI Use Cases Library, and 6
+realistic NCP Sheets spanning the full S1–S7 lifecycle (open, mid-workflow, and
+closed-with-REX) so the Capitalization Library RAG search, KPIs, and alerts all have real
+data to work with. Solution Packs are distributed realistically across the demo
+organizations (Horizon on Resolve; Solaris and GreenValley on Govern; National
+Infrastructure Authority and all three Meridian entities on Assure, several with one or
+more Compliance Modules activated) so every Pack tier, quota state, and compliance
+scaffold can be explored out of the box.
 
 ## The NCP Sheet — full S1→S7 process coverage
 
@@ -154,21 +160,23 @@ never be the same person as the action owner) are all enforced server-side.
 | My Actions | Action Owner (AR) / Evaluator (AE) task queues |
 | Capitalization Library | RAG semantic search over closed NCP sheets |
 | Standards | Standards knowledge base (ISO, internal procedures) |
-| AI Use Cases Library | The governed catalog and control plane for every AI capability in NCP Solver — 14 use cases (one per S1–S7 process agent, the 2 AI Assistant agents, and 5 more across BPMN/Risks/Controls/Business Rules/RACSI), each tiered Assistive or Augmented (Autonomous AI is out of scope); full CRUD + versioning (`aiUseCase.create/edit/delete`); Organization-level activate/deactivate (`aiUseCase.activate`) with a per-Project tri-state override (`aiUseCase.projectOverride`); an append-only AI Usage Log of every accept/edit/reject outcome (`aiUseCase.viewUsageLog`); and the optional, browser-local Real LLM Provider Connection — see below |
-| Reports | The 4 standard reports (Operational, Action Plan, Strategic Scorecard, Capitalization Log) + 10 KPIs |
-| Alerts | Alerts A–J, computed by the rule-based Monitoring Agent |
+| AI Use Cases Library | The governed catalog and control plane for every AI capability in NCP Solver — 14 library use cases (one per S1–S7 process agent, the 2 AI Assistant agents, and 5 more across BPMN/Risks/Controls/Business Rules/RACSI), each tiered Assistive or Augmented (Autonomous AI is out of scope), plus organization-authored **custom** use cases up to the Solution Pack's quota; full CRUD + versioning (`aiUseCase.create/edit/delete`); Organization-level activate/deactivate (`aiUseCase.activate`) with a per-Project tri-state override (`aiUseCase.projectOverride`), enforced against the Pack's included/custom/combined quota; an append-only AI Usage Log of every accept/edit/reject outcome (`aiUseCase.viewUsageLog`); and the optional, browser-local Real LLM Provider Connection — see below |
+| Reports | The 4 standard reports (Operational, Action Plan, Strategic Scorecard, Capitalization Log) + 10 standard KPIs, plus any organization-defined Custom KPIs |
+| Alerts | Alerts A–J, computed by the rule-based Monitoring Agent, optionally tagged to an S1–S7 stage |
 | Hierarchy | Group (optional) → Organization → Project (optional) |
 | OBS | Organizational breakdown structure (site → department → service → team); every node shows linked-item counts (people, sheets, business rules, controls, risks, RACSI activities) |
 | Users & Scope | User directory + role assignment, scoped to an OBS node |
-| Permission Matrix | Full role × permission grid (9 roles, 80 permission codes across 24 modules) |
-| Business Rules | Full CRUD, RBAC-gated; validation/workflow/approval/naming/threshold/escalation rules with severity, owned by an OBS unit |
-| Controls | Full CRUD, RBAC-gated; COSO Internal Control – Integrated Framework (5 components), type/frequency/effectiveness tracking |
-| Risks & Opportunities | Full CRUD, RBAC-gated; 5×5 likelihood × impact matrix, linked Controls, inherent/residual scoring |
+| Permission Matrix | Full role × permission grid (9 roles, 88 permission codes across 26 modules) |
+| Business Rules | Full CRUD, RBAC-gated; validation/workflow/approval/naming/threshold/escalation rules with severity, owned by an OBS unit, optionally tagged to an S1–S7 stage (surfaced on that stage's NCP Sheet tab) |
+| Controls | Full CRUD, RBAC-gated; COSO Internal Control – Integrated Framework (5 components), type/frequency/effectiveness tracking, optional S1–S7 stage tag, optional compliance-framework tag (GDPR/ISO 27001/SOC 2) when seeded by a Compliance Module |
+| Risks & Opportunities | Full CRUD, RBAC-gated; 5×5 likelihood × impact matrix, linked Controls, inherent/residual scoring, optional S1–S7 stage tag |
 | RACSI Matrix | Full CRUD, RBAC-gated; Responsible/Accountable/Consulted/Support/Informed per NCP process step (S1–S7) or per Business Rule/Control/Risk record; assignees are OBS roles or named people; exactly one Accountable enforced client- and server-side |
-| BPMN Process | Full CRUD, RBAC-gated; real BPMN 2.0 diagrams rendered/edited in-browser with [bpmn.io](https://bpmn.io)'s `bpmn-js`; seeded with the NCP Solver process itself (S1–S7, including the effectiveness-evaluation loop back to S5); users without `bpmn.edit` get a read-only, pan/zoom viewer, editors get the full modeler palette |
-| AI Assistant | Chat-style Q&A with two modes: **Query My Data** (answers computed live from the tenant's own database, strictly scoped to the asking user's RBAC permissions — the same question from two different roles can return different data, or a transparent refusal, never a leak) and **Ask About the Application** (RAG search over a 47-entry built-in FAQ knowledge base answering "Can it…?" / "How do I…?" questions about every module) |
+| Custom KPIs | Full CRUD, RBAC-gated; organization-defined KPIs additive to the 10 built-in system KPIs, each with a code, plain-language formula, target, and optional S1–S7 stage tag |
+| Sheet Templates | Full CRUD, RBAC-gated; a library of pre-filled S1 starting points (title/description templates, default criticality/priority) by problem type, selectable from the New NCP Sheet form |
+| BPMN Process | Full CRUD, RBAC-gated; real BPMN 2.0 diagrams rendered/edited in-browser with [bpmn.io](https://bpmn.io)'s `bpmn-js`; seeded with the NCP Solver process itself (S1–S7, including the effectiveness-evaluation loop back to S5); users without `bpmn.edit` get a read-only, pan/zoom viewer, editors get the full modeler with its tool palette in a dedicated sidebar next to the canvas (not floating over it); availability and edit mode also depend on the Organization's Solution Pack |
+| AI Assistant | Chat-style Q&A with two modes: **Query My Data** (answers computed live from the tenant's own database, strictly scoped to the asking user's RBAC permissions — the same question from two different roles can return different data, or a transparent refusal, never a leak) and **Ask About the Application** (RAG search over a built-in FAQ knowledge base answering "Can it…?" / "How do I…?" questions about every module, including Configuration Management). Also available as a floating chat widget on every screen, not just its own page |
 | Governance Settings | KPI thresholds, alert toggles, default RCA method, REX-before-close policy |
-| License & Plan | SaaS/OnPrem, plan tier, seats, billing cycle |
+| Configuration Management (License & Plan) | Solution Pack selector (Resolve/Govern/Assure), Add-On toggles, Compliance Module toggles (GDPR/ISO 27001/SOC 2), live feature matrix, usage/quota bars, deployment option, support tier, seats, billing cycle — see below |
 | Help | In-app, searchable multi-language user guide covering every module |
 
 ## Notes on the "AI" layer
@@ -179,7 +187,14 @@ AI agents are implemented as deterministic, explainable, RAG-grounded services
 Mining, S5 Action Recommendation, S6 Evaluation Assistant, S7 REX Generation) plus
 the always-on Monitoring & Alert agent: keyword/rule-based classification, TF-IDF
 similarity search over the tenant's own closed sheets for containment/root-cause/action
-suggestions, and template-based REX drafting. The same philosophy powers the
+suggestions, and template-based REX drafting. Each of the seven step agents grounds
+its output against the organization's Standards Knowledge Base with the step's own
+S1–S7 tag as a priority filter (`retrieveGrounding(...)`, `server/src/services/aiGeneration.js`):
+Standards whose `stage_tags` match the current step are preferred, and the pool is
+topped up from the rest of the active corpus only if not enough stage-specific matches
+exist — so an S4 Root Cause suggestion is grounded first in the Standards actually
+relevant to root-cause analysis, never a hard filter that could starve the agent of
+context. The same philosophy powers the
 **AI Assistant**: `runDataQueryAgent` matches the question to one of a dozen intents,
 each declaring the RBAC permission it requires, checked *before* any query runs;
 `runAppFeatureQueryAgent` reuses the `RagIndex` TF-IDF engine (the same one behind

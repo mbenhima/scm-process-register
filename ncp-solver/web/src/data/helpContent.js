@@ -43,7 +43,18 @@ export const HELP_TOPICS = {
       body: [
         'Users & Scope lists every account in your Organization, the role(s) assigned to them, and — where relevant — the OBS node or Project that scopes their access.',
         'The Permission Matrix shows every role against every permission in the system (module.action codes, e.g. fiche.create, control.edit). Administrators can toggle any cell to grant or revoke a permission live.',
-        'License & Plan shows your subscription tier (Starter / Professional / Enterprise), deployment model (SaaS or On-Premise), seat usage and billing cycle.',
+        'License & Plan (now Configuration Management) shows your Solution Pack (Resolve / Govern / Assure), deployment option, seat usage and billing cycle.',
+      ],
+    },
+    {
+      id: 'configuration-management',
+      title: 'Configuration Management: Packs, Add-Ons & Compliance',
+      body: [
+        'Configuration Management (sidebar, Governance group) is where an Administrator selects the Organization\'s Solution Pack and everything it includes. Resolve (Essentials) covers the core S1–S7 workflow with 3 AI Use Cases and no GRC modules. Govern (Professional) adds the Capitalization Library, the full 7-agent AI library, and the GRC bundle (Business Rules, Controls, Risks & Opportunities, RACSI). Assure (Enterprise) adds the full 14-Use-Case AI library, the AI Assistant, the full BPMN editing modeler, Group hierarchy, and every deployment option.',
+        'Add-Ons let an Organization pick up a capability its Pack doesn\'t already include — Capitalization Library & RAG, the AI Assistant, BPMN Full Editing, Custom Roles & Permission Matrix Editor, and the Sovereign Deployment Suite — each toggled independently.',
+        'Compliance Modules (GDPR, ISO/IEC 27001, SOC 2 Type II) can each be activated from the same screen. Activating one seeds a starter set of COSO-classified Controls for that framework and ensures its related reference Standard is active — this documents and scaffolds the corresponding governance coverage; it is not itself a certification.',
+        'The Usage & Quotas panel shows live counts against your Pack\'s scale limits — AI Use Cases active, custom AI Use Cases authored, Projects, OBS nodes, and Standards active from the built-in Standards Library — so you always know how much headroom you have before the next Pack tier is needed.',
+        'A module or action your Pack doesn\'t include is hidden from the sidebar entirely, and any attempt to reach it directly is blocked server-side — Pack entitlement is enforced the same way RBAC permissions are, never only in the UI.',
       ],
     },
     {
@@ -53,7 +64,8 @@ export const HELP_TOPICS = {
         'Business Rules capture the "if/then" logic that governs the NCP process — validation, workflow, approval, naming, threshold or escalation rules — each with a severity (blocking, warning, info).',
         'Controls follow the COSO Internal Control – Integrated Framework: every control is tagged to one of the five COSO components (Control Environment, Risk Assessment, Control Activities, Information & Communication, Monitoring Activities), with a type (preventive/detective/corrective), a testing frequency, an owner and an effectiveness rating.',
         'Risks & Opportunities are scored on a 5×5 likelihood × impact matrix, colour-banded from red (severe) to dark green (negligible), and can be linked to one or more Controls that mitigate them. Both inherent and residual scores are tracked.',
-        'All three modules can be tagged with the OBS unit that owns them, so you can trace governance accountability back to a specific site, department, service or team.',
+        'All three modules can be tagged with the OBS unit that owns them, and each can also be tagged with the NCP process stage (S1–S7) it relates to — when set, that item is surfaced directly on the matching stage tab of every NCP Sheet, so a team member sees the relevant rule, control, or risk right where they are working.',
+        'Custom KPIs and NCP Sheet Templates (sidebar, GRC group) round out this area: Custom KPIs let you define organization-specific metrics beyond the 10 built-in ones, each optionally tagged to a stage; Sheet Templates give Reporters a pre-filled starting point (title, description, default criticality/priority) for common problem types, selectable from the New NCP Sheet form.',
       ],
     },
     {
@@ -95,7 +107,8 @@ export const HELP_TOPICS = {
       title: 'BPMN Process Diagrams',
       body: [
         'The BPMN module (sidebar, Governance/Risk/Compliance group) stores and renders real BPMN 2.0 process diagrams using a genuine, in-browser BPMN modeler — not a screenshot or static image. It is seeded with a diagram of the NCP Solver process itself, S1 through S7, including the loop back to S5 when an S6 effectiveness evaluation comes back Not Effective.',
-        'Access follows RBAC like every other module: anyone with bpmn.view can open a diagram and pan/zoom it read-only; only users holding bpmn.edit see the full editing palette (drag on tasks, gateways, and flows) and the Save Diagram button. Creating, editing, and deleting diagrams are full CRUD operations, each gated by its own permission (bpmn.create / bpmn.edit / bpmn.delete), exactly like Business Rules, Controls, or Risks & Opportunities.',
+        'Access follows RBAC like every other module: anyone with bpmn.view can open a diagram and pan/zoom it read-only; only users holding bpmn.edit see the full editing palette. Creating, editing, and deleting diagrams are full CRUD operations, each gated by its own permission (bpmn.create / bpmn.edit / bpmn.delete), exactly like Business Rules, Controls, or Risks & Opportunities. Whether BPMN is available at all, and whether editing is included, also depends on your Organization\'s Solution Pack (see Configuration Management).',
+        'In edit mode, the tool palette sits in its own dedicated sidebar to the left of the canvas rather than floating over the diagram, so dragging a task or gateway onto the canvas never means fighting with an overlay — the palette and the drawing surface each get their own space.',
         'Use it to model the NCP Solver workflow as shipped, or to document any other process your organization wants a shared, versioned, visual reference for.',
       ],
     },
@@ -104,6 +117,7 @@ export const HELP_TOPICS = {
       title: 'AI Assistant & AI Use Case Library',
       body: [
         'The AI Assistant (sidebar, top section) answers two kinds of questions in a chat-style interface, with no AI use case activation needed. "Query My Data" answers questions about your own organization\'s data — counts of open NCP sheets, overdue actions, high-severity risks, and more — computed live from the database and strictly limited by your role\'s permissions (RBAC-enforced): the same question asked by two different roles can return different results, or a polite refusal, never leaked data.',
+        'The same Assistant is also available as a floating chat button in the bottom corner of every screen, so you never have to leave what you\'re doing to ask a quick question. It shares the exact same two modes and the exact same permission and Pack entitlement as the full-page AI Assistant.',
         '"Ask About the Application" answers "Can it…?" and "How do I…?" questions about NCP Solver itself, drawn from a built-in application help knowledge base searched with the same lightweight retrieval engine (RAG) used by the Capitalization Library.',
         'The AI Use Cases Library (sidebar) is the governed catalog and control plane for every AI capability in NCP Solver — 14 use cases, each in one of two tiers: Assistive (suggests; a human decides) or Augmented (drafts a substantial part of the task; a human must review and approve). Autonomous AI is out of scope by design. An administrator can activate or deactivate each use case per Organization, and a CI Pilot can override that state for a single Project. Every AI-generated suggestion is labeled "AI-generated — review before use," discloses the methodology references (Standards) it was grounded in, and lets you Accept, mark Edited, or Reject it — logged to an append-only AI Usage Log.',
         'The Library also hosts the optional Real LLM Provider Connection: pick a provider (Anthropic, OpenAI, Azure OpenAI, Mistral, Ollama, or a custom OpenAI-compatible endpoint are actually callable in this build), enter a model and API key. This connection is stored only in your browser — never on the server, never in an export — and is used at most once per request; every use case falls back to its built-in deterministic generator automatically if no connection is set or a call fails, so nothing ever depends on it being configured.',
@@ -161,7 +175,18 @@ export const HELP_TOPICS = {
       body: [
         "« Utilisateurs & Périmètre » liste chaque compte de votre Organisation, le ou les rôles qui lui sont affectés et, le cas échéant, le nœud OBS ou le Projet qui délimite son accès.",
         "La Matrice des Permissions croise chaque rôle avec chaque permission du système (codes module.action, par ex. fiche.create, control.edit). Les administrateurs peuvent activer ou désactiver n'importe quelle case en direct.",
-        "« Licence & Plan » affiche votre niveau d'abonnement (Starter / Professional / Enterprise), le modèle de déploiement (SaaS ou sur site), l'utilisation des sièges et le cycle de facturation.",
+        "« Gestion de la Configuration » (anciennement Licence & Plan) affiche le Pack de Solution de votre Organisation (Resolve / Govern / Assure), l'option de déploiement, l'utilisation des sièges et le cycle de facturation.",
+      ],
+    },
+    {
+      id: 'configuration-management',
+      title: 'Gestion de la Configuration : Packs, Modules Complémentaires & Conformité',
+      body: [
+        "La Gestion de la Configuration (menu latéral, groupe Gouvernance) est l'écran où un Administrateur choisit le Pack de Solution de l'Organisation et tout ce qu'il inclut. Resolve (Essentials) couvre le flux S1–S7 de base avec 3 Cas d'Usage IA et aucun module GRC. Govern (Professional) ajoute la Bibliothèque de Capitalisation, la bibliothèque complète de 7 agents IA, et le socle GRC (Règles Métier, Contrôles, Risques & Opportunités, RACSI). Assure (Enterprise) ajoute la bibliothèque complète de 14 Cas d'Usage IA, l'Assistant IA, le modeleur BPMN complet, la hiérarchie de Groupe et toutes les options de déploiement.",
+        "Les Modules Complémentaires permettent à une Organisation d'acquérir une capacité que son Pack n'inclut pas déjà — Bibliothèque de Capitalisation & RAG, Assistant IA, Édition BPMN Complète, Éditeur de Rôles Personnalisés & Matrice des Permissions, et la Suite de Déploiement Souverain — chacun activable indépendamment.",
+        "Les Modules de Conformité (GDPR, ISO/IEC 27001, SOC 2 Type II) peuvent chacun être activés depuis le même écran. Activer un module amorce un socle de Contrôles classés COSO pour ce référentiel et active la Norme de référence associée — cela documente et prépare la couverture de gouvernance correspondante ; ce n'est pas en soi une certification.",
+        "Le panneau Utilisation & Quotas affiche en direct votre consommation par rapport aux limites de votre Pack — Cas d'Usage IA actifs, Cas d'Usage IA personnalisés créés, Projets, nœuds OBS et Normes actives de la Bibliothèque de Normes — afin de toujours savoir quelle marge il reste avant de devoir passer au Pack supérieur.",
+        "Un module ou une action que votre Pack n'inclut pas est entièrement masqué du menu latéral, et toute tentative d'y accéder directement est bloquée côté serveur — l'appartenance à un Pack est appliquée de la même manière que les permissions RBAC, jamais seulement dans l'interface.",
       ],
     },
     {
@@ -171,7 +196,8 @@ export const HELP_TOPICS = {
         "Les Règles Métier capturent la logique « si/alors » qui régit le processus MRP — règles de validation, de workflow, d'approbation, de nommage, de seuil ou d'escalade — chacune avec une sévérité (bloquante, avertissement, information).",
         "Les Contrôles suivent le référentiel COSO (Internal Control – Integrated Framework) : chaque contrôle est rattaché à l'une des cinq composantes COSO (Environnement de Contrôle, Évaluation des Risques, Activités de Contrôle, Information & Communication, Activités de Pilotage), avec un type (préventif/détectif/correctif), une fréquence de test, un propriétaire et une notation d'efficacité.",
         "Les Risques & Opportunités sont notés sur une matrice probabilité × impact 5×5, colorée du rouge (sévère) au vert foncé (négligeable), et peuvent être liés à un ou plusieurs Contrôles qui les atténuent. Les scores inhérent et résiduel sont tous deux suivis.",
-        "Les trois modules peuvent être rattachés à l'unité OBS qui en est propriétaire, permettant de faire remonter la responsabilité de gouvernance jusqu'à un site, département, service ou équipe précis.",
+        "Les trois modules peuvent être rattachés à l'unité OBS qui en est propriétaire, et chacun peut aussi être rattaché à l'étape du processus MRP (S1–S7) à laquelle il se rapporte — lorsqu'elle est définie, cet élément apparaît directement sur l'onglet d'étape correspondant de chaque Fiche MRP, pour que l'équipe voie la règle, le contrôle ou le risque pertinent là où elle travaille.",
+        "Les KPIs Personnalisés et les Modèles de Fiches MRP (menu latéral, groupe GRC) complètent cet espace : les KPIs Personnalisés permettent de définir des indicateurs propres à l'organisation en plus des 10 indicateurs intégrés, chacun optionnellement rattaché à une étape ; les Modèles de Fiches offrent aux Déclarants un point de départ pré-rempli (titre, description, criticité/priorité par défaut) pour les types de problèmes courants, sélectionnable depuis le formulaire de nouvelle Fiche MRP.",
       ],
     },
     {
@@ -213,7 +239,8 @@ export const HELP_TOPICS = {
       title: 'Diagrammes de Processus BPMN',
       body: [
         "Le module BPMN (menu latéral, groupe Gouvernance/Risques/Conformité) stocke et affiche de véritables diagrammes de processus BPMN 2.0 grâce à un modeleur BPMN authentique intégré au navigateur — et non une capture d'écran ou une image statique. Il est initialisé avec un diagramme du processus NCP Solver lui-même, de S1 à S7, incluant la boucle de retour vers S5 lorsqu'une évaluation S6 de l'efficacité revient « Non Efficace ».",
-        "L'accès suit le RBAC comme tout autre module : toute personne disposant de bpmn.view peut ouvrir un diagramme et le parcourir en lecture seule (zoom/déplacement) ; seuls les utilisateurs disposant de bpmn.edit voient la palette d'édition complète (glisser des tâches, passerelles et flux) et le bouton Enregistrer le Diagramme. La création, la modification et la suppression de diagrammes sont des opérations CRUD complètes, chacune protégée par sa propre permission (bpmn.create / bpmn.edit / bpmn.delete), exactement comme les Règles Métier, les Contrôles ou les Risques & Opportunités.",
+        "L'accès suit le RBAC comme tout autre module : toute personne disposant de bpmn.view peut ouvrir un diagramme et le parcourir en lecture seule (zoom/déplacement) ; seuls les utilisateurs disposant de bpmn.edit voient la palette d'édition complète. La création, la modification et la suppression de diagrammes sont des opérations CRUD complètes, chacune protégée par sa propre permission (bpmn.create / bpmn.edit / bpmn.delete), exactement comme les Règles Métier, les Contrôles ou les Risques & Opportunités. La disponibilité de BPMN, et de l'édition, dépend aussi du Pack de Solution de votre Organisation (voir Gestion de la Configuration).",
+        "En mode édition, la palette d'outils occupe sa propre zone dédiée à gauche du canevas plutôt que de flotter au-dessus du diagramme, afin que glisser une tâche ou une passerelle sur le canevas ne se heurte jamais à un chevauchement — la palette et la surface de dessin ont chacune leur propre espace.",
         "Utilisez-le pour modéliser le workflow NCP Solver tel que livré, ou pour documenter tout autre processus pour lequel votre organisation souhaite une référence visuelle partagée et versionnée.",
       ],
     },
@@ -222,6 +249,7 @@ export const HELP_TOPICS = {
       title: "Assistant IA & Bibliothèque de Cas d'Usage IA",
       body: [
         "L'Assistant IA (menu latéral, section supérieure) répond à deux types de questions dans une interface de type discussion, sans nécessiter l'activation d'un cas d'usage IA. « Interroger mes données » répond aux questions sur les données de votre propre organisation — nombre de fiches NCP ouvertes, actions en retard, risques à sévérité élevée, etc. — calculées en direct à partir de la base de données et strictement limitées par les permissions de votre rôle (contrôle RBAC) : la même question posée par deux rôles différents peut renvoyer des résultats différents, ou un refus poli, jamais de données divulguées.",
+        "Le même Assistant est aussi disponible sous forme de bouton de discussion flottant en bas de chaque écran, pour ne jamais avoir à quitter ce que vous faites pour poser une question rapide. Il partage exactement les deux mêmes modes et les mêmes droits d'accès (permissions et Pack) que l'Assistant IA en pleine page.",
         "« Question sur l'application » répond aux questions du type « Est-ce que… ? » et « Comment… ? » sur NCP Solver lui-même, à partir d'une base de connaissances d'aide intégrée interrogée avec le même moteur de recherche léger (RAG) que la Bibliothèque de Capitalisation.",
         "La Bibliothèque de Cas d'Usage IA (menu latéral) est le catalogue gouverné et le plan de contrôle de toutes les capacités d'IA de NCP Solver — 14 cas d'usage, chacun dans l'un de deux niveaux : Assisté (suggère ; un humain décide) ou Augmenté (rédige une part substantielle de la tâche ; un humain doit relire et approuver). L'IA autonome est délibérément hors périmètre. Un administrateur peut activer ou désactiver chaque cas d'usage par Organisation, et un Pilote AC peut déroger à cet état pour un Projet donné. Chaque suggestion générée par IA est étiquetée « Généré par IA — à vérifier avant utilisation », divulgue les références méthodologiques (Référentiels) sur lesquelles elle s'appuie, et permet d'Accepter, de marquer comme Modifié, ou de Rejeter — journalisé dans un Journal d'Utilisation IA en ajout seul.",
         "La Bibliothèque héberge aussi la Connexion optionnelle à un Vrai Fournisseur LLM : choisissez un fournisseur (Anthropic, OpenAI, Azure OpenAI, Mistral, Ollama, ou un point de terminaison compatible OpenAI personnalisé sont réellement appelables dans cette version), saisissez un modèle et une clé API. Cette connexion est stockée uniquement dans votre navigateur — jamais sur le serveur, jamais dans un export — et n'est utilisée qu'une seule fois par requête au maximum ; chaque cas d'usage revient automatiquement à son générateur déterministe intégré si aucune connexion n'est configurée ou si un appel échoue, de sorte que rien ne dépend jamais de sa configuration.",
@@ -279,7 +307,18 @@ export const HELP_TOPICS = {
       body: [
         'تُدرج شاشة "المستخدمون والنطاق" كل حساب في مؤسستك، والدور أو الأدوار المعينة له، وعند الاقتضاء، عقدة OBS أو المشروع الذي يحدد نطاق وصوله.',
         'تعرض مصفوفة الصلاحيات كل دور مقابل كل صلاحية في النظام (رموز من نوع module.action، مثل fiche.create وcontrol.edit). يمكن للمسؤولين تفعيل أو إلغاء أي خلية مباشرة.',
-        'تعرض شاشة "الترخيص والخطة" مستوى اشتراكك (مبتدئ / احترافي / مؤسسي)، ونموذج النشر (سحابي أو محلي)، واستخدام المقاعد ودورة الفوترة.',
+        'تعرض شاشة "إدارة التكوين" (سابقًا الترخيص والخطة) باقة الحل الخاصة بمؤسستك (Resolve / Govern / Assure)، وخيار النشر، واستخدام المقاعد، ودورة الفوترة.',
+      ],
+    },
+    {
+      id: 'configuration-management',
+      title: 'إدارة التكوين: الباقات والإضافات والامتثال',
+      body: [
+        'إدارة التكوين (القائمة الجانبية، مجموعة الحوكمة) هي الشاشة التي يختار منها المسؤول باقة الحل الخاصة بالمؤسسة وكل ما تتضمنه. تغطي باقة Resolve (الأساسية) سير عمل S1–S7 الأساسي مع 3 حالات استخدام للذكاء الاصطناعي ودون وحدات حوكمة ومخاطر وامتثال. تضيف باقة Govern (الاحترافية) مكتبة الرسملة، ومكتبة الوكلاء الكاملة المكونة من 7 وكلاء ذكاء اصطناعي، ووحدات الحوكمة والمخاطر والامتثال (قواعد العمل، الضوابط، المخاطر والفرص، RACSI). تضيف باقة Assure (المؤسسية) مكتبة الـ14 حالة استخدام كاملة، والمساعد الذكي، ومحرر BPMN الكامل، وهيكل المجموعة، وجميع خيارات النشر.',
+        'تتيح الإضافات للمؤسسة الحصول على قدرة لا تتضمنها باقتها بالفعل — مكتبة الرسملة و RAG، المساعد الذكي، تحرير BPMN الكامل، الأدوار المخصصة ومحرر مصفوفة الصلاحيات، وحزمة النشر السيادي — يمكن تفعيل كل منها بشكل مستقل.',
+        'يمكن تفعيل وحدات الامتثال (GDPR وISO/IEC 27001 وSOC 2 Type II) من الشاشة نفسها. يؤدي تفعيل وحدة إلى إنشاء مجموعة ضوابط أولية مصنفة وفق COSO لذلك الإطار، والتأكد من تفعيل المعيار المرجعي المرتبط به — وهذا يوثق ويُهيئ التغطية الحوكمية المقابلة؛ وهو ليس شهادة اعتماد بحد ذاته.',
+        'تعرض لوحة الاستخدام والحصص العدادات الحية مقارنة بحدود باقتك — حالات استخدام الذكاء الاصطناعي النشطة، حالات الاستخدام المخصصة التي تم إنشاؤها، المشاريع، عقد OBS، والمعايير النشطة من مكتبة المعايير المدمجة — لتعرف دائمًا مقدار الهامش المتاح قبل الحاجة إلى الباقة الأعلى.',
+        'تُخفى تمامًا من القائمة الجانبية أي وحدة أو إجراء لا تتضمنه باقتك، وتُمنع أي محاولة للوصول إليها مباشرة من جانب الخادم — يُطبَّق الانتماء إلى الباقة بنفس الطريقة التي تُطبَّق بها صلاحيات RBAC، وليس فقط في الواجهة.',
       ],
     },
     {
@@ -289,7 +328,8 @@ export const HELP_TOPICS = {
         'تلتقط قواعد العمل منطق "إذا/فإن" الذي يحكم عملية حل المشكلات — قواعد التحقق أو سير العمل أو الموافقة أو التسمية أو العتبة أو التصعيد — لكل منها درجة خطورة (حاجزة، تحذيرية، معلوماتية).',
         'تتبع الضوابط إطار العمل COSO لضبط الرقابة الداخلية: كل ضابط مرتبط بأحد المكونات الخمسة لإطار COSO (بيئة الرقابة، تقييم المخاطر، أنشطة الرقابة، المعلومات والاتصال، أنشطة المراقبة)، مع نوع (وقائي/كاشف/تصحيحي)، وتكرار اختبار، ومالك، وتقييم فعالية.',
         'تُقيَّم المخاطر والفرص على مصفوفة احتمالية × تأثير بحجم 5×5، مُلوَّنة من الأحمر (شديد) إلى الأخضر الداكن (ضئيل)، ويمكن ربطها بضابط واحد أو أكثر يخفف منها. يُتابَع كل من الدرجة المتأصلة والدرجة المتبقية.',
-        'يمكن ربط الوحدات الثلاث بوحدة OBS المالكة لها، مما يتيح تتبع مسؤولية الحوكمة وصولًا إلى موقع أو قسم أو خدمة أو فريق محدد.',
+        'يمكن ربط الوحدات الثلاث بوحدة OBS المالكة لها، ويمكن أيضًا ربط كل منها بمرحلة عملية حل المشكلات (S1–S7) التي تتعلق بها — وعند تحديدها، يظهر هذا العنصر مباشرة على علامة تبويب المرحلة المطابقة في كل بطاقة NCP، بحيث يرى عضو الفريق القاعدة أو الضابط أو الخطر ذا الصلة في مكان عمله بالضبط.',
+        'تُكمل مؤشرات الأداء المخصصة وقوالب بطاقات NCP (القائمة الجانبية، مجموعة GRC) هذا الجزء: تتيح مؤشرات الأداء المخصصة تعريف مقاييس خاصة بالمؤسسة إضافة إلى المؤشرات العشرة المدمجة، مع إمكانية ربط كل منها بمرحلة؛ وتمنح القوالب المُبلِّغين نقطة انطلاق جاهزة (العنوان، الوصف، الخطورة/الأولوية الافتراضية) لأنواع المشكلات الشائعة، يمكن اختيارها من نموذج بطاقة NCP جديدة.',
       ],
     },
     {
@@ -331,7 +371,8 @@ export const HELP_TOPICS = {
       title: 'مخططات عملية BPMN',
       body: [
         'تخزّن وحدة BPMN (القائمة الجانبية، مجموعة الحوكمة/المخاطر/الامتثال) وتعرض مخططات عملية حقيقية بمعيار BPMN 2.0 باستخدام محرر BPMN فعلي مدمج في المتصفح — وليس لقطة شاشة أو صورة ثابتة. تم تهيئتها بمخطط لعملية NCP Solver نفسها، من S1 إلى S7، بما في ذلك حلقة العودة إلى S5 عندما يكون تقييم فعالية S6 "غير فعّال".',
-        'يتبع الوصول نظام RBAC مثل أي وحدة أخرى: يمكن لأي شخص لديه صلاحية bpmn.view فتح مخطط وتصفحه للقراءة فقط (تكبير/تنقل)؛ فقط المستخدمون الذين لديهم صلاحية bpmn.edit يرون لوحة التحرير الكاملة (سحب المهام والبوابات والتدفقات) وزر حفظ المخطط. يُعد الإنشاء والتعديل والحذف عمليات CRUD كاملة، كل منها محمي بصلاحيته الخاصة (bpmn.create / bpmn.edit / bpmn.delete)، تمامًا مثل قواعد العمل والضوابط والمخاطر والفرص.',
+        'يتبع الوصول نظام RBAC مثل أي وحدة أخرى: يمكن لأي شخص لديه صلاحية bpmn.view فتح مخطط وتصفحه للقراءة فقط (تكبير/تنقل)؛ فقط المستخدمون الذين لديهم صلاحية bpmn.edit يرون لوحة التحرير الكاملة. يُعد الإنشاء والتعديل والحذف عمليات CRUD كاملة، كل منها محمي بصلاحيته الخاصة (bpmn.create / bpmn.edit / bpmn.delete)، تمامًا مثل قواعد العمل والضوابط والمخاطر والفرص. يعتمد توفر BPMN أصلاً، وتوفر التحرير، أيضًا على باقة الحل الخاصة بمؤسستك (راجع إدارة التكوين).',
+        'في وضع التحرير، تشغل لوحة الأدوات مساحتها الجانبية المخصصة إلى يسار لوحة الرسم بدلاً من التعويم فوق المخطط، بحيث لا يتعارض سحب مهمة أو بوابة إلى اللوحة أبدًا مع طبقة متراكبة — تحصل كل من اللوحة وسطح الرسم على مساحتها الخاصة.',
         'استخدمه لتصميم سير عمل NCP Solver كما تم تسليمه، أو لتوثيق أي عملية أخرى تريد مؤسستك مرجعًا مرئيًا مشتركًا ومُصدَّرًا له.',
       ],
     },
@@ -341,6 +382,7 @@ export const HELP_TOPICS = {
       body: [
         'يجيب المساعد الذكي (القائمة الجانبية، القسم العلوي) على نوعين من الأسئلة عبر واجهة دردشة، دون الحاجة لتفعيل أي حالة استخدام ذكاء اصطناعي. يجيب "استعلام عن بياناتي" على أسئلة حول بيانات مؤسستك — عدد بطاقات NCP المفتوحة، الإجراءات المتأخرة، المخاطر ذات الشدة العالية، وغيرها — محسوبة مباشرة من قاعدة البيانات ومحدودة بصرامة حسب صلاحيات دورك (تحكم قائم على RBAC): قد يعطي نفس السؤال المطروح من دورين مختلفين نتائج مختلفة، أو رفضًا مهذبًا، ولا يُسرَّب أي بيانات أبدًا.',
         'يجيب "سؤال عن التطبيق" على أسئلة مثل "هل يمكن…؟" و"كيف…؟" حول NCP Solver نفسه، بالاستناد إلى قاعدة معرفة مساعدة مدمجة يتم البحث فيها بنفس محرك البحث الخفيف (RAG) المستخدم في مكتبة الرسملة.',
+        'يتوفر المساعد نفسه أيضًا كزر دردشة عائم في الزاوية السفلية من كل شاشة، حتى لا تضطر لمغادرة ما تعمل عليه لطرح سؤال سريع. يشارك نفس الوضعين تمامًا ونفس صلاحيات الوصول (RBAC وباقة الحل) الخاصة بالمساعد الذكي في صفحته الكاملة.',
         'مكتبة حالات استخدام الذكاء الاصطناعي (القائمة الجانبية) هي الكتالوج المحكوم ولوحة التحكم لكل قدرة ذكاء اصطناعي في NCP Solver — 14 حالة استخدام، كل منها ضمن أحد مستويين: مساعد (يقترح؛ يقرر الإنسان) أو معزّز (ينجز جزءًا كبيرًا من المهمة؛ يجب على الإنسان المراجعة والموافقة). الذكاء الاصطناعي المستقل مستبعد عمدًا من النطاق. يمكن للمسؤول تفعيل أو تعطيل كل حالة استخدام لكل مؤسسة، ويمكن لقائد التحسين المستمر تجاوز تلك الحالة لمشروع واحد. تُوسم كل اقتراح من الذكاء الاصطناعي بعبارة "تم إنشاؤه بواسطة الذكاء الاصطناعي — راجعه قبل الاستخدام"، وتُكشف فيه المراجع المنهجية (المعايير) التي استند إليها، وتتيح لك القبول أو التمييز كمُعدَّل أو الرفض — ويُسجَّل ذلك في سجل استخدام ذكاء اصطناعي بنمط الإضافة فقط.',
         'تستضيف المكتبة أيضًا الاتصال الاختياري بمزوّد نموذج لغة حقيقي: اختر مزوّدًا (Anthropic وOpenAI وAzure OpenAI وMistral وOllama أو نقطة نهاية مخصصة متوافقة مع OpenAI قابلة فعليًا للاستدعاء في هذا الإصدار)، وأدخل نموذجًا ومفتاح API. يُخزَّن هذا الاتصال فقط في متصفحك — لا يُرسل أو يُخزَّن أبدًا على الخادم، ولا يُدرج في أي تصدير — ويُستخدم مرة واحدة على الأكثر لكل طلب؛ وتعود كل حالة استخدام تلقائيًا إلى مولدها الحتمي المدمج إذا لم يُضبط أي اتصال أو فشل الاستدعاء، بحيث لا يعتمد أي شيء أبدًا على تكوينه.',
       ],

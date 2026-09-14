@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { writeAudit } from '../services/audit.js';
+import { checkObsNodeQuota } from '../services/packConfig.js';
 
 const router = Router();
 
@@ -56,6 +57,8 @@ router.get('/', requirePermission('obs.view'), (req, res) => {
 router.post('/', requirePermission('obs.manage'), (req, res) => {
   const { parent_id, node_type, name, name_fr, name_ar, code } = req.body || {};
   if (!node_type || !name) return res.status(400).json({ error: 'node_type_and_name_required' });
+  const quota = checkObsNodeQuota(req.user.organizationId);
+  if (!quota.ok) return res.status(409).json({ error: 'quota_exceeded', quota: 'obsNodes', used: quota.used, max: quota.max });
   const id = randomUUID();
   db.prepare(`
     INSERT INTO obs_nodes (id, organization_id, parent_id, node_type, name, name_fr, name_ar, code)

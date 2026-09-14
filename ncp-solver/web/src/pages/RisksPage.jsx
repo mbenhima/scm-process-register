@@ -16,10 +16,12 @@ function bandColor(score) {
   return '#B6D7A8';
 }
 
+const NCP_STAGES = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
+
 const EMPTY = {
   code: '', title: '', description: '', item_type: 'risk', category: 'operational',
   likelihood: 3, impact: 3, response_strategy: '', mitigation_plan: '', status: 'identified',
-  residual_likelihood: '', residual_impact: '', target_date: '', control_ids: [], obs_node_id: '',
+  residual_likelihood: '', residual_impact: '', target_date: '', control_ids: [], obs_node_id: '', ncp_stage: '',
 };
 
 function RiskMatrix({ risks, t }) {
@@ -119,7 +121,10 @@ export default function RisksPage() {
           <Card key={r.id}>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-xs text-grey-medium font-semibold">{r.code} · {t(`risk.category.${r.category}`)} · {t(`risk.itemType.${r.item_type}`)} · {t('common.obsUnit')}: {obsName(r.obs_node_id)}</div>
+                <div className="text-xs text-grey-medium font-semibold">
+                  {r.code} · {t(`risk.category.${r.category}`)} · {t(`risk.itemType.${r.item_type}`)} · {t('common.obsUnit')}: {obsName(r.obs_node_id)}
+                  {r.ncp_stage && <span className="badge bg-orange-tint text-orange-deep ms-1">{r.ncp_stage}</span>}
+                </div>
                 <div className="font-title font-bold text-grey-dark">{r.title}</div>
                 <p className="text-sm text-grey-ink mt-1">{r.description}</p>
               </div>
@@ -200,12 +205,20 @@ function RiskForm({ initial, controls, obsFlat, onSave, onClose, t }) {
             ))}
           </div>
         </Field>
-        <Field label={t('common.obsUnit')}>
-          <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
-            <option value="">—</option>
-            {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
-          </select>
-        </Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label={t('common.obsUnit')}>
+            <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
+              <option value="">—</option>
+              {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
+            </select>
+          </Field>
+          <Field label={t('common.ncpStage')}>
+            <select className="input" value={form.ncp_stage || ''} onChange={set('ncp_stage')}>
+              <option value="">—</option>
+              {NCP_STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </Field>
+        </div>
         <div className="flex justify-end gap-2 mt-3">
           <button type="button" onClick={onClose} className="btn-secondary">{t('common.cancel')}</button>
           <button type="submit" className="btn-primary">{t('common.save')}</button>

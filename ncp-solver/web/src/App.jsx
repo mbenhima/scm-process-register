@@ -29,6 +29,8 @@ import UsersPage from './pages/UsersPage.jsx';
 import PermissionMatrixPage from './pages/PermissionMatrixPage.jsx';
 import GovernancePage from './pages/GovernancePage.jsx';
 import LicensePage from './pages/LicensePage.jsx';
+import SheetTemplatesPage from './pages/SheetTemplatesPage.jsx';
+import CustomKpisPage from './pages/CustomKpisPage.jsx';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -73,6 +75,8 @@ function AppRoutes() {
         <Route path="permissions" element={<PermissionGate permission="role.view"><PermissionMatrixPage /></PermissionGate>} />
         <Route path="governance" element={<PermissionGate permission="governance.view"><GovernancePage /></PermissionGate>} />
         <Route path="license" element={<PermissionGate permission="license.view"><LicensePage /></PermissionGate>} />
+        <Route path="sheet-templates" element={<PermissionGate permission="sheetTemplate.view"><SheetTemplatesPage /></PermissionGate>} />
+        <Route path="custom-kpis" element={<PermissionGate permission="customKpi.view"><CustomKpisPage /></PermissionGate>} />
         <Route path="assistant" element={<PermissionGate permission="assistant.view"><AiAssistantPage /></PermissionGate>} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

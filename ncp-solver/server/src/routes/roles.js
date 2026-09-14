@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { writeAudit } from '../services/audit.js';
+import { requirePackFeature } from '../services/packConfig.js';
 
 const router = Router();
 
@@ -20,7 +21,7 @@ router.get('/', requirePermission('role.view'), (req, res) => {
   res.json(roles);
 });
 
-router.post('/', requirePermission('role.create'), (req, res) => {
+router.post('/', requirePackFeature('customRoles'), requirePermission('role.create'), (req, res) => {
   const { code, name, name_fr, name_ar, description } = req.body || {};
   if (!code || !name) return res.status(400).json({ error: 'code_and_name_required' });
   const id = randomUUID();
@@ -46,7 +47,7 @@ router.put('/:id', requirePermission('role.edit'), (req, res) => {
   res.json(row);
 });
 
-router.delete('/:id', requirePermission('role.delete'), (req, res) => {
+router.delete('/:id', requirePackFeature('customRoles'), requirePermission('role.delete'), (req, res) => {
   const existing = db.prepare('SELECT * FROM roles WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!existing) return res.status(404).json({ error: 'not_found' });
   if (existing.is_system_role) return res.status(400).json({ error: 'cannot_delete_system_role' });
@@ -79,7 +80,7 @@ router.get('/permissions/matrix', requirePermission('role.view'), (req, res) => 
   });
 });
 
-router.put('/:id/permissions', requirePermission('role.managePermissions'), (req, res) => {
+router.put('/:id/permissions', requirePackFeature('customRoles'), requirePermission('role.managePermissions'), (req, res) => {
   const role = db.prepare('SELECT * FROM roles WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!role) return res.status(404).json({ error: 'not_found' });
   const { codes = [] } = req.body || {};

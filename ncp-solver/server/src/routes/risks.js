@@ -9,7 +9,7 @@ const router = Router();
 const FIELDS = [
   'code', 'title', 'description', 'item_type', 'category', 'likelihood', 'impact',
   'response_strategy', 'mitigation_plan', 'owner_id', 'status',
-  'residual_likelihood', 'residual_impact', 'target_date', 'related_fiche_id', 'obs_node_id',
+  'residual_likelihood', 'residual_impact', 'target_date', 'related_fiche_id', 'obs_node_id', 'ncp_stage',
 ];
 
 function withScores(row) {
@@ -36,6 +36,7 @@ router.get('/', requirePermission('riskOpportunity.view'), (req, res) => {
   const params = [req.user.organizationId];
   if (req.query.item_type) { sql += ' AND item_type = ?'; params.push(req.query.item_type); }
   if (req.query.status) { sql += ' AND status = ?'; params.push(req.query.status); }
+  if (req.query.ncp_stage) { sql += ' AND ncp_stage = ?'; params.push(req.query.ncp_stage); }
   sql += ' ORDER BY created_at DESC';
   const rows = db.prepare(sql).all(...params).map(withScores);
   res.json(rows);

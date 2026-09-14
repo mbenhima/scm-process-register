@@ -106,6 +106,16 @@ export const PERMISSIONS = [
   ['alert', 'manage', 'alert.manage', 'Manage alert configuration'],
 
   ['audit', 'view', 'audit.view', 'View audit trail'],
+
+  ['customKpi', 'view', 'customKpi.view', 'View custom KPIs'],
+  ['customKpi', 'create', 'customKpi.create', 'Create custom KPIs'],
+  ['customKpi', 'edit', 'customKpi.edit', 'Edit custom KPIs'],
+  ['customKpi', 'delete', 'customKpi.delete', 'Delete custom KPIs'],
+
+  ['sheetTemplate', 'view', 'sheetTemplate.view', 'View NCP Sheet templates'],
+  ['sheetTemplate', 'create', 'sheetTemplate.create', 'Create NCP Sheet templates'],
+  ['sheetTemplate', 'edit', 'sheetTemplate.edit', 'Edit NCP Sheet templates'],
+  ['sheetTemplate', 'delete', 'sheetTemplate.delete', 'Delete NCP Sheet templates'],
 ];
 
 export const ALL_CODES = PERMISSIONS.map((p) => p[2]);
@@ -134,6 +144,8 @@ export const ROLE_TEMPLATES = {
       'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit', 'riskOpportunity.delete',
       'racsi.view', 'racsi.create', 'racsi.edit', 'racsi.delete',
       'bpmn.view', 'bpmn.create', 'bpmn.edit', 'bpmn.delete',
+      'customKpi.view', 'customKpi.create', 'customKpi.edit', 'customKpi.delete',
+      'sheetTemplate.view', 'sheetTemplate.create', 'sheetTemplate.edit', 'sheetTemplate.delete',
     ],
   },
   ci_pilot: {
@@ -151,6 +163,8 @@ export const ROLE_TEMPLATES = {
       'control.view', 'riskOpportunity.view', 'riskOpportunity.create', 'riskOpportunity.edit',
       'racsi.view', 'racsi.create', 'racsi.edit',
       'bpmn.view', 'bpmn.create', 'bpmn.edit',
+      'customKpi.view', 'customKpi.create', 'customKpi.edit',
+      'sheetTemplate.view', 'sheetTemplate.create', 'sheetTemplate.edit',
     ],
   },
   ncp_team_member: {
@@ -180,7 +194,7 @@ export const ROLE_TEMPLATES = {
   reporter: {
     name: 'Reporter', name_fr: 'Déclarant', name_ar: 'المبلّغ',
     description: 'Create new fiches (S1 only); view own submitted fiches; no edit rights after submission.',
-    permissions: ['dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'fiche.create'],
+    permissions: ['dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'fiche.create', 'sheetTemplate.view'],
   },
   auditor: {
     name: 'Read-Only / Auditor', name_fr: 'Auditeur (lecture seule)', name_ar: 'مدقق (قراءة فقط)',
@@ -189,7 +203,7 @@ export const ROLE_TEMPLATES = {
       'dashboard.view', 'help.view', 'assistant.view', 'fiche.view', 'action.view', 'rootcause.view', 'rex.view',
       'standard.view', 'capitalization.view', 'report.view', 'audit.view', 'obs.view', 'hierarchy.view',
       'businessRule.view', 'control.view', 'riskOpportunity.view', 'racsi.view', 'bpmn.view',
-      'aiUseCase.view', 'aiUseCase.viewUsageLog',
+      'aiUseCase.view', 'aiUseCase.viewUsageLog', 'customKpi.view', 'sheetTemplate.view', 'license.view',
     ],
   },
 };

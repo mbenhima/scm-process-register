@@ -111,19 +111,42 @@ CREATE TABLE IF NOT EXISTS user_roles (
 );
 
 -- =========================================================================
--- LICENSE & PLAN (SaaS / OnPrem)
+-- LICENSE & PLAN = CONFIGURATION MANAGEMENT (Solution Packs, Add-Ons,
+-- Compliance Modules, Deployment). One row per Organization. plan_tier is
+-- one of NCP Solver's 3 Solution Packs (Resolve/Govern/Assure); each Pack's
+-- included feature/quota matrix is the single source of truth in
+-- server/src/services/packConfig.js. The addon_* and compliance_* flags let
+-- an Organization exceed its Pack's defaults, mirroring the Technical &
+-- Solution Offer's Add-On Catalog and Compliance & Security Standards.
 -- =========================================================================
 CREATE TABLE IF NOT EXISTS licenses (
   id TEXT PRIMARY KEY,
   organization_id TEXT NOT NULL UNIQUE REFERENCES organizations(id) ON DELETE CASCADE,
-  plan_tier TEXT NOT NULL DEFAULT 'professional', -- starter | professional | enterprise
-  deployment_model TEXT NOT NULL DEFAULT 'saas',  -- saas | onprem
+  plan_tier TEXT NOT NULL DEFAULT 'govern', -- resolve | govern | assure
+  deployment_model TEXT NOT NULL DEFAULT 'saas',  -- saas | onprem (legacy; see deployment_option for the 5 named modes)
+  deployment_option TEXT NOT NULL DEFAULT 'dedicated_cloud',
+    -- dedicated_cloud | group_cloud | hybrid_shield | sovereign_core | sovereign_vault
   seats_total INTEGER NOT NULL DEFAULT 25,
   seats_used INTEGER NOT NULL DEFAULT 0,
   billing_cycle TEXT NOT NULL DEFAULT 'annual', -- monthly | annual
   renewal_date TEXT,
   status TEXT NOT NULL DEFAULT 'active', -- active | trial | suspended | expired
   onprem_server_region TEXT,
+  support_tier TEXT NOT NULL DEFAULT 'standard', -- standard | priority | premium
+  -- Add-Ons (Section 8 of the Technical & Solution Offer) — each can be turned
+  -- on for a Pack that does not already include it standard.
+  addon_capitalization INTEGER NOT NULL DEFAULT 0,   -- Capitalization Library & RAG
+  addon_ai_assistant INTEGER NOT NULL DEFAULT 0,     -- AI Assistant (Query Data / Query App)
+  addon_bpmn_editing INTEGER NOT NULL DEFAULT 0,     -- BPMN Full Editing Modeler
+  addon_custom_roles INTEGER NOT NULL DEFAULT 0,     -- Custom Roles & Permission Matrix Editor
+  addon_sovereign_deployment INTEGER NOT NULL DEFAULT 0, -- Sovereign Deployment Suite
+  -- Compliance & Security Standards (Section 10) — priced, toggleable modules.
+  -- Activating one seeds/activates its supporting Standards + Controls scaffold
+  -- (see seed/complianceModules.js); it documents and scaffolds GRC coverage,
+  -- it is not itself a certification or legal attestation of compliance.
+  compliance_gdpr INTEGER NOT NULL DEFAULT 0,
+  compliance_iso27001 INTEGER NOT NULL DEFAULT 0,
+  compliance_soc2 INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -153,7 +176,9 @@ CREATE TABLE IF NOT EXISTS standards (
   title TEXT NOT NULL,
   description TEXT,
   version TEXT,
-  is_active INTEGER NOT NULL DEFAULT 1,
+  domain TEXT, -- e.g. "Cross-industry quality", "Automotive" — from the Standards Library (Annex A)
+  is_active INTEGER NOT NULL DEFAULT 1, -- pack allotment (3/5/7 active) enforced by packConfig, see standardsRoutes
+  stage_tags TEXT, -- comma-separated S1..S7 subset this Standard most grounds (for per-step RAG retrieval); NULL/empty = generally applicable
   effective_date TEXT,
   document_link TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -274,6 +299,7 @@ CREATE TABLE IF NOT EXISTS notification_alerts (
   id TEXT PRIMARY KEY,
   organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
   alert_type TEXT NOT NULL, -- A..J
+  ncp_stage TEXT, -- S1..S7, derived from alert_type (see alertStageMap in services/alerts.js), so alerts can be shown on their relevant Sheet stage tab
   triggering_entity_id TEXT,
   target_user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
   channel TEXT NOT NULL DEFAULT 'in_app', -- in_app | email
@@ -334,6 +360,7 @@ CREATE TABLE IF NOT EXISTS ai_use_cases (
   estimated_roi TEXT,
   tags TEXT,
   is_active INTEGER NOT NULL DEFAULT 1, -- Organization-level activation toggle (canActivateAiForOrg): 1 = active, 0 = deactivated (kept for history, hidden from active use)
+  is_custom INTEGER NOT NULL DEFAULT 0, -- 0 = from the 14-entry seeded library, 1 = authored by the Organization beyond it (separate pack quota, see packConfig.js)
   current_version_id TEXT, -- FK to ai_use_case_versions(id), set after first version is created
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -405,6 +432,7 @@ CREATE TABLE IF NOT EXISTS business_rules (
   severity TEXT NOT NULL DEFAULT 'warning', -- blocking | warning | info
   owner_id TEXT REFERENCES users(id) ON DELETE SET NULL,
   obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, -- owning org unit
+  ncp_stage TEXT, -- optional S1..S7 tag, so a Rule can be surfaced on its relevant Sheet stage tab (mirrors racsi_activities.ncp_stage)
   is_active INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -429,6 +457,8 @@ CREATE TABLE IF NOT EXISTS controls (
   next_test_date TEXT,
   evidence_notes TEXT,
   obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, -- owning org unit
+  ncp_stage TEXT, -- optional S1..S7 tag, so a Control can be surfaced on its relevant Sheet stage tab
+  compliance_framework TEXT, -- gdpr | iso27001 | soc2 | NULL — set when seeded/created as part of a compliance module scaffold
   is_active INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -456,6 +486,7 @@ CREATE TABLE IF NOT EXISTS risks_opportunities (
   target_date TEXT,
   related_fiche_id TEXT REFERENCES ncp_fiches(id) ON DELETE SET NULL,
   obs_node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, -- owning org unit
+  ncp_stage TEXT, -- optional S1..S7 tag, so a Risk/Opportunity can be surfaced on its relevant Sheet stage tab
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -501,6 +532,47 @@ CREATE TABLE IF NOT EXISTS racsi_assignments (
 
 -- Enforce exactly one Accountable (A) per activity; R/C/S/I may repeat freely.
 CREATE UNIQUE INDEX IF NOT EXISTS idx_racsi_one_accountable ON racsi_assignments(activity_id) WHERE racsi_type = 'A';
+
+-- =========================================================================
+-- CUSTOM KPIs — additive to the 10 built-in system KPIs (Appendix B), full
+-- CRUD via RBAC, each optionally tagged to an S1-S7 stage or a module.
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS custom_kpis (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  formula_desc TEXT NOT NULL, -- plain-language formula, e.g. "(Sheets closed on time / Sheets closed) x 100"
+  target_value TEXT,          -- free-text target, e.g. ">= 85%"
+  ncp_stage TEXT,              -- optional S1..S7 tag
+  owner_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(organization_id, code)
+);
+
+-- =========================================================================
+-- NCP SHEET TEMPLATES — a library of pre-filled S1 starting points by
+-- problem type/sector, full CRUD via RBAC. "Start from template" on the New
+-- NCP Sheet form pre-fills title/description/criticality/priority.
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS ncp_sheet_templates (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,             -- template name, e.g. "Supplier Non-Conformity"
+  description TEXT,                -- when to use this template
+  problem_type TEXT,                -- free-text category/sector tag
+  default_criticality TEXT NOT NULL DEFAULT 'medium', -- high | medium | low
+  default_priority INTEGER NOT NULL DEFAULT 3,
+  title_template TEXT NOT NULL,        -- pre-filled S1 title starting point
+  description_template TEXT NOT NULL,  -- pre-filled S1 description starting point
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_by TEXT REFERENCES users(id) ON DELETE SET NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 
 -- =========================================================================
 -- BPMN: process diagrams (BPMN 2.0 XML), full CRUD via RBAC. Seeded with the
@@ -551,3 +623,10 @@ CREATE INDEX IF NOT EXISTS idx_bpmn_org ON bpmn_diagrams(organization_id);
 CREATE INDEX IF NOT EXISTS idx_business_rules_obs ON business_rules(obs_node_id);
 CREATE INDEX IF NOT EXISTS idx_controls_obs ON controls(obs_node_id);
 CREATE INDEX IF NOT EXISTS idx_risks_obs ON risks_opportunities(obs_node_id);
+CREATE INDEX IF NOT EXISTS idx_business_rules_stage ON business_rules(ncp_stage);
+CREATE INDEX IF NOT EXISTS idx_controls_stage ON controls(ncp_stage);
+CREATE INDEX IF NOT EXISTS idx_risks_stage ON risks_opportunities(ncp_stage);
+CREATE INDEX IF NOT EXISTS idx_alerts_stage ON notification_alerts(ncp_stage);
+CREATE INDEX IF NOT EXISTS idx_standards_org ON standards(organization_id);
+CREATE INDEX IF NOT EXISTS idx_custom_kpis_org ON custom_kpis(organization_id);
+CREATE INDEX IF NOT EXISTS idx_sheet_templates_org ON ncp_sheet_templates(organization_id);

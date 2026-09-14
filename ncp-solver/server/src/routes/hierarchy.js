@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { writeAudit } from '../services/audit.js';
+import { checkProjectQuota } from '../services/packConfig.js';
 
 const router = Router();
 
@@ -58,6 +59,8 @@ router.get('/projects', requirePermission('hierarchy.view'), (req, res) => {
 router.post('/projects', requirePermission('hierarchy.manage'), (req, res) => {
   const { name, name_fr, name_ar, description, status, start_date, end_date } = req.body || {};
   if (!name) return res.status(400).json({ error: 'name_required' });
+  const quota = checkProjectQuota(req.user.organizationId);
+  if (!quota.ok) return res.status(409).json({ error: 'quota_exceeded', quota: 'projects', used: quota.used, max: quota.max });
   const id = randomUUID();
   db.prepare(`
     INSERT INTO projects (id, organization_id, name, name_fr, name_ar, description, status, start_date, end_date)

@@ -6,6 +6,24 @@ import { SECTOR_TEMPLATES, SECTOR_LABELS } from './sectorTemplates.js';
 import { AI_USE_CASE_TEMPLATES } from './aiUseCaseTemplates.js';
 import { BUSINESS_RULE_TEMPLATES, CONTROL_TEMPLATES, RISK_TEMPLATES } from './grcTemplates.js';
 import { NCP_PROCESS_BPMN_XML } from './bpmnTemplates.js';
+import { ANNEX_A_STANDARDS } from './standardsLibrary.js';
+import { SHEET_TEMPLATE_SEEDS } from './sheetTemplates.js';
+import { PACKS } from '../services/packConfig.js';
+import { activateComplianceModule } from './complianceModules.js';
+
+function activateComplianceModuleSafe(orgId, framework) {
+  try { activateComplianceModule(orgId, framework); } catch { /* best-effort at seed time */ }
+}
+
+function seedSheetTemplatesForOrg(orgId, sector, users) {
+  const creator = users.admin || users.cipilot || null;
+  for (const t of SHEET_TEMPLATE_SEEDS) {
+    db.prepare(`
+      INSERT INTO ncp_sheet_templates (id, organization_id, title, description, problem_type, default_criticality, default_priority, title_template, description_template, created_by)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(randomUUID(), orgId, t.title, t.description, t.problemType, t.defaultCriticality, t.defaultPriority, t.titleTemplate, t.descriptionTemplate, creator);
+  }
+}
 
 export const DEMO_PASSWORD = 'Ncp#2026Demo';
 
@@ -16,6 +34,7 @@ const TABLES_IN_DELETE_ORDER = [
   'ai_use_case_versions', 'ai_use_cases',
   'racsi_assignments', 'racsi_activities', 'bpmn_diagrams',
   'risk_controls', 'risks_opportunities', 'controls', 'business_rules',
+  'custom_kpis', 'ncp_sheet_templates',
   'standards',
   'governance_settings', 'licenses',
   'role_permissions', 'user_roles', 'roles', 'users',
@@ -122,7 +141,7 @@ function seedObsForOrg(orgId, departments) {
   return byName;
 }
 
-function seedStandardsForOrg(orgId, standardTitles) {
+function seedStandardsForOrg(orgId, standardTitles, planTier) {
   const ids = {};
   let i = 1;
   for (const title of standardTitles) {
@@ -133,14 +152,38 @@ function seedStandardsForOrg(orgId, standardTitles) {
     `).run(id, orgId, `STD-${String(i++).padStart(3, '0')}`, title, daysAgoISO(400));
     ids[title] = id;
   }
+  // The Technical Offer's illustrative Standards Library (Annex A): seeded in
+  // full for every Organization, with only the Pack's allotment (3/5/7)
+  // marked active by default — an Administrator can activate any other from
+  // the Configuration Management screen, subject to that same allotment.
+  const pack = PACKS[planTier] || PACKS.govern;
+  ANNEX_A_STANDARDS.forEach((std, idx) => {
+    const id = randomUUID();
+    db.prepare(`
+      INSERT INTO standards (id, organization_id, code, title, domain, version, is_active, stage_tags, effective_date)
+      VALUES (?, ?, ?, ?, ?, '1.0', ?, ?, ?)
+    `).run(id, orgId, std.code, std.title, std.domain, idx < pack.standardsIncluded ? 1 : 0, std.stageTag, daysAgoISO(400));
+    ids[std.title] = id;
+  });
   return ids;
 }
 
-function seedLicenseAndGovernance(orgId, planTier, deploymentModel) {
+function seedLicenseAndGovernance(orgId, planTier, deploymentModel, options = {}) {
+  const deploymentOption = deploymentModel === 'onprem' ? 'sovereign_core' : (options.deploymentOption || 'dedicated_cloud');
   db.prepare(`
-    INSERT INTO licenses (id, organization_id, plan_tier, deployment_model, seats_total, billing_cycle, renewal_date, status)
-    VALUES (?, ?, ?, ?, 30, 'annual', ?, 'active')
-  `).run(randomUUID(), orgId, planTier, deploymentModel, daysAgoISO(-300));
+    INSERT INTO licenses (
+      id, organization_id, plan_tier, deployment_model, deployment_option, seats_total, billing_cycle, renewal_date, status,
+      support_tier, addon_capitalization, addon_ai_assistant, addon_bpmn_editing, addon_custom_roles, addon_sovereign_deployment,
+      compliance_gdpr, compliance_iso27001, compliance_soc2
+    )
+    VALUES (?, ?, ?, ?, ?, 30, 'annual', ?, 'active', ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    randomUUID(), orgId, planTier, deploymentModel, deploymentOption, daysAgoISO(-300),
+    options.supportTier || 'standard',
+    options.addonCapitalization ? 1 : 0, options.addonAiAssistant ? 1 : 0, options.addonBpmnEditing ? 1 : 0,
+    options.addonCustomRoles ? 1 : 0, options.addonSovereignDeployment ? 1 : 0,
+    options.complianceGdpr ? 1 : 0, options.complianceIso27001 ? 1 : 0, options.complianceSoc2 ? 1 : 0,
+  );
   db.prepare(`
     INSERT INTO governance_settings (id, organization_id, default_language, kpi_thresholds_json, alert_config_json)
     VALUES (?, ?, 'en', ?, ?)
@@ -283,18 +326,20 @@ function seedFichesForOrg(orgId, sector, obsByName, users, standardIds) {
   });
 }
 
-function seedAiUseCasesForOrg(orgId, sector, users) {
+function seedAiUseCasesForOrg(orgId, sector, users, planTier) {
   const templates = AI_USE_CASE_TEMPLATES;
-  for (const t of templates) {
+  const pack = PACKS[planTier] || PACKS.govern;
+  templates.forEach((t, idx) => {
     const useCaseId = randomUUID();
+    const isActive = idx < pack.aiUseCasesIncluded ? 1 : 0;
     db.prepare(`
       INSERT INTO ai_use_cases (id, organization_id, title, description, sector, business_function, ai_technique,
         maturity_stage, status, tier, module_key, trigger_desc, output_desc, human_checkpoint,
-        owner_id, expected_impact, estimated_roi, tags)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        owner_id, expected_impact, estimated_roi, tags, is_active, is_custom)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
     `).run(useCaseId, orgId, t.title, t.description, sector, t.business_function, t.ai_technique,
       t.maturity_stage, t.status, t.tier, t.module_key, t.trigger_desc, t.output_desc, t.human_checkpoint,
-      users.cipilot, t.expected_impact, t.maturity_stage >= 3 ? 'Medium-High' : 'To be assessed', t.module_key);
+      users.cipilot, t.expected_impact, t.maturity_stage >= 3 ? 'Medium-High' : 'To be assessed', t.module_key, isActive);
 
     const versionId = randomUUID();
     db.prepare(`
@@ -303,7 +348,7 @@ function seedAiUseCasesForOrg(orgId, sector, users) {
       VALUES (?, ?, 1, ?, ?, ?, ?, ?, 'Initial version', 1, ?)
     `).run(versionId, useCaseId, t.inputs, t.prompt, t.expected_output, t.constraints_guardrails, t.model_technique_notes, users.cipilot);
     db.prepare('UPDATE ai_use_cases SET current_version_id = ? WHERE id = ?').run(versionId, useCaseId);
-  }
+  });
 }
 
 function seedBusinessRulesForOrg(orgId, users, obsNodeId) {
@@ -312,10 +357,10 @@ function seedBusinessRulesForOrg(orgId, users, obsNodeId) {
     const id = randomUUID();
     db.prepare(`
       INSERT INTO business_rules (id, organization_id, code, title, description, rule_type, applies_to_module,
-        condition_text, action_text, severity, owner_id, obs_node_id, is_active)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+        condition_text, action_text, severity, owner_id, obs_node_id, ncp_stage, is_active)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
     `).run(id, orgId, r.code, r.title, r.action_text, r.rule_type, r.applies_to_module,
-      r.condition_text, r.action_text, r.severity, users.cipilot, obsNodeId);
+      r.condition_text, r.action_text, r.severity, users.cipilot, obsNodeId, r.ncp_stage || null);
     ids[r.code] = id;
   }
   return ids;
@@ -327,10 +372,10 @@ function seedControlsForOrg(orgId, users, obsNodeId) {
     const id = randomUUID();
     db.prepare(`
       INSERT INTO controls (id, organization_id, code, title, description, coso_component, control_type, frequency,
-        control_owner_id, effectiveness, last_tested_date, next_test_date, evidence_notes, obs_node_id, is_active)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+        control_owner_id, effectiveness, last_tested_date, next_test_date, evidence_notes, obs_node_id, ncp_stage, is_active)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
     `).run(id, orgId, c.code, c.title, c.evidence_notes, c.coso_component, c.control_type, c.frequency,
-      users.quality, c.effectiveness, daysAgoISO(30), daysAgoISO(-60), c.evidence_notes, obsNodeId);
+      users.quality, c.effectiveness, daysAgoISO(30), daysAgoISO(-60), c.evidence_notes, obsNodeId, c.ncp_stage || null);
     ids[c.code] = id;
   }
   return ids;
@@ -343,11 +388,11 @@ function seedRisksForOrg(orgId, users, controlIds, obsNodeId) {
     db.prepare(`
       INSERT INTO risks_opportunities (id, organization_id, code, title, description, item_type, category,
         likelihood, impact, response_strategy, mitigation_plan, owner_id, status,
-        residual_likelihood, residual_impact, target_date, obs_node_id)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        residual_likelihood, residual_impact, target_date, obs_node_id, ncp_stage)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(id, orgId, r.code, r.title, r.description, r.item_type, r.category, r.likelihood, r.impact,
       r.response_strategy, r.mitigation_plan, users.quality, r.status,
-      Math.max(1, r.likelihood - 1), Math.max(1, r.impact - 1), daysAgoISO(-90), obsNodeId);
+      Math.max(1, r.likelihood - 1), Math.max(1, r.impact - 1), daysAgoISO(-90), obsNodeId, r.ncp_stage || null);
     ids[r.code] = id;
     for (const controlCode of r.controls || []) {
       if (controlIds[controlCode]) db.prepare('INSERT INTO risk_controls (risk_id, control_id) VALUES (?, ?)').run(id, controlIds[controlCode]);
@@ -519,7 +564,7 @@ function seedBpmnForOrg(orgId, users, obsNodeId) {
   );
 }
 
-function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorType, country, planTier, deploymentModel, domain, language }) {
+function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorType, country, planTier, deploymentModel, domain, language, licenseOptions }) {
   db.prepare(`
     INSERT INTO organizations (id, group_id, name, name_fr, name_ar, sector, sector_type, country, logo_color)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, '#F8931D')
@@ -531,16 +576,20 @@ function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorT
   const obsByName = seedObsForOrg(id, departments);
   const users = seedUsersForOrg(id, domain, roleIds, language, obsByName);
   const standardTitles = [...new Set(templates.map((t) => t.standard).filter(Boolean))];
-  const standardIds = seedStandardsForOrg(id, standardTitles.length ? standardTitles : ['ISO 9001:2015 Quality Management']);
-  seedLicenseAndGovernance(id, planTier, deploymentModel);
+  const standardIds = seedStandardsForOrg(id, standardTitles.length ? standardTitles : ['ISO 9001:2015 Quality Management'], planTier);
+  seedLicenseAndGovernance(id, planTier, deploymentModel, licenseOptions || {});
   seedFichesForOrg(id, sector, obsByName, users, standardIds);
-  seedAiUseCasesForOrg(id, sector, users);
+  seedAiUseCasesForOrg(id, sector, users, planTier);
   const govObsId = governanceObsId(obsByName);
   const businessRuleIds = seedBusinessRulesForOrg(id, users, govObsId);
   const controlIds = seedControlsForOrg(id, users, govObsId);
   const riskIds = seedRisksForOrg(id, users, controlIds, govObsId);
   seedRacsiForOrg(id, users, roleIds, obsByName, businessRuleIds, controlIds, riskIds);
   seedBpmnForOrg(id, users, govObsId);
+  seedSheetTemplatesForOrg(id, sector, users);
+  if (licenseOptions?.complianceGdpr) activateComplianceModuleSafe(id, 'gdpr');
+  if (licenseOptions?.complianceIso27001) activateComplianceModuleSafe(id, 'iso27001');
+  if (licenseOptions?.complianceSoc2) activateComplianceModuleSafe(id, 'soc2');
   return { id, users, roleIds };
 }
 
@@ -556,19 +605,23 @@ export function runSeed() {
     // --- Independent companies (no group) ---
     seedOrganization({
       id: randomUUID(), name: 'National Infrastructure Authority', name_fr: 'Autorité Nationale des Infrastructures', name_ar: 'الهيئة الوطنية للبنية التحتية',
-      sector: 'public_infrastructure', sectorType: 'public', country: 'Morocco', planTier: 'enterprise', deploymentModel: 'onprem', domain: 'nia', language: 'fr',
+      sector: 'public_infrastructure', sectorType: 'public', country: 'Morocco', planTier: 'assure', deploymentModel: 'onprem', domain: 'nia', language: 'fr',
+      licenseOptions: { supportTier: 'premium', complianceIso27001: true, complianceGdpr: true },
     });
     seedOrganization({
       id: randomUUID(), name: 'Solaris Precision Manufacturing', name_fr: 'Solaris Manufacture de Précision', name_ar: 'سولاريس للتصنيع الدقيق',
-      sector: 'manufacturing', sectorType: 'private', country: 'Morocco', planTier: 'professional', deploymentModel: 'saas', domain: 'solaris', language: 'en',
+      sector: 'manufacturing', sectorType: 'private', country: 'Morocco', planTier: 'govern', deploymentModel: 'saas', domain: 'solaris', language: 'en',
+      licenseOptions: { supportTier: 'priority', addonCapitalization: true },
     });
     seedOrganization({
       id: randomUUID(), name: 'GreenValley AgroBusiness Co.', name_fr: 'GreenValley Agro-Industrie', name_ar: 'شركة جرين فالي للأعمال الزراعية',
-      sector: 'agro_business', sectorType: 'private', country: 'Morocco', planTier: 'professional', deploymentModel: 'saas', domain: 'greenvalley', language: 'fr',
+      sector: 'agro_business', sectorType: 'private', country: 'Morocco', planTier: 'govern', deploymentModel: 'saas', domain: 'greenvalley', language: 'fr',
+      licenseOptions: { supportTier: 'standard' },
     });
     seedOrganization({
       id: randomUUID(), name: 'Horizon Real Estate Developers', name_fr: 'Horizon Promotion Immobilière', name_ar: 'هورايزون للتطوير العقاري',
-      sector: 'real_estate', sectorType: 'private', country: 'UAE', planTier: 'starter', deploymentModel: 'saas', domain: 'horizon', language: 'ar',
+      sector: 'real_estate', sectorType: 'private', country: 'UAE', planTier: 'resolve', deploymentModel: 'saas', domain: 'horizon', language: 'ar',
+      licenseOptions: { supportTier: 'standard' },
     });
 
     // --- Group of companies ---
@@ -580,15 +633,18 @@ export function runSeed() {
     );
     seedOrganization({
       id: randomUUID(), groupId, name: 'Meridian Industrial Manufacturing', name_fr: 'Meridian Manufacture Industrielle', name_ar: 'ميريديان للتصنيع الصناعي',
-      sector: 'manufacturing', sectorType: 'private', country: 'Morocco', planTier: 'enterprise', deploymentModel: 'saas', domain: 'meridian-mfg', language: 'en',
+      sector: 'manufacturing', sectorType: 'private', country: 'Morocco', planTier: 'assure', deploymentModel: 'saas', domain: 'meridian-mfg', language: 'en',
+      licenseOptions: { supportTier: 'premium', complianceGdpr: true, complianceIso27001: true, complianceSoc2: true },
     });
     seedOrganization({
       id: randomUUID(), groupId, name: 'Meridian AgroBusiness', name_fr: 'Meridian Agro-Industrie', name_ar: 'ميريديان للأعمال الزراعية',
-      sector: 'agro_business', sectorType: 'private', country: 'Morocco', planTier: 'enterprise', deploymentModel: 'saas', domain: 'meridian-agro', language: 'fr',
+      sector: 'agro_business', sectorType: 'private', country: 'Morocco', planTier: 'assure', deploymentModel: 'saas', domain: 'meridian-agro', language: 'fr',
+      licenseOptions: { supportTier: 'priority' },
     });
     seedOrganization({
       id: randomUUID(), groupId, name: 'Meridian Real Estate Development', name_fr: 'Meridian Promotion Immobilière', name_ar: 'ميريديان للتطوير العقاري',
-      sector: 'real_estate', sectorType: 'private', country: 'Morocco', planTier: 'enterprise', deploymentModel: 'saas', domain: 'meridian-re', language: 'en',
+      sector: 'real_estate', sectorType: 'private', country: 'Morocco', planTier: 'assure', deploymentModel: 'saas', domain: 'meridian-re', language: 'en',
+      licenseOptions: { supportTier: 'priority' },
     });
   });
   tx();

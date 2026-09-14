@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { useI18n } from '../context/I18nContext.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field } from '../components/ui.jsx';
 
 export default function NewFichePage() {
   const { t } = useI18n();
+  const { hasPermission } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     title: '', description: '', criticality: 'medium', priority: 3,
@@ -13,6 +15,22 @@ export default function NewFichePage() {
   });
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const [templates, setTemplates] = useState([]);
+  const [templateId, setTemplateId] = useState('');
+
+  useEffect(() => {
+    if (hasPermission('sheetTemplate.view')) api.get('/sheet-templates').then((rows) => setTemplates(rows.filter((r) => r.is_active))).catch(() => {});
+  }, []);
+
+  function applyTemplate(id) {
+    setTemplateId(id);
+    const tpl = templates.find((x) => x.id === id);
+    if (!tpl) return;
+    setForm((f) => ({
+      ...f, title: tpl.title_template, description: tpl.description_template,
+      criticality: tpl.default_criticality, priority: tpl.default_priority,
+    }));
+  }
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -36,6 +54,15 @@ export default function NewFichePage() {
       <h1 className="font-title font-bold text-2xl text-grey-dark mb-4">{t('fiche.newFiche')}</h1>
       <Card>
         <form onSubmit={onSubmit}>
+          {templates.length > 0 && (
+            <Field label={t('sheetTemplate.startFrom')}>
+              <select className="input" value={templateId} onChange={(e) => applyTemplate(e.target.value)}>
+                <option value="">{t('sheetTemplate.blank')}</option>
+                {templates.map((tpl) => <option key={tpl.id} value={tpl.id}>{tpl.title}{tpl.problem_type ? ` — ${tpl.problem_type}` : ''}</option>)}
+              </select>
+              {templateId && <p className="text-xs text-grey-medium mt-1">{templates.find((x) => x.id === templateId)?.description}</p>}
+            </Field>
+          )}
           <Field label={t('fiche.title')}>
             <input className="input" value={form.title} onChange={set('title')} required />
           </Field>

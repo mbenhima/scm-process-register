@@ -8,8 +8,9 @@ const RULE_TYPES = ['validation', 'workflow', 'approval', 'naming', 'threshold',
 const MODULES = ['fiche', 'action', 'rootcause', 'rex', 'standard', 'general'];
 const SEVERITIES = ['blocking', 'warning', 'info'];
 const SEVERITY_BADGE = { blocking: 'not_effective', warning: 'pending', info: 'to_do' };
+const NCP_STAGES = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
 
-const EMPTY = { code: '', title: '', rule_type: 'workflow', applies_to_module: 'fiche', condition_text: '', action_text: '', severity: 'warning', obs_node_id: '' };
+const EMPTY = { code: '', title: '', rule_type: 'workflow', applies_to_module: 'fiche', condition_text: '', action_text: '', severity: 'warning', obs_node_id: '', ncp_stage: '' };
 
 export default function BusinessRulesPage() {
   const { t } = useI18n();
@@ -50,7 +51,10 @@ export default function BusinessRulesPage() {
           <Card key={r.id}>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-xs text-grey-medium font-semibold">{r.code} · {t(`businessRule.ruleType.${r.rule_type}`)} · {r.applies_to_module} · {t('common.obsUnit')}: {obsName(r.obs_node_id)}</div>
+                <div className="text-xs text-grey-medium font-semibold">
+                  {r.code} · {t(`businessRule.ruleType.${r.rule_type}`)} · {r.applies_to_module} · {t('common.obsUnit')}: {obsName(r.obs_node_id)}
+                  {r.ncp_stage && <span className="badge bg-orange-tint text-orange-deep ms-1">{r.ncp_stage}</span>}
+                </div>
                 <div className="font-title font-bold text-grey-dark">{r.title}</div>
               </div>
               <StatusBadge value={SEVERITY_BADGE[r.severity]} label={t(`businessRule.severity.${r.severity}`)} />
@@ -104,12 +108,20 @@ function RuleForm({ initial, obsFlat, onSave, onClose, t }) {
         </div>
         <Field label={t('businessRule.condition')}><textarea className="input" value={form.condition_text || ''} onChange={set('condition_text')} /></Field>
         <Field label={t('businessRule.actionText')}><textarea className="input" value={form.action_text || ''} onChange={set('action_text')} /></Field>
-        <Field label={t('common.obsUnit')}>
-          <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
-            <option value="">—</option>
-            {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
-          </select>
-        </Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label={t('common.obsUnit')}>
+            <select className="input" value={form.obs_node_id || ''} onChange={set('obs_node_id')}>
+              <option value="">—</option>
+              {obsFlat.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
+            </select>
+          </Field>
+          <Field label={t('common.ncpStage')}>
+            <select className="input" value={form.ncp_stage || ''} onChange={set('ncp_stage')}>
+              <option value="">—</option>
+              {NCP_STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </Field>
+        </div>
         <div className="flex justify-end gap-2 mt-3">
           <button type="button" onClick={onClose} className="btn-secondary">{t('common.cancel')}</button>
           <button type="submit" className="btn-primary">{t('common.save')}</button>

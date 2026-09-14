@@ -4,6 +4,7 @@ import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { writeAudit } from '../services/audit.js';
 import { LLM_PROVIDERS } from '../services/aiGeneration.js';
+import { checkAiUseCaseQuota } from '../services/packConfig.js';
 
 const router = Router();
 
@@ -80,12 +81,17 @@ router.get('/:id', requirePermission('aiUseCase.view'), (req, res) => {
 router.post('/', requirePermission('aiUseCase.create'), (req, res) => {
   const body = req.body || {};
   if (!body.title || !body.description) return res.status(400).json({ error: 'title_and_description_required' });
+  // Every use case created through this API is, by definition, org-authored
+  // beyond the 14-entry seeded library — subject to the Pack's separate
+  // "Custom AI Use Cases" allowance (Section 4.3 of the Technical Offer).
+  const quota = checkAiUseCaseQuota(req.user.organizationId, { creatingCustom: true });
+  if (!quota.ok) return res.status(409).json({ error: 'quota_exceeded', quota: quota.reason, used: quota.used, max: quota.max });
   const id = randomUUID();
   // Only bind fields actually present in the payload, so an omitted field (e.g. tier)
   // falls back to the column's own SQL DEFAULT instead of being overwritten with NULL.
   const providedFields = METADATA_FIELDS.filter((f) => f in body);
-  const cols = ['id', 'organization_id', ...providedFields];
-  const vals = [id, req.user.organizationId, ...providedFields.map((f) => body[f])];
+  const cols = ['id', 'organization_id', 'is_custom', ...providedFields];
+  const vals = [id, req.user.organizationId, 1, ...providedFields.map((f) => body[f])];
   db.prepare(`INSERT INTO ai_use_cases (${cols.join(',')}) VALUES (${cols.map(() => '?').join(',')})`).run(...vals);
   const version = createVersion(id, body, req.user.id, 'Initial version');
   const row = db.prepare('SELECT * FROM ai_use_cases WHERE id = ?').get(id);
@@ -119,6 +125,10 @@ router.put('/:id/activation', requirePermission('aiUseCase.activate'), (req, res
   const existing = getUseCase(req);
   if (!existing) return res.status(404).json({ error: 'not_found' });
   const isActive = req.body?.is_active ? 1 : 0;
+  if (isActive && !existing.is_active) {
+    const quota = checkAiUseCaseQuota(req.user.organizationId, { activating: true, isCustom: !!existing.is_custom });
+    if (!quota.ok) return res.status(409).json({ error: 'quota_exceeded', quota: quota.reason, used: quota.used, max: quota.max });
+  }
   db.prepare(`UPDATE ai_use_cases SET is_active = ?, updated_at = datetime('now') WHERE id = ?`).run(isActive, req.params.id);
   const row = db.prepare('SELECT * FROM ai_use_cases WHERE id = ?').get(req.params.id);
   writeAudit(req, 'UPDATE', 'AIUseCaseActivation', req.params.id, { is_active: existing.is_active }, { is_active: isActive });

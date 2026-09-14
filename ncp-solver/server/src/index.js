@@ -27,6 +27,9 @@ import racsiRoutes from './routes/racsi.js';
 import bpmnRoutes from './routes/bpmn.js';
 import assistantRoutes from './routes/assistant.js';
 import aiUsageLogRoutes from './routes/aiUsageLog.js';
+import customKpisRoutes from './routes/customKpis.js';
+import sheetTemplatesRoutes from './routes/sheetTemplates.js';
+import { requirePackFeature } from './services/packConfig.js';
 
 if (isEmpty()) {
   console.log('Empty database detected - running seed...');
@@ -55,16 +58,18 @@ app.use('/api/actions', actionsRoutes);
 app.use('/api/alerts', alertsRoutes);
 app.use('/api/ai-use-cases', aiUseCasesRoutes);
 app.use('/api/ai-agents', aiAgentRoutes);
-app.use('/api/capitalization', capitalizationRoutes);
+app.use('/api/capitalization', requirePackFeature('capitalization'), capitalizationRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/business-rules', businessRulesRoutes);
-app.use('/api/controls', controlsRoutes);
-app.use('/api/risks', risksRoutes);
-app.use('/api/racsi', racsiRoutes);
+app.use('/api/business-rules', requirePackFeature('grcModules'), businessRulesRoutes);
+app.use('/api/controls', requirePackFeature('grcModules'), controlsRoutes);
+app.use('/api/risks', requirePackFeature('grcModules'), risksRoutes);
+app.use('/api/racsi', requirePackFeature('grcModules'), racsiRoutes);
 app.use('/api/bpmn', bpmnRoutes);
-app.use('/api/assistant', assistantRoutes);
+app.use('/api/assistant', requirePackFeature('aiAssistant'), assistantRoutes);
 app.use('/api/ai-usage-log', aiUsageLogRoutes);
+app.use('/api/custom-kpis', customKpisRoutes);
+app.use('/api/sheet-templates', sheetTemplatesRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

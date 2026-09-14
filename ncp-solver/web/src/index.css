@@ -55,3 +55,50 @@ table.ncp-table tr:nth-child(even) td {
 .badge {
   @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
 }
+
+/* BPMN modeler: a dedicated, non-overlapping sidebar for the tool palette,
+   instead of bpmn-js's default floating overlay on top of the diagram.
+   bpmn-js nests both the drawing <svg> and .djs-palette as children of the
+   same .djs-container (itself the sole child of our .bpmn-canvas root), each
+   normally taken out of flow by bpmn-js's own CSS (absolute positioning) so
+   the palette overlays the top-left corner of the canvas. Making
+   .djs-container a flex row turns the svg and the palette into side-by-side
+   flex items instead — every other diagram-js helper layer (tooltips,
+   overlays, breadcrumbs, context pad, search) keeps its own absolute
+   positioning from bpmn-js's CSS and is unaffected, since flex layout only
+   applies to in-flow children. */
+.bpmn-canvas {
+  overflow: hidden;
+}
+.bpmn-canvas .djs-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+.bpmn-canvas .djs-container > svg {
+  flex: 1 1 auto;
+  min-width: 0;
+  order: 1;
+}
+.bpmn-canvas .djs-palette {
+  position: static !important;
+  order: 0;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 100% !important;
+  max-height: none !important;
+  border: none !important;
+  border-inline-end: 1px solid #E3E3E4 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #FDFDFC !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.bpmn-canvas .djs-palette .djs-palette-entries {
+  width: 100%;
+}
+[dir='rtl'] .bpmn-canvas .djs-palette {
+  border-inline-end: none !important;
+  border-inline-start: 1px solid #E3E3E4 !important;
+}

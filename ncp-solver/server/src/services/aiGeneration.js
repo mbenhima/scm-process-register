@@ -44,8 +44,25 @@ const CALL_TIMEOUT_MS = 12000;
  * path produced it (FR-M6-11) — grounding is a transparency guarantee, not a
  * real-LLM-only feature.
  */
-export function retrieveGrounding(organizationId, queryText, topK = 3) {
-  const standards = db.prepare('SELECT code, title, description FROM standards WHERE organization_id = ? AND is_active = 1').all(organizationId);
+export function retrieveGrounding(organizationId, queryText, topK = 3, stage = null) {
+  let standards;
+  if (stage) {
+    // Per-step knowledge base (item 7): prioritize Standards tagged to this
+    // agent's own S1-S7 stage, topped up with the rest of the active corpus
+    // so a thin stage-specific pool never starves relevance or falls short of
+    // topK — a graceful fallback to full-corpus retrieval, not a hard filter.
+    const staged = db.prepare('SELECT code, title, description FROM standards WHERE organization_id = ? AND is_active = 1 AND stage_tags = ?').all(organizationId, stage);
+    if (staged.length >= topK) {
+      standards = staged;
+    } else {
+      const already = new Set(staged.map((s) => s.code));
+      const rest = db.prepare('SELECT code, title, description FROM standards WHERE organization_id = ? AND is_active = 1').all(organizationId)
+        .filter((s) => !already.has(s.code));
+      standards = [...staged, ...rest];
+    }
+  } else {
+    standards = db.prepare('SELECT code, title, description FROM standards WHERE organization_id = ? AND is_active = 1').all(organizationId);
+  }
   if (!standards.length) return [];
   const index = new RagIndex();
   standards.forEach((s, i) => index.addDocument({ id: String(i), text: `${s.code} ${s.title} ${s.description || ''}`, meta: s }));
@@ -149,8 +166,8 @@ export async function callRealLlm(connection, systemPrompt, userPrompt) {
  * result the caller already computed. Returns { grounding, llmNarrative,
  * generatedBy } to merge into the agent's response object.
  */
-export async function augmentWithLlm({ organizationId, queryText, agentName, recordContext, connection }) {
-  const grounding = retrieveGrounding(organizationId, queryText, 3);
+export async function augmentWithLlm({ organizationId, queryText, agentName, recordContext, connection, stage }) {
+  const grounding = retrieveGrounding(organizationId, queryText, 3, stage || null);
   if (!connection) return { grounding, llmNarrative: null, generatedBy: 'deterministic' };
 
   const systemPrompt = [

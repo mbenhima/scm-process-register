@@ -6,11 +6,12 @@ export default makeCrudRouter({
   fields: [
     'code', 'title', 'description', 'coso_component', 'control_type', 'frequency',
     'control_owner_id', 'effectiveness', 'last_tested_date', 'next_test_date',
-    'evidence_notes', 'obs_node_id', 'is_active',
+    'evidence_notes', 'obs_node_id', 'ncp_stage', 'compliance_framework', 'is_active',
   ],
   permView: 'control.view',
   permCreate: 'control.create',
   permEdit: 'control.edit',
   permDelete: 'control.delete',
   orderBy: 'code ASC',
+  extraFilters: (req) => (req.query.ncp_stage ? { clause: 'ncp_stage = ?', params: [req.query.ncp_stage] } : null),
 });

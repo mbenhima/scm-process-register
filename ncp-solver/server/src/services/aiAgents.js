@@ -75,7 +75,7 @@ export async function runClassificationAgent(req, fiche, connection) {
   };
   Object.assign(response, await augmentWithLlm({
     organizationId: req.user.organizationId, queryText: text, agentName: 'Classification Agent',
-    recordContext: { title: fiche.title, description: fiche.description, suggestedCriticality }, connection,
+    recordContext: { title: fiche.title, description: fiche.description, suggestedCriticality }, connection, stage: 'S1',
   }));
   logAgent(req, fiche.id, 'Classification Agent', text, null, response, confidence);
   return response;
@@ -95,7 +95,7 @@ export async function runProblemStructuringAgent(req, fiche, connection) {
   const response = { suggestions, sourceFiches: results.map((r) => r.meta.ficheNumber) };
   Object.assign(response, await augmentWithLlm({
     organizationId: req.user.organizationId, queryText: fiche.description, agentName: 'Problem Structuring Agent',
-    recordContext: { title: fiche.title, description: fiche.description, detectionDate: fiche.detection_date }, connection,
+    recordContext: { title: fiche.title, description: fiche.description, detectionDate: fiche.detection_date }, connection, stage: 'S2',
   }));
   logAgent(req, fiche.id, 'Problem Structuring Agent', fiche.description, null, response, results[0]?.score || 0.4);
   return response;
@@ -108,7 +108,7 @@ export async function runContainmentAdvisor(req, fiche, connection) {
   const response = { suggestions, sourceFiches: results.map((r) => r.meta.ficheNumber) };
   Object.assign(response, await augmentWithLlm({
     organizationId: req.user.organizationId, queryText: `${fiche.title} ${fiche.description}`, agentName: 'Containment Advisor Agent',
-    recordContext: { title: fiche.title, description: fiche.description }, connection,
+    recordContext: { title: fiche.title, description: fiche.description }, connection, stage: 'S3',
   }));
   logAgent(req, fiche.id, 'Containment Advisor Agent', fiche.description, null, response, results[0]?.score || 0.4);
   return response;
@@ -122,7 +122,7 @@ export async function runRootCauseMining(req, fiche, connection) {
   const response = { suggestedCauses: suggestions, suggestedCategories: categories, sourceFiches: results.map((r) => r.meta.ficheNumber) };
   Object.assign(response, await augmentWithLlm({
     organizationId: req.user.organizationId, queryText: `${fiche.title} ${fiche.description}`, agentName: 'Root Cause Mining Agent',
-    recordContext: { title: fiche.title, description: fiche.description, candidateCauses: suggestions }, connection,
+    recordContext: { title: fiche.title, description: fiche.description, candidateCauses: suggestions }, connection, stage: 'S4',
   }));
   logAgent(req, fiche.id, 'Root Cause Mining Agent', fiche.description, null, response, results[0]?.score || 0.4);
   return response;
@@ -135,7 +135,7 @@ export async function runActionRecommendation(req, fiche, rootCauseText, connect
   const response = { suggestions, sourceFiches: results.map((r) => r.meta.ficheNumber) };
   Object.assign(response, await augmentWithLlm({
     organizationId: req.user.organizationId, queryText: rootCauseText, agentName: 'Action Recommendation Agent',
-    recordContext: { rootCause: rootCauseText, candidateActions: suggestions }, connection,
+    recordContext: { rootCause: rootCauseText, candidateActions: suggestions }, connection, stage: 'S5',
   }));
   logAgent(req, fiche.id, 'Action Recommendation Agent', rootCauseText, null, response, results[0]?.score || 0.4);
   return response;
@@ -168,7 +168,7 @@ export async function runRexGenerationAgent(req, fiche, connection) {
   };
   Object.assign(response, await augmentWithLlm({
     organizationId: req.user.organizationId, queryText: lessonsLearned, agentName: 'REX Generation Agent',
-    recordContext: { title: fiche.title, rootCauses: rootCauses.map((r) => r.description), correctiveActions: corrective.map((a) => a.description) }, connection,
+    recordContext: { title: fiche.title, rootCauses: rootCauses.map((r) => r.description), correctiveActions: corrective.map((a) => a.description) }, connection, stage: 'S7',
   }));
   logAgent(req, fiche.id, 'REX Generation Agent', fiche.description, { rootCauses, actions }, response, 0.8);
   return response;
@@ -201,7 +201,7 @@ export async function runEvaluationAssistant(req, fiche, connection) {
   const response = { suggestions, historicalEffectivenessRate, sampleSize };
   Object.assign(response, await augmentWithLlm({
     organizationId: req.user.organizationId, queryText: fiche.description, agentName: 'Evaluation Assistant Agent',
-    recordContext: { correctiveActions: correctiveActions.map((a) => a.description), historicalEffectivenessRate }, connection,
+    recordContext: { correctiveActions: correctiveActions.map((a) => a.description), historicalEffectivenessRate }, connection, stage: 'S6',
   }));
   logAgent(req, fiche.id, 'Evaluation Assistant Agent', fiche.description, { rootCauses, correctiveActions }, response, sampleSize > 0 ? 0.6 : 0.4);
   return response;
