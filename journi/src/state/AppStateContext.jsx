@@ -762,14 +762,14 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
-  // D-Config item 8: lets the M4 Process Registry's Flow view (palette +
-  // canvas) reorder or extend an E2E process's macro-process chain, the same
-  // "small, ungoverned edit" tier as updateRacsiCell above rather than full
-  // versioned CRUD, since a chain reorder isn't a governance artifact.
-  const updateE2eProcessChain = useCallback((e2eId, orderedMacroProcesses) => {
+  // D-Config item 8: persists the BPMN 2.0 XML a user edits in the M4
+  // Process Registry's Flow (BPMN) tab (BpmnEditor.jsx, backed by bpmn-js).
+  // Same "small, ungoverned edit" tier as updateRacsiCell above rather than
+  // full versioned CRUD, since a diagram save isn't a governance artifact.
+  const updateE2eBpmnXml = useCallback((e2eId, bpmnXml) => {
     setData((prev) => ({
       ...prev,
-      e2eProcessCatalog: prev.e2eProcessCatalog.map((e2e) => (e2e.id === e2eId ? { ...e2e, orderedMacroProcesses } : e2e)),
+      e2eProcessCatalog: prev.e2eProcessCatalog.map((e2e) => (e2e.id === e2eId ? { ...e2e, bpmnXml } : e2e)),
     }))
   }, [])
 
@@ -1337,7 +1337,7 @@ export function AppStateProvider({ children }) {
       addSponsorAction,
       updateRolePermission,
       updateRacsiCell,
-      updateE2eProcessChain,
+      updateE2eBpmnXml,
       logCharterAction,
       deleteCharterActionLog,
       addCharter,
@@ -1434,7 +1434,7 @@ export function AppStateProvider({ children }) {
       addSponsorAction,
       updateRolePermission,
       updateRacsiCell,
-      updateE2eProcessChain,
+      updateE2eBpmnXml,
       logCharterAction,
       deleteCharterActionLog,
       addCharter,

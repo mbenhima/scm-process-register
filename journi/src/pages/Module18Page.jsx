@@ -6,10 +6,12 @@ import PageHeader from '../components/PageHeader.jsx'
 import Badge from '../components/Badge.jsx'
 import Modal from '../components/Modal.jsx'
 import VersionHistoryPanel from '../components/VersionHistoryPanel.jsx'
+import BpmnEditor from '../components/BpmnEditor.jsx'
 import { RACSI_ROLES, RACSI_VALUES } from '../data/racsi.js'
 import { COSO_COMPONENTS } from '../data/constants.js'
 import { ALERT_SEVERITIES, CONTROL_TYPES, CONTROL_FREQUENCIES, CONTROL_STATUSES, RO_TYPES, RO_STATUSES } from '../data/processGovernanceSeed.js'
 import processKnowledgeBase from '../data/processKnowledgeBase.js'
+import { generateDefaultBpmnXml } from '../utils/bpmnGenerator.js'
 import { uid } from '../utils/id.js'
 
 const KIND_TONE = { core: 'brand', loop: 'amber', type: 'green' }
@@ -233,97 +235,88 @@ function E2ETab({ data }) {
   )
 }
 
-// D-Config item 8: a small BPMN-style flow builder — a Palette panel of
-// available Macro Process "blocks" kept visually and structurally separate
-// from the Canvas that renders the chosen chain, instead of the old
-// e2e-tab text chips with no editing surface at all.
+// D-Config item 8: a genuine BPMN 2.0 diagram per E2E chain, edited with
+// bpmn-js (BpmnEditor.jsx) — schema-valid BPMN 2.0 XML, standard OMG
+// notation, and bpmn-js's own Palette kept structurally separate from its
+// Canvas. A chain with no saved diagram yet gets one generated on the fly
+// (generateDefaultBpmnXml) from its orderedMacroProcesses — a Start Event,
+// one Task per macro process, an End Event — which the user can then edit
+// into any valid BPMN 2.0 diagram (gateways, pools, additional events…).
 function FlowTab({ data, canGovern }) {
   const { t, tv } = useI18n()
-  const { updateE2eProcessChain } = useAppState()
+  const { updateE2eBpmnXml } = useAppState()
   const [selectedId, setSelectedId] = useState(data.e2eProcessCatalog[0]?.id || null)
   const selected = data.e2eProcessCatalog.find((e2e) => e2e.id === selectedId)
   const macroById = Object.fromEntries(data.macroProcessCatalog.map((mp) => [mp.id, mp]))
 
-  const chain = selected?.orderedMacroProcesses || []
-  const setChain = (next) => updateE2eProcessChain(selected.id, next)
-  const addStep = (mpId) => setChain([...chain, mpId])
-  const removeStep = (idx) => setChain(chain.filter((_, i) => i !== idx))
-  const moveStep = (idx, dir) => {
-    const next = [...chain]
-    const j = idx + dir
-    if (j < 0 || j >= next.length) return
-    ;[next[idx], next[j]] = [next[j], next[idx]]
-    setChain(next)
+  const xml = React.useMemo(() => {
+    if (!selected) return null
+    if (selected.bpmnXml) return selected.bpmnXml
+    return generateDefaultBpmnXml({
+      id: selected.id,
+      name: tv(selected.name),
+      steps: selected.orderedMacroProcesses.map((mpId) => ({ id: mpId, name: `${mpId} ${tv(macroById[mpId]?.name)}` })),
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected?.id, selected?.bpmnXml])
+
+  const exportXml = async () => {
+    if (!selected?.bpmnXml && !xml) return
+    const blob = new Blob([selected.bpmnXml || xml], { type: 'application/xml' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${selected.id}.bpmn`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const importXmlFile = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => updateE2eBpmnXml(selected.id, String(reader.result))
+    reader.readAsText(file)
+    e.target.value = ''
   }
 
   return (
     <div>
-      <div className="mb-3">
-        <label className="label">{t('m18_flow_select_chain')}</label>
-        <select className="input max-w-md" value={selectedId || ''} onChange={(e) => setSelectedId(e.target.value)}>
-          {data.e2eProcessCatalog.map((e2e) => (
-            <option key={e2e.id} value={e2e.id}>
-              {e2e.id} — {tv(e2e.name)}
-            </option>
-          ))}
-        </select>
-      </div>
-      {selected && (
-        <div className="grid md:grid-cols-[220px_1fr] gap-4">
-          {/* Palette — deliberately its own panel, not mixed into the canvas */}
-          <div className="card p-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50 mb-2">{t('m18_flow_palette')}</h3>
-            <div className="space-y-1.5">
-              {data.macroProcessCatalog.map((mp) => (
-                <button
-                  key={mp.id}
-                  disabled={!canGovern}
-                  onClick={() => addStep(mp.id)}
-                  className="w-full text-start text-xs px-2 py-1.5 rounded-lg border border-brand-100 bg-white hover:bg-brand-50 disabled:opacity-40 disabled:cursor-not-allowed"
-                  title={tv(mp.description)}
-                >
-                  <span className="font-mono text-ink/40">{mp.id}</span> {tv(mp.name)}
-                </button>
-              ))}
-            </div>
-            {!canGovern && <p className="text-[11px] text-ink/40 italic mt-2">{t('m18_flow_readonly')}</p>}
-          </div>
-
-          {/* Canvas — horizontal flow of the chain, separate from the palette */}
-          <div className="card p-4 overflow-x-auto">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50 mb-3">{t('m18_flow_canvas')}</h3>
-            {chain.length === 0 && <p className="text-sm text-ink/40 italic">{t('m18_flow_empty')}</p>}
-            <div className="flex items-stretch gap-1 flex-wrap">
-              {chain.map((mpId, idx) => (
-                <React.Fragment key={`${mpId}-${idx}`}>
-                  {idx > 0 && (
-                    <div className="flex items-center text-brand-300 text-lg" aria-hidden>
-                      →
-                    </div>
-                  )}
-                  <div className="w-40 shrink-0 rounded-xl border-2 border-brand-200 bg-brand-50/60 p-2.5 flex flex-col gap-1">
-                    <div className="font-mono text-[10px] text-brand-500">{mpId}</div>
-                    <div className="text-xs font-medium text-brand-950 leading-snug">{tv(macroById[mpId]?.name)}</div>
-                    {canGovern && (
-                      <div className="flex gap-1 mt-1">
-                        <button className="btn-ghost text-[10px] py-0.5 px-1.5" onClick={() => moveStep(idx, -1)} aria-label={t('m18_flow_move_left')}>
-                          ←
-                        </button>
-                        <button className="btn-ghost text-[10px] py-0.5 px-1.5" onClick={() => moveStep(idx, 1)} aria-label={t('m18_flow_move_right')}>
-                          →
-                        </button>
-                        <button className="btn-ghost text-[10px] py-0.5 px-1.5 text-red-600 ms-auto" onClick={() => removeStep(idx)}>
-                          {t('delete')}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
+      <div className="flex items-end justify-between gap-3 mb-3 flex-wrap">
+        <div>
+          <label className="label">{t('m18_flow_select_chain')}</label>
+          <select className="input max-w-md" value={selectedId || ''} onChange={(e) => setSelectedId(e.target.value)}>
+            {data.e2eProcessCatalog.map((e2e) => (
+              <option key={e2e.id} value={e2e.id}>
+                {e2e.id} — {tv(e2e.name)}
+              </option>
+            ))}
+          </select>
         </div>
+        {selected && (
+          <div className="flex gap-2">
+            <button className="btn-secondary text-xs py-1.5 px-3" onClick={exportXml}>
+              {t('m18_flow_export')}
+            </button>
+            {canGovern && (
+              <label className="btn-secondary text-xs py-1.5 px-3 cursor-pointer">
+                {t('m18_flow_import')}
+                <input type="file" accept=".bpmn,.xml" className="hidden" onChange={importXmlFile} />
+              </label>
+            )}
+          </div>
+        )}
+      </div>
+      {!canGovern && <p className="text-[11px] text-ink/40 italic mb-2">{t('m18_flow_readonly')}</p>}
+      {selected && xml && (
+        <BpmnEditor
+          key={selected.id}
+          xml={xml}
+          readOnly={!canGovern}
+          onChange={(nextXml) => updateE2eBpmnXml(selected.id, nextXml)}
+        />
       )}
+      <p className="text-[11px] text-ink/40 mt-2">{t('m18_flow_bpmn20_note')}</p>
     </div>
   )
 }
