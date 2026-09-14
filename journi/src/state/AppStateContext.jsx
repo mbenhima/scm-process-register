@@ -7,6 +7,10 @@ import defaultRacsiGrid from '../data/racsi.js'
 import defaultCodebook from '../data/defaultCodebook.js'
 import defaultCharters from '../data/charters.js'
 import { DEFAULT_ROLE_PERMISSIONS } from '../data/constants.js'
+import { PACK_DEFINITIONS } from '../data/packDefinitions.js'
+import { DEFAULT_ACTIVE_STANDARDS } from '../data/complianceStandards.js'
+import { buildProcessGovernanceSeed } from '../data/processGovernanceSeed.js'
+import { buildTemplateLibrarySeed } from '../data/templateLibrarySeed.js'
 import { uid } from '../utils/id.js'
 import { addDays, todayISO } from '../utils/wbs.js'
 import { withVersionBump, revertEntityToVersion } from '../utils/versioning.js'
@@ -134,6 +138,28 @@ function migrateOrSeed(parsed) {
         // Module 3 — OBS (Organizational Breakdown Structure): a session
         // persisted before this shipped won't have the array yet.
         obsEntries: p.obsEntries || [],
+      }))
+      // D-Config: a session persisted before Configuration Management, the
+      // Template Library, or per-process Governance shipped won't have these
+      // top-level keys yet — back-fill from the same defaults buildSeed()
+      // uses, rather than let those new pages render on undefined data.
+      if (!parsed.packConfig) {
+        parsed.packConfig = {
+          activePack: 'horizon',
+          enabledModules: [...PACK_DEFINITIONS.horizon.modules],
+          aiTier: PACK_DEFINITIONS.horizon.aiTier,
+          customOverride: false,
+          complianceStandards: { ...DEFAULT_ACTIVE_STANDARDS },
+        }
+      }
+      if (!parsed.processGovernance) parsed.processGovernance = buildProcessGovernanceSeed()
+      if (!parsed.templateLibrary) parsed.templateLibrary = buildTemplateLibrarySeed()
+      // A session persisted before the Process Registry catalog gained CRUD +
+      // version history won't have those fields on each macro process yet.
+      parsed.macroProcessCatalog = (parsed.macroProcessCatalog || macroProcessCatalog).map((mp) => ({
+        version: 1,
+        versionHistory: [],
+        ...mp,
       }))
       return parsed
     }
@@ -469,6 +495,170 @@ export function AppStateProvider({ children }) {
     }))
   }, [])
 
+  // Macro Process catalog CRUD (M4 Process Registry) — the catalog shipped
+  // read-only; it now takes the same versioned-CRUD shape as Phase Templates
+  // and AI Use Cases so a Change Manager can add a process specific to their
+  // sector without a code change, and revert a bad edit.
+  const addMacroProcess = useCallback((mp) => {
+    setData((prev) => ({
+      ...prev,
+      macroProcessCatalog: [...prev.macroProcessCatalog, { ...mp, id: mp.id || uid('MP'), version: 1, versionHistory: [] }],
+    }))
+  }, [])
+
+  const updateMacroProcess = useCallback((mpId, patch, note) => {
+    setData((prev) => ({
+      ...prev,
+      macroProcessCatalog: prev.macroProcessCatalog.map((mp) => (mp.id === mpId ? withVersionBump(mp, patch, note) : mp)),
+    }))
+  }, [])
+
+  const deleteMacroProcess = useCallback((mpId) => {
+    setData((prev) => ({
+      ...prev,
+      macroProcessCatalog: prev.macroProcessCatalog.filter((mp) => mp.id !== mpId),
+      processGovernance: Object.fromEntries(Object.entries(prev.processGovernance || {}).filter(([id]) => id !== mpId)),
+    }))
+  }, [])
+
+  const revertMacroProcess = useCallback((mpId, targetVersion) => {
+    setData((prev) => ({
+      ...prev,
+      macroProcessCatalog: prev.macroProcessCatalog.map((mp) => (mp.id === mpId ? revertEntityToVersion(mp, targetVersion) : mp)),
+    }))
+  }, [])
+
+  // D-Config: Configuration Management (Pack + AI tier + module toggles +
+  // compliance standards). setActivePack replaces enabledModules/aiTier with
+  // that Pack's stock list (clearing any manual override); updatePackConfig
+  // is used for hand-editing individual modules/standards afterwards, which
+  // is what flips customOverride on so the UI can show "customized" next to
+  // the Pack name instead of silently pretending it's still stock.
+  const setActivePack = useCallback((packKey) => {
+    const def = PACK_DEFINITIONS[packKey]
+    if (!def) return
+    setData((prev) => ({
+      ...prev,
+      packConfig: {
+        ...prev.packConfig,
+        activePack: packKey,
+        enabledModules: [...def.modules],
+        aiTier: def.aiTier,
+        customOverride: false,
+      },
+    }))
+  }, [])
+
+  const toggleConfigModule = useCallback((routeId) => {
+    setData((prev) => {
+      const enabled = new Set(prev.packConfig.enabledModules)
+      if (enabled.has(routeId)) enabled.delete(routeId)
+      else enabled.add(routeId)
+      return { ...prev, packConfig: { ...prev.packConfig, enabledModules: [...enabled], customOverride: true } }
+    })
+  }, [])
+
+  const setConfigAiTier = useCallback((tier) => {
+    setData((prev) => ({ ...prev, packConfig: { ...prev.packConfig, aiTier: tier, customOverride: true } }))
+  }, [])
+
+  const toggleComplianceStandard = useCallback((standardKey) => {
+    setData((prev) => ({
+      ...prev,
+      packConfig: {
+        ...prev.packConfig,
+        complianceStandards: { ...prev.packConfig.complianceStandards, [standardKey]: !prev.packConfig.complianceStandards[standardKey] },
+      },
+    }))
+  }, [])
+
+  // Per-process Governance (Alerts / Business Rules / Controls / KPIs /
+  // Reports / Risks & Opportunities), keyed by Macro Process id then by kind
+  // (one of processGovernanceSeed.js's GOVERNANCE_KINDS). A generic
+  // add/update/delete triplet rather than six near-identical function pairs,
+  // since all six kinds share the same "array of small records" shape.
+  const addProcessGovernanceItem = useCallback((mpId, kind, item) => {
+    setData((prev) => {
+      const bucket = prev.processGovernance[mpId] || { alerts: [], businessRules: [], controls: [], kpis: [], reports: [], risksOpportunities: [] }
+      return {
+        ...prev,
+        processGovernance: {
+          ...prev.processGovernance,
+          [mpId]: { ...bucket, [kind]: [...bucket[kind], { ...item, id: item.id || uid(kind) }] },
+        },
+      }
+    })
+  }, [])
+
+  const updateProcessGovernanceItem = useCallback((mpId, kind, itemId, patch) => {
+    setData((prev) => {
+      const bucket = prev.processGovernance[mpId]
+      if (!bucket) return prev
+      return {
+        ...prev,
+        processGovernance: {
+          ...prev.processGovernance,
+          [mpId]: { ...bucket, [kind]: bucket[kind].map((it) => (it.id === itemId ? { ...it, ...patch } : it)) },
+        },
+      }
+    })
+  }, [])
+
+  const deleteProcessGovernanceItem = useCallback((mpId, kind, itemId) => {
+    setData((prev) => {
+      const bucket = prev.processGovernance[mpId]
+      if (!bucket) return prev
+      return {
+        ...prev,
+        processGovernance: {
+          ...prev.processGovernance,
+          [mpId]: { ...bucket, [kind]: bucket[kind].filter((it) => it.id !== itemId) },
+        },
+      }
+    })
+  }, [])
+
+  // Template Library CRUD (Charter / Communication / Training templates —
+  // Phase Templates keep their own dedicated CRUD above since they predate
+  // this module). Generic over `kind` (one of TEMPLATE_LIBRARY_KINDS) the
+  // same way Process Governance is generic over its six kinds.
+  const addLibraryTemplate = useCallback((kind, tpl) => {
+    setData((prev) => ({
+      ...prev,
+      templateLibrary: {
+        ...prev.templateLibrary,
+        [kind]: [...prev.templateLibrary[kind], { ...tpl, id: tpl.id || uid(kind), version: 1, versionHistory: [] }],
+      },
+    }))
+  }, [])
+
+  const updateLibraryTemplate = useCallback((kind, templateId, patch, note) => {
+    setData((prev) => ({
+      ...prev,
+      templateLibrary: {
+        ...prev.templateLibrary,
+        [kind]: prev.templateLibrary[kind].map((tpl) => (tpl.id === templateId ? withVersionBump(tpl, patch, note) : tpl)),
+      },
+    }))
+  }, [])
+
+  const deleteLibraryTemplate = useCallback((kind, templateId) => {
+    setData((prev) => ({
+      ...prev,
+      templateLibrary: { ...prev.templateLibrary, [kind]: prev.templateLibrary[kind].filter((tpl) => tpl.id !== templateId) },
+    }))
+  }, [])
+
+  const revertLibraryTemplate = useCallback((kind, templateId, targetVersion) => {
+    setData((prev) => ({
+      ...prev,
+      templateLibrary: {
+        ...prev.templateLibrary,
+        [kind]: prev.templateLibrary[kind].map((tpl) => (tpl.id === templateId ? revertEntityToVersion(tpl, targetVersion) : tpl)),
+      },
+    }))
+  }, [])
+
   const updateSustainment = useCallback((projectId, patchFn) => {
     setData((prev) => ({
       ...prev,
@@ -569,6 +759,17 @@ export function AppStateProvider({ children }) {
         ...prev.racsiGrid,
         [macroProcessId]: { ...prev.racsiGrid[macroProcessId], [role]: value },
       },
+    }))
+  }, [])
+
+  // D-Config item 8: lets the M4 Process Registry's Flow view (palette +
+  // canvas) reorder or extend an E2E process's macro-process chain, the same
+  // "small, ungoverned edit" tier as updateRacsiCell above rather than full
+  // versioned CRUD, since a chain reorder isn't a governance artifact.
+  const updateE2eProcessChain = useCallback((e2eId, orderedMacroProcesses) => {
+    setData((prev) => ({
+      ...prev,
+      e2eProcessCatalog: prev.e2eProcessCatalog.map((e2e) => (e2e.id === e2eId ? { ...e2e, orderedMacroProcesses } : e2e)),
     }))
   }, [])
 
@@ -1112,6 +1313,21 @@ export function AppStateProvider({ children }) {
       updatePhaseTemplate,
       deletePhaseTemplate,
       revertPhaseTemplate,
+      addMacroProcess,
+      updateMacroProcess,
+      deleteMacroProcess,
+      revertMacroProcess,
+      setActivePack,
+      toggleConfigModule,
+      setConfigAiTier,
+      toggleComplianceStandard,
+      addProcessGovernanceItem,
+      updateProcessGovernanceItem,
+      deleteProcessGovernanceItem,
+      addLibraryTemplate,
+      updateLibraryTemplate,
+      deleteLibraryTemplate,
+      revertLibraryTemplate,
       updateCheckpoint,
       addQuickWin,
       addLesson,
@@ -1121,6 +1337,7 @@ export function AppStateProvider({ children }) {
       addSponsorAction,
       updateRolePermission,
       updateRacsiCell,
+      updateE2eProcessChain,
       logCharterAction,
       deleteCharterActionLog,
       addCharter,
@@ -1193,6 +1410,21 @@ export function AppStateProvider({ children }) {
       updatePhaseTemplate,
       deletePhaseTemplate,
       revertPhaseTemplate,
+      addMacroProcess,
+      updateMacroProcess,
+      deleteMacroProcess,
+      revertMacroProcess,
+      setActivePack,
+      toggleConfigModule,
+      setConfigAiTier,
+      toggleComplianceStandard,
+      addProcessGovernanceItem,
+      updateProcessGovernanceItem,
+      deleteProcessGovernanceItem,
+      addLibraryTemplate,
+      updateLibraryTemplate,
+      deleteLibraryTemplate,
+      revertLibraryTemplate,
       updateCheckpoint,
       addQuickWin,
       addLesson,
@@ -1202,6 +1434,7 @@ export function AppStateProvider({ children }) {
       addSponsorAction,
       updateRolePermission,
       updateRacsiCell,
+      updateE2eProcessChain,
       logCharterAction,
       deleteCharterActionLog,
       addCharter,

@@ -8,6 +8,10 @@ import defaultRacsiGrid from './racsi.js'
 import defaultCodebook from './defaultCodebook.js'
 import defaultCharters from './charters.js'
 import { DEFAULT_ROLE_PERMISSIONS } from './constants.js'
+import { PACK_DEFINITIONS } from './packDefinitions.js'
+import { DEFAULT_ACTIVE_STANDARDS } from './complianceStandards.js'
+import { buildProcessGovernanceSeed } from './processGovernanceSeed.js'
+import { buildTemplateLibrarySeed } from './templateLibrarySeed.js'
 import * as atlas from './cases/atlas.js'
 import * as atlasTangier from './cases/atlasTangier.js'
 import * as maghreb from './cases/maghreb.js'
@@ -182,6 +186,19 @@ export function buildSeed() {
     uploadedFile: null,
   }
 
+  // D-Config: the demo tenant ships fully unlocked (Horizon pack, every
+  // compliance standard on) so existing screenshots/tests keep seeing all 22
+  // modules by default — a Super/Group/Org Admin then dials this down to
+  // Trailhead/Waypoint from the Configuration Management module to see what a
+  // smaller Pack's tenant actually looks like.
+  const packConfig = {
+    activePack: 'horizon',
+    enabledModules: [...PACK_DEFINITIONS.horizon.modules],
+    aiTier: PACK_DEFINITIONS.horizon.aiTier,
+    customOverride: false,
+    complianceStandards: { ...DEFAULT_ACTIVE_STANDARDS },
+  }
+
   return {
     groups,
     organizations,
@@ -189,7 +206,7 @@ export function buildSeed() {
     cmProjects,
     users,
     aiUseCaseCatalog,
-    macroProcessCatalog,
+    macroProcessCatalog: macroProcessCatalog.map((mp) => ({ version: 1, versionHistory: [], ...mp })),
     e2eProcessCatalog,
     phaseTemplateCatalog,
     racsiGrid: JSON.parse(JSON.stringify(defaultRacsiGrid)),
@@ -201,5 +218,8 @@ export function buildSeed() {
     rolePermissions,
     requireJustification,
     license,
+    packConfig,
+    processGovernance: buildProcessGovernanceSeed(),
+    templateLibrary: buildTemplateLibrarySeed(),
   }
 }

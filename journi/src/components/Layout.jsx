@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 import Sidebar from './Sidebar.jsx'
 import TopBar from './TopBar.jsx'
+import ChatbotWidget from './ChatbotWidget.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
 
 export default function Layout() {
@@ -19,6 +20,7 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
+      <ChatbotWidget />
     </div>
   )
 }

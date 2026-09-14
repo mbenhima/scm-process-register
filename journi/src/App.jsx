@@ -2,7 +2,8 @@ import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import RequireRole from './components/RequireRole.jsx'
-import { canManageHierarchy, canManageUsers } from './utils/rbac.js'
+import RequireModule from './components/RequireModule.jsx'
+import { canManageHierarchy, canManageUsers, canManageConfiguration } from './utils/rbac.js'
 import LoginPage from './pages/LoginPage.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Module1Page from './pages/Module1Page.jsx'
@@ -30,6 +31,8 @@ import Module22Page from './pages/Module22Page.jsx'
 import QueryDataPage from './pages/QueryDataPage.jsx'
 import QueryFeaturesPage from './pages/QueryFeaturesPage.jsx'
 import HelpPage from './pages/HelpPage.jsx'
+import ConfigurationPage from './pages/ConfigurationPage.jsx'
+import TemplateLibraryPage from './pages/TemplateLibraryPage.jsx'
 
 export default function App() {
   return (
@@ -54,29 +57,38 @@ export default function App() {
             </RequireRole>
           }
         />
-        <Route path="m3" element={<Module3Page />} />
-        <Route path="m4" element={<Module4Page />} />
-        <Route path="m5" element={<Module5Page />} />
-        <Route path="m6" element={<Module6Page />} />
-        <Route path="m7" element={<Module7Page />} />
-        <Route path="m8" element={<Module8Page />} />
-        <Route path="m9" element={<Module9Page />} />
-        <Route path="m10" element={<Module10Page />} />
-        <Route path="m11" element={<Module11Page />} />
-        <Route path="m12" element={<Module12Page />} />
-        <Route path="m13" element={<Module13Page />} />
-        <Route path="m14" element={<Module14Page />} />
-        <Route path="m15" element={<Module15Page />} />
-        <Route path="m16" element={<Module16Page />} />
-        <Route path="m17" element={<Module17Page />} />
-        <Route path="m18" element={<Module18Page />} />
-        <Route path="m19" element={<Module19Page />} />
-        <Route path="m20" element={<Module20Page />} />
-        <Route path="m21" element={<Module21Page />} />
-        <Route path="m22" element={<Module22Page />} />
+        <Route path="m3" element={<RequireModule routeId="m3"><Module3Page /></RequireModule>} />
+        <Route path="m4" element={<RequireModule routeId="m4"><Module4Page /></RequireModule>} />
+        <Route path="m5" element={<RequireModule routeId="m5"><Module5Page /></RequireModule>} />
+        <Route path="m6" element={<RequireModule routeId="m6"><Module6Page /></RequireModule>} />
+        <Route path="m7" element={<RequireModule routeId="m7"><Module7Page /></RequireModule>} />
+        <Route path="m8" element={<RequireModule routeId="m8"><Module8Page /></RequireModule>} />
+        <Route path="m9" element={<RequireModule routeId="m9"><Module9Page /></RequireModule>} />
+        <Route path="m10" element={<RequireModule routeId="m10"><Module10Page /></RequireModule>} />
+        <Route path="m11" element={<RequireModule routeId="m11"><Module11Page /></RequireModule>} />
+        <Route path="m12" element={<RequireModule routeId="m12"><Module12Page /></RequireModule>} />
+        <Route path="m13" element={<RequireModule routeId="m13"><Module13Page /></RequireModule>} />
+        <Route path="m14" element={<RequireModule routeId="m14"><Module14Page /></RequireModule>} />
+        <Route path="m15" element={<RequireModule routeId="m15"><Module15Page /></RequireModule>} />
+        <Route path="m16" element={<RequireModule routeId="m16"><Module16Page /></RequireModule>} />
+        <Route path="m17" element={<RequireModule routeId="m17"><Module17Page /></RequireModule>} />
+        <Route path="m18" element={<RequireModule routeId="m18"><Module18Page /></RequireModule>} />
+        <Route path="m19" element={<RequireModule routeId="m19"><Module19Page /></RequireModule>} />
+        <Route path="m20" element={<RequireModule routeId="m20"><Module20Page /></RequireModule>} />
+        <Route path="m21" element={<RequireModule routeId="m21"><Module21Page /></RequireModule>} />
+        <Route path="m22" element={<RequireModule routeId="m22"><Module22Page /></RequireModule>} />
         <Route path="query-data" element={<QueryDataPage />} />
         <Route path="query-features" element={<QueryFeaturesPage />} />
         <Route path="help" element={<HelpPage />} />
+        <Route
+          path="config"
+          element={
+            <RequireRole check={canManageConfiguration}>
+              <ConfigurationPage />
+            </RequireRole>
+          }
+        />
+        <Route path="templates" element={<TemplateLibraryPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
     </Routes>

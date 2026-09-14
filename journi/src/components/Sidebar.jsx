@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useI18n } from '../i18n/index.jsx'
 import { useAppState } from '../state/AppStateContext.jsx'
-import { canManageHierarchy, canManageUsers } from '../utils/rbac.js'
+import { canManageHierarchy, canManageUsers, canManageConfiguration, canManageTemplates } from '../utils/rbac.js'
 
 // Logical flow, tenant creation through sustainment: platform/governance
 // setup first (1-6), then the program lifecycle in order (7-22). The
@@ -39,6 +39,10 @@ const PROGRAM_MODULES = [
 export default function Sidebar({ mobileOpen, onNavigate }) {
   const { t } = useI18n()
   const { currentUser, data } = useAppState()
+  const enabledModules = data.packConfig?.enabledModules
+  const isModuleEnabled = (path) => !Array.isArray(enabledModules) || enabledModules.includes(path.split('/').pop())
+  const visiblePlatformModules = PLATFORM_MODULES.filter((m) => isModuleEnabled(m.path))
+  const visibleProgramModules = PROGRAM_MODULES.filter((m) => isModuleEnabled(m.path))
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
@@ -74,22 +78,32 @@ export default function Sidebar({ mobileOpen, onNavigate }) {
                 {t('navM2')}
               </NavLink>
             )}
-            {PLATFORM_MODULES.map((m) => (
+            {visiblePlatformModules.map((m) => (
               <NavLink key={m.path} to={m.path} className={linkClass} onClick={onNavigate}>
                 {t(m.key)}
               </NavLink>
             ))}
+            {canManageConfiguration(currentUser?.role, data.rolePermissions) && (
+              <NavLink to="/app/config" className={linkClass} onClick={onNavigate}>
+                {t('navConfig')}
+              </NavLink>
+            )}
           </div>
         </div>
 
         <div>
           <div className="label px-3">{t('sectionCore')}</div>
           <div className="space-y-1">
-            {PROGRAM_MODULES.map((m) => (
+            {visibleProgramModules.map((m) => (
               <NavLink key={m.path} to={m.path} className={linkClass} onClick={onNavigate}>
                 {t(m.key)}
               </NavLink>
             ))}
+            {canManageTemplates(currentUser?.role, data.rolePermissions) && (
+              <NavLink to="/app/templates" className={linkClass} onClick={onNavigate}>
+                {t('navTemplateLibrary')}
+              </NavLink>
+            )}
           </div>
         </div>
 

@@ -57,18 +57,20 @@ export const CAPABILITIES = [
   { key: 'manageCharters' },
   { key: 'manageAiUseCases' },
   { key: 'manageTemplates' },
+  { key: 'manageConfiguration' },
+  { key: 'manageProcessGovernance' },
 ]
 
 export const DEFAULT_ROLE_PERMISSIONS = {
-  [ROLES.SUPER_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true },
-  [ROLES.GROUP_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true },
-  [ROLES.ORG_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true },
-  [ROLES.SPONSOR]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
-  [ROLES.CHANGE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true },
-  [ROLES.PEOPLE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
-  [ROLES.PRACTITIONER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
-  [ROLES.EMPLOYEE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
-  [ROLES.EXECUTIVE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false },
+  [ROLES.SUPER_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true, manageConfiguration: true, manageProcessGovernance: true },
+  [ROLES.GROUP_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true, manageConfiguration: true, manageProcessGovernance: true },
+  [ROLES.ORG_ADMIN]: { manageHierarchy: true, manageUsers: true, write: true, activateAiForOrg: true, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true, manageConfiguration: true, manageProcessGovernance: true },
+  [ROLES.SPONSOR]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false, manageConfiguration: false, manageProcessGovernance: false },
+  [ROLES.CHANGE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: true, manageCharters: true, manageAiUseCases: true, manageTemplates: true, manageConfiguration: false, manageProcessGovernance: true },
+  [ROLES.PEOPLE_MANAGER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false, manageConfiguration: false, manageProcessGovernance: false },
+  [ROLES.PRACTITIONER]: { manageHierarchy: false, manageUsers: false, write: true, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false, manageConfiguration: false, manageProcessGovernance: false },
+  [ROLES.EMPLOYEE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false, manageConfiguration: false, manageProcessGovernance: false },
+  [ROLES.EXECUTIVE]: { manageHierarchy: false, manageUsers: false, write: false, activateAiForOrg: false, requestProjectAiOverride: false, manageCharters: false, manageAiUseCases: false, manageTemplates: false, manageConfiguration: false, manageProcessGovernance: false },
 }
 
 export const ADKAR_BLOCKS = ['awareness', 'desire', 'knowledge', 'ability', 'reinforcement']
@@ -89,3 +91,7 @@ export const SECTORS = ['manufacturing', 'logistics', 'health']
 export const ARCHETYPES = ['erp', 'automation', 'qms', 'bpr', 'cultural', 'operating_model', 'compliance', 'training_skills']
 
 export const VISIBILITY_LEVELS = ['weak', 'moderate', 'strong']
+
+// COSO 2013 Internal Control – Integrated Framework components, used to tag
+// each process-level Control on the M4 Process Registry's Governance tab.
+export const COSO_COMPONENTS = ['control_environment', 'risk_assessment', 'control_activities', 'information_communication', 'monitoring_activities']

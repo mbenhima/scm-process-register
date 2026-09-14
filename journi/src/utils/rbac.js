@@ -69,6 +69,26 @@ export function canManageTemplates(role, matrix) {
   return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN, ROLES.CHANGE_MANAGER].includes(role)
 }
 
+// D-Config: Configuration Management (Pack selection, module toggles,
+// compliance standard activation) is deliberately narrower than the other
+// platform-wide catalogs above — Change Manager can shape charters, AI use
+// cases, and templates, but flipping a compliance standard or a licensed
+// module on/off is a tenant-commercial decision, admin-tier only.
+export function canManageConfiguration(role, matrix) {
+  if (matrix) return !!matrix[role]?.manageConfiguration
+  return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN].includes(role)
+}
+
+// Alerts / Business Rules / Controls / KPIs / Reports / Risks & Opportunities
+// attached to a Macro Process (M4 Process Registry Governance tab) — same
+// admin + Change Manager set as canManageAiUseCases/canManageCharters, since
+// this is shared platform-wide process-governance content a Change Manager
+// routinely authors, not a per-project write.
+export function canManageProcessGovernance(role, matrix) {
+  if (matrix) return !!matrix[role]?.manageProcessGovernance
+  return [ROLES.SUPER_ADMIN, ROLES.GROUP_ADMIN, ROLES.ORG_ADMIN, ROLES.CHANGE_MANAGER].includes(role)
+}
+
 // Only used to seed data.rolePermissions at buildSeed() time.
 export { DEFAULT_ROLE_PERMISSIONS }
 

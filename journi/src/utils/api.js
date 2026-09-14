@@ -46,6 +46,11 @@ export function aiSuggest(useCaseId, recordContext, llm) {
   return post('/ai-suggest', { useCaseId, recordContext, llm })
 }
 
+/** @param {string} question @param {{role,text}[]} [history] @param {{role:string,scopeType?:string,scopeId?:string}} user @param {object} data @param {object} [llm] */
+export function chatbotAsk(question, history, user, data, llm) {
+  return post('/chatbot', { question, history, user, data, llm })
+}
+
 export async function backendReachable() {
   try {
     const res = await fetch('/api/health')

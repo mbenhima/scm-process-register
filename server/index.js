@@ -10,6 +10,7 @@ import { readState, writeState, dbFilePath } from './db.js'
 import queryDataRouter from './routes/queryData.js'
 import queryFeaturesRouter from './routes/queryFeatures.js'
 import aiSuggestRouter from './routes/aiSuggest.js'
+import chatbotRouter from './routes/chatbot.js'
 import { hasServerFallbackKey } from './lib/llmProxy.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -60,6 +61,7 @@ app.put('/api/state', (req, res) => {
 app.use('/api/query-data', queryDataRouter)
 app.use('/api/query-features', queryFeaturesRouter)
 app.use('/api/ai-suggest', aiSuggestRouter)
+app.use('/api/chatbot', chatbotRouter)
 
 if (fs.existsSync(DIST_DIR)) {
   app.use(express.static(DIST_DIR))
