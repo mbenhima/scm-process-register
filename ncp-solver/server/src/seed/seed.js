@@ -2,12 +2,14 @@ import { randomUUID } from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import db from '../db/index.js';
 import { PERMISSIONS, ROLE_TEMPLATES } from './rbacCatalog.js';
-import { SECTOR_TEMPLATES, SECTOR_LABELS } from './sectorTemplates.js';
+import { SECTOR_TEMPLATES, SECTOR_LABELS, PROJECT_TEMPLATES } from './sectorTemplates.js';
 import { AI_USE_CASE_TEMPLATES } from './aiUseCaseTemplates.js';
 import { BUSINESS_RULE_TEMPLATES, CONTROL_TEMPLATES, RISK_TEMPLATES } from './grcTemplates.js';
 import { NCP_PROCESS_BPMN_XML } from './bpmnTemplates.js';
 import { ANNEX_A_STANDARDS } from './standardsLibrary.js';
 import { SHEET_TEMPLATE_SEEDS } from './sheetTemplates.js';
+import { STANDARD_REQUIREMENTS } from './standardRequirements.js';
+import { ALERT_STAGE_MAP } from '../services/alertCatalog.js';
 import { PACKS } from '../services/packConfig.js';
 import { activateComplianceModule } from './complianceModules.js';
 
@@ -25,6 +27,67 @@ function seedSheetTemplatesForOrg(orgId, sector, users) {
   }
 }
 
+// Populates the Project level of Group -> Organization -> Project (Hierarchy),
+// previously an empty table for every seeded Organization.
+function seedProjectsForOrg(orgId, sector) {
+  const templates = PROJECT_TEMPLATES[sector] || [];
+  for (const p of templates) {
+    db.prepare(`
+      INSERT INTO projects (id, organization_id, name, description, status, start_date, end_date)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(randomUUID(), orgId, p.name, p.description, p.status, daysAgoISO(-p.startOffsetDays), daysAgoISO(-p.endOffsetDays));
+  }
+}
+
+// Custom KPIs suggested in addition to the 10 built-in system KPIs (Appendix B),
+// spanning multiple S1-S7 stages plus a couple of cross-cutting ones.
+const CUSTOM_KPI_SUGGESTIONS = [
+  { code: 'CK-01', title: 'Time to Containment', description: 'Average elapsed time from detection (S1) to the first immediate action being executed (S3).', formula_desc: 'AVG(date(S3 immediate action start) - date(S1 detection)) in hours', target_value: '<= 24h', ncp_stage: 'S3' },
+  { code: 'CK-02', title: 'Time to Root Cause Identification', description: 'Average elapsed time from detection to a validated root cause being recorded.', formula_desc: 'AVG(date(root cause validated_at) - date(S1 detection)) in hours', target_value: '<= 72h', ncp_stage: 'S4' },
+  { code: 'CK-03', title: 'Recurring Non-Conformity Rate', description: 'Share of new NCP sheets flagged as recurring rather than first-time occurrences.', formula_desc: '(Sheets with frequency = recurring / Total sheets opened in period) x 100', target_value: '<= 20%', ncp_stage: 'S1' },
+  { code: 'CK-04', title: 'Overdue Corrective Action Rate', description: 'Share of open corrective actions that are past their planned completion date.', formula_desc: '(Corrective actions overdue / Corrective actions open) x 100', target_value: '<= 10%', ncp_stage: 'S5' },
+  { code: 'CK-05', title: 'AI Suggestion Acceptance Rate', description: 'Share of AI Use Case suggestions that users accept as-is or accept-with-edit, rather than reject, across all agents.', formula_desc: '((Accepted + Edited) / Total AI suggestions logged) x 100', target_value: '>= 70%', ncp_stage: null },
+  { code: 'CK-06', title: 'REX Generalization Backlog', description: 'Number of closed sheets flagged as needing generalization whose generalization plan has not yet been executed elsewhere.', formula_desc: 'COUNT(rex_entries WHERE needs_generalization = 1 AND generalization not yet applied)', target_value: '<= 5 open', ncp_stage: 'S7' },
+];
+
+function seedCustomKpisForOrg(orgId, users) {
+  for (const k of CUSTOM_KPI_SUGGESTIONS) {
+    db.prepare(`
+      INSERT INTO custom_kpis (id, organization_id, code, title, description, formula_desc, target_value, ncp_stage, owner_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(randomUUID(), orgId, k.code, k.title, k.description, k.formula_desc, k.target_value, k.ncp_stage, users.quality);
+  }
+}
+
+// Simulated historical alerts spanning every type (A-J) and every S1-S7 stage,
+// referencing the org's own seeded fiches/actions so they read as realistic
+// rather than generic placeholder text.
+function seedAlertsForOrg(orgId, users, ficheIds, sector) {
+  const templates = SECTOR_TEMPLATES[sector];
+  const insert = db.prepare(`
+    INSERT INTO notification_alerts (id, organization_id, alert_type, ncp_stage, triggering_entity_id, target_user_id, channel, message, status, sent_at, read_at, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, 'in_app', ?, 'sent', ?, ?, ?)
+  `);
+  const seedAlert = (type, ficheIdx, targetUser, message, daysAgo, read) => {
+    const ficheId = ficheIds[ficheIdx] || null;
+    const sentAt = daysAgoISO(daysAgo);
+    insert.run(randomUUID(), orgId, type, ALERT_STAGE_MAP[type], ficheId, targetUser, message, sentAt, read ? sentAt : null, sentAt);
+  };
+  // Indices into the 9-template fiches array: 0-2 closed, 3=S6, 4=S5, 5=S4, 6=S3, 7=S2, 8=S1
+  seedAlert('A', 8, users.quality, `New high-priority NCP sheet "${templates[8]?.title}" requires immediate triage.`, 0, false);
+  seedAlert('J', 8, users.cipilot, `Priority-1 sheet "${templates[8]?.title}" has had no update for 3+ days.`, 1, false);
+  seedAlert('G', 6, users.owner1, `Immediate action for "${templates[6]?.title}" is due tomorrow.`, 2, true);
+  seedAlert('E', 6, users.cipilot, `Containment evidence still pending upload for "${templates[6]?.title}".`, 3, false);
+  seedAlert('D', 5, users.reporter, `Root cause analysis not started for "${templates[5]?.title}" (48h elapsed).`, 5, true);
+  seedAlert('H', 4, users.owner2, `Corrective action for "${templates[4]?.title}" is due in 2 days.`, 4, false);
+  seedAlert('B', 4, users.owner2, `Corrective action for "${templates[4]?.title}" is overdue.`, 1, false);
+  seedAlert('I', 3, users.evaluator, `Effectiveness evaluation due in 2 days for "${templates[3]?.title}".`, 2, true);
+  seedAlert('C', 3, users.evaluator, `Effectiveness evaluation pending for "${templates[3]?.title}".`, 6, true);
+  seedAlert('F', 2, users.quality, `Monthly KPI7 (Standardization Rate) fell below its configured Governance Settings threshold.`, 10, true);
+  seedAlert('J', 2, users.admin, `Priority-1 sheet "${templates[2]?.title}" had no update for 3+ days before closure.`, 40, true);
+  seedAlert('A', 7, users.quality, `New NCP sheet "${templates[7]?.title}" requires triage.`, 1, true);
+}
+
 export const DEMO_PASSWORD = 'Ncp#2026Demo';
 
 const TABLES_IN_DELETE_ORDER = [
@@ -35,7 +98,7 @@ const TABLES_IN_DELETE_ORDER = [
   'racsi_assignments', 'racsi_activities', 'bpmn_diagrams',
   'risk_controls', 'risks_opportunities', 'controls', 'business_rules',
   'custom_kpis', 'ncp_sheet_templates',
-  'standards',
+  'standard_requirements', 'standards',
   'governance_settings', 'licenses',
   'role_permissions', 'user_roles', 'roles', 'users',
   'permissions', 'obs_nodes', 'projects', 'organizations', 'groups',
@@ -164,8 +227,23 @@ function seedStandardsForOrg(orgId, standardTitles, planTier) {
       VALUES (?, ?, ?, ?, ?, '1.0', ?, ?, ?)
     `).run(id, orgId, std.code, std.title, std.domain, idx < pack.standardsIncluded ? 1 : 0, std.stageTag, daysAgoISO(400));
     ids[std.title] = id;
+    seedRequirementsForStandard(orgId, id, std.code);
   });
   return ids;
+}
+
+// Clause-level requirements (with a simulated NC/Problem example each) for the
+// Annex A Standards Library — see standardRequirements.js.
+function seedRequirementsForStandard(orgId, standardId, code) {
+  const reqs = STANDARD_REQUIREMENTS[code];
+  if (!reqs) return;
+  const insert = db.prepare(`
+    INSERT INTO standard_requirements (id, standard_id, organization_id, clause_code, title, requirement_text, example_nonconformity, example_problem, order_index)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+  reqs.forEach((r, idx) => {
+    insert.run(randomUUID(), standardId, orgId, r.clause, r.title, r.text, r.exampleNc, r.exampleProblem, idx);
+  });
 }
 
 function seedLicenseAndGovernance(orgId, planTier, deploymentModel, options = {}) {
@@ -188,7 +266,13 @@ function seedLicenseAndGovernance(orgId, planTier, deploymentModel, options = {}
     INSERT INTO governance_settings (id, organization_id, default_language, kpi_thresholds_json, alert_config_json)
     VALUES (?, ?, 'en', ?, ?)
   `).run(randomUUID(), orgId,
-    JSON.stringify({ kpi1: 100, kpi2: 85, kpi3: 80, kpi4: 100, kpi5: 80, kpi6: 100, kpi7: 70, kpi8: 40, kpi10: 85 }),
+    // Keys must match computeKPIs()'s output (reports.js) so Governance Settings
+    // can show a human-readable KPI Name (see kpiCatalog.js) alongside each ID.
+    JSON.stringify({
+      kpi1_completion_immediate: 100, kpi2_effectiveness_immediate: 85, kpi3_on_time: 80,
+      kpi4_completion_corrective: 100, kpi5_effectiveness_corrective: 80, kpi6_evaluations: 100,
+      kpi7_standardization: 70, kpi8_generalization: 40, kpi10_closure: 85,
+    }),
     JSON.stringify({ A: true, B: true, C: true, D: true, E: true, F: true, G: true, H: true, I: true, J: true }));
 }
 
@@ -318,12 +402,17 @@ function insertFiche(orgId, obsId, users, standardIds, tpl, detectionDaysAgo, pl
 
 function seedFichesForOrg(orgId, sector, obsByName, users, standardIds) {
   const templates = SECTOR_TEMPLATES[sector];
-  const plans = ['closed', 'closed', 'S5', 'S3', 'S1', 'S2'];
-  const detectionDays = [60, 45, 20, 4, 0, 2];
+  // 9 templates per sector: 3 closed (rich Capitalization Library / REX data),
+  // and one open sheet at each of the other 6 stages so every S1-S7 tab has a
+  // live example, plus more Actions overall for My Actions.
+  const plans = ['closed', 'closed', 'closed', 'S6', 'S5', 'S4', 'S3', 'S2', 'S1'];
+  const detectionDays = [75, 60, 45, 25, 20, 12, 4, 1, 0];
+  const ficheIds = [];
   templates.forEach((tpl, i) => {
     const obsId = obsByName[tpl.department] || governanceObsId(obsByName);
-    insertFiche(orgId, obsId, users, standardIds, tpl, detectionDays[i], plans[i]);
+    ficheIds.push(insertFiche(orgId, obsId, users, standardIds, tpl, detectionDays[i], plans[i]));
   });
+  return ficheIds;
 }
 
 function seedAiUseCasesForOrg(orgId, sector, users, planTier) {
@@ -578,7 +667,7 @@ function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorT
   const standardTitles = [...new Set(templates.map((t) => t.standard).filter(Boolean))];
   const standardIds = seedStandardsForOrg(id, standardTitles.length ? standardTitles : ['ISO 9001:2015 Quality Management'], planTier);
   seedLicenseAndGovernance(id, planTier, deploymentModel, licenseOptions || {});
-  seedFichesForOrg(id, sector, obsByName, users, standardIds);
+  const ficheIds = seedFichesForOrg(id, sector, obsByName, users, standardIds);
   seedAiUseCasesForOrg(id, sector, users, planTier);
   const govObsId = governanceObsId(obsByName);
   const businessRuleIds = seedBusinessRulesForOrg(id, users, govObsId);
@@ -587,6 +676,9 @@ function seedOrganization({ id, groupId, name, name_fr, name_ar, sector, sectorT
   seedRacsiForOrg(id, users, roleIds, obsByName, businessRuleIds, controlIds, riskIds);
   seedBpmnForOrg(id, users, govObsId);
   seedSheetTemplatesForOrg(id, sector, users);
+  seedProjectsForOrg(id, sector);
+  seedCustomKpisForOrg(id, users);
+  seedAlertsForOrg(id, users, ficheIds, sector);
   if (licenseOptions?.complianceGdpr) activateComplianceModuleSafe(id, 'gdpr');
   if (licenseOptions?.complianceIso27001) activateComplianceModuleSafe(id, 'iso27001');
   if (licenseOptions?.complianceSoc2) activateComplianceModuleSafe(id, 'soc2');

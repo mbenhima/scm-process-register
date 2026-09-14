@@ -6,6 +6,37 @@ import { Card, StatTile, StageProgress, StatusBadge, EmptyState } from '../compo
 
 const PIE_COLORS = ['#F8931D', '#3A6EA5', '#5AA469', '#808184'];
 
+// UI tab key -> backend report key (server/src/routes/reports.js REPORT_GETTERS).
+const REPORT_KEYS = { operational: 'operational', actionPlan: 'action-plan', scorecard: 'scorecard', capitalizationLog: 'capitalization' };
+
+function ExportButtons({ reportKey, t }) {
+  const [busy, setBusy] = useState(null); // format currently downloading, or null
+  async function download(format) {
+    setBusy(format);
+    try {
+      await api.download(`/reports/${reportKey}/export?format=${format}`, `ncp-solver-${reportKey}.${format}`);
+    } catch {
+      // silent — the browser download simply won't start; nothing to recover client-side
+    } finally {
+      setBusy(null);
+    }
+  }
+  return (
+    <div className="flex gap-2">
+      {['pdf', 'xlsx', 'docx'].map((fmt) => (
+        <button
+          key={fmt}
+          onClick={() => download(fmt)}
+          disabled={busy === fmt}
+          className="btn-secondary !py-1.5 !px-3 text-xs disabled:opacity-50"
+        >
+          {busy === fmt ? t('common.loading') : `${t('reports.downloadAs')} ${fmt.toUpperCase()}`}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function ReportsPage() {
   const { t } = useI18n();
   const [tab, setTab] = useState('operational');
@@ -25,9 +56,12 @@ export default function ReportsPage() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <div className="eyebrow">{t('nav.reports')}</div>
-        <h1 className="font-title font-bold text-2xl text-grey-dark">{t('reports.title')}</h1>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <div className="eyebrow">{t('nav.reports')}</div>
+          <h1 className="font-title font-bold text-2xl text-grey-dark">{t('reports.title')}</h1>
+        </div>
+        <ExportButtons reportKey={REPORT_KEYS[tab]} t={t} />
       </div>
 
       <div className="flex gap-1 border-b border-grey-line overflow-x-auto">

@@ -3,9 +3,10 @@ import { api } from '../lib/api.js';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Card, EmptyState } from '../components/ui.jsx';
+import { ALERT_NAMES } from '../data/kpiCatalog.js';
 
 export default function AlertsPage() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { hasPermission } = useAuth();
   const [alerts, setAlerts] = useState([]);
   const [running, setRunning] = useState(false);
@@ -36,7 +37,9 @@ export default function AlertsPage() {
           {alerts.map((a) => (
             <div key={a.id} className="py-3 flex items-center justify-between gap-3">
               <div>
-                <span className="badge bg-orange-tint text-orange-deep me-2">{a.alert_type}</span>
+                <span className="badge bg-orange-tint text-orange-deep me-2">
+                  {a.alert_type} — {ALERT_NAMES[a.alert_type]?.[lang] || ALERT_NAMES[a.alert_type]?.en || a.alert_type}
+                </span>
                 <span className="text-sm text-grey-dark">{a.message}</span>
                 <div className="text-[11px] text-grey-medium">{new Date(a.created_at).toLocaleString()}</div>
               </div>

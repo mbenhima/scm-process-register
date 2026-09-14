@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import db from '../db/index.js';
 import { requirePermission } from '../middleware/rbac.js';
+import { buildPdf, buildXlsx, buildDocx, shapeReport } from '../services/reportExport.js';
 
 const router = Router();
 
@@ -60,9 +61,9 @@ router.get('/kpis', requirePermission('report.view'), (req, res) => {
 });
 
 // Report 1: Operational NCP Dashboard
-router.get('/operational', requirePermission('report.view'), (req, res) => {
-  const fiches = db.prepare(`SELECT * FROM ncp_fiches WHERE organization_id = ? AND status != 'closed' ORDER BY priority, detection_date`).all(req.user.organizationId);
-  const rows = fiches.map((f) => {
+function getOperational(orgId) {
+  const fiches = db.prepare(`SELECT * FROM ncp_fiches WHERE organization_id = ? AND status != 'closed' ORDER BY priority, detection_date`).all(orgId);
+  return fiches.map((f) => {
     const actions = db.prepare('SELECT * FROM actions WHERE fiche_id = ?').all(f.id);
     const imm = actions.filter((a) => a.action_type === 'immediate');
     const corr = actions.filter((a) => a.action_type === 'corrective');
@@ -75,48 +76,91 @@ router.get('/operational', requirePermission('report.view'), (req, res) => {
       correctiveProgress: pct(corr.filter((a) => a.status === 'done').length, corr.length),
     };
   });
-  res.json(rows);
-});
+}
+router.get('/operational', requirePermission('report.view'), (req, res) => res.json(getOperational(req.user.organizationId)));
 
 // Report 2: Action Plan Monitoring Report (weekly)
-router.get('/action-plan', requirePermission('report.view'), (req, res) => {
+function getActionPlan(orgId) {
   const rows = db.prepare(`
     SELECT a.*, f.fiche_number, u.first_name, u.last_name
     FROM actions a JOIN ncp_fiches f ON f.id = a.fiche_id
     LEFT JOIN users u ON u.id = a.responsible_owner_id
     WHERE a.organization_id = ? ORDER BY a.planned_completion_date
-  `).all(req.user.organizationId);
+  `).all(orgId);
   const today = new Date().toISOString().slice(0, 10);
   const evalStmt = db.prepare('SELECT * FROM action_evaluations WHERE action_id = ?');
-  res.json(rows.map((a) => ({
+  return rows.map((a) => ({
     ...a,
     ownerName: a.first_name ? `${a.first_name} ${a.last_name}` : null,
     overdue: a.status !== 'done' && a.planned_completion_date && a.planned_completion_date < today,
     evaluation: evalStmt.get(a.id) || null,
-  })));
-});
+  }));
+}
+router.get('/action-plan', requirePermission('report.view'), (req, res) => res.json(getActionPlan(req.user.organizationId)));
 
 // Report 3: Strategic Problem-Solving Scorecard
-router.get('/scorecard', requirePermission('report.view'), (req, res) => {
-  const kpis = computeKPIs(req.user.organizationId);
-  const priorityDist = db.prepare(`SELECT priority, COUNT(*) c FROM ncp_fiches WHERE organization_id = ? GROUP BY priority`).all(req.user.organizationId);
+function getScorecard(orgId) {
+  const kpis = computeKPIs(orgId);
+  const priorityDist = db.prepare(`SELECT priority, COUNT(*) c FROM ncp_fiches WHERE organization_id = ? GROUP BY priority`).all(orgId);
   const byDept = db.prepare(`
     SELECT COALESCE(o.name, 'Unassigned') AS department, COUNT(*) c
     FROM ncp_fiches f LEFT JOIN obs_nodes o ON o.id = f.obs_node_id
     WHERE f.organization_id = ? GROUP BY department ORDER BY c DESC
-  `).all(req.user.organizationId);
-  const criticalityDist = db.prepare(`SELECT criticality, COUNT(*) c FROM ncp_fiches WHERE organization_id = ? GROUP BY criticality`).all(req.user.organizationId);
-  res.json({ kpis, priorityDist, byDepartment: byDept, criticalityDist });
-});
+  `).all(orgId);
+  const criticalityDist = db.prepare(`SELECT criticality, COUNT(*) c FROM ncp_fiches WHERE organization_id = ? GROUP BY criticality`).all(orgId);
+  return { kpis, priorityDist, byDepartment: byDept, criticalityDist };
+}
+router.get('/scorecard', requirePermission('report.view'), (req, res) => res.json(getScorecard(req.user.organizationId)));
 
 // Report 4: Capitalization & Lessons Learned Log
-router.get('/capitalization', requirePermission('report.view'), (req, res) => {
-  const rows = db.prepare(`
+function getCapitalizationLog(orgId) {
+  return db.prepare(`
     SELECT f.fiche_number, f.title, f.closure_date, r.lessons_learned, r.needs_standardization, r.needs_generalization, r.tags
     FROM rex_entries r JOIN ncp_fiches f ON f.id = r.fiche_id
     WHERE f.organization_id = ? ORDER BY f.closure_date DESC
-  `).all(req.user.organizationId);
-  res.json(rows);
+  `).all(orgId);
+}
+router.get('/capitalization', requirePermission('report.view'), (req, res) => res.json(getCapitalizationLog(req.user.organizationId)));
+
+const REPORT_GETTERS = {
+  operational: getOperational,
+  'action-plan': getActionPlan,
+  scorecard: getScorecard,
+  capitalization: getCapitalizationLog,
+};
+
+// Export any of the 4 standard reports to PDF / Excel / Word.
+router.get('/:key/export', requirePermission('report.view'), async (req, res) => {
+  const getter = REPORT_GETTERS[req.params.key];
+  const format = req.query.format;
+  if (!getter) return res.status(404).json({ error: 'unknown_report' });
+  if (!['pdf', 'xlsx', 'docx'].includes(format)) return res.status(400).json({ error: 'unsupported_format' });
+
+  const payload = getter(req.user.organizationId);
+  const shaped = shapeReport(req.params.key, payload);
+  const filenameBase = `ncp-solver-${req.params.key}-${new Date().toISOString().slice(0, 10)}`;
+
+  try {
+    if (format === 'pdf') {
+      const buf = await buildPdf(shaped);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="${filenameBase}.pdf"`);
+      res.send(buf);
+    } else if (format === 'xlsx') {
+      const buf = await buildXlsx(shaped);
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename="${filenameBase}.xlsx"`);
+      res.send(Buffer.from(buf));
+    } else {
+      const buf = await buildDocx(shaped);
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      res.setHeader('Content-Disposition', `attachment; filename="${filenameBase}.docx"`);
+      res.send(buf);
+    }
+  } catch (err) {
+    console.error('report export failed', err);
+    res.status(500).json({ error: 'export_failed', message: err.message });
+  }
 });
 
 export default router;

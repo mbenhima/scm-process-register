@@ -263,6 +263,13 @@ export const translations = {
     'standards.code': 'Code',
     'standards.version': 'Version',
     'standards.new': 'New Standard',
+    'standards.domain': 'Domain',
+    'standards.requirements': 'Requirements',
+    'standards.showRequirements': 'Show requirements',
+    'standards.hideRequirements': 'Hide requirements',
+    'standards.exampleNc': 'Example non-conformity',
+    'standards.exampleProblem': 'Underlying problem pattern',
+    'standards.noRequirements': 'No requirement clauses seeded for this Standard yet.',
 
     'aiUseCase.title': 'AI Use Cases Library',
     'aiUseCase.new': 'New AI Use Case',
@@ -490,6 +497,7 @@ export const translations = {
     'reports.actionPlan': 'Action Plan Monitoring',
     'reports.scorecard': 'Strategic Scorecard',
     'reports.capitalizationLog': 'Capitalization & Lessons Learned',
+    'reports.downloadAs': 'Download',
 
     'alerts.title': 'Alerts & Notifications',
     'alerts.runNow': 'Run Monitoring Agent',
@@ -505,6 +513,7 @@ export const translations = {
     'nav.sheetTemplates': 'Sheet Templates',
     'common.ncpStage': 'NCP Stage',
     'common.inactive': 'Inactive',
+    'common.active': 'Active',
 
     'stageGov.title': 'Governance linked to this stage',
     'stageGov.businessRules': 'Business Rules',
@@ -793,6 +802,13 @@ export const translations = {
     'standards.code': 'Code',
     'standards.version': 'Version',
     'standards.new': 'Nouvelle Norme',
+    'standards.domain': 'Domaine',
+    'standards.requirements': 'Exigences',
+    'standards.showRequirements': 'Afficher les exigences',
+    'standards.hideRequirements': 'Masquer les exigences',
+    'standards.exampleNc': 'Exemple de non-conformité',
+    'standards.exampleProblem': 'Schéma de problème sous-jacent',
+    'standards.noRequirements': "Aucune clause d'exigence n'a encore été chargée pour cette norme.",
 
     'aiUseCase.title': "Bibliothèque de Cas d'Usage IA",
     'aiUseCase.new': "Nouveau Cas d'Usage",
@@ -1020,6 +1036,7 @@ export const translations = {
     'reports.actionPlan': "Suivi du Plan d'Actions",
     'reports.scorecard': 'Scorecard Stratégique',
     'reports.capitalizationLog': 'Capitalisation & Leçons Apprises',
+    'reports.downloadAs': 'Télécharger',
 
     'alerts.title': 'Alertes & Notifications',
     'alerts.runNow': 'Lancer l\'Agent de Surveillance',
@@ -1035,6 +1052,7 @@ export const translations = {
     'nav.sheetTemplates': 'Modèles de Fiches',
     'common.ncpStage': 'Étape MRP',
     'common.inactive': 'Inactif',
+    'common.active': 'Actif',
 
     'stageGov.title': 'Gouvernance liée à cette étape',
     'stageGov.businessRules': 'Règles Métier',
@@ -1323,6 +1341,13 @@ export const translations = {
     'standards.code': 'الرمز',
     'standards.version': 'الإصدار',
     'standards.new': 'معيار جديد',
+    'standards.domain': 'المجال',
+    'standards.requirements': 'المتطلبات',
+    'standards.showRequirements': 'إظهار المتطلبات',
+    'standards.hideRequirements': 'إخفاء المتطلبات',
+    'standards.exampleNc': 'مثال على عدم المطابقة',
+    'standards.exampleProblem': 'نمط المشكلة الأساسي',
+    'standards.noRequirements': 'لم يتم تحميل بنود متطلبات لهذا المعيار بعد.',
 
     'aiUseCase.title': 'مكتبة حالات استخدام الذكاء الاصطناعي',
     'aiUseCase.new': 'حالة استخدام جديدة',
@@ -1550,6 +1575,7 @@ export const translations = {
     'reports.actionPlan': 'متابعة خطة العمل',
     'reports.scorecard': 'بطاقة الأداء الاستراتيجي',
     'reports.capitalizationLog': 'سجل رسملة المعرفة والدروس المستفادة',
+    'reports.downloadAs': 'تنزيل',
 
     'alerts.title': 'التنبيهات والإشعارات',
     'alerts.runNow': 'تشغيل وكيل المراقبة',
@@ -1565,6 +1591,7 @@ export const translations = {
     'nav.sheetTemplates': 'قوالب البطاقات',
     'common.ncpStage': 'مرحلة العملية',
     'common.inactive': 'غير نشط',
+    'common.active': 'نشط',
 
     'stageGov.title': 'الحوكمة المرتبطة بهذه المرحلة',
     'stageGov.businessRules': 'قواعد العمل',

@@ -184,6 +184,23 @@ CREATE TABLE IF NOT EXISTS standards (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Clause-level requirement breakdown for a Standard (Annex A library entries),
+-- each illustrated with a simulated non-conformity/problem example so a user
+-- can see, per Standard, exactly what it requires and what non-compliance
+-- with a given clause typically looks like.
+CREATE TABLE IF NOT EXISTS standard_requirements (
+  id TEXT PRIMARY KEY,
+  standard_id TEXT NOT NULL REFERENCES standards(id) ON DELETE CASCADE,
+  organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  clause_code TEXT NOT NULL,       -- e.g. "8.5.1", "A.8.16", "Principle 3"
+  title TEXT NOT NULL,
+  requirement_text TEXT NOT NULL,  -- what the clause requires
+  example_nonconformity TEXT,      -- simulated NC illustrating a typical breach of this clause
+  example_problem TEXT,            -- the underlying problem pattern that NC typically signals
+  order_index INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS ncp_fiches (
   id TEXT PRIMARY KEY,
   organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
@@ -628,5 +645,9 @@ CREATE INDEX IF NOT EXISTS idx_controls_stage ON controls(ncp_stage);
 CREATE INDEX IF NOT EXISTS idx_risks_stage ON risks_opportunities(ncp_stage);
 CREATE INDEX IF NOT EXISTS idx_alerts_stage ON notification_alerts(ncp_stage);
 CREATE INDEX IF NOT EXISTS idx_standards_org ON standards(organization_id);
+CREATE INDEX IF NOT EXISTS idx_standard_requirements_standard ON standard_requirements(standard_id);
+CREATE INDEX IF NOT EXISTS idx_standard_requirements_org ON standard_requirements(organization_id);
+CREATE INDEX IF NOT EXISTS idx_projects_org ON projects(organization_id);
+CREATE INDEX IF NOT EXISTS idx_notification_alerts_target ON notification_alerts(target_user_id);
 CREATE INDEX IF NOT EXISTS idx_custom_kpis_org ON custom_kpis(organization_id);
 CREATE INDEX IF NOT EXISTS idx_sheet_templates_org ON ncp_sheet_templates(organization_id);

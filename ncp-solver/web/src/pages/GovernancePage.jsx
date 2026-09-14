@@ -3,11 +3,12 @@ import { api } from '../lib/api.js';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Card, Field, EmptyState } from '../components/ui.jsx';
+import { KPI_NAMES, ALERT_NAMES } from '../data/kpiCatalog.js';
 
 const ALERT_CODES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
 export default function GovernancePage() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { hasPermission } = useAuth();
   const [settings, setSettings] = useState(null);
 
@@ -57,7 +58,7 @@ export default function GovernancePage() {
       <Card title={t('governance.kpiThresholds')}>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {Object.entries(settings.kpi_thresholds || {}).map(([key, val]) => (
-            <Field key={key} label={key}>
+            <Field key={key} label={`${KPI_NAMES[key]?.[lang] || KPI_NAMES[key]?.en || key} (${key})`}>
               <input
                 className="input" type="number" value={val} disabled={!canManage}
                 onChange={(e) => setSettings((s) => ({ ...s, kpi_thresholds: { ...s.kpi_thresholds, [key]: Number(e.target.value) } }))}
@@ -68,7 +69,7 @@ export default function GovernancePage() {
       </Card>
 
       <Card title={t('governance.alertConfig')}>
-        <div className="grid grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {ALERT_CODES.map((code) => (
             <label key={code} className="flex items-center gap-2 text-sm">
               <input
@@ -76,7 +77,8 @@ export default function GovernancePage() {
                 checked={!!settings.alert_config?.[code]}
                 onChange={(e) => setSettings((s) => ({ ...s, alert_config: { ...s.alert_config, [code]: e.target.checked } }))}
               />
-              Alert {code}
+              <span className="badge bg-orange-tint text-orange-deep shrink-0">{code}</span>
+              {ALERT_NAMES[code]?.[lang] || ALERT_NAMES[code]?.en || `Alert ${code}`}
             </label>
           ))}
         </div>

@@ -35,9 +35,39 @@ async function request(path, { method = 'GET', body, headers = {} } = {}) {
   return data;
 }
 
+// Downloads a binary response (PDF/Excel/Word export) and triggers a browser
+// save-as, using the same Bearer auth as the JSON API (a plain <a href> can't
+// carry an Authorization header, so the file must be fetched then blobbed).
+async function download(path, filenameFallback) {
+  const token = getToken();
+  const res = await fetch(`/api${path}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    const err = new Error(data?.error || 'download_failed');
+    err.data = data;
+    err.status = res.status;
+    throw err;
+  }
+  const disposition = res.headers.get('content-disposition') || '';
+  const match = disposition.match(/filename="([^"]+)"/);
+  const filename = match ? match[1] : filenameFallback;
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 export const api = {
   get: (path) => request(path),
   post: (path, body) => request(path, { method: 'POST', body }),
   put: (path, body) => request(path, { method: 'PUT', body }),
   del: (path) => request(path, { method: 'DELETE' }),
+  download,
 };

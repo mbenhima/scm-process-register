@@ -103,4 +103,40 @@ export const RISK_TEMPLATES = [
     response_strategy: 'exploit', mitigation_plan: 'Expose these modules via the existing shared API contract per the composability guide; pilot with one sibling application.',
     status: 'identified', controls: [],
   },
+  {
+    code: 'R-005', title: 'Mis-Triage at Detection Delays Response', ncp_stage: 'S1', item_type: 'risk', category: 'operational', likelihood: 3, impact: 3,
+    description: 'A detector under-rates the criticality of a new NCP sheet at S1, so it does not receive the urgent routing/alerting a genuinely high-criticality issue warrants.',
+    response_strategy: 'reduce', mitigation_plan: 'Classification Agent suggests criticality/priority from similar past sheets at S1 creation; CI Pilot spot-checks self-rated Medium/Low sheets weekly.',
+    status: 'monitoring', controls: [],
+  },
+  {
+    code: 'R-006', title: 'Incomplete 5W2H Weakens Root Cause Analysis', ncp_stage: 'S2', item_type: 'risk', category: 'operational', likelihood: 3, impact: 3,
+    description: 'Teams rush the S2 Problem Understanding (5W2H/QQOQCCP) step to reach containment faster, leaving gaps that make S4 root cause analysis less reliable.',
+    response_strategy: 'reduce', mitigation_plan: 'BR-006 requires 5W2H completion before advancing past S2; Problem Structuring Agent proposes a draft from similar past sheets to lower the effort barrier.',
+    status: 'monitoring', controls: [],
+  },
+  {
+    code: 'R-007', title: 'Containment Action Masking the Real Problem', ncp_stage: 'S3', item_type: 'risk', category: 'operational', likelihood: 2, impact: 4,
+    description: 'An immediate containment action (e.g. quarantine, rework) resolves the symptom effectively enough that momentum toward S4 root cause analysis is lost.',
+    response_strategy: 'reduce', mitigation_plan: 'BR-004 triggers Alert D if root cause analysis has not started 48h after detection, regardless of containment status.',
+    status: 'monitoring', controls: ['C-003'],
+  },
+  {
+    code: 'O-003', title: 'Recurring Root Cause Patterns Feed Preventive Action', ncp_stage: 'S4', item_type: 'opportunity', category: 'operational', likelihood: 3, impact: 4,
+    description: 'Root causes recorded at S4 across many sheets can be mined for recurring 6M categories (e.g. repeated "machine" causes on one asset), surfacing a preventive-maintenance opportunity before further non-conformities occur.',
+    response_strategy: 'exploit', mitigation_plan: 'Quarterly Risk Assessment Review (C-003) screens the Root Cause log for repeat categories/assets and raises a new Risk or Control when a pattern emerges.',
+    status: 'assessing', controls: ['C-003'],
+  },
+  {
+    code: 'R-008', title: 'Corrective Action Plan Underfunded or Understaffed', ncp_stage: 'S5', item_type: 'risk', category: 'operational', likelihood: 3, impact: 4,
+    description: 'A corrective action plan at S5 is approved in principle but not given the budget/cross-functional resources it needs, so it stalls in "to do" status.',
+    response_strategy: 'reduce', mitigation_plan: 'Action Plan Monitoring Report flags actions with no movement against their planned completion date; overdue corrective actions trigger Alert B.',
+    status: 'monitoring', controls: [],
+  },
+  {
+    code: 'R-009', title: 'Effectiveness Review Rubber-Stamped', ncp_stage: 'S6', item_type: 'risk', category: 'operational', likelihood: 2, impact: 4,
+    description: 'An S6 effectiveness evaluation is marked "effective" without genuinely re-testing whether the non-conformity recurs, undermining confidence in the closure decision.',
+    response_strategy: 'reduce', mitigation_plan: 'BR-001 enforces AR ≠ AE independence on every evaluation; Evaluation Assistant surfaces the historical effectiveness rate for similar actions as a sanity check.',
+    status: 'monitoring', controls: ['C-001'],
+  },
 ];

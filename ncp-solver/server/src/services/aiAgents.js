@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import db from '../db/index.js';
 import { RagIndex } from './rag.js';
 import { augmentWithLlm } from './aiGeneration.js';
+import { ALERT_STAGE_MAP } from './alertCatalog.js';
 
 // Rule-based + RAG-grounded simulations of the NCP Solver AI agents (KB-010):
 // one per process step (S1-S7) plus Monitoring & Alert and an Orchestrator.
@@ -401,9 +402,9 @@ export function runMonitoringAgent(organizationId) {
     if (already) return;
     const id = randomUUID();
     db.prepare(`
-      INSERT INTO notification_alerts (id, organization_id, alert_type, triggering_entity_id, target_user_id, channel, message, status, sent_at)
-      VALUES (?, ?, ?, ?, ?, 'in_app', ?, 'sent', datetime('now'))
-    `).run(id, organizationId, type, entityId, targetUserId, message);
+      INSERT INTO notification_alerts (id, organization_id, alert_type, ncp_stage, triggering_entity_id, target_user_id, channel, message, status, sent_at)
+      VALUES (?, ?, ?, ?, ?, ?, 'in_app', ?, 'sent', datetime('now'))
+    `).run(id, organizationId, type, ALERT_STAGE_MAP[type] || null, entityId, targetUserId, message);
     alerts.push({ id, type, entityId, message });
   };
 
