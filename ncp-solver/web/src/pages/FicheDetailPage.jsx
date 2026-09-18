@@ -69,16 +69,29 @@ function ActionCard({ action, users, hasPermission, currentUserId, onChanged, al
   const isOwner = action.responsible_owner_id === currentUserId;
   const canUpdateOwn = allowExecute && isOwner && hasPermission('action.updateOwn');
   const canEvaluate = allowExecute && hasPermission('action.evaluate') && action.responsible_owner_id !== currentUserId;
+  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'error'
 
   async function markDone() {
-    await api.put(`/actions/${action.id}/progress`, { status: 'done', actual_completion_date: new Date().toISOString().slice(0, 10) });
-    onChanged();
+    setSaveStatus('saving');
+    try {
+      await api.put(`/actions/${action.id}/progress`, { status: 'done', actual_completion_date: new Date().toISOString().slice(0, 10) });
+      onChanged();
+      setSaveStatus(null);
+    } catch {
+      setSaveStatus('error');
+    }
   }
   async function saveEvaluation(e) {
     e.preventDefault();
-    await api.put(`/actions/${action.id}/evaluation`, { ...evalForm, actual_review_date: new Date().toISOString().slice(0, 10) });
-    setEvalOpen(false);
-    onChanged();
+    setSaveStatus('saving');
+    try {
+      await api.put(`/actions/${action.id}/evaluation`, { ...evalForm, actual_review_date: new Date().toISOString().slice(0, 10) });
+      setEvalOpen(false);
+      setSaveStatus(null);
+      onChanged();
+    } catch {
+      setSaveStatus('error');
+    }
   }
 
   return (
@@ -99,13 +112,14 @@ function ActionCard({ action, users, hasPermission, currentUserId, onChanged, al
         </div>
       </div>
       {allowExecute && (
-        <div className="flex gap-2 mt-3">
+        <div className="flex items-center gap-2 mt-3">
           {canUpdateOwn && action.status !== 'done' && (
-            <button onClick={markDone} className="btn-secondary !py-1 !px-2 text-xs">{t('action.status.done')}</button>
+            <button onClick={markDone} disabled={saveStatus === 'saving'} className="btn-secondary !py-1 !px-2 text-xs">{t('action.status.done')}</button>
           )}
           {canEvaluate && (
             <button onClick={() => setEvalOpen((o) => !o)} className="btn-secondary !py-1 !px-2 text-xs">{t('action.reviewResult')}</button>
           )}
+          {saveStatus === 'error' && <span className="text-xs text-red-600 font-semibold">{t('common.saveFailed')}</span>}
         </div>
       )}
       {evalOpen && (
@@ -115,7 +129,10 @@ function ActionCard({ action, users, hasPermission, currentUserId, onChanged, al
             <option value="not_effective">{t('action.reviewResult.not_effective')}</option>
           </select>
           <input className="input" placeholder={t('action.reviewResult')} value={evalForm.review_comments} onChange={(e) => setEvalForm((f) => ({ ...f, review_comments: e.target.value }))} />
-          <button type="submit" className="btn-primary !py-1 !px-3 text-xs">{t('common.save')}</button>
+          <div className="flex items-center gap-2">
+            <button type="submit" disabled={saveStatus === 'saving'} className="btn-primary !py-1 !px-3 text-xs">{t('common.save')}</button>
+            {saveStatus === 'error' && <span className="text-xs text-red-600 font-semibold">{t('common.saveFailed')}</span>}
+          </div>
         </form>
       )}
       {allowExecute && (
@@ -434,11 +451,19 @@ function UnderstandingTab({ fiche, onSaved }) {
     what: '', who_detected: '', where_: '', when_: '', how_detected: '', why_problem: '', how_much: '', objectives: '',
   });
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
 
   async function save(e) {
     e.preventDefault();
-    await api.put(`/fiches/${fiche.id}/understanding`, form);
-    onSaved();
+    setSaveStatus('saving');
+    try {
+      await api.put(`/fiches/${fiche.id}/understanding`, form);
+      onSaved();
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus(null), 2000);
+    } catch {
+      setSaveStatus('error');
+    }
   }
 
   return (
@@ -452,7 +477,13 @@ function UnderstandingTab({ fiche, onSaved }) {
         <Field label="How detected?"><input className="input" value={form.how_detected || ''} onChange={set('how_detected')} disabled={!hasPermission('fiche.edit')} /></Field>
         <Field label="How much (gap)?"><input className="input" value={form.how_much || ''} onChange={set('how_much')} disabled={!hasPermission('fiche.edit')} /></Field>
         <Field label="Objectives"><input className="input" value={form.objectives || ''} onChange={set('objectives')} disabled={!hasPermission('fiche.edit')} /></Field>
-        {hasPermission('fiche.edit') && <button type="submit" className="btn-primary col-span-2 mt-2 justify-self-end">{t('common.save')}</button>}
+        {hasPermission('fiche.edit') && (
+          <div className="col-span-2 mt-2 flex items-center justify-end gap-2">
+            {saveStatus === 'saved' && <span className="text-xs text-green-700 font-semibold">{t('common.saved')}</span>}
+            {saveStatus === 'error' && <span className="text-xs text-red-600 font-semibold">{t('common.saveFailed')}</span>}
+            <button type="submit" disabled={saveStatus === 'saving'} className="btn-primary">{t('common.save')}</button>
+          </div>
+        )}
       </form>
     </Card>
   );
@@ -462,14 +493,21 @@ function ActionsTab({ actions, actionType, ficheId, users, hasPermission, curren
   const { t } = useI18n();
   const [form, setForm] = useState({ description: '', responsible_owner_id: '', planned_completion_date: '', root_cause_id: '' });
   const [showForm, setShowForm] = useState(false);
+  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'error'
   const canCreate = allowCreate && hasPermission('action.create');
 
   async function create(e) {
     e.preventDefault();
-    await api.post('/actions', { ...form, fiche_id: ficheId, action_type: actionType, root_cause_id: form.root_cause_id || null });
-    setForm({ description: '', responsible_owner_id: '', planned_completion_date: '', root_cause_id: '' });
-    setShowForm(false);
-    onChanged();
+    setSaveStatus('saving');
+    try {
+      await api.post('/actions', { ...form, fiche_id: ficheId, action_type: actionType, root_cause_id: form.root_cause_id || null });
+      setForm({ description: '', responsible_owner_id: '', planned_completion_date: '', root_cause_id: '' });
+      setShowForm(false);
+      setSaveStatus(null);
+      onChanged();
+    } catch {
+      setSaveStatus('error');
+    }
   }
 
   return (
@@ -502,7 +540,10 @@ function ActionsTab({ actions, actionType, ficheId, users, hasPermission, curren
                 <input className="input" type="date" value={form.planned_completion_date} onChange={(e) => setForm((f) => ({ ...f, planned_completion_date: e.target.value }))} />
               </Field>
             </div>
-            <button type="submit" className="btn-primary text-xs">{t('common.create')}</button>
+            <div className="flex items-center gap-2">
+              <button type="submit" disabled={saveStatus === 'saving'} className="btn-primary text-xs">{t('common.create')}</button>
+              {saveStatus === 'error' && <span className="text-xs text-red-600 font-semibold">{t('common.saveFailed')}</span>}
+            </div>
           </form>
         </Card>
       )}
@@ -520,13 +561,20 @@ function RootCausesTab({ fiche, onSaved, hasPermission }) {
   const { t } = useI18n();
   const [form, setForm] = useState({ description: '', cause_category: 'method' });
   const [showForm, setShowForm] = useState(false);
+  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'error'
 
   async function create(e) {
     e.preventDefault();
-    await api.post(`/fiches/${fiche.id}/root-causes`, form);
-    setForm({ description: '', cause_category: 'method' });
-    setShowForm(false);
-    onSaved();
+    setSaveStatus('saving');
+    try {
+      await api.post(`/fiches/${fiche.id}/root-causes`, form);
+      setForm({ description: '', cause_category: 'method' });
+      setShowForm(false);
+      setSaveStatus(null);
+      onSaved();
+    } catch {
+      setSaveStatus('error');
+    }
   }
 
   return (
@@ -545,7 +593,10 @@ function RootCausesTab({ fiche, onSaved, hasPermission }) {
                 {['man', 'machine', 'method', 'material', 'measurement', 'milieu'].map((c) => <option key={c} value={c}>{t(`rootcause.category.${c}`)}</option>)}
               </select>
             </Field>
-            <button type="submit" className="btn-primary text-xs">{t('common.create')}</button>
+            <div className="flex items-center gap-2">
+              <button type="submit" disabled={saveStatus === 'saving'} className="btn-primary text-xs">{t('common.create')}</button>
+              {saveStatus === 'error' && <span className="text-xs text-red-600 font-semibold">{t('common.saveFailed')}</span>}
+            </div>
           </form>
         </Card>
       )}
@@ -572,6 +623,7 @@ function RexTab({ fiche, onSaved, hasPermission, result: draftMeta, onResult: se
     needs_standardization: false, needs_generalization: false, tags: '',
   });
   const [generating, setGenerating] = useState(false);
+  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const setBool = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.checked }));
@@ -591,8 +643,15 @@ function RexTab({ fiche, onSaved, hasPermission, result: draftMeta, onResult: se
 
   async function save(e) {
     e.preventDefault();
-    await api.put(`/fiches/${fiche.id}/rex`, form);
-    onSaved();
+    setSaveStatus('saving');
+    try {
+      await api.put(`/fiches/${fiche.id}/rex`, form);
+      onSaved();
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus(null), 2000);
+    } catch {
+      setSaveStatus('error');
+    }
   }
 
   return (
@@ -621,7 +680,13 @@ function RexTab({ fiche, onSaved, hasPermission, result: draftMeta, onResult: se
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!form.needs_generalization} onChange={setBool('needs_generalization')} disabled={!hasPermission('rex.edit')} />{t('rex.needsGeneralization')}</label>
         </div>
         <Field label={t('rex.tags')}><input className="input" value={form.tags || ''} onChange={set('tags')} disabled={!hasPermission('rex.edit')} /></Field>
-        {hasPermission('rex.edit') && <button type="submit" className="btn-primary">{t('common.save')}</button>}
+        {hasPermission('rex.edit') && (
+          <div className="flex items-center gap-2">
+            <button type="submit" disabled={saveStatus === 'saving'} className="btn-primary">{t('common.save')}</button>
+            {saveStatus === 'saved' && <span className="text-xs text-green-700 font-semibold">{t('common.saved')}</span>}
+            {saveStatus === 'error' && <span className="text-xs text-red-600 font-semibold">{t('common.saveFailed')}</span>}
+          </div>
+        )}
       </form>
     </Card>
   );

@@ -46,6 +46,7 @@ export const translations = {
 
     'common.save': 'Save',
     'common.saved': 'Saved.',
+    'common.saveFailed': 'Save failed — please try again.',
     'common.cancel': 'Cancel',
     'common.create': 'Create',
     'common.edit': 'Edit',
@@ -585,6 +586,7 @@ export const translations = {
 
     'common.save': 'Enregistrer',
     'common.saved': 'Enregistré.',
+    'common.saveFailed': "Échec de l'enregistrement — veuillez réessayer.",
     'common.cancel': 'Annuler',
     'common.create': 'Créer',
     'common.edit': 'Modifier',
@@ -1124,6 +1126,7 @@ export const translations = {
 
     'common.save': 'حفظ',
     'common.saved': 'تم الحفظ.',
+    'common.saveFailed': 'فشل الحفظ — يرجى المحاولة مرة أخرى.',
     'common.cancel': 'إلغاء',
     'common.create': 'إنشاء',
     'common.edit': 'تعديل',
