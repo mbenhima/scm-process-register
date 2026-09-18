@@ -129,9 +129,13 @@ function ActionCard({ action, users, hasPermission, currentUserId, onChanged, al
   );
 }
 
-function AiPanel({ label, onRun, render, ficheId, summarize }) {
+// `result`/`onResult` and `outcome`/`onOutcomeLogged` are controlled by the
+// parent FicheDetailPage (lifted state keyed per agent) rather than held
+// locally: each stage tab's content unmounts when the user switches tabs, so
+// a suggestion and its Accept/Edit/Reject decision must live above that
+// unmount boundary to survive navigating away and back.
+function AiPanel({ label, onRun, render, ficheId, summarize, result, onResult, outcome, onOutcomeLogged }) {
   const { t } = useI18n();
-  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -140,7 +144,7 @@ function AiPanel({ label, onRun, render, ficheId, summarize }) {
     setError(null);
     try {
       const connection = getLlmConnection();
-      setResult(await onRun(connection));
+      onResult(await onRun(connection));
     } catch (err) {
       if (err.data?.error === 'ai_use_case_deactivated') setError(t('aiGov.deactivated'));
       else setError(err.message || t('assistant.error'));
@@ -168,6 +172,8 @@ function AiPanel({ label, onRun, render, ficheId, summarize }) {
             outputSummary={summarize ? summarize(result) : label}
             generatedBy={result.generatedBy}
             ficheId={ficheId}
+            outcome={outcome}
+            onLogged={onOutcomeLogged}
           />
         </div>
       )}
@@ -183,6 +189,18 @@ export default function FicheDetailPage() {
   const [fiche, setFiche] = useState(null);
   const [tab, setTab] = useState('detail');
   const [users, setUsers] = useState([]);
+  // Lifted, per-agent AI panel state (result + Accept/Edit/Reject outcome),
+  // keyed by agent, so it survives switching stage tabs and back (see AiPanel).
+  const [aiPanels, setAiPanels] = useState({});
+  function aiPanelProps(key) {
+    const entry = aiPanels[key] || {};
+    return {
+      result: entry.result ?? null,
+      onResult: (r) => setAiPanels((s) => ({ ...s, [key]: { ...s[key], result: r } })),
+      outcome: entry.outcome ?? null,
+      onOutcomeLogged: (o) => setAiPanels((s) => ({ ...s, [key]: { ...s[key], outcome: o } })),
+    };
+  }
 
   const load = useCallback(() => {
     api.get(`/fiches/${id}`).then(setFiche).catch(() => {});
@@ -260,6 +278,7 @@ export default function FicheDetailPage() {
             <AiPanel
               label={t('fiche.aiClassification')}
               ficheId={id}
+              {...aiPanelProps('classification')}
               onRun={(connection) => api.post(`/ai-agents/${id}/classification`, { connection }).then((r) => { load(); return r; })}
               summarize={(r) => `Suggested ${r.suggestedCriticality}/P${r.suggestedPriority}`}
               render={(r) => (
@@ -288,6 +307,7 @@ export default function FicheDetailPage() {
           <AiPanel
             label={t('fiche.aiProblemStructuring')}
             ficheId={id}
+            {...aiPanelProps('problemStructuring')}
             onRun={(connection) => api.post(`/ai-agents/${id}/problem-structuring`, { connection })}
             summarize={(r) => r.suggestions?.[0] || 'Problem structuring draft'}
             render={(r) => (
@@ -306,6 +326,7 @@ export default function FicheDetailPage() {
           <AiPanel
             label={t('fiche.aiContainment')}
             ficheId={id}
+            {...aiPanelProps('containmentAdvisor')}
             onRun={(connection) => api.post(`/ai-agents/${id}/containment-advisor`, { connection })}
             summarize={(r) => r.suggestions?.[0] || 'Containment suggestion'}
             render={(r) => (
@@ -327,6 +348,7 @@ export default function FicheDetailPage() {
           <AiPanel
             label={t('fiche.aiRootCause')}
             ficheId={id}
+            {...aiPanelProps('rootCauseMining')}
             onRun={(connection) => api.post(`/ai-agents/${id}/root-cause-mining`, { connection })}
             summarize={(r) => r.suggestedCauses?.[0] || 'Root cause suggestion'}
             render={(r) => (
@@ -346,6 +368,7 @@ export default function FicheDetailPage() {
           <AiPanel
             label={t('fiche.aiActionRecommendation')}
             ficheId={id}
+            {...aiPanelProps('actionRecommendation')}
             onRun={(connection) => api.post(`/ai-agents/${id}/action-recommendation`, {
               root_cause_text: fiche.rootCauses.map((rc) => rc.description).join(' ') || fiche.description, connection,
             })}
@@ -371,6 +394,7 @@ export default function FicheDetailPage() {
           <AiPanel
             label={t('fiche.aiEvaluationAssistant')}
             ficheId={id}
+            {...aiPanelProps('evaluationAssistant')}
             onRun={(connection) => api.post(`/ai-agents/${id}/evaluation-assistant`, { connection })}
             summarize={(r) => r.suggestions?.[0] || 'Evaluation context'}
             render={(r) => (
@@ -395,7 +419,7 @@ export default function FicheDetailPage() {
 
       {tab === 'rex' && (
         <div className="space-y-3">
-          <RexTab fiche={fiche} onSaved={load} hasPermission={hasPermission} />
+          <RexTab fiche={fiche} onSaved={load} hasPermission={hasPermission} {...aiPanelProps('rex')} />
           <StageGovernancePanel stage="S7" />
         </div>
       )}
@@ -538,14 +562,16 @@ function RootCausesTab({ fiche, onSaved, hasPermission }) {
   );
 }
 
-function RexTab({ fiche, onSaved, hasPermission }) {
+// `result`/`onResult` (as draftMeta) and `outcome`/`onOutcomeLogged` are
+// lifted into FicheDetailPage (see AiPanel) so the generated draft's
+// Accept/Edit/Reject decision survives switching away from the S7 tab.
+function RexTab({ fiche, onSaved, hasPermission, result: draftMeta, onResult: setDraftMeta, outcome, onOutcomeLogged }) {
   const { t } = useI18n();
   const [form, setForm] = useState(fiche.rex || {
     lessons_learned: '', root_cause_summary: '', solution_summary: '',
     needs_standardization: false, needs_generalization: false, tags: '',
   });
   const [generating, setGenerating] = useState(false);
-  const [draftMeta, setDraftMeta] = useState(null);
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const setBool = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.checked }));
@@ -578,7 +604,10 @@ function RexTab({ fiche, onSaved, hasPermission }) {
             <div className="mt-2 bg-orange-tint/50 rounded-md p-3">
               <AiGeneratedNotice generatedBy={draftMeta.generatedBy} />
               <GroundingDisclosure grounding={draftMeta.grounding} llmNarrative={draftMeta.llmNarrative} />
-              <OutcomeButtons useCaseId={draftMeta.useCaseId} outputSummary={form.lessons_learned} generatedBy={draftMeta.generatedBy} ficheId={fiche.id} />
+              <OutcomeButtons
+                useCaseId={draftMeta.useCaseId} outputSummary={form.lessons_learned} generatedBy={draftMeta.generatedBy} ficheId={fiche.id}
+                outcome={outcome} onLogged={onOutcomeLogged}
+              />
             </div>
           )}
         </div>

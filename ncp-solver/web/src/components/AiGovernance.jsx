@@ -56,20 +56,25 @@ export function GroundingDisclosure({ grounding, llmNarrative }) {
   );
 }
 
-export function OutcomeButtons({ useCaseId, outputSummary, generatedBy, ficheId, projectId, onLogged }) {
+// `outcome`/`onLogged` let a parent that survives tab-switching (e.g.
+// FicheDetailPage) hold this decision in lifted state, so it isn't lost when
+// the surrounding stage tab unmounts; omit them to fall back to purely local
+// state for simpler call sites.
+export function OutcomeButtons({ useCaseId, outputSummary, generatedBy, ficheId, projectId, outcome, onLogged }) {
   const { t } = useI18n();
-  const [logged, setLogged] = useState(null);
+  const [localLogged, setLocalLogged] = useState(null);
+  const logged = outcome !== undefined ? outcome : localLogged;
 
-  async function log(outcome) {
+  async function log(newOutcome) {
     if (!useCaseId) return;
     try {
       await api.post('/ai-usage-log', {
-        use_case_id: useCaseId, outcome, output_summary: String(outputSummary || '').slice(0, 500),
+        use_case_id: useCaseId, outcome: newOutcome, output_summary: String(outputSummary || '').slice(0, 500),
         generated_by: generatedBy, fiche_id: ficheId || null, project_id: projectId || null,
       });
     } catch { /* logging is best-effort; never block the user's workflow on it */ }
-    setLogged(outcome);
-    onLogged?.(outcome);
+    setLocalLogged(newOutcome);
+    onLogged?.(newOutcome);
   }
 
   if (!useCaseId) return null;
