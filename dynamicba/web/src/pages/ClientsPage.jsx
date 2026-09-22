@@ -4,9 +4,12 @@ import { useClients } from '../hooks/useClients'
 
 export default function ClientsPage() {
   const { orgId, activeClientId, selectClient, can } = useApp()
-  const { clients, loading, addClient, softDeleteClient } = useClients(orgId)
+  const { clients, loading, addClient, updateClient, softDeleteClient } = useClients(orgId)
   const [form, setForm] = useState({ name: '', industry: '' })
   const [showForm, setShowForm] = useState(false)
+  const [editingId, setEditingId] = useState(null)
+  const [editForm, setEditForm] = useState({ name: '', industry: '' })
+  const canManage = can('hierarchy.manage')
 
   async function handleAdd(e) {
     e.preventDefault()
@@ -15,11 +18,21 @@ export default function ClientsPage() {
     setShowForm(false)
   }
 
+  function startEdit(c) {
+    setEditingId(c.id)
+    setEditForm({ name: c.name, industry: c.industry || '' })
+  }
+
+  async function saveEdit(id) {
+    await updateClient(id, editForm)
+    setEditingId(null)
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-serif font-bold text-grey-dark">Clients</h1>
-        {can('hierarchy.manage') && (
+        {canManage && (
           <button className="btn-primary" onClick={() => setShowForm((s) => !s)}>+ Add Client</button>
         )}
       </div>
@@ -41,16 +54,32 @@ export default function ClientsPage() {
       {loading ? <p className="text-grey-medium">Loading…</p> : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {clients.map((c) => (
-            <div key={c.id} className={`card p-4 cursor-pointer ${activeClientId === c.id ? 'ring-2 ring-orange' : ''}`} onClick={() => selectClient(c.id)}>
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="font-semibold text-grey-dark">{c.name}</div>
-                  <div className="text-xs text-grey-medium">{c.industry || 'No industry set'}</div>
+            <div key={c.id} className={`card p-4 ${editingId !== c.id ? 'cursor-pointer' : ''} ${activeClientId === c.id ? 'ring-2 ring-orange' : ''}`} onClick={() => editingId !== c.id && selectClient(c.id)}>
+              {editingId === c.id ? (
+                <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+                  <input className="input" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} />
+                  <input className="input" value={editForm.industry} onChange={(e) => setEditForm({ ...editForm, industry: e.target.value })} />
+                  <div className="flex gap-2">
+                    <button className="btn-primary text-xs" onClick={() => saveEdit(c.id)}>Save</button>
+                    <button className="btn-secondary text-xs" onClick={() => setEditingId(null)}>Cancel</button>
+                  </div>
                 </div>
-                {activeClientId === c.id && <span className="text-orange">✓</span>}
-              </div>
-              {can('hierarchy.manage') && (
-                <button className="text-xs text-red-500 mt-3" onClick={(e) => { e.stopPropagation(); softDeleteClient(c.id) }}>Delete</button>
+              ) : (
+                <>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="font-semibold text-grey-dark">{c.name}</div>
+                      <div className="text-xs text-grey-medium">{c.industry || 'No industry set'}</div>
+                    </div>
+                    {activeClientId === c.id && <span className="text-orange">✓</span>}
+                  </div>
+                  {canManage && (
+                    <div className="flex gap-3 mt-3">
+                      <button className="text-xs text-orange-deep font-semibold" onClick={(e) => { e.stopPropagation(); startEdit(c) }}>Edit</button>
+                      <button className="text-xs text-red-500" onClick={(e) => { e.stopPropagation(); softDeleteClient(c.id) }}>Delete</button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           ))}

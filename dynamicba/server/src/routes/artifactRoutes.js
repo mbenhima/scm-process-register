@@ -9,7 +9,7 @@ router.use(base, authenticate, requireOwnOrg)
 
 // Generic, schema-agnostic CRUD for any of the 32 D09/D10 object classes, scoped to one
 // project — the server-side counterpart of web/src/components/ArtifactExplorer.jsx.
-router.get(base, (req, res) => {
+router.get(base, requireCapability('project.read'), (req, res) => {
   const { orgId, projectId, objectClassId } = req.params
   res.json(find('artifacts', (a) => a.orgId === orgId && a.projectId === projectId && a.objectClassId === objectClassId))
 })

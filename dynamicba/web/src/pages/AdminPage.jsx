@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useApp } from '../contexts/AppContext'
 import { useApiCollection } from '../hooks/useApiCollection'
 import { api } from '../lib/api'
+import { invalidate } from '../lib/queryStore'
 import { ROLES, ROLE_IDS, CAPABILITIES } from '../lib/roles'
 import { PLAN_LABELS } from '../lib/catalogue'
 
@@ -9,8 +10,9 @@ const TABS = ['Organization', 'Users & Roles', 'Permission Matrix', 'Licensing',
 
 export default function AdminPage() {
   const [tab, setTab] = useState(TABS[0])
-  const { orgId, organization, licence, permissionMatrix, complianceStandards, refresh } = useApp()
-  const { data: users, refetch: refetchUsers } = useApiCollection(orgId ? `/organizations/${orgId}/users` : null)
+  const { orgId, organization, licence, permissionMatrix, complianceStandards, refresh, can } = useApp()
+  const usersPath = orgId ? `/organizations/${orgId}/users` : null
+  const { data: users } = useApiCollection(usersPath)
   const { data: auditLog } = useApiCollection(orgId ? `/organizations/${orgId}/audit-log` : null)
 
   return (
@@ -23,10 +25,10 @@ export default function AdminPage() {
       </div>
 
       {tab === 'Organization' && <OrganizationTab orgId={orgId} organization={organization} />}
-      {tab === 'Users & Roles' && <UsersTab orgId={orgId} users={users} onChanged={refetchUsers} />}
-      {tab === 'Permission Matrix' && <PermissionMatrixTab orgId={orgId} matrix={permissionMatrix} onChanged={refresh} />}
-      {tab === 'Licensing' && <LicensingTab orgId={orgId} licence={licence} memberCount={organization?.memberCount} onChanged={refresh} />}
-      {tab === 'Compliance Standards' && <ComplianceTab orgId={orgId} standards={complianceStandards} onChanged={refresh} />}
+      {tab === 'Users & Roles' && <UsersTab orgId={orgId} users={users} usersPath={usersPath} can={can} />}
+      {tab === 'Permission Matrix' && <PermissionMatrixTab orgId={orgId} matrix={permissionMatrix} onChanged={refresh} can={can} />}
+      {tab === 'Licensing' && <LicensingTab orgId={orgId} licence={licence} memberCount={organization?.memberCount} onChanged={refresh} can={can} />}
+      {tab === 'Compliance Standards' && <ComplianceTab orgId={orgId} standards={complianceStandards} onChanged={refresh} can={can} />}
       {tab === 'Audit Log' && <AuditLogTab entries={auditLog} />}
       {tab === 'Demo Data' && <DemoDataTab />}
     </div>
@@ -56,37 +58,97 @@ function OrganizationTab({ orgId, organization }) {
   )
 }
 
-function UsersTab({ orgId, users, onChanged }) {
+function UsersTab({ orgId, users, usersPath, can }) {
+  const canManage = can('users.manage')
+  const [showForm, setShowForm] = useState(false)
+  const [form, setForm] = useState({ name: '', email: '', password: '', roles: ['business_analyst'] })
+  const [created, setCreated] = useState(null)
+  const [error, setError] = useState('')
+
   async function setRoles(userId, roles) {
-    await api.patch(`/organizations/${orgId}/users/${userId}`, { roles })
-    onChanged()
+    await api.patch(`${usersPath}/${userId}`, { roles })
+    invalidate(usersPath)
   }
+
+  async function handleCreate(e) {
+    e.preventDefault()
+    setError('')
+    try {
+      await api.post(usersPath, form)
+      invalidate(usersPath)
+      setCreated({ email: form.email, password: form.password })
+      setForm({ name: '', email: '', password: '', roles: ['business_analyst'] })
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  async function handleDelete(userId) {
+    if (!confirm('Remove this user’s access? This cannot be undone.')) return
+    try {
+      await api.del(`${usersPath}/${userId}`)
+      invalidate(usersPath)
+    } catch (err) {
+      alert(err.message)
+    }
+  }
+
   return (
-    <table className="w-full card text-sm">
-      <thead><tr className="text-left text-grey-medium border-b border-grey-line"><th className="p-2">Name</th><th className="p-2">Email</th><th className="p-2">Roles</th></tr></thead>
-      <tbody>
-        {users.map((u) => (
-          <tr key={u.id} className="border-b border-grey-line last:border-0">
-            <td className="p-2">{u.name}</td>
-            <td className="p-2">{u.email}</td>
-            <td className="p-2">
-              <select
-                multiple
-                className="input h-24"
-                value={u.roles || []}
-                onChange={(e) => setRoles(u.id, Array.from(e.target.selectedOptions).map((o) => o.value))}
-              >
-                {ROLES.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
-              </select>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="space-y-4">
+      {canManage && (
+        <div className="card p-4">
+          <button className="btn-secondary" onClick={() => setShowForm((s) => !s)}>{showForm ? 'Cancel' : '+ Create User'}</button>
+          {showForm && (
+            <form onSubmit={handleCreate} className="grid grid-cols-2 gap-3 mt-3">
+              <div><label className="label">Full Name</label><input className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required /></div>
+              <div><label className="label">Email</label><input className="input" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required /></div>
+              <div><label className="label">Temporary Password</label><input className="input" type="text" minLength={6} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required /></div>
+              <div>
+                <label className="label">Role</label>
+                <select className="input" value={form.roles[0]} onChange={(e) => setForm({ ...form, roles: [e.target.value] })}>
+                  {ROLES.filter((r) => r.id !== 'org_admin').map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
+                </select>
+              </div>
+              <div className="col-span-2"><button className="btn-primary">Create User</button></div>
+              {error && <div className="col-span-2 text-sm text-red-600">{error}</div>}
+            </form>
+          )}
+          {created && (
+            <p className="text-sm text-green-700 mt-3">Created {created.email}. Share this temporary password with them: <span className="font-mono bg-grey-light px-1 rounded">{created.password}</span></p>
+          )}
+        </div>
+      )}
+      <table className="w-full card text-sm">
+        <thead><tr className="text-left text-grey-medium border-b border-grey-line"><th className="p-2">Name</th><th className="p-2">Email</th><th className="p-2">Roles</th><th className="p-2"></th></tr></thead>
+        <tbody>
+          {users.map((u) => (
+            <tr key={u.id} className="border-b border-grey-line last:border-0">
+              <td className="p-2">{u.name}</td>
+              <td className="p-2">{u.email}</td>
+              <td className="p-2">
+                <select
+                  multiple
+                  className="input h-24"
+                  value={u.roles || []}
+                  disabled={!canManage}
+                  onChange={(e) => setRoles(u.id, Array.from(e.target.selectedOptions).map((o) => o.value))}
+                >
+                  {ROLES.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
+                </select>
+              </td>
+              <td className="p-2 text-right">
+                {canManage && <button className="text-red-500 text-xs" onClick={() => handleDelete(u.id)}>Remove</button>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
 
-function PermissionMatrixTab({ orgId, matrix, onChanged }) {
+function PermissionMatrixTab({ orgId, matrix, onChanged, can }) {
+  const canManage = can('permissions.manage')
   async function toggle(role, capability) {
     const current = !!matrix?.[role]?.[capability]
     await api.put(`/organizations/${orgId}/config/permission-matrix`, { [role]: { ...matrix[role], [capability]: !current } })
@@ -107,7 +169,7 @@ function PermissionMatrixTab({ orgId, matrix, onChanged }) {
               <td className="p-2 font-mono text-xs">{cap}</td>
               {ROLE_IDS.map((r) => (
                 <td key={r} className="p-2 text-center">
-                  <input type="checkbox" checked={!!matrix?.[r]?.[cap]} disabled={r === 'org_admin'} onChange={() => toggle(r, cap)} />
+                  <input type="checkbox" checked={!!matrix?.[r]?.[cap]} disabled={!canManage || r === 'org_admin'} onChange={() => toggle(r, cap)} />
                 </td>
               ))}
             </tr>
@@ -118,7 +180,8 @@ function PermissionMatrixTab({ orgId, matrix, onChanged }) {
   )
 }
 
-function LicensingTab({ orgId, licence, memberCount, onChanged }) {
+function LicensingTab({ orgId, licence, memberCount, onChanged, can }) {
+  const canManage = can('config.manage')
   async function changePlan(plan) {
     await api.put(`/licences/${orgId}`, { plan })
     onChanged()
@@ -131,14 +194,15 @@ function LicensingTab({ orgId, licence, memberCount, onChanged }) {
       <div>Entitled modules: {(licence?.features || []).join(', ')}</div>
       <div className="flex gap-2">
         {Object.keys(PLAN_LABELS).map((p) => (
-          <button key={p} className={`btn-secondary ${licence?.plan === p ? '!bg-orange !text-white' : ''}`} onClick={() => changePlan(p)}>{PLAN_LABELS[p]}</button>
+          <button key={p} disabled={!canManage} className={`btn-secondary ${licence?.plan === p ? '!bg-orange !text-white' : ''}`} onClick={() => changePlan(p)}>{PLAN_LABELS[p]}</button>
         ))}
       </div>
     </div>
   )
 }
 
-function ComplianceTab({ orgId, standards, onChanged }) {
+function ComplianceTab({ orgId, standards, onChanged, can }) {
+  const canManage = can('config.manage')
   async function toggle(key) {
     await api.put(`/organizations/${orgId}/config/compliance-standards`, { [key]: !standards[key] })
     onChanged()
@@ -148,7 +212,7 @@ function ComplianceTab({ orgId, standards, onChanged }) {
       <p className="text-xs text-grey-medium italic">Activating a standard seeds GRC scaffolding only — it is not a certification, external audit, or legal attestation (Standard SRS FR-DA-CFG-09).</p>
       {['GDPR', 'ISO27001', 'SOC2'].map((key) => (
         <label key={key} className="flex items-center gap-2">
-          <input type="checkbox" checked={!!standards?.[key]} onChange={() => toggle(key)} /> {key}
+          <input type="checkbox" disabled={!canManage} checked={!!standards?.[key]} onChange={() => toggle(key)} /> {key}
         </label>
       ))}
     </div>

@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
-import { findById, findOne, find, update, insert } from '../db.js'
+import { findById, findOne, find, update, insert, remove } from '../db.js'
 import { authenticate, requireOwnOrg, requireCapability } from '../middleware.js'
+import { hashPassword } from '../auth.js'
 import { DEFAULT_PERMISSION_MATRIX } from '../constants.js'
 
 const router = Router({ mergeParams: true })
@@ -16,16 +17,58 @@ router.patch('/organizations/:orgId', requireCapability('config.manage'), (req, 
 })
 
 // ---- Users ------------------------------------------------------------------
+function publicUser(u) {
+  return { id: u.id, name: u.name, email: u.email, roles: u.roles }
+}
+
 router.get('/organizations/:orgId/users', (req, res) => {
-  const users = find('users', (u) => u.orgId === req.params.orgId).map((u) => ({ id: u.id, name: u.name, email: u.email, roles: u.roles }))
-  res.json(users)
+  res.json(find('users', (u) => u.orgId === req.params.orgId).map(publicUser))
+})
+
+// Admin-direct user creation (no self-registration flow needed in this local build,
+// which has no email delivery) — subject to the same licence seat quota as the
+// self-service "join an existing Organization" path (NFR-DA-SEC-08).
+router.post('/organizations/:orgId/users', requireCapability('users.manage'), (req, res) => {
+  const { orgId } = req.params
+  const { name, email, password, roles } = req.body
+  if (!name || !email || !password) return res.status(400).json({ error: 'Missing required fields' })
+  if (findOne('users', (u) => u.email === email)) return res.status(409).json({ error: 'An account with that email already exists' })
+
+  const org = findById('organizations', orgId)
+  const licence = findOne('licences', (l) => l.orgId === orgId)
+  if (org.memberCount >= (licence?.maxUsers || 0)) {
+    return res.status(409).json({ error: `This Organization has reached its licence limit (${org.memberCount} of ${licence?.maxUsers} seats used). Upgrade the plan first.` })
+  }
+
+  const user = insert('users', {
+    id: uuid(), email, passwordHash: hashPassword(password), name, orgId,
+    roles: Array.isArray(roles) && roles.length ? roles : ['business_analyst'],
+    language: 'en', createdAt: new Date().toISOString(),
+  })
+  update('organizations', orgId, { memberCount: org.memberCount + 1 })
+  res.status(201).json(publicUser(user))
 })
 
 router.patch('/organizations/:orgId/users/:userId', requireCapability('users.manage'), (req, res) => {
   const target = findById('users', req.params.userId)
   if (!target || target.orgId !== req.params.orgId) return res.status(404).json({ error: 'User not found' })
   const updated = update('users', req.params.userId, { roles: req.body.roles })
-  res.json({ id: updated.id, name: updated.name, email: updated.email, roles: updated.roles })
+  res.json(publicUser(updated))
+})
+
+router.delete('/organizations/:orgId/users/:userId', requireCapability('users.manage'), (req, res) => {
+  const { orgId, userId } = req.params
+  const target = findById('users', userId)
+  if (!target || target.orgId !== orgId) return res.status(404).json({ error: 'User not found' })
+  if (target.id === req.user.id) return res.status(400).json({ error: 'You cannot remove your own account while signed in as it.' })
+  const remainingAdmins = find('users', (u) => u.orgId === orgId && u.id !== userId && u.roles.includes('org_admin'))
+  if (target.roles.includes('org_admin') && remainingAdmins.length === 0) {
+    return res.status(400).json({ error: 'Cannot remove the last Organization Admin.' })
+  }
+  remove('users', userId)
+  const org = findById('organizations', orgId)
+  update('organizations', orgId, { memberCount: Math.max(0, org.memberCount - 1) })
+  res.status(204).end()
 })
 
 // ---- Config: permission matrix + compliance standards -----------------------

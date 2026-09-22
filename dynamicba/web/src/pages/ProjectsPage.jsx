@@ -8,11 +8,18 @@ const STEP_LABELS = { 1: 'Step 1: Upload SOW', 2: 'Step 2: AI Generates Spec Pac
 export default function ProjectsPage() {
   const { orgId, activeClientId, activeProjectId, selectProject, can } = useApp()
   const { clients } = useClients(orgId)
-  const { projects, loading, addProject, softDeleteProject } = useProjects(orgId, activeClientId)
+  const { projects, loading, addProject, updateProject, softDeleteProject } = useProjects(orgId, activeClientId)
   const [name, setName] = useState('')
   const [showForm, setShowForm] = useState(false)
+  const [renamingId, setRenamingId] = useState(null)
+  const [renameValue, setRenameValue] = useState('')
 
   const client = clients.find((c) => c.id === activeClientId)
+
+  async function saveRename(id) {
+    await updateProject(id, { name: renameValue })
+    setRenamingId(null)
+  }
 
   async function handleAdd(e) {
     e.preventDefault()
@@ -58,11 +65,20 @@ export default function ProjectsPage() {
           <tbody>
             {projects.map((p) => (
               <tr key={p.id} className={`border-b border-grey-line last:border-0 ${activeProjectId === p.id ? 'bg-orange-tint' : ''}`}>
-                <td className="p-3 font-medium text-grey-dark">{p.name}</td>
+                <td className="p-3 font-medium text-grey-dark">
+                  {renamingId === p.id ? (
+                    <div className="flex gap-2">
+                      <input className="input !py-1" value={renameValue} onChange={(e) => setRenameValue(e.target.value)} />
+                      <button className="text-orange-deep text-xs font-semibold" onClick={() => saveRename(p.id)}>Save</button>
+                      <button className="text-grey-medium text-xs" onClick={() => setRenamingId(null)}>Cancel</button>
+                    </div>
+                  ) : p.name}
+                </td>
                 <td className="p-3"><span className={`badge ${p.status === 'completed' ? 'badge-good' : 'badge-medium'}`}>{p.status || 'not_started'}</span></td>
                 <td className="p-3 text-grey-ink">{STEP_LABELS[p.currentStep || 1]}</td>
                 <td className="p-3 text-right space-x-3">
                   <button className="text-orange-deep font-semibold" onClick={() => selectProject(p.id)}>Open</button>
+                  {can('hierarchy.manage') && <button className="text-grey-ink" onClick={() => { setRenamingId(p.id); setRenameValue(p.name) }}>Rename</button>}
                   {can('hierarchy.manage') && <button className="text-red-500" onClick={() => softDeleteProject(p.id)}>Delete</button>}
                 </td>
               </tr>

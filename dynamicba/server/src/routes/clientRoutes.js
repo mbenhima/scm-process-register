@@ -6,7 +6,7 @@ import { authenticate, requireOwnOrg, requireCapability } from '../middleware.js
 const router = Router({ mergeParams: true })
 router.use('/organizations/:orgId/clients', authenticate, requireOwnOrg)
 
-router.get('/organizations/:orgId/clients', (req, res) => {
+router.get('/organizations/:orgId/clients', requireCapability('project.read'), (req, res) => {
   res.json(find('clients', (c) => c.orgId === req.params.orgId))
 })
 

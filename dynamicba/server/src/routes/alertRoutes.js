@@ -1,13 +1,13 @@
 import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
-import { find, findById, insert, update } from '../db.js'
+import { find, findById, insert, update, remove } from '../db.js'
 import { authenticate, requireOwnOrg, requireCapability } from '../middleware.js'
 
 const router = Router({ mergeParams: true })
 const base = '/organizations/:orgId/clients/:clientId/projects/:projectId/alerts'
 router.use(base, authenticate, requireOwnOrg)
 
-router.get(base, (req, res) => {
+router.get(base, requireCapability('project.read'), (req, res) => {
   res.json(find('alerts', (a) => a.orgId === req.params.orgId && a.projectId === req.params.projectId))
 })
 
@@ -21,6 +21,13 @@ router.patch(`${base}/:alertId`, requireCapability('project.write'), (req, res) 
   const alert = findById('alerts', req.params.alertId)
   if (!alert || alert.orgId !== req.params.orgId) return res.status(404).json({ error: 'Alert not found' })
   res.json(update('alerts', req.params.alertId, req.body))
+})
+
+router.delete(`${base}/:alertId`, requireCapability('project.write'), (req, res) => {
+  const alert = findById('alerts', req.params.alertId)
+  if (!alert || alert.orgId !== req.params.orgId) return res.status(404).json({ error: 'Alert not found' })
+  remove('alerts', req.params.alertId)
+  res.status(204).end()
 })
 
 export default router

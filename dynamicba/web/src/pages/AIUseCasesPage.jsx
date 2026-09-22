@@ -3,25 +3,27 @@ import { AI_USE_CASES } from '../lib/catalogue'
 import { useApp } from '../contexts/AppContext'
 import { useApiCollection } from '../hooks/useApiCollection'
 import { api } from '../lib/api'
+import { invalidate } from '../lib/queryStore'
 
 export default function AIUseCasesPage() {
   const { orgId, activeClientId, activeProjectId, can } = useApp()
-  const { data: activations, refetch: refetchActivations } = useApiCollection(orgId ? `/organizations/${orgId}/ai-use-case-activation` : null)
+  const activationsPath = orgId ? `/organizations/${orgId}/ai-use-case-activation` : null
+  const { data: activations } = useApiCollection(activationsPath)
   const overridesPath = orgId && activeClientId && activeProjectId
     ? `/organizations/${orgId}/clients/${activeClientId}/projects/${activeProjectId}/ai-use-case-overrides`
     : null
-  const { data: overrides, refetch: refetchOverrides } = useApiCollection(overridesPath)
+  const { data: overrides } = useApiCollection(overridesPath)
 
   const activeMap = Object.fromEntries(activations.map((a) => [a.aiucId, a.active]))
   const overrideMap = Object.fromEntries(overrides.map((o) => [o.aiucId, o.state]))
 
   async function toggleOrgActivation(aiucId, current) {
-    await api.put(`/organizations/${orgId}/ai-use-case-activation/${aiucId}`, { active: !current })
-    await refetchActivations()
+    await api.put(`${activationsPath}/${aiucId}`, { active: !current })
+    invalidate(activationsPath)
   }
   async function setOverride(aiucId, state) {
     await api.put(`${overridesPath}/${aiucId}`, { state })
-    await refetchOverrides()
+    invalidate(overridesPath)
   }
 
   return (

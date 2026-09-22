@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import { OBJECT_CLASSES, attributesFor } from '../lib/schema'
 import { useArtifacts } from '../hooks/useArtifacts'
+import { useApp } from '../contexts/AppContext'
 
 // A schema-driven CRUD browser for all 32 D09 Information Class Model object classes,
 // scoped to one project. Every class gets real create/read/update/delete without a
 // bespoke page component — the D10 Data Dictionary attribute list is the form definition.
+// Write actions are gated by the project.write capability (RBAC); the server enforces the
+// same check independently, so this is a UX convenience, never the security boundary.
 export default function ArtifactExplorer({ orgId, clientId, projectId }) {
+  const { can } = useApp()
+  const canWrite = can('project.write')
   const [selected, setSelected] = useState(OBJECT_CLASSES[0].id)
   const objectClass = OBJECT_CLASSES.find((c) => c.id === selected)
   const attrs = attributesFor(selected)
@@ -59,10 +64,10 @@ export default function ArtifactExplorer({ orgId, clientId, projectId }) {
             <div className="font-semibold text-grey-dark">{objectClass.id} — {objectClass.label}</div>
             <div className="text-xs text-grey-medium">{objectClass.desc}</div>
           </div>
-          <button className="btn-primary" onClick={startAdd}>+ New Record</button>
+          {canWrite && <button className="btn-primary" onClick={startAdd}>+ New Record</button>}
         </div>
 
-        {editingId && (
+        {editingId && canWrite && (
           <div className="card p-4 mb-4 grid grid-cols-2 gap-3">
             {attrs.map((a) => (
               <div key={a.id}>
@@ -109,8 +114,12 @@ export default function ArtifactExplorer({ orgId, clientId, projectId }) {
                   <tr key={r.id} className="border-b border-grey-line last:border-0">
                     {attrs.slice(0, 4).map((a) => <td key={a.id} className="p-2">{String(r[a.name] ?? '')}</td>)}
                     <td className="p-2 text-right space-x-2">
-                      <button className="text-orange-deep font-semibold" onClick={() => startEdit(r)}>Edit</button>
-                      <button className="text-red-500" onClick={() => deleteRecord(r.id)}>Delete</button>
+                      {canWrite ? (
+                        <>
+                          <button className="text-orange-deep font-semibold" onClick={() => startEdit(r)}>Edit</button>
+                          <button className="text-red-500" onClick={() => deleteRecord(r.id)}>Delete</button>
+                        </>
+                      ) : <span className="text-grey-medium text-xs">Read-only</span>}
                     </td>
                   </tr>
                 ))}
