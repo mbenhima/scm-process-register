@@ -5,11 +5,11 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   POWERACT Consulting design tokens. Every color used anywhere in the app
-   must trace back to one of these — components reference them only through
-   the Tailwind classes configured in tailwind.config.js, never as raw hex.
-   Channels are stored as "R G B" so Tailwind's rgb(var(...) / <alpha-value>)
-   pattern can still apply opacity (e.g. bg-orange/40) without a second token.
+   DynamicBA design tokens. Every color used anywhere in the app must trace
+   back to one of these — components reference them only through the Tailwind
+   classes configured in tailwind.config.js, never as raw hex. Channels are
+   stored as "R G B" so Tailwind's rgb(var(...) / <alpha-value>) pattern can
+   still apply opacity (e.g. bg-orange/40) without a second token.
    ========================================================================== */
 :root {
   --pa-orange: 248 147 29;

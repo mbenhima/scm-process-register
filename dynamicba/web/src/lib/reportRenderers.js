@@ -36,15 +36,13 @@ export function renderBlocksToPdfFile(blocks, meta, filename) {
     if (y + needed > 800) { pdf.addPage(); y = PDF_MARGIN }
   }
   function writeCover() {
-    pdf.setFont('times', 'bold'); pdf.setFontSize(22); pdf.setTextColor(58, 58, 60)
-    pdf.text('POWERACT CONSULTING', 297, 220, { align: 'center' })
-    pdf.setFontSize(28); pdf.setTextColor(224, 123, 0)
-    pdf.text(meta.title, 297, 280, { align: 'center' })
+    pdf.setFont('times', 'bold'); pdf.setFontSize(28); pdf.setTextColor(224, 123, 0)
+    pdf.text(meta.title, 297, 240, { align: 'center' })
     pdf.setFontSize(16); pdf.setTextColor(58, 58, 60)
-    pdf.text(meta.subtitle, 297, 310, { align: 'center' })
+    pdf.text(meta.subtitle, 297, 270, { align: 'center' })
     pdf.setFont('times', 'normal'); pdf.setFontSize(11); pdf.setTextColor(88, 89, 91)
     const rows = [`Client: ${meta.client}`, `Project: ${meta.project}`, `Prepared for: ${meta.preparedFor}`, `Prepared by: ${meta.preparedBy}`, `Date: ${meta.date}`, `Sign-Off Status: ${meta.status}`]
-    rows.forEach((r, i) => pdf.text(r, 297, 380 + i * 20, { align: 'center' }))
+    rows.forEach((r, i) => pdf.text(r, 297, 340 + i * 20, { align: 'center' }))
     pdf.addPage()
     y = PDF_MARGIN
   }

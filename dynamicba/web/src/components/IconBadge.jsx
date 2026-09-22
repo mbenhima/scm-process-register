@@ -1,8 +1,8 @@
 import React from 'react'
 
 // A solid-color circle with a centered white Lucide icon at ~52% of the circle's
-// diameter, per the POWERACT Consulting brand guide (icon badges section). Orange
-// is for emphasis; ink (grey) is the neutral default.
+// diameter, per the brand guide's icon-badge convention. Orange is for emphasis;
+// ink (grey) is the neutral default.
 export default function IconBadge({ icon: Icon, tone = 'orange', size = 32, className = '' }) {
   const toneClass = tone === 'ink' ? 'icon-badge-ink' : 'icon-badge-orange'
   const iconSize = Math.round(size * 0.52)

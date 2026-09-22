@@ -140,8 +140,8 @@ function main() {
 
   const orgId = `org_demo_${uuid().slice(0, 8)}`
   const userId = uuid()
-  insert('organizations', { id: orgId, name: 'POWERACT Demo Practice', sector: 'Management Consulting', country: '', defaultLanguage: 'en', memberCount: 1, createdBy: userId, createdAt: new Date().toISOString() })
-  insert('licences', { id: orgId, orgId, plan: 'enterprise', maxUsers: 100, features: PLAN_MODULES.enterprise, expiryDate: new Date(Date.now() + 365 * 24 * 3600 * 1000).toISOString(), issueDate: new Date().toISOString(), companyName: 'POWERACT Demo Practice', version: 1 })
+  insert('organizations', { id: orgId, name: 'Demo Consulting Practice', sector: 'Management Consulting', country: '', defaultLanguage: 'en', memberCount: 1, createdBy: userId, createdAt: new Date().toISOString() })
+  insert('licences', { id: orgId, orgId, plan: 'enterprise', maxUsers: 100, features: PLAN_MODULES.enterprise, expiryDate: new Date(Date.now() + 365 * 24 * 3600 * 1000).toISOString(), issueDate: new Date().toISOString(), companyName: 'Demo Consulting Practice', version: 1 })
   insert('orgConfig', { id: orgId, orgId, permissionMatrix: DEFAULT_PERMISSION_MATRIX, complianceStandards: { GDPR: false, ISO27001: false, SOC2: false } })
   for (const aiucId of AI_USE_CASE_IDS) insert('aiUseCaseActivation', { id: uuid(), orgId, aiucId, active: true })
   insert('users', { id: userId, email: ADMIN_EMAIL, passwordHash: hashPassword(ADMIN_PASSWORD), name: 'Demo Admin', orgId, roles: ['org_admin'], language: 'en', createdAt: new Date().toISOString() })

@@ -10,7 +10,7 @@ export default function AuthShell({ children, wide = false }) {
       <div className="hidden lg:flex lg:w-[42%] xl:w-[38%] bg-grey-dark text-white flex-col justify-between px-12 py-16">
         <div>
           <div className="font-serif font-bold text-2xl">DynamicBA</div>
-          <div className="eyebrow text-orange mt-1">POWERACT Consulting</div>
+          <div className="eyebrow text-orange mt-1">Scope-to-Specs Automation</div>
         </div>
         <div className="max-w-sm">
           <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-orange mb-6">
@@ -25,7 +25,7 @@ export default function AuthShell({ children, wide = false }) {
             reviewed and approved by your own consulting team at every step.
           </p>
         </div>
-        <p className="text-white/50 text-xs">© {new Date().getFullYear()} POWERACT Consulting.</p>
+        <p className="text-white/50 text-xs">© {new Date().getFullYear()} DynamicBA.</p>
       </div>
 
       <div className="flex-1 flex items-center justify-center px-6 py-12">

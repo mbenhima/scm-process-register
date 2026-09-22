@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 // Every color resolves to a CSS custom property defined in src/index.css (the
-// POWERACT Consulting design tokens) via the rgb(var(...) / <alpha-value>) pattern,
-// so opacity modifiers like bg-orange/10 keep working without a second hex value
+// DynamicBA design tokens) via the rgb(var(...) / <alpha-value>) pattern, so
+// opacity modifiers like bg-orange/10 keep working without a second hex value
 // anywhere. Nothing in here or in a component should ever hold a raw hex code.
 function token(name) {
   return `rgb(var(${name}) / <alpha-value>)`

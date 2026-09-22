@@ -1,8 +1,8 @@
 // src/lib/docBrand.js
-// POWERACT Consulting brand styling for DynamicBA's own generated Word documents
-// (Times New Roman, orange/grey palette, Heading 1-3 styles, auto TOC, running
-// header/footer) — the same visual identity used for the Installation/User Guides,
-// applied here to the app's own Export & Handoff output.
+// Brand styling for DynamicBA's own generated Word documents (Times New Roman,
+// orange/grey palette, Heading 1-3 styles, auto TOC, running header/footer) — the
+// same visual identity used for the Installation/User Guides, applied here to the
+// app's own Export & Handoff output.
 import {
   Document, Paragraph, TextRun, HeadingLevel, Header, Footer, PageNumber, AlignmentType,
   Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle, TableOfContents,
@@ -25,7 +25,7 @@ export const FONT = 'Times New Roman'
 const styles = {
   default: {
     document: {
-      run: { font: FONT, size: 24, color: COLOR.greyInk }, // 12pt body per the POWERACT brand guide
+      run: { font: FONT, size: 24, color: COLOR.greyInk }, // 12pt body per the brand guide
       paragraph: { spacing: { line: 276, after: 160 }, alignment: AlignmentType.JUSTIFIED },
     },
   },
@@ -92,8 +92,8 @@ export function brandTable(headers, rows, columnWidths) {
 export function coverPage({ title, subtitle, client, project, preparedFor, preparedBy, date, status }) {
   return [
     spacer(500),
-    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'POWERACT', font: FONT, size: 40, bold: true, color: COLOR.greyDark }), new TextRun({ text: ' CONSULTING', font: FONT, size: 40, bold: true, color: COLOR.orange })] }),
-    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 500 }, children: [new TextRun({ text: 'Powered by DynamicBA — AI-assisted scope-to-specs automation', font: FONT, size: 18, italics: true, color: COLOR.greyMedium })] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Dynamic', font: FONT, size: 40, bold: true, color: COLOR.greyDark }), new TextRun({ text: 'BA', font: FONT, size: 40, bold: true, color: COLOR.orange })] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 500 }, children: [new TextRun({ text: 'AI-assisted scope-to-specs automation', font: FONT, size: 18, italics: true, color: COLOR.greyMedium })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 300, after: 150 }, border: { bottom: { color: COLOR.orangeDeep, space: 8, style: BorderStyle.SINGLE, size: 8 } }, children: [new TextRun({ text: title, font: FONT, size: 48, bold: true, color: COLOR.orangeDeep })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: subtitle, font: FONT, size: 26, color: COLOR.greyDark })] }),
     spacer(400),
@@ -116,7 +116,7 @@ export function tocPage() {
 function headerFooter(docTitle) {
   const header = new Header({ children: [new Paragraph({
     border: { bottom: { color: COLOR.greyLine, space: 4, style: BorderStyle.SINGLE, size: 4 } },
-    children: [new TextRun({ text: `POWERACT Consulting — ${docTitle}`, font: FONT, size: 14, color: COLOR.greyMedium })],
+    children: [new TextRun({ text: `DynamicBA — ${docTitle}`, font: FONT, size: 14, color: COLOR.greyMedium })],
   })] })
   const footer = new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [
     new TextRun({ text: 'DynamicBA Specification Package — Page ', font: FONT, size: 14, color: COLOR.greyMedium }),

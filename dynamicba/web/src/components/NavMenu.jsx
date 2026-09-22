@@ -85,7 +85,6 @@ export default function NavMenu({
         {expanded ? (
           <>
             <div className="font-serif font-bold text-xl text-grey-dark leading-tight whitespace-nowrap">{t('app_name')}</div>
-            {vertical && <div className="eyebrow mt-1">POWERACT Consulting</div>}
             {vertical && <div className="text-xs text-grey-medium mt-2 truncate">{organization?.name || '—'}</div>}
             {vertical && licence && <span className="badge badge-good mt-2">{PLAN_LABELS[licence.plan] || licence.plan}</span>}
           </>
