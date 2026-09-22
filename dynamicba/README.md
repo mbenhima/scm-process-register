@@ -3,9 +3,10 @@
 AI-assisted scope-to-specs automation platform for management-consulting engagements —
 built as a multi-tenant SaaS web application on the DynamicMS Suite platform pattern.
 
-Full installation and user documentation is delivered as two Word documents:
-`DynamicBA_Installation_Guide.docx` and `DynamicBA_User_Guide.docx` (with table of
-contents). This README is a developer quickstart only.
+Full installation and user documentation is delivered as two Word documents, each with
+an auto-generated table of contents, in `docs/`: `docs/DynamicBA_Installation_Guide.docx`
+and `docs/DynamicBA_User_Guide.docx` (the latter includes a library of complete usage
+scenarios with suggested sample data). This README is a developer quickstart only.
 
 ## Tech stack
 
