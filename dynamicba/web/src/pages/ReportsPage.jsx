@@ -1,6 +1,6 @@
 import React from 'react'
 import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
+import { Download } from 'lucide-react'
 import { REPORTS_CATALOGUE, KPIS } from '../lib/catalogue'
 import { useApp } from '../contexts/AppContext'
 import { useArtifacts } from '../hooks/useArtifacts'
@@ -29,19 +29,22 @@ export default function ReportsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
         <div>
-          <h1 className="text-xl font-serif font-bold text-grey-dark">Reports &amp; Cockpits</h1>
-          <p className="text-xs text-grey-medium italic">D08 reporting cockpits. {haveProject ? 'Live values shown are computed from the selected project.' : 'Select a project in the top bar to see live KPI values.'}</p>
+          <div className="eyebrow mb-1">Cockpits</div>
+          <h1 className="h-page">Reports &amp; Cockpits</h1>
+          <p className="text-sm text-grey-ink mt-1 italic">D08 reporting cockpits. {haveProject ? 'Live values shown are computed from the selected project.' : 'Select a project in the top bar to see live KPI values.'}</p>
         </div>
-        <button className="btn-secondary" onClick={exportKpiSummary}>⬇ Export KPI Summary (Excel)</button>
+        <button className="btn-secondary" onClick={exportKpiSummary}>
+          <Download size={15} strokeWidth={2} aria-hidden="true" /> Export KPI Summary (Excel)
+        </button>
       </div>
       <div className="grid grid-cols-2 gap-4">
         {REPORTS_CATALOGUE.map((r) => (
           <div key={r.id} className="card p-4">
-            <div className="font-semibold text-grey-dark">{r.id} — {r.name}</div>
+            <div className="h-card">{r.id} — {r.name}</div>
             <div className="text-xs text-grey-medium mb-2">Audience: {r.audience} · Refresh: {r.cadence}</div>
-            <ul className="text-sm text-grey-ink list-disc pl-4">
+            <ul className="text-sm text-grey-ink list-disc pl-4 space-y-1">
               {r.fields.map((f) => (
                 <li key={f}>{f}{liveValues[f] !== undefined && <span className="ml-2 badge badge-good">{liveValues[f]}</span>}</li>
               ))}

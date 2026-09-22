@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { X, MessageCircle } from 'lucide-react'
 import { useApp } from '../contexts/AppContext'
 import { useClients } from '../hooks/useClients'
 import { useAllProjects } from '../hooks/useProjects'
@@ -62,8 +63,12 @@ export default function AIAssistantWidget({ onClose }) {
   return (
     <div className="fixed bottom-4 right-4 w-96 card flex flex-col h-[28rem] z-50">
       <div className="flex items-center justify-between px-4 py-2 border-b border-grey-line bg-orange-tint rounded-t-xl">
-        <span className="font-semibold text-orange-deep text-sm">AI Assistant</span>
-        <button onClick={onClose} className="text-grey-ink text-sm">✕</button>
+        <span className="flex items-center gap-2 font-semibold text-orange-deep text-sm">
+          <MessageCircle size={15} strokeWidth={2} aria-hidden="true" /> AI Assistant
+        </span>
+        <button onClick={onClose} aria-label="Close AI Assistant" className="text-grey-ink hover:text-grey-dark p-1 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep">
+          <X size={16} strokeWidth={2} aria-hidden="true" />
+        </button>
       </div>
       <div className="flex-1 overflow-y-auto p-3 space-y-2 text-sm">
         {history.map((h, i) => (

@@ -1,44 +1,230 @@
-@import url('https://fonts.googleapis.com/css2?family=Cambria&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================================================
+   POWERACT Consulting design tokens. Every color used anywhere in the app
+   must trace back to one of these — components reference them only through
+   the Tailwind classes configured in tailwind.config.js, never as raw hex.
+   Channels are stored as "R G B" so Tailwind's rgb(var(...) / <alpha-value>)
+   pattern can still apply opacity (e.g. bg-orange/40) without a second token.
+   ========================================================================== */
+:root {
+  --pa-orange: 248 147 29;
+  --pa-orange-deep: 224 123 0;
+  --pa-orange-tint: 253 238 218;
+  --pa-grey-dark: 58 58 60;
+  --pa-grey-ink: 88 89 91;
+  --pa-grey-medium: 128 129 132;
+  --pa-grey-light: 242 242 243;
+  --pa-grey-line: 227 227 228;
+  --pa-bg: 253 253 252;
+  --pa-white: 255 255 255;
+
+  /* Semantic status scale — scores, health, heatmaps. Always this red-to-green order. */
+  --pa-status-1: 244 199 195;
+  --pa-status-2: 251 224 181;
+  --pa-status-3: 255 243 176;
+  --pa-status-4: 217 234 211;
+  --pa-status-5: 182 215 168;
+
+  /* Darkened text shade for each status fill above, so a badge always reads AA
+     on its own background (never plain black). --pa-success mirrors status-5's
+     text shade for standalone use (e.g. a confirmation message, no chip). */
+  --pa-status-1-text: 122 42 34;
+  --pa-status-2-text: 122 80 0;
+  --pa-status-3-text: 107 92 0;
+  --pa-status-4-text: 45 90 45;
+  --pa-status-5-text: 31 74 31;
+  --pa-success: 31 74 31;
+
+  /* Chart overlay series only — never for UI chrome. */
+  --pa-chart-blue: 58 110 165;
+  --pa-chart-green: 90 164 105;
+
+  /* Not part of the brand palette proper, but every application needs a way
+     to mark a destructive action distinctly from the primary orange — kept
+     as one named token rather than scattered raw hex. */
+  --pa-danger: 179 38 30;
+}
 
 html, body, #root {
   height: 100%;
 }
 
 body {
-  background-color: #FDFDFC;
-  color: #3A3A3C;
+  background-color: rgb(var(--pa-bg));
+  color: rgb(var(--pa-grey-ink));
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  -webkit-font-smoothing: antialiased;
 }
 
 [dir='rtl'] .flip-rtl {
   transform: scaleX(-1);
 }
 
+/* Visible keyboard focus everywhere, even on elements that don't opt in
+   individually — never rely on the browser's default outline alone. */
+:focus-visible {
+  outline: 2px solid rgb(var(--pa-orange));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Typographic building blocks
+   ========================================================================== */
+.eyebrow {
+  @apply font-sans text-xs font-bold uppercase tracking-wider text-orange-deep;
+}
+.kpi-number {
+  @apply font-serif font-bold text-orange-deep;
+}
+.h-page {
+  @apply font-serif font-bold text-3xl text-grey-dark;
+}
+.h-section {
+  @apply font-serif font-semibold text-xl text-grey-dark;
+}
+.h-card {
+  @apply font-serif font-semibold text-base text-grey-dark;
+}
+.caption {
+  @apply text-xs italic text-grey-ink;
+}
+
+/* ==========================================================================
+   Status badges — the 5-step semantic scale plus a neutral variant. Text
+   color on each fill is a darkened shade of that same hue for AA contrast,
+   never plain black.
+   ========================================================================== */
 .badge {
-  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold;
 }
-.badge-critical { @apply bg-[#F4C7C3] text-[#7a2a22]; }
-.badge-high { @apply bg-[#FBE0B5] text-[#7a5000]; }
-.badge-medium { @apply bg-[#FFF3B0] text-[#6b5c00]; }
-.badge-low { @apply bg-[#D9EAD3] text-[#2d5a2d]; }
-.badge-good { @apply bg-[#B6D7A8] text-[#1f4a1f]; }
+.badge-critical { @apply bg-status-1 text-status-text-1; }
+.badge-high     { @apply bg-status-2 text-status-text-2; }
+.badge-medium   { @apply bg-status-3 text-status-text-3; }
+.badge-low      { @apply bg-status-4 text-status-text-4; }
+.badge-good     { @apply bg-status-5 text-status-text-5; }
+.badge-neutral  { @apply bg-grey-light text-grey-ink; }
+.badge-info     { @apply bg-orange-tint text-orange-deep; }
 
+/* ==========================================================================
+   Surfaces
+   ========================================================================== */
 .card {
-  @apply bg-white rounded-xl border border-grey-line shadow-sm;
+  @apply bg-white rounded-xl border border-grey-line shadow-card;
+}
+.card-highlight {
+  @apply bg-orange-tint rounded-xl border border-orange/20;
 }
 
+/* ==========================================================================
+   Icon badges — solid circle + centered white Lucide icon (see
+   components/IconBadge.jsx). Sizing lives there; color variants here.
+   ========================================================================== */
+.icon-badge-orange { @apply bg-orange text-white; }
+.icon-badge-ink    { @apply bg-grey-ink text-white; }
+
+/* ==========================================================================
+   Interactive controls — every one gets a designed hover, focus-visible,
+   active, and disabled state; never the browser default alone.
+   ========================================================================== */
 .btn-primary {
-  @apply bg-orange text-white font-semibold rounded-lg px-4 py-2 hover:bg-orange-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply inline-flex items-center justify-center gap-2 bg-orange text-white font-sans font-semibold text-sm rounded-lg px-4 py-2
+    transition-colors duration-150 ease-out
+    hover:bg-orange-deep
+    active:bg-orange-deep active:scale-[0.98]
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep
+    disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
 }
 .btn-secondary {
-  @apply bg-white text-grey-dark font-semibold rounded-lg px-4 py-2 border border-grey-line hover:bg-grey-light transition-colors disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 bg-white text-grey-dark font-sans font-semibold text-sm rounded-lg px-4 py-2 border border-grey-line
+    transition-colors duration-150 ease-out
+    hover:bg-grey-light hover:border-grey-medium
+    active:bg-grey-light active:scale-[0.98]
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep
+    disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
 }
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 text-grey-ink font-sans font-medium text-sm rounded-lg px-3 py-1.5
+    transition-colors duration-150 ease-out
+    hover:bg-grey-light hover:text-grey-dark
+    active:bg-grey-line
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep
+    disabled:opacity-40 disabled:cursor-not-allowed;
+}
+/* A compact inline text action (table/card row "Edit", "Open", "Restore"…).
+   Stays grey-dark at rest and on hover — orange appears only as the underline
+   accent, since this text is well below the size orange passes AA at. */
+.row-action {
+  @apply text-xs font-sans font-semibold text-grey-dark underline decoration-2 decoration-transparent underline-offset-2
+    transition-colors duration-150 ease-out
+    hover:decoration-orange
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep
+    disabled:opacity-40 disabled:cursor-not-allowed;
+}
+.btn-danger-text {
+  @apply text-danger font-sans font-semibold text-xs
+    transition-colors duration-150 ease-out
+    hover:underline hover:opacity-80
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep
+    disabled:opacity-40 disabled:cursor-not-allowed;
+}
+
 .input {
-  @apply w-full rounded-lg border border-grey-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40 focus:border-orange;
+  @apply w-full rounded-lg border border-grey-line bg-white px-3 py-2 text-sm text-grey-dark font-sans
+    transition-colors duration-150 ease-out
+    placeholder:text-grey-medium
+    hover:border-grey-medium
+    focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-orange focus:border-orange
+    disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-grey-light;
 }
 .label {
   @apply block text-xs font-semibold text-grey-ink mb-1;
+}
+
+/* Inline text links. Orange/orange-deep fail WCAG AA for small text on white,
+   so the link itself stays grey-dark and orange appears only as a decorative
+   underline — never as the text color at body/label size. */
+.link-accent {
+  @apply text-grey-dark font-semibold underline decoration-2 decoration-orange underline-offset-2
+    transition-colors duration-150 ease-out
+    hover:decoration-orange-deep
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep;
+}
+
+/* Tab-style toggle buttons (wizard sub-tabs, Admin tabs, etc.) — one shared
+   look so every tab strip in the app behaves and reads identically. */
+.tab-button {
+  @apply px-3 py-1.5 rounded-lg text-xs font-sans font-semibold border transition-colors duration-150 ease-out
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep
+    disabled:opacity-40 disabled:cursor-not-allowed;
+}
+.tab-button-active {
+  @apply bg-orange text-white border-orange;
+}
+.tab-button-inactive {
+  @apply bg-white text-grey-ink border-grey-line hover:bg-grey-light hover:border-grey-medium;
+}
+
+/* ==========================================================================
+   Tables — solid orange header, alternating body rows, thin grey borders.
+   ========================================================================== */
+.table-pa {
+  @apply w-full text-sm border-collapse;
+}
+.table-pa thead th {
+  @apply bg-orange text-white font-sans font-bold text-left px-3 py-2 text-xs uppercase tracking-wide;
+}
+.table-pa tbody tr {
+  @apply border-b border-grey-line last:border-0;
+}
+.table-pa tbody tr:nth-child(even) {
+  @apply bg-grey-light;
+}
+.table-pa tbody td {
+  @apply px-3 py-2 text-grey-ink align-top;
 }

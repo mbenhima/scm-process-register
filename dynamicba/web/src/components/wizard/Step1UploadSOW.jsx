@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { ArrowRight, Users } from 'lucide-react'
 import { useApp } from '../../contexts/AppContext'
 import { useArtifacts } from '../../hooks/useArtifacts'
 import { useAlerts } from '../../hooks/useAlerts'
 import { evaluateSowIntake, evaluateStakeholders, generateClarifyingQuestions } from '../../lib/ruleEngine'
 import { applyFindings } from '../../lib/applyFindings'
+import IconBadge from '../IconBadge'
 
 const FIELDS = [
   { key: 'objectives', label: 'Objectives' },
@@ -68,10 +70,10 @@ export default function Step1UploadSOW({ project, onAdvance }) {
     <div className="grid grid-cols-3 gap-6">
       <div className="col-span-2 space-y-4">
         {!moduleAllowed && (
-          <div className="card p-3 bg-orange-tint text-orange-deep text-sm">Your current plan does not include the SOW Ingestion Module. Ask your admin to check Admin → Licensing.</div>
+          <div className="card-highlight p-3 text-sm text-orange-deep">Your current plan does not include the SOW Ingestion Module. Ask your admin to check Admin → Licensing.</div>
         )}
         <div className="card p-4 space-y-3">
-          <h2 className="font-semibold text-grey-dark">MP-01 — SOW Ingestion &amp; Understanding</h2>
+          <h2 className="h-card">MP-01 — SOW Ingestion &amp; Understanding</h2>
           {FIELDS.map((f) => (
             <div key={f.key}>
               <label className="label">{f.label}</label>
@@ -86,7 +88,10 @@ export default function Step1UploadSOW({ project, onAdvance }) {
         </div>
 
         <div className="card p-4">
-          <h3 className="font-semibold text-grey-dark mb-2">Stakeholders (OC-05)</h3>
+          <div className="flex items-center gap-3 mb-3">
+            <IconBadge icon={Users} tone="ink" size={28} />
+            <h3 className="h-card">Stakeholders (OC-05)</h3>
+          </div>
           {canWrite && (
             <form onSubmit={handleAddStakeholder} className="flex gap-2 mb-3">
               <input className="input" placeholder="Name" value={newStakeholder.Name} onChange={(e) => setNewStakeholder({ ...newStakeholder, Name: e.target.value })} required />
@@ -94,16 +99,16 @@ export default function Step1UploadSOW({ project, onAdvance }) {
               <select className="input" value={newStakeholder.Influence_Level} onChange={(e) => setNewStakeholder({ ...newStakeholder, Influence_Level: e.target.value })}>
                 <option>Low</option><option>Medium</option><option>High</option>
               </select>
-              <button className="btn-secondary">Add</button>
+              <button className="btn-secondary whitespace-nowrap">Add</button>
             </form>
           )}
           <ul className="text-sm divide-y divide-grey-line">
             {stakeholders.map((s) => (
-              <li key={s.id} className="py-1.5 flex justify-between">
-                <span>{s.Name} — <span className="text-grey-medium">{s.Role}</span></span>
+              <li key={s.id} className="py-2 flex justify-between items-center">
+                <span className="text-grey-dark">{s.Name} — <span className="text-grey-medium">{s.Role}</span></span>
                 <span className="flex items-center gap-3">
                   <span className="badge badge-medium">{s.Influence_Level}</span>
-                  {canWrite && <button className="text-red-500 text-xs" onClick={() => deleteStakeholder(s.id)}>Remove</button>}
+                  {canWrite && <button className="btn-danger-text" onClick={() => deleteStakeholder(s.id)}>Remove</button>}
                 </span>
               </li>
             ))}
@@ -114,21 +119,21 @@ export default function Step1UploadSOW({ project, onAdvance }) {
 
       <div className="col-span-1">
         <div className="card p-4 sticky top-0">
-          <h3 className="font-semibold text-grey-dark mb-2">SOW Completeness Score</h3>
-          <div className="text-3xl font-serif font-bold text-orange-deep">{completeness}<span className="text-base text-grey-medium">/100</span></div>
+          <h3 className="h-card mb-2">SOW Completeness Score</h3>
+          <div className="kpi-number text-3xl">{completeness}<span className="text-base font-sans font-normal text-grey-medium">/100</span></div>
           <div className="w-full bg-grey-light rounded-full h-2 mt-2">
-            <div className="bg-orange h-2 rounded-full" style={{ width: `${completeness}%` }} />
+            <div className="bg-orange h-2 rounded-full transition-all duration-300" style={{ width: `${completeness}%` }} />
           </div>
           {result?.questions?.length > 0 && (
             <div className="mt-4">
-              <div className="text-sm font-semibold text-orange-deep mb-1">Clarifying Questions (BR-02)</div>
+              <div className="text-sm font-semibold text-grey-dark mb-1">Clarifying Questions (BR-02)</div>
               <ul className="text-xs text-grey-ink list-disc pl-4 space-y-1">
                 {result.questions.map((q, i) => <li key={i}>{q.question}</li>)}
               </ul>
             </div>
           )}
           <button className="btn-primary w-full mt-4" disabled={completeness < 70} onClick={onAdvance}>
-            Continue to Step 2 →
+            Continue to Step 2 <ArrowRight size={15} strokeWidth={2.5} aria-hidden="true" />
           </button>
           {completeness < 70 && <p className="text-xs text-grey-medium mt-2">Completeness must reach 70 (CTRL-01 gate) before context enrichment can start.</p>}
         </div>

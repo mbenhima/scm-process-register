@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Search } from 'lucide-react'
 import { FAQ_CORPUS } from '../lib/faq'
 
 export default function HelpPage() {
@@ -8,12 +9,16 @@ export default function HelpPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-serif font-bold text-grey-dark mb-4">Help</h1>
-      <input className="input max-w-md mb-4" placeholder="Search help articles…" value={query} onChange={(e) => setQuery(e.target.value)} />
+      <div className="eyebrow mb-1">Support</div>
+      <h1 className="h-page mb-4">Help</h1>
+      <div className="relative max-w-md mb-6">
+        <Search size={16} strokeWidth={2} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-grey-medium" aria-hidden="true" />
+        <input className="input !pl-8" placeholder="Search help articles…" value={query} onChange={(e) => setQuery(e.target.value)} />
+      </div>
       <div className="space-y-6">
         {topics.map((topic) => (
           <div key={topic}>
-            <h2 className="font-semibold text-grey-dark mb-2">{topic}</h2>
+            <h2 className="h-card mb-2">{topic}</h2>
             <div className="space-y-2">
               {filtered.filter((f) => f.topic === topic).map((f, i) => (
                 <div key={i} className="card p-3">

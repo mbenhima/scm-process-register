@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { WifiOff } from 'lucide-react'
+import IconBadge from './components/IconBadge'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { AppProvider } from './contexts/AppContext'
@@ -47,7 +49,8 @@ function ApiHealthGate({ children }) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-bg p-6">
         <div className="card p-8 max-w-lg">
-          <h1 className="font-serif font-bold text-xl text-orange-deep mb-2">Can&apos;t reach the DynamicBA server</h1>
+          <IconBadge icon={WifiOff} tone="ink" size={40} className="mb-4" />
+          <h1 className="h-page !text-xl mb-2">Can&apos;t reach the DynamicBA server</h1>
           <p className="text-sm text-grey-ink mb-3">The web app can&apos;t connect to its API server. This usually means the server isn&apos;t running yet.</p>
           <p className="text-sm text-grey-ink">Open a terminal in the <code>server</code> folder and run <code>npm run dev</code>, then reload this page. See the Installation Guide if you haven&apos;t set up the server yet.</p>
         </div>

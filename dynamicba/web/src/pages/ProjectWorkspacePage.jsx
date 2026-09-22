@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Check, Lock } from 'lucide-react'
 import { useApp } from '../contexts/AppContext'
 import { useProjectDoc } from '../hooks/useProjectDoc'
 import { USER_FACING_STEPS } from '../lib/catalogue'
@@ -10,9 +11,14 @@ import ArtifactExplorer from '../components/ArtifactExplorer'
 import AlertsPanel from '../components/AlertsPanel'
 
 const STEP_COMPONENTS = [Step1UploadSOW, Step2GenerateSpec, Step3ReviewValidate, Step4ExportHandoff]
+const TABS = [
+  { key: 'wizard', label: 'Wizard' },
+  { key: 'artifacts', label: 'Project Artifacts' },
+  { key: 'alerts', label: 'Alerts' },
+]
 
 export default function ProjectWorkspacePage() {
-  const { orgId, activeClientId, activeProjectId, licenceProvider } = useApp()
+  const { orgId, activeClientId, activeProjectId } = useApp()
   const { project, loading, patch } = useProjectDoc(orgId, activeClientId, activeProjectId)
   const [tab, setTab] = useState('wizard') // 'wizard' | 'artifacts' | 'alerts'
 
@@ -38,31 +44,45 @@ export default function ProjectWorkspacePage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-serif font-bold text-grey-dark">{project.name}</h1>
-        <div className="flex gap-2 text-sm">
-          <button className={`px-3 py-1 rounded-lg ${tab === 'wizard' ? 'bg-orange text-white' : 'bg-grey-light'}`} onClick={() => setTab('wizard')}>Wizard</button>
-          <button className={`px-3 py-1 rounded-lg ${tab === 'artifacts' ? 'bg-orange text-white' : 'bg-grey-light'}`} onClick={() => setTab('artifacts')}>Project Artifacts</button>
-          <button className={`px-3 py-1 rounded-lg ${tab === 'alerts' ? 'bg-orange text-white' : 'bg-grey-light'}`} onClick={() => setTab('alerts')}>Alerts</button>
+      <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
+        <div>
+          <div className="eyebrow mb-1">Project Workspace</div>
+          <h1 className="h-page">{project.name}</h1>
+        </div>
+        <div className="flex gap-2">
+          {TABS.map((tb) => (
+            <button key={tb.key} className={`tab-button ${tab === tb.key ? 'tab-button-active' : 'tab-button-inactive'}`} onClick={() => setTab(tb.key)}>
+              {tb.label}
+            </button>
+          ))}
         </div>
       </div>
 
       {tab === 'wizard' && (
         <>
-          <ol className="flex gap-2 mb-6">
+          <ol className="flex items-stretch gap-2 mb-6">
             {USER_FACING_STEPS.map((s, i) => {
               const n = i + 1
-              const allowed = n === 1 || licenceProvider.hasModule('MOD-01') // step gating detail lives inside each step component too
+              const isCurrent = n === currentStep
+              const isDone = n < currentStep
+              const isLocked = n > currentStep
               return (
                 <li key={s.key} className="flex-1">
                   <button
-                    onClick={() => n <= currentStep && goToStep(n)}
-                    disabled={n > currentStep}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-semibold border ${
-                      n === currentStep ? 'bg-orange text-white border-orange' : n < currentStep ? 'bg-orange-tint text-orange-deep border-orange-tint' : 'bg-grey-light text-grey-medium border-grey-line cursor-not-allowed'
-                    }`}
+                    onClick={() => !isLocked && goToStep(n)}
+                    disabled={isLocked}
+                    className={`w-full flex items-center gap-3 text-left px-4 py-3 rounded-lg border transition-colors duration-150
+                      focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep
+                      ${isCurrent ? 'bg-orange border-orange' : isDone ? 'bg-orange-tint border-orange-tint hover:border-orange' : 'bg-grey-light border-grey-line cursor-not-allowed'}`}
                   >
-                    {n}. {s.label}
+                    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full shrink-0 text-xs font-bold
+                      ${isCurrent ? 'bg-white text-orange-deep' : isDone ? 'bg-orange text-white' : 'bg-white text-grey-medium border border-grey-line'}`}
+                    >
+                      {isDone ? <Check size={14} strokeWidth={3} aria-hidden="true" /> : isLocked ? <Lock size={11} strokeWidth={2.5} aria-hidden="true" /> : n}
+                    </span>
+                    <span className={`text-sm font-semibold leading-tight ${isCurrent ? 'text-white' : isDone ? 'text-orange-deep' : 'text-grey-medium'}`}>
+                      {s.label}
+                    </span>
                   </button>
                 </li>
               )

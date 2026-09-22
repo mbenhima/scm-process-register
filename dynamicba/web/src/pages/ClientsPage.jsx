@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { Plus, Building2, Check } from 'lucide-react'
 import { useApp } from '../contexts/AppContext'
 import { useClients } from '../hooks/useClients'
+import IconBadge from '../components/IconBadge'
 
 export default function ClientsPage() {
   const { orgId, activeClientId, selectClient, can } = useApp()
@@ -30,15 +32,20 @@ export default function ClientsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-serif font-bold text-grey-dark">Clients</h1>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <div className="eyebrow mb-1">Practice Roster</div>
+          <h1 className="h-page">Clients</h1>
+        </div>
         {canManage && (
-          <button className="btn-primary" onClick={() => setShowForm((s) => !s)}>+ Add Client</button>
+          <button className="btn-primary" onClick={() => setShowForm((s) => !s)}>
+            <Plus size={16} strokeWidth={2.5} aria-hidden="true" /> Add Client
+          </button>
         )}
       </div>
 
       {showForm && (
-        <form onSubmit={handleAdd} className="card p-4 mb-4 flex gap-3 items-end">
+        <form onSubmit={handleAdd} className="card p-4 mb-6 flex gap-4 items-end">
           <div className="flex-1">
             <label className="label">Client Name</label>
             <input className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required placeholder="e.g. Meridian Retail Group" />
@@ -53,36 +60,46 @@ export default function ClientsPage() {
 
       {loading ? <p className="text-grey-medium">Loading…</p> : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {clients.map((c) => (
-            <div key={c.id} className={`card p-4 ${editingId !== c.id ? 'cursor-pointer' : ''} ${activeClientId === c.id ? 'ring-2 ring-orange' : ''}`} onClick={() => editingId !== c.id && selectClient(c.id)}>
-              {editingId === c.id ? (
-                <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
-                  <input className="input" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} />
-                  <input className="input" value={editForm.industry} onChange={(e) => setEditForm({ ...editForm, industry: e.target.value })} />
-                  <div className="flex gap-2">
-                    <button className="btn-primary text-xs" onClick={() => saveEdit(c.id)}>Save</button>
-                    <button className="btn-secondary text-xs" onClick={() => setEditingId(null)}>Cancel</button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="font-semibold text-grey-dark">{c.name}</div>
-                      <div className="text-xs text-grey-medium">{c.industry || 'No industry set'}</div>
+          {clients.map((c) => {
+            const isActive = activeClientId === c.id
+            return (
+              <div
+                key={c.id}
+                className={`card p-4 transition-shadow duration-150 ${editingId !== c.id ? 'cursor-pointer hover:shadow-none hover:border-grey-medium' : ''} ${isActive ? 'ring-2 ring-orange' : ''}`}
+                onClick={() => editingId !== c.id && selectClient(c.id)}
+              >
+                {editingId === c.id ? (
+                  <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+                    <input className="input" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} />
+                    <input className="input" value={editForm.industry} onChange={(e) => setEditForm({ ...editForm, industry: e.target.value })} />
+                    <div className="flex gap-2">
+                      <button className="btn-primary !text-xs !py-2" onClick={() => saveEdit(c.id)}>Save</button>
+                      <button className="btn-secondary !text-xs !py-2" onClick={() => setEditingId(null)}>Cancel</button>
                     </div>
-                    {activeClientId === c.id && <span className="text-orange">✓</span>}
                   </div>
-                  {canManage && (
-                    <div className="flex gap-3 mt-3">
-                      <button className="text-xs text-orange-deep font-semibold" onClick={(e) => { e.stopPropagation(); startEdit(c) }}>Edit</button>
-                      <button className="text-xs text-red-500" onClick={(e) => { e.stopPropagation(); softDeleteClient(c.id) }}>Delete</button>
+                ) : (
+                  <>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-start gap-3 min-w-0">
+                        <IconBadge icon={Building2} tone={isActive ? 'orange' : 'ink'} size={32} />
+                        <div className="min-w-0">
+                          <div className="font-semibold text-grey-dark truncate">{c.name}</div>
+                          <div className="text-xs text-grey-medium truncate">{c.industry || 'No industry set'}</div>
+                        </div>
+                      </div>
+                      {isActive && <IconBadge icon={Check} tone="orange" size={20} />}
                     </div>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
+                    {canManage && (
+                      <div className="flex gap-4 mt-3 pt-3 border-t border-grey-line">
+                        <button className="row-action" onClick={(e) => { e.stopPropagation(); startEdit(c) }}>Edit</button>
+                        <button className="btn-danger-text" onClick={(e) => { e.stopPropagation(); softDeleteClient(c.id) }}>Delete</button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )
+          })}
           {clients.length === 0 && <p className="text-grey-medium">No clients yet. Add your first client to get started.</p>}
         </div>
       )}

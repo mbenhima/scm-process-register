@@ -87,7 +87,7 @@ export default function Step4ExportHandoff({ project, patch, onComplete }) {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div className="card p-4 space-y-3">
-        <h3 className="font-semibold text-grey-dark">MP-07.7 — Export Package</h3>
+        <h3 className="h-card">MP-07.7 — Export Package</h3>
         <p className="text-xs text-grey-medium">Word, PDF, and Excel export natively in-browser as a full Automation Specification Package (executive summary, all 6 spec-package sections, sign-off/handoff record, and reference appendices). Choosing Word also generates a matching PDF automatically. Visio, Jira and Azure DevOps targets route to the JSON manual-export fallback (rule BR-14).</p>
         <select className="input" value={format} onChange={(e) => setFormat(e.target.value)}>
           <option>Word</option><option>Excel</option><option>PDF</option><option>JSON</option><option>Visio</option><option>Jira</option><option>Azure DevOps</option>
@@ -98,14 +98,14 @@ export default function Step4ExportHandoff({ project, patch, onComplete }) {
       <QuickList {...args} objectClassId="OC-31" title="MP-07.8 — Development Backlog (OC-31)" fields={[{ name: 'Development_Backlog_Item_ID', label: 'Backlog item', type: 'text' }, { name: 'Priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }]} />
 
       <div className="col-span-2 card p-4 space-y-2">
-        <h3 className="font-semibold text-grey-dark">MP-07.9 — Handoff Readiness &amp; Time Savings Report</h3>
+        <h3 className="h-card">MP-07.9 — Handoff Readiness &amp; Time Savings Report</h3>
         <label className="label">Consultant hours saved on this engagement (KPI-10, target ≥ 58h)</label>
         <input className="input w-40" type="number" value={hoursSaved} onChange={(e) => setHoursSaved(Number(e.target.value))} />
         <div className="flex items-center gap-4 mt-2">
           <span className={`badge ${hoursSaved >= 58 ? 'badge-good' : 'badge-medium'}`}>{hoursSaved}h saved</span>
           <button className="btn-primary" onClick={finish}>Mark Engagement Complete</button>
         </div>
-        {project.status === 'completed' && <p className="text-sm text-green-700">This engagement is complete. Its full spec package remains available under Project Artifacts.</p>}
+        {project.status === 'completed' && <p className="text-sm text-success">This engagement is complete. Its full spec package remains available under Project Artifacts.</p>}
       </div>
     </div>
   )

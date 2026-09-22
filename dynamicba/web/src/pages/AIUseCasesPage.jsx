@@ -28,40 +28,47 @@ export default function AIUseCasesPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-serif font-bold text-grey-dark mb-1">AI Use Case Library</h1>
-      <p className="text-xs text-grey-medium mb-4 italic">D15 — every use case is tiered Assistive or Augmented, never Autonomous, and requires a named human checkpoint. Generation runs on DynamicBA's deterministic rule engine (src/lib/ruleEngine.js) with no external LLM call by default.</p>
-      <table className="w-full card text-sm">
-        <thead>
-          <tr className="text-left text-grey-medium border-b border-grey-line">
-            <th className="p-2">Use Case</th><th className="p-2">Step</th><th className="p-2">Risk</th><th className="p-2">Human Checkpoint</th><th className="p-2">Org Active</th>
-            {overridesPath && <th className="p-2">Project Override</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {AI_USE_CASES.map((u) => (
-            <tr key={u.id} className="border-b border-grey-line last:border-0">
-              <td className="p-2 font-mono text-xs">{u.id}<br /><span className="font-sans font-semibold">{u.name}</span> {u.custom && <span className="badge badge-medium ml-1">Custom</span>}</td>
-              <td className="p-2 font-mono text-xs">{u.step}</td>
-              <td className="p-2"><span className={`badge ${u.risk === 'High' ? 'badge-critical' : u.risk === 'Medium' ? 'badge-medium' : 'badge-good'}`}>{u.risk}</span></td>
-              <td className="p-2 text-xs">{u.checkpoint}</td>
-              <td className="p-2">
-                <button disabled={!can('ai_usecases.manage')} onClick={() => toggleOrgActivation(u.id, activeMap[u.id])} className={`badge ${activeMap[u.id] === false ? 'badge-critical' : 'badge-good'}`}>
-                  {activeMap[u.id] === false ? 'Off' : 'On'}
-                </button>
-              </td>
-              {overridesPath && (
-                <td className="p-2">
-                  <select className="input !w-28 !py-1" value={overrideMap[u.id] || 'inherit'} onChange={(e) => setOverride(u.id, e.target.value)} disabled={!can('ai_usecases.manage')}>
-                    <option value="inherit">Inherit</option>
-                    <option value="on">On</option>
-                    <option value="off">Off</option>
-                  </select>
-                </td>
-              )}
+      <div className="eyebrow mb-1">Governance</div>
+      <h1 className="h-page mb-1">AI Use Case Library</h1>
+      <p className="text-sm text-grey-ink mb-6 italic">D15 — every use case is tiered Assistive or Augmented, never Autonomous, and requires a named human checkpoint. Where a use case calls an external AI provider (Admin → AI Provider), every output is tagged as a draft and reviewed by a human before it counts as final.</p>
+      <div className="card overflow-hidden">
+        <table className="table-pa">
+          <thead>
+            <tr>
+              <th>Use Case</th><th>Step</th><th>Risk</th><th>Human Checkpoint</th><th>Org Active</th>
+              {overridesPath && <th>Project Override</th>}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {AI_USE_CASES.map((u) => (
+              <tr key={u.id}>
+                <td className="font-mono text-xs">{u.id}<br /><span className="font-sans font-semibold text-grey-dark">{u.name}</span> {u.custom && <span className="badge badge-medium ml-1">Custom</span>}</td>
+                <td className="font-mono text-xs">{u.step}</td>
+                <td><span className={`badge ${u.risk === 'High' ? 'badge-critical' : u.risk === 'Medium' ? 'badge-medium' : 'badge-good'}`}>{u.risk}</span></td>
+                <td className="text-xs">{u.checkpoint}</td>
+                <td>
+                  <button
+                    disabled={!can('ai_usecases.manage')}
+                    onClick={() => toggleOrgActivation(u.id, activeMap[u.id])}
+                    className={`badge transition-opacity duration-150 hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep disabled:opacity-40 disabled:cursor-not-allowed ${activeMap[u.id] === false ? 'badge-critical' : 'badge-good'}`}
+                  >
+                    {activeMap[u.id] === false ? 'Off' : 'On'}
+                  </button>
+                </td>
+                {overridesPath && (
+                  <td>
+                    <select className="input !w-28 !py-1" value={overrideMap[u.id] || 'inherit'} onChange={(e) => setOverride(u.id, e.target.value)} disabled={!can('ai_usecases.manage')}>
+                      <option value="inherit">Inherit</option>
+                      <option value="on">On</option>
+                      <option value="off">Off</option>
+                    </select>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

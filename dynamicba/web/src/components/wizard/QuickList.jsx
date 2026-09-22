@@ -20,7 +20,7 @@ export default function QuickList({ orgId, clientId, projectId, objectClassId, t
 
   return (
     <div className="card p-4">
-      <h3 className="font-semibold text-grey-dark mb-2">{title}</h3>
+      <h3 className="h-card mb-2">{title}</h3>
       <form onSubmit={handleAdd} className="grid gap-2 mb-3" style={{ gridTemplateColumns: `repeat(${fields.length}, 1fr) auto` }}>
         {fields.map((f) => (
           f.type === 'select' ? (
@@ -29,8 +29,8 @@ export default function QuickList({ orgId, clientId, projectId, objectClassId, t
               {f.options.map((o) => <option key={o} value={o}>{o}</option>)}
             </select>
           ) : f.type === 'boolean' ? (
-            <label key={f.name} className="flex items-center gap-1 text-xs text-grey-ink self-center">
-              <input type="checkbox" checked={draft[f.name]} onChange={(e) => setDraft({ ...draft, [f.name]: e.target.checked })} /> {f.label}
+            <label key={f.name} className="flex items-center gap-2 text-xs text-grey-ink self-center">
+              <input type="checkbox" className="accent-orange w-4 h-4" checked={draft[f.name]} onChange={(e) => setDraft({ ...draft, [f.name]: e.target.checked })} /> {f.label}
             </label>
           ) : (
             <input key={f.name} className="input" type={f.type === 'number' ? 'number' : 'text'} placeholder={f.label} value={draft[f.name]} onChange={(e) => setDraft({ ...draft, [f.name]: e.target.value })} />
@@ -45,7 +45,7 @@ export default function QuickList({ orgId, clientId, projectId, objectClassId, t
               {fields.map((f) => `${r[f.name]}`).filter(Boolean).join(' · ')}
               {renderExtra && renderExtra(r)}
             </span>
-            <button className="text-red-500 text-xs ml-2" onClick={() => deleteRecord(r.id)}>Remove</button>
+            <button className="btn-danger-text ml-2" onClick={() => deleteRecord(r.id)}>Remove</button>
           </li>
         ))}
         {records.length === 0 && <li className="py-2 text-grey-medium">None added yet.</li>}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import AuthShell from '../components/AuthShell'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -25,28 +26,25 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg">
-      <div className="card p-8 w-full max-w-sm">
-        <div className="text-center mb-6">
-          <div className="font-serif font-bold text-2xl text-grey-dark">DynamicBA</div>
-          <div className="text-xs text-grey-medium mt-1">AI-assisted scope-to-specs automation</div>
+    <AuthShell>
+      <div className="eyebrow mb-2">Welcome back</div>
+      <h1 className="h-page mb-1">Sign in</h1>
+      <p className="text-sm text-grey-ink mb-6">Continue to your DynamicBA workspace.</p>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="label">Email</label>
+          <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="label">Email</label>
-            <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </div>
-          <div>
-            <label className="label">Password</label>
-            <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          </div>
-          {error && <div className="text-sm text-red-600">{error}</div>}
-          <button className="btn-primary w-full" disabled={busy}>{busy ? 'Signing in…' : 'Sign In'}</button>
-        </form>
-        <div className="text-center mt-4 text-sm text-grey-ink">
-          No account? <Link to="/signup" className="text-orange-deep font-semibold">Create one</Link>
+        <div>
+          <label className="label">Password</label>
+          <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" />
         </div>
+        {error && <div className="text-sm text-danger" role="alert">{error}</div>}
+        <button className="btn-primary w-full" disabled={busy}>{busy ? 'Signing in…' : 'Sign In'}</button>
+      </form>
+      <div className="text-center mt-6 text-sm text-grey-ink">
+        No account? <Link to="/signup" className="link-accent">Create one</Link>
       </div>
-    </div>
+    </AuthShell>
   )
 }

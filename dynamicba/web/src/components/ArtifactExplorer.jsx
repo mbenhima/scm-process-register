@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Plus } from 'lucide-react'
 import { OBJECT_CLASSES, attributesFor } from '../lib/schema'
 import { useArtifacts } from '../hooks/useArtifacts'
 import { useApp } from '../contexts/AppContext'
@@ -51,7 +52,9 @@ export default function ArtifactExplorer({ orgId, clientId, projectId }) {
           <button
             key={c.id}
             onClick={() => { setSelected(c.id); setEditingId(null) }}
-            className={`w-full text-left px-2 py-1.5 rounded text-xs ${selected === c.id ? 'bg-orange-tint text-orange-deep font-semibold' : 'text-grey-ink hover:bg-grey-light'}`}
+            className={`w-full text-left px-2 py-1.5 rounded-lg text-xs transition-colors duration-150
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-deep
+              ${selected === c.id ? 'bg-orange-tint text-orange-deep font-semibold' : 'text-grey-ink hover:bg-grey-light'}`}
           >
             {c.id} · {c.label}
           </button>
@@ -61,17 +64,21 @@ export default function ArtifactExplorer({ orgId, clientId, projectId }) {
       <div className="col-span-3">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <div className="font-semibold text-grey-dark">{objectClass.id} — {objectClass.label}</div>
+            <div className="h-card">{objectClass.id} — {objectClass.label}</div>
             <div className="text-xs text-grey-medium">{objectClass.desc}</div>
           </div>
-          {canWrite && <button className="btn-primary" onClick={startAdd}>+ New Record</button>}
+          {canWrite && (
+            <button className="btn-primary" onClick={startAdd}>
+              <Plus size={16} strokeWidth={2.5} aria-hidden="true" /> New Record
+            </button>
+          )}
         </div>
 
         {editingId && canWrite && (
           <div className="card p-4 mb-4 grid grid-cols-2 gap-3">
             {attrs.map((a) => (
               <div key={a.id}>
-                <label className="label">{a.name.replace(/_/g, ' ')} {a.required && <span className="text-orange">*</span>}</label>
+                <label className="label">{a.name.replace(/_/g, ' ')} {a.required && <span className="text-danger">*</span>}</label>
                 {a.type === 'boolean' ? (
                   <select className="input" value={String(draft[a.name] ?? false)} onChange={(e) => setDraft({ ...draft, [a.name]: e.target.value === 'true' })}>
                     <option value="false">False</option>
@@ -90,7 +97,7 @@ export default function ArtifactExplorer({ orgId, clientId, projectId }) {
                     onChange={(e) => setDraft({ ...draft, [a.name]: e.target.value })}
                   />
                 )}
-                <div className="text-[10px] text-grey-medium mt-0.5">{a.rule}</div>
+                <div className="text-[11px] text-grey-medium">{a.rule}</div>
               </div>
             ))}
             <div className="col-span-2 flex gap-2">
@@ -102,28 +109,28 @@ export default function ArtifactExplorer({ orgId, clientId, projectId }) {
 
         {loading ? <p className="text-grey-medium">Loading…</p> : (
           <div className="card overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="table-pa">
               <thead>
-                <tr className="text-left text-grey-medium border-b border-grey-line">
-                  {attrs.slice(0, 4).map((a) => <th key={a.id} className="p-2">{a.name.replace(/_/g, ' ')}</th>)}
-                  <th className="p-2"></th>
+                <tr>
+                  {attrs.slice(0, 4).map((a) => <th key={a.id}>{a.name.replace(/_/g, ' ')}</th>)}
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {records.map((r) => (
-                  <tr key={r.id} className="border-b border-grey-line last:border-0">
-                    {attrs.slice(0, 4).map((a) => <td key={a.id} className="p-2">{String(r[a.name] ?? '')}</td>)}
-                    <td className="p-2 text-right space-x-2">
+                  <tr key={r.id}>
+                    {attrs.slice(0, 4).map((a) => <td key={a.id}>{String(r[a.name] ?? '')}</td>)}
+                    <td className="text-right space-x-4 whitespace-nowrap">
                       {canWrite ? (
                         <>
-                          <button className="text-orange-deep font-semibold" onClick={() => startEdit(r)}>Edit</button>
-                          <button className="text-red-500" onClick={() => deleteRecord(r.id)}>Delete</button>
+                          <button className="row-action" onClick={() => startEdit(r)}>Edit</button>
+                          <button className="btn-danger-text" onClick={() => deleteRecord(r.id)}>Delete</button>
                         </>
                       ) : <span className="text-grey-medium text-xs">Read-only</span>}
                     </td>
                   </tr>
                 ))}
-                {records.length === 0 && <tr><td colSpan={5} className="p-4 text-grey-medium">No {objectClass.label} records yet on this project.</td></tr>}
+                {records.length === 0 && <tr><td colSpan={5} className="text-grey-medium">No {objectClass.label} records yet on this project.</td></tr>}
               </tbody>
             </table>
           </div>

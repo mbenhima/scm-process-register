@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import { useApp } from '../contexts/AppContext'
 import { useApiCollection } from '../hooks/useApiCollection'
 import { api } from '../lib/api'
@@ -18,10 +19,11 @@ export default function AdminPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-serif font-bold text-grey-dark mb-4">Admin</h1>
-      <div className="flex gap-2 mb-4 flex-wrap">
+      <div className="eyebrow mb-1">Practice Settings</div>
+      <h1 className="h-page mb-6">Admin</h1>
+      <div className="flex gap-2 mb-6 flex-wrap">
         {TABS.map((tb) => (
-          <button key={tb} onClick={() => setTab(tb)} className={`px-3 py-1.5 rounded-lg text-sm font-semibold ${tab === tb ? 'bg-orange text-white' : 'bg-grey-light text-grey-ink'}`}>{tb}</button>
+          <button key={tb} onClick={() => setTab(tb)} className={`tab-button ${tab === tb ? 'tab-button-active' : 'tab-button-inactive'}`}>{tb}</button>
         ))}
       </div>
 
@@ -42,7 +44,7 @@ function DemoDataTab() {
     <div className="card p-4 max-w-xl space-y-3 text-sm">
       <p className="text-grey-ink">Demo data (5 example clients across Retail, Healthcare, Manufacturing, Finance, and Telecom, plus 10 example engagement projects at different wizard stages) is seeded from the command line rather than from this screen, so it can populate a fresh database before anyone signs in.</p>
       <p className="text-grey-ink">From the <code>server</code> folder, run:</p>
-      <pre className="bg-grey-light rounded p-3 text-xs">npm run seed</pre>
+      <pre className="bg-grey-light rounded-lg p-3 text-xs">npm run seed</pre>
       <p className="text-grey-ink">This also creates a ready-to-use demo admin login: <code>admin@dynamicba.demo</code> / <code>DemoAdmin123!</code>. See the Installation Guide for details.</p>
     </div>
   )
@@ -51,11 +53,11 @@ function DemoDataTab() {
 function OrganizationTab({ orgId, organization }) {
   return (
     <div className="card p-4 max-w-md space-y-2 text-sm">
-      <div><span className="text-grey-medium">Organization ID (share this to invite teammates):</span><div className="font-mono bg-grey-light rounded p-2 mt-1 select-all">{orgId}</div></div>
-      <div><span className="text-grey-medium">Name:</span> {organization?.name}</div>
-      <div><span className="text-grey-medium">Sector:</span> {organization?.sector || '—'}</div>
-      <div><span className="text-grey-medium">Country:</span> {organization?.country || '—'}</div>
-      <div><span className="text-grey-medium">Members:</span> {organization?.memberCount}</div>
+      <div><span className="text-grey-medium">Organization ID (share this to invite teammates):</span><div className="font-mono bg-grey-light rounded-lg p-2 mt-1 select-all text-grey-dark">{orgId}</div></div>
+      <div><span className="text-grey-medium">Name:</span> <span className="text-grey-dark">{organization?.name}</span></div>
+      <div><span className="text-grey-medium">Sector:</span> <span className="text-grey-dark">{organization?.sector || '—'}</span></div>
+      <div><span className="text-grey-medium">Country:</span> <span className="text-grey-dark">{organization?.country || '—'}</span></div>
+      <div><span className="text-grey-medium">Members:</span> <span className="text-grey-dark">{organization?.memberCount}</span></div>
     </div>
   )
 }
@@ -99,9 +101,11 @@ function UsersTab({ orgId, users, usersPath, can }) {
     <div className="space-y-4">
       {canManage && (
         <div className="card p-4">
-          <button className="btn-secondary" onClick={() => setShowForm((s) => !s)}>{showForm ? 'Cancel' : '+ Create User'}</button>
+          <button className="btn-secondary" onClick={() => setShowForm((s) => !s)}>
+            {!showForm && <Plus size={16} strokeWidth={2.5} aria-hidden="true" />} {showForm ? 'Cancel' : 'Create User'}
+          </button>
           {showForm && (
-            <form onSubmit={handleCreate} className="grid grid-cols-2 gap-3 mt-3">
+            <form onSubmit={handleCreate} className="grid grid-cols-2 gap-3 mt-4">
               <div><label className="label">Full Name</label><input className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required /></div>
               <div><label className="label">Email</label><input className="input" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required /></div>
               <div><label className="label">Temporary Password</label><input className="input" type="text" minLength={6} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required /></div>
@@ -112,39 +116,41 @@ function UsersTab({ orgId, users, usersPath, can }) {
                 </select>
               </div>
               <div className="col-span-2"><button className="btn-primary">Create User</button></div>
-              {error && <div className="col-span-2 text-sm text-red-600">{error}</div>}
+              {error && <div className="col-span-2 text-sm text-danger" role="alert">{error}</div>}
             </form>
           )}
           {created && (
-            <p className="text-sm text-green-700 mt-3">Created {created.email}. Share this temporary password with them: <span className="font-mono bg-grey-light px-1 rounded">{created.password}</span></p>
+            <p className="text-sm text-success mt-3">Created {created.email}. Share this temporary password with them: <span className="font-mono bg-grey-light px-1 rounded">{created.password}</span></p>
           )}
         </div>
       )}
-      <table className="w-full card text-sm">
-        <thead><tr className="text-left text-grey-medium border-b border-grey-line"><th className="p-2">Name</th><th className="p-2">Email</th><th className="p-2">Roles</th><th className="p-2"></th></tr></thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id} className="border-b border-grey-line last:border-0">
-              <td className="p-2">{u.name}</td>
-              <td className="p-2">{u.email}</td>
-              <td className="p-2">
-                <select
-                  multiple
-                  className="input h-24"
-                  value={u.roles || []}
-                  disabled={!canManage}
-                  onChange={(e) => setRoles(u.id, Array.from(e.target.selectedOptions).map((o) => o.value))}
-                >
-                  {ROLES.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
-                </select>
-              </td>
-              <td className="p-2 text-right">
-                {canManage && <button className="text-red-500 text-xs" onClick={() => handleDelete(u.id)}>Remove</button>}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="card overflow-hidden">
+        <table className="table-pa">
+          <thead><tr><th>Name</th><th>Email</th><th>Roles</th><th></th></tr></thead>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u.id}>
+                <td className="text-grey-dark font-medium">{u.name}</td>
+                <td>{u.email}</td>
+                <td>
+                  <select
+                    multiple
+                    className="input h-24"
+                    value={u.roles || []}
+                    disabled={!canManage}
+                    onChange={(e) => setRoles(u.id, Array.from(e.target.selectedOptions).map((o) => o.value))}
+                  >
+                    {ROLES.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
+                  </select>
+                </td>
+                <td className="text-right">
+                  {canManage && <button className="btn-danger-text" onClick={() => handleDelete(u.id)}>Remove</button>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
@@ -158,20 +164,20 @@ function PermissionMatrixTab({ orgId, matrix, onChanged, can }) {
   }
   return (
     <div className="card overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="table-pa">
         <thead>
-          <tr className="text-left text-grey-medium border-b border-grey-line">
-            <th className="p-2">Capability</th>
-            {ROLE_IDS.map((r) => <th key={r} className="p-2 text-xs">{r}</th>)}
+          <tr>
+            <th>Capability</th>
+            {ROLE_IDS.map((r) => <th key={r} className="!text-[11px]">{r}</th>)}
           </tr>
         </thead>
         <tbody>
           {CAPABILITIES.map((cap) => (
-            <tr key={cap} className="border-b border-grey-line last:border-0">
-              <td className="p-2 font-mono text-xs">{cap}</td>
+            <tr key={cap}>
+              <td className="font-mono text-xs text-grey-dark">{cap}</td>
               {ROLE_IDS.map((r) => (
-                <td key={r} className="p-2 text-center">
-                  <input type="checkbox" checked={!!matrix?.[r]?.[cap]} disabled={!canManage || r === 'org_admin'} onChange={() => toggle(r, cap)} />
+                <td key={r} className="text-center">
+                  <input type="checkbox" className="accent-orange w-4 h-4" checked={!!matrix?.[r]?.[cap]} disabled={!canManage || r === 'org_admin'} onChange={() => toggle(r, cap)} />
                 </td>
               ))}
             </tr>
@@ -191,12 +197,12 @@ function LicensingTab({ orgId, licence, memberCount, onChanged, can }) {
   return (
     <div className="card p-4 max-w-xl space-y-3 text-sm">
       <p className="text-xs text-grey-medium italic">Demo build: plan changes are made here directly by an Organization Admin rather than by a Stripe/PayPal webhook (see the Installation Guide's "Licensing in Production" appendix).</p>
-      <div>Current plan: <span className="badge badge-good">{PLAN_LABELS[licence?.plan]}</span></div>
-      <div>Seats used: {memberCount} of {licence?.maxUsers}</div>
-      <div>Entitled modules: {(licence?.features || []).join(', ')}</div>
-      <div className="flex gap-2">
+      <div className="text-grey-ink">Current plan: <span className="badge badge-good">{PLAN_LABELS[licence?.plan]}</span></div>
+      <div className="text-grey-ink">Seats used: <span className="text-grey-dark font-semibold">{memberCount}</span> of {licence?.maxUsers}</div>
+      <div className="text-grey-ink">Entitled modules: <span className="text-grey-dark">{(licence?.features || []).join(', ')}</span></div>
+      <div className="flex gap-2 flex-wrap">
         {Object.keys(PLAN_LABELS).map((p) => (
-          <button key={p} disabled={!canManage} className={`btn-secondary ${licence?.plan === p ? '!bg-orange !text-white' : ''}`} onClick={() => changePlan(p)}>{PLAN_LABELS[p]}</button>
+          <button key={p} disabled={!canManage} className={licence?.plan === p ? 'btn-primary' : 'btn-secondary'} onClick={() => changePlan(p)}>{PLAN_LABELS[p]}</button>
         ))}
       </div>
     </div>
@@ -213,8 +219,8 @@ function ComplianceTab({ orgId, standards, onChanged, can }) {
     <div className="card p-4 max-w-md space-y-2 text-sm">
       <p className="text-xs text-grey-medium italic">Activating a standard seeds GRC scaffolding only — it is not a certification, external audit, or legal attestation (Standard SRS FR-DA-CFG-09).</p>
       {['GDPR', 'ISO27001', 'SOC2'].map((key) => (
-        <label key={key} className="flex items-center gap-2">
-          <input type="checkbox" disabled={!canManage} checked={!!standards?.[key]} onChange={() => toggle(key)} /> {key}
+        <label key={key} className="flex items-center gap-2 text-grey-ink">
+          <input type="checkbox" className="accent-orange w-4 h-4" disabled={!canManage} checked={!!standards?.[key]} onChange={() => toggle(key)} /> {key}
         </label>
       ))}
     </div>
@@ -270,7 +276,7 @@ function AiProviderTab({ orgId, can }) {
       <p className="text-grey-ink">DynamicBA uses the Anthropic (Claude) API to draft a first-pass automation opportunity assessment and specification set in Step 2 of every project — automation candidates, use cases, business rules, controls, KPIs, and risks — grounded in that engagement's own Statement of Work. A human business analyst always reviews and approves the draft before it counts toward the engagement; nothing generated here is final on its own.</p>
       <p className="text-grey-ink">Get a key at <span className="font-mono bg-grey-light px-1 rounded">console.anthropic.com</span> and paste it below. It is stored only in this server's own local data file and is sent only to Anthropic's API — never anywhere else. (A technical alternative: set <span className="font-mono bg-grey-light px-1 rounded">ANTHROPIC_API_KEY</span> in <span className="font-mono bg-grey-light px-1 rounded">server/.env</span> instead, which every organization on this server will then share.)</p>
 
-      <div className={`text-xs px-2 py-1 rounded inline-block ${config?.configured ? 'bg-green-100 text-green-800' : 'bg-orange-tint text-orange-deep'}`}>
+      <div className={`badge ${config?.configured ? 'badge-good' : 'badge-info'} !text-xs !py-1`}>
         {config?.configured ? `AI provider configured (source: ${config.source}, model: ${config.model})` : 'No AI provider configured yet — Step 2 will fall back to fully manual entry.'}
       </div>
 
@@ -286,12 +292,12 @@ function AiProviderTab({ orgId, can }) {
               {AI_MODEL_OPTIONS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
             </select>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-4">
             <button className="btn-primary">Save</button>
-            {config?.configured && <button type="button" className="text-red-500 text-xs" onClick={handleClear}>Remove stored key</button>}
+            {config?.configured && <button type="button" className="btn-danger-text" onClick={handleClear}>Remove stored key</button>}
           </div>
-          {status && <p className="text-sm text-green-700">{status}</p>}
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {status && <p className="text-sm text-success">{status}</p>}
+          {error && <p className="text-sm text-danger" role="alert">{error}</p>}
         </form>
       ) : (
         <p className="text-xs text-grey-medium italic">Only an Organization Admin can change the AI provider configuration.</p>
@@ -302,18 +308,20 @@ function AiProviderTab({ orgId, can }) {
 
 function AuditLogTab({ entries }) {
   return (
-    <table className="w-full card text-sm">
-      <thead><tr className="text-left text-grey-medium border-b border-grey-line"><th className="p-2">Entity</th><th className="p-2">Actor</th><th className="p-2">Details</th></tr></thead>
-      <tbody>
-        {entries.map((e) => (
-          <tr key={e.id} className="border-b border-grey-line last:border-0">
-            <td className="p-2">{e.entityType} {e.entityId}</td>
-            <td className="p-2">{e.actor}</td>
-            <td className="p-2 text-xs">{JSON.stringify(e.before)} → {JSON.stringify(e.after)}</td>
-          </tr>
-        ))}
-        {entries.length === 0 && <tr><td colSpan={3} className="p-4 text-grey-medium">No audit entries yet.</td></tr>}
-      </tbody>
-    </table>
+    <div className="card overflow-hidden">
+      <table className="table-pa">
+        <thead><tr><th>Entity</th><th>Actor</th><th>Details</th></tr></thead>
+        <tbody>
+          {entries.map((e) => (
+            <tr key={e.id}>
+              <td>{e.entityType} {e.entityId}</td>
+              <td>{e.actor}</td>
+              <td className="text-xs">{JSON.stringify(e.before)} → {JSON.stringify(e.after)}</td>
+            </tr>
+          ))}
+          {entries.length === 0 && <tr><td colSpan={3} className="text-grey-medium">No audit entries yet.</td></tr>}
+        </tbody>
+      </table>
+    </div>
   )
 }

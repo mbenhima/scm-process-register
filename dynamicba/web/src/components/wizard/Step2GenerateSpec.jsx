@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Sparkles, Lock, ArrowRight } from 'lucide-react'
 import { useApp } from '../../contexts/AppContext'
 import { useArtifacts } from '../../hooks/useArtifacts'
 import { useAlerts } from '../../hooks/useAlerts'
@@ -12,6 +13,7 @@ import {
   evaluateControlSpec, evaluateBusinessRuleSpec, evaluateKpiSpec,
 } from '../../lib/ruleEngine'
 import QuickList from './QuickList'
+import IconBadge from '../IconBadge'
 
 const SUBTABS = [
   { key: 'context', label: 'MP-02 Context Enrichment', module: 'MOD-02' },
@@ -37,11 +39,14 @@ export default function Step2GenerateSpec({ project, onAdvance }) {
       <AiDraftGenerator project={project} args={args} raiseAlert={raiseAlert} />
 
       <div className="flex gap-2 mb-4 flex-wrap">
-        {SUBTABS.map((t) => (
-          <button key={t.key} onClick={() => setSub(t.key)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${sub === t.key ? 'bg-orange text-white border-orange' : 'bg-white text-grey-ink border-grey-line'} ${!licenceProvider.hasModule(t.module) ? 'opacity-50' : ''}`}>
-            {t.label} {!licenceProvider.hasModule(t.module) && '🔒'}
-          </button>
-        ))}
+        {SUBTABS.map((t) => {
+          const locked = !licenceProvider.hasModule(t.module)
+          return (
+            <button key={t.key} onClick={() => setSub(t.key)} className={`tab-button ${sub === t.key ? 'tab-button-active' : 'tab-button-inactive'} ${locked ? 'opacity-60' : ''}`}>
+              {t.label} {locked && <Lock size={12} strokeWidth={2.5} className="inline -mt-0.5 ml-1" aria-hidden="true" />}
+            </button>
+          )
+        })}
       </div>
 
       {sub === 'context' && <ContextSection args={args} raiseAlert={raiseAlert} />}
@@ -52,7 +57,7 @@ export default function Step2GenerateSpec({ project, onAdvance }) {
 
       <div className="mt-6 card p-4 flex items-center justify-between">
         <p className="text-sm text-grey-ink">{canContinue ? `${candidates.length} automation candidate(s) captured.` : 'Add at least one Automation Candidate (Opportunity Assessment tab) before continuing.'}</p>
-        <button className="btn-primary" disabled={!canContinue} onClick={onAdvance}>Continue to Step 3 →</button>
+        <button className="btn-primary" disabled={!canContinue} onClick={onAdvance}>Continue to Step 3 <ArrowRight size={15} strokeWidth={2.5} aria-hidden="true" /></button>
       </div>
     </div>
   )
@@ -140,20 +145,23 @@ function AiDraftGenerator({ project, args, raiseAlert }) {
   }
 
   return (
-    <div className="card p-4 mb-4 border-2 border-orange-tint">
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <div>
-          <h3 className="font-semibold text-grey-dark">✨ Generate Draft with AI</h3>
-          <p className="text-xs text-grey-ink max-w-2xl">Sends this engagement's Statement of Work and stakeholder list to your configured AI provider (Admin → AI Provider) and drafts automation candidates, use cases, business rules, controls, KPIs, and risks below — grounded in this SOW, not generic filler. Every AI-drafted record is tagged as a draft for the consulting team to review, edit, and approve; nothing is final until a human approves it.</p>
+    <div className="card-highlight p-4 mb-4">
+      <div className="flex items-start justify-between flex-wrap gap-3">
+        <div className="flex items-start gap-3">
+          <IconBadge icon={Sparkles} size={32} />
+          <div>
+            <h3 className="h-card">Generate Draft with AI</h3>
+            <p className="text-xs text-grey-ink max-w-2xl">Sends this engagement's Statement of Work and stakeholder list to your configured AI provider (Admin → AI Provider) and drafts automation candidates, use cases, business rules, controls, KPIs, and risks below — grounded in this SOW, not generic filler. Every AI-drafted record is tagged as a draft for the consulting team to review, edit, and approve; nothing is final until a human approves it.</p>
+          </div>
         </div>
         <button className="btn-primary whitespace-nowrap" disabled={state === 'loading' || !sow} onClick={generate}>
           {state === 'loading' ? 'Generating…' : 'Generate Draft with AI'}
         </button>
       </div>
-      {!sow && <p className="text-xs text-orange-deep mt-2">Complete Step 1 (Upload SOW) first — the AI needs the Statement of Work to draft from.</p>}
-      {state === 'error' && <p className="text-sm text-red-600 mt-2">{error}</p>}
+      {!sow && <p className="text-xs text-grey-ink mt-2">Complete Step 1 (Upload SOW) first — the AI needs the Statement of Work to draft from.</p>}
+      {state === 'error' && <p className="text-sm text-danger mt-2" role="alert">{error}</p>}
       {state === 'done' && summary && (
-        <p className="text-sm text-green-700 mt-2">
+        <p className="text-sm text-success mt-2">
           AI draft added: {summary.candidates} automation candidate(s), {summary.useCases} use case(s), {summary.rules} business rule(s), {summary.controls} control(s), {summary.kpis} KPI(s), {summary.risks} risk(s) — all tagged Draft below. Review each tab, edit as needed, then continue.
         </p>
       )}
@@ -179,7 +187,7 @@ function ContextSection({ args, raiseAlert }) {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div className="card p-4 space-y-2">
-        <h3 className="font-semibold text-grey-dark">Context Knowledge Model (OC-08)</h3>
+        <h3 className="h-card">Context Knowledge Model (OC-08)</h3>
         <label className="label">Systems identified in the landscape</label>
         <input className="input" type="number" value={systemsCount} onChange={(e) => setSystemsCount(e.target.value)} />
         <label className="label">Processes identified</label>
@@ -212,7 +220,7 @@ function CurrentStateSection({ args, raiseAlert }) {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div className="card p-4 space-y-2">
-        <h3 className="font-semibold text-grey-dark">As-Is Process Map Validation (OC-11)</h3>
+        <h3 className="h-card">As-Is Process Map Validation (OC-11)</h3>
         <div className="grid grid-cols-2 gap-2">
           <div><label className="label">Transcript step count</label><input className="input" type="number" value={transcriptStepCount} onChange={(e) => setTranscriptStepCount(e.target.value)} /></div>
           <div><label className="label">Drafted map step count</label><input className="input" type="number" value={mapStepCount} onChange={(e) => setMapStepCount(e.target.value)} /></div>
@@ -251,7 +259,7 @@ function OpportunitySection({ args, raiseAlert }) {
   return (
     <div className="grid grid-cols-2 gap-4">
       <form onSubmit={addCandidate} className="card p-4 space-y-2">
-        <h3 className="font-semibold text-grey-dark">Automation Candidate (OC-15/16/17)</h3>
+        <h3 className="h-card">Automation Candidate (OC-15/16/17)</h3>
         <input className="input" placeholder="Candidate name (e.g. Invoice 3-way match)" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
         {['technical', 'dataQuality', 'processStability', 'strategicFit'].map((k) => (
           <div key={k}>
@@ -270,7 +278,7 @@ function OpportunitySection({ args, raiseAlert }) {
         <button className="btn-primary w-full">Score &amp; Add Candidate</button>
       </form>
       <div className="card p-4">
-        <h3 className="font-semibold text-grey-dark mb-2">Prioritization Matrix</h3>
+        <h3 className="h-card mb-2">Prioritization Matrix</h3>
         <table className="w-full text-sm">
           <thead><tr className="text-left text-grey-medium"><th>Candidate</th><th>Feasibility</th><th></th></tr></thead>
           <tbody>
@@ -278,7 +286,7 @@ function OpportunitySection({ args, raiseAlert }) {
               <tr key={c.id} className="border-t border-grey-line">
                 <td className="py-1.5">{c.Name}</td>
                 <td><span className={`badge ${c.Feasibility_Score >= 80 ? 'badge-good' : c.Feasibility_Score >= 50 ? 'badge-medium' : 'badge-low'}`}>{c.Feasibility_Score}</span></td>
-                <td className="text-right"><button className="text-red-500 text-xs" onClick={() => deleteRecord(c.id)}>Remove</button></td>
+                <td className="text-right"><button className="btn-danger-text" onClick={() => deleteRecord(c.id)}>Remove</button></td>
               </tr>
             ))}
             {candidates.length === 0 && <tr><td colSpan={3} className="py-3 text-grey-medium">No candidates scored yet.</td></tr>}
@@ -303,7 +311,7 @@ function ToBeSection({ args, raiseAlert }) {
     <div className="space-y-4">
       <div className="card p-4 flex items-center justify-between">
         <div>
-          <h3 className="font-semibold text-grey-dark">Future-State Process Map (OC-18)</h3>
+          <h3 className="h-card">Future-State Process Map (OC-18)</h3>
           <p className="text-sm text-grey-ink">Status: {toBe?.Status || 'Draft'}</p>
         </div>
         <button className="btn-secondary" onClick={markApproved}>Mark Approved</button>

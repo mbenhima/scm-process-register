@@ -1,8 +1,10 @@
 import React from 'react'
+import { Building2, FolderKanban, CheckCircle2, Clock, Zap, GaugeCircle, ShieldCheck } from 'lucide-react'
 import { useApp } from '../contexts/AppContext'
 import { useClients } from '../hooks/useClients'
 import { useAllProjects } from '../hooks/useProjects'
 import { PLAN_LABELS } from '../lib/catalogue'
+import IconBadge from '../components/IconBadge'
 
 export default function DashboardPage() {
   const { orgId, organization, licence, licenceProvider } = useApp()
@@ -18,42 +20,66 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-serif font-bold text-grey-dark">Welcome to {organization?.name || 'DynamicBA'}</h1>
-        <p className="text-sm text-grey-medium">AI-assisted scope-to-specs automation platform for management consulting engagements.</p>
+        <div className="eyebrow mb-1">Practice Overview</div>
+        <h1 className="h-page">Welcome to {organization?.name || 'DynamicBA'}</h1>
+        <p className="text-sm text-grey-ink mt-1">AI-assisted scope-to-specs automation platform for management consulting engagements.</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <StatCard label="Clients" value={clients.length} />
-        <StatCard label="Total Projects" value={projects.length} />
-        <StatCard label="Completed" value={completed} good />
-        <StatCard label="In Progress" value={inProgress} />
-        <StatCard label="Hours Saved (KPI-10)" value={totalHoursSaved} />
+        <StatCard icon={Building2} label="Clients" value={clients.length} />
+        <StatCard icon={FolderKanban} label="Total Projects" value={projects.length} />
+        <StatCard icon={CheckCircle2} label="Completed" value={completed} />
+        <StatCard icon={Clock} label="In Progress" value={inProgress} />
+        <StatCard icon={Zap} label="Hours Saved (KPI-10)" value={totalHoursSaved} />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="card p-4">
-          <h2 className="font-semibold text-grey-dark mb-3">Pipeline Status</h2>
-          <div className="space-y-2 text-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <IconBadge icon={GaugeCircle} tone="ink" size={28} />
+            <h2 className="h-section !text-base">Pipeline Status</h2>
+          </div>
+          <div className="space-y-3">
             <BarRow label="Not started" value={notStarted} total={projects.length} />
             <BarRow label="In progress" value={inProgress} total={projects.length} />
             <BarRow label="Completed" value={completed} total={projects.length} />
           </div>
+          <p className="caption mt-3">Share of engagements at each wizard stage, across every client.</p>
         </div>
+
         <div className="card p-4">
-          <h2 className="font-semibold text-grey-dark mb-3">Licensing</h2>
-          <p className="text-sm">Plan: <span className="badge badge-good">{PLAN_LABELS[licence?.plan] || '—'}</span></p>
-          <p className="text-sm mt-2">Modules entitled: {licenceProvider.getFeatureFlags().join(', ') || '—'}</p>
-          <p className="text-sm mt-2">Licence status: <span className={`badge ${check.status === 'active' ? 'badge-good' : check.status === 'warning' ? 'badge-medium' : 'badge-critical'}`}>{check.status}</span> {Number.isFinite(check.daysLeft) && `(${check.daysLeft} days left)`}</p>
+          <div className="flex items-center gap-3 mb-4">
+            <IconBadge icon={ShieldCheck} tone="ink" size={28} />
+            <h2 className="h-section !text-base">Licensing</h2>
+          </div>
+          <dl className="space-y-2 text-sm">
+            <div className="flex items-center justify-between">
+              <dt className="text-grey-ink">Plan</dt>
+              <dd><span className="badge badge-good">{PLAN_LABELS[licence?.plan] || '—'}</span></dd>
+            </div>
+            <div className="flex items-start justify-between gap-4">
+              <dt className="text-grey-ink shrink-0">Modules entitled</dt>
+              <dd className="text-grey-dark text-right">{licenceProvider.getFeatureFlags().join(', ') || '—'}</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-grey-ink">Licence status</dt>
+              <dd>
+                <span className={`badge ${check.status === 'active' ? 'badge-good' : check.status === 'warning' ? 'badge-medium' : 'badge-critical'}`}>{check.status}</span>
+                {Number.isFinite(check.daysLeft) && <span className="text-grey-medium text-xs ml-2">{check.daysLeft} days left</span>}
+              </dd>
+            </div>
+          </dl>
         </div>
       </div>
     </div>
   )
 }
 
-function StatCard({ label, value, good }) {
+function StatCard({ icon, label, value }) {
   return (
     <div className="card p-4">
-      <div className={`text-2xl font-serif font-bold ${good ? 'text-orange-deep' : 'text-grey-dark'}`}>{value}</div>
+      <IconBadge icon={icon} size={28} className="mb-3" />
+      <div className="kpi-number text-2xl">{value}</div>
       <div className="text-xs text-grey-medium mt-1">{label}</div>
     </div>
   )
@@ -63,8 +89,8 @@ function BarRow({ label, value, total }) {
   const pct = total ? Math.round((value / total) * 100) : 0
   return (
     <div>
-      <div className="flex justify-between text-xs text-grey-ink mb-1"><span>{label}</span><span>{value}</span></div>
-      <div className="w-full bg-grey-light rounded-full h-2"><div className="bg-orange h-2 rounded-full" style={{ width: `${pct}%` }} /></div>
+      <div className="flex justify-between text-xs text-grey-ink mb-1"><span>{label}</span><span className="font-semibold text-grey-dark">{value}</span></div>
+      <div className="w-full bg-grey-light rounded-full h-2"><div className="bg-orange h-2 rounded-full transition-all duration-300" style={{ width: `${pct}%` }} /></div>
     </div>
   )
 }
