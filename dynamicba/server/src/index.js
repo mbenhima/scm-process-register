@@ -8,6 +8,7 @@ import clientRoutes from './routes/clientRoutes.js'
 import projectRoutes from './routes/projectRoutes.js'
 import artifactRoutes from './routes/artifactRoutes.js'
 import alertRoutes from './routes/alertRoutes.js'
+import aiRoutes from './routes/aiRoutes.js'
 
 const app = express()
 app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }))
@@ -21,6 +22,7 @@ app.use('/api', clientRoutes)
 app.use('/api', projectRoutes)
 app.use('/api', artifactRoutes)
 app.use('/api', alertRoutes)
+app.use('/api', aiRoutes)
 
 app.use((err, req, res, next) => {
   console.error(err)

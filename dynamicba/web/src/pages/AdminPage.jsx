@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useApp } from '../contexts/AppContext'
 import { useApiCollection } from '../hooks/useApiCollection'
 import { api } from '../lib/api'
 import { invalidate } from '../lib/queryStore'
 import { ROLES, ROLE_IDS, CAPABILITIES } from '../lib/roles'
 import { PLAN_LABELS } from '../lib/catalogue'
+import { getAiConfig, saveAiConfig, clearAiConfig, AI_MODEL_OPTIONS } from '../lib/aiApi'
 
-const TABS = ['Organization', 'Users & Roles', 'Permission Matrix', 'Licensing', 'Compliance Standards', 'Audit Log', 'Demo Data']
+const TABS = ['Organization', 'Users & Roles', 'Permission Matrix', 'Licensing', 'Compliance Standards', 'AI Provider', 'Audit Log', 'Demo Data']
 
 export default function AdminPage() {
   const [tab, setTab] = useState(TABS[0])
@@ -29,6 +30,7 @@ export default function AdminPage() {
       {tab === 'Permission Matrix' && <PermissionMatrixTab orgId={orgId} matrix={permissionMatrix} onChanged={refresh} can={can} />}
       {tab === 'Licensing' && <LicensingTab orgId={orgId} licence={licence} memberCount={organization?.memberCount} onChanged={refresh} can={can} />}
       {tab === 'Compliance Standards' && <ComplianceTab orgId={orgId} standards={complianceStandards} onChanged={refresh} can={can} />}
+      {tab === 'AI Provider' && <AiProviderTab orgId={orgId} can={can} />}
       {tab === 'Audit Log' && <AuditLogTab entries={auditLog} />}
       {tab === 'Demo Data' && <DemoDataTab />}
     </div>
@@ -215,6 +217,85 @@ function ComplianceTab({ orgId, standards, onChanged, can }) {
           <input type="checkbox" disabled={!canManage} checked={!!standards?.[key]} onChange={() => toggle(key)} /> {key}
         </label>
       ))}
+    </div>
+  )
+}
+
+function AiProviderTab({ orgId, can }) {
+  const canManage = can('config.manage')
+  const [config, setConfig] = useState(null)
+  const [apiKey, setApiKey] = useState('')
+  const [model, setModel] = useState(AI_MODEL_OPTIONS[0].value)
+  const [status, setStatus] = useState('')
+  const [error, setError] = useState('')
+
+  async function load() {
+    try {
+      const cfg = await getAiConfig(orgId)
+      setConfig(cfg)
+      setModel(cfg.model || AI_MODEL_OPTIONS[0].value)
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+  useEffect(() => { if (orgId) load() }, [orgId])
+
+  async function handleSave(e) {
+    e.preventDefault()
+    setError('')
+    setStatus('')
+    try {
+      const cfg = await saveAiConfig(orgId, { apiKey, model })
+      setConfig(cfg)
+      setApiKey('')
+      setStatus('Saved. AI-generated drafts are now available in Step 2 of every project.')
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  async function handleClear() {
+    if (!confirm('Remove the stored AI provider API key for this organization?')) return
+    try {
+      await clearAiConfig(orgId)
+      setStatus('API key removed.')
+      load()
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  return (
+    <div className="card p-4 max-w-xl space-y-3 text-sm">
+      <p className="text-grey-ink">DynamicBA uses the Anthropic (Claude) API to draft a first-pass automation opportunity assessment and specification set in Step 2 of every project — automation candidates, use cases, business rules, controls, KPIs, and risks — grounded in that engagement's own Statement of Work. A human business analyst always reviews and approves the draft before it counts toward the engagement; nothing generated here is final on its own.</p>
+      <p className="text-grey-ink">Get a key at <span className="font-mono bg-grey-light px-1 rounded">console.anthropic.com</span> and paste it below. It is stored only in this server's own local data file and is sent only to Anthropic's API — never anywhere else. (A technical alternative: set <span className="font-mono bg-grey-light px-1 rounded">ANTHROPIC_API_KEY</span> in <span className="font-mono bg-grey-light px-1 rounded">server/.env</span> instead, which every organization on this server will then share.)</p>
+
+      <div className={`text-xs px-2 py-1 rounded inline-block ${config?.configured ? 'bg-green-100 text-green-800' : 'bg-orange-tint text-orange-deep'}`}>
+        {config?.configured ? `AI provider configured (source: ${config.source}, model: ${config.model})` : 'No AI provider configured yet — Step 2 will fall back to fully manual entry.'}
+      </div>
+
+      {canManage ? (
+        <form onSubmit={handleSave} className="space-y-2">
+          <div>
+            <label className="label">Anthropic API Key</label>
+            <input className="input" type="password" placeholder={config?.configured ? '••••••••••••••••  (leave blank to keep the current key)' : 'sk-ant-...'} value={apiKey} onChange={(e) => setApiKey(e.target.value)} />
+          </div>
+          <div>
+            <label className="label">Model</label>
+            <select className="input" value={model} onChange={(e) => setModel(e.target.value)}>
+              {AI_MODEL_OPTIONS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+            </select>
+          </div>
+          <div className="flex gap-2">
+            <button className="btn-primary">Save</button>
+            {config?.configured && <button type="button" className="text-red-500 text-xs" onClick={handleClear}>Remove stored key</button>}
+          </div>
+          {status && <p className="text-sm text-green-700">{status}</p>}
+          {error && <p className="text-sm text-red-600">{error}</p>}
+        </form>
+      ) : (
+        <p className="text-xs text-grey-medium italic">Only an Organization Admin can change the AI provider configuration.</p>
+      )}
     </div>
   )
 }

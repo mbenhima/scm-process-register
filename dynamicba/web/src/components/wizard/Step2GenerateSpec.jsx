@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { useApp } from '../../contexts/AppContext'
 import { useArtifacts } from '../../hooks/useArtifacts'
 import { useAlerts } from '../../hooks/useAlerts'
+import { useClients } from '../../hooks/useClients'
 import { applyFindings } from '../../lib/applyFindings'
 import { OBJECT_CLASSES } from '../../lib/schema'
+import { generateSpecsDraft } from '../../lib/aiApi'
 import {
   computeContextCompleteness, evaluateContextModel, evaluateAsIsMap, evaluateBaseline,
   computeFeasibilityScore, computeRoiModel, evaluateCandidate, evaluateExceptionFlow,
@@ -32,6 +34,8 @@ export default function Step2GenerateSpec({ project, onAdvance }) {
 
   return (
     <div>
+      <AiDraftGenerator project={project} args={args} raiseAlert={raiseAlert} />
+
       <div className="flex gap-2 mb-4 flex-wrap">
         {SUBTABS.map((t) => (
           <button key={t.key} onClick={() => setSub(t.key)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${sub === t.key ? 'bg-orange text-white border-orange' : 'bg-white text-grey-ink border-grey-line'} ${!licenceProvider.hasModule(t.module) ? 'opacity-50' : ''}`}>
@@ -50,6 +54,109 @@ export default function Step2GenerateSpec({ project, onAdvance }) {
         <p className="text-sm text-grey-ink">{canContinue ? `${candidates.length} automation candidate(s) captured.` : 'Add at least one Automation Candidate (Opportunity Assessment tab) before continuing.'}</p>
         <button className="btn-primary" disabled={!canContinue} onClick={onAdvance}>Continue to Step 3 →</button>
       </div>
+    </div>
+  )
+}
+
+// The real AI generation entry point (calls DynamicBA's server, which calls the
+// Anthropic API — see server/src/routes/aiRoutes.js). Grounded strictly in this
+// engagement's own SOW and stakeholders, never generic filler. Every record it creates
+// is tagged aiGenerated: true and Status: 'Draft' so it is unmistakably a draft pending
+// the consulting team's review, per DynamicBA's human-in-the-loop governance model.
+function AiDraftGenerator({ project, args, raiseAlert }) {
+  const { orgId, activeClientId } = useApp()
+  const { clients } = useClients(orgId)
+  const client = clients.find((c) => c.id === activeClientId)
+  const { records: sows } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-01')
+  const { records: stakeholders } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-05')
+  const { addRecord: addCandidate } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-15')
+  const { addRecord: addFeasibility } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-16')
+  const { addRecord: addRoi } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-17')
+  const { addRecord: addPainPoint } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-13')
+  const { addRecord: addSystem } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-09')
+  const { addRecord: addUseCase } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-19')
+  const { addRecord: addRule } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-22')
+  const { addRecord: addControl } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-23')
+  const { addRecord: addKpi } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-25')
+  const { addRecord: addRisk } = useArtifacts(args.orgId, args.clientId, args.projectId, 'OC-27')
+
+  const [state, setState] = useState('idle') // idle | loading | done | error
+  const [error, setError] = useState('')
+  const [summary, setSummary] = useState(null)
+  const sow = sows[0]
+
+  async function generate() {
+    setState('loading')
+    setError('')
+    try {
+      const draft = await generateSpecsDraft(orgId, {
+        sow, stakeholders, industry: client?.industry, clientName: client?.name, projectName: project.name,
+      })
+
+      for (const c of draft.automationCandidates || []) {
+        const feasibilityScore = computeFeasibilityScore(c)
+        const roi = computeRoiModel(c)
+        const id = `CAND-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
+        await addCandidate({ Automation_Candidate_ID: id, Name: c.name, Feasibility_Score: feasibilityScore, Rationale: c.rationale, aiGenerated: true })
+        await addFeasibility({ Feasibility_Assessment_ID: `FA-${id}`, Data_Availability_Rating: c.dataAvailability || 'Medium', aiGenerated: true })
+        await addRoi({ ROI_Model_ID: `ROI-${id}`, Payback_Months: roi.paybackMonths, NPV: roi.npv, aiGenerated: true })
+        await applyFindings(raiseAlert, evaluateCandidate({ feasibilityScore, paybackMonths: roi.paybackMonths }), 'MP-04.5')
+      }
+      for (const pp of draft.painPoints || []) {
+        await addPainPoint({ Pain_Point_ID: `PP-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, Description: pp.description, Severity: pp.severity || 'Medium', aiGenerated: true })
+      }
+      for (const s of draft.systemLandscape || []) {
+        await addSystem({ System_Landscape_ID: s.system, aiGenerated: true })
+      }
+      for (const u of draft.useCases || []) {
+        await addUseCase({ Use_Case_ID: `UC-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, Name: u.name, Description: u.description, Status: 'Draft', aiGenerated: true })
+      }
+      for (const r of draft.businessRules || []) {
+        const findings = evaluateBusinessRuleSpec()
+        await addRule({ Business_Rule_Spec_ID: `BRS-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, Name: r.name, Condition: r.condition, Action: r.action, Status: 'Draft', aiGenerated: true })
+        await applyFindings(raiseAlert, findings, 'MP-06.2')
+      }
+      for (const c of draft.controls || []) {
+        await addControl({ Control_Spec_ID: `CTL-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, Name: c.name, Type: c.type || 'Preventive', linkedToFinancialAction: !!c.linkedToFinancialAction, Description: c.description, aiGenerated: true })
+        await applyFindings(raiseAlert, evaluateControlSpec({ type: c.type, linkedToFinancialAction: c.linkedToFinancialAction }), 'MP-05.7')
+      }
+      for (const k of draft.kpis || []) {
+        await addKpi({ KPI_Spec_ID: `KPI-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, Name: k.name, Target_Value: k.targetValue, Description: k.description, aiGenerated: true })
+      }
+      for (const r of draft.risks || []) {
+        await addRisk({ Risk_Opportunity_ID: `RISK-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, Category: r.category, Description: r.description, aiGenerated: true })
+      }
+
+      setSummary({
+        candidates: (draft.automationCandidates || []).length, useCases: (draft.useCases || []).length,
+        rules: (draft.businessRules || []).length, controls: (draft.controls || []).length,
+        kpis: (draft.kpis || []).length, risks: (draft.risks || []).length,
+      })
+      setState('done')
+    } catch (err) {
+      setError(err.message)
+      setState('error')
+    }
+  }
+
+  return (
+    <div className="card p-4 mb-4 border-2 border-orange-tint">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div>
+          <h3 className="font-semibold text-grey-dark">✨ Generate Draft with AI</h3>
+          <p className="text-xs text-grey-ink max-w-2xl">Sends this engagement's Statement of Work and stakeholder list to your configured AI provider (Admin → AI Provider) and drafts automation candidates, use cases, business rules, controls, KPIs, and risks below — grounded in this SOW, not generic filler. Every AI-drafted record is tagged as a draft for the consulting team to review, edit, and approve; nothing is final until a human approves it.</p>
+        </div>
+        <button className="btn-primary whitespace-nowrap" disabled={state === 'loading' || !sow} onClick={generate}>
+          {state === 'loading' ? 'Generating…' : 'Generate Draft with AI'}
+        </button>
+      </div>
+      {!sow && <p className="text-xs text-orange-deep mt-2">Complete Step 1 (Upload SOW) first — the AI needs the Statement of Work to draft from.</p>}
+      {state === 'error' && <p className="text-sm text-red-600 mt-2">{error}</p>}
+      {state === 'done' && summary && (
+        <p className="text-sm text-green-700 mt-2">
+          AI draft added: {summary.candidates} automation candidate(s), {summary.useCases} use case(s), {summary.rules} business rule(s), {summary.controls} control(s), {summary.kpis} KPI(s), {summary.risks} risk(s) — all tagged Draft below. Review each tab, edit as needed, then continue.
+        </p>
+      )}
     </div>
   )
 }
@@ -202,11 +309,11 @@ function ToBeSection({ args, raiseAlert }) {
         <button className="btn-secondary" onClick={markApproved}>Mark Approved</button>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <QuickList {...args} objectClassId="OC-19" title="Use Cases (OC-19)" fields={[{ name: 'Name', label: 'Use case name', type: 'text' }, { name: 'Status', label: 'Status', type: 'select', options: ['Draft', 'Detailed', 'Approved'] }]} />
+        <QuickList {...args} objectClassId="OC-19" title="Use Cases (OC-19)" fields={[{ name: 'Name', label: 'Use case name', type: 'text' }, { name: 'Status', label: 'Status', type: 'select', options: ['Draft', 'Detailed', 'Approved'] }, { name: 'Description', label: 'Description', type: 'text' }]} />
         <QuickList {...args} objectClassId="OC-21" title="Integration Points (OC-21)" fields={[{ name: 'Target_System', label: 'Target system', type: 'text' }]} />
         <ExceptionFlowSection args={args} raiseAlert={raiseAlert} />
         <ControlSpecSection args={args} raiseAlert={raiseAlert} />
-        <QuickList {...args} objectClassId="OC-27" title="Risks / Opportunities (OC-27)" fields={[{ name: 'Category', label: 'Category', type: 'text' }]} />
+        <QuickList {...args} objectClassId="OC-27" title="Risks / Opportunities (OC-27)" fields={[{ name: 'Category', label: 'Category', type: 'text' }, { name: 'Description', label: 'Description', type: 'text' }]} />
       </div>
     </div>
   )
@@ -239,8 +346,10 @@ function ControlSpecSection({ args, raiseAlert }) {
       objectClassId="OC-23"
       title="Control Specs (OC-23)"
       fields={[
+        { name: 'Name', label: 'Control name', type: 'text' },
         { name: 'Type', label: 'Type', type: 'select', options: ['Preventive', 'Detective'] },
         { name: 'linkedToFinancialAction', label: 'Linked to financial action', type: 'boolean' },
+        { name: 'Description', label: 'Description', type: 'text' },
       ]}
       onAfterAdd={(record) => applyFindings(raiseAlert, evaluateControlSpec({ type: record.Type, linkedToFinancialAction: record.linkedToFinancialAction }), 'MP-05.7')}
     />
@@ -252,7 +361,12 @@ function SpecsSection({ args, raiseAlert }) {
     <div className="grid grid-cols-2 gap-4">
       <QuickList
         {...args} objectClassId="OC-22" title="Business Rule Specs (OC-22)"
-        fields={[{ name: 'Status', label: 'Status', type: 'select', options: ['Draft', 'Specified', 'Approved'] }]}
+        fields={[
+          { name: 'Name', label: 'Rule name', type: 'text' },
+          { name: 'Status', label: 'Status', type: 'select', options: ['Draft', 'Specified', 'Approved'] },
+          { name: 'Condition', label: 'Condition (IF)', type: 'text' },
+          { name: 'Action', label: 'Action (THEN)', type: 'text' },
+        ]}
         onAfterAdd={() => applyFindings(raiseAlert, evaluateBusinessRuleSpec(), 'MP-06.2')}
       />
       <KpiSpecSection args={args} raiseAlert={raiseAlert} />
@@ -267,7 +381,7 @@ function KpiSpecSection({ args, raiseAlert }) {
   return (
     <QuickList
       {...args} objectClassId="OC-25" title="KPI Specs (OC-25)"
-      fields={[{ name: 'Target_Value', label: 'Target value', type: 'text' }, { name: 'dataSource', label: 'Data source (object class)', type: 'select', options: CLASS_NAMES }]}
+      fields={[{ name: 'Name', label: 'KPI name', type: 'text' }, { name: 'Target_Value', label: 'Target value', type: 'text' }, { name: 'dataSource', label: 'Data source (object class)', type: 'select', options: CLASS_NAMES }, { name: 'Description', label: 'Description', type: 'text' }]}
       onAfterAdd={(record) => applyFindings(raiseAlert, evaluateKpiSpec({ dataSource: record.dataSource }, CLASS_NAMES), 'MP-06.7')}
     />
   )
