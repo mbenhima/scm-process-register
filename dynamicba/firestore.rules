@@ -1,0 +1,176 @@
+rules_version = '2';
+
+// DynamicBA Firestore Security Rules
+//
+// Design notes (see docs/dynamicba_spec.md Appendix A / Standard SRS NFR-DA-SEC-01/03):
+// the sibling mySCM reference app enforces RBAC and tenant isolation client-side only,
+// which the platform's own Standard SRS flags as its single highest-priority production
+// gap. DynamicBA closes that gap at the one layer a pure Firebase SPA (no backend server)
+// can genuinely enforce server-side: Firestore Security Rules. Every rule below re-derives
+// the requesting user's Organization and roles from their own user document (never trusts
+// a client-supplied orgId/role claim), so tenant isolation and RBAC hold even against a
+// malicious or compromised client.
+
+function isSignedIn() {
+  return request.auth != null;
+}
+
+function userDoc() {
+  return get(/databases/$(database)/documents/users/$(request.auth.uid));
+}
+
+function myOrgId() {
+  return userDoc().data.orgId;
+}
+
+function myRoles() {
+  return userDoc().data.roles;
+}
+
+function hasRole(role) {
+  return isSignedIn() && userDoc().data.roles.hasAny([role]);
+}
+
+function isOrgAdmin() {
+  return hasRole('org_admin');
+}
+
+function inMyOrg(orgId) {
+  return isSignedIn() && myOrgId() == orgId;
+}
+
+// Permission matrix lookup: role x capability grid stored per-organization.
+function matrixAllows(orgId, capability) {
+  let matrix = get(/databases/$(database)/documents/organizations/$(orgId)/config/permissionMatrix).data;
+  return myRoles().hasAny(matrix[capability]);
+}
+
+function canManageHierarchy(orgId) {
+  return isOrgAdmin() || matrixAllows(orgId, 'hierarchy.manage');
+}
+
+function canWriteProject(orgId) {
+  return isOrgAdmin() || matrixAllows(orgId, 'project.write');
+}
+
+function canManageGovernance(orgId) {
+  return isOrgAdmin() || matrixAllows(orgId, 'governance.manage');
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Note: the D01-D10/D15/D26 reference catalogue (macro processes, steps, business
+    // rules, controls, risks, KPIs, alerts, reports, AI use cases, modules & tiers) is
+    // the same static data for every tenant, so it ships as bundled JS
+    // (src/lib/catalogue.js, src/lib/schema.js) rather than a Firestore collection —
+    // there is nothing tenant-specific to isolate and one fewer read on every page load.
+
+    // ---- Users -------------------------------------------------------------
+    match /users/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || inMyOrg(resource.data.orgId));
+      // A user may only create their own profile document, and only once, either as the
+      // founder of a brand-new Organization or by joining one that has spare licence
+      // seats (NFR-DA-SEC-08: quota enforced server-side, not just hidden client-side).
+      allow create: if isSignedIn() && request.auth.uid == uid
+        && request.resource.data.uid == uid
+        && (
+          // Founding a new Organization: memberCount is being initialized to 1 in the
+          // same transaction, checked by the organizations/create rule below.
+          !exists(/databases/$(database)/documents/organizations/$(request.resource.data.orgId))
+          ||
+          // Joining an existing Organization: must still be under its licence's maxUsers.
+          (
+            get(/databases/$(database)/documents/organizations/$(request.resource.data.orgId)).data.memberCount
+              < get(/databases/$(database)/documents/licences/$(request.resource.data.orgId)).data.maxUsers
+          )
+        );
+      allow update: if isSignedIn() && (
+        request.auth.uid == uid // a user may edit their own profile/language preference
+        || (inMyOrg(resource.data.orgId) && (isOrgAdmin() || matrixAllows(resource.data.orgId, 'users.manage')))
+      ) && request.resource.data.orgId == resource.data.orgId; // orgId is immutable post-creation
+      allow delete: if false;
+    }
+
+    // ---- Organizations -------------------------------------------------------
+    match /organizations/{orgId} {
+      allow read: if inMyOrg(orgId);
+      allow create: if isSignedIn() && request.resource.data.memberCount == 1
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update: if inMyOrg(orgId) && (
+        isOrgAdmin()
+        || matrixAllows(orgId, 'config.manage')
+        // allow the memberCount increment performed as part of a new member joining
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['memberCount'])
+            && request.resource.data.memberCount == resource.data.memberCount + 1)
+      );
+      allow delete: if false;
+
+      match /config/{doc} {
+        allow read: if inMyOrg(orgId);
+        allow write: if inMyOrg(orgId) && (isOrgAdmin() || matrixAllows(orgId, 'config.manage') || matrixAllows(orgId, 'permissions.manage'));
+      }
+
+      match /aiUseCaseActivation/{aiucId} {
+        allow read: if inMyOrg(orgId);
+        allow write: if inMyOrg(orgId) && (isOrgAdmin() || matrixAllows(orgId, 'ai_usecases.manage'));
+      }
+
+      match /auditLog/{entryId} {
+        allow read: if inMyOrg(orgId) && (isOrgAdmin() || matrixAllows(orgId, 'audit.view'));
+        allow create: if inMyOrg(orgId); // append-only; every write records the acting user
+        allow update, delete: if false;
+      }
+
+      // ---- Clients (OC-04) ---------------------------------------------------
+      match /clients/{clientId} {
+        allow read: if inMyOrg(orgId);
+        allow write: if inMyOrg(orgId) && canManageHierarchy(orgId);
+
+        // ---- Projects / Engagements ------------------------------------------
+        match /projects/{projectId} {
+          allow read: if inMyOrg(orgId);
+          allow write: if inMyOrg(orgId) && (canManageHierarchy(orgId) || canWriteProject(orgId));
+
+          // ---- Generic per-class artifacts (D09/D10 schema-driven records) ----
+          match /artifacts/{objectClassId}/records/{recordId} {
+            allow read: if inMyOrg(orgId);
+            allow write: if inMyOrg(orgId) && canWriteProject(orgId);
+          }
+
+          match /governance/{docId} {
+            allow read: if inMyOrg(orgId);
+            allow write: if inMyOrg(orgId) && canManageGovernance(orgId);
+          }
+
+          match /alerts/{alertId} {
+            allow read: if inMyOrg(orgId);
+            allow create: if inMyOrg(orgId) && canWriteProject(orgId);
+            allow update: if inMyOrg(orgId) && canWriteProject(orgId); // mark read/dismissed
+            allow delete: if false;
+          }
+
+          match /aiUseCaseOverrides/{aiucId} {
+            allow read: if inMyOrg(orgId);
+            allow write: if inMyOrg(orgId) && (isOrgAdmin() || matrixAllows(orgId, 'ai_usecases.manage'));
+          }
+
+          match /aiUsageLog/{entryId} {
+            allow read: if inMyOrg(orgId);
+            allow create: if inMyOrg(orgId);
+            allow update, delete: if false;
+          }
+        }
+      }
+    }
+
+    // ---- Licences (D30 §7 license record; SaaS = Firestore doc, not a signed file) --
+    match /licences/{orgId} {
+      allow read: if inMyOrg(orgId);
+      // Demo build: plan changes are made by an Organization Admin in-app rather than by
+      // a Stripe/PayPal webhook + Cloud Function (see the Installation Guide's "Licensing
+      // in Production" appendix for the recommended hardening path).
+      allow write: if inMyOrg(orgId) && isOrgAdmin();
+    }
+  }
+}

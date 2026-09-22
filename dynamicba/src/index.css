@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Cambria&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background-color: #FDFDFC;
+  color: #3A3A3C;
+}
+
+[dir='rtl'] .flip-rtl {
+  transform: scaleX(-1);
+}
+
+.badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+}
+.badge-critical { @apply bg-[#F4C7C3] text-[#7a2a22]; }
+.badge-high { @apply bg-[#FBE0B5] text-[#7a5000]; }
+.badge-medium { @apply bg-[#FFF3B0] text-[#6b5c00]; }
+.badge-low { @apply bg-[#D9EAD3] text-[#2d5a2d]; }
+.badge-good { @apply bg-[#B6D7A8] text-[#1f4a1f]; }
+
+.card {
+  @apply bg-white rounded-xl border border-grey-line shadow-sm;
+}
+
+.btn-primary {
+  @apply bg-orange text-white font-semibold rounded-lg px-4 py-2 hover:bg-orange-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+}
+.btn-secondary {
+  @apply bg-white text-grey-dark font-semibold rounded-lg px-4 py-2 border border-grey-line hover:bg-grey-light transition-colors disabled:opacity-50;
+}
+.input {
+  @apply w-full rounded-lg border border-grey-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40 focus:border-orange;
+}
+.label {
+  @apply block text-xs font-semibold text-grey-ink mb-1;
+}
