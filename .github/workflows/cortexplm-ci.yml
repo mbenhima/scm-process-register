@@ -1,0 +1,29 @@
+# Build and test CortexPLM on every push and pull request (NFR-DA-SEC-11: cross-tenant tests in the pipeline).
+name: CortexPLM CI
+on:
+  push:
+    paths: ['cortexplm/**', '.github/workflows/cortexplm-ci.yml']
+  pull_request:
+    paths: ['cortexplm/**', '.github/workflows/cortexplm-ci.yml']
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Server - install, seed, test
+        working-directory: cortexplm/server
+        run: |
+          npm ci
+          npm run seed
+          npm test
+      - name: Web - install and build
+        working-directory: cortexplm/web
+        run: |
+          npm ci
+          npm run build

@@ -752,7 +752,7 @@
   "Demo accounts": "Comptes de démonstration",
   "Department": "Département",
   "Department (OBS)": "Département (OBS)",
-  "Deployment": "Déploiement",
+  "Deployment": "Hébergement",
   "Describe the change": "Décrivez la modification",
   "Describe the change (required)": "Décrivez la modification (obligatoire)",
   "Describe the idea, score its complexity, confirm the track, then create it. E2E-01 Idea-to-Business Plan starts automatically.": "Décrivez l’idée, évaluez sa complexité, confirmez la trajectoire, puis créez-la. E2E-01 De l’idée au business plan démarre automatiquement.",
@@ -1863,6 +1863,12 @@
   "Construction": "Construction",
   "RACSI activities": "Activités RACSI",
   "Work package": "Lot de travaux",
-  "All languages": "Toutes les langues"
+  "All languages": "Toutes les langues",
+  "Requirements met": "Exigences satisfaites",
+  "{p} partial · {d} depend on hosting": "{p} partielles · {d} dépendent de l’hébergement",
+  "Assessment": "Évaluation",
+  "Met": "Satisfaite",
+  "Partial": "Partielle",
+  "Fixed": "Corrigée"
  }
 }

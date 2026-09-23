@@ -752,7 +752,7 @@
   "Demo accounts": "حسابات تجريبية",
   "Department": "القسم",
   "Department (OBS)": "القسم (OBS)",
-  "Deployment": "النشر",
+  "Deployment": "الاستضافة",
   "Describe the change": "صف التغيير",
   "Describe the change (required)": "صف التغيير (إلزامي)",
   "Describe the idea, score its complexity, confirm the track, then create it. E2E-01 Idea-to-Business Plan starts automatically.": "صف الفكرة، وقيّم تعقيدها، وأكّد المسار، ثم أنشئها. تبدأ E2E-01 من الفكرة إلى خطة العمل تلقائياً.",
@@ -1863,6 +1863,12 @@
   "Construction": "البناء",
   "RACSI activities": "أنشطة RACSI",
   "Work package": "حزمة عمل",
-  "All languages": "كل اللغات"
+  "All languages": "كل اللغات",
+  "Requirements met": "المتطلبات المستوفاة",
+  "{p} partial · {d} depend on hosting": "{p} جزئية · {d} تعتمد على الاستضافة",
+  "Assessment": "التقييم",
+  "Met": "مستوفى",
+  "Partial": "جزئي",
+  "Fixed": "تم الإصلاح"
  }
 }

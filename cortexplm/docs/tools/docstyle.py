@@ -226,7 +226,7 @@ def table(doc, headers, rows, widths=None, size=9.5, status_col=None):
                 if li: p = c.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.LEFT; p.paragraph_format.space_after = Pt(0); p.paragraph_format.line_spacing = 1.0
                 _rich(p, line, size=size)
             if status_col is not None and i == status_col:
-                _cell_bg(c, {'Covered': 'D9EAD3', 'Partial': 'FBE0B5', 'Missing': 'F4C7C3'}.get(str(val).split(' ')[0], 'D9EAD3'))
+                _cell_bg(c, {'Covered': 'D9EAD3', 'Met': 'D9EAD3', 'Fixed': 'B6D7A8', 'Partial': 'FBE0B5', 'Deployment': 'FFF3B0', 'Missing': 'F4C7C3', 'Gap': 'F4C7C3'}.get(str(val).replace('*', '').split(' ')[0], 'D9EAD3'))
     doc.add_paragraph().paragraph_format.space_after = Pt(2)
     return t
 

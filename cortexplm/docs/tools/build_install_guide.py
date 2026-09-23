@@ -9,7 +9,10 @@ ORGS = [
     ('Agro-Business – Dairy Products', 'Valdora Dairy Cooperative', 'valdora.example'),
     ('Transportation', 'Orvane Transit Group', 'orvane.example'),
     ('Oil, Gas & Energy', 'Kestrel Energy & Utilities', 'kestrel.example'),
+    ('Construction', 'Ridgeway Construction Contractors', 'ridgeway.example'),
 ]
+GROUP_OF = {'cedarline.example': 'Atlas Infrastructure Holding', 'orvane.example': 'Atlas Infrastructure Holding', 'ridgeway.example': 'Atlas Infrastructure Holding',
+            'valdora.example': 'Crescent Agro-Energy Group', 'kestrel.example': 'Crescent Agro-Energy Group'}
 ROLES = [
     ('exec', 'Executive Sponsor (records gate decisions)'), ('board1', 'Gate Review Board member'), ('pm1', 'Product Manager (runs projects)'),
     ('pm2', 'Product Manager (French or Arabic interface in two organizations)'), ('portfolio', 'Portfolio Manager'), ('engineering', 'Engineering Lead'),
@@ -75,7 +78,7 @@ def build(out):
     para(doc, 'Open a command window in the **server** folder, then type these three commands, one at a time. Press **Enter** after each and wait until it finishes.')
     table(doc, ['Step', 'Type this', 'What happens', 'How long'], [
         ('1', '**npm install**', 'Downloads the components the server needs.', '1 to 3 minutes'),
-        ('2', '**npm run seed**', 'Creates the database with six demonstration organizations, 126 projects and their history. It ends with "Done".', 'About 1 minute'),
+        ('2', '**npm run seed**', 'Creates the database with seven demonstration organizations (one per sector), 147 projects and their history. It ends with "Done".', 'About 1 minute'),
         ('3', '**npm run dev**', 'Starts the server. It shows "CortexPLM API is running on http://localhost:4000".', 'A few seconds'),
     ], widths=[0.6, 1.5, 3.6, 1.07])
     callout(doc, 'Leave this window open. The server stops when the window closes.', 'Important')
@@ -98,7 +101,8 @@ def build(out):
     table(doc, ['E-mail', 'Password', 'Can do'], [('**admin@cortexplm.example**', '**Admin#2026**', 'Everything, in every organization. Switch organization from the top bar.')], widths=[2.4, 1.2, 3.17])
     doc.add_heading('6.2 Demonstration organizations', 2)
     para(doc, 'Every organization has the same set of users. Build the e-mail address from a user name and the organization domain, for example **pm1@metrocity.example**. The password is always **Demo#2026**.')
-    table(doc, ['Industry', 'Organization', 'Domain'], [(a, b, f'**{c}**') for a, b, c in ORGS], widths=[2.1, 2.8, 1.87])
+    table(doc, ['Sector', 'Organization', 'Domain', 'Group'], [(a, b, f'**{c}**', GROUP_OF.get(c, 'Independent')) for a, b, c in ORGS], widths=[1.75, 2.2, 1.35, 1.47], size=9.5)
+    para(doc, 'Organizations of the same group can compare their indicators in **Reports > Benchmarking**. Independent organizations compare only their own projects.')
     doc.add_heading('6.3 User names and roles', 2)
     table(doc, ['User name', 'Role in the application'], [(f'**{a}**', b) for a, b in ROLES], widths=[1.4, 5.37])
     callout(doc, 'The licence of Orvane Transit Group expires in 22 days. A yellow banner shows this on purpose, to demonstrate the licence warning.', 'Note')
@@ -113,6 +117,14 @@ def build(out):
     doc.add_heading('7.3 Reset the demonstration data', 2)
     para(doc, 'Stop the server window (**Ctrl + C**), type **npm run seed**, then **npm run dev** again. All changes are lost and the demonstration data is recreated.')
 
+    doc.add_heading('7.4 Back up and restore', 2)
+    para(doc, 'While the server runs, it writes one copy of the database per day to **server/data/backups** and keeps 14 days of copies.')
+    table(doc, ['To', 'Do this'], [
+        ('Make a backup now', 'In a command window in the **server** folder, type **npm run backup**. Or sign in as the platform administrator and select **Back up now** in **Administration > Configuration**.'),
+        ('Restore a backup', 'Stop the server (**Ctrl + C**). Copy the chosen file from **server/data/backups** over **server/data/cortexplm.db**. Start the server again with **npm run dev**.'),
+        ('Keep backups elsewhere', 'Copy the **server/data/backups** folder to another disk or a network share regularly.'),
+    ], widths=[1.8, 4.97])
+
     h1(doc, '8. Optional Settings', new_page=False)
     para(doc, 'The application works without any setting. The items below are for administrators who want to go further.')
     table(doc, ['Setting', 'How to change it'], [
@@ -120,6 +132,7 @@ def build(out):
         ('Security secret', 'In **.env**, replace **APP_SECRET** with a long random text before real use.'),
         ('Outgoing e-mail', 'In **.env**, fill in the **SMTP_** lines with your mail server. Without them, e-mail notifications stay queued and in-app notifications still work.'),
         ('Live AI model', 'Optional. In the application, open **Settings**, section **Live AI model**, and type an API key. Without a key, the built-in suggestions are used.'),
+        ('Backups', 'In **.env**, **BACKUP_RETENTION_DAYS** sets how many days of backups are kept (default 14); **BACKUP_DAILY=off** stops the automatic daily backup.'),
         ('OnPrem licence file', 'In **.env**, set **DEPLOYMENT_MODE=onprem**. The vendor signs a licence with **npm run sign-licence**; the administrator installs it in **Administration > Licensing**.'),
     ], widths=[1.6, 5.17])
 

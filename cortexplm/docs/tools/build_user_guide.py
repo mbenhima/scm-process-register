@@ -2,6 +2,7 @@
 Run: python3 build_user_guide.py scenario-log.json screenshots-dir out.docx"""
 import json, os, sys
 from docstyle import new_document, header_footer, cover, toc, h1, para, bullets, numbered, table, callout, figure
+from guide_modules import benchmarking_run, module_scenarios
 
 GATE_NAMES = {'T-1': 'T-1', 'T0': 'T0', 'T1': 'T1', 'T2': 'T2', 'T3': 'T3', 'T4': 'T4', 'T5': 'T5', 'T6': 'T6'}
 CRITERIA = [('strategic', 'Strategic impact'), ('investment', 'Investment level'), ('novelty', 'Technical novelty'), ('regulatory', 'Regulatory and safety exposure'),
@@ -151,8 +152,9 @@ def run_section(doc, run, shots):
     ])
 
 
-def build(log_path, shots, out):
+def build(log_path, shots, out, bench_path=None):
     runs = json.load(open(log_path))
+    bench = json.load(open(bench_path)) if bench_path else None
     from_scen = {1: 'A low-complexity citizen service goes from idea to launch in the Fast Track: E2E-01, E2E-02 and E2E-05 with gates T-1, T0 and T3.',
                  2: 'A Fast Track feature for bus passengers. One task is skipped under Rule R2, and the board sends the T0 gate back once (Recycle) before approving it.',
                  3: 'A new dairy product runs the whole Light Track: six gate decisions, the E2E-09 market campaign, the performance review (E2E-07) with Rule R1, and a relaunch through E2E-08 Branch A that loops back to launch (E2E-05).',
@@ -174,7 +176,9 @@ def build(log_path, shots, out):
         ('3', 'Agro-Business – Dairy', 'Light', 'New idea', 'Relaunched', 'T-1, T0, T1, T2, T3, T5, T3'),
         ('4', 'Healthcare', 'Full', 'New idea', 'Retired', 'T-1, T0, T1, T2, T3, T4, T5, T6'),
         ('5', 'Oil, Gas & Energy', 'Full', 'Live product', 'Relaunched', 'T5, T2, T3'),
+        ('6', 'Construction', 'All', 'Portfolio', 'Benchmarked', 'Within the organization and across its group'),
     ], widths=[0.45, 1.6, 0.6, 1.0, 1.0, 2.12])
+    para(doc, 'Chapter 11 adds short scenarios for every other module: governance registers, RACSI, KPIs, BPMN, AI, knowledge, templates, WBS, lessons learned, reports, notifications and administration.')
     callout(doc, 'Start from a fresh demonstration database (Installation Guide, "Reset the demonstration data") so the project codes match: PUB-022, TRN-022, DAI-022 and HLT-022. If you already created projects, your codes will simply have a higher number.', 'Before you start')
     doc.add_heading('1.1 Conventions', 2)
     table(doc, ['You see', 'Meaning'], [
@@ -202,7 +206,18 @@ def build(log_path, shots, out):
     doc.add_heading('2.4 Language', 2)
     para(doc, 'Choose **English**, **Français** or **العربية** in the language list of the top bar. Arabic switches the whole layout to right-to-left, and the navigation bar moves to the right. Your choice is saved; the organization default applies otherwise.')
     figure(doc, S('10_arabic.png'), 'The dashboard in Arabic, laid out right to left.')
-    doc.add_heading('2.5 Alerts, notifications and the assistant', 2)
+    doc.add_heading('2.5 Organizations and groups', 2)
+    para(doc, 'The demonstration has seven organizations, one per sector. An organization may belong to a group; its members can compare themselves with each other (Run 6). The others are independent.')
+    table(doc, ['Organization', 'Sector', 'Domain', 'Group'], [
+        ('Metro City Digital Services Agency', 'Public Sector', 'metrocity.example', 'No (independent)'),
+        ('Cedarline Precast Systems', 'Manufacturing in Construction', 'cedarline.example', 'Atlas Infrastructure Holding'),
+        ('Meridale Health Network', 'Healthcare', 'meridale.example', 'No (independent)'),
+        ('Valdora Dairy Cooperative', 'Agro-Business – Dairy Products', 'valdora.example', 'Crescent Agro-Energy Group'),
+        ('Orvane Transit Group', 'Transportation', 'orvane.example', 'Atlas Infrastructure Holding'),
+        ('Kestrel Energy & Utilities', 'Oil, Gas & Energy', 'kestrel.example', 'Crescent Agro-Energy Group'),
+        ('Ridgeway Construction Contractors', 'Construction', 'ridgeway.example', 'Atlas Infrastructure Holding'),
+    ], widths=[2.2, 1.8, 1.3, 1.47], size=9.5)
+    doc.add_heading('2.6 Alerts, notifications and the assistant', 2)
     bullets(doc, [
         'The **bell** in the top bar shows unread alerts, such as overdue tasks or a gate waiting too long. Open **Alerts** for the full list.',
         '**Notifications** holds your inbox and lets you choose, per category, the channels you want (in-app, e-mail, webhook, SMS, push).',
@@ -257,7 +272,10 @@ def build(log_path, shots, out):
         if r.get('error'): continue
         run_section(doc, r, shots)
 
-    h1(doc, '10. Messages You May Meet')
+    if bench: benchmarking_run(doc, bench, shots, 10)
+    module_scenarios(doc, 11)
+
+    h1(doc, '12. Messages You May Meet')
     table(doc, ['Message', 'Why', 'What to do'], [
         ('Evidence is required before this item can be marked complete (BR-005).', 'A mandatory checklist item has no evidence.', 'Type an evidence reference or attach a file, then select **Mark complete**.'),
         ('Gate submission blocked: … mandatory checklist item(s) are open (BR-004).', 'The checklist is not finished.', 'Complete or waive the mandatory items, then complete the checklist task.'),
@@ -271,4 +289,4 @@ def build(log_path, shots, out):
 
 
 if __name__ == '__main__':
-    build(*sys.argv[1:4])
+    build(*sys.argv[1:5])

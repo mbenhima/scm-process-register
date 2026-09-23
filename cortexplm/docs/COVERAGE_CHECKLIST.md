@@ -1,6 +1,6 @@
 # CortexPLM Coverage Checklist
 
-All 41 content blocks of the five source documents and of the request are covered. Counts are measured on the running application after a fresh seed.
+Every content block of the five source documents is covered; the SRS blocks are partial (148 of 155 requirements met, see the SRS Gap Analysis). Counts are measured on the running application after a fresh seed.
 
 ## Process Design Reference v2 (CortexPLM_Process_Design_Reference_v2.docx)
 
@@ -22,16 +22,16 @@ All 41 content blocks of the five source documents and of the request are covere
 | Cover | Workbook cover data | Reference API /reference/workbook | Loaded | Covered |
 | D01 Macro Processes | Macro process pages (owner role, category, tier) | Macro processes | 69 of 69 | Covered |
 | D02 Tasks & Steps | Steps under each macro process; checklist evidence items | Macro processes; gate checklists | 727 of 727 | Covered |
-| D03 Business Rules | Business rules register (versioned); BR-001/002/004/005/008/009/011/030 enforced live | Governance > Business rules | 64 / 64 / 64 / 64 / 64 / 64 per organization (60 reference + organization rules) | Covered |
+| D03 Business Rules | Business rules register (versioned); BR-001/002/004/005/008/009/011/030 enforced live | Governance > Business rules | 64 / 64 / 64 / 64 / 64 / 64 / 64 per organization (60 reference + organization rules) | Covered |
 | D03a Actions Registry | Actions registry (ACT-01..) | Governance > Business rules > Actions | 50 of 50 | Covered |
-| D04 Controls | Controls register with COSO components; CTL-01, CTL-04 enforced | Governance > Controls (COSO) | 58 / 53 / 59 / 53 / 54 / 57 per organization (47 reference + compliance starters) | Covered |
-| D05 Risks | Risks & opportunities register, heat map, project risks | Governance > Risks & opportunities | 49 / 50 / 49 / 49 / 48 / 50 per organization (27 reference + project risks) | Covered |
-| D06 KPIs | Built-in KPIs computed live or recorded, custom KPIs | Governance > KPIs | 38 / 38 / 38 / 38 / 38 / 38 per organization (38 of 38) | Covered |
+| D04 Controls | Controls register with COSO components; CTL-01, CTL-04 enforced | Governance > Controls (COSO) | 58 / 53 / 59 / 53 / 54 / 57 / 57 per organization (47 reference + compliance starters) | Covered |
+| D05 Risks | Risks & opportunities register, heat map, project risks | Governance > Risks & opportunities | 50 / 48 / 50 / 48 / 49 / 48 / 48 per organization (27 reference + project risks) | Covered |
+| D06 KPIs | Built-in KPIs computed live or recorded, custom KPIs | Governance > KPIs | 38 / 38 / 38 / 38 / 38 / 38 / 38 per organization (38 of 38) | Covered |
 | D07 Alerts | Alert catalog, background checks, multi-channel dispatch | Alerts; Notifications | 31 alert types (25 D07 + 6 system) | Covered |
 | D08 Reports & Cockpits | Report screens with PDF, Excel and Word export | Reports & cockpits | 24 of 24 | Covered |
 | D09 Information Class Model | Data model page | Reports > Data model | 58 of 58 | Covered |
 | D10 Data Dictionary | Data dictionary with types and validation rules | Reports > Data model | 189 of 189 | Covered |
-| D15 AI Use Cases | Governed AI use cases, suggestions, append-only usage log | Intelligence > AI use cases | 23 / 23 / 23 / 23 / 23 / 23 per organization (23 of 23) | Covered |
+| D15 AI Use Cases | Governed AI use cases, suggestions, append-only usage log | Intelligence > AI use cases | 23 / 23 / 23 / 23 / 23 / 23 / 23 per organization (23 of 23) | Covered |
 | D15b Role Menus | Role menus reference; navigation filtered by role permissions | Reports > Role menus | 309 of 309 | Covered |
 | D26 Modules & Tiers | Tiers, feature gating and quotas per subscription | Administration > Configuration | 11 modules | Covered |
 
@@ -52,15 +52,15 @@ All 41 content blocks of the five source documents and of the request are covere
 | Source content | Implemented as | Where to see it | Measured | Status |
 |---|---|---|---|---|
 | Sections 1–3 introduction, principles, common platform architecture | Multi-tenant server, RBAC, commercial gating, AI governance, RAG, i18n, justification, versions, communication, REX | Whole application | Implemented | Covered |
-| Section 4 functional requirements FR-DA-* (18 groups) | Every requirement traced to a screen and a server module | Administration > Traceability | 155 of 155 requirements traced | Covered |
-| Section 5 non-functional requirements NFR-DA-* | Security headers, rate limit, encryption, tenant isolation tests, accessibility, RTL, exports | Administration > Traceability | Included in the 155 | Covered |
+| Section 4 functional requirements FR-DA-* (18 groups) | Each requirement assessed individually (see the SRS Gap Analysis) | Administration > Traceability | 110 of 112 met; partial: FR-DA-TEN-08, FR-DA-I18N-01 | Partial |
+| Section 5 non-functional requirements NFR-DA-* | Measured: response times, 100 concurrent users, BPMN round trip, WCAG scan, phone width; tests in CI | Administration > Traceability | 38 of 43 met; partial or hosting: NFR-DA-REL-02, NFR-DA-SCALE-03, NFR-DA-UX-03, NFR-DA-PORT-02, NFR-DA-MAINT-01 | Partial |
 | Sections 6–7 data model and interface conventions; Appendix A | REST JSON API, UI conventions, data model page | Data model; API /api/* | Implemented | Covered |
 
 ## D30 Licensing Implementation Schema (CD_D30_Licensing_Implementation_Schema.docx)
 
 | Source content | Implemented as | Where to see it | Measured | Status |
 |---|---|---|---|---|
-| One LicenceProvider interface, SaaS and OnPrem implementations | SaasLicenceProvider (signed record) and OnPremLicenceProvider (Ed25519 .lic file) | Administration > Licensing | saas active 25/60 / saas active 24/40 / saas active 24/40 / saas active 24/30 / saas warning 24/30 / saas active 24/30 | Covered |
+| One LicenceProvider interface, SaaS and OnPrem implementations | SaasLicenceProvider (signed record) and OnPremLicenceProvider (Ed25519 .lic file) | Administration > Licensing | saas active 25/60 / saas active 24/40 / saas active 24/40 / saas active 24/30 / saas warning 24/30 / saas active 24/30 / saas active 24/40 | Covered |
 | Add-on licensing as independent toggles (compliance standards) | Compliance standards activation with non-certification disclosure | Administration > Configuration | Implemented | Covered |
 | Hardware binding, licence file format, vendor signing tool | hardwareId field, npm run keys / npm run sign-licence | server/tools | Implemented | Covered |
 | maxUsers enforcement and expiry warning (CTRL-003) | User creation blocked at the limit; banner 30 days before expiry | Users & roles; top banner | Orvane licence expires in 22 days | Covered |
@@ -69,7 +69,9 @@ All 41 content blocks of the five source documents and of the request are covere
 
 | Source content | Implemented as | Where to see it | Measured | Status |
 |---|---|---|---|---|
-| Six industries: Public Sector, Manufacturing in Construction, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy | One organization per industry with 24–25 users and 21 projects | Organization switcher (platform admin) | Public Sector / Manufacturing in Construction / Healthcare / Agro-Business - Dairy Products / Transportation / Oil, Gas & Energy | Covered |
+| Seven sectors: Public Sector, Manufacturing in Construction, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Construction | One organization per sector with 24–25 users and 21 projects | Organization switcher (platform admin) | Public Sector / Manufacturing in Construction / Healthcare / Agro-Business - Dairy Products / Transportation / Oil, Gas & Energy / Construction | Covered |
+| Tenant model: Group (Yes/No), Organization, Project | Atlas Infrastructure Holding (Cedarline, Ridgeway, Orvane); Crescent Agro-Energy Group (Valdora, Kestrel); Metro City and Meridale independent | Administration > Organizations & OBS | 2 groups, 5 members, 2 independent | Covered |
+| Benchmarking within the organization and within the group (external out of scope) | Project type, track and department comparison; group comparison of aggregates with opt-out; 5 automated tests | Reports > Benchmarking | 13 indicators | Covered |
 | At least 10 instances of each E2E process per industry | E2E-01:21 02:19 03:16 04:14 05:16 06:12 07:12 08:10 09:13 in every organization | Dashboard, E2E pages | Minimum 10 met | Covered |
 | Pin and slide menu; top, bottom, left and right positions | Navigation bar settings, saved per user; RTL aware | Sliders icon in the navigation bar | Implemented | Covered |
 
@@ -81,4 +83,4 @@ All 41 content blocks of the five source documents and of the request are covere
 | 2 | TRN-022 Real-time Bus Crowding Indicator | Fast | 32 | Launched |
 | 3 | DAI-022 Lactose-free Greek Yogurt 500 g | Light | 78 | Active |
 | 4 | HLT-022 Remote Cardiac Monitoring Patch | Full | 77 | Retired |
-| 5 | ENR-012 Green Hydrogen Electrolyser Pilot | Full | 30 | Active |
+| 5 | ENR-012 Green Hydrogen Electrolyser Pilot | Full | 31 | Active |

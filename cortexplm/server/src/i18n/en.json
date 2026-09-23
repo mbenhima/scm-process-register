@@ -1863,6 +1863,12 @@
   "Construction": "Construction",
   "RACSI activities": "RACSI activities",
   "Work package": "Work package",
-  "All languages": "All languages"
+  "All languages": "All languages",
+  "Requirements met": "Requirements met",
+  "{p} partial · {d} depend on hosting": "{p} partial · {d} depend on hosting",
+  "Assessment": "Assessment",
+  "Met": "Met",
+  "Partial": "Partial",
+  "Fixed": "Fixed"
  }
 }

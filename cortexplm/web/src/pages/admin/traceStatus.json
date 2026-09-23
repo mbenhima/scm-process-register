@@ -1,0 +1,622 @@
+{
+"FR-DA-TEN-01": [
+"Met",
+"Administration > Organizations & OBS: groups, organizations; Innovation projects: projects (create, edit, delete) behind hierarchy.manage / project rights."
+],
+"FR-DA-TEN-02": [
+"Met",
+"Seed: Atlas Infrastructure Holding (3 orgs), Crescent Agro-Energy Group (2 orgs), 2 independent organizations. Group is optional in the organization form."
+],
+"FR-DA-TEN-03": [
+"Met",
+"Foreign keys: groups ON DELETE SET NULL; organization ON DELETE CASCADE for projects, users, AI state."
+],
+"FR-DA-TEN-04": [
+"Fixed",
+"Added per-project OBS trees (tree selector) and free-text node types. First delivery had per-organization trees only."
+],
+"FR-DA-TEN-05": [
+"Met",
+"Deleting a node moves its children up one level; linked records keep integrity (SET NULL)."
+],
+"FR-DA-TEN-06": [
+"Met",
+"OBS table shows live counts of users, projects, rules, controls, risks, RACSI, BPMN and REX per node."
+],
+"FR-DA-TEN-07": [
+"Met",
+"checkQuota on project and OBS creation returns HTTP 409."
+],
+"FR-DA-TEN-08": [
+"Partial",
+"Other tenants' records return 404 and lists are scoped (automated tests). Record ids are one global sequence, so the size of an id can hint at overall volume. Recommendation: opaque identifiers."
+],
+"FR-DA-RBAC-01": [
+"Met",
+"Administration > Users & roles: name, e-mail, several roles, language."
+],
+"FR-DA-RBAC-02": [
+"Met",
+"Administration > Permission matrix, editable, effective immediately; new permissions added by a startup migration."
+],
+"FR-DA-RBAC-03": [
+"Met",
+"requirePerm on every route; 403 verified by tests."
+],
+"FR-DA-RBAC-04": [
+"Met",
+"Owner cannot evaluate own task; evaluator must differ (UI and server)."
+],
+"FR-DA-RBAC-05": [
+"Met",
+"/directory returns id, name, e-mail for assignment."
+],
+"FR-DA-RBAC-06": [
+"Met",
+"Signed JWT with 8-hour lifetime; password hashes never returned."
+],
+"FR-DA-RBAC-07": [
+"Met",
+"Justification-required toggle in Configuration, default on."
+],
+"FR-DA-CFG-01": [
+"Met",
+"One subscription per organization; entitlements.js is the single source."
+],
+"FR-DA-CFG-02": [
+"Met",
+"Features, AI tier and quotas (projects, OBS nodes, custom AI use cases) per pack/bundle."
+],
+"FR-DA-CFG-03": [
+"Met",
+"28 add-ons as independent toggles, compatibility checked."
+],
+"FR-DA-CFG-04": [
+"Met",
+"GDPR, ISO/IEC 27001, SOC 2, ISO 27701, HIPAA, ISO 9001 toggles."
+],
+"FR-DA-CFG-05": [
+"Met",
+"Idempotent starter controls; deactivation keeps tagged controls."
+],
+"FR-DA-CFG-06": [
+"Met",
+"requireFeatureFor middleware returns 403 naming the feature, independent of RBAC (tested)."
+],
+"FR-DA-CFG-07": [
+"Met",
+"/config and /catalog readable by every authenticated user; menu shows locked items."
+],
+"FR-DA-CFG-08": [
+"Met",
+"Configuration shows usage bars per quota and flags reached quotas."
+],
+"FR-DA-CFG-09": [
+"Met",
+"Non-certification disclosure on activation, in Help and in the knowledge base (EN, FR, AR)."
+],
+"FR-DA-CFG-10": [
+"Met",
+"Administration > Integrations: register, configure, enable/disable each connector."
+],
+"FR-DA-CFG-11": [
+"Met",
+"Credentials encrypted (AES-GCM) at rest, never returned or logged."
+],
+"FR-DA-CFG-12": [
+"Met",
+"Test connection records Healthy / Authentication failure / Unreachable with timestamp."
+],
+"FR-DA-CFG-13": [
+"Met",
+"Field mappings and exchange log (record, time, direction, result)."
+],
+"FR-DA-CFG-14": [
+"Met",
+"Inbound endpoint verifies HMAC signature and scopes events to the registering organization."
+],
+"FR-DA-AI-01": [
+"Met",
+"AI use cases: create, edit, versions, revert; ai.manage."
+],
+"FR-DA-AI-02": [
+"Met",
+"23 use cases seeded per organization; custom use cases limited by quota."
+],
+"FR-DA-AI-03": [
+"Met",
+"Version 1 on creation; revert creates a new current version."
+],
+"FR-DA-AI-04": [
+"Met",
+"Organization activation plus project Inherit/On/Off override."
+],
+"FR-DA-AI-05": [
+"Met",
+"Generation refused for a deactivated use case; reviewed content kept."
+],
+"FR-DA-AI-06": [
+"Met",
+"Every suggestion labelled AI-generated with tier and source."
+],
+"FR-DA-AI-07": [
+"Met",
+"Append-only usage log enforced by database triggers."
+],
+"FR-DA-AI-08": [
+"Met",
+"Settings > Live AI model stored in the browser only, forwarded per request."
+],
+"FR-DA-AI-09": [
+"Met",
+"Live call failure falls back to the built-in generator."
+],
+"FR-DA-AI-10": [
+"Met",
+"Suggestions read only records the user may already see."
+],
+"FR-DA-AI-11": [
+"Met",
+"Retrieval grounding; references shown with the output."
+],
+"FR-DA-KB-01": [
+"Fixed",
+"Reference articles now seeded in English, French and Arabic, with a language filter. First delivery: English only."
+],
+"FR-DA-KB-02": [
+"Met",
+"One TF-IDF engine for knowledge, records, FAQ and assistant help mode."
+],
+"FR-DA-KB-03": [
+"Met",
+"Retrieval scoped to the tenant (tested)."
+],
+"FR-DA-KB-04": [
+"Met",
+"Retrieval result returned when the live model is unavailable."
+],
+"FR-DA-GOV-01": [
+"Met",
+"Business rules register with condition, action, severity, owner."
+],
+"FR-DA-GOV-02": [
+"Met",
+"Controls with COSO component, type, frequency, owner, effectiveness."
+],
+"FR-DA-GOV-03": [
+"Met",
+"Compliance standard tag on controls, with non-certification wording."
+],
+"FR-DA-GOV-04": [
+"Met",
+"Risks and opportunities, computed score, 5×5 heat map."
+],
+"FR-DA-GOV-05": [
+"Met",
+"Custom KPIs with formula, target, owner, measurements."
+],
+"FR-DA-GOV-06": [
+"Met",
+"RACSI activities linked to steps or records; assignments to people or roles."
+],
+"FR-DA-GOV-07": [
+"Met",
+"One Accountable per activity enforced by a unique index."
+],
+"FR-DA-GOV-08": [
+"Fixed",
+"Macro process pages now list the organization's rules, controls, risks, RACSI activities and lessons tagged to that process. First delivery: tags stored but no per-process view."
+],
+"FR-DA-BPMN-01": [
+"Met",
+"bpmn-js modeler with XML payload, title and description."
+],
+"FR-DA-BPMN-02": [
+"Met",
+"Viewer for view rights; modeler and Save for edit rights with the entitlement."
+],
+"FR-DA-BPMN-03": [
+"Met",
+"Palette in its own panel beside the canvas."
+],
+"FR-DA-BPMN-04": [
+"Met",
+"Export .bpmn and Import .bpmn."
+],
+"FR-DA-BPMN-05": [
+"Met",
+"9 diagrams per organization (one per E2E process)."
+],
+"FR-DA-REP-01": [
+"Met",
+"38 KPIs computed live from tenant data."
+],
+"FR-DA-REP-02": [
+"Met",
+"24 reports exported server-side as PDF, Excel and Word in the brand style."
+],
+"FR-DA-REP-03": [
+"Met",
+"File name with report key and date; correct MIME type and attachment header."
+],
+"FR-DA-REP-04": [
+"Met",
+"CSV of on-screen rows with UTF-8 byte-order mark on every table."
+],
+"FR-DA-ALT-01": [
+"Met",
+"One shared alert catalog (31 types) for seed and live checks."
+],
+"FR-DA-ALT-02": [
+"Met",
+"Alert inbox with unread counter in the top bar."
+],
+"FR-DA-ALT-03": [
+"Met",
+"De-duplication by type, entity and period."
+],
+"FR-DA-ALT-04": [
+"Met",
+"Read and dismiss stored per user, separate from the alert."
+],
+"FR-DA-ALT-05": [
+"Met",
+"Alert types enabled/disabled per organization, name and code shown."
+],
+"FR-DA-AST-01": [
+"Met",
+"Fixed data-query intents answered in EN, FR and AR."
+],
+"FR-DA-AST-02": [
+"Met",
+"Permission checked after matching, before querying; refusal names the permission."
+],
+"FR-DA-AST-03": [
+"Met",
+"Answers scoped to the tenant."
+],
+"FR-DA-AST-04": [
+"Met",
+"Help mode ranks the FAQ corpus with the shared engine."
+],
+"FR-DA-AST-05": [
+"Met",
+"Dedicated screen and floating widget on every screen."
+],
+"FR-DA-AST-06": [
+"Met",
+"assistant.use permission plus assistant entitlement."
+],
+"FR-DA-AUD-01": [
+"Met",
+"Audit entry per governed change with actor, time, entity, before/after."
+],
+"FR-DA-AUD-02": [
+"Met",
+"Stage then justify; value and note written together."
+],
+"FR-DA-AUD-03": [
+"Met",
+"Read-only audit trail screen; no edit or delete route."
+],
+"FR-DA-AUD-04": [
+"Met",
+"Audit writes wrapped so they never fail the operation."
+],
+"FR-DA-HLP-01": [
+"Met",
+"24 Help articles covering every module, open to every user."
+],
+"FR-DA-HLP-02": [
+"Met",
+"Same article set in EN, FR and AR."
+],
+"FR-DA-HLP-03": [
+"Met",
+"Case-insensitive search on title and body."
+],
+"FR-DA-TPL-01": [
+"Met",
+"Project templates pre-fill the New project wizard; every field stays editable."
+],
+"FR-DA-TPL-02": [
+"Met",
+"Templates CRUD with versions and restore."
+],
+"FR-DA-TPL-03": [
+"Met",
+"Templates available in every subscription."
+],
+"FR-DA-TPL-04": [
+"Met",
+"Templates copied at use; deleting one leaves projects untouched."
+],
+"FR-DA-I18N-01": [
+"Partial",
+"All 1,100 interface strings and 117 fixed server messages in EN, FR, AR, plus reference labels. Remaining in English: long reference texts from the source documents (macro-process goals, 727 step descriptions) and 18 server messages that embed values."
+],
+"FR-DA-I18N-02": [
+"Met",
+"Language switch in the top bar applies at once without reload."
+],
+"FR-DA-I18N-03": [
+"Met",
+"Language saved per user; user > organization > English."
+],
+"FR-DA-I18N-04": [
+"Met",
+"Arabic mirrors navigation, forms, tables, charts and the Gantt."
+],
+"FR-DA-I18N-05": [
+"Met",
+"Organization default language in Configuration."
+],
+"FR-DA-I18N-06": [
+"Met",
+"A new language is a new JSON file in server/src/i18n."
+],
+"FR-DA-WBS-01": [
+"Met",
+"WBS trees referencing tasks (actions) from any project."
+],
+"FR-DA-WBS-02": [
+"Met",
+"Dates, duration, percent complete, predecessors."
+],
+"FR-DA-WBS-03": [
+"Met",
+"Gantt with dependency lines and state colours."
+],
+"FR-DA-WBS-04": [
+"Met",
+"Summary nodes roll up dates and progress."
+],
+"FR-DA-WBS-05": [
+"Met",
+"WBS CRUD; a task can appear in several WBS."
+],
+"FR-DA-WBS-06": [
+"Met",
+"Gantt export to PDF."
+],
+"FR-DA-VER-01": [
+"Met",
+"One version service (entity_versions) used by all versioned entities."
+],
+"FR-DA-VER-02": [
+"Met",
+"Version 1 at creation, new version on each edit."
+],
+"FR-DA-VER-03": [
+"Fixed",
+"Added \"Compare two versions\" field by field on every version history (registers, AI use cases, templates, REX, track configuration). First delivery: history without comparison."
+],
+"FR-DA-VER-04": [
+"Met",
+"Restore creates a new current version."
+],
+"FR-DA-VER-05": [
+"Met",
+"User, time and justification stored on each version."
+],
+"FR-DA-COMM-01": [
+"Met",
+"One dispatch interface: in-app, e-mail, webhook, SMS, push."
+],
+"FR-DA-COMM-02": [
+"Met",
+"Preferences per category and channel, in-app on by default."
+],
+"FR-DA-COMM-03": [
+"Met",
+"Message composed once in the recipient's language."
+],
+"FR-DA-COMM-04": [
+"Met",
+"Delivery status per channel with independent retries."
+],
+"FR-DA-COMM-05": [
+"Met",
+"Minimal content per channel; tenant-scoped dispatch."
+],
+"FR-DA-REX-01": [
+"Fixed",
+"Lesson prompt now also appears when a project reaches Launched (Fast Track) or Retired, and to the executives who close it. First delivery: only after task completion and Kill."
+],
+"FR-DA-REX-02": [
+"Met",
+"Went well, went wrong, root cause, recommendation, category, rating 1-5."
+],
+"FR-DA-REX-03": [
+"Met",
+"REX CRUD with OBS and process tags."
+],
+"FR-DA-REX-04": [
+"Met",
+"REX indexed in the shared retrieval corpus."
+],
+"FR-DA-REX-05": [
+"Met",
+"REX register by category and rating trend."
+],
+"FR-DA-REX-06": [
+"Met",
+"REX versioned with restore."
+],
+"FR-DA-REX-07": [
+"Met",
+"rex.manage capability; tenant-scoped reads."
+],
+"NFR-DA-PERF-01": [
+"Met",
+"Measured: dashboard 31 ms, project list 27 ms, my tasks 2 ms, benchmark 170 ms (target 2 s)."
+],
+"NFR-DA-PERF-02": [
+"Met",
+"Measured: deterministic suggestion 4 ms (target 5 s)."
+],
+"NFR-DA-PERF-03": [
+"Met",
+"Measured: knowledge search 2 ms, help search 1 ms (target 1 s)."
+],
+"NFR-DA-PERF-04": [
+"Met",
+"Measured: PDF 296 ms, Excel 46 ms, Word 90 ms (target 3 s)."
+],
+"NFR-DA-SEC-01": [
+"Met",
+"All routes except login and dictionaries require a token (tested)."
+],
+"NFR-DA-SEC-02": [
+"Met",
+"bcrypt hashes; passwords never logged."
+],
+"NFR-DA-SEC-03": [
+"Met",
+"Server-side checks; client checks are UX only."
+],
+"NFR-DA-SEC-04": [
+"Met",
+"Parameterized statements throughout."
+],
+"NFR-DA-SEC-05": [
+"Met",
+"Segregation of duties and CTL-01 enforced by the server."
+],
+"NFR-DA-SEC-06": [
+"Met",
+"Unique index for one Accountable per activity."
+],
+"NFR-DA-SEC-07": [
+"Met",
+"API key kept client-side; used for one outbound call."
+],
+"NFR-DA-SEC-08": [
+"Met",
+"Quotas checked at creation; 409."
+],
+"NFR-DA-SEC-09": [
+"Met",
+"Entitlement and RBAC checked independently (tested)."
+],
+"NFR-DA-SEC-10": [
+"Fixed",
+"Individual evaluation verdicts and notes now restricted to the people involved and roles holding evaluation.view; others see \"Evaluated\" only. Peer organizations in benchmarks are aggregates only."
+],
+"NFR-DA-SEC-11": [
+"Fixed",
+"11 automated tests (tenant isolation and benchmarking) now run in a CI pipeline on Linux, Windows and macOS. First delivery: tests without a pipeline."
+],
+"NFR-DA-REL-01": [
+"Met",
+"AI failure never blocks the operation; fallback served."
+],
+"NFR-DA-REL-02": [
+"Deployment",
+"Uptime depends on hosting. The application restarts cleanly and supports a process manager; 99.9% needs redundant hosting and monitoring."
+],
+"NFR-DA-REL-03": [
+"Met",
+"Export errors return a structured message; data untouched."
+],
+"NFR-DA-REL-04": [
+"Fixed",
+"Added automatic daily backups (VACUUM INTO) with retention, npm run backup, and a Backups panel. Off-site copy remains a hosting task."
+],
+"NFR-DA-SCALE-01": [
+"Met",
+"Web built as static files, served independently from the API."
+],
+"NFR-DA-SCALE-02": [
+"Fixed",
+"Measured 100 simultaneous users: 400 requests, 0 failures; p95 4.4 s before, 0.9 s after adding a per-user read cache."
+],
+"NFR-DA-SCALE-03": [
+"Partial",
+"Data access goes through one query module and retrieval through one module, so they can be replaced; no distributed database or vector store has been plugged in to prove it."
+],
+"NFR-DA-UX-01": [
+"Met",
+"Shared tokens for UI, reports and documents."
+],
+"NFR-DA-UX-02": [
+"Fixed",
+"Verified at 390 px: no horizontal scrolling; touch targets raised to 44 px on touch screens and 24 px minimum elsewhere."
+],
+"NFR-DA-UX-03": [
+"Partial",
+"axe-core WCAG 2.1 AA scan of 14 screens: ARIA errors and grey-text contrast fixed. Remaining: brand-mandated white text on orange table headers (2.28:1) and orange KPI numbers (2.99:1)."
+],
+"NFR-DA-UX-04": [
+"Met",
+"One status badge vocabulary across modules."
+],
+"NFR-DA-I18N-01": [
+"Met",
+"Layouts mirrored in Arabic, verified by screenshots."
+],
+"NFR-DA-PORT-01": [
+"Met",
+"Fresh install from the zip needs only Node.js 22.13+ (verified)."
+],
+"NFR-DA-PORT-02": [
+"Partial",
+"Verified on Linux. The CI workflow now runs install, seed, tests and build on Windows and macOS too; see its result."
+],
+"NFR-DA-MAINT-01": [
+"Partial",
+"Engines are separate modules behind one REST contract; reuse by a sibling Dynamic App has not been demonstrated."
+],
+"NFR-DA-MAINT-02": [
+"Met",
+"AI generation behind one interface (deterministic or live)."
+],
+"NFR-DA-MAINT-03": [
+"Met",
+"Entitlements in one module."
+],
+"NFR-DA-MAINT-04": [
+"Met",
+"Only ai.js calls a live model."
+],
+"NFR-DA-MAINT-05": [
+"Met",
+"Alert catalog in one module."
+],
+"NFR-DA-COMPAT-01": [
+"Met",
+"Evergreen browsers; checked in Chromium at desktop and phone widths."
+],
+"NFR-DA-COMPAT-02": [
+"Met",
+"Round trip verified: 63 of 63 stored diagrams parse, export and re-parse with bpmn-moddle."
+],
+"NFR-DA-COMPAT-03": [
+"Met",
+"Core workflows usable on a phone; same REST API."
+],
+"NFR-DA-COMP-01": [
+"Met",
+"Usage log with confidence, use case, record or question."
+],
+"NFR-DA-COMP-02": [
+"Met",
+"COSO coverage chart across five components."
+],
+"NFR-DA-COMP-03": [
+"Met",
+"AI use case and template versions kept indefinitely."
+],
+"NFR-DA-COMP-04": [
+"Met",
+"No certification claim in UI, Help, knowledge or documents."
+],
+"NFR-DA-DATA-01": [
+"Met",
+"No third-party call unless a user configures a live model; never for data queries."
+],
+"NFR-DA-DATA-02": [
+"Met",
+"Deployment option (SaaS shared or dedicated/sovereign) recorded per organization; same isolation code."
+]
+}

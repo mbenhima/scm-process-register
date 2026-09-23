@@ -2,11 +2,16 @@
 application implements it, with counts measured on the running application (verify-coverage.mjs output).
 Run: python3 build_checklist.py verify.json scenario-log.json out.docx out.md"""
 import json, sys
+from collections import Counter
 from docstyle import new_document, header_footer, cover, toc, h1, para, bullets, table, callout
+from gap_data import S as SRS_STATUS
 
 
 def rows_for(v):
     o = v['orgs']
+    st = Counter(x[0] for x in SRS_STATUS.values()); fr = {k: x for k, x in SRS_STATUS.items() if k.startswith('FR')}; nfr = {k: x for k, x in SRS_STATUS.items() if k.startswith('NFR')}
+    met = lambda d: sum(1 for x in d.values() if x[0] in ('Met', 'Fixed'))
+    part = lambda d: [k for k, x in d.items() if x[0] in ('Partial', 'Deployment')]
     per = lambda k: ' / '.join(str(x[k]) for x in o)
     return {
         'Process Design Reference v2 (CortexPLM_Process_Design_Reference_v2.docx)': [
@@ -47,8 +52,8 @@ def rows_for(v):
         ],
         'Dynamic Apps Standard SRS (Dynamic_Apps_Standard_SRS.docx)': [
             ('Sections 1–3 introduction, principles, common platform architecture', 'Multi-tenant server, RBAC, commercial gating, AI governance, RAG, i18n, justification, versions, communication, REX', 'Whole application', 'Implemented'),
-            ('Section 4 functional requirements FR-DA-* (18 groups)', 'Every requirement traced to a screen and a server module', 'Administration > Traceability', f"{v['srs']} of 155 requirements traced"),
-            ('Section 5 non-functional requirements NFR-DA-*', 'Security headers, rate limit, encryption, tenant isolation tests, accessibility, RTL, exports', 'Administration > Traceability', 'Included in the 155'),
+            ('Section 4 functional requirements FR-DA-* (18 groups)', 'Each requirement assessed individually (see the SRS Gap Analysis)', 'Administration > Traceability', f"{met(fr)} of {len(fr)} met; partial: {', '.join(part(fr))}", 'Partial'),
+            ('Section 5 non-functional requirements NFR-DA-*', 'Measured: response times, 100 concurrent users, BPMN round trip, WCAG scan, phone width; tests in CI', 'Administration > Traceability', f"{met(nfr)} of {len(nfr)} met; partial or hosting: {', '.join(part(nfr))}", 'Partial'),
             ('Sections 6–7 data model and interface conventions; Appendix A', 'REST JSON API, UI conventions, data model page', 'Data model; API /api/*', 'Implemented'),
         ],
         'D30 Licensing Implementation Schema (CD_D30_Licensing_Implementation_Schema.docx)': [
@@ -58,7 +63,9 @@ def rows_for(v):
             ('maxUsers enforcement and expiry warning (CTRL-003)', 'User creation blocked at the limit; banner 30 days before expiry', 'Users & roles; top banner', 'Orvane licence expires in 22 days'),
         ],
         'Seed data requirement (request)': [
-            ('Six industries: Public Sector, Manufacturing in Construction, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy', 'One organization per industry with 24–25 users and 21 projects', 'Organization switcher (platform admin)', ' / '.join(x['industry'] for x in o)),
+            ('Seven sectors: Public Sector, Manufacturing in Construction, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Construction', 'One organization per sector with 24–25 users and 21 projects', 'Organization switcher (platform admin)', ' / '.join(x['industry'] for x in o)),
+            ('Tenant model: Group (Yes/No), Organization, Project', 'Atlas Infrastructure Holding (Cedarline, Ridgeway, Orvane); Crescent Agro-Energy Group (Valdora, Kestrel); Metro City and Meridale independent', 'Administration > Organizations & OBS', '2 groups, 5 members, 2 independent'),
+            ('Benchmarking within the organization and within the group (external out of scope)', 'Project type, track and department comparison; group comparison of aggregates with opt-out; 5 automated tests', 'Reports > Benchmarking', '13 indicators'),
             ('At least 10 instances of each E2E process per industry', 'E2E-01:21 02:19 03:16 04:14 05:16 06:12 07:12 08:10 09:13 in every organization', 'Dashboard, E2E pages', 'Minimum 10 met'),
             ('Pin and slide menu; top, bottom, left and right positions', 'Navigation bar settings, saved per user; RTL aware', 'Sliders icon in the navigation bar', 'Implemented'),
         ],
@@ -74,17 +81,19 @@ def build(verify, log, out_docx, out_md):
     toc(doc)
     h1(doc, '1. Summary', new_page=False)
     total = sum(len(r) for r in groups.values())
-    para(doc, f'All {total} content blocks of the five source documents and of the request are covered. Counts come from the running application after a fresh demonstration seed, not from the documents.')
-    table(doc, ['Source', 'Blocks', 'Status'], [(k.split(' (')[0], str(len(r)), 'Covered') for k, r in groups.items()], widths=[4.5, 0.9, 1.37], status_col=2)
+    partial_blocks = sum(1 for r in groups.values() for x in r if len(x) > 4 and x[4] == 'Partial')
+    met = sum(1 for x in SRS_STATUS.values() if x[0] in ('Met', 'Fixed'))
+    para(doc, f'{total - partial_blocks} of {total} content blocks of the five source documents and of the request are fully covered. The SRS blocks are marked Partial: {met} of {len(SRS_STATUS)} SRS requirements are met, and the remaining ones are listed with next steps in the SRS Gap Analysis. Counts come from the running application after a fresh demonstration seed.')
+    table(doc, ['Source', 'Blocks', 'Status'], [(k.split(' (')[0], str(len(r)), 'Partial' if any(len(x) > 4 and x[4] == 'Partial' for x in r) else 'Covered') for k, r in groups.items()], widths=[4.5, 0.9, 1.37], status_col=2)
     callout(doc, 'Governance registers hold more records than the workbook because each organization adds its own records (project risks, compliance starter controls). Every reference record from the workbook is present.', 'Note')
-    md = ['# CortexPLM Coverage Checklist', '', f'All {total} content blocks of the five source documents and of the request are covered. Counts are measured on the running application after a fresh seed.', '']
+    md = ['# CortexPLM Coverage Checklist', '', f'Every content block of the five source documents is covered; the SRS blocks are partial ({sum(1 for x in SRS_STATUS.values() if x[0] in ("Met", "Fixed"))} of {len(SRS_STATUS)} requirements met, see the SRS Gap Analysis). Counts are measured on the running application after a fresh seed.', '']
     n = 2
     for k, rows in groups.items():
         h1(doc, f'{n}. {k.split(" (")[0]}', new_page=False); n += 1
         para(doc, f'Source file: {k.split("(")[1].rstrip(")")}' if '(' in k else '')
-        table(doc, ['Source content', 'Implemented as', 'Where to see it', 'Measured', 'Status'], [(a, b, c, d, 'Covered') for a, b, c, d in rows], widths=[1.8, 1.9, 1.35, 1.1, 0.62], size=8.5, status_col=4)
+        table(doc, ['Source content', 'Implemented as', 'Where to see it', 'Measured', 'Status'], [(x[0], x[1], x[2], x[3], x[4] if len(x) > 4 else 'Covered') for x in rows], widths=[1.8, 1.9, 1.35, 1.1, 0.62], size=8.5, status_col=4)
         md += [f'## {k}', '', '| Source content | Implemented as | Where to see it | Measured | Status |', '|---|---|---|---|---|']
-        md += [f'| {a} | {b} | {c} | {d} | Covered |' for a, b, c, d in rows] + ['']
+        md += [f'| {x[0]} | {x[1]} | {x[2]} | {x[3]} | {x[4] if len(x) > 4 else "Covered"} |' for x in rows] + ['']
     h1(doc, f'{n}. End-to-End Verification', new_page=False)
     para(doc, 'The five User Guide runs were replayed through the application on a fresh database. Each one ran to the end state below.')
     table(doc, ['Run', 'Project', 'Track', 'Steps', 'End state'], [(str(r['id']), f"{r['code']} {r['name']}", (r.get('created') or {}).get('track', 'Full'), str(len(r['steps'])), r['final']['status']) for r in runs if not r.get('error')], widths=[0.5, 2.9, 0.8, 0.7, 1.87])
