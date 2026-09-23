@@ -1,0 +1,17 @@
+{
+ "meta": {
+  "code": "fr",
+  "name": "Français",
+  "dir": "ltr"
+ },
+ "strings": {
+  "notify.alert.raised.subject": "[{severity}] {name}",
+  "notify.alert.raised.body": "{message}",
+  "notify.run.started.subject": "Nouvelles tâches : {e2e}",
+  "notify.run.started.body": "{project} a démarré {e2e}. Ouvrez Mes tâches pour voir les tâches qui vous sont attribuées.",
+  "notify.task.evaluate.subject": "Évaluation demandée : {task}",
+  "notify.task.evaluate.body": "« {task} » sur {project} est terminée. En tant qu’évaluateur, notez-la Efficace ou Non efficace.",
+  "notify.gate.decided.subject": "Décision {gate} : {decision}",
+  "notify.gate.decided.body": "Le comité de jalon a enregistré « {decision} » au jalon {gate} pour {project}."
+ }
+}

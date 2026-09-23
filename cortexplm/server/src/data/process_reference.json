@@ -1,0 +1,5222 @@
+{
+ "keyFigures": {
+  "macroProcesses": 69,
+  "e2e": 9,
+  "gates": 8,
+  "tracks": 3,
+  "ufs": 30,
+  "uft": 81,
+  "activitySteps": 210,
+  "gapsResolved": 16
+ },
+ "macroProcesses": [
+  {
+   "id": "MP-01",
+   "name": "Product Portfolio & Strategy Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Align product development with corporate strategy; optimize resource allocation; ensure a profitable, market-driven product portfolio.",
+   "suppliers": "Executive Leadership, Market Research Firms, Sales & Marketing, Finance, Customers, Competitive Intelligence Teams.",
+   "inputs": "Corporate Strategy, Market Analysis Reports, Customer Feedback, Financial Targets, Competitive Intelligence, Technology Roadmaps, Regulatory Horizon Scans, Portfolio Performance Data.",
+   "process": [
+    "Define strategic product themes, goals, and investment horizons.",
+    "Ideate and capture new product concepts.",
+    "Evaluate and score product ideas against strategic fit.",
+    "Develop business cases (NPV, ROI, risk).",
+    "Prioritize projects and allocate resources.",
+    "Manage product portfolio roadmap (BCG, Ansoff).",
+    "Conduct Stage-Gate/Phase-Gate reviews.",
+    "Manage project and program portfolios.",
+    "Monitor portfolio performance.",
+    "Conduct portfolio rebalancing and sunset decisions.",
+    "Align product strategy with service strategy and ESG."
+   ],
+   "outputs": "Approved Product Portfolio, Prioritized Project Pipeline, Resource Allocation Plan, Product Roadmaps, Business Cases, Portfolio Performance Dashboards.",
+   "customers": "Product Managers, R&D Teams, Executive Leadership, Finance Department, Sales & Marketing, Investors.",
+   "usedIn": "E2E-01, E2E-02, E2E-07, E2E-08, E2E-09"
+  },
+  {
+   "id": "MP-02",
+   "name": "Product Data & Document Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Provide a secure, single source of truth for all product-related data and documents.",
+   "suppliers": "Engineering, Marketing, Suppliers, Quality Assurance, Legal, Manufacturing, Service.",
+   "inputs": "CAD Files, Specifications, Requirements Documents, Test Reports, Supplier Data, Marketing Collateral, Compliance Certificates, Technical Drawings, Simulation Data.",
+   "process": [
+    "Manage and organize product data (parts, components, materials, assemblies).",
+    "Control document versions and revisions.",
+    "Manage CAD file check-in/check-out (multi-CAD).",
+    "Classify and categorize parts and documents.",
+    "Enforce data access and security rules.",
+    "Manage data relationships (where-used, where-consumed).",
+    "Ensure data integrity and validation.",
+    "Provide advanced search and retrieval.",
+    "Manage digital signatures and approvals.",
+    "Manage data archiving and retention.",
+    "Support multi-site and multi-tenant data federation."
+   ],
+   "outputs": "Centralized Product Repository, Controlled Documents, Master Part Records, Accurate and Secure Product Data, Data Quality Reports.",
+   "customers": "All PLM Users, Manufacturing, Quality, Service, Regulatory Bodies, Suppliers, Customers.",
+   "usedIn": "Platform enabler for all E2E processes (proposed classification)"
+  },
+  {
+   "id": "MP-03",
+   "name": "Requirements & Systems Engineering",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Capture, manage, and trace all product requirements through the entire lifecycle.",
+   "suppliers": "Marketing, Customers, Regulatory Bodies, Engineering, Service, Suppliers, Legal.",
+   "inputs": "Market Requirements Document (MRD), Customer Needs, Regulatory Standards (ISO, FDA, CE), Technical Specifications, Voice of the Customer (VOC), System Architecture Models, Interface Definitions.",
+   "process": [
+    "Elicit and capture requirements from all sources.",
+    "Structure and categorize requirements.",
+    "Analyze and validate requirements.",
+    "Trace requirements to design and test cases (bidirectional).",
+    "Manage changes to requirements with impact analysis.",
+    "Manage system architecture, interfaces, and decomposition.",
+    "Perform systems modeling and simulation (SysML, Modelica).",
+    "Conduct requirements reviews and approvals.",
+    "Manage requirements baselines and variants.",
+    "Support compliance matrices and regulatory submissions."
+   ],
+   "outputs": "Verified Requirements Baseline, Requirements Traceability Matrix (RTM), System Architecture Models, Compliance Matrix, Requirements Change History.",
+   "customers": "Engineering Teams, Quality Assurance, Project Managers, Compliance Officers, Test Engineers, Regulatory Bodies.",
+   "usedIn": "E2E-01, E2E-02, E2E-03, E2E-08"
+  },
+  {
+   "id": "MP-04",
+   "name": "Engineering & Design Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Efficiently manage creation, simulation, and validation of product designs.",
+   "suppliers": "R&D, Industrial Design, Simulation Engineers, External Design Partners, Suppliers, Manufacturing Engineering.",
+   "inputs": "Requirements Baseline, Concept Sketches, CAD Models (MCAD, ECAD), Simulation Parameters, Material Properties, Design Standards, DFM/DFA Guidelines.",
+   "process": [
+    "Manage design process (conceptual, detailed, validation).",
+    "Integrate with CAD/CAM/CAE tools (Creo, NX, CATIA, SolidWorks, AutoCAD).",
+    "Manage simulation and analysis (FEA, CFD, thermal, electromagnetic).",
+    "Manage design variants and options.",
+    "Perform DFM, DFA, DFR analysis.",
+    "Manage design reviews and approvals (PDR, CDR).",
+    "Capture and reuse design knowledge.",
+    "Apply generative design principles (AI-driven).",
+    "Manage design for sustainability.",
+    "Conduct tolerance stack-up analysis.",
+    "Manage design releases and revisions."
+   ],
+   "outputs": "Validated & Released Designs, 3D Models, Simulation Reports, Technical Drawings, Design BOM (eBOM), Design Review Records.",
+   "customers": "Manufacturing, Quality, Procurement, Simulation Teams, Certification Bodies, Service, Suppliers.",
+   "usedIn": "E2E-01, E2E-02, E2E-03, E2E-04, E2E-08"
+  },
+  {
+   "id": "MP-05",
+   "name": "Bill of Materials (BOM) Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Create and manage a single, accurate, configurable BOM serving all downstream functions.",
+   "suppliers": "Engineering, Manufacturing Engineering, Procurement, Service, Suppliers, Finance.",
+   "inputs": "Engineering BOM (eBOM), Approved Parts List, Manufacturing Process Plans, Supplier Catalog Data, Cost Data, Service Requirements.",
+   "process": [
+    "Create and manage Engineering BOM (eBOM).",
+    "Transform eBOM to Manufacturing BOM (mBOM).",
+    "Create Service BOM (sBOM).",
+    "Manage configurable BOMs and variants (150%/100%).",
+    "Perform BOM comparison and reconciliation.",
+    "Manage BOM effectivity dates and versioning.",
+    "Integrate BOM with ERP (SAP, Oracle, Dynamics).",
+    "Publish BOMs to MES, PLM, ERP.",
+    "Manage BOM cost roll-up and should-cost analysis.",
+    "Support multi-plant and multi-site BOM.",
+    "Manage BOM compliance (RoHS, REACH, conflict minerals)."
+   ],
+   "outputs": "Accurate Manufacturing BOM (mBOM), Service BOM (sBOM), Configured Product Structures, Costed BOM, BOM Comparison Reports.",
+   "customers": "Manufacturing, Procurement, Supply Chain, Finance, Service, ERP Systems, Suppliers.",
+   "usedIn": "E2E-03, E2E-04, E2E-08"
+  },
+  {
+   "id": "MP-06",
+   "name": "Manufacturing Process Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Plan, define, and optimize manufacturing processes.",
+   "suppliers": "Manufacturing Engineering, Industrial Engineering, Production Planning, Quality, Suppliers.",
+   "inputs": "Manufacturing BOM (mBOM), Plant Capabilities, Tooling Data, Quality Standards, Time & Motion Studies, NC Programs, Operator Skills Data.",
+   "process": [
+    "Define manufacturing process plans and routings.",
+    "Design and manage work instructions (visual, 3D, AR).",
+    "Plan for tooling, fixtures, and equipment.",
+    "Simulate and optimize production lines.",
+    "Manage plant and resource data.",
+    "Integrate with MES.",
+    "Perform time and cost analysis.",
+    "Manage NC programs and post-processing.",
+    "Support lean manufacturing.",
+    "Manage process quality controls and inspection plans.",
+    "Support additive manufacturing process planning."
+   ],
+   "outputs": "Optimized Process Plans, Work Instructions, Resource Plans, Plant Layouts, NC Programs, Process Cost Models.",
+   "customers": "Production Floor, Manufacturing Engineers, Quality Control, Industrial Engineers, MES, Operators.",
+   "usedIn": "E2E-04, E2E-08"
+  },
+  {
+   "id": "MP-07",
+   "name": "Change & Configuration Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Manage changes to product data in a controlled, traceable manner.",
+   "suppliers": "Any PLM user, Customer Feedback, Regulatory Bodies, Field Service.",
+   "inputs": "Change Requests (ECR), Problem Reports, Non-conformance Reports, New Requirements, Field Failure Data, Supplier Change Notices.",
+   "process": [
+    "Initiate and submit change requests (ECR).",
+    "Assess change impact (cost, schedule, quality, compliance).",
+    "Review and approve changes (CCB).",
+    "Create and manage Change Orders (ECO).",
+    "Implement changes across affected data.",
+    "Manage configuration baselines (functional, allocated, product).",
+    "Track and report change status and cycle time.",
+    "Manage deviations and waivers.",
+    "Conduct post-implementation reviews.",
+    "Manage change effectivity and cut-in dates.",
+    "Support enterprise-wide change management."
+   ],
+   "outputs": "Approved Change Orders (ECO), Updated Product Data, New Configuration Baselines, Audit Trail of Changes, Change Impact Reports.",
+   "customers": "All PLM Users, Manufacturing, Quality, Service, Suppliers, Regulatory Bodies.",
+   "usedIn": "E2E-03, E2E-04, E2E-08"
+  },
+  {
+   "id": "MP-08",
+   "name": "Quality & Compliance Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Ensure products meet all quality standards and regulatory requirements.",
+   "suppliers": "Regulatory Bodies, Quality Assurance, Customers, Engineering, Suppliers, Service.",
+   "inputs": "Regulatory Standards (FDA, ISO, CE, IATF), Quality Standards, Inspection Plans, Test Results, Customer Complaints, Audit Findings, CAPA Data.",
+   "process": [
+    "Define and manage quality plans (APQP, PPAP).",
+    "Manage non-conformance reports (NCR).",
+    "Manage Corrective and Preventive Actions (CAPA).",
+    "Conduct root cause analysis (5 Whys, Fishbone, 8D).",
+    "Manage inspections and tests.",
+    "Track and manage compliance to regulations.",
+    "Generate compliance reports and certificates.",
+    "Manage risk analysis (FMEA, FTA).",
+    "Conduct internal and supplier audits.",
+    "Manage quality records and documentation.",
+    "Support regulatory submissions and inspections.",
+    "Manage customer complaints and returns."
+   ],
+   "outputs": "Compliant Products, Quality Records, CAPA Reports, Audit Reports, Compliance Certificates, FMEA Reports.",
+   "customers": "Customers, Regulatory Agencies, Quality Assurance, Legal, Executive Management, Suppliers.",
+   "usedIn": "E2E-03, E2E-04, E2E-05, E2E-06, E2E-08"
+  },
+  {
+   "id": "MP-09",
+   "name": "Sourcing & Supply Chain Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Strategically manage suppliers and sourcing activities.",
+   "suppliers": "Procurement, Engineering, Suppliers, Quality, Finance, Logistics.",
+   "inputs": "Approved Manufacturer List (AML), Approved Vendor List (AVL), Component Specifications, Supplier Capabilities, Market Data, Supplier Risk Data, Cost Data.",
+   "process": [
+    "Manage supplier onboarding and qualification.",
+    "Manage component and supplier data.",
+    "Source and procure components (RFQ, RFP, RFI).",
+    "Manage supplier collaboration and communication.",
+    "Monitor supplier performance and risk (scorecards, audits).",
+    "Manage supply chain compliance.",
+    "Perform should-cost analysis and cost negotiation.",
+    "Manage supplier quality.",
+    "Manage supply chain risk and resilience.",
+    "Support dual-sourcing and localization.",
+    "Manage obsolescence and end-of-life components."
+   ],
+   "outputs": "Qualified Supplier List, Sourcing Decisions, Supplier Scorecards, Supply Chain Risk Reports, Cost Savings Reports.",
+   "customers": "Procurement, Engineering, Manufacturing, Finance, Quality, Executive Management.",
+   "usedIn": "E2E-04, E2E-08 (proposed assignment)"
+  },
+  {
+   "id": "MP-10",
+   "name": "Service & Maintenance Management",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Support the product after it is in the field.",
+   "suppliers": "Customers, Field Service, Engineering, Quality, Suppliers, Logistics.",
+   "inputs": "Service BOM (sBOM), Technical Manuals, Customer Complaints, IoT Sensor Data, Warranty Information, Service Contracts, Spare Parts Inventory.",
+   "process": [
+    "Manage service parts and inventory.",
+    "Create and manage maintenance plans (preventive, predictive).",
+    "Manage service requests and work orders.",
+    "Provide technical support and troubleshooting.",
+    "Manage MRO.",
+    "Track product performance in the field.",
+    "Manage warranty and claims.",
+    "Provide feedback to engineering.",
+    "Manage field service scheduling and dispatch.",
+    "Support remote diagnostics and AR assistance.",
+    "Manage service contracts and entitlements.",
+    "Support predictive maintenance using IoT data."
+   ],
+   "outputs": "Resolved Service Requests, Maintenance Records, RMA Reports, Field Performance Data, Updated Technical Documentation, Service Analytics.",
+   "customers": "End Customers, Field Service Technicians, Support Teams, Engineering, Quality, Finance.",
+   "usedIn": "E2E-06"
+  },
+  {
+   "id": "MP-11",
+   "name": "Collaboration & Visualization",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Enable seamless collaboration and data visualization across all stakeholders.",
+   "suppliers": "All PLM users, Suppliers, Partners, Customers, External Designers.",
+   "inputs": "Product Data, CAD Models, Documents, Project Plans, Discussion Threads, Markups, Annotations.",
+   "process": [
+    "Provide secure, role-based access to data.",
+    "Enable real-time collaboration.",
+    "Provide 3D CAD visualization (JT, 3D PDF).",
+    "Manage markups and annotations (redlining).",
+    "Facilitate supplier collaboration portals.",
+    "Manage social collaboration features.",
+    "Integrate with communication tools (Slack, Teams).",
+    "Support multi-site and multi-company collaboration.",
+    "Manage digital threads and traceability links.",
+    "Support AR/VR visualization.",
+    "Manage IP protection during collaboration."
+   ],
+   "outputs": "Improved Decision-Making, Faster Problem Resolution, Enhanced Innovation, Secure Data Sharing, Collaboration Analytics.",
+   "customers": "All Stakeholders (Internal and External), Engineering, Suppliers, Partners, Customers.",
+   "usedIn": "Platform enabler for all E2E processes (proposed classification)"
+  },
+  {
+   "id": "MP-12",
+   "name": "Lifecycle Governance & Analytics",
+   "part": "A",
+   "category": "Product Lifecycle",
+   "goal": "Provide governance, metrics, and reporting across the entire product lifecycle.",
+   "suppliers": "All PLM Macro Processes, Business Intelligence Systems, Executive Leadership, Finance.",
+   "inputs": "PLM Process Data, Project Data, Quality Data, Financial Data, Supply Chain Data, Customer Data, Regulatory Data.",
+   "process": [
+    "Define and manage lifecycle workflows.",
+    "Enforce GRC policies.",
+    "Define and track KPIs.",
+    "Create and manage dashboards and reports.",
+    "Perform lifecycle cost analysis.",
+    "Manage end-of-life (EOL) processes.",
+    "Provide audit trails and reporting.",
+    "Conduct lifecycle performance reviews.",
+    "Support regulatory audits and inspections.",
+    "Provide data-driven insights.",
+    "Monitor process compliance and deviations.",
+    "Support continuous improvement."
+   ],
+   "outputs": "Performance Dashboards, Lifecycle Analytics Reports, Compliance Reports, EOL Plans, Process Improvement Insights, Audit Trails.",
+   "customers": "Executive Management, Product Managers, Process Owners, Finance, Regulatory Bodies, Auditors.",
+   "usedIn": "E2E-01, E2E-02, E2E-03, E2E-04, E2E-05, E2E-06, E2E-07, E2E-08, E2E-09"
+  },
+  {
+   "id": "MP-16",
+   "name": "Service Portfolio & Offer Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Define, manage, and optimize the portfolio of services offered.",
+   "suppliers": "Executive Leadership, Marketing, Sales, Finance, Customers, Service Managers.",
+   "inputs": "Corporate Strategy, Market Analysis, Customer Feedback, Competitive Intelligence, Financial Targets, Service Performance Data.",
+   "process": [
+    "Ideate and define new services.",
+    "Develop service business cases.",
+    "Evaluate profitability and market fit.",
+    "Manage service portfolio roadmap.",
+    "Prioritize service investments.",
+    "Conduct service lifecycle reviews.",
+    "Retire/sunset services.",
+    "Align with product portfolio.",
+    "Manage service bundling.",
+    "Monitor market trends."
+   ],
+   "outputs": "Approved Service Portfolio, Service Roadmaps, Pricing Models, Service Business Cases, Service Performance Reports.",
+   "customers": "Service Managers, Sales, Marketing, Executive Leadership, Finance, Customers.",
+   "usedIn": "E2E-01, E2E-02, E2E-07 (proposed assignment)"
+  },
+  {
+   "id": "MP-17",
+   "name": "Customer Experience & Journey Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Design, manage, and optimize the end-to-end customer journey.",
+   "suppliers": "Marketing, Sales, Customer Support, Customers, UX Teams, Service Delivery.",
+   "inputs": "Customer Personas, Journey Maps, Touchpoint Data, Feedback, Analytics, CRM Data, Customer Behavior Data.",
+   "process": [
+    "Define personas and segments.",
+    "Map journeys and touchpoints.",
+    "Identify pain points and moments of truth.",
+    "Design experience improvements.",
+    "Monitor sentiment (NPS, CSAT).",
+    "Integrate experience data.",
+    "Personalize interactions.",
+    "Manage communication preferences.",
+    "Conduct journey analytics.",
+    "Align product/service experiences.",
+    "Manage loyalty and advocacy."
+   ],
+   "outputs": "Journey Maps, Experience Improvement Plans, Customer Personas, Personalization Rules, NPS/CSAT Reports.",
+   "customers": "Customers, Marketing, Sales, Service Delivery Teams, Executive Management.",
+   "usedIn": "E2E-01, E2E-02, E2E-03, E2E-04, E2E-05, E2E-06, E2E-07, E2E-08, E2E-09"
+  },
+  {
+   "id": "MP-18",
+   "name": "Service Catalog & SLA Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Provide a clear, structured catalog of services and enforce SLAs.",
+   "suppliers": "Service Portfolio Management, Legal, Sales, Customers, Operations.",
+   "inputs": "Service Definitions, Pricing, Legal Requirements, Customer Contracts, Operational Capabilities, Service Performance Data.",
+   "process": [
+    "Define and publish catalog items.",
+    "Create and manage SLAs and entitlements.",
+    "Map services to SLAs and pricing.",
+    "Manage fulfillment processes.",
+    "Monitor SLA compliance.",
+    "Manage breaches and penalties.",
+    "Update catalog.",
+    "Manage dependencies.",
+    "Support self-service.",
+    "Integrate with ITSM.",
+    "Report on SLA performance."
+   ],
+   "outputs": "Service Catalog, SLA Definitions, Entitlement Records, Service Request Fulfillment Plans, SLA Compliance Reports.",
+   "customers": "Customers, Service Desk, Sales, Operations, Finance.",
+   "usedIn": "E2E-05, E2E-06 (proposed assignment)"
+  },
+  {
+   "id": "MP-19",
+   "name": "Service Delivery & Workforce Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Plan, schedule, and manage delivery of services.",
+   "suppliers": "Service Catalog, HR, Customers, Operations, Partners.",
+   "inputs": "Service Requests, Work Orders, Resource Availability, Skills Matrix, Schedules, Customer Locations, Service Parts.",
+   "process": [
+    "Plan and forecast demand.",
+    "Schedule and dispatch personnel.",
+    "Manage field operations.",
+    "Track delivery progress.",
+    "Manage skills and certifications.",
+    "Optimize routing (AI).",
+    "Manage service inventory and parts.",
+    "Capture time and materials.",
+    "Manage service quality and compliance.",
+    "Support mobile/offline access.",
+    "Manage subcontractors.",
+    "Conduct post-service follow-up."
+   ],
+   "outputs": "Completed Service Orders, Delivery Reports, Resource Utilization Reports, Time & Expense Records, Customer Satisfaction Records.",
+   "customers": "Customers, Field Service Technicians, Operations Managers, Finance, HR.",
+   "usedIn": "E2E-06 (proposed assignment)"
+  },
+  {
+   "id": "MP-20",
+   "name": "Knowledge & Content Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Capture, manage, and distribute knowledge and content.",
+   "suppliers": "Subject Matter Experts, Service Teams, Customers, Engineering, Training.",
+   "inputs": "Procedures, Troubleshooting Guides, FAQs, Resolutions, Best Practices, Customer Feedback, Technical Documentation.",
+   "process": [
+    "Create and author knowledge articles.",
+    "Review and approve.",
+    "Organize and categorize.",
+    "Publish to self-service portals.",
+    "Manage versions and lifecycle.",
+    "Provide intelligent search and recommendation.",
+    "Capture feedback.",
+    "Integrate with AI chatbots.",
+    "Manage multi-language content.",
+    "Support contextual help.",
+    "Measure effectiveness."
+   ],
+   "outputs": "Knowledge Base, Self-Service Portal, Chatbot Content, Training Materials, Knowledge Analytics.",
+   "customers": "Customers, Service Desk, Field Service, Support Teams, Partners.",
+   "usedIn": "E2E-04"
+  },
+  {
+   "id": "MP-21",
+   "name": "Contract, Billing & Revenue Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Manage service contracts, invoices, and revenue recognition.",
+   "suppliers": "Sales, Legal, Finance, Customers, Service Delivery.",
+   "inputs": "Contracts, Pricing Agreements, Service Usage Data, Time & Materials Records, Billing Schedules, Payment Terms.",
+   "process": [
+    "Create and manage contracts.",
+    "Define billing terms.",
+    "Capture usage and consumption.",
+    "Generate invoices and credit notes.",
+    "Manage revenue recognition (ASC 606/IFRS 15).",
+    "Handle disputes.",
+    "Integrate with ERP.",
+    "Manage renewals and amendments.",
+    "Support subscription/usage-based billing.",
+    "Manage collections and dunning.",
+    "Report on revenue and profitability."
+   ],
+   "outputs": "Executed Contracts, Invoices, Revenue Reports, Renewal Notices, Financial Analytics.",
+   "customers": "Finance, Sales, Customers, Executive Management, Auditors.",
+   "usedIn": "E2E-05, E2E-08 (proposed assignment)"
+  },
+  {
+   "id": "MP-22",
+   "name": "Partner & Channel Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Manage relationships with partners, resellers, and channel organizations.",
+   "suppliers": "Sales, Alliances, Legal, Partners, Marketing.",
+   "inputs": "Partner Agreements, Channel Strategies, Performance Data, Market Data, Partner Capabilities.",
+   "process": [
+    "Onboard and certify partners.",
+    "Manage partner agreements and contracts.",
+    "Provide portals and resources.",
+    "Track performance and compliance.",
+    "Manage channel conflict and deal registration.",
+    "Enable collaboration.",
+    "Manage compensation and incentives.",
+    "Conduct training and enablement.",
+    "Monitor satisfaction.",
+    "Manage partner lifecycle."
+   ],
+   "outputs": "Qualified Partners, Partner Scorecards, Channel Reports, Joint Service Offerings, Partner Revenue.",
+   "customers": "Partners, Sales, Customers, Executive Management, Finance.",
+   "usedIn": "E2E-05, E2E-08"
+  },
+  {
+   "id": "MP-23",
+   "name": "Incident, Problem, Request & Change Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Efficiently manage service incidents, problems, requests, and changes (ITIL/ESM).",
+   "suppliers": "Customers, Service Desk, IT Operations, Engineering, Suppliers.",
+   "inputs": "Incident Tickets, Service Requests, Problem Reports, Change Requests, Monitoring Alerts, Knowledge Base.",
+   "process": [
+    "Log and categorize incidents and requests.",
+    "Prioritize and escalate.",
+    "Diagnose and resolve.",
+    "Perform root cause analysis.",
+    "Manage change requests and approvals.",
+    "Maintain knowledge base.",
+    "Track SLAs and KPIs.",
+    "Conduct post-incident reviews.",
+    "Manage major incidents and crisis response.",
+    "Support self-service and automation.",
+    "Integrate monitoring.",
+    "Report on trends."
+   ],
+   "outputs": "Resolved Incidents, Fulfilled Requests, Problem Resolutions, Implemented Changes, Service Reports, Root Cause Analyses.",
+   "customers": "Customers, Service Desk, Operations, Engineering, Executive Management.",
+   "usedIn": "E2E-06"
+  },
+  {
+   "id": "MP-24",
+   "name": "Demand & Capacity Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Forecast demand and ensure adequate capacity.",
+   "suppliers": "Marketing, Sales, Operations, Finance, Customers, HR.",
+   "inputs": "Historical Demand Data, Sales Forecasts, Market Trends, Resource Capacity Data, Budgets, Seasonality Data.",
+   "process": [
+    "Forecast service demand.",
+    "Analyze capacity gaps.",
+    "Plan resource acquisition and training.",
+    "Manage capacity buffers.",
+    "Optimize resource allocation.",
+    "Monitor demand vs. capacity.",
+    "Adjust plans.",
+    "Model scenarios.",
+    "Coordinate with portfolio planning.",
+    "Report on utilization."
+   ],
+   "outputs": "Demand Forecasts, Capacity Plans, Resource Allocation Plans, Staffing Schedules, Utilization Reports.",
+   "customers": "Operations, HR, Finance, Service Delivery Teams, Executive Management.",
+   "usedIn": "E2E-05, E2E-09 (proposed assignment)"
+  },
+  {
+   "id": "MP-25",
+   "name": "Service Quality & Experience Management",
+   "part": "B",
+   "category": "Service Lifecycle",
+   "goal": "Measure, manage, and improve service quality and customer experience.",
+   "suppliers": "Customers, Quality Assurance, Operations, Marketing, Service Delivery.",
+   "inputs": "Customer Feedback (CSAT, NPS), SLA Data, Quality Standards, Audit Results, Complaint Data, Service Performance Data.",
+   "process": [
+    "Define quality metrics and KPIs.",
+    "Collect and analyze feedback.",
+    "Monitor SLA compliance.",
+    "Conduct quality audits.",
+    "Manage complaints and escalations.",
+    "Identify improvements.",
+    "Implement corrective actions.",
+    "Report on quality performance.",
+    "Benchmark.",
+    "Drive continuous improvement.",
+    "Align with CX goals."
+   ],
+   "outputs": "Service Quality Reports, CSAT/NPS Dashboards, Improvement Plans, Audit Reports, Benchmarking Reports.",
+   "customers": "Customers, Service Managers, Executive Management, Quality Assurance, Operations.",
+   "usedIn": "E2E-05, E2E-06, E2E-07, E2E-09"
+  },
+  {
+   "id": "MP-26",
+   "name": "Security, Identity & Access Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Protect product, service, and customer data.",
+   "suppliers": "IT Security, Compliance, HR, External Auditors, Regulatory Bodies.",
+   "inputs": "Security Policies, User Identities, Role Definitions, Threat Intelligence, Compliance Requirements, Access Logs.",
+   "process": [
+    "Manage identities (joiner/mover/leaver).",
+    "Enforce RBAC.",
+    "Implement zero-trust.",
+    "Manage encryption and keys.",
+    "Monitor and respond to incidents.",
+    "Conduct audits and penetration testing.",
+    "Manage IP protection and DLP.",
+    "Ensure compliance (GDPR, SOC 2, ISO 27001, HIPAA).",
+    "Manage privileged access.",
+    "Conduct awareness training.",
+    "Report on security posture."
+   ],
+   "outputs": "Secure Access Controls, Identity Records, Security Audit Reports, Incident Response Plans, Compliance Certificates.",
+   "customers": "All Users, IT Security, Compliance, Executive Management, Customers, Auditors.",
+   "usedIn": "Platform enabler for all E2E processes (proposed classification)"
+  },
+  {
+   "id": "MP-27",
+   "name": "Data Governance & Master Data Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Ensure data quality, consistency, and stewardship.",
+   "suppliers": "Data Stewards, IT, Business Units, External Data Providers, Regulatory Bodies.",
+   "inputs": "Data Policies, Data Models, Source Data, Data Quality Rules, Metadata, Data Lineage Data.",
+   "process": [
+    "Define governance policies and standards.",
+    "Establish stewardship.",
+    "Manage master data.",
+    "Ensure data quality and cleansing.",
+    "Manage lineage.",
+    "Implement data lifecycle management.",
+    "Maintain golden records.",
+    "Manage integration and synchronization.",
+    "Conduct quality audits.",
+    "Support regulatory requirements.",
+    "Report on data metrics."
+   ],
+   "outputs": "Data Governance Policies, Master Data Records, Data Quality Reports, Data Lineage Maps, Golden Records.",
+   "customers": "All Business Units, IT, Analytics Teams, Compliance, Executive Management.",
+   "usedIn": "Platform enabler for all E2E processes (proposed classification)"
+  },
+  {
+   "id": "MP-28",
+   "name": "Integration & API Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Enable seamless integration between CortexPLM and enterprise systems.",
+   "suppliers": "IT, Enterprise Architects, External System Owners, Partners, Developers.",
+   "inputs": "Integration Requirements, API Specifications, System Interfaces, Data Contracts, Security Requirements.",
+   "process": [
+    "Design and publish APIs (REST, GraphQL).",
+    "Manage API gateway and security.",
+    "Implement event streaming and webhooks.",
+    "Manage enterprise integration (ERP, CRM, MES, ITSM).",
+    "Monitor performance.",
+    "Manage versioning and deprecation.",
+    "Provide iPaaS.",
+    "Support B2B/EDI.",
+    "Manage integration testing.",
+    "Document integration architecture.",
+    "Report on integration health."
+   ],
+   "outputs": "Published APIs, Integration Flows, Event Streams, Integration Monitoring Dashboards, API Documentation.",
+   "customers": "IT, Business Units, Partners, Developers, Executive Management.",
+   "usedIn": "Platform enabler for all E2E processes (proposed classification)"
+  },
+  {
+   "id": "MP-29",
+   "name": "Workflow & Business Process Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Design, orchestrate, and optimize business processes and workflows.",
+   "suppliers": "Process Owners, Business Analysts, IT, All Departments.",
+   "inputs": "Process Definitions, Business Rules, Workflow Requirements, Process Data, Performance Metrics.",
+   "process": [
+    "Design and model processes (BPMN).",
+    "Define business rules.",
+    "Orchestrate workflows.",
+    "Automate tasks.",
+    "Monitor performance.",
+    "Conduct process mining.",
+    "Manage process changes.",
+    "Support no-code/low-code.",
+    "Integrate with RPA/AI.",
+    "Conduct simulations.",
+    "Report on efficiency."
+   ],
+   "outputs": "Process Models, Automated Workflows, Business Rules, Process Performance Reports, Process Improvement Plans.",
+   "customers": "Process Owners, All Departments, Executive Management, IT.",
+   "usedIn": "E2E-02, E2E-03, E2E-04"
+  },
+  {
+   "id": "MP-30",
+   "name": "Regulatory Affairs & Submissions Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Manage regulatory submissions, approvals, and ongoing compliance.",
+   "suppliers": "Regulatory Bodies, Legal, Quality, Engineering, Clinical Teams.",
+   "inputs": "Regulatory Requirements, Submission Dossiers, Test Data, Clinical Data, Labeling, Compliance Data.",
+   "process": [
+    "Monitor regulatory intelligence.",
+    "Prepare and submit filings.",
+    "Manage submissions and approvals.",
+    "Maintain registrations and licenses.",
+    "Manage labeling and packaging.",
+    "Respond to queries and inspections.",
+    "Track regulatory changes.",
+    "Manage regulatory documentation.",
+    "Support post-market surveillance.",
+    "Coordinate with agencies.",
+    "Report on compliance."
+   ],
+   "outputs": "Approved Submissions, Regulatory Certificates, Compliance Records, Labeling Approvals, Regulatory Intelligence Reports.",
+   "customers": "Regulatory Agencies, Quality, Legal, Executive Management, Customers.",
+   "usedIn": "E2E-01, E2E-02, E2E-03, E2E-04, E2E-05, E2E-08"
+  },
+  {
+   "id": "MP-31",
+   "name": "Environment, Health & Safety (EHS) Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Ensure workplace safety, environmental compliance, and ESG reporting.",
+   "suppliers": "Regulatory Bodies, EHS Teams, Operations, HR, Communities.",
+   "inputs": "EHS Regulations, Incident Reports, Environmental Data, Safety Standards, ESG Targets, Hazardous Material Data.",
+   "process": [
+    "Manage workplace safety programs.",
+    "Track environmental compliance.",
+    "Manage incident reporting and investigation.",
+    "Conduct safety audits.",
+    "Manage hazardous materials.",
+    "Track ESG metrics.",
+    "Implement corrective actions.",
+    "Conduct training.",
+    "Manage emergency response.",
+    "Monitor environmental impact.",
+    "Report on EHS performance."
+   ],
+   "outputs": "EHS Reports, Incident Records, Safety Certifications, ESG Reports, Compliance Certificates.",
+   "customers": "Employees, Regulatory Bodies, Communities, Executive Management, Investors.",
+   "usedIn": "E2E-04, E2E-08 (proposed assignment)"
+  },
+  {
+   "id": "MP-32",
+   "name": "Intellectual Property & Legal Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Protect and manage IP, patents, trademarks, and legal agreements.",
+   "suppliers": "Legal, R&D, Engineering, External Counsel, Patent Offices.",
+   "inputs": "Invention Disclosures, Patent Applications, Trademark Filings, Contracts, Legal Requirements, IP Portfolio Data.",
+   "process": [
+    "Manage invention disclosures and patent filings.",
+    "Manage trademark and copyright registrations.",
+    "Manage IP licensing and royalties.",
+    "Conduct freedom-to-operate (FTO) analysis.",
+    "Manage legal holds and litigation.",
+    "Manage contract lifecycle.",
+    "Protect trade secrets.",
+    "Conduct IP portfolio reviews.",
+    "Manage assignments.",
+    "Support M&A due diligence.",
+    "Report on portfolio value."
+   ],
+   "outputs": "Granted Patents, Registered Trademarks, License Agreements, Legal Opinions, IP Portfolio Reports.",
+   "customers": "Legal, R&D, Executive Management, Investors, Partners.",
+   "usedIn": "E2E-01, E2E-02, E2E-03, E2E-05, E2E-08"
+  },
+  {
+   "id": "MP-33",
+   "name": "Product Launch & Commercialization Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Manage the transition from development to market.",
+   "suppliers": "Marketing, Sales, Engineering, Manufacturing, Service, Partners.",
+   "inputs": "Launch Plans, Marketing Collateral, Sales Enablement Materials, Pricing, Channel Readiness, Training Materials.",
+   "process": [
+    "Develop go-to-market plans.",
+    "Prepare collateral.",
+    "Train sales and channel partners.",
+    "Coordinate launch readiness.",
+    "Manage events and communications.",
+    "Monitor launch performance.",
+    "Capture post-launch feedback.",
+    "Manage launch risk.",
+    "Coordinate supply chain.",
+    "Support phased launches.",
+    "Conduct post-mortems."
+   ],
+   "outputs": "Launched Products/Services, Marketing Campaigns, Sales Enablement Kits, Launch Reports, Post-Launch Reviews.",
+   "customers": "Sales, Marketing, Customers, Partners, Executive Management.",
+   "usedIn": "E2E-03, E2E-04, E2E-05, E2E-06, E2E-08, E2E-09"
+  },
+  {
+   "id": "MP-34",
+   "name": "End-of-Life & Decommissioning Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Manage the orderly phase-out of products and services.",
+   "suppliers": "Product Managers, Operations, Legal, Compliance, Customers.",
+   "inputs": "EOL Notices, Inventory Data, Customer Contracts, Regulatory Requirements, Service Commitments.",
+   "process": [
+    "Define EOL criteria.",
+    "Notify customers.",
+    "Manage last-time buys and inventory.",
+    "Plan service and support transition.",
+    "Decommission assets.",
+    "Archive data.",
+    "Ensure regulatory disposal.",
+    "Provide migration paths.",
+    "Manage spare parts.",
+    "Conduct EOL reviews.",
+    "Report on EOL status."
+   ],
+   "outputs": "EOL Plans, Decommissioning Reports, Archived Records, Customer Migration Guides, EOL Communications.",
+   "customers": "Customers, Operations, Legal, Compliance, Executive Management.",
+   "usedIn": "E2E-08"
+  },
+  {
+   "id": "MP-35",
+   "name": "Cost & Profitability Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Manage costs and profitability across the lifecycle.",
+   "suppliers": "Finance, Procurement, Engineering, Operations, Suppliers.",
+   "inputs": "Cost Data, Pricing Data, Financial Targets, Market Data, Supplier Quotes, Activity-Based Costing Data.",
+   "process": [
+    "Perform should-cost and target costing.",
+    "Manage lifecycle costing.",
+    "Analyze profitability.",
+    "Optimize cost structures.",
+    "Manage cost reduction.",
+    "Track variances.",
+    "Support pricing decisions.",
+    "Conduct make-vs-buy analysis.",
+    "Manage cost estimation.",
+    "Report on profitability.",
+    "Support value engineering."
+   ],
+   "outputs": "Cost Models, Profitability Reports, Cost Reduction Plans, Pricing Recommendations, Cost Variance Reports.",
+   "customers": "Finance, Product Managers, Executive Management, Sales, Procurement.",
+   "usedIn": "E2E-01, E2E-02, E2E-03, E2E-04, E2E-05, E2E-06, E2E-07, E2E-08, E2E-09"
+  },
+  {
+   "id": "MP-36",
+   "name": "Returns & Reverse Logistics Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Manage returns, refurbishment, recycling, and disposal.",
+   "suppliers": "Customers, Logistics, Quality, Service, Sustainability.",
+   "inputs": "Return Requests (RMA), Returned Products, Inspection Data, Warranty Claims, Disposal Regulations.",
+   "process": [
+    "Process return requests and RMAs.",
+    "Inspect and grade returns.",
+    "Manage refurbishment.",
+    "Process recycling and disposal.",
+    "Manage credits and refunds.",
+    "Analyze return reasons.",
+    "Provide feedback to engineering.",
+    "Manage reverse logistics.",
+    "Support circular economy.",
+    "Track return rates.",
+    "Report on returns performance."
+   ],
+   "outputs": "Processed Returns, Refurbished Products, Recycling Reports, Return Analytics, Feedback Reports.",
+   "customers": "Customers, Finance, Quality, Engineering, Sustainability.",
+   "usedIn": "E2E-08"
+  },
+  {
+   "id": "MP-37",
+   "name": "Customer Onboarding & Offboarding Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Ensure smooth customer activation, provisioning, training, and offboarding.",
+   "suppliers": "Sales, Customer Success, Operations, Customers, Training.",
+   "inputs": "Contracts, Customer Data, Service Requirements, Training Needs, Provisioning Requirements.",
+   "process": [
+    "Activate accounts.",
+    "Provision resources.",
+    "Conduct customer training.",
+    "Manage customer data.",
+    "Monitor onboarding.",
+    "Manage offboarding and data return.",
+    "Conduct exit interviews.",
+    "Manage communications.",
+    "Support multi-product onboarding.",
+    "Track onboarding metrics.",
+    "Report on onboarding and offboarding."
+   ],
+   "outputs": "Activated Customers, Provisioned Services, Training Records, Offboarding Reports, Customer Feedback.",
+   "customers": "Customers, Sales, Customer Success, Operations, Finance.",
+   "usedIn": "E2E-08"
+  },
+  {
+   "id": "MP-38",
+   "name": "Training & Enablement Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Ensure users, partners, and employees have the required knowledge and skills.",
+   "suppliers": "HR, Subject Matter Experts, Training Vendors, Customers, Partners.",
+   "inputs": "Training Needs, Competency Frameworks, Training Content, Certification Requirements, Product Updates.",
+   "process": [
+    "Assess training needs.",
+    "Develop and curate content.",
+    "Deliver training.",
+    "Manage certifications.",
+    "Track completion.",
+    "Provide ongoing learning.",
+    "Manage knowledge transfer.",
+    "Support role-based learning paths.",
+    "Measure training ROI.",
+    "Manage training records.",
+    "Report on training metrics."
+   ],
+   "outputs": "Training Programs, Certified Users, Competency Records, Training Reports, Learning Paths.",
+   "customers": "Employees, Partners, Customers, HR, Executive Management.",
+   "usedIn": "E2E-05"
+  },
+  {
+   "id": "MP-39",
+   "name": "Localization & Globalization Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Manage multi-language content, regional compliance, and cultural adaptation.",
+   "suppliers": "Marketing, Legal, Regional Teams, Translation Vendors, Regulatory Bodies.",
+   "inputs": "Source Content, Regional Requirements, Cultural Guidelines, Legal Requirements, Currency Data.",
+   "process": [
+    "Translate and localize content.",
+    "Adapt products and services for regions.",
+    "Ensure regional regulatory compliance.",
+    "Manage currency and pricing.",
+    "Adapt marketing and branding.",
+    "Manage regional distribution and support.",
+    "Manage localization workflows.",
+    "Ensure cultural sensitivity.",
+    "Track localization quality.",
+    "Report on localization status."
+   ],
+   "outputs": "Localized Content, Regional Compliance Records, Localized Products/Services, Translation Memory.",
+   "customers": "Regional Teams, Customers, Marketing, Legal, Sales.",
+   "usedIn": "E2E-05, E2E-09 (proposed assignment)"
+  },
+  {
+   "id": "MP-40",
+   "name": "Mobile & Offline Access Management",
+   "part": "C",
+   "category": "Cross-Cutting & Governance",
+   "goal": "Provide mobile and offline access to PLM data and processes.",
+   "suppliers": "IT, Field Service, Engineering, Operations, HR.",
+   "inputs": "Mobile Requirements, User Roles, Data Access Policies, Device Management Policies, Offline Data Requirements.",
+   "process": [
+    "Develop and manage mobile apps.",
+    "Enable offline access and synchronization.",
+    "Ensure mobile security and device management.",
+    "Optimize mobile UX.",
+    "Manage notifications.",
+    "Support cross-device use.",
+    "Manage app lifecycle.",
+    "Support barcode and QR scanning.",
+    "Enable photo and video capture.",
+    "Manage data usage.",
+    "Report on adoption."
+   ],
+   "outputs": "Mobile Apps, Offline Data Access, Mobile Security Policies, User Adoption Reports, Mobile Analytics.",
+   "customers": "Field Service, Engineering, Operations, Sales, Customers.",
+   "usedIn": "E2E-05, E2E-09"
+  },
+  {
+   "id": "MP-13",
+   "name": "Sustainability & Circular Economy Management",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Integrate sustainability into every stage of the product lifecycle.",
+   "suppliers": "Sustainability Officers, Regulatory Bodies, Suppliers, Engineering, Communities.",
+   "inputs": "Environmental Regulations (RoHS, REACH, CSRD), Material Composition Data, Energy Consumption Data, Supplier Sustainability Reports, Carbon Footprint Targets, LCA Data.",
+   "process": [
+    "Track material compliance.",
+    "Calculate carbon and water footprint.",
+    "Manage substances of concern (SoC).",
+    "Design for recyclability.",
+    "Plan EOL recovery.",
+    "Manage supplier sustainability scorecards.",
+    "Integrate LCA tools.",
+    "Support circular business models.",
+    "Manage sustainability reporting.",
+    "Conduct sustainability audits.",
+    "Report on sustainability performance."
+   ],
+   "outputs": "Sustainability Reports, Carbon Footprint Declarations, Material Compliance Certificates, Circular Economy Plans, LCA Reports.",
+   "customers": "Sustainability Teams, Regulatory Bodies, Customers, Executive Management, Marketing, Investors.",
+   "usedIn": "E2E-01, E2E-08"
+  },
+  {
+   "id": "MP-14",
+   "name": "Digital Twin & IoT Integration",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Create and manage a dynamic digital twin of the product.",
+   "suppliers": "IoT Platforms, Engineering, Service, Manufacturing, Customers.",
+   "inputs": "As-Designed Models, As-Built Data, As-Maintained Data, Real-time Sensor Data, Operational Data, Environmental Data.",
+   "process": [
+    "Define the digital twin model.",
+    "Ingest and process IoT data.",
+    "Visualize performance.",
+    "Run simulations.",
+    "Enable predictive maintenance.",
+    "Provide feedback to engineering.",
+    "Manage the digital thread.",
+    "Support what-if analysis.",
+    "Integrate AR/VR.",
+    "Manage data security.",
+    "Report on twin performance."
+   ],
+   "outputs": "Real-time Performance Dashboards, Predictive Maintenance Alerts, Design Improvement Insights, Optimized Product Performance, Digital Twin Models.",
+   "customers": "Service Teams, Engineering, Customers, Product Managers, Operations.",
+   "usedIn": "E2E-09"
+  },
+  {
+   "id": "MP-15",
+   "name": "AI & Machine Learning Core Services",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Embed AI/ML capabilities across all macro processes.",
+   "suppliers": "All PLM Macro Processes, Data Scientists, External Data Sources, AI Platforms.",
+   "inputs": "Historical PLM Data, Structured/Unstructured Data, User Behavior Data, External Market Data, Training Data.",
+   "process": [
+    "Provide generative design.",
+    "Automate data classification.",
+    "Predict quality and supply chain risks.",
+    "Power intelligent search.",
+    "Automate change impact analysis.",
+    "Optimize resource allocation.",
+    "Provide natural language processing (NLP).",
+    "Enable predictive maintenance.",
+    "Support demand forecasting.",
+    "Automate document summarization.",
+    "Continuously train models."
+   ],
+   "outputs": "Design Recommendations, Risk Alerts, Automated Workflows, Intelligent Search Results, Predictive Analytics, AI Models.",
+   "customers": "All PLM Users, Data Scientists, Executive Management.",
+   "usedIn": "E2E-01, E2E-02, E2E-03, E2E-04, E2E-05, E2E-06, E2E-07, E2E-08, E2E-09"
+  },
+  {
+   "id": "MP-57",
+   "name": "Generative AI & Autonomous Design Management",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Manage AI-generated designs, their validation, and ethical AI governance.",
+   "suppliers": "Data Scientists, Engineering, Ethics Boards, Regulatory Bodies, Customers.",
+   "inputs": "Training Data, Design Constraints, Ethical Guidelines, Regulatory Requirements, Performance Requirements.",
+   "process": [
+    "Train generative AI models.",
+    "Generate design alternatives.",
+    "Validate AI-generated designs.",
+    "Ensure ethical AI use.",
+    "Manage model lifecycle.",
+    "Integrate with human designers.",
+    "Monitor performance and bias.",
+    "Manage AI-generated IP.",
+    "Support human-in-the-loop review.",
+    "Document AI decisions.",
+    "Report on AI performance."
+   ],
+   "outputs": "AI-Generated Designs, Validation Reports, Ethical AI Records, Performance Metrics, AI Design Documentation.",
+   "customers": "Engineering, R&D, Ethics, Regulatory Bodies, Executive Management.",
+   "usedIn": "E2E-03"
+  },
+  {
+   "id": "MP-54",
+   "name": "Cybersecurity for Connected Products",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Ensure the security of connected products and services.",
+   "suppliers": "Security Teams, Engineering, Regulatory Bodies, Customers, Threat Intelligence.",
+   "inputs": "Threat Intelligence, Vulnerability Data, Security Requirements, Regulatory Standards, Product Architecture.",
+   "process": [
+    "Conduct threat modeling.",
+    "Implement security by design.",
+    "Manage vulnerabilities and patches.",
+    "Conduct security testing.",
+    "Monitor for threats.",
+    "Manage incident response.",
+    "Ensure regulatory compliance (UNECE R155, ISO/SAE 21434).",
+    "Manage OTA updates.",
+    "Conduct security audits.",
+    "Train teams.",
+    "Report on security posture."
+   ],
+   "outputs": "Secure Products, Vulnerability Reports, Patch Releases, Incident Reports, Security Certifications.",
+   "customers": "Customers, Security Teams, Regulatory Bodies, Executive Management.",
+   "usedIn": "E2E-03, E2E-06 (proposed assignment)"
+  },
+  {
+   "id": "MP-129",
+   "name": "Digital Product Passport Management",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Manage EU Digital Product Passport (DPP) requirements.",
+   "suppliers": "Regulatory Bodies, Suppliers, Engineering, Sustainability, Customers.",
+   "inputs": "Product Data, Material Data, Sustainability Data, Regulatory Requirements, Supply Chain Data.",
+   "process": [
+    "Collect product data.",
+    "Ensure data accuracy.",
+    "Publish digital passports.",
+    "Manage access.",
+    "Update passport data.",
+    "Ensure compliance.",
+    "Report on compliance.",
+    "Integrate the supply chain.",
+    "Support QR/NFC carriers.",
+    "Manage privacy.",
+    "Report on usage."
+   ],
+   "outputs": "Digital Product Passports, Compliance Records, Data Reports, Usage Analytics.",
+   "customers": "Regulators, Customers, Recyclers, Sustainability, Supply Chain Partners.",
+   "usedIn": "E2E-05, E2E-08 (proposed assignment)"
+  },
+  {
+   "id": "MP-128",
+   "name": "Circular Economy Certification Management",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Manage Cradle-to-Cradle, B Corp, and other circular certifications.",
+   "suppliers": "Certification Bodies, Sustainability, Operations, Suppliers, Customers.",
+   "inputs": "Certification Requirements, Material Data, Process Data, Sustainability Data.",
+   "process": [
+    "Assess readiness.",
+    "Implement requirements.",
+    "Apply for certifications.",
+    "Maintain certifications.",
+    "Report on compliance.",
+    "Train teams.",
+    "Monitor requirement changes.",
+    "Conduct internal audits.",
+    "Manage renewals.",
+    "Report on certification status."
+   ],
+   "outputs": "Certifications, Compliance Records, Sustainability Reports, Audit Reports.",
+   "customers": "Customers, Regulators, Investors, Sustainability, Marketing.",
+   "usedIn": "E2E-08 (proposed assignment)"
+  },
+  {
+   "id": "MP-72",
+   "name": "Reliability & Field Failure Management",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Track and improve product reliability in the field.",
+   "suppliers": "Service, Quality, Engineering, Customers, Suppliers.",
+   "inputs": "Field Failure Data, Warranty Claims, Reliability Models, Test Data, Customer Complaints.",
+   "process": [
+    "Collect field failure data.",
+    "Analyze failure modes.",
+    "Model reliability (Weibull, MTBF).",
+    "Identify improvements.",
+    "Implement design changes.",
+    "Track reliability metrics.",
+    "Report to engineering.",
+    "Conduct reliability testing (ALT, HALT).",
+    "Manage FRACAS.",
+    "Predict reliability.",
+    "Report on reliability performance."
+   ],
+   "outputs": "Reliability Reports, Failure Analysis, Improvement Plans, Reliability Metrics, FRACAS Records.",
+   "customers": "Engineering, Quality, Service, Customers, Executive Management.",
+   "usedIn": "E2E-06, E2E-07"
+  },
+  {
+   "id": "MP-69",
+   "name": "Obsolescence & Long-Term Support Management",
+   "part": "D",
+   "category": "Strategic Differentiators",
+   "goal": "Manage component obsolescence and extended support commitments.",
+   "suppliers": "Suppliers, Engineering, Service, Customers, Procurement.",
+   "inputs": "Component Lifecycle Data, Obsolescence Notices, Support Commitments, Inventory Data.",
+   "process": [
+    "Monitor obsolescence.",
+    "Plan last-time buys.",
+    "Identify alternatives.",
+    "Manage long-term support.",
+    "Communicate with customers.",
+    "Manage inventory.",
+    "Plan redesign.",
+    "Conduct risk analysis.",
+    "Manage supplier notifications.",
+    "Report on obsolescence status."
+   ],
+   "outputs": "Obsolescence Plans, Last-Time Buys, Support Commitments, Redesign Plans, Risk Reports.",
+   "customers": "Customers, Engineering, Service, Procurement, Executive Management.",
+   "usedIn": "E2E-08"
+  },
+  {
+   "id": "MP-41",
+   "name": "Clinical & Trial Management",
+   "part": "E",
+   "category": "Industry-Specific",
+   "goal": "Manage clinical trials, regulatory submissions, and post-market surveillance for life sciences.",
+   "suppliers": "Regulatory Bodies, Clinical Sites, Patients, R&D, Ethics Committees.",
+   "inputs": "Clinical Protocols, Patient Data, Trial Results, Regulatory Requirements, Informed Consent Data.",
+   "process": [
+    "Design and manage trials.",
+    "Recruit participants.",
+    "Collect and analyze data.",
+    "Manage regulatory submissions.",
+    "Monitor post-market performance.",
+    "Manage adverse event reporting.",
+    "Ensure GxP compliance.",
+    "Manage trial documentation.",
+    "Conduct site monitoring.",
+    "Manage clinical supplies.",
+    "Report outcomes."
+   ],
+   "outputs": "Clinical Trial Reports, Regulatory Approvals, Safety Reports, Post-Market Data, Clinical Study Reports.",
+   "customers": "Regulatory Agencies, Patients, R&D, Medical Affairs, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-45",
+   "name": "Aerospace & Defense Compliance Management",
+   "part": "E",
+   "category": "Industry-Specific",
+   "goal": "Ensure compliance with aerospace and defense regulations.",
+   "suppliers": "Regulatory Bodies, Defense Agencies, Engineering, Quality, Suppliers.",
+   "inputs": "AS9100, ITAR, EAR, Customer Requirements, Technical Data, Security Clearances.",
+   "process": [
+    "Manage AS9100 quality compliance.",
+    "Ensure ITAR/EAR compliance.",
+    "Manage export controls.",
+    "Track configuration and serial numbers.",
+    "Manage airworthiness certifications.",
+    "Conduct audits.",
+    "Manage supply chain compliance.",
+    "Manage clearances.",
+    "Control technical data access.",
+    "Report to agencies.",
+    "Conduct training."
+   ],
+   "outputs": "Compliant Products, Certification Records, Export Licenses, Audit Reports, Compliance Certificates.",
+   "customers": "Defense Agencies, Regulatory Bodies, Customers, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-46",
+   "name": "Automotive Quality & Compliance Management",
+   "part": "E",
+   "category": "Industry-Specific",
+   "goal": "Ensure automotive quality and compliance.",
+   "suppliers": "Regulatory Bodies, OEMs, Suppliers, Engineering, Quality.",
+   "inputs": "IATF 16949, APQP, PPAP, Customer Requirements, Technical Specifications, Regulatory Requirements.",
+   "process": [
+    "Manage APQP/PPAP.",
+    "Ensure IATF 16949 compliance.",
+    "Manage recalls.",
+    "Track warranty and field failures.",
+    "Manage supplier quality.",
+    "Conduct audits.",
+    "Manage regulatory compliance (emissions, safety).",
+    "Support Automotive SPICE.",
+    "Manage traceability and serialization.",
+    "Report on quality.",
+    "Conduct training."
+   ],
+   "outputs": "Compliant Vehicles/Components, PPAP Approvals, Recall Reports, Quality Records, Compliance Certificates.",
+   "customers": "OEMs, Regulatory Bodies, Customers, Dealers, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-96",
+   "name": "Medical Device UDI & Post-Market Surveillance Management",
+   "part": "E",
+   "category": "Industry-Specific",
+   "goal": "Manage UDI compliance and post-market surveillance for medical devices.",
+   "suppliers": "Regulatory Bodies, Clinicians, Patients, Quality, R&D.",
+   "inputs": "Device Data, UDI Requirements, Adverse Event Data, Clinical Data, Regulatory Requirements.",
+   "process": [
+    "Assign and manage UDIs.",
+    "Submit to regulatory databases (GUDID, EUDAMED).",
+    "Monitor post-market performance.",
+    "Manage adverse event reporting (MDR, MIR).",
+    "Conduct post-market clinical follow-up.",
+    "Manage recalls.",
+    "Report to regulators.",
+    "Manage device tracking.",
+    "Conduct risk analysis.",
+    "Report on performance.",
+    "Support field safety corrective actions."
+   ],
+   "outputs": "UDI Records, Post-Market Reports, Adverse Event Reports, Recall Records, Compliance Certificates.",
+   "customers": "Regulators, Clinicians, Patients, Quality, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-171",
+   "name": "Product-Service Integration Management",
+   "part": "I",
+   "category": "Product-Service Integration",
+   "goal": "Manage the integration of product and service offerings.",
+   "suppliers": "Product Management, Service Management, Engineering, Sales, Customers.",
+   "inputs": "Product Data, Service Data, Customer Requirements, Integration Requirements.",
+   "process": [
+    "Define product-service bundles.",
+    "Align lifecycles.",
+    "Manage cross-lifecycle dependencies.",
+    "Coordinate launches.",
+    "Manage integrated pricing.",
+    "Support integrated billing.",
+    "Provide a unified customer experience.",
+    "Manage integrated service delivery.",
+    "Report on performance."
+   ],
+   "outputs": "Integrated Product-Service Offerings, Bundled Pricing, Unified Customer Experience, Integrated Performance Reports.",
+   "customers": "Customers, Product Managers, Service Managers, Sales, Executive Management.",
+   "usedIn": "Conditional activation in E2E-05 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-172",
+   "name": "Outcome-Based Contract Management",
+   "part": "I",
+   "category": "Product-Service Integration",
+   "goal": "Manage outcome-based contracts (pay-per-use, performance-based).",
+   "suppliers": "Sales, Legal, Finance, Customers, Operations.",
+   "inputs": "Contract Terms, Usage Data, Performance Data, Outcome Metrics.",
+   "process": [
+    "Define outcome metrics and SLAs.",
+    "Monitor performance.",
+    "Calculate payments based on outcomes.",
+    "Manage compliance.",
+    "Handle disputes.",
+    "Report on outcomes.",
+    "Manage renewals.",
+    "Support outcome-based pricing."
+   ],
+   "outputs": "Outcome-Based Contracts, Performance Reports, Payment Calculations, Compliance Records.",
+   "customers": "Customers, Finance, Sales, Operations, Legal.",
+   "usedIn": "Conditional activation in E2E-05 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-173",
+   "name": "Installed Base Management",
+   "part": "I",
+   "category": "Product-Service Integration",
+   "goal": "Manage the installed base of products and services.",
+   "suppliers": "Service, Engineering, Customers, Operations, Sales.",
+   "inputs": "Installed Base Data, Configuration Data, Performance Data, Customer Data.",
+   "process": [
+    "Register installed products.",
+    "Track configuration changes.",
+    "Monitor performance.",
+    "Manage upgrades and updates.",
+    "Support service and maintenance.",
+    "Manage warranty and entitlements.",
+    "Support recall campaigns.",
+    "Report on the installed base."
+   ],
+   "outputs": "Installed Base Records, Configuration Data, Performance Reports, Upgrade Plans.",
+   "customers": "Service, Engineering, Customers, Operations, Sales.",
+   "usedIn": "Conditional activation in E2E-05 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-174",
+   "name": "Service Parts & Inventory Optimization",
+   "part": "I",
+   "category": "Product-Service Integration",
+   "goal": "Optimize service parts inventory across the network.",
+   "suppliers": "Service, Procurement, Logistics, Suppliers, Finance.",
+   "inputs": "Demand Forecast, Inventory Data, Supplier Data, Cost Data, Service Levels.",
+   "process": [
+    "Forecast demand.",
+    "Optimize inventory levels.",
+    "Manage replenishment.",
+    "Manage supplier lead times.",
+    "Track performance.",
+    "Manage obsolete inventory.",
+    "Support multi-echelon optimization.",
+    "Report on optimization."
+   ],
+   "outputs": "Optimized Inventory Levels, Replenishment Plans, Inventory Performance Reports, Cost Savings.",
+   "customers": "Service, Procurement, Logistics, Finance, Customers.",
+   "usedIn": "Conditional activation in E2E-05 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-175",
+   "name": "Field Service Mobility & Augmented Reality",
+   "part": "I",
+   "category": "Product-Service Integration",
+   "goal": "Enable field service technicians with mobile and AR tools.",
+   "suppliers": "Field Service, IT, Engineering, Customers, Training.",
+   "inputs": "Service Requests, Technical Documentation, AR Content, Mobile Device Data.",
+   "process": [
+    "Deploy mobile apps.",
+    "Provide AR-guided procedures.",
+    "Enable remote expert assistance.",
+    "Capture field data.",
+    "Support offline access.",
+    "Manage devices and connectivity.",
+    "Track first-time fix rates.",
+    "Report on performance."
+   ],
+   "outputs": "Mobile Field Service Apps, AR Procedures, Remote Assistance Records, Field Data, Performance Reports.",
+   "customers": "Field Service Technicians, Customers, Engineering, Operations, Training.",
+   "usedIn": "Conditional activation in E2E-05 to E2E-08 by industry or business model"
+  },
+  {
+   "id": "MP-161",
+   "name": "Service Innovation & Ideation Management",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Manage the front-end of service innovation, from idea to concept.",
+   "suppliers": "Marketing, Customers, Service Managers, R&D, Partners.",
+   "inputs": "Customer Feedback, Market Trends, Competitive Intelligence, Technology Trends.",
+   "process": [
+    "Ideate concepts.",
+    "Evaluate ideas.",
+    "Develop concepts.",
+    "Validate with customers.",
+    "Prioritize innovations.",
+    "Align with strategy.",
+    "Report on the pipeline."
+   ],
+   "outputs": "Service Concepts, Innovation Pipeline, Validation Reports, Prioritized Ideas.",
+   "customers": "Service Managers, Marketing, Executive Management, Customers.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-162",
+   "name": "Service Blueprinting & Design Management",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Design service processes, touchpoints, and customer journeys.",
+   "suppliers": "Service Managers, UX Teams, Customers, Operations, Marketing.",
+   "inputs": "Customer Personas, Journey Maps, Service Requirements, Process Data.",
+   "process": [
+    "Create service blueprints.",
+    "Design processes.",
+    "Define touchpoints.",
+    "Map journeys.",
+    "Design service recovery.",
+    "Validate designs.",
+    "Implement designs.",
+    "Report on design."
+   ],
+   "outputs": "Service Blueprints, Process Designs, Touchpoint Maps, Service Recovery Plans.",
+   "customers": "Service Managers, UX Teams, Operations, Customers.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-163",
+   "name": "Service Capacity & Resource Optimization",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Optimize service capacity and resource allocation.",
+   "suppliers": "Operations, HR, Finance, Service Managers, Customers.",
+   "inputs": "Demand Forecast, Resource Data, Capacity Data, Cost Data.",
+   "process": [
+    "Forecast demand.",
+    "Optimize allocation.",
+    "Manage capacity buffers.",
+    "Support scalability.",
+    "Monitor utilization.",
+    "Adjust plans.",
+    "Report on optimization."
+   ],
+   "outputs": "Capacity Plans, Resource Allocation Plans, Utilization Reports, Optimization Recommendations.",
+   "customers": "Operations, HR, Finance, Service Managers.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-164",
+   "name": "Service Pricing & Revenue Optimization",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Manage dynamic pricing, yield management, and revenue optimization.",
+   "suppliers": "Finance, Sales, Marketing, Customers, Operations.",
+   "inputs": "Cost Data, Market Data, Demand Data, Competitive Data.",
+   "process": [
+    "Define pricing models.",
+    "Implement dynamic pricing.",
+    "Manage yield.",
+    "Optimize revenue.",
+    "Monitor price performance.",
+    "Adjust pricing.",
+    "Report on optimization."
+   ],
+   "outputs": "Pricing Models, Revenue Optimization Reports, Yield Management Plans, Price Performance Reports.",
+   "customers": "Finance, Sales, Marketing, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-165",
+   "name": "Service Compliance & Regulatory Management",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Manage industry-specific service regulations.",
+   "suppliers": "Regulatory Bodies, Legal, Compliance, Service Managers.",
+   "inputs": "Regulatory Requirements, Service Data, Compliance Data.",
+   "process": [
+    "Monitor regulations.",
+    "Assess compliance.",
+    "Implement controls.",
+    "Conduct audits.",
+    "Report on compliance.",
+    "Train staff.",
+    "Manage regulatory changes."
+   ],
+   "outputs": "Compliance Reports, Audit Records, Regulatory Submissions, Training Records.",
+   "customers": "Regulatory Bodies, Legal, Compliance, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-166",
+   "name": "Service Ecosystem & Platform Management",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Manage service ecosystems, APIs, and platform business models.",
+   "suppliers": "Partners, Developers, Service Managers, IT.",
+   "inputs": "Ecosystem Strategy, API Data, Partner Data, Platform Data.",
+   "process": [
+    "Define ecosystem strategy.",
+    "Manage APIs.",
+    "Onboard partners.",
+    "Manage platform operations.",
+    "Monitor ecosystem health.",
+    "Optimize value.",
+    "Report on performance."
+   ],
+   "outputs": "Ecosystem Strategy, API Management, Partner Network, Platform Reports.",
+   "customers": "Partners, Developers, Service Managers, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-167",
+   "name": "Service Data & Analytics Management",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Manage service-specific analytics.",
+   "suppliers": "Data Science, Operations, Finance, Customers, Marketing.",
+   "inputs": "Service Data, Customer Data, Operational Data, Financial Data.",
+   "process": [
+    "Collect service data.",
+    "Analyze customer analytics.",
+    "Analyze operational analytics.",
+    "Analyze financial analytics.",
+    "Create dashboards.",
+    "Provide insights.",
+    "Report on analytics."
+   ],
+   "outputs": "Service Analytics Dashboards, Customer Insights, Operational Insights, Financial Insights.",
+   "customers": "Data Science, Operations, Finance, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-168",
+   "name": "Service Workforce & Talent Management",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Manage service-specific workforce planning, skills, and scheduling.",
+   "suppliers": "HR, Operations, Service Managers, Training.",
+   "inputs": "Workforce Data, Skills Data, Demand Forecast, Training Data.",
+   "process": [
+    "Forecast workforce demand.",
+    "Manage skills and competencies.",
+    "Schedule the workforce.",
+    "Manage certifications.",
+    "Support career development.",
+    "Monitor performance.",
+    "Report on the workforce."
+   ],
+   "outputs": "Workforce Plans, Skills Inventories, Schedules, Certification Records.",
+   "customers": "HR, Operations, Service Managers, Employees.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-169",
+   "name": "Service Continuity & Resilience Management",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Manage business continuity for service operations.",
+   "suppliers": "IT, Operations, Risk Management, Service Managers.",
+   "inputs": "Business Impact Analysis, Risk Data, Recovery Requirements.",
+   "process": [
+    "Conduct business impact analysis (BIA).",
+    "Develop recovery plans.",
+    "Test procedures.",
+    "Manage backup and replication.",
+    "Coordinate crisis response.",
+    "Ensure compliance.",
+    "Report on resilience."
+   ],
+   "outputs": "Recovery Plans, Business Continuity Plans, Test Reports, Compliance Records.",
+   "customers": "Operations, IT, Risk Management, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-170",
+   "name": "Service Innovation Lab & Experimentation Management",
+   "part": "J",
+   "category": "Pure Service Industry",
+   "goal": "Manage service experiments, A/B testing, and pilots.",
+   "suppliers": "Innovation, Marketing, Service Managers, Customers.",
+   "inputs": "Experiment Ideas, Test Data, Customer Feedback, Metrics.",
+   "process": [
+    "Design experiments.",
+    "Run A/B tests.",
+    "Conduct pilots.",
+    "Collect data.",
+    "Analyze results.",
+    "Scale successful experiments.",
+    "Report on experimentation."
+   ],
+   "outputs": "Experiment Results, A/B Test Reports, Pilot Results, Scaled Innovations.",
+   "customers": "Innovation, Marketing, Service Managers, Executive Management.",
+   "usedIn": "Conditional activation in E2E-01 to E2E-09 by industry or business model"
+  },
+  {
+   "id": "MP-121",
+   "name": "Innovation Phase-Gate Management",
+   "part": "K",
+   "category": "Innovation Phase-Gate & Configuration",
+   "goal": "Structure every innovation project into defined phases separated by decision gates with clear Go / Kill / Hold / Recycle decisions.",
+   "suppliers": "Executive Leadership, Innovation Committee, Product Managers, Portfolio Managers, Finance, Engineering, Marketing, Regulatory Affairs.",
+   "inputs": "Innovation Project Charter, Track Assignment, Phase Definitions, Gate Criteria, Business Case, Resource Plan, Risk Register, Market Data, Technical Feasibility Data, Financial Projections.",
+   "process": [
+    "Define innovation phases.",
+    "Define gates between phases.",
+    "Assign gate owners and decision-makers.",
+    "Define gate criteria (strategic fit, market viability, technical feasibility, financial viability, regulatory compliance, resource availability, risk profile).",
+    "Assign project to track (Full, Light, Fast).",
+    "Configure phases and gates per track.",
+    "Schedule gate reviews.",
+    "Conduct gate reviews.",
+    "Evaluate performance against gate criteria.",
+    "Make Go/Kill/Hold/Recycle decisions.",
+    "Document decisions and rationale.",
+    "Trigger next-phase activities.",
+    "Escalate contentious decisions.",
+    "Track gate cycle time.",
+    "Manage exceptions and waivers.",
+    "Conduct post-gate lessons learned.",
+    "Report on portfolio performance."
+   ],
+   "outputs": "Approved Phase-Gate Plans, Gate Review Records, Go/Kill/Hold/Recycle Decisions, Phase Progression Authorizations, Gate Decision Rationale, Phase-Gate Performance Reports.",
+   "customers": "Innovation Teams, Product Managers, Executive Leadership, Portfolio Managers, Finance, Gate Review Board, PMO.",
+   "usedIn": "All nine E2E processes (governance layer)"
+  },
+  {
+   "id": "MP-122",
+   "name": "Gate Checklist Management",
+   "part": "K",
+   "category": "Innovation Phase-Gate & Configuration",
+   "goal": "Ensure every gate has a comprehensive, track-appropriate checklist completed before progression.",
+   "suppliers": "Gate Review Board, Quality Assurance, Compliance, Product Managers, Engineering, Marketing, Finance, Regulatory Affairs.",
+   "inputs": "Gate Definitions, Track Assignment, Checklist Templates, Regulatory Requirements, Quality Standards, Business Rules, Historical Checklist Data, Lessons Learned.",
+   "process": [
+    "Define checklist templates per gate.",
+    "Configure items per track.",
+    "Define mandatory vs optional items.",
+    "Assign owners and reviewers.",
+    "Define evidence requirements.",
+    "Enforce completion before gate review.",
+    "Track item status.",
+    "Validate evidence.",
+    "Flag incomplete or non-compliant items.",
+    "Escalate blocked items.",
+    "Generate gate readiness reports.",
+    "Conduct pre-gate reviews.",
+    "Manage exceptions and waivers.",
+    "Archive completed checklists.",
+    "Continuously improve checklists.",
+    "Report on compliance."
+   ],
+   "outputs": "Gate Checklists, Completed Checklist Records, Gate Readiness Reports, Exception/Waiver Records, Evidence Packages, Checklist Compliance Reports, Audit Trails.",
+   "customers": "Gate Review Board, Project Managers, Quality Assurance, Compliance, Regulatory Affairs, Internal Audit, Executive Leadership.",
+   "usedIn": "All nine E2E processes (governance layer)"
+  },
+  {
+   "id": "MP-123",
+   "name": "Innovation Track Configuration Management",
+   "part": "K",
+   "category": "Innovation Phase-Gate & Configuration",
+   "goal": "Define, configure, and manage the three innovation tracks (Full, Light, Fast).",
+   "suppliers": "Innovation Governance Board, Executive Leadership, Process Owners, Product Managers, Portfolio Managers, IT.",
+   "inputs": "Track Definitions, Complexity Scoring Criteria, Macro Process Catalog, Phase-Gate Templates, Task Libraries, Step Libraries, Business Rules, Regulatory Requirements, Historical Project Data.",
+   "process": [
+    "Define three innovation tracks.",
+    "Define complexity scoring criteria.",
+    "Map macro processes to each track.",
+    "Map phases to each track.",
+    "Map gates to each track.",
+    "Map tasks and steps to each macro process per track.",
+    "Define default checklist items per gate per track.",
+    "Configure track-specific workflows and approvals.",
+    "Define track escalation rules.",
+    "Version-control track configurations.",
+    "Allow track customization per business unit.",
+    "Allow track override with justification.",
+    "Publish track configurations.",
+    "Train users on track selection.",
+    "Monitor track usage and effectiveness.",
+    "Refine track definitions.",
+    "Report on track performance."
+   ],
+   "outputs": "Track Definitions, Complexity Scoring Models, Track-to-Macro-Process Maps, Track-to-Phase-Gate Maps, Track-to-Task/Step Maps, Track Configuration Versions, Track Override Records, Track Performance Reports.",
+   "customers": "Project Managers, Innovation Teams, Portfolio Managers, Process Owners, Executive Leadership, PMO, Business Unit Leaders.",
+   "usedIn": "All nine E2E processes (governance layer)"
+  },
+  {
+   "id": "MP-124",
+   "name": "Process Tailoring & Composability Management",
+   "part": "K",
+   "category": "Innovation Phase-Gate & Configuration",
+   "goal": "Provide a configuration engine to select, deselect, and tailor macro processes, tasks, and steps per project.",
+   "suppliers": "Process Owners, Project Managers, Innovation Teams, IT, Enterprise Architects, Governance Board.",
+   "inputs": "Macro Process Catalog, Task Library, Step Library, Track Configuration, Project Charter, Complexity Score, Business Rules, Dependency Maps, Regulatory Requirements, User Roles & Permissions.",
+   "process": [
+    "Provide configuration UI for macro process selection.",
+    "Provide task-level and step-level selection.",
+    "Display dependencies.",
+    "Validate selections against track constraints.",
+    "Enforce mandatory macro processes per track.",
+    "Allow optional macro processes.",
+    "Allow task and step customization.",
+    "Apply templates for common project types.",
+    "Save configurations as reusable templates.",
+    "Version-control configurations.",
+    "Manage changes with impact analysis.",
+    "Enforce approval workflows.",
+    "Roll back configurations.",
+    "Audit all changes.",
+    "Provide configuration analytics.",
+    "Support multi-tenant configuration.",
+    "Report on compliance."
+   ],
+   "outputs": "Project Configuration Records, Tailored Macro Process Sets, Tailored Task/Step Lists, Configuration Templates, Configuration Versions, Change Impact Reports, Configuration Audit Trails, Configuration Analytics.",
+   "customers": "Project Managers, Innovation Teams, Process Owners, IT, Enterprise Architects, Governance Board, PMO, Executive Leadership.",
+   "usedIn": "All nine E2E processes (governance layer)"
+  }
+ ],
+ "e2e": [
+  {
+   "E2E": "E2E-01",
+   "Type": "Root / Master Chain",
+   "Name": "Idea-to-Business Plan",
+   "Goal": "Evaluate the initial opportunity, identify the target market, and produce a preliminary business plan.",
+   "Exit gate": "T-1",
+   "Related macro processes": "MP-01, MP-03, MP-04*, MP-12, MP-13, MP-15, MP-17*, MP-30, MP-32, MP-35, MP-121, MP-122, MP-123, MP-124",
+   "Tasks": "8"
+  },
+  {
+   "E2E": "E2E-02",
+   "Type": "Root / Master Chain",
+   "Name": "Idea-to-Business Proposal",
+   "Goal": "Conduct the opportunity study, develop a detailed business case, and take the Go/No-Go decision.",
+   "Exit gate": "T0",
+   "Related macro processes": "MP-01, MP-03, MP-04, MP-12, MP-15, MP-17, MP-29*, MP-30, MP-32, MP-35, MP-121, MP-122, MP-123, MP-124",
+   "Tasks": "11"
+  },
+  {
+   "E2E": "E2E-03",
+   "Type": "Partition of E2E-02",
+   "Name": "Business Proposal-to-Design",
+   "Goal": "Complete the detailed design and functional prototype, and validate the architecture.",
+   "Exit gate": "T1",
+   "Related macro processes": "MP-03, MP-04, MP-05, MP-07, MP-08, MP-12, MP-15, MP-17, MP-29, MP-30, MP-32, MP-33*, MP-35, MP-57, MP-121, MP-122",
+   "Tasks": "10"
+  },
+  {
+   "E2E": "E2E-04",
+   "Type": "Partition of E2E-02",
+   "Name": "Design-to-Development",
+   "Goal": "Complete development, validate functionalities, and prepare deployment.",
+   "Exit gate": "T2",
+   "Related macro processes": "MP-04, MP-05, MP-06, MP-07, MP-08, MP-12, MP-15, MP-17, MP-20*, MP-29, MP-30, MP-33*, MP-35, MP-121, MP-122",
+   "Tasks": "9"
+  },
+  {
+   "E2E": "E2E-05",
+   "Type": "Root / Master Chain",
+   "Name": "Development-to-Launch",
+   "Goal": "Prepare and execute the market launch.",
+   "Exit gate": "T3",
+   "Related macro processes": "MP-08, MP-12, MP-15, MP-17, MP-22, MP-25, MP-30, MP-32, MP-33, MP-35, MP-38*, MP-40, MP-121, MP-122",
+   "Tasks": "10"
+  },
+  {
+   "E2E": "E2E-06",
+   "Type": "Partition of E2E-05",
+   "Name": "Launch-to-After-Sales",
+   "Goal": "Monitor post-launch performance, analyze feedback, and track incidents.",
+   "Exit gate": "T4",
+   "Related macro processes": "MP-08, MP-10, MP-12, MP-15, MP-17, MP-23, MP-25, MP-33*, MP-35, MP-72, MP-121, MP-122",
+   "Tasks": "7"
+  },
+  {
+   "E2E": "E2E-07",
+   "Type": "Partition of E2E-05",
+   "Name": "After-Sales-to-Performance",
+   "Goal": "Evaluate overall performance and profitability, and prepare the relaunch-or-retire decision.",
+   "Exit gate": "T5",
+   "Related macro processes": "MP-01, MP-12, MP-15, MP-17, MP-25, MP-35, MP-72, MP-121, MP-122",
+   "Tasks": "6"
+  },
+  {
+   "E2E": "E2E-08",
+   "Type": "Composite (of E2E-03 to E2E-07)",
+   "Name": "Assessment-to-Relaunch or Retirement",
+   "Goal": "Branching decision: relaunch the product (loop back to E2E-03/04/05) or retire it (proceed to T6).",
+   "Exit gate": "T6",
+   "Related macro processes": "MP-01, MP-03, MP-04, MP-05, MP-06*, MP-07, MP-08, MP-12, MP-13, MP-15, MP-17*, MP-22, MP-30, MP-32, MP-33, MP-34, MP-35, MP-36, MP-37*, MP-69, MP-121, MP-122",
+   "Tasks": "12"
+  },
+  {
+   "E2E": "E2E-09",
+   "Type": "Root / Master Chain (Parallel)",
+   "Name": "Market Strategy-to-Campaign",
+   "Goal": "Establish the market strategy and execute marketing campaigns.",
+   "Exit gate": "—",
+   "Related macro processes": "MP-01, MP-12, MP-14, MP-15, MP-17, MP-25, MP-33, MP-35, MP-40, MP-121, MP-122",
+   "Tasks": "8"
+  }
+ ],
+ "e2eDetail": {
+  "E2E-01": {
+   "trigger": "Market trend detected, strategic initiative launched, or executive request for new product exploration.",
+   "terminal": "Approved Business Plan with committed resources; Go decision at T-1 to proceed to E2E-02 (Idea-to-Business Proposal).",
+   "exitGate": "T-1",
+   "type": "Root / Master Chain",
+   "tasks": [
+    {
+     "id": "UFT-01-01",
+     "name": "Capture Strategic Idea",
+     "description": "Capture new product/service idea from an internal or external source",
+     "chainLink": "Feeds E2E-02",
+     "macroProcesses": "MP-01 Portfolio, MP-03 Requirements",
+     "module": "Ideation Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Marketing",
+     "S": "R&D",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-01-02",
+     "name": "Assess Market Opportunity",
+     "description": "Analyze market trends, customer needs, and competitive landscape",
+     "chainLink": "Feeds E2E-02",
+     "macroProcesses": "MP-01 Portfolio, MP-17 CX",
+     "module": "Market Intelligence",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-01-03",
+     "name": "Build Preliminary Business Case",
+     "description": "Develop preliminary business case with NPV, ROI, and risk",
+     "chainLink": "Feeds E2E-02",
+     "macroProcesses": "MP-35 Cost, MP-01 Portfolio",
+     "module": "Business Case Module",
+     "R": "Finance",
+     "A": "Product Manager",
+     "C": "Legal",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-01-04",
+     "name": "Assess Risks & Compliance",
+     "description": "Identify regulatory, legal, and technical risks",
+     "chainLink": "Feeds E2E-02",
+     "macroProcesses": "MP-30 Regulatory, MP-32 IP/Legal",
+     "module": "Risk & Compliance",
+     "R": "Compliance Officer",
+     "A": "Legal",
+     "C": "Product Manager",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-01-05",
+     "name": "Describe High-Level Capability",
+     "description": "Define high-level product capability and skills needed",
+     "chainLink": "Feeds E2E-02",
+     "macroProcesses": "MP-03 Requirements, MP-04 Design",
+     "module": "Capability Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "R&D",
+     "S": "HR",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-01-06",
+     "name": "Establish Product Portfolio Strategy",
+     "description": "Align idea with portfolio strategy and roadmap",
+     "chainLink": "Feeds E2E-02",
+     "macroProcesses": "MP-01 Portfolio, MP-12 Governance",
+     "module": "Portfolio Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Marketing",
+     "S": "Finance",
+     "I": "R&D"
+    },
+    {
+     "id": "UFT-01-07",
+     "name": "Complete Gate Checklist (T-1)",
+     "description": "Complete mandatory T-1 checklist",
+     "chainLink": "Gate for E2E-02",
+     "macroProcesses": "MP-122 Checklist, MP-121 Phase-Gate",
+     "module": "Checklist Module",
+     "R": "Quality Assurance",
+     "A": "Product Manager",
+     "C": "Compliance",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-01-08",
+     "name": "Approve T-1 Gate (Go/No-Go)",
+     "description": "Gate Review Board decision to proceed",
+     "chainLink": "Gate for E2E-02",
+     "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+     "module": "Gate Review Module",
+     "R": "Executive Sponsor",
+     "A": "Gate Review Board",
+     "C": "Product Manager",
+     "S": "Finance",
+     "I": "R&D"
+    }
+   ]
+  },
+  "E2E-02": {
+   "trigger": "T-1 Gate Go decision from E2E-01.",
+   "terminal": "Approved Business Proposal; T0 Gate Go decision to proceed to E2E-03 (Design).",
+   "exitGate": "T0",
+   "type": "Root / Master Chain",
+   "tasks": [
+    {
+     "id": "UFT-02-01",
+     "name": "Conduct Opportunity Study",
+     "description": "Comprehensive opportunity study",
+     "chainLink": "From E2E-01",
+     "macroProcesses": "MP-01 Portfolio, MP-03 Requirements",
+     "module": "Opportunity Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Marketing",
+     "S": "R&D",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-02-02",
+     "name": "Develop Detailed Business Case",
+     "description": "Detailed business case with forecasts",
+     "chainLink": "From E2E-01",
+     "macroProcesses": "MP-35 Cost, MP-01 Portfolio",
+     "module": "Business Case",
+     "R": "Finance",
+     "A": "Product Manager",
+     "C": "Legal",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-02-03",
+     "name": "Define High-Level Functional Specs",
+     "description": "Define functional specifications",
+     "chainLink": "Feeds E2E-03",
+     "macroProcesses": "MP-03 Requirements, MP-04 Design",
+     "module": "Requirements Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "QA",
+     "S": "R&D",
+     "I": "Marketing"
+    },
+    {
+     "id": "UFT-02-04",
+     "name": "Map Preliminary Customer Journey",
+     "description": "Map customer journey and personas",
+     "chainLink": "Feeds E2E-03",
+     "macroProcesses": "MP-17 CX",
+     "module": "CX Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "UX"
+    },
+    {
+     "id": "UFT-02-05",
+     "name": "Conduct Detailed Profitability Analysis",
+     "description": "Deep-dive profitability analysis",
+     "chainLink": "From E2E-01",
+     "macroProcesses": "MP-35 Cost",
+     "module": "Finance Module",
+     "R": "Finance",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-02-06",
+     "name": "Validate Regulatory Aspects",
+     "description": "Validate regulatory compliance",
+     "chainLink": "Feeds E2E-03",
+     "macroProcesses": "MP-30 Regulatory",
+     "module": "Regulatory Module",
+     "R": "Compliance",
+     "A": "Legal",
+     "C": "Product Manager",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-02-07",
+     "name": "Assess Technical Feasibility",
+     "description": "Assess technical feasibility",
+     "chainLink": "Feeds E2E-03",
+     "macroProcesses": "MP-04 Design, MP-03 Requirements",
+     "module": "Engineering Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "R&D",
+     "S": "QA",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-02-08",
+     "name": "Develop Development Plan",
+     "description": "Develop preliminary development plan",
+     "chainLink": "Feeds E2E-03",
+     "macroProcesses": "MP-04 Design, MP-29 Workflow",
+     "module": "Planning Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "R&D",
+     "S": "Finance",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-02-09",
+     "name": "Validate Opportunity",
+     "description": "Validate opportunity with stakeholders",
+     "chainLink": "Gate for E2E-03",
+     "macroProcesses": "MP-01 Portfolio, MP-12 Governance",
+     "module": "Portfolio Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Marketing",
+     "S": "Sales",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-02-10",
+     "name": "Complete Gate Checklist (T0)",
+     "description": "Complete mandatory T0 checklist",
+     "chainLink": "Gate for E2E-03",
+     "macroProcesses": "MP-122 Checklist, MP-121 Phase-Gate",
+     "module": "Checklist Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Compliance",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-02-11",
+     "name": "Approve T0 Gate (Go/No-Go)",
+     "description": "Gate Review Board decision",
+     "chainLink": "Gate for E2E-03",
+     "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+     "module": "Gate Review",
+     "R": "Executive Sponsor",
+     "A": "Gate Board",
+     "C": "Product Manager",
+     "S": "Finance",
+     "I": "R&D"
+    }
+   ]
+  },
+  "E2E-03": {
+   "trigger": "T0 Gate Go decision from E2E-02.",
+   "terminal": "Validated design and functional prototype; T1 Gate Go decision to proceed to E2E-04 (Development).",
+   "exitGate": "T1",
+   "type": "Partition of E2E-02",
+   "tasks": [
+    {
+     "id": "UFT-03-01",
+     "name": "Develop Detailed Specifications",
+     "description": "Develop detailed commercial, performance, technical, and operational specifications",
+     "chainLink": "From E2E-02",
+     "macroProcesses": "MP-03 Requirements, MP-04 Design",
+     "module": "Design Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "QA",
+     "S": "R&D",
+     "I": "Marketing"
+    },
+    {
+     "id": "UFT-03-02",
+     "name": "Validate Marketing Specifications",
+     "description": "Validate marketing specifications",
+     "chainLink": "From E2E-02",
+     "macroProcesses": "MP-17 CX, MP-33 Launch",
+     "module": "Marketing Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "UX"
+    },
+    {
+     "id": "UFT-03-03",
+     "name": "Validate Customer Journey",
+     "description": "Validate customer journey and touchpoints",
+     "chainLink": "From E2E-02",
+     "macroProcesses": "MP-17 CX",
+     "module": "CX Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "UX"
+    },
+    {
+     "id": "UFT-03-04",
+     "name": "Model Detailed Processes",
+     "description": "Model detailed business processes",
+     "chainLink": "Feeds E2E-04",
+     "macroProcesses": "MP-29 Workflow",
+     "module": "BPM Module",
+     "R": "Process Owner",
+     "A": "Product Manager",
+     "C": "Operations",
+     "S": "IT",
+     "I": "QA"
+    },
+    {
+     "id": "UFT-03-05",
+     "name": "Develop Detailed Design",
+     "description": "Develop detailed documented design",
+     "chainLink": "Feeds E2E-04",
+     "macroProcesses": "MP-04 Design, MP-57 Gen AI",
+     "module": "Design Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "R&D",
+     "S": "QA",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-03-06",
+     "name": "Build Functional Prototype",
+     "description": "Build functional prototype",
+     "chainLink": "Feeds E2E-04",
+     "macroProcesses": "MP-04 Design, MP-57 Gen AI",
+     "module": "Prototyping",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "R&D",
+     "S": "QA",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-03-07",
+     "name": "Validate Architectures",
+     "description": "Validate architectures",
+     "chainLink": "Feeds E2E-04",
+     "macroProcesses": "MP-04 Design",
+     "module": "Architecture",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "R&D",
+     "S": "IT",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-03-08",
+     "name": "Develop Development Plan",
+     "description": "Develop detailed development plan",
+     "chainLink": "Feeds E2E-04",
+     "macroProcesses": "MP-04 Design, MP-29 Workflow",
+     "module": "Planning Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "R&D",
+     "S": "Finance",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-03-09",
+     "name": "Complete Gate Checklist (T1)",
+     "description": "Complete mandatory T1 checklist",
+     "chainLink": "Gate for E2E-04",
+     "macroProcesses": "MP-122 Checklist, MP-121 Phase-Gate",
+     "module": "Checklist Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Compliance",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-03-10",
+     "name": "Approve T1 Gate (Go/No-Go)",
+     "description": "Gate Review Board decision",
+     "chainLink": "Gate for E2E-04",
+     "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+     "module": "Gate Review",
+     "R": "Executive Sponsor",
+     "A": "Gate Board",
+     "C": "Product Manager",
+     "S": "Finance",
+     "I": "R&D"
+    }
+   ]
+  },
+  "E2E-04": {
+   "trigger": "T1 Gate Go decision from E2E-03.",
+   "terminal": "Completed development and validated functionalities; T2 Gate Go decision to proceed to E2E-05 (Launch).",
+   "exitGate": "T2",
+   "type": "Partition of E2E-02",
+   "tasks": [
+    {
+     "id": "UFT-04-01",
+     "name": "Support Operational Introduction",
+     "description": "Support product operational introduction",
+     "chainLink": "From E2E-03",
+     "macroProcesses": "MP-04 Design, MP-06 Manufacturing",
+     "module": "Operations Module",
+     "R": "Operations",
+     "A": "Product Manager",
+     "C": "Engineering",
+     "S": "QA",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-04-02",
+     "name": "Conduct Operational Readiness Testing",
+     "description": "Conduct operational readiness testing",
+     "chainLink": "From E2E-03",
+     "macroProcesses": "MP-08 Quality, MP-06 Manufacturing",
+     "module": "Testing Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Engineering",
+     "S": "Operations",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-04-03",
+     "name": "Manage Product Configuration",
+     "description": "Manage product configuration",
+     "chainLink": "From E2E-03",
+     "macroProcesses": "MP-05 BOM, MP-07 Change",
+     "module": "Configuration Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "QA",
+     "S": "Operations",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-04-04",
+     "name": "Develop Product Offering Procedures",
+     "description": "Develop product offering procedures",
+     "chainLink": "Feeds E2E-05",
+     "macroProcesses": "MP-29 Workflow, MP-20 Knowledge",
+     "module": "Documentation",
+     "R": "Operations",
+     "A": "Product Manager",
+     "C": "Engineering",
+     "S": "QA",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-04-05",
+     "name": "Manage Acceptance Testing",
+     "description": "Manage product offering acceptance testing",
+     "chainLink": "Feeds E2E-05",
+     "macroProcesses": "MP-08 Quality",
+     "module": "Testing Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Engineering",
+     "S": "Operations",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-04-06",
+     "name": "Develop Preliminary Launch Plan",
+     "description": "Develop preliminary launch plan",
+     "chainLink": "Feeds E2E-05",
+     "macroProcesses": "MP-33 Launch",
+     "module": "Launch Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Operations",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-04-07",
+     "name": "Complete Functionalities",
+     "description": "Complete all functionalities",
+     "chainLink": "Feeds E2E-05",
+     "macroProcesses": "MP-04 Design, MP-05 BOM",
+     "module": "Development Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "R&D",
+     "S": "QA",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-04-08",
+     "name": "Complete Gate Checklist (T2)",
+     "description": "Complete mandatory T2 checklist",
+     "chainLink": "Gate for E2E-05",
+     "macroProcesses": "MP-122 Checklist, MP-121 Phase-Gate",
+     "module": "Checklist Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Compliance",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-04-09",
+     "name": "Approve T2 Gate (Go/No-Go)",
+     "description": "Gate Review Board decision",
+     "chainLink": "Gate for E2E-05",
+     "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+     "module": "Gate Review",
+     "R": "Executive Sponsor",
+     "A": "Gate Board",
+     "C": "Product Manager",
+     "S": "Finance",
+     "I": "R&D"
+    }
+   ]
+  },
+  "E2E-05": {
+   "trigger": "T2 Gate Go decision from E2E-04.",
+   "terminal": "Product launched; T3 Gate Go-Live decision, which opens E2E-06 (After-Sales), E2E-07 (Performance), E2E-08 (Relaunch/Retire) and E2E-09 (Campaign).",
+   "exitGate": "T3",
+   "type": "Root / Master Chain",
+   "tasks": [
+    {
+     "id": "UFT-05-01",
+     "name": "Approve for Launch/Rollout",
+     "description": "Approve product offering for launch",
+     "chainLink": "From E2E-04",
+     "macroProcesses": "MP-33 Launch, MP-121 Phase-Gate",
+     "module": "Launch Module",
+     "R": "Executive Sponsor",
+     "A": "Product Manager",
+     "C": "Marketing",
+     "S": "Sales",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-05-02",
+     "name": "Develop Detailed Launch Plan",
+     "description": "Develop detailed launch plan",
+     "chainLink": "From E2E-04",
+     "macroProcesses": "MP-33 Launch",
+     "module": "Launch Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Operations",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-05-03",
+     "name": "Develop Communication Plan",
+     "description": "Develop communication plan",
+     "chainLink": "From E2E-04",
+     "macroProcesses": "MP-33 Launch, MP-17 CX",
+     "module": "Communications",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-05-04",
+     "name": "Develop Marketing & Sales Materials",
+     "description": "Develop marketing and sales materials",
+     "chainLink": "From E2E-04",
+     "macroProcesses": "MP-33 Launch, MP-17 CX",
+     "module": "Marketing Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "UX"
+    },
+    {
+     "id": "UFT-05-05",
+     "name": "Execute Communication Campaign",
+     "description": "Execute communication campaign",
+     "chainLink": "Feeds E2E-06",
+     "macroProcesses": "MP-33 Launch, MP-17 CX",
+     "module": "Campaign Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-05-06",
+     "name": "Train Teams",
+     "description": "Train sales and channel teams",
+     "chainLink": "Feeds E2E-06",
+     "macroProcesses": "MP-38 Training",
+     "module": "Training Module",
+     "R": "HR",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Marketing",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-05-07",
+     "name": "Validate Customer Journey",
+     "description": "Validate customer journey",
+     "chainLink": "Feeds E2E-06",
+     "macroProcesses": "MP-17 CX",
+     "module": "CX Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "UX"
+    },
+    {
+     "id": "UFT-05-08",
+     "name": "Final Regulatory Validation",
+     "description": "Final regulatory validation",
+     "chainLink": "Feeds E2E-06",
+     "macroProcesses": "MP-30 Regulatory",
+     "module": "Regulatory Module",
+     "R": "Compliance",
+     "A": "Legal",
+     "C": "Product Manager",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-05-09",
+     "name": "Complete Gate Checklist (T3)",
+     "description": "Complete mandatory T3 checklist",
+     "chainLink": "Gate for E2E-06",
+     "macroProcesses": "MP-122 Checklist, MP-121 Phase-Gate",
+     "module": "Checklist Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Compliance",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-05-10",
+     "name": "Approve T3 Gate (Go Live)",
+     "description": "Gate Review Board decision",
+     "chainLink": "Gate for E2E-06",
+     "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+     "module": "Gate Review",
+     "R": "Executive Sponsor",
+     "A": "Gate Board",
+     "C": "Product Manager",
+     "S": "Finance",
+     "I": "R&D"
+    }
+   ]
+  },
+  "E2E-06": {
+   "trigger": "T3 Gate Go decision from E2E-05.",
+   "terminal": "Post-launch performance monitored; T4 Gate Go decision to proceed to E2E-07 (Performance).",
+   "exitGate": "T4",
+   "type": "Partition of E2E-05",
+   "tasks": [
+    {
+     "id": "UFT-06-01",
+     "name": "Identify Product Issues",
+     "description": "Identify product offering issues",
+     "chainLink": "From E2E-05",
+     "macroProcesses": "MP-08 Quality, MP-23 Incident",
+     "module": "Quality Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Engineering",
+     "S": "Service",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-06-02",
+     "name": "Assess Product Performance",
+     "description": "Assess performance of existing offering",
+     "chainLink": "From E2E-05",
+     "macroProcesses": "MP-12 Governance, MP-72 Reliability",
+     "module": "Analytics Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Engineering",
+     "S": "Service",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-06-03",
+     "name": "Analyze Campaign Results",
+     "description": "Analyze campaign results",
+     "chainLink": "From E2E-05",
+     "macroProcesses": "MP-33 Launch, MP-17 CX",
+     "module": "Campaign Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-06-04",
+     "name": "Track Customer Satisfaction",
+     "description": "Track customer satisfaction",
+     "chainLink": "Feeds E2E-07",
+     "macroProcesses": "MP-17 CX, MP-25 Service Quality",
+     "module": "CX Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-06-05",
+     "name": "Track Product Performance",
+     "description": "Track product performance in the field",
+     "chainLink": "Feeds E2E-07",
+     "macroProcesses": "MP-10 Service, MP-72 Reliability",
+     "module": "Service Module",
+     "R": "Service",
+     "A": "Product Manager",
+     "C": "Engineering",
+     "S": "QA",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-06-06",
+     "name": "Complete Gate Checklist (T4)",
+     "description": "Complete mandatory T4 checklist",
+     "chainLink": "Gate for E2E-07",
+     "macroProcesses": "MP-122 Checklist, MP-121 Phase-Gate",
+     "module": "Checklist Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Compliance",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-06-07",
+     "name": "Approve T4 Gate (Continue)",
+     "description": "Gate Review Board decision",
+     "chainLink": "Gate for E2E-07",
+     "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+     "module": "Gate Review",
+     "R": "Executive Sponsor",
+     "A": "Gate Board",
+     "C": "Product Manager",
+     "S": "Finance",
+     "I": "R&D"
+    }
+   ]
+  },
+  "E2E-07": {
+   "trigger": "T4 Gate Go decision from E2E-06.",
+   "terminal": "Overall performance evaluated; T5 Gate decision for Relaunch or Retirement, which triggers E2E-08.",
+   "exitGate": "T5",
+   "type": "Partition of E2E-05",
+   "tasks": [
+    {
+     "id": "UFT-07-01",
+     "name": "Evaluate Overall Performance",
+     "description": "Evaluate overall product performance",
+     "chainLink": "From E2E-06",
+     "macroProcesses": "MP-12 Governance, MP-35 Cost",
+     "module": "Analytics Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Finance",
+     "S": "Marketing",
+     "I": "R&D"
+    },
+    {
+     "id": "UFT-07-02",
+     "name": "Analyze Profitability",
+     "description": "Analyze product profitability",
+     "chainLink": "From E2E-06",
+     "macroProcesses": "MP-35 Cost",
+     "module": "Finance Module",
+     "R": "Finance",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-07-03",
+     "name": "Gather Customer Experience Feedback",
+     "description": "Gather customer experience feedback",
+     "chainLink": "From E2E-06",
+     "macroProcesses": "MP-17 CX, MP-25 Service Quality",
+     "module": "CX Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-07-04",
+     "name": "Develop Improvement Recommendations",
+     "description": "Develop improvement recommendations",
+     "chainLink": "Feeds E2E-08",
+     "macroProcesses": "MP-12 Governance, MP-35 Cost",
+     "module": "Governance Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Engineering",
+     "S": "Marketing",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-07-05",
+     "name": "Complete Gate Checklist (T5)",
+     "description": "Complete mandatory T5 checklist",
+     "chainLink": "Gate for E2E-08",
+     "macroProcesses": "MP-122 Checklist, MP-121 Phase-Gate",
+     "module": "Checklist Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Compliance",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-07-06",
+     "name": "Approve T5 Gate (Relaunch/Retire)",
+     "description": "Gate Review Board decision",
+     "chainLink": "Gate for E2E-08",
+     "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+     "module": "Gate Review",
+     "R": "Executive Sponsor",
+     "A": "Gate Board",
+     "C": "Product Manager",
+     "S": "Finance",
+     "I": "R&D"
+    }
+   ]
+  },
+  "E2E-08": {
+   "trigger": "T5 Gate decision from E2E-07 (Relaunch or Retirement).",
+   "terminal": "Branch A (Relaunch): product re-enters E2E-03 (Design), E2E-04 (Development), or E2E-05 (Launch). Branch B (Retirement): product retired; T6 Gate End-of-Life confirmed.",
+   "exitGate": "T6",
+   "type": "Composite (of E2E-03 to E2E-07)",
+   "tasks": [
+    {
+     "id": "UFT-08-01",
+     "name": "Update Product Specifications",
+     "description": "Update specifications for relaunch",
+     "chainLink": "Branch A → E2E-03",
+     "macroProcesses": "MP-03 Requirements, MP-07 Change",
+     "module": "Design Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "QA",
+     "S": "R&D",
+     "I": "Marketing"
+    },
+    {
+     "id": "UFT-08-02",
+     "name": "Support Operational Re-introduction",
+     "description": "Support operational re-introduction",
+     "chainLink": "Branch A → E2E-04",
+     "macroProcesses": "MP-04 Design, MP-06 Manufacturing",
+     "module": "Operations Module",
+     "R": "Operations",
+     "A": "Product Manager",
+     "C": "Engineering",
+     "S": "QA",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-08-03",
+     "name": "Manage Product Improvements",
+     "description": "Manage product improvements",
+     "chainLink": "Branch A → E2E-04",
+     "macroProcesses": "MP-07 Change, MP-08 Quality",
+     "module": "Change Module",
+     "R": "Engineering",
+     "A": "Product Manager",
+     "C": "QA",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-08-04",
+     "name": "Approve for Relaunch",
+     "description": "Approve product offering for relaunch",
+     "chainLink": "Branch A → E2E-05",
+     "macroProcesses": "MP-33 Launch, MP-121 Phase-Gate",
+     "module": "Launch Module",
+     "R": "Executive Sponsor",
+     "A": "Product Manager",
+     "C": "Marketing",
+     "S": "Sales",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-08-05",
+     "name": "Assess Exit Impact",
+     "description": "Assess impact of product exit",
+     "chainLink": "Branch B",
+     "macroProcesses": "MP-12 Governance, MP-34 EOL",
+     "module": "Governance Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Finance",
+     "S": "Legal",
+     "I": "Operations"
+    },
+    {
+     "id": "UFT-08-06",
+     "name": "Develop Exit Strategy",
+     "description": "Develop product exit strategies",
+     "chainLink": "Branch B",
+     "macroProcesses": "MP-34 EOL, MP-69 Obsolescence",
+     "module": "EOL Module",
+     "R": "Product Manager",
+     "A": "Executive Sponsor",
+     "C": "Legal",
+     "S": "Finance",
+     "I": "Operations"
+    },
+    {
+     "id": "UFT-08-07",
+     "name": "Execute Product Exit",
+     "description": "Exit product from market",
+     "chainLink": "Branch B",
+     "macroProcesses": "MP-34 EOL, MP-22 Partner",
+     "module": "EOL Module",
+     "R": "Operations",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Legal",
+     "I": "Finance"
+    },
+    {
+     "id": "UFT-08-08",
+     "name": "Communicate End-of-Life",
+     "description": "Communicate EOL to customers",
+     "chainLink": "Branch B",
+     "macroProcesses": "MP-34 EOL, MP-17 CX",
+     "module": "Communications",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-08-09",
+     "name": "Support Customer Migration",
+     "description": "Support customer migration",
+     "chainLink": "Branch B",
+     "macroProcesses": "MP-34 EOL, MP-37 Onboarding",
+     "module": "Migration Module",
+     "R": "Customer Success",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-08-10",
+     "name": "Financial Closure",
+     "description": "Close project financially",
+     "chainLink": "Branch B",
+     "macroProcesses": "MP-35 Cost, MP-34 EOL",
+     "module": "Finance Module",
+     "R": "Finance",
+     "A": "Product Manager",
+     "C": "Legal",
+     "S": "Operations",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-08-11",
+     "name": "Complete Gate Checklist (T6)",
+     "description": "Complete mandatory T6 checklist",
+     "chainLink": "Branch B",
+     "macroProcesses": "MP-122 Checklist, MP-121 Phase-Gate",
+     "module": "Checklist Module",
+     "R": "QA",
+     "A": "Product Manager",
+     "C": "Compliance",
+     "S": "R&D",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-08-12",
+     "name": "Approve T6 Gate (EOL)",
+     "description": "Gate Review Board decision",
+     "chainLink": "Terminal",
+     "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+     "module": "Gate Review",
+     "R": "Executive Sponsor",
+     "A": "Gate Board",
+     "C": "Product Manager",
+     "S": "Finance",
+     "I": "R&D"
+    }
+   ]
+  },
+  "E2E-09": {
+   "trigger": "Portfolio strategy approved; runs in parallel with all other E2E processes.",
+   "terminal": "Marketing campaign executed; effectiveness measured; insights fed back to E2E-01 and E2E-07.",
+   "exitGate": "None (continuous)",
+   "type": "Root / Master Chain (Parallel)",
+   "tasks": [
+    {
+     "id": "UFT-09-01",
+     "name": "Gather Customer Experience Data",
+     "description": "Gather customer experience data",
+     "chainLink": "Parallel",
+     "macroProcesses": "MP-17 CX",
+     "module": "CX Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-09-02",
+     "name": "Gather Product Delivery Feedback",
+     "description": "Gather product delivery feedback",
+     "chainLink": "Parallel",
+     "macroProcesses": "MP-33 Launch, MP-17 CX",
+     "module": "Feedback Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Operations"
+    },
+    {
+     "id": "UFT-09-03",
+     "name": "Establish Market Segments",
+     "description": "Establish market segments",
+     "chainLink": "Parallel",
+     "macroProcesses": "MP-17 CX, MP-01 Portfolio",
+     "module": "Market Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-09-04",
+     "name": "Link Segments & Products",
+     "description": "Link segments and products",
+     "chainLink": "Parallel",
+     "macroProcesses": "MP-17 CX, MP-33 Launch",
+     "module": "Market Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-09-05",
+     "name": "Establish Market Strategy",
+     "description": "Establish market strategy",
+     "chainLink": "Parallel",
+     "macroProcesses": "MP-01 Portfolio, MP-17 CX",
+     "module": "Strategy Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-09-06",
+     "name": "Plan & Develop Campaign",
+     "description": "Plan and develop campaign",
+     "chainLink": "Parallel",
+     "macroProcesses": "MP-33 Launch, MP-17 CX",
+     "module": "Campaign Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "UX"
+    },
+    {
+     "id": "UFT-09-07",
+     "name": "Launch & Monitor Campaign",
+     "description": "Launch and monitor campaign",
+     "chainLink": "Parallel",
+     "macroProcesses": "MP-33 Launch, MP-17 CX",
+     "module": "Campaign Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    },
+    {
+     "id": "UFT-09-08",
+     "name": "Complete Campaign & Report",
+     "description": "Complete campaign and report",
+     "chainLink": "Parallel",
+     "macroProcesses": "MP-33 Launch, MP-12 Governance",
+     "module": "Campaign Module",
+     "R": "Marketing",
+     "A": "Product Manager",
+     "C": "Sales",
+     "S": "Customers",
+     "I": "Executive"
+    }
+   ]
+  }
+ },
+ "chains": [
+  {
+   "E2E": "E2E-01",
+   "Relationship type": "Root / Master Chain → Sequential",
+   "Related to": "E2E-02",
+   "Activity steps in chain": "26 + 31",
+   "Description": "E2E-01 produces the Business Plan that triggers E2E-02 (Opportunity Study)."
+  },
+  {
+   "E2E": "E2E-02",
+   "Relationship type": "Root / Master Chain → Branching",
+   "Related to": "E2E-03, E2E-04, E2E-05",
+   "Activity steps in chain": "31 + 29 + 26 + 20 = 106",
+   "Description": "The T0 Go decision opens Design (E2E-03), Development (E2E-04) and Launch (E2E-05)."
+  },
+  {
+   "E2E": "E2E-03",
+   "Relationship type": "Partition → Sequential",
+   "Related to": "E2E-04",
+   "Activity steps in chain": "29 + 26",
+   "Description": "The T1 Design decision feeds Development (E2E-04)."
+  },
+  {
+   "E2E": "E2E-04",
+   "Relationship type": "Partition → Sequential",
+   "Related to": "E2E-05",
+   "Activity steps in chain": "26 + 20",
+   "Description": "The T2 Development decision feeds Launch (E2E-05)."
+  },
+  {
+   "E2E": "E2E-05",
+   "Relationship type": "Root / Master Chain → Branching",
+   "Related to": "E2E-06, E2E-07, E2E-08, E2E-09",
+   "Activity steps in chain": "20 + 17 + 14 + 34 + 13 = 98",
+   "Description": "The T3 Go-Live decision opens After-Sales, Performance, Relaunch/Retire and Campaign."
+  },
+  {
+   "E2E": "E2E-06",
+   "Relationship type": "Partition → Sequential",
+   "Related to": "E2E-07",
+   "Activity steps in chain": "17 + 14",
+   "Description": "The T4 After-Sales decision feeds the Performance Review (E2E-07)."
+  },
+  {
+   "E2E": "E2E-07",
+   "Relationship type": "Partition → Branching",
+   "Related to": "E2E-08",
+   "Activity steps in chain": "14 + 34",
+   "Description": "The T5 Performance decision triggers the E2E-08 branching decision."
+  },
+  {
+   "E2E": "E2E-08",
+   "Relationship type": "Composite → Loop / Terminate",
+   "Related to": "E2E-03, E2E-04, E2E-05 (Branch A) or terminal (Branch B)",
+   "Activity steps in chain": "34",
+   "Description": "Branch A loops back to E2E-03, 04 or 05; Branch B retires the product at T6."
+  },
+  {
+   "E2E": "E2E-09",
+   "Relationship type": "Root / Master Chain → Parallel",
+   "Related to": "All E2E processes",
+   "Activity steps in chain": "13",
+   "Description": "Runs in parallel to supply market strategy and campaigns to all other processes."
+  }
+ ],
+ "ufs": [
+  {
+   "id": "UFS-01",
+   "name": "Capture Strategic Idea",
+   "macroProcesses": "MP-01 Portfolio, MP-03 Requirements",
+   "e2e": "Idea-to-Business Plan (E2E-01)"
+  },
+  {
+   "id": "UFS-02",
+   "name": "Assess Market Opportunity",
+   "macroProcesses": "MP-01 Portfolio, MP-17 CX",
+   "e2e": "Idea-to-Business Plan (E2E-01)"
+  },
+  {
+   "id": "UFS-03",
+   "name": "Build Preliminary Business Case",
+   "macroProcesses": "MP-35 Cost, MP-01 Portfolio",
+   "e2e": "Idea-to-Business Plan (E2E-01)"
+  },
+  {
+   "id": "UFS-04",
+   "name": "Approve T-1 Gate (Go/No-Go)",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "Idea-to-Business Plan (E2E-01)"
+  },
+  {
+   "id": "UFS-05",
+   "name": "Conduct Opportunity Study",
+   "macroProcesses": "MP-03 Requirements, MP-35 Cost",
+   "e2e": "Idea-to-Business Proposal (E2E-02)"
+  },
+  {
+   "id": "UFS-06",
+   "name": "Develop Detailed Business Proposal",
+   "macroProcesses": "MP-01 Portfolio, MP-35 Cost",
+   "e2e": "Idea-to-Business Proposal (E2E-02)"
+  },
+  {
+   "id": "UFS-07",
+   "name": "Approve T0 Gate (Go/No-Go)",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "Idea-to-Business Proposal (E2E-02)"
+  },
+  {
+   "id": "UFS-08",
+   "name": "Complete Detailed Design",
+   "macroProcesses": "MP-04 Design, MP-03 Requirements",
+   "e2e": "Business Proposal-to-Design (E2E-03)"
+  },
+  {
+   "id": "UFS-09",
+   "name": "Build Prototype",
+   "macroProcesses": "MP-04 Design, MP-57 Gen AI",
+   "e2e": "Business Proposal-to-Design (E2E-03)"
+  },
+  {
+   "id": "UFS-10",
+   "name": "Approve T1 Gate (Go/No-Go)",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "Business Proposal-to-Design (E2E-03)"
+  },
+  {
+   "id": "UFS-11",
+   "name": "Complete Development",
+   "macroProcesses": "MP-04 Design, MP-05 BOM, MP-06 Manufacturing",
+   "e2e": "Design-to-Development (E2E-04)"
+  },
+  {
+   "id": "UFS-12",
+   "name": "Validate Functionalities",
+   "macroProcesses": "MP-08 Quality, MP-07 Change",
+   "e2e": "Design-to-Development (E2E-04)"
+  },
+  {
+   "id": "UFS-13",
+   "name": "Approve T2 Gate (Go/No-Go)",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "Design-to-Development (E2E-04)"
+  },
+  {
+   "id": "UFS-14",
+   "name": "Prepare Launch Readiness",
+   "macroProcesses": "MP-33 Launch, MP-17 CX",
+   "e2e": "Development-to-Launch (E2E-05)"
+  },
+  {
+   "id": "UFS-15",
+   "name": "Execute Launch Campaign",
+   "macroProcesses": "MP-33 Launch, MP-22 Partner",
+   "e2e": "Development-to-Launch (E2E-05)"
+  },
+  {
+   "id": "UFS-16",
+   "name": "Approve T3 Gate (Go Live)",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "Development-to-Launch (E2E-05)"
+  },
+  {
+   "id": "UFS-17",
+   "name": "Monitor Post-Launch Performance",
+   "macroProcesses": "MP-10 Service, MP-23 Incident",
+   "e2e": "Launch-to-After-Sales (E2E-06)"
+  },
+  {
+   "id": "UFS-18",
+   "name": "Track Incidents & Feedback",
+   "macroProcesses": "MP-23 Incident, MP-72 Reliability",
+   "e2e": "Launch-to-After-Sales (E2E-06)"
+  },
+  {
+   "id": "UFS-19",
+   "name": "Approve T4 Gate (Continue)",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "Launch-to-After-Sales (E2E-06)"
+  },
+  {
+   "id": "UFS-20",
+   "name": "Evaluate Product Performance",
+   "macroProcesses": "MP-12 Governance, MP-35 Cost",
+   "e2e": "After-Sales-to-Performance (E2E-07)"
+  },
+  {
+   "id": "UFS-21",
+   "name": "Analyze Profitability",
+   "macroProcesses": "MP-35 Cost, MP-12 Governance",
+   "e2e": "After-Sales-to-Performance (E2E-07)"
+  },
+  {
+   "id": "UFS-22",
+   "name": "Approve T5 Gate (Relaunch/Retire)",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "After-Sales-to-Performance (E2E-07)"
+  },
+  {
+   "id": "UFS-23",
+   "name": "Execute Relaunch (Branch A)",
+   "macroProcesses": "MP-04 Design, MP-33 Launch",
+   "e2e": "Assessment-to-Relaunch or Retirement (E2E-08)"
+  },
+  {
+   "id": "UFS-24",
+   "name": "Execute Retirement (Branch B)",
+   "macroProcesses": "MP-34 EOL, MP-69 Obsolescence",
+   "e2e": "Assessment-to-Relaunch or Retirement (E2E-08)"
+  },
+  {
+   "id": "UFS-25",
+   "name": "Approve T6 Gate (EOL)",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "Assessment-to-Relaunch or Retirement (E2E-08)"
+  },
+  {
+   "id": "UFS-26",
+   "name": "Define Market Strategy",
+   "macroProcesses": "MP-17 CX, MP-01 Portfolio",
+   "e2e": "Market Strategy-to-Campaign (E2E-09)"
+  },
+  {
+   "id": "UFS-27",
+   "name": "Execute Marketing Campaign",
+   "macroProcesses": "MP-33 Launch, MP-17 CX",
+   "e2e": "Market Strategy-to-Campaign (E2E-09)"
+  },
+  {
+   "id": "UFS-28",
+   "name": "Configure Track & Macro Processes",
+   "macroProcesses": "MP-123 Track Config, MP-124 Tailoring",
+   "e2e": "All E2E processes"
+  },
+  {
+   "id": "UFS-29",
+   "name": "Complete Gate Checklist",
+   "macroProcesses": "MP-122 Checklist",
+   "e2e": "All E2E processes"
+  },
+  {
+   "id": "UFS-30",
+   "name": "Make Go/Kill/Hold/Recycle Decision",
+   "macroProcesses": "MP-121 Phase-Gate, MP-122 Checklist",
+   "e2e": "All E2E processes"
+  }
+ ],
+ "bpmnE2E01": [
+  {
+   "Task ID": "UFT-01-01",
+   "Task": "Capture Strategic Idea",
+   "Inputs suppliers": "Executive, Marketing, R&D",
+   "Inputs": "Market data, customer feedback",
+   "Sequential task (macro process)": "MP-01-T2 Ideate and capture new product concepts",
+   "Activity step": "S-01-01 Receive idea",
+   "Outputs": "Idea captured",
+   "Beneficiary": "Product Manager",
+   "BPMN element": "Start Event → Task",
+   "Gateway": "—"
+  },
+  {
+   "Task ID": "UFT-01-02",
+   "Task": "Assess Market Opportunity",
+   "Inputs suppliers": "Marketing, Customers",
+   "Inputs": "Market analysis, competitor data",
+   "Sequential task (macro process)": "MP-01-T3 Evaluate and score ideas against strategic fit",
+   "Activity step": "S-01-02 Analyze market",
+   "Outputs": "Opportunity assessment",
+   "Beneficiary": "Marketing",
+   "BPMN element": "Task",
+   "Gateway": "—"
+  },
+  {
+   "Task ID": "UFT-01-03",
+   "Task": "Build Preliminary Business Case",
+   "Inputs suppliers": "Finance, Product Manager",
+   "Inputs": "Cost data, revenue projections",
+   "Sequential task (macro process)": "MP-01-T4 Develop business cases (NPV, ROI, risk); MP-35-T1 Should-cost and target costing",
+   "Activity step": "S-01-03 Build business case",
+   "Outputs": "Preliminary business case",
+   "Beneficiary": "Finance",
+   "BPMN element": "Task",
+   "Gateway": "—"
+  },
+  {
+   "Task ID": "UFT-01-04",
+   "Task": "Assess Risks & Compliance",
+   "Inputs suppliers": "Compliance, Legal",
+   "Inputs": "Regulatory data, risk models",
+   "Sequential task (macro process)": "MP-30-T1 Monitor regulatory intelligence",
+   "Activity step": "S-01-04 Assess risks",
+   "Outputs": "Risk register",
+   "Beneficiary": "Compliance",
+   "BPMN element": "Task",
+   "Gateway": "—"
+  },
+  {
+   "Task ID": "UFT-01-05",
+   "Task": "Describe High-Level Capability",
+   "Inputs suppliers": "Engineering, HR",
+   "Inputs": "Skills data, technology data",
+   "Sequential task (macro process)": "MP-03-T1 Elicit and capture requirements",
+   "Activity step": "S-01-05 Define capability",
+   "Outputs": "Capability description",
+   "Beneficiary": "Engineering",
+   "BPMN element": "Task",
+   "Gateway": "—"
+  },
+  {
+   "Task ID": "UFT-01-06",
+   "Task": "Establish Product Portfolio Strategy",
+   "Inputs suppliers": "Product Manager, Executive",
+   "Inputs": "Portfolio data, strategy documents",
+   "Sequential task (macro process)": "MP-01-T6 Manage product portfolio roadmap",
+   "Activity step": "S-01-06 Establish strategy",
+   "Outputs": "Portfolio strategy",
+   "Beneficiary": "Product Manager",
+   "BPMN element": "Task",
+   "Gateway": "—"
+  },
+  {
+   "Task ID": "UFT-01-07",
+   "Task": "Complete Gate Checklist (T-1)",
+   "Inputs suppliers": "QA, Compliance",
+   "Inputs": "Checklist template",
+   "Sequential task (macro process)": "MP-122-T6 Enforce completion before gate review",
+   "Activity step": "S-01-07 Complete checklist",
+   "Outputs": "Completed checklist",
+   "Beneficiary": "QA",
+   "BPMN element": "Task",
+   "Gateway": "—"
+  },
+  {
+   "Task ID": "UFT-01-08",
+   "Task": "Approve T-1 Gate",
+   "Inputs suppliers": "Executive, Gate Board",
+   "Inputs": "Checklist, business case",
+   "Sequential task (macro process)": "MP-121-T8 Conduct gate reviews; MP-121-T10 Make Go/Kill/Hold/Recycle decisions",
+   "Activity step": "S-01-08 Gate review",
+   "Outputs": "Gate decision and rationale",
+   "Beneficiary": "Executive",
+   "BPMN element": "Task → Exclusive Gateway → End Event",
+   "Gateway": "Exclusive: Go / Kill / Hold / Recycle"
+  }
+ ],
+ "coverage": [
+  {
+   "MP": "MP-01",
+   "Macro process": "Product Portfolio & Strategy Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-02",
+   "Macro process": "Product Data & Document Management",
+   "E01": "E",
+   "E02": "E",
+   "E03": "E",
+   "E04": "E",
+   "E05": "E",
+   "E06": "E",
+   "E07": "E",
+   "E08": "E",
+   "E09": "E"
+  },
+  {
+   "MP": "MP-03",
+   "Macro process": "Requirements & Systems Engineering",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-04",
+   "Macro process": "Engineering & Design Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-05",
+   "Macro process": "Bill of Materials (BOM) Management",
+   "E01": "",
+   "E02": "",
+   "E03": "●",
+   "E04": "●",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-06",
+   "Macro process": "Manufacturing Process Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "●",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-07",
+   "Macro process": "Change & Configuration Management",
+   "E01": "",
+   "E02": "",
+   "E03": "●",
+   "E04": "●",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-08",
+   "Macro process": "Quality & Compliance Management",
+   "E01": "",
+   "E02": "",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-09",
+   "Macro process": "Sourcing & Supply Chain Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "○",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "○",
+   "E09": ""
+  },
+  {
+   "MP": "MP-10",
+   "Macro process": "Service & Maintenance Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "●",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-11",
+   "Macro process": "Collaboration & Visualization",
+   "E01": "E",
+   "E02": "E",
+   "E03": "E",
+   "E04": "E",
+   "E05": "E",
+   "E06": "E",
+   "E07": "E",
+   "E08": "E",
+   "E09": "E"
+  },
+  {
+   "MP": "MP-12",
+   "Macro process": "Lifecycle Governance & Analytics",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-13",
+   "Macro process": "Sustainability & Circular Economy Management",
+   "E01": "●",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-14",
+   "Macro process": "Digital Twin & IoT Integration",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-15",
+   "Macro process": "AI & Machine Learning Core Services",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-16",
+   "Macro process": "Service Portfolio & Offer Management",
+   "E01": "○",
+   "E02": "○",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "○",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-17",
+   "Macro process": "Customer Experience & Journey Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-18",
+   "Macro process": "Service Catalog & SLA Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "○",
+   "E06": "○",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-19",
+   "Macro process": "Service Delivery & Workforce Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "○",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-20",
+   "Macro process": "Knowledge & Content Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "●",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-21",
+   "Macro process": "Contract, Billing & Revenue Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "○",
+   "E06": "",
+   "E07": "",
+   "E08": "○",
+   "E09": ""
+  },
+  {
+   "MP": "MP-22",
+   "Macro process": "Partner & Channel Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "●",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-23",
+   "Macro process": "Incident, Problem, Request & Change Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "●",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-24",
+   "Macro process": "Demand & Capacity Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "○",
+   "E06": "",
+   "E07": "",
+   "E08": "",
+   "E09": "○"
+  },
+  {
+   "MP": "MP-25",
+   "Macro process": "Service Quality & Experience Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-26",
+   "Macro process": "Security, Identity & Access Management",
+   "E01": "E",
+   "E02": "E",
+   "E03": "E",
+   "E04": "E",
+   "E05": "E",
+   "E06": "E",
+   "E07": "E",
+   "E08": "E",
+   "E09": "E"
+  },
+  {
+   "MP": "MP-27",
+   "Macro process": "Data Governance & Master Data Management",
+   "E01": "E",
+   "E02": "E",
+   "E03": "E",
+   "E04": "E",
+   "E05": "E",
+   "E06": "E",
+   "E07": "E",
+   "E08": "E",
+   "E09": "E"
+  },
+  {
+   "MP": "MP-28",
+   "Macro process": "Integration & API Management",
+   "E01": "E",
+   "E02": "E",
+   "E03": "E",
+   "E04": "E",
+   "E05": "E",
+   "E06": "E",
+   "E07": "E",
+   "E08": "E",
+   "E09": "E"
+  },
+  {
+   "MP": "MP-29",
+   "Macro process": "Workflow & Business Process Management",
+   "E01": "",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-30",
+   "Macro process": "Regulatory Affairs & Submissions Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-31",
+   "Macro process": "Environment, Health & Safety (EHS) Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "○",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "○",
+   "E09": ""
+  },
+  {
+   "MP": "MP-32",
+   "Macro process": "Intellectual Property & Legal Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "",
+   "E05": "●",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-33",
+   "Macro process": "Product Launch & Commercialization Management",
+   "E01": "",
+   "E02": "",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-34",
+   "Macro process": "End-of-Life & Decommissioning Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-35",
+   "Macro process": "Cost & Profitability Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-36",
+   "Macro process": "Returns & Reverse Logistics Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-37",
+   "Macro process": "Customer Onboarding & Offboarding Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-38",
+   "Macro process": "Training & Enablement Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "●",
+   "E06": "",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-39",
+   "Macro process": "Localization & Globalization Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "○",
+   "E06": "",
+   "E07": "",
+   "E08": "",
+   "E09": "○"
+  },
+  {
+   "MP": "MP-40",
+   "Macro process": "Mobile & Offline Access Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "●",
+   "E06": "",
+   "E07": "",
+   "E08": "",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-41",
+   "Macro process": "Clinical & Trial Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  },
+  {
+   "MP": "MP-45",
+   "Macro process": "Aerospace & Defense Compliance Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  },
+  {
+   "MP": "MP-46",
+   "Macro process": "Automotive Quality & Compliance Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  },
+  {
+   "MP": "MP-54",
+   "Macro process": "Cybersecurity for Connected Products",
+   "E01": "",
+   "E02": "",
+   "E03": "○",
+   "E04": "",
+   "E05": "",
+   "E06": "○",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-57",
+   "Macro process": "Generative AI & Autonomous Design Management",
+   "E01": "",
+   "E02": "",
+   "E03": "●",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-69",
+   "Macro process": "Obsolescence & Long-Term Support Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "●",
+   "E09": ""
+  },
+  {
+   "MP": "MP-72",
+   "Macro process": "Reliability & Field Failure Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "●",
+   "E07": "●",
+   "E08": "",
+   "E09": ""
+  },
+  {
+   "MP": "MP-96",
+   "Macro process": "Medical Device UDI & Post-Market Surveillance Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  },
+  {
+   "MP": "MP-121",
+   "Macro process": "Innovation Phase-Gate Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-122",
+   "Macro process": "Gate Checklist Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-123",
+   "Macro process": "Innovation Track Configuration Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-124",
+   "Macro process": "Process Tailoring & Composability Management",
+   "E01": "●",
+   "E02": "●",
+   "E03": "●",
+   "E04": "●",
+   "E05": "●",
+   "E06": "●",
+   "E07": "●",
+   "E08": "●",
+   "E09": "●"
+  },
+  {
+   "MP": "MP-128",
+   "Macro process": "Circular Economy Certification Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "",
+   "E06": "",
+   "E07": "",
+   "E08": "○",
+   "E09": ""
+  },
+  {
+   "MP": "MP-129",
+   "Macro process": "Digital Product Passport Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "○",
+   "E06": "",
+   "E07": "",
+   "E08": "○",
+   "E09": ""
+  },
+  {
+   "MP": "MP-161",
+   "Macro process": "Service Innovation & Ideation Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-162",
+   "Macro process": "Service Blueprinting & Design Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-163",
+   "Macro process": "Service Capacity & Resource Optimization",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-164",
+   "Macro process": "Service Pricing & Revenue Optimization",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-165",
+   "Macro process": "Service Compliance & Regulatory Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-166",
+   "Macro process": "Service Ecosystem & Platform Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-167",
+   "Macro process": "Service Data & Analytics Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-168",
+   "Macro process": "Service Workforce & Talent Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-169",
+   "Macro process": "Service Continuity & Resilience Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-170",
+   "Macro process": "Service Innovation Lab & Experimentation Management",
+   "E01": "◆",
+   "E02": "◆",
+   "E03": "◆",
+   "E04": "◆",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": "◆"
+  },
+  {
+   "MP": "MP-171",
+   "Macro process": "Product-Service Integration Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  },
+  {
+   "MP": "MP-172",
+   "Macro process": "Outcome-Based Contract Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  },
+  {
+   "MP": "MP-173",
+   "Macro process": "Installed Base Management",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  },
+  {
+   "MP": "MP-174",
+   "Macro process": "Service Parts & Inventory Optimization",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  },
+  {
+   "MP": "MP-175",
+   "Macro process": "Field Service Mobility & Augmented Reality",
+   "E01": "",
+   "E02": "",
+   "E03": "",
+   "E04": "",
+   "E05": "◆",
+   "E06": "◆",
+   "E07": "◆",
+   "E08": "◆",
+   "E09": ""
+  }
+ ],
+ "trackMatrix": [
+  {
+   "MP": "MP-01",
+   "Macro process": "Product Portfolio & Strategy Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-02",
+   "Macro process": "Product Data & Document Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-03",
+   "Macro process": "Requirements & Systems Engineering",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-04",
+   "Macro process": "Engineering & Design Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-05",
+   "Macro process": "Bill of Materials (BOM) Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-06",
+   "Macro process": "Manufacturing Process Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-07",
+   "Macro process": "Change & Configuration Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-08",
+   "Macro process": "Quality & Compliance Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-09",
+   "Macro process": "Sourcing & Supply Chain Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-10",
+   "Macro process": "Service & Maintenance Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-11",
+   "Macro process": "Collaboration & Visualization",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-12",
+   "Macro process": "Lifecycle Governance & Analytics",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-13",
+   "Macro process": "Sustainability & Circular Economy Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-14",
+   "Macro process": "Digital Twin & IoT Integration",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-15",
+   "Macro process": "AI & Machine Learning Core Services",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-16",
+   "Macro process": "Service Portfolio & Offer Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-17",
+   "Macro process": "Customer Experience & Journey Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-18",
+   "Macro process": "Service Catalog & SLA Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-19",
+   "Macro process": "Service Delivery & Workforce Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-20",
+   "Macro process": "Knowledge & Content Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-21",
+   "Macro process": "Contract, Billing & Revenue Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-22",
+   "Macro process": "Partner & Channel Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-23",
+   "Macro process": "Incident, Problem, Request & Change Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-24",
+   "Macro process": "Demand & Capacity Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-25",
+   "Macro process": "Service Quality & Experience Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-26",
+   "Macro process": "Security, Identity & Access Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-27",
+   "Macro process": "Data Governance & Master Data Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-28",
+   "Macro process": "Integration & API Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-29",
+   "Macro process": "Workflow & Business Process Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-30",
+   "Macro process": "Regulatory Affairs & Submissions Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-31",
+   "Macro process": "Environment, Health & Safety (EHS) Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-32",
+   "Macro process": "Intellectual Property & Legal Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-33",
+   "Macro process": "Product Launch & Commercialization Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-34",
+   "Macro process": "End-of-Life & Decommissioning Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-35",
+   "Macro process": "Cost & Profitability Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-36",
+   "Macro process": "Returns & Reverse Logistics Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-37",
+   "Macro process": "Customer Onboarding & Offboarding Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-38",
+   "Macro process": "Training & Enablement Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-39",
+   "Macro process": "Localization & Globalization Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-40",
+   "Macro process": "Mobile & Offline Access Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Optional"
+  },
+  {
+   "MP": "MP-41",
+   "Macro process": "Clinical & Trial Management",
+   "Full Track": "If Life Sciences",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-45",
+   "Macro process": "Aerospace & Defense Compliance Management",
+   "Full Track": "If A&D",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-46",
+   "Macro process": "Automotive Quality & Compliance Management",
+   "Full Track": "If Automotive",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-54",
+   "Macro process": "Cybersecurity for Connected Products",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-57",
+   "Macro process": "Generative AI & Autonomous Design Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-69",
+   "Macro process": "Obsolescence & Long-Term Support Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-72",
+   "Macro process": "Reliability & Field Failure Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-96",
+   "Macro process": "Medical Device UDI & Post-Market Surveillance Management",
+   "Full Track": "If MedTech",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-121",
+   "Macro process": "Innovation Phase-Gate Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-122",
+   "Macro process": "Gate Checklist Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-123",
+   "Macro process": "Innovation Track Configuration Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-124",
+   "Macro process": "Process Tailoring & Composability Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Mandatory",
+   "Fast Track": "Mandatory"
+  },
+  {
+   "MP": "MP-128",
+   "Macro process": "Circular Economy Certification Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-129",
+   "Macro process": "Digital Product Passport Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-161",
+   "Macro process": "Service Innovation & Ideation Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-162",
+   "Macro process": "Service Blueprinting & Design Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-163",
+   "Macro process": "Service Capacity & Resource Optimization",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-164",
+   "Macro process": "Service Pricing & Revenue Optimization",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-165",
+   "Macro process": "Service Compliance & Regulatory Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-166",
+   "Macro process": "Service Ecosystem & Platform Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-167",
+   "Macro process": "Service Data & Analytics Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-168",
+   "Macro process": "Service Workforce & Talent Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-169",
+   "Macro process": "Service Continuity & Resilience Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-170",
+   "Macro process": "Service Innovation Lab & Experimentation Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-171",
+   "Macro process": "Product-Service Integration Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-172",
+   "Macro process": "Outcome-Based Contract Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-173",
+   "Macro process": "Installed Base Management",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-174",
+   "Macro process": "Service Parts & Inventory Optimization",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  },
+  {
+   "MP": "MP-175",
+   "Macro process": "Field Service Mobility & Augmented Reality",
+   "Full Track": "Mandatory",
+   "Light Track": "Optional",
+   "Fast Track": "Not activated"
+  }
+ ],
+ "trackSummary": [
+  {
+   "E2E": "E2E-01",
+   "End-to-end process": "Idea-to-Business Plan",
+   "Full Track": "Yes",
+   "Light Track": "Yes",
+   "Fast Track": "Yes"
+  },
+  {
+   "E2E": "E2E-02",
+   "End-to-end process": "Idea-to-Business Proposal",
+   "Full Track": "Yes",
+   "Light Track": "Yes",
+   "Fast Track": "Yes"
+  },
+  {
+   "E2E": "E2E-03",
+   "End-to-end process": "Business Proposal-to-Design",
+   "Full Track": "Yes",
+   "Light Track": "Yes",
+   "Fast Track": "No"
+  },
+  {
+   "E2E": "E2E-04",
+   "End-to-end process": "Design-to-Development",
+   "Full Track": "Yes",
+   "Light Track": "Yes",
+   "Fast Track": "No"
+  },
+  {
+   "E2E": "E2E-05",
+   "End-to-end process": "Development-to-Launch",
+   "Full Track": "Yes",
+   "Light Track": "Yes",
+   "Fast Track": "Yes"
+  },
+  {
+   "E2E": "E2E-06",
+   "End-to-end process": "Launch-to-After-Sales",
+   "Full Track": "Yes",
+   "Light Track": "No",
+   "Fast Track": "No"
+  },
+  {
+   "E2E": "E2E-07",
+   "End-to-end process": "After-Sales-to-Performance",
+   "Full Track": "Yes",
+   "Light Track": "Yes",
+   "Fast Track": "No"
+  },
+  {
+   "E2E": "E2E-08",
+   "End-to-end process": "Assessment-to-Relaunch or Retirement",
+   "Full Track": "Yes (both branches)",
+   "Light Track": "Yes (relaunch only)",
+   "Fast Track": "No"
+  },
+  {
+   "E2E": "E2E-09",
+   "End-to-end process": "Market Strategy-to-Campaign",
+   "Full Track": "Yes",
+   "Light Track": "Yes",
+   "Fast Track": "No"
+  }
+ ],
+ "tracks": [
+  {
+   "Track": "Full",
+   "Complexity": "High / complex innovation",
+   "Macro processes": "69 (all): 65 mandatory + 4 industry-conditional",
+   "E2E processes": "9 (E2E-01 to E2E-09)",
+   "Gates": "T-1, T0, T1, T2, T3, T4, T5, T6",
+   "Checklist items per gate": "30–50"
+  },
+  {
+   "Track": "Light",
+   "Complexity": "Medium complexity",
+   "Macro processes": "40–50 activated: 21 mandatory + selected optional",
+   "E2E processes": "8 (E2E-01 to 05, 07, 08 relaunch branch, 09)",
+   "Gates": "T-1, T0, T1, T2, T3, T5",
+   "Checklist items per gate": "15–25"
+  },
+  {
+   "Track": "Fast",
+   "Complexity": "Low complexity",
+   "Macro processes": "15–20 activated: 13 mandatory + selected optional",
+   "E2E processes": "3 (E2E-01, 02, 05)",
+   "Gates": "T-1, T0, T3",
+   "Checklist items per gate": "5–10"
+  }
+ ],
+ "scoring": [
+  {
+   "Criterion": "Strategic impact",
+   "Score 1 (low)": "Incremental change to an existing offer",
+   "Score 3 (medium)": "New segment or product-line extension",
+   "Score 5 (high)": "New platform or business model"
+  },
+  {
+   "Criterion": "Investment level",
+   "Score 1 (low)": "Within the business unit's delegated authority",
+   "Score 3 (medium)": "Requires portfolio-level approval",
+   "Score 5 (high)": "Requires executive or board approval"
+  },
+  {
+   "Criterion": "Technical novelty",
+   "Score 1 (low)": "Known technology; configuration change",
+   "Score 3 (medium)": "Adaptation of existing technology",
+   "Score 5 (high)": "New technology or architecture"
+  },
+  {
+   "Criterion": "Regulatory and safety exposure",
+   "Score 1 (low)": "No new certification needed",
+   "Score 3 (medium)": "Standard certifications or declarations",
+   "Score 5 (high)": "Regulated or safety-critical product"
+  },
+  {
+   "Criterion": "Market scope",
+   "Score 1 (low)": "One market, existing channel",
+   "Score 3 (medium)": "Several markets or a new channel",
+   "Score 5 (high)": "Multi-market or global launch"
+  },
+  {
+   "Criterion": "Cross-functional reach",
+   "Score 1 (low)": "1 to 2 functions",
+   "Score 3 (medium)": "3 to 5 functions",
+   "Score 5 (high)": "More than 5 functions or external partners"
+  },
+  {
+   "Criterion": "Product-service integration",
+   "Score 1 (low)": "Product-only or service-only change",
+   "Score 3 (medium)": "Change to an existing bundle",
+   "Score 5 (high)": "New integrated or outcome-based offer"
+  }
+ ],
+ "thresholds": [
+  {
+   "Total score": "7 – 14",
+   "Recommended track": "Fast Track",
+   "Override rules": "Not allowed if any criterion scores 5."
+  },
+  {
+   "Total score": "15 – 24",
+   "Recommended track": "Light Track",
+   "Override rules": "Minimum track if regulatory and safety exposure scores 4 or more."
+  },
+  {
+   "Total score": "25 – 35",
+   "Recommended track": "Full Track",
+   "Override rules": "Mandatory for any safety-critical product, whatever the total."
+  }
+ ],
+ "trackRules": [
+  {
+   "id": "R1",
+   "title": "Light Track performance review without T4",
+   "text": "In the Light Track, E2E-07 starts after the T3 Go-Live decision plus an observation period set by the Innovation Governance Board (for example, two quarters). UFT-06-04 (Track Customer Satisfaction) and UFT-06-05 (Track Product Performance) run in light form during that period."
+  },
+  {
+   "id": "R2",
+   "title": "Fast Track tasks that depend on non-activated macro processes",
+   "text": "Nine user-facing tasks (UFT-01-02, UFT-01-04, UFT-02-04, UFT-02-06, UFT-05-03, UFT-05-04, UFT-05-05, UFT-05-07, UFT-05-08) rely on MP-17, MP-30 or MP-32, which are not activated in the Fast Track. They are marked skippable in the Fast Track configuration; MP-30 becomes mandatory when the change affects a regulated product.",
+   "tasks": [
+    "UFT-01-02",
+    "UFT-01-04",
+    "UFT-02-04",
+    "UFT-02-06",
+    "UFT-05-03",
+    "UFT-05-04",
+    "UFT-05-05",
+    "UFT-05-07",
+    "UFT-05-08"
+   ]
+  },
+  {
+   "id": "R3",
+   "title": "Fast Track has no performance or retirement path",
+   "text": "Every Fast Track project is a change to an existing product. After T3, its performance and eventual retirement are governed by the parent product lifecycle (its own E2E-07 and E2E-08)."
+  },
+  {
+   "id": "R4",
+   "title": "Light Track macro process count",
+   "text": "The Light Track mandates 21 macro processes; the 40 to 50 range assumes 19 to 29 optional macro processes are selected per project. Recommended optional sets per project type are published as reusable templates (for example, \"regional variant\" adds MP-30, MP-39, MP-22)."
+  }
+ ],
+ "gates": [
+  {
+   "Gate": "T-1",
+   "Closes": "E2E-01 Idea-to-Business Plan",
+   "Decision question": "Is the idea strategically aligned and worth a funded opportunity study?",
+   "Minimum evidence": "Captured idea; market opportunity assessment; preliminary business case (NPV, ROI, risk); initial risk and compliance register; portfolio fit.",
+   "Tracks": "Full, Light, Fast"
+  },
+  {
+   "Gate": "T0",
+   "Closes": "E2E-02 Idea-to-Business Proposal",
+   "Decision question": "Should we commit investment to design and development?",
+   "Minimum evidence": "Opportunity study; detailed business case and profitability analysis; high-level functional specifications; preliminary customer journey; regulatory validation; technical feasibility; development plan.",
+   "Tracks": "Full, Light, Fast"
+  },
+  {
+   "Gate": "T1",
+   "Closes": "E2E-03 Business Proposal-to-Design",
+   "Decision question": "Is the design validated and ready to be built?",
+   "Minimum evidence": "Detailed specifications; validated marketing specifications and customer journey; process models; detailed design; functional prototype; architecture validation; detailed development plan.",
+   "Tracks": "Full, Light"
+  },
+  {
+   "Gate": "T2",
+   "Closes": "E2E-04 Design-to-Development",
+   "Decision question": "Is the product complete, tested and operationally ready?",
+   "Minimum evidence": "Completed functionalities; operational readiness and acceptance test results; configuration baseline; offering procedures; preliminary launch plan.",
+   "Tracks": "Full, Light"
+  },
+  {
+   "Gate": "T3",
+   "Closes": "E2E-05 Development-to-Launch",
+   "Decision question": "Are we ready to go live?",
+   "Minimum evidence": "Detailed launch and communication plans; marketing and sales materials; trained teams; validated customer journey; final regulatory validation.",
+   "Tracks": "Full, Light, Fast"
+  },
+  {
+   "Gate": "T4",
+   "Closes": "E2E-06 Launch-to-After-Sales",
+   "Decision question": "Is post-launch performance stable enough for steady-state review?",
+   "Minimum evidence": "Issue log; performance assessment; campaign results; CSAT and NPS; field performance data.",
+   "Tracks": "Full"
+  },
+  {
+   "Gate": "T5",
+   "Closes": "E2E-07 After-Sales-to-Performance",
+   "Decision question": "Should the product continue, be relaunched, or be retired?",
+   "Minimum evidence": "Overall performance evaluation; profitability analysis; customer experience feedback; improvement recommendations.",
+   "Tracks": "Full, Light"
+  },
+  {
+   "Gate": "T6",
+   "Closes": "E2E-08 Branch B (Retirement)",
+   "Decision question": "Is the product fully and compliantly retired?",
+   "Minimum evidence": "Exit impact assessment; exit strategy; executed market exit; end-of-life communication; customer migration; financial closure.",
+   "Tracks": "Full"
+  }
+ ],
+ "gateOutcomes": [
+  {
+   "id": "Go",
+   "text": "The project proceeds; the next E2E process starts."
+  },
+  {
+   "id": "Kill",
+   "text": "The project stops; resources are released and lessons learned are recorded."
+  },
+  {
+   "id": "Hold",
+   "text": "The project pauses, for example pending a market or regulatory event; a re-review date is set."
+  },
+  {
+   "id": "Recycle",
+   "text": "The project returns to named earlier tasks to close evidence gaps, then comes back to the same gate."
+  }
+ ],
+ "gateRoles": "In every E2E process, the checklist task is performed by Quality Assurance (R) and owned by the Product Manager (A); the gate decision is performed by the Executive Sponsor (R) and owned by the Gate Review Board (A). Contentious decisions are escalated under MP-121 (task 13), and exceptions or waivers are recorded under MP-121 (task 15) and MP-122 (task 13).",
+ "findings": [
+  {
+   "ID": "F-01",
+   "Finding": "Coverage claim not supported",
+   "Evidence": "16 macro processes have no E2E mapping: MP-02, MP-09, MP-11, MP-16, MP-18, MP-19, MP-21, MP-24, MP-26, MP-27, MP-28, MP-31, MP-39, MP-54, MP-129, MP-128.",
+   "Resolution": "Resolved (proposed): 5 platform enablers and 11 assignments — Section 6.2."
+  },
+  {
+   "ID": "F-02",
+   "Finding": "Inventory omits macro processes used by tasks",
+   "Evidence": "E2E-01: MP-04, MP-17; E2E-02: MP-29; E2E-03: MP-33; E2E-04: MP-20, MP-33; E2E-05: MP-38; E2E-06: MP-33; E2E-08: MP-06, MP-17, MP-37.",
+   "Resolution": "Resolved: added to the inventory and marked * — Section 1.4."
+  },
+  {
+   "ID": "F-03",
+   "Finding": "Task counts in the inventory did not match Part 5",
+   "Evidence": "E2E-02 listed 12 steps but has 11 tasks; E2E-08 listed 8 + 12 but has 4 + 8.",
+   "Resolution": "Resolved: counts aligned to Part 5."
+  },
+  {
+   "ID": "F-04",
+   "Finding": "Three different \"step\" totals (30, 81, 210)",
+   "Evidence": "The 210 activity steps are detailed for E2E-01 only (8 of 26 declared).",
+   "Resolution": "Clarified in Section 1.5. Open: complete BPMN tables for E2E-02 to E2E-09."
+  },
+  {
+   "ID": "F-05",
+   "Finding": "Coverage table listed macro processes under the wrong category",
+   "Evidence": "The Part A row cited MP-13, 14, 22, 25, 33, 34, 35, 36, 40, 57, 69, 72, which belong to other parts.",
+   "Resolution": "Resolved: coverage recalculated from the mapping — Section 6.1."
+  },
+  {
+   "ID": "F-06",
+   "Finding": "Light Track E2E count inconsistent",
+   "Evidence": "Section 7.1 stated 7 E2E processes but listed 8; Section 7.3 stated 8.",
+   "Resolution": "Corrected to 8."
+  },
+  {
+   "ID": "F-07",
+   "Finding": "Light Track has no trigger for E2E-07",
+   "Evidence": "E2E-07 is triggered by T4, which the Light Track skips.",
+   "Resolution": "Rule R1 proposed — Section 7.5."
+  },
+  {
+   "ID": "F-08",
+   "Finding": "Fast Track tasks depend on non-activated processes",
+   "Evidence": "9 tasks in E2E-01, 02 and 05 use MP-17, MP-30 or MP-32.",
+   "Resolution": "Rule R2 proposed — Section 7.5."
+  },
+  {
+   "ID": "F-09",
+   "Finding": "Fast Track has no performance or retirement path",
+   "Evidence": "The track ends at T3 with no T5 or T6.",
+   "Resolution": "Rule R3 proposed — Section 7.5."
+  },
+  {
+   "ID": "F-10",
+   "Finding": "Light Track 40–50 range not explained",
+   "Evidence": "Only 21 macro processes are mandatory.",
+   "Resolution": "Clarified; Rule R4 proposes optional-set templates."
+  },
+  {
+   "ID": "F-11",
+   "Finding": "E2E-01 BPMN tasks mapped to set-up activities",
+   "Evidence": "For example, \"Complete checklist\" was mapped to MP-122-T1 \"Define checklist templates\".",
+   "Resolution": "Corrected 6 mappings (UFT-01-01, 02, 03, 06, 07, 08) — Section 5.1."
+  },
+  {
+   "ID": "F-12",
+   "Finding": "Gates modelled as binary Go/No-Go",
+   "Evidence": "MP-121 defines Go / Kill / Hold / Recycle.",
+   "Resolution": "Aligned in Section 5.1 and Part 8."
+  },
+  {
+   "ID": "F-13",
+   "Finding": "Unsubstantiated market claims",
+   "Evidence": "\"#1 PSLM application\" and \"the only PSLM platform\" are not evidenced in the document.",
+   "Resolution": "Rephrased as capability statements; restore if evidenced."
+  },
+  {
+   "ID": "F-14",
+   "Finding": "Non-contiguous identifiers",
+   "Evidence": "Parts F, G and H are absent; MP numbers jump (e.g., MP-46 to MP-54).",
+   "Resolution": "Retained for traceability. Open: confirm whether Parts F–H were removed on purpose."
+  },
+  {
+   "ID": "F-15",
+   "Finding": "No complexity scoring criteria",
+   "Evidence": "MP-123 requires them; none were defined.",
+   "Resolution": "Proposed model — Section 7.4."
+  },
+  {
+   "ID": "F-16",
+   "Finding": "Gate content undefined",
+   "Evidence": "Gates were named without decision questions or evidence.",
+   "Resolution": "Added Part 8."
+  }
+ ],
+ "unmappedResolution": [
+  {
+   "Macro process": "MP-02 Product Data",
+   "Proposed treatment": "Platform enabler (all E2E)",
+   "Rationale": "Single source of truth for product data and documents used by every task."
+  },
+  {
+   "Macro process": "MP-11 Collaboration",
+   "Proposed treatment": "Platform enabler (all E2E)",
+   "Rationale": "Collaboration and visualization underpin all cross-functional work and gate reviews."
+  },
+  {
+   "Macro process": "MP-26 Security & IAM",
+   "Proposed treatment": "Platform enabler (all E2E)",
+   "Rationale": "Identity and access control applies to every user and every record."
+  },
+  {
+   "Macro process": "MP-27 Data Governance",
+   "Proposed treatment": "Platform enabler (all E2E)",
+   "Rationale": "Master data quality is a precondition for every E2E process."
+  },
+  {
+   "Macro process": "MP-28 Integration & API",
+   "Proposed treatment": "Platform enabler (all E2E)",
+   "Rationale": "ERP, CRM, MES and ITSM integration is used by all processes."
+  },
+  {
+   "Macro process": "MP-09 Sourcing",
+   "Proposed treatment": "E2E-04, E2E-08",
+   "Rationale": "Supplier qualification and sourcing during development; last-time buys at retirement."
+  },
+  {
+   "Macro process": "MP-16 Service Portfolio",
+   "Proposed treatment": "E2E-01, E2E-02, E2E-07",
+   "Rationale": "Service offers are ideated and assessed alongside products at the front-end; service portfolio reviewed at T5."
+  },
+  {
+   "Macro process": "MP-18 Catalog & SLA",
+   "Proposed treatment": "E2E-05, E2E-06",
+   "Rationale": "Catalog items and SLAs must exist at launch and are monitored after sales."
+  },
+  {
+   "Macro process": "MP-19 Service Delivery",
+   "Proposed treatment": "E2E-06",
+   "Rationale": "Service delivery and field workforce operate once the offer is in market."
+  },
+  {
+   "Macro process": "MP-21 Billing",
+   "Proposed treatment": "E2E-05, E2E-08",
+   "Rationale": "Contracts and billing go live at launch; contracts are closed at retirement."
+  },
+  {
+   "Macro process": "MP-24 Demand & Capacity",
+   "Proposed treatment": "E2E-05, E2E-09",
+   "Rationale": "Demand and capacity are planned for launch and adjusted by campaigns."
+  },
+  {
+   "Macro process": "MP-31 EHS",
+   "Proposed treatment": "E2E-04, E2E-08",
+   "Rationale": "Workplace and environmental safety for new production; hazardous disposal at retirement."
+  },
+  {
+   "Macro process": "MP-39 Localization",
+   "Proposed treatment": "E2E-05, E2E-09",
+   "Rationale": "Localized content and regional compliance are needed for launch and regional campaigns."
+  },
+  {
+   "Macro process": "MP-54 Product Cybersecurity",
+   "Proposed treatment": "E2E-03, E2E-06",
+   "Rationale": "Security by design during detailed design; vulnerability management in the field."
+  },
+  {
+   "Macro process": "MP-128 Circular Certification",
+   "Proposed treatment": "E2E-08",
+   "Rationale": "Circular certifications affect end-of-life recovery and recycling routes."
+  },
+  {
+   "Macro process": "MP-129 Digital Product Passport",
+   "Proposed treatment": "E2E-05, E2E-08",
+   "Rationale": "Digital product passports are published at launch and updated at end-of-life."
+  }
+ ],
+ "glossary": [
+  {
+   "Term": "A&D",
+   "Definition": "Aerospace and defense."
+  },
+  {
+   "Term": "ALT / HALT",
+   "Definition": "Accelerated life testing / highly accelerated life testing."
+  },
+  {
+   "Term": "APQP / PPAP",
+   "Definition": "Advanced product quality planning / production part approval process (automotive quality)."
+  },
+  {
+   "Term": "BOM (eBOM, mBOM, sBOM)",
+   "Definition": "Bill of materials in its engineering, manufacturing and service views."
+  },
+  {
+   "Term": "BPMN",
+   "Definition": "Business Process Model and Notation, the standard used for the activity-level flows."
+  },
+  {
+   "Term": "CAPA",
+   "Definition": "Corrective and preventive action."
+  },
+  {
+   "Term": "CCB",
+   "Definition": "Change control board."
+  },
+  {
+   "Term": "CSAT / NPS",
+   "Definition": "Customer satisfaction score / Net Promoter Score."
+  },
+  {
+   "Term": "DFM / DFA / DFR",
+   "Definition": "Design for manufacturing / assembly / reliability."
+  },
+  {
+   "Term": "DPP",
+   "Definition": "Digital product passport (EU Ecodesign for Sustainable Products Regulation)."
+  },
+  {
+   "Term": "E2E",
+   "Definition": "End-to-end process: an orchestrated business outcome built from macro processes."
+  },
+  {
+   "Term": "ECR / ECO",
+   "Definition": "Engineering change request / engineering change order."
+  },
+  {
+   "Term": "EOL",
+   "Definition": "End of life."
+  },
+  {
+   "Term": "eTOM (GB921E)",
+   "Definition": "TM Forum Business Process Framework, used here for product lifecycle streams."
+  },
+  {
+   "Term": "FMEA / FTA",
+   "Definition": "Failure mode and effects analysis / fault tree analysis."
+  },
+  {
+   "Term": "FRACAS",
+   "Definition": "Failure reporting, analysis and corrective action system."
+  },
+  {
+   "Term": "Gate",
+   "Definition": "A decision point between phases with Go / Kill / Hold / Recycle outcomes."
+  },
+  {
+   "Term": "ITSM",
+   "Definition": "IT service management."
+  },
+  {
+   "Term": "LCA",
+   "Definition": "Life cycle assessment (environmental)."
+  },
+  {
+   "Term": "Macro process (MP)",
+   "Definition": "A reusable, configurable building block that performs a discrete lifecycle function."
+  },
+  {
+   "Term": "MES / ERP / CRM",
+   "Definition": "Manufacturing execution system / enterprise resource planning / customer relationship management."
+  },
+  {
+   "Term": "MTBF",
+   "Definition": "Mean time between failures."
+  },
+  {
+   "Term": "NCR",
+   "Definition": "Non-conformance report."
+  },
+  {
+   "Term": "Platform enabler",
+   "Definition": "A macro process used by every E2E process rather than by a single lifecycle stage (proposed classification in this edition)."
+  },
+  {
+   "Term": "PSLM",
+   "Definition": "Product-Service Lifecycle Management: managing physical products and services in one lifecycle model."
+  },
+  {
+   "Term": "RACSI",
+   "Definition": "Responsible, Accountable, Consulted, Supportive, Informed."
+  },
+  {
+   "Term": "RMA",
+   "Definition": "Return merchandise authorization."
+  },
+  {
+   "Term": "SIPOC",
+   "Definition": "Suppliers, Inputs, Process, Outputs, Customers."
+  },
+  {
+   "Term": "SLA",
+   "Definition": "Service level agreement."
+  },
+  {
+   "Term": "Track",
+   "Definition": "One of three rigor levels (Full, Light, Fast) assigned to a project by complexity."
+  },
+  {
+   "Term": "TTM Referentiel",
+   "Definition": "Time-to-market phase-gate framework defining gates T-1 to T6."
+  },
+  {
+   "Term": "UDI",
+   "Definition": "Unique device identification (medical devices)."
+  },
+  {
+   "Term": "UFS / UFT",
+   "Definition": "User-facing step / user-facing task."
+  }
+ ]
+}

@@ -1,0 +1,777 @@
+[
+ {
+  "id": "FR-DA-TEN-01",
+  "section": "4.1 Tenant & Organizational Hierarchy",
+  "text": "The system shall support full Create, Read, Update, and Delete on Group, Organization, and Project records, gated by a hierarchy-management capability."
+ },
+ {
+  "id": "FR-DA-TEN-02",
+  "section": "4.1 Tenant & Organizational Hierarchy",
+  "text": "The system shall allow an Organization to optionally belong to a Group; an Organization not assigned to a Group shall operate as fully independent."
+ },
+ {
+  "id": "FR-DA-TEN-03",
+  "section": "4.1 Tenant & Organizational Hierarchy",
+  "text": "Deleting a Group shall not delete its member Organizations; deleting an Organization shall cascade-delete its Projects and directly-scoped user accounts and AI activation/override state."
+ },
+ {
+  "id": "FR-DA-TEN-04",
+  "section": "4.1 Tenant & Organizational Hierarchy",
+  "text": "The system shall support full Create, Read, Update, and Delete on Organizational Breakdown Structure (OBS) entries, each typed or free-text, optionally parented to another OBS entry, forming a per-Organization or per-Project tree."
+ },
+ {
+  "id": "FR-DA-TEN-05",
+  "section": "4.1 Tenant & Organizational Hierarchy",
+  "text": "The system shall prevent deleting an OBS node from breaking referential integrity, either by cascading or by re-parenting/reassigning dependent records."
+ },
+ {
+  "id": "FR-DA-TEN-06",
+  "section": "4.1 Tenant & Organizational Hierarchy",
+  "text": "The system shall display, for every OBS node, a live count of linked item types, so accountability and activity concentration are visible at a glance."
+ },
+ {
+  "id": "FR-DA-TEN-07",
+  "section": "4.1 Tenant & Organizational Hierarchy",
+  "text": "The system shall enforce the active Solution Pack's maximum-Projects and maximum-OBS-node quotas at creation time, server-side, rejecting an over-quota request with HTTP 409."
+ },
+ {
+  "id": "FR-DA-TEN-08",
+  "section": "4.1 Tenant & Organizational Hierarchy",
+  "text": "The system shall ensure that no Organization can enumerate, query, or infer the existence of another Organization through any API response, error message, or shared identifier sequence."
+ },
+ {
+  "id": "FR-DA-RBAC-01",
+  "section": "4.2 Identity & Role-Based Access Control",
+  "text": "The system shall support full Create, Read, Update, and Delete on user accounts, including name, email/username, one or more assigned roles, and language preference."
+ },
+ {
+  "id": "FR-DA-RBAC-02",
+  "section": "4.2 Identity & Role-Based Access Control",
+  "text": "The system shall provide a Permission Matrix screen displaying every permission/capability code against every role, editable by users holding a dedicated permission-management capability, with edits taking effect immediately and platform-wide without a code change."
+ },
+ {
+  "id": "FR-DA-RBAC-03",
+  "section": "4.2 Identity & Role-Based Access Control",
+  "text": "The system shall enforce every API endpoint, server-side, against the authenticated user's resolved permission set (the union across all assigned roles); a request lacking the required permission shall be rejected with HTTP 403."
+ },
+ {
+  "id": "FR-DA-RBAC-04",
+  "section": "4.2 Identity & Role-Based Access Control",
+  "text": "The system shall enforce that the Owner and the Evaluator of any two-party verification step are never the same user, both in the UI and at the server."
+ },
+ {
+  "id": "FR-DA-RBAC-05",
+  "section": "4.2 Identity & Role-Based Access Control",
+  "text": "The system shall provide a minimal user directory (id, name, email) accessible to any authenticated user for assignment purposes, independent of the full user-management permission."
+ },
+ {
+  "id": "FR-DA-RBAC-06",
+  "section": "4.2 Identity & Role-Based Access Control",
+  "text": "The system shall issue a signed, time-boxed authentication token on successful login, required on every subsequent API call, and shall never expose a stored password hash or credential via any API response."
+ },
+ {
+  "id": "FR-DA-RBAC-07",
+  "section": "4.2 Identity & Role-Based Access Control",
+  "text": "The system shall expose a single platform-wide justification-required toggle (Section 3.7), defaulting to on, gated by a hierarchy/governance-management capability."
+ },
+ {
+  "id": "FR-DA-CFG-01",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall record, per Organization, exactly one Solution Pack as the single source of truth for that Organization's feature and quota entitlements, defined centrally in one configuration module and consumed by every enforcing route, so entitlements are never duplicated or able to drift between routes."
+ },
+ {
+  "id": "FR-DA-CFG-02",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall define, for each Solution Pack, at minimum: which modules/features are enabled, the AI tier available (Assistive-only vs. Assistive+Augmented), and numeric ceilings on Projects, OBS nodes, and AI Use Cases."
+ },
+ {
+  "id": "FR-DA-CFG-03",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall record a set of priced Add-Ons, each an independent toggle that grants its associated feature to a Pack that does not already include it standard."
+ },
+ {
+  "id": "FR-DA-CFG-04",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall record a set of priced Compliance & Security Standards modules (at minimum GDPR, ISO/IEC 27001, and SOC 2), each an independent toggle available regardless of Solution Pack."
+ },
+ {
+  "id": "FR-DA-CFG-05",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall, on activating a Compliance & Security Standard, idempotently seed a starting Controls scaffold tagged to that framework, without duplicating it on repeated activation, and shall not delete any Control tagged to a Standard that is later deactivated."
+ },
+ {
+  "id": "FR-DA-CFG-06",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall enforce every Pack-gated feature and every Add-On/Compliance-gated feature server-side via dedicated middleware on the corresponding API route, independently of and in addition to RBAC permission checks; a request for a feature the active configuration does not include shall be rejected with HTTP 403, naming the missing feature."
+ },
+ {
+  "id": "FR-DA-CFG-07",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall expose the Organization's effective configuration and the static Pack/Add-On/Compliance catalog to every authenticated user regardless of role, so client-side navigation can correctly show or hide gated menu items; this read is a UX convenience, not the enforcement boundary."
+ },
+ {
+  "id": "FR-DA-CFG-08",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall expose current usage against every quota dimension, computed live from current data, and shall visually flag a quota that meets or exceeds its allotment."
+ },
+ {
+  "id": "FR-DA-CFG-09",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall never represent, in any UI text, Help content, FAQ answer, or generated document, that activating a Compliance & Security Standard constitutes a certification, an external audit, or a legal attestation of compliance."
+ },
+ {
+  "id": "FR-DA-CFG-10",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall allow an authorized Organization administrator to register, configure, enable, and disable a connection to an external application through the External Integration Registry (Section 3.3), independently of any other registered integration."
+ },
+ {
+  "id": "FR-DA-CFG-11",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall store every external integration's credentials using the same client-side-only or encrypted-server-side pattern already required for the Real LLM Provider Connection (NFR-DA-SEC-07), never in plaintext, and never logged."
+ },
+ {
+  "id": "FR-DA-CFG-12",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall verify an external integration's connection health on demand and shall record the outcome (success, authentication failure, unreachable) with a timestamp, without exposing provider-side error detail that could aid an unrelated attacker."
+ },
+ {
+  "id": "FR-DA-CFG-13",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall allow an authorized administrator to map fields between an external application's records and the platform's own entities, and shall log every inbound or outbound integration transaction (record, timestamp, direction, and result) for audit (Section 4.11)."
+ },
+ {
+  "id": "FR-DA-CFG-14",
+  "section": "4.3 Configuration Management (Solution Packs, Add-Ons, Compliance Standards)",
+  "text": "The system shall accept inbound events from an external application only through the Multi-Channel Communication webhook channel (Section 4.17) or an equivalent authenticated endpoint, never an unauthenticated route, and shall scope every inbound event to the Organization that registered the originating integration."
+ },
+ {
+  "id": "FR-DA-AI-01",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall support full Create, Read, Update, Delete, and version-revert on an AI Use Case catalog, each entry capturing an id, name, tier (Assistive/Augmented), owning module, trigger, expected output, a human-checkpoint description, and versioned prompt-template content, gated by a dedicated AI-use-case-management capability."
+ },
+ {
+  "id": "FR-DA-AI-02",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall seed every Organization with the same library of AI Use Cases on creation, and shall allow an Organization to additionally author custom AI Use Cases up to its active Solution Pack's custom-use-case quota."
+ },
+ {
+  "id": "FR-DA-AI-03",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall create Version 1 of an AI Use Case automatically on creation, mark it Default/Current, and shall retain the full version history indefinitely; reverting to a historical version shall duplicate its content into a brand-new Current version, never rewrite or delete history."
+ },
+ {
+  "id": "FR-DA-AI-04",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall allow an Organization Administrator to activate or deactivate any AI Use Case for the whole Organization, and shall allow an authorized Project-level user to set a tri-state (Inherit/On/Off) override per Project; effective activation shall resolve the Project override when set, else the Organization's activation state."
+ },
+ {
+  "id": "FR-DA-AI-05",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall block, server-side, any new AI suggestion from a deactivated AI Use Case (by its effective state) immediately on deactivation, while never retroactively hiding or removing content a human already reviewed and approved before deactivation."
+ },
+ {
+  "id": "FR-DA-AI-06",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall visually label every AI-generated output, wherever shown, as AI-generated and requiring human review, alongside its tier and its generation source (deterministic built-in engine or a configured live model)."
+ },
+ {
+  "id": "FR-DA-AI-07",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall write an append-only AI Usage Log entry for every AI suggestion's outcome (Accepted, Edited, or Rejected), capturing the use case, Organization, Project, the record it applied to, the acting user, and a timestamp; the log shall expose no edit or delete route."
+ },
+ {
+  "id": "FR-DA-AI-08",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall allow a user to configure a Real LLM Provider Connection (provider, model, endpoint, API key) that is persisted client-side only, is forwarded once per generation request, is never returned in any API response, never written to any log, never cached or persisted server-side beyond that single request, and is never included in any data export."
+ },
+ {
+  "id": "FR-DA-AI-09",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall, on any failure of a live LLM call, fall back automatically to the AI Use Case's deterministic built-in generator, so a misconfigured or unreachable connection never blocks a suggestion from being produced."
+ },
+ {
+  "id": "FR-DA-AI-10",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall ensure an AI Use Case's activation, tier, or generation never grants a user visibility into data beyond what their RBAC role and permissions already allow."
+ },
+ {
+  "id": "FR-DA-AI-11",
+  "section": "4.4 AI Use Case Library & Governance",
+  "text": "The system shall, before generating any suggestion, ground it in retrieved reference content (Section 4.5), instruct the underlying model to stay within the application's own vocabulary, and state no number, score, or name not present in the retrieved references or the record's own data; the retrieved references shall be disclosed to the user alongside the output."
+ },
+ {
+  "id": "FR-DA-KB-01",
+  "section": "4.5 Standards / Knowledge Base & Retrieval-Augmented Generation",
+  "text": "The system shall maintain a Standards/Knowledge Base of reference content — regulatory or methodological standards, or per-process/per-stage practitioner guidance — available in every language the platform supports."
+ },
+ {
+  "id": "FR-DA-KB-02",
+  "section": "4.5 Standards / Knowledge Base & Retrieval-Augmented Generation",
+  "text": "The system shall index this knowledge base, the tenant's own historical records, and a static application-feature/FAQ corpus using the same retrieval mechanism, so AI Use Case grounding, an AI Assistant's application-help mode, and any chatbot share one retrieval engine rather than several."
+ },
+ {
+  "id": "FR-DA-KB-03",
+  "section": "4.5 Standards / Knowledge Base & Retrieval-Augmented Generation",
+  "text": "The system shall scope every retrieval query to the requesting user's own tenant; no cross-tenant record shall appear in a retrieval result or an AI suggestion."
+ },
+ {
+  "id": "FR-DA-KB-04",
+  "section": "4.5 Standards / Knowledge Base & Retrieval-Augmented Generation",
+  "text": "The system shall gracefully degrade when a live LLM call is unavailable or fails: the retrieval result (the matched reference content, the computed fact) shall still be returned, rather than the request failing outright."
+ },
+ {
+  "id": "FR-DA-GOV-01",
+  "section": "4.6 Process/Stage Governance (Alerts, Business Rules, Controls, Risks, RACSI, Custom KPIs)",
+  "text": "The system shall support full Create, Read, Update, and Delete on Business Rules, each with a condition, an action, a severity, and an owner, gated by a governance-management capability and, where the platform separates GRC from the base module set, by the active Solution Pack's GRC entitlement."
+ },
+ {
+  "id": "FR-DA-GOV-02",
+  "section": "4.6 Process/Stage Governance (Alerts, Business Rules, Controls, Risks, RACSI, Custom KPIs)",
+  "text": "The system shall support full Create, Read, Update, and Delete on Controls, each classified under one of the five COSO Internal Control — Integrated Framework components, with a control type, testing frequency, owner, and effectiveness rating."
+ },
+ {
+  "id": "FR-DA-GOV-03",
+  "section": "4.6 Process/Stage Governance (Alerts, Business Rules, Controls, Risks, RACSI, Custom KPIs)",
+  "text": "The system shall allow a Control to be optionally tagged with the Compliance & Security Standard it was seeded under or otherwise supports, without that tag itself constituting a certification (Section 4.3, FR-DA-CFG-09)."
+ },
+ {
+  "id": "FR-DA-GOV-04",
+  "section": "4.6 Process/Stage Governance (Alerts, Business Rules, Controls, Risks, RACSI, Custom KPIs)",
+  "text": "The system shall support full Create, Read, Update, and Delete on Risk/Opportunity items, each with a type, a likelihood (1–5) and impact (1–5) rating, an automatically computed score, an owner, and a status, and shall render a 5×5 likelihood × impact heat-map."
+ },
+ {
+  "id": "FR-DA-GOV-05",
+  "section": "4.6 Process/Stage Governance (Alerts, Business Rules, Controls, Risks, RACSI, Custom KPIs)",
+  "text": "The system shall support full Create, Read, Update, and Delete on Custom KPIs, additive to the platform's built-in KPI set, each with a plain-language formula description, a target, and an owner, available regardless of Solution Pack."
+ },
+ {
+  "id": "FR-DA-GOV-06",
+  "section": "4.6 Process/Stage Governance (Alerts, Business Rules, Controls, Risks, RACSI, Custom KPIs)",
+  "text": "The system shall support a RACSI accountability matrix: full Create, Read, Update, and Delete on RACSI Activities, each optionally linked to a process step or to a specific Business Rule, Control, or Risk/Opportunity record, and on RACSI Assignments, each assigning exactly one of the five RACSI roles to a named person or a role."
+ },
+ {
+  "id": "FR-DA-GOV-07",
+  "section": "4.6 Process/Stage Governance (Alerts, Business Rules, Controls, Risks, RACSI, Custom KPIs)",
+  "text": "The system shall enforce that a RACSI Activity has at most one Accountable assignment at any time, both in the UI and at the data-persistence layer."
+ },
+ {
+  "id": "FR-DA-GOV-08",
+  "section": "4.6 Process/Stage Governance (Alerts, Business Rules, Controls, Risks, RACSI, Custom KPIs)",
+  "text": "The system shall allow a Business Rule, a Control, a Risk/Opportunity, and a RACSI Activity to each be optionally tagged with the owning OBS node and with the process/stage they are most relevant to, and shall surface the items tagged to a given process/stage on that process/stage's own governance view."
+ },
+ {
+  "id": "FR-DA-BPMN-01",
+  "section": "4.7 BPMN 2.0 Process Modeling",
+  "text": "The system shall support full Create, Read, Update, and Delete on BPMN Diagrams, each with a title, description, and a BPMN 2.0-compliant XML payload, rendered/edited with a standards-compliant BPMN 2.0 modeler/viewer component, not a static image."
+ },
+ {
+  "id": "FR-DA-BPMN-02",
+  "section": "4.7 BPMN 2.0 Process Modeling",
+  "text": "The system shall grant read-only pan/zoom viewing of a BPMN Diagram to any user holding view access, and shall grant the full editing palette and a Save action only to users holding edit access whose Organization's active configuration includes full BPMN editing."
+ },
+ {
+  "id": "FR-DA-BPMN-03",
+  "section": "4.7 BPMN 2.0 Process Modeling",
+  "text": "The system shall render the BPMN editor's tool palette in a dedicated panel beside the diagram canvas, structurally separate from the canvas, rather than floating over it."
+ },
+ {
+  "id": "FR-DA-BPMN-04",
+  "section": "4.7 BPMN 2.0 Process Modeling",
+  "text": "The system shall provide Export (download the current diagram as a schema-valid .bpmn/XML file) and Import (load a .bpmn/XML file, replacing the current diagram) actions, so a diagram is portable to and from any other BPMN 2.0-compliant tool."
+ },
+ {
+  "id": "FR-DA-BPMN-05",
+  "section": "4.7 BPMN 2.0 Process Modeling",
+  "text": "The system shall be seeded, per Organization, with at least one BPMN Diagram modeling the application's own core process end-to-end."
+ },
+ {
+  "id": "FR-DA-REP-01",
+  "section": "4.8 Reports & Data Export",
+  "text": "The system shall compute the platform's standard KPIs in real time from current data, scoped to the requesting user's tenant."
+ },
+ {
+  "id": "FR-DA-REP-02",
+  "section": "4.8 Reports & Data Export",
+  "text": "The system shall provide a set of standard reports, each exportable on demand as a downloadable PDF, Excel (.xlsx), and Word (.docx) file, generated server-side and styled to the suite's common visual identity."
+ },
+ {
+  "id": "FR-DA-REP-03",
+  "section": "4.8 Reports & Data Export",
+  "text": "The system shall name every exported report file with the report key and the export date, and shall serve it with the correct MIME type and a Content-Disposition attachment header."
+ },
+ {
+  "id": "FR-DA-REP-04",
+  "section": "4.8 Reports & Data Export",
+  "text": "The system shall offer a client-side CSV export on its highest-traffic tables, reflecting exactly the rows and columns currently on screen and respecting the same RBAC and scope filtering as the table itself, written with a UTF-8 byte-order mark so accented and Arabic content opens correctly in common spreadsheet tools."
+ },
+ {
+  "id": "FR-DA-ALT-01",
+  "section": "4.9 Notification Center (Alerts)",
+  "text": "The system shall define a shared Alert Catalog naming every alert type once, with a human-readable name and a primary process/stage tag, consumed identically by seed data and by live computation, so alert semantics cannot drift between demo data and live behavior."
+ },
+ {
+  "id": "FR-DA-ALT-02",
+  "section": "4.9 Notification Center (Alerts)",
+  "text": "The system shall surface a persistent, dismissible per-tenant or per-project alert inbox, with a live unread-alert indicator in the primary navigation."
+ },
+ {
+  "id": "FR-DA-ALT-03",
+  "section": "4.9 Notification Center (Alerts)",
+  "text": "The system shall avoid raising a duplicate alert of the same type against the same triggering entity within the same period."
+ },
+ {
+  "id": "FR-DA-ALT-04",
+  "section": "4.9 Notification Center (Alerts)",
+  "text": "The system shall allow a user to mark an individual alert as read, and, where dismissal is supported, shall persist the dismissal separately from the alert's own (recomputed) state."
+ },
+ {
+  "id": "FR-DA-ALT-05",
+  "section": "4.9 Notification Center (Alerts)",
+  "text": "The system shall allow an authorized user to independently enable or disable each alert type, displaying its human-readable name alongside its machine code in both the alert inbox and any governance-settings configuration list."
+ },
+ {
+  "id": "FR-DA-AST-01",
+  "section": "4.10 AI Assistant / Chatbot",
+  "text": "The system shall provide a data-query mode that answers natural-language questions about the requesting user's own organization by matching the question to a fixed set of data-query intents."
+ },
+ {
+  "id": "FR-DA-AST-02",
+  "section": "4.10 AI Assistant / Chatbot",
+  "text": "The system shall associate every data-query intent with the single RBAC permission required to answer it, and shall evaluate that permission after matching the intent but strictly before running any query; when the permission is missing, the system shall return an explicit, human-readable refusal naming the missing permission rather than executing the query."
+ },
+ {
+  "id": "FR-DA-AST-03",
+  "section": "4.10 AI Assistant / Chatbot",
+  "text": "The system shall scope every data-query answer to the requesting user's own tenant, consistent with the platform's multi-tenancy requirement (Section 4.1)."
+ },
+ {
+  "id": "FR-DA-AST-04",
+  "section": "4.10 AI Assistant / Chatbot",
+  "text": "The system shall provide an application-help mode answering “Can it…?” / “How do I…?” questions by ranking a static FAQ/feature corpus with the same retrieval engine used elsewhere in the platform (Section 4.5)."
+ },
+ {
+  "id": "FR-DA-AST-05",
+  "section": "4.10 AI Assistant / Chatbot",
+  "text": "The system shall render the AI Assistant both as a dedicated screen and as a floating widget accessible from every authenticated screen, without navigating away from the user's current work."
+ },
+ {
+  "id": "FR-DA-AST-06",
+  "section": "4.10 AI Assistant / Chatbot",
+  "text": "The system shall gate the AI Assistant behind a single view permission and the active Solution Pack's AI Assistant entitlement, independent of and in addition to any module-specific permission a given data-query intent may separately require."
+ },
+ {
+  "id": "FR-DA-AUD-01",
+  "section": "4.11 Audit Trail & Justification Governance",
+  "text": "The system shall write an audit or change-log entry for every state-changing operation on a governed field, capturing the actor, timestamp, entity type/id, and the before/after value."
+ },
+ {
+  "id": "FR-DA-AUD-02",
+  "section": "4.11 Audit Trail & Justification Governance",
+  "text": "The system shall follow the stage-then-justify pattern (Section 3.7) for every score or state change to a governed record: staging a new value, requiring or offering a justification note per the platform-wide toggle, and appending both atomically to the record's audit/change log in one update."
+ },
+ {
+  "id": "FR-DA-AUD-03",
+  "section": "4.11 Audit Trail & Justification Governance",
+  "text": "The system shall make the audit/change log viewable, read-only, to users holding an audit-view permission, and shall never expose an edit or delete route for it."
+ },
+ {
+  "id": "FR-DA-AUD-04",
+  "section": "4.11 Audit Trail & Justification Governance",
+  "text": "The system shall ensure audit-log writes never block or fail the primary operation they accompany."
+ },
+ {
+  "id": "FR-DA-HLP-01",
+  "section": "4.12 Help & In-App Guidance",
+  "text": "The system shall provide an in-app Help screen presenting topic articles covering every module of the application, accessible to every authenticated user independent of role or permission grants."
+ },
+ {
+  "id": "FR-DA-HLP-02",
+  "section": "4.12 Help & In-App Guidance",
+  "text": "The system shall render Help content in the user's currently selected display language, matching the article set one-to-one across every supported language."
+ },
+ {
+  "id": "FR-DA-HLP-03",
+  "section": "4.12 Help & In-App Guidance",
+  "text": "The system shall provide a free-text search box on the Help screen filtering topics by a case-insensitive match against the topic title or body."
+ },
+ {
+  "id": "FR-DA-TPL-01",
+  "section": "4.13 Template Libraries",
+  "text": "The system shall support a library of pre-filled starting points (templates) for its principal record type, each capturing default field values a new record can be seeded from, while leaving every field editable before submission."
+ },
+ {
+  "id": "FR-DA-TPL-02",
+  "section": "4.13 Template Libraries",
+  "text": "The system shall support full Create, Read, Update, and Delete on templates, versioned via the same version-history mechanism as the AI Use Case Library (Section 4.4), gated by a dedicated template-management capability."
+ },
+ {
+  "id": "FR-DA-TPL-03",
+  "section": "4.13 Template Libraries",
+  "text": "The system shall make templates available regardless of Solution Pack, consistent with the always-standard treatment of Custom KPIs and standard Reports."
+ },
+ {
+  "id": "FR-DA-TPL-04",
+  "section": "4.13 Template Libraries",
+  "text": "Deleting a template shall not affect any record already created from it; a template is a starting point copied at use time, not a live-linked reference."
+ },
+ {
+  "id": "FR-DA-I18N-01",
+  "section": "4.14 Multi-Language & Localization",
+  "text": "The system shall provide complete UI translation in English, French, and Arabic for all navigation, labels, form fields, statuses, and messages, with no hardcoded UI string outside the shared translation dictionary."
+ },
+ {
+  "id": "FR-DA-I18N-02",
+  "section": "4.14 Multi-Language & Localization",
+  "text": "The system shall allow a user to change their display language at any time without reloading or losing unsaved work."
+ },
+ {
+  "id": "FR-DA-I18N-03",
+  "section": "4.14 Multi-Language & Localization",
+  "text": "The system shall persist a user's language preference and apply it automatically on subsequent logins, resolved per the precedence order in Section 3.6."
+ },
+ {
+  "id": "FR-DA-I18N-04",
+  "section": "4.14 Multi-Language & Localization",
+  "text": "The system shall render the entire application right-to-left, including navigation, forms, tables, and charts, when Arabic is selected."
+ },
+ {
+  "id": "FR-DA-I18N-05",
+  "section": "4.14 Multi-Language & Localization",
+  "text": "The system shall allow an Organization to configure a tenant-level default language."
+ },
+ {
+  "id": "FR-DA-I18N-06",
+  "section": "4.14 Multi-Language & Localization",
+  "text": "The system shall allow adding a new supported language by configuration — populating the shared translation dictionary (Section 3.6) — alone, without a code change or a redeployment of application logic."
+ },
+ {
+  "id": "FR-DA-WBS-01",
+  "section": "4.15 Work Breakdown Structure & Gantt Scheduling",
+  "text": "The system shall allow any set of Actions the user selects to be grouped into a Work Breakdown Structure (WBS), organized as a tree of WBS nodes, each node referencing one or more Action IDs as its leaf-level work items."
+ },
+ {
+  "id": "FR-DA-WBS-02",
+  "section": "4.15 Work Breakdown Structure & Gantt Scheduling",
+  "text": "The system shall allow a WBS node or a referenced Action to carry a planned start date, planned end date or duration, percent-complete, and zero or more predecessor dependencies on other WBS nodes or Actions within the same WBS."
+ },
+ {
+  "id": "FR-DA-WBS-03",
+  "section": "4.15 Work Breakdown Structure & Gantt Scheduling",
+  "text": "The system shall render a WBS as a Gantt chart, plotting every node and its referenced Actions on a shared timeline, drawing dependency lines between predecessor and successor items, and visually distinguishing planned, in-progress, completed, and overdue items."
+ },
+ {
+  "id": "FR-DA-WBS-04",
+  "section": "4.15 Work Breakdown Structure & Gantt Scheduling",
+  "text": "The system shall recompute a WBS node’s own planned dates and percent-complete from its child nodes/Actions when the node itself is not directly scheduled, so a summary bar always reflects the current state of its children without manual reconciliation."
+ },
+ {
+  "id": "FR-DA-WBS-05",
+  "section": "4.15 Work Breakdown Structure & Gantt Scheduling",
+  "text": "The system shall support full Create, Read, Update, and Delete on WBS structures, and shall allow the same Action to be referenced from more than one WBS without duplicating the underlying Action record."
+ },
+ {
+  "id": "FR-DA-WBS-06",
+  "section": "4.15 Work Breakdown Structure & Gantt Scheduling",
+  "text": "The system shall export a WBS/Gantt view to at least one portable format (e.g. PDF or an image), consistent with the platform’s standard Reports & Data Export conventions (Section 4.8)."
+ },
+ {
+  "id": "FR-DA-VER-01",
+  "section": "4.16 Version Management",
+  "text": "The system shall provide a single, generic Version Management service (Section 3.8) that any governed entity type can register with, rather than each entity type implementing its own history mechanism."
+ },
+ {
+  "id": "FR-DA-VER-02",
+  "section": "4.16 Version Management",
+  "text": "The system shall create an initial version automatically when a versioned entity is created, mark it Current, and create a new version — never overwrite the prior one — on every subsequent edit."
+ },
+ {
+  "id": "FR-DA-VER-03",
+  "section": "4.16 Version Management",
+  "text": "The system shall retain every version of a versioned entity indefinitely, with no hard-delete route for a historical version, and shall allow an authorized user to view the full version history and compare any two versions field-by-field."
+ },
+ {
+  "id": "FR-DA-VER-04",
+  "section": "4.16 Version Management",
+  "text": "The system shall allow an authorized user to revert a versioned entity to any historical version; reverting shall duplicate that version’s content into a brand-new Current version, never rewrite or delete the entity’s history, consistent with the pattern already defined for the AI Use Case Library (FR-DA-AI-03) and Template Libraries (FR-DA-TPL-02)."
+ },
+ {
+  "id": "FR-DA-VER-05",
+  "section": "4.16 Version Management",
+  "text": "The system shall record, on every version, the acting user, a timestamp, and — where the platform-wide justification toggle (Section 3.7) requires it — the justification note that accompanied the change."
+ },
+ {
+  "id": "FR-DA-COMM-01",
+  "section": "4.17 Multi-Channel Communication",
+  "text": "The system shall support delivering a notification or alert (Section 4.9) through one or more channels — at minimum in-app, email, and webhook, with SMS and push as optional channels — behind a single shared dispatch interface (Section 3.9)."
+ },
+ {
+  "id": "FR-DA-COMM-02",
+  "section": "4.17 Multi-Channel Communication",
+  "text": "The system shall allow a user to independently enable or disable each available channel for each notification category, defaulting every category to the in-app channel at minimum."
+ },
+ {
+  "id": "FR-DA-COMM-03",
+  "section": "4.17 Multi-Channel Communication",
+  "text": "The system shall compose a message once, per notification event, and render it in the recipient’s own display language (Section 3.6) before dispatch to any channel."
+ },
+ {
+  "id": "FR-DA-COMM-04",
+  "section": "4.17 Multi-Channel Communication",
+  "text": "The system shall record a delivery-status record per message per channel (queued, sent, delivered, failed), and shall retry a failed delivery on that channel’s own schedule without blocking or duplicating delivery on any other channel."
+ },
+ {
+  "id": "FR-DA-COMM-05",
+  "section": "4.17 Multi-Channel Communication",
+  "text": "The system shall never send a tenant’s data through an external channel provider (email, SMS, push) beyond the minimum content required for that notification, and shall scope every dispatch to the recipient’s own tenant."
+ },
+ {
+  "id": "FR-DA-REX-01",
+  "section": "4.18 Return on Experience (REX)",
+  "text": "The system shall prompt for a REX entry when the application’s principal record reaches a terminal/closed status, and when an individual Action is marked complete, without blocking the closure itself on the REX entry being filled in."
+ },
+ {
+  "id": "FR-DA-REX-02",
+  "section": "4.18 Return on Experience (REX)",
+  "text": "The system shall structure every REX entry with, at minimum: what went well, what did not, a root-cause note, a recommendation/improvement action, a category/tag, and an effectiveness or satisfaction rating on a fixed scale."
+ },
+ {
+  "id": "FR-DA-REX-03",
+  "section": "4.18 Return on Experience (REX)",
+  "text": "The system shall support full Create, Read, Update, and Delete on REX entries, each optionally tagged to the owning OBS node and to the process/stage it is most relevant to, consistent with how other governance artifacts are tagged (Section 4.6, FR-DA-GOV-08)."
+ },
+ {
+  "id": "FR-DA-REX-04",
+  "section": "4.18 Return on Experience (REX)",
+  "text": "The system shall index every saved REX entry into the same retrieval corpus used for AI Use Case grounding, the AI Assistant, and application-help search (Section 4.5), scoped to the requesting user’s own tenant, so a relevant prior REX entry can surface in a future suggestion or answer."
+ },
+ {
+  "id": "FR-DA-REX-05",
+  "section": "4.18 Return on Experience (REX)",
+  "text": "The system shall provide a REX Register view aggregating entries by category/tag and by rating, so a recurring root cause or a declining rating trend is visible without reading every entry individually."
+ },
+ {
+  "id": "FR-DA-REX-06",
+  "section": "4.18 Return on Experience (REX)",
+  "text": "The system shall version every REX entry via the generic Version Management service (Section 3.8/4.16), retaining its full edit history and supporting revert to any prior version."
+ },
+ {
+  "id": "FR-DA-REX-07",
+  "section": "4.18 Return on Experience (REX)",
+  "text": "The system shall gate REX entry management behind a dedicated capability, and shall scope every REX read and every retrieval-grounded reference to it to the requesting user’s own tenant, consistent with the platform’s multi-tenancy requirement (Section 4.1)."
+ },
+ {
+  "id": "NFR-DA-PERF-01",
+  "section": "5.1 Performance",
+  "text": "Dashboard and list views shall render within 2 seconds under nominal per-tenant data volumes."
+ },
+ {
+  "id": "NFR-DA-PERF-02",
+  "section": "5.1 Performance",
+  "text": "An AI agent suggestion shall return within 5 seconds under its deterministic path."
+ },
+ {
+  "id": "NFR-DA-PERF-03",
+  "section": "5.1 Performance",
+  "text": "A knowledge-base or FAQ retrieval search shall return ranked results within 1 second for a tenant's full corpus."
+ },
+ {
+  "id": "NFR-DA-PERF-04",
+  "section": "5.1 Performance",
+  "text": "A single standard-report export (PDF, Excel, or Word) shall complete within 3 seconds for a tenant's current data volume."
+ },
+ {
+  "id": "NFR-DA-SEC-01",
+  "section": "5.2 Security",
+  "text": "All API endpoints except login shall require a valid, signed, time-boxed authentication token."
+ },
+ {
+  "id": "NFR-DA-SEC-02",
+  "section": "5.2 Security",
+  "text": "Passwords shall be stored only as salted cryptographic hashes; plaintext passwords shall never be logged or persisted."
+ },
+ {
+  "id": "NFR-DA-SEC-03",
+  "section": "5.2 Security",
+  "text": "Every authorization decision shall be enforced server-side; client-side permission and Pack-entitlement checks are a UX convenience only, never the security boundary."
+ },
+ {
+  "id": "NFR-DA-SEC-04",
+  "section": "5.2 Security",
+  "text": "No data query shall be constructed by concatenating untrusted input; all data access shall use parameterized statements or an equivalent safe-query mechanism."
+ },
+ {
+  "id": "NFR-DA-SEC-05",
+  "section": "5.2 Security",
+  "text": "Owner/Evaluator segregation of duties, and any equivalent server-enforced business rule, shall be enforced server-side, not merely hidden in the UI."
+ },
+ {
+  "id": "NFR-DA-SEC-06",
+  "section": "5.2 Security",
+  "text": "A one-Accountable-per-RACSI-activity rule, and any equivalent uniqueness rule, shall be enforced by a data-persistence-layer constraint, not merely by disabling an option in the UI."
+ },
+ {
+  "id": "NFR-DA-SEC-07",
+  "section": "5.2 Security",
+  "text": "A Real LLM Provider Connection's API key shall be captured and stored only client-side; the backend shall never persist it to any table, write it to any log line, or return it in any API response, and any server-side proxying of a forwarded key shall use it for exactly one outbound call and never write, log, cache, or hold it beyond that request."
+ },
+ {
+  "id": "NFR-DA-SEC-08",
+  "section": "5.2 Security",
+  "text": "Every quota check (Projects, OBS nodes, AI Use Cases, and any other Pack-bound dimension) shall be enforced at the point of creation/activation on the server, never solely by disabling a client-side control; an over-quota request shall be rejected with HTTP 409, never silently truncated or partially applied."
+ },
+ {
+  "id": "NFR-DA-SEC-09",
+  "section": "5.2 Security",
+  "text": "Solution Pack entitlement shall be treated as an authorization axis independent of, and enforced in addition to, RBAC permissions; a route gated by both shall require both checks to pass, each independently testable and independently capable of producing a 403."
+ },
+ {
+  "id": "NFR-DA-SEC-10",
+  "section": "5.2 Security",
+  "text": "Individually identifiable records requiring restricted visibility (e.g. individual-level readiness or sentiment data) shall be restricted, by RBAC default, to an explicitly named set of roles; other roles shall see only aggregated, de-identified views."
+ },
+ {
+  "id": "NFR-DA-SEC-11",
+  "section": "5.2 Security",
+  "text": "Tenant data isolation shall be verified by an automated cross-tenant access test suite exercised in the build/release pipeline, not solely by code review."
+ },
+ {
+  "id": "NFR-DA-REL-01",
+  "section": "5.3 Reliability & Data Integrity",
+  "text": "The system shall degrade gracefully if an AI agent or live-LLM call fails: the underlying CRUD operation shall still succeed, with the AI suggestion simply unavailable or served from its deterministic fallback."
+ },
+ {
+  "id": "NFR-DA-REL-02",
+  "section": "5.3 Reliability & Data Integrity",
+  "text": "The system shall target 99.9% uptime in a production deployment."
+ },
+ {
+  "id": "NFR-DA-REL-03",
+  "section": "5.3 Reliability & Data Integrity",
+  "text": "A report-export failure shall return a structured error without corrupting or partially writing the underlying report data view."
+ },
+ {
+  "id": "NFR-DA-REL-04",
+  "section": "5.3 Reliability & Data Integrity",
+  "text": "The persistence layer shall support scheduled backup with a defined retention policy; a production deployment shall not rely on a single unreplicated data file as its sole durability boundary."
+ },
+ {
+  "id": "NFR-DA-SCALE-01",
+  "section": "5.4 Scalability",
+  "text": "The architecture shall support horizontal scaling of the web tier independently of the API tier."
+ },
+ {
+  "id": "NFR-DA-SCALE-02",
+  "section": "5.4 Scalability",
+  "text": "The system shall support at least 100 concurrent users per tenant without functional degradation."
+ },
+ {
+  "id": "NFR-DA-SCALE-03",
+  "section": "5.4 Scalability",
+  "text": "The persistence schema and the retrieval index shall each be swappable for a distributed equivalent (e.g. a managed relational database, a vector database) without changing the API contract."
+ },
+ {
+  "id": "NFR-DA-UX-01",
+  "section": "5.5 Usability & Accessibility",
+  "text": "The UI, and every generated document, shall follow the suite's common visual identity (color palette, typography, iconography) consistently across all modules and output formats."
+ },
+ {
+  "id": "NFR-DA-UX-02",
+  "section": "5.5 Usability & Accessibility",
+  "text": "The UI shall be responsive and usable on desktop, tablet, and mobile viewport widths, with touch-target sizing meeting WCAG 2.1 AA on mobile."
+ },
+ {
+  "id": "NFR-DA-UX-03",
+  "section": "5.5 Usability & Accessibility",
+  "text": "All interactive controls shall be keyboard-navigable and carry accessible labels (WCAG 2.1 AA target)."
+ },
+ {
+  "id": "NFR-DA-UX-04",
+  "section": "5.5 Usability & Accessibility",
+  "text": "Status, severity, and classification fields shall use one consistent color/badge vocabulary across every module, so a user who has learned a meaning in one module recognizes it in every other."
+ },
+ {
+  "id": "NFR-DA-I18N-01",
+  "section": "5.6 Localization",
+  "text": "Every layout — navigation, tables, and charts — shall render correctly mirrored under Arabic RTL, not just with mirrored text direction."
+ },
+ {
+  "id": "NFR-DA-PORT-01",
+  "section": "5.7 Portability / Installability",
+  "text": "Installation shall succeed on a fresh target machine with only a supported Node.js runtime installed — no native C/C++ build toolchain, no required external database server, and no mandatory external API key."
+ },
+ {
+  "id": "NFR-DA-PORT-02",
+  "section": "5.7 Portability / Installability",
+  "text": "The same source shall run unmodified across supported operating systems via standard package-manager install/build/start commands."
+ },
+ {
+  "id": "NFR-DA-MAINT-01",
+  "section": "5.8 Maintainability / Extensibility",
+  "text": "Cross-cutting engines — the Action/Task Register, the Alert & Notification Engine, the RBAC layer, the KPI/Reporting engine, and the Audit Trail Service — shall be implemented as composable modules reusable by sibling Dynamic Apps via the same API contract."
+ },
+ {
+  "id": "NFR-DA-MAINT-02",
+  "section": "5.8 Maintainability / Extensibility",
+  "text": "AI agent implementations shall be isolated behind a stable internal interface so a rule-based implementation can be replaced by an LLM/vector-DB-backed one without changing calling code."
+ },
+ {
+  "id": "NFR-DA-MAINT-03",
+  "section": "5.8 Maintainability / Extensibility",
+  "text": "The Solution Pack feature and quota matrix shall be defined in exactly one place and consumed by every enforcing route, so entitlements can never drift between routes."
+ },
+ {
+  "id": "NFR-DA-MAINT-04",
+  "section": "5.8 Maintainability / Extensibility",
+  "text": "The AI Use Case Library's generation service shall be the single designated server-side integration point for a live LLM call and its provider-specific credential/endpoint logic; no other module shall embed its own LLM provider client."
+ },
+ {
+  "id": "NFR-DA-MAINT-05",
+  "section": "5.8 Maintainability / Extensibility",
+  "text": "The alert type-to-name and type-to-stage/process mapping shall be defined in exactly one shared module, consumed by both seed data and live computation."
+ },
+ {
+  "id": "NFR-DA-COMPAT-01",
+  "section": "5.9 Compatibility",
+  "text": "The application shall target evergreen desktop, tablet, and mobile browsers; no legacy-browser support is in scope."
+ },
+ {
+  "id": "NFR-DA-COMPAT-02",
+  "section": "5.9 Compatibility",
+  "text": "BPMN diagrams shall be stored and exchanged as schema-valid BPMN 2.0 XML, verified by a round-trip import/export, so a diagram authored in one Dynamic App opens without error in any other BPMN 2.0-compliant tool, and vice versa."
+ },
+ {
+  "id": "NFR-DA-COMPAT-03",
+  "section": "5.9 Compatibility",
+  "text": "The application's core workflows (record CRUD, approvals, alerts) shall remain fully usable on a mobile viewport without requiring a separate native application; a native or installable Progressive Web App wrapper, where offered, shall consume the same REST API (Section 7.2) with no mobile-specific endpoint variant."
+ },
+ {
+  "id": "NFR-DA-COMP-01",
+  "section": "5.10 Auditability & Compliance",
+  "text": "Every AI-generated suggestion shall be logged with a confidence indicator and be attributable to a specific agent/use case and record, or, for the AI Assistant, to the requesting user and question."
+ },
+ {
+  "id": "NFR-DA-COMP-02",
+  "section": "5.10 Auditability & Compliance",
+  "text": "The Controls module shall support demonstrating COSO Internal Control — Integrated Framework coverage across all five components."
+ },
+ {
+  "id": "NFR-DA-COMP-03",
+  "section": "5.10 Auditability & Compliance",
+  "text": "The system shall retain the full version history of every AI Use Case and every template indefinitely (no hard deletion of prior versions on edit or revert)."
+ },
+ {
+  "id": "NFR-DA-COMP-04",
+  "section": "5.10 Auditability & Compliance",
+  "text": "The system shall never represent, in any UI text, Help content, FAQ answer, or generated document, that activating a Compliance & Security Standard constitutes a certification, an external audit, or a legal attestation of compliance."
+ },
+ {
+  "id": "NFR-DA-DATA-01",
+  "section": "5.11 Data Retention & Privacy",
+  "text": "By default, and whenever no Real LLM Provider Connection is configured, the system shall not transmit tenant data to any third-party service; every AI capability shall run entirely within the deployment's own infrastructure using rule-based/statistical methods and RAG grounding. Only an explicitly user-configured, client-stored Real LLM Provider Connection may cause a single generation request to be sent to that user-selected third-party provider — opt-in per user, never enabled by default, and never applied to a permission-scoped data-query mode."
+ },
+ {
+  "id": "NFR-DA-DATA-02",
+  "section": "5.11 Data Retention & Privacy",
+  "text": "The system shall support both shared-infrastructure (SaaS) and dedicated/sovereign deployment options per Organization, without changing the tenant-isolation guarantee."
+ }
+]

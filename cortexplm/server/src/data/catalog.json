@@ -1,0 +1,1531 @@
+{
+ "packs": [
+  {
+   "id": "PACK-01",
+   "name": "PLM Foundation",
+   "price": 49,
+   "segment": "SMBs, Startups, Small Manufacturers (10–100 users)",
+   "behavior": "Teams manage product data in spreadsheets, shared drives, and email. No single source of truth.",
+   "painpoints": "Version conflicts, lost files, manual data entry, no audit trail.",
+   "hopes": "Centralized product data, version control, faster collaboration, audit readiness.",
+   "fit": "CortexPLM Foundation provides a secure, cloud-native PLM foundation that eliminates data silos and enables real-time collaboration at an affordable price.",
+   "modules": [
+    "Product Data Management (PDM)",
+    "Document Management",
+    "Change Management",
+    "Collaboration & Visualization",
+    "Governance & Analytics",
+    "Security & Access Management",
+    "Data Governance",
+    "Integration & API",
+    "Workflow & BPM"
+   ],
+   "macroProcessText": [
+    "MP-01: Product Portfolio & Strategy Management",
+    "MP-02: Product Data & Document Management",
+    "MP-07: Change & Configuration Management",
+    "MP-11: Collaboration & Visualization",
+    "MP-12: Lifecycle Governance & Analytics",
+    "MP-26: Security, Identity & Access Management",
+    "MP-27: Data Governance & Master Data Management",
+    "MP-28: Integration & API Management",
+    "MP-29: Workflow & Business Process Management"
+   ],
+   "integrations": [
+    "INT-ERP-01",
+    "INT-ERP-02",
+    "INT-COL-01",
+    "INT-DAT-01",
+    "INT-DAT-02",
+    "INT-PLT-01",
+    "INT-PLT-02",
+    "INT-PLT-03"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-CAP-03",
+    "ADD-AI-04",
+    "ADD-SEC-02",
+    "ADD-PRO-01",
+    "ADD-PRO-02"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-02",
+   "name": "Product Engineering",
+   "price": 99,
+   "segment": "Design & Engineering Teams (50–500 users)",
+   "behavior": "Engineers work in CAD silos; requirements are managed in documents; BOMs are manually created.",
+   "painpoints": "Design errors, BOM inaccuracies, slow design reviews, lack of traceability.",
+   "hopes": "Integrated CAD-PLM, automated BOM generation, real-time design collaboration, requirements traceability.",
+   "fit": "CortexPLM Product Engineering connects CAD, requirements, and BOM management into a unified engineering environment, reducing design errors and accelerating time-to-market.",
+   "modules": [
+    "Requirements & Systems Engineering",
+    "Engineering & Design Management",
+    "BOM Management",
+    "Sourcing & Supply Chain Management",
+    "Generative AI & Design",
+    "CAD Integration"
+   ],
+   "macroProcessText": [
+    "MP-03: Requirements & Systems Engineering",
+    "MP-04: Engineering & Design Management",
+    "MP-05: Bill of Materials (BOM) Management",
+    "MP-09: Sourcing & Supply Chain Management",
+    "MP-57: Generative AI & Autonomous Design Management"
+   ],
+   "integrations": [
+    "INT-ERP-04",
+    "INT-CRM-01",
+    "INT-CRM-02",
+    "INT-CAD-01",
+    "INT-CAD-02",
+    "INT-CAD-03",
+    "INT-CAD-04",
+    "INT-SRM-01",
+    "INT-SRM-03",
+    "INT-COL-03",
+    "INT-ALM-01",
+    "INT-ALM-02",
+    "INT-ALM-03"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-AI-01",
+    "ADD-SEC-02",
+    "ADD-PRO-01"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-03",
+   "name": "Manufacturing Operations",
+   "price": 129,
+   "segment": "Production & Operations Teams (100–1,000 users)",
+   "behavior": "Work instructions are paper-based; production data is siloed in MES; cost data is disconnected from engineering.",
+   "painpoints": "Operator errors, production delays, inaccurate cost estimates, slow change propagation.",
+   "hopes": "Digital work instructions, real-time production visibility, accurate costing, faster change adoption.",
+   "fit": "CortexPLM Manufacturing Operations bridges engineering and production with digital work instructions, real-time cost roll-up, and mobile access for shop-floor operators.",
+   "modules": [
+    "Manufacturing Process Management",
+    "Quality & Compliance (Manufacturing)",
+    "Cost & Profitability Management",
+    "Mobile & Offline Access",
+    "MES Integration"
+   ],
+   "macroProcessText": [
+    "MP-06: Manufacturing Process Management",
+    "MP-08: Quality & Compliance Management (Manufacturing)",
+    "MP-10: Service & Maintenance Management (Manufacturing)",
+    "MP-35: Cost & Profitability Management",
+    "MP-40: Mobile & Offline Access Management"
+   ],
+   "integrations": [
+    "INT-ERP-01",
+    "INT-ERP-02",
+    "INT-ERP-03",
+    "INT-ERP-04",
+    "INT-ERP-05",
+    "INT-MES-01",
+    "INT-MES-02",
+    "INT-MES-03",
+    "INT-MES-04",
+    "INT-SRM-01",
+    "INT-SRM-03",
+    "INT-SRM-04"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-INT-02",
+    "ADD-INT-04",
+    "ADD-SEC-02",
+    "ADD-PRO-01"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-04",
+   "name": "Quality & Compliance",
+   "price": 119,
+   "segment": "Regulated Industries (MedTech, Pharma, Aerospace, Automotive)",
+   "behavior": "Quality data is fragmented across PLM, QMS, and ERP; audits are stressful; compliance is reactive.",
+   "painpoints": "Audit findings, submission delays, compliance risks, recurring defects.",
+   "hopes": "Audit readiness, closed-loop quality, automated compliance, faster approvals.",
+   "fit": "CortexPLM Quality & Compliance provides a unified quality and compliance framework with CAPA, FMEA, NCR, and regulatory submission management.",
+   "modules": [
+    "Quality Management (QMS)",
+    "Regulatory Affairs",
+    "EHS Management",
+    "IP & Legal Management",
+    "End-of-Life & Decommissioning",
+    "Returns & Reverse Logistics",
+    "QMS Integration"
+   ],
+   "macroProcessText": [
+    "MP-08: Quality & Compliance Management (full)",
+    "MP-30: Regulatory Affairs & Submissions Management",
+    "MP-31: Environment, Health & Safety (EHS) Management",
+    "MP-32: Intellectual Property & Legal Management",
+    "MP-34: End-of-Life & Decommissioning Management",
+    "MP-36: Returns & Reverse Logistics Management"
+   ],
+   "integrations": [
+    "INT-MES-03",
+    "INT-QMS-01",
+    "INT-QMS-02",
+    "INT-QMS-03",
+    "INT-QMS-04",
+    "INT-SRM-02",
+    "INT-ALM-03"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-AI-02",
+    "ADD-SEC-01",
+    "ADD-SEC-02",
+    "ADD-SEC-03",
+    "ADD-PRO-01"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-05",
+   "name": "Service Lifecycle",
+   "price": 89,
+   "segment": "Service Companies & After-Sales Organizations",
+   "behavior": "Service teams lack access to product data; SLAs are managed manually; field service is reactive.",
+   "painpoints": "Slow service resolution, wrong parts sent to field, low first-time fix rates, customer dissatisfaction.",
+   "hopes": "Real-time service data, predictive maintenance, optimized scheduling, improved CSAT.",
+   "fit": "CortexPLM Service Lifecycle provides end-to-end service management from catalog to delivery, with IoT-driven predictive maintenance and field service mobility.",
+   "modules": [
+    "Service Portfolio & Offer Management",
+    "Customer Experience & Journey Management",
+    "Service Catalog & SLA Management",
+    "Service Delivery & Workforce Management",
+    "Knowledge & Content Management",
+    "Contract, Billing & Revenue Management",
+    "Partner & Channel Management",
+    "Incident, Problem, Request & Change Management",
+    "Demand & Capacity Management",
+    "Service Quality & Experience Management"
+   ],
+   "macroProcessText": [
+    "MP-16: Service Portfolio & Offer Management",
+    "MP-17: Customer Experience & Journey Management",
+    "MP-18: Service Catalog & SLA Management",
+    "MP-19: Service Delivery & Workforce Management",
+    "MP-20: Knowledge & Content Management",
+    "MP-21: Contract, Billing & Revenue Management",
+    "MP-22: Partner & Channel Management",
+    "MP-23: Incident, Problem, Request & Change Management",
+    "MP-24: Demand & Capacity Management",
+    "MP-25: Service Quality & Experience Management"
+   ],
+   "integrations": [
+    "INT-CRM-03",
+    "INT-CAD-04",
+    "INT-IOT-02"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-SEC-02",
+    "ADD-PRO-01"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-06",
+   "name": "Innovation & Portfolio",
+   "price": 139,
+   "segment": "R&D, Product Management, Innovation Teams",
+   "behavior": "Innovation projects lack structure; portfolios are managed in spreadsheets; gate reviews are informal.",
+   "painpoints": "Project overruns, unclear priorities, missed market windows, resource misallocation.",
+   "hopes": "Structured phase-gate governance, portfolio visibility, faster time-to-market, strategic alignment.",
+   "fit": "CortexPLM Innovation & Portfolio provides configurable innovation tracks (Full/Light/Fast), phase-gate governance, and gate checklist management for disciplined innovation.",
+   "modules": [
+    "Product Portfolio & Strategy",
+    "Product Launch & Commercialization",
+    "Customer Onboarding & Offboarding",
+    "Training & Enablement",
+    "Localization & Globalization",
+    "Innovation Phase-Gate Management",
+    "Gate Checklist Management",
+    "Innovation Track Configuration",
+    "Process Tailoring & Composability"
+   ],
+   "macroProcessText": [
+    "MP-01: Product Portfolio & Strategy Management (advanced)",
+    "MP-33: Product Launch & Commercialization Management",
+    "MP-37: Customer Onboarding & Offboarding Management",
+    "MP-38: Training & Enablement Management",
+    "MP-39: Localization & Globalization Management",
+    "MP-121: Innovation Phase-Gate Management",
+    "MP-122: Gate Checklist Management",
+    "MP-123: Innovation Track Configuration Management",
+    "MP-124: Process Tailoring & Composability Management"
+   ],
+   "integrations": [
+    "INT-ERP-03",
+    "INT-CRM-01",
+    "INT-CRM-02",
+    "INT-CRM-04",
+    "INT-SRM-04",
+    "INT-COL-02",
+    "INT-ALM-02",
+    "INT-DAT-01"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-AI-04",
+    "ADD-SEC-02",
+    "ADD-SUP-03",
+    "ADD-PRO-01",
+    "ADD-PRO-03",
+    "ADD-PRO-04",
+    "ADD-PRO-05"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-07",
+   "name": "AI & Digital Twin",
+   "price": 109,
+   "segment": "Tech-Forward Manufacturers, IoT-Enabled Companies",
+   "behavior": "Product performance data is siloed in IoT platforms; AI is not embedded in PLM; reliability is reactive.",
+   "painpoints": "No feedback loop from field to design, unplanned downtime, recurring failures.",
+   "hopes": "Real-time digital twin, predictive maintenance, AI-driven insights, faster design improvements.",
+   "fit": "CortexPLM AI & Digital Twin embeds AI/ML across all processes and connects IoT data to the digital thread for predictive maintenance and continuous improvement.",
+   "modules": [
+    "Digital Twin & IoT",
+    "AI & Machine Learning",
+    "Cybersecurity for Connected Products",
+    "Obsolescence & Long-Term Support",
+    "Reliability & Field Failure Management",
+    "Sustainability (partial)"
+   ],
+   "macroProcessText": [
+    "MP-13: Sustainability & Circular Economy Management (partial)",
+    "MP-14: Digital Twin & IoT Integration",
+    "MP-15: AI & Machine Learning Core Services",
+    "MP-54: Cybersecurity for Connected Products",
+    "MP-69: Obsolescence & Long-Term Support Management",
+    "MP-72: Reliability & Field Failure Management"
+   ],
+   "integrations": [
+    "INT-IOT-01",
+    "INT-IOT-02",
+    "INT-IOT-03",
+    "INT-DAT-03"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-CAP-02",
+    "ADD-AI-01",
+    "ADD-AI-02",
+    "ADD-AI-03",
+    "ADD-INT-03",
+    "ADD-SEC-02",
+    "ADD-PRO-01"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-08",
+   "name": "Sustainability & Circular Economy",
+   "price": 79,
+   "segment": "ESG-Focused Companies, Regulated for Sustainability",
+   "behavior": "Sustainability data is collected manually; circular economy is aspirational; compliance is reactive.",
+   "painpoints": "Regulatory penalties, missed ESG targets, reputation risks.",
+   "hopes": "Automated sustainability reporting, circular economy certifications, digital product passports.",
+   "fit": "CortexPLM Sustainability provides end-to-end ESG management, from material compliance to circular economy certifications and digital product passports.",
+   "modules": [
+    "Sustainability & Circular Economy",
+    "Circular Economy Certification",
+    "Digital Product Passport"
+   ],
+   "macroProcessText": [
+    "MP-13: Sustainability & Circular Economy Management (full)",
+    "MP-128: Circular Economy Certification Management",
+    "MP-129: Digital Product Passport Management"
+   ],
+   "integrations": [
+    "INT-SRM-02"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-SEC-02",
+    "ADD-PRO-01"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-09",
+   "name": "Regulated Industries",
+   "price": 199,
+   "segment": "MedTech, Pharma, Aerospace, Automotive",
+   "behavior": "Industry-specific compliance is managed in silos; audits are manual; submissions are slow.",
+   "painpoints": "Compliance gaps, submission delays, audit findings, product recalls.",
+   "hopes": "Industry-specific compliance, automated submissions, audit readiness, recall prevention.",
+   "fit": "CortexPLM Regulated Industries provides pre-built compliance frameworks for MedTech, Pharma, Aerospace, and Automotive.",
+   "modules": [
+    "Clinical & Trial Management",
+    "Aerospace & Defense Compliance",
+    "Automotive Quality & Compliance",
+    "Medical Device UDI & Post-Market Surveillance"
+   ],
+   "macroProcessText": [
+    "MP-41: Clinical & Trial Management",
+    "MP-45: Aerospace & Defense Compliance Management",
+    "MP-46: Automotive Quality & Compliance Management",
+    "MP-96: Medical Device UDI & Post-Market Surveillance Management"
+   ],
+   "integrations": [
+    "INT-QMS-01",
+    "INT-QMS-02",
+    "INT-QMS-03",
+    "INT-QMS-04",
+    "INT-ALM-01"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-SEC-01",
+    "ADD-SEC-02",
+    "ADD-SEC-03",
+    "ADD-SEC-04",
+    "ADD-SUP-02",
+    "ADD-PRO-01",
+    "ADD-IND-01",
+    "ADD-IND-02",
+    "ADD-IND-03",
+    "ADD-IND-04"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-10",
+   "name": "Product-Service Systems",
+   "price": 149,
+   "segment": "Product-Service Companies (Equipment-as-a-Service, After-Sales)",
+   "behavior": "Product and service lifecycles are managed separately; installed base is untracked; contracts are complex.",
+   "painpoints": "Revenue leakage, poor customer experience, unoptimized service inventory.",
+   "hopes": "Integrated product-service lifecycle, installed base visibility, outcome-based contracts.",
+   "fit": "CortexPLM Product-Service Systems unifies product and service lifecycles with outcome-based contract management, installed base tracking, and field service mobility.",
+   "modules": [
+    "Service Innovation & Ideation",
+    "Service Blueprinting & Design",
+    "Service Capacity & Resource Optimization",
+    "Service Pricing & Revenue Optimization",
+    "Service Compliance & Regulatory",
+    "Service Ecosystem & Platform",
+    "Service Data & Analytics",
+    "Service Workforce & Talent",
+    "Service Continuity & Resilience",
+    "Service Innovation Lab & Experimentation",
+    "Product-Service Integration",
+    "Outcome-Based Contract Management",
+    "Installed Base Management",
+    "Service Parts & Inventory Optimization",
+    "Field Service Mobility & AR"
+   ],
+   "macroProcessText": [
+    "MP-161 to MP-170: Pure Service Industry (all)",
+    "MP-171 to MP-175: Product-Service Integration (all)"
+   ],
+   "integrations": [
+    "INT-CRM-03"
+   ],
+   "addons": [
+    "ADD-CAP-01",
+    "ADD-SEC-02",
+    "ADD-PRO-01"
+   ],
+   "minUsers": 5
+  },
+  {
+   "id": "PACK-11",
+   "name": "CortexPLM Enterprise",
+   "price": 299,
+   "segment": "Large Enterprises (1,000+ users)",
+   "behavior": "Multiple PLM, ERP, and MES systems across sites; data is fragmented; governance is complex.",
+   "painpoints": "Data inconsistencies, high TCO, slow decision-making, compliance risks.",
+   "hopes": "Single source of truth, end-to-end digital thread, enterprise-wide governance, AI-driven insights.",
+   "fit": "CortexPLM Enterprise provides all 69 macro processes, all integrations, and all add-ons in a single, unified platform.",
+   "modules": [
+    "All modules"
+   ],
+   "macroProcessText": [
+    "All 69 macro processes"
+   ],
+   "integrations": [
+    "ALL"
+   ],
+   "addons": [
+    "ALL"
+   ],
+   "minUsers": 10
+  }
+ ],
+ "integrations": [
+  {
+   "id": "INT-ERP-01",
+   "name": "PLM-ERP BOM Synchronization",
+   "goal": "Sync eBOM to mBOM and ERP material master",
+   "examples": "SAP S/4HANA, Oracle ERP, Dynamics 365, Infor, Epicor",
+   "value": "Behavior: Silos between engineering and production. Pain: BOM discrepancies, rework. Hopes: Real-time BOM accuracy.",
+   "packs": [
+    "PACK-01",
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "ERP Integrations"
+  },
+  {
+   "id": "INT-ERP-02",
+   "name": "PLM-ERP Change Order Sync",
+   "goal": "Propagate ECOs to ERP",
+   "examples": "SAP PLM/ERP, Windchill-SAP, Teamcenter-SAP",
+   "value": "Behavior: Manual change communication. Pain: Obsolete parts, cost overruns. Hopes: Automated change propagation.",
+   "packs": [
+    "PACK-01",
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "ERP Integrations"
+  },
+  {
+   "id": "INT-ERP-03",
+   "name": "PLM-ERP Cost Roll-Up",
+   "goal": "Sync cost data for profitability analysis",
+   "examples": "SAP CO-PA, Oracle Cost Mgmt, Dynamics 365 Finance",
+   "value": "Behavior: Different cost models. Pain: Inaccurate profitability. Hopes: Real-time cost roll-up.",
+   "packs": [
+    "PACK-03",
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "ERP Integrations"
+  },
+  {
+   "id": "INT-ERP-04",
+   "name": "PLM-ERP Supplier Sync",
+   "goal": "Sync AML/AVL, specs, lead times",
+   "examples": "SAP Ariba, Oracle Procurement, Coupa, Jaggaer",
+   "value": "Behavior: Outdated supplier data. Pain: Wrong parts ordered. Hopes: Real-time supplier data.",
+   "packs": [
+    "PACK-02",
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "ERP Integrations"
+  },
+  {
+   "id": "INT-ERP-05",
+   "name": "PLM-ERP Production Order Sync",
+   "goal": "Sync production orders for traceability",
+   "examples": "SAP PP, Oracle Manufacturing, Dynamics 365",
+   "value": "Behavior: No real-time visibility. Pain: No as-built traceability. Hopes: Digital thread.",
+   "packs": [
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "ERP Integrations"
+  },
+  {
+   "id": "INT-CRM-01",
+   "name": "PLM-CRM Requirements Sync",
+   "goal": "Sync customer feedback to PLM",
+   "examples": "Salesforce, Dynamics 365, SAP C4C, HubSpot",
+   "value": "Behavior: Feedback disconnected from design. Pain: Products miss market needs. Hopes: Closed-loop feedback.",
+   "packs": [
+    "PACK-02",
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "CRM Integrations"
+  },
+  {
+   "id": "INT-CRM-02",
+   "name": "PLM-CRM CPQ",
+   "goal": "Enable sales to configure products",
+   "examples": "Salesforce Revenue Cloud, Oracle CPQ, Tacton",
+   "value": "Behavior: Manual configuration. Pain: Wrong configurations. Hopes: Accurate quoting.",
+   "packs": [
+    "PACK-02",
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "CRM Integrations"
+  },
+  {
+   "id": "INT-CRM-03",
+   "name": "PLM-CRM After-Sales",
+   "goal": "Sync installed base, sBOM, docs",
+   "examples": "Salesforce Service Cloud, ServiceNow, Dynamics 365",
+   "value": "Behavior: Service lacks product data. Pain: Slow resolution. Hopes: First-time fix.",
+   "packs": [
+    "PACK-05",
+    "PACK-10",
+    "PACK-11"
+   ],
+   "category": "CRM Integrations"
+  },
+  {
+   "id": "INT-CRM-04",
+   "name": "PLM-CRM Launch Sync",
+   "goal": "Sync launch data to CRM",
+   "examples": "Salesforce Marketing, HubSpot, Marketo",
+   "value": "Behavior: Marketing lacks launch data. Pain: Delayed launches. Hopes: Coordinated GTM.",
+   "packs": [
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "CRM Integrations"
+  },
+  {
+   "id": "INT-MES-01",
+   "name": "PLM-MES Work Instruction Sync",
+   "goal": "Sync work instructions to MES",
+   "examples": "Siemens Opcenter, Rockwell FactoryTalk, DELMIA Apriso",
+   "value": "Behavior: Paper-based instructions. Pain: Operator errors. Hopes: Digital instructions.",
+   "packs": [
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "MES Integrations"
+  },
+  {
+   "id": "INT-MES-02",
+   "name": "PLM-MES As-Built Config",
+   "goal": "Capture as-built BOM from MES",
+   "examples": "Siemens Opcenter, PTC ThingWorx, SAP ME",
+   "value": "Behavior: As-built data siloed. Pain: No traceability. Hopes: Digital thread.",
+   "packs": [
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "MES Integrations"
+  },
+  {
+   "id": "INT-MES-03",
+   "name": "PLM-MES Quality Data",
+   "goal": "Sync inspection, NCR, CAPA",
+   "examples": "Siemens Opcenter Quality, PTC Windchill QMS",
+   "value": "Behavior: Fragmented quality data. Pain: Slow RCA. Hopes: Closed-loop quality.",
+   "packs": [
+    "PACK-03",
+    "PACK-04",
+    "PACK-11"
+   ],
+   "category": "MES Integrations"
+  },
+  {
+   "id": "INT-MES-04",
+   "name": "PLM-MES Scheduling Sync",
+   "goal": "Sync production schedules to PLM",
+   "examples": "Siemens Opcenter, SAP ME, Rockwell",
+   "value": "Behavior: Design-production disconnect. Pain: Unmanufacturable designs. Hopes: DFM feedback.",
+   "packs": [
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "MES Integrations"
+  },
+  {
+   "id": "INT-QMS-01",
+   "name": "PLM-QMS Document Control",
+   "goal": "Sync controlled documents",
+   "examples": "MasterControl, ETQ Reliance, Greenlight Guru",
+   "value": "Behavior: Separate document control. Pain: Audit findings. Hopes: Single source of truth.",
+   "packs": [
+    "PACK-04",
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "QMS Integrations"
+  },
+  {
+   "id": "INT-QMS-02",
+   "name": "PLM-QMS CAPA & NCR",
+   "goal": "Sync NCR and CAPA",
+   "examples": "MasterControl, ETQ Reliance, Sparta Systems",
+   "value": "Behavior: Quality not linked to design. Pain: Recurring defects. Hopes: Closed-loop quality.",
+   "packs": [
+    "PACK-04",
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "QMS Integrations"
+  },
+  {
+   "id": "INT-QMS-03",
+   "name": "PLM-QMS FMEA",
+   "goal": "Sync FMEA for risk management",
+   "examples": "APIS IQ-Software, Plato SCIO, PTC Windchill FMEA",
+   "value": "Behavior: FMEA in spreadsheets. Pain: Incomplete risk analysis. Hopes: Integrated risk mgmt.",
+   "packs": [
+    "PACK-04",
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "QMS Integrations"
+  },
+  {
+   "id": "INT-QMS-04",
+   "name": "PLM-QMS Regulatory Submission",
+   "goal": "Sync regulatory submission data",
+   "examples": "MasterControl, Veeva Vault, Greenlight Guru",
+   "value": "Behavior: Manual compilation. Pain: Submission delays. Hopes: Automated packages.",
+   "packs": [
+    "PACK-04",
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "QMS Integrations"
+  },
+  {
+   "id": "INT-CAD-01",
+   "name": "PLM-CAD File Management",
+   "goal": "Check-in/check-out CAD files",
+   "examples": "SolidWorks, CATIA, NX, Creo, AutoCAD, Altium",
+   "value": "Behavior: Local file management. Pain: Version conflicts. Hopes: Centralized CAD.",
+   "packs": [
+    "PACK-02",
+    "PACK-11"
+   ],
+   "category": "CAD Integrations"
+  },
+  {
+   "id": "INT-CAD-02",
+   "name": "PLM-CAD BOM Sync",
+   "goal": "Sync CAD-generated BOMs",
+   "examples": "SolidWorks, CATIA, NX, Creo, Onshape",
+   "value": "Behavior: Manual BOM creation. Pain: BOM errors. Hopes: Automated BOM.",
+   "packs": [
+    "PACK-02",
+    "PACK-11"
+   ],
+   "category": "CAD Integrations"
+  },
+  {
+   "id": "INT-CAD-03",
+   "name": "PLM-CAD Change Notification",
+   "goal": "Notify PLM of CAD changes",
+   "examples": "SolidWorks PDM, CATIA V6, NX, Creo",
+   "value": "Behavior: Email-based changes. Pain: Uncontrolled changes. Hopes: Automated ECM.",
+   "packs": [
+    "PACK-02",
+    "PACK-11"
+   ],
+   "category": "CAD Integrations"
+  },
+  {
+   "id": "INT-CAD-04",
+   "name": "PLM-CAD Visualization",
+   "goal": "Generate lightweight 3D visualizations",
+   "examples": "Siemens JT, Adobe 3D PDF, Autodesk Viewer",
+   "value": "Behavior: Native CAD required. Pain: Limited access. Hopes: Universal 3D access.",
+   "packs": [
+    "PACK-02",
+    "PACK-05",
+    "PACK-11"
+   ],
+   "category": "CAD Integrations"
+  },
+  {
+   "id": "INT-SRM-01",
+   "name": "PLM-SRM Supplier Qualification",
+   "goal": "Sync supplier AML/AVL, certifications",
+   "examples": "SAP Ariba, Oracle Supplier Hub, Coupa, Jaggaer",
+   "value": "Behavior: Separate supplier data. Pain: Unqualified suppliers. Hopes: Real-time supplier data.",
+   "packs": [
+    "PACK-02",
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "SRM/SCM Integrations"
+  },
+  {
+   "id": "INT-SRM-02",
+   "name": "PLM-SRM Component Compliance",
+   "goal": "Sync RoHS, REACH, conflict minerals",
+   "examples": "SAP Ariba, Assent Compliance, Source Intelligence",
+   "value": "Behavior: Manual compliance. Pain: Compliance gaps. Hopes: Automated compliance.",
+   "packs": [
+    "PACK-04",
+    "PACK-08",
+    "PACK-11"
+   ],
+   "category": "SRM/SCM Integrations"
+  },
+  {
+   "id": "INT-SRM-03",
+   "name": "PLM-SCM Supply Chain Risk",
+   "goal": "Sync supply chain risk data",
+   "examples": "Resilinc, Everstream Analytics, SAP Ariba",
+   "value": "Behavior: Risks ignored in design. Pain: Supply disruptions. Hopes: Risk-aware design.",
+   "packs": [
+    "PACK-02",
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "SRM/SCM Integrations"
+  },
+  {
+   "id": "INT-SRM-04",
+   "name": "PLM-SCM Should-Cost",
+   "goal": "Sync should-cost and sourcing decisions",
+   "examples": "SAP Ariba, Coupa, Zycus",
+   "value": "Behavior: Cost data siloed. Pain: Inaccurate estimates. Hopes: Real-time should-cost.",
+   "packs": [
+    "PACK-03",
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "SRM/SCM Integrations"
+  },
+  {
+   "id": "INT-IOT-01",
+   "name": "PLM-IoT Digital Twin Sync",
+   "goal": "Sync real-time sensor data",
+   "examples": "PTC ThingWorx, Siemens MindSphere, AWS IoT, Azure IoT",
+   "value": "Behavior: IoT data siloed. Pain: No field-to-design loop. Hopes: Real-time digital twin.",
+   "packs": [
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "IoT & Digital Twin Integrations"
+  },
+  {
+   "id": "INT-IOT-02",
+   "name": "PLM-IoT Predictive Maintenance",
+   "goal": "Sync IoT data for predictive maintenance",
+   "examples": "PTC ThingWorx, Siemens MindSphere, GE Predix",
+   "value": "Behavior: Reactive maintenance. Pain: Unplanned downtime. Hopes: Predictive maintenance.",
+   "packs": [
+    "PACK-05",
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "IoT & Digital Twin Integrations"
+  },
+  {
+   "id": "INT-IOT-03",
+   "name": "PLM-IoT Field Performance",
+   "goal": "Sync field data for reliability analysis",
+   "examples": "PTC ThingWorx, Aras-BellaDati, Siemens MindSphere",
+   "value": "Behavior: Manual reliability data. Pain: Slow improvements. Hopes: Automated FRACAS.",
+   "packs": [
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "IoT & Digital Twin Integrations"
+  },
+  {
+   "id": "INT-COL-01",
+   "name": "PLM-Collaboration Tools",
+   "goal": "Sync notifications, approvals",
+   "examples": "Slack, Microsoft Teams, Zoom, Webex",
+   "value": "Behavior: Silos communication. Pain: Missed notifications. Hopes: Real-time updates.",
+   "packs": [
+    "PACK-01",
+    "PACK-11"
+   ],
+   "category": "Collaboration Integrations"
+  },
+  {
+   "id": "INT-COL-02",
+   "name": "PLM-Project Management",
+   "goal": "Sync tasks, milestones",
+   "examples": "Jira, Asana, Monday.com, MS Project",
+   "value": "Behavior: Separate project plans. Pain: Duplicate entry. Hopes: Single source of truth.",
+   "packs": [
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "Collaboration Integrations"
+  },
+  {
+   "id": "INT-COL-03",
+   "name": "PLM-ALM",
+   "goal": "Sync requirements, test cases",
+   "examples": "PTC Codebeamer, Siemens Polarion, Jama Connect",
+   "value": "Behavior: HW/SW silos. Pain: Traceability gaps. Hopes: Unified lifecycle.",
+   "packs": [
+    "PACK-02",
+    "PACK-11"
+   ],
+   "category": "Collaboration Integrations"
+  },
+  {
+   "id": "INT-ALM-01",
+   "name": "PLM-ALM Requirements Traceability",
+   "goal": "Trace SW requirements to HW",
+   "examples": "PTC Codebeamer, Siemens Polarion, Jama Connect",
+   "value": "Behavior: Separate requirements. Pain: Compliance gaps. Hopes: End-to-end traceability.",
+   "packs": [
+    "PACK-02",
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "ALM Integrations"
+  },
+  {
+   "id": "INT-ALM-02",
+   "name": "PLM-ALM Change Management",
+   "goal": "Sync SCR and ECO",
+   "examples": "PTC Codebeamer, Siemens Polarion, Jira",
+   "value": "Behavior: Fragmented change mgmt. Pain: Release delays. Hopes: Unified change mgmt.",
+   "packs": [
+    "PACK-02",
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "ALM Integrations"
+  },
+  {
+   "id": "INT-ALM-03",
+   "name": "PLM-ALM Test Management",
+   "goal": "Sync test cases and results",
+   "examples": "PTC Codebeamer, Siemens Polarion, Jama Connect",
+   "value": "Behavior: Siloed test data. Pain: Incomplete validation. Hopes: Integrated testing.",
+   "packs": [
+    "PACK-02",
+    "PACK-04",
+    "PACK-11"
+   ],
+   "category": "ALM Integrations"
+  },
+  {
+   "id": "INT-DAT-01",
+   "name": "PLM-BI & Analytics",
+   "goal": "Sync PLM data to BI platforms",
+   "examples": "Tableau, Power BI, Qlik, Looker",
+   "value": "Behavior: Data locked in PLM. Pain: No strategic visibility. Hopes: Data-driven decisions.",
+   "packs": [
+    "PACK-01",
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "Data & Analytics Integrations"
+  },
+  {
+   "id": "INT-DAT-02",
+   "name": "PLM-MDM",
+   "goal": "Sync master data",
+   "examples": "SAP MDG, Informatica MDM, Stibo, Reltio",
+   "value": "Behavior: Duplicated master data. Pain: Inconsistencies. Hopes: Golden records.",
+   "packs": [
+    "PACK-01",
+    "PACK-11"
+   ],
+   "category": "Data & Analytics Integrations"
+  },
+  {
+   "id": "INT-DAT-03",
+   "name": "PLM-Data Lake",
+   "goal": "Ingest PLM data into data lakes",
+   "examples": "Snowflake, Databricks, AWS S3, Azure Data Lake",
+   "value": "Behavior: PLM data not in analytics. Pain: Limited insights. Hopes: Advanced analytics.",
+   "packs": [
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "Data & Analytics Integrations"
+  },
+  {
+   "id": "INT-PLT-01",
+   "name": "PLM-iPaaS",
+   "goal": "Connect PLM via iPaaS",
+   "examples": "MuleSoft, Boomi, Workato, Zapier",
+   "value": "Behavior: Brittle custom integrations. Pain: High maintenance. Hopes: Pre-built connectors.",
+   "packs": [
+    "PACK-01",
+    "PACK-11"
+   ],
+   "category": "Integration Platform Integrations"
+  },
+  {
+   "id": "INT-PLT-02",
+   "name": "PLM-Marketplace Connectors",
+   "goal": "Access pre-built connectors",
+   "examples": "Aras Marketplace, Onshape App Store, Salesforce AppExchange",
+   "value": "Behavior: Want plug-and-play. Pain: Complex development. Hopes: Rapid deployment.",
+   "packs": [
+    "PACK-01",
+    "PACK-11"
+   ],
+   "category": "Integration Platform Integrations"
+  },
+  {
+   "id": "INT-PLT-03",
+   "name": "PLM-API Gateway",
+   "goal": "Expose PLM APIs securely",
+   "examples": "Apigee, Kong, AWS API Gateway, Azure APIM",
+   "value": "Behavior: Direct API access. Pain: Security risks. Hopes: Secure API access.",
+   "packs": [
+    "PACK-01",
+    "PACK-11"
+   ],
+   "category": "Integration Platform Integrations"
+  }
+ ],
+ "addons": [
+  {
+   "id": "ADD-CAP-01",
+   "name": "Additional Storage (1 TB)",
+   "goal": "Add 1 TB of cloud storage",
+   "value": "Behavior: Growing CAD and document data. Pain: Storage limits. Hopes: Unlimited storage.",
+   "packs": [
+    "ALL"
+   ],
+   "category": "Capacity & Storage"
+  },
+  {
+   "id": "ADD-CAP-02",
+   "name": "Additional Compute (GPU)",
+   "goal": "Add GPU compute for AI/ML workloads",
+   "value": "Behavior: AI/ML workloads need more compute. Pain: Slow simulations. Hopes: Faster AI.",
+   "packs": [
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "Capacity & Storage"
+  },
+  {
+   "id": "ADD-CAP-03",
+   "name": "Additional API Calls (1M/month)",
+   "goal": "Add 1M API calls per month",
+   "value": "Behavior: High integration volume. Pain: API rate limits. Hopes: Unlimited integration.",
+   "packs": [
+    "PACK-01",
+    "PACK-11"
+   ],
+   "category": "Capacity & Storage"
+  },
+  {
+   "id": "ADD-AI-01",
+   "name": "Advanced Generative Design",
+   "goal": "Add advanced generative design capabilities",
+   "value": "Behavior: Manual design optimization. Pain: Suboptimal designs. Hopes: AI-driven design.",
+   "packs": [
+    "PACK-02",
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "AI & Analytics"
+  },
+  {
+   "id": "ADD-AI-02",
+   "name": "Predictive Quality Analytics",
+   "goal": "Add predictive quality analytics",
+   "value": "Behavior: Reactive quality. Pain: Recurring defects. Hopes: Predictive quality.",
+   "packs": [
+    "PACK-04",
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "AI & Analytics"
+  },
+  {
+   "id": "ADD-AI-03",
+   "name": "Custom AI Model Training",
+   "goal": "Train custom AI models on customer data",
+   "value": "Behavior: Generic AI models. Pain: Low accuracy. Hopes: Custom AI.",
+   "packs": [
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "AI & Analytics"
+  },
+  {
+   "id": "ADD-AI-04",
+   "name": "Advanced BI Dashboards",
+   "goal": "Add advanced BI dashboards",
+   "value": "Behavior: Standard dashboards. Pain: Limited insights. Hopes: Custom dashboards.",
+   "packs": [
+    "PACK-01",
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "AI & Analytics"
+  },
+  {
+   "id": "ADD-INT-01",
+   "name": "Custom Connector Development",
+   "goal": "Develop custom connectors",
+   "value": "Behavior: Unique systems. Pain: No connector available. Hopes: Custom integration.",
+   "packs": [
+    "PACK-11"
+   ],
+   "category": "Integration & Connector"
+  },
+  {
+   "id": "ADD-INT-02",
+   "name": "Premium ERP Connector",
+   "goal": "Add premium ERP connector",
+   "value": "Behavior: Complex ERP. Pain: Standard connector insufficient. Hopes: Deep ERP integration.",
+   "packs": [
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "Integration & Connector"
+  },
+  {
+   "id": "ADD-INT-03",
+   "name": "Real-Time Event Streaming",
+   "goal": "Add real-time event streaming",
+   "value": "Behavior: Batch integration. Pain: Delayed data. Hopes: Real-time data.",
+   "packs": [
+    "PACK-07",
+    "PACK-11"
+   ],
+   "category": "Integration & Connector"
+  },
+  {
+   "id": "ADD-INT-04",
+   "name": "B2B/EDI Integration",
+   "goal": "Add B2B/EDI integration",
+   "value": "Behavior: Manual EDI. Pain: Errors. Hopes: Automated EDI.",
+   "packs": [
+    "PACK-03",
+    "PACK-11"
+   ],
+   "category": "Integration & Connector"
+  },
+  {
+   "id": "ADD-SEC-01",
+   "name": "Advanced Encryption (BYOK)",
+   "goal": "Add bring-your-own-key encryption",
+   "value": "Behavior: Strict security requirements. Pain: Compliance risks. Hopes: Full control.",
+   "packs": [
+    "PACK-04",
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "Security & Compliance"
+  },
+  {
+   "id": "ADD-SEC-02",
+   "name": "SSO & MFA",
+   "goal": "Add SSO and MFA",
+   "value": "Behavior: Multiple systems. Pain: Password fatigue. Hopes: Single sign-on.",
+   "packs": [
+    "ALL"
+   ],
+   "category": "Security & Compliance"
+  },
+  {
+   "id": "ADD-SEC-03",
+   "name": "Audit Trail Extension (7 years)",
+   "goal": "Extend audit trail retention",
+   "value": "Behavior: Long retention requirements. Pain: Compliance gaps. Hopes: Full audit trail.",
+   "packs": [
+    "PACK-04",
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "Security & Compliance"
+  },
+  {
+   "id": "ADD-SEC-04",
+   "name": "Data Residency (EU/US/APAC)",
+   "goal": "Choose data residency region",
+   "value": "Behavior: Data sovereignty requirements. Pain: Compliance risks. Hopes: Regional data.",
+   "packs": [
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "Security & Compliance"
+  },
+  {
+   "id": "ADD-SUP-01",
+   "name": "Premium Support (24/7)",
+   "goal": "Add 24/7 premium support",
+   "value": "Behavior: Global operations. Pain: Slow support. Hopes: 24/7 support.",
+   "packs": [
+    "PACK-11"
+   ],
+   "category": "Support & Success"
+  },
+  {
+   "id": "ADD-SUP-02",
+   "name": "Dedicated Customer Success Manager",
+   "goal": "Add dedicated CSM",
+   "value": "Behavior: Complex deployments. Pain: Lack of guidance. Hopes: Dedicated CSM.",
+   "packs": [
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "Support & Success"
+  },
+  {
+   "id": "ADD-SUP-03",
+   "name": "Quarterly Business Reviews",
+   "goal": "Add quarterly business reviews",
+   "value": "Behavior: Strategic alignment needed. Pain: Misaligned goals. Hopes: Regular reviews.",
+   "packs": [
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "Support & Success"
+  },
+  {
+   "id": "ADD-SUP-04",
+   "name": "Priority Bug Fixes",
+   "goal": "Add priority bug fix SLA",
+   "value": "Behavior: Critical operations. Pain: Slow fixes. Hopes: Priority fixes.",
+   "packs": [
+    "PACK-11"
+   ],
+   "category": "Support & Success"
+  },
+  {
+   "id": "ADD-PRO-01",
+   "name": "Implementation Services",
+   "goal": "Add implementation services",
+   "value": "Behavior: Complex deployment. Pain: Long time-to-value. Hopes: Fast implementation.",
+   "packs": [
+    "ALL"
+   ],
+   "category": "Professional Services"
+  },
+  {
+   "id": "ADD-PRO-02",
+   "name": "Data Migration Services",
+   "goal": "Add data migration services",
+   "value": "Behavior: Legacy data. Pain: Manual migration. Hopes: Automated migration.",
+   "packs": [
+    "PACK-01",
+    "PACK-11"
+   ],
+   "category": "Professional Services"
+  },
+  {
+   "id": "ADD-PRO-03",
+   "name": "Custom Training",
+   "goal": "Add custom training programs",
+   "value": "Behavior: Unique processes. Pain: Low adoption. Hopes: Custom training.",
+   "packs": [
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "Professional Services"
+  },
+  {
+   "id": "ADD-PRO-04",
+   "name": "Business Process Reengineering",
+   "goal": "Add BPR consulting",
+   "value": "Behavior: Legacy processes. Pain: Inefficiency. Hopes: Optimized processes.",
+   "packs": [
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "Professional Services"
+  },
+  {
+   "id": "ADD-PRO-05",
+   "name": "Change Management Services",
+   "goal": "Add change management services",
+   "value": "Behavior: Resistance to change. Pain: Low adoption. Hopes: Smooth transition.",
+   "packs": [
+    "PACK-06",
+    "PACK-11"
+   ],
+   "category": "Professional Services"
+  },
+  {
+   "id": "ADD-IND-01",
+   "name": "FDA 21 CFR Part 11 Compliance",
+   "goal": "Add FDA compliance module",
+   "value": "Behavior: FDA-regulated. Pain: Compliance gaps. Hopes: FDA compliance.",
+   "packs": [
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "Industry-Specific"
+  },
+  {
+   "id": "ADD-IND-02",
+   "name": "ITAR/EAR Compliance",
+   "goal": "Add ITAR/EAR compliance module",
+   "value": "Behavior: Defense-regulated. Pain: Export control risks. Hopes: ITAR compliance.",
+   "packs": [
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "Industry-Specific"
+  },
+  {
+   "id": "ADD-IND-03",
+   "name": "IATF 16949 Compliance",
+   "goal": "Add IATF 16949 module",
+   "value": "Behavior: Automotive-regulated. Pain: Quality gaps. Hopes: IATF compliance.",
+   "packs": [
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "Industry-Specific"
+  },
+  {
+   "id": "ADD-IND-04",
+   "name": "EU MDR Compliance",
+   "goal": "Add EU MDR compliance module",
+   "value": "Behavior: EU-regulated. Pain: MDR compliance. Hopes: EU MDR compliance.",
+   "packs": [
+    "PACK-09",
+    "PACK-11"
+   ],
+   "category": "Industry-Specific"
+  }
+ ],
+ "bundles": [
+  {
+   "id": "BND-01",
+   "name": "Starter Bundle",
+   "packs": [
+    "PACK-01",
+    "PACK-02"
+   ],
+   "price": 129,
+   "statedSavings": "13%"
+  },
+  {
+   "id": "BND-02",
+   "name": "Engineering Bundle",
+   "packs": [
+    "PACK-01",
+    "PACK-02",
+    "PACK-07"
+   ],
+   "price": 219,
+   "statedSavings": "15%"
+  },
+  {
+   "id": "BND-03",
+   "name": "Manufacturing Bundle",
+   "packs": [
+    "PACK-01",
+    "PACK-02",
+    "PACK-03",
+    "PACK-04"
+   ],
+   "price": 329,
+   "statedSavings": "20%"
+  },
+  {
+   "id": "BND-04",
+   "name": "Service Bundle",
+   "packs": [
+    "PACK-01",
+    "PACK-05",
+    "PACK-10"
+   ],
+   "price": 249,
+   "statedSavings": "18%"
+  },
+  {
+   "id": "BND-05",
+   "name": "Innovation Bundle",
+   "packs": [
+    "PACK-01",
+    "PACK-02",
+    "PACK-06"
+   ],
+   "price": 249,
+   "statedSavings": "15%"
+  },
+  {
+   "id": "BND-06",
+   "name": "Regulated Bundle",
+   "packs": [
+    "PACK-01",
+    "PACK-02",
+    "PACK-04",
+    "PACK-09"
+   ],
+   "price": 379,
+   "statedSavings": "22%"
+  },
+  {
+   "id": "BND-07",
+   "name": "Sustainability Bundle",
+   "packs": [
+    "PACK-01",
+    "PACK-08",
+    "PACK-07"
+   ],
+   "price": 199,
+   "statedSavings": "15%"
+  },
+  {
+   "id": "BND-08",
+   "name": "Complete Bundle",
+   "packs": [
+    "PACK-01",
+    "PACK-02",
+    "PACK-03",
+    "PACK-04",
+    "PACK-05",
+    "PACK-06",
+    "PACK-07",
+    "PACK-08",
+    "PACK-09",
+    "PACK-10",
+    "PACK-11"
+   ],
+   "price": 799,
+   "statedSavings": "30%"
+  }
+ ],
+ "bundleRecalc": [
+  {
+   "id": "BND-01",
+   "sum": "$148",
+   "price": "$129",
+   "stated": "13%",
+   "calculated": "12.8%"
+  },
+  {
+   "id": "BND-02",
+   "sum": "$257",
+   "price": "$219",
+   "stated": "15%",
+   "calculated": "14.8%"
+  },
+  {
+   "id": "BND-03",
+   "sum": "$396",
+   "price": "$329",
+   "stated": "20%",
+   "calculated": "16.9%"
+  },
+  {
+   "id": "BND-04",
+   "sum": "$287",
+   "price": "$249",
+   "stated": "18%",
+   "calculated": "13.2%"
+  },
+  {
+   "id": "BND-05",
+   "sum": "$287",
+   "price": "$249",
+   "stated": "15%",
+   "calculated": "13.2%"
+  },
+  {
+   "id": "BND-06",
+   "sum": "$466",
+   "price": "$379",
+   "stated": "22%",
+   "calculated": "18.7%"
+  },
+  {
+   "id": "BND-07",
+   "sum": "$237",
+   "price": "$199",
+   "stated": "15%",
+   "calculated": "16.0%"
+  },
+  {
+   "id": "BND-08",
+   "sum": "$1459",
+   "price": "$799",
+   "stated": "30%",
+   "calculated": "45.2%"
+  }
+ ],
+ "volumeDiscounts": [
+  {
+   "users": "1–50",
+   "discount": "0%"
+  },
+  {
+   "users": "51–100",
+   "discount": "5%"
+  },
+  {
+   "users": "101–250",
+   "discount": "10%"
+  },
+  {
+   "users": "251–500",
+   "discount": "15%"
+  },
+  {
+   "users": "501–1,000",
+   "discount": "20%"
+  },
+  {
+   "users": "1,001+",
+   "discount": "Custom"
+  }
+ ],
+ "reviewNotes": [
+  {
+   "n": 1,
+   "observation": "Six bundles state savings that do not match the pack prices (BND-03 to BND-08).",
+   "action": "Correct either the bundle price or the stated percentage."
+  },
+  {
+   "n": 2,
+   "observation": "BND-08 Complete Bundle costs USD 799, while PACK-11 CortexPLM Enterprise (USD 299) already includes all modules, integrations and add-ons, and BND-08 itself contains PACK-11.",
+   "action": "Remove BND-08, or redefine it (e.g., PACK-11 plus premium services) so the offer is coherent."
+  },
+  {
+   "n": 3,
+   "observation": "Section 1.1 states \"USD 40/month per pack\"; Section 5.1 states \"USD 40/user/month\".",
+   "action": "This edition uses \"per user per month\" throughout; confirm."
+  },
+  {
+   "n": 4,
+   "observation": "Add-ons have no price in the catalog.",
+   "action": "Add a price list for add-ons (flat, per user or per unit)."
+  },
+  {
+   "n": 5,
+   "observation": "INT-COL-03 PLM-ALM (Collaboration) overlaps with the ALM category (INT-ALM-01 to 03).",
+   "action": "Merge it into 3.9 ALM Integrations or rename it to show the difference."
+  },
+  {
+   "n": 6,
+   "observation": "PACK-08 and PACK-10 have only one compatible integration each.",
+   "action": "Consider mapping relevant connectors (e.g., INT-SRM-02 to PACK-10, INT-IOT-02 to PACK-10, INT-DAT-01 to PACK-08)."
+  },
+  {
+   "n": 7,
+   "observation": "The source title claimed \"The #1 PSLM Application\".",
+   "action": "Omitted from the cover under the Mounire Benhima voice guidelines; restore if supported by independent evidence."
+  }
+ ],
+ "principles": [
+  [
+   "Modular",
+   "Customers buy only what they need."
+  ],
+  [
+   "Scalable",
+   "Start small, expand as needs grow."
+  ],
+  [
+   "Segment-Aligned",
+   "Each pack targets a specific customer profile."
+  ],
+  [
+   "Integration-Ready",
+   "Packs include pre-built connectors to relevant external systems."
+  ],
+  [
+   "Value-Driven",
+   "Pricing reflects the value delivered, not just features."
+  ],
+  [
+   "Minimum $40/month",
+   "Ensures sustainable unit economics."
+  ],
+  [
+   ""
+  ]
+ ]
+}

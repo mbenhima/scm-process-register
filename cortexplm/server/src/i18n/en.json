@@ -1,0 +1,17 @@
+{
+ "meta": {
+  "code": "en",
+  "name": "English",
+  "dir": "ltr"
+ },
+ "strings": {
+  "notify.alert.raised.subject": "[{severity}] {name}",
+  "notify.alert.raised.body": "{message}",
+  "notify.run.started.subject": "New tasks: {e2e}",
+  "notify.run.started.body": "{project} has started {e2e}. Open My Tasks to see the tasks assigned to you.",
+  "notify.task.evaluate.subject": "Evaluation requested: {task}",
+  "notify.task.evaluate.body": "\"{task}\" on {project} is complete. As evaluator, rate it Effective or Not effective.",
+  "notify.gate.decided.subject": "{gate} decision: {decision}",
+  "notify.gate.decided.body": "The Gate Review Board recorded \"{decision}\" at {gate} for {project}."
+ }
+}

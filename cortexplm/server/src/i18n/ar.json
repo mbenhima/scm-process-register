@@ -1,0 +1,17 @@
+{
+ "meta": {
+  "code": "ar",
+  "name": "العربية",
+  "dir": "rtl"
+ },
+ "strings": {
+  "notify.alert.raised.subject": "[{severity}] {name}",
+  "notify.alert.raised.body": "{message}",
+  "notify.run.started.subject": "مهام جديدة: {e2e}",
+  "notify.run.started.body": "بدأ المشروع {project} العملية {e2e}. افتح مهامي لرؤية المهام المسندة إليك.",
+  "notify.task.evaluate.subject": "مطلوب تقييم: {task}",
+  "notify.task.evaluate.body": "اكتملت المهمة «{task}» في المشروع {project}. بصفتك المُقيِّم، قيّمها فعّالة أو غير فعّالة.",
+  "notify.gate.decided.subject": "قرار البوابة {gate}: {decision}",
+  "notify.gate.decided.body": "سجّل مجلس مراجعة البوابات القرار «{decision}» في البوابة {gate} للمشروع {project}."
+ }
+}
