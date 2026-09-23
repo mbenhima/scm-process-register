@@ -45,8 +45,8 @@ export default function Tracks() {
             <DataTable filterable={false} rows={R.summary} columns={[{ key: 'E2E', label: t('E2E'), render: (r) => <Link to={`/e2e/${r.E2E}`}>{r.E2E}</Link> }, { key: 'End-to-end process', label: t('End-to-end process'), render: (r) => t(r['End-to-end process']) }, ...['Full Track', 'Light Track', 'Fast Track'].map((k) => ({ key: k, label: t(k), render: (r) => t(r[k]) }))]} />
           </Card>
           <Card><CardHead title={t('Light Track observation period (Rule R1)')} subtitle={t('Days between the T3 Go-Live decision and the start of E2E-07 in the Light Track.')} />
-            <div className="row"><Field label={t('Observation period (days)')}><Input type="number" min="0" max="730" value={obs || settings.data?.light_observation_days || ''} onChange={(e) => setObs(e.target.value)} disabled={!can('governance.manage')} /></Field>
-              {can('governance.manage') && <Button variant="primary" disabled={!obs} onClick={async () => { try { await put('/settings', { light_observation_days: Number(obs) }); toast.ok(t('Saved.')); settings.reload(); } catch (e) { toast.err(e); } }}>{t('Save')}</Button>}</div>
+            <div className="row"><Field label={t('Observation period (days)')}><Input type="number" min="0" max="730" value={obs !== '' ? obs : (settings.data?.light_observation_days ?? '')} onChange={(e) => setObs(e.target.value)} disabled={!can('governance.manage')} /></Field>
+              {can('governance.manage') && <Button variant="primary" disabled={obs === ''} onClick={async () => { try { await put('/settings', { light_observation_days: Number(obs) }); toast.ok(t('Saved.')); settings.reload(); } catch (e) { toast.err(e); } }}>{t('Save')}</Button>}</div>
           </Card>
         </div>
       )}

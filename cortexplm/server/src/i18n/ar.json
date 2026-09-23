@@ -1658,6 +1658,8 @@
   "On target": "ضمن الهدف",
   "Relationship type": "نوع العلاقة",
   "Select": "اختر",
-  "days": "يوم"
+  "days": "يوم",
+  "Reopen task": "إعادة فتح المهمة",
+  "Task reopened.": "أُعيد فتح المهمة."
  }
 }

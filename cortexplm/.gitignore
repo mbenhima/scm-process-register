@@ -5,3 +5,4 @@ server/licence/
 server/.env
 web/.env
 *.log
+__pycache__/

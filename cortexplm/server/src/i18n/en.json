@@ -1658,6 +1658,8 @@
   "On target": "On target",
   "Relationship type": "Relationship type",
   "Select": "Select",
-  "days": "days"
+  "days": "days",
+  "Reopen task": "Reopen task",
+  "Task reopened.": "Task reopened."
  }
 }

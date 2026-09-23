@@ -6,6 +6,7 @@ import { useI18n } from '../lib/i18n.jsx';
 import { api, post, put, download } from '../lib/api.js';
 import {
   PageHeader, Card, CardHead, useFetch, Skeleton, ErrorNote, StatusBadge, Button, Field, Input, Textarea, Select, Modal, Badge, useToast, fmtDate,
+  JustifyModal,
 } from '../components/ui.jsx';
 import AiSuggest from '../components/AiSuggest.jsx';
 import RexForm from '../components/RexForm.jsx';
@@ -114,6 +115,7 @@ export default function Task() {
   const [rex, setRex] = useState(false);
   const [assign, setAssign] = useState(false);
   const [skip, setSkip] = useState(false);
+  const [reopen, setReopen] = useState(false);
   const [verdict, setVerdict] = useState({ verdict: 'Effective', notes: '' });
   const [busy, setBusy] = useState(false);
   useEffect(() => { if (task) { setData(task.data || {}); setOutput(task.output || ''); } }, [task?.id]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -157,6 +159,8 @@ export default function Task() {
               <div className="row" style={{ marginTop: 16 }}>
                 {open && canWork && <Button variant="primary" icon={CheckCircle2} busy={busy} onClick={complete}>{t('Complete task')}</Button>}
                 {open && canWork && task.data?.r2Skippable && <Button icon={SkipForward} onClick={() => setSkip(true)}>{t('Skip (Rule R2)')}</Button>}
+                {!open && ['Done', 'Skipped'].includes(task.status) && task.project.status === 'Active' && task.run.status === 'In progress' && can('project.edit') && (!task.gate || ['Open', 'On hold'].includes(task.gate.status))
+                  && <Button icon={RotateCcw} onClick={() => setReopen(true)}>{t('Reopen task')}</Button>}
                 <Upload entityType="task" entityId={task.id} onDone={reload} label={t('Attach evidence file')} />
                 {task.files.map((f) => <button key={f.id} type="button" className="btn btn-ghost btn-sm" onClick={() => download(`/evidence/${f.id}`)}><Paperclip aria-hidden />{f.filename}</button>)}
               </div>
@@ -218,6 +222,7 @@ export default function Task() {
       {rex && <RexForm projectId={task.project.id} taskId={task.id} processTag={task.run.e2e_id} defaultTitle={`${task.uft_id} ${t(task.name)}`} onClose={() => setRex(false)} />}
       {assign && <Assign task={task} onClose={() => setAssign(false)} onSaved={reload} />}
       {skip && <SkipModal onClose={() => setSkip(false)} onConfirm={(reason) => run(async () => { await post(`/tasks/${task.id}/skip`, { reason }); setSkip(false); reload(); })} />}
+      {reopen && <JustifyModal title={t('Reopen task')} onCancel={() => setReopen(false)} onConfirm={(reason) => run(async () => { await post(`/tasks/${task.id}/reopen`, { reason }); setReopen(false); toast.ok(t('Task reopened.')); reload(); })} />}
     </div>
   );
 }

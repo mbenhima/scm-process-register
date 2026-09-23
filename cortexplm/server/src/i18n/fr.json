@@ -1658,6 +1658,8 @@
   "On target": "Dans la cible",
   "Relationship type": "Type de relation",
   "Select": "Sélectionner",
-  "days": "jours"
+  "days": "jours",
+  "Reopen task": "Rouvrir la tâche",
+  "Task reopened.": "Tâche rouverte."
  }
 }

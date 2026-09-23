@@ -60,6 +60,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   app.listen(config.port, () => {
     console.log(`\n  CortexPLM API is running on http://localhost:${config.port}`);
     console.log(`  Licensing mode: ${config.deploymentMode}. Open the web app at ${config.webOrigin[0]}\n`);
+  }).on('error', (e) => {
+    if (e.code === 'EADDRINUSE') console.error(`\n  Port ${config.port} is already in use: CortexPLM is probably running in another window. Use that window, or close it and start again.\n`);
+    else console.error(e);
+    process.exit(1);
   });
   background();
 }

@@ -129,6 +129,7 @@ r.post('/tasks/:id/complete', requirePerm('task.edit'), h((req) => {
   return { ...taskDetail(req.orgId, req.params.id), effects: res.effects, rexPrompt: res.rexPrompt };
 }));
 r.post('/tasks/:id/skip', requirePerm('task.edit'), h((req) => { L.skipTask(ctxOf(req), req.params.id, req.body.reason, has(req, 'project.edit')); return taskDetail(req.orgId, req.params.id); }));
+r.post('/tasks/:id/reopen', requirePerm('project.edit'), h((req) => { L.reopenTask(ctxOf(req), req.params.id, req.body.reason); return taskDetail(req.orgId, req.params.id); }));
 r.post('/tasks/:id/evaluate', requirePerm('task.evaluate'), h((req) => { L.evaluateTask(ctxOf(req), req.params.id, req.body.verdict, req.body.notes); return taskDetail(req.orgId, req.params.id); }));
 r.put('/tasks/:id/assign', requirePerm('task.assign'), h((req) => { L.assignTask(ctxOf(req), req.params.id, req.body); return taskDetail(req.orgId, req.params.id); }));
 r.put('/tasks/:id/schedule', requirePerm('wbs.manage'), h((req) => {

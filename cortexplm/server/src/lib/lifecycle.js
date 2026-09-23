@@ -280,6 +280,19 @@ function afterTaskClosed(ctx, t) {
   }
 }
 
+// Reopen a closed work task while its gate is still open, e.g. to correct an answer that blocks submission (BR-030).
+export function reopenTask(ctx, taskId, reason) {
+  const t = taskForOrg(ctx.orgId, taskId); const p = getProject(t.project_id);
+  assertEditable(ctx, t, p, true);
+  if (t.kind !== 'work' || !['Done', 'Skipped'].includes(t.status)) throw new AppError(409, 'Only a completed or skipped work task can be reopened.');
+  const g = q.get('SELECT status FROM gate_reviews WHERE run_id = ?', t.run_id);
+  if (g && !['Open', 'On hold'].includes(g.status)) throw new AppError(409, 'The gate has been submitted or decided; ask the board for a Recycle decision instead.');
+  if (!String(reason || '').trim()) throw new AppError(400, 'Give a reason for reopening the task.');
+  q.run("UPDATE run_tasks SET status = 'In progress', completed_at = NULL, pct = 50, evaluation = NULL WHERE id = ?", taskId);
+  audit(ctx, 'task', taskId, 'reopen', { status: [t.status, 'In progress'] }, reason);
+  return taskForOrg(ctx.orgId, taskId);
+}
+
 export function skipTask(ctx, taskId, reason, canManage) {
   const t = taskForOrg(ctx.orgId, taskId); const p = getProject(t.project_id);
   assertEditable(ctx, t, p, canManage);
@@ -422,7 +435,7 @@ function triggerNext(ctx, p, g, nextPath) {
   const started = [];
   const go = (e2e, opts) => { started.push(e2e); return startRun(ctx, p, e2e, opts); };
   const active = (e2e) => q.get("SELECT id FROM e2e_runs WHERE project_id = ? AND e2e_id = ? AND status IN ('In progress','Scheduled')", p.id, e2e);
-  const obs = Number(q.get("SELECT value FROM governance_settings WHERE org_id = ? AND key = 'light_observation_days'", p.org_id)?.value || 182);
+  const obs = Number(q.get("SELECT value FROM governance_settings WHERE org_id = ? AND key = 'light_observation_days'", p.org_id)?.value ?? 182);
   const next = {
     Full: { 'T-1': ['E2E-02'], T0: ['E2E-03'], T1: ['E2E-04'], T2: ['E2E-05'], T3: ['E2E-06', 'E2E-09'], T4: ['E2E-07'], T5: ['E2E-08'], T6: [] },
     Light: { 'T-1': ['E2E-02'], T0: ['E2E-03'], T1: ['E2E-04'], T2: ['E2E-05'], T3: ['E2E-07', 'E2E-09'], T5: ['E2E-08'] },

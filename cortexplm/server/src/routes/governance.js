@@ -139,7 +139,7 @@ r.put('/alert-settings/:type', requirePerm('alert.manage'), h((req) => {
 // Governance settings (justification toggle, observation period, default language)
 r.get('/settings', requirePerm('governance.view', 'config.view'), h((req) => ({
   justification_required: justificationRequired(req.orgId),
-  light_observation_days: Number(q.get("SELECT value FROM governance_settings WHERE org_id = ? AND key = 'light_observation_days'", req.orgId)?.value || 182),
+  light_observation_days: Number(q.get("SELECT value FROM governance_settings WHERE org_id = ? AND key = 'light_observation_days'", req.orgId)?.value ?? 182),
   default_language: q.get('SELECT default_language FROM organizations WHERE id = ?', req.orgId).default_language,
 })));
 r.put('/settings', requirePerm('governance.manage', 'hierarchy.manage'), h((req) => {
