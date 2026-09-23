@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../lib/auth.jsx';
 import { useI18n } from '../lib/i18n.jsx';
-import { PageHeader, Card, CardHead, useFetch, Skeleton, SearchBox, Tabs, Badge } from '../components/ui.jsx';
+import { PageHeader, Card, CardHead, useFetch, Skeleton, SearchBox, Tabs, Badge, Select } from '../components/ui.jsx';
 import CrudPage from '../components/CrudPage.jsx';
 
 export default function Knowledge() {
   const { id } = useParams();
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const [kbLang, setKbLang] = useState(lang);
   const { can } = useAuth();
   const nav = useNavigate();
   const [q, setQ] = useState('');
@@ -41,7 +42,9 @@ export default function Knowledge() {
         </Card>
       )}
       {tab === 'articles' && (
-        <CrudPage endpoint="/knowledge" csvName="knowledge" entityLabel="article" newLabel="Add article" canManage={can('kb.manage')} defaults={{ kind: 'Practice note', lang: 'en' }}
+        <CrudPage endpoint="/knowledge" csvName="knowledge" entityLabel="article" newLabel="Add article" canManage={can('kb.manage')} defaults={{ kind: 'Practice note', lang }}
+          filter={(r) => !kbLang || r.lang === kbLang}
+          toolbar={<div style={{ minWidth: 170 }}><Select aria-label={t('Language')} value={kbLang} onChange={(e) => setKbLang(e.target.value)} placeholder={t('All languages')} options={[{ value: 'en', label: 'English' }, { value: 'fr', label: 'Français' }, { value: 'ar', label: 'العربية' }]} /></div>}
           onRowOpen={(r) => { if (r.org_id == null) { nav(`/knowledge/${r.id}`); return true; } return false; }}
           columns={[{ key: 'title', label: t('Title'), render: (r) => <span className="strong">{r.title}</span> }, { key: 'kind', label: t('Type'), render: (r) => t(r.kind) }, { key: 'ref', label: t('Reference') },
             { key: 'scope', label: t('Scope'), csv: (r) => (r.org_id ? 'Organization' : 'Reference'), render: (r) => (r.org_id ? <Badge tone="accent">{t('Organization')}</Badge> : <Badge>{t('Reference (read only)')}</Badge>) }]}

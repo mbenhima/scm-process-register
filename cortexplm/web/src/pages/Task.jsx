@@ -189,7 +189,7 @@ export default function Task() {
           {task.status === 'Done' && task.kind === 'work' && (
             <Card>
               <CardHead title={t('Evaluation')} subtitle={t('Owner and evaluator are always different people.')} />
-              {task.evaluation ? (
+              {task.evaluation?.restricted ? <p className="small muted">{t('Evaluated. The verdict is visible only to the people involved and to authorized roles.')}</p> : task.evaluation ? (
                 <div className="row"><StatusBadge value={task.evaluation.verdict} /><span>{task.evaluation.notes}</span><span className="muted">{fmtDate(task.evaluated_at)}</span></div>
               ) : (task.evaluator_id === me.user.id || (!task.evaluator_id && can('task.evaluate'))) && !mine ? (
                 <div className="form-grid">

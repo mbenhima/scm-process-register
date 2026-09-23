@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Trash2, RotateCcw } from 'lucide-react';
 import { useI18n } from '../lib/i18n.jsx';
 import { get, post, put, del } from '../lib/api.js';
+import VersionCompare from './VersionCompare.jsx';
 import { Card, DataTable, Modal, Field, Input, Textarea, Select, Button, useFetch, Skeleton, ErrorNote, useToast, JustifyModal, Tabs, Badge, fmtDate } from './ui.jsx';
 
 export function FormFields({ fields, value, onChange, disabled }) {
@@ -29,12 +30,15 @@ function Versions({ endpoint, id, onReverted }) {
   const { data } = useFetch(`${endpoint}/${id}`);
   if (!data) return <Skeleton h={120} />;
   return (
+    <>
     <DataTable filterable={false} rows={data.versions || []} columns={[
       { key: 'version', label: t('Version'), num: true }, { key: 'created_at', label: t('Date'), render: (v) => fmtDate(v.created_at) }, { key: 'user_name', label: t('By') },
       { key: 'justification', label: t('Justification') },
       { key: 'is_current', label: '', sortable: false, render: (v) => (v.is_current ? <Badge tone="s5">{t('Current')}</Badge>
         : <Button size="sm" icon={RotateCcw} onClick={async () => { try { await post(`${endpoint}/${id}/revert/${v.version}`); toast.ok(t('Restored as a new current version.')); onReverted(); } catch (e) { toast.err(e); } }}>{t('Restore')}</Button>) },
     ]} empty={t('No versions yet.')} />
+    <div style={{ marginTop: 16 }}><VersionCompare versions={data.versions} /></div>
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useAuth } from '../lib/auth.jsx';
+import VersionCompare from '../components/VersionCompare.jsx';
 import { useI18n } from '../lib/i18n.jsx';
 import { post, put } from '../lib/api.js';
 import { PageHeader, Card, CardHead, DataTable, useFetch, Skeleton, ErrorNote, StatusBadge, Tabs, Modal, Button, Check, useToast, Badge, fmtDate, Kpi } from '../components/ui.jsx';
@@ -37,10 +38,13 @@ function Detail({ uc, onClose, onChanged, canManage }) {
           <FormFields fields={FIELDS} value={f} onChange={setF} disabled={!canManage} />
         </div>
       ) : (
+        <>
         <DataTable filterable={false} rows={data.versions} columns={[
           { key: 'version', label: t('Version'), num: true }, { key: 'created_at', label: t('Date'), render: (v) => fmtDate(v.created_at) }, { key: 'user_name', label: t('By') }, { key: 'justification', label: t('Change') },
           { key: 'r', label: '', sortable: false, render: (v) => (v.is_current ? <Badge tone="s5">{t('Current')}</Badge> : canManage && <Button size="sm" onClick={() => act(() => post(`/ai/use-cases/${uc.id}/revert/${v.version}`), t('Reverted as a new version.'))}>{t('Restore')}</Button>) },
         ]} />
+        <div style={{ marginTop: 16 }}><VersionCompare versions={data.versions} /></div>
+        </>
       )}
     </Modal>
   );

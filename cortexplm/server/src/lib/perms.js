@@ -6,7 +6,7 @@ export const PERMISSIONS = [
   ['project.view', 'Projects', 'View innovation projects'], ['project.create', 'Projects', 'Create projects'],
   ['project.edit', 'Projects', 'Edit projects and manage their tasks'], ['project.delete', 'Projects', 'Delete projects'],
   ['task.view', 'Tasks', 'View tasks'], ['task.edit', 'Tasks', 'Work on own tasks'], ['task.assign', 'Tasks', 'Assign tasks and evaluators'],
-  ['task.evaluate', 'Tasks', 'Evaluate completed tasks'],
+  ['task.evaluate', 'Tasks', 'Evaluate completed tasks'], ['evaluation.view', 'Tasks', 'See individual evaluation verdicts and notes of other people'],
   ['checklist.edit', 'Gates', 'Complete gate checklist items'], ['gate.view', 'Gates', 'View gate reviews'],
   ['gate.submit', 'Gates', 'Submit gates for decision'], ['gate.decide', 'Gates', 'Record gate decisions and approve waivers'],
   ['tailoring.approve', 'Gates', 'Approve tailoring deviations (executive approval)'],
@@ -24,6 +24,9 @@ export const PERMISSIONS = [
   ['template.view', 'Templates', 'View templates'], ['template.manage', 'Templates', 'Manage templates'],
   ['wbs.view', 'Planning', 'View WBS and Gantt'], ['wbs.manage', 'Planning', 'Manage WBS and Gantt'],
   ['report.view', 'Reports', 'View reports'], ['report.export', 'Reports', 'Export reports'],
+  ['benchmark.view', 'Benchmarking', 'Compare project types and tracks within the organization'],
+  ['benchmark.group', 'Benchmarking', 'Compare the organization with the other organizations of its group (aggregates only)'],
+  ['benchmark.manage', 'Benchmarking', 'Decide whether the organization shares its aggregates with its group'],
   ['audit.view', 'Audit', 'View the audit trail and version history'],
   ['catalog.view', 'Commercial', 'View packs, integrations and add-ons catalog'],
   ['config.view', 'Configuration', 'View configuration'], ['config.manage', 'Configuration', 'Change subscription, add-ons and compliance standards'],
@@ -48,23 +51,38 @@ export const ROLES = [
 ];
 
 const ALL = PERMISSIONS.map((p) => p[0]);
-const VIEW = ALL.filter((c) => /\.view$/.test(c) && c !== 'audit.view');
+const VIEW = ALL.filter((c) => /\.view$/.test(c) && !['audit.view', 'evaluation.view'].includes(c)); // restricted views are granted explicitly
 const CONTRIB = [...VIEW, 'project.create', 'project.edit', 'task.edit', 'task.evaluate', 'checklist.edit', 'gate.submit', 'ai.use', 'assistant.use', 'rex.manage', 'wbs.manage', 'report.export', 'kpi.manage'];
-const MANAGER = [...CONTRIB, 'task.assign', 'governance.manage', 'racsi.manage', 'bpmn.edit', 'alert.manage', 'kb.manage', 'template.manage', 'audit.view', 'project.delete'];
+const MANAGER = [...CONTRIB, 'task.assign', 'governance.manage', 'racsi.manage', 'bpmn.edit', 'alert.manage', 'kb.manage', 'template.manage', 'audit.view', 'project.delete', 'benchmark.group', 'evaluation.view'];
 const ADMIN_ONLY = ['config.manage', 'integration.manage', 'license.manage', 'hierarchy.manage', 'user.manage', 'permission.manage'];
 const without = (list, ...drop) => list.filter((c) => !drop.includes(c));
 
-export function defaultGrants(roleId) {
+export function defaultGrants(roleId) { return [...new Set(grants(roleId))]; }
+
+function grants(roleId) {
   switch (roleId) {
     case 'R18': return ALL;
-    case 'R17': return [...MANAGER, 'track.manage', 'tailoring.approve', 'ai.manage'];
+    case 'R17': return [...MANAGER, 'track.manage', 'tailoring.approve', 'ai.manage', 'benchmark.manage'];
     case 'R03': case 'R04': case 'R07': return MANAGER;
     case 'R16': return [...CONTRIB, 'ai.manage', 'kb.manage'];
-    case 'R01': return [...VIEW, 'gate.decide', 'tailoring.approve', 'task.evaluate', 'ai.use', 'assistant.use', 'report.export', 'audit.view'];
-    case 'R02': return [...VIEW, 'gate.decide', 'task.evaluate', 'checklist.edit', 'ai.use', 'assistant.use', 'report.export'];
+    case 'R01': return [...VIEW, 'gate.decide', 'tailoring.approve', 'task.evaluate', 'ai.use', 'assistant.use', 'report.export', 'audit.view', 'benchmark.group', 'benchmark.manage', 'rex.manage', 'evaluation.view'];
+    case 'R02': return [...VIEW, 'gate.decide', 'task.evaluate', 'checklist.edit', 'ai.use', 'assistant.use', 'report.export', 'rex.manage'];
     case 'R14': return ['dashboard.view', 'task.view', 'task.edit', 'project.view', 'kb.view', 'rex.view', 'rex.manage', 'alert.view', 'report.view', 'assistant.use', 'reference.view'];
     case 'R20': case 'R21': return ['dashboard.view', 'report.view', 'kb.view', 'alert.view', 'reference.view'];
-    case 'R22': return [...VIEW, 'audit.view', 'report.export'];
+    case 'R22': return [...VIEW, 'audit.view', 'report.export', 'evaluation.view'];
     default: return without(CONTRIB, ...ADMIN_ONLY);
   }
+}
+
+// Startup migration: permissions added in a newer version are inserted with their default role grants,
+// without touching grants an administrator already edited in the Permission Matrix.
+export function ensurePermissions(q) {
+  const have = new Set(q.all('SELECT code FROM permissions').map((r) => r.code));
+  const added = PERMISSIONS.filter(([code]) => !have.has(code));
+  if (!added.length || !q.get('SELECT 1 FROM roles LIMIT 1')) return [];
+  for (const [code, module, description] of added) {
+    q.insert('permissions', { code, module, description });
+    for (const [roleId] of ROLES) if (defaultGrants(roleId).includes(code)) q.run('INSERT OR IGNORE INTO role_permissions (role_id, permission_code) VALUES (?, ?)', roleId, code);
+  }
+  return added.map((p) => p[0]);
 }

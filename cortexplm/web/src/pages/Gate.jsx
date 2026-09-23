@@ -31,7 +31,7 @@ export default function Gate() {
       const votes = d.votes_for !== '' || d.votes_against !== '' ? { for: Number(d.votes_for || 0), against: Number(d.votes_against || 0) } : undefined;
       const r = await post(`/gates/${g.id}/decide`, { decision: d.decision, rationale: d.rationale, hold_until: d.hold_until || undefined, recycle_tasks: d.recycle_tasks, next_path: d.next_path || undefined, votes });
       toast.ok(r.started?.length ? t('Decision recorded. Started: {e}.', { e: r.started.join(', ') }) : t('Decision recorded: {d}.', { d: t(d.decision) }));
-      if (d.decision === 'Kill' && can('rex.manage')) setRex(true);
+      if (r.rexPrompt && can('rex.manage')) setRex(true);
       reload();
     } catch (e) { setErr(e); } finally { setBusy(false); }
   };
@@ -121,7 +121,7 @@ export default function Gate() {
           )}
         </div>
       </div>
-      {rex && <RexForm projectId={g.project.id} defaultTitle={`${g.project.code}: ${t('Kill at {g}', { g: g.gate })}`} processTag="MP-121" onClose={() => setRex(false)} />}
+      {rex && <RexForm projectId={g.project.id} defaultTitle={`${g.project.code}: ${g.decision === 'Kill' ? t('Kill at {g}', { g: g.gate }) : t('Closure at {g}', { g: g.gate })}`} processTag="MP-121" onClose={() => setRex(false)} />}
     </div>
   );
 }

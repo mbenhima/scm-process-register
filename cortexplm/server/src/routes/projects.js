@@ -49,7 +49,7 @@ r.get('/projects/:id', requirePerm('project.view'), h((req) => {
   const p = L.projectForOrg(req.orgId, req.params.id);
   const runs = q.all('SELECT * FROM e2e_runs WHERE project_id = ? ORDER BY id', p.id).map((run) => {
     const tasks = q.all('SELECT t.*, u.name owner_name, e.name evaluator_name FROM run_tasks t LEFT JOIN users u ON u.id = t.owner_id LEFT JOIN users e ON e.id = t.evaluator_id WHERE t.run_id = ? ORDER BY t.seq', run.id)
-      .map((t) => ({ ...t, data: json(t.data, {}), evaluation: json(t.evaluation, null) }));
+      .map((t) => ({ ...t, data: json(t.data, {}), evaluation: maskEval(req, t, p, json(t.evaluation, null)) }));
     const gate = q.get('SELECT * FROM gate_reviews WHERE run_id = ?', run.id);
     return { ...run, name: E2E[run.e2e_id].name, tasks, gate: gate ? { ...gate, recycle_tasks: json(gate.recycle_tasks, []), votes: json(gate.votes, null) } : null };
   });
@@ -97,7 +97,12 @@ r.put('/projects/:id/mps/:mp', requirePerm('project.edit'), h((req) => {
 }));
 
 // Tasks
-const taskDetail = (orgId, id) => {
+// Individual evaluations are visible to the people involved and to roles holding evaluation.view (NFR-DA-SEC-10);
+// everyone else only sees that the task was evaluated.
+const canSeeEval = (req, t, p) => !req || req.perms.has('evaluation.view') || [t.owner_id, t.evaluator_id, p.owner_id, p.sponsor_id].includes(req.user.id);
+const maskEval = (req, t, p, ev) => (ev && !canSeeEval(req, t, p) ? { verdict: null, restricted: true } : ev);
+
+const taskDetail = (orgId, id, req) => {
   const t = L.taskForOrg(orgId, id);
   const p = L.getProject(t.project_id);
   const run = q.get('SELECT * FROM e2e_runs WHERE id = ?', t.run_id);
@@ -108,7 +113,7 @@ const taskDetail = (orgId, id) => {
   const files = q.all("SELECT id, filename, uploaded_at FROM evidence_files WHERE entity_type = 'task' AND entity_id = ?", t.id);
   const people = q.all('SELECT id, name FROM users WHERE id IN (?, ?)', t.owner_id || 0, t.evaluator_id || 0);
   return {
-    ...t, data: json(t.data, {}), evaluation: json(t.evaluation, null), project: { id: p.id, code: p.code, name: p.name, track: p.track, status: p.status, owner_id: p.owner_id },
+    ...t, data: json(t.data, {}), evaluation: maskEval(req, t, p, json(t.evaluation, null)), project: { id: p.id, code: p.code, name: p.name, track: p.track, status: p.status, owner_id: p.owner_id },
     run: { id: run.id, e2e_id: run.e2e_id, e2e_name: E2E[run.e2e_id].name, run_no: run.run_no, status: run.status, branch: run.branch }, uft, form: formFor(t.uft_id),
     gate: gate ? { ...gate, question: GATE[gate.gate]?.question, evidence: GATE[gate.gate]?.evidence } : null, checklist, files,
     owner_name: people.find((x) => x.id === t.owner_id)?.name, evaluator_name: people.find((x) => x.id === t.evaluator_id)?.name,
@@ -121,17 +126,17 @@ r.get('/tasks/mine', requirePerm('task.view'), h((req) => q.all(`SELECT t.id, t.
   WHERE t.org_id = ? AND p.status = 'Active' AND r.status = 'In progress' AND ((t.owner_id = ? AND t.status IN ('To do','In progress')) OR (t.evaluator_id = ? AND t.status = 'Done' AND t.evaluation IS NULL))
   ORDER BY t.due_date LIMIT 200`, req.user.id, req.orgId, req.user.id, req.user.id)));
 
-r.get('/tasks/:id', requirePerm('task.view'), h((req) => taskDetail(req.orgId, req.params.id)));
-r.post('/tasks/:id/start', requirePerm('task.edit'), h((req) => { L.startTask(ctxOf(req), req.params.id, has(req, 'project.edit')); return taskDetail(req.orgId, req.params.id); }));
+r.get('/tasks/:id', requirePerm('task.view'), h((req) => taskDetail(req.orgId, req.params.id, req)));
+r.post('/tasks/:id/start', requirePerm('task.edit'), h((req) => { L.startTask(ctxOf(req), req.params.id, has(req, 'project.edit')); return taskDetail(req.orgId, req.params.id, req); }));
 r.post('/tasks/:id/complete', requirePerm('task.edit'), h((req) => {
   const res = L.completeTask(ctxOf(req), req.params.id, { data: req.body.data || {}, output: req.body.output || '' }, has(req, 'project.edit'));
   invalidate(req.orgId);
-  return { ...taskDetail(req.orgId, req.params.id), effects: res.effects, rexPrompt: res.rexPrompt };
+  return { ...taskDetail(req.orgId, req.params.id, req), effects: res.effects, rexPrompt: res.rexPrompt };
 }));
-r.post('/tasks/:id/skip', requirePerm('task.edit'), h((req) => { L.skipTask(ctxOf(req), req.params.id, req.body.reason, has(req, 'project.edit')); return taskDetail(req.orgId, req.params.id); }));
-r.post('/tasks/:id/reopen', requirePerm('project.edit'), h((req) => { L.reopenTask(ctxOf(req), req.params.id, req.body.reason); return taskDetail(req.orgId, req.params.id); }));
-r.post('/tasks/:id/evaluate', requirePerm('task.evaluate'), h((req) => { L.evaluateTask(ctxOf(req), req.params.id, req.body.verdict, req.body.notes); return taskDetail(req.orgId, req.params.id); }));
-r.put('/tasks/:id/assign', requirePerm('task.assign'), h((req) => { L.assignTask(ctxOf(req), req.params.id, req.body); return taskDetail(req.orgId, req.params.id); }));
+r.post('/tasks/:id/skip', requirePerm('task.edit'), h((req) => { L.skipTask(ctxOf(req), req.params.id, req.body.reason, has(req, 'project.edit')); return taskDetail(req.orgId, req.params.id, req); }));
+r.post('/tasks/:id/reopen', requirePerm('project.edit'), h((req) => { L.reopenTask(ctxOf(req), req.params.id, req.body.reason); return taskDetail(req.orgId, req.params.id, req); }));
+r.post('/tasks/:id/evaluate', requirePerm('task.evaluate'), h((req) => { L.evaluateTask(ctxOf(req), req.params.id, req.body.verdict, req.body.notes); return taskDetail(req.orgId, req.params.id, req); }));
+r.put('/tasks/:id/assign', requirePerm('task.assign'), h((req) => { L.assignTask(ctxOf(req), req.params.id, req.body); return taskDetail(req.orgId, req.params.id, req); }));
 r.put('/tasks/:id/schedule', requirePerm('wbs.manage'), h((req) => {
   const t = L.taskForOrg(req.orgId, req.params.id);
   const data = { planned_start: req.body.planned_start ?? t.planned_start, due_date: req.body.due_date ?? t.due_date, pct: req.body.pct ?? t.pct };

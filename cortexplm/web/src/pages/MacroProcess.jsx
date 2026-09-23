@@ -1,12 +1,44 @@
 import { Link, useParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
+import { useAuth } from '../lib/auth.jsx';
 import { PageHeader, Card, CardHead, DataTable, useFetch, Skeleton, ErrorNote, Badge } from '../components/ui.jsx';
 
 const COV = { '●': ['Mapped', 's4'], '○': ['Proposed', 's3'], E: ['Platform enabler', 'outline'], '◆': ['Conditional', 's2'] };
 
+// This organization's own governance records tagged to the macro process (FR-DA-GOV-08).
+function TaggedGovernance({ tag }) {
+  const { t } = useI18n();
+  const { data } = useFetch(`/governance/by-process/${tag}`);
+  if (!data) return null;
+  const sections = [
+    ['Business rules', data.rules, '/business-rules', (r) => `${r.code} · ${r.condition} → ${r.action}`, (r) => r.severity],
+    ['Controls', data.controls, '/controls', (r) => `${r.code} · ${r.name}`, (r) => r.effectiveness],
+    ['Risks & opportunities', data.risks, '/risks', (r) => `${r.code} · ${r.name}`, (r) => `${t('Score')} ${r.score}`],
+    ['RACSI activities', data.racsi, '/racsi', (r) => r.name, () => null],
+    ['Lessons learned', data.rex, '/rex', (r) => r.title, (r) => (r.rating ? `${r.rating}/5` : null)],
+  ];
+  const total = sections.reduce((s, x) => s + x[1].length, 0);
+  return (
+    <Card style={{ marginTop: 24 }}>
+      <CardHead title={t('Governance tagged to this process')} subtitle={t('{n} records of your organization carry the tag {tag}.', { n: total, tag })} />
+      <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+        {sections.filter((x) => x[1].length).map(([label, rows, to, text, meta]) => (
+          <div key={label}>
+            <h4><Link to={to}>{t(label)}</Link> <span className="muted small">({rows.length})</span></h4>
+            <ul className="list-plain">{rows.slice(0, 8).map((r) => <li key={r.id} className="small">{text(r)}{meta(r) && <> <Badge>{t(String(meta(r)))}</Badge></>}</li>)}</ul>
+            {rows.length > 8 && <Link className="small" to={to}>{t('Show all {n}', { n: rows.length })}</Link>}
+          </div>
+        ))}
+      </div>
+      {!total && <p className="muted small">{t('No governance record is tagged to this process yet.')}</p>}
+    </Card>
+  );
+}
+
 export default function MacroProcess() {
   const { id } = useParams();
   const { t } = useI18n();
+  const { can } = useAuth();
   const { data: m, error } = useFetch(`/reference/macro-processes/${id}`);
   if (error) return <div className="page"><ErrorNote error={error} /></div>;
   if (!m) return <div className="page"><Skeleton h={500} /></div>;
@@ -57,6 +89,7 @@ export default function MacroProcess() {
           </Card>
         </div>
       </div>
+      {can('governance.view', 'racsi.view', 'rex.view') && <TaggedGovernance tag={m.id} />}
     </div>
   );
 }

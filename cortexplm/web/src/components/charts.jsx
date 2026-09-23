@@ -124,9 +124,9 @@ export function RiskHeatmap({ cells, caption, onCell, t }) {
   const tone = (s) => (s >= 20 ? 'var(--st-1)' : s >= 12 ? 'var(--st-2)' : s >= 6 ? 'var(--st-3)' : s >= 3 ? 'var(--st-4)' : 'var(--st-5)');
   return (
     <ChartFrame caption={caption}>
-      <div className="heat" role="table" aria-label={caption}>
+      <div className="heat" role="group" aria-label={caption}>
         {[5, 4, 3, 2, 1].map((l) => [
-          <div key={`a${l}`} className="ax" role="rowheader">{l}</div>,
+          <div key={`a${l}`} className="ax" aria-hidden="true">{l}</div>,
           ...[1, 2, 3, 4, 5].map((i) => {
             const n = count(l, i);
             return (
@@ -138,7 +138,7 @@ export function RiskHeatmap({ cells, caption, onCell, t }) {
           }),
         ])}
         <div />
-        {[1, 2, 3, 4, 5].map((i) => <div key={`i${i}`} className="ax">{i}</div>)}
+        {[1, 2, 3, 4, 5].map((i) => <div key={`i${i}`} className="ax" aria-hidden="true">{i}</div>)}
       </div>
       <div className="row between xs muted" style={{ marginTop: 8 }}><span>{t('Rows: likelihood (5 = almost certain)')}</span><span>{t('Columns: impact (5 = severe)')}</span></div>
     </ChartFrame>

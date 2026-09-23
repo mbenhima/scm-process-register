@@ -7,7 +7,7 @@ import { BrandMark } from '../components/Shell.jsx';
 
 const DOMAINS = [
   ['metrocity.example', 'Public Sector'], ['cedarline.example', 'Manufacturing in Construction'], ['meridale.example', 'Healthcare'],
-  ['valdora.example', 'Agro-Business - Dairy Products'], ['orvane.example', 'Transportation'], ['kestrel.example', 'Oil, Gas & Energy'],
+  ['valdora.example', 'Agro-Business - Dairy Products'], ['orvane.example', 'Transportation'], ['kestrel.example', 'Oil, Gas & Energy'], ['ridgeway.example', 'Construction'],
 ];
 const ROLES = [['pm1', 'Product Manager'], ['board1', 'Gate Review Board Member'], ['quality', 'Quality Manager'], ['exec', 'Executive Sponsor'], ['process', 'Process Owner / Track Administrator'], ['admin', 'Platform Administrator']];
 

@@ -218,13 +218,14 @@ export function ErrorNote({ error }) {
 // ------------------------------------------------------------------ toasts
 const ToastCtx = createContext(null);
 export function ToastProvider({ children }) {
+  const t = useT();
   const [items, setItems] = useState([]);
   const push = useCallback((text, kind = 'ok') => {
     const id = Math.random();
     setItems((x) => [...x, { id, text, kind }]);
     setTimeout(() => setItems((x) => x.filter((i) => i.id !== id)), kind === 'error' ? 7000 : 3500);
   }, []);
-  const api2 = useMemo(() => ({ ok: (m) => push(m, 'ok'), err: (e) => push(e?.message || String(e), 'error') }), [push]);
+  const api2 = useMemo(() => ({ ok: (m) => push(m, 'ok'), err: (e) => push(t(e?.message || String(e)), 'error') }), [push, t]);
   return (
     <ToastCtx.Provider value={api2}>
       {children}

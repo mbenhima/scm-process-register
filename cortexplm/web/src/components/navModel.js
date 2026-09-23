@@ -1,7 +1,7 @@
 import {
   LayoutDashboard, ListChecks, Bell, FolderKanban, Gavel, GanttChart, Lightbulb, Library, Workflow, Grid3x3, SlidersHorizontal,
   Flag, Scale, ShieldCheck, TriangleAlert, Gauge, Users2, Network, Bot, MessageSquare, BookOpen, FileStack, BarChart3, Database,
-  Menu as MenuIcon, Building2, UserCog, KeyRound, Settings2, Store, Plug, BadgeCheck, History, ClipboardCheck, BellRing, Settings, HelpCircle,
+  Menu as MenuIcon, ChartBarBig, Building2, UserCog, KeyRound, Settings2, Store, Plug, BadgeCheck, History, ClipboardCheck, BellRing, Settings, HelpCircle,
 } from 'lucide-react';
 
 // perm: any of these permissions; feature: Pack entitlement (shown locked when missing).
@@ -40,6 +40,7 @@ export const NAV = [
   ] },
   { group: 'Reports', items: [
     { to: '/reports', label: 'Reports & cockpits', icon: BarChart3, perm: ['report.view'] },
+    { to: '/benchmarking', label: 'Benchmarking', icon: ChartBarBig, perm: ['benchmark.view'] },
     { to: '/data-model', label: 'Data model', icon: Database, perm: ['reference.view'] },
     { to: '/role-menus', label: 'Role menus', icon: MenuIcon, perm: ['reference.view'] },
   ] },

@@ -12,6 +12,10 @@ import governance from './routes/governance.js';
 import intelligence from './routes/intelligence.js';
 import admin, { inboundHandler } from './routes/admin.js';
 import reports from './routes/reports.js';
+import benchmark from './routes/benchmark.js';
+import { ensurePermissions } from './lib/perms.js';
+import { dailyBackup } from './lib/backup.js';
+import { responseCache } from './lib/cache.js';
 import { processQueue } from './lib/dispatch.js';
 import { computeAlerts, raiseAlert } from './lib/alerts.js';
 import { activateScheduledRuns } from './lib/lifecycle.js';
@@ -27,7 +31,7 @@ export function createApp() {
   app.get('/api/health', (req, res) => res.json({ ok: true, seeded: !!q.get("SELECT value FROM meta WHERE key = 'seeded_at'"), mode: config.deploymentMode }));
   app.post('/api/integrations/:id/inbound', inboundHandler); // HMAC-authenticated webhook
   app.use('/api', auth); // public i18n + login, then authenticate()
-  app.use('/api', reference, projects, governance, intelligence, admin, reports);
+  app.use('/api', responseCache, reference, projects, governance, intelligence, admin, reports, benchmark);
   app.use('/api', (req, res) => res.status(404).json({ error: 'Unknown API route.' }));
   app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     console.error('[error]', err);
@@ -49,11 +53,16 @@ function background() {
   };
   setInterval(() => processQueue().catch(() => {}), 60 * 1000).unref();
   setInterval(tick, 15 * 60 * 1000).unref();
+  const backup = () => { try { const b = dailyBackup(); if (b) console.log(`  Daily backup written: ${b.file}`); } catch (e) { console.error('[backup]', e.message); } };
+  setTimeout(backup, 10000).unref();
+  setInterval(backup, 60 * 60 * 1000).unref();
   setTimeout(tick, 5000).unref();
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const app = createApp();
+  const added = ensurePermissions(q);
+  if (added.length) console.log(`  Added permissions: ${added.join(', ')}`);
   if (!q.get("SELECT value FROM meta WHERE key = 'seeded_at'")) {
     console.log('\n  The database is empty. Stop the server (Ctrl+C), run "npm run seed", then "npm run dev" again.\n');
   }

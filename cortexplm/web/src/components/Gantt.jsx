@@ -29,7 +29,7 @@ export default function Gantt({ nodes, onSelect }) {
         <svg width={W} height={H} role="img" aria-label={t('Gantt chart')}>
           <defs><marker id="arrow" viewBox="0 0 6 6" refX="6" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L6,3 L0,6 Z" fill="var(--pa-grey-ink)" /></marker></defs>
           {nodes.map((n, i) => i % 2 === 1 && <rect key={`z${n.id}`} x={0} y={36 + i * ROW} width={W} height={ROW} fill="var(--pa-grey-light)" />)}
-          {months.map((m) => <g key={+m}><line x1={X(tx(m))} x2={X(tx(m))} y1={20} y2={H} stroke="var(--pa-grey-line)" /><text x={X(tx(m) + 4)} y={16} textAnchor={anchor} style={{ fill: 'var(--pa-grey-medium)' }}>{m.toISOString().slice(0, 7)}</text></g>)}
+          {months.map((m) => <g key={+m}><line x1={X(tx(m))} x2={X(tx(m))} y1={20} y2={H} stroke="var(--pa-grey-line)" /><text x={X(tx(m) + 4)} y={16} textAnchor={anchor} style={{ fill: 'var(--pa-grey-ink)' }}>{m.toISOString().slice(0, 7)}</text></g>)}
           <line x1={X(tx(new Date()))} x2={X(tx(new Date()))} y1={20} y2={H} stroke="var(--pa-grey-dark)" strokeDasharray="3 3" />
           <text x={X(tx(new Date()) + 4)} y={30} textAnchor={anchor} style={{ fontSize: 11, fill: 'var(--pa-grey-dark)' }}>{t('Today')}</text>
           {nodes.map((n, i) => {

@@ -2,12 +2,31 @@ import { useState } from 'react';
 import { Lock, Check as CheckIcon } from 'lucide-react';
 import { useAuth } from '../../lib/auth.jsx';
 import { useI18n } from '../../lib/i18n.jsx';
-import { put } from '../../lib/api.js';
-import { PageHeader, Card, CardHead, useFetch, Skeleton, Button, Modal, Field, Input, Select, Check, useToast, Badge, Progress, StatusBadge, JustifyModal, fmtDate } from '../../components/ui.jsx';
+import { put, post } from '../../lib/api.js';
+import { PageHeader, Card, CardHead, useFetch, Skeleton, Button, Modal, Field, Input, Select, Check, useToast, Badge, Progress, StatusBadge, JustifyModal, fmtDate, DataTable } from '../../components/ui.jsx';
+
+
+// Database backups (NFR-DA-REL-04), platform administrators only.
+function Backups() {
+  const { t } = useI18n();
+  const toast = useToast();
+  const { data, reload } = useFetch('/backups');
+  if (!data) return null;
+  return (
+    <Card style={{ marginTop: 24 }}>
+      <CardHead title={t('Backups')} subtitle={data.daily ? t('One automatic backup a day, kept {n} days. Restore: stop the server and copy a backup over data/cortexplm.db.', { n: data.retentionDays }) : t('Automatic daily backups are off (BACKUP_DAILY=off).')}
+        actions={<Button onClick={async () => { try { const b = await post('/backups'); toast.ok(t('Backup written: {f}', { f: b.file })); reload(); } catch (e) { toast.err(e); } }}>{t('Back up now')}</Button>} />
+      <DataTable filterable={false} rows={data.backups.map((b) => ({ ...b, id: b.file }))} columns={[
+        { key: 'file', label: t('File') }, { key: 'created', label: t('Date'), render: (b) => b.created.slice(0, 16).replace('T', ' ') },
+        { key: 'size', label: t('Size'), num: true, render: (b) => `${(b.size / 1048576).toFixed(1)} MB` },
+      ]} empty={t('No backup yet.')} />
+    </Card>
+  );
+}
 
 export default function Configuration() {
   const { t } = useI18n();
-  const { can, refresh } = useAuth();
+  const { me, can, refresh } = useAuth();
   const toast = useToast();
   const cfg = useFetch('/config');
   const cat = useFetch('/catalog');
@@ -96,6 +115,7 @@ export default function Configuration() {
           <Check label={t('I understand that this is not a certification, an external audit or a legal attestation.')} checked={ack} onChange={(e) => setAck(e.target.checked)} />
         </Modal>
       )}
+      {me.user.isPlatformAdmin && <Backups />}
     </div>
   );
 }

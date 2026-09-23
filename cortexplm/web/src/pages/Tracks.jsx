@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Lock, RotateCcw } from 'lucide-react';
 import { useAuth } from '../lib/auth.jsx';
+import VersionCompare from '../components/VersionCompare.jsx';
 import { useI18n } from '../lib/i18n.jsx';
 import { put, post } from '../lib/api.js';
 import { PageHeader, Card, CardHead, DataTable, useFetch, Skeleton, ErrorNote, Tabs, Badge, JustifyModal, useToast, Button, Field, Input, fmtDate } from '../components/ui.jsx';
@@ -82,6 +83,7 @@ export default function Tracks() {
             { key: 'justification', label: t('Justification') }, { key: 'changes', label: t('Changes'), render: (v) => <span className="xs">{v.changes.slice(-3).join('; ') || '—'}</span> },
             { key: 'is_current', label: t('Current'), render: (v) => (v.is_current ? <Badge tone="s5">{t('Current')}</Badge> : cfg.data.editable ? <Button size="sm" icon={RotateCcw} onClick={async () => { try { await post(`/track-config/revert/${v.version}`); toast.ok(t('Reverted; a new current version was created.')); cfg.reload(); } catch (e) { toast.err(e); } }}>{t('Restore')}</Button> : '—') },
           ]} empty={t('No change yet: the reference configuration (Section 7.2) applies.')} />
+          <div style={{ marginTop: 16 }}><VersionCompare versions={cfg.data.versions} /></div>
         </Card>
       )}
       {edit && <JustifyModal title={t('{mp} in the {tr} Track: set to {s}', { mp: edit.mp, tr: t(edit.track), s: t(edit.state) })} onCancel={() => setEdit(null)} onConfirm={save} />}

@@ -47,6 +47,11 @@ export const TENANT_KB = {
     ['Grid connection approvals', 'Submit grid connection studies before T1 for storage and generation projects; approval lead time can exceed six months.'],
     ['Permit conditions tracking', 'Record environmental permit conditions as requirements and link them to acceptance tests.'],
   ],
+  BLD: [
+    ['Design freeze before site mobilisation', 'Agree a design freeze with the client before the T2 gate. Late design changes are the main cause of Recycle decisions on build projects.'],
+    ['Heat-stress work planning', 'From June to September, move heavy work to early morning and night shifts and log rest breaks. Link incidents to the site safety plan.'],
+    ['Subcontractor capacity check', 'Confirm crew availability with the top three subcontractors before committing a launch date; record the check as gate evidence.'],
+  ],
 };
 
 export const REX_LIBRARY = [

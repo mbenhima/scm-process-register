@@ -402,6 +402,8 @@ export function decideGate(ctx, gateId, { decision, rationale, hold_until, recyc
     q.run("UPDATE e2e_runs SET status = 'Completed', completed_at = ? WHERE id = ?", ts, g.run_id);
     q.update('projects', p.id, { current_gate: g.gate });
     result.started = triggerNext(ctx, getProject(p.id), g, next_path);
+    const after = getProject(p.id).status;
+    if (after !== 'Active') { result.rexPrompt = true; result.projectStatus = after; } // closed status reached (FR-DA-REX-01)
   } else if (decision === 'Kill') {
     closeProject(ctx, p, 'Killed', g.run_id, rationale);
     result.rexPrompt = true;

@@ -13,6 +13,7 @@
     "start": "node --disable-warning=ExperimentalWarning src/index.js",
     "seed": "node --disable-warning=ExperimentalWarning src/seed/seed.js",
     "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
+    "backup": "node --disable-warning=ExperimentalWarning tools/backup.js",
     "keys": "node tools/generate-keys.js",
     "sign-licence": "node tools/sign-licence.js"
   },

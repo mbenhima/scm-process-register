@@ -1,4 +1,4 @@
-// Demo organizations for the six industries. All names, people and figures are fictional.
+// Demo organizations for the seven industries. All names, people and figures are fictional.
 // Each project follows a lifecycle plan (see PLANS in seed.js); plans are listed in the same order for
 // every industry so that project codes (e.g. PUB-011) are predictable for the user guide.
 export const PLAN_ORDER = [
@@ -206,6 +206,45 @@ export const INDUSTRIES = [
       ['Floating Solar on Reservoirs', 'Floating solar arrays on water reservoirs.', 'Product'],
     ],
   },
+  {
+    key: 'BLD', industry: 'Construction', name: 'Ridgeway Construction Contractors', domain: 'ridgeway.example', country: 'Saudi Arabia',
+    subscription: 'BND-05', seats: 40, addons: ['ADD-SEC-02', 'ADD-AI-02'], compliance: ['ISO9001', 'ISO27001'],
+    integrations: [['INT-ERP-01', 'Project cost sync with ERP (Oracle)'], ['INT-COL-01', 'Site team notifications (Teams)'], ['INT-DAT-01', 'Portfolio BI (Power BI)']],
+    segments: ['public infrastructure owners', 'commercial real-estate developers', 'industrial plant owners'], regions: ['Riyadh region', 'Eastern Province', 'Red Sea coast'],
+    regulation: 'national building code, health and safety on construction sites and environmental impact permits',
+    risks: ['late design changes from the client', 'subcontractor capacity shortages', 'summer heat restricting site working hours'],
+    partners: ['a BIM design studio', 'a heavy equipment rental company'], channels: ['public tenders', 'design-and-build framework agreements'],
+    kpiWord: 'on-time milestone rate', unit: 'site milestones',
+    projects: [
+      ['BIM-Based Clash Detection Service', 'Model-based clash detection before construction, offered to clients as a paid design-review service.', 'Service'],
+      ['Modular Site Office Kit', 'Relocatable site offices assembled in one day from standard modules.', 'Product'],
+      ['Drone Progress Monitoring', 'Weekly drone flights compare site progress with the 4D schedule.', 'Service'],
+      ['Low-Carbon Concrete Mix Programme', 'Qualifying low-clinker concrete mixes for structural works.', 'Product'],
+      ['Digital Site Permit-to-Work', 'Mobile permit-to-work for hot work, confined spaces and lifting operations.', 'Service'],
+      ['Tower Crane Anti-Collision System', 'Sensors and zoning that stop crane jibs from colliding on dense sites.', 'Product-Service'],
+      ['Worker Heat-Stress Wearables', 'Wearables that alert supervisors when workers reach heat-stress limits.', 'Product-Service'],
+      ['Prefabricated MEP Risers', 'Factory-built mechanical, electrical and plumbing risers for high-rise towers.', 'Product'],
+      ['Handover Digital Twin Package', 'As-built model and asset data delivered to the building operator at handover.', 'Service'],
+      ['Rebar Scheduling Optimiser', 'Cut-and-bend optimisation that reduces rebar offcut waste.', 'Service'],
+      ['Road Resurfacing Rapid Method', 'Night-time resurfacing method that reopens lanes by 6 am.', 'Service'],
+      ['Solar-Powered Site Lighting', 'Autonomous solar lighting towers replacing diesel generators on site.', 'Product'],
+      ['Subcontractor Prequalification Portal', 'Online prequalification of subcontractors with safety and financial checks.', 'Service'],
+      ['Concrete Curing Sensors', 'Embedded sensors that report concrete strength gain in real time.', 'Product-Service'],
+      ['Modular School Classroom', 'Permanent modular classrooms delivered in twelve weeks.', 'Product'],
+      ['Site Waste Sorting Programme', 'On-site sorting and recycling of construction and demolition waste.', 'Service'],
+      ['3D-Printed Boundary Walls', 'Printed concrete boundary walls for residential compounds.', 'Product'],
+      ['Client Progress Portal', 'Portal where clients follow milestones, photos and payment certificates.', 'Service'],
+      ['Tunnel Ventilation Retrofit', 'Energy-efficient jet-fan retrofit for road tunnels.', 'Product-Service'],
+      ['Seismic Retrofit Service for Schools', 'Assessment and strengthening of existing school buildings.', 'Service'],
+      ['Autonomous Site Survey Rover', 'Rover that performs setting-out and as-built surveys at night.', 'Product'],
+    ],
+  },
+];
+
+// Groups: organizations of a group can benchmark against each other; the others operate independently.
+export const GROUPS = [
+  { key: 'ATLAS', name: 'Atlas Infrastructure Holding', description: 'Construction, precast manufacturing and transport operations under one holding.', members: ['CON', 'BLD', 'TRN'] },
+  { key: 'CRESCENT', name: 'Crescent Agro-Energy Group', description: 'Dairy cooperative and energy utility owned by the same regional investment group.', members: ['DAI', 'ENR'] },
 ];
 
 // People: role alias -> [title, role ids]. The e-mail is <alias>@<domain>; demo password Demo#2026.

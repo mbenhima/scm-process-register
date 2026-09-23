@@ -136,6 +136,18 @@ r.put('/alert-settings/:type', requirePerm('alert.manage'), h((req) => {
   return { ok: true };
 }));
 
+// Governance items of this organization tagged to one macro process or stage (FR-DA-GOV-08).
+r.get('/governance/by-process/:tag', requirePerm('governance.view', 'racsi.view', 'rex.view'), h((req) => {
+  const tag = String(req.params.tag); const o = req.orgId; const has = (p) => req.perms.has(p);
+  return {
+    rules: has('governance.view') ? q.all('SELECT id, code, condition, action, severity, owner FROM business_rules WHERE org_id = ? AND process_tag = ? ORDER BY code', o, tag) : [],
+    controls: has('governance.view') ? q.all('SELECT id, code, name, coso_component, effectiveness, owner FROM controls WHERE org_id = ? AND process_tag = ? ORDER BY code', o, tag) : [],
+    risks: has('governance.view') ? q.all('SELECT id, code, name, kind, likelihood * impact score, status, owner FROM risks WHERE org_id = ? AND process_tag = ? ORDER BY likelihood * impact DESC LIMIT 50', o, tag) : [],
+    racsi: has('racsi.view') ? q.all('SELECT id, name FROM racsi_activities WHERE org_id = ? AND process_tag = ? ORDER BY name', o, tag) : [],
+    rex: has('rex.view') ? q.all('SELECT id, title, category, rating FROM rex_entries WHERE org_id = ? AND process_tag = ? ORDER BY id DESC LIMIT 30', o, tag) : [],
+  };
+}));
+
 // Governance settings (justification toggle, observation period, default language)
 r.get('/settings', requirePerm('governance.view', 'config.view'), h((req) => ({
   justification_required: justificationRequired(req.orgId),
@@ -155,7 +167,7 @@ const STATES = ['Mandatory', 'Optional', 'Not activated'];
 r.get('/track-config', requirePerm('track.view'), h((req) => {
   let editable = req.perms.has('track.manage');
   try { requireFeatureFor(req.orgId, 'trackConfig'); } catch { editable = false; }
-  return { matrix: matrixFor(req.orgId), defaults: TRACK_MATRIX, versions: versionsOf('track_config', req.orgId).map(({ data, ...v }) => ({ ...v, changes: data.changes || [] })), editable };
+  return { matrix: matrixFor(req.orgId), defaults: TRACK_MATRIX, versions: versionsOf('track_config', req.orgId).map(({ data, ...v }) => ({ ...v, changes: data.changes || [], data: data.matrix ? Object.fromEntries(Object.entries(data.matrix).map(([mp, row]) => [mp, row])) : data })), editable };
 }));
 r.put('/track-config', requirePerm('track.manage'), h((req) => {
   requireFeatureFor(req.orgId, 'trackConfig');

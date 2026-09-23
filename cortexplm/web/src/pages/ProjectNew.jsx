@@ -85,7 +85,7 @@ export default function ProjectNew() {
                   <legend className="strong small" style={{ marginBottom: 4 }}>{t(c.label)}</legend>
                   <div className="xs muted" style={{ marginBottom: 8 }}>1 = {t(c.low)} · 3 = {t(c.mid)} · 5 = {t(c.high)}</div>
                   <div className="segmented" role="radiogroup" aria-label={t(c.label)}>
-                    {[1, 2, 3, 4, 5].map((v) => <button key={v} type="button" role="radio" aria-checked={scores[c.key] === v} aria-pressed={scores[c.key] === v} onClick={() => setScores((s) => ({ ...s, [c.key]: v }))}>{v}</button>)}
+                    {[1, 2, 3, 4, 5].map((v) => <button key={v} type="button" role="radio" aria-checked={scores[c.key] === v} onClick={() => setScores((s) => ({ ...s, [c.key]: v }))}>{v}</button>)}
                   </div>
                 </fieldset>
               ))}

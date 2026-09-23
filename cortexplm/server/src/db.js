@@ -13,6 +13,7 @@ export function openDb(file = config.dbPath) {
   db = new DatabaseSync(file);
   db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;');
   migrate(db);
+  upgrade(db);
   return db;
 }
 
@@ -50,6 +51,12 @@ function norm(v) {
 }
 
 export const json = (s, fallback = null) => { try { return s ? JSON.parse(s) : fallback; } catch { return fallback; } };
+
+// Additive upgrades for databases created by an earlier version.
+function upgrade(d) {
+  const cols = (t) => d.prepare(`PRAGMA table_info(${t})`).all().map((c) => c.name);
+  if (!cols('obs_nodes').includes('project_id')) d.exec('ALTER TABLE obs_nodes ADD COLUMN project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE'); // FR-DA-TEN-04 per-project OBS
+}
 
 function migrate(d) {
   d.exec(`

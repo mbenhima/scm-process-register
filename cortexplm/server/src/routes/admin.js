@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'node:crypto';
 import { q, json } from '../db.js';
 import { requirePerm, encrypt, decrypt, hmac } from '../lib/security.js';
+import { runBackup, listBackups } from '../lib/backup.js';
 import { effectiveConfig, usage, checkQuota, addonCompatible, integrationCompatible, requireFeatureFor, subscriptionPacks } from '../lib/entitlements.js';
 import { PACK, BUNDLE, ADDON, INTEGRATION, COMPLIANCE_STANDARDS, NON_CERT_DISCLOSURE } from '../lib/ref.js';
 import { getLicenceProvider, SaasLicenceProvider, OnPremLicenceProvider } from '../licensing/index.js';
@@ -53,7 +54,7 @@ r.delete('/organizations/:id', admin, h((req) => {
 }));
 
 // ------------------------------------------------------------------ OBS (FR-DA-TEN-04..07)
-r.get('/obs', h((req) => q.all('SELECT * FROM obs_nodes WHERE org_id = ? ORDER BY parent_id IS NOT NULL, parent_id, name', req.orgId).map((n) => ({
+r.get('/obs', h((req) => q.all('SELECT n.*, p.code project_code, p.name project_name FROM obs_nodes n LEFT JOIN projects p ON p.id = n.project_id WHERE n.org_id = ? ORDER BY n.parent_id IS NOT NULL, n.parent_id, n.name', req.orgId).map((n) => ({
   ...n, linked: {
     users: q.get('SELECT COUNT(*) n FROM users WHERE obs_node_id = ?', n.id).n, projects: q.get('SELECT COUNT(*) n FROM projects WHERE obs_node_id = ?', n.id).n,
     rules: q.get('SELECT COUNT(*) n FROM business_rules WHERE obs_node_id = ?', n.id).n, controls: q.get('SELECT COUNT(*) n FROM controls WHERE obs_node_id = ?', n.id).n,
@@ -61,11 +62,21 @@ r.get('/obs', h((req) => q.all('SELECT * FROM obs_nodes WHERE org_id = ? ORDER B
     bpmn: q.get('SELECT COUNT(*) n FROM bpmn_diagrams WHERE obs_node_id = ?', n.id).n, rex: q.get('SELECT COUNT(*) n FROM rex_entries WHERE obs_node_id = ?', n.id).n,
   },
 }))));
+// OBS entries form a per-organization tree, or a per-project tree when project_id is set (FR-DA-TEN-04).
+const obsProject = (req) => {
+  if (!req.body.project_id) return null;
+  const p = q.get('SELECT id FROM projects WHERE id = ? AND org_id = ?', req.body.project_id, req.orgId);
+  if (!p) throw badRequest('Unknown project.');
+  return p.id;
+};
 r.post('/obs', admin, h((req) => {
   if (!req.body.name) throw badRequest('Name is required.');
   checkQuota(req.orgId, 'obsNodes');
-  if (req.body.parent_id && !q.get('SELECT id FROM obs_nodes WHERE id = ? AND org_id = ?', req.body.parent_id, req.orgId)) throw badRequest('Unknown parent.');
-  const id = q.insert('obs_nodes', { org_id: req.orgId, name: req.body.name, type: req.body.type || 'Department', parent_id: req.body.parent_id || null });
+  const projectId = obsProject(req);
+  const parent = req.body.parent_id ? q.get('SELECT id, project_id FROM obs_nodes WHERE id = ? AND org_id = ?', req.body.parent_id, req.orgId) : null;
+  if (req.body.parent_id && !parent) throw badRequest('Unknown parent.');
+  if (parent && (parent.project_id || null) !== projectId) throw badRequest('The parent must belong to the same tree (organization or the same project).');
+  const id = q.insert('obs_nodes', { org_id: req.orgId, name: req.body.name, type: req.body.type || 'Department', parent_id: req.body.parent_id || null, project_id: projectId });
   audit(ctxOf(req), 'obs_node', id, 'create', { name: [null, req.body.name] });
   return { id };
 }));
@@ -73,6 +84,7 @@ r.put('/obs/:id', admin, h((req) => {
   const n = q.get('SELECT * FROM obs_nodes WHERE id = ? AND org_id = ?', req.params.id, req.orgId); if (!n) throw notFound();
   if (Number(req.body.parent_id) === n.id) throw badRequest('A node cannot be its own parent.');
   const d = { name: req.body.name ?? n.name, type: req.body.type ?? n.type, parent_id: req.body.parent_id === '' ? null : req.body.parent_id ?? n.parent_id };
+  if (d.parent_id) { const par = q.get('SELECT project_id FROM obs_nodes WHERE id = ? AND org_id = ?', d.parent_id, req.orgId); if (!par || (par.project_id || null) !== (n.project_id || null)) throw badRequest('The parent must belong to the same tree (organization or the same project).'); }
   q.update('obs_nodes', n.id, d); audit(ctxOf(req), 'obs_node', n.id, 'update', diff(n, d));
   return { ok: true };
 }));
@@ -188,6 +200,16 @@ r.put('/config/compliance/:id', requirePerm('config.manage'), h((req) => {
   new SaasLicenceProvider(req.orgId).resign();
   audit(ctxOf(req), 'configuration', req.orgId, 'compliance_off', { [s.id]: [true, false] });
   return { ok: true };
+}));
+
+// ------------------------------------------------------------------ Backups (NFR-DA-REL-04): platform administrators only
+r.get('/backups', requirePerm('config.manage'), h((req) => {
+  if (!req.user.is_platform_admin) throw Object.assign(new Error('Only a platform administrator can manage backups.'), { status: 403 });
+  return { backups: listBackups(), retentionDays: Number(process.env.BACKUP_RETENTION_DAYS || 14), daily: (process.env.BACKUP_DAILY || 'on') !== 'off' };
+}));
+r.post('/backups', requirePerm('config.manage'), h((req) => {
+  if (!req.user.is_platform_admin) throw Object.assign(new Error('Only a platform administrator can manage backups.'), { status: 403 });
+  const b = runBackup(); audit(ctxOf(req), 'backup', 0, 'create', { file: [null, b.file] }); return b;
 }));
 
 // ------------------------------------------------------------------ Licensing (D30)

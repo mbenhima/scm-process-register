@@ -15,10 +15,11 @@ import { raiseAlert, computeAlerts } from '../lib/alerts.js';
 import { SaasLicenceProvider } from '../licensing/index.js';
 import { effectiveConfig } from '../lib/entitlements.js';
 import { generate, recordOutcome } from '../lib/ai.js';
-import { INDUSTRIES, PEOPLE, PLAN_ORDER, personName } from './industries.js';
+import { INDUSTRIES, GROUPS, PEOPLE, PLAN_ORDER, personName } from './industries.js';
 import { outputFor } from './outputs.js';
 import { bpmnFor } from './bpmn.js';
 import { GLOBAL_KB, TENANT_KB, REX_LIBRARY } from './knowledge.js';
+import { GLOBAL_KB_I18N } from './knowledge_i18n.js';
 
 const TODAY = new Date(new Date().toISOString().slice(0, 10) + 'T09:00:00Z');
 const DAY = 86400000;
@@ -46,6 +47,7 @@ function seedPlatform() {
     for (const p of defaultGrants(id)) q.insert('role_permissions', { role_id: id, permission_code: p });
   }
   for (const k of GLOBAL_KB) q.insert('knowledge_docs', { org_id: null, kind: k.kind, ref: k.ref, title: k.title, body: k.body, lang: 'en', tags: k.tags });
+  for (const [lang, list] of Object.entries(GLOBAL_KB_I18N)) list.forEach(([title, body], i) => q.insert('knowledge_docs', { org_id: null, kind: GLOBAL_KB[i].kind, ref: GLOBAL_KB[i].ref, title, body, lang, tags: GLOBAL_KB[i].tags })); // FR-DA-KB-01
 }
 
 const COSO_OF = (c) => {
@@ -56,6 +58,20 @@ const COSO_OF = (c) => {
   if (c.Type === 'Detective') return 'Monitoring Activities';
   return 'Control Activities';
 };
+// Delivery profile per organization, so internal and group benchmarks show real differences.
+// recycle: chance a gate is sent back once before Go; pace: task speed factor (>1 = slower, more late tasks);
+// effective: share of evaluations rated Effective; waive: chance a mandatory checklist item is waived;
+// decide: days from submission to decision; cash: yearly cash flow as a share of the investment.
+const PROFILES = {
+  PUB: { recycle: 0.10, pace: 1.10, effective: 0.90, waive: 0.02, decide: [3, 12], cash: [0.22, 0.45] },
+  CON: { recycle: 0.06, pace: 0.90, effective: 0.94, waive: 0.03, decide: [2, 7], cash: [0.28, 0.55] },
+  HLT: { recycle: 0.18, pace: 1.30, effective: 0.95, waive: 0.01, decide: [4, 14], cash: [0.30, 0.60] },
+  DAI: { recycle: 0.05, pace: 0.85, effective: 0.91, waive: 0.04, decide: [2, 6], cash: [0.26, 0.50] },
+  TRN: { recycle: 0.12, pace: 1.15, effective: 0.86, waive: 0.05, decide: [3, 11], cash: [0.24, 0.48] },
+  ENR: { recycle: 0.14, pace: 1.20, effective: 0.93, waive: 0.02, decide: [3, 13], cash: [0.30, 0.62] },
+  BLD: { recycle: 0.09, pace: 1.25, effective: 0.88, waive: 0.06, decide: [2, 9], cash: [0.20, 0.42] },
+};
+
 const LI = { 25: [5, 5], 20: [4, 5], 16: [4, 4], 15: [3, 5], 12: [3, 4], 10: [2, 5], 9: [3, 3], 8: [2, 4], 6: [2, 3] };
 const ownerOfStep = (step) => D01[String(step).split('.')[0].split(',')[0].trim()]?.Owner_Role || 'Process Owner / Track Administrator';
 
@@ -166,11 +182,12 @@ class Sim {
     const u = q.get('SELECT id, name FROM users WHERE id = ?', userId);
     return { orgId: this.org.id, user: u, now: iso(this.cursor), notify: this.cursor > addDays(TODAY, -30) };
   }
-  tick(a = 2, b = 6) { this.cursor = addDays(this.cursor, between(a, b)); if (this.cursor > TODAY) this.cursor = new Date(TODAY); }
+  get prof() { return PROFILES[this.ind.key]; }
+  tick(a = 2, b = 6) { this.cursor = addDays(this.cursor, Math.round(between(a, b) * this.prof.pace)); if (this.cursor > TODAY) this.cursor = new Date(TODAY); }
   x() { const i = this.ind; return { p: this.project.name, seg: pick(i.segments), region: pick(i.regions), reg: i.regulation, risk: pick(i.risks), partner: pick(i.partners), channel: pick(i.channels), kpi: i.kpiWord, unit: i.unit, n1: between(2, 6), n2: between(8, 30), n3: between(55, 85) }; }
   dataFor(uft) {
     const i = this.ind; const inv = between(300, 4200);
-    const bc = () => ({ investment: inv, annual_cash_flow: Math.round(inv * (0.28 + rnd() * 0.3)), years: 5, discount_rate: between(8, 12) });
+    const [c0, c1] = this.prof.cash; const bc = () => ({ investment: inv, annual_cash_flow: Math.round(inv * (c0 + rnd() * (c1 - c0))), years: 5, discount_rate: between(8, 12) });
     switch (uft) {
       case 'UFT-01-01': return { idea_source: pick(['Internal - strategy', 'Customer request', 'Market trend', 'Internal - employee', 'Partner', 'Regulation']), idea_statement: `${this.project.name}: ${this.project.description}` };
       case 'UFT-01-02': return { target_segment: pick(i.segments), market_size: between(5, 140), strategic_fit: this.plan === 'fast-parked' ? 42 : between(62, 93) };
@@ -206,7 +223,7 @@ class Sim {
     L.startTask(this.ctx(owner), t.id, true);
     L.completeTask(this.ctx(owner), t.id, { data: this.dataFor(t.uft_id), output: outputFor(t.uft_id, this.x()) }, true);
     if (t.evaluator_id && t.evaluator_id !== owner && rnd() < 0.8 && this.cursor < addDays(TODAY, -5)) {
-      try { L.evaluateTask(this.ctx(t.evaluator_id), t.id, rnd() < 0.92 ? 'Effective' : 'Not effective', rnd() < 0.5 ? 'Output meets the task description.' : 'Reviewed against the RACSI description.'); } catch { /* ignore */ }
+      try { L.evaluateTask(this.ctx(t.evaluator_id), t.id, rnd() < this.prof.effective ? 'Effective' : 'Not effective', rnd() < 0.5 ? 'Output meets the task description.' : 'Reviewed against the RACSI description.'); } catch { /* ignore */ }
     }
     this.tick();
     this.parallelStep();
@@ -227,7 +244,7 @@ class Sim {
     const ct = q.get("SELECT * FROM run_tasks WHERE run_id = ? AND kind = 'checklist'", run.id);
     const qa = ct?.owner_id || this.project.owner_id;
     for (const it of q.all("SELECT * FROM checklist_items WHERE gate_review_id = ? AND status = 'Open'", g.id)) {
-      if (it.mandatory && rnd() < 0.03) { L.updateChecklistItem(this.ctx(this.people.board2), it.id, { action: 'waive', reason: 'Evidence follows at the next gate; risk accepted by the board.' }, new Set(['gate.decide'])); continue; }
+      if (it.mandatory && rnd() < this.prof.waive) { L.updateChecklistItem(this.ctx(this.people.board2), it.id, { action: 'waive', reason: 'Evidence follows at the next gate; risk accepted by the board.' }, new Set(['gate.decide'])); continue; }
       if (!it.mandatory && rnd() < 0.15) continue;
       L.updateChecklistItem(this.ctx(qa), it.id, { action: 'complete', evidence: `Evidence pack ${this.project.code}/${g.gate}/${String(it.seq).padStart(2, '0')} - document stored in the project folder` }, new Set());
     }
@@ -242,7 +259,16 @@ class Sim {
     const g = this.checklist(run);
     L.submitGate(this.ctx(this.project.owner_id), g.id);
     if (extra.submitOnly) return g;
-    this.tick(2, 9);
+    this.tick(...this.prof.decide);
+    if (decision === 'Go' && g.gate !== 'T-1' && rnd() < this.prof.recycle) { // sent back once, then approved
+      const first = q.get("SELECT uft_id FROM run_tasks WHERE run_id = ? AND kind = 'work' ORDER BY seq LIMIT 1", run.id).uft_id;
+      L.decideGate(this.ctx(this.people.board1), g.id, { decision: 'Recycle', rationale: 'Evidence gaps on the first deliverable; rework it and return to this gate.', recycle_tasks: [first] });
+      this.tick(2, 5);
+      this.workTasks(run);
+      this.checklist(run);
+      L.submitGate(this.ctx(this.project.owner_id), g.id);
+      this.tick(...this.prof.decide);
+    }
     const board = rnd() < 0.5 ? this.people.board1 : this.people.board2;
     const rationale = { Go: `Evidence complete and ${pick(['business case confirmed', 'risks acceptable', 'readiness confirmed', 'criteria met'])}; proceed.`, Kill: 'Business case no longer holds after the opportunity study; resources released.', Hold: 'Paused pending the regulator’s guidance expected next quarter.', Recycle: 'Evidence gaps on the business case and customer journey; rework named tasks and return to this gate.' }[decision];
     const votes = decision === 'Go' && rnd() < 0.04 ? { for: 3, against: 1 } : { for: 4, against: 0 };
@@ -290,8 +316,8 @@ class Sim {
   }
 }
 
-function seedOrg(ind, idx, groupId) {
-  const org = { id: q.insert('organizations', { uid: `ORG-${ind.key}-001`, group_id: ind.key === 'PUB' ? null : groupId, name: ind.name, industry: ind.industry, country: ind.country, default_language: 'en', profile: `${ind.industry} demo tenant` }) };
+function seedOrg(ind, idx, groupIds) {
+  const org = { id: q.insert('organizations', { uid: `ORG-${ind.key}-001`, group_id: groupIds[ind.key] ?? null, name: ind.name, industry: ind.industry, country: ind.country, default_language: 'en', profile: `${ind.industry} demo tenant` }) };
   q.insert('org_config', { org_id: org.id, subscription_id: ind.subscription, seats: ind.seats, deployment_option: ind.key === 'HLT' ? 'Dedicated / sovereign' : 'SaaS (shared)', support_tier: ind.key === 'PUB' ? 'Premium 24/7' : 'Standard', billing_cycle: 'Annual',
     issue_date: '2026-01-01T00:00:00.000Z', expiry_date: ind.key === 'TRN' ? addDays(TODAY, 22).toISOString() : '2027-12-31T23:59:59.000Z' });
   for (const a of ind.addons) q.insert('org_addons', { org_id: org.id, addon_id: a, activated_at: '2026-01-05T10:00:00.000Z' });
@@ -412,8 +438,8 @@ function seedOrg(ind, idx, groupId) {
     }
   }
   // Historical alerts from the shared catalog (same catalog as live computation)
-  const EXTRA = { PUB: ['ALR-17', 'ALR-21', 'ALR-12'], CON: ['ALR-05', 'ALR-25', 'ALR-08'], HLT: ['ALR-23', 'ALR-10', 'ALR-06'], DAI: ['ALR-24', 'ALR-05', 'ALR-09'], TRN: ['ALR-13', 'ALR-12', 'ALR-14'], ENR: ['ALR-15', 'ALR-16', 'ALR-07'] }[ind.key];
-  const MSG = { 'ALR-17': 'Privileged session on the permit database lasted 9 h 20 min.', 'ALR-21': 'Knowledge article "Parking permit eligibility" not reviewed for 12 months.', 'ALR-12': 'Service desk queue at 84% of the 8-hour SLA target.', 'ALR-05': 'Major NCR: honeycombing on wall panel batch WP-2291.', 'ALR-25': 'Should-cost of the bridge beam exceeds target cost by 13%.', 'ALR-08': 'Aggregate supplier scored 55 for the second consecutive quarter.', 'ALR-23': 'Serious adverse event reported in the remote monitoring pilot (24 h reporting clock started).', 'ALR-10': 'Technical file for the ECG patch is missing the usability report.', 'ALR-06': 'CAPA-118 on sterilization labels is 6 days overdue.', 'ALR-24': 'Summer yogurt demand forecast exceeds line capacity by 14%.', 'ALR-09': 'Carton supplier announced end-of-life for the 1 L format.', 'ALR-13': 'P1 ticket: contactless validators offline on line 4.', 'ALR-14': 'Door motor failure predicted within 14 days on bus 1187 (78%).', 'ALR-15': 'Pressure sensor outside design envelope for 22 minutes on segment P-14.', 'ALR-16': 'Field MTBF of the leak sensor is 18% below target.', 'ALR-07': 'FMEA line for flare compressor seal has RPN 240.' };
+  const EXTRA = { PUB: ['ALR-17', 'ALR-21', 'ALR-12'], CON: ['ALR-05', 'ALR-25', 'ALR-08'], HLT: ['ALR-23', 'ALR-10', 'ALR-06'], DAI: ['ALR-24', 'ALR-05', 'ALR-09'], TRN: ['ALR-13', 'ALR-12', 'ALR-14'], ENR: ['ALR-15', 'ALR-16', 'ALR-07'], BLD: ['ALR-03', 'ALR-24', 'ALR-25'] }[ind.key];
+  const MSG = { 'ALR-17': 'Privileged session on the permit database lasted 9 h 20 min.', 'ALR-21': 'Knowledge article "Parking permit eligibility" not reviewed for 12 months.', 'ALR-12': 'Service desk queue at 84% of the 8-hour SLA target.', 'ALR-05': 'Major NCR: honeycombing on wall panel batch WP-2291.', 'ALR-25': 'Should-cost of the bridge beam exceeds target cost by 13%.', 'ALR-08': 'Aggregate supplier scored 55 for the second consecutive quarter.', 'ALR-23': 'Serious adverse event reported in the remote monitoring pilot (24 h reporting clock started).', 'ALR-10': 'Technical file for the ECG patch is missing the usability report.', 'ALR-06': 'CAPA-118 on sterilization labels is 6 days overdue.', 'ALR-24': 'Summer yogurt demand forecast exceeds line capacity by 14%.', 'ALR-09': 'Carton supplier announced end-of-life for the 1 L format.', 'ALR-13': 'P1 ticket: contactless validators offline on line 4.', 'ALR-14': 'Door motor failure predicted within 14 days on bus 1187 (78%).', 'ALR-15': 'Pressure sensor outside design envelope for 22 minutes on segment P-14.', 'ALR-16': 'Field MTBF of the leak sensor is 18% below target.', 'ALR-07': 'FMEA line for flare compressor seal has RPN 240.', 'ALR-03': 'Change order CO-311 (tunnel temporary works) is 5 days past its effectivity date.' };
   EXTRA.forEach((type, k) => raiseAlert(org.id, type, { entityType: 'catalog', entityId: k + 1, message: MSG[type], now: addDays(TODAY, -between(1, 50)).toISOString(), notify: false }));
   computeAlerts(org.id, TODAY);
   new SaasLicenceProvider(org.id).resign();
@@ -425,13 +451,17 @@ async function main() {
   console.log('Seeding CortexPLM demo data...');
   reset();
   seedPlatform();
-  const groupId = q.insert('groups_', { name: 'Cortex Demo Industries Group', description: 'Holding group for the industry demo organizations (Public Sector operates independently).' });
-  const orgs = INDUSTRIES.map((ind, i) => { const r = seedOrg(ind, i, groupId); console.log(`  ${ind.industry.padEnd(32)} ${q.get('SELECT COUNT(*) n FROM projects WHERE org_id = ?', r.org.id).n} projects, ${q.get('SELECT COUNT(*) n FROM e2e_runs WHERE org_id = ?', r.org.id).n} E2E instances`); return r; });
+  const groupIds = {};
+  for (const g of GROUPS) { const id = q.insert('groups_', { name: g.name, description: g.description }); for (const k of g.members) groupIds[k] = id; }
+  const orgs = INDUSTRIES.map((ind, i) => { const r = seedOrg(ind, i, groupIds); console.log(`  ${ind.industry.padEnd(32)} ${q.get('SELECT COUNT(*) n FROM projects WHERE org_id = ?', r.org.id).n} projects, ${q.get('SELECT COUNT(*) n FROM e2e_runs WHERE org_id = ?', r.org.id).n} E2E instances`); return r; });
   // Platform administrator (can switch between organizations)
   const pid = q.insert('users', { org_id: orgs[0].org.id, name: 'Platform Administrator', email: 'admin@cortexplm.example', password_hash: bcrypt.hashSync('Admin#2026', 10), is_platform_admin: 1, title: 'Platform Administrator' });
   q.insert('user_roles', { user_id: pid, role_id: 'R18' });
   await new Promise((r) => setTimeout(r, 50)); // let pending AI outcome writes finish
   q.insert('meta', { key: 'seeded_at', value: new Date().toISOString() });
+  console.log('\nGroups:');
+  for (const g of GROUPS) console.log(`  ${g.name}: ${g.members.map((k) => INDUSTRIES.find((i) => i.key === k).name).join(', ')}`);
+  console.log(`  Independent (no group): ${INDUSTRIES.filter((i) => !GROUPS.some((g) => g.members.includes(i.key))).map((i) => i.name).join(', ')}`);
   console.log('\nInstances of each E2E process per industry:');
   const rows = q.all('SELECT o.industry, r.e2e_id, COUNT(*) n FROM e2e_runs r JOIN organizations o ON o.id = r.org_id GROUP BY o.industry, r.e2e_id ORDER BY o.id, r.e2e_id');
   for (const ind of INDUSTRIES) console.log(`  ${ind.industry.padEnd(32)} ${E2E_IDS.map((e) => `${e.slice(4)}:${rows.find((x) => x.industry === ind.industry && x.e2e_id === e)?.n || 0}`).join('  ')}`);

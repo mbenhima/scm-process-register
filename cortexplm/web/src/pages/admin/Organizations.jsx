@@ -5,14 +5,17 @@ import { useI18n } from '../../lib/i18n.jsx';
 import { post, put, del } from '../../lib/api.js';
 import { PageHeader, Card, CardHead, DataTable, useFetch, Skeleton, Button, Modal, Field, Input, Select, useToast, Tabs, Badge } from '../../components/ui.jsx';
 
-const INDUSTRIES = ['Public Sector', 'Manufacturing in Construction', 'Healthcare', 'Agro-Business - Dairy Products', 'Transportation', 'Oil, Gas & Energy'];
+const INDUSTRIES = ['Public Sector', 'Manufacturing in Construction', 'Healthcare', 'Agro-Business - Dairy Products', 'Transportation', 'Oil, Gas & Energy', 'Construction'];
 
 function Obs() {
   const { t } = useI18n();
   const toast = useToast();
-  const { data, reload } = useFetch('/obs');
+  const { data: all, reload } = useFetch('/obs');
+  const projects = useFetch('/projects');
   const [edit, setEdit] = useState(null);
-  if (!data) return <Skeleton />;
+  const [scope, setScope] = useState('');
+  if (!all) return <Skeleton />;
+  const data = all.filter((n) => String(n.project_id || '') === String(scope));
   const byParent = (pid) => data.filter((n) => (n.parent_id || null) === pid);
   const rows = [];
   const walk = (pid, depth) => byParent(pid).forEach((n) => { rows.push({ ...n, depth }); walk(n.id, depth + 1); });
@@ -20,7 +23,10 @@ function Obs() {
   const save = async () => { try { if (edit.id) await put(`/obs/${edit.id}`, edit); else await post('/obs', edit); toast.ok(t('Saved.')); setEdit(null); reload(); } catch (e) { toast.err(e); } };
   return (
     <Card>
-      <CardHead title={t('Organizational breakdown structure')} subtitle={t('Sites, departments and teams. Counts show linked records so ownership is visible at a glance.')} actions={<Button variant="primary" icon={Plus} onClick={() => setEdit({ name: '', type: 'Department', parent_id: '' })}>{t('Add node')}</Button>} />
+      <CardHead title={t('Organizational breakdown structure')} subtitle={t('Sites, departments and teams. Counts show linked records so ownership is visible at a glance.')} actions={<Button variant="primary" icon={Plus} onClick={() => setEdit({ name: '', type: 'Department', parent_id: '', project_id: scope || null })}>{t('Add node')}</Button>} />
+      <div style={{ maxWidth: 420, marginBottom: 12 }}><Field label={t('Tree')} hint={t('Each organization has its own tree; a project can also have its own team tree.')}>
+        <Select value={scope} onChange={(e) => setScope(e.target.value)} placeholder={t('Organization tree')} options={(projects.data || []).map((p) => ({ value: p.id, label: `${p.code} ${p.name}${all.some((n) => n.project_id === p.id) ? '' : ` (${t('empty')})`}` }))} />
+      </Field></div>
       <DataTable csvName="obs" rows={rows} pageSize={80} onRowClick={setEdit} columns={[
         { key: 'name', label: t('Node'), render: (n) => <span style={{ paddingInlineStart: n.depth * 20 }} className={n.depth ? '' : 'strong'}>{n.name}</span> }, { key: 'type', label: t('Type'), render: (n) => t(n.type) },
         ...['users', 'projects', 'rules', 'controls', 'risks', 'racsi', 'bpmn', 'rex'].map((k) => ({ key: k, label: t(k === 'racsi' ? 'RACSI' : k === 'bpmn' ? 'BPMN' : k === 'rex' ? 'REX' : k.charAt(0).toUpperCase() + k.slice(1)), num: true, csv: (n) => n.linked[k], sortValue: (n) => n.linked[k], render: (n) => n.linked[k] || '·' })),
@@ -31,7 +37,7 @@ function Obs() {
           <div className="grow" /><Button onClick={() => setEdit(null)}>{t('Cancel')}</Button><Button variant="primary" onClick={save} disabled={!edit.name}>{t('Save')}</Button></>}>
           <div className="form-grid">
             <Field label={t('Name')} required full><Input value={edit.name} onChange={(e) => setEdit({ ...edit, name: e.target.value })} /></Field>
-            <Field label={t('Type')}><Select value={edit.type} onChange={(e) => setEdit({ ...edit, type: e.target.value })} options={['Site', 'Department', 'Team', 'Service'].map((v) => ({ value: v, label: t(v) }))} /></Field>
+            <Field label={t('Type')} hint={t('Choose a type or type your own.')}><Input list="obs-types" value={edit.type} onChange={(e) => setEdit({ ...edit, type: e.target.value })} /><datalist id="obs-types">{['Site', 'Department', 'Team', 'Service', 'Work package'].map((v) => <option key={v} value={v}>{t(v)}</option>)}</datalist></Field>
             <Field label={t('Parent')}><Select value={edit.parent_id || ''} onChange={(e) => setEdit({ ...edit, parent_id: e.target.value })} placeholder={t('Top level')} options={data.filter((n) => n.id !== edit.id).map((n) => ({ value: n.id, label: n.name }))} /></Field>
           </div>
         </Modal>
