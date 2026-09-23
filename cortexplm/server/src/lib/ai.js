@@ -1,6 +1,7 @@
 // AI Use Case Library service (FR-DA-AI-01..11). This module is the single designated integration point
 // for any live LLM call (NFR-DA-MAINT-04). Every use case has a deterministic, explainable generator; a
 // live model, if the user configured one on their own device, is used for one request and never stored.
+import { translate } from './i18n.js';
 import Anthropic from '@anthropic-ai/sdk';
 import { q, json } from '../db.js';
 import { STEP, MP, STEPS } from './ref.js';
@@ -128,24 +129,24 @@ export function recordOutcome(ctx, suggestionId, outcome) {
 // Each intent is bound to exactly one permission, checked after matching and before querying.
 const today = () => new Date().toISOString().slice(0, 10);
 export const INTENTS = [
-  { id: 'active_projects', permission: 'project.view', match: /(how many|number of|count|combien|كم).*(project|projet|مشروع)|active projects|projets actifs/i,
-    run: (o) => { const r = q.all("SELECT track, COUNT(*) n FROM projects WHERE org_id = ? AND status = 'Active' GROUP BY track", o); const t = r.reduce((s, x) => s + x.n, 0); return { text: `${t} active projects: ${r.map((x) => `${x.n} ${x.track}`).join(', ') || 'none'}.`, rows: r }; } },
-  { id: 'pending_gates', permission: 'gate.view', match: /(pending|waiting|submitted|awaiting|en attente|معلق).*(gate|jalon|decision|بوابة)|gates? (to|waiting)|gate board/i,
-    run: (o) => { const r = q.all("SELECT p.code, p.name, g.gate, g.submitted_at FROM gate_reviews g JOIN projects p ON p.id = g.project_id WHERE g.org_id = ? AND g.status = 'Submitted' ORDER BY g.submitted_at", o); return { text: r.length ? `${r.length} gate(s) wait for a decision. Oldest: ${r[0].code} ${r[0].name} at ${r[0].gate}, submitted ${r[0].submitted_at.slice(0, 10)}.` : 'No gate is waiting for a decision.', rows: r }; } },
+  { id: 'active_projects', permission: 'project.view', match: /(how many|number of|count|combien|كم).*(project|projet|مشروع|مشاريع)|active projects|projets actifs|المشاريع النشطة/i,
+    run: (o, u, qt, tr) => { const r = q.all("SELECT track, COUNT(*) n FROM projects WHERE org_id = ? AND status = 'Active' GROUP BY track", o); const t = r.reduce((s, x) => s + x.n, 0); return { text: tr('{n} active projects: {list}.', { n: t, list: r.map((x) => `${x.n} ${tr(x.track)}`).join(', ') || tr('none') }), rows: r }; } },
+  { id: 'pending_gates', permission: 'gate.view', match: /(pending|waiting|submitted|awaiting|en attente|معلق).*(gate|jalon|decision|بوابة)|gates? (to|waiting)|gate board|jalons? en attente|البوابات المعلقة/i,
+    run: (o, u, qt, tr) => { const r = q.all("SELECT p.code, p.name, g.gate, g.submitted_at FROM gate_reviews g JOIN projects p ON p.id = g.project_id WHERE g.org_id = ? AND g.status = 'Submitted' ORDER BY g.submitted_at", o); return { text: r.length ? tr('{n} gate(s) wait for a decision. Oldest: {p} at {g}, submitted {d}.', { n: r.length, p: `${r[0].code} ${r[0].name}`, g: r[0].gate, d: r[0].submitted_at.slice(0, 10) }) : tr('No gate is waiting for a decision.'), rows: r }; } },
   { id: 'my_tasks', permission: 'task.view', match: /\bmy tasks?\b|mes t[aâ]ches|مهامي|assigned to me/i,
-    run: (o, u) => { const r = q.all("SELECT t.name, p.code, t.due_date, t.status FROM run_tasks t JOIN projects p ON p.id = t.project_id WHERE t.org_id = ? AND t.owner_id = ? AND t.status IN ('To do','In progress') AND p.status = 'Active' ORDER BY t.due_date LIMIT 10", o, u.id); return { text: r.length ? `You have ${r.length} open task(s) shown here. Next due: "${r[0].name}" (${r[0].code}) on ${r[0].due_date}.` : 'You have no open tasks.', rows: r }; } },
+    run: (o, u, qt, tr) => { const r = q.all("SELECT t.name, p.code, t.due_date, t.status FROM run_tasks t JOIN projects p ON p.id = t.project_id WHERE t.org_id = ? AND t.owner_id = ? AND t.status IN ('To do','In progress') AND p.status = 'Active' ORDER BY t.due_date LIMIT 10", o, u.id); return { text: r.length ? tr('You have {n} open task(s) shown here. Next due: "{t}" ({p}) on {d}.', { n: r.length, t: tr(r[0].name), p: r[0].code, d: r[0].due_date }) : tr('You have no open tasks.'), rows: r }; } },
   { id: 'overdue_tasks', permission: 'task.view', match: /overdue|late tasks?|en retard|متأخر/i,
-    run: (o) => { const r = q.all("SELECT t.name, p.code, t.due_date FROM run_tasks t JOIN projects p ON p.id = t.project_id WHERE t.org_id = ? AND t.status IN ('To do','In progress') AND t.due_date < ? AND p.status = 'Active' ORDER BY t.due_date LIMIT 15", o, today()); const n = q.get("SELECT COUNT(*) n FROM run_tasks t JOIN projects p ON p.id = t.project_id WHERE t.org_id = ? AND t.status IN ('To do','In progress') AND t.due_date < ? AND p.status = 'Active'", o, today()).n; return { text: `${n} task(s) are overdue.`, rows: r }; } },
+    run: (o, u, qt, tr) => { const r = q.all("SELECT t.name, p.code, t.due_date FROM run_tasks t JOIN projects p ON p.id = t.project_id WHERE t.org_id = ? AND t.status IN ('To do','In progress') AND t.due_date < ? AND p.status = 'Active' ORDER BY t.due_date LIMIT 15", o, today()); const n = q.get("SELECT COUNT(*) n FROM run_tasks t JOIN projects p ON p.id = t.project_id WHERE t.org_id = ? AND t.status IN ('To do','In progress') AND t.due_date < ? AND p.status = 'Active'", o, today()).n; return { text: tr('{n} task(s) are overdue.', { n }), rows: r }; } },
   { id: 'top_risks', permission: 'governance.view', match: /(top|highest|biggest|main|principaux|أعلى).*risk|risques?|مخاطر/i,
-    run: (o) => { const r = q.all("SELECT code, name, likelihood * impact score, status FROM risks WHERE org_id = ? AND status != 'Closed' ORDER BY score DESC LIMIT 5", o); return { text: r.length ? `Highest open risk: ${r[0].code} ${r[0].name} (score ${r[0].score} of 25).` : 'No open risks.', rows: r }; } },
+    run: (o, u, qt, tr) => { const r = q.all("SELECT code, name, likelihood * impact score, status FROM risks WHERE org_id = ? AND status != 'Closed' ORDER BY score DESC LIMIT 5", o); return { text: r.length ? tr('Highest open risk: {r} (score {s} of 25).', { r: `${r[0].code} ${r[0].name}`, s: r[0].score }) : tr('No open risks.'), rows: r }; } },
   { id: 'kpi', permission: 'kpi.view', match: /kpi|indicator|indicateur|مؤشر|time to market|first-pass|checklist compliance|nps|csat/i,
-    run: (o, u, question) => { const all = computeKpis(o); const qt = tokens(question); const best = all.map((k) => ({ k, s: tokens(k.name).filter((t) => qt.includes(t)).length })).sort((a, b) => b.s - a.s)[0]; const k = best.s ? best.k : all.find((x) => x.id === 'KPI-38'); return { text: `${k.id} ${k.name}: ${k.value ?? 'no data'}${k.value != null ? ' ' + k.unit : ''} (target ${k.target}, ${k.source.toLowerCase()}).`, rows: [{ id: k.id, name: k.name, value: k.value, target: k.target }] }; } },
+    run: (o, u, question, tr) => { const all = computeKpis(o); const qt = tokens(question); const best = all.map((k) => ({ k, s: tokens(k.name).filter((t) => qt.includes(t)).length })).sort((a, b) => b.s - a.s)[0]; const k = best.s ? best.k : all.find((x) => x.id === 'KPI-38'); return { text: tr('{k}: {v} (target {t}, {s}).', { k: `${k.id} ${tr(k.name)}`, v: k.value != null ? `${k.value} ${k.unit}` : tr('no data yet'), t: k.target, s: tr(k.source) }), rows: [{ id: k.id, name: k.name, value: k.value, target: k.target }] }; } },
   { id: 'unread_alerts', permission: 'alert.view', match: /alert|alerte|تنبيه|notification/i,
-    run: (o, u) => { const r = q.all('SELECT a.type, a.severity, a.message FROM alerts a LEFT JOIN alert_reads r ON r.alert_id = a.id AND r.user_id = ? WHERE a.org_id = ? AND r.alert_id IS NULL AND a.resolved_at IS NULL ORDER BY a.id DESC LIMIT 5', u.id, o); const n = q.get('SELECT COUNT(*) n FROM alerts a LEFT JOIN alert_reads r ON r.alert_id = a.id AND r.user_id = ? WHERE a.org_id = ? AND r.alert_id IS NULL AND a.resolved_at IS NULL', u.id, o).n; return { text: `You have ${n} unread alert(s).`, rows: r }; } },
+    run: (o, u, qt, tr) => { const r = q.all('SELECT a.type, a.severity, a.message FROM alerts a LEFT JOIN alert_reads r ON r.alert_id = a.id AND r.user_id = ? WHERE a.org_id = ? AND r.alert_id IS NULL AND a.resolved_at IS NULL ORDER BY a.id DESC LIMIT 5', u.id, o); const n = q.get('SELECT COUNT(*) n FROM alerts a LEFT JOIN alert_reads r ON r.alert_id = a.id AND r.user_id = ? WHERE a.org_id = ? AND r.alert_id IS NULL AND a.resolved_at IS NULL', u.id, o).n; return { text: tr('You have {n} unread alert(s).', { n }), rows: r }; } },
   { id: 'user_count', permission: 'user.manage', match: /(how many|number of|combien|كم).*(user|utilisateur|مستخدم)/i,
-    run: (o) => { const n = q.get('SELECT COUNT(*) n FROM users WHERE org_id = ? AND active = 1', o).n; return { text: `${n} active user accounts in this organization.`, rows: [] }; } },
+    run: (o, u, qt, tr) => { const n = q.get('SELECT COUNT(*) n FROM users WHERE org_id = ? AND active = 1', o).n; return { text: tr('{n} active user accounts in this organization.', { n }), rows: [] }; } },
   { id: 'projects_by_phase', permission: 'project.view', match: /(phase|stage|étape|مرحلة)|which e2e/i,
-    run: (o) => { const r = q.all("SELECT current_e2e, COUNT(*) n FROM projects WHERE org_id = ? AND status = 'Active' GROUP BY current_e2e ORDER BY current_e2e", o); return { text: `Active projects by current E2E process: ${r.map((x) => `${x.current_e2e}: ${x.n}`).join(', ')}.`, rows: r }; } },
+    run: (o, u, qt, tr) => { const r = q.all("SELECT current_e2e, COUNT(*) n FROM projects WHERE org_id = ? AND status = 'Active' GROUP BY current_e2e ORDER BY current_e2e", o); return { text: tr('Active projects by current E2E process: {list}.', { list: r.map((x) => `${x.current_e2e}: ${x.n}`).join(', ') }), rows: r }; } },
 ];
 
 export function assistantAnswer(ctx, question, lang = 'en') {
@@ -154,13 +155,13 @@ export function assistantAnswer(ctx, question, lang = 'en') {
   const intent = helpish ? null : INTENTS.find((i) => i.match.test(qText));
   if (intent) {
     if (!ctx.perms.has(intent.permission)) {
-      return { mode: 'data', intent: intent.id, refused: true, text: `I cannot answer this: it needs the permission "${intent.permission}", which your roles do not include.` };
+      return { mode: 'data', intent: intent.id, refused: true, text: translate(lang, 'I cannot answer this: it needs the permission "{p}", which your roles do not include.', { p: intent.permission }) };
     }
-    const r = intent.run(ctx.orgId, ctx.user, qText);
+    const r = intent.run(ctx.orgId, ctx.user, qText, (k, p) => translate(lang, k, p));
     return { mode: 'data', intent: intent.id, text: r.text, rows: r.rows, label: 'Computed from your organization data' };
   }
   const refs = searchHelp(qText, lang, 3);
   const extra = search(ctx.orgId, qText, { k: 3, kinds: ['Macro process', 'E2E process', 'Gate', 'Track rule', 'Glossary'] });
-  if (!refs.length && !extra.length) return { mode: 'help', text: 'I did not find an answer. Try other words, or open Help.', refs: [] };
+  if (!refs.length && !extra.length) return { mode: 'help', text: translate(lang, 'I did not find an answer. Try other words, or open Help.'), refs: [] };
   return { mode: 'help', text: refs[0] ? refs[0].text : extra[0].snippet, refs: [...refs, ...extra].map(({ kind, ref, title, link, score }) => ({ kind, ref, title, link, score })) };
 }

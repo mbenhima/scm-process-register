@@ -15,6 +15,13 @@ const today = (ctx) => (ctx.now || new Date().toISOString()).slice(0, 10);
 const nowIso = (ctx) => ctx.now || new Date().toISOString();
 const addDays = (iso, n) => { const d = new Date(iso.slice(0, 10) + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 
+// ---------------------------------------------------------------- Track configuration (MP-123, versioned per organization)
+export function matrixFor(orgId) {
+  const v = q.get("SELECT data FROM entity_versions WHERE entity_type = 'track_config' AND entity_id = ? AND is_current = 1", orgId);
+  const custom = v ? json(v.data, null)?.matrix : null;
+  return custom ? { ...TRACK_MATRIX, ...custom } : TRACK_MATRIX;
+}
+
 // ---------------------------------------------------------------- Track selection (Section 7.4, BR-010)
 export const CRITERIA = PROC.scoring.map((c, i) => ({ key: ['strategic', 'investment', 'novelty', 'regulatory', 'market', 'reach', 'integration'][i], label: c.Criterion, low: c['Score 1 (low)'], mid: c['Score 3 (medium)'], high: c['Score 5 (high)'] }));
 
@@ -78,7 +85,7 @@ export function createProject(ctx, input) {
   if (chosen !== rec.recommended) audit(ctx, 'project', id, 'track_override', { track: [rec.recommended, chosen] }, override_reason);
   // Tailoring baseline (MP-124): mandatory processes auto-activated, industry-conditional ones by industry.
   const industryFlag = { Healthcare: ['Life Sciences', 'MedTech'], Transportation: ['Automotive'] }[org.industry] || [];
-  for (const [mp, row] of Object.entries(TRACK_MATRIX)) {
+  for (const [mp, row] of Object.entries(matrixFor(ctx.orgId))) {
     let state = row[chosen];
     if (state.startsWith('If ')) state = industryFlag.includes(CONDITIONAL[mp]) ? 'Mandatory' : 'Optional';
     const selected = state === 'Mandatory' ? 'Mandatory' : state === 'Optional' ? (optional_mps.includes(mp) ? 'Selected' : 'Optional') : 'Not activated';
@@ -103,7 +110,7 @@ export function setProjectMp(ctx, projectId, mpId, want, justification, canAppro
   const row = q.get('SELECT * FROM project_mps WHERE project_id = ? AND mp_id = ?', projectId, mpId);
   if (!row) throw new AppError(404, 'Macro process not found for this project.');
   const project = getProject(projectId);
-  const base = TRACK_MATRIX[mpId][project.track];
+  const base = matrixFor(project.org_id)[mpId][project.track];
   const guarded = (row.state === 'Mandatory' && want === 'Deselected') || (base === 'Not activated' && want === 'Selected');
   if (guarded) {
     if (!justification?.trim()) throw new AppError(400, 'A justification is required for this change (BR-011).');

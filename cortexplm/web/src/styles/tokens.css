@@ -1,0 +1,42 @@
+/* Design tokens. Components use these variables only; no raw colour values outside this file. */
+:root {
+  /* Colour */
+  --pa-orange: #F8931D;        /* primary actions, current-state data, icon badges */
+  --pa-orange-deep: #E07B00;   /* large headings accents, KPI numbers (display size only) */
+  --pa-orange-tint: #FDEEDA;   /* highlighted cards and callouts */
+  --pa-grey-dark: #3A3A3C;     /* headings, strong text */
+  --pa-grey-ink: #58595B;      /* body text, secondary series */
+  --pa-grey-medium: #808184;   /* metadata, axis labels */
+  --pa-grey-light: #F2F2F3;    /* alternating rows, secondary surfaces */
+  --pa-grey-line: #E3E3E4;     /* borders, dividers, gridlines */
+  --pa-bg: #FDFDFC;            /* page background */
+  --pa-white: #FFFFFF;
+
+  /* Semantic status scale (red -> green), used only for scores, health and heatmaps */
+  --st-1: #F4C7C3;
+  --st-2: #FBE0B5;
+  --st-3: #FFF3B0;
+  --st-4: #D9EAD3;
+  --st-5: #B6D7A8;
+
+  /* Chart overlay series only */
+  --series-blue: #3A6EA5;
+  --series-green: #5AA469;
+
+  /* Spacing scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+  /* Type scale: 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 */
+  --fs-12: 12px; --fs-14: 14px; --fs-16: 16px; --fs-18: 18px; --fs-20: 20px; --fs-24: 24px; --fs-30: 30px; --fs-36: 36px;
+  --font-serif: 'Source Serif 4', 'Noto Naskh Arabic', serif;
+  --font-sans: 'Source Sans 3', 'Noto Sans Arabic', sans-serif;
+
+  /* Shape and elevation */
+  --r-button: 8px; --r-input: 8px; --r-card: 12px;
+  --shadow-1: 0 1px 3px rgba(58, 58, 60, 0.08), 0 1px 2px rgba(58, 58, 60, 0.04);
+  --focus-ring: 0 0 0 2px var(--pa-white), 0 0 0 4px var(--pa-grey-dark);
+
+  --nav-width: 264px;
+  --nav-bar-height: 48px;
+  --topbar-height: 64px;
+}

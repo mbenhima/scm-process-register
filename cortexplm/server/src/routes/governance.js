@@ -5,7 +5,9 @@ import { requireFeatureFor } from '../lib/entitlements.js';
 import { COSO, DLV } from '../lib/ref.js';
 import { computeKpis } from '../lib/kpis.js';
 import { ALERT_CATALOG, computeAlerts } from '../lib/alerts.js';
-import { audit, diff, justificationRequired } from '../lib/audit.js';
+import { audit, diff, justificationRequired, snapshot, versionsOf } from '../lib/audit.js';
+import { matrixFor } from '../lib/lifecycle.js';
+import { TRACK_MATRIX } from '../lib/ref.js';
 import { h, crud, ctxOf, badRequest, notFound } from './util.js';
 
 const r = Router();
@@ -146,6 +148,37 @@ r.put('/settings', requirePerm('governance.manage', 'hierarchy.manage'), h((req)
   if (req.body.light_observation_days !== undefined) { const d = Number(req.body.light_observation_days); if (!(d >= 0 && d <= 730)) throw badRequest('Observation period must be between 0 and 730 days.'); set('light_observation_days', d); audit(ctxOf(req), 'settings', req.orgId, 'update', { light_observation_days: [null, d] }); }
   if (req.body.default_language !== undefined) { q.run('UPDATE organizations SET default_language = ? WHERE id = ?', req.body.default_language, req.orgId); audit(ctxOf(req), 'organization', req.orgId, 'update', { default_language: [null, req.body.default_language] }); }
   return { ok: true };
+}));
+
+// Track configuration (MP-123): versioned activation matrix per organization; editing needs PACK-06/11.
+const STATES = ['Mandatory', 'Optional', 'Not activated'];
+r.get('/track-config', requirePerm('track.view'), h((req) => {
+  let editable = req.perms.has('track.manage');
+  try { requireFeatureFor(req.orgId, 'trackConfig'); } catch { editable = false; }
+  return { matrix: matrixFor(req.orgId), defaults: TRACK_MATRIX, versions: versionsOf('track_config', req.orgId).map(({ data, ...v }) => ({ ...v, changes: data.changes || [] })), editable };
+}));
+r.put('/track-config', requirePerm('track.manage'), h((req) => {
+  requireFeatureFor(req.orgId, 'trackConfig');
+  const { mp, track, state, justification } = req.body;
+  if (!TRACK_MATRIX[mp] || !['Full', 'Light', 'Fast'].includes(track) || !(STATES.includes(state) || String(state).startsWith('If '))) throw badRequest('Choose a macro process, a track and a state.');
+  if (!String(justification || '').trim()) throw badRequest('Every track configuration change needs a justification (MP-123 task 12).');
+  const current = matrixFor(req.orgId);
+  const before = current[mp][track];
+  const matrix = Object.fromEntries(Object.entries(current).map(([k, v]) => [k, { ...v }]));
+  matrix[mp][track] = state;
+  const prev = versionsOf('track_config', req.orgId)[0]?.data?.changes || [];
+  if (!versionsOf('track_config', req.orgId).length) snapshot({ orgId: req.orgId, user: { id: null, name: 'System' } }, 'track_config', req.orgId, { matrix: TRACK_MATRIX, changes: [] }, 'Version 1: Process Design Reference v2.0, Section 7.2.');
+  const v = snapshot({ orgId: req.orgId, user: req.user }, 'track_config', req.orgId, { matrix, changes: [...prev, `${mp} ${track}: ${before} -> ${state}`] }, justification);
+  audit({ orgId: req.orgId, user: req.user }, 'track_config', req.orgId, 'update', { [`${mp} ${track}`]: [before, state] }, justification);
+  return { ok: true, version: v };
+}));
+r.post('/track-config/revert/:version', requirePerm('track.manage'), h((req) => {
+  requireFeatureFor(req.orgId, 'trackConfig');
+  const v = versionsOf('track_config', req.orgId).find((x) => x.version === Number(req.params.version));
+  if (!v) throw notFound('Version not found.');
+  const nv = snapshot({ orgId: req.orgId, user: req.user }, 'track_config', req.orgId, v.data, `Reverted to version ${v.version}.`);
+  audit({ orgId: req.orgId, user: req.user }, 'track_config', req.orgId, 'revert', {}, `Reverted to version ${v.version} (new version ${nv}).`);
+  return { ok: true, version: nv };
 }));
 
 r.get('/actions-registry', requirePerm('governance.view'), (req, res) => res.json(DLV['D03a Actions Registry']));
