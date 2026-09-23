@@ -64,6 +64,7 @@ Settings are optional: copy `server/.env.example` to `server/.env` to change the
 ## Documentation
 
 - Installation Guide and User Guide (Word and PDF) are delivered with the application.
+- `docs/guides/Dynamic_Apps_Standard_SRS_v1.1` (Word/PDF) is the suite standard updated with the generic capabilities proven here; `docs/tools/update_srs.py` rebuilds it.
 - `docs/COVERAGE_CHECKLIST.md` maps every source document to the application; the SRS Gap Analysis (Word/PDF) assesses each SRS requirement.
 - `docs/tools/bpmn-roundtrip.mjs` and `docs/tools/replay-module-scenarios.mjs` re-run the BPMN and User Guide checks.
 - `docs/tools` regenerates the guides: `run-scenarios.mjs` replays the five User Guide walkthroughs against a freshly seeded server.
