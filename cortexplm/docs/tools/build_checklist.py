@@ -63,11 +63,27 @@ def rows_for(v):
             ('maxUsers enforcement and expiry warning (CTRL-003)', 'User creation blocked at the limit; banner 30 days before expiry', 'Users & roles; top banner', 'Orvane licence expires in 22 days'),
         ],
         'Seed data requirement (request)': [
-            ('Seven sectors: Public Sector, Manufacturing, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Construction', 'One organization per sector with 24–25 users and 21 projects', 'Organization switcher (platform admin)', ' / '.join(x['industry'] for x in o)),
-            ('Tenant model: Group (Yes/No), Organization, Project', 'Atlas Infrastructure Holding (Cedarline, Ridgeway, Orvane); Crescent Agro-Energy Group (Valdora, Kestrel); Metro City and Meridale independent', 'Administration > Organizations & OBS', '2 groups, 5 members, 2 independent'),
-            ('Benchmarking within the organization and within the group (external out of scope)', 'Project type, track and department comparison; group comparison of aggregates with opt-out; 5 automated tests', 'Reports > Benchmarking', '13 indicators'),
+            ('Seven sectors: Public Sector, Manufacturing, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Real Estate Development', 'One organization per sector with 24–25 users and 21 projects', 'Organization switcher (platform admin)', ' / '.join(x['industry'] for x in o)),
+            ('Tenant model: Group (Yes/No), Organization, Project', 'Atlas Infrastructure Holding (Cedarline, Ridgeway, Orvane); Crescent Agro-Energy Group (Valdora, Kestrel); Metro City and Meridale independent', 'Portfolio > Groups, organizations & projects', '2 groups, 5 members, 2 independent'),
+            ('Benchmarking within the organization and within the group (external out of scope)', 'Project type, track and department comparison; group comparison of aggregates with opt-out; 5 automated tests', 'Portfolio > Benchmarking', '13 indicators'),
             ('At least 10 instances of each E2E process per industry', 'E2E-01:21 02:19 03:16 04:14 05:16 06:12 07:12 08:10 09:13 in every organization', 'Dashboard, E2E pages', 'Minimum 10 met'),
             ('Pin and slide menu; top, bottom, left and right positions', 'Navigation bar settings, saved per user; RTL aware', 'Sliders icon in the navigation bar', 'Implemented'),
+        ],
+        'Request of round 2 (tenancy, portfolio, checklists, attachments, AI, BPMN)': [
+            ('Tenancy: Group (Yes, No), Organization, Projects; projects created and linked to an organization', 'Tree and table Group (Yes/No) > Organization > Projects; Add group; Add organization with Group Yes/No and starting team; New project with an Organization step', 'Portfolio > Groups, organizations & projects', '2 groups, 7 organizations, 147 projects'),
+            ('See all seeded groups, organizations and projects', 'Platform administrator sees everything; group executives see their group read-only', 'Same screen', 'Automated tests'),
+            ('Seed the OBS of all projects, with roles', 'One team tree per project (steering committee, project management, delivery teams) and department members', 'Administration > Organizations, OBS & teams', '147 trees, 2,400+ placements'),
+            ('Configure the LLM: provider and model drop-down with a custom choice', 'Provider list, model list, Custom model, custom endpoint, Test connection', 'Settings; Administration > Configuration & AI model', '5 models + custom'),
+            ('Overall view for a scope: E2E columns, project rows, status at the intersection, legend', 'Portfolio overview with group / organization / set-of-projects scope, 7-status legend, totals, CSV', 'Portfolio > Portfolio overview', 'Implemented'),
+            ('Process design: legend for Part; tasks with Assistive / Augmented AI', 'Legend: Part card; AI column; Tasks and AI tab', 'Process design > Macro processes; End-to-end processes', '54 of 81 tasks with AI'),
+            ('AI use cases CRUD; visible and runnable (Accept, Modify, Reject) on E2E, macro processes, tasks and steps', 'Create, versioned edit, delete (custom), activation; sparkle badges run the use case in place', 'AI use cases; E2E; macro process; task page', 'Implemented'),
+            ('Checklist template library per gate per track; link to gates; create from template or manually at the gate', 'Standard and sector templates; linked templates applied when the gate opens; Add to this checklist; Save as template', 'Process design > Checklist templates; gate page', '145 templates seeded'),
+            ('Attach documents in many formats to all tasks', 'Multi-file upload, drag-and-drop, 9 format families, 25 MB, delete, audit', 'Every task page', '440+ files seeded'),
+            ('Filter innovation projects by group, organization and project within permissions', 'Scope filters limited to permitted organizations; foreign projects read-only', 'Portfolio > Innovation projects', 'Automated tests'),
+            ('Seed all application aspects', 'Every table populated (custom AI use cases, overrides, alert settings, reads, webhooks, attachments, teams)', 'Whole application', 'No empty table'),
+            ('BPMN: palette section; full screen with palette and return', 'Shapes palette panel, legend when view-only, slide-away palette, zoom slider, Full screen / Back to the page', 'Process design > BPMN diagrams', 'Implemented'),
+            ('Organize the modules for a better user experience', 'Menu regrouped: Home, Portfolio, Process design, Governance & risk, AI & knowledge, Reports, Administration, Me', 'Navigation bar', 'Implemented'),
+            ('User Guide: scenarios start with Group (Yes/No), Organization, then Project(s); decision matrix', 'Six runs with Step 0 tenancy; Chapter 4 Decision Matrix; in-app Decision matrix button', 'User Guide', '6 runs replayed'),
         ],
     }
 
@@ -76,7 +92,7 @@ def build(verify, log, out_docx, out_md):
     v = json.load(open(verify)); runs = json.load(open(log))
     groups = rows_for(v)
     doc = new_document('CortexPLM Coverage Checklist')
-    cover(doc, 'Delivery Checklist', 'CortexPLM Coverage Checklist', 'Every content block of the five source documents and where the application covers it', 'Version 1.0  ·  September 2026')
+    cover(doc, 'Delivery Checklist', 'CortexPLM Coverage Checklist', 'Every content block of the five source documents and where the application covers it', 'Version 2.0  ·  September 2026')
     header_footer(doc, 'CortexPLM Coverage Checklist')
     toc(doc)
     h1(doc, '1. Summary', new_page=False)
@@ -95,12 +111,14 @@ def build(verify, log, out_docx, out_md):
         md += [f'## {k}', '', '| Source content | Implemented as | Where to see it | Measured | Status |', '|---|---|---|---|---|']
         md += [f'| {x[0]} | {x[1]} | {x[2]} | {x[3]} | {x[4] if len(x) > 4 else "Covered"} |' for x in rows] + ['']
     h1(doc, f'{n}. End-to-End Verification', new_page=False)
-    para(doc, 'The five User Guide runs were replayed through the application on a fresh database. Each one ran to the end state below.')
-    table(doc, ['Run', 'Project', 'Track', 'Steps', 'End state'], [(str(r['id']), f"{r['code']} {r['name']}", (r.get('created') or {}).get('track', 'Full'), str(len(r['steps'])), r['final']['status']) for r in runs if not r.get('error')], widths=[0.5, 2.9, 0.8, 0.7, 1.87])
-    bullets(doc, ['Server tests: tenant isolation suite passes (npm test).', 'Web build: production build succeeds; every screen opened in a browser for administrator, product manager, executive, supplier and Arabic users without errors.',
-                  'Translations: 1,041 interface strings in English, French and Arabic, plus reference labels (statuses, processes, tasks, gates, roles).'])
-    md += ['## End-to-end verification', '', '| Run | Project | Track | Steps | End state |', '|---|---|---|---|---|']
-    md += [f"| {r['id']} | {r['code']} {r['name']} | {(r.get('created') or {}).get('track', 'Full')} | {len(r['steps'])} | {r['final']['status']} |" for r in runs if not r.get('error')]
+    ten = lambda r: f"Group: {'Yes (' + r['tenancy']['group']['name'] + ')' if r['tenancy'].get('group') else 'No'} > {r['tenancy']['org']['name']}"
+    para(doc, 'The six User Guide runs were replayed through the application on a fresh database. Each one first created its group (if any) and its organization, then ran to the end state below.')
+    table(doc, ['Run', 'Tenancy', 'Project', 'Track', 'Steps', 'End state'], [(str(r['id']), ten(r), f"{r['code']} {r['name']}", (r.get('created') or {}).get('track', 'Full'), str(len(r['steps'])), r['final']['status']) for r in runs if not r.get('error')], widths=[0.35, 1.8, 1.8, 0.5, 0.5, 1.82])
+    bullets(doc, ['Server tests: 17 automated tests pass (npm test): tenant isolation, benchmarking, group portfolio scope, checklist templates, attachments, organization provisioning.', 'Module scenarios of the User Guide: 43 checks pass (replay-module-scenarios.mjs).', 'Web build: production build succeeds; every screen opened in a browser for administrator, product manager, executive, supplier and Arabic users without errors.',
+                  'Translations: 1,400 interface strings in English, French and Arabic, plus reference labels (statuses, processes, tasks, gates, roles).'])
+    md += ['## End-to-end verification', '', '| Run | Tenancy | Project | Track | Steps | End state |', '|---|---|---|---|---|---|']
+    md += [f"| {r['id']} | {ten(r)} | {r['code']} {r['name']} | {(r.get('created') or {}).get('track', 'Full')} | {len(r['steps'])} | {r['final']['status']} |" for r in runs if not r.get('error')]
+    md += ['', 'Server tests: 17 passed. User Guide module scenarios: 43 checks passed.']
     doc.save(out_docx)
     open(out_md, 'w').write('\n'.join(md) + '\n')
 

@@ -2185,6 +2185,17 @@
   "Mandatory for any safety-critical product, whatever the total.": "Obligatoire pour tout produit critique pour la sécurité, quel que soit le total.",
   "Manufacturing": "Industrie manufacturière",
   "Real Estate Development": "Promotion immobilière",
-  "Pool/participant": "Bassin / participant"
+  "Pool/participant": "Bassin / participant",
+  "Accounts are created as role@domain, for example pm1@{d}.": "Les comptes sont créés sous la forme rôle@domaine, par exemple pm1@{d}.",
+  "At least 8 characters. Give it to the team; each person changes it in Settings.": "Au moins 8 caractères. Communiquez-le à l'équipe ; chacun le change dans Paramètres.",
+  "Choose a subscription from the catalog.": "Choisissez un abonnement dans le catalogue.",
+  "Create the starting team: one account per standard role (24 people), placed in their departments": "Créer l'équipe de départ : un compte par rôle standard (24 personnes), placé dans son département",
+  "E-mail domain": "Domaine e-mail",
+  "Enter the e-mail domain of the organization, for example example.org.": "Saisissez le domaine e-mail de l'organisation, par exemple example.org.",
+  "Every new organization also receives the standard content: OBS departments, business rules, controls, risks, RACSI, BPMN diagrams, the AI use case library, checklist templates and project templates.": "Chaque nouvelle organisation reçoit aussi le contenu standard : départements OBS, règles métier, contrôles, risques, RACSI, diagrammes BPMN, bibliothèque de cas d'usage IA, modèles de checklist et modèles de projet.",
+  "Initial password": "Mot de passe initial",
+  "Organization created with {n} accounts.": "Organisation créée avec {n} comptes.",
+  "The initial password needs at least 8 characters.": "Le mot de passe initial doit contenir au moins 8 caractères.",
+  "This e-mail domain is already used by another organization.": "Ce domaine e-mail est déjà utilisé par une autre organisation."
  }
 }

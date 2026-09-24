@@ -2185,6 +2185,17 @@
   "Mandatory for any safety-critical product, whatever the total.": "Mandatory for any safety-critical product, whatever the total.",
   "Manufacturing": "Manufacturing",
   "Real Estate Development": "Real Estate Development",
-  "Pool/participant": "Pool/participant"
+  "Pool/participant": "Pool/participant",
+  "Accounts are created as role@domain, for example pm1@{d}.": "Accounts are created as role@domain, for example pm1@{d}.",
+  "At least 8 characters. Give it to the team; each person changes it in Settings.": "At least 8 characters. Give it to the team; each person changes it in Settings.",
+  "Choose a subscription from the catalog.": "Choose a subscription from the catalog.",
+  "Create the starting team: one account per standard role (24 people), placed in their departments": "Create the starting team: one account per standard role (24 people), placed in their departments",
+  "E-mail domain": "E-mail domain",
+  "Enter the e-mail domain of the organization, for example example.org.": "Enter the e-mail domain of the organization, for example example.org.",
+  "Every new organization also receives the standard content: OBS departments, business rules, controls, risks, RACSI, BPMN diagrams, the AI use case library, checklist templates and project templates.": "Every new organization also receives the standard content: OBS departments, business rules, controls, risks, RACSI, BPMN diagrams, the AI use case library, checklist templates and project templates.",
+  "Initial password": "Initial password",
+  "Organization created with {n} accounts.": "Organization created with {n} accounts.",
+  "The initial password needs at least 8 characters.": "The initial password needs at least 8 characters.",
+  "This e-mail domain is already used by another organization.": "This e-mail domain is already used by another organization."
  }
 }

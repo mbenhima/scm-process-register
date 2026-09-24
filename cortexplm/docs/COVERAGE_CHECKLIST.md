@@ -22,16 +22,16 @@ Every content block of the five source documents is covered; the SRS blocks are 
 | Cover | Workbook cover data | Reference API /reference/workbook | Loaded | Covered |
 | D01 Macro Processes | Macro process pages (owner role, category, tier) | Macro processes | 69 of 69 | Covered |
 | D02 Tasks & Steps | Steps under each macro process; checklist evidence items | Macro processes; gate checklists | 727 of 727 | Covered |
-| D03 Business Rules | Business rules register (versioned); BR-001/002/004/005/008/009/011/030 enforced live | Governance > Business rules | 64 / 64 / 64 / 64 / 64 / 64 / 64 per organization (60 reference + organization rules) | Covered |
+| D03 Business Rules | Business rules register (versioned); BR-001/002/004/005/008/009/011/030 enforced live | Governance > Business rules | 64 / 64 / 64 / 64 / 64 / 64 / 64 / 65 / 64 / 64 / 64 / 64 / 64 per organization (60 reference + organization rules) | Covered |
 | D03a Actions Registry | Actions registry (ACT-01..) | Governance > Business rules > Actions | 50 of 50 | Covered |
-| D04 Controls | Controls register with COSO components; CTL-01, CTL-04 enforced | Governance > Controls (COSO) | 58 / 53 / 59 / 53 / 54 / 57 / 57 per organization (47 reference + compliance starters) | Covered |
-| D05 Risks | Risks & opportunities register, heat map, project risks | Governance > Risks & opportunities | 50 / 48 / 50 / 48 / 49 / 48 / 48 per organization (27 reference + project risks) | Covered |
-| D06 KPIs | Built-in KPIs computed live or recorded, custom KPIs | Governance > KPIs | 38 / 38 / 38 / 38 / 38 / 38 / 38 per organization (38 of 38) | Covered |
+| D04 Controls | Controls register with COSO components; CTL-01, CTL-04 enforced | Governance > Controls (COSO) | 58 / 53 / 59 / 53 / 54 / 57 / 57 / 51 / 50 / 50 / 50 / 50 / 50 per organization (47 reference + compliance starters) | Covered |
+| D05 Risks | Risks & opportunities register, heat map, project risks | Governance > Risks & opportunities | 50 / 48 / 50 / 48 / 49 / 48 / 48 / 33 / 32 / 32 / 32 / 32 / 32 per organization (27 reference + project risks) | Covered |
+| D06 KPIs | Built-in KPIs computed live or recorded, custom KPIs | Governance > KPIs | 38 / 38 / 38 / 38 / 38 / 38 / 38 / 38 / 38 / 38 / 38 / 38 / 38 per organization (38 of 38) | Covered |
 | D07 Alerts | Alert catalog, background checks, multi-channel dispatch | Alerts; Notifications | 31 alert types (25 D07 + 6 system) | Covered |
 | D08 Reports & Cockpits | Report screens with PDF, Excel and Word export | Reports & cockpits | 24 of 24 | Covered |
 | D09 Information Class Model | Data model page | Reports > Data model | 58 of 58 | Covered |
 | D10 Data Dictionary | Data dictionary with types and validation rules | Reports > Data model | 189 of 189 | Covered |
-| D15 AI Use Cases | Governed AI use cases, suggestions, append-only usage log | Intelligence > AI use cases | 23 / 23 / 23 / 23 / 23 / 23 / 23 per organization (23 of 23) | Covered |
+| D15 AI Use Cases | Governed AI use cases, suggestions, append-only usage log | Intelligence > AI use cases | 24 / 24 / 24 / 24 / 24 / 24 / 24 / 23 / 23 / 23 / 23 / 23 / 23 per organization (23 of 23) | Covered |
 | D15b Role Menus | Role menus reference; navigation filtered by role permissions | Reports > Role menus | 309 of 309 | Covered |
 | D26 Modules & Tiers | Tiers, feature gating and quotas per subscription | Administration > Configuration | 11 modules | Covered |
 
@@ -60,7 +60,7 @@ Every content block of the five source documents is covered; the SRS blocks are 
 
 | Source content | Implemented as | Where to see it | Measured | Status |
 |---|---|---|---|---|
-| One LicenceProvider interface, SaaS and OnPrem implementations | SaasLicenceProvider (signed record) and OnPremLicenceProvider (Ed25519 .lic file) | Administration > Licensing | saas active 25/60 / saas active 24/40 / saas active 24/40 / saas active 24/30 / saas warning 24/30 / saas active 24/30 / saas active 24/40 | Covered |
+| One LicenceProvider interface, SaaS and OnPrem implementations | SaasLicenceProvider (signed record) and OnPremLicenceProvider (Ed25519 .lic file) | Administration > Licensing | saas active 25/60 / saas active 24/40 / saas active 24/40 / saas active 24/30 / saas warning 24/30 / saas active 24/30 / saas active 24/40 / saas active 25/25 / saas active 24/25 / saas active 24/25 / saas active 24/25 / saas active 24/25 / saas active 24/25 | Covered |
 | Add-on licensing as independent toggles (compliance standards) | Compliance standards activation with non-certification disclosure | Administration > Configuration | Implemented | Covered |
 | Hardware binding, licence file format, vendor signing tool | hardwareId field, npm run keys / npm run sign-licence | server/tools | Implemented | Covered |
 | maxUsers enforcement and expiry warning (CTRL-003) | User creation blocked at the limit; banner 30 days before expiry | Users & roles; top banner | Orvane licence expires in 22 days | Covered |
@@ -69,43 +69,40 @@ Every content block of the five source documents is covered; the SRS blocks are 
 
 | Source content | Implemented as | Where to see it | Measured | Status |
 |---|---|---|---|---|
-| Seven sectors: Public Sector, Manufacturing, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Real Estate Development | One organization per sector with 24–25 users and 21 projects | Organization switcher (platform admin) | Public Sector / Manufacturing / Healthcare / Agro-Business - Dairy Products / Transportation / Oil, Gas & Energy / Construction | Covered |
-| Tenant model: Group (Yes/No), Organization, Project | Atlas Infrastructure Holding (Cedarline, Ridgeway, Orvane); Crescent Agro-Energy Group (Valdora, Kestrel); Metro City and Meridale independent | Administration > Organizations & OBS | 2 groups, 5 members, 2 independent | Covered |
-| Benchmarking within the organization and within the group (external out of scope) | Project type, track and department comparison; group comparison of aggregates with opt-out; 5 automated tests | Reports > Benchmarking | 13 indicators | Covered |
+| Seven sectors: Public Sector, Manufacturing, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Real Estate Development | One organization per sector with 24–25 users and 21 projects | Organization switcher (platform admin) | Public Sector / Manufacturing / Healthcare / Agro-Business - Dairy Products / Transportation / Oil, Gas & Energy / Real Estate Development / Public Sector / Transportation / Agro-Business - Dairy Products / Healthcare / Oil, Gas & Energy / Real Estate Development | Covered |
+| Tenant model: Group (Yes/No), Organization, Project | Atlas Infrastructure Holding (Cedarline, Ridgeway, Orvane); Crescent Agro-Energy Group (Valdora, Kestrel); Metro City and Meridale independent | Portfolio > Groups, organizations & projects | 2 groups, 5 members, 2 independent | Covered |
+| Benchmarking within the organization and within the group (external out of scope) | Project type, track and department comparison; group comparison of aggregates with opt-out; 5 automated tests | Portfolio > Benchmarking | 13 indicators | Covered |
 | At least 10 instances of each E2E process per industry | E2E-01:21 02:19 03:16 04:14 05:16 06:12 07:12 08:10 09:13 in every organization | Dashboard, E2E pages | Minimum 10 met | Covered |
 | Pin and slide menu; top, bottom, left and right positions | Navigation bar settings, saved per user; RTL aware | Sliders icon in the navigation bar | Implemented | Covered |
 
-## Request of this round (tenancy, portfolio, checklists, attachments, AI, BPMN)
+## Request of round 2 (tenancy, portfolio, checklists, attachments, AI, BPMN)
 
-| Request | Implemented as | Where to see it | Status |
-|---|---|---|---|
-| Tenancy: Group (Yes, No), Organization, Projects; create projects linked to an organization | Tree and table Group (Yes/No) > Organization > Projects; Add group, Add organization (Group Yes/No, starting team), New project with Organization step | Portfolio > Groups, organizations & projects; New project, Step 0 | Covered |
-| See all seeded groups, organizations and projects | Platform administrator sees 2 groups, 7 organizations, 147 projects; group executives see their group | Same screen | Covered |
-| OBS seeded for all projects, with roles | 147 project team trees (steering committee, project management, delivery teams) with 2,400+ people-role placements; department members | Administration > Organizations, OBS & teams | Covered |
-| LLM configuration with model drop-down and custom choice | Provider list, model list (Claude Opus 5 default, Opus 5.5, Fable 5.1, Sonnet 5, Haiku 4.5), Custom model…, custom endpoint, Test connection | Settings; Administration > Configuration & AI model | Covered |
-| Overall view for a scope: columns E2E, rows projects, status at the intersection, legend | Portfolio overview with group / organization / set-of-projects scope, 7-status legend, totals, CSV | Portfolio > Portfolio overview | Covered |
-| Process design: legend for Part; tasks with Assistive/Augmented AI | Legend: Part card; AI column; Tasks and AI tab listing 81 tasks with AI badges | Process design > Macro processes; End-to-end processes | Covered |
-| AI use cases CRUD; visible and runnable (Accept, Modify, Reject) on E2E, macro processes, tasks and steps | Create, edit (versioned), delete (custom), activate; sparkle badges run the use case in place | AI use cases; E2E detail; macro process steps; task page | Covered |
-| Checklist template library per gate per track; link to gates; create at the gate from a template or manually | 145 standard + sector templates; linked templates copied when a gate opens; Add to this checklist; Save as template | Process design > Checklist templates; gate page | Covered |
-| Attach documents in many formats to all tasks | Multi-file upload and drag-and-drop, 9 format families, 25 MB, delete, audit; 440+ seeded attachments | Every task page | Covered |
-| Filter Innovation projects by group / organization / project within permissions | Scope filters limited to permitted organizations; foreign projects read-only | Portfolio > Innovation projects | Covered |
-| Seed all application aspects | Every table populated (custom AI use cases, overrides, alert settings, reads, webhooks, attachments, teams) | Whole application | Covered |
-| BPMN palette section; full screen with palette and return | Shapes palette panel (legend when view-only), slide-away palette, zoom slider, Full screen / Back to the page | Process design > BPMN diagrams | Covered |
-| Organize the modules for a better experience | Menu regrouped: Home, Portfolio, Process design, Governance & risk, AI & knowledge, Reports, Administration, Me | Navigation bar | Covered |
-| User Guide: every scenario starts with Group (Yes/No), Organization, then Project(s); decision matrix | Six runs each with Step 0 (tenancy); Chapter 4 Decision Matrix; in-app Decision matrix button | User Guide | Covered |
-| Sectors: Public Sector, Manufacturing, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Real Estate Development | One seeded organization per sector (MFG and RED codes for the two renamed sectors) | Tenancy screen | Covered |
+| Source content | Implemented as | Where to see it | Measured | Status |
+|---|---|---|---|---|
+| Tenancy: Group (Yes, No), Organization, Projects; projects created and linked to an organization | Tree and table Group (Yes/No) > Organization > Projects; Add group; Add organization with Group Yes/No and starting team; New project with an Organization step | Portfolio > Groups, organizations & projects | 2 groups, 7 organizations, 147 projects | Covered |
+| See all seeded groups, organizations and projects | Platform administrator sees everything; group executives see their group read-only | Same screen | Automated tests | Covered |
+| Seed the OBS of all projects, with roles | One team tree per project (steering committee, project management, delivery teams) and department members | Administration > Organizations, OBS & teams | 147 trees, 2,400+ placements | Covered |
+| Configure the LLM: provider and model drop-down with a custom choice | Provider list, model list, Custom model, custom endpoint, Test connection | Settings; Administration > Configuration & AI model | 5 models + custom | Covered |
+| Overall view for a scope: E2E columns, project rows, status at the intersection, legend | Portfolio overview with group / organization / set-of-projects scope, 7-status legend, totals, CSV | Portfolio > Portfolio overview | Implemented | Covered |
+| Process design: legend for Part; tasks with Assistive / Augmented AI | Legend: Part card; AI column; Tasks and AI tab | Process design > Macro processes; End-to-end processes | 54 of 81 tasks with AI | Covered |
+| AI use cases CRUD; visible and runnable (Accept, Modify, Reject) on E2E, macro processes, tasks and steps | Create, versioned edit, delete (custom), activation; sparkle badges run the use case in place | AI use cases; E2E; macro process; task page | Implemented | Covered |
+| Checklist template library per gate per track; link to gates; create from template or manually at the gate | Standard and sector templates; linked templates applied when the gate opens; Add to this checklist; Save as template | Process design > Checklist templates; gate page | 145 templates seeded | Covered |
+| Attach documents in many formats to all tasks | Multi-file upload, drag-and-drop, 9 format families, 25 MB, delete, audit | Every task page | 440+ files seeded | Covered |
+| Filter innovation projects by group, organization and project within permissions | Scope filters limited to permitted organizations; foreign projects read-only | Portfolio > Innovation projects | Automated tests | Covered |
+| Seed all application aspects | Every table populated (custom AI use cases, overrides, alert settings, reads, webhooks, attachments, teams) | Whole application | No empty table | Covered |
+| BPMN: palette section; full screen with palette and return | Shapes palette panel, legend when view-only, slide-away palette, zoom slider, Full screen / Back to the page | Process design > BPMN diagrams | Implemented | Covered |
+| Organize the modules for a better user experience | Menu regrouped: Home, Portfolio, Process design, Governance & risk, AI & knowledge, Reports, Administration, Me | Navigation bar | Implemented | Covered |
+| User Guide: scenarios start with Group (Yes/No), Organization, then Project(s); decision matrix | Six runs with Step 0 tenancy; Chapter 4 Decision Matrix; in-app Decision matrix button | User Guide | 6 runs replayed | Covered |
 
 ## End-to-end verification
-
-Replayed on a fresh seed with docs/tools/run-scenarios.mjs; each run first creates its group (if any) and organization.
 
 | Run | Tenancy | Project | Track | Steps | End state |
 |---|---|---|---|---|---|
 | 1 | Group: No > Harbourview City Services | HAR-001 Online Parking Permit Renewal | Fast | 29 | Launched |
-| 2 | Group: Yes (new: Meridian Mobility Holding) > Northline Regional Transit | NOR-001 Real-time Bus Crowding Indicator | Fast | 32 | Launched |
-| 3 | Group: Yes (Crescent) > Oasis Fresh Dairies | OAS-001 Lactose-free Greek Yogurt 500 g | Light | 78 | Active (relaunched) |
+| 2 | Group: Yes (Meridian Mobility Holding) > Northline Regional Transit | NOR-001 Real-time Bus Crowding Indicator | Fast | 32 | Launched |
+| 3 | Group: Yes (Crescent Agro-Energy Group) > Oasis Fresh Dairies | OAS-001 Lactose-free Greek Yogurt 500 g | Light | 78 | Active |
 | 4 | Group: No > Clearwater Medical Devices | CLE-001 Remote Cardiac Monitoring Patch | Full | 77 | Retired |
-| 5 | Group: Yes (Crescent) > Sahara Hydrogen Energy | SAH-001 Green Hydrogen Refuelling Kit | Full | 92 | Active (relaunched) |
-| 6 | Group: Yes (Atlas) > Palmgrove Residential Developers | PAL-001 Smart Townhouse Collection | Light | 48 | Launched |
+| 5 | Group: Yes (Crescent Agro-Energy Group) > Sahara Hydrogen Energy | SAH-001 Green Hydrogen Refuelling Kit | Full | 92 | Active |
+| 6 | Group: Yes (Atlas Infrastructure Holding) > Palmgrove Residential Developers | PAL-001 Smart Townhouse Collection | Light | 48 | Active |
 
-Module scenarios: 43 checks passed (docs/tools/replay-module-scenarios.mjs). Server tests: 17 passed.
+Server tests: 17 passed. User Guide module scenarios: 43 checks passed.

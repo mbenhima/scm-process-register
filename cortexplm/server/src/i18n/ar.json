@@ -2185,6 +2185,17 @@
   "Mandatory for any safety-critical product, whatever the total.": "إلزامي لأي منتج حرج للسلامة مهما كان المجموع.",
   "Manufacturing": "التصنيع",
   "Real Estate Development": "التطوير العقاري",
-  "Pool/participant": "حوض / مشارك"
+  "Pool/participant": "حوض / مشارك",
+  "Accounts are created as role@domain, for example pm1@{d}.": "تُنشأ الحسابات بصيغة الدور@النطاق، مثلاً pm1@{d}.",
+  "At least 8 characters. Give it to the team; each person changes it in Settings.": "8 أحرف على الأقل. أعطه للفريق؛ ويغيّره كل شخص من الإعدادات.",
+  "Choose a subscription from the catalog.": "اختر اشتراكاً من الكتالوج.",
+  "Create the starting team: one account per standard role (24 people), placed in their departments": "إنشاء فريق البداية: حساب لكل دور قياسي (24 شخصاً) موزعين على أقسامهم",
+  "E-mail domain": "نطاق البريد الإلكتروني",
+  "Enter the e-mail domain of the organization, for example example.org.": "أدخل نطاق البريد الإلكتروني للمؤسسة، مثلاً example.org.",
+  "Every new organization also receives the standard content: OBS departments, business rules, controls, risks, RACSI, BPMN diagrams, the AI use case library, checklist templates and project templates.": "تحصل كل مؤسسة جديدة أيضاً على المحتوى القياسي: أقسام الهيكل التنظيمي، قواعد العمل، الضوابط، المخاطر، RACSI، مخططات BPMN، مكتبة حالات استخدام الذكاء الاصطناعي، قوالب قوائم التحقق وقوالب المشاريع.",
+  "Initial password": "كلمة المرور الأولية",
+  "Organization created with {n} accounts.": "تم إنشاء المؤسسة مع {n} حساباً.",
+  "The initial password needs at least 8 characters.": "يجب أن تتكون كلمة المرور الأولية من 8 أحرف على الأقل.",
+  "This e-mail domain is already used by another organization.": "نطاق البريد هذا مستخدم من مؤسسة أخرى."
  }
 }
