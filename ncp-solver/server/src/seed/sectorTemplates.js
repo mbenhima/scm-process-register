@@ -1,6 +1,8 @@
 // Simulated non-compliance / problem scenarios per sector, used to seed
 // realistic demo data. Each entry drives one NCP Fiche end-to-end (S1-S7).
 
+import { SHOWCASE_SECTOR_TEMPLATES, SHOWCASE_SECTOR_LABELS } from './sectorShowcaseTemplates.js';
+
 export const SECTOR_TEMPLATES = {
   public_infrastructure: [
     {
@@ -387,6 +389,8 @@ export const SECTOR_TEMPLATES = {
       lessons: 'Verbal instructions bypassing the change-control process are a recurring root cause for safety-system impacts; the control has to be enforced, not just documented.',
     },
   ],
+  // 7 additional "showcase" sectors (25+ sheets each), see sectorShowcaseTemplates.js.
+  ...SHOWCASE_SECTOR_TEMPLATES,
 };
 
 // Sample Projects per sector, seeded under Hierarchy so the Project level of
@@ -420,4 +424,5 @@ export const SECTOR_LABELS = {
   manufacturing: { en: 'Manufacturing', fr: 'Industrie Manufacturière', ar: 'التصنيع' },
   agro_business: { en: 'Agro-Business', fr: 'Agro-Industrie', ar: 'الأعمال الزراعية' },
   real_estate: { en: 'Real Estate Development', fr: 'Promotion Immobilière', ar: 'التطوير العقاري' },
+  ...SHOWCASE_SECTOR_LABELS,
 };

@@ -12,6 +12,7 @@ import { STANDARD_REQUIREMENTS } from './standardRequirements.js';
 import { ALERT_STAGE_MAP } from '../services/alertCatalog.js';
 import { PACKS } from '../services/packConfig.js';
 import { activateComplianceModule } from './complianceModules.js';
+import { SHOWCASE_ORG_DEFS } from './sectorShowcaseTemplates.js';
 
 function activateComplianceModuleSafe(orgId, framework) {
   try { activateComplianceModule(orgId, framework); } catch { /* best-effort at seed time */ }
@@ -64,6 +65,9 @@ function seedCustomKpisForOrg(orgId, users) {
 // rather than generic placeholder text.
 function seedAlertsForOrg(orgId, users, ficheIds, sector) {
   const templates = SECTOR_TEMPLATES[sector];
+  // Indices below assume the original 9-template layout (see planForTemplateCount);
+  // skip for larger "showcase" sectors rather than reference the wrong stage's sheet.
+  if (templates.length !== 9) return;
   const insert = db.prepare(`
     INSERT INTO notification_alerts (id, organization_id, alert_type, ncp_stage, triggering_entity_id, target_user_id, channel, message, status, sent_at, read_at, created_at)
     VALUES (?, ?, ?, ?, ?, ?, 'in_app', ?, 'sent', ?, ?, ?)
@@ -400,13 +404,33 @@ function insertFiche(orgId, obsId, users, standardIds, tpl, detectionDaysAgo, pl
   return ficheId;
 }
 
+// Builds a (plan, detectionDaysAgo) pair for every template in a sector. The
+// original 4 sectors ship exactly 9 templates (3 closed for rich Capitalization
+// Library / REX data, plus one open sheet at each of the other 6 stages) and
+// seedAlertsForOrg()'s hardcoded indices depend on that exact layout, so it is
+// preserved as-is. Larger "showcase" sectors (25+ templates) get a generic
+// distribution: roughly a third closed, the rest cycled S6->S1 so every stage
+// tab has several live examples.
+function planForTemplateCount(n) {
+  if (n === 9) {
+    return { plans: ['closed', 'closed', 'closed', 'S6', 'S5', 'S4', 'S3', 'S2', 'S1'], detectionDays: [75, 60, 45, 25, 20, 12, 4, 1, 0] };
+  }
+  const stages = ['S6', 'S5', 'S4', 'S3', 'S2', 'S1'];
+  const closedCount = Math.max(3, Math.round(n * 0.3));
+  const plans = new Array(closedCount).fill('closed');
+  for (let i = 0; i < n - closedCount; i++) plans.push(stages[i % stages.length]);
+  const detectionDays = plans.map((p, i) => {
+    if (p === 'closed') return Math.max(30, 95 - i * 5);
+    const stageIdx = stages.indexOf(p);
+    const cycle = Math.floor((i - closedCount) / stages.length);
+    return Math.max(0, (stageIdx + 1) * 5 - cycle * 2 + (i % 3));
+  });
+  return { plans, detectionDays };
+}
+
 function seedFichesForOrg(orgId, sector, obsByName, users, standardIds) {
   const templates = SECTOR_TEMPLATES[sector];
-  // 9 templates per sector: 3 closed (rich Capitalization Library / REX data),
-  // and one open sheet at each of the other 6 stages so every S1-S7 tab has a
-  // live example, plus more Actions overall for My Actions.
-  const plans = ['closed', 'closed', 'closed', 'S6', 'S5', 'S4', 'S3', 'S2', 'S1'];
-  const detectionDays = [75, 60, 45, 25, 20, 12, 4, 1, 0];
+  const { plans, detectionDays } = planForTemplateCount(templates.length);
   const ficheIds = [];
   templates.forEach((tpl, i) => {
     const obsId = obsByName[tpl.department] || governanceObsId(obsByName);
@@ -738,6 +762,12 @@ export function runSeed() {
       sector: 'real_estate', sectorType: 'private', country: 'Morocco', planTier: 'assure', deploymentModel: 'saas', domain: 'meridian-re', language: 'en',
       licenseOptions: { supportTier: 'priority' },
     });
+
+    // --- Sector showcase organizations (25+ NCP sheets each), for demos and
+    // cross-industry screenshot capture. See sectorShowcaseTemplates.js. ---
+    for (const def of SHOWCASE_ORG_DEFS) {
+      seedOrganization({ id: randomUUID(), ...def });
+    }
   });
   tx();
   console.log('Seed complete.');
