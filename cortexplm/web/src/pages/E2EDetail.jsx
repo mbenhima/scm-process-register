@@ -1,12 +1,14 @@
 import { Link, useParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { PageHeader, Card, CardHead, DataTable, useFetch, Skeleton, ErrorNote, Badge } from '../components/ui.jsx';
+import { useProcessAi, AiBadges, AiLegend } from '../components/ProcessAi.jsx';
 
 export default function E2EDetail() {
   const { id } = useParams();
   const { t } = useI18n();
   const { data: e, error } = useFetch(`/reference/e2e/${id}`);
   const bp = useFetch('/bpmn');
+  const ai = useProcessAi();
   if (error) return <div className="page"><ErrorNote error={error} /></div>;
   if (!e) return <div className="page"><Skeleton h={500} /></div>;
   const diagram = bp.data?.find((d) => d.e2e_id === e.id);
@@ -21,10 +23,13 @@ export default function E2EDetail() {
       </div>
       <Card style={{ marginBottom: 24 }}>
         <CardHead title={t('User-facing tasks and RACSI')} subtitle={t('R = Responsible, A = Accountable, C = Consulted, S = Supportive, I = Informed')} />
+        <div className="row" style={{ marginBottom: 8 }}><span className="strong small">{t('AI in this process')}:</span><AiBadges list={ai.forE2E(e)} compact empty={<span className="muted small">{t('No active AI use case.')}</span>} /></div>
+        <AiLegend />
         <DataTable csvName={`${e.id}_tasks`} rows={e.tasks} filterable={false} pageSize={20} columns={[
           { key: 'id', label: t('Task ID') }, { key: 'name', label: t('Task'), render: (x) => <><div className="strong">{t(x.name)}</div><div className="xs muted">{t(x.description)}</div></> },
           { key: 'chainLink', label: t('Chain link'), render: (x) => t(x.chainLink) }, { key: 'macroProcesses', label: t('Macro processes'), render: (x) => <span className="xs">{t(x.macroProcesses)}</span> },
           { key: 'module', label: t('Module'), render: (x) => t(x.module) },
+          { key: 'ai', label: t('AI'), sortable: false, csv: (x) => ai.forTask(x).map((u) => `${u.code} ${u.tier}`).join('; '), render: (x) => <AiBadges list={ai.forTask(x)} compact empty={<span className="muted xs">—</span>} /> },
           ...['R', 'A', 'C', 'S', 'I'].map((l) => ({ key: l, label: l, render: (x) => <span className="xs">{t(x[l])}</span> })),
         ]} />
       </Card>

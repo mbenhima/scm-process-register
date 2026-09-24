@@ -6,7 +6,7 @@ export default function AssistantPage() {
   const { t } = useI18n();
   return (
     <div className="page">
-      <PageHeader eyebrow={t('Intelligence')} title={t('AI Assistant')} subtitle={t('Answers questions about your organization within your permissions, and explains how to use the application. It runs offline on the built-in engine.')} />
+      <PageHeader eyebrow={t('AI & knowledge')} title={t('AI Assistant')} subtitle={t('Answers questions about your organization within your permissions, and explains how to use the application. It runs offline on the built-in engine.')} />
       <div className="grid two">
         <Card className="flush" style={{ display: 'flex', flexDirection: 'column', height: 600 }}><ChatPanel /></Card>
         <Card className="quiet">

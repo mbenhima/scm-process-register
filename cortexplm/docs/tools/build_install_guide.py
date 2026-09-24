@@ -4,12 +4,12 @@ from docstyle import new_document, header_footer, cover, toc, h1, para, bullets,
 
 ORGS = [
     ('Public Sector', 'Metro City Digital Services Agency', 'metrocity.example'),
-    ('Manufacturing in Construction', 'Cedarline Precast Systems', 'cedarline.example'),
+    ('Manufacturing', 'Cedarline Precast Systems', 'cedarline.example'),
     ('Healthcare', 'Meridale Health Network', 'meridale.example'),
     ('Agro-Business – Dairy Products', 'Valdora Dairy Cooperative', 'valdora.example'),
     ('Transportation', 'Orvane Transit Group', 'orvane.example'),
     ('Oil, Gas & Energy', 'Kestrel Energy & Utilities', 'kestrel.example'),
-    ('Construction', 'Ridgeway Construction Contractors', 'ridgeway.example'),
+    ('Real Estate Development', 'Ridgeway Real Estate Development', 'ridgeway.example'),
 ]
 GROUP_OF = {'cedarline.example': 'Atlas Infrastructure Holding', 'orvane.example': 'Atlas Infrastructure Holding', 'ridgeway.example': 'Atlas Infrastructure Holding',
             'valdora.example': 'Crescent Agro-Energy Group', 'kestrel.example': 'Crescent Agro-Energy Group'}
@@ -24,7 +24,7 @@ ROLES = [
 
 def build(out):
     doc = new_document('CortexPLM Installation Guide')
-    cover(doc, 'Installation Guide', 'CortexPLM', 'Install, start and sign in, step by step', 'Version 1.0  ·  September 2026')
+    cover(doc, 'Installation Guide', 'CortexPLM', 'Install, start and sign in, step by step', 'Version 2.0  ·  September 2026')
     header_footer(doc, 'CortexPLM Installation Guide')
     toc(doc)
 
@@ -101,8 +101,17 @@ def build(out):
     table(doc, ['E-mail', 'Password', 'Can do'], [('**admin@cortexplm.example**', '**Admin#2026**', 'Everything, in every organization. Switch organization from the top bar.')], widths=[2.4, 1.2, 3.17])
     doc.add_heading('6.2 Demonstration organizations', 2)
     para(doc, 'Every organization has the same set of users. Build the e-mail address from a user name and the organization domain, for example **pm1@metrocity.example**. The password is always **Demo#2026**.')
-    table(doc, ['Sector', 'Organization', 'Domain', 'Group'], [(a, b, f'**{c}**', GROUP_OF.get(c, 'Independent')) for a, b, c in ORGS], widths=[1.75, 2.2, 1.35, 1.47], size=9.5)
-    para(doc, 'Organizations of the same group can compare their indicators in **Reports > Benchmarking**. Independent organizations compare only their own projects.')
+    table(doc, ['Group (Yes / No)', 'Group', 'Organization', 'Sector', 'Domain'], [('Yes' if c in GROUP_OF else 'No', GROUP_OF.get(c, '—'), b, a, f'**{c}**') for a, b, c in ORGS], widths=[0.85, 1.6, 1.75, 1.35, 1.22], size=9)
+    para(doc, 'Each organization has 21 projects (for example **PUB-001** to **PUB-021**), at least ten instances of every end-to-end process, a team tree (OBS) with roles for every project, sample attachments, checklist templates and AI use cases. '
+         'Open **Portfolio > Groups, organizations & projects** to see the whole tree Group (Yes / No) > Organization > Projects. Organizations of the same group can compare their indicators in **Portfolio > Benchmarking** and see each other\'s projects read-only in **Portfolio > Portfolio overview**.')
+    doc.add_heading('6.4 Create your own group and organization', 2)
+    numbered(doc, [
+        'Sign in as **admin@cortexplm.example** and open **Portfolio > Groups, organizations & projects**.',
+        'Optional: select **Add group**, type a name and **Save** (Group: Yes). Skip this for an independent organization (Group: No).',
+        'Select **Add organization**: answer **Belongs to a group?**, type the name, choose the sector, country and subscription.',
+        'Keep **Create the starting team** ticked, type the e-mail domain (for example **acme.example**) and an initial password of at least 8 characters, then **Save**.',
+        'The organization receives its standard content and one account per role, such as **pm1@acme.example**. Sign in with that account to create the first project. The User Guide walks through six complete examples.',
+    ])
     doc.add_heading('6.3 User names and roles', 2)
     table(doc, ['User name', 'Role in the application'], [(f'**{a}**', b) for a, b in ROLES], widths=[1.4, 5.37])
     callout(doc, 'The licence of Orvane Transit Group expires in 22 days. A yellow banner shows this on purpose, to demonstrate the licence warning.', 'Note')
@@ -131,7 +140,8 @@ def build(out):
         ('Port numbers', 'In the **server** folder, copy **.env.example** to a new file named **.env** and change **PORT**. The web application expects port 4000.'),
         ('Security secret', 'In **.env**, replace **APP_SECRET** with a long random text before real use.'),
         ('Outgoing e-mail', 'In **.env**, fill in the **SMTP_** lines with your mail server. Without them, e-mail notifications stay queued and in-app notifications still work.'),
-        ('Live AI model', 'Optional. In the application, open **Settings**, section **Live AI model**, and type an API key. Without a key, the built-in suggestions are used.'),
+        ('Live AI model', 'Optional. In the application, open **Settings** or **Administration > Configuration & AI model**, card **Live AI model**. Choose the provider, choose a model in the list (Claude Opus 5 by default) or **Custom model…** to type another name, paste an API key and select **Test connection**, then **Save connection**. The key stays in the browser. Without a key, the built-in suggestions are used.'),
+        ('Attachments', 'Files attached to tasks are stored in **server/data/uploads** (up to 25 MB each). Include this folder in your backups.'),
         ('Backups', 'In **.env**, **BACKUP_RETENTION_DAYS** sets how many days of backups are kept (default 14); **BACKUP_DAILY=off** stops the automatic daily backup.'),
         ('OnPrem licence file', 'In **.env**, set **DEPLOYMENT_MODE=onprem**. The vendor signs a licence with **npm run sign-licence**; the administrator installs it in **Administration > Licensing**.'),
     ], widths=[1.6, 5.17])

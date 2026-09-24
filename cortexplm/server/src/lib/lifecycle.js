@@ -135,6 +135,33 @@ export function checklistTemplate(e2eId, gate, track) {
   return items.slice(0, n).map((it, i) => ({ ...it, seq: i + 1, mandatory: it.mandatory || (track === 'Full' ? i % 2 === 0 : track === 'Light' ? i % 3 === 0 : 0) ? 1 : 0 }));
 }
 
+// Items copied into a gate checklist when the gate opens: the organization's templates linked to this gate
+// and track (auto_apply), or the reference checklist when none is linked.
+export function gateChecklistItems(orgId, e2eId, gate, track) {
+  const tpls = q.all('SELECT * FROM checklist_templates WHERE org_id = ? AND gate = ? AND track = ? AND auto_apply = 1 ORDER BY id', orgId, gate, track);
+  const items = tpls.length ? tpls.flatMap((tp) => json(tp.items, []).map((it) => ({ ...it, source: it.source || `Template: ${tp.name}` }))) : checklistTemplate(e2eId, gate, track);
+  return items.map((it, i) => ({ ...it, seq: i + 1, mandatory: it.mandatory ? 1 : 0 }));
+}
+
+// Adds items to an open gate checklist, from a template or typed by the user.
+export function addChecklistItems(ctx, gateId, items, source) {
+  const g = q.get('SELECT * FROM gate_reviews WHERE id = ? AND org_id = ?', gateId, ctx.orgId);
+  if (!g) throw new AppError(404, 'Gate review not found.');
+  if (!['Open', 'On hold'].includes(g.status)) throw new AppError(409, 'The gate has been submitted; the checklist is frozen.');
+  const clean = items.map((it) => ({ text: String(it.text || '').trim(), mandatory: it.mandatory ? 1 : 0, evidence_required: it.evidence_required ?? (it.mandatory ? 1 : 0), source: it.source || source })).filter((it) => it.text);
+  if (!clean.length) throw new AppError(400, 'Add at least one checklist item.');
+  const existing = new Set(q.all('SELECT text FROM checklist_items WHERE gate_review_id = ?', g.id).map((r) => r.text.toLowerCase()));
+  let seq = q.get('SELECT COALESCE(MAX(seq), 0) n FROM checklist_items WHERE gate_review_id = ?', g.id).n;
+  const added = [];
+  for (const it of clean) {
+    if (existing.has(it.text.toLowerCase())) continue; // the same item is never added twice
+    seq += 1;
+    added.push(q.insert('checklist_items', { org_id: ctx.orgId, gate_review_id: g.id, seq, text: it.text, source: it.source, mandatory: it.mandatory, evidence_required: it.evidence_required ? 1 : 0 }));
+  }
+  audit(ctx, 'gate_review', g.id, 'checklist.add', { items: [null, added.length] }, source);
+  return { added: added.length, skipped: clean.length - added.length };
+}
+
 // ---------------------------------------------------------------- E2E runs
 function tasksForRun(project, e2eId, branch) {
   let list = E2E[e2eId].tasks;
@@ -174,8 +201,8 @@ export function startRun(ctx, project, e2eId, { trigger, branch = null, schedule
   const hasGate = gate && TRACKS[project.track].gates.includes(gate) && !(e2eId === 'E2E-08' && branch === 'A');
   if (hasGate) {
     const gid = q.insert('gate_reviews', { org_id: project.org_id, run_id: runId, project_id: project.id, gate, status: 'Open' });
-    for (const it of checklistTemplate(e2eId, gate, project.track)) {
-      q.insert('checklist_items', { org_id: project.org_id, gate_review_id: gid, seq: it.seq, text: it.text, source: it.source, mandatory: it.mandatory, evidence_required: it.mandatory ? 1 : 0 });
+    for (const it of gateChecklistItems(project.org_id, e2eId, gate, project.track)) {
+      q.insert('checklist_items', { org_id: project.org_id, gate_review_id: gid, seq: it.seq, text: it.text, source: it.source, mandatory: it.mandatory, evidence_required: it.evidence_required ?? (it.mandatory ? 1 : 0) });
     }
   }
   if (e2eId !== 'E2E-09') q.run('UPDATE projects SET current_e2e = ? WHERE id = ?', e2eId, project.id);

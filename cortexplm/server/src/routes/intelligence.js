@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { q, json } from '../db.js';
 import { requirePerm } from '../lib/security.js';
 import { requireFeatureFor, checkQuota } from '../lib/entitlements.js';
-import { generate, recordOutcome, assistantAnswer, effectiveState } from '../lib/ai.js';
+import { generate, recordOutcome, assistantAnswer, effectiveState, testLlm, LLM_MODELS, LLM_PROVIDERS } from '../lib/ai.js';
 import { search, searchHelp, invalidate } from '../lib/rag.js';
 import { HELP } from '../lib/help.js';
 import { audit, snapshot, versionsOf } from '../lib/audit.js';
@@ -32,7 +32,7 @@ r.post('/ai/use-cases', requirePerm('ai.manage'), h((req) => {
   const d = Object.fromEntries(UC_FIELDS.map((f) => [f, req.body[f] ?? null]));
   if (!d.name || !d.human_checkpoint) throw badRequest('Name and human checkpoint are required.');
   if (!['Assistive', 'Augmented'].includes(d.tier)) throw badRequest('Tier must be Assistive or Augmented (never autonomous).');
-  const n = q.get("SELECT COUNT(*) n FROM ai_use_cases WHERE org_id = ?", req.orgId).n + 1;
+  const n = (q.get('SELECT MAX(CAST(substr(code, 6) AS INTEGER)) n FROM ai_use_cases WHERE org_id = ?', req.orgId).n || 0) + 1;
   const id = q.insert('ai_use_cases', { ...d, org_id: req.orgId, code: `AIUC-${String(n).padStart(2, '0')}`, is_custom: 1, approval_status: 'Pending Approval', active: 0 });
   const row = q.get('SELECT * FROM ai_use_cases WHERE id = ?', id);
   snapshot(ctxOf(req), 'ai_use_case', id, row, 'Version 1 created.');
@@ -50,6 +50,16 @@ r.put('/ai/use-cases/:id', requirePerm('ai.manage'), h((req) => {
   const v = snapshot(ctxOf(req), 'ai_use_case', u.id, row, req.body.justification);
   audit(ctxOf(req), 'ai_use_case', u.id, 'update', Object.fromEntries(Object.keys(d).map((k) => [k, [u[k], d[k]]])), req.body.justification);
   return { ...row, version: v };
+}));
+// Delete: custom use cases only. Seeded catalog entries are shared by every organization and are deactivated instead.
+// The append-only usage log keeps its entries (it stores the use case code, not a link).
+r.delete('/ai/use-cases/:id', requirePerm('ai.manage'), h((req) => {
+  const u = q.get('SELECT * FROM ai_use_cases WHERE id = ? AND org_id = ?', req.params.id, req.orgId);
+  if (!u) throw notFound();
+  if (!u.is_custom) throw Object.assign(new Error('Seeded use cases cannot be deleted. Deactivate it instead.'), { status: 409 });
+  q.run('DELETE FROM ai_use_cases WHERE id = ?', u.id);
+  audit(ctxOf(req), 'ai_use_case', u.id, 'delete', { name: [u.name, null] }, req.body?.justification || null);
+  return { ok: true };
 }));
 r.post('/ai/use-cases/:id/revert/:version', requirePerm('ai.manage'), h((req) => {
   const u = q.get('SELECT * FROM ai_use_cases WHERE id = ? AND org_id = ?', req.params.id, req.orgId);
@@ -86,6 +96,9 @@ r.put('/ai/use-cases/:id/override/:projectId', requirePerm('project.edit'), h((r
   audit(ctxOf(req), 'project', p.id, 'ai_override', { [`use case ${u.id}`]: [null, req.body.state] });
   return { ok: true };
 }));
+// Live AI model: catalog for the drop-downs and a connection test. The key is used for one call and never stored.
+r.get('/ai/models', h(() => ({ providers: LLM_PROVIDERS, models: LLM_MODELS })));
+r.post('/ai/test-connection', requirePerm('ai.use'), h(async (req) => testLlm(req.body?.llm)));
 r.post('/ai/generate', requirePerm('ai.use'), h(async (req) => {
   requireFeatureFor(req.orgId, 'ai');
   const { useCaseId, projectId, recordType, recordId, text, llm } = req.body || {};

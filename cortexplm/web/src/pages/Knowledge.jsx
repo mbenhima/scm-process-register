@@ -26,7 +26,7 @@ export default function Knowledge() {
   }
   return (
     <div className="page">
-      <PageHeader eyebrow={t('Intelligence')} title={t('Knowledge base')} subtitle={t('One search covers the process reference, standards and guidance, your practice notes, lessons learned and projects.')} />
+      <PageHeader eyebrow={t('AI & knowledge')} title={t('Knowledge base')} subtitle={t('One search covers the process reference, standards and guidance, your practice notes, lessons learned and projects.')} />
       <Tabs value={tab} onChange={setTab} tabs={[{ value: 'search', label: t('Search') }, { value: 'articles', label: t('Articles') }]} />
       {tab === 'search' && (
         <Card>

@@ -27,6 +27,7 @@ const pages = {
   Configuration: P(() => import('./pages/admin/Configuration.jsx')), Catalog: P(() => import('./pages/admin/Catalog.jsx')), Integrations: P(() => import('./pages/admin/Integrations.jsx')),
   Licensing: P(() => import('./pages/admin/Licensing.jsx')), Audit: P(() => import('./pages/admin/Audit.jsx')), Traceability: P(() => import('./pages/admin/Traceability.jsx')),
   Notifications: P(() => import('./pages/Notifications.jsx')), Settings: P(() => import('./pages/Settings.jsx')), Help: P(() => import('./pages/Help.jsx')), Benchmarking: P(() => import('./pages/Benchmarking.jsx')),
+  Tenancy: P(() => import('./pages/Tenancy.jsx')), Portfolio: P(() => import('./pages/Portfolio.jsx')), ChecklistTemplates: P(() => import('./pages/ChecklistTemplates.jsx')),
 };
 
 const ROUTES = [
@@ -38,7 +39,7 @@ const ROUTES = [
   ['/wbs', 'Wbs'], ['/wbs/:id', 'Wbs'], ['/reports', 'Reports'], ['/reports/:id', 'Reports'], ['/benchmarking', 'Benchmarking'], ['/data-model', 'DataModel'], ['/role-menus', 'RoleMenus'],
   ['/admin/organizations', 'Organizations'], ['/admin/users', 'Users'], ['/admin/permissions', 'Permissions'], ['/admin/configuration', 'Configuration'],
   ['/admin/catalog', 'Catalog'], ['/admin/integrations', 'Integrations'], ['/admin/licensing', 'Licensing'], ['/admin/audit', 'Audit'],
-  ['/admin/traceability', 'Traceability'], ['/notifications', 'Notifications'], ['/settings', 'Settings'], ['/help', 'Help'],
+  ['/admin/traceability', 'Traceability'], ['/tenancy', 'Tenancy'], ['/portfolio', 'Portfolio'], ['/checklist-templates', 'ChecklistTemplates'], ['/notifications', 'Notifications'], ['/settings', 'Settings'], ['/help', 'Help'],
 ];
 
 // Route guard: a page opened by URL shows a clear message when the user's roles do not include it.

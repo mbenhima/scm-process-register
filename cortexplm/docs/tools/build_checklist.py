@@ -63,7 +63,7 @@ def rows_for(v):
             ('maxUsers enforcement and expiry warning (CTRL-003)', 'User creation blocked at the limit; banner 30 days before expiry', 'Users & roles; top banner', 'Orvane licence expires in 22 days'),
         ],
         'Seed data requirement (request)': [
-            ('Seven sectors: Public Sector, Manufacturing in Construction, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Construction', 'One organization per sector with 24–25 users and 21 projects', 'Organization switcher (platform admin)', ' / '.join(x['industry'] for x in o)),
+            ('Seven sectors: Public Sector, Manufacturing, Healthcare, Agro-Business – Dairy, Transportation, Oil/Gas/Energy, Construction', 'One organization per sector with 24–25 users and 21 projects', 'Organization switcher (platform admin)', ' / '.join(x['industry'] for x in o)),
             ('Tenant model: Group (Yes/No), Organization, Project', 'Atlas Infrastructure Holding (Cedarline, Ridgeway, Orvane); Crescent Agro-Energy Group (Valdora, Kestrel); Metro City and Meridale independent', 'Administration > Organizations & OBS', '2 groups, 5 members, 2 independent'),
             ('Benchmarking within the organization and within the group (external out of scope)', 'Project type, track and department comparison; group comparison of aggregates with opt-out; 5 automated tests', 'Reports > Benchmarking', '13 indicators'),
             ('At least 10 instances of each E2E process per industry', 'E2E-01:21 02:19 03:16 04:14 05:16 06:12 07:12 08:10 09:13 in every organization', 'Dashboard, E2E pages', 'Minimum 10 met'),

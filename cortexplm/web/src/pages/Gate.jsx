@@ -4,9 +4,61 @@ import { Gavel, Send } from 'lucide-react';
 import { useAuth } from '../lib/auth.jsx';
 import { useI18n } from '../lib/i18n.jsx';
 import { post, download } from '../lib/api.js';
-import { PageHeader, Card, CardHead, useFetch, Skeleton, ErrorNote, StatusBadge, Button, Field, Input, Textarea, Kpi, Segmented, Check, DataTable, useToast, fmtDate, fmtNum, Badge } from '../components/ui.jsx';
+import { PageHeader, Card, CardHead, useFetch, Skeleton, ErrorNote, StatusBadge, Button, Field, Input, Textarea, Kpi, Segmented, Check, DataTable, useToast, fmtDate, fmtNum, Badge, Modal } from '../components/ui.jsx';
 import AiSuggest from '../components/AiSuggest.jsx';
 import RexForm from '../components/RexForm.jsx';
+import { ItemsEditor } from './ChecklistTemplates.jsx';
+import { Select } from '../components/ui.jsx';
+
+// Add items to an open gate checklist: from the template library (templates of this gate and track first) or typed here.
+function AddToChecklist({ g, onAdded }) {
+  const { t } = useI18n();
+  const { can } = useAuth();
+  const toast = useToast();
+  const tpls = useFetch('/checklist-templates');
+  const [mode, setMode] = useState('template');
+  const [tid, setTid] = useState('');
+  const [items, setItems] = useState([{ text: '', mandatory: 0, evidence_required: 0 }]);
+  const [save, setSave] = useState(null);
+  if (!tpls.data) return null;
+  const track = g.project.track;
+  const sorted = [...tpls.data].sort((a, b) => (b.gate === g.gate && b.track === track) - (a.gate === g.gate && a.track === track));
+  const chosen = tpls.data.find((x) => String(x.id) === String(tid));
+  const add = async () => {
+    try {
+      const r = mode === 'template' ? await post(`/gates/${g.id}/checklist/from-template`, { templateId: Number(tid) }) : await post(`/gates/${g.id}/checklist`, { items: items.filter((i) => i.text.trim()) });
+      toast.ok(t('{n} items added{s}.', { n: r.added, s: r.skipped ? t(' ({n} already in the checklist)', { n: r.skipped }) : '' }));
+      setTid(''); setItems([{ text: '', mandatory: 0, evidence_required: 0 }]); onAdded();
+    } catch (e) { toast.err(e); }
+  };
+  return (
+    <Card>
+      <CardHead title={t('Add to this checklist')} subtitle={t('From the checklist template library, or item by item. Items already in the checklist are not added twice.')}
+        actions={can('checklist.template.manage') && <Button size="sm" onClick={() => setSave({ name: `${g.project.code} ${g.gate} checklist`, auto_apply: false })}>{t('Save as template')}</Button>} />
+      <div className="stack">
+        <Segmented label={t('Add from')} value={mode} onChange={setMode} options={[{ value: 'template', label: t('From a template') }, { value: 'manual', label: t('Manually') }]} />
+        {mode === 'template' ? (
+          <>
+            <Field label={t('Template')} hint={t('Templates of gate {g} on the {tr} Track are listed first.', { g: g.gate, tr: t(track) })}>
+              <Select value={tid} onChange={(e) => setTid(e.target.value)} placeholder={t('Choose a template')} options={sorted.map((x) => ({ value: x.id, label: `${x.gate} · ${t(`${x.track} Track`)} · ${x.name} (${x.items.length})` }))} />
+            </Field>
+            {chosen && <ul className="list-plain small">{chosen.items.slice(0, 12).map((i, k) => <li key={k}>{i.text} {i.mandatory ? <Badge tone="dark">{t('Mandatory')}</Badge> : null}</li>)}{chosen.items.length > 12 && <li className="muted">{t('and {n} more', { n: chosen.items.length - 12 })}</li>}</ul>}
+          </>
+        ) : <ItemsEditor items={items} onChange={setItems} />}
+        <div><Button variant="primary" disabled={mode === 'template' ? !tid : !items.some((i) => i.text.trim())} onClick={add}>{t('Add to checklist')}</Button></div>
+      </div>
+      {save && (
+        <Modal title={t('Save this checklist as a template')} subtitle={t('The template keeps the items of this checklist for gate {g} on the {tr} Track.', { g: g.gate, tr: t(track) })} onClose={() => setSave(null)}
+          footer={<><Button onClick={() => setSave(null)}>{t('Cancel')}</Button><Button variant="primary" disabled={!save.name.trim()} onClick={async () => { try { await post(`/gates/${g.id}/checklist/save-as-template`, save); toast.ok(t('Template saved in the library.')); setSave(null); tpls.reload(); } catch (e) { toast.err(e); } }}>{t('Save')}</Button></>}>
+          <div className="form-grid">
+            <Field label={t('Name')} required full><Input value={save.name} onChange={(e) => setSave({ ...save, name: e.target.value })} /></Field>
+            <Field full><Check label={t('Link to the gate: copy these items into the checklist every time this gate opens on this track')} checked={save.auto_apply} onChange={(e) => setSave({ ...save, auto_apply: e.target.checked })} /></Field>
+          </div>
+        </Modal>
+      )}
+    </Card>
+  );
+}
 
 export default function Gate() {
   const { id } = useParams();
@@ -55,9 +107,11 @@ export default function Gate() {
             <DataTable filterable={false} rows={g.items} pageSize={60} columns={[
               { key: 'seq', label: '#', num: true }, { key: 'text', label: t('Checklist item'), render: (i) => <>{t(i.text)} {i.mandatory ? <Badge tone="dark">{t('Mandatory')}</Badge> : null}</> },
               { key: 'evidence', label: t('Evidence'), render: (i) => <span className="xs">{i.evidence || i.waiver_reason || '—'}{i.files.length ? ` · ${i.files.length} ${t('file(s)')}` : ''}</span> },
+              { key: 'source', label: t('Source'), render: (i) => <span className="xs muted">{t(i.source || '')}</span> },
               { key: 'status', label: t('Status'), render: (i) => <StatusBadge value={i.status} /> },
             ]} />
           </Card>
+          {['Open', 'On hold'].includes(g.status) && can('checklist.edit') && <AddToChecklist g={g} onAdded={reload} />}
           <Card>
             <CardHead title={t('Task results')} />
             <ul className="list-plain">

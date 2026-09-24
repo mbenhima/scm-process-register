@@ -1,11 +1,13 @@
-// The five end-to-end walkthroughs used in the User Guide. Each value here is what the user types.
+// The six end-to-end walkthroughs used in the User Guide. Each starts by creating Group (Yes / No), then the
+// Organization with its starting team, then the project. Each value here is what the user types.
 // run-scenarios.mjs replays them through the API (as the user would through the screens) and records
 // the outcome, so the guide always matches the application.
 const cash = (investment, flow, years, rate) => ({ investment, annual_cash_flow: flow, years, discount_rate: rate });
 
 export const SCENARIOS = [
   {
-    id: 1, title: 'Fast Track in the Public Sector', org: 'metrocity.example', pm: 'pm1', exec: 'exec',
+    id: 1, title: 'Fast Track in the Public Sector', org: 'harbourview.example', pm: 'pm1', exec: 'exec',
+    tenancy: { group: null, org: { name: 'Harbourview City Services', industry: 'Public Sector', country: 'Morocco', subscription_id: 'PACK-11' } },
     summary: 'A low-complexity citizen service goes from idea to launch in the Fast Track: E2E-01, E2E-02 and E2E-05 with gates T-1, T0 and T3.',
     project: {
       name: 'Online Parking Permit Renewal', description: 'Residents renew their parking permit online in under five minutes, without visiting a counter.',
@@ -29,7 +31,8 @@ export const SCENARIOS = [
     },
   },
   {
-    id: 2, title: 'Fast Track in Transportation, with a skipped task and a Recycle decision', org: 'orvane.example', pm: 'pm1', exec: 'exec',
+    id: 2, title: 'Fast Track in Transportation, with a skipped task and a Recycle decision', org: 'northline.example', pm: 'pm1', exec: 'exec',
+    tenancy: { group: { name: 'Meridian Mobility Holding', description: 'Regional transport operators owned by one holding.', create: true }, org: { name: 'Northline Regional Transit', industry: 'Transportation', country: 'Canada', subscription_id: 'BND-05' } },
     summary: 'A Fast Track feature for bus passengers. One task is skipped under Rule R2, and the board sends the T0 gate back once (Recycle) before approving it.',
     project: {
       name: 'Real-time Bus Crowding Indicator', description: 'Shows how full the next bus is in the passenger app, using existing automatic passenger counters.',
@@ -55,7 +58,8 @@ export const SCENARIOS = [
     },
   },
   {
-    id: 3, title: 'Light Track in Agro-Business (Dairy), from idea to relaunch', org: 'valdora.example', pm: 'pm1', exec: 'exec', admin: 'process',
+    id: 3, title: 'Light Track in Agro-Business (Dairy), from idea to relaunch', org: 'oasisdairy.example', pm: 'pm1', exec: 'exec', admin: 'process',
+    tenancy: { group: { name: 'Crescent Agro-Energy Group' }, org: { name: 'Oasis Fresh Dairies', industry: 'Agro-Business - Dairy Products', country: 'Morocco', subscription_id: 'BND-05' } },
     summary: 'A new dairy product runs the whole Light Track: six gates, the E2E-09 market campaign, the performance review (E2E-07) with Rule R1, and a relaunch through E2E-08 Branch A.',
     project: {
       name: 'Lactose-free Greek Yogurt 500 g', description: 'A lactose-free strained yogurt for the national retail chains, made on the existing cup line.',
@@ -88,7 +92,8 @@ export const SCENARIOS = [
     },
   },
   {
-    id: 4, title: 'Full Track in Healthcare, from idea to retirement', org: 'meridale.example', pm: 'pm1', exec: 'exec',
+    id: 4, title: 'Full Track in Healthcare, from idea to retirement', org: 'clearwater.example', pm: 'pm1', exec: 'exec',
+    tenancy: { group: null, org: { name: 'Clearwater Medical Devices', industry: 'Healthcare', country: 'France', subscription_id: 'BND-06' } },
     summary: 'A safety-critical medical device runs the complete Full Track: all nine E2E processes and all eight gates, ending with retirement through E2E-08 Branch B.',
     project: {
       name: 'Remote Cardiac Monitoring Patch', description: 'A wearable ECG patch that sends arrhythmia alerts to the cardiology team.',
@@ -123,21 +128,68 @@ export const SCENARIOS = [
     },
   },
   {
-    id: 5, title: 'Full Track in Oil, Gas & Energy, relaunching a live product', org: 'kestrel.example', pm: 'pm1', exec: 'exec',
-    summary: 'The seeded project ENR-012 Green Hydrogen Electrolyser Pilot is waiting in E2E-07. The review recommends a relaunch; E2E-08 Branch A loops back to development (E2E-04), and the improved product goes live again at T3.',
-    existing: 'ENR-012',
+    id: 5, title: 'Full Track in Oil, Gas & Energy, from idea to a relaunch', org: 'saharah2.example', pm: 'pm1', exec: 'exec',
+    tenancy: { group: { name: 'Crescent Agro-Energy Group' }, org: { name: 'Sahara Hydrogen Energy', industry: 'Oil, Gas & Energy', country: 'Oman', subscription_id: 'PACK-11' } },
+    summary: 'A green hydrogen offer runs the Full Track from idea to launch and performance review. The review recommends a relaunch; E2E-08 Branch A loops back to development (E2E-04), and the improved product goes live again at T3.',
+    project: {
+      name: 'Green Hydrogen Refuelling Kit', description: 'Containerised electrolyser and dispenser that lets fleet depots refuel hydrogen trucks on site.',
+      offer_type: 'Product-Service', region: 'Oman industrial zones',
+      scores: { strategic: 5, investment: 4, novelty: 4, regulatory: 4, market: 3, reach: 4, integration: 4 },
+    },
     t5Path: 'A',
     relaunchReentry: 'E2E-04',
-    stopAfter: 'T3',
     forms: {
+      'UFT-01-01': { idea_source: 'Market trend', idea_statement: 'Offer on-site hydrogen refuelling to truck fleets.' },
+      'UFT-01-02': { target_segment: 'Logistics fleets with 20 trucks or more', market_size: 60, strategic_fit: 82 },
+      'UFT-01-03': cash(3200, 900, 8, 10),
+      'UFT-01-04': { top_risk: 'Hydrogen leak at the dispenser', likelihood: 2, impact: 5, regulated: 'Yes' },
+      'UFT-01-05': { capabilities: 'Electrolyser stack, compression, dispenser, remote monitoring' },
+      'UFT-01-06': { portfolio_fit: 'Transformational', roadmap_slot: '2028-Q2' },
+      'UFT-02-02': cash(3400, 950, 8, 10),
+      'UFT-02-05': { gross_margin: 32 },
+      'UFT-02-06': { regulations: 'Pressure equipment directive, ATEX, ISO 19880 hydrogen fuelling' },
+      'UFT-02-07': { feasibility: 'Medium' },
+      'UFT-04-05': { acceptance_pass_rate: 97 },
+      'UFT-05-02': { planned_launch_date: '+90' },
+      'UFT-05-06': { people_trained: 30 },
+      'UFT-05-08': { approvals_complete: 'Yes' },
+      'UFT-06-01': { issues_open: 5 },
+      'UFT-06-04': { csat: 3.8, nps: 18 },
+      'UFT-06-05': { mtbf_hours: 3100 },
       'UFT-07-02': { revenue: 5200, cogs: 4300 },
       'UFT-07-03': { csat: 3.9, nps: 22 },
       'UFT-07-04': { recommendation: 'Relaunch' },
       'UFT-08-04': { reentry: 'E2E-04' },
-      'UFT-04-05': { acceptance_pass_rate: 98 },
-      'UFT-05-02': { planned_launch_date: '+45' },
-      'UFT-05-06': { people_trained: 25 },
+      'UFT-09-08': { leads: 140, conversion: 12 },
+    },
+  },
+  {
+    id: 6, title: 'Light Track in Real Estate Development, from idea to launch', org: 'palmgrove.example', pm: 'pm1', exec: 'exec',
+    tenancy: { group: { name: 'Atlas Infrastructure Holding' }, org: { name: 'Palmgrove Residential Developers', industry: 'Real Estate Development', country: 'Saudi Arabia', subscription_id: 'BND-05' } },
+    summary: 'A developer launches a new home offer on the Light Track: gates T-1 to T3, including the Real Estate checklist template added at gate T2 and a sales campaign in E2E-09.',
+    project: {
+      name: 'Smart Townhouse Collection', description: 'Townhouses sold off-plan with smart home equipment, solar roof and a resident app.',
+      offer_type: 'Product-Service', region: 'Riyadh region',
+      scores: { strategic: 3, investment: 4, novelty: 3, regulatory: 3, market: 2, reach: 4, integration: 3 },
+    },
+    stopAfter: 'T3',
+    addTemplateAt: { gate: 'T2', name: 'Off-plan launch readiness (escrow and permits)' },
+    forms: {
+      'UFT-01-01': { idea_source: 'Customer request', idea_statement: 'Offer smart, energy-efficient townhouses for young families.' },
+      'UFT-01-02': { target_segment: 'Young families buying their first home', market_size: 25, strategic_fit: 76 },
+      'UFT-01-03': cash(9500, 2600, 6, 9),
+      'UFT-01-04': { top_risk: 'Slow off-plan sales', likelihood: 3, impact: 4, regulated: 'Yes' },
+      'UFT-01-05': { capabilities: 'Modular townhouse design, smart home kit, resident app' },
+      'UFT-01-06': { portfolio_fit: 'Adjacent', roadmap_slot: '2027-Q4' },
+      'UFT-02-02': cash(9800, 2700, 6, 9),
+      'UFT-02-05': { gross_margin: 27 },
+      'UFT-02-06': { regulations: 'Off-plan sales regulation (escrow), building code, green building rating' },
+      'UFT-02-07': { feasibility: 'High' },
+      'UFT-04-05': { acceptance_pass_rate: 96 },
+      'UFT-05-02': { planned_launch_date: '+60' },
+      'UFT-05-06': { people_trained: 18 },
       'UFT-05-08': { approvals_complete: 'Yes' },
+      'UFT-09-08': { leads: 420, conversion: 9 },
     },
   },
 ];
@@ -157,3 +209,5 @@ export const RATIONALE = {
   T6: 'Customers migrated and costs closed; end of life confirmed.',
 };
 export const RECYCLE_RATIONALE = 'The business case needs a sensitivity analysis before we commit.';
+
+export const TEAM_PASSWORD = 'Start#2026';

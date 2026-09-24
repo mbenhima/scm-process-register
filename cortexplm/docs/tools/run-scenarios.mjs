@@ -1,15 +1,16 @@
 // Replays the User Guide walkthroughs against a running server and writes what happened to a JSON log.
 // Usage: node run-scenarios.mjs http://localhost:4000 out.json   (use a freshly seeded database)
 import fs from 'node:fs';
-import { SCENARIOS, outputFor, evidenceFor, RATIONALE, RECYCLE_RATIONALE } from './scenarios.mjs';
+import { SCENARIOS, outputFor, evidenceFor, RATIONALE, RECYCLE_RATIONALE, TEAM_PASSWORD } from './scenarios.mjs';
 
 const BASE = `${process.argv[2] || 'http://localhost:4000'}/api`;
 const OUT = process.argv[3] || 'scenario-log.json';
-const PASS = { admin: 'Admin#2026' };
+const PASS = { 'admin@cortexplm.example': 'Admin#2026' };
+const passFor = (email) => PASS[email] || (SCENARIOS.some((s) => email.endsWith(`@${s.org}`)) ? TEAM_PASSWORD : 'Demo#2026');
 const plusDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
 
 async function session(email) {
-  const r = await fetch(`${BASE}/auth/login`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, password: PASS[email] || 'Demo#2026' }) });
+  const r = await fetch(`${BASE}/auth/login`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, password: passFor(email) }) });
   const { token, error } = await r.json(); if (!token) throw new Error(`login ${email}: ${error}`);
   const call = async (method, path, body) => {
     const res = await fetch(BASE + path, { method, headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
@@ -23,6 +24,16 @@ async function session(email) {
 
 async function runScenario(s) {
   const log = { id: s.id, title: s.title, steps: [] };
+  // Step 0: Group (Yes / No) > Organization (with its starting team) > then the project below.
+  const admin = await session('admin@cortexplm.example');
+  let groupId = null; log.tenancy = { group: s.tenancy.group ? { ...s.tenancy.group } : null, org: { ...s.tenancy.org, domain: s.org, password: TEAM_PASSWORD } };
+  if (s.tenancy.group) {
+    const found = (await admin.get('/groups')).find((g) => g.name === s.tenancy.group.name);
+    groupId = found ? found.id : (await admin.post('/groups', { name: s.tenancy.group.name, description: s.tenancy.group.description })).id;
+    log.tenancy.group.created = !found;
+  }
+  const org = await admin.post('/organizations', { ...s.tenancy.org, group_id: groupId, default_language: 'en', starter_team: true, domain: s.org, initial_password: TEAM_PASSWORD });
+  log.tenancy.org.id = org.id; log.tenancy.org.users = org.users;
   const pm = await session(`${s.pm}@${s.org}`); const ex = await session(`${s.exec}@${s.org}`);
   log.pm = { email: pm.email, name: pm.me.user.name }; log.exec = { email: ex.email, name: ex.me.user.name };
   log.org = pm.me.organization.name; log.industry = pm.me.organization.industry;
@@ -71,6 +82,12 @@ async function runScenario(s) {
         }
       } else {
         step.gate = d.gate.gate;
+        if (s.addTemplateAt?.gate === d.gate.gate && !step.addedTemplate) {
+          const tpl = (await pm.get(`/checklist-templates?gate=${d.gate.gate}&track=${p.track}`)).find((x) => x.name === s.addTemplateAt.name);
+          const r = await pm.post(`/gates/${d.gate.id}/checklist/from-template`, { templateId: tpl.id });
+          step.addedTemplate = { name: tpl.name, added: r.added };
+          Object.assign(d, await pm.get(`/tasks/${task.id}`));
+        }
         step.items = d.checklist.map((c) => ({ seq: c.seq, text: c.text, mandatory: !!c.mandatory }));
         for (const c of d.checklist.filter((x) => x.mandatory && !['Complete', 'Waived'].includes(x.status))) await pm.put(`/checklist/${c.id}`, { action: 'complete', evidence: evidenceFor(p.code, d.gate.gate, c.seq) });
         await pm.post(`/tasks/${task.id}/complete`, {});

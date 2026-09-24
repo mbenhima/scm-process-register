@@ -87,12 +87,41 @@ function genericGenerator({ orgId, useCase, text, project }) {
   };
 }
 
+// Models offered in the AI model drop-down; any other model id can be typed as a custom choice.
+export const LLM_PROVIDERS = [
+  { id: 'anthropic', label: 'Anthropic Claude', endpoint: '' },
+  { id: 'custom', label: 'Custom endpoint (Anthropic Messages API compatible)', endpoint: 'required' },
+];
+export const LLM_MODELS = [
+  { id: 'claude-opus-5', label: 'Claude Opus 5 (default)' },
+  { id: 'claude-opus-5-5', label: 'Claude Opus 5.5' },
+  { id: 'claude-fable-5-1', label: 'Claude Fable 5.1 (most capable)' },
+  { id: 'claude-sonnet-5', label: 'Claude Sonnet 5' },
+  { id: 'claude-haiku-4-5', label: 'Claude Haiku 4.5 (fastest)' },
+];
+const clientFor = (llm, timeout = 60000) => new Anthropic({ apiKey: llm.apiKey, baseURL: llm.endpoint || undefined, maxRetries: 0, timeout });
+
+// Connection test: one short call with the user's key; only the outcome category is returned, never provider details.
+export async function testLlm(llm) {
+  if (!llm?.apiKey) return { ok: false, reason: 'Enter an API key first.' };
+  try {
+    await clientFor(llm, 30000).messages.create({ model: llm.model || 'claude-opus-5', max_tokens: 64, messages: [{ role: 'user', content: 'Reply with the word OK.' }] });
+    return { ok: true, model: llm.model || 'claude-opus-5' };
+  } catch (e) {
+    if (e instanceof Anthropic.AuthenticationError || e instanceof Anthropic.PermissionDeniedError) return { ok: false, reason: 'Authentication failure: check the API key.' };
+    if (e instanceof Anthropic.NotFoundError) return { ok: false, reason: 'Model not found: check the model name.' };
+    if (e instanceof Anthropic.RateLimitError) return { ok: false, reason: 'The provider is rate limiting requests; try again later.' };
+    if (e instanceof Anthropic.APIConnectionError) return { ok: false, reason: 'Unreachable: check the endpoint and the network.' };
+    return { ok: false, reason: `The provider refused the request (${e.status || 'error'}).` };
+  }
+}
+
 async function liveGenerate(llm, useCase, base, refs, text) {
   // Single outbound call using the user's own key; the key is never persisted, logged or returned.
-  const client = new Anthropic({ apiKey: llm.apiKey, baseURL: llm.endpoint || undefined, maxRetries: 0, timeout: 20000 });
+  const client = clientFor(llm);
   const system = 'You assist users of CortexPLM, a product-service lifecycle application. Use only the vocabulary of the application. State no number, score or name that is not present in the record data or the references provided. Keep the answer under 180 words. A person will review your output.';
   const content = `Use case: ${useCase.name}\nHuman checkpoint: ${useCase.human_checkpoint}\nTemplate: ${useCase.prompt_template || ''}\nUser input: ${text || '(none)'}\nDeterministic draft:\n${base}\nReferences:\n${refs.map((r) => `[${r.ref}] ${r.title}: ${r.snippet}`).join('\n')}`;
-  const res = await client.messages.create({ model: llm.model || 'claude-opus-5', max_tokens: 1024, system, messages: [{ role: 'user', content }] });
+  const res = await client.messages.create({ model: llm.model || 'claude-opus-5', max_tokens: 4096, system, messages: [{ role: 'user', content }] });
   if (res.stop_reason === 'refusal') throw new Error('Model declined the request.');
   const out = res.content.filter((b) => b.type === 'text').map((b) => b.text).join('\n').trim();
   if (!out) throw new Error('Empty model response.');

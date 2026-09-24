@@ -52,7 +52,7 @@ function metricsFor(orgId, projectIds) {
   const launched = projects.filter((p) => p.actual_launch_date);
   out.launch_rate = pct(launched.length, decided.length);
   out.kill_rate = pct(projects.filter((p) => p.status === 'Killed').length, n);
-  out.time_to_market_days = launched.length ? round(launched.reduce((s, p) => s + days(p.created_at, p.actual_launch_date), 0) / launched.length, 0) : null;
+  out.time_to_market_days = launched.length ? round(launched.reduce((s, p) => s + Math.max(0, days(p.created_at, p.actual_launch_date)), 0) / launched.length, 0) : null;
   const npv = projects.filter((p) => p.npv != null); const roi = projects.filter((p) => p.roi != null);
   out.avg_npv = npv.length ? round(npv.reduce((s, p) => s + p.npv, 0) / npv.length, 0) : null;
   out.avg_roi = roi.length ? round(roi.reduce((s, p) => s + p.roi, 0) / roi.length) : null;

@@ -5,14 +5,17 @@ import { useI18n } from '../../lib/i18n.jsx';
 import { post, put, del } from '../../lib/api.js';
 import { PageHeader, Card, CardHead, DataTable, useFetch, Skeleton, Button, Modal, Field, Input, Select, useToast, Tabs, Badge } from '../../components/ui.jsx';
 
-const INDUSTRIES = ['Public Sector', 'Manufacturing in Construction', 'Healthcare', 'Agro-Business - Dairy Products', 'Transportation', 'Oil, Gas & Energy', 'Construction'];
+const INDUSTRIES = ['Public Sector', 'Manufacturing', 'Healthcare', 'Agro-Business - Dairy Products', 'Transportation', 'Oil, Gas & Energy', 'Real Estate Development'];
 
 function Obs() {
   const { t } = useI18n();
   const toast = useToast();
   const { data: all, reload } = useFetch('/obs');
   const projects = useFetch('/projects');
+  const people = useFetch('/directory');
+  const roles = useFetch('/roles');
   const [edit, setEdit] = useState(null);
+  const [member, setMember] = useState({ user_id: '', role_id: '', project_role: '' });
   const [scope, setScope] = useState('');
   if (!all) return <Skeleton />;
   const data = all.filter((n) => String(n.project_id || '') === String(scope));
@@ -29,6 +32,8 @@ function Obs() {
       </Field></div>
       <DataTable csvName="obs" rows={rows} pageSize={80} onRowClick={setEdit} columns={[
         { key: 'name', label: t('Node'), render: (n) => <span style={{ paddingInlineStart: n.depth * 20 }} className={n.depth ? '' : 'strong'}>{n.name}</span> }, { key: 'type', label: t('Type'), render: (n) => t(n.type) },
+        { key: 'members', label: t('People and roles'), sortValue: (n) => n.members.length, csv: (n) => n.members.map((m) => `${m.name} (${m.project_role || m.role_name || ''})`).join('; '),
+          render: (n) => (n.members.length ? <div className="chips">{n.members.map((m) => <span key={m.id} className="chip" title={m.role_name ? `${m.role_id} ${t(m.role_name)}` : ''}>{m.name} · {t(m.project_role || m.role_name || '')}</span>)}</div> : <span className="muted">·</span>) },
         ...['users', 'projects', 'rules', 'controls', 'risks', 'racsi', 'bpmn', 'rex'].map((k) => ({ key: k, label: t(k === 'racsi' ? 'RACSI' : k === 'bpmn' ? 'BPMN' : k === 'rex' ? 'REX' : k.charAt(0).toUpperCase() + k.slice(1)), num: true, csv: (n) => n.linked[k], sortValue: (n) => n.linked[k], render: (n) => n.linked[k] || '·' })),
       ]} />
       {edit && (
@@ -40,6 +45,21 @@ function Obs() {
             <Field label={t('Type')} hint={t('Choose a type or type your own.')}><Input list="obs-types" value={edit.type} onChange={(e) => setEdit({ ...edit, type: e.target.value })} /><datalist id="obs-types">{['Site', 'Department', 'Team', 'Service', 'Work package'].map((v) => <option key={v} value={v}>{t(v)}</option>)}</datalist></Field>
             <Field label={t('Parent')}><Select value={edit.parent_id || ''} onChange={(e) => setEdit({ ...edit, parent_id: e.target.value })} placeholder={t('Top level')} options={data.filter((n) => n.id !== edit.id).map((n) => ({ value: n.id, label: n.name }))} /></Field>
           </div>
+          {edit.id && (
+            <div style={{ marginTop: 16 }}>
+              <h4>{t('People and their role in this node')}</h4>
+              <ul className="list-plain">{(all.find((n) => n.id === edit.id)?.members || []).map((m) => (
+                <li key={m.id} className="row between"><span>{m.name} · <span className="muted">{t(m.project_role || '')}{m.role_id ? ` (${m.role_id} ${t(m.role_name)})` : ''}</span></span>
+                  <Button size="sm" variant="danger" onClick={async () => { try { await del(`/obs/${edit.id}/members/${m.id}`); reload(); } catch (e) { toast.err(e); } }}>{t('Remove')}</Button></li>
+              ))}</ul>
+              <div className="form-grid" style={{ marginTop: 8 }}>
+                <Field label={t('Person')}><Select value={member.user_id} onChange={(e) => setMember({ ...member, user_id: e.target.value })} placeholder={t('Choose')} options={(people.data || []).map((u) => ({ value: u.id, label: u.name }))} /></Field>
+                <Field label={t('Role (permission set)')}><Select value={member.role_id} onChange={(e) => setMember({ ...member, role_id: e.target.value })} placeholder={t('Choose')} options={(roles.data || []).map((r) => ({ value: r.id, label: `${r.id} ${t(r.name)}` }))} /></Field>
+                <Field label={t('Role played here')} hint={t('For example: Project manager, Engineering lead.')}><Input value={member.project_role} onChange={(e) => setMember({ ...member, project_role: e.target.value })} /></Field>
+                <div><Button disabled={!member.user_id} onClick={async () => { try { await post(`/obs/${edit.id}/members`, member); setMember({ user_id: '', role_id: '', project_role: '' }); reload(); } catch (e) { toast.err(e); } }}>{t('Add person')}</Button></div>
+              </div>
+            </div>
+          )}
         </Modal>
       )}
     </Card>
@@ -58,8 +78,8 @@ export default function Organizations() {
   const admin = me.user.isPlatformAdmin;
   return (
     <div className="page">
-      <PageHeader eyebrow={t('Administration')} title={t('Organizations & OBS')} subtitle={t('Groups contain organizations; each organization is an isolated tenant with its own projects, users and data.')} />
-      <Tabs value={tab} onChange={setTab} tabs={[{ value: 'orgs', label: t('Organizations') }, { value: 'groups', label: t('Groups') }, { value: 'obs', label: t('OBS of {o}', { o: me.organization.name }) }]} />
+      <PageHeader eyebrow={t('Administration')} title={t('Organizations, OBS & teams')} subtitle={t('Groups contain organizations; each organization is an isolated tenant with its own projects, users and data.')} />
+      <Tabs value={tab} onChange={setTab} tabs={[{ value: 'orgs', label: t('Organizations') }, { value: 'groups', label: t('Groups') }, { value: 'obs', label: t('OBS & project teams of {o}', { o: me.organization.name }) }]} />
       {tab === 'orgs' && (orgs.data ? (
         <Card>
           <DataTable csvName="organizations" rows={orgs.data} onRowClick={setEdit} toolbar={admin && <Button variant="primary" icon={Plus} onClick={() => setEdit({ name: '', industry: INDUSTRIES[0], country: '', default_language: 'en', subscription_id: 'PACK-01' })}>{t('Add organization')}</Button>} columns={[

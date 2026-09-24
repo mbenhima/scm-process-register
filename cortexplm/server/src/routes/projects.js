@@ -6,17 +6,25 @@ import crypto from 'node:crypto';
 import { q, json } from '../db.js';
 import { config } from '../config.js';
 import { requirePerm, has } from '../lib/security.js';
-import { E2E, GATE, TRACK_MATRIX, MP } from '../lib/ref.js';
+import { E2E, GATE, TRACK_MATRIX, MP, TRACKS, GATE_OF_E2E } from '../lib/ref.js';
 import * as L from '../lib/lifecycle.js';
 import { audit, diff, justificationRequired } from '../lib/audit.js';
 import { formFor } from '../lib/taskForms.js';
-import { h, ctxOf, notFound, badRequest } from './util.js';
+import { h, ctxOf, notFound, badRequest, crud } from './util.js';
 import { invalidate } from '../lib/rag.js';
 import { computeKpis } from '../lib/kpis.js';
 
 const r = Router();
 fs.mkdirSync(config.uploadDir, { recursive: true });
-const upload = multer({ dest: config.uploadDir, limits: { fileSize: 15 * 1024 * 1024 } });
+// Attachments: office documents, PDF, images, drawings/CAD, data, archives, audio/video and e-mails, up to 25 MB each.
+export const ATTACHMENT_TYPES = {
+  Documents: ['pdf', 'doc', 'docx', 'odt', 'rtf', 'txt', 'md'], Spreadsheets: ['xls', 'xlsx', 'xlsm', 'ods', 'csv'], Presentations: ['ppt', 'pptx', 'odp'],
+  Images: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'tif', 'tiff', 'svg'], 'Drawings & CAD': ['dwg', 'dxf', 'step', 'stp', 'igs', 'iges', 'stl', 'ifc'],
+  'Data & models': ['json', 'xml', 'bpmn', 'yaml', 'yml'], Archives: ['zip', '7z', 'rar', 'gz'], 'Audio & video': ['mp3', 'wav', 'mp4', 'mov', 'webm'], 'E-mails': ['eml', 'msg'],
+};
+const ALLOWED_EXT = new Set(Object.values(ATTACHMENT_TYPES).flat());
+const extOf = (name) => String(name).split('.').pop().toLowerCase();
+const upload = multer({ dest: config.uploadDir, limits: { fileSize: 25 * 1024 * 1024, files: 10 } });
 const today = () => new Date().toISOString().slice(0, 10);
 
 const projectRow = (p) => {
@@ -109,8 +117,8 @@ const taskDetail = (orgId, id, req) => {
   const uft = E2E[run.e2e_id].tasks.find((x) => x.id === t.uft_id) || Object.values(E2E).flatMap((e) => e.tasks).find((x) => x.id === t.uft_id);
   const gate = q.get('SELECT * FROM gate_reviews WHERE run_id = ?', t.run_id);
   const checklist = gate && t.kind !== 'work' ? q.all('SELECT c.*, u.name completed_by_name FROM checklist_items c LEFT JOIN users u ON u.id = c.completed_by WHERE gate_review_id = ? ORDER BY seq', gate.id)
-    .map((c) => ({ ...c, files: q.all("SELECT id, filename FROM evidence_files WHERE entity_type = 'checklist_item' AND entity_id = ?", c.id) })) : null;
-  const files = q.all("SELECT id, filename, uploaded_at FROM evidence_files WHERE entity_type = 'task' AND entity_id = ?", t.id);
+    .map((c) => ({ ...c, files: filesOf('checklist_item', c.id) })) : null;
+  const files = filesOf('task', t.id);
   const people = q.all('SELECT id, name FROM users WHERE id IN (?, ?)', t.owner_id || 0, t.evaluator_id || 0);
   return {
     ...t, data: json(t.data, {}), evaluation: maskEval(req, t, p, json(t.evaluation, null)), project: { id: p.id, code: p.code, name: p.name, track: p.track, status: p.status, owner_id: p.owner_id },
@@ -147,24 +155,47 @@ r.put('/tasks/:id/schedule', requirePerm('wbs.manage'), h((req) => {
 // Checklist items
 r.put('/checklist/:id', requirePerm('checklist.edit'), h((req) => L.updateChecklistItem(ctxOf(req), req.params.id, req.body, req.perms)));
 
-// Evidence files
-r.post('/evidence', requirePerm('task.edit', 'checklist.edit'), upload.single('file'), h((req) => {
+// Evidence files and attachments (tasks and checklist items), several files per upload.
+const attachmentTarget = (req, entityType, entityId) => (entityType === 'task' ? q.get('SELECT id FROM run_tasks WHERE id = ? AND org_id = ?', entityId, req.orgId)
+  : entityType === 'checklist_item' ? q.get('SELECT id FROM checklist_items WHERE id = ? AND org_id = ?', entityId, req.orgId) : null);
+export const filesOf = (entityType, entityId) => q.all(`SELECT f.id, f.filename, f.mime, f.size, f.uploaded_at, u.name uploaded_by_name FROM evidence_files f LEFT JOIN users u ON u.id = f.uploaded_by
+  WHERE f.entity_type = ? AND f.entity_id = ? ORDER BY f.id`, entityType, entityId).map((f) => ({ ...f, ext: extOf(f.filename) }));
+r.get('/attachment-types', h(() => ({ types: ATTACHMENT_TYPES, maxMb: 25, maxFiles: 10 })));
+r.post('/evidence', requirePerm('task.edit', 'checklist.edit'), upload.any(), h((req) => {
   const { entity_type, entity_id } = req.body;
-  if (!req.file) throw badRequest('Choose a file to upload.');
-  const ok = entity_type === 'task' ? q.get('SELECT id FROM run_tasks WHERE id = ? AND org_id = ?', entity_id, req.orgId)
-    : entity_type === 'checklist_item' ? q.get('SELECT id FROM checklist_items WHERE id = ? AND org_id = ?', entity_id, req.orgId) : null;
-  if (!ok) { fs.unlinkSync(req.file.path); throw notFound('Record not found.'); }
-  const stored = crypto.randomUUID();
-  fs.renameSync(req.file.path, path.join(config.uploadDir, stored));
-  const id = q.insert('evidence_files', { org_id: req.orgId, entity_type, entity_id, filename: req.file.originalname, stored_name: stored, mime: req.file.mimetype, size: req.file.size, uploaded_by: req.user.id });
-  audit(ctxOf(req), entity_type, entity_id, 'evidence', { file: [null, req.file.originalname] });
-  return { id, filename: req.file.originalname };
+  const files = req.files || [];
+  const drop = () => files.forEach((f) => fs.existsSync(f.path) && fs.unlinkSync(f.path));
+  if (!files.length) throw badRequest('Choose a file to upload.');
+  if (!attachmentTarget(req, entity_type, entity_id)) { drop(); throw notFound('Record not found.'); }
+  const refused = files.filter((f) => !ALLOWED_EXT.has(extOf(f.originalname)));
+  if (refused.length) { drop(); throw badRequest(`File type not accepted: ${refused.map((f) => f.originalname).join(', ')}.`); }
+  const out = files.map((f) => {
+    const stored = crypto.randomUUID();
+    fs.renameSync(f.path, path.join(config.uploadDir, stored));
+    const id = q.insert('evidence_files', { org_id: req.orgId, entity_type, entity_id, filename: f.originalname, stored_name: stored, mime: f.mimetype, size: f.size, uploaded_by: req.user.id });
+    audit(ctxOf(req), entity_type, entity_id, 'evidence', { file: [null, f.originalname] });
+    return { id, filename: f.originalname };
+  });
+  return { files: out, id: out[0].id, filename: out[0].filename };
 }));
 r.get('/evidence/:id', requirePerm('task.view'), (req, res) => {
   const f = q.get('SELECT * FROM evidence_files WHERE id = ? AND org_id = ?', req.params.id, req.orgId);
   if (!f) return res.status(404).json({ error: 'File not found.' });
   res.download(path.join(config.uploadDir, f.stored_name), f.filename);
 });
+r.delete('/evidence/:id', requirePerm('task.edit', 'checklist.edit'), h((req) => {
+  const f = q.get('SELECT * FROM evidence_files WHERE id = ? AND org_id = ?', req.params.id, req.orgId);
+  if (!f) throw notFound('File not found.');
+  if (f.entity_type === 'checklist_item') {
+    const g = q.get('SELECT g.status FROM checklist_items c JOIN gate_reviews g ON g.id = c.gate_review_id WHERE c.id = ?', f.entity_id);
+    if (g && !['Open', 'On hold'].includes(g.status)) throw Object.assign(new Error('The gate has been submitted; its evidence is frozen.'), { status: 409 });
+  }
+  if (f.uploaded_by !== req.user.id && !req.perms.has('project.edit')) throw Object.assign(new Error('Only the person who added the file or a project manager can remove it.'), { status: 403 });
+  q.run('DELETE FROM evidence_files WHERE id = ?', f.id);
+  const file = path.join(config.uploadDir, f.stored_name); if (fs.existsSync(file)) fs.unlinkSync(file);
+  audit(ctxOf(req), f.entity_type, f.entity_id, 'evidence.delete', { file: [f.filename, null] }, req.body?.justification || null);
+  return { ok: true };
+}));
 
 // Gates
 r.get('/gates', requirePerm('gate.view'), h((req) => {
@@ -181,13 +212,43 @@ r.get('/gates/:id', requirePerm('gate.view'), h((req) => {
   const g = L.gateForOrg(req.orgId, req.params.id);
   const p = L.getProject(g.project_id);
   const items = q.all('SELECT c.*, u.name completed_by_name FROM checklist_items c LEFT JOIN users u ON u.id = c.completed_by WHERE gate_review_id = ? ORDER BY seq', g.id)
-    .map((c) => ({ ...c, files: q.all("SELECT id, filename FROM evidence_files WHERE entity_type = 'checklist_item' AND entity_id = ?", c.id) }));
+    .map((c) => ({ ...c, files: filesOf('checklist_item', c.id) }));
   const tasks = q.all('SELECT t.id, t.uft_id, t.name, t.kind, t.status, t.output, u.name owner_name FROM run_tasks t LEFT JOIN users u ON u.id = t.owner_id WHERE run_id = ? ORDER BY seq', g.run_id);
   const run = q.get('SELECT e2e_id, run_no, branch FROM e2e_runs WHERE id = ?', g.run_id);
   return { ...g, recycle_tasks: json(g.recycle_tasks, []), votes: json(g.votes, null), reference: GATE[g.gate], project: projectRow(p), run: { ...run, name: E2E[run.e2e_id].name }, items, tasks, kpis: { npv: p.npv, roi: p.roi, payback: p.payback_years } };
 }));
 r.post('/gates/:id/submit', requirePerm('gate.submit'), h((req) => { L.submitGate(ctxOf(req), req.params.id); return { ok: true }; }));
 r.post('/gates/:id/decide', requirePerm('gate.decide'), h((req) => { const out = L.decideGate(ctxOf(req), req.params.id, req.body); invalidate(req.orgId); return out; }));
+
+// Gate checklist additions: from a template of the library, or typed by the user.
+r.post('/gates/:id/checklist', requirePerm('checklist.edit'), h((req) => L.addChecklistItems(ctxOf(req), req.params.id, req.body.items || [], `Added by ${req.user.name}`)));
+r.post('/gates/:id/checklist/from-template', requirePerm('checklist.edit'), h((req) => {
+  const tp = q.get('SELECT * FROM checklist_templates WHERE id = ? AND org_id = ?', req.body.templateId, req.orgId);
+  if (!tp) throw notFound('Checklist template not found.');
+  return L.addChecklistItems(ctxOf(req), req.params.id, json(tp.items, []), `Template: ${tp.name}`);
+}));
+r.post('/gates/:id/checklist/save-as-template', requirePerm('checklist.template.manage'), h((req) => {
+  const g = L.gateForOrg(req.orgId, req.params.id);
+  const p = L.getProject(g.project_id);
+  const name = String(req.body.name || '').trim();
+  if (!name) throw badRequest('Name is required.');
+  const items = q.all('SELECT text, mandatory, evidence_required FROM checklist_items WHERE gate_review_id = ? ORDER BY seq', g.id);
+  const id = q.insert('checklist_templates', { org_id: req.orgId, name, track: p.track, gate: g.gate, description: req.body.description || `Saved from ${p.code} gate ${g.gate}.`, items, auto_apply: req.body.auto_apply ? 1 : 0, created_by: req.user.id });
+  audit(ctxOf(req), 'checklist_template', id, 'create', { name: [null, name] });
+  return { id };
+}));
+
+// Checklist template library: one or more templates per gate and track, versioned (FR-DA-TPL-02).
+const validTemplate = (d) => {
+  if (!TRACKS[d.track]) throw badRequest('Choose a track: Full, Light or Fast.');
+  if (!TRACKS[d.track].gates.includes(d.gate)) throw badRequest(`Gate ${d.gate} is not part of the ${d.track} Track.`);
+  const items = typeof d.items === 'string' ? json(d.items, null) : d.items;
+  if (!Array.isArray(items) || !items.some((it) => String(it.text || '').trim())) throw badRequest('Add at least one checklist item.');
+};
+crud(r, '/checklist-templates', { table: 'checklist_templates', entity: 'checklist_template', fields: ['name', 'track', 'gate', 'description', 'items', 'auto_apply'], required: ['name', 'track', 'gate'],
+  view: 'checklist.template.view', manage: 'checklist.template.manage', versioned: true, order: "CASE track WHEN 'Full' THEN 1 WHEN 'Light' THEN 2 ELSE 3 END, gate, name", validate: validTemplate,
+  filter: (req, where, args) => { for (const k of ['track', 'gate']) if (req.query[k]) { where.push(`${k} = ?`); args.push(req.query[k]); } },
+  map: (t) => ({ ...t, items: json(t.items, []), e2e: Object.keys(GATE_OF_E2E).find((e) => GATE_OF_E2E[e] === t.gate) }) });
 
 // Dashboard aggregates (FR-DA-REP-01: computed in real time, tenant-scoped).
 r.get('/dashboard', requirePerm('dashboard.view'), h((req) => {

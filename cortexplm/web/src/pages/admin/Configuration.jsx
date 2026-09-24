@@ -3,6 +3,7 @@ import { Lock, Check as CheckIcon } from 'lucide-react';
 import { useAuth } from '../../lib/auth.jsx';
 import { useI18n } from '../../lib/i18n.jsx';
 import { put, post } from '../../lib/api.js';
+import LlmConnection from '../../components/LlmConnection.jsx';
 import { PageHeader, Card, CardHead, useFetch, Skeleton, Button, Modal, Field, Input, Select, Check, useToast, Badge, Progress, StatusBadge, JustifyModal, fmtDate, DataTable } from '../../components/ui.jsx';
 
 
@@ -41,7 +42,7 @@ export default function Configuration() {
   const subs = [...cat.data.packs.map((p) => ({ value: p.id, label: `${p.id} ${p.name} ($${p.price})` })), ...cat.data.bundles.map((b) => ({ value: b.id, label: `${b.id} ${b.name} ($${b.price})` }))];
   return (
     <div className="page">
-      <PageHeader eyebrow={t('Administration · Configuration management')} title={t('Configuration')} subtitle={t('{s} gives access to {n} macro processes, tier {tier}, AI {ai}.', { s: `${c.subscriptionId} ${c.subscriptionName}`, n: c.macroProcesses.length, tier: t(c.tierName), ai: t(c.aiTier) })}
+      <PageHeader eyebrow={t('Administration · Configuration management')} title={t('Configuration & AI model')} subtitle={t('{s} gives access to {n} macro processes, tier {tier}, AI {ai}.', { s: `${c.subscriptionId} ${c.subscriptionName}`, n: c.macroProcesses.length, tier: t(c.tierName), ai: t(c.aiTier) })}
         actions={manage && c.deploymentMode !== 'onprem' && <Button variant="primary" onClick={() => setEdit({ subscription_id: c.subscriptionId, seats: c.seats, expiry_date: (c.expiryDate || '').slice(0, 10), support_tier: c.supportTier, deployment_option: c.deploymentOption, billing_cycle: c.billingCycle })}>{t('Change subscription')}</Button>} />
       <div className="grid two" style={{ marginBottom: 24 }}>
         <Card>
@@ -115,6 +116,7 @@ export default function Configuration() {
           <Check label={t('I understand that this is not a certification, an external audit or a legal attestation.')} checked={ack} onChange={(e) => setAck(e.target.checked)} />
         </Modal>
       )}
+      <div id="ai-model" style={{ marginTop: 24 }}><LlmConnection /></div>
       {me.user.isPlatformAdmin && <Backups />}
     </div>
   );

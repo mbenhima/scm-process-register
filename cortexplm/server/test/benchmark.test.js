@@ -21,9 +21,9 @@ test('group benchmark lists only organizations of the same group, as aggregates'
   const t = await login('exec@ridgeway.example');
   const d = await (await call(t, '/benchmark/group')).json();
   assert.equal(d.group, 'Atlas Infrastructure Holding');
-  assert.deepEqual(d.rows.map((r) => r.segment).sort(), ['Cedarline Precast Systems', 'Orvane Transit Group', 'Ridgeway Construction Contractors']);
+  assert.deepEqual(d.rows.map((r) => r.segment).sort(), ['Cedarline Precast Systems', 'Orvane Transit Group', 'Ridgeway Real Estate Development']);
   for (const r of d.rows) assert.deepEqual(Object.keys(r).sort(), ['comparable', 'industry', 'metrics', 'ranks', 'segment', 'self', 'shared']);
-  assert.ok(!JSON.stringify(d).includes('BLD-0') && !JSON.stringify(d).includes('CON-0'), 'no project codes leak');
+  assert.ok(!JSON.stringify(d).includes('RED-0') && !JSON.stringify(d).includes('MFG-0'), 'no project codes leak');
 });
 
 test('an independent organization has no group comparison', async () => {

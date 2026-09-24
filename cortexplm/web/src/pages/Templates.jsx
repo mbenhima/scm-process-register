@@ -8,7 +8,7 @@ export default function Templates() {
   const { can } = useAuth();
   return (
     <div className="page">
-      <PageHeader eyebrow={t('Intelligence · Template library')} title={t('Templates')} subtitle={t('Starting points for new projects: default scores and recommended optional macro processes (Rule R4). A template is copied when used; editing it never changes existing projects.')} />
+      <PageHeader eyebrow={t('AI & knowledge · Template library')} title={t('Project templates')} subtitle={t('Starting points for new projects: default scores and recommended optional macro processes (Rule R4). A template is copied when used; editing it never changes existing projects.')} />
       <CrudPage endpoint="/templates" csvName="templates" entityLabel="template" newLabel="Add template" versioned canManage={can('template.manage')}
         defaults={{ kind: 'Project', payload: '{\n  "offer_type": "Product",\n  "scores": { "strategic": 3, "investment": 3, "novelty": 2, "regulatory": 2, "market": 3, "reach": 3, "integration": 2 },\n  "optional_mps": []\n}' }}
         toForm={(x) => ({ ...x, payload: typeof x.payload === 'string' ? x.payload : JSON.stringify(x.payload, null, 2) })}

@@ -3,26 +3,15 @@ import { Link, useParams } from 'react-router-dom';
 import { Play, CheckCircle2, SkipForward, Paperclip, UserCog, ShieldQuestion, RotateCcw } from 'lucide-react';
 import { useAuth } from '../lib/auth.jsx';
 import { useI18n } from '../lib/i18n.jsx';
-import { api, post, put, download } from '../lib/api.js';
+import { post, put, download } from '../lib/api.js';
 import {
   PageHeader, Card, CardHead, useFetch, Skeleton, ErrorNote, StatusBadge, Button, Field, Input, Textarea, Select, Modal, Badge, useToast, fmtDate,
   JustifyModal,
 } from '../components/ui.jsx';
 import AiSuggest from '../components/AiSuggest.jsx';
 import RexForm from '../components/RexForm.jsx';
-
-function Upload({ entityType, entityId, onDone, label }) {
-  const { t } = useI18n();
-  const toast = useToast();
-  const [busy, setBusy] = useState(false);
-  const pick = async (e) => {
-    const file = e.target.files?.[0]; if (!file) return;
-    const form = new FormData(); form.append('entity_type', entityType); form.append('entity_id', entityId); form.append('file', file);
-    setBusy(true);
-    try { await api('/evidence', { method: 'POST', form }); toast.ok(t('File attached: {f}', { f: file.name })); onDone?.(); } catch (err) { toast.err(err); } finally { setBusy(false); e.target.value = ''; }
-  };
-  return <label className="btn btn-secondary btn-sm" aria-busy={busy}><Paperclip aria-hidden />{label || t('Attach file')}<input type="file" className="sr-only" onChange={pick} /></label>;
-}
+import Attachments, { AttachButton as Upload } from '../components/Attachments.jsx';
+import { useProcessAi, AiBadges } from '../components/ProcessAi.jsx';
 
 function Checklist({ task, reload }) {
   const { t } = useI18n();
@@ -118,6 +107,7 @@ export default function Task() {
   const [reopen, setReopen] = useState(false);
   const [verdict, setVerdict] = useState({ verdict: 'Effective', notes: '' });
   const [busy, setBusy] = useState(false);
+  const ai = useProcessAi();
   useEffect(() => { if (task) { setData(task.data || {}); setOutput(task.output || ''); } }, [task?.id]); // eslint-disable-line react-hooks/exhaustive-deps
   if (error) return <div className="page"><ErrorNote error={error} /></div>;
   if (!task) return <div className="page"><Skeleton h={500} /></div>;
@@ -161,8 +151,6 @@ export default function Task() {
                 {open && canWork && task.data?.r2Skippable && <Button icon={SkipForward} onClick={() => setSkip(true)}>{t('Skip (Rule R2)')}</Button>}
                 {!open && ['Done', 'Skipped'].includes(task.status) && task.project.status === 'Active' && task.run.status === 'In progress' && can('project.edit') && (!task.gate || ['Open', 'On hold'].includes(task.gate.status))
                   && <Button icon={RotateCcw} onClick={() => setReopen(true)}>{t('Reopen task')}</Button>}
-                <Upload entityType="task" entityId={task.id} onDone={reload} label={t('Attach evidence file')} />
-                {task.files.map((f) => <button key={f.id} type="button" className="btn btn-ghost btn-sm" onClick={() => download(`/evidence/${f.id}`)}><Paperclip aria-hidden />{f.filename}</button>)}
               </div>
               {task.skip_reason && <p className="muted" style={{ marginTop: 12 }}>{t('Skipped')}: {task.skip_reason}</p>}
             </Card>
@@ -203,6 +191,10 @@ export default function Task() {
         </div>
         <div className="stack">
           <Card>
+            <CardHead title={t('Attachments ({n})', { n: task.files.length })} subtitle={t('Documents, drawings, pictures and data that support this task.')} />
+            <Attachments entityType="task" entityId={task.id} files={task.files} onChange={reload} canAdd={can('task.edit') && task.project.status === 'Active'} />
+          </Card>
+          <Card>
             <CardHead title={t('Accountability (RACSI)')} />
             <dl className="kv">
               <dt>{t('Owner')}</dt><dd>{task.owner_name || '—'}</dd><dt>{t('Evaluator')}</dt><dd>{task.evaluator_name || '—'}</dd>
@@ -210,6 +202,7 @@ export default function Task() {
               {['R', 'A', 'C', 'S', 'I'].map((l) => [<dt key={`${l}t`}>{{ R: t('Responsible'), A: t('Accountable'), C: t('Consulted'), S: t('Supportive'), I: t('Informed') }[l]}</dt>, <dd key={`${l}d`}>{t(u[l] || '—')}</dd>])}
               <dt>{t('Macro processes')}</dt><dd>{(u.macroProcesses || '').split(', ').map((m) => <div key={m}><Link to={`/library/${m.split(' ')[0]}`}>{t(m)}</Link></div>)}</dd>
               <dt>{t('Module')}</dt><dd>{t(u.module)}</dd><dt>{t('Chain link')}</dt><dd>{t(u.chainLink)}</dd>
+              <dt>{t('AI for this task')}</dt><dd><AiBadges list={ai.forTask(u)} context={{ projectId: task.project.id, recordType: 'task', recordId: task.id, onUse: task.kind === 'work' && open && canWork ? (txt) => setOutput((o) => (o ? `${o}\n\n${txt}` : txt)) : undefined }} empty={<span className="muted">{t('None active')}</span>} /></dd>
             </dl>
           </Card>
           {task.kind === 'work' && open && canWork && (

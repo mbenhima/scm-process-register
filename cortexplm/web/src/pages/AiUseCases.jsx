@@ -3,14 +3,16 @@ import { Plus } from 'lucide-react';
 import { useAuth } from '../lib/auth.jsx';
 import VersionCompare from '../components/VersionCompare.jsx';
 import { useI18n } from '../lib/i18n.jsx';
-import { post, put } from '../lib/api.js';
+import { post, put, del } from '../lib/api.js';
+import { Link } from 'react-router-dom';
+import { Trash2 } from 'lucide-react';
 import { PageHeader, Card, CardHead, DataTable, useFetch, Skeleton, ErrorNote, StatusBadge, Tabs, Modal, Button, Check, useToast, Badge, fmtDate, Kpi } from '../components/ui.jsx';
 import { FormFields } from '../components/CrudPage.jsx';
 import { HBars } from '../components/charts.jsx';
 
 const FIELDS = [
   { key: 'name', label: 'Name', required: true }, { key: 'tier', label: 'Tier', type: 'select', options: ['Assistive', 'Augmented'], required: true },
-  { key: 'linked_step', label: 'Linked step (e.g. MP-01.2)' }, { key: 'model_task_type', label: 'Model task type' }, { key: 'risk_level', label: 'Risk level', type: 'select', options: ['Low', 'Medium', 'High'] },
+  { key: 'linked_step', label: 'Linked to: step (MP-01.2), macro process (MP-01), task (UFT-01-01) or E2E process (E2E-01)' }, { key: 'model_task_type', label: 'Model task type' }, { key: 'risk_level', label: 'Risk level', type: 'select', options: ['Low', 'Medium', 'High'] },
   { key: 'module', label: 'Owning module' }, { key: 'trigger_text', label: 'Trigger' }, { key: 'expected_output', label: 'Expected output' },
   { key: 'human_checkpoint', label: 'Human checkpoint', type: 'textarea', required: true }, { key: 'prompt_template', label: 'Prompt template', type: 'textarea', rows: 5 }, { key: 'based_on', label: 'Based on use case' },
 ];
@@ -26,7 +28,7 @@ function Detail({ uc, onClose, onChanged, canManage }) {
   const act = async (fn, msg) => { try { await fn(); toast.ok(msg); reload(); onChanged(); } catch (e) { toast.err(e); } };
   return (
     <Modal wide title={`${uc.code} ${uc.name}`} subtitle={t('Every save creates a new version; history is never deleted.')} onClose={onClose}
-      footer={canManage && tab === 'details' && <><input className="input" style={{ maxWidth: 360 }} placeholder={t('Describe the change (required)')} value={note} onChange={(e) => setNote(e.target.value)} aria-label={t('Describe the change')} /><Button variant="primary" disabled={!note.trim()} onClick={() => act(() => put(`/ai/use-cases/${uc.id}`, { ...f, justification: note }), t('New version saved.'))}>{t('Save new version')}</Button></>}>
+      footer={canManage && tab === 'details' && <>{data.is_custom ? <Button variant="danger" icon={Trash2} onClick={async () => { if (!window.confirm(t('Delete this custom use case? Its usage log entries are kept.'))) return; try { await del(`/ai/use-cases/${uc.id}`); toast.ok(t('Deleted.')); onChanged(); onClose(); } catch (e) { toast.err(e); } }}>{t('Delete')}</Button> : null}<div className="grow" /><input className="input" style={{ maxWidth: 360 }} placeholder={t('Describe the change (required)')} value={note} onChange={(e) => setNote(e.target.value)} aria-label={t('Describe the change')} /><Button variant="primary" disabled={!note.trim()} onClick={() => act(() => put(`/ai/use-cases/${uc.id}`, { ...f, justification: note }), t('New version saved.'))}>{t('Save new version')}</Button></>}>
       <Tabs value={tab} onChange={setTab} tabs={[{ value: 'details', label: t('Details') }, { value: 'versions', label: t('Versions ({n})', { n: data.versions.length }) }]} />
       {tab === 'details' ? (
         <div className="stack">
@@ -66,7 +68,7 @@ export default function AiUseCases() {
   const totals = list.data.reduce((a, u) => ({ n: a.n + (u.usage?.n || 0), acc: a.acc + (u.usage?.a || 0) }), { n: 0, acc: 0 });
   return (
     <div className="page">
-      <PageHeader eyebrow={t('Intelligence · D15')} title={t('AI use cases')} subtitle={t('Governed AI capabilities. Each is Assistive or Augmented, never autonomous, and every suggestion is reviewed by a person.')}
+      <PageHeader eyebrow={t('AI & knowledge · D15')} title={t('AI use cases')} subtitle={t('Governed AI capabilities. Each is Assistive or Augmented, never autonomous, and every suggestion is reviewed by a person.')}
         actions={manage && <Button variant="primary" icon={Plus} onClick={() => setCreate({ tier: 'Assistive', risk_level: 'Low' })}>{t('Add custom use case')}</Button>} />
       <div className="grid kpis" style={{ marginBottom: 24 }}>
         <Kpi value={list.data.filter((u) => u.active).length} label={t('Active use cases')} meta={t('of {n} in the library', { n: list.data.length })} />
@@ -74,6 +76,7 @@ export default function AiUseCases() {
         <Kpi value={t(cfg.aiTier)} label={t('AI tier of the subscription')} neutral />
         <Kpi value={`${list.data.filter((u) => u.is_custom).length}/${cfg.quotas.customAiUseCases}`} label={t('Custom use cases (quota)')} neutral />
       </div>
+      <p className="small muted" style={{ marginTop: -8 }}>{t('Active use cases also appear, with their Assistive AI or Augmented AI badge, on the E2E processes, macro processes, tasks and steps they are linked to. The live AI model is set in')} <Link to="/admin/configuration">{t('Configuration & AI model')}</Link> {t('or in')} <Link to="/settings">{t('Settings')}</Link>.</p>
       <Tabs value={tab} onChange={setTab} tabs={[{ value: 'library', label: t('Library') }, { value: 'log', label: t('Usage log') }]} />
       {tab === 'library' && (
         <div className="grid two">

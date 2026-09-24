@@ -72,6 +72,12 @@ function migrate(d) {
     id INTEGER PRIMARY KEY, org_id INTEGER NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     parent_id INTEGER REFERENCES obs_nodes(id) ON DELETE SET NULL, name TEXT NOT NULL, type TEXT DEFAULT 'Department');
 
+  -- People placed in an OBS node with the role they play there (project teams, departments).
+  CREATE TABLE IF NOT EXISTS obs_members (
+    id INTEGER PRIMARY KEY, org_id INTEGER NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    obs_node_id INTEGER NOT NULL REFERENCES obs_nodes(id) ON DELETE CASCADE, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role_id TEXT, project_role TEXT, UNIQUE(obs_node_id, user_id));
+
   -- Identity & RBAC -----------------------------------------------------------
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY, org_id INTEGER REFERENCES organizations(id) ON DELETE CASCADE,
@@ -132,6 +138,12 @@ function migrate(d) {
     gate_review_id INTEGER NOT NULL REFERENCES gate_reviews(id) ON DELETE CASCADE, seq INTEGER, text TEXT NOT NULL,
     source TEXT, mandatory INTEGER DEFAULT 1, evidence_required INTEGER DEFAULT 1, status TEXT NOT NULL DEFAULT 'Open',
     evidence TEXT, waiver_reason TEXT, waiver_approved_by INTEGER, completed_by INTEGER, completed_at TEXT);
+  -- Checklist template library: one or more templates per gate and track. A template "linked" to its gate
+  -- (auto_apply = 1) is copied into the gate checklist when the gate opens; others are added on demand.
+  CREATE TABLE IF NOT EXISTS checklist_templates (
+    id INTEGER PRIMARY KEY, org_id INTEGER NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    name TEXT NOT NULL, track TEXT NOT NULL, gate TEXT NOT NULL, description TEXT, items TEXT NOT NULL,
+    auto_apply INTEGER DEFAULT 0, created_by INTEGER, updated_at TEXT DEFAULT (datetime('now')));
   CREATE TABLE IF NOT EXISTS evidence_files (
     id INTEGER PRIMARY KEY, org_id INTEGER NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     entity_type TEXT, entity_id INTEGER, filename TEXT, stored_name TEXT, mime TEXT, size INTEGER,

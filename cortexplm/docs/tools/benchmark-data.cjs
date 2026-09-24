@@ -1,4 +1,4 @@
-const B = 'http://localhost:4100/api';
+const B = `${process.env.API || 'http://localhost:4100'}/api`;
 (async () => {
   const tok = (await (await fetch(B + '/auth/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: 'exec@ridgeway.example', password: 'Demo#2026' }) })).json()).token;
   const g = async (p) => (await fetch(B + p, { headers: { authorization: 'Bearer ' + tok } })).json();

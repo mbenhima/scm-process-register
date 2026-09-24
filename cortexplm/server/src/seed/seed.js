@@ -1,4 +1,4 @@
-// npm run seed  -  rebuilds the database with six demo organizations (one per industry).
+// npm run seed  -  rebuilds the database with seven demo organizations (one per sector) in two groups plus independents.
 // The seed drives the real lifecycle engine (same code as the API) with simulated dates and actors, so
 // every record obeys the business rules, controls and track rules.
 import fs from 'node:fs';
@@ -7,7 +7,11 @@ import bcrypt from 'bcryptjs';
 import { config } from '../config.js';
 import { openDb, closeDb, q, json } from '../db.js';
 import { PERMISSIONS, ROLES, defaultGrants } from '../lib/perms.js';
-import { DLV, PROC, E2E, E2E_IDS, D01, STEP, COMPLIANCE_STANDARDS, NON_CERT_DISCLOSURE, MP, GATE_OF_E2E } from '../lib/ref.js';
+import { DLV, PROC, E2E, E2E_IDS, D01, STEP, COMPLIANCE_STANDARDS, NON_CERT_DISCLOSURE, MP, GATE_OF_E2E, GATE, TRACKS } from '../lib/ref.js';
+import PDFDocument from 'pdfkit';
+import ExcelJS from 'exceljs';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx';
+import crypto from 'node:crypto';
 import * as L from '../lib/lifecycle.js';
 import { snapshot } from '../lib/audit.js';
 import { encrypt } from '../lib/security.js';
@@ -15,11 +19,13 @@ import { raiseAlert, computeAlerts } from '../lib/alerts.js';
 import { SaasLicenceProvider } from '../licensing/index.js';
 import { effectiveConfig } from '../lib/entitlements.js';
 import { generate, recordOutcome } from '../lib/ai.js';
-import { INDUSTRIES, GROUPS, PEOPLE, PLAN_ORDER, personName } from './industries.js';
+import { INDUSTRIES, GROUPS, PLAN_ORDER, PROJECT_TEAMS, CUSTOM_AI } from './industries.js';
 import { outputFor } from './outputs.js';
 import { bpmnFor } from './bpmn.js';
 import { GLOBAL_KB, TENANT_KB, REX_LIBRARY } from './knowledge.js';
 import { GLOBAL_KB_I18N } from './knowledge_i18n.js';
+import { seedGovernance as seedGovernanceStd, seedAiUseCases, createObsSkeleton, createStarterTeam, seedProjectTemplates, seedStandardChecklists, seedSectorChecklists } from '../lib/orgSetup.js';
+const seedGovernance = (orgId, obs) => seedGovernanceStd(orgId, obs, between);
 
 const TODAY = new Date(new Date().toISOString().slice(0, 10) + 'T09:00:00Z');
 const DAY = 86400000;
@@ -50,78 +56,19 @@ function seedPlatform() {
   for (const [lang, list] of Object.entries(GLOBAL_KB_I18N)) list.forEach(([title, body], i) => q.insert('knowledge_docs', { org_id: null, kind: GLOBAL_KB[i].kind, ref: GLOBAL_KB[i].ref, title, body, lang, tags: GLOBAL_KB[i].tags })); // FR-DA-KB-01
 }
 
-const COSO_OF = (c) => {
-  const t = `${c.Control_Name} ${c.Description}`.toLowerCase();
-  if (/segregation|policy|training|role|privileg|access right|awareness|ownership/.test(t)) return 'Control Environment';
-  if (/risk|fmea|assessment|impact analysis|scoring/.test(t)) return 'Risk Assessment';
-  if (/notif|report|communicat|disclos|label|publish|inform/.test(t)) return 'Information & Communication';
-  if (c.Type === 'Detective') return 'Monitoring Activities';
-  return 'Control Activities';
-};
 // Delivery profile per organization, so internal and group benchmarks show real differences.
 // recycle: chance a gate is sent back once before Go; pace: task speed factor (>1 = slower, more late tasks);
 // effective: share of evaluations rated Effective; waive: chance a mandatory checklist item is waived;
 // decide: days from submission to decision; cash: yearly cash flow as a share of the investment.
 const PROFILES = {
   PUB: { recycle: 0.10, pace: 1.10, effective: 0.90, waive: 0.02, decide: [3, 12], cash: [0.22, 0.45] },
-  CON: { recycle: 0.06, pace: 0.90, effective: 0.94, waive: 0.03, decide: [2, 7], cash: [0.28, 0.55] },
+  MFG: { recycle: 0.06, pace: 0.90, effective: 0.94, waive: 0.03, decide: [2, 7], cash: [0.28, 0.55] },
   HLT: { recycle: 0.18, pace: 1.30, effective: 0.95, waive: 0.01, decide: [4, 14], cash: [0.30, 0.60] },
   DAI: { recycle: 0.05, pace: 0.85, effective: 0.91, waive: 0.04, decide: [2, 6], cash: [0.26, 0.50] },
   TRN: { recycle: 0.12, pace: 1.15, effective: 0.86, waive: 0.05, decide: [3, 11], cash: [0.24, 0.48] },
   ENR: { recycle: 0.14, pace: 1.20, effective: 0.93, waive: 0.02, decide: [3, 13], cash: [0.30, 0.62] },
-  BLD: { recycle: 0.09, pace: 1.25, effective: 0.88, waive: 0.06, decide: [2, 9], cash: [0.20, 0.42] },
+  RED: { recycle: 0.09, pace: 1.25, effective: 0.88, waive: 0.06, decide: [2, 9], cash: [0.20, 0.42] },
 };
-
-const LI = { 25: [5, 5], 20: [4, 5], 16: [4, 4], 15: [3, 5], 12: [3, 4], 10: [2, 5], 9: [3, 3], 8: [2, 4], 6: [2, 3] };
-const ownerOfStep = (step) => D01[String(step).split('.')[0].split(',')[0].trim()]?.Owner_Role || 'Process Owner / Track Administrator';
-
-function seedGovernance(orgId, obs) {
-  const gov = obs.Quality; const eng = obs.Engineering; const pmo = obs['Portfolio Office'];
-  const live = new Set(['BR-001', 'BR-002', 'BR-004', 'BR-005', 'BR-006', 'BR-007', 'BR-008', 'BR-009', 'BR-010', 'BR-011', 'BR-030']);
-  const actions = Object.fromEntries(DLV['D03a Actions Registry'].map((a) => [a.Action_ID, a.Action_Name]));
-  const sevOf = Object.fromEntries(DLV['D07 Alerts'].map((a) => [a.Rule_Condition, a.Severity]));
-  for (const b of DLV['D03 Business Rules']) {
-    const mp = b.Triggering_Step_ID.split('.')[0];
-    q.insert('business_rules', { org_id: orgId, code: b.Rule_ID, triggering_step: b.Triggering_Step_ID, condition: b.Condition, action_id: b.Action_ID, action: actions[b.Action_ID], rule_type: b.Rule_Type,
-      severity: sevOf[b.Rule_ID] || (b.Rule_Type === 'Escalation' ? 'High' : b.Rule_Type === 'Validation' ? 'Medium' : 'Low'), owner: ownerOfStep(b.Triggering_Step_ID), process_tag: mp,
-      obs_node_id: ['MP-121', 'MP-122', 'MP-123', 'MP-124', 'MP-01'].includes(mp) ? pmo : ['MP-08', 'MP-30'].includes(mp) ? gov : eng, evaluation: live.has(b.Rule_ID) ? 'Live (engine)' : 'Catalog', active: 1 });
-  }
-  // D30 licensing rules
-  [['RULE-LIC-001', 'MP-18', 'Licence signature does not verify', 'Reject the licence and block activation'],
-    ['RULE-LIC-002', 'MP-18', 'Licence expiry date has passed', 'Block sign-in for the organization; warn 30 days ahead'],
-    ['RULE-LIC-003', 'MP-18', 'Active users would exceed maxUsers', 'Refuse the new user (HTTP 409)'],
-    ['RULE-LIC-004', 'MP-19', 'Add-on already active, or compliance add-on activated', 'No duplicate scaffold; show the non-certification disclosure']].forEach(([code, mp, cond, act]) =>
-    q.insert('business_rules', { org_id: orgId, code, triggering_step: mp, condition: cond, action: act, rule_type: 'Validation', severity: 'High', owner: 'Platform Administrator', process_tag: mp, evaluation: 'Live (engine)', active: 1 }));
-  const eff = ['Effective', 'Effective', 'Effective', 'Partially effective', 'Effective', 'Not tested'];
-  DLV['D04 Controls'].forEach((c, i) => {
-    q.insert('controls', { org_id: orgId, code: c.Control_ID, name: c.Control_Name, control_type: c.Type, coso_component: COSO_OF(c), testing_frequency: c.Type === 'Preventive' ? 'Quarterly' : 'Monthly',
-      owner: ownerOfStep(c.Linked_Step_IDs), effectiveness: i === 13 ? 'Not effective' : eff[i % eff.length], linked_steps: c.Linked_Step_IDs, description: c.Description, process_tag: c.Linked_Step_IDs.split('.')[0], obs_node_id: gov });
-  });
-  [['CTRL-003', 'Licence expiry prevention', 'Preventive', 'Information & Communication', 'Warn administrators 30 days before licence expiry and raise alert SYS-02.'],
-    ['CTRL-016', 'Licence file integrity check (Ed25519)', 'Preventive', 'Control Activities', 'Verify the Ed25519 signature of every OnPrem licence file; SaaS records are HMAC-signed by the server.'],
-    ['CTRL-017', 'Add-on activation integrity check', 'Preventive', 'Control Activities', 'Add-on activation is idempotent and compliance add-ons require acknowledgement of the non-certification disclosure.']]
-    .forEach(([code, name, type, coso, d]) => q.insert('controls', { org_id: orgId, code, name, control_type: type, coso_component: coso, testing_frequency: 'Continuous', owner: 'Platform Administrator', effectiveness: 'Effective', description: d, process_tag: 'MP-18' }));
-  for (const r of DLV['D05 Risks']) {
-    const [l, im] = LI[Number(r.Inherent_Score)] || [3, 4];
-    q.insert('risks', { org_id: orgId, code: r.Risk_ID, name: r.Risk_Name, kind: 'Risk', category: r.Category, likelihood: l, impact: im, residual_score: Number(r.Residual_Score), mitigating_controls: r.Mitigating_Control_IDs, kri_formula: r.KRI_Formula,
-      owner: r.Category.includes('AI') ? 'Data & AI Specialist' : r.Category.includes('Security') || r.Category === 'Technology' ? 'Platform Administrator' : r.Category.includes('Regul') || r.Category.includes('Compliance') ? 'Regulatory & Compliance Officer' : 'Quality Manager',
-      status: Number(r.Residual_Score) <= 5 ? 'Mitigated' : 'Open', process_tag: 'MP-12', obs_node_id: gov });
-  }
-  q.insert('risks', { org_id: orgId, code: 'RISK-004', name: 'Licence expiry', kind: 'Risk', category: 'Commercial', likelihood: 2, impact: 5, residual_score: 4, mitigating_controls: 'CTRL-003', kri_formula: 'Days until licence expiry', owner: 'Platform Administrator', status: 'Open', process_tag: 'MP-18' });
-  [['OPP-01', 'Reuse of approved design modules across product lines', 'Engineering', 3, 4], ['OPP-02', 'Bundling services with products for recurring revenue', 'Commercial', 3, 5], ['OPP-03', 'Faster gate reviews with complete evidence packs', 'Governance', 4, 3]]
-    .forEach(([code, name, cat, l, im]) => q.insert('risks', { org_id: orgId, code, name, kind: 'Opportunity', category: cat, likelihood: l, impact: im, owner: 'Portfolio Manager', status: 'Open', process_tag: 'MP-01' }));
-  for (const [name, formula, target, unit, owner, tag] of [
-    ['Licence compliance %', 'Active users within licensed seats ÷ active users × 100 (KPI-006, D30)', '100%', '%', 'Platform Administrator', 'MP-18'],
-    ['API availability', 'Minutes the API answered health checks ÷ minutes in period × 100 (KPI-011, D30)', '≥ 99.9%', '%', 'Platform Administrator', 'MP-28'],
-    ['Evidence completeness at first submission', 'Gates submitted with all mandatory evidence ÷ gates submitted × 100', '≥ 95%', '%', 'Quality Manager', 'MP-122'],
-  ]) q.insert('custom_kpis', { org_id: orgId, name, formula, target, unit, current_value: unit === '%' ? between(93, 100) : null, owner, process_tag: tag });
-  // RACSI from the 81 user-facing tasks (exactly one Accountable each)
-  for (const e of E2E_IDS) for (const t of E2E[e].tasks) {
-    const id = q.insert('racsi_activities', { org_id: orgId, name: `${t.id} ${t.name}`, process_tag: e, linked_type: 'UFT', linked_id: t.id, obs_node_id: pmo });
-    for (const letter of ['R', 'A', 'C', 'S', 'I']) q.insert('racsi_assignments', { activity_id: id, letter, assignee_type: 'role', assignee: t[letter] });
-  }
-  for (const e of E2E_IDS) q.insert('bpmn_diagrams', { org_id: orgId, title: `${e} ${E2E[e].name}`, description: `Core process model: ${E2E[e].goal}`, xml: bpmnFor(e), e2e_id: e, obs_node_id: pmo });
-}
 
 function seedKpiValues(orgId, ind) {
   const skip = new Set(['KPI-01', 'KPI-02', 'KPI-03', 'KPI-04', 'KPI-05', 'KPI-16', 'KPI-18', 'KPI-20', 'KPI-21', 'KPI-32', 'KPI-33', 'KPI-37', 'KPI-38']);
@@ -140,28 +87,6 @@ function seedKpiValues(orgId, ind) {
     }
   }
   void ind;
-}
-
-function seedAiUseCases(orgId) {
-  const ctx = { orgId, user: { id: null, name: 'System' } };
-  for (const a of DLV['D15 AI Use Cases']) {
-    const step = STEP[a.Linked_Step_ID];
-    const mp = MP[step?.Parent_Macro_Process_ID];
-    const id = q.insert('ai_use_cases', {
-      org_id: orgId, code: a.AIUC_ID, name: a.Use_Case_Name, linked_step: a.Linked_Step_ID, model_task_type: a.Model_Task_Type,
-      tier: a.Risk_Level === 'High' ? 'Augmented' : 'Assistive', risk_level: a.Risk_Level, human_checkpoint: a.Human_in_the_Loop_Checkpoint, activation_scope: a.Activation_Scope,
-      is_custom: a.Is_Custom === 'True' ? 1 : 0, based_on: a.Based_On_AI_Use_Case_ID === '—' ? null : a.Based_On_AI_Use_Case_ID, approval_status: a.Approval_Status,
-      module: mp ? `${mp.id} ${mp.name}` : '', trigger_text: step ? `When step ${step.Step_ID} "${step.Step_Name}" runs` : 'On request',
-      expected_output: `${a.Model_Task_Type} result presented for human review`,
-      prompt_template: `Assist with "${step?.Step_Name || a.Use_Case_Name}". Use only the record data and the retrieved references. Human checkpoint: ${a.Human_in_the_Loop_Checkpoint} (starter template; final template reference pending D19c).`,
-      active: a.Approval_Status === 'Pending Approval' ? 0 : 1,
-    });
-    snapshot(ctx, 'ai_use_case', id, q.get('SELECT * FROM ai_use_cases WHERE id = ?', id), 'Version 1 (seeded catalog, D15).');
-    if (['AIUC-12', 'AIUC-08'].includes(a.AIUC_ID)) {
-      q.run('UPDATE ai_use_cases SET human_checkpoint = ? WHERE id = ?', `${a.Human_in_the_Loop_Checkpoint} Reviewer name and decision are recorded in the gate pack.`, id);
-      snapshot(ctx, 'ai_use_case', id, q.get('SELECT * FROM ai_use_cases WHERE id = ?', id), 'Clarified the human checkpoint wording.');
-    }
-  }
 }
 
 // ------------------------------------------------------------------ lifecycle simulation
@@ -316,6 +241,81 @@ class Sim {
   }
 }
 
+// ------------------------------------------------------------------ checklist template library (per gate and track)
+function seedChecklistTemplates(orgId, ind, people) {
+  seedStandardChecklists(orgId, people.process);
+  seedSectorChecklists(orgId, ind.industry, people.process);
+}
+
+// ------------------------------------------------------------------ OBS with roles: department members and one team tree per project
+function seedProjectTeam(org, p, people) {
+  const root = q.insert('obs_nodes', { org_id: org.id, project_id: p.id, name: `${p.code} project team`, type: 'Project' });
+  for (const [node, members] of PROJECT_TEAMS[p.track]) {
+    const nid = q.insert('obs_nodes', { org_id: org.id, project_id: p.id, parent_id: root, name: node, type: 'Team' });
+    for (const [alias, role, played] of members) {
+      const uid = alias === 'owner' ? p.owner_id : people[alias];
+      if (uid) q.run('INSERT OR IGNORE INTO obs_members (org_id, obs_node_id, user_id, role_id, project_role) VALUES (?, ?, ?, ?, ?)', org.id, nid, uid, role, played);
+    }
+  }
+}
+
+// ------------------------------------------------------------------ sample attachments in several formats
+let SAMPLES = null;
+async function buildSamples() {
+  const pdf = await new Promise((resolve) => {
+    const doc = new PDFDocument({ size: 'A4', margin: 56 }); const parts = [];
+    doc.on('data', (c) => parts.push(c)); doc.on('end', () => resolve(Buffer.concat(parts)));
+    doc.fontSize(18).fillColor('#E07B00').text('Test report (demonstration file)'); doc.moveDown();
+    doc.fontSize(11).fillColor('#3A3A3C').text('This PDF was generated by the demonstration seed to show task attachments. Results: all acceptance criteria passed; two minor observations recorded.');
+    doc.end();
+  });
+  const wb = new ExcelJS.Workbook(); const ws = wb.addWorksheet('Cost model');
+  ws.addRow(['Item', 'Year 1', 'Year 2', 'Year 3']); ws.addRow(['Revenue (kUSD)', 420, 910, 1350]); ws.addRow(['Cost (kUSD)', 380, 610, 720]); ws.addRow(['Margin (kUSD)', 40, 300, 630]);
+  ws.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } }; ws.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8931D' } };
+  const xlsx = Buffer.from(await wb.xlsx.writeBuffer());
+  const docx = await Packer.toBuffer(new Document({ sections: [{ children: [
+    new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun('Meeting minutes (demonstration file)')] }),
+    new Paragraph('Attendees: project manager, engineering lead, quality manager.'),
+    new Paragraph('Decisions: scope confirmed; the risk register is updated; next review in two weeks.'),
+  ] }] }));
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180"><rect width="320" height="180" fill="#FDFDFC"/><rect x="20" y="40" width="120" height="100" rx="8" fill="#FDEEDA" stroke="#F8931D"/><rect x="180" y="40" width="120" height="100" rx="8" fill="#F2F2F3" stroke="#58595B"/><text x="160" y="24" font-family="Calibri, sans-serif" font-size="14" fill="#3A3A3C" text-anchor="middle">Concept sketch (demonstration)</text></svg>';
+  SAMPLES = [
+    ['test-report.pdf', 'application/pdf', pdf], ['cost-model.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', xlsx],
+    ['meeting-minutes.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', docx], ['concept-sketch.svg', 'image/svg+xml', Buffer.from(svg)],
+    ['requirements.csv', 'text/csv', Buffer.from('\ufeffID,Requirement,Priority\nREQ-01,The user can submit the request online,Must\nREQ-02,The status is visible at every step,Should\n')],
+    ['market-data.json', 'application/json', Buffer.from(JSON.stringify({ source: 'demonstration', segments: 3, growth: '6% per year' }, null, 2))],
+  ];
+}
+function seedAttachments(org, p, people) {
+  const tasks = q.all("SELECT id, uft_id, owner_id, completed_at FROM run_tasks WHERE project_id = ? AND status = 'Done' AND kind = 'work' ORDER BY id LIMIT 3", p.id);
+  tasks.forEach((t, k) => {
+    const [name, mime, buf] = SAMPLES[(p.id + k * 2) % SAMPLES.length];
+    const stored = crypto.randomUUID();
+    fs.writeFileSync(path.join(config.uploadDir, stored), buf);
+    q.insert('evidence_files', { org_id: org.id, entity_type: 'task', entity_id: t.id, filename: `${p.code}_${t.uft_id}_${name}`, stored_name: stored, mime, size: buf.length, uploaded_by: t.owner_id || people.pm1, uploaded_at: t.completed_at });
+  });
+}
+
+// Settings a live organization accumulates: a custom AI use case, per-project AI overrides, alert choices,
+// alerts already read, and a (paused) webhook endpoint.
+function seedExtras(org, ind, people) {
+  const [name, step, tier, risk, checkpoint] = CUSTOM_AI[ind.key];
+  const mp = MP[STEP[step]?.Parent_Macro_Process_ID];
+  const n = (q.get('SELECT MAX(CAST(substr(code, 6) AS INTEGER)) n FROM ai_use_cases WHERE org_id = ?', org.id).n || 0) + 1;
+  const ucId = q.insert('ai_use_cases', { org_id: org.id, code: `AIUC-${String(n).padStart(2, '0')}`, name, linked_step: step, model_task_type: 'Classification / summarisation', tier, risk_level: risk, human_checkpoint: checkpoint,
+    activation_scope: 'Organization', is_custom: 1, approval_status: 'Approved', module: mp ? `${mp.id} ${mp.name}` : '', trigger_text: `When step ${step} runs`, expected_output: 'Draft for human review',
+    prompt_template: `Assist with "${STEP[step]?.Step_Name || name}". Use only the record data and the retrieved references. Human checkpoint: ${checkpoint}`, active: 1 });
+  snapshot({ orgId: org.id, user: { id: people.data, name: 'Data & AI Specialist' } }, 'ai_use_case', ucId, q.get('SELECT * FROM ai_use_cases WHERE id = ?', ucId), 'Version 1 (custom use case, approved by the Process Owner).');
+  const projs = q.all("SELECT id FROM projects WHERE org_id = ? AND status = 'Active' ORDER BY id LIMIT 3", org.id);
+  const ucs = q.all("SELECT id FROM ai_use_cases WHERE org_id = ? AND active = 1 ORDER BY id LIMIT 2", org.id);
+  projs.forEach((p, i) => ucs.forEach((u, j) => q.run('INSERT OR IGNORE INTO ai_project_overrides (project_id, use_case_id, state) VALUES (?, ?, ?)', p.id, u.id, (i + j) % 2 ? 'Off' : 'On')));
+  for (const type of ['ALR-21', 'ALR-09']) q.insert('alert_settings', { org_id: org.id, alert_type: type, enabled: ind.key === 'PUB' && type === 'ALR-21' ? 1 : 0 });
+  for (const a of q.all('SELECT id, created_at FROM alerts WHERE org_id = ? ORDER BY id LIMIT 40', org.id)) {
+    for (const u of [people.pm1, people.exec]) q.run('INSERT OR IGNORE INTO alert_reads (alert_id, user_id, read_at, dismissed) VALUES (?, ?, ?, ?)', a.id, u, a.created_at, a.id % 5 === 0 ? 1 : 0);
+  }
+  q.insert('webhook_endpoints', { org_id: org.id, user_id: people.admin, url: `https://hooks.${ind.domain}/cortexplm`, secret_enc: encrypt(`whsec-${ind.key}`), active: 0 });
+}
+
 function seedOrg(ind, idx, groupIds) {
   const org = { id: q.insert('organizations', { uid: `ORG-${ind.key}-001`, group_id: groupIds[ind.key] ?? null, name: ind.name, industry: ind.industry, country: ind.country, default_language: 'en', profile: `${ind.industry} demo tenant` }) };
   q.insert('org_config', { org_id: org.id, subscription_id: ind.subscription, seats: ind.seats, deployment_option: ind.key === 'HLT' ? 'Dedicated / sovereign' : 'SaaS (shared)', support_tier: ind.key === 'PUB' ? 'Premium 24/7' : 'Standard', billing_cycle: 'Annual',
@@ -323,22 +323,9 @@ function seedOrg(ind, idx, groupIds) {
   for (const a of ind.addons) q.insert('org_addons', { org_id: org.id, addon_id: a, activated_at: '2026-01-05T10:00:00.000Z' });
   q.insert('governance_settings', { org_id: org.id, key: 'justification_required', value: '1' });
   q.insert('governance_settings', { org_id: org.id, key: 'light_observation_days', value: '182' });
-  // OBS tree
-  const site = q.insert('obs_nodes', { org_id: org.id, name: `${ind.name} - Headquarters`, type: 'Site' });
-  const obs = { Site: site };
-  for (const d of ['Portfolio Office', 'Engineering', 'Operations', 'Quality', 'Finance', 'Marketing & Sales', 'Service', 'IT & Data']) obs[d] = q.insert('obs_nodes', { org_id: org.id, parent_id: site, name: d, type: 'Department' });
-  q.insert('obs_nodes', { org_id: org.id, parent_id: obs.Engineering, name: 'Design & Development Team', type: 'Team' });
-  q.insert('obs_nodes', { org_id: org.id, parent_id: obs.Quality, name: 'Regulatory Affairs Team', type: 'Team' });
-  // Users
-  const hash = bcrypt.hashSync('Demo#2026', 10);
-  const people = {};
-  const deptOf = { exec: 'Portfolio Office', board1: 'Portfolio Office', board2: 'Portfolio Office', pm1: 'Portfolio Office', pm2: 'Portfolio Office', portfolio: 'Portfolio Office', engineering: 'Engineering', operations: 'Operations', quality: 'Quality', compliance: 'Quality', legal: 'Portfolio Office', finance: 'Finance', procurement: 'Operations', marketing: 'Marketing & Sales', service: 'Service', technician: 'Service', sustainability: 'Operations', data: 'IT & Data', process: 'Portfolio Office', admin: 'IT & Data', training: 'Service', supplier: null, customer: null, auditor: 'Finance' };
-  PEOPLE.forEach(([alias, title, roles], i) => {
-    const lang = (ind.key === 'PUB' && alias === 'pm2') ? 'fr' : (ind.key === 'ENR' && alias === 'pm2') ? 'ar' : null;
-    const id = q.insert('users', { org_id: org.id, name: personName(idx, i), email: `${alias}@${ind.domain}`, password_hash: hash, language: lang, title, obs_node_id: deptOf[alias] ? obs[deptOf[alias]] : null, created_at: '2025-12-15T08:00:00.000Z' });
-    for (const r of roles) q.insert('user_roles', { user_id: id, role_id: r });
-    people[alias] = id;
-  });
+  // OBS tree and the starting team (shared with "Add organization")
+  const obs = createObsSkeleton(org.id, ind.name);
+  const people = createStarterTeam(org.id, obs, ind.domain, 'Demo#2026', idx, { createdAt: '2025-12-15T08:00:00.000Z', languageOf: (alias) => ((ind.key === 'PUB' && alias === 'pm2') ? 'fr' : (ind.key === 'ENR' && alias === 'pm2') ? 'ar' : null) });
   q.insert('notification_prefs', { user_id: people.pm1, category: 'gate', channel: 'email', enabled: 1 });
   q.insert('notification_prefs', { user_id: people.exec, category: 'alert', channel: 'email', enabled: 1 });
   seedGovernance(org.id, obs);
@@ -350,16 +337,8 @@ function seedOrg(ind, idx, groupIds) {
     q.insert('org_compliance', { org_id: org.id, standard_id: sid, disclosure_ack_by: people.admin, activated_at: '2026-01-05T10:00:00.000Z' });
     s.controls.forEach(([name, coso, type, freq], k) => q.insert('controls', { org_id: org.id, code: `${sid}-${String(k + 1).padStart(2, '0')}`, name, control_type: type, coso_component: coso, testing_frequency: freq, owner: 'Regulatory & Compliance Officer', effectiveness: k % 3 === 2 ? 'Not tested' : 'Effective', standard_tag: sid, description: `Starting control seeded by the ${s.name} module. ${NON_CERT_DISCLOSURE.split('.')[1]}.` }));
   }
-  // Templates (FR-DA-TPL, Rule R4 recommended optional sets)
-  const tpl = [
-    ['Regional variant (Rule R4)', 'Light Track starting point for a regional variant; adds MP-30, MP-39 and MP-22.', { offer_type: 'Product', scores: { strategic: 3, investment: 3, novelty: 2, regulatory: 3, market: 4, reach: 3, integration: 2 }, optional_mps: ['MP-30', 'MP-39', 'MP-22'], description: 'Regional variant of an existing offer.' }],
-    ['Service upgrade', 'Light Track starting point for service upgrades; adds service catalog, incident and quality processes.', { offer_type: 'Service', scores: { strategic: 3, investment: 2, novelty: 3, regulatory: 2, market: 3, reach: 4, integration: 3 }, optional_mps: ['MP-18', 'MP-23', 'MP-25'], description: 'Upgrade of an existing service.' }],
-    ['Minor change (Fast Track)', 'Fast Track starting point for cosmetic, packaging or documentation changes.', { offer_type: 'Product', scores: { strategic: 2, investment: 1, novelty: 1, regulatory: 2, market: 2, reach: 2, integration: 1 }, optional_mps: ['MP-20'], description: 'Minor change to an existing product.' }],
-  ];
-  for (const [name, description, payload] of tpl) {
-    const id = q.insert('templates', { org_id: org.id, kind: 'Project', name, description, payload });
-    snapshot({ orgId: org.id, user: { id: people.process, name: 'Process Owner' } }, 'template', id, q.get('SELECT * FROM templates WHERE id = ?', id), 'Version 1.');
-  }
+  seedProjectTemplates(org.id, people.process);
+  seedChecklistTemplates(org.id, ind, people);
   for (const k of TENANT_KB[ind.key]) q.insert('knowledge_docs', { org_id: org.id, kind: 'Practice note', title: k[0], body: k[1], lang: 'en', tags: ind.industry });
   // Integrations
   ind.integrations.forEach(([cat, name], k) => {
@@ -401,6 +380,8 @@ function seedOrg(ind, idx, groupIds) {
     }
     // Lessons learned at closure (FR-DA-REX-01)
     const fin = L.getProject(p.id);
+    seedProjectTeam(org, fin, people);
+    seedAttachments(org, fin, people);
     if (['Killed', 'Retired', 'Launched'].includes(fin.status) || plan.startsWith('full-relaunched')) {
       const lib = pick(REX_LIBRARY);
       const id = q.insert('rex_entries', { org_id: org.id, project_id: p.id, title: `${fin.code} ${fin.name}: ${lib.title}`, went_well: lib.well, went_wrong: lib.wrong, root_cause: lib.cause, recommendation: lib.rec, category: lib.cat, rating: lib.rating, obs_node_id: fin.obs_node_id, process_tag: lib.mp, created_by: fin.owner_id, created_at: (fin.closed_at || iso(sim.cursor)) });
@@ -438,10 +419,11 @@ function seedOrg(ind, idx, groupIds) {
     }
   }
   // Historical alerts from the shared catalog (same catalog as live computation)
-  const EXTRA = { PUB: ['ALR-17', 'ALR-21', 'ALR-12'], CON: ['ALR-05', 'ALR-25', 'ALR-08'], HLT: ['ALR-23', 'ALR-10', 'ALR-06'], DAI: ['ALR-24', 'ALR-05', 'ALR-09'], TRN: ['ALR-13', 'ALR-12', 'ALR-14'], ENR: ['ALR-15', 'ALR-16', 'ALR-07'], BLD: ['ALR-03', 'ALR-24', 'ALR-25'] }[ind.key];
-  const MSG = { 'ALR-17': 'Privileged session on the permit database lasted 9 h 20 min.', 'ALR-21': 'Knowledge article "Parking permit eligibility" not reviewed for 12 months.', 'ALR-12': 'Service desk queue at 84% of the 8-hour SLA target.', 'ALR-05': 'Major NCR: honeycombing on wall panel batch WP-2291.', 'ALR-25': 'Should-cost of the bridge beam exceeds target cost by 13%.', 'ALR-08': 'Aggregate supplier scored 55 for the second consecutive quarter.', 'ALR-23': 'Serious adverse event reported in the remote monitoring pilot (24 h reporting clock started).', 'ALR-10': 'Technical file for the ECG patch is missing the usability report.', 'ALR-06': 'CAPA-118 on sterilization labels is 6 days overdue.', 'ALR-24': 'Summer yogurt demand forecast exceeds line capacity by 14%.', 'ALR-09': 'Carton supplier announced end-of-life for the 1 L format.', 'ALR-13': 'P1 ticket: contactless validators offline on line 4.', 'ALR-14': 'Door motor failure predicted within 14 days on bus 1187 (78%).', 'ALR-15': 'Pressure sensor outside design envelope for 22 minutes on segment P-14.', 'ALR-16': 'Field MTBF of the leak sensor is 18% below target.', 'ALR-07': 'FMEA line for flare compressor seal has RPN 240.', 'ALR-03': 'Change order CO-311 (tunnel temporary works) is 5 days past its effectivity date.' };
+  const EXTRA = { PUB: ['ALR-17', 'ALR-21', 'ALR-12'], MFG: ['ALR-05', 'ALR-25', 'ALR-08'], HLT: ['ALR-23', 'ALR-10', 'ALR-06'], DAI: ['ALR-24', 'ALR-05', 'ALR-09'], TRN: ['ALR-13', 'ALR-12', 'ALR-14'], ENR: ['ALR-15', 'ALR-16', 'ALR-07'], RED: ['ALR-03', 'ALR-24', 'ALR-25'] }[ind.key];
+  const MSG = { 'ALR-17': 'Privileged session on the permit database lasted 9 h 20 min.', 'ALR-21': 'Knowledge article "Parking permit eligibility" not reviewed for 12 months.', 'ALR-12': 'Service desk queue at 84% of the 8-hour SLA target.', 'ALR-05': 'Major NCR: honeycombing on wall panel batch WP-2291.', 'ALR-25': 'Should-cost of the bridge beam exceeds target cost by 13%.', 'ALR-08': 'Aggregate supplier scored 55 for the second consecutive quarter.', 'ALR-23': 'Serious adverse event reported in the remote monitoring pilot (24 h reporting clock started).', 'ALR-10': 'Technical file for the ECG patch is missing the usability report.', 'ALR-06': 'CAPA-118 on sterilization labels is 6 days overdue.', 'ALR-24': 'Summer yogurt demand forecast exceeds line capacity by 14%.', 'ALR-09': 'Carton supplier announced end-of-life for the 1 L format.', 'ALR-13': 'P1 ticket: contactless validators offline on line 4.', 'ALR-14': 'Door motor failure predicted within 14 days on bus 1187 (78%).', 'ALR-15': 'Pressure sensor outside design envelope for 22 minutes on segment P-14.', 'ALR-16': 'Field MTBF of the leak sensor is 18% below target.', 'ALR-07': 'FMEA line for flare compressor seal has RPN 240.', 'ALR-03': 'Change order CO-311 (podium facade redesign) is 5 days past its effectivity date.' };
   EXTRA.forEach((type, k) => raiseAlert(org.id, type, { entityType: 'catalog', entityId: k + 1, message: MSG[type], now: addDays(TODAY, -between(1, 50)).toISOString(), notify: false }));
   computeAlerts(org.id, TODAY);
+  seedExtras(org, ind, people);
   new SaasLicenceProvider(org.id).resign();
   return { org, people };
 }
@@ -451,6 +433,7 @@ async function main() {
   console.log('Seeding CortexPLM demo data...');
   reset();
   seedPlatform();
+  await buildSamples();
   const groupIds = {};
   for (const g of GROUPS) { const id = q.insert('groups_', { name: g.name, description: g.description }); for (const k of g.members) groupIds[k] = id; }
   const orgs = INDUSTRIES.map((ind, i) => { const r = seedOrg(ind, i, groupIds); console.log(`  ${ind.industry.padEnd(32)} ${q.get('SELECT COUNT(*) n FROM projects WHERE org_id = ?', r.org.id).n} projects, ${q.get('SELECT COUNT(*) n FROM e2e_runs WHERE org_id = ?', r.org.id).n} E2E instances`); return r; });
@@ -459,9 +442,13 @@ async function main() {
   q.insert('user_roles', { user_id: pid, role_id: 'R18' });
   await new Promise((r) => setTimeout(r, 50)); // let pending AI outcome writes finish
   q.insert('meta', { key: 'seeded_at', value: new Date().toISOString() });
-  console.log('\nGroups:');
-  for (const g of GROUPS) console.log(`  ${g.name}: ${g.members.map((k) => INDUSTRIES.find((i) => i.key === k).name).join(', ')}`);
-  console.log(`  Independent (no group): ${INDUSTRIES.filter((i) => !GROUPS.some((g) => g.members.includes(i.key))).map((i) => i.name).join(', ')}`);
+  console.log('\nTenancy (Group Yes/No > Organization > Projects):');
+  for (const ind of INDUSTRIES) {
+    const g = GROUPS.find((x) => x.members.includes(ind.key));
+    const o = q.get('SELECT id FROM organizations WHERE uid = ?', `ORG-${ind.key}-001`);
+    const codes = q.all('SELECT code FROM projects WHERE org_id = ? ORDER BY code', o.id).map((p) => p.code);
+    console.log(`  Group ${g ? `Yes (${g.name})` : 'No '.padEnd(4)} > ${ind.name} [${ind.industry}] > ${codes.length} projects (${codes[0]} .. ${codes[codes.length - 1]})`);
+  }
   console.log('\nInstances of each E2E process per industry:');
   const rows = q.all('SELECT o.industry, r.e2e_id, COUNT(*) n FROM e2e_runs r JOIN organizations o ON o.id = r.org_id GROUP BY o.industry, r.e2e_id ORDER BY o.id, r.e2e_id');
   for (const ind of INDUSTRIES) console.log(`  ${ind.industry.padEnd(32)} ${E2E_IDS.map((e) => `${e.slice(4)}:${rows.find((x) => x.industry === ind.industry && x.e2e_id === e)?.n || 0}`).join('  ')}`);

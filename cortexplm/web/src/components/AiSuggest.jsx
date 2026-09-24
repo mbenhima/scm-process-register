@@ -11,7 +11,7 @@ import { Button, Field, Select, Textarea, useFetch, useToast, Badge } from './ui
 export const LLM_KEY = 'cortexplm.llm';
 export const readLlm = () => { try { return JSON.parse(localStorage.getItem(LLM_KEY) || 'null'); } catch { return null; } };
 
-export default function AiSuggest({ projectId, recordType, recordId, preferred = [], onUse }) {
+export default function AiSuggest({ projectId, recordType, recordId, preferred = [], onUse, lockedId }) {
   const { can, feature } = useAuth();
   const { t } = useI18n();
   const toast = useToast();
@@ -24,7 +24,7 @@ export default function AiSuggest({ projectId, recordType, recordId, preferred =
   const [busy, setBusy] = useState(false);
   if (!feature('ai')) return <div className="callout neutral"><Bot size={18} aria-hidden /><div>{t('AI suggestions are not included in this subscription.')}</div></div>;
   if (!can('ai.use')) return null;
-  const chosen = ucId || usable.find((u) => preferred.includes(u.code))?.id || usable[0]?.id || '';
+  const chosen = lockedId || ucId || usable.find((u) => preferred.includes(u.code))?.id || usable[0]?.id || '';
   const run = async () => {
     setBusy(true); setRes(null); setEdit(null);
     try { setRes(await post('/ai/generate', { useCaseId: Number(chosen), projectId, recordType, recordId, text, llm: readLlm() || undefined })); } catch (e) { toast.err(e); } finally { setBusy(false); }
@@ -40,9 +40,9 @@ export default function AiSuggest({ projectId, recordType, recordId, preferred =
   return (
     <div className="stack">
       <div className="form-grid">
-        <Field label={t('AI use case')}>
+        {!lockedId && <Field label={t('AI use case')}>
           <Select value={chosen} onChange={(e) => setUcId(e.target.value)} options={usable.map((u) => ({ value: u.id, label: `${u.code} ${u.name} (${t(u.tier)})` }))} />
-        </Field>
+        </Field>}
         <Field label={t('Context (optional)')}><input className="input" value={text} onChange={(e) => setText(e.target.value)} placeholder={t('Add details for the suggestion')} /></Field>
       </div>
       <div><Button icon={Bot} onClick={run} busy={busy} disabled={!chosen}>{t('Get suggestion')}</Button></div>
@@ -57,8 +57,8 @@ export default function AiSuggest({ projectId, recordType, recordId, preferred =
           <div className="xs muted">{t('Human checkpoint')}: {res.useCase.checkpoint}</div>
           {res.refs?.length > 0 && <div className="xs" style={{ marginTop: 8 }}>{t('Grounded on')}: {res.refs.map((r, i) => <span key={i}>{i ? '; ' : ''}{r.link ? <Link to={r.link}>{r.ref} {r.title}</Link> : `${r.ref} ${r.title}`}</span>)}</div>}
           <div className="row" style={{ marginTop: 12 }}>
-            <Button variant="primary" icon={Check} onClick={() => decide(edit == null ? 'Accepted' : 'Edited')}>{edit == null ? t('Accept') : t('Save edited version')}</Button>
-            {edit == null && <Button icon={Pencil} onClick={() => setEdit(res.output)}>{t('Edit')}</Button>}
+            <Button variant="primary" icon={Check} onClick={() => decide(edit == null ? 'Accepted' : 'Edited')}>{edit == null ? t('Accept') : t('Save modified version')}</Button>
+            {edit == null && <Button icon={Pencil} onClick={() => setEdit(res.output)}>{t('Modify')}</Button>}
             <Button variant="danger" icon={X} onClick={() => decide('Rejected')}>{t('Reject')}</Button>
           </div>
         </div>

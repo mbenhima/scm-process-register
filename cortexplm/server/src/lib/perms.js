@@ -23,6 +23,10 @@ export const PERMISSIONS = [
   ['rex.view', 'REX', 'View lessons learned'], ['rex.manage', 'REX', 'Record and edit lessons learned'],
   ['template.view', 'Templates', 'View templates'], ['template.manage', 'Templates', 'Manage templates'],
   ['wbs.view', 'Planning', 'View WBS and Gantt'], ['wbs.manage', 'Planning', 'Manage WBS and Gantt'],
+  ['portfolio.view', 'Portfolio', 'View the portfolio overview (projects × E2E processes) of the organization'],
+  ['portfolio.group', 'Portfolio', 'See the projects of the other organizations of the group (read-only)'],
+  ['tenancy.view', 'Tenancy', 'View groups, organizations and their projects'],
+  ['checklist.template.view', 'Gates', 'View the checklist template library'], ['checklist.template.manage', 'Gates', 'Manage checklist templates and link them to gates'],
   ['report.view', 'Reports', 'View reports'], ['report.export', 'Reports', 'Export reports'],
   ['benchmark.view', 'Benchmarking', 'Compare project types and tracks within the organization'],
   ['benchmark.group', 'Benchmarking', 'Compare the organization with the other organizations of its group (aggregates only)'],
@@ -53,7 +57,7 @@ export const ROLES = [
 const ALL = PERMISSIONS.map((p) => p[0]);
 const VIEW = ALL.filter((c) => /\.view$/.test(c) && !['audit.view', 'evaluation.view'].includes(c)); // restricted views are granted explicitly
 const CONTRIB = [...VIEW, 'project.create', 'project.edit', 'task.edit', 'task.evaluate', 'checklist.edit', 'gate.submit', 'ai.use', 'assistant.use', 'rex.manage', 'wbs.manage', 'report.export', 'kpi.manage'];
-const MANAGER = [...CONTRIB, 'task.assign', 'governance.manage', 'racsi.manage', 'bpmn.edit', 'alert.manage', 'kb.manage', 'template.manage', 'audit.view', 'project.delete', 'benchmark.group', 'evaluation.view'];
+const MANAGER = [...CONTRIB, 'task.assign', 'governance.manage', 'racsi.manage', 'bpmn.edit', 'alert.manage', 'kb.manage', 'template.manage', 'audit.view', 'project.delete', 'benchmark.group', 'evaluation.view', 'checklist.template.manage'];
 const ADMIN_ONLY = ['config.manage', 'integration.manage', 'license.manage', 'hierarchy.manage', 'user.manage', 'permission.manage'];
 const without = (list, ...drop) => list.filter((c) => !drop.includes(c));
 
@@ -62,14 +66,15 @@ export function defaultGrants(roleId) { return [...new Set(grants(roleId))]; }
 function grants(roleId) {
   switch (roleId) {
     case 'R18': return ALL;
-    case 'R17': return [...MANAGER, 'track.manage', 'tailoring.approve', 'ai.manage', 'benchmark.manage'];
-    case 'R03': case 'R04': case 'R07': return MANAGER;
+    case 'R17': return [...MANAGER, 'track.manage', 'tailoring.approve', 'ai.manage', 'benchmark.manage', 'portfolio.group'];
+    case 'R03': case 'R07': return MANAGER;
+    case 'R04': return [...MANAGER, 'portfolio.group'];
     case 'R16': return [...CONTRIB, 'ai.manage', 'kb.manage'];
-    case 'R01': return [...VIEW, 'gate.decide', 'tailoring.approve', 'task.evaluate', 'ai.use', 'assistant.use', 'report.export', 'audit.view', 'benchmark.group', 'benchmark.manage', 'rex.manage', 'evaluation.view'];
+    case 'R01': return [...VIEW, 'gate.decide', 'tailoring.approve', 'task.evaluate', 'ai.use', 'assistant.use', 'report.export', 'audit.view', 'benchmark.group', 'benchmark.manage', 'rex.manage', 'evaluation.view', 'portfolio.group'];
     case 'R02': return [...VIEW, 'gate.decide', 'task.evaluate', 'checklist.edit', 'ai.use', 'assistant.use', 'report.export', 'rex.manage'];
-    case 'R14': return ['dashboard.view', 'task.view', 'task.edit', 'project.view', 'kb.view', 'rex.view', 'rex.manage', 'alert.view', 'report.view', 'assistant.use', 'reference.view'];
+    case 'R14': return ['dashboard.view', 'task.view', 'tenancy.view', 'task.edit', 'project.view', 'kb.view', 'rex.view', 'rex.manage', 'alert.view', 'report.view', 'assistant.use', 'reference.view'];
     case 'R20': case 'R21': return ['dashboard.view', 'report.view', 'kb.view', 'alert.view', 'reference.view'];
-    case 'R22': return [...VIEW, 'audit.view', 'report.export', 'evaluation.view'];
+    case 'R22': return [...VIEW, 'audit.view', 'report.export', 'evaluation.view', 'portfolio.group'];
     default: return without(CONTRIB, ...ADMIN_ONLY);
   }
 }

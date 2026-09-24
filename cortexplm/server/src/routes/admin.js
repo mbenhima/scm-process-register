@@ -5,6 +5,7 @@ import { q, json } from '../db.js';
 import { requirePerm, encrypt, decrypt, hmac } from '../lib/security.js';
 import { runBackup, listBackups } from '../lib/backup.js';
 import { effectiveConfig, usage, checkQuota, addonCompatible, integrationCompatible, requireFeatureFor, subscriptionPacks } from '../lib/entitlements.js';
+import { provisionOrganization } from '../lib/orgSetup.js';
 import { PACK, BUNDLE, ADDON, INTEGRATION, COMPLIANCE_STANDARDS, NON_CERT_DISCLOSURE } from '../lib/ref.js';
 import { getLicenceProvider, SaasLicenceProvider, OnPremLicenceProvider } from '../licensing/index.js';
 import { audit, diff, versionsOf } from '../lib/audit.js';
@@ -28,16 +29,28 @@ r.get('/organizations', requirePerm('hierarchy.manage', 'config.view'), h((req) 
     : q.all('SELECT o.*, g.name group_name FROM organizations o LEFT JOIN groups_ g ON g.id = o.group_id WHERE o.id = ?', req.orgId);
   return rows.map((o) => ({ ...o, subscription: q.get('SELECT subscription_id FROM org_config WHERE org_id = ?', o.id)?.subscription_id, projects: q.get('SELECT COUNT(*) n FROM projects WHERE org_id = ?', o.id).n, users: q.get('SELECT COUNT(*) n FROM users WHERE org_id = ?', o.id).n }));
 }));
+r.get('/subscriptions', h(() => [...Object.values(PACK), ...Object.values(BUNDLE)].map((p) => ({ id: p.id || p.Module_ID, name: p.name || p.Module_Name }))));
 r.post('/organizations', admin, h((req) => {
   if (!req.user.is_platform_admin) throw Object.assign(new Error('Only a platform administrator can create organizations.'), { status: 403 });
   const { name, industry, country, group_id, default_language = 'en', subscription_id = 'PACK-01' } = req.body;
   if (!name || !industry) throw badRequest('Name and industry are required.');
-  const uid = `ORG-${industry.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
-  const id = q.insert('organizations', { uid, name, industry, country, group_id: group_id || null, default_language });
-  q.insert('org_config', { org_id: id, subscription_id, seats: 25, issue_date: new Date().toISOString(), expiry_date: new Date(Date.now() + 365 * 86400000).toISOString() });
+  const uid = `ORG-${(name.replace(/[^A-Za-z]/g, '').slice(0, 3) || 'ORG').toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+  if (!PACK[subscription_id] && !BUNDLE[subscription_id]) throw badRequest('Choose a subscription from the catalog.');
+  // Optional starting team: one account per standard role, <alias>@<domain>, with the initial password typed here.
+  const domain = String(req.body.domain || '').trim().toLowerCase();
+  const team = !!req.body.starter_team;
+  if (team && !/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(domain)) throw badRequest('Enter the e-mail domain of the organization, for example example.org.');
+  if (team && String(req.body.initial_password || '').length < 8) throw badRequest('The initial password needs at least 8 characters.');
+  if (team && q.get('SELECT id FROM users WHERE email LIKE ?', `%@${domain}`)) throw Object.assign(new Error('This e-mail domain is already used by another organization.'), { status: 409 });
+  const id = q.tx(() => {
+    const oid = q.insert('organizations', { uid, name, industry, country, group_id: group_id || null, default_language, profile: domain ? `E-mail domain ${domain}` : null });
+    q.insert('org_config', { org_id: oid, subscription_id, seats: 25, issue_date: new Date().toISOString(), expiry_date: new Date(Date.now() + 365 * 86400000).toISOString() });
+    provisionOrganization(oid, name, { industry, ...(team ? { domain, password: req.body.initial_password } : {}) }); // FR-DA-AI-02 and the standard catalog
+    return oid;
+  });
   new SaasLicenceProvider(id).resign();
-  audit({ ...ctxOf(req), orgId: id }, 'organization', id, 'create', { name: [null, name] });
-  return { id };
+  audit({ ...ctxOf(req), orgId: id }, 'organization', id, 'create', { name: [null, name], starter_team: [null, team ? `${domain} (24 accounts)` : 'none'] });
+  return { id, users: team ? q.get('SELECT COUNT(*) n FROM users WHERE org_id = ?', id).n : 0 };
 }));
 r.put('/organizations/:id', admin, h((req) => {
   const id = req.user.is_platform_admin ? Number(req.params.id) : req.orgId;
@@ -61,7 +74,24 @@ r.get('/obs', h((req) => q.all('SELECT n.*, p.code project_code, p.name project_
     risks: q.get('SELECT COUNT(*) n FROM risks WHERE obs_node_id = ?', n.id).n, racsi: q.get('SELECT COUNT(*) n FROM racsi_activities WHERE obs_node_id = ?', n.id).n,
     bpmn: q.get('SELECT COUNT(*) n FROM bpmn_diagrams WHERE obs_node_id = ?', n.id).n, rex: q.get('SELECT COUNT(*) n FROM rex_entries WHERE obs_node_id = ?', n.id).n,
   },
+  members: q.all('SELECT m.id, m.user_id, m.role_id, m.project_role, u.name, u.title, ro.name role_name FROM obs_members m JOIN users u ON u.id = m.user_id LEFT JOIN roles ro ON ro.id = m.role_id WHERE m.obs_node_id = ? ORDER BY m.id', n.id),
 }))));
+// People placed in an OBS node with their role there (e.g. a project team: sponsor, project manager, engineering lead).
+r.post('/obs/:id/members', admin, h((req) => {
+  const n = q.get('SELECT * FROM obs_nodes WHERE id = ? AND org_id = ?', req.params.id, req.orgId); if (!n) throw notFound();
+  const u = q.get('SELECT id, name FROM users WHERE id = ? AND org_id = ?', req.body.user_id, req.orgId); if (!u) throw badRequest('Choose a person of this organization.');
+  if (req.body.role_id && !q.get('SELECT id FROM roles WHERE id = ?', req.body.role_id)) throw badRequest('Unknown role.');
+  if (q.get('SELECT id FROM obs_members WHERE obs_node_id = ? AND user_id = ?', n.id, u.id)) throw Object.assign(new Error('This person is already in this node.'), { status: 409 });
+  const id = q.insert('obs_members', { org_id: req.orgId, obs_node_id: n.id, user_id: u.id, role_id: req.body.role_id || null, project_role: req.body.project_role || null });
+  audit(ctxOf(req), 'obs_node', n.id, 'member.add', { member: [null, `${u.name} (${req.body.project_role || req.body.role_id || ''})`] });
+  return { id };
+}));
+r.delete('/obs/:id/members/:mid', admin, h((req) => {
+  const m = q.get('SELECT m.*, u.name FROM obs_members m JOIN users u ON u.id = m.user_id WHERE m.id = ? AND m.obs_node_id = ? AND m.org_id = ?', req.params.mid, req.params.id, req.orgId); if (!m) throw notFound();
+  q.run('DELETE FROM obs_members WHERE id = ?', m.id);
+  audit(ctxOf(req), 'obs_node', m.obs_node_id, 'member.remove', { member: [m.name, null] });
+  return { ok: true };
+}));
 // OBS entries form a per-organization tree, or a per-project tree when project_id is set (FR-DA-TEN-04).
 const obsProject = (req) => {
   if (!req.body.project_id) return null;

@@ -7,12 +7,12 @@ from gap_data import S, DOC_GAPS
 
 GROUPS = [
     ('Metro City Digital Services Agency', 'Public Sector', 'No', '—'),
-    ('Cedarline Precast Systems', 'Manufacturing in Construction', 'Yes', 'Atlas Infrastructure Holding'),
+    ('Cedarline Precast Systems', 'Manufacturing', 'Yes', 'Atlas Infrastructure Holding'),
     ('Meridale Health Network', 'Healthcare', 'No', '—'),
     ('Valdora Dairy Cooperative', 'Agro-Business – Dairy Products', 'Yes', 'Crescent Agro-Energy Group'),
     ('Orvane Transit Group', 'Transportation', 'Yes', 'Atlas Infrastructure Holding'),
     ('Kestrel Energy & Utilities', 'Oil, Gas & Energy', 'Yes', 'Crescent Agro-Energy Group'),
-    ('Ridgeway Construction Contractors', 'Construction', 'Yes', 'Atlas Infrastructure Holding'),
+    ('Ridgeway Real Estate Development', 'Real Estate Development', 'Yes', 'Atlas Infrastructure Holding'),
 ]
 RECOMMEND = {
     'FR-DA-TEN-08': 'Replace sequential record ids in URLs and API payloads with opaque identifiers (UUID or per-tenant codes). Medium effort; touches every route.',
@@ -51,7 +51,7 @@ def build(srs_path, bench_path, out):
     doc.add_heading('1.1 What changed in this release', 2)
     bullets(doc, [
         '**Benchmarking module (new):** compares project types, tracks and departments within an organization, and organizations within the same group. External benchmarking is out of scope.',
-        '**Seven sectors and real groups:** Construction added; two groups (Atlas Infrastructure Holding, Crescent Agro-Energy Group) and two independent organizations.',
+        '**Seven sectors and real groups:** Real Estate Development and Manufacturing sectors; two groups (Atlas Infrastructure Holding, Crescent Agro-Energy Group) and two independent organizations.',
         f"**{now['Fixed']} SRS gaps closed:** per-project OBS, multilingual knowledge, per-process governance view, version comparison, lessons-learned prompt at closure, restricted evaluations, CI pipeline, backups, load capacity and touch targets.",
         '**Documents corrected:** the Coverage Checklist overstated SRS coverage; the User Guide covered the lifecycle only. Both are updated (Section 6).',
     ])
@@ -107,7 +107,7 @@ def build(srs_path, bench_path, out):
     ])
     g = bench['group']
     rows = [(f"{r['segment']}{' (you)' if r['self'] else ''}", f"{r['metrics']['go_rate']}%", f"{r['metrics']['recycle_rate']}%", f"{r['metrics']['time_to_market_days']} days", f"{r['metrics']['avg_npv']} kUSD") for r in g['rows']]
-    para(doc, f"Example: {g['group']}, seen by the Executive Sponsor of Ridgeway Construction Contractors.", align='left')
+    para(doc, f"Example: {g['group']}, seen by the Executive Sponsor of Ridgeway Real Estate Development.", align='left')
     table(doc, ['Organization', 'First-time Go', 'Recycle', 'Time to market', 'Average NPV'], rows, widths=[2.6, 1.0, 0.9, 1.2, 1.07], size=9.5)
 
     h1(doc, '8. Measurements')

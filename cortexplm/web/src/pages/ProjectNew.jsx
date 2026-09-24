@@ -6,9 +6,11 @@ import { useI18n } from '../lib/i18n.jsx';
 import { post } from '../lib/api.js';
 import { PageHeader, Card, CardHead, Field, Input, Textarea, Select, Button, useFetch, Skeleton, ErrorNote, useToast, Check as CheckBox, StatusBadge, Badge } from '../components/ui.jsx';
 import { Radar } from '../components/charts.jsx';
+import { SCORING_MATRIX, TRACK_THRESHOLDS } from '../lib/decisionMatrix.js';
+import { Modal } from '../components/ui.jsx';
 
-export default function ProjectNew() {
-  const { me } = useAuth();
+function ProjectNewForm() {
+  const { me, switchOrg } = useAuth();
   const { t } = useI18n();
   const nav = useNavigate();
   const toast = useToast();
@@ -17,6 +19,8 @@ export default function ProjectNew() {
   const obs = useFetch('/obs');
   const templates = useFetch('/templates');
   const mps = useFetch('/reference/macro-processes');
+  const scope = useFetch(me.user.isPlatformAdmin ? '/portfolio/scope' : null);
+  const orgOptions = scope.data?.orgs || [{ id: me.organization.id, name: me.organization.name, group_name: me.organization.group_name }];
   const [f, setF] = useState({ name: '', description: '', offer_type: 'Product', region: '', owner_id: me.user.id, sponsor_id: '', obs_node_id: '', template_id: '', planned_launch_date: '' });
   const [scores, setScores] = useState({});
   const [safety, setSafety] = useState(false);
@@ -26,6 +30,7 @@ export default function ProjectNew() {
   const [rec, setRec] = useState(null);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [matrix, setMatrix] = useState(false);
   const set = (k) => (e) => setF((x) => ({ ...x, [k]: e.target.value }));
   const criteria = tracks.data?.criteria || [];
   const complete = criteria.length && criteria.every((c) => scores[c.key] >= 1);
@@ -57,11 +62,36 @@ export default function ProjectNew() {
     } catch (e) { setError(e); } finally { setBusy(false); }
   };
   const canSubmit = f.name.trim() && complete && track && (track === rec?.recommended || reason.trim());
+  const matrixModal = matrix && (
+    <Modal wide title={t('Decision matrix: how to score a new project')} subtitle={t('Pick, for each criterion, the description closest to the project. The total decides the recommended track.')} onClose={() => setMatrix(false)}>
+      <div className="table-wrap"><table className="data compact">
+        <thead><tr><th>{t('Criterion')}</th>{[1, 2, 3, 4, 5].map((v) => <th key={v}>{t('Score {n}', { n: v })}</th>)}</tr></thead>
+        <tbody>{SCORING_MATRIX.map((c) => <tr key={c.key}><td className="strong">{t(c.label)}</td>{c.levels.map((l, i) => <td key={i} className="small" style={scores[c.key] === i + 1 ? { background: 'var(--pa-orange-tint)' } : undefined}>{t(l)}</td>)}</tr>)}</tbody>
+      </table></div>
+      <h4 style={{ marginTop: 16 }}>{t('From total score to track')}</h4>
+      <div className="table-wrap"><table className="data compact">
+        <thead><tr><th>{t('Total score')}</th><th>{t('Recommended track')}</th><th>{t('Rule')}</th></tr></thead>
+        <tbody>{TRACK_THRESHOLDS.map(([r, tr, rule]) => <tr key={r}><td>{r}</td><td>{t(tr)}</td><td className="small">{t(rule)}</td></tr>)}</tbody>
+      </table></div>
+    </Modal>
+  );
   return (
     <div className="page">
+      {matrixModal}
       <PageHeader eyebrow={t('UFS-28 Configure track & macro processes')} title={t('New innovation project')} subtitle={t('Describe the idea, score its complexity, confirm the track, then create it. E2E-01 Idea-to-Business Plan starts automatically.')} />
       <div className="grid two">
         <div className="stack">
+          <Card>
+            <CardHead title={t('Step 0. Where the project belongs')} subtitle={t('Every project belongs to one organization. The group, if any, comes from the organization.')} />
+            <div className="form-grid">
+              <Field label={t('Organization')} hint={me.user.isPlatformAdmin ? t('Changing it switches you to that organization: owners, teams and templates are loaded from there.') : t('Projects are created in your own organization.')}>
+                <Select value={me.organization.id} disabled={!me.user.isPlatformAdmin} onChange={(e) => switchOrg(Number(e.target.value))} options={orgOptions.map((o) => ({ value: o.id, label: o.name }))} />
+              </Field>
+              <Field label={t('Belongs to a group?')}>
+                <div className="row" style={{ minHeight: 40 }}><StatusBadge value={me.organization.group_name ? 'Yes' : 'No'} /><span>{me.organization.group_name || t('Independent organization')}</span></div>
+              </Field>
+            </div>
+          </Card>
           <Card>
             <CardHead title={t('Step 1. Describe the project')} />
             <div className="form-grid">
@@ -78,7 +108,7 @@ export default function ProjectNew() {
             </div>
           </Card>
           <Card>
-            <CardHead title={t('Step 2. Score the complexity')} subtitle={t('Score each criterion from 1 (low) to 5 (high). Use 2 or 4 between the descriptions.')} />
+            <CardHead title={t('Step 2. Score the complexity')} subtitle={t('Score each criterion from 1 (low) to 5 (high). Use 2 or 4 between the descriptions.')} actions={<Button size="sm" onClick={() => setMatrix(true)}>{t('Decision matrix')}</Button>} />
             <div className="stack">
               {criteria.map((c) => (
                 <fieldset key={c.key} style={{ border: 0, padding: 0, margin: 0 }}>
@@ -141,4 +171,10 @@ export default function ProjectNew() {
       </div>
     </div>
   );
+}
+
+// Remount the form when the organization changes, so every list (owners, OBS, templates) reloads for it.
+export default function ProjectNew() {
+  const { me } = useAuth();
+  return <ProjectNewForm key={me.organization.id} />;
 }

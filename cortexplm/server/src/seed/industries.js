@@ -42,7 +42,7 @@ export const INDUSTRIES = [
     ],
   },
   {
-    key: 'CON', industry: 'Manufacturing in Construction', name: 'Cedarline Precast Systems', domain: 'cedarline.example', country: 'United Arab Emirates',
+    key: 'MFG', industry: 'Manufacturing', name: 'Cedarline Precast Systems', domain: 'cedarline.example', country: 'United Arab Emirates',
     subscription: 'BND-03', seats: 40, addons: ['ADD-SEC-02', 'ADD-INT-02', 'ADD-AI-02'], compliance: ['ISO9001'],
     integrations: [['INT-ERP-01', 'BOM sync with ERP (SAP S/4HANA)'], ['INT-MES-01', 'Work instructions to MES (Opcenter)'], ['INT-SRM-03', 'Supply chain risk feed (Resilinc)']],
     segments: ['residential developers', 'infrastructure contractors', 'modular builders'], regions: ['Gulf region', 'East Africa', 'South Asia'],
@@ -207,58 +207,78 @@ export const INDUSTRIES = [
     ],
   },
   {
-    key: 'BLD', industry: 'Construction', name: 'Ridgeway Construction Contractors', domain: 'ridgeway.example', country: 'Saudi Arabia',
+    key: 'RED', industry: 'Real Estate Development', name: 'Ridgeway Real Estate Development', domain: 'ridgeway.example', country: 'Saudi Arabia',
     subscription: 'BND-05', seats: 40, addons: ['ADD-SEC-02', 'ADD-AI-02'], compliance: ['ISO9001', 'ISO27001'],
-    integrations: [['INT-ERP-01', 'Project cost sync with ERP (Oracle)'], ['INT-COL-01', 'Site team notifications (Teams)'], ['INT-DAT-01', 'Portfolio BI (Power BI)']],
-    segments: ['public infrastructure owners', 'commercial real-estate developers', 'industrial plant owners'], regions: ['Riyadh region', 'Eastern Province', 'Red Sea coast'],
-    regulation: 'national building code, health and safety on construction sites and environmental impact permits',
-    risks: ['late design changes from the client', 'subcontractor capacity shortages', 'summer heat restricting site working hours'],
-    partners: ['a BIM design studio', 'a heavy equipment rental company'], channels: ['public tenders', 'design-and-build framework agreements'],
-    kpiWord: 'on-time milestone rate', unit: 'site milestones',
+    integrations: [['INT-ERP-01', 'Sales and cost sync with ERP (Oracle)'], ['INT-COL-01', 'Sales team notifications (Teams)'], ['INT-DAT-01', 'Portfolio BI (Power BI)']],
+    segments: ['first-time home buyers', 'investors in off-plan units', 'corporate tenants'], regions: ['Riyadh region', 'Eastern Province', 'Red Sea coast'],
+    regulation: 'off-plan sales regulation with escrow accounts, the national building code, municipal zoning approvals and green building rating',
+    risks: ['slow off-plan sales in a rising interest-rate market', 'late permits from the municipality', 'contractor delays on handover dates'],
+    partners: ['a design-and-build contractor', 'a mortgage bank'], channels: ['sales centres', 'broker network', 'online reservation'],
+    kpiWord: 'off-plan pre-sales rate', unit: 'residential units',
     projects: [
-      ['BIM-Based Clash Detection Service', 'Model-based clash detection before construction, offered to clients as a paid design-review service.', 'Service'],
-      ['Modular Site Office Kit', 'Relocatable site offices assembled in one day from standard modules.', 'Product'],
-      ['Drone Progress Monitoring', 'Weekly drone flights compare site progress with the 4D schedule.', 'Service'],
-      ['Low-Carbon Concrete Mix Programme', 'Qualifying low-clinker concrete mixes for structural works.', 'Product'],
-      ['Digital Site Permit-to-Work', 'Mobile permit-to-work for hot work, confined spaces and lifting operations.', 'Service'],
-      ['Tower Crane Anti-Collision System', 'Sensors and zoning that stop crane jibs from colliding on dense sites.', 'Product-Service'],
-      ['Worker Heat-Stress Wearables', 'Wearables that alert supervisors when workers reach heat-stress limits.', 'Product-Service'],
-      ['Prefabricated MEP Risers', 'Factory-built mechanical, electrical and plumbing risers for high-rise towers.', 'Product'],
-      ['Handover Digital Twin Package', 'As-built model and asset data delivered to the building operator at handover.', 'Service'],
-      ['Rebar Scheduling Optimiser', 'Cut-and-bend optimisation that reduces rebar offcut waste.', 'Service'],
-      ['Road Resurfacing Rapid Method', 'Night-time resurfacing method that reopens lanes by 6 am.', 'Service'],
-      ['Solar-Powered Site Lighting', 'Autonomous solar lighting towers replacing diesel generators on site.', 'Product'],
-      ['Subcontractor Prequalification Portal', 'Online prequalification of subcontractors with safety and financial checks.', 'Service'],
-      ['Concrete Curing Sensors', 'Embedded sensors that report concrete strength gain in real time.', 'Product-Service'],
-      ['Modular School Classroom', 'Permanent modular classrooms delivered in twelve weeks.', 'Product'],
-      ['Site Waste Sorting Programme', 'On-site sorting and recycling of construction and demolition waste.', 'Service'],
-      ['3D-Printed Boundary Walls', 'Printed concrete boundary walls for residential compounds.', 'Product'],
-      ['Client Progress Portal', 'Portal where clients follow milestones, photos and payment certificates.', 'Service'],
-      ['Tunnel Ventilation Retrofit', 'Energy-efficient jet-fan retrofit for road tunnels.', 'Product-Service'],
-      ['Seismic Retrofit Service for Schools', 'Assessment and strengthening of existing school buildings.', 'Service'],
-      ['Autonomous Site Survey Rover', 'Rover that performs setting-out and as-built surveys at night.', 'Product'],
+      ['Smart Home Apartment Line', 'Apartments delivered with pre-installed smart lighting, climate and access control managed from one app.', 'Product'],
+      ['Off-Plan Sales Digital Platform', 'Online reservation, contract signature and escrow instalment tracking for off-plan buyers.', 'Service'],
+      ['Build-to-Rent Community Model', 'Rental community designed, built and operated by the developer with a resident services package.', 'Product-Service'],
+      ['Net-Zero Villa Prototype', 'Villa type with solar roof, high-performance envelope and smart metering that reaches net-zero energy.', 'Product'],
+      ['Virtual Property Tour and Configurator', 'Buyers tour units in 3D and choose finishes online; choices flow to the contractor as change orders.', 'Service'],
+      ['Modular Townhouse Range', 'Townhouses assembled from factory-built modules to cut construction time by 40%.', 'Product'],
+      ['Community Facility Management Service', 'Service-charge funded maintenance, security and landscaping for handed-over communities.', 'Service'],
+      ['Co-Living Residence Concept', 'Furnished private rooms with shared kitchens and workspaces for young professionals.', 'Product-Service'],
+      ['Green Building Certification Programme', 'Design and construction process that earns a green building rating for every new tower.', 'Service'],
+      ['Escrow Payment Tracking Portal', 'Portal where buyers and the regulator follow escrow balances against construction milestones.', 'Service'],
+      ['Resident Mobile App and Concierge', 'Resident app for maintenance requests, visitor access, amenity booking and concierge services.', 'Service'],
+      ['Mixed-Use Retail Podium Format', 'Standard retail podium with food court and clinics under residential towers.', 'Product'],
+      ['Senior Living Apartment Concept', 'Accessible apartments with on-site care services and emergency call systems.', 'Product-Service'],
+      ['Handover Snagging App', 'Buyers and inspectors record defects at handover with photos; the contractor receives work orders.', 'Service'],
+      ['Solar Rooftop Offer for Buyers', 'Optional rooftop solar package financed with the mortgage.', 'Product-Service'],
+      ['Parking Guidance System Upgrade', 'Replacement of the parking bay sensors in existing community car parks.', 'Product'],
+      ['Sales Brochure and Kit Refresh', 'New brochure, floor-plan booklet and sales kit for the current launch.', 'Product'],
+      ['Show Apartment Fit-Out Update', 'Updated furniture and finishes in the show apartment of the sales centre.', 'Product'],
+      ['Floating Waterfront Villas Pilot', 'Pilot of floating villas moored in a marina on the Red Sea coast.', 'Product'],
+      ['Digital Twin for Asset Management', 'Building digital twin used by the facility team for maintenance planning and energy use.', 'Service'],
+      ['Fractional Ownership Investment Scheme', 'Investors buy shares of rental units through a regulated fund with quarterly distributions.', 'Service'],
     ],
   },
 ];
 
 // Groups: organizations of a group can benchmark against each other; the others operate independently.
 export const GROUPS = [
-  { key: 'ATLAS', name: 'Atlas Infrastructure Holding', description: 'Construction, precast manufacturing and transport operations under one holding.', members: ['CON', 'BLD', 'TRN'] },
+  { key: 'ATLAS', name: 'Atlas Infrastructure Holding', description: 'Real estate development, precast manufacturing and transport operations under one holding.', members: ['MFG', 'RED', 'TRN'] },
   { key: 'CRESCENT', name: 'Crescent Agro-Energy Group', description: 'Dairy cooperative and energy utility owned by the same regional investment group.', members: ['DAI', 'ENR'] },
 ];
 
-// People: role alias -> [title, role ids]. The e-mail is <alias>@<domain>; demo password Demo#2026.
-export const PEOPLE = [
-  ['exec', 'Executive Sponsor', ['R01']], ['board1', 'Gate Review Board Member', ['R02']], ['board2', 'Gate Review Board Member', ['R02']],
-  ['pm1', 'Product Manager', ['R03']], ['pm2', 'Product Manager', ['R03']], ['portfolio', 'Portfolio Manager', ['R04']],
-  ['engineering', 'Engineering Lead', ['R05']], ['operations', 'Manufacturing / Operations Engineer', ['R06']], ['quality', 'Quality Manager', ['R07']],
-  ['compliance', 'Regulatory & Compliance Officer', ['R08']], ['legal', 'Legal & IP Counsel', ['R09']], ['finance', 'Finance Controller', ['R10']],
-  ['procurement', 'Procurement & Supplier Manager', ['R11']], ['marketing', 'Marketing & Sales Manager', ['R12']], ['service', 'Service Manager', ['R13']],
-  ['technician', 'Field Service Technician', ['R14']], ['sustainability', 'Sustainability Officer', ['R15']], ['data', 'Data & AI Specialist', ['R16']],
-  ['process', 'Process Owner / Track Administrator', ['R17']], ['admin', 'Platform Administrator', ['R18']], ['training', 'Customer Success & Training Manager', ['R19']],
-  ['supplier', 'Supplier (External Portal)', ['R20']], ['customer', 'Customer (External Portal)', ['R21']], ['auditor', 'Internal Auditor', ['R22']],
-];
+// Project team (OBS) per track: node name -> [person alias or 'owner', role id, role played in the project].
+export const PROJECT_TEAMS = {
+  Full: [
+    ['Steering committee', [['exec', 'R01', 'Executive sponsor'], ['board1', 'R02', 'Gate board member'], ['board2', 'R02', 'Gate board member']]],
+    ['Project management', [['owner', 'R03', 'Project manager'], ['portfolio', 'R04', 'Portfolio manager'], ['process', 'R17', 'Track administrator'], ['data', 'R16', 'Data & AI specialist']]],
+    ['Engineering & delivery', [['engineering', 'R05', 'Engineering lead'], ['operations', 'R06', 'Operations engineer'], ['procurement', 'R11', 'Procurement lead'], ['sustainability', 'R15', 'Sustainability officer']]],
+    ['Quality & compliance', [['quality', 'R07', 'Quality manager'], ['compliance', 'R08', 'Compliance officer'], ['legal', 'R09', 'Legal & IP counsel']]],
+    ['Commercial & finance', [['marketing', 'R12', 'Marketing lead'], ['finance', 'R10', 'Finance controller']]],
+    ['Service & support', [['service', 'R13', 'Service manager'], ['training', 'R19', 'Training manager'], ['technician', 'R14', 'Field service technician']]],
+  ],
+  Light: [
+    ['Steering committee', [['exec', 'R01', 'Executive sponsor'], ['board1', 'R02', 'Gate board member']]],
+    ['Project management', [['owner', 'R03', 'Project manager'], ['portfolio', 'R04', 'Portfolio manager']]],
+    ['Delivery team', [['engineering', 'R05', 'Engineering lead'], ['operations', 'R06', 'Operations engineer'], ['quality', 'R07', 'Quality manager']]],
+    ['Commercial & finance', [['marketing', 'R12', 'Marketing lead'], ['finance', 'R10', 'Finance controller']]],
+  ],
+  Fast: [
+    ['Project management', [['owner', 'R03', 'Project manager'], ['portfolio', 'R04', 'Portfolio manager']]],
+    ['Delivery team', [['engineering', 'R05', 'Engineering lead'], ['quality', 'R07', 'Quality manager']]],
+  ],
+};
 
-const FIRST = ['Amina', 'Youssef', 'Claire', 'Omar', 'Sofia', 'Karim', 'Leila', 'Thomas', 'Nadia', 'Hassan', 'Julie', 'Rachid', 'Emma', 'Samir', 'Ines', 'Daniel', 'Salma', 'Marc', 'Hiba', 'Anas', 'Laura', 'Mehdi', 'Sara', 'Paul', 'Fatima', 'Adam', 'Chloe', 'Tariq', 'Maya', 'Ilyas'];
-const LAST = ['Benali', 'Martin', 'El Idrissi', 'Dubois', 'Haddad', 'Lambert', 'Alaoui', 'Moreau', 'Tazi', 'Roche', 'Chraibi', 'Girard', 'Mansouri', 'Fontaine', 'Berrada', 'Nguyen', 'Kettani', 'Leroy', 'Amrani', 'Perrin', 'Saidi', 'Fournier', 'Ouazzani', 'Blanc', 'Zahiri', 'Mercier', 'Lahlou', 'Carpentier', 'Bennani', 'Garnier'];
-export const personName = (orgIdx, i) => `${FIRST[(i * 7 + orgIdx * 5) % FIRST.length]} ${LAST[(i * 11 + orgIdx * 3) % LAST.length]}`;
+// One organization-authored (custom) AI use case per sector, next to the seeded catalog.
+export const CUSTOM_AI = {
+  PUB: ['Citizen feedback theme clustering', 'MP-03.2', 'Assistive', 'Low', 'Service designer confirms each theme before it enters the requirements list.'],
+  MFG: ['Curing defect root-cause hints', 'MP-08.1', 'Assistive', 'Medium', 'Quality manager validates the proposed causes before a CAPA is opened.'],
+  HLT: ['Regulatory change impact summary', 'MP-30.1', 'Augmented', 'High', 'Regulatory affairs officer reviews every impact statement before it is filed.'],
+  DAI: ['Shelf-life claim wording check', 'MP-39.1', 'Assistive', 'Medium', 'Food safety lead approves the final label wording.'],
+  TRN: ['Passenger complaint triage', 'MP-03.1', 'Assistive', 'Low', 'Customer service lead confirms the category of each complaint.'],
+  ENR: ['Permit condition extraction', 'MP-30.1', 'Augmented', 'High', 'HSE manager checks every extracted condition against the permit text.'],
+  RED: ['Buyer request classification', 'MP-03.1', 'Assistive', 'Low', 'Sales manager confirms the classification before a change order is raised.'],
+};
+
+// People (role alias -> title, roles) and names come from the shared organization setup.
+export { PEOPLE, personName } from '../lib/orgSetup.js';

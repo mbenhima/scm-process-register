@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useAuth } from '../lib/auth.jsx';
 import { PageHeader, Card, CardHead, DataTable, useFetch, Skeleton, ErrorNote, Badge } from '../components/ui.jsx';
+import { useProcessAi, AiBadges, AiLegend } from '../components/ProcessAi.jsx';
 
 const COV = { '●': ['Mapped', 's4'], '○': ['Proposed', 's3'], E: ['Platform enabler', 'outline'], '◆': ['Conditional', 's2'] };
 
@@ -40,6 +41,7 @@ export default function MacroProcess() {
   const { t } = useI18n();
   const { can } = useAuth();
   const { data: m, error } = useFetch(`/reference/macro-processes/${id}`);
+  const ai = useProcessAi();
   if (error) return <div className="page"><ErrorNote error={error} /></div>;
   if (!m) return <div className="page"><Skeleton h={500} /></div>;
   const sipoc = [['Suppliers', m.suppliers], ['Inputs', m.inputs], ['Process', null], ['Outputs', m.outputs], ['Customers', m.customers]];
@@ -59,10 +61,11 @@ export default function MacroProcess() {
         <div className="stack">
           <Card>
             <CardHead title={t('Tasks and steps (D02)')} subtitle={t('{n} steps', { n: m.tasks.reduce((a, x) => a + x.steps.length, 0) })} />
+            <AiLegend />
             {m.tasks.map((task) => (
               <div key={task.name} style={{ marginBottom: 16 }}>
                 <h4>{t(task.name)}</h4>
-                <ul className="list-plain">{task.steps.map((s) => <li key={s.Step_ID} className="row between"><span><strong className="strong">{s.Step_ID}</strong> {t(s.Step_Name)}</span><span className="row" style={{ gap: 8 }}><Badge>{t(s.Step_Type)}</Badge><span className="xs muted">{t(s.Responsible_Role)}</span></span></li>)}</ul>
+                <ul className="list-plain">{task.steps.map((s) => <li key={s.Step_ID} className="row between"><span><strong className="strong">{s.Step_ID}</strong> {t(s.Step_Name)} <AiBadges list={ai.forStep(s.Step_ID)} /></span><span className="row" style={{ gap: 8 }}><Badge>{t(s.Step_Type)}</Badge><span className="xs muted">{t(s.Responsible_Role)}</span></span></li>)}</ul>
               </div>
             ))}
           </Card>
@@ -80,8 +83,9 @@ export default function MacroProcess() {
             <DataTable filterable={false} rows={m.controls} columns={[{ key: 'Control_ID', label: t('Control') }, { key: 'Control_Name', label: t('Name'), render: (r) => t(r.Control_Name) }, { key: 'Type', label: t('Type'), render: (r) => t(r.Type) }]} empty={t('None')} />
           </Card>
           <Card><CardHead title={t('KPIs (D06) and AI use cases (D15)')} />
-            <ul className="list-plain">{m.kpis.map((k) => <li key={k.KPI_ID}>{k.KPI_ID} {t(k.KPI_Name)} · {t('target')} {k.Target}</li>)}{m.ai.map((a) => <li key={a.AIUC_ID}>{a.AIUC_ID} {t(a.Use_Case_Name)} · {t(a.Risk_Level)}</li>)}</ul>
-            {!m.kpis.length && !m.ai.length && <p className="muted">{t('None')}</p>}
+            <ul className="list-plain">{m.kpis.map((k) => <li key={k.KPI_ID}>{k.KPI_ID} {t(k.KPI_Name)} · {t('target')} {k.Target}</li>)}</ul>
+            <div style={{ marginTop: 8 }}><AiBadges list={ai.forMp(m.id)} empty={m.ai.length ? <p className="muted small">{t('The AI use cases of this process are not active in your organization.')}</p> : null} /></div>
+            {!m.kpis.length && !m.ai.length && !ai.forMp(m.id).length && <p className="muted">{t('None')}</p>}
           </Card>
           <Card><CardHead title={t('Information classes (D09)')} />
             <ul className="list-plain">{m.classes.map((c) => <li key={c.Object_Class_ID}>{c.Object_Class_ID} {t(c.Class_Name)} · <span className="muted">{t(c.Description)}</span></li>)}</ul>

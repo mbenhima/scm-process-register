@@ -22,7 +22,7 @@ export const TENANT_KB = {
     ['Working with the national identity platform', 'Book integration test slots at least eight weeks ahead. Keep the identity-verification level of each service documented in the specification and confirmed at T1.'],
     ['Budget cycle and gate timing', 'Plan T0 decisions before the annual budget submission so that approved projects are funded in the next fiscal year.'],
   ],
-  CON: [
+  MFG: [
     ['Hot-weather curing practice', 'In summer months, schedule pours before 10:00, use curing compounds and monitor core temperature. Log deviations as NCRs linked to the batch.'],
     ['Transport and handling of large elements', 'Check lifting anchor positions against the drawing and the transport frame before release. Damage in transport is the main source of site rework.'],
     ['Embodied carbon declarations', 'Keep the environmental product declaration with the product record and update it when the cement blend changes.'],
@@ -47,10 +47,10 @@ export const TENANT_KB = {
     ['Grid connection approvals', 'Submit grid connection studies before T1 for storage and generation projects; approval lead time can exceed six months.'],
     ['Permit conditions tracking', 'Record environmental permit conditions as requirements and link them to acceptance tests.'],
   ],
-  BLD: [
-    ['Design freeze before site mobilisation', 'Agree a design freeze with the client before the T2 gate. Late design changes are the main cause of Recycle decisions on build projects.'],
-    ['Heat-stress work planning', 'From June to September, move heavy work to early morning and night shifts and log rest breaks. Link incidents to the site safety plan.'],
-    ['Subcontractor capacity check', 'Confirm crew availability with the top three subcontractors before committing a launch date; record the check as gate evidence.'],
+  RED: [
+    ['Escrow evidence at every gate', 'Off-plan projects must show the escrow account balance against the construction milestone plan at T2 and T3; the regulator can ask for it at any time.'],
+    ['Permit path before sales launch', 'Do not open off-plan sales before the building permit and the off-plan sales licence are both issued; record both as T3 gate evidence.'],
+    ['Handover readiness review', 'Six weeks before handover, run a snagging walk-through with the contractor and the facility team; open defects are tracked in the snagging app.'],
   ],
 };
 
