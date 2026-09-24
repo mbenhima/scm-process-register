@@ -61,13 +61,14 @@ router.post('/', requirePermission('user.create'), (req, res) => {
 router.put('/:id', requirePermission('user.edit'), (req, res) => {
   const existing = db.prepare('SELECT * FROM users WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!existing) return res.status(404).json({ error: 'not_found' });
-  const { first_name, last_name, language_preference, is_active, password } = req.body || {};
+  let { first_name, last_name, language_preference, is_active, password } = req.body || {};
+  first_name ??= null; last_name ??= null; language_preference ??= null;
   db.prepare(`
     UPDATE users SET first_name = COALESCE(?, first_name), last_name = COALESCE(?, last_name),
       language_preference = COALESCE(?, language_preference), is_active = COALESCE(?, is_active),
       updated_at = datetime('now')
     WHERE id = ?
-  `).run(first_name, last_name, language_preference, is_active === undefined ? undefined : (is_active ? 1 : 0), req.params.id);
+  `).run(first_name, last_name, language_preference, is_active === undefined ? null : (is_active ? 1 : 0), req.params.id);
   if (password) db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(bcrypt.hashSync(password, 10), req.params.id);
   const row = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.id);
   writeAudit(req, 'UPDATE', 'User', req.params.id, { ...existing, password_hash: undefined }, { ...row, password_hash: undefined });

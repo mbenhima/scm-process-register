@@ -72,7 +72,8 @@ router.post('/', requirePermission('obs.manage'), (req, res) => {
 router.put('/:id', requirePermission('obs.manage'), (req, res) => {
   const existing = db.prepare('SELECT * FROM obs_nodes WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!existing) return res.status(404).json({ error: 'not_found' });
-  const { name, name_fr, name_ar, code, node_type, parent_id } = req.body || {};
+  let { name, name_fr, name_ar, code, node_type, parent_id } = req.body || {};
+  name ??= null; name_fr ??= null; name_ar ??= null; code ??= null; node_type ??= null;
   db.prepare(`
     UPDATE obs_nodes SET name = COALESCE(?, name), name_fr = COALESCE(?, name_fr), name_ar = COALESCE(?, name_ar),
       code = COALESCE(?, code), node_type = COALESCE(?, node_type), parent_id = ?

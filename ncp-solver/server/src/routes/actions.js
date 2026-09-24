@@ -45,7 +45,9 @@ router.post('/', requirePermission('action.create'), (req, res) => {
 router.put('/:id', requirePermission('action.edit'), (req, res) => {
   const existing = db.prepare('SELECT * FROM actions WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!existing) return res.status(404).json({ error: 'not_found' });
-  const { description, tasks, required_means, responsible_owner_id, planned_completion_date, status, actual_completion_date, root_cause_id } = req.body || {};
+  let { description, tasks, required_means, responsible_owner_id, planned_completion_date, status, actual_completion_date, root_cause_id } = req.body || {};
+  description ??= null; tasks ??= null; required_means ??= null; responsible_owner_id ??= null;
+  planned_completion_date ??= null; status ??= null; actual_completion_date ??= null; root_cause_id ??= null;
   db.prepare(`
     UPDATE actions SET description = COALESCE(?, description), tasks = COALESCE(?, tasks),
       required_means = COALESCE(?, required_means), responsible_owner_id = COALESCE(?, responsible_owner_id),
@@ -66,7 +68,8 @@ router.put('/:id/progress', requirePermission('action.updateOwn'), (req, res) =>
   if (existing.responsible_owner_id !== req.user.id && !req.user.permissions.has('action.edit')) {
     return res.status(403).json({ error: 'not_action_owner' });
   }
-  const { status, actual_completion_date } = req.body || {};
+  let { status, actual_completion_date } = req.body || {};
+  status ??= null; actual_completion_date ??= null;
   db.prepare(`UPDATE actions SET status = COALESCE(?, status), actual_completion_date = COALESCE(?, actual_completion_date), updated_at = datetime('now') WHERE id = ?`)
     .run(status, actual_completion_date, req.params.id);
   const row = db.prepare('SELECT * FROM actions WHERE id = ?').get(req.params.id);
@@ -89,7 +92,9 @@ router.put('/:id/evaluation', requirePermission('action.evaluate'), (req, res) =
   if (action.responsible_owner_id === req.user.id) {
     return res.status(400).json({ error: 'rr_and_re_must_differ' });
   }
-  const { planned_review_date, actual_review_date, efficiency_criteria, measurement_method, review_result, review_comments } = req.body || {};
+  let { planned_review_date, actual_review_date, efficiency_criteria, measurement_method, review_result, review_comments } = req.body || {};
+  planned_review_date ??= null; actual_review_date ??= null; efficiency_criteria ??= null;
+  measurement_method ??= null; review_result ??= null; review_comments ??= null;
   const existing = db.prepare('SELECT * FROM action_evaluations WHERE action_id = ?').get(action.id);
   if (existing) {
     db.prepare(`

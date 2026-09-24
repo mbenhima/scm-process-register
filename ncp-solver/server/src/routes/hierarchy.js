@@ -22,7 +22,8 @@ router.get('/tree', requirePermission('hierarchy.view'), (req, res) => {
 });
 
 router.put('/organization', requirePermission('hierarchy.manage'), (req, res) => {
-  const { name, name_fr, name_ar, sector, country, logo_color } = req.body || {};
+  let { name, name_fr, name_ar, sector, country, logo_color } = req.body || {};
+  name ??= null; name_fr ??= null; name_ar ??= null; sector ??= null; country ??= null; logo_color ??= null;
   const existing = db.prepare('SELECT * FROM organizations WHERE id = ?').get(req.user.organizationId);
   db.prepare(`
     UPDATE organizations SET name = COALESCE(?, name), name_fr = COALESCE(?, name_fr), name_ar = COALESCE(?, name_ar),
@@ -74,7 +75,8 @@ router.post('/projects', requirePermission('hierarchy.manage'), (req, res) => {
 router.put('/projects/:id', requirePermission('hierarchy.manage'), (req, res) => {
   const existing = db.prepare('SELECT * FROM projects WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!existing) return res.status(404).json({ error: 'not_found' });
-  const { name, name_fr, name_ar, description, status, start_date, end_date } = req.body || {};
+  let { name, name_fr, name_ar, description, status, start_date, end_date } = req.body || {};
+  name ??= null; name_fr ??= null; name_ar ??= null; description ??= null; status ??= null; start_date ??= null; end_date ??= null;
   db.prepare(`
     UPDATE projects SET name = COALESCE(?, name), name_fr = COALESCE(?, name_fr), name_ar = COALESCE(?, name_ar),
       description = COALESCE(?, description), status = COALESCE(?, status),

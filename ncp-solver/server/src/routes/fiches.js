@@ -141,7 +141,9 @@ router.post('/:id/close', requirePermission('fiche.close'), (req, res) => {
 router.put('/:id/understanding', requirePermission('fiche.edit'), (req, res) => {
   const fiche = db.prepare('SELECT * FROM ncp_fiches WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!fiche) return res.status(404).json({ error: 'not_found' });
-  const { what, who_detected, where_, when_, how_detected, why_problem, how_much, frequency_analysis, objectives } = req.body || {};
+  let { what, who_detected, where_, when_, how_detected, why_problem, how_much, frequency_analysis, objectives } = req.body || {};
+  what ??= null; who_detected ??= null; where_ ??= null; when_ ??= null; how_detected ??= null;
+  why_problem ??= null; how_much ??= null; frequency_analysis ??= null; objectives ??= null;
   const existing = db.prepare('SELECT * FROM problem_understanding WHERE fiche_id = ?').get(fiche.id);
   if (existing) {
     db.prepare(`
@@ -194,7 +196,8 @@ router.post('/:id/root-causes', requirePermission('rootcause.create'), (req, res
 router.put('/:id/root-causes/:rcId', requirePermission('rootcause.edit'), (req, res) => {
   const existing = db.prepare('SELECT * FROM root_causes WHERE id = ? AND fiche_id = ?').get(req.params.rcId, req.params.id);
   if (!existing) return res.status(404).json({ error: 'not_found' });
-  const { description, cause_category, rca_method_used, validated_at, validated_by } = req.body || {};
+  let { description, cause_category, rca_method_used, validated_at, validated_by } = req.body || {};
+  description ??= null; cause_category ??= null; rca_method_used ??= null; validated_at ??= null; validated_by ??= null;
   db.prepare(`
     UPDATE root_causes SET description = COALESCE(?, description), cause_category = COALESCE(?, cause_category),
       rca_method_used = COALESCE(?, rca_method_used), validated_at = COALESCE(?, validated_at), validated_by = COALESCE(?, validated_by)
@@ -216,10 +219,12 @@ router.delete('/:id/root-causes/:rcId', requirePermission('rootcause.delete'), (
 router.put('/:id/rex', requirePermission('rex.edit'), (req, res) => {
   const fiche = db.prepare('SELECT * FROM ncp_fiches WHERE id = ? AND organization_id = ?').get(req.params.id, req.user.organizationId);
   if (!fiche) return res.status(404).json({ error: 'not_found' });
-  const {
+  let {
     lessons_learned, root_cause_summary, solution_summary,
     needs_standardization, standardization_details, needs_generalization, generalization_plan, tags,
   } = req.body || {};
+  lessons_learned ??= null; root_cause_summary ??= null; solution_summary ??= null;
+  standardization_details ??= null; generalization_plan ??= null; tags ??= null;
   const existing = db.prepare('SELECT * FROM rex_entries WHERE fiche_id = ?').get(fiche.id);
   if (existing) {
     db.prepare(`
