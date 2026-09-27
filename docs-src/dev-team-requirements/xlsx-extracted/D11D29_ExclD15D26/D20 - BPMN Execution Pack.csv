@@ -1,0 +1,14 @@
+D20 — BPMN Execution Pack,,,,,,,,,,,,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,,,,,,,,,,,,
+BPMN_Process_ID,BPMN_XML_Ref,Pool,Lanes,Start_Events,End_Events,User_Tasks,Service_Tasks,AI_Tasks,RPA_Tasks,Gateways,Timer_Events,Message_Events,Boundary_Events,Compensation,Retry,Escalation,Deployment_Package
+Proc_MP01_ChangeImpactAssessment,/bpmn/mp01_change_impact_assessment.bpmn,journi Change Management Pool,"Change Manager, FPO/Supervisor, System",1,1,5,3,2,0,0,0,1,0,No,No,No,journi-core-v1
+Proc_MP02_SponsorshipGovernance,/bpmn/mp02_sponsorship_governance.bpmn,journi Change Management Pool,"Executive Sponsor, Change Manager, System",1,1,5,4,1,0,0,1,0,0,No,Yes (ACT-003 nudge),Yes (to Steering Committee),journi-core-v1
+Proc_MP03_CommunicationAwareness,/bpmn/mp03_communication_awareness.bpmn,journi Change Management Pool,"Change Manager, System",1,1,3,5,2,0,0,1,1,1,No,Yes (ACT-002 style retry on send failure),No,journi-core-v1
+Proc_MP04_ResistanceBarrier,/bpmn/mp04_resistance_barrier.bpmn,journi Change Management Pool,"Frontline Supervisor, Change Manager, System",1,1,4,3,2,0,1,0,1,0,No,No,Yes (RULE-004 to Steering Committee),journi-core-v1
+Proc_MP05_TrainingCapability,/bpmn/mp05_training_capability.bpmn,journi Change Management Pool,"Trainer, System",1,1,2,7,1,0,0,0,1,1,No,"Yes (ACT-008 remedial retry, max 2)",No,journi-core-v1
+Proc_MP06_ChampionNetwork,/bpmn/mp06_champion_network.bpmn,journi Change Management Pool,"Change Manager, System",1,1,4,5,1,0,0,0,1,0,No,No,No,journi-core-v1
+Proc_MP07_ReadinessDiagnostics,/bpmn/mp07_readiness_diagnostics.bpmn,journi Change Management Pool,"Respondent, Change Manager, System",1,2,7,5,2,0,0,0,0,1,No,No,Yes (survey EXC-001 to Admin),journi-core-v1
+Proc_MP08_DivergenceRiskDetection,/bpmn/mp08_divergence_risk_detection.bpmn,journi Change Management Pool,"Frontline Supervisor, Change Manager, System",1,1,3,5,1,0,1,1,0,0,No,No,No,journi-core-v1
+Proc_MP09_HypercareFloorCoaching,/bpmn/mp09_hypercare_floor_coaching.bpmn,journi Change Management Pool,"People Manager, Change Manager, System",1,1,3,6,1,0,0,0,1,0,No,No,No,journi-core-v1
+Proc_MP10_ReinforcementSustainment,/bpmn/mp10_reinforcement_sustainment.bpmn,journi Change Management Pool,"Change Manager, Executive Sponsor, System",1,1,5,4,1,0,0,1,0,0,No,No,No,journi-core-v1
+"🔗 BPMN_Process_ID → D01/D14. Task-type counts mirror D14 exactly (same source data from D02); this table adds the execution-engine-specific fields (Pool/Lanes, Retry, Escalation, Compensation) a BPMN engine (e.g., Camunda/Flowable) deployment actually needs beyond D14's readiness-scoring view.",,,,,,,,,,,,,,,,,

@@ -1,0 +1,29 @@
+D32c — Phase Checklist Registry,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,
+Checklist_ID,Phase,Track,Checklist_Item,Weight_%,Owner_Role,Evidence_Required
+CHK-P1-PM-01,P1 Intake & Diagnosis,PM,Business case approved and budget confirmed,50,Program/Project Manager,Signed business case document
+CHK-P1-PM-02,P1 Intake & Diagnosis,PM,Technical current-state assessment complete,50,IT/Technical Lead,Assessment report
+CHK-P1-CM-01,P1 Intake & Diagnosis,CM,Baseline readiness pulse captured (D23 J1),50,Change Manager,D02 STEP-07011 completion record
+CHK-P1-CM-02,P1 Intake & Diagnosis,CM,Stakeholder map published and confirmed (MP-01),50,Change Manager,D02 STEP-01031 completion record
+CHK-P2-PM-01,P2 Design & Planning,PM,Future-state process design signed off by Functional Process Owners,50,Program/Project Manager,Signed design document
+CHK-P2-PM-02,P2 Design & Planning,PM,Technical architecture and integration design approved,50,IT/Technical Lead,Approved architecture document
+CHK-P2-CM-01,P2 Design & Planning,CM,Communication plan approved (MP-03),35,Change Manager,D02 STEP-03011 completion record
+CHK-P2-CM-02,P2 Design & Planning,CM,Governance cadence and guiding coalition roster confirmed (MP-02),35,Change Manager,D02 STEP-02021 completion record
+CHK-P2-CM-03,P2 Design & Planning,CM,Sponsorship / Leadership Charter signed (D31 CHTR-01),30,Executive Sponsor,D31 charter sign-off record
+CHK-P3-PM-01,P3 Build & Configuration,PM,Configuration/build complete against the approved P2 design,60,IT/Technical Lead,Build completion report
+CHK-P3-PM-02,P3 Build & Configuration,PM,System Integration Testing (SIT) environment ready and accessible,40,IT/Technical Lead,SIT environment sign-off
+CHK-P3-CM-01,P3 Build & Configuration,CM,Communication cadence running with no open saturation flags (RULE-015),50,Change Manager,"D08 RPT-009 cockpit, zero open flags"
+CHK-P3-CM-02,P3 Build & Configuration,CM,Champion network recruited to target coverage ratio (RULE-007),50,Change Manager,D06 KPI-004 reading >= threshold
+CHK-P4-PM-01,P4 Testing & Training,PM,UAT sign-off received from Functional Process Owners,100,Program/Project Manager,Signed UAT report
+CHK-P4-CM-01,P4 Testing & Training,CM,Training completion rate at or above target (D06 KPI-005),60,Training Lead,D06 KPI-005 reading >= threshold
+CHK-P4-CM-02,P4 Testing & Training,CM,No open Divergence Pattern cases (RULE-008) for the go-live cohort,40,Change Manager,"D08 RPT-003 cockpit, zero open flags"
+CHK-P5-PM-01,P5 Deployment / Go-Live,PM,Cutover runbook rehearsed and signed off,100,IT/Technical Lead,Rehearsal sign-off
+CHK-P5-CM-01,P5 Deployment / Go-Live,CM,Hypercare support model activated and staffed,100,Change Manager,D31a CHTRACT-0501 completion record
+CHK-P6-PM-01,P6 Stabilization & Hypercare,PM,No open Severity-1 defects traced to the go-live cutover,50,IT/Technical Lead,"Defect log, zero open Sev-1"
+CHK-P6-PM-02,P6 Stabilization & Hypercare,PM,Schedule gap within tolerance on all open WBS tasks (D19b FRM-014),50,Program/Project Manager,D32a WBS-06 reading within tolerance
+CHK-P6-CM-01,P6 Stabilization & Hypercare,CM,Hypercare coaching cadence tapering per the approved schedule,40,Change Manager,D31a CHTRACT-0503 completion record
+CHK-P6-CM-02,P6 Stabilization & Hypercare,CM,No unresolved sentiment-regression cases (Exception E4),30,Change Manager,"D25 REX-004 pattern check, zero open cases"
+CHK-P6-CM-03,P6 Stabilization & Hypercare,CM,Adoption Curve % trending toward target (D06 KPI-003),30,Change Manager,"D06 KPI-003 trend, positive slope"
+CHK-P7-PM-01,P7 Sustainment & Closure,PM,Handoff to Business-as-Usual owner documented,100,Program/Project Manager,Signed handoff document
+CHK-P7-CM-01,P7 Sustainment & Closure,CM,"Regression audit clean for 2 consecutive checkpoints (RULE-002, RULE-021)",100,Change Manager,D03a ACT-023 evidence pack
+"🔗 Phase → D32g. Realizes D13 REQ-017. Each of all 7 Common-Lifecycle phases (P1-P7) carries a separate PM-track and CM-track checklist (matching the Functional Spec's PM+CM dual-checklist requirement); Weight_% within a (Phase, Track) pair sums to 100 and drives the Checklist_Completion_Pct input consumed by RULE-013's Phase Gate decision. Full P1-P7 coverage as of this revision — P2, P3, and P6 were added to close a gap where only P1, P4, P5, and P7 had been specified.",,,,,,

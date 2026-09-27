@@ -1,0 +1,20 @@
+D11 — Tools & Interfaces,,,,,,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,,,,,,
+Tool_ID,Tool_Name,Tool_Type,Interface_ID,Interface_Name,Interface_Type,CRUD_Matrix,Linked_Macro_ID,Linked_Task_ID,Linked_Step_ID,Description
+TOOL-01,journi Web Application,Native Platform,IFC-01,Survey Form Renderer,Web UI (React),"C,R,U",MP-07,TASK-0701-WORKED,STEP-0001,"Renders the multi-step survey form used for baseline/pulse capture, including inline validation (RULE-001)."
+TOOL-01,journi Web Application,Native Platform,IFC-02,ADKAR Scoring Grid,Web UI (React),"C,R,U,D",MP-07,TASK-0704,STEP-07042,"Editable 1-5 scoring grid per building block, per stakeholder/cohort, feeding OC-06."
+TOOL-01,journi Web Application,Native Platform,IFC-03,Journey Map Timeline,Web UI (D3.js),R,-,-,-,"Visual per-person/cohort timeline (Module 16) combining ADKAR stage, Bridges phase and sentiment."
+TOOL-01,journi Web Application,Native Platform,IFC-04,RACSI Grid Editor,Web UI (React),"C,R,U",-,-,-,"Five-column R/A/C/S/I editable grid used on WBS tasks, Joint Decisions and Macro Process records (Section 3.6)."
+TOOL-01,journi Web Application,Native Platform,IFC-05,Phase Gate Decision Widget,Web UI (React),"C,R,U",-,-,-,"Bundles Phase Checklist completion, Composite Readiness Index and open flags into a Go/Go-with-Conditions/No-Go decision (RULE-013)."
+TOOL-01,journi Web Application,Native Platform,IFC-06,AI Suggestion Review Panel,Web UI (React),"R,U",-,-,-,Displays 'AI-generated — review required' suggestions with Accept/Edit/Reject controls (CTRL-006).
+TOOL-01,journi Web Application,Native Platform,IFC-07,Permission Matrix Grid,Web UI (React),"R,U",-,-,-,Super-Admin-editable nine-role x five-capability runtime override grid (Section 3.4).
+TOOL-01,journi Web Application,Native Platform,IFC-08,Metrics & Analytics Dashboard,Web UI (Chart.js),R,MP-07,TASK-0705,STEP-07051,"Composite Readiness Index, ADKAR heatmaps, adoption curves and benchmarking views (Module 15)."
+TOOL-01,journi Web Application,Native Platform,IFC-09,WBS / Gantt Board,"Web UI (React, Gantt lib)","C,R,U,D",-,-,-,Baseline-vs-actual schedule editor across PM/CM/Framework tracks (Module 18).
+TOOL-01,journi Web Application,Native Platform,IFC-10,Divergence & Risk Cockpit,Web UI (React),"R,U",MP-08,TASK-0801,STEP-08012,"Risk register, alert queue and Divergence Pattern Log consolidated view (Module 14)."
+TOOL-02,journi Mobile (Responsive Web),Native Platform,IFC-11,Rapid Pulse Widget,Mobile Web UI,"C,R",MP-07,TASK-0703,STEP-07031,"Lightweight emoji/slider pulse for high-anxiety moments, optimized for phone use on the shop floor."
+TOOL-03,journi API Gateway,Native Platform (API),IFC-12,REST API,REST/JSON over HTTPS,"C,R,U,D",-,-,-,Programmatic access to every journi object class (D09) for the PMO import hook and external BI tools.
+TOOL-04,Real LLM Provider Endpoint,External Integration,IFC-13,Provider Connection Panel,Web UI + External API,"C,R,U",-,-,-,Optional Module 17 panel routing seeded/custom AI use cases through Anthropic/OpenAI/Google/custom endpoints; browser-local key storage (CTRL-016).
+TOOL-05,Enterprise SSO (SAML/OIDC),External Integration,IFC-14,SSO Login,SAML 2.0 / OIDC,R,-,-,-,Optional enterprise single sign-on for larger deployments (Section 3.3).
+TOOL-01,journi Web Application,Native Platform,IFC-GANTT,Gantt Chart Visualization,Web UI (Gantt lib),"R,U",-,-,-,"NEW — visual baseline-vs-actual Gantt rendering of D09 OC-24 WBS Tasks across the Project Management, Change Management, and Framework tracks, with Common_Lifecycle_Phase (P1-P7) color banding. See D32a."
+TOOL-06,PMO Import Connector,External Integration,IFC-PMOIMPORT,PMO Import Hook,CSV Upload + Validation,C,-,-,-,"NEW — one-way CSV import of externally-managed PM-track tasks into D09 OC-24, tagged Source = Imported vs. Manual on arrival. See D32f."
+"🔗 Linked_Macro_ID → D01 · Linked_Task_ID → D02 · Linked_Step_ID → D02. Native journi UI/API surfaces plus the two external integration points (LLM provider, SSO) described in the functional spec.",,,,,,,,,,

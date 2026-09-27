@@ -1,0 +1,12 @@
+D32f — PMO Import Specification,,,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,,,
+Field_ID,CSV_Column,Maps_To,Required,Validation_Rule,Notes
+IMP-01,task_name,OC-24.Task_Name (implicit via WBS task record),Yes,"Non-empty, max 200 chars",-
+IMP-02,track,OC-24.Task_Track,Yes,"Must be one of: Project Management, Change Management, Framework",Imported rows default to Task_Track = Project Management unless explicitly set.
+IMP-03,baseline_start,OC-24.Baseline_Start,Yes,ISO 8601 date,-
+IMP-04,baseline_finish,OC-24.Baseline_Finish,Yes,"ISO 8601 date, >= baseline_start",-
+IMP-05,actual_start,OC-24.Actual_Start,No,ISO 8601 date or blank,-
+IMP-06,actual_finish,OC-24.Actual_Finish,No,ISO 8601 date or blank,-
+IMP-07,external_task_id,New field: External_Reference_ID,No,Free text,Preserves the source PMO tool's own task ID for round-trip reconciliation.
+IMP-08,macro_process_tag,OC-24.Macro_Process_Tag (D32a WBS-07),No,Must resolve to a valid MP-01..MP-10 or be blank,-
+"🔗 Maps_To → D09/D10 OC-24 and D32a. Realizes D13 REQ-019 and D11 IFC-PMOIMPORT. Every successfully imported row is tagged Source = Imported (D32a WBS-10) and remains fully editable post-import — this is a one-way sync at import time, not a live bidirectional integration, per the original spec's own scope.",,,,,

@@ -1,0 +1,12 @@
+D32e — Joint Decision Record Specification,,,
+POWERACT Consulting · journi Deliverables Structure — Full Specs (D11-D29),,,
+Field_ID,Field_Name,Data_Type,Description
+JD-01,Joint_Decision_ID,UUID,Primary key.
+JD-02,PM_Input,Text,"The Program/Project Manager's schedule/delivery-readiness input, captured independently."
+JD-03,CM_Input,Text,"The Change Manager's people-readiness input, captured independently — neither input overwrites the other."
+JD-04,Fused_Decision,Enum (Go / Go with Conditions / No-Go),The single decision resulting from both inputs — not a PM decision and a separate CM decision.
+JD-05,Accountable_Role,Role (single value),Exactly one role accountable for the fused decision (CTRL-012) — may differ from either input's author.
+JD-06,Project_Change_Joint_Tag,Enum,"Always ""JOINT"" for a record in this table — included for consistency with D32a's tagging model."
+JD-07,Decision_Date,DateTime,-
+JD-08,Linked_Phase_Gate_ID,"UUID (FK to D32d, nullable)","Populated when this Joint Decision is a Phase Gate; null for other joint decisions (e.g., a mid-phase escalation)."
+"🔗 Linked_Phase_Gate_ID → D32d (most common case) — but a Joint Decision Record can also stand alone for a non-Phase-Gate joint call (e.g., a mid-phase scope-change decision). Realizes D13 REQ-018. The core design point: PM_Input and CM_Input are captured and stored side by side, never merged into one field, so the fused decision's rationale remains auditable back to each track's independent assessment.",,,
