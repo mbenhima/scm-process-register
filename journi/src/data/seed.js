@@ -16,6 +16,7 @@ import * as atlas from './cases/atlas.js'
 import * as atlasTangier from './cases/atlasTangier.js'
 import * as maghreb from './cases/maghreb.js'
 import * as meridia from './cases/meridia.js'
+import * as sectorShowcase from './cases/sectorShowcase.js'
 
 const SUB_COLLECTIONS = [
   'risks',
@@ -89,11 +90,11 @@ function normalizeCmProject(raw) {
 export function buildSeed() {
   const groups = [{ id: 'grp-atlas', name: 'Atlas Industrial Group', defaultLanguage: 'fr' }]
 
-  const organizations = [atlas.organization, atlasTangier.organization, maghreb.organization, meridia.organization]
+  const organizations = [atlas.organization, atlasTangier.organization, maghreb.organization, meridia.organization, ...sectorShowcase.organizations]
 
-  const mainProjects = [...atlas.mainProjects, ...atlasTangier.mainProjects, ...maghreb.mainProjects, ...meridia.mainProjects]
+  const mainProjects = [...atlas.mainProjects, ...atlasTangier.mainProjects, ...maghreb.mainProjects, ...meridia.mainProjects, ...sectorShowcase.mainProjects]
 
-  const cmProjects = [...atlas.cmProjects, ...atlasTangier.cmProjects, ...maghreb.cmProjects, ...meridia.cmProjects].map(normalizeCmProject)
+  const cmProjects = [...atlas.cmProjects, ...atlasTangier.cmProjects, ...maghreb.cmProjects, ...meridia.cmProjects, ...sectorShowcase.cmProjects].map(normalizeCmProject)
 
   // AI Use Case Governance: org-level activation = union of everything any of its projects use.
   // Project-level entries mirror the seeded "activated (example)" list; undefined = inherit org default.
