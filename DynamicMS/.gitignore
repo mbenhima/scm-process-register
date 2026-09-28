@@ -7,3 +7,4 @@ server/licence/*.lic
 server/licence/*.pem
 *.log
 .env
+deliverables/build/

@@ -29,7 +29,10 @@ export default function Bpmn({ projectId, mpId, code }) {
         const viewer = new Mod({ container: canvasRef.current, bpmnRenderer: RENDER, textRenderer: { defaultStyle: { fontFamily: 'Source Sans 3, Calibri, sans-serif', fontSize: 12 } } });
         inst.current = viewer;
         await viewer.importXML(m.xml);
-        viewer.get('canvas').zoom('fit-viewport');
+        const canvas = viewer.get('canvas');
+        canvas.zoom('fit-viewport');
+        const vb = canvas.viewbox();
+        if (vb.scale < 0.6) canvas.viewbox({ x: vb.inner.x - 20, y: vb.inner.y - 20, width: vb.outer.width / 0.8, height: vb.outer.height / 0.8 });
         if (edit) {
           const pal = canvasRef.current.querySelector('.djs-palette');
           if (pal && paletteRef.current) paletteRef.current.appendChild(pal);
