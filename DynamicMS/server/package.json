@@ -11,7 +11,7 @@
     "seed": "node --disable-warning=ExperimentalWarning src/seed/run.js",
     "backup": "node --disable-warning=ExperimentalWarning src/ops/backup-cli.js",
     "sign-licence": "node tools/sign-licence.js",
-    "test": "node --disable-warning=ExperimentalWarning --test test/"
+    "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 test/api.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

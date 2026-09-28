@@ -1,0 +1,33 @@
+// Localized labels for status and code values stored as stable English codes.
+const L = (en, fr, ar) => ({ en, fr, ar });
+export const LABELS = {
+  // step / process / phase statuses
+  Done: L('Done', 'Terminée', 'منجزة'), InProgress: L('In progress', 'En cours', 'قيد التنفيذ'), Todo: L('To do', 'À faire', 'للتنفيذ'),
+  Completed: L('Completed', 'Terminé', 'مكتمل'), NotStarted: L('Not started', 'Non démarré', 'لم يبدأ'),
+  Closed: L('Closed', 'Clôturé', 'مغلق'), Active: L('Active', 'Actif', 'نشط'), Planned: L('Planned', 'Planifié', 'مخطط'), AtGate: L('At gate', 'Au jalon', 'عند البوابة'), OnHold: L('On hold', 'En attente', 'معلّق'),
+  'In progress': L('In progress', 'En cours', 'قيد التنفيذ'), 'At gate': L('At gate', 'Au jalon', 'عند البوابة'), 'On hold': L('On hold', 'En attente', 'معلّق'), 'Not started': L('Not started', 'Non démarré', 'لم يبدأ'), 'Not applicable': L('Not applicable', 'Sans objet', 'غير منطبق'), Stopped: L('Stopped', 'Arrêté', 'متوقف'),
+  Go: L('Go', 'Go', 'المضي'), 'No-Go': L('No-Go', 'No-Go', 'عدم المضي'), Hold: L('Hold', 'En attente', 'تعليق'),
+  // records
+  Open: L('Open', 'Ouverte', 'مفتوح'), Analysis: L('Analysis', 'Analyse', 'التحليل'), Action: L('Action', 'Action', 'الإجراء'), Verification: L('Verification', 'Vérification', 'التحقق'),
+  Minor: L('Minor', 'Mineure', 'ثانوية'), Major: L('Major', 'Majeure', 'رئيسية'), Critical: L('Critical', 'Critique', 'حرجة'),
+  High: L('High', 'Élevée', 'مرتفعة'), Medium: L('Medium', 'Moyenne', 'متوسطة'), Low: L('Low', 'Faible', 'منخفضة'),
+  Customer: L('Customer', 'Client', 'العميل'), Audit: L('Audit', 'Audit', 'التدقيق'), Process: L('Process', 'Processus', 'العملية'), Supplier: L('Supplier', 'Fournisseur', 'المورد'), Incident: L('Incident', 'Incident', 'حادث'),
+  Product: L('Product', 'Produit', 'المنتج'), Metrology: L('Metrology', 'Métrologie', 'القياس'), Documentation: L('Documentation', 'Documentation', 'التوثيق'), Competence: L('Competence', 'Compétence', 'الكفاءة'), 'OH&S': L('OH&S', 'SST', 'الصحة والسلامة المهنية'), Environment: L('Environment', 'Environnement', 'البيئة'),
+  Containment: L('Containment', 'Confinement', 'احتواء'), Corrective: L('Corrective', 'Corrective', 'تصحيحي'), Preventive: L('Preventive', 'Préventive', 'وقائي'), Treatment: L('Treatment', 'Traitement', 'معالجة'), Improvement: L('Improvement', 'Amélioration', 'تحسين'),
+  Effective: L('Effective', 'Efficace', 'فعّال'), 'Partially effective': L('Partially effective', 'Partiellement efficace', 'فعّال جزئيًا'), 'Not effective': L('Not effective', 'Inefficace', 'غير فعّال'),
+  Internal: L('Internal', 'Interne', 'داخلي'), Mock: L('Mock', 'À blanc', 'تجريبي'), Certification: L('Certification', 'Certification', 'الاعتماد'), Surveillance: L('Surveillance', 'Surveillance', 'المتابعة'),
+  Observation: L('Observation', 'Observation', 'ملاحظة'), OFI: L('Opportunity for improvement', 'Piste d\'amélioration', 'فرصة للتحسين'), Noted: L('Noted', 'Pris en compte', 'مسجلة'),
+  Published: L('Published', 'Publié', 'منشور'), Draft: L('Draft', 'Brouillon', 'مسودة'), 'In review': L('In review', 'En revue', 'قيد المراجعة'), Superseded: L('Superseded', 'Remplacé', 'مستبدل'), Retired: L('Retired', 'Retiré', 'متقاعد'),
+  Policy: L('Policy', 'Politique', 'سياسة'), Manual: L('Manual', 'Manuel', 'دليل'), Procedure: L('Procedure', 'Procédure', 'إجراء'), Sheet: L('Process sheet', 'Fiche processus', 'بطاقة عملية'), Map: L('Process map', 'Cartographie', 'خريطة'), Plan: L('Plan', 'Plan', 'خطة'), Register: L('Register', 'Registre', 'سجل'),
+  Risk: L('Risk', 'Risque', 'مخاطرة'), Opportunity: L('Opportunity', 'Opportunité', 'فرصة'), Hazard: L('Hazard', 'Danger', 'خطر'), Aspect: L('Aspect', 'Aspect', 'جانب بيئي'),
+  Treated: L('Treated', 'Traité', 'معالج'), Monitoring: L('Monitoring', 'Sous surveillance', 'تحت المراقبة'),
+  'On track': L('On track', 'Dans les temps', 'في المسار'), 'At risk': L('At risk', 'À risque', 'معرّض للخطر'),
+  Valid: L('Valid', 'Valide', 'ساري'), Overdue: L('Overdue', 'Échu', 'متأخر'), Approved: L('Approved', 'Approuvé', 'معتمد'), Conditional: L('Conditional', 'Sous condition', 'مشروط'), 'Under review': L('Under review', 'En évaluation', 'قيد التقييم'),
+  Implemented: L('Implemented', 'Mise en œuvre', 'منفّذة'), Proposed: L('Proposed', 'Proposée', 'مقترحة'), Held: L('Held', 'Tenue', 'منعقدة'),
+  Accepted: L('Accepted', 'Acceptée', 'مقبول'), Edited: L('Edited', 'Modifiée', 'معدَّل'), Rejected: L('Rejected', 'Rejetée', 'مرفوض'), Pending: L('Pending', 'En attente', 'معلّق'),
+  Assistive: L('Assistive', 'Assistance', 'مساعد'), Augmented: L('Augmented', 'Augmentée', 'معزز'),
+  QMS: L('QMS', 'SMQ', 'نظام إدارة الجودة'), QHSE: L('QHSE', 'QHSE', 'الجودة والصحة والسلامة والبيئة'), FULL: L('Full lifecycle', 'Cycle complet', 'دورة كاملة'), SME: L('SME', 'PME', 'مؤسسة صغيرة ومتوسطة'),
+  'TRK-LIGHT': L('Light track', 'Parcours léger', 'المسار الخفيف'), 'TRK-STANDARD': L('Standard track', 'Parcours standard', 'المسار القياسي'), 'TRK-ADVANCED': L('Advanced track', 'Parcours avancé', 'المسار المتقدم'),
+  Large: L('Large', 'Grande entreprise', 'مؤسسة كبيرة'),
+};
+export const label = (code, lang) => (LABELS[code] ? LABELS[code][lang] ?? LABELS[code].en : code);

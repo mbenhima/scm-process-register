@@ -247,6 +247,10 @@ CREATE TABLE IF NOT EXISTS integration_log (
 
 CREATE TABLE IF NOT EXISTS onboarding_plans (
   id TEXT PRIMARY KEY, org_id TEXT NOT NULL, steps TEXT, target_days INTEGER, started_at TEXT, status TEXT, metrics TEXT);
+CREATE TABLE IF NOT EXISTS bpmn_diagrams (
+  id TEXT PRIMARY KEY, org_id TEXT NOT NULL, mp_id TEXT NOT NULL, name TEXT, xml TEXT NOT NULL, version INTEGER DEFAULT 1,
+  status TEXT DEFAULT 'Draft', updated_by TEXT, updated_at TEXT);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_bpmn_org_mp ON bpmn_diagrams(org_id, mp_id);
 `;
 
 // Columns added after the first release are declared here so existing databases upgrade in place.
