@@ -1,0 +1,541 @@
+3851	Le numéro de niveau de l'élément n'est pas exactement égal au niveau du parent + 1
+3852	Validation
+3853	Élément créé au niveau 4 ou plus profond alors que le niveau n'a pas de nom dans la définition des niveaux
+3854	Un élément gagne ou perd son dernier enfant
+3855	Calcul
+3856	Le nombre de normes sélectionnées change
+3857	La politique ne comporte pas d'engagement pour l'une des normes du périmètre
+3858	Le statut de la version de la politique passe à Publiée
+3859	SIPOC existant enregistré pour un élément dont l'existant requis = Non
+3860	Un champ obligatoire du SIPOC cible est vide (déclencheur, fournisseurs, entrées, détails, RACSI, sorties, clients, événements de fin, Go/No-Go)
+3861	Fiche soumise sans SIPOC cible approuvé pour son macro-processus
+3862	Le RACSI de la fiche ne comporte pas exactement un rôle Autorité
+3863	Un KPI de la fiche a une fréquence d'analyse plus élevée que sa fréquence de mesure
+3864	La fiche se cite elle-même parmi les macro-processus en interaction
+3865	La fiche composite compte moins de deux fiches membres ou contient une autre fiche composite
+3866	Une fiche membre publie une nouvelle version
+3867	L'utilisateur demande la cartographie d'une fonction
+3868	La procédure n'a pas d'événement de fin ou comporte une passerelle exclusive sans critères Go/No-Go
+3869	Tableau des étapes de la procédure enregistré
+3870	Version brouillon soumise
+3871	Routage
+3872	Approbation d'une modification marquée majeure ou mineure
+3873	Le statut de la version passe à Publiée
+3874	Une version plus récente du même objet est publiée
+3875	Le format demandé n'est pas activé sur le modèle du type de document
+3876	Génération demandée pour une version non encore publiée
+3877	Fichier généré téléchargé ou partagé
+3878	Le libellé de la nouvelle valeur personnalisée existe déjà dans la même liste
+3879	Méthode de surveillance enregistrée ou dernière occurrence réalisée
+3880	Mesure reçue pour la période
+3881	Valeur du KPI hors de la tolérance cible
+3882	Escalade
+3883	Analyse non enregistrée 5 jours ouvrés après la date d'échéance de l'analyse
+3884	Le destinataire n'a pas accusé réception 10 jours ouvrés après la diffusion
+3885	Efficacité du contrôle mise à jour
+3886	Criticité = Critique
+3887	Non-conformité classée majeure ou critique
+3888	L'enseignement tiré concerne un SIPOC, une fiche ou une procédure
+3889	Élément de liste de contrôle marqué non conforme
+3890	Contenu SIPOC rédigé par l'IA généré
+3891	Version cible approuvée
+3892	Accès non recertifié dans les 30 jours suivant l'échéance de revue
+3893	Date d'échéance de maintenance atteinte
+3894	Score fournisseur inférieur à 60 pendant deux périodes consécutives
+3895	Le locataire exige une approbation pour un type de document
+3896	Modèle enregistré sans les sections obligatoires de son type de document
+3897	Bloquer l'enregistrement avec message de validation
+3898	Empêche l'enregistrement et affiche le message de la règle.
+3899	Bloquer la publication
+3900	Empêche le passage d'une version à Publiée tant que la condition n'est pas remplie.
+3901	Calculer l'indicateur de plus bas niveau
+3902	Recalcule l'indicateur de plus bas niveau pour l'élément et son parent.
+3903	Définir le type de périmètre de la politique
+3904	Définit le type de périmètre (mono-norme ou intégré) selon le nombre de normes.
+3905	Incrémenter le numéro de version
+3906	Attribue le prochain numéro de version majeure ou mineure.
+3907	Générer les fichiers
+3908	Génère la version dans chaque format activé à l'aide du modèle du locataire.
+3909	Appliquer le filigrane de statut
+3910	Applique le filigrane BROUILLON ou REMPLACÉ selon le statut du cycle de vie.
+3911	Remplacer la version précédente
+3912	Passe la version publiée précédente au statut Remplacée, en lecture seule.
+3913	Notifier la liste de diffusion
+3914	Envoie le lien de la version publiée à chaque destinataire et demande un accusé de réception.
+3915	Créer une tâche de revue
+3916	Crée une tâche de revue pour les relecteurs définis dans le RACSI.
+3917	Escalader au rôle Autorité
+3918	Escalade l'élément au rôle Autorité.
+3919	Escalader au responsable SMI
+3920	Escalade l'élément au responsable SMI.
+3921	Générer le diagramme BPMN
+3922	Génère le diagramme BPMN 2.0 à partir du tableau des étapes de la procédure.
+3923	Agréger la fiche composite
+3924	Fusionne les sections des fiches membres selon la règle d'agrégation.
+3925	Générer la cartographie des processus
+3926	Construit la cartographie d'une fonction à partir de la hiérarchie, des documents et des applications.
+3927	Calculer la valeur du KPI
+3928	Calcule la valeur du KPI avec sa formule enregistrée.
+3929	Lever une alerte
+3930	Crée une alerte avec sa gravité et son chemin d'escalade.
+3931	Calculer le risque résiduel
+3932	Recalcule le score résiduel à partir de l'efficacité des contrôles.
+3933	Créer une action corrective
+3934	Crée une action corrective liée à l'élément source.
+3935	Ouvrir un brouillon de révision
+3936	Ouvre une nouvelle version brouillon d'un objet gouverné concerné.
+3937	Planifier la prochaine occurrence
+3938	Calcule la prochaine échéance à partir de la fréquence.
+3939	Rejeter la valeur en double
+3940	Rejette une valeur de liste dont le libellé existe déjà dans la liste.
+3941	Journaliser le téléchargement
+3942	Journalise l'utilisateur, le format et la version de chaque téléchargement.
+3943	Créer un brouillon de constat d'audit
+3944	Crée un brouillon de constat à partir d'un élément de liste de contrôle non conforme.
+3945	Router la sortie de l'IA vers une revue humaine
+3946	Retient la sortie de l'IA jusqu'à ce qu'un humain l'approuve ou la modifie.
+3947	Suspendre l'accès de l'utilisateur
+3948	Suspend l'accès jusqu'à la fin de la recertification.
+3949	Créer un ordre de maintenance
+3950	Crée un ordre de maintenance pour l'actif.
+3951	Bloquer le fournisseur
+3952	Passe le statut du fournisseur à Bloqué.
+3953	Approbation à quatre yeux des documents gouvernés
+3954	Préventif
+3955	L'auteur ne peut pas approuver sa propre version ; l'approbation requiert un autre utilisateur détenant le rôle Autorité.
+3956	Historique des versions immuable
+3957	Les versions approuvées, publiées et remplacées sont en lecture seule ; toute modification requiert une nouvelle version.
+3958	Filigrane de statut sur les fichiers générés
+3959	Les fichiers issus de versions non publiées portent le filigrane BROUILLON ; les versions remplacées portent REMPLACÉ.
+3960	Journal d'audit des téléchargements
+3961	Détectif
+3962	Chaque téléchargement et partage est journalisé avec l'utilisateur, le format, la version et l'horodatage.
+3963	Barrière de complétude du SIPOC cible
+3964	Les fiches et procédures ne peuvent être publiées sans SIPOC cible complet et approuvé.
+3965	Contrôle d'intégrité de la hiérarchie
+3966	Impose la cohérence des niveaux parent-enfant et des niveaux nommés.
+3967	Rôle Autorité unique
+3968	Le RACSI doit comporter exactement un rôle Autorité pour les fiches, SIPOC, procédures et KPI.
+3969	Suivi des accusés de diffusion
+3970	Suit les accusés de lecture et escalade les retards.
+3971	Validation du flux des procédures
+3972	Vérifie les événements de fin, les passerelles et les chemins d'exception avant la génération BPMN.
+3973	Approbation des modifications de modèles
+3974	Les modifications de modèles touchant des sections obligatoires requièrent l'approbation du gestionnaire documentaire.
+3975	Gouvernance des listes de valeurs
+3976	Les valeurs personnalisées sont uniques, attribuées à un créateur et retirées plutôt que supprimées lorsqu'elles sont utilisées.
+3977	Revue périodique des politiques
+3978	L'échéance de revue est calculée à partir de la fréquence de revue de la politique ; les revues en retard sont signalées.
+3979	Cohérence des fréquences des KPI
+3980	La fréquence d'analyse ne peut pas être plus élevée que la fréquence de mesure.
+3981	Respect du calendrier de surveillance
+3982	Signale les occurrences de surveillance non réalisées à leur échéance.
+3983	Revue humaine des sorties de l'IA
+3984	Le contenu généré par l'IA reste une suggestion jusqu'à son acceptation par un utilisateur nommé.
+3985	Contrôle d'accès basé sur les rôles
+3986	Accès limité par rôle et par périmètre de données.
+3987	Recertification périodique des accès
+3988	Recertification trimestrielle des rôles à privilèges.
+3989	Minimisation des données personnelles dans les fichiers générés
+3990	Les champs de données personnelles sont masqués dans les fichiers générés, sauf si le modèle les inclut explicitement et que l'utilisateur détient l'autorisation.
+3991	Validation des formules avant activation
+3992	La formule doit réussir un test d'exécution avant l'activation du KPI.
+3993	Application des durées de conservation
+3994	Les enregistrements ne peuvent être détruits avant la fin de leur conservation ni sans approbation.
+3995	Barrière d'homologation des fournisseurs
+3996	Commandes bloquées pour les fournisseurs non homologués.
+3997	Revue de l'efficacité des actions correctives
+3998	Les actions ne sont clôturées qu'après enregistrement de la preuve d'efficacité.
+3999	Contrôle de l'indépendance des auditeurs
+4000	Un auditeur ne peut pas auditer un élément de processus dont il est propriétaire.
+4001	Test des plans de continuité
+4002	Test annuel avec résultats documentés.
+4003	Piste d'audit des modifications de configuration
+4004	Toutes les modifications de configuration sont journalisées avec les valeurs avant/après.
+4005	Approbation des cas d'usage de l'IA personnalisés
+4006	Les cas d'usage de l'IA personnalisés restent inactifs jusqu'à leur approbation par le responsable de la gouvernance de l'IA.
+4007	Application de la politique de sécurité
+4008	Règles SSO, MFA et de session imposées à tous les utilisateurs.
+4009	Suivi des délais des demandes des personnes concernées
+4010	Demandes suivies au regard du délai légal de réponse.
+4011	Utilisation d'une version obsolète d'un document
+4012	Téléchargements de versions remplacées / total des téléchargements (%)
+4013	Approbation non autorisée de documents gouvernés
+4014	Approbations par des utilisateurs sans rôle Autorité par trimestre (nombre)
+4015	SIPOC cible incomplet ou incohérent publié
+4016	SIPOC publiés avec des champs obligatoires vides (nombre)
+4017	Hiérarchie de processus rompue (éléments orphelins ou mal placés)
+4018	Éléments en échec au contrôle de hiérarchie / total des éléments (%)
+4019	Politique ne couvrant pas toutes les normes du périmètre
+4020	Normes du périmètre sans engagement dans la politique (nombre)
+4021	Fichiers générés divulguant des données personnelles
+4022	Confidentialité
+4023	Fichiers générés contenant des données personnelles non masquées (nombre)
+4024	Modifications non maîtrisées de modèles altérant le contenu des documents
+4025	Modifications de modèles sans approbation (nombre)
+4026	Destinataires de diffusion non informés des modifications
+4027	Opérationnel
+4028	Accusés en retard / total des diffusions (%)
+4029	KPI mesurés ou évalués en retard
+4030	KPI avec analyse en retard / KPI actifs (%)
+4031	Procédures sans flux d'exception
+4032	Procédures sans flux d'exception / total des procédures (%)
+4033	Listes de valeurs personnalisées dupliquées ou incohérentes
+4034	Qualité des données
+4035	Libellés en double détectés par liste (nombre)
+4036	Contenu généré par l'IA accepté sans revue
+4037	Sorties de l'IA acceptées sans modification ni trace de revue (nombre)
+4038	Droits d'accès excessifs
+4039	Utilisateurs à rôles privilégiés non recertifiés (nombre)
+4040	Formule de KPI incorrecte
+4041	Formules en échec au test d'exécution (nombre)
+4042	Enregistrements détruits trop tôt
+4043	Destructions avant la fin de la conservation (nombre)
+4044	Fournisseur non homologué utilisé
+4045	Commandes passées à des fournisseurs non homologués (nombre)
+4046	Non-conformités récurrentes
+4047	NC répétées sur 12 mois / total des NC (%)
+4048	Objectivité de l'audit compromise
+4049	Assurance
+4050	Audits réalisés par les propriétaires des éléments (nombre)
+4051	Interruption d'activité
+4052	Processus critiques sans plan de continuité testé (nombre)
+4053	Modifications de configuration non traçables
+4054	Modifications de configuration sans enregistrement d'audit (nombre)
+4055	Réponse tardive aux demandes des personnes concernées
+4056	Demandes traitées après le délai (nombre)
+4057	Taux de revue des politiques dans les délais
+4058	Stratégique
+4059	Politiques revues à l'échéance / politiques à revoir x 100
+4060	Couverture des SIPOC cibles
+4061	Macro-processus et tâches avec SIPOC cible approuvé / total des macro-processus et tâches x 100
+4062	Complétude des fiches macro-processus
+4063	Attributs obligatoires renseignés / total des attributs obligatoires x 100
+4064	Taux de résorption des écarts de compétences
+4065	Écarts résorbés sur la période / écarts ouverts en début de période x 100
+4066	Taux d'accusé de diffusion
+4067	Diffusions accusées / total des diffusions x 100
+4068	Risques dans les limites de l'appétence
+4069	Risques dont le score résiduel est <= appétence / total des risques x 100
+4070	Réussite des tests de continuité
+4071	Tests de continuité réussis / tests réalisés x 100
+4072	Obligations reliées aux éléments de processus
+4073	Obligations reliées / total des obligations x 100
+4074	Certificats maintenus
+4075	Certificats valides / certificats visés x 100
+4076	Délai du cycle d'approbation des documents
+4077	Nombre moyen de jours ouvrés entre la soumission et la publication
+4078	<= 5 jours
+4079	Procédures avec BPMN et flux d'exception
+4080	Procédures avec BPMN généré et >= 1 flux d'exception / total des procédures x 100
+4081	Réalisation de la recertification des accès
+4082	Rôles recertifiés à temps / rôles à recertifier x 100
+4083	Respect de la maintenance préventive des actifs
+4084	Ordres de maintenance réalisés à temps / ordres échus x 100
+4085	Score de qualité des données de référence
+4086	Enregistrements conformes aux contrôles qualité / enregistrements contrôlés x 100
+4087	Taux de formules validées
+4088	Formules validées / formules actives x 100
+4089	Livraisons fournisseurs à l'heure
+4090	Livraisons à l'heure / total des livraisons x 100
+4091	Délai d'exécution des rappels
+4092	Heures entre la décision de rappel et la notification de tous les clients concernés
+4093	<= 24 h
+4094	Clôture des non-conformités dans les délais
+4095	NC clôturées à l'échéance / NC échues x 100
+4096	Efficacité des actions correctives
+4097	Actions efficaces / actions vérifiées x 100
+4098	Ponctualité de l'analyse des KPI
+4099	Analyses de KPI enregistrées à l'échéance / analyses dues x 100
+4100	Exécution du plan de surveillance
+4101	Occurrences de surveillance réalisées / planifiées x 100
+4102	Réalisation du programme d'audit
+4103	Audits réalisés / audits planifiés x 100
+4104	Précision des alertes prédictives
+4105	Problèmes confirmés / alertes prédictives levées x 100
+4106	Idées d'amélioration mises en œuvre
+4107	Idées mises en œuvre / idées approuvées x 100
+4108	Délai de déploiement de l'existant vers la cible
+4109	Nombre moyen de jours entre l'approbation de la cible et le déploiement
+4110	<= 30 jours
+4111	Modifications de configuration avec enregistrement d'approbation
+4112	Modifications avec enregistrement d'audit / total des modifications x 100
+4113	Élevée
+4114	Direction générale
+4115	Moyenne
+4116	Faible
+4117	Relecteurs (Consultés du RACSI)
+4118	Destinataires de la liste de diffusion
+4119	Destinataire
+4120	Responsable de fonction
+4121	Utilisateur demandeur
+4122	Autorité du KPI
+4123	Critique
+4124	Pilote de processus audité
+4125	Responsable de la sécurité informatique
+4126	Responsable des achats
+4127	Propriétaire de la surveillance
+4128	Document de politique du système de management
+4129	À la publication
+4130	Fiche macro-processus
+4131	liste de diffusion
+4132	Fiche processus composite
+4133	À la publication de tout membre
+4134	Cartographie des processus d'une fonction
+4135	À la demande
+4136	auditeurs
+4137	Fiche SIPOC (existant / cible)
+4138	Comparaison existant / cible
+4139	Procédure de tâche (cas d'usage)
+4140	Exécutants des tâches
+4141	stagiaires
+4142	Export du diagramme BPMN
+4143	À la publication de la procédure
+4144	analystes
+4145	Historique des versions des documents
+4146	Temps réel
+4147	Journal des fichiers générés et des téléchargements
+4148	Cockpit de l'architecture des processus
+4149	Quotidien
+4150	Cockpit de la maîtrise documentaire
+4151	Tableau de bord des KPI
+4152	Selon la fréquence d'analyse
+4153	Plan de surveillance et exécution
+4154	Hebdomadaire
+4155	Registre des risques et opportunités
+4156	Cockpit conformité et certification
+4157	Cockpit non-conformités et CAPA
+4158	Rapport d'audit
+4159	Par audit
+4160	Dossier de revue de direction
+4161	Par revue de direction
+4162	Matrice des compétences et de la formation
+4163	Tableau de bord fournisseurs
+4164	Rapport d'audit de la configuration du locataire
+4165	Politique du système de management
+4166	Majeure.Mineure
+4167	BROUILLON jusqu'à la publication ; REMPLACÉ après remplacement
+4168	Logo
+4169	palette de couleurs
+4170	polices
+4171	page de couverture
+4172	en-tête et pied de page
+4173	ordre des sections
+4174	afficher/masquer les sections
+4175	sections personnalisées
+4176	langue (EN/FR/AR)
+4177	texte du filigrane
+4178	Titre
+4179	normes du périmètre
+4180	engagements
+4181	bloc d'approbation
+4182	bloc de version
+4183	En revue
+4184	Approuvée
+4185	Publiée
+4186	Remplacée
+4187	Archivée
+4188	Word (DOCX)
+4189	PDF
+4190	nom
+4191	RACSI
+4192	entrées/sorties
+4193	objectifs
+4194	tâches
+4195	méthodes de surveillance
+4196	Excel (XLSX)
+4197	Fiche composite
+4198	Liste des membres
+4199	RACSI fusionné
+4200	KPI consolidés
+4201	BROUILLON lorsqu'un élément n'est pas actif
+4202	couleurs
+4203	mise en page (horizontale/verticale)
+4204	niveaux affichés
+4205	afficher/masquer documents et applications
+4206	macro-processus
+4207	PowerPoint (PPTX)
+4208	Image SVG
+4209	Image PNG
+4210	SIPOC (existant ou cible)
+4211	Les onze champs du SIPOC
+4212	Sans objet (généré à la demande)
+4213	Aucun
+4214	couleur de surlignage des modifications
+4215	champs comparés
+4216	Élément
+4217	les deux états
+4218	résumé des modifications
+4219	Généré à la demande
+4220	Champs d'en-tête
+4221	diagramme BPMN
+4222	tableau des étapes
+4223	reporting
+4224	alertes
+4225	Diagramme BPMN
+4226	Suit la version de la procédure
+4227	Couleurs des couloirs
+4228	libellés des formes
+4229	orientation
+4230	Pool, couloirs, événements, tâches, passerelles
+4231	XML BPMN 2.0
+4232	Politique qualité initiale
+4233	Directeur général
+4234	Majeure
+4235	Politique QHSE intégrée remplaçant la politique qualité
+4236	Ajout de l'engagement de consultation des travailleurs (ISO 45001 article 5.4)
+4237	Corrections rédactionnelles de la traduction française
+4238	En attente
+4239	Mineure
+4240	Première politique de sécurité de l'information
+4241	Ajout de la référence à l'activité de contrôle du crédit
+4242	Responsable commercial
+4243	Conception cible avec consignation et GMAO
+4244	Responsable maintenance
+4245	Responsable de production
+4246	Ajout de la section personnalisée sur l'indépendance des auditeurs
+4247	Responsable QHSE
+4248	Première fiche composite Ventes
+4249	SIPOC existant de la gestion des commandes
+4250	SIPOC cible mis à jour avec le canal portail
+4251	Première procédure d'enregistrement des réclamations
+4252	Ajout du flux d'exception de fusion des doublons
+4253	Ajout de l'exception de situation dangereuse
+4254	Cartographie des processus de la fonction Ventes
+4255	Politique qualité
+4256	Mono-norme (SMQ)
+4257	Tous les sites ; conception, fabrication et livraison des produits
+4258	Satisfaire les exigences des clients et les exigences applicables ; améliorer en continu le SMQ ; fixer et revoir les objectifs qualité ; garantir un personnel compétent.
+4259	Intranet
+4260	panneaux d'affichage
+4261	accueil des nouveaux arrivants
+4262	Politique QHSE intégrée
+4263	Intégrée (QHSE)
+4264	Tous les sites et activités, y compris les sous-traitants sur site
+4265	Qualité : satisfaction des clients et conformité. Environnement : protection de l'environnement, y compris la prévention de la pollution ; respect des obligations de conformité. SST : conditions de travail sûres et saines ; éliminer les dangers et réduire les risques ; consultation et participation des travailleurs. Commun : amélioration continue et cadre des objectifs.
+4266	portail fournisseurs
+4267	Politique de sécurité de l'information
+4268	Mono-norme (SMSI)
+4269	Systèmes informatiques et actifs informationnels de tous les sites
+4270	Protéger la confidentialité, l'intégrité et la disponibilité de l'information ; respecter les exigences légales et contractuelles ; améliorer en continu le SMSI.
+4271	accueil informatique
+4272	Instance d'organisation cliente avec sa configuration.
+4273	Personne disposant d'identifiants et de rôles attribués.
+4274	Ensemble nommé d'autorisations et de périmètres de données.
+4275	Norme de système de management du périmètre (p. ex. ISO 9001, ISO 45001).
+4276	Politique portant sur une norme (mono-norme) ou plusieurs normes (intégrée, p. ex. QHSE).
+4277	Enjeu interne ou externe affectant le système de management.
+4278	Partie prenante avec ses besoins et attentes.
+4279	Objectif mesurable décliné aux fonctions et macro-processus.
+4280	Nommage par le locataire des niveaux de la hiérarchie (niveau 1 à n).
+4281	Nœud abstrait de la hiérarchie des processus (fonction, macro-processus, tâche ou niveau inférieur).
+4282	Élément de processus de niveau 1 (p. ex. Ventes, RH).
+4283	Élément de processus de niveau 2 décomposant une fonction.
+4284	Élément de processus de plus bas niveau d'une branche (niveau 3 ou inférieur).
+4285	Fiche atomique décrivant un macro-processus avec tous ses attributs.
+4286	Fiche regroupant deux fiches macro-processus atomiques ou plus.
+4287	Section supplémentaire définie par le locataire et ajoutée à une fiche.
+4288	Rôles Responsable, Autorité, Consulté, Soutien et Informé pour un élément.
+4289	SIPOC existant ou cible d'un macro-processus ou d'une tâche.
+4290	Cas d'usage / procédure décrivant la réalisation d'une tâche.
+4291	Étape d'une procédure dans le flux nominal ou un flux d'exception.
+4292	Diagramme BPMN 2.0 généré à partir du tableau des étapes d'une procédure.
+4293	Cartographie générée d'une fonction avec ses macro-processus, tâches, documents et applications.
+4294	Document interne ou de référence soumis à la maîtrise du cycle de vie.
+4295	Preuve conservée selon une règle de conservation.
+4296	Modèle personnalisable par type de document et format de sortie.
+4297	Fichier téléchargeable généré à partir d'une version de document dans un format.
+4298	Version d'un document gouverné avec son statut de cycle de vie.
+4299	Destinataires auxquels un document ou une fiche est diffusé.
+4300	Application métier liée aux éléments de processus (p. ex. ERP, CRM).
+4301	Liste déroulante avec valeurs système et personnalisées.
+4302	Une valeur d'une liste déroulante.
+4303	Indicateur avec formule, unité, fréquences et RACSI.
+4304	Valeur de KPI mesurée ou calculée pour une période.
+4305	Mode et fréquence de surveillance appliqués à un macro-processus.
+4306	Risque lié à un élément de processus.
+4307	Opportunité liée à un élément de processus.
+4308	Contrôle atténuant un ou plusieurs risques.
+4309	Exigence légale, réglementaire ou contractuelle.
+4310	Certification détenue pour une norme et un périmètre.
+4311	Non-conformité, incident ou réclamation.
+4312	Action éliminant la cause d'une non-conformité.
+4313	Ensemble planifié d'audits pour une période.
+4314	Constat enregistré lors d'un audit.
+4315	Compétence requise pour un rôle.
+4316	Formation dispensée et son efficacité.
+4317	Prestataire externe.
+4318	Équipement ou élément d'infrastructure.
+4319	Expression enregistrée calculant un KPI ou un KRI.
+4320	Notification levée par une règle ou un seuil.
+4321	Proposition d'amélioration liée à un élément de processus.
+4322	Enregistrement de configuration et de gouvernance d'une capacité d'IA.
+4323	Décision enregistrée en revue de direction.
+4324	Chaîne de valeur transverse regroupant des macro-processus (E2E-01 à E2E-12).
+4325	Ressources humaines
+4326	Achats
+4327	Management QHSE
+4328	Fréquence
+4329	Semestriel
+4330	Annuel
+4331	Par événement
+4332	Tous les 2 ans
+4333	Par lot de production
+4334	Mode de surveillance
+4335	Revue des KPI
+4336	Revue de direction
+4337	Visite de processus
+4338	Auto-évaluation
+4339	Audit client
+4340	Audit de processus par couches
+4341	Format de sortie
+4342	Statut du cycle de vie
+4343	Rédiger les engagements de la politique du système de management
+4344	Génération de texte
+4345	Le responsable SMI accepte ou modifie chaque engagement avant revue
+4346	Global
+4347	Sans objet (fourni)
+4348	Rédiger les détails fins et les critères Go/No-Go du SIPOC cible
+4349	Le pilote de processus valide chaque champ du SIPOC
+4350	Rédiger la séquence des étapes de la procédure à partir du SIPOC cible
+4351	Génération structurée
+4352	Le pilote de processus confirme les étapes, les acteurs et les exceptions
+4353	Générer du microlearning à partir d'une procédure publiée
+4354	Synthèse
+4355	Le responsable RH approuve le module avant affectation
+4356	Mettre en correspondance les articles des normes avec les éléments de processus
+4357	Le responsable conformité confirme chaque correspondance
+4358	Recherche sémantique dans les documents de processus publiés
+4359	Questions-réponses augmentées par la recherche
+4360	Les réponses citent les documents sources ; l'utilisateur juge de leur pertinence
+4361	Suggestions de causes racines à partir de cas similaires
+4362	Recommandation
+4363	Le responsable qualité valide les causes en atelier ACR
+4364	Classer la criticité des non-conformités
+4365	Le responsable qualité confirme la criticité proposée
+4366	Compiler le dossier d'entrée de la revue de direction
+4367	Le responsable SMI revoit le dossier avant diffusion
+4368	Générer la liste de contrôle d'audit à partir du SIPOC et des procédures
+4369	L'auditeur modifie la liste de contrôle avant l'audit
+4370	Scoring prédictif des risques des processus
+4371	Prédiction
+4372	Le responsable des risques examine les alertes avant d'agir
+4373	Veille réglementaire
+4374	Extraction
+4375	Le responsable conformité confirme l'applicabilité
+4376	Résumer les écarts entre existant et cible
+4377	Le pilote de processus modifie le résumé des modifications
+4378	Scorer les candidats à l'automatisation
+4379	Le pilote de processus décide des tâches à automatiser
+4380	Proposer une formule de KPI à partir de sa description
+4381	Le gestionnaire de données valide la formule avant activation
+4382	Suggérer une liste de diffusion à partir du RACSI et des interactions
+4383	Le pilote de processus confirme les destinataires
+4384	Rédiger les étapes de procédure en français et en arabe
+4385	Le pilote de processus valide les étapes traduites
+4386	En attente d'approbation
+4387	Rédiger la synthèse de direction d'une fiche composite
+4388	Le responsable SMI modifie la synthèse avant publication
+4389	Projet
+4391	Modification
+4392	Toujours

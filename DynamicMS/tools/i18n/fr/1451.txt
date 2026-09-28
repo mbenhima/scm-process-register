@@ -1,0 +1,600 @@
+1451	Analystes de données
+1452	Objectifs du processus
+1453	Sources de données
+1454	Données de benchmark
+1455	Aligner sur les objectifs
+1456	Fixer les cibles
+1457	Définir les sources de données
+1458	Établir la fréquence
+1459	Revoir la pertinence
+1460	Automatiser
+1461	Visualiser
+1462	Tableaux de bord
+1463	Suivi des cibles
+1464	Seuils d'alerte et d'escalade des processus
+1465	Définir les seuils d'alerte ; fixer les niveaux d'escalade ; configurer les notifications ; tester.
+1466	Administrateurs informatiques
+1467	Cibles de performance
+1468	Exigences d'escalade
+1469	Fixer les niveaux d'alerte
+1470	Configurer les déclencheurs
+1471	Désigner les destinataires
+1472	Définir les chemins d'escalade
+1473	Tester
+1474	Seuils d'alerte
+1475	Procédures d'escalade
+1476	Enregistrements de notification
+1477	Seuils ajustés
+1478	Équipes support
+1479	Tableau de bord temps réel et pilotage des processus
+1480	Offrir une visibilité en temps réel ; permettre l'exploration détaillée ; contrôler les accès ; mettre à jour.
+1481	Resp. données/SI
+1482	Chefs de service
+1483	Profils utilisateurs
+1484	Exigences du tableau de bord
+1485	Retours
+1486	Identifier les profils
+1487	Définir la mise en page
+1488	Agréger les données
+1489	Configurer les widgets
+1490	Paramétrer l'exploration détaillée
+1491	Contrôler les accès
+1492	Recueillir les retours
+1493	Rapports détaillés
+1494	Enregistrements d'accès
+1495	Retours des utilisateurs
+1496	Tous les utilisateurs
+1497	Gestion des risques et opportunités opérationnels
+1498	Identifier les risques/opportunités ; évaluer et prioriser ; définir les actions ; suivre.
+1499	Resp. risques
+1500	Performance historique
+1501	Critères de risque
+1502	Identifier les opportunités
+1503	Évaluer
+1504	Définir les actions de maîtrise
+1505	Définir les actions d'exploitation
+1506	Rendre compte
+1507	Mettre à jour à partir du REX
+1508	Registre des opportunités
+1509	Comité des risques
+1510	Orchestration des compétences et de la formation
+1511	Définir les référentiels de compétences ; évaluer les écarts ; dispenser la formation ; suivre les certifications.
+1512	Resp. RH/formation
+1513	Profils de poste
+1514	Matrices de compétences
+1515	Évaluer les écarts
+1516	Concevoir les cursus
+1517	Planifier
+1518	Dispenser
+1519	Évaluer
+1520	Suivre les certifications
+1521	Certifier
+1522	Certifications
+1523	Plans de développement
+1524	Élaboration du plan de communication du système de management
+1525	Définir les besoins de communication ; élaborer le plan ; choisir les canaux ; mesurer l'efficacité.
+1526	Resp. communication
+1527	Identifier les publics
+1528	Définir les messages
+1529	Choisir les canaux
+1530	Concevoir les supports
+1531	Mesurer l'efficacité
+1532	Produire le rapport
+1533	Rapports d'efficacité
+1534	Plans mis à jour
+1535	Déploiement et mise en œuvre du système de management
+1536	Déployer le système de management ; conduire des pilotes ; préparer les équipes ; passer en régime établi.
+1537	Resp. déploiement
+1538	Équipe projet
+1539	Plan de mise en œuvre
+1540	Plan des ressources
+1541	Plan de formation
+1542	Sélectionner les pilotes
+1543	Conduire le pilote
+1544	Affiner
+1545	Préparer les équipes
+1546	Valider le calendrier
+1547	Vérifier la préparation
+1548	Exécuter la transition
+1549	Accompagner
+1550	Passer en régime établi
+1551	Personnel formé
+1552	Enregistrements de transition
+1553	Indicateurs d'adoption
+1554	Audit à blanc, pré-certification et diagnostic des écarts
+1555	Conduire l'audit à blanc ; identifier les constats ; valider ; définir les actions.
+1556	Auditeurs internes
+1557	Consultants
+1558	Enregistrements des processus
+1559	Planifier l'audit
+1560	Conduire l'audit
+1561	Identifier les constats
+1562	Catégoriser
+1563	Émettre le rapport
+1564	Présenter
+1565	Définir les plans
+1566	Journal des constats
+1567	Plans d'actions correctives
+1568	Organisme de certification
+1569	Préparation et coordination de l'audit de certification
+1570	Sélectionner le certificateur ; coordonner les dates ; accompagner l'audit ; obtenir la certification.
+1571	Coordonner les dates
+1572	Préparer les dossiers
+1573	Désigner les accompagnateurs
+1574	Suivre l'audit
+1575	Analyser les constats
+1576	Valider les constats
+1577	Corriger immédiatement
+1578	Clôturer et obtenir
+1579	Rapport de certification
+1580	Actions correctives
+1581	Preuves de clôture
+1582	Saisie et définition des problèmes
+1583	Saisir les NC ; définir la criticité ; analyser en 5W2H ; classer et approuver.
+1584	Propriétaire du problème
+1585	Chargés qualité
+1586	Données de détection
+1587	Exigences des normes
+1588	Saisir les données
+1589	Définir la criticité
+1590	Désigner l'équipe
+1591	Soumettre
+1592	Analyser en 5W2H
+1593	Quantifier l'écart
+1594	Identifier les normes
+1595	Classer la polarité
+1596	Approuver
+1597	Transmettre
+1598	Fiche de NC
+1599	Classement de priorité
+1600	Affectation de l'équipe
+1601	Équipe qualité
+1602	Équipe d'amélioration
+1603	Gestion des actions immédiates
+1604	Définir les actions de confinement ; exécuter immédiatement ; évaluer l'efficacité ; escalader.
+1605	Propriétaire de l'action
+1606	Équipe terrain
+1607	Exigences de confinement
+1608	Critères d'escalade
+1609	Exécuter
+1610	Téléverser les preuves
+1611	Confirmer ou escalader
+1612	Preuves d'exécution
+1613	Évaluation de l'efficacité
+1614	Enregistrements d'escalade
+1615	Équipe processus
+1616	Comité de pilotage
+1617	Résolution des causes racines
+1618	Choisir la méthode d'ACR ; animer l'atelier ; valider les causes ; définir les actions correctives.
+1619	Animateur ACR
+1620	Animer l'atelier
+1621	Construire le diagramme
+1622	Valider les causes
+1623	Relier aux normes
+1624	Définir les actions correctives
+1625	Valider le plan
+1626	Analyse des causes racines
+1627	Plan d'actions correctives
+1628	Exécution et suivi des actions correctives
+1629	Affecter les actions correctives ; exécuter et documenter ; confirmer l'efficacité ; clôturer.
+1630	Échéancier
+1631	Critères d'efficacité
+1632	Confirmer
+1633	Escalader si nécessaire
+1634	Clôturer
+1635	Vérification
+1636	Enregistrements de clôture
+1637	Capitalisation et clôture des non-conformités
+1638	Planifier le REX ; documenter les enseignements ; identifier la standardisation ; mettre à jour la base de connaissances.
+1639	Planifier le REX
+1640	Documenter les enseignements
+1641	Identifier la standardisation
+1642	Revoir l'efficacité
+1643	Valider la pérennité
+1644	Planifier la généralisation
+1645	Mettre à jour la base de connaissances
+1646	Registre des enseignements
+1647	Enregistrements de standardisation
+1648	NC clôturée
+1649	Base de connaissances
+1650	Pilotage du pipeline d'amélioration continue
+1651	Recueillir les idées ; évaluer le ROI ; prioriser ; dérouler le PDCA ; standardiser.
+1652	Resp. amélioration
+1653	Experts Lean
+1654	Finance/RH
+1655	Critères de ROI
+1656	Critères de faisabilité
+1657	Évaluer le ROI/la faisabilité
+1658	Prioriser
+1659	Constituer les équipes
+1660	Dérouler le PDCA
+1661	Suivre les jalons
+1662	Standardiser
+1663	Reconnaître
+1664	Initiatives priorisées
+1665	Enregistrements PDCA
+1666	Performance qualité des fournisseurs
+1667	Définir les critères de qualification ; intégrer les fournisseurs ; suivre la performance ; gérer la remédiation.
+1668	Ingénieur qualité fournisseurs
+1669	Resp. achats
+1670	Auditeur fournisseurs
+1671	Resp. risques
+1672	Spécifications
+1673	Évaluation des risques
+1674	Intégrer les fournisseurs
+1675	Collecter la performance
+1676	Conduire les audits
+1677	Revoir les tableaux de bord
+1678	Évaluer les SCAR
+1679	Émettre les SCAR
+1680	Déclencher la remédiation
+1681	Requalifier/retirer
+1682	Enregistrements de performance
+1683	Enregistrements SCAR
+1684	Enregistrements de requalification
+1685	Maîtrise des ressources de surveillance et de mesure
+1686	Inventorier les équipements ; planifier/réaliser l'étalonnage ; évaluer l'impact ; tenir les enregistrements.
+1687	Technicien d'étalonnage
+1688	Resp. maintenance
+1689	Calendriers d'étalonnage
+1690	Établir les calendriers
+1691	Réaliser l'étalonnage
+1692	Étiqueter
+1693	Ajuster/corriger
+1694	Évaluer l'impact
+1695	Tenir les enregistrements
+1696	Traiter les non-conformes
+1697	Registre des équipements
+1698	Étiquettes
+1699	Évaluations d'impact
+1700	Enregistrements de quarantaine
+1701	Qualification et certification des auditeurs internes
+1702	Définir les critères ; former les candidats ; évaluer et certifier ; tenir le registre.
+1703	Critères auditeurs
+1704	Profils des candidats
+1705	Exigences de formation
+1706	ISO 19011
+1707	Identifier les candidats
+1708	Dispenser la formation formelle
+1709	Conduire les exercices
+1710	Évaluer la performance
+1711	Valider les compétences
+1712	Délivrer la certification
+1713	Tenir le registre
+1714	Planifier la recertification
+1715	Formation de recyclage
+1716	Critères
+1717	Registre des auditeurs
+1718	Plans de recertification
+1719	Harmonisation unifiée des exigences
+1720	Recueillir les exigences ; détecter les écarts ; harmoniser ; publier et mettre à jour.
+1721	Resp. exigences
+1722	Juridique/conformité
+1723	Exigences clients
+1724	Recueillir
+1725	Catégoriser/étiqueter
+1726	Détecter les écarts
+1727	Animer des ateliers
+1728	Établir le référentiel
+1729	Analyse des écarts
+1730	Enregistrements d'approbation
+1731	Journal des modifications
+1732	Toutes les équipes
+1733	Cartographie des obligations réglementaires et de conformité
+1734	Tenir le registre légal ; identifier les obligations ; les relier aux contrôles ; suivre les évolutions.
+1735	Lois
+1736	Réglementations
+1737	Permis
+1738	Juridictions
+1739	Tenir le registre légal
+1740	Identifier les obligations
+1741	Relier aux politiques/contrôles
+1742	Suivre les évolutions
+1743	Ajuster les politiques
+1744	Soumettre les déclarations
+1745	Gérer les inspections
+1746	Rendre compte de la conformité
+1747	Registre légal
+1748	Obligations de conformité
+1749	Maîtrise du cycle de vie documentaire
+1750	Définir les métadonnées ; gérer l'approbation ; maîtriser les versions ; archiver les documents obsolètes.
+1751	Auteur du document
+1752	Pilote de processus
+1753	Expert métier
+1754	Gestionnaire documentaire
+1755	Workflow d'approbation
+1756	Règles de conservation
+1757	Identifier le workflow
+1758	Relecture par les pairs
+1759	Contrôler la conformité
+1760	Vérifier les versions
+1761	Approuver/publier
+1762	Diffuser
+1763	Archiver les documents obsolètes
+1764	Planifier les rappels
+1765	Attester la prise de connaissance
+1766	Enregistrements de diffusion
+1767	Enregistrements d'archivage
+1768	Cycle de vie des enregistrements, conservation et gouvernance des preuves
+1769	Définir la conservation ; mettre en œuvre la destruction ; gérer les gels juridiques ; produire des preuves recevables.
+1770	Resp. enregistrements
+1771	Types d'enregistrements
+1772	Exigences de conservation
+1773	Gels juridiques
+1774	Définir les types/la conservation
+1775	Mettre en œuvre les règles
+1776	Gérer les gels
+1777	Maintenir la chaîne de conservation
+1778	Valider l'authenticité
+1779	Détruire les éléments expirés
+1780	Produire les preuves
+1781	Calendriers de conservation
+1782	Enregistrements de destruction
+1783	Enregistrements de gel juridique
+1784	Enregistrements d'audit
+1785	Dossiers de preuves
+1786	Consolidation des indicateurs de performance et revues
+1787	Définir les indicateurs ; collecter les données en temps réel ; agréger les tableaux de bord ; analyser les tendances.
+1788	Cibles
+1789	Établir l'ordre du jour
+1790	Agréger
+1791	Analyser
+1792	Identifier les écarts
+1793	Générer les supports
+1794	Animer les revues
+1795	Suivre les actions
+1796	Analyse des tendances
+1797	Rapports d'écarts
+1798	Surveillance de la performance du système de management
+1799	Fixer la périodicité PDCA ; définir les indicateurs du système ; comparer les données ; déclencher les actions correctives.
+1800	Indicateurs du système
+1801	Référence du plan
+1802	Comparer au plan
+1803	Identifier les anomalies
+1804	Générer les rapports
+1805	Déclencher les corrections
+1806	Suivre les tendances
+1807	Ajuster les paramètres
+1808	Rapports de santé du système
+1809	Rapports d'anomalies
+1810	Déclencheurs correctifs
+1811	Revue de performance des processus opérationnels
+1812	Fixer la périodicité ; collecter les données ; animer des ateliers ; identifier les causes racines.
+1813	Animateur
+1814	Données de défauts
+1815	Données de temps de cycle
+1816	Définir l'ordre du jour
+1817	Comparer aux cibles
+1818	Escalader
+1819	Plans d'amélioration
+1820	Orchestration des instances et revues de gouvernance
+1821	Fixer la périodicité par instance ; définir les données ; conduire les revues ; consolider les décisions.
+1822	Données requises
+1823	Exigences décisionnelles
+1824	Définir les données
+1825	Revues de processus
+1826	Mini-revues
+1827	Revues complètes
+1828	Comité exécutif
+1829	Comités commerciaux
+1830	Consolider le tableau de bord
+1831	Valider les décisions
+1832	Rendre compte de la vélocité
+1833	Comptes rendus
+1834	Enregistrements de décisions
+1835	Suivi des actions
+1836	Gestion du baromètre de satisfaction client
+1837	Fixer la périodicité des enquêtes ; définir NPS/CSAT ; gérer les campagnes ; corréler.
+1838	Resp. expérience client
+1839	Données d'enquêtes
+1840	Cibles NPS/CSAT
+1841	Définir les objectifs
+1842	Déterminer les coûts
+1843	Gérer la campagne
+1844	Analyser les tendances
+1845	Générer les tableaux de bord
+1846	Corréler
+1847	Identifier les actions
+1848	Rendre compte en revue de direction
+1849	Scores NPS/CSAT
+1850	Actions d'amélioration
+1851	Ventes/marketing
+1852	Revue de direction
+1853	Gouvernance des politiques et procédures
+1854	Définir le cycle de vie des politiques ; identifier les écarts ; valider et approuver ; publier et renouveler.
+1855	Propriétaire de la politique
+1856	Responsable conformité
+1857	Exigences de politique
+1858	Notifier
+1859	Planifier le renouvellement
+1860	Retirer
+1861	Enregistrements de publication
+1862	Calendriers de renouvellement
+1863	Univers et évaluation des risques d'entreprise
+1864	Définir la taxonomie des risques ; identifier les scénarios ; évaluer probabilité/impact ; publier la carte de chaleur.
+1865	Stratégie/finance
+1866	Taxonomie des risques
+1867	Scénarios
+1868	Données de contrôle
+1869	Définir la taxonomie
+1870	Identifier les scénarios
+1871	Évaluer probabilité/impact
+1872	Calculer les scores
+1873	Relier aux contrôles
+1874	Calculer le risque résiduel
+1875	Publier la carte de chaleur
+1876	Carte de chaleur
+1877	Évaluation du risque résiduel
+1878	Planification du traitement et de l'atténuation des risques
+1879	Évaluer les options de traitement ; concevoir les plans ; mettre en œuvre et suivre ; documenter l'acceptation.
+1880	Propriétaire du risque
+1881	Options de traitement
+1882	Évaluer les options
+1883	Concevoir les plans
+1884	Allouer le budget
+1885	Mettre en œuvre
+1886	Réévaluer
+1887	Documenter l'acceptation
+1888	Plans de traitement
+1889	Enregistrements budgétaires
+1890	Enregistrements de mise en œuvre
+1891	Enregistrements d'acceptation
+1892	Cycle d'audit interne et d'assurance
+1893	Planifier selon le risque ; élaborer les programmes ; tester et documenter ; rendre compte et suivre.
+1894	Auditeur principal
+1895	Auditeur interne
+1896	Comité d'audit
+1897	Documentation des processus
+1898	Élaborer les programmes
+1899	Allouer
+1900	Rédiger le rapport
+1901	Réunion de clôture
+1902	Suivre les plans d'action
+1903	Programmes d'audit
+1904	Enregistrements de constats
+1905	Suivi
+1906	Audités
+1907	Reporting GRC de direction et tableaux de bord
+1908	Agréger les données ; construire les tableaux de bord ; générer les rapports ; utiliser l'analytique prédictive.
+1909	Directeur risques/audit
+1910	Données de risques
+1911	Définir les besoins
+1912	Construire
+1913	Préparer les soumissions
+1914	Utiliser l'analytique prédictive
+1915	Tableaux de bord GRC
+1916	Rapports de direction
+1917	Analytique prédictive
+1918	Soumissions
+1919	Actionnaires
+1920	Supervision du système de management de l'IA
+1921	Établir la politique IA ; définir le périmètre/les risques ; appliquer les contrôles de cycle de vie ; surveiller/auditer.
+1922	Niveau 2 — Extensions conditionnelles du SMI
+1923	Resp. gouvernance IA
+1924	Data scientists
+1925	Développeurs IA
+1926	Exigences de politique IA
+1927	ISO 42001
+1928	Règlement européen sur l'IA
+1929	Évaluer les impacts
+1930	Définir les rôles
+1931	Appliquer les contrôles
+1932	Corriger
+1933	Évaluation d'impact
+1934	Utilisateurs finaux
+1935	GRC cyber et contrôle informatique
+1936	Définir l'inventaire des contrôles ; conduire les évaluations des risques ; mettre en œuvre et surveiller ; auditer.
+1937	Analyste cyber
+1938	Auditeur informatique
+1939	Données de vulnérabilités
+1940	Définir l'inventaire
+1941	Conduire les évaluations
+1942	Concevoir/mettre en œuvre les contrôles
+1943	Gérer les incidents
+1944	Remédier
+1945	Évaluations des risques
+1946	Enregistrements de contrôles
+1947	Enregistrements d'incidents
+1948	Utilisateurs informatiques
+1949	Gestion de la protection des données personnelles
+1950	Tenir le registre des traitements ; gérer les demandes des personnes concernées ; réaliser les AIPD ; surveiller.
+1951	Sécurité informatique
+1952	Activités de traitement
+1953	Enregistrements de consentement
+1954	Données de transfert
+1955	Tenir le registre
+1956	Gérer les demandes
+1957	Réaliser les AIPD
+1958	Gérer les consentements
+1959	Surveiller les transferts
+1960	Détecter/notifier les violations
+1961	Gérer la conservation
+1962	Registre des traitements
+1963	Rapports d'AIPD
+1964	Enregistrements de violations
+1965	Personnes concernées
+1966	Gouvernance des données et qualité des données de référence
+1967	Définir les domaines/propriétaires ; établir les règles ; profiler et nettoyer ; surveiller.
+1968	Gestionnaire de données
+1969	Exigences de qualité
+1970	Données de référence
+1971	Établir les règles
+1972	Mettre en œuvre le profilage
+1973	Gérer le lignage
+1974	Exploiter le MDM
+1975	Surveiller les tableaux de bord
+1976	Résoudre les incidents
+1977	Communiquer les scores
+1978	Enregistrements de nettoyage
+1979	Scores
+1980	Consommateurs de données
+1981	Gouvernance des accès, de la sécurité et des rôles
+1982	Définir le RBAC ; attribuer les rôles/la séparation des tâches ; traiter les demandes d'accès ; surveiller.
+1983	Administrateur du locataire
+1984	Resp. IAM
+1985	Administrateur système
+1986	Politiques RBAC
+1987	Définitions des rôles
+1988	Règles de séparation des tâches
+1989	Demandes d'accès
+1990	Définir le RBAC
+1991	Attribuer les rôles
+1992	Définir la séparation des tâches
+1993	Traiter les demandes
+1994	Conduire la recertification
+1995	Surveiller les comptes à privilèges
+1996	Corriger les conflits de séparation des tâches
+1997	Tenir les pistes d'audit
+1998	Attributions de rôles
+1999	Enregistrements de recertification
+2000	Pistes d'audit
+2001	Utilisateurs du système
+2002	Référentiel des applications et interfaces
+2003	Identifier les applications/propriétaires ; documenter le cycle de vie ; cartographier les interfaces ; maintenir les schémas.
+2004	Architecte d'entreprise
+2005	Inventaire des applications
+2006	Exigences d'interface
+2007	Spécifications d'API
+2008	Données de cycle de vie
+2009	Identifier les applications/propriétaires
+2010	Documenter la finalité
+2011	Cartographier les interfaces
+2012	Définir les API
+2013	Maintenir les schémas
+2014	Évaluer l'obsolescence
+2015	Inventaire applicatif
+2016	Cartes des interfaces
+2017	Schémas de dépendances
+2018	Équipes métier
+2019	Cycle de vie des technologies et de l'architecture
+2020	Définir les standards ; évaluer les nouvelles technologies ; gérer les mises à niveau ; surveiller l'obsolescence.
+2021	Resp. architecture
+2022	Standards technologiques
+2023	Architecture de référence
+2024	Données sur les nouvelles technologies
+2025	Données d'obsolescence
+2026	Définir les standards
+2027	Évaluer les technologies
+2028	Établir les feuilles de route
+2029	Gérer les mises à niveau
+2030	Conduire les revues
+2031	Surveiller l'obsolescence
+2032	Planifier le démantèlement
+2033	Feuilles de route
+2034	Enregistrements de migration
+2035	Rapports d'obsolescence
+2036	Enregistrements de démantèlement
+2037	Souveraineté des locataires et gouvernance de la sécurité
+2038	Définir les politiques d'isolation ; cartographier la résidence des données ; mettre en œuvre les contrôles juridictionnels ; auditer.
+2039	Resp. conformité souveraine
+2040	Politiques d'isolation
+2041	Résidence des données
+2042	Exigences juridictionnelles
+2043	Schrems II
+2044	Définir les politiques
+2045	Cartographier la résidence
+2046	Mettre en œuvre les contrôles
+2047	Surveiller la ségrégation
+2048	Gérer les accès des autorités
+2049	Maintenir les certificats
+2050	Cartes de résidence

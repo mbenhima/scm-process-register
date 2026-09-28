@@ -1,0 +1,5477 @@
+1	Context To Strategy
+2	Define context, policy, strategy, objectives, compliance, governance
+3	Strategic planning cycle, management review output, or significant context change
+4	Approved policy, strategy, objectives, risk register, compliance framework in place
+5	Establishes the strategic foundation of the IMS — context, policy, objectives, processes, risks, requirements, and policies.
+6	This process establishes the strategic foundation of the entire IMS. It begins by understanding the organization's internal and external context — regulatory, market, technological, and cultural. From this understanding, it defines the quality policy, strategic direction, and measurable objectives. It then maps the process architecture, manages enterprise risks and opportunities, harmonizes overlapping requirements across standards, and governs policies and procedures. For SMEs, it provides simplified onboarding and process modeling.
+7	Ensures the IMS is aligned with business strategy from day one and provides the foundation for every subsequent E2E process.
+8	Context
+9	Policy
+10	Objectives
+11	Process
+12	Risk
+13	Compliance
+14	SME
+15	Context Analysis
+16	Strategy Analyst
+17	Top Mgmt
+18	Legal
+19	Marketing
+20	Quality Mgr
+21	All Employees
+22	Policy Definition
+23	Strategy Team
+24	Objectives Deployment
+25	Finance
+26	Process Owners
+27	Process Mapping
+28	Process Analyst
+29	IT
+30	All Teams
+31	Risk Management
+32	Risk Mgr
+33	Board
+34	Requirements Harmonization
+35	Compliance Mgr
+36	Policy Governance
+37	Policy Owner
+38	SME Onboarding
+39	SME Admin
+40	SME Owner
+41	Onboarding Specialist
+42	Employees
+43	SME Process Modeling
+44	SME Process Owner
+45	DynamicMS
+46	Analyze Context and Stakeholders
+47	Understand issues; identify parties
+48	Context tasks
+49	Identify issues
+50	Internal/External issues
+51	Context report
+52	Stakeholder register
+53	Define Policy and Strategy
+54	Establish policy/direction
+55	Policy tasks
+56	Draft policy
+57	Purpose
+58	Policy document
+59	Deploy Objectives
+60	Cascade objectives
+61	Objectives tasks
+62	Define SMART
+63	Strategy
+64	Strategic objectives
+65	KPIs
+66	Map Processes
+67	Define architecture
+68	Mapping tasks
+69	Define scope
+70	Scope
+71	Process map
+72	SIPOC
+73	Manage Risks and Opportunities
+74	Identify and treat risks
+75	Risk tasks
+76	Identify risks
+77	Context data
+78	Risk register
+79	Harmonize Requirements
+80	Unify requirements
+81	Requirements tasks
+82	Collect requirements
+83	Contracts
+84	Standards
+85	Harmonized reference
+86	Govern Policies
+87	Manage policy lifecycle
+88	Define lifecycle
+89	Requirements
+90	Policies
+91	Procedures
+92	Set Up DynamicMS
+93	Deploy platform
+94	Onboarding tasks
+95	Select segment
+96	Company profile
+97	Configured tenant
+98	SME Employees
+99	Model Processes
+100	Digitize processes
+101	Modeling tasks
+102	Select template
+103	Templates
+104	Process models
+105	Leadership To Commitment
+106	Establish leadership, competence, communication, audit capability
+107	E2E-01 completion or leadership change
+108	Competent personnel, communication plan, qualified auditors in place
+109	This process ensures that the human and communication foundation of the IMS is in place. It builds competence across the workforce, establishes internal and external communication channels, qualifies and certifies internal auditors, manages collaborative business relationships with partners, and handles environmental communication. For SMEs, it provides fractional expert access and simplified training management.
+110	Ensures that people are competent, informed, and aligned — the single most important enabler of IMS success.
+111	Competence
+112	Communication
+113	Audit
+114	Collaboration
+115	Environmental Communication
+116	SME Expert
+117	SME Training
+118	Competence Building
+119	HR Mgr
+120	Dept Mgrs
+121	Trainers
+122	Comm Mgr
+123	Auditor Qualification
+124	HR
+125	Subject Experts
+126	Audit Team
+127	Partnership Mgr
+128	Procurement
+129	All Partners
+130	Environmental Comm
+131	Environmental Mgr
+132	Comm
+133	All Stakeholders
+134	SME Expert Access
+135	Expert Network
+136	SME HR
+137	Managers
+138	Build Competence
+139	Competent personnel
+140	Competence tasks
+141	Define frameworks
+142	Competence requirements
+143	Competence records
+144	Communicate
+145	Communication channels
+146	Communication tasks
+147	Fix periodicity
+148	Communication needs
+149	Communication plan
+150	Access Expert Help
+151	Expert guidance
+152	Expert tasks
+153	Identify need
+154	Expert needs
+155	Expert records
+156	Manage Training
+157	Training tasks
+158	Identify needs
+159	Training needs
+160	Training records
+161	Risk To Resilience
+162	Manage controls, third-party risk, continuity, functional safety, process safety, crisis
+163	Risk assessment cycle, incident, regulatory change, or functional safety requirement
+164	Controls, third-party risk managed, continuity tested, functional/process safety assured, crisis ready
+165	This process makes the organization resilient against operational, safety, and regulatory risks. It covers internal controls (including SOX), third-party and supplier risk, whistleblowing and incident investigation, business continuity and crisis preparedness, continuous controls monitoring, crisis communication, and the full suite of functional safety and process safety macro processes for high-risk industries. For SMEs, it provides simplified risk registers and exit/transition support.
+166	Protects the organization from catastrophic failure — whether from safety incidents, cyber attacks, supply chain disruption, or regulatory action.
+167	Controls
+168	Third-Party
+169	Investigation
+170	Continuity
+171	Functional Safety
+172	Process Safety
+173	Industrial Hygiene
+174	Asset Integrity
+175	Maritime
+176	Road Safety
+177	SME Risk
+178	Internal Controls
+179	Controller
+180	CFO
+181	Internal Audit
+182	Third-Party Risk
+183	Supply Chain
+184	Incident Investigation
+185	Investigator
+186	Security
+187	Audit Committee
+188	BCP Coordinator
+189	Facilities
+190	Operations
+191	Safety Engineer
+192	Engineering Mgr
+193	Quality
+194	Process Safety Mgr
+195	Operations Mgr
+196	Engineering
+197	HSE
+198	Industrial Hygienist
+199	HSE Mgr
+200	Medical
+201	Integrity Engineer
+202	Maintenance Mgr
+203	Maritime Safety
+204	Maritime Safety Officer
+205	Fleet Mgr
+206	Fleet Safety Mgr
+207	Logistics
+208	SME Exit
+209	Control Internally
+210	Internal controls
+211	Control tasks
+212	Identify controls
+213	Key controls
+214	Control inventory
+215	Monitor Third Parties
+216	Supplier risk
+217	Third-party tasks
+218	Due diligence
+219	Third-party data
+220	Risk scores
+221	Suppliers
+222	Manage Incidents
+223	Investigate incidents
+224	Investigation tasks
+225	Operate channels
+226	Reports
+227	Protocols
+228	Investigation reports
+229	Prepare for Continuity and Safety
+230	BCP and safety readiness
+231	Continuity and safety tasks
+232	Conduct BIA
+233	BIA data
+234	Safety requirements
+235	BCP
+236	Safety cases
+237	Manage Risk
+238	Simplified risk management
+239	Business context
+240	Plan Exit
+241	Support transition
+242	Exit tasks
+243	Plan exit
+244	Exit plans
+245	Exit plan
+246	Compliance To Achievement
+247	Deploy, audit, certify, maintain the management system
+248	Readiness for certification, surveillance audit due, or new compliance obligation
+249	Certification achieved or maintained; findings closed; compliance obligations met
+250	This process manages the certification lifecycle and compliance obligations. It deploys the management system, conducts mock audits and pre-certification gap diagnoses, coordinates certification audits, and manages a portfolio of certifications across multiple standards. It also covers chemical substance compliance, SDS management, extended producer responsibility, human rights due diligence, conflict minerals reporting, modern slavery compliance, and anti-bribery management. For SMEs, it provides quick audit preparation, cost-effective compliance, regulatory alerts, and multi-standard quick certification.
+251	Achieves and maintains certifications that open markets, satisfy customers, and demonstrate regulatory compliance.
+252	Deployment
+253	Certification
+254	Product Stewardship
+255	EPR
+256	Human Rights
+257	Anti-Bribery
+258	SME Compliance
+259	Deployment Mgr
+260	Project Team
+261	Mock Audit
+262	Auditors
+263	Consultant
+264	Certification Body
+265	Market
+266	Chemical Compliance
+267	Product Steward
+268	R&D
+269	SDS Management
+270	SDS Author
+271	Customers
+272	Regulators
+273	Stakeholders
+274	Conflict Minerals
+275	Procurement Mgr
+276	Modern Slavery
+277	Compliance Officer
+278	SME Audit Prep
+279	SME Quality Mgr
+280	Deploy Management System
+281	Roll out IMS
+282	Deployment tasks
+283	Define phases
+284	IMS design
+285	Deployed processes
+286	Conduct Mock Audit
+287	Prepare certification
+288	Mock audit tasks
+289	IMS documentation
+290	Mock audit report
+291	Coordinate Certification
+292	Achieve certification
+293	Certification tasks
+294	Select certifier
+295	Readiness assessment
+296	Certificate
+297	Prepare for Audit
+298	Quick audit prep
+299	Audit prep tasks
+300	Select audit type
+301	Audit criteria
+302	Audit pack
+303	Ensure Compliance
+304	Cost-effective compliance
+305	Compliance tasks
+306	Identify compliance
+307	Compliance requirements
+308	Compliance reports
+309	People To Capability
+310	Provide people, competence, documentation, records, measurement, health
+311	IMS deployment, new hire, documentation change, or medical surveillance requirement
+312	Competent people, controlled documentation, calibrated equipment, health records
+313	This process ensures the organization has the people, documentation, records, measurement resources, and health surveillance in place. It manages the full lifecycle of controlled documents and records, calibrates and controls measurement equipment, conducts medical surveillance and maintains health records, and — for SMEs — provides document templates and multi-role user management.
+314	Provides the operational backbone of the IMS — the documents, records, equipment, and people health that every process depends on.
+315	Documentation
+316	Records
+317	Metrology
+318	Medical Surveillance
+319	SME Document
+320	Doc Controller
+321	Records Mgr
+322	Measurement
+323	Metrologist
+324	Maintenance
+325	Occ Health
+326	SME Documents
+327	SME Users
+328	Control Documentation
+329	Document lifecycle
+330	Documentation tasks
+331	Define metadata
+332	Doc Author
+333	Process Owner
+334	Documentation requirements
+335	Controlled documents
+336	Control Measurement and Health
+337	Measurement/health
+338	Measurement and health tasks
+339	Inventory equipment
+340	Calibration Tech
+341	Equipment inventory
+342	Health req.
+343	Calibration records
+344	Manage Documents
+345	Use templates
+346	Document tasks
+347	Browse library
+348	Document requirements
+349	Documents
+350	Infrastructure To Wellbeing
+351	Provide IT, security, data, technology, environmental infrastructure
+352	IT infrastructure change, security threat, data protection requirement, environmental requirement, or facility change
+353	Secure compliant IT; data protection; cleanrooms monitored; facilities managed; asset reliability; water efficiency
+354	This process provides the IT, security, data, technology, and environmental infrastructure required by the IMS. It covers cyber GRC, personal data protection, access and role governance, application and interface repositories, technology lifecycle, tenant sovereignty, configuration governance, asset reliability, cleanroom classification and monitoring, water efficiency, facility management, IT service management, cloud security, and water footprint management.
+355	Ensures the digital and physical infrastructure is secure, compliant, reliable, and environmentally responsible.
+356	Data Protection
+357	Access
+358	Architecture
+359	Asset
+360	Cleanroom
+361	Water
+362	Facility
+363	ITSM
+364	Cloud Security
+365	Cyber GRC
+366	CISO
+367	IT Audit
+368	DPO
+369	IT Security
+370	Data Subjects
+371	Access Governance
+372	IAM Mgr
+373	Enterprise Architect
+374	DSI
+375	PMO
+376	Tenant Sovereignty
+377	Sovereign Compliance
+378	Tenants
+379	Asset Reliability
+380	Reliability Engineer
+381	Cleanroom Mgr
+382	Water Efficiency
+383	Facility Mgr
+384	IT Service Mgr
+385	Business
+386	All Users
+387	Cloud Security Architect
+388	Govern IT and Security
+389	Secure/govern IT
+390	IT governance tasks
+391	Define controls
+392	ISO 27001/NIST
+393	GDPR
+394	Knowledge To Control
+395	Govern data, formulas, calculations, knowledge
+396	Data governance requirement, formula change, or knowledge gap
+397	Governed data, formulas, calculations, knowledge graph
+398	This process governs data, formulas, calculations, and knowledge as organizational assets. It manages master data quality and governance, formula repositories and variable governance, formula execution and traceability, and the knowledge graph that powers AI recommendations.
+399	Turns data and knowledge into reliable, traceable, and reusable organizational intelligence.
+400	Data Governance
+401	Formula
+402	Knowledge Graph
+403	Data Steward
+404	CDO
+405	Data Consumers
+406	Formula Repository
+407	Data Gov Mgr
+408	Data Analysts
+409	Report Users
+410	Formula Execution
+411	Data Engineer
+412	Knowledge Mgr
+413	Govern Data and Formulas
+414	Govern data assets
+415	Data governance tasks
+416	Define domains
+417	Data domains
+418	Quality rules
+419	Requirements To Delivery
+420	Transform requirements into delivered products/services
+421	Customer order, production plan, supplier onboarding, welding requirement, laboratory test, or eco-design
+422	Products/services delivered; suppliers controlled; traceability ensured; quality validated; LCA completed
+423	This process transforms requirements into delivered products and services. It manages operational planning and control, product/service requirements, external provider control, production and service provision, release of products/services, nonconforming outputs control, emergency preparedness, supplier quality performance, supply chain resilience and traceability, supplier ecosystem intelligence, mobile-first field operations, supplier collaboration, product traceability and recall, welding quality, testing and calibration labs, medical labs, eco-design, life cycle assessment, and — for SMEs — informal process digitization.
+424	Ensures that what the customer receives is what the customer was promised — conforming, traceable, safe, and sustainable.
+425	Supplier
+426	Traceability
+427	Mobile
+428	Welding
+429	Laboratory
+430	Eco-design
+431	LCA
+432	SME Process
+433	Process Engineer
+434	Operators
+435	Supplier Quality Eng
+436	Quality Team
+437	Field Data
+438	Field Operator
+439	Welding Engineer
+440	Lab Mgr
+441	Eco-design Eng
+442	R&D Mgr
+443	Environmental
+444	LCA Analyst
+445	SME Processes
+446	Plan and Control Operations
+447	Control operations
+448	Operations tasks
+449	Identify critical points
+450	Process designs
+451	Control plans
+452	Control Suppliers
+453	Supplier quality
+454	Supplier tasks
+455	Define criteria
+456	Supplier capabilities
+457	Supplier approvals
+458	Ensure Traceability and Quality
+459	Trace and validate
+460	Traceability and quality tasks
+461	Define requirements
+462	Product data
+463	Tests
+464	Traceability records
+465	Capture Field Data
+466	Field data
+467	Mobile tasks
+468	Provide mobile apps
+469	Checklists
+470	Field records
+471	Digitize
+472	Verification To Preparedness
+473	Detect, contain, resolve, capitalize nonconformities and problems
+474	Nonconformity detected, incident reported, or problem identified
+475	Problem resolved; REX capitalized; KB updated
+476	This process detects, contains, resolves, and capitalizes nonconformities and problems. It covers problem capture and definition, immediate action, root cause resolution, corrective action execution, nonconformity capitalization and closure, AI knowledge base and RAG, AI agent orchestration, smart alerting and escalation, REX capitalization, automated root cause intelligence, automated CAPA recommendation, voice-to-text reporting, and — for SMEs — simplified nonconformity management.
+477	Ensures that every problem is not just fixed but converted into reusable organizational knowledge.
+478	NCP
+479	AI Agent
+480	Knowledge Base
+481	Alert
+482	SME NCP
+483	Problem Capture
+484	Detector
+485	NCP Team
+486	Containment
+487	Action Owner
+488	CI Pilot
+489	Field Team
+490	Supervisor
+491	Root Cause
+492	RCA Facilitator
+493	Corrective Actions
+494	Reviewers
+495	Capitalization
+496	Organization
+497	AI Orchestration
+498	Orchestrator Agent
+499	Data Scientists
+500	Alerts
+501	System
+502	Capture Problems
+503	Capture NC
+504	Capture tasks
+505	Create record
+506	Problem data
+507	NCP record
+508	Contain Immediately
+509	Contain problem
+510	Containment tasks
+511	Define actions
+512	Problem definition
+513	Containment records
+514	Process Team
+515	Resolve Root Causes
+516	Identify causes
+517	RCA tasks
+518	Select method
+519	RCA report
+520	Execute Corrective Actions
+521	Implement corrections
+522	Corrective tasks
+523	Assign actions
+524	Corrective plan
+525	Corrective records
+526	Capitalize and Close
+527	Learn and close
+528	Capitalization tasks
+529	Plan workshop
+530	REX report
+531	Orchestrate AI Agents
+532	Manage agents
+533	AI tasks
+534	Initialize orchestrator
+535	AI Orchestrator
+536	NCP data
+537	AI outputs
+538	Manage Knowledge Base
+539	Maintain KB
+540	Knowledge tasks
+541	Define schema
+542	Closed NCP
+543	Vector KB
+544	Manage Alerts
+545	Trigger alerts
+546	Alert tasks
+547	Configure alerts
+548	NCP events
+549	Alert records
+550	Manage Nonconformities
+551	Simplify NCP
+552	NCP tasks
+553	Capture problem
+554	NCP records
+555	Monitoring To Evaluation
+556	Monitor performance, evaluate results, steer the organization
+557	Monitoring periodicity, performance deviation, or governance review
+558	Performance evaluated; governance decisions made; improvements identified
+559	This process monitors performance, evaluates results, and steers the organization. It manages KPIs, alerts and escalation, real-time dashboards, performance indicator consolidation, system performance monitoring, operational process performance reviews, governance bodies and reviews, customer satisfaction barometers, internal audit cycles, executive GRC reporting, continual improvement pipeline, customer experience intelligence, voice-of-customer analytics, cross-site benchmarking, AR-guided audits, remote audits, customer complaint portals, and — for SMEs — peer benchmarking, essential KPI dashboards, and owner dashboards.
+560	Ensures the organization knows how it is performing and makes decisions based on real data.
+561	KPI
+562	Dashboard
+563	Governance
+564	Customer
+565	Benchmarking
+566	AR
+567	Remote Audit
+568	SME KPI
+569	Performance Review
+570	Meeting Facilitator
+571	Customer Satisfaction
+572	CX Mgr
+573	Sales
+574	Lead Auditor
+575	Site Mgrs
+576	All Sites
+577	AR Audits
+578	Auditor
+579	Remote Audits
+580	Certification Bodies
+581	SME Benchmarking
+582	SME KPIs
+583	Monitor KPIs
+584	Track performance
+585	KPI tasks
+586	Define indicators
+587	KPI definitions
+588	KPI dashboards
+589	Review Performance
+590	Evaluate results
+591	Review tasks
+592	KPI data
+593	Performance reports
+594	Orchestrate Governance
+595	Conduct governance
+596	Governance tasks
+597	Set periodicity
+598	Governance calendar
+599	Review minutes
+600	Manage Customer Satisfaction
+601	Monitor satisfaction
+602	Customer tasks
+603	Customer feedback
+604	Satisfaction reports
+605	Audit Internally
+606	Internal audit
+607	Audit tasks
+608	Plan by risk
+609	Audit plan
+610	Audit reports
+611	Benchmark
+612	Compare sites
+613	Benchmarking tasks
+614	Define metrics
+615	Site performance
+616	Benchmarking reports
+617	AR guidance
+618	AR tasks
+619	Define content
+620	Audit checklists
+621	AR audit records
+622	Remote audit
+623	Remote tasks
+624	Define protocols
+625	Remote audit reports
+626	Benchmark Performance
+627	Compare peers
+628	Select category
+629	Performance data
+630	Essential KPIs
+631	Select KPIs
+632	Business objectives
+633	KPI dashboard
+634	Audit To Assurance
+635	Provide assurance through AI, foresight, IoT, ESG, analytics
+636	Predictive analytics alert, regulatory change, or assurance requirement
+637	Risks predicted; compliance assured; ESG and carbon reported
+638	This process provides assurance through AI, foresight, IoT, ESG, and advanced analytics. It covers AI predictive risk intelligence, automated regulatory horizon scanning, multi-standard cross-mapping, intelligent document generation, digital twin simulation, ESG and sustainability performance, carbon footprint, natural language process mining, predictive compliance, real-time regulatory change impact, AI explainability, IoT integration, task mining, and Scope 3 emissions.
+639	Moves the organization from reactive compliance to predictive assurance — seeing risks and opportunities before they materialize.
+640	AI
+641	Regulatory
+642	Document
+643	Simulation
+644	ESG
+645	Mining
+646	IoT
+647	Predictive Risk
+648	Regulatory Horizon
+649	Legal Counsel
+650	Regulatory Bodies
+651	Cross-Mapping
+652	Standards Experts
+653	Document Generation
+654	AI Engine
+655	Authors
+656	Simulation Engineers
+657	Sustainability Mgr
+658	External Auditors
+659	Investors
+660	Process Mining
+661	Process Analysts
+662	Improvement Teams
+663	Predictive Compliance
+664	Compliance Team
+665	AI Explainability
+666	AI Engineers
+667	IoT Engineers
+668	Vendors
+669	Predict Risks
+670	AI risk prediction
+671	Prediction tasks
+672	Collect data
+673	Historical data
+674	Risk predictions
+675	Scan Regulatory Horizon
+676	Monitor regulations
+677	Scanning tasks
+678	Aggregate feeds
+679	Regulatory feeds
+680	Regulatory alerts
+681	Cross-Map Standards
+682	Map standards
+683	Ingest standards
+684	ISO standards
+685	Cross-mapping matrix
+686	Generate Documents
+687	Auto-generate
+688	Generation tasks
+689	Generated documents
+690	Simulate Processes
+691	Simulate
+692	Simulation tasks
+693	Build twin
+694	Process data
+695	Simulation results
+696	Manage ESG
+697	Track ESG
+698	ESG tasks
+699	ESG data
+700	ESG reports
+701	Mine Processes
+702	Discover processes
+703	Mining tasks
+704	User logs
+705	Predict Compliance
+706	Predict compliance
+707	Compliance data
+708	Explain AI
+709	Explainability tasks
+710	AI logs
+711	Integrate IoT
+712	Integrate sensors
+713	IoT tasks
+714	Sensor data
+715	Correction To Innovation
+716	Drive continual improvement, innovation, automation, ecosystem
+717	Improvement opportunity, innovation idea, or automation candidate
+718	Improvements implemented; innovations deployed; ecosystem expanded
+719	This process drives continual improvement, innovation, automation, and ecosystem growth. It covers AI management system supervision, optimization and automation project management, macro process discovery, enterprise simulation, automation scoring, ROI and VOI lifecycle, innovation pipeline, blockchain audit trail, composable module governance, multi-tenant isolation, real-time collaboration, digital signatures, low-code workflow builder, marketplace for templates, and — for SMEs — growth readiness, budget-conscious improvement, and collaborative community.
+720	Ensures that the organization does not just maintain compliance but continuously improves, innovates, and grows.
+721	Improvement
+722	ROI
+723	Innovation
+724	Blockchain
+725	Composable
+726	Signature
+727	Low-Code
+728	Marketplace
+729	SME Growth
+730	SME Improvement
+731	SME Community
+732	Continuous Improvement
+733	Improvement Mgr
+734	Lean Experts
+735	AI Supervision
+736	AI Gov Mgr
+737	Simulation Mgr
+738	ROI/VOI
+739	Finance Mgr
+740	Innovation Mgr
+741	Engineers
+742	Composable Modules
+743	Platform Architect
+744	Product Mgrs
+745	Development
+746	Doc Authors
+747	Digital Signature
+748	Signature Providers
+749	Business Users
+750	Low-Code Team
+751	All Departments
+752	Partners
+753	Industry Experts
+754	DynamicMS Team
+755	Community
+756	Improve Continuously
+757	Drive improvement
+758	Improvement tasks
+759	Collect ideas
+760	Ideas
+761	Performance
+762	Improvement pipeline
+763	Supervise AI
+764	Govern AI
+765	Establish policy
+766	AI policy
+767	Simulate Enterprise
+768	Build model
+769	Manage ROI and VOI
+770	Manage value
+771	ROI tasks
+772	Define formula
+773	ROI requirements
+774	ROI formula
+775	Innovate
+776	Manage innovation
+777	Innovation tasks
+778	Capture ideas
+779	Innovation ideas
+780	Innovation pipeline
+781	Blockchain Audit
+782	Immutable audit
+783	Blockchain tasks
+784	Audit data
+785	Immutable trail
+786	Compose Modules
+787	Govern modules
+788	Composable tasks
+789	Define catalog
+790	Module catalog
+791	Collaborate in Real-Time
+792	Co-author
+793	Collaboration tasks
+794	Enable sessions
+795	Edited docs
+796	Sign Digitally
+797	Digital signatures
+798	Signature tasks
+799	Signed docs
+800	Build Low-Code
+801	Build workflows
+802	Low-code tasks
+803	Provide designer
+804	Custom workflows
+805	Access Marketplace
+806	Access marketplace
+807	Marketplace tasks
+808	Marketplace catalog
+809	Plan for Growth
+810	Prepare growth
+811	Growth tasks
+812	Assess plans
+813	Growth plans
+814	Growth readiness
+815	Budget-conscious improvement
+816	Improvement ideas
+817	Join Community
+818	Connect peers
+819	Community tasks
+820	Join community
+821	Community topics
+822	Community profile
+823	Root E2E
+824	Master chain that owns a process domain
+825	Partition Component
+826	Sub-chain that belongs to a Root E2E
+827	Composite
+828	Chain combining multiple Root E2E
+829	Feeds
+830	Output of E2E-A becomes input of E2E-B
+831	Triggers
+832	Completion of E2E-A triggers start of E2E-B
+833	Informs
+834	E2E-A provides data or insight to E2E-B
+835	Depends On
+836	E2E-A cannot start until E2E-B completes
+837	Partition Of
+838	E2E-A is a partition component of Root E2E-B
+839	Composes
+840	E2E-C is a composite of multiple Root E2E processes
+841	IMS Manager
+842	HR Manager
+843	Risk Manager
+844	Document Controller
+845	IT Manager
+846	Operations Manager
+847	Quality Manager
+848	Performance Manager
+849	Internal Audit Manager
+850	Transformation Manager
+851	Strategy & Governance
+852	Context, policy, objectives, communication, governance bodies and executive reporting.
+853	Quality Management
+854	Problem solving, corrective action, continual improvement, metrology, laboratories and welding quality.
+855	Safety, Health & Environment
+856	Occupational health and safety, functional and process safety, maritime safety and environmental protection.
+857	HSE Manager
+858	Operational and enterprise risk, internal controls, third-party risk, continuity and crisis management.
+859	Compliance & Certification
+860	Compliance obligations, regulatory watch, standards harmonization, deployment and certification.
+861	Internal Audit & Assurance
+862	Internal audit, auditor qualification, investigations and audit-trail assurance.
+863	Human Resources & Competence
+864	Competence, training and expert access.
+865	Documentation & Knowledge
+866	Document and record lifecycle, document generation, co-authoring, signatures and knowledge graph.
+867	Information Technology & Data
+868	Cyber security, data protection, access, architecture, configuration, formulas, tenancy and IT services.
+869	Operations & Supply Chain
+870	Operational control, suppliers, traceability, field operations, assets, facilities and cleanrooms.
+871	Performance & Customer Experience
+872	KPIs, alerts, dashboards, performance reviews, benchmarking and customer feedback.
+873	Sustainability & ESG
+874	ESG performance, carbon, water, eco-design and life cycle assessment.
+875	ESG Manager
+876	Innovation & Digital Transformation
+877	AI management, automation, simulation, ROI/VOI, innovation, IoT, low-code and ecosystem.
+878	Process Architecture & Excellence
+879	Process architecture, SIPOC, procedures, control plans, business rules and process discovery.
+880	Process Excellence Manager
+881	Function
+882	Root of every branch; decomposed into macro processes.
+883	Macro Process
+884	Decomposes a function; carries the Macro Process Sheet and SIPOC.
+885	Task
+886	Default lowest level; becomes an intermediate level when decomposed further.
+887	Level 4
+888	Activity
+889	Optional decomposition of a Level 3 task.
+890	Level 5
+891	Operation
+892	Optional decomposition of a Level 4 element.
+893	Level 6
+894	Step
+895	Enabled but not used in the sample tenant.
+896	Automotive & Transportation
+897	Functional safety ASIL
+898	Cybersecurity TARA
+899	Supply chain disruption
+900	Warranty/field failure
+901	Regulatory recall
+902	APQP/PPAP delays
+903	Traceability gaps
+904	Supplier PPM escalation
+905	IATF 16949
+906	VDA 6.3
+907	QSB+
+908	ISO 26262 assessment
+909	ISO/SAE 21434
+910	ASPICE
+911	AEC-Q
+912	LPA
+913	PPM
+914	OTD
+915	ASIL Compliance
+916	TARA Completion
+917	APQP Adherence
+918	PPAP Approval
+919	Field Failure
+920	Monthly
+921	Quarterly
+922	Per Submission
+923	Aerospace & Defense
+924	ITAR/EAR violations
+925	NADCAP process failures
+926	Counterfeit parts
+927	Flight safety
+928	Certification delays
+929	CMMC
+930	Key person dependency
+931	AS9100D
+932	NADCAP
+933	EASA/FAA production
+934	AS9120B
+935	ITAR compliance
+936	Internal AS9100
+937	Customer source inspections
+938	First Pass Yield
+939	NADCAP Pass
+940	ITAR Compliance
+941	AS9100 NC
+942	AS9120B Traceability
+943	Industrial Machinery
+944	Machine safety
+945	SIL functional safety
+946	CE non-compliance
+947	Design deficiencies
+948	Component failures
+949	Operator injury
+950	Connected machine cyber
+951	CE technical file
+952	EN ISO 13849-1
+953	EN 62061 SIL
+954	Internal design reviews
+955	Customer FAT
+956	Notified Body
+957	CE Marking
+958	Machinery Safety
+959	SIL Achievement
+960	Design Review
+961	Warranty Claims
+962	Healthcare & Life Sciences
+963	Patient safety
+964	FDA/MDR non-compliance
+965	Design control failure
+966	Sterility assurance
+967	Connected device cyber
+968	Recall
+969	Clinical evaluation gaps
+970	ISO 13485
+971	FDA 21 CFR 820
+972	EU MDR Notified Body
+973	ISO 14971
+974	ISO 14644
+975	Internal quality
+976	MDR
+977	FDA Audit Pass
+978	CAPA Effectiveness
+979	Complaint Rate
+980	Design Control
+981	Sterilization Validation
+982	Electronics & High-Tech
+983	RoHS/REACH non-compliance
+984	Counterfeit components
+985	ESD damage
+986	Solder joint failure
+987	Supply chain
+988	Obsolescence
+989	Conflict minerals
+990	IPC-A-610
+991	IPC-J-STD-001
+992	RoHS/REACH
+993	ISO 9001
+994	Customer audits
+995	ANSI/ESD S20.20
+996	IPC Class 3
+997	RoHS
+998	REACH SVHC
+999	Solder Defect
+1000	ESD
+1001	AEC & Construction
+1002	Structural failure
+1003	BIM data loss
+1004	Safety incidents
+1005	Schedule delays
+1006	Cost overruns
+1007	Subcontractor performance
+1008	EN 1090 FPC
+1009	ISO 19650
+1010	CE marking
+1011	Project quality
+1012	Safety
+1013	Client audits
+1014	BIM
+1015	EN 1090
+1016	Rework
+1017	Food & Beverage
+1018	Food safety
+1019	Allergen cross-contamination
+1020	Microbiological
+1021	Foreign body
+1022	Supply chain contamination
+1023	Water quality
+1024	FSSC 22000
+1025	BRCGS
+1026	IFS Food
+1027	HACCP
+1028	FDA/EU inspections
+1029	FSSC Pass
+1030	Micro Compliance
+1031	Foreign Body
+1032	Social & Solidarity Economy
+1033	Human rights violations
+1034	Fairtrade certification loss
+1035	Supply chain exploitation
+1036	Modern slavery
+1037	Community impact
+1038	Governance failure
+1039	Fairtrade
+1040	WFTO Guarantee
+1041	SA8000
+1042	Social audits
+1043	Stakeholder reviews
+1044	Producer Income
+1045	Community Investment
+1046	Pharmaceutical & Process
+1047	Product contamination
+1048	Data integrity ALCOA+
+1049	Cleanroom excursion
+1050	Deviation
+1051	OOS
+1052	Regulatory inspection failure
+1053	API supply chain
+1054	Serialization
+1055	GMP FDA/EMA/WHO
+1056	ICH Q10
+1057	Data integrity
+1058	CSV
+1059	Internal GMP
+1060	GMP
+1061	Batch Release
+1062	Data Integrity
+1063	Retail, Footwear & Apparel
+1064	Chemical residue
+1065	Ethical sourcing
+1066	Brand reputation
+1067	Returns
+1068	Counterfeit
+1069	EPR compliance
+1070	GOTS
+1071	OEKO-TEX
+1072	BSCI/Sedex
+1073	Brand-specific
+1074	Supplier Audit
+1075	Ethical Sourcing
+1076	Consumer Packaged Goods
+1077	Allergen
+1078	Package integrity
+1079	Consumer complaint
+1080	Sustainability
+1081	FDA 21 CFR 110
+1082	Complaint
+1083	OEE
+1084	Package Integrity
+1085	Energy & Utilities
+1086	Grid reliability
+1087	NERC CIP cyber
+1088	Asset failure
+1089	Water efficiency
+1090	Workforce safety
+1091	NERC CIP
+1092	IEC 62443
+1093	ISO 55001
+1094	Cybersecurity
+1095	Internal asset
+1096	Asset Availability
+1097	SAIDI
+1098	SAIFI
+1099	Grid Cyber
+1100	Telecommunications
+1101	Network outage
+1102	Data privacy
+1103	Customer churn
+1104	Natural disaster
+1105	TL 9000
+1106	ISO 27001
+1107	ISO 22301
+1108	Internal network
+1109	Network Availability
+1110	TL 9000 Return
+1111	MTTR
+1112	NPS
+1113	Process/Petrochemical
+1114	Process safety PSM
+1115	Mechanical integrity
+1116	Pressure vessel failure
+1117	Chemical exposure
+1118	Environmental release
+1119	Fire/explosion
+1120	OT cyber
+1121	OSHA PSM
+1122	API 510/570
+1123	ASME VIII
+1124	NBIC
+1125	EPA
+1126	Internal PSM
+1127	Mechanical Integrity
+1128	API 510
+1129	PSM
+1130	Exposure
+1131	Flare
+1132	Shipbuilding
+1133	Vessel safety
+1134	Marine pollution
+1135	Classification failure
+1136	Welding defects
+1137	Schedule delay
+1138	Cost overrun
+1139	Vessel OT cyber
+1140	SOLAS
+1141	MARPOL
+1142	IACS
+1143	EN 1090 welding
+1144	Port State Control
+1145	Internal
+1146	Classification
+1147	Welding Defect
+1148	Consumer Products Extended
+1149	Cosmetic safety
+1150	FDA CGMP
+1151	Adverse events
+1152	Human rights
+1153	ISO 22716
+1154	Cosmetic GMP
+1155	Consumer safety
+1156	Adverse Events
+1157	Process Industries
+1158	Process safety
+1159	ISO 22000
+1160	FDA FSMA
+1161	FSMA
+1162	Env Release
+1163	Water Usage
+1164	Infrastructure
+1165	Asset reliability
+1166	Funding
+1167	Climate resilience
+1168	Eurocode
+1169	Structural integrity
+1170	Structural
+1171	Fabrication & Assembly
+1172	EN 1090 non-compliance
+1173	Material traceability
+1174	Welder competence
+1175	Dimensional accuracy
+1176	Delivery delay
+1177	ISO 3834
+1178	WPQR
+1179	Welder qualification
+1180	Welder Qual
+1181	Process/Packaged Goods
+1182	FSVP non-compliance
+1183	Supplier verification
+1184	GFSI benchmarked
+1185	FDA FSVP
+1186	HACCP verification
+1187	Supplier audits
+1188	FSVP
+1189	Supplier Verification
+1190	GFSI Pass
+1191	Semiconductor & Electronics Mfg
+1192	Wafer contamination
+1193	Rare earth supply
+1194	Yield loss
+1195	AEC-Q100
+1196	IEC 61508
+1197	ISO 14001
+1198	Wafer Yield
+1199	SIL
+1200	Retail
+1201	PCI DSS breach
+1202	GDPR violation
+1203	Customer data privacy
+1204	Store safety
+1205	Reputation
+1206	PCI DSS 4.0
+1207	ISO 45001
+1208	PCI DSS
+1209	Data Breach
+1210	Distribution
+1211	GDP non-compliance
+1212	Cold chain break
+1213	Inventory loss
+1214	Warehouse safety
+1215	Cyber
+1216	GDP
+1217	IFS Logistic
+1218	Order Accuracy
+1219	Inventory
+1220	Cold Chain
+1221	Cargo theft
+1222	AEO non-compliance
+1223	Driver safety
+1224	Cold chain
+1225	TAPA FSR/TSR
+1226	AEO
+1227	IFS Logistics
+1228	Customs
+1229	TAPA
+1230	Cargo Theft
+1231	Driver Safety
+1232	Pharma
+1233	Manufacturing (Generic)
+1234	Production disruption
+1235	Quality defect
+1236	Safety incident
+1237	Environmental impact
+1238	Energy efficiency
+1239	First Pass
+1240	Private Education
+1241	Accreditation loss
+1242	Student safety
+1243	Teacher competence
+1244	Curriculum gaps
+1245	Financial sustainability
+1246	ISO 21001
+1247	National Accreditation
+1248	Regional Education Authority
+1249	Student Satisfaction
+1250	Graduation
+1251	Accreditation
+1252	Teacher Competence
+1253	Complaint Resolution
+1254	Public Education
+1255	Ministry non-compliance
+1256	Budget
+1257	Ministry of Education
+1258	Ministry
+1259	Teacher
+1260	Parent
+1261	Healthcare (Providers)
+1262	Clinical error
+1263	HIPAA/GDPR
+1264	JCI non-compliance
+1265	Medical device failure
+1266	Infection control
+1267	JCI
+1268	HIPAA
+1269	NHA
+1270	ISO 15189
+1271	FHIR
+1272	Patient Satisfaction
+1273	Patient Safety
+1274	Clinical Outcome
+1275	Lab Accuracy
+1276	Small & Medium Enterprises
+1277	Strategic (market, customer loss)
+1278	Operational (process failure, supply chain)
+1279	Compliance (regulatory, certification)
+1280	Financial (cash flow, cost)
+1281	People (key person, skills)
+1282	Technology (system, cyber)
+1283	Reputation (complaints, incidents)
+1284	Growth (scalability, resources)
+1285	NC Rate
+1286	Corrective Closure
+1287	Employee Competence
+1288	Audit Readiness
+1289	Training
+1290	Risk Mitigation
+1291	Improvement ROI
+1292	Context Analysis and Stakeholder Mapping
+1293	Understand internal/external issues; identify interested parties; define IMS scope.
+1294	Tier 1 — Core IMS
+1295	Top mgmt
+1296	Strategy team
+1297	External consultants
+1298	Industry reports
+1299	Regulatory bodies
+1300	Dept heads
+1301	Market analysts
+1302	Internal issues
+1303	External issues
+1304	Stakeholder expectations
+1305	Legal requirements
+1306	Contractual obligations
+1307	Fix periodicity of strategic diagnosis
+1308	Identify external issues
+1309	Identify internal issues
+1310	Identify interested parties
+1311	Determine needs/expectations
+1312	Validate and cascade
+1313	Identify interactions
+1314	Define/review scope
+1315	Document and communicate
+1316	Review periodically
+1317	Context analysis report
+1318	Requirements matrix
+1319	IMS scope
+1320	Process interaction map
+1321	Risk mgmt
+1322	Planning
+1323	All IMS processes
+1324	Quality Policy and Strategic Direction Definition
+1325	Establish quality policy; define strategic direction; secure top mgmt commitment.
+1326	Context analysis
+1327	Stakeholder requirements
+1328	Legal counsel
+1329	Strategic plan
+1330	Stakeholder needs
+1331	Fix review periodicity
+1332	Consult top mgmt
+1333	Integrate commitments
+1334	Align with requirements
+1335	Obtain approval
+1336	Plan review
+1337	Update
+1338	Communication records
+1339	Review records
+1340	Strategic direction statement
+1341	All employees
+1342	Process owners
+1343	Interested parties
+1344	Certification bodies
+1345	Quality Objectives and Targets Deployment
+1346	Cascade strategic objectives; deploy SMART objectives; assign responsibilities; monitor.
+1347	Resources
+1348	Cascade
+1349	Align
+1350	Designate responsible
+1351	Deploy
+1352	Monitor
+1353	Ensure visibility
+1354	Adjust
+1355	Celebrate
+1356	Translate policy
+1357	Action plans
+1358	Resource plans
+1359	Progress reports
+1360	Operational teams
+1361	Performance evaluation
+1362	Process Architecture Mapping
+1363	Define architecture; identify core/support; map in BPMN; assign RACI.
+1364	Analysts
+1365	Business experts
+1366	Quality mgr
+1367	Process inventory
+1368	Value chain analysis
+1369	Best practices
+1370	Identify core/support
+1371	Map in BPMN
+1372	Assign RACI
+1373	Validate
+1374	Verify alignment
+1375	Publish
+1376	Review
+1377	Architecture map
+1378	BPMN diagrams
+1379	RACI matrix
+1380	Descriptions
+1381	SIPOC and Value Stream Mapping
+1382	Define SIPOC; map value stream; identify value-added steps; optimize flow.
+1383	Lean mgrs
+1384	Subject experts
+1385	Process scope
+1386	Customer needs
+1387	Data
+1388	Define SIPOC method
+1389	Define suppliers
+1390	Define inputs
+1391	Define steps
+1392	Define outputs
+1393	Define customers
+1394	Map value stream
+1395	SIPOC diagrams
+1396	Value stream maps
+1397	Flow diagrams
+1398	Optimization opportunities
+1399	Lean teams
+1400	Improvement teams
+1401	Procedures and Work Instructions Development
+1402	Develop procedures; ensure clarity; validate compliance.
+1403	Technical writers
+1404	Standard requirements
+1405	Documentation standards
+1406	Define structure
+1407	Draft
+1408	Develop instructions
+1409	Integrate visual supports
+1410	Verify compliance
+1411	Submit for approval
+1412	Train
+1413	Plan reviews
+1414	Work instructions
+1415	Visual aids
+1416	Approved documentation
+1417	Training teams
+1418	Process Control Plan Management
+1419	Identify critical control points; define methods; assign responsibilities; monitor.
+1420	Process engineers
+1421	Risk analysis
+1422	Control requirements
+1423	Regulatory requirements
+1424	Customer specs
+1425	Define methods
+1426	Define acceptance criteria
+1427	Verify
+1428	Archive
+1429	Monitoring records
+1430	Verification records
+1431	Adjusted plans
+1432	Quality teams
+1433	Business Rules and Process Logic Management
+1434	Identify decision points; define conditional logic; define thresholds; simulate.
+1435	Business analysts
+1436	IT architects
+1437	Business requirements
+1438	Decision criteria
+1439	Regulatory constraints
+1440	Identify decision points
+1441	Define logic
+1442	Document exceptions
+1443	Define thresholds
+1444	Maintain log
+1445	Business rules
+1446	Decision logic docs
+1447	Exception procedures
+1448	IT teams
+1449	Process Indicators and KPI Management
+1450	Define KPIs; align with objectives; set targets; automate and visualize.
+1451	Data analysts
+1452	Process objectives
+1453	Data sources
+1454	Benchmark data
+1455	Align with objectives
+1456	Set targets
+1457	Define data sources
+1458	Establish frequency
+1459	Review relevance
+1460	Automate
+1461	Visualize
+1462	Dashboards
+1463	Target tracking
+1464	Process Alert and Escalation Thresholds
+1465	Define alert thresholds; set escalation levels; configure notifications; test.
+1466	IT admins
+1467	Performance targets
+1468	Escalation requirements
+1469	Set alert levels
+1470	Configure triggers
+1471	Designate recipients
+1472	Define escalation paths
+1473	Test
+1474	Alert thresholds
+1475	Escalation procedures
+1476	Notification records
+1477	Adjusted thresholds
+1478	Support teams
+1479	Real-Time Dashboard and Process Steering
+1480	Provide real-time visibility; enable drill-down; control access; update.
+1481	Data/SI mgr
+1482	Dept mgrs
+1483	User profiles
+1484	Dashboard requirements
+1485	Feedback
+1486	Identify profiles
+1487	Define layout
+1488	Aggregate data
+1489	Configure widgets
+1490	Set up drill-down
+1491	Control access
+1492	Gather feedback
+1493	Drill-down reports
+1494	Access records
+1495	User feedback
+1496	All users
+1497	Operational Risk and Opportunity Management
+1498	Identify risks/opportunities; assess and prioritize; define actions; monitor.
+1499	Risk mgrs
+1500	Historical performance
+1501	Risk criteria
+1502	Identify opportunities
+1503	Assess
+1504	Define control actions
+1505	Define exploitation actions
+1506	Report
+1507	Update based on REX
+1508	Opportunity register
+1509	Risk committee
+1510	Competence and Training Orchestration
+1511	Define competence frameworks; assess gaps; deliver training; track certifications.
+1512	HR/Training mgr
+1513	Job profiles
+1514	Skill matrices
+1515	Assess gaps
+1516	Design curricula
+1517	Plan
+1518	Deliver
+1519	Evaluate
+1520	Track certifications
+1521	Certify
+1522	Certifications
+1523	Development plans
+1524	Management System Communication Plan Development
+1525	Define communication needs; develop plan; select channels; measure effectiveness.
+1526	Comm mgr
+1527	Identify audiences
+1528	Define messages
+1529	Select channels
+1530	Design supports
+1531	Measure effectiveness
+1532	Produce report
+1533	Effectiveness reports
+1534	Updated plans
+1535	Management System Deployment and Implementation
+1536	Deploy the management system; conduct pilots; prepare teams; move to steady state.
+1537	Deployment mgr
+1538	Project team
+1539	Implementation plan
+1540	Resource plan
+1541	Training plan
+1542	Select pilots
+1543	Conduct pilot
+1544	Refine
+1545	Prepare teams
+1546	Validate schedule
+1547	Verify readiness
+1548	Execute transition
+1549	Support
+1550	Move to steady state
+1551	Trained personnel
+1552	Transition records
+1553	Adoption metrics
+1554	Mock Audit, Pre-Certification, and Gap Diagnosis
+1555	Conduct mock audit; identify findings; validate; define actions.
+1556	Internal auditors
+1557	Consultants
+1558	Process records
+1559	Plan audit
+1560	Conduct audit
+1561	Identify findings
+1562	Categorize
+1563	Issue report
+1564	Present
+1565	Define plans
+1566	Findings log
+1567	Corrective action plans
+1568	Certification body
+1569	Certification Audit Preparation and Coordination
+1570	Select certifier; coordinate dates; support audit; obtain certification.
+1571	Coordinate dates
+1572	Prepare dossiers
+1573	Designate accompanists
+1574	Monitor audit
+1575	Analyze findings
+1576	Validate findings
+1577	Correct immediately
+1578	Close and obtain
+1579	Certification report
+1580	Corrective actions
+1581	Closure evidence
+1582	Problem Capture and Definition
+1583	Capture NCs; define criticality; analyze 5W2H; classify and approve.
+1584	Problem owner
+1585	Quality officers
+1586	Detection data
+1587	Standards requirements
+1588	Enter data
+1589	Define criticality
+1590	Designate team
+1591	Submit
+1592	Analyze 5W2H
+1593	Quantify gap
+1594	Identify standards
+1595	Classify polarity
+1596	Approve
+1597	Transmit
+1598	NC record
+1599	Priority classification
+1600	Team assignment
+1601	Quality team
+1602	Improvement team
+1603	Immediate Action Management
+1604	Define containment actions; execute immediately; evaluate effectiveness; escalate.
+1605	Action owner
+1606	Field team
+1607	Containment requirements
+1608	Escalation criteria
+1609	Execute
+1610	Upload evidence
+1611	Confirm or escalate
+1612	Execution evidence
+1613	Effectiveness evaluation
+1614	Escalation records
+1615	Process team
+1616	Steering committee
+1617	Root Cause Resolution
+1618	Select RCA method; conduct workshop; validate causes; define corrective actions.
+1619	RCA facilitator
+1620	Conduct workshop
+1621	Build diagram
+1622	Validate causes
+1623	Link to standards
+1624	Define corrective
+1625	Validate plan
+1626	Root cause analysis
+1627	Corrective action plan
+1628	Corrective Action Execution and Follow-Up
+1629	Assign corrective actions; execute and document; confirm effectiveness; close.
+1630	Timeline
+1631	Effectiveness criteria
+1632	Confirm
+1633	Escalate if needed
+1634	Close
+1635	Verification
+1636	Closure records
+1637	Nonconformity Capitalization and Closure
+1638	Plan REX; document lessons; identify standardization; update KB.
+1639	Plan REX
+1640	Document lessons
+1641	Identify standardization
+1642	Review effectiveness
+1643	Validate sustainability
+1644	Plan generalization
+1645	Update KB
+1646	Lessons register
+1647	Standardization records
+1648	Closed NC
+1649	Knowledge base
+1650	Continual Improvement Pipeline Steering
+1651	Collect ideas; evaluate ROI; prioritize; run PDCA; standardize.
+1652	Improvement mgr
+1653	Lean experts
+1654	Finance/HR
+1655	ROI criteria
+1656	Feasibility criteria
+1657	Evaluate ROI/feasibility
+1658	Prioritize
+1659	Form teams
+1660	Run PDCA
+1661	Monitor milestones
+1662	Standardize
+1663	Recognize
+1664	Prioritized initiatives
+1665	PDCA records
+1666	Supplier Quality Performance
+1667	Define qualification criteria; integrate suppliers; monitor performance; manage remediation.
+1668	Supplier quality engineer
+1669	Procurement mgr
+1670	Supplier auditor
+1671	Risk mgr
+1672	Specs
+1673	Risk assessment
+1674	Integrate suppliers
+1675	Collect performance
+1676	Conduct audits
+1677	Review dashboards
+1678	Evaluate SCAR
+1679	Issue SCARs
+1680	Trigger remediation
+1681	Requalify/remove
+1682	Performance records
+1683	SCAR records
+1684	Requalification records
+1685	Monitoring and Measurement Resources Control
+1686	Inventory equipment; plan/execute calibration; assess impact; maintain records.
+1687	Calibration technician
+1688	Maintenance mgr
+1689	Calibration schedules
+1690	Establish schedules
+1691	Perform calibration
+1692	Label
+1693	Adjust/correct
+1694	Assess impact
+1695	Maintain records
+1696	Handle nonconforming
+1697	Equipment register
+1698	Labels
+1699	Impact assessments
+1700	Quarantine records
+1701	Internal Auditor Qualification and Certification
+1702	Define criteria; train candidates; evaluate and certify; maintain registry.
+1703	Auditor criteria
+1704	Candidate profiles
+1705	Training requirements
+1706	ISO 19011
+1707	Identify candidates
+1708	Deliver formal training
+1709	Conduct exercises
+1710	Evaluate performance
+1711	Validate competences
+1712	Issue certification
+1713	Maintain registry
+1714	Plan recertification
+1715	Refresher training
+1716	Criteria
+1717	Auditor registry
+1718	Recertification plans
+1719	Unified Requirements Harmonization
+1720	Collect requirements; detect gaps; harmonize; publish and update.
+1721	Requirements mgr
+1722	Legal/Compliance
+1723	Customer requirements
+1724	Collect
+1725	Categorize/label
+1726	Detect gaps
+1727	Conduct workshops
+1728	Establish reference
+1729	Gap analysis
+1730	Approval records
+1731	Change log
+1732	All teams
+1733	Regulatory and Compliance Obligations Mapping
+1734	Maintain legal register; identify obligations; link to controls; monitor changes.
+1735	Laws
+1736	Regulations
+1737	Permits
+1738	Jurisdictions
+1739	Maintain legal register
+1740	Identify obligations
+1741	Link to policies/controls
+1742	Monitor changes
+1743	Adjust policies
+1744	Submit declarations
+1745	Manage inspections
+1746	Report compliance
+1747	Legal register
+1748	Compliance obligations
+1749	Documentary Lifecycle Control
+1750	Define metadata; manage approval; control versions; archive obsolete.
+1751	Document author
+1752	Process owner
+1753	Subject expert
+1754	Document controller
+1755	Approval workflow
+1756	Retention rules
+1757	Identify workflow
+1758	Peer review
+1759	Check compliance
+1760	Verify versions
+1761	Approve/publish
+1762	Distribute
+1763	Archive obsolete
+1764	Schedule reminders
+1765	Certify acknowledgment
+1766	Distribution records
+1767	Archive records
+1768	Records Lifecycle, Retention, and Evidence Governance
+1769	Define retention; implement disposal; manage legal holds; produce admissible evidence.
+1770	Records mgr
+1771	Record types
+1772	Retention requirements
+1773	Legal holds
+1774	Define types/retention
+1775	Implement rules
+1776	Manage holds
+1777	Maintain custody
+1778	Validate authenticity
+1779	Dispose expired
+1780	Produce evidence
+1781	Retention schedules
+1782	Disposal records
+1783	Legal hold records
+1784	Audit records
+1785	Evidence packages
+1786	Performance Indicator Consolidation and Reviews
+1787	Define indicators; collect real-time data; aggregate dashboards; analyze trends.
+1788	Targets
+1789	Establish agenda
+1790	Aggregate
+1791	Analyze
+1792	Identify gaps
+1793	Generate supports
+1794	Facilitate reviews
+1795	Monitor actions
+1796	Trend analysis
+1797	Gap reports
+1798	Management System Performance Monitoring
+1799	Set PDCA periodicity; define system indicators; compare data; trigger corrective actions.
+1800	System indicators
+1801	Plan baseline
+1802	Compare to plan
+1803	Identify anomalies
+1804	Generate reports
+1805	Trigger corrections
+1806	Monitor trends
+1807	Adjust parameters
+1808	Health reports
+1809	Anomaly reports
+1810	Corrective triggers
+1811	Operational Process Performance Review
+1812	Set periodicity; collect data; conduct workshops; identify root causes.
+1813	Facilitator
+1814	Defect data
+1815	Cycle time data
+1816	Define agenda
+1817	Compare to targets
+1818	Escalate
+1819	Improvement plans
+1820	Governance Bodies and Reviews Orchestration
+1821	Set periodicity per body; define data; conduct reviews; consolidate decisions.
+1822	Required data
+1823	Decision requirements
+1824	Define data
+1825	Process reviews
+1826	Mini-reviews
+1827	Full reviews
+1828	ExCo
+1829	Commercial committees
+1830	Consolidate dashboard
+1831	Validate decisions
+1832	Report velocity
+1833	Minutes
+1834	Decision records
+1835	Action tracking
+1836	Customer Satisfaction Barometer Management
+1837	Set survey periodicity; define NPS/CSAT; manage campaigns; correlate.
+1838	CX mgr
+1839	Survey data
+1840	NPS/CSAT targets
+1841	Define objectives
+1842	Determine costs
+1843	Manage campaign
+1844	Analyze trends
+1845	Generate dashboards
+1846	Correlate
+1847	Identify actions
+1848	Report to management review
+1849	NPS/CSAT scores
+1850	Improvement actions
+1851	Sales/Marketing
+1852	Management review
+1853	Policy and Procedure Governance
+1854	Define policy lifecycle; identify gaps; validate and approve; publish and renew.
+1855	Policy owner
+1856	Compliance officer
+1857	Policy requirements
+1858	Notify
+1859	Schedule renewal
+1860	Retire
+1861	Publication records
+1862	Renewal schedules
+1863	Enterprise Risk Universe and Assessment
+1864	Define risk taxonomy; identify scenarios; assess probability/impact; publish heatmap.
+1865	Strategy/Finance
+1866	Risk taxonomy
+1867	Scenarios
+1868	Control data
+1869	Define taxonomy
+1870	Identify scenarios
+1871	Assess probability/impact
+1872	Calculate scores
+1873	Link to controls
+1874	Calculate residual
+1875	Publish heatmap
+1876	Heatmap
+1877	Residual risk assessment
+1878	Risk Treatment and Mitigation Planning
+1879	Evaluate treatment options; design plans; implement and monitor; document acceptance.
+1880	Risk owner
+1881	Treatment options
+1882	Evaluate options
+1883	Design plans
+1884	Allocate budget
+1885	Implement
+1886	Reassess
+1887	Document acceptance
+1888	Treatment plans
+1889	Budget records
+1890	Implementation records
+1891	Acceptance records
+1892	Internal Audit and Assurance Cycle
+1893	Plan by risk; develop programs; test and document; report and follow up.
+1894	Lead auditor
+1895	Internal auditor
+1896	Audit committee
+1897	Process documentation
+1898	Develop programs
+1899	Allocate
+1900	Draft report
+1901	Closing meeting
+1902	Monitor action plans
+1903	Audit programs
+1904	Finding records
+1905	Follow-up
+1906	Auditees
+1907	Executive GRC Reporting and Dashboards
+1908	Aggregate data; build dashboards; generate reports; use predictive analytics.
+1909	Risk/Audit director
+1910	Risk data
+1911	Define needs
+1912	Build
+1913	Prepare submissions
+1914	Use predictive analytics
+1915	GRC dashboards
+1916	Executive reports
+1917	Predictive analytics
+1918	Submissions
+1919	Shareholders
+1920	AI Management System Supervision
+1921	Establish AI policy; define scope/risks; apply lifecycle controls; monitor/audit.
+1922	Tier 2 — Conditional IMS Extensions
+1923	AI gov mgr
+1924	Data scientists
+1925	AI developers
+1926	AI policy requirements
+1927	ISO 42001
+1928	AI Act
+1929	Assess impacts
+1930	Define roles
+1931	Apply controls
+1932	Correct
+1933	Impact assessment
+1934	End users
+1935	Cyber GRC and IT Control
+1936	Define control inventory; conduct risk assessments; implement and monitor; audit.
+1937	Cyber analyst
+1938	IT auditor
+1939	Vulnerability data
+1940	Define inventory
+1941	Conduct assessments
+1942	Design/implement controls
+1943	Manage incidents
+1944	Remediate
+1945	Risk assessments
+1946	Control records
+1947	Incident records
+1948	IT users
+1949	Personal Data Protection Management
+1950	Maintain processing register; manage data subject requests; conduct DPIAs; monitor.
+1951	IT security
+1952	Processing activities
+1953	Consent records
+1954	Transfer data
+1955	Maintain register
+1956	Manage requests
+1957	Conduct DPIAs
+1958	Maintain consents
+1959	Monitor transfers
+1960	Detect/report breaches
+1961	Manage retention
+1962	Processing register
+1963	DPIA reports
+1964	Breach records
+1965	Data subjects
+1966	Data Governance and Master Data Quality
+1967	Define domains/owners; establish rules; profile and clean; monitor.
+1968	Data steward
+1969	Quality requirements
+1970	Master data
+1971	Establish rules
+1972	Implement profiling
+1973	Manage lineage
+1974	Operate MDM
+1975	Monitor dashboards
+1976	Resolve incidents
+1977	Report scores
+1978	Cleansing records
+1979	Scores
+1980	Data consumers
+1981	Access, Security, and Role Governance
+1982	Define RBAC; assign roles/SoD; process access requests; monitor.
+1983	Tenant Administrator
+1984	IAM mgr
+1985	Sys admin
+1986	RBAC policies
+1987	Role definitions
+1988	SoD rules
+1989	Access requests
+1990	Define RBAC
+1991	Assign roles
+1992	Define SoD
+1993	Process requests
+1994	Conduct recertification
+1995	Monitor privileged
+1996	Remediate SoD
+1997	Maintain trails
+1998	Role assignments
+1999	Recertification records
+2000	Audit trails
+2001	System users
+2002	Application and Interface Repository
+2003	Identify applications/owners; document lifecycle; map interfaces; maintain schemas.
+2004	Enterprise architect
+2005	Application inventory
+2006	Interface requirements
+2007	API specs
+2008	Lifecycle data
+2009	Identify apps/owners
+2010	Document purpose
+2011	Map interfaces
+2012	Define APIs
+2013	Maintain schemas
+2014	Assess obsolescence
+2015	App inventory
+2016	Interface maps
+2017	Dependency schemas
+2018	Business teams
+2019	Technology and Architecture Lifecycle
+2020	Define standards; evaluate new technologies; manage upgrades; monitor obsolescence.
+2021	Architecture mgr
+2022	Technology standards
+2023	Reference architecture
+2024	New tech data
+2025	Obsolescence data
+2026	Define standards
+2027	Evaluate technologies
+2028	Establish roadmaps
+2029	Manage upgrades
+2030	Conduct reviews
+2031	Monitor obsolescence
+2032	Plan decommissioning
+2033	Roadmaps
+2034	Migration records
+2035	Obsolescence reports
+2036	Decommission records
+2037	Tenant Sovereignty and Security Governance
+2038	Define isolation policies; map residency; implement jurisdictional controls; audit.
+2039	Sovereign compliance mgr
+2040	Isolation policies
+2041	Data residency
+2042	Jurisdictional requirements
+2043	Schrems II
+2044	Define policies
+2045	Map residency
+2046	Implement controls
+2047	Monitor segregation
+2048	Manage gov access
+2049	Maintain certificates
+2050	Residency maps
+2051	Compliance certificates
+2052	Internal Controls and SOX Certification
+2053	Identify key controls; design and link to risks; self-assess and test; certify.
+2054	Control owner
+2055	SOX requirements
+2056	Design
+2057	Link to risks
+2058	Self-assess
+2059	Document deficiencies
+2060	Maintain repository
+2061	Design records
+2062	Test records
+2063	Deficiency records
+2064	External auditors
+2065	Third-Party and Supplier Risk Monitoring
+2066	Conduct due diligence; assess risk; draft clauses; audit and manage exit.
+2067	Contract requirements
+2068	Assess risk
+2069	Assign scores
+2070	Draft clauses
+2071	Review annually
+2072	Manage exit
+2073	Due diligence reports
+2074	Contract clauses
+2075	Exit records
+2076	Whistleblowing and Incident Investigation
+2077	Operate confidential channels; define protocols; secure evidence; recommend and close.
+2078	Legal/HR
+2079	Evidence
+2080	Investigation requirements
+2081	Record
+2082	Determine scope
+2083	Secure evidence
+2084	Recommend
+2085	Evidence records
+2086	Recommendations
+2087	Business Continuity and Crisis Preparedness
+2088	Conduct BIA; identify RTO/RPO; design strategies; document BCP; test.
+2089	BCP coordinator
+2090	RTO/RPO requirements
+2091	Recovery strategies
+2092	Crisis scenarios
+2093	Identify RTO/RPO
+2094	Design strategies
+2095	Document BCP
+2096	Activate cell
+2097	BIA report
+2098	RTO/RPO definitions
+2099	Evaluation reports
+2100	Clients
+2101	Optimization and Automation Project Management
+2102	Set periodicity; identify opportunities; manage projects; validate benefits.
+2103	Optimization mgr
+2104	Project mgr
+2105	Opportunities
+2106	Manage BPR
+2107	Manage automation
+2108	Track milestones
+2109	Validate benefits
+2110	Transfer
+2111	Optimization projects
+2112	Automation records
+2113	Benefit validation
+2114	Standardization
+2115	Macro Process Discovery and Prioritization
+2116	Collect friction points; score processes; define prioritization; publish.
+2117	Business analyst
+2118	Friction points
+2119	Strategic value
+2120	Collect friction
+2121	Score processes
+2122	Rank
+2123	Build portfolio
+2124	Revise quarterly
+2125	Prioritization portfolio
+2126	Scoring records
+2127	Validation records
+2128	Published portfolio
+2129	Enterprise Simulation and Digital Twin
+2130	Build digital twin; calibrate; define scenarios; run simulations; validate.
+2131	Simulation mgr
+2132	Data science
+2133	Scenario definitions
+2134	Reference data
+2135	Calibrate
+2136	Define scenarios
+2137	Run simulations
+2138	Compare
+2139	Digital twin model
+2140	Decision support reports
+2141	Process Element Automation Scoring
+2142	Read element; score human/workflow/RPA/AI axes; cite facts; document with ROI.
+2143	Process analyst
+2144	Automation architect
+2145	Process element
+2146	Automation criteria
+2147	Feasibility data
+2148	Read element
+2149	Score Human
+2150	Score Workflow
+2151	Score RPA
+2152	Score AI
+2153	Cite facts
+2154	Identify predominant
+2155	Document with ROI
+2156	Automation scores
+2157	Predominant axis
+2158	ROI estimates
+2159	Formula Repository and Variable Governance
+2160	Catalog formulas; define syntax; validate; version and publish.
+2161	Data gov mgr
+2162	Business formulas
+2163	Syntax requirements
+2164	Metadata standards
+2165	Catalog formulas
+2166	Define syntax
+2167	Version
+2168	Change control
+2169	Link to data
+2170	Provide search
+2171	Formula repository
+2172	Syntax definitions
+2173	Version records
+2174	Report users
+2175	Formula Execution and Traceability Orchestration
+2176	Deploy formulas; ingest data; execute calculations; log and trace.
+2177	Data engineer
+2178	Formulas
+2179	Input data
+2180	Schedules
+2181	Traceability requirements
+2182	Ingest
+2183	Log parameters
+2184	Capture steps
+2185	Store with traceability
+2186	Ensure traceability
+2187	Detect anomalies
+2188	Calculation results
+2189	Traceability logs
+2190	Parameter records
+2191	Anomaly alerts
+2192	Report consumers
+2193	Configuration and Parameter Governance
+2194	Catalog parameters; define environment values; implement change control; monitor drift.
+2195	IT Ops
+2196	Application mgr
+2197	Change mgmt
+2198	Configurable parameters
+2199	Environment requirements
+2200	Change requests
+2201	Test data
+2202	Catalog parameters
+2203	Define values
+2204	Deploy with rollback
+2205	Maintain logs
+2206	Monitor drift
+2207	Document dependencies
+2208	Parameter catalog
+2209	Config records
+2210	Change records
+2211	Audit logs
+2212	ROI Lifecycle Management
+2213	Define ROI formula; define thresholds; validate with CFO; register and communicate.
+2214	Finance/Strategy mgr
+2215	Financial data
+2216	Investment data
+2217	Threshold criteria
+2218	Validate with CFO
+2219	Register in UMS054
+2220	Schedule review
+2221	Threshold definitions
+2222	All consumers
+2223	Management Committee
+2224	VOI Lifecycle Management
+2225	Define VOI composition; weightings/profiles; validate; register and communicate.
+2226	VOI requirements
+2227	Benefit data
+2228	Weighting criteria
+2229	Profile definitions
+2230	Define composition
+2231	Define weightings
+2232	Define profiles
+2233	Validate with Committee
+2234	VOI composition
+2235	Weighting definitions
+2236	Benefit profiles
+2237	AI Predictive Risk Intelligence
+2238	Predict risks before they materialize; use ML; generate warnings.
+2239	Tier 3 — Market-Leading Differentiators
+2240	External data
+2241	Historical risk data
+2242	Real-time process data
+2243	External signals
+2244	Incident data
+2245	ML parameters
+2246	Collect/clean
+2247	Train/validate models
+2248	Generate predictions
+2249	Identify patterns
+2250	Trigger warnings
+2251	Recommend actions
+2252	Track accuracy
+2253	Retrain
+2254	Early warnings
+2255	Preventive recommendations
+2256	Accuracy reports
+2257	Automated Regulatory Horizon Scanning
+2258	Monitor regulatory changes; assess impact; alert; update obligations.
+2259	AI/NLP engines
+2260	External databases
+2261	Legal databases
+2262	Jurisdiction data
+2263	Org profile
+2264	Apply NLP
+2265	Classify urgency
+2266	Update register
+2267	Track implementation
+2268	Updated register
+2269	Compliance actions
+2270	Multi-Standard Automated Cross-Mapping
+2271	Map requirements across standards; identify overlaps/gaps; generate unified framework.
+2272	Standards experts
+2273	AI engine
+2274	Internal policies
+2275	Apply cross-mapping
+2276	Identify overlaps/gaps
+2277	Generate matrix
+2278	Update on change
+2279	Report coverage
+2280	Overlap analysis
+2281	Unified framework
+2282	Intelligent Document Generation
+2283	Auto-generate documents; ensure compliance; reduce effort.
+2284	Doc controllers
+2285	Historical docs
+2286	User prompts
+2287	Gather data
+2288	Generate draft
+2289	Validate against standards
+2290	Route for review
+2291	Track version
+2292	Generated docs
+2293	Compliance validation
+2294	Version history
+2295	Document authors
+2296	Digital Twin Process Simulation
+2297	Create digital twin; simulate scenarios; predict outcomes; optimize design.
+2298	Simulation engineers
+2299	Resource models
+2300	Analyze outcomes
+2301	Recommend design
+2302	Update twin
+2303	Optimal design
+2304	ESG and Sustainability Performance Management
+2305	Track ESG metrics; manage initiatives; report; align with GRI/SASB/TCFD.
+2306	Sustainability mgr
+2307	Sustainability targets
+2308	Reporting frameworks
+2309	Define metrics/targets
+2310	Validate quality
+2311	Manage initiatives
+2312	Align with frameworks
+2313	Track improvement
+2314	Sustainability dashboards
+2315	ESG scores
+2316	Stakeholder communications
+2317	Carbon Footprint Management
+2318	Calculate Scope 1/2/3; set targets; track offsets; report.
+2319	Sustainability team
+2320	External verifiers
+2321	Energy mgrs
+2322	Energy data
+2323	Emission factors
+2324	Supply chain data
+2325	Offset data
+2326	Define boundaries
+2327	Collect activity data
+2328	Apply factors
+2329	Calculate Scope 1/2/3
+2330	Track offsets
+2331	Update annually
+2332	Carbon footprint report
+2333	Emission calculations
+2334	Reduction targets
+2335	Supply Chain Resilience and Traceability
+2336	Map supply chain; identify vulnerabilities; ensure traceability; build resilience.
+2337	Supply chain mgr
+2338	Supplier data
+2339	Map supply chain
+2340	Identify vulnerabilities
+2341	Assess risks
+2342	Implement traceability
+2343	Monitor disruptions
+2344	Develop contingency
+2345	Test scenarios
+2346	Report health
+2347	Supply chain map
+2348	Vulnerability assessment
+2349	Resilience plans
+2350	Supplier Ecosystem Intelligence
+2351	Monitor supplier ecosystem; predict risks; identify innovation; optimize portfolio.
+2352	News feeds
+2353	Apply AI to predict risks
+2354	Monitor financial health
+2355	Identify innovation
+2356	Score ecosystem health
+2357	Recommend optimization
+2358	Alert on disruptions
+2359	Supplier risk predictions
+2360	Ecosystem health scores
+2361	Innovation opportunities
+2362	Optimization recommendations
+2363	Customer Experience Intelligence
+2364	Capture feedback; analyze sentiment; predict churn; drive improvements.
+2365	Social media
+2366	Transaction data
+2367	Capture feedback
+2368	Identify pain points
+2369	Predict churn
+2370	Correlate with performance
+2371	Recommend improvements
+2372	Track impact
+2373	Customer intelligence reports
+2374	Churn predictions
+2375	Improvement recommendations
+2376	Sentiment dashboards
+2377	Voice-of-Customer Analytics
+2378	Aggregate VoC data; identify themes; link to improvements; measure impact.
+2379	Complaint data
+2380	Call center
+2381	Reviews
+2382	Apply NLP/clustering
+2383	Identify themes
+2384	Link to improvements
+2385	Prioritize by impact
+2386	Track trends
+2387	Measure impact
+2388	VoC analytics
+2389	Theme identification
+2390	Improvement priorities
+2391	Impact reports
+2392	Innovation Pipeline Management
+2393	Capture ideas; evaluate/prioritize; manage projects; measure ROI.
+2394	Innovation mgr
+2395	Market data
+2396	Technology trends
+2397	Evaluate feasibility/impact
+2398	Manage projects
+2399	Validate outcomes
+2400	Measure ROI
+2401	Standardize successful
+2402	Prioritized portfolio
+2403	Project records
+2404	ROI reports
+2405	Knowledge Graph and Semantic Search
+2406	Build knowledge graph; enable semantic search; connect information; power AI.
+2407	Knowledge mgrs
+2408	IMS data
+2409	Relationship data
+2410	Extract entities/relationships
+2411	Build graph
+2412	Index for search
+2413	Enable NL queries
+2414	Power AI
+2415	Maintain accuracy
+2416	Report insights
+2417	Knowledge graph
+2418	Search index
+2419	Query results
+2420	AI recommendations
+2421	Natural Language Process Mining
+2422	Extract process insights from text; detect deviations; identify improvements.
+2423	Process analysts
+2424	Process logs
+2425	Text data
+2426	Emails
+2427	Event logs
+2428	Build models
+2429	Detect deviations
+2430	Identify bottlenecks
+2431	Update models
+2432	Discovered models
+2433	Deviation reports
+2434	Updated models
+2435	Automated Root Cause Intelligence
+2436	Automate RCA; use AI; link to historical patterns; accelerate resolution.
+2437	Historical RCA
+2438	Failure patterns
+2439	Ingest data
+2440	Apply AI
+2441	Link to patterns
+2442	Rank causes
+2443	Recommend verification
+2444	Validate with experts
+2445	AI-suggested causes
+2446	Ranked causes
+2447	Verification recommendations
+2448	Updated KB
+2449	Cross-Site Benchmarking
+2450	Compare performance across sites; identify best practices; share; drive standardization.
+2451	Quality mgrs
+2452	Site mgrs
+2453	Best practice data
+2454	Normalize and compare
+2455	Identify top performers
+2456	Extract best practices
+2457	Share learnings
+2458	Drive standardization
+2459	Best practice library
+2460	Standardization recommendations
+2461	Improvement tracking
+2462	All sites
+2463	Predictive Compliance Intelligence
+2464	Predict compliance risks; identify at-risk processes; recommend actions; reduce NCs.
+2465	Audit findings
+2466	NC data
+2467	Train models
+2468	Predict risks
+2469	Identify at-risk
+2470	Alert compliance
+2471	Compliance risk predictions
+2472	At-risk list
+2473	Blockchain Audit Trail
+2474	Create immutable trail; ensure integrity; enable tamper-proof records; simplify verification.
+2475	Blockchain engineers
+2476	Document hashes
+2477	Hash records
+2478	Write to blockchain
+2479	Verify integrity
+2480	Enable access
+2481	Provide tools
+2482	Monitor health
+2483	Integrity verification
+2484	Real-Time Regulatory Change Impact
+2485	Assess regulatory impact in real time; identify affected; recommend actions.
+2486	Regulatory changes
+2487	Process maps
+2488	Obligation data
+2489	Detect change
+2490	Identify affected
+2491	Alert owners
+2492	Affected process lists
+2493	Action recommendations
+2494	Implementation tracking
+2495	Automated CAPA Recommendation Engine
+2496	Recommend CAPA via AI; learn from history; accelerate resolution.
+2497	Historical CAPA
+2498	Root cause data
+2499	Effectiveness data
+2500	Rank by effectiveness
+2501	Link to successful
+2502	Provide guidance
+2503	Track effectiveness
+2504	Learn
+2505	Improve
+2506	CAPA recommendations
+2507	Effectiveness rankings
+2508	Implementation guidance
+2509	Learning records
+2510	NCP Knowledge Base and RAG Management
+2511	Build/maintain vector KB; semantic search; RAG; multi-language; RBAC-aware.
+2512	Tier 4 — NCP Solver Integrations
+2513	AI engineers
+2514	CI Pilots
+2515	Closed NCP fiches
+2516	REX entries
+2517	Standards library
+2518	Embedding models
+2519	Generate embeddings
+2520	Index into vector DB
+2521	Configure RAG
+2522	RBAC-aware retrieval
+2523	Multi-language
+2524	Monitor quality
+2525	Update on closure
+2526	RAG index
+2527	Search results
+2528	KB health reports
+2529	AI agents
+2530	NCP teams
+2531	AI Agent Orchestration for Problem Solving
+2532	Coordinate 8 AI agents; manage state machine; ensure RBAC; log with confidence.
+2533	Stage transitions
+2534	Agent configurations
+2535	User queries
+2536	KB context
+2537	Initialize Orchestrator
+2538	Trigger Classification at E1
+2539	Trigger Structuring at E2
+2540	Trigger Containment at E3
+2541	Trigger RCA at E4
+2542	Trigger Action Rec. at E5
+2543	Trigger Monitoring at E6
+2544	Trigger REX at E7
+2545	Manage transitions
+2546	Log with confidence
+2547	AI classifications
+2548	Structured descriptions
+2549	Recommended actions
+2550	Suggested causes
+2551	Delay predictions
+2552	Draft REX
+2553	Smart Alert and Escalation Engine
+2554	Trigger 10 alert types (A–J); deliver; escalate; configurable per tenant.
+2555	Sys admins
+2556	Fiche events
+2557	Deadlines
+2558	KPI thresholds
+2559	User roles
+2560	Tenant config
+2561	Configure A–J
+2562	Alert A (high-priority)
+2563	Alert B (overdue)
+2564	Alert C (pending eval)
+2565	Alert D (RCA delay)
+2566	Alert E (capitalization)
+2567	Alert F (KPI breach)
+2568	Alerts G–I (J-1/J-2 reminders)
+2569	Alert J (inactive)
+2570	Escalate after 24h
+2571	Log
+2572	In-app notifications
+2573	Email alerts
+2574	Alert logs
+2575	Action owners
+2576	Evaluators
+2577	Composable Module Governance
+2578	Manage reusable modules; ensure shareability across apps.
+2579	Platform architects
+2580	Module owners
+2581	Product mgrs
+2582	Dev teams
+2583	Reuse requirements
+2584	Version matrix
+2585	Establish interfaces
+2586	Versioning
+2587	Enable sharing
+2588	Govern RBAC/tenant
+2589	Monitor usage
+2590	Manage lifecycle
+2591	Report reuse/ROI
+2592	Reuse metrics
+2593	All DynamicMS applications
+2594	Product teams
+2595	Multi-Tenant Isolation and Governance
+2596	Ensure complete data isolation; enforce tenant-level config/branding/RBAC.
+2597	Tenant admins
+2598	Partitioning rules
+2599	Security requirements
+2600	Define isolation
+2601	Implement context propagation
+2602	Enforce tenant_id
+2603	Configure tenant-level
+2604	Manage onboarding/offboarding
+2605	Monitor cross-tenant
+2606	Isolation records
+2607	Access logs
+2608	All tenant users
+2609	REX Capitalization and Generalization
+2610	Document lessons; identify standardization (V1); generalization (V2); update KB.
+2611	Closed fiches
+2612	Effectiveness evals
+2613	Org context
+2614	Document lessons (AI-assisted)
+2615	Identify generalization
+2616	Assign responsible
+2617	Set deadlines
+2618	Update procedures
+2619	Index into RAG
+2620	REX narrative
+2621	Generalization plans
+2622	Updated procedures
+2623	Lessons log
+2624	All departments
+2625	AI Explainability and Confidence Scoring
+2626	Log AI recommendations with confidence; provide explainability; human-in-the-loop.
+2627	Confidence scores
+2628	Source references
+2629	Define requirements per agent
+2630	Attach source refs
+2631	Enable human review
+2632	Conduct bias audits
+2633	AI recommendation logs
+2634	Explainability reports
+2635	Accuracy records
+2636	Bias audit reports
+2637	Real-Time Collaborative Editing and Co-Authoring
+2638	Enable simultaneous editing; presence awareness; conflict resolution; version history.
+2639	Tier 5 — Market Leadership Additions
+2640	NCP fiches
+2641	Sessions
+2642	Collaboration rules
+2643	Permissions
+2644	Enable multi-user sessions
+2645	Display presence
+2646	Apply CRDT
+2647	Track contributions
+2648	Inline comments
+2649	Threaded discussions
+2650	Lock for approval
+2651	Report analytics
+2652	Co-edited documents
+2653	Presence records
+2654	Contribution logs
+2655	Comments
+2656	Analytics
+2657	All platform users
+2658	Mobile-First Field Operations and Offline Capture
+2659	Enable IMS on mobile; offline capture with sync; field-optimized UI; evidence.
+2660	Field operators
+2661	Inspectors
+2662	Mobile developers
+2663	Incident reports
+2664	Photos
+2665	Videos
+2666	Voice
+2667	GPS
+2668	Provide native apps
+2669	Enable offline capture
+2670	Support photo/video/voice
+2671	Capture GPS/timestamps
+2672	Field-optimized checklists
+2673	Barcode/QR scanning
+2674	Auto-sync
+2675	Resolve conflicts
+2676	Offline access to procedures
+2677	Inspection reports
+2678	Evidence files
+2679	GPS data
+2680	Sync logs
+2681	Field analytics
+2682	Voice-to-Text Incident and Audit Reporting
+2683	Hands-free reporting; voice to structured text; multi-language; reduce time.
+2684	Voice recordings
+2685	Audit observations
+2686	Language prefs
+2687	Capture voice
+2688	Speech-to-text (EN/FR/AR)
+2689	Extract structured data
+2690	Classify type
+2691	Suggest severity
+2692	Route to workflow
+2693	Attach recording
+2694	Enable review
+2695	Structured reports
+2696	Voice evidence
+2697	Classification records
+2698	Accuracy metrics
+2699	HSE teams
+2700	IoT and Sensor Data Integration
+2701	Integrate IoT/equipment; capture real-time data; trigger alerts/workflows.
+2702	IoT engineers
+2703	Equipment vendors
+2704	Telemetry
+2705	Environmental data
+2706	Thresholds
+2707	Connect sensors
+2708	Ingest streams
+2709	Threshold/anomaly detection
+2710	Correlate with quality
+2711	Predictive quality models
+2712	Store time-series
+2713	Provide dashboards
+2714	Real-time data
+2715	Automated alerts
+2716	Triggered workflows
+2717	Predictive models
+2718	IoT dashboards
+2719	Augmented Reality Guided Audits and Inspections
+2720	Guide auditors with AR; step-by-step instructions; remote expert assistance.
+2721	AR developers
+2722	Equipment data
+2723	AR content
+2724	Expert input
+2725	Site data
+2726	Define AR content
+2727	Deploy overlays
+2728	Guide step-by-step
+2729	Remote expert
+2730	Capture AR evidence
+2731	Compare actual vs expected
+2732	Auto-log findings
+2733	AR training mode
+2734	Update content
+2735	Visual evidence
+2736	Remote assistance logs
+2737	Findings
+2738	AR content library
+2739	Digital Signature and E-Signature Workflow
+2740	Enable legally binding signatures; comply with eIDAS/ESIGN; automate workflows.
+2741	Signature providers
+2742	Approval workflows
+2743	Signature requirements
+2744	Identity data
+2745	Compliance rules
+2746	Integrate providers
+2747	Verify identity
+2748	Route for signature
+2749	Capture with timestamps
+2750	Store certificates
+2751	Provide audit trail
+2752	Bulk signatures
+2753	Multi-party
+2754	Signed documents
+2755	Signature certificates
+2756	Audit trail
+2757	Signature analytics
+2758	Compliance records
+2759	Approvers
+2760	Industry-Specific Compliance Pack Management
+2761	Provide pre-built packs; support IATF/ISO 13485/AS9100/FSSC/GMP; rapid deployment.
+2762	Industry experts
+2763	Standards bodies
+2764	Industry standards
+2765	Define packs
+2766	Provide checklists
+2767	Pre-load standards
+2768	Configure KPIs
+2769	Provide templates
+2770	Update on revisions
+2771	Report usage
+2772	Compliance packs
+2773	Pre-configured workflows
+2774	Standards libraries
+2775	Deployment records
+2776	Tenant organizations
+2777	Multi-Standard Certification Portfolio Management
+2778	Manage multiple certifications; track status/renewals; coordinate audits; optimize cost.
+2779	Certification data
+2780	Audit schedules
+2781	Renewal dates
+2782	Register certifications
+2783	Track status
+2784	Schedule audits
+2785	Coordinate across standards
+2786	Share evidence
+2787	Track costs
+2788	Alert on renewals
+2789	Provide dashboard
+2790	Optimize calendar
+2791	Certification portfolio
+2792	Audit calendar
+2793	Renewal alerts
+2794	Cost reports
+2795	Remote and Virtual Audit Capability
+2796	Enable remote audits; video/screen/document review; comply with IAF; reduce cost.
+2797	Video conferencing
+2798	Document repositories
+2799	Remote protocols
+2800	Schedule sessions
+2801	Video interviews
+2802	Share screens
+2803	Review documents
+2804	Capture evidence
+2805	Validate technology
+2806	Document limitations
+2807	Issue reports
+2808	Video records
+2809	Document review logs
+2810	Remote audit evidence
+2811	Continuous Controls Monitoring and Automated Testing
+2812	Continuously monitor controls; automate testing; detect failures; reduce effort.
+2813	Control owners
+2814	Test scripts
+2815	Map to data
+2816	Build test scripts
+2817	Execute continuously
+2818	Detect failures
+2819	Track remediation
+2820	Report effectiveness
+2821	Update scripts
+2822	Provide audit-ready evidence
+2823	Control monitoring dashboard
+2824	Test results
+2825	Failure alerts
+2826	Remediation records
+2827	Task Mining and Process Discovery Automation
+2828	Discover processes from interactions; identify automation; detect deviations.
+2829	Application events
+2830	Apply task mining
+2831	Reconstruct flows
+2832	Compare to designed
+2833	Identify automation
+2834	Score potential
+2835	Automation candidates
+2836	Low-Code Process Builder and Workflow Designer
+2837	Enable citizen developers; drag-and-drop; reduce IT dependency; accelerate digitization.
+2838	Business users
+2839	Low-code platform team
+2840	Process requirements
+2841	Form designs
+2842	Workflow rules
+2843	Integration needs
+2844	Enable form building
+2845	Configure rules
+2846	Connect data/APIs
+2847	Test in sandbox
+2848	Monitor performance
+2849	Governance/versioning
+2850	Enable training
+2851	Report adoption
+2852	Forms
+2853	Marketplace for Templates, Connectors, and Industry Packs
+2854	Provide marketplace; enable contributions; accelerate deployment; new revenue.
+2855	Developers
+2856	DynamicMS team
+2857	Connectors
+2858	Industry packs
+2859	Contribution guidelines
+2860	Enable onboarding
+2861	Provide guidelines
+2862	Review/certify
+2863	Enable browsing/purchase
+2864	Ratings/reviews
+2865	Track analytics
+2866	Revenue sharing
+2867	Update continuously
+2868	Certified templates
+2869	Partner ecosystem
+2870	DynamicMS revenue team
+2871	Supplier Collaboration Portal
+2872	Supplier self-service; quality submissions; automate onboarding; improve transparency.
+2873	Quality submissions
+2874	Audit responses
+2875	Provide portal
+2876	Automate submissions
+2877	Enable audit responses
+2878	Performance dashboards
+2879	CAPA collaboration
+2880	Track risk
+2881	Improve relationships
+2882	Supplier portal
+2883	Onboarding records
+2884	Collaboration records
+2885	Customer Complaint and Feedback Portal
+2886	Customer self-service; capture complaints/feedback; automate routing; improve satisfaction.
+2887	Customer service
+2888	Complaints
+2889	Service data
+2890	Capture complaints
+2891	Auto-classify/route
+2892	Track lifecycle
+2893	Enable communication
+2894	Link to NCP/CAPA
+2895	Provide analytics
+2896	Track satisfaction
+2897	Report trends
+2898	Improve experience
+2899	Complaint records
+2900	Feedback data
+2901	Satisfaction metrics
+2902	AI-Generated Microlearning and Training Content
+2903	Auto-generate training from IMS data; microlearning; personalized paths.
+2904	Training mgrs
+2905	Competence frameworks
+2906	Learner profiles
+2907	Ingest content
+2908	Translate EN/FR/AR
+2909	Personalize paths
+2910	Deliver mobile/web
+2911	Track completion
+2912	Update from REX
+2913	Provide certification
+2914	Microlearning modules
+2915	Personalized paths
+2916	Completion records
+2917	Learning analytics
+2918	Compliance Calendar and Obligation Scheduler
+2919	Centralize obligations; schedule tasks/deadlines; send reminders; track status.
+2920	Regulatory obligations
+2921	Contractual deadlines
+2922	Aggregate obligations
+2923	Define recurrence
+2924	Assign owners
+2925	Integrate task mgmt
+2926	Alert on deadlines
+2927	Report metrics
+2928	Compliance calendar
+2929	Obligation register
+2930	Reminder records
+2931	Status dashboards
+2932	Compliance metrics
+2933	Scope 3 Emissions and Value Chain Carbon Accounting
+2934	Calculate Scope 3; engage suppliers; report per GHG Protocol; support net-zero.
+2935	Value chain data
+2936	Activity data
+2937	Map value chain
+2938	Collect supplier data
+2939	Calculate Categories 1–15
+2940	Verify quality
+2941	Support net-zero targets
+2942	Engage suppliers
+2943	Track progress
+2944	Scope 3 report
+2945	Supplier engagement records
+2946	Net-zero targets
+2947	Product Traceability and Recall Management
+2948	End-to-end traceability; manage recalls; comply with FDA/EU; protect brand.
+2949	Batch data
+2950	Distribution data
+2951	Recall triggers
+2952	Capture batch/serial
+2953	Track through supply chain
+2954	Detect triggers
+2955	Initiate recall
+2956	Notify authorities/customers
+2957	Manage disposition
+2958	Update from learnings
+2959	Recall records
+2960	Notifications
+2961	Disposition records
+2962	Crisis Communication and Reputation Management
+2963	Manage crisis communication; protect brand; coordinate; monitor sentiment.
+2964	Communication team
+2965	PR agencies
+2966	Crisis triggers
+2967	Stakeholder data
+2968	Media monitoring
+2969	Sentiment data
+2970	Activate team
+2971	Draft/approve messaging
+2972	Coordinate stakeholders
+2973	Monitor sentiment
+2974	Respond to misinformation
+2975	Track metrics
+2976	Post-crisis analysis
+2977	Update playbook
+2978	Crisis communications
+2979	Stakeholder notifications
+2980	Sentiment reports
+2981	Reputation metrics
+2982	Media
+2983	Functional Safety Lifecycle Management
+2984	Manage functional safety per ISO 26262/IEC 61508; ensure SIL/ASIL achieved.
+2985	Tier 6 — Vertical-Specific Standards Compliance
+2986	Safety engineers
+2987	System architects
+2988	HW/SW engineers
+2989	HARA
+2990	Safety goals
+2991	ASIL/SIL targets
+2992	Define item/scope
+2993	Conduct HARA
+2994	Determine ASIL/SIL
+2995	Develop safety concept
+2996	Allocate requirements
+2997	Design mechanisms
+2998	Implement measures
+2999	Manage safety case
+3000	Monitor field
+3001	Decommission
+3002	Safety case
+3003	Safety concept
+3004	ASIL/SIL determination
+3005	Verification/validation records
+3006	Field safety reports
+3007	Safety Integrity Level Determination
+3008	Determine SIL for SIFs per IEC 61508/62061; ensure risk reduction.
+3009	Risk analysts
+3010	LOPA
+3011	Architecture constraints
+3012	Identify SIFs
+3013	Conduct LOPA
+3014	Determine SIL
+3015	Verify constraints
+3016	Calculate PFD/PFH
+3017	Validate SIL
+3018	Manage changes
+3019	SIL report
+3020	SIF register
+3021	LOPA records
+3022	PFD/PFH
+3023	Automotive Safety Integrity Level Management
+3024	Manage ASIL per ISO 26262; ensure automotive functional safety.
+3025	Safety mgrs
+3026	System engineers
+3027	ASIL targets
+3028	Determine ASIL
+3029	Develop concept
+3030	Allocate to elements
+3031	HARA report
+3032	ASIL determination
+3033	ASIL measures
+3034	Automotive Threat Analysis and Risk Assessment (TARA)
+3035	Conduct TARA per ISO/SAE 21434; identify threats; define cybersecurity goals.
+3036	Cybersecurity engineers
+3037	Threat intelligence
+3038	Asset inventory
+3039	Feasibility
+3040	Impact analysis
+3041	Identify assets
+3042	Identify threats
+3043	Assess feasibility
+3044	Determine risk
+3045	Define goals
+3046	Verify/validate
+3047	TARA report
+3048	Threat register
+3049	Cybersecurity goals
+3050	Process Hazard Analysis (PHA)
+3051	Conduct PHA per OSHA PSM/Seveso; identify hazards; define safeguards.
+3052	Process safety engineers
+3053	Facilitators
+3054	Process design
+3055	P&IDs
+3056	Chemical data
+3057	Historical incidents
+3058	Select methodology
+3059	Assemble team
+3060	Conduct study
+3061	Identify hazards
+3062	Identify safeguards
+3063	Define recommendations
+3064	Track closure
+3065	Revalidate
+3066	PHA report
+3067	Hazard register
+3068	Recommendation log
+3069	Revalidation records
+3070	Mechanical Integrity Management
+3071	Ensure integrity per API 510/570/ASME; prevent catastrophic failures.
+3072	Integrity engineers
+3073	Inspection schedules
+3074	Corrosion data
+3075	Failures
+3076	Register vessels/piping
+3077	Thickness measurements
+3078	Visual inspections
+3079	NDT
+3080	Fitness-for-service
+3081	Remaining life
+3082	Schedule repairs
+3083	Thickness records
+3084	FFS assessments
+3085	Remaining life estimates
+3086	Repair records
+3087	Pre-Startup Safety Review (PSSR)
+3088	Conduct PSSR per OSHA PSM; ensure safe startup.
+3089	PHA results
+3090	Construction completion
+3091	Equipment docs
+3092	Verify construction
+3093	Verify PHA closed
+3094	Verify procedures
+3095	Verify training
+3096	Verify safety systems
+3097	Conduct review
+3098	Approve startup
+3099	PSSR report
+3100	Startup approval
+3101	Completion documentation
+3102	Occupational Exposure Monitoring
+3103	Monitor exposures per OSHA/ISO 45001; ensure worker health.
+3104	Industrial hygienists
+3105	Occ health
+3106	Chemical inventory
+3107	Exposure limits
+3108	Worker rosters
+3109	Sampling plans
+3110	Identify agents
+3111	Define limits
+3112	Develop strategy
+3113	Personal sampling
+3114	Area sampling
+3115	Compare to limits
+3116	Monitor effectiveness
+3117	Exposure reports
+3118	Sampling records
+3119	Lab results
+3120	Control recommendations
+3121	Workers
+3122	Medical Surveillance and Health Records
+3123	Conduct surveillance per OSHA/ISO 45001; maintain confidential records.
+3124	Occ physicians
+3125	Nurses
+3126	Exposure data
+3127	Job requirements
+3128	Health questionnaires
+3129	Medical protocols
+3130	Pre-employment exams
+3131	Periodic exams
+3132	Exit exams
+3133	Analyze data
+3134	Identify conditions
+3135	Recommend interventions
+3136	Report statistics
+3137	Surveillance reports
+3138	Health records
+3139	Fitness-for-duty
+3140	Interventions
+3141	Pressure Vessel and Piping Inspection
+3142	Inspect per API 510/570/NBIC; ensure integrity.
+3143	Inspection plans
+3144	Historical records
+3145	Register
+3146	Define intervals
+3147	External inspections
+3148	Internal inspections
+3149	Hydrostatic testing
+3150	Assess results
+3151	Define repairs
+3152	Repair recommendations
+3153	Asset Reliability and Maintenance Management
+3154	Manage reliability per ISO 55001; optimize maintenance; maximize availability.
+3155	Reliability engineers
+3156	Maintenance planners
+3157	OEMs
+3158	Asset register
+3159	Failure data
+3160	Maintenance history
+3161	Criticality analysis
+3162	Register assets
+3163	Define strategies
+3164	Plan PM
+3165	Predictive maintenance
+3166	Analyze failures
+3167	Optimize
+3168	Maintenance plans
+3169	Work orders
+3170	Failure analysis
+3171	Reliability reports
+3172	Maritime Safety Management
+3173	Manage maritime safety per SOLAS/IMO/IACS; ensure vessel/crew safety.
+3174	Maritime safety officers
+3175	Fleet mgrs
+3176	Classification societies
+3177	Flag states
+3178	SOLAS requirements
+3179	Vessel docs
+3180	Crew certifications
+3181	Safety equipment
+3182	Maintain SMS
+3183	Vessel inspections
+3184	Drills/training
+3185	Internal audits
+3186	Manage NCs
+3187	Coordinate with classification
+3188	Emergency response
+3189	SMS docs
+3190	Drill records
+3191	Safety performance reports
+3192	Fleet mgmt
+3193	Crew
+3194	Marine Pollution Prevention
+3195	Prevent pollution per MARPOL; manage waste, oil, emissions.
+3196	Environmental officers
+3197	Port authorities
+3198	MARPOL requirements
+3199	Vessel ops
+3200	Waste records
+3201	Emission data
+3202	Maintain plan
+3203	Oil discharge
+3204	Waste disposal
+3205	Emissions
+3206	Environmental inspections
+3207	Train crew
+3208	Coordinate with authorities
+3209	Prevention plan
+3210	Emission reports
+3211	Inspection records
+3212	Cleanroom Classification and Monitoring
+3213	Classify/monitor cleanrooms per ISO 14644; ensure contamination control.
+3214	Cleanroom mgrs
+3215	Microbiologists
+3216	Cleanroom design
+3217	Contamination data
+3218	HVAC data
+3219	Classify
+3220	Define plan
+3221	Particle monitoring
+3222	Microbial monitoring
+3223	Pressure differentials
+3224	Temp/humidity
+3225	Classification reports
+3226	Validation reports
+3227	Microbiology
+3228	Welding Quality Management
+3229	Manage welding per ISO 3834/14554/EN 1090; ensure weld integrity.
+3230	Welding engineers
+3231	Welding inspectors
+3232	Welders
+3233	Welding procedures
+3234	Welder qualifications
+3235	Material certs
+3236	Weld maps
+3237	Develop WPS
+3238	Qualify PQR
+3239	Qualify welders
+3240	Inspect operations
+3241	Visual inspection
+3242	Assess quality
+3243	Manage repairs
+3244	WPS/PQR records
+3245	Welder quals
+3246	NDT records
+3247	Quality reports
+3248	Production
+3249	Chemical Substance Compliance Management
+3250	Manage chemical compliance per REACH/RoHS; ensure product compliance.
+3251	Product stewards
+3252	Compliance mgrs
+3253	Substance inventory
+3254	Supplier declarations
+3255	Material data
+3256	Assess applicability
+3257	Collect declarations
+3258	Assess status
+3259	Manage SVHC
+3260	Manage restrictions
+3261	Prepare docs
+3262	Manage NC
+3263	Compliance assessments
+3264	Declarations
+3265	Safety Data Sheet Management
+3266	Manage SDS per GHS/REACH; ensure hazardous material communication.
+3267	SDS authors
+3268	EHS
+3269	GHS requirements
+3270	REACH requirements
+3271	Supplier SDS
+3272	Maintain inventory
+3273	Author per GHS
+3274	Review supplier SDS
+3275	Maintain access
+3276	Ensure compliance
+3277	SDS documents
+3278	Extended Producer Responsibility Management
+3279	Manage EPR per EU regulations; ensure circular economy compliance.
+3280	Environmental mgrs
+3281	EPR requirements
+3282	Packaging data
+3283	Recycling data
+3284	Register products
+3285	Declare volumes
+3286	Pay fees
+3287	Manage take-back
+3288	Manage recycling
+3289	Report to authorities
+3290	Manage compliance
+3291	Report performance
+3292	EPR registrations
+3293	Fee payments
+3294	Take-back records
+3295	Human Rights Due Diligence
+3296	Conduct due diligence per SA8000/ISO 26000/UNGP; ensure respect for human rights.
+3297	HR mgrs
+3298	NGOs
+3299	UNGP requirements
+3300	Stakeholder input
+3301	Define policy
+3302	Conduct assessment
+3303	Identify salient issues
+3304	Integrate findings
+3305	Provide remediation
+3306	Engage stakeholders
+3307	Review/improve
+3308	Human rights policy
+3309	Assessment reports
+3310	Salient issues
+3311	Performance tracking
+3312	Conflict Minerals Reporting
+3313	Report per SEC 1502/EU 2017/821; ensure responsible sourcing.
+3314	Procurement mgrs
+3315	SEC requirements
+3316	EU requirements
+3317	Smelter data
+3318	Identify minerals
+3319	Survey suppliers
+3320	Identify smelters
+3321	Conduct due diligence
+3322	Assess smelter compliance
+3323	Prepare disclosure
+3324	File report
+3325	Monitor supply chain
+3326	Conflict minerals report
+3327	Supplier surveys
+3328	Smelter list
+3329	Due diligence records
+3330	Disclosure filings
+3331	Modern Slavery Compliance
+3332	Comply per UK MSA/California Transparency; ensure ethical supply chains.
+3333	UK MSA requirements
+3334	California Transparency
+3335	Develop policy
+3336	Train employees
+3337	Modern slavery statement
+3338	Anti-Bribery and Corruption Management
+3339	Manage per FCPA/UK Bribery Act/ISO 37001; ensure ethical conduct.
+3340	Compliance officers
+3341	Ethics committee
+3342	FCPA requirements
+3343	UK Bribery Act
+3344	ISO 37001
+3345	Conduct risk assessment
+3346	Certify compliance
+3347	Anti-bribery policy
+3348	Road Safety Management
+3349	Manage road safety per ISO 39001; reduce fatalities/injuries.
+3350	Fleet safety mgrs
+3351	Insurance
+3352	ISO 39001
+3353	Fleet data
+3354	Driver data
+3355	Train drivers
+3356	Monitor behavior
+3357	Manage vehicle maintenance
+3358	Road safety policy
+3359	Drivers
+3360	Water Efficiency Management
+3361	Manage water efficiency per ISO 46001; reduce consumption.
+3362	Water utilities
+3363	ISO 46001
+3364	Water usage data
+3365	Utility bills
+3366	Assess usage
+3367	Monitor consumption
+3368	Identify savings
+3369	Water efficiency plan
+3370	Savings records
+3371	Facility Management
+3372	Manage facilities per ISO 41001; ensure performance and safety.
+3373	Facility mgrs
+3374	Landlords
+3375	ISO 41001
+3376	Facility data
+3377	Maintenance data
+3378	Occupancy data
+3379	Assess needs
+3380	Plan services
+3381	Manage maintenance
+3382	Manage space
+3383	Manage utilities
+3384	Manage safety
+3385	Facility management plan
+3386	Maintenance records
+3387	Space records
+3388	IT Service Management
+3389	Manage IT services per ISO 20000; ensure quality and availability.
+3390	IT service mgrs
+3391	IT operations
+3392	ISO 20000
+3393	Service catalog
+3394	SLA data
+3395	Design services
+3396	Transition
+3397	Manage problems
+3398	Service management policy
+3399	SLAs
+3400	Cloud Security and Privacy Management
+3401	Manage cloud security/privacy per ISO 27017/27018; ensure protection.
+3402	Cloud security architects
+3403	Cloud providers
+3404	ISO 27017
+3405	ISO 27018
+3406	Cloud architecture
+3407	Data protection requirements
+3408	Manage data privacy
+3409	Cloud security controls
+3410	Testing and Calibration Laboratory Management
+3411	Manage labs per ISO 17025; ensure competent testing/calibration.
+3412	Lab mgrs
+3413	Lab technicians
+3414	Accreditation bodies
+3415	ISO 17025
+3416	Test methods
+3417	Equipment records
+3418	Define lab system
+3419	Manage competence
+3420	Manage equipment
+3421	Manage methods
+3422	Manage samples
+3423	Manage results
+3424	Manage reports
+3425	Maintain accreditation
+3426	Lab system
+3427	Test reports
+3428	Calibration certificates
+3429	Medical Laboratory Management
+3430	Manage medical labs per ISO 15189; ensure competent medical testing.
+3431	Pathologists
+3432	Clinicians
+3433	Patient samples
+3434	Patient reports
+3435	Patients
+3436	Collaborative Business Relationship Management
+3437	Manage collaborations per ISO 44001; ensure mutual value.
+3438	Partnership mgrs
+3439	Business development
+3440	ISO 44001
+3441	Partner data
+3442	Collaboration objectives
+3443	Define strategy
+3444	Identify partners
+3445	Assess fit
+3446	Develop agreement
+3447	Manage collaboration
+3448	Manage issues
+3449	Collaboration strategy
+3450	Partner assessments
+3451	Agreements
+3452	Business units
+3453	Eco-design Management
+3454	Manage eco-design per ISO 14006; reduce environmental impact.
+3455	Eco-design engineers
+3456	ISO 14006
+3457	Integrate into development
+3458	Eco-design policy
+3459	Environmental assessments
+3460	Life Cycle Assessment (LCA)
+3461	Conduct LCA per ISO 14040/14044; quantify environmental impacts.
+3462	LCA analysts
+3463	ISO 14040/14044
+3464	Define goal/scope
+3465	Inventory analysis
+3466	Interpret
+3467	Review critically
+3468	Integrate into decisions
+3469	LCA report
+3470	Inventory data
+3471	Critical reviews
+3472	Water Footprint Management
+3473	Manage water footprint per ISO 14046; quantify impacts.
+3474	Water analysts
+3475	ISO 14046
+3476	Water quality data
+3477	Water inventory
+3478	Water footprint report
+3479	Environmental Communication Management
+3480	Manage communication per ISO 14063; ensure effective communication.
+3481	Communication mgrs
+3482	ISO 14063
+3483	Identify stakeholders
+3484	Develop plan
+3485	Communication policy
+3486	SME Onboarding and Quick Start
+3487	Deploy in days; guided setup; reduce complexity.
+3488	Tier 7 — SME-Specific
+3489	SME owner
+3490	SME admin
+3491	DynamicMS onboarding specialist
+3492	Templates library
+3493	Industry segment
+3494	Must Standards
+3495	Employee count
+3496	Current processes
+3497	Select standards
+3498	Configure profile
+3499	Activate pack
+3500	Import docs
+3501	Invite users
+3502	Run wizard
+3503	Configure workflows
+3504	Activate KPIs
+3505	Launch
+3506	Schedule check-in
+3507	Activated pack
+3508	Imported docs
+3509	User accounts
+3510	Simplified workflows
+3511	SME employees
+3512	SME admins
+3513	SME Simplified Process Modeling
+3514	Pre-built templates; quick customization; reduce effort.
+3515	SME process owner
+3516	SME quality mgr
+3517	Process designer
+3518	Industry templates
+3519	Existing docs
+3520	Customize
+3521	Assign responsibilities
+3522	Configure approvals
+3523	Monitor adoption
+3524	Share
+3525	RACI assignments
+3526	Published processes
+3527	SME process owners
+3528	SME management
+3529	SME Document Template Library
+3530	Ready-to-use templates; reduce burden; ensure compliance.
+3531	SME doc controller
+3532	Template library
+3533	Browse
+3534	Select type
+3535	Download
+3536	Customized docs
+3537	Approved docs
+3538	Review schedules
+3539	SME auditors
+3540	SME Fractional Expert Access
+3541	On-demand expert access; reduce full-time hires; ensure guidance.
+3542	DynamicMS expert network
+3543	Question/challenge
+3544	SME context
+3545	Submit request
+3546	Match expert
+3547	Schedule
+3548	Consult
+3549	Receive recommendations
+3550	Follow up
+3551	Rate
+3552	Consultation records
+3553	Expert ratings
+3554	SME Peer Benchmarking
+3555	Benchmark against peers; identify improvements; learn.
+3556	Industry associations
+3557	Peer SMEs
+3558	Benchmarking data
+3559	SME performance
+3560	Industry benchmarks
+3561	Peer data
+3562	Define peer group
+3563	Identify strengths
+3564	Re-benchmark
+3565	Strengths analysis
+3566	Peer comparisons
+3567	SME Multi-Role User Management
+3568	Support multi-role; simplify management; ensure access.
+3569	User management
+3570	Employee data
+3571	Access requirements
+3572	Org structure
+3573	Assign multiple
+3574	Configure permissions
+3575	Set up delegation
+3576	Handle conflicts
+3577	Review access
+3578	Update roles
+3579	Delegation records
+3580	Access reviews
+3581	SME Simplified Risk Register
+3582	Simplified risk management; reduce complexity; ensure coverage.
+3583	SME mgrs
+3584	Risk templates
+3585	Industry risk data
+3586	Industry risks
+3587	Process risks
+3588	Resource constraints
+3589	Identify top risks
+3590	Assess likelihood/impact
+3591	Define mitigation
+3592	Review quarterly
+3593	Mitigation plans
+3594	Risk reports
+3595	SME Essential KPI Dashboard
+3596	Essential KPIs; simplify monitoring; data-driven decisions.
+3597	Define targets
+3598	Configure sources
+3599	Set up dashboard
+3600	Review daily
+3601	Take action
+3602	KPI reports
+3603	Action records
+3604	SME Quick Audit Preparation
+3605	Quick audit prep; provide checklists; reduce stress.
+3606	Audit templates
+3607	Previous findings
+3608	Download checklist
+3609	Mock audit
+3610	Address findings
+3611	Prepare pack
+3612	Coordinate auditor
+3613	Self-assessment records
+3614	Mock reports
+3615	SME Simplified Training Management
+3616	Simplified training; ensure competence; reduce burden.
+3617	Training providers
+3618	Training module
+3619	Select modules
+3620	Record completion
+3621	Assess competence
+3622	Schedule refreshers
+3623	Update plan
+3624	Training reports
+3625	SME Cost-Effective Compliance
+3626	Cost-effective compliance; prioritize essential; reduce costs.
+3627	Compliance templates
+3628	Budget constraints
+3629	Identify mandatory
+3630	Prioritize by risk
+3631	Select solutions
+3632	Review costs
+3633	Plan growth
+3634	Compliance plans
+3635	Budget allocations
+3636	Cost optimization records
+3637	SME Growth Readiness
+3638	Prepare for growth; scale processes; ensure IMS scales.
+3639	SME mgmt
+3640	Growth advisors
+3641	DynamicMS platform
+3642	Scalability requirements
+3643	Resource projections
+3644	Plan scaling
+3645	Upgrade configuration
+3646	Add users
+3647	Expand compliance
+3648	Add standards
+3649	Train new
+3650	Review readiness
+3651	Growth readiness assessment
+3652	Scaling plans
+3653	Upgraded configuration
+3654	Readiness reports
+3655	Future employees
+3656	SME Informal Process Digitization
+3657	Digitize informal processes; capture tribal knowledge; create repeatable.
+3658	Process templates
+3659	Informal processes
+3660	Tribal knowledge
+3661	Employee input
+3662	Identify
+3663	Interview
+3664	Identify improvements
+3665	Design digital
+3666	Configure
+3667	Digitized processes
+3668	Lessons learned
+3669	SME Owner Dashboard
+3670	Simplified executive dashboard; quick decisions; essential metrics.
+3671	Compliance status
+3672	Select metrics
+3673	Design layout
+3674	Set up alerts
+3675	Drill down
+3676	Owner dashboard
+3677	Essential metrics
+3678	Board (if applicable)
+3679	SME Regulatory Alert Service
+3680	Alert to regulatory changes; simplify monitoring; timely compliance.
+3681	SME compliance mgr
+3682	DynamicMS AI
+3683	SME profile
+3684	Subscribe feeds
+3685	Filter changes
+3686	Alert owner
+3687	Guidance docs
+3688	SME Simplified Nonconformity Management
+3689	Simplified NCP; reduce complexity; essential problem-solving.
+3690	NCP templates
+3691	NCP module
+3692	Capture
+3693	Assess severity
+3694	Immediate action
+3695	Simple RCA
+3696	Corrective action
+3697	Document lesson
+3698	RCA reports
+3699	SME Budget-Conscious Improvement
+3700	Drive improvement within constraints; prioritize high-impact; maximize ROI.
+3701	Assess cost/impact
+3702	Prioritize by ROI
+3703	Recognition records
+3704	SME Multi-Standard Quick Certification
+3705	Efficient multiple certifications; reduce costs; streamline audits.
+3706	Certification module
+3707	Certification requirements
+3708	Current status
+3709	Identify targets
+3710	Assess compliance
+3711	Mock audits
+3712	Coordinate certifiers
+3713	Support audits
+3714	Close findings
+3715	Maintain
+3716	Certification plans
+3717	Certificates
+3718	Maintenance schedules
+3719	SME Collaborative Community
+3720	Connect with peers; share knowledge; reduce isolation; accelerate learning.
+3721	Community platform
+3722	Questions
+3723	Experiences
+3724	Join
+3725	Create profile
+3726	Ask
+3727	Participate
+3728	Attend events
+3729	Collaborate
+3730	Rate contributions
+3731	Report value
+3732	Discussion records
+3733	Shared best practices
+3734	Value reports
+3735	SME Exit and Transition
+3736	Support exit/sale/transition; preserve IMS records; smooth handover.
+3737	Successor
+3738	Buyer
+3739	IMS records
+3740	Compliance docs
+3741	Transition requirements
+3742	Assess IMS status
+3743	Compile docs
+3744	Transfer records
+3745	Train successor
+3746	Support due diligence
+3747	Coordinate buyer
+3748	Complete handover
+3749	Close account
+3750	IMS documentation package
+3751	Handover records
+3752	Archived records
+3753	Plan & Prepare
+3754	User Task
+3755	Verify, Record & Close
+3756	Manage Management System Policy Lifecycle
+3757	Select policy standards and scope type
+3758	Choose one standard (single-standard policy, e.g. QMS) or several (integrated policy, e.g. QHSE) and the sites covered.
+3759	Draft policy from template
+3760	AI-Assisted Task
+3761	Generate a draft policy from the selected template; AI proposes commitment clauses per standard for human review.
+3762	Review and approve policy version
+3763	Reviewers comment; Top Management approves; the version number increments per the versioning scheme.
+3764	Publish policy and generate downloadable files
+3765	Service Task
+3766	DynamicMS Engine
+3767	Publish the approved version and render it in the configured formats (DOCX, PDF) with the tenant's customized template.
+3768	Model Process Element Hierarchy
+3769	Create functions and decompose into process elements
+3770	Create Level 1 functions, decompose into Level 2 macro processes and Level 3 tasks, adding Level 4+ where needed.
+3771	Flag lowest-level elements as tasks
+3772	Engine marks every element without children as a Task, whatever its level.
+3773	Generate process map for a function
+3774	Render the process map of a selected function: macro processes, tasks, related documents and related applications.
+3775	Compile Macro Process Sheets
+3776	Compile Macro Process Sheet
+3777	Complete all sheet attributes (RACSI, goals, interactions, tasks, resources, KPIs, monitoring methods, custom sections).
+3778	Group atomic sheets into composite sheet
+3779	Select two or more atomic sheets and assemble a composite sheet with ordering and aggregation rules.
+3780	Manage As-Is and To-Be SIPOC
+3781	Capture As-Is SIPOC where required
+3782	If As-Is is flagged Yes for the element, document the current SIPOC.
+3783	Design To-Be SIPOC
+3784	Document the mandatory To-Be SIPOC; AI drafts fine-grained details and Go/No-Go criteria for review.
+3785	Compare As-Is and To-Be SIPOC
+3786	Engine produces a side-by-side comparison highlighting changed fields.
+3787	Approve and deploy To-Be version
+3788	Approve the To-Be version; it becomes the effective process.
+3789	Author Task Procedures (Use Cases)
+3790	Create procedure header
+3791	Record ID, goals, scope of work, definitions, reference documents, external interactions, owner and main documents.
+3792	Define step sequence with exceptions
+3793	Enter steps (ID, name, who, documents/applications, outputs, customers) for the normal flow and exceptions, end events and Go/No-Go decisions.
+3794	Generate BPMN diagram from step table
+3795	Engine renders a BPMN 2.0 diagram from the step table, including gateways and end events.
+3796	Attach KPIs, reporting and alerts
+3797	Link KPIs, report outputs and alert rules to the procedure.
+3798	Govern KPI Frequencies & RACSI
+3799	Set KPI measurement and analysis frequencies
+3800	Select measurement and analysis/evaluation frequencies from the Frequency list (system or custom values).
+3801	Assign KPI RACSI
+3802	Assign Responsible, Accountable, Consulted, Support and Informed roles to each KPI.
+3803	Distribute Published Documents
+3804	Distribute published documents to distribution lists
+3805	Send each newly published document version to its distribution list and collect read acknowledgements.
+3806	Track distribution acknowledgements
+3807	Engine tracks read acknowledgements per recipient and escalates overdue ones.
+3808	Control Versions of Governed Documents
+3809	Submit document for review
+3810	Author submits a draft version with change summary.
+3811	Approve and release version
+3812	Approver signs off; engine assigns the new version number.
+3813	Publish and notify
+3814	Publish the version and notify the distribution list.
+3815	Supersede and archive previous version
+3816	Mark the previous version Superseded and move it to the archive with read-only access.
+3817	Customize & Generate Downloadable Files
+3818	Customize document template
+3819	Adjust logo, colours, header/footer, section order and visibility, and custom sections for a document type.
+3820	Generate files in selected formats
+3821	Render the document in the requested formats (Word, Excel, PDF and others enabled for the type).
+3822	Download or share generated file
+3823	User downloads the file or shares a link; the download is logged against the version.
+3824	Plan & Execute Monitoring Methods
+3825	Plan monitoring methods
+3826	Schedule monitoring per mode (e.g. internal audit) and frequency.
+3827	Execute monitoring and record results
+3828	Perform the monitoring and record conclusions.
+3829	Administer AI Use Cases
+3830	Activate AI use cases by scope
+3831	Activate seeded AI use cases globally or for a group, organization or project.
+3832	Approve custom AI use cases
+3833	Review and approve or reject custom AI use cases.
+3834	Govern Custom Value Lists
+3835	Maintain customizable value lists
+3836	Add or retire custom values in drop-down lists (functions, frequencies, monitoring modes).
+3837	Retire unused custom values
+3838	Retire custom list values no longer used; values in use are deactivated, not deleted.
+3839	Configure Process Framework
+3840	Name hierarchy levels
+3841	Name Level 1 to Level n (e.g. Level 4 'Activity', Level 5 'Operation').
+3842	Configure drop-down value lists
+3843	Define system and custom values for Function, Frequency and Monitoring Mode lists.
+3844	Configure custom sheet sections
+3845	Define reusable custom sections available on macro process sheets.
+3846	Configure Document Templates & Versioning
+3847	Maintain branded templates per document type
+3848	Maintain templates per document type and output format.
+3849	Configure versioning and retention scheme
+3850	Set major/minor versioning rules, approval requirements and archive retention.
+3851	Element Level_Number is not exactly parent level + 1
+3852	Validation
+3853	Element created at Level 4 or deeper and the level has no name in the ProcessLevelDefinition
+3854	An element gains or loses its last child
+3855	Calculation
+3856	Number of selected standards changes
+3857	Policy lacks a commitment for any standard in scope
+3858	Policy version status becomes Published
+3859	As-Is SIPOC saved for an element whose As_Is_Required = No
+3860	Any mandatory To-Be SIPOC field is empty (trigger, suppliers, inputs, details, RACSI, outputs, customers, end events, Go/No-Go)
+3861	Sheet submitted without an approved To-Be SIPOC for its macro process
+3862	Sheet RACSI does not have exactly one Accountable role
+3863	A KPI on the sheet has an analysis frequency more frequent than its measurement frequency
+3864	Sheet lists itself among interacting macro processes
+3865	Composite sheet has fewer than two member sheets or contains another composite
+3866	A member sheet publishes a new version
+3867	User requests a process map for a function
+3868	Procedure has no End Event or an Exclusive Gateway without Go/No-Go criteria
+3869	Procedure step table saved
+3870	Draft version submitted
+3871	Routing
+3872	Approval of a change marked Major or Minor
+3873	Version status becomes Published
+3874	A newer version of the same object is Published
+3875	Requested format is not enabled on the document type's template
+3876	Generation requested for a version not yet Published
+3877	Generated file downloaded or shared
+3878	New custom value label already exists in the same list
+3879	Monitoring method saved or last occurrence completed
+3880	Measurement received for the period
+3881	KPI value outside target tolerance
+3882	Escalation
+3883	Analysis not recorded 5 working days after the analysis due date
+3884	Recipient has not acknowledged 10 working days after distribution
+3885	Control effectiveness updated
+3886	Criticality = Critical
+3887	Nonconformity classified Major or Critical
+3888	Lesson learned affects a SIPOC, sheet or procedure
+3889	Checklist item marked non-compliant
+3890	AI-drafted SIPOC content generated
+3891	To-Be version approved
+3892	Access not recertified within 30 days of review due date
+3893	Maintenance due date reached
+3894	Supplier score below 60 for two consecutive periods
+3895	Tenant sets approval required for a document type
+3896	Template saved without the mandatory sections of its document type
+3897	Block Save With Validation Message
+3898	Prevents saving and displays the rule message.
+3899	Block Publication
+3900	Prevents a version moving to Published until the condition is met.
+3901	Compute Lowest-Level Flag
+3902	Recomputes Is_Lowest_Level for the element and its parent.
+3903	Set Policy Scope Type
+3904	Sets Scope_Type to Single-standard or Integrated from the number of standards.
+3905	Increment Version Number
+3906	Assigns the next major or minor version number.
+3907	Render Generated Files
+3908	Renders the version in each enabled format using the tenant template.
+3909	Apply Status Watermark
+3910	Applies DRAFT or SUPERSEDED watermark according to lifecycle status.
+3911	Supersede Previous Version
+3912	Sets the previous Published version to Superseded and read-only.
+3913	Notify Distribution List
+3914	Sends the published version link to every recipient and requests acknowledgement.
+3915	Create Review Task
+3916	Creates a review task for reviewers defined in the RACSI.
+3917	Escalate To Accountable Role
+3918	Escalates the item to the Accountable role.
+3919	Escalate To IMS Manager
+3920	Escalates the item to the IMS Manager.
+3921	Render BPMN Diagram
+3922	Generates the BPMN 2.0 diagram from the procedure step table.
+3923	Aggregate Composite Sheet
+3924	Merges member sheet sections according to the aggregation rule.
+3925	Generate Process Map
+3926	Builds the process map of a function from the hierarchy, documents and applications.
+3927	Compute KPI Value
+3928	Computes the KPI value with its registered formula.
+3929	Raise Alert
+3930	Creates an alert with severity and escalation path.
+3931	Compute Residual Risk
+3932	Recomputes residual score from control effectiveness.
+3933	Create Corrective Action
+3934	Creates a corrective action linked to the source item.
+3935	Open Revision Draft
+3936	Opens a new draft version of an affected governed object.
+3937	Schedule Next Occurrence
+3938	Computes the next due date from the frequency value.
+3939	Reject Duplicate Value
+3940	Rejects a list value whose label already exists in the list.
+3941	Log Download Event
+3942	Logs user, format and version for each download.
+3943	Create Audit Finding Draft
+3944	Creates a draft finding from a failed checklist item.
+3945	Route AI Output For Human Review
+3946	Holds AI output until a human approves or edits it.
+3947	Suspend User Access
+3948	Suspends access until recertification is completed.
+3949	Create Maintenance Order
+3950	Creates a maintenance order for the asset.
+3951	Block Supplier
+3952	Sets supplier status to Blocked.
+3953	Four-eyes approval of governed documents
+3954	Preventive
+3955	Author cannot approve their own version; approval requires a different user holding the Accountable role.
+3956	Immutable version history
+3957	Approved, Published and Superseded versions are read-only; changes require a new version.
+3958	Status watermark on generated files
+3959	Files from non-published versions carry a DRAFT watermark; superseded versions carry SUPERSEDED.
+3960	Download audit log
+3961	Detective
+3962	Every download and share is logged with user, format, version and timestamp.
+3963	To-Be SIPOC completeness gate
+3964	Sheets and procedures cannot be published without a complete, approved To-Be SIPOC.
+3965	Hierarchy integrity check
+3966	Enforces parent-child level consistency and named levels.
+3967	Single accountable role
+3968	RACSI must hold exactly one Accountable role for sheets, SIPOC, procedures and KPIs.
+3969	Distribution acknowledgement tracking
+3970	Tracks read acknowledgements and escalates overdue ones.
+3971	Procedure flow validation
+3972	Checks end events, gateways and exception paths before BPMN generation.
+3973	Template change approval
+3974	Template changes affecting mandatory sections require Document Controller approval.
+3975	Value-list governance
+3976	Custom values are unique, attributed to a creator and retired rather than deleted when in use.
+3977	Periodic policy review
+3978	Review due date computed from the policy review frequency; overdue reviews reported.
+3979	KPI frequency consistency
+3980	Analysis frequency cannot be more frequent than measurement frequency.
+3981	Monitoring schedule adherence
+3982	Reports monitoring occurrences not executed by their due date.
+3983	Human review of AI output
+3984	AI-generated content is held as a suggestion until a named user accepts it.
+3985	Role-based access control
+3986	Access limited by role and data scope.
+3987	Periodic access recertification
+3988	Quarterly recertification of privileged roles.
+3989	Personal-data minimization in generated files
+3990	Personal data fields are masked in generated files unless the template explicitly includes them and the user holds the permission.
+3991	Formula validation before activation
+3992	Formula must pass test execution before KPI activation.
+3993	Record retention enforcement
+3994	Records cannot be disposed before retention end or without approval.
+3995	Supplier approval gate
+3996	Purchase orders blocked for non-approved suppliers.
+3997	Corrective action effectiveness review
+3998	Actions closed only after effectiveness evidence is recorded.
+3999	Auditor independence check
+4000	Auditor cannot audit a process element they own.
+4001	Continuity plan testing
+4002	Annual test with documented results.
+4003	Configuration change audit trail
+4004	All configuration changes are logged with before/after values.
+4005	Custom AI use case approval
+4006	Custom AI use cases stay inactive until approved by the AI Governance Officer.
+4007	Security policy enforcement
+4008	SSO, MFA and session rules enforced for all users.
+4009	Data subject request deadline tracking
+4010	Requests tracked against the legal response deadline.
+4011	Use of an obsolete document version
+4012	Downloads of Superseded versions / total downloads (%)
+4013	Unauthorized approval of governed documents
+4014	Approvals by non-Accountable users per quarter (count)
+4015	Incomplete or inconsistent To-Be SIPOC published
+4016	Published SIPOC with empty mandatory fields (count)
+4017	Broken process hierarchy (orphan or misplaced elements)
+4018	Elements failing hierarchy check / total elements (%)
+4019	Policy not covering all standards in scope
+4020	Standards in scope without policy commitment (count)
+4021	Generated files disclose personal data
+4022	Privacy
+4023	Generated files containing unmasked personal data (count)
+4024	Uncontrolled template changes alter document content
+4025	Template changes without approval (count)
+4026	Distribution recipients unaware of changes
+4027	Operational
+4028	Acknowledgements overdue / total distributions (%)
+4029	KPIs measured or evaluated late
+4030	KPIs with overdue analysis / active KPIs (%)
+4031	Procedures missing exception flows
+4032	Procedures without an exception flow / total procedures (%)
+4033	Custom value lists become duplicated or inconsistent
+4034	Data Quality
+4035	Duplicate labels detected per list (count)
+4036	AI-generated content accepted without review
+4037	AI outputs accepted without edit or review record (count)
+4038	Excessive access rights
+4039	Users with privileged roles not recertified (count)
+4040	Incorrect KPI formula
+4041	Formulas failing test execution (count)
+4042	Records disposed too early
+4043	Disposals before retention end (count)
+4044	Unapproved supplier used
+4045	Purchase orders to non-approved suppliers (count)
+4046	Recurring nonconformities
+4047	Repeat NCs within 12 months / total NCs (%)
+4048	Audit objectivity compromised
+4049	Assurance
+4050	Audits performed by element owners (count)
+4051	Business interruption
+4052	Critical processes without tested continuity plan (count)
+4053	Untraceable configuration changes
+4054	Configuration changes without audit record (count)
+4055	Late response to data subject requests
+4056	Requests answered after deadline (count)
+4057	Policy review on time rate
+4058	Strategic
+4059	Policies reviewed by due date / policies due x 100
+4060	To-Be SIPOC coverage
+4061	Macro processes and tasks with approved To-Be SIPOC / total macro processes and tasks x 100
+4062	Macro process sheet completeness
+4063	Mandatory sheet attributes filled / total mandatory attributes x 100
+4064	Competence gap closure rate
+4065	Gaps closed in period / gaps open at period start x 100
+4066	Distribution acknowledgement rate
+4067	Acknowledged distributions / total distributions x 100
+4068	Risks within appetite
+4069	Risks with residual score <= appetite / total risks x 100
+4070	Continuity test success
+4071	Successful continuity tests / tests performed x 100
+4072	Obligations mapped to process elements
+4073	Mapped obligations / total obligations x 100
+4074	Certificates maintained
+4075	Valid certificates / certificates targeted x 100
+4076	Document approval cycle time
+4077	Average working days from Submitted to Published
+4078	<= 5 days
+4079	Procedures with BPMN and exception flow
+4080	Procedures with generated BPMN and >= 1 exception flow / total procedures x 100
+4081	Access recertification completion
+4082	Roles recertified on time / roles due x 100
+4083	Asset preventive maintenance compliance
+4084	Maintenance orders completed on time / orders due x 100
+4085	Master data quality score
+4086	Records passing quality checks / records checked x 100
+4087	Validated formula rate
+4088	Formulas passing validation / active formulas x 100
+4089	Supplier on-time delivery
+4090	On-time deliveries / total deliveries x 100
+4091	Recall execution time
+4092	Hours from recall decision to all affected customers notified
+4093	<= 24 h
+4094	Nonconformity closure on time
+4095	NCs closed by due date / NCs due x 100
+4096	Corrective action effectiveness
+4097	Effective actions / verified actions x 100
+4098	KPI analysis timeliness
+4099	KPI analyses recorded by due date / analyses due x 100
+4100	Monitoring plan execution
+4101	Monitoring occurrences executed / planned x 100
+4102	Audit programme completion
+4103	Audits completed / audits planned x 100
+4104	Predictive alert precision
+4105	Confirmed issues / predictive alerts raised x 100
+4106	Improvement ideas implemented
+4107	Ideas implemented / ideas approved x 100
+4108	As-Is to To-Be deployment lead time
+4109	Average days from To-Be approval to deployment
+4110	<= 30 days
+4111	Configuration changes with approval record
+4112	Changes with audit record / total changes x 100
+4113	High
+4114	Top Management
+4115	Medium
+4116	Low
+4117	Reviewers (RACSI Consulted)
+4118	Distribution list recipients
+4119	Recipient
+4120	Function Head
+4121	Requesting user
+4122	KPI Accountable
+4123	Critical
+4124	Auditee Process Owner
+4125	IT Security Officer
+4126	Purchasing Manager
+4127	Monitoring owner
+4128	Management System Policy Document
+4129	On publication
+4130	Macro Process Sheet
+4131	distribution list
+4132	Composite Process Sheet
+4133	On publication of any member
+4134	Function Process Map
+4135	On demand
+4136	auditors
+4137	SIPOC Sheet (As-Is / To-Be)
+4138	As-Is vs To-Be Comparison
+4139	Task Procedure (Use Case)
+4140	Task performers
+4141	trainees
+4142	BPMN Diagram Export
+4143	On procedure publication
+4144	analysts
+4145	Document Version History
+4146	Real time
+4147	Generated Files & Downloads Log
+4148	Process Architecture Cockpit
+4149	Daily
+4150	Document Control Cockpit
+4151	KPI Scorecard
+4152	Per analysis frequency
+4153	Monitoring Plan & Execution
+4154	Weekly
+4155	Risk & Opportunity Register
+4156	Compliance & Certification Cockpit
+4157	Nonconformity & CAPA Cockpit
+4158	Audit Report
+4159	Per audit
+4160	Management Review Pack
+4161	Per management review
+4162	Competence & Training Matrix
+4163	Supplier Scorecard
+4164	Tenant Configuration Audit Report
+4165	Management System Policy
+4166	Major.Minor
+4167	DRAFT until Published; SUPERSEDED after replacement
+4168	Logo
+4169	colour palette
+4170	fonts
+4171	cover page
+4172	header and footer
+4173	section order
+4174	show/hide sections
+4175	custom sections
+4176	language (EN/FR/AR)
+4177	watermark text
+4178	Title
+4179	standards in scope
+4180	commitments
+4181	approval block
+4182	version block
+4183	In Review
+4184	Approved
+4185	Published
+4186	Superseded
+4187	Archived
+4188	Word (DOCX)
+4189	PDF
+4190	name
+4191	RACSI
+4192	inputs/outputs
+4193	goals
+4194	tasks
+4195	monitoring methods
+4196	Excel (XLSX)
+4197	Composite Sheet
+4198	Member list
+4199	merged RACSI
+4200	consolidated KPIs
+4201	DRAFT when any element is not Active
+4202	colours
+4203	layout (horizontal/vertical)
+4204	levels displayed
+4205	show/hide documents and applications
+4206	macro processes
+4207	PowerPoint (PPTX)
+4208	SVG image
+4209	PNG image
+4210	SIPOC (As-Is or To-Be)
+4211	All eleven SIPOC fields
+4212	N/A (generated on demand)
+4213	None
+4214	highlight colour for changes
+4215	fields compared
+4216	Element
+4217	both states
+4218	change summary
+4219	Generated on demand
+4220	Header fields
+4221	BPMN diagram
+4222	step table
+4223	reporting
+4224	alerts
+4225	BPMN Diagram
+4226	Follows procedure version
+4227	Lane colours
+4228	shape labels
+4229	orientation
+4230	Pool, lanes, events, tasks, gateways
+4231	BPMN 2.0 XML
+4232	Initial quality policy
+4233	General Manager
+4234	Major
+4235	Integrated QHSE policy replacing quality policy
+4236	Added worker consultation commitment (ISO 45001 clause 5.4)
+4237	Editorial corrections to French translation
+4238	Pending
+4239	Minor
+4240	First information security policy
+4241	Added credit check activity reference
+4242	Sales Manager
+4243	To-Be design with LOTO and CMMS
+4244	Maintenance Manager
+4245	Production Manager
+4246	Added auditor independence custom section
+4247	QHSE Manager
+4248	First Sales composite sheet
+4249	As-Is SIPOC of order management
+4250	To-Be SIPOC updated with portal channel
+4251	First complaint registration procedure
+4252	Added duplicate-merge exception flow
+4253	Added unsafe-condition exception
+4254	Sales function process map
+4255	Quality Policy
+4256	Single-standard (QMS)
+4257	All sites; design, manufacture and delivery of products
+4258	Satisfy customer and applicable requirements; continually improve the QMS; set and review quality objectives; ensure competent personnel.
+4259	Intranet
+4260	notice boards
+4261	onboarding
+4262	QHSE Integrated Policy
+4263	Integrated (QHSE)
+4264	All sites and activities, including contractors on site
+4265	Quality: customer satisfaction and compliance. Environment: protection of the environment including pollution prevention; fulfilment of compliance obligations. OH&S: safe and healthy working conditions; eliminate hazards and reduce risks; consultation and participation of workers. Common: continual improvement and objectives framework.
+4266	supplier portal
+4267	Information Security Policy
+4268	Single-standard (ISMS)
+4269	IT systems and information assets of all sites
+4270	Protect confidentiality, integrity and availability of information; comply with legal and contractual requirements; continually improve the ISMS.
+4271	IT onboarding
+4272	Customer organization instance with its configuration.
+4273	Person with credentials and role assignments.
+4274	Named set of permissions and data scopes.
+4275	Management system standard in scope (e.g. ISO 9001, ISO 45001).
+4276	Policy for one standard (single-standard) or several standards (integrated, e.g. QHSE).
+4277	Internal or external issue affecting the management system.
+4278	Stakeholder with needs and expectations.
+4279	Measurable objective cascaded to functions and macro processes.
+4280	Tenant naming of hierarchy levels (Level 1 to Level n).
+4281	Abstract node of the process hierarchy (function, macro process, task or deeper level).
+4282	Level 1 process element (e.g. Sales, HR).
+4283	Level 2 process element decomposing a function.
+4284	Lowest-level process element of a branch (Level 3 or deeper).
+4285	Atomic sheet describing one macro process with all its attributes.
+4286	Sheet grouping two or more atomic macro process sheets.
+4287	Tenant-defined additional section appended to a sheet.
+4288	Responsible, Accountable, Consulted, Support and Informed roles for an item.
+4289	As-Is or To-Be SIPOC of a macro process or task.
+4290	Use case / procedure describing how a task is performed.
+4291	Step of a procedure in the normal flow or an exception flow.
+4292	BPMN 2.0 diagram generated from a procedure step table.
+4293	Generated map of a function with its macro processes, tasks, documents and applications.
+4294	Internal or reference document under lifecycle control.
+4295	Evidence retained per retention rule.
+4296	Customizable template per document type and output format.
+4297	Downloadable file rendered from a document version in one format.
+4298	Version of a governed document with lifecycle status.
+4299	Recipients to whom a document or sheet is distributed.
+4300	Business application related to process elements (e.g. ERP, CRM).
+4301	Drop-down list with system and custom values.
+4302	One value of a drop-down list.
+4303	Indicator with formula, unit, frequencies and RACSI.
+4304	Measured or computed KPI value for a period.
+4305	Monitoring mode and frequency applied to a macro process.
+4306	Risk related to a process element.
+4307	Opportunity related to a process element.
+4308	Control mitigating one or more risks.
+4309	Legal, regulatory or contractual requirement.
+4310	Certification held for a standard and scope.
+4311	Nonconformity, incident or complaint.
+4312	Action eliminating the cause of a nonconformity.
+4313	Planned set of audits for a period.
+4314	Finding recorded during an audit.
+4315	Competence required for a role.
+4316	Training delivered and its effectiveness.
+4317	External provider.
+4318	Equipment or infrastructure item.
+4319	Registered expression computing a KPI or KRI.
+4320	Notification raised by a rule or threshold.
+4321	Improvement proposal linked to a process element.
+4322	AI capability configuration and governance record.
+4323	Decision recorded in management review.
+4324	Cross-functional value stream grouping macro processes (E2E-01 to E2E-12).
+4325	Human Resources
+4326	Purchasing
+4327	QHSE Management
+4328	Frequency
+4329	Semi-annual
+4330	Annual
+4331	Per event
+4332	Every 2 years
+4333	Per production batch
+4334	Monitoring Mode
+4335	KPI Review
+4336	Management Review
+4337	Process Walk-through
+4338	Self-assessment
+4339	Customer Audit
+4340	Layered Process Audit
+4341	Output Format
+4342	Lifecycle Status
+4343	Draft management system policy clauses
+4344	Text Generation
+4345	IMS Manager accepts or edits each clause before review
+4346	Global
+4347	N/A (seeded)
+4348	Draft To-Be SIPOC fine-grained details and Go/No-Go criteria
+4349	Process Owner validates each SIPOC field
+4350	Draft procedure step sequence from To-Be SIPOC
+4351	Structured Generation
+4352	Process Owner confirms steps, actors and exceptions
+4353	Generate microlearning from a published procedure
+4354	Summarization
+4355	HR Manager approves module before assignment
+4356	Cross-map standard clauses to process elements
+4357	Compliance Officer confirms each mapping
+4358	Semantic search over published process documents
+4359	Retrieval-Augmented Q&A
+4360	Answers cite source documents; user judges relevance
+4361	Root cause suggestions from similar cases
+4362	Recommendation
+4363	Quality Manager validates causes in RCA workshop
+4364	Classify nonconformity criticality
+4365	Quality Manager confirms the proposed criticality
+4366	Compile management review input pack
+4367	IMS Manager reviews pack before circulation
+4368	Generate audit checklist from SIPOC and procedures
+4369	Auditor edits checklist before the audit
+4370	Predictive process risk scoring
+4371	Prediction
+4372	Risk Manager reviews alerts before action
+4373	Regulatory horizon scanning
+4374	Extraction
+4375	Compliance Officer confirms applicability
+4376	Summarize As-Is vs To-Be changes
+4377	Process Owner edits the change summary
+4378	Score automation candidates
+4379	Process Owner decides which tasks to automate
+4380	Propose KPI formula from KPI description
+4381	Data Steward validates formula before activation
+4382	Suggest distribution list from RACSI and interactions
+4383	Process Owner confirms recipients
+4384	Draft procedure steps in French and Arabic
+4385	Process Owner validates translated steps
+4386	Pending Approval
+4387	Draft composite sheet executive summary
+4388	IMS Manager edits summary before publication
+4389	Project
+4390	Run all tasks of UMS016 and download its outputs.
+4391	Edit
+4392	Always
+4393	Run all tasks of UMS022 and download its outputs.
+4394	Run all tasks of UMS031 and download its outputs.
+4395	Run all tasks of UMS032 and download its outputs.
+4396	Run all tasks of UMS039 and download its outputs.
+4397	Run all tasks of GRC001 and download its outputs.
+4398	Run all tasks of GRC010 and download its outputs.
+4399	Run all tasks of DMS082 and download its outputs.
+4400	Run all tasks of DMS095 and download its outputs.
+4401	Run all tasks of DMS101 and download its outputs.
+4402	Run all tasks of UMS011 and download its outputs.
+4403	Run all tasks of UMS012 and download its outputs.
+4404	Run all tasks of UMS013 and download its outputs.
+4405	Run all tasks of UMS014 and download its outputs.
+4406	Run all tasks of UMS015 and download its outputs.
+4407	Run all tasks of UMS005 and download its outputs.
+4408	Run all tasks of UMS021 and download its outputs.
+4409	Run all tasks of DMS015 and download its outputs.
+4410	Run all tasks of DMS020 and download its outputs.
+4411	Run all tasks of DMS021 and download its outputs.
+4412	Run all tasks of DMS022 and download its outputs.
+4413	Run all tasks of DMS026 and download its outputs.
+4414	Run all tasks of DMS030 and download its outputs.
+4415	DMS-ENT active for the tenant
+4416	Run all tasks of DMS062 and download its outputs.
+4417	Run all tasks of DMS075 and download its outputs.
+4418	DMS-LSCI active for the tenant
+4419	Run all tasks of DMS076 and download its outputs.
+4420	Run all tasks of DMS097 and download its outputs.
+4421	Run all tasks of DMS098 and download its outputs.
+4422	Run all tasks of DMS048 and download its outputs.
+4423	Run all tasks of DMS049 and download its outputs.
+4424	Run all tasks of DMS050 and download its outputs.
+4425	Run all tasks of DMS051 and download its outputs.
+4426	Run all tasks of DMS052 and download its outputs.
+4427	Run all tasks of DMS053 and download its outputs.
+4428	Run all tasks of DMS054 and download its outputs.
+4429	Run all tasks of DMS055 and download its outputs.
+4430	Run all tasks of DMS056 and download its outputs.
+4431	Run all tasks of DMS057 and download its outputs.
+4432	Run all tasks of DMS059 and download its outputs.
+4433	DMS-MARI active for the tenant
+4434	Run all tasks of DMS060 and download its outputs.
+4435	Run all tasks of DMS070 and download its outputs.
+4436	Run all tasks of DMS081 and download its outputs.
+4437	DMS-ESG active for the tenant
+4438	Run all tasks of UMS030 and download its outputs.
+4439	Run all tasks of GRC002 and download its outputs.
+4440	Run all tasks of GRC003 and download its outputs.
+4441	Run all tasks of GRC004 and download its outputs.
+4442	Run all tasks of GRC006 and download its outputs.
+4443	Run all tasks of GRC009 and download its outputs.
+4444	Run all tasks of DMS001 and download its outputs.
+4445	Run all tasks of DMS037 and download its outputs.
+4446	Run all tasks of DMS047 and download its outputs.
+4447	Run all tasks of DMS088 and download its outputs.
+4448	Run all tasks of UMS033 and download its outputs.
+4449	Run all tasks of UMS037 and download its outputs.
+4450	Run all tasks of UMS038 and download its outputs.
+4451	Run all tasks of UMS044 and download its outputs.
+4452	Run all tasks of GRC005 and download its outputs.
+4453	Run all tasks of DMS002 and download its outputs.
+4454	Run all tasks of DMS003 and download its outputs.
+4455	Run all tasks of DMS017 and download its outputs.
+4456	Run all tasks of DMS019 and download its outputs.
+4457	DMS-AI active for the tenant
+4458	Run all tasks of DMS034 and download its outputs.
+4459	Run all tasks of DMS035 and download its outputs.
+4460	Run all tasks of DMS044 and download its outputs.
+4461	Run all tasks of DMS063 and download its outputs.
+4462	Run all tasks of DMS064 and download its outputs.
+4463	Run all tasks of DMS065 and download its outputs.
+4464	Run all tasks of DMS066 and download its outputs.
+4465	Run all tasks of DMS067 and download its outputs.
+4466	Run all tasks of DMS068 and download its outputs.
+4467	Run all tasks of DMS069 and download its outputs.
+4468	Run all tasks of DMS090 and download its outputs.
+4469	Run all tasks of DMS092 and download its outputs.
+4470	Run all tasks of DMS096 and download its outputs.
+4471	Run all tasks of DMS099 and download its outputs.
+4472	Run all tasks of UMS035 and download its outputs.
+4473	Run all tasks of GRC008 and download its outputs.
+4474	Run all tasks of GRC007 and download its outputs.
+4475	Run all tasks of DMS018 and download its outputs.
+4476	Run all tasks of DMS032 and download its outputs.
+4477	Run all tasks of DMS036 and download its outputs.
+4478	Run all tasks of UMS006 and download its outputs.
+4479	Run all tasks of DMS043 and download its outputs.
+4480	Run all tasks of DMS085 and download its outputs.
+4481	Run all tasks of DMS091 and download its outputs.
+4482	Run all tasks of UMS001 and download its outputs.
+4483	Run all tasks of UMS047 and download its outputs.
+4484	Run all tasks of DMS004 and download its outputs.
+4485	Run all tasks of DMS013 and download its outputs.
+4486	Run all tasks of DMS028 and download its outputs.
+4487	Run all tasks of DMS033 and download its outputs.
+4488	Run all tasks of DMS084 and download its outputs.
+4489	Run all tasks of UMS045 and download its outputs.
+4490	Run all tasks of UMS046 and download its outputs.
+4491	Run all tasks of UMS048 and download its outputs.
+4492	Run all tasks of UMS051 and download its outputs.
+4493	Run all tasks of UMS052 and download its outputs.
+4494	Run all tasks of UMS054 and download its outputs.
+4495	Run all tasks of UMS055 and download its outputs.
+4496	Run all tasks of DMS073 and download its outputs.
+4497	Run all tasks of DMS074 and download its outputs.
+4498	Run all tasks of UMS007 and download its outputs.
+4499	Run all tasks of DMS008 and download its outputs.
+4500	Run all tasks of DMS009 and download its outputs.
+4501	Run all tasks of DMS029 and download its outputs.
+4502	Run all tasks of DMS041 and download its outputs.
+4503	Run all tasks of DMS046 and download its outputs.
+4504	Run all tasks of DMS058 and download its outputs.
+4505	Run all tasks of DMS061 and download its outputs.
+4506	Run all tasks of DMS072 and download its outputs.
+4507	Run all tasks of DMS077 and download its outputs.
+4508	Run all tasks of UMS027 and download its outputs.
+4509	Run all tasks of UMS028 and download its outputs.
+4510	Run all tasks of UMS029 and download its outputs.
+4511	Run all tasks of UMS010 and download its outputs.
+4512	Run all tasks of UMS034 and download its outputs.
+4513	Run all tasks of UMS036 and download its outputs.
+4514	Run all tasks of UMS040 and download its outputs.
+4515	Run all tasks of DMS010 and download its outputs.
+4516	Run all tasks of DMS011 and download its outputs.
+4517	Run all tasks of DMS016 and download its outputs.
+4518	Run all tasks of DMS023 and download its outputs.
+4519	Run all tasks of DMS042 and download its outputs.
+4520	Run all tasks of DMS086 and download its outputs.
+4521	Run all tasks of DMS089 and download its outputs.
+4522	Run all tasks of DMS006 and download its outputs.
+4523	Run all tasks of DMS007 and download its outputs.
+4524	Run all tasks of DMS045 and download its outputs.
+4525	Run all tasks of DMS071 and download its outputs.
+4526	Run all tasks of DMS078 and download its outputs.
+4527	Run all tasks of DMS079 and download its outputs.
+4528	Run all tasks of DMS080 and download its outputs.
+4529	Run all tasks of UMS017 and download its outputs.
+4530	Run all tasks of UMS041 and download its outputs.
+4531	Run all tasks of UMS057 and download its outputs.
+4532	Run all tasks of UMS062 and download its outputs.
+4533	Run all tasks of UMS063 and download its outputs.
+4534	Run all tasks of UMS064 and download its outputs.
+4535	Run all tasks of DMS005 and download its outputs.
+4536	Run all tasks of DMS012 and download its outputs.
+4537	Run all tasks of DMS027 and download its outputs.
+4538	Run all tasks of DMS031 and download its outputs.
+4539	Run all tasks of DMS039 and download its outputs.
+4540	Run all tasks of DMS040 and download its outputs.
+4541	Run all tasks of DMS093 and download its outputs.
+4542	Run all tasks of DMS100 and download its outputs.
+4543	Run all tasks of UMS002 and download its outputs.
+4544	Run all tasks of UMS023 and download its outputs.
+4545	Run all tasks of UMS024 and download its outputs.
+4546	Run all tasks of UMS025 and download its outputs.
+4547	Run all tasks of UMS026 and download its outputs.
+4548	Run all tasks of UMS042 and download its outputs.
+4549	Run all tasks of DMS014 and download its outputs.
+4550	Run all tasks of DMS038 and download its outputs.
+4551	Run all tasks of DMS083 and download its outputs.
+4552	Run all tasks of DMS094 and download its outputs.
+4553	Run all tasks of UMS049 and download its outputs.
+4554	Run all tasks of UMS059 and download its outputs.
+4555	Run all tasks of UMS056 and download its outputs.
+4556	Run all tasks of DMS024 and download its outputs.
+4557	Run all tasks of DMS025 and download its outputs.
+4558	Run all tasks of DMS087 and download its outputs.
+4559	Policy Approvals
+4560	Approve or reject policy versions.
+4561	To-Be Process Approvals
+4562	Approve To-Be process designs.
+4563	Management Review Decisions
+4564	Record management review decisions.
+4565	Employee
+4566	My Workspace
+4567	My Documents
+4568	Read, acknowledge and download documents.
+4569	View
+4570	Report a Problem
+4571	Declare nonconformities.
+4572	Submit an Idea
+4573	Submit improvement ideas.
+4574	Ask the IMS
+4575	Search procedures, sheets and SIPOC semantically.
+4576	AI Governance Officer
+4577	AI Governance
+4578	AI Use Case Activation
+4579	Activate AI use cases by scope.
+4580	Admin
+4581	Custom AI Approvals
+4582	Approve or reject custom AI use cases.
+4583	SME Essentials
+4584	Base
+4585	Monthly SaaS subscription per tenant; deployment multiplier applies (DEP-1 to DEP-3)
+4586	Up to 25 users; 25 GB; 500 generated files/month; hierarchy up to Level 4
+4587	Professional Multi-Standard IMS
+4588	Monthly SaaS subscription per tenant; deployment multiplier applies (DEP-1 to DEP-7)
+4589	Up to 100 users; 250 GB; 5,000 generated files/month; hierarchy up to Level 6
+4590	Enterprise Regulated IMS
+4591	Up to 500 users; 2 TB; 50,000 generated files/month; hierarchy up to Level 9
+4592	Automotive, Industrial & Manufacturing Pack
+4593	Industry
+4594	Monthly add-on to DMS-PRO or DMS-ENT
+4595	Inherits base pack limits
+4596	Life Sciences & Healthcare Pack
+4597	Food Safety & Consumer Goods Pack
+4598	Process, Energy & Infrastructure Pack
+4599	Aerospace & Defense Pack
+4600	Monthly add-on to DMS-ENT
+4601	Maritime & Shipbuilding Pack
+4602	Certification & Audit Accelerator
+4603	Capability
+4604	Monthly add-on to any base pack
+4605	AI Intelligence & Assurance
+4606	Monthly add-on to any base pack (DEP-1 to DEP-6)
+4607	20,000 AI requests/month; inherits base pack limits
+4608	ESG & Sustainability Pack
+4609	Behavior: Cost-conscious, time-poor, multi-role owners; want quick wins. Pain Points: No dedicated QHSE staff; complex enterprise tools; informal processes. Hopes: Achieve ISO 9001/14001/45001 certification quickly at low cost; digitize tribal knowledge; grow without breaking compliance.
+4610	25 GB
+4611	Simplified Process Modeling
+4612	Document Templates
+4613	Multi-Role User Management
+4614	Essential KPI Dashboard
+4615	Owner Dashboard
+4616	Simplified Risk Register
+4617	Simplified NCP
+4618	Behavior: Process-driven, multi-site, ISO-certified; require scalability and multi-standard support. Pain Points: Fragmented QHSE data; disconnected standards; manual audits; high cost of certification maintenance. Hopes: Unified IMS across standards; real-time visibility; automated audit readiness; predictable certification cycles.
+4619	250 GB
+4620	Process Architecture
+4621	Document Control
+4622	Performance Management
+4623	CAPA
+4624	Supplier Quality
+4625	Behavior: Highly regulated, multi-national, complex supply chains; require deep compliance and governance. Pain Points: Multiple certifications; regulatory scrutiny; audit overload; disconnected enterprise systems (ERP, MES, LIMS). Hopes: Single source of truth for compliance; predictive risk management; regulatory foresight; full traceability.
+4626	2 TB
+4627	All DMS-PRO modules + Advanced Governance + Multi-Tenant + Tenant Sovereignty + Formula Governance + Continuous Controls + Enterprise Simulation
+4628	Behavior: Safety-critical, high-volume, IATF/ISO 26262-driven; obsessed with PPM and OTD. Pain Points: Functional safety complexity; ASPICE compliance; supplier PPM escalation; conflict minerals. Hopes: Zero-defect manufacturing; ASIL/SIL compliance; multi-tier supplier visibility; certification without disruption.
+4629	ASIL/SIL Management
+4630	TARA
+4631	Welding Quality
+4632	APQP/PPAP
+4633	SPC
+4634	Behavior: FDA/MDR/JCI-driven; zero tolerance for patient risk; audit-intensive. Pain Points: Data integrity (ALCOA+); CSV compliance; cleanroom excursions; adverse events; OOS investigations. Hopes: Always audit-ready; zero 483s; MDR/IVDR compliance; patient safety excellence.
+4635	Medical Lab
+4636	Testing Lab
+4637	Clinical Data
+4638	Behavior: HACCP/FSSC/BRCGS-driven; recall-sensitive; supply chain intensive. Pain Points: Allergen cross-contamination; foreign body; supplier verification; cold chain; FSMA/FSVP compliance. Hopes: Zero recalls; full traceability; GFSI certification; consumer trust.
+4639	Allergen Management
+4640	Water Footprint
+4641	Behavior: OSHA PSM/NERC CIP-driven; asset-intensive; safety-critical. Pain Points: PSM compliance; mechanical integrity; NERC CIP audits; water efficiency; exposure monitoring. Hopes: Zero process safety incidents; regulatory compliance; asset reliability; ESG performance.
+4642	PHA
+4643	PSSR
+4644	MOC
+4645	Exposure Monitoring
+4646	Behavior: AS9100D/NADCAP-driven; ITAR-sensitive; national security. Pain Points: ITAR/EAR compliance; NADCAP audits; counterfeit parts; export control; CMMC. Hopes: Zero non-conformances; ITAR compliance; supply chain integrity; certification dominance.
+4647	ITAR/EAR
+4648	Crisis Communication
+4649	Behavior: SOLAS/MARPOL/IACS-driven; classification-society dependent. Pain Points: IMO compliance; welding quality; marine pollution; classification surveys. Hopes: Zero detentions; IACS classification; MARPOL compliance; on-time delivery.
+4650	Marine Pollution
+4651	Classification Surveys
+4652	Behavior: First-time certification or multi-standard expansion; time-sensitive. Pain Points: Costly consultants; long certification cycles; audit surprises; finding gaps late. Hopes: Faster certification; lower consulting cost; predictable audits; audit-ready at all times.
+4653	Certification Coordination
+4654	Multi-Standard Portfolio
+4655	Gap Diagnosis
+4656	Readiness Assessment
+4657	Behavior: Data-driven, innovation-focused; early adopters of AI. Pain Points: Reactive compliance; missed early warnings; manual RCA; slow CAPA. Hopes: Predictive risk; automated RCA; AI-assisted CAPA; foresight over hindsight.
+4658	AI Predictive Risk
+4659	Automated CAPA
+4660	NCP Knowledge Base (RAG)
+4661	AI Agent Orchestration
+4662	Automated Regulatory Scanning
+4663	Behavior: Investor-driven, customer-driven ESG; CSRD/TCFD reporting; sustainability goals. Pain Points: Scope 3 data; carbon accounting; ESG reporting frameworks; stakeholder pressure. Hopes: ESG compliance; net-zero trajectory; investor confidence; brand differentiation.
+4664	ESG Management
+4665	Carbon Footprint
+4666	Scope 3
+4667	Mobile Field Operations
+4668	Mobility
+4669	Native iOS/Android apps; offline data capture; photo/video/voice evidence; GPS tagging; barcode scanning
+4670	Behavior: Field-heavy operations (construction, utilities, field service). Pain Points: Paper forms; delayed data entry; poor field UX. Hopes: Real-time field data; evidence capture; remote oversight
+4671	Voice-to-Text Reporting
+4672	Hands-free incident/audit reporting; speech-to-text in EN/FR/AR; structured data extraction; auto-classification
+4673	Behavior: Multilingual workforces (MENA, Africa); hands-busy roles. Pain Points: Typing delays; language barriers; incomplete reports. Hopes: Fast, accurate, multilingual reporting
+4674	Augmented Reality Audits
+4675	AR overlays for audit guidance; step-by-step visual instructions; remote expert assistance; AR evidence capture
+4676	Behavior: Complex equipment; remote expertise needed. Pain Points: Auditor expertise gaps; travel costs; inconsistent audits. Hopes: Expert-guided audits; consistent quality; reduced travel
+4677	Digital Signatures (eIDAS)
+4678	Legally binding signatures; eIDAS/ESIGN compliance; automated workflows; signature audit trail
+4679	Behavior: Regulated industries; paper-heavy processes. Pain Points: Wet signatures; slow approvals; compliance risk. Hopes: Paperless; fast approvals; legal certainty
+4680	Trust
+4681	Immutable audit trail; tamper-proof records; integrity verification; regulator access
+4682	Behavior: Highly regulated; high-stakes compliance. Pain Points: Data tampering risk; audit verification cost. Hopes: Immutable trust; regulator confidence
+4683	Ecosystem
+4684	Supplier self-service; quality submissions; automated onboarding; performance dashboards; CAPA collaboration
+4685	Behavior: Complex supply chains; multi-tier visibility. Pain Points: Supplier data chase; manual SCARs. Hopes: Real-time supplier visibility; faster response
+4686	Customer Feedback Portal
+4687	CX
+4688	Customer self-service; complaint capture; auto-routing; lifecycle tracking; NCP/CAPA link
+4689	Behavior: B2C or B2B customer-facing. Pain Points: Complaints in email; slow resolution. Hopes: Fast resolution; customer trust
+4690	Low-Code Process Builder
+4691	Drag-and-drop workflow design; citizen developer enablement; sandbox testing; version governance
+4692	Behavior: Process-innovation-hungry; IT-constrained. Pain Points: IT backlog; slow change. Hopes: Rapid digitization; business autonomy
+4693	Marketplace Access
+4694	Access to templates, connectors, industry packs; third-party contributions; ratings/reviews
+4695	Behavior: Ecosystem-oriented; accelerator-seeking. Pain Points: Slow deployment; custom build cost. Hopes: Fast deployment; best practices reuse
+4696	Digital Twin Simulation
+4697	Digital twin of processes; scenario simulation; outcome prediction; optimization recommendations
+4698	Behavior: Innovation-focused; data-rich. Pain Points: Costly experiments; uncertain outcomes. Hopes: Virtual experimentation; confident decisions
+4699	Voice of Customer Analytics
+4700	Aggregate VoC from all sources; NLP theme identification; prioritization; impact measurement
+4701	Behavior: Customer-centric; data-driven. Pain Points: VoC noise; unclear priorities. Hopes: Systematic VoC; improvement prioritization
+4702	IoT Sensor Integration
+4703	Industry 4.0
+4704	Real-time sensor ingestion; threshold/anomaly detection; auto-triggered workflows; predictive quality models
+4705	Behavior: Industry 4.0; real-time visibility. Pain Points: Delayed detection; manual monitoring. Hopes: Real-time quality; predictive safety
+4706	Odoo ERP Integration
+4707	ERP
+4708	Sync master data (customers/suppliers/products); auto-create NCP from QC; pull Cost of Quality; push supplier audit findings
+4709	Behavior: Cost-conscious, agile SMEs. Pain Points: Data silos; manual reporting; unclear quality ROI. Hopes: Unified business view; automation; demonstrated quality ROI
+4710	Morocco: Most widely deployed ERP among SMEs. Europe: Growing modular alternative. Africa: "Fastest-growing ERP." Middle East: Recognized player
+4711	SAP ERP / S/4HANA Integration
+4712	Bidirectional material master sync; push inspection results to SAP QM; pull production/batch data; align GRC risk
+4713	Behavior: Complex, regulated, global. Pain Points: SAP-QHSE disconnect; data latency; compliance gaps. Hopes: Closed-loop quality; boardroom visibility; brand protection
+4714	Morocco: International groups. Europe: ~55% market share. Africa: Large enterprises. Middle East: GCC enterprises with ZATCA/WPS
+4715	ZenHR HRMS Integration
+4716	Sync employee records for RBAC; trigger onboarding/offboarding; pull absence data; push training/competency records
+4717	Behavior: MENA-focused, regulation-aware. Pain Points: HR-QHSE disconnect; manual compliance. Hopes: Unified workforce view; compliant operations
+4718	Middle East: Leading cloud HRMS for KSA and MENA; compliant with local labor laws
+4719	Personio HR Integration
+4720	Sync employee data; automate personnel files for audits; manage health & safety training; track absences
+4721	Behavior: Efficiency-focused European SMEs. Pain Points: Fragmented HR/QHSE systems. Hopes: Single source of truth; compliance proof
+4722	Europe: Leading HR platform for SMEs (200–1,000 employees)
+4723	HubSpot CRM Integration
+4724	CRM
+4725	Auto-create complaints from deals/tickets; link CSAT/NPS; trigger investigations; push resolution back
+4726	Behavior: Customer-centric, marketing-led. Pain Points: CX-QHSE silo; recurring complaints. Hopes: Truly customer-centric; loyalty
+4727	Morocco: Popular with startups/SMEs. Europe: Primary CRM. Africa: Widely used. Middle East: Recognized CRM
+4728	Siemens Opcenter MES Integration
+4729	MES
+4730	Capture production data; trigger NCP from shop floor; push batch/genealogy; digital work instructions
+4731	Behavior: Operations excellence, Industry 4.0. Pain Points: Time-to-quality gap; large non-conforming batches. Hopes: Real-time QC; zero defects
+4732	Europe: Leading MES. Africa: Dominant industrial automation. Middle East: Major GCC player
+4733	Thermo Fisher SampleManager LIMS
+4734	LIMS
+4735	Auto-create OOS/OOT investigations; sync sample results; manage calibration/competence; ensure data integrity
+4736	Behavior: Scientific, regulated. Pain Points: LIMS-QMS disconnect; manual entries. Hopes: Audit-ready at all times
+4737	Europe: Major LIMS player. Africa: Kenya Ministry of Health. Middle East: MAAZ in Saudi Arabia
+4738	ManWinWin CMMS Integration
+4739	CMMS
+4740	Trigger NCP/work order from equipment failure; sync calibration schedules; pull equipment history; manage spare parts quality
+4741	Behavior: Asset-intensive, pragmatic. Pain Points: Unpredictable downtime; no link to QHSE. Hopes: Proactive maintenance; reliability excellence
+4742	Morocco/Africa: Strong in PALOP and Zambia. Europe: Established in Southern Europe
+4743	EcoOnline EHS Software Integration
+4744	Consolidate incident reporting; sync chemical inventories/SDS; manage audits; roll up ESG metrics
+4745	Behavior: Multinational, integrated GRC. Pain Points: Fragmented EHS/QHSE data. Hopes: Unified One Company, One System
+4746	Europe: Leading EHSQ SaaS. Africa: Available for South Africa
+4747	AVEVA System Platform / SCADA
+4748	SCADA
+4749	Ingest real-time sensor data; auto-trigger NCP on threshold breach; use historical data for AI; unified dashboard
+4750	Behavior: Asset-intensive, digital transformation. Pain Points: OT/IT gap; missed warnings. Hopes: Unlock operational data; proactive prevention
+4751	Europe: Market leader. Africa: Expanding in mining/energy. Middle East: Major modernization projects
+4752	Cercli Payroll Integration
+4753	Payroll
+4754	Sync employee/payroll data; calculate wages for medical leave; provide payroll data for fatigue analysis; labor law compliance
+4755	Behavior: GCC-focused, WPS-compliant. Pain Points: Complex labor laws across GCC. Hopes: Compliant payroll linked to operations
+4756	Middle East: Modern employee data platform for MENA; automates payroll, compliance, reimbursement
+4757	PaySpace Payroll Integration
+4758	Sync employee data across 40+ African countries; automate statutory contributions; manage cross-border payroll; DEI metrics
+4759	Behavior: Multi-country African operators. Pain Points: Legislative compliance across regimes. Hopes: Unified African workforce view
+4760	Africa: True cloud HR/payroll across 40+ countries; used by Absa Group
+4761	SaaS (Multi-Tenant Shared)
+4762	Shared infrastructure, logical isolation
+4763	SMEs, mid-market
+4764	Logical
+4765	Vendor-controlled
+4766	Public Cloud — Multi-Tenant Subscription
+4767	Dedicated instance on shared cloud, multi-tenant logic
+4768	Mid-market, multi-site
+4769	Logical + instance
+4770	Public Cloud — Single-Tenant Subscription
+4771	Dedicated infrastructure, single customer
+4772	Enterprise, regulated
+4773	Physical + logical
+4774	Vendor-controlled region
+4775	Customer Private Cloud
+4776	Customer's AWS/Azure/GCP tenancy
+4777	Large enterprise, regulated
+4778	Physical + customer-controlled
+4779	Customer-controlled
+4780	Customer On-Prem (Data Center)
+4781	Customer's own data center
+4782	Regulated industries
+4783	Full isolation
+4784	Fully customer-controlled
+4785	Hybrid (Cloud + On-Prem)
+4786	Mix of cloud SaaS + on-prem edge
+4787	Distributed operations
+4788	Mixed
+4789	Customer On-Prem — Air-Gapped
+4790	Fully isolated, no internet
+4791	Defense, government, critical infrastructure
+4792	Physical + network
+4793	SME Cluster (V-30)
+4794	Owner-operated; cost-conscious; multi-role employees; informal processes; growth-driven
+4795	No QHSE staff; complex enterprise tools; manual compliance; fear of audits
+4796	Fast certification; low cost; digital tribal knowledge; scale without breaking
+4797	Professional Cluster (MFG, ELE, AEC, CON, RET, DST, LOG, RFA, TEL, SSE, PED, PUED)
+4798	Process-driven; ISO-certified; multi-site; efficiency-focused
+4799	Fragmented QHSE; disconnected standards; manual audits; high certification cost
+4800	Unified IMS; real-time visibility; automated audit readiness
+4801	Enterprise Regulated Cluster (AER, HLS, PHM, PHA, ENG, PCH, SHB, SEM, HCA)
+4802	Highly regulated; multi-national; complex supply chains; audit-intensive
+4803	Multiple certifications; regulatory scrutiny; enterprise system silos
+4804	Single source of truth; predictive risk; regulatory foresight; full traceability
+4805	Automotive Cluster (AUT, IND, SEM, FAB, MFG)
+4806	Safety-critical; high-volume; IATF/ISO 26262-driven; PPM/OTD-obsessed
+4807	Functional safety; ASPICE; supplier PPM; conflict minerals
+4808	Zero defects; ASIL/SIL compliance; multi-tier visibility
+4809	Life Sciences Cluster (HLS, PHM, PHA, HCA)
+4810	FDA/MDR/JCI-driven; zero tolerance for patient risk; audit-intensive
+4811	Data integrity; CSV; cleanroom; adverse events; OOS
+4812	Always audit-ready; zero 483s; MDR compliance; patient safety
+4813	Food & CPG Cluster (FNB, CPG, PCI, PPG)
+4814	HACCP/FSSC-driven; recall-sensitive; supply chain intensive
+4815	Allergen; foreign body; supplier verification; FSMA/FSVP
+4816	Zero recalls; full traceability; GFSI certification
+4817	Process & Energy Cluster (ENG, PCH, INF)
+4818	OSHA PSM/NERC CIP-driven; asset-intensive; safety-critical
+4819	PSM; mechanical integrity; NERC CIP; water efficiency
+4820	Zero process safety incidents; asset reliability; ESG
+4821	Aerospace Cluster (AER)
+4822	AS9100D/NADCAP-driven; ITAR-sensitive; national security
+4823	ITAR/EAR; NADCAP audits; counterfeit parts; CMMC
+4824	Zero non-conformances; ITAR compliance; certification dominance
+4825	Maritime Cluster (SHB)
+4826	SOLAS/MARPOL/IACS-driven; classification-society dependent
+4827	IMO compliance; welding quality; marine pollution
+4828	Zero detentions; IACS classification; on-time delivery
+4829	Standard
+4830	Professional
+4831	Enterprise
+4832	3-year
+4833	Base Pack + 1 Industry Pack
+4834	Base Pack + 1 Industry + 1 Capability
+4835	Base Pack + 1 Industry + 2 Capabilities
+4836	Base Pack + 2 Industry + 2 Capabilities
+4837	Enterprise Agreement (3-year)
+4838	Customer Order Management
+4839	Customer Complaint Handling
+4840	Recruitment & Onboarding
+4841	Competence & Training
+4842	Production Planning & Control
+4843	Equipment Maintenance
+4844	Supplier Selection & Evaluation
+4845	Purchase Order Management
+4846	Document & Record Control
+4847	Receive and register order
+4848	Sales Administrator
+4849	Task (lowest level)
+4850	Review order
+4851	Intermediate element
+4852	Check technical feasibility
+4853	Check capacity and delivery date
+4854	Production Planner
+4855	Check credit and pricing
+4856	Verify customer credit limit
+4857	Finance Manager
+4858	Validate price against price list
+4859	Confirm order to customer
+4860	Register complaint
+4861	Investigate complaint
+4862	Respond to customer and close complaint
+4863	Define recruitment need
+4864	Line Manager
+4865	Select candidate
+4866	Onboard new employee
+4867	Identify training needs
+4868	Deliver training
+4869	Trainer
+4870	Evaluate training effectiveness
+4871	Plan production
+4872	Release production order
+4873	Monitor production
+4874	Shift Supervisor
+4875	Plan preventive maintenance
+4876	Perform maintenance intervention
+4877	Maintenance Technician
+4878	Lock-out/tag-out equipment
+4879	Execute intervention
+4880	Restart and verify equipment
+4881	Pre-qualify supplier
+4882	Evaluate supplier performance
+4883	Create purchase requisition
+4884	Requester
+4885	Issue purchase order
+4886	Receive and inspect goods
+4887	Warehouse Keeper
+4888	Create or revise document
+4889	Document Author
+4890	Approve and publish document
+4891	Archive obsolete documents
+4892	Report and follow up audit
+4893	Customer purchase orders and requests for quotation; price list; production capacity; customer credit status
+4894	Order confirmation; registered sales order in ERP; order rejection notice
+4895	Confirm 100% of feasible orders within 48 h; zero orders accepted beyond capacity; zero pricing errors
+4896	1 Sales Manager, 2 Sales Administrators (order entry, customer contact); competence in product range and ERP
+4897	ERP order module; CRM; e-mail; order review checklist in DynamicMS
+4898	Sales team; Production Manager; Finance Manager; QHSE Manager
+4899	Customer complaints (portal, e-mail, phone); delivery and batch records
+4900	Registered complaint; investigation report; customer response; corrective action request
+4901	Acknowledge complaints within 24 h; close 90% within 15 working days; reduce repeat complaints
+4902	Sales Administrator (registration), QHSE Manager (investigation); competence in root cause analysis
+4903	CRM ticketing; DynamicMS NC module; laboratory for sample analysis
+4904	Sales team; QHSE Manager; Production Manager; General Manager
+4905	QHSE Engineer
+4906	Approved headcount; job descriptions; candidate applications
+4907	Signed employment contract; completed onboarding checklist; employee record in HRIS
+4908	Fill approved positions within 45 days; complete onboarding including OH&S induction before first shift
+4909	HR Manager, HR Assistant; interview panel of line managers
+4910	HRIS; job boards; onboarding portal
+4911	HR team; Line Managers; QHSE Manager
+4912	HR Assistant
+4913	Competence requirements per role; competence gap assessments; training requests
+4914	Annual training plan; training records; effectiveness evaluations
+4915	Close 80% of competence gaps within the year; 100% mandatory safety training on time
+4916	HR Manager, internal trainers, external training providers
+4917	HRIS; e-learning platform; DynamicMS competence matrix
+4918	Confirmed sales orders; stock levels; capacity calendar; maintenance plan
+4919	Production plan; released production orders; batch records; production reports
+4920	On-time production start above 95%; scrap rate below 2%; zero environmental incidents
+4921	Production Manager, Production Planner, 3 Shift Supervisors, operators
+4922	ERP planning module; production lines; spill kits and retention tanks
+4923	Production team; Sales Manager; Maintenance Manager; QHSE Manager
+4924	Equipment register; preventive maintenance plan; breakdown requests
+4925	Completed interventions; maintenance reports; updated equipment history
+4926	Planned maintenance compliance above 95%; zero lost-time injuries during interventions
+4927	Maintenance Manager, 4 technicians with electrical and mechanical authorizations
+4928	CMMS; tooling; lock-out/tag-out kits; spare-parts store
+4929	Maintenance team; Production Manager; QHSE Manager
+4930	Spare-parts Storekeeper
+4931	Purchasing needs; supplier questionnaires; delivery and quality performance data
+4932	Approved supplier list; supplier evaluation reports; development plans
+4933	100% of critical suppliers evaluated annually; supplier on-time delivery above 95%
+4934	Purchasing Manager, Buyers; QHSE Engineer for supplier audits
+4935	ERP supplier module; supplier portal
+4936	Purchasing team; QHSE Manager; Production Manager
+4937	Purchase requisitions; approved supplier list; budgets
+4938	Issued purchase orders; goods receipts; receiving inspection records
+4939	Issue purchase orders within 2 days of approved requisition; zero orders to non-approved suppliers
+4940	Buyers, Warehouse Keepers
+4941	ERP purchasing module; receiving area and inspection tools
+4942	Purchasing team; Warehouse; Finance Manager
+4943	New or changed documents; change requests; retention rules
+4944	Approved and published document versions; distribution acknowledgements; archived versions
+4945	Approval cycle within 5 working days; zero use of obsolete documents found in audits
+4946	Document Controller; process owners as authors
+4947	DynamicMS document control; e-signature
+4948	All process owners; QHSE Manager
+4949	Audit programme; process risks; previous audit results; SIPOC and procedures as audit criteria
+4950	Audit plans; audit reports; findings; follow-up records
+4951	Complete 100% of the audit programme; close findings within agreed dates
+4952	QHSE Manager, 4 qualified internal auditors
+4953	DynamicMS audit module; tablets for on-site audits
+4954	QHSE Manager; General Manager; audited process owners
+4955	Internal Auditors
+4956	Provides input to
+4957	Confirmed sales orders and delivery dates
+4958	Receives output from
+4959	Complaint trends affecting order terms
+4960	Production-related complaint causes
+4961	Supplier-related complaint causes
+4962	New employees requiring induction training
+4963	Technician authorizations
+4964	Confirmed orders
+4965	Bidirectional
+4966	Maintenance windows and equipment availability
+4967	Material requirements
+4968	Spare-parts requisitions
+4969	Approved supplier list
+4970	Delivery and receiving inspection results
+4971	Published procedures and forms
+4972	Current document versions used as audit criteria
+4973	Findings requiring document revision
+4974	Complaint data used in audit planning
+4975	Register every order without error
+4976	Order captured in ERP and CRM
+4977	Sales Administrator checks order completeness (items, quantities, delivery address, requested date), creates the sales order in ERP and links the CRM opportunity.
+4978	Accept only orders that can be fulfilled
+4979	Feasibility, capacity, credit and price checks
+4980	Review decomposed into three activities (technical feasibility, capacity and delivery date, credit and pricing); any failed check leads to a negotiation or rejection.
+4981	Confirm within 48 h
+4982	Order confirmation sent
+4983	Order confirmation generated from ERP with confirmed delivery date and sent to the customer; signed confirmation filed as record.
+4984	Capture complaint within 24 h
+4985	Complaint registered and acknowledged
+4986	Complaint recorded with evidence, product and batch references, severity assessed and acknowledgement sent to the customer.
+4987	Identify root cause
+4988	Investigation and root cause analysis
+4989	QHSE Manager analyses samples and records, performs root cause analysis and decides whether a corrective action is required.
+4990	Close 90% within 15 working days
+4991	Response and closure
+4992	Sales Manager sends the response with actions taken; the complaint is closed once the customer accepts or after 10 working days without reply.
+4993	Justify each hire
+4994	Approved recruitment request
+4995	Line Manager raises a request against approved headcount with job description reference.
+4996	Hire the best-fit candidate
+4997	Screening, interviews, offer
+4998	HR screens applications, organizes panel interviews and issues the offer after reference checks.
+4999	Operational and safe from day one
+5000	Induction and onboarding checklist
+5001	HR runs the onboarding checklist including OH&S induction, IT access and job-specific training assignment.
+5002	Cover all competence gaps
+5003	Line Managers assess competence against requirements and record gaps.
+5004	Deliver planned training on time
+5005	Training sessions
+5006	Trainers deliver sessions; attendance and assessments are recorded.
+5007	Verify competence acquired
+5008	Line Managers evaluate effectiveness 30 to 90 days after training and update the competence matrix.
+5009	Feasible plan meeting delivery dates
+5010	Weekly production plan
+5011	Planner builds the plan from confirmed orders, stock, capacity and maintenance windows.
+5012	Release only when materials and equipment are ready
+5013	Order release
+5014	Production Manager releases orders after material availability and equipment status checks.
+5015	Detect deviations early
+5016	Line monitoring
+5017	Shift Supervisors monitor output, scrap and environmental controls and record deviations.
+5018	Maintain equipment availability
+5019	Preventive plan
+5020	Maintenance Manager plans interventions from CMMS schedules aligned with production windows.
+5021	Safe and effective intervention
+5022	Lock-out, intervention, restart
+5023	Decomposed into lock-out/tag-out, intervention execution and restart verification activities.
+5024	Approve only capable suppliers
+5025	Qualification
+5026	Questionnaire, certificates review and, for critical suppliers, an on-site audit.
+5027	Measure and improve supplier performance
+5028	Periodic evaluation
+5029	Quarterly scorecard on delivery, quality and responsiveness; development plan below threshold.
+5030	Express justified needs
+5031	Requisition
+5032	Requester creates a requisition in ERP within budget.
+5033	Order from approved suppliers only
+5034	Purchase order
+5035	Buyer selects an approved supplier, negotiates and issues the order.
+5036	Accept only conforming goods
+5037	Receiving inspection
+5038	Warehouse Keeper checks quantities and documents; samples are inspected per plan.
+5039	Produce clear, correct documents
+5040	Drafting
+5041	Author drafts or revises the document in DynamicMS with change summary.
+5042	Publish approved versions only
+5043	Approval and publication
+5044	Reviewers comment, approver signs, the system publishes and distributes the version.
+5045	Prevent use of obsolete versions
+5046	Archiving
+5047	Superseded versions are archived and removed from points of use.
+5048	Risk-based audit coverage
+5049	Lead Auditor prepares the plan, scope, criteria and team.
+5050	Collect objective evidence
+5051	Audit execution
+5052	Opening meeting, interviews, evidence sampling against SIPOC and procedures, closing meeting.
+5053	Findings closed on time
+5054	Report and follow-up
+5055	Report issued, corrective actions tracked to closure and effectiveness verified.
+5056	Order confirmation lead time
+5057	Average hours from order receipt to confirmation
+5058	Hours
+5059	Orders accepted beyond capacity
+5060	Number of confirmed orders later rescheduled for capacity
+5061	Count
+5062	Complaints closed within 15 days
+5063	Complaints closed within 15 working days / complaints closed x 100
+5064	Repeat complaint rate
+5065	Complaints with same root cause in 12 months / total complaints x 100
+5066	Time to fill
+5067	Average days from approved request to signed contract
+5068	Days
+5069	Mandatory safety training completion
+5070	Employees with valid mandatory safety training / employees requiring it x 100
+5071	Scrap rate
+5072	Scrap quantity / total produced quantity x 100
+5073	On-time production start
+5074	Orders started on planned date / orders released x 100
+5075	Preventive maintenance compliance
+5076	Preventive interventions done on time / planned x 100
+5077	Lost-time injuries during maintenance
+5078	Number of lost-time injuries during interventions
+5079	Orders to non-approved suppliers
+5080	Purchase orders issued to non-approved suppliers
+5081	Average working days from submission to publication
+5082	Findings closed by due date / findings due x 100
+5083	Customer-specific requirements
+5084	Table
+5085	Automotive customers require PPAP level 3 for new parts; food-contact customers require declaration of compliance.
+5086	Customer communication templates
+5087	Attachment
+5088	Acknowledgement and closure letter templates in English, French and Arabic.
+5089	Environmental aspects of the process
+5090	Solvent emissions (significant), wastewater (significant), packaging waste (not significant) with operational controls.
+5091	OH&S hazards and controls
+5092	Checklist
+5093	Electrical isolation verified; mechanical energy released; permit to work signed; PPE checked.
+5094	Used oil (hazardous waste) collected in labelled containers; refrigerant handling by certified technician.
+5095	Auditor independence matrix
+5096	Each auditor mapped to processes they must not audit.
+5097	Sales Function Composite Sheet
+5098	Order by sheet; merge RACSI by role; union of risks, documents and applications; KPIs listed per member
+5099	Operations Composite Sheet (Production + Maintenance + Purchasing)
+5100	Custom
+5101	Order by value chain; interactions between members shown as a flow; shared resources de-duplicated
+5102	QHSE Management Composite Sheet
+5103	Order by ISO 9001 clause; members' KPIs consolidated in one table
+5104	Order received by e-mail or phone
+5105	Customers; sales representatives
+5106	Customer order (unstructured e-mail); verbal price information
+5107	Orders re-keyed manually into ERP; feasibility checked informally by phone with production; no credit check before confirmation; confirmations sent from personal mailboxes.
+5108	Order confirmation (no confirmed delivery date)
+5109	Customer; Production
+5110	Order confirmed or verbally rejected
+5111	None formalized
+5112	Order received through CRM, customer portal or e-mail
+5113	Customers; CRM; Finance (credit status); Production (capacity)
+5114	Structured customer order; price list; capacity calendar; credit status
+5115	Orders captured once in CRM and synchronized to ERP; review performed through three activities (feasibility, capacity, credit and pricing) with evidence; confirmation generated from ERP with confirmed date.
+5116	Order confirmation with confirmed delivery date; sales order in ERP
+5117	Customer; Production; Warehouse
+5118	Order confirmed; order rejected with reason
+5119	Go if feasible, capacity available by requested date, credit within limit and price validated; otherwise No-Go and negotiation
+5120	Complaint received by phone or e-mail
+5121	Complaint description
+5122	Complaints logged in a spreadsheet; investigation assigned informally; no response deadline.
+5123	Customer reply
+5124	Reply sent
+5125	Complaint received via customer portal, CRM ticket, e-mail or phone
+5126	Customers; CRM
+5127	Complaint with evidence; product and batch references
+5128	Registration within 24 h; severity classification; investigation with root cause analysis; corrective action for major complaints; response and closure with customer acceptance.
+5129	Investigation report; customer response; corrective action request
+5130	Customer; Production; QHSE
+5131	Complaint closed accepted; complaint closed without reply after 10 days
+5132	Go to corrective action if severity Major or repeat root cause; Go to closure if customer accepts response
+5133	Line Managers; General Manager
+5134	Approved headcount; job description
+5135	Sourcing, screening, interviews, offer, onboarding with OH&S induction before first shift.
+5136	Signed contract; onboarding checklist completed
+5137	New employee; Line Manager
+5138	Employee operational; position cancelled
+5139	Go to offer if panel score >= 70% and references positive
+5140	Annual planning cycle or new competence gap
+5141	Line Managers; HR
+5142	Competence requirements; gap assessments
+5143	Needs consolidated into annual plan; sessions delivered; effectiveness evaluated 30-90 days later.
+5144	Training plan; training records; effectiveness evaluations
+5145	Employees; Line Managers
+5146	Competence confirmed; retraining scheduled
+5147	Go to competence confirmation if evaluation >= required level
+5148	Weekly planning cycle
+5149	Sales; Warehouse; Maintenance
+5150	Confirmed orders; stock; capacity; maintenance windows
+5151	Weekly plan built in ERP; orders released after material and equipment checks; line monitoring with scrap and environmental controls.
+5152	Production plan; released orders; batch records
+5153	Sales; Warehouse; Customers
+5154	Order completed; order put on hold
+5155	Go to release if materials available and equipment status Available
+5156	Breakdown reported by operator
+5157	Production operators
+5158	Verbal breakdown report
+5159	Mostly corrective maintenance; paper work orders; lock-out practiced inconsistently.
+5160	Repaired equipment
+5161	Equipment restarted
+5162	CMMS preventive schedule due or breakdown request
+5163	CMMS; Production
+5164	Maintenance plan; work order; equipment history
+5165	Preventive plan aligned with production windows; interventions under lock-out/tag-out with permit; restart verified by supervisor; history updated in CMMS.
+5166	Completed intervention; maintenance report; updated history
+5167	Production; QHSE
+5168	Equipment released to production; equipment quarantined
+5169	Go to restart only if lock-out removed by the person who applied it and functional test passed
+5170	New supplier needed or evaluation period ends
+5171	Purchasing; QHSE
+5172	Supplier questionnaire; certificates; performance data
+5173	Pre-qualification with questionnaire and certificates; audit for critical suppliers; quarterly scorecards; development plan below threshold.
+5174	Approved supplier list; evaluation reports
+5175	Buyers; Production
+5176	Supplier approved; supplier blocked
+5177	Go to approval if qualification score >= 70 and no critical finding
+5178	Approved purchase requisition
+5179	Requesters; ERP
+5180	Requisition; approved supplier list; budget
+5181	Supplier selected from approved list; order issued in ERP; goods received and inspected per sampling plan.
+5182	Purchase order; goods receipt; inspection record
+5183	Requester; Finance
+5184	Goods accepted; goods rejected and returned
+5185	Go to acceptance if quantity and inspection results conform
+5186	Document change requested by e-mail
+5187	Word files on shared drive
+5188	Documents edited on shared drive; approvals by e-mail; old copies remain in folders.
+5189	Updated file on shared drive
+5190	File saved
+5191	Change request or scheduled review in DynamicMS
+5192	Process owners; auditors
+5193	Draft document; change summary
+5194	Drafting in DynamicMS; review and approval workflow; automatic versioning; publication with distribution and acknowledgement; superseded versions archived.
+5195	Published version; generated files (Word, PDF); acknowledgements
+5196	All employees; auditors
+5197	Version published; change rejected
+5198	Go to publication only after approval by the Accountable role different from the author
+5199	Audit programme period starts
+5200	QHSE; Top Management
+5201	Audit programme; process risks; SIPOC and procedures
+5202	Risk-based planning; audit against To-Be SIPOC and procedures; report within 5 days; follow-up of findings.
+5203	Audit plan; audit report; findings
+5204	Process Owners; Top Management
+5205	Audit closed; follow-up audit scheduled
+5206	Go to closure when all findings have accepted action plans
+5207	Order line prices to validate
+5208	Sales Administrator; ERP
+5209	Order lines; current price list; discount rules
+5210	Each line price compared with the price list; discounts above 10% routed to Sales Manager.
+5211	Validated prices; discount approvals
+5212	Prices validated; prices sent back for negotiation
+5213	Go if all lines match the price list or approved discount
+5214	Complaint received on any channel
+5215	Complaint description; evidence; product and batch references
+5216	Record complaint, check duplicates, classify severity, send acknowledgement within 24 h.
+5217	Registered complaint; acknowledgement
+5218	Customer; QHSE Manager
+5219	Complaint registered; duplicate merged
+5220	Go to investigation if complaint is valid and not a duplicate
+5221	Work order assigned
+5222	Paper work order
+5223	Technician executes repair; parts taken from store without record.
+5224	Repair done
+5225	Equipment locked out and permit signed
+5226	Maintenance Manager; CMMS
+5227	Work order; spare parts; permit to work
+5228	Execute intervention per work instruction; record parts used in CMMS; record findings and time spent.
+5229	Intervention report; parts consumption record
+5230	Shift Supervisor; Maintenance Manager
+5231	Intervention completed; intervention escalated
+5232	Go to restart activity if intervention completed and area cleaned
+5233	Approved purchase requisition assigned to buyer
+5234	Requester; ERP
+5235	Requisition; approved supplier list
+5236	Select approved supplier; request quotation if above threshold; issue order; send to supplier.
+5237	Issued purchase order
+5238	Supplier; Requester
+5239	Order issued; requisition returned
+5240	Go to issue only if supplier is approved and budget available
+5241	Draft version submitted for approval
+5242	Draft version; change summary
+5243	Review comments resolved; approver signs; system assigns version, publishes and distributes.
+5244	Published version; distribution notifications
+5245	Version published; version rejected
+5246	Go if all review comments resolved and approver is not the author
+5247	Register customer complaint
+5248	Capture every complaint within 24 h with complete information and acknowledge it.
+5249	Applies to all complaints from customers on any channel, for all products; excludes warranty claims handled by distributors.
+5250	Complaint: expression of dissatisfaction about a product or service. Duplicate: complaint on the same batch and defect already registered.
+5251	Customer (portal, e-mail, phone); CRM (HubSpot)
+5252	Complaint form; product and batch references; photos or samples; CRM ticket
+5253	Complaint registered; duplicate merged; complaint rejected as out of scope
+5254	Valid complaint? Duplicate? Severity Major?
+5255	Weekly complaint register report to Sales Manager; monthly trend report to management
+5256	Alert if not acknowledged within 24 h; alert to QHSE Manager when severity Major
+5257	Issue purchase orders to approved suppliers within 2 days of requisition approval.
+5258	All purchases of materials, spare parts and services above the petty-cash threshold.
+5259	Approved supplier: supplier listed as Approved in the approved supplier list. Quotation threshold: purchases above the tenant-defined amount.
+5260	Supplier; ERP (Odoo)
+5261	Purchase requisition; approved supplier list; quotations; purchase order
+5262	Purchase order issued; requisition returned to requester
+5263	Supplier approved? Quotation required? Budget available?
+5264	Monthly purchase order report; supplier spend report
+5265	Alert if requisition pending more than 2 days; block if supplier not approved
+5266	Execute maintenance intervention
+5267	Perform maintenance safely and restore equipment function.
+5268	Preventive and corrective interventions on production equipment after lock-out/tag-out.
+5269	Permit to work: authorization to intervene on isolated equipment. LOTO: lock-out/tag-out.
+5270	CMMS (ManWinWin); spare-parts supplier for urgent parts
+5271	Work order; permit to work; work instruction; spare parts; intervention report
+5272	Intervention completed; intervention escalated to external contractor
+5273	Isolation verified? Parts available? Repair successful?
+5274	Intervention report per work order; monthly maintenance KPI report
+5275	Alert to QHSE Manager on any unsafe condition; alert if intervention exceeds planned duration by 50%
+5276	Publish only reviewed and approved document versions and inform users.
+5277	All controlled internal documents, sheets, SIPOC and procedures.
+5278	Accountable approver: role holding A in the document RACSI. Major change: change of content or requirements; minor: editorial.
+5279	None (internal)
+5280	Draft version; review comments; change summary; generated files
+5281	All comments resolved? Approver different from author? Major or minor change?
+5282	Document version history report; weekly pending approvals report
+5283	Alert if approval pending more than 5 working days; alert on overdue acknowledgements
+5284	Normal
+5285	Complaint received
+5286	Customer portal; e-mail; phone
+5287	Complaint message
+5288	Start Event
+5289	Record complaint details
+5290	CRM ticket; complaint form
+5291	Draft complaint record
+5292	Check validity and duplicates
+5293	CRM; DynamicMS complaint register
+5294	Validity decision
+5295	Exclusive Gateway
+5296	Go if in scope and no open complaint on same batch and defect
+5297	Classify severity
+5298	Severity matrix
+5299	Severity (Minor/Major)
+5300	Major if safety, regulatory or repeat defect
+5301	Send acknowledgement to customer
+5302	Acknowledgement template; e-mail
+5303	Acknowledgement
+5304	Complaint registered
+5305	Registered complaint
+5306	End Event
+5307	Exception
+5308	Merge duplicate into existing complaint
+5309	DynamicMS complaint register
+5310	Updated complaint
+5311	Inform customer complaint is out of scope
+5312	E-mail
+5313	Out-of-scope notice
+5314	Notify QHSE Manager of Major complaint
+5315	DynamicMS alert
+5316	Duplicate merged
+5317	Merged complaint
+5318	Requisition approved
+5319	Approved requisition
+5320	Select supplier from approved list
+5321	Approved supplier list; ERP
+5322	Selected supplier
+5323	Go only if supplier status Approved
+5324	Request quotations if above threshold
+5325	ERP; e-mail
+5326	Quotations
+5327	Go to order when best offer meets technical requirements
+5328	Check budget availability
+5329	ERP budget
+5330	Budget check
+5331	Go if remaining budget covers order amount
+5332	Issue and send purchase order
+5333	ERP purchase order
+5334	Purchase order issued
+5335	Issued order
+5336	Launch supplier pre-qualification
+5337	Supplier questionnaire
+5338	Qualification request
+5339	Return requisition to requester
+5340	Returned requisition
+5341	Permit to work; LOTO kit
+5342	Signed permit
+5343	Verify zero energy state
+5344	LOTO checklist
+5345	Verified isolation
+5346	Go only if all energy sources isolated and verified
+5347	Collect spare parts
+5348	CMMS; spare-parts store
+5349	Parts issued record
+5350	Go if all parts available
+5351	Perform intervention per work instruction
+5352	Work instruction; CMMS work order
+5353	Repaired or serviced equipment
+5354	Record intervention and parts in CMMS
+5355	Intervention report
+5356	Intervention completed
+5357	Closed work order
+5358	Stop work and report unsafe condition
+5359	DynamicMS incident form
+5360	Unsafe condition report
+5361	Order urgent parts or escalate to contractor
+5362	CMMS; ERP
+5363	Urgent purchase request
+5364	Draft submitted for approval
+5365	Submitted draft
+5366	Resolve review comments
+5367	DynamicMS review
+5368	Resolved comments
+5369	Go if all comments resolved
+5370	Approve version
+5371	Accountable approver
+5372	DynamicMS; e-signature
+5373	Approved version
+5374	Go if approver differs from author; classify change Major or Minor
+5375	Publish, generate files and distribute
+5376	DynamicMS templates
+5377	Published version; Word and PDF files; notifications
+5378	Version published
+5379	Published version
+5380	Return draft to author
+5381	Returned draft
+5382	Reject version
+5383	Rejection with reason
+5384	Reference Document
+5385	ISO 9001:2015 Quality management systems — Requirements
+5386	Active
+5387	ISO 14001:2015 Environmental management systems — Requirements
+5388	ISO 45001:2018 Occupational health and safety management systems — Requirements
+5389	ISO/IEC 27001:2022 Information security management systems — Requirements
+5390	ISO 19011:2018 Guidelines for auditing management systems
+5391	Applicable labour code and occupational safety regulations register
+5392	Applicable environmental regulations register
+5393	Customer general terms and framework contracts
+5394	Internal Document
+5395	Order review procedure
+5396	Customer complaint handling procedure
+5397	Recruitment and onboarding procedure
+5398	Training management procedure
+5399	Production planning procedure
+5400	Maintenance procedure including lock-out/tag-out
+5401	Supplier selection and evaluation procedure
+5402	Purchasing procedure
+5403	Document and record control procedure
+5404	Internal audit procedure
+5405	Price list
+5406	Job descriptions
+5407	Preventive maintenance plan
+5408	Signed order confirmations
+5409	Retained 10 years
+5410	Complaint files and responses
+5411	Retained 5 years
+5412	Recruitment files
+5413	Retained 2 years after decision
+5414	Training and competence records
+5415	Retained employment + 5 years
+5416	Production orders and batch records
+5417	Maintenance intervention reports
+5418	Retained asset life + 2 years
+5419	Supplier evaluation reports
+5420	Purchase orders and receiving inspection records
+5421	Document master list and distribution acknowledgements
+5422	Audit programme, plans and reports
+5423	Retained 6 years
+5424	Application
+5425	Odoo ERP (integration INT-01)
+5426	HubSpot CRM (integration INT-05)
+5427	Personio HR (integration INT-04)
+5428	ManWinWin CMMS (integration INT-08)
+5429	E-mail and office suite
+5430	Order accepted beyond available capacity
+5431	Open
+5432	Incorrect price quoted to customer
+5433	Late complaint response leading to customer loss
+5434	Key position left vacant
+5435	Unplanned equipment breakdown
+5436	Supplier delivery failure
+5437	Use of an obsolete document
+5438	Audit programme misses high-risk processes
+5439	Injury during maintenance intervention (OH&S)
+5440	Chemical spill during production (environment)
+5441	Opportunity
+5442	Customer self-service order portal
+5443	Use complaint data for product improvement
+5444	Structured onboarding improves retention
+5445	Condition-based maintenance from CMMS data
+5446	Supplier base consolidation
+5447	Remote audits for secondary sites
+5448	Automotive Pack
+5449	Aerospace Pack
+5450	Industrial Machinery Pack
+5451	Healthcare & Life Sciences Pack
+5452	Electronics & High-Tech Pack
+5453	AEC & Construction Pack
+5454	Food & Beverage Pack
+5455	Social & Solidarity Economy Pack
+5456	Pharmaceutical & Process Pack
+5457	Retail, Footwear & Apparel Pack
+5458	Consumer Packaged Goods Pack
+5459	Energy & Utilities Pack
+5460	Telecommunications Pack
+5461	Process/Petrochemical Pack
+5462	Shipbuilding Pack
+5463	Consumer Products Extended Pack
+5464	Process Industries Pack
+5465	Infrastructure Pack
+5466	Fabrication & Assembly Pack
+5467	Process/Packaged Goods Pack
+5468	Semiconductor & Electronics Mfg Pack
+5469	Retail Pack
+5470	Distribution Pack
+5471	Logistics Pack
+5472	Pharma Pack
+5473	Manufacturing (Generic) Pack
+5474	Private Education Pack
+5475	Public Education Pack
+5476	Healthcare (Providers) Pack
+5477	SME Pack

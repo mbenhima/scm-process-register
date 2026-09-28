@@ -1,0 +1,550 @@
+901	Rappel réglementaire
+902	Retards APQP/PPAP
+903	Lacunes de traçabilité
+904	Escalade PPM fournisseurs
+905	IATF 16949
+906	VDA 6.3
+907	QSB+
+908	Évaluation ISO 26262
+909	ISO/SAE 21434
+910	ASPICE
+911	AEC-Q
+912	LPA
+913	PPM
+914	Livraison à l'heure (OTD)
+915	Conformité ASIL
+916	Réalisation TARA
+917	Respect de l'APQP
+918	Approbation PPAP
+919	Défaillance terrain
+920	Mensuel
+921	Trimestriel
+922	Par soumission
+923	Aéronautique et défense
+924	Violations ITAR/EAR
+925	Défaillances de procédés NADCAP
+926	Pièces contrefaites
+927	Sécurité des vols
+928	Retards de certification
+929	CMMC
+930	Dépendance à des personnes clés
+931	AS9100D
+932	NADCAP
+933	Production EASA/FAA
+934	AS9120B
+935	Conformité ITAR
+936	AS9100 interne
+937	Inspections à la source client
+938	Rendement au premier passage
+939	Réussite NADCAP
+940	Conformité ITAR
+941	NC AS9100
+942	Traçabilité AS9120B
+943	Machines industrielles
+944	Sécurité des machines
+945	Sécurité fonctionnelle SIL
+946	Non-conformité CE
+947	Défauts de conception
+948	Défaillances de composants
+949	Blessure d'opérateur
+950	Cybersécurité des machines connectées
+951	Dossier technique CE
+952	EN ISO 13849-1
+953	EN 62061 SIL
+954	Revues de conception internes
+955	FAT client
+956	Organisme notifié
+957	Marquage CE
+958	Sécurité des machines
+959	Atteinte du SIL
+960	Revue de conception
+961	Réclamations garantie
+962	Santé et sciences de la vie
+963	Sécurité des patients
+964	Non-conformité FDA/MDR
+965	Défaillance de la maîtrise de la conception
+966	Assurance de stérilité
+967	Cybersécurité des dispositifs connectés
+968	Rappel
+969	Lacunes de l'évaluation clinique
+970	ISO 13485
+971	FDA 21 CFR 820
+972	Organisme notifié UE MDR
+973	ISO 14971
+974	ISO 14644
+975	Qualité interne
+976	MDR
+977	Réussite audit FDA
+978	Efficacité des CAPA
+979	Taux de réclamations
+980	Maîtrise de la conception
+981	Validation de la stérilisation
+982	Électronique et haute technologie
+983	Non-conformité RoHS/REACH
+984	Composants contrefaits
+985	Dommages ESD
+986	Défaillance des joints de soudure
+987	Chaîne d'approvisionnement
+988	Obsolescence
+989	Minerais de conflit
+990	IPC-A-610
+991	IPC-J-STD-001
+992	RoHS/REACH
+993	ISO 9001
+994	Audits clients
+995	ANSI/ESD S20.20
+996	IPC classe 3
+997	RoHS
+998	REACH SVHC
+999	Défauts de brasage
+1000	ESD
+1001	AEC et construction
+1002	Défaillance structurelle
+1003	Perte de données BIM
+1004	Incidents de sécurité
+1005	Retards de planning
+1006	Dépassements de coûts
+1007	Performance des sous-traitants
+1008	CPU EN 1090
+1009	ISO 19650
+1010	Marquage CE
+1011	Qualité projet
+1012	Sécurité
+1013	Audits client
+1014	BIM
+1015	EN 1090
+1016	Reprises
+1017	Agroalimentaire et boissons
+1018	Sécurité des aliments
+1019	Contamination croisée par allergènes
+1020	Microbiologique
+1021	Corps étrangers
+1022	Contamination de la chaîne d'approvisionnement
+1023	Qualité de l'eau
+1024	FSSC 22000
+1025	BRCGS
+1026	IFS Food
+1027	HACCP
+1028	Inspections FDA/UE
+1029	Réussite FSSC
+1030	Conformité microbiologique
+1031	Corps étrangers
+1032	Économie sociale et solidaire
+1033	Violations des droits humains
+1034	Perte de la certification Fairtrade
+1035	Exploitation dans la chaîne d'approvisionnement
+1036	Esclavage moderne
+1037	Impact sur les communautés
+1038	Défaillance de gouvernance
+1039	Fairtrade
+1040	Garantie WFTO
+1041	SA8000
+1042	Audits sociaux
+1043	Revues des parties prenantes
+1044	Revenu des producteurs
+1045	Investissement communautaire
+1046	Pharmaceutique et procédés
+1047	Contamination des produits
+1048	Intégrité des données ALCOA+
+1049	Excursion en salle propre
+1050	Déviation
+1051	Hors spécification (OOS)
+1052	Échec d'inspection réglementaire
+1053	Chaîne d'approvisionnement en principes actifs
+1054	Sérialisation
+1055	BPF FDA/EMA/OMS
+1056	ICH Q10
+1057	Intégrité des données
+1058	Validation des systèmes informatisés
+1059	BPF interne
+1060	BPF
+1061	Libération des lots
+1062	Intégrité des données
+1063	Distribution, chaussure et habillement
+1064	Résidus chimiques
+1065	Approvisionnement éthique
+1066	Réputation de la marque
+1067	Retours
+1068	Contrefaçon
+1069	Conformité REP
+1070	GOTS
+1071	OEKO-TEX
+1072	BSCI/Sedex
+1073	Propre à la marque
+1074	Audit fournisseur
+1075	Approvisionnement éthique
+1076	Produits de grande consommation
+1077	Allergènes
+1078	Intégrité des emballages
+1079	Réclamation consommateur
+1080	Développement durable
+1081	FDA 21 CFR 110
+1082	Réclamations
+1083	TRS (OEE)
+1084	Intégrité des emballages
+1085	Énergie et services publics
+1086	Fiabilité du réseau
+1087	Cybersécurité NERC CIP
+1088	Défaillance d'actif
+1089	Efficacité hydrique
+1090	Sécurité du personnel
+1091	NERC CIP
+1092	IEC 62443
+1093	ISO 55001
+1094	Cybersécurité
+1095	Actifs internes
+1096	Disponibilité des actifs
+1097	SAIDI
+1098	SAIFI
+1099	Cybersécurité du réseau
+1100	Télécommunications
+1101	Panne réseau
+1102	Confidentialité des données
+1103	Attrition des clients
+1104	Catastrophe naturelle
+1105	TL 9000
+1106	ISO 27001
+1107	ISO 22301
+1108	Réseau interne
+1109	Disponibilité du réseau
+1110	Retours TL 9000
+1111	MTTR
+1112	NPS
+1113	Procédés/pétrochimie
+1114	Sécurité des procédés PSM
+1115	Intégrité mécanique
+1116	Défaillance d'appareil à pression
+1117	Exposition chimique
+1118	Rejet dans l'environnement
+1119	Incendie/explosion
+1120	Cybersécurité OT
+1121	OSHA PSM
+1122	API 510/570
+1123	ASME VIII
+1124	NBIC
+1125	EPA
+1126	PSM interne
+1127	Intégrité mécanique
+1128	API 510
+1129	PSM
+1130	Exposition
+1131	Torchage
+1132	Construction navale
+1133	Sécurité des navires
+1134	Pollution marine
+1135	Échec de classification
+1136	Défauts de soudure
+1137	Retard de planning
+1138	Dépassement de coûts
+1139	Cybersécurité OT des navires
+1140	SOLAS
+1141	MARPOL
+1142	IACS
+1143	Soudage EN 1090
+1144	Contrôle par l'État du port
+1145	Interne
+1146	Classification
+1147	Défauts de soudure
+1148	Produits de consommation étendus
+1149	Sécurité des cosmétiques
+1150	FDA CGMP
+1151	Événements indésirables
+1152	Droits humains
+1153	ISO 22716
+1154	BPF cosmétiques
+1155	Sécurité des consommateurs
+1156	Événements indésirables
+1157	Industries de procédés
+1158	Sécurité des procédés
+1159	ISO 22000
+1160	FDA FSMA
+1161	FSMA
+1162	Rejets environnementaux
+1163	Consommation d'eau
+1164	Infrastructures
+1165	Fiabilité des actifs
+1166	Financement
+1167	Résilience climatique
+1168	Eurocode
+1169	Intégrité structurelle
+1170	Structure
+1171	Fabrication et assemblage
+1172	Non-conformité EN 1090
+1173	Traçabilité des matériaux
+1174	Compétence des soudeurs
+1175	Précision dimensionnelle
+1176	Retard de livraison
+1177	ISO 3834
+1178	DMOS/QMOS (WPQR)
+1179	Qualification des soudeurs
+1180	Qualification soudeurs
+1181	Procédés/produits emballés
+1182	Non-conformité FSVP
+1183	Vérification des fournisseurs
+1184	Référentiels reconnus GFSI
+1185	FDA FSVP
+1186	Vérification HACCP
+1187	Audits fournisseurs
+1188	FSVP
+1189	Vérification des fournisseurs
+1190	Réussite GFSI
+1191	Semi-conducteurs et fabrication électronique
+1192	Contamination des plaquettes
+1193	Approvisionnement en terres rares
+1194	Perte de rendement
+1195	AEC-Q100
+1196	IEC 61508
+1197	ISO 14001
+1198	Rendement des plaquettes
+1199	SIL
+1200	Commerce de détail
+1201	Violation PCI DSS
+1202	Violation du RGPD
+1203	Confidentialité des données clients
+1204	Sécurité en magasin
+1205	Réputation
+1206	PCI DSS 4.0
+1207	ISO 45001
+1208	PCI DSS
+1209	Violation de données
+1210	Distribution
+1211	Non-conformité BPD
+1212	Rupture de la chaîne du froid
+1213	Pertes de stock
+1214	Sécurité en entrepôt
+1215	Cyber
+1216	BPD (GDP)
+1217	IFS Logistic
+1218	Exactitude des commandes
+1219	Stock
+1220	Chaîne du froid
+1221	Vol de marchandises
+1222	Non-conformité OEA
+1223	Sécurité des conducteurs
+1224	Chaîne du froid
+1225	TAPA FSR/TSR
+1226	OEA (AEO)
+1227	IFS Logistics
+1228	Douanes
+1229	TAPA
+1230	Vol de marchandises
+1231	Sécurité des conducteurs
+1232	Pharmacie
+1233	Industrie manufacturière (générique)
+1234	Perturbation de la production
+1235	Défaut qualité
+1236	Incident de sécurité
+1237	Impact environnemental
+1238	Efficacité énergétique
+1239	Premier passage
+1240	Enseignement privé
+1241	Perte d'accréditation
+1242	Sécurité des élèves
+1243	Compétence des enseignants
+1244	Lacunes des programmes
+1245	Viabilité financière
+1246	ISO 21001
+1247	Accréditation nationale
+1248	Autorité régionale de l'éducation
+1249	Satisfaction des élèves
+1250	Taux de diplomation
+1251	Accréditation
+1252	Compétence des enseignants
+1253	Résolution des réclamations
+1254	Enseignement public
+1255	Non-conformité ministérielle
+1256	Budget
+1257	Ministère de l'Éducation
+1258	Ministère
+1259	Enseignants
+1260	Parents
+1261	Santé (établissements de soins)
+1262	Erreur clinique
+1263	HIPAA/RGPD
+1264	Non-conformité JCI
+1265	Défaillance de dispositif médical
+1266	Prévention des infections
+1267	JCI
+1268	HIPAA
+1269	Autorité nationale de santé
+1270	ISO 15189
+1271	FHIR
+1272	Satisfaction des patients
+1273	Sécurité des patients
+1274	Résultats cliniques
+1275	Exactitude du laboratoire
+1276	Petites et moyennes entreprises
+1277	Stratégique (marché, perte de clients)
+1278	Opérationnel (défaillance de processus, chaîne d'approvisionnement)
+1279	Conformité (réglementaire, certification)
+1280	Financier (trésorerie, coûts)
+1281	Personnes (personne clé, compétences)
+1282	Technologie (système, cyber)
+1283	Réputation (réclamations, incidents)
+1284	Croissance (passage à l'échelle, ressources)
+1285	Taux de NC
+1286	Clôture des actions correctives
+1287	Compétence des employés
+1288	Préparation à l'audit
+1289	Formation
+1290	Réduction des risques
+1291	ROI de l'amélioration
+1292	Analyse du contexte et cartographie des parties prenantes
+1293	Comprendre les enjeux internes/externes ; identifier les parties intéressées ; définir le périmètre du SMI.
+1294	Niveau 1 — SMI de base
+1295	Direction
+1296	Équipe stratégie
+1297	Consultants externes
+1298	Rapports sectoriels
+1299	Organismes de réglementation
+1300	Chefs de service
+1301	Analystes de marché
+1302	Enjeux internes
+1303	Enjeux externes
+1304	Attentes des parties prenantes
+1305	Exigences légales
+1306	Obligations contractuelles
+1307	Fixer la périodicité du diagnostic stratégique
+1308	Identifier les enjeux externes
+1309	Identifier les enjeux internes
+1310	Identifier les parties intéressées
+1311	Déterminer les besoins/attentes
+1312	Valider et décliner
+1313	Identifier les interactions
+1314	Définir/revoir le périmètre
+1315	Documenter et communiquer
+1316	Revoir périodiquement
+1317	Rapport d'analyse du contexte
+1318	Matrice des exigences
+1319	Périmètre du SMI
+1320	Carte des interactions des processus
+1321	Gestion des risques
+1322	Planification
+1323	Tous les processus du SMI
+1324	Définition de la politique qualité et de l'orientation stratégique
+1325	Établir la politique qualité ; définir l'orientation stratégique ; obtenir l'engagement de la direction.
+1326	Analyse du contexte
+1327	Exigences des parties prenantes
+1328	Conseiller juridique
+1329	Plan stratégique
+1330	Besoins des parties prenantes
+1331	Fixer la périodicité de revue
+1332	Consulter la direction
+1333	Intégrer les engagements
+1334	Aligner sur les exigences
+1335	Obtenir l'approbation
+1336	Planifier la revue
+1337	Mettre à jour
+1338	Enregistrements de communication
+1339	Enregistrements de revue
+1340	Déclaration d'orientation stratégique
+1341	Tous les employés
+1342	Pilotes de processus
+1343	Parties intéressées
+1344	Organismes de certification
+1345	Déploiement des objectifs et cibles qualité
+1346	Décliner les objectifs stratégiques ; déployer des objectifs SMART ; attribuer les responsabilités ; suivre.
+1347	Ressources
+1348	Décliner
+1349	Aligner
+1350	Désigner les responsables
+1351	Déployer
+1352	Suivre
+1353	Assurer la visibilité
+1354	Ajuster
+1355	Célébrer
+1356	Traduire la politique
+1357	Plans d'action
+1358	Plans de ressources
+1359	Rapports d'avancement
+1360	Équipes opérationnelles
+1361	Évaluation de la performance
+1362	Cartographie de l'architecture des processus
+1363	Définir l'architecture ; identifier les processus cœur/support ; modéliser en BPMN ; attribuer le RACI.
+1364	Analystes
+1365	Experts métier
+1366	Resp. qualité
+1367	Inventaire des processus
+1368	Analyse de la chaîne de valeur
+1369	Bonnes pratiques
+1370	Identifier les processus cœur/support
+1371	Modéliser en BPMN
+1372	Attribuer le RACI
+1373	Valider
+1374	Vérifier l'alignement
+1375	Publier
+1376	Revoir
+1377	Carte d'architecture
+1378	Diagrammes BPMN
+1379	Matrice RACI
+1380	Descriptions
+1381	SIPOC et cartographie de la chaîne de valeur
+1382	Définir le SIPOC ; cartographier la chaîne de valeur ; identifier les étapes à valeur ajoutée ; optimiser le flux.
+1383	Resp. Lean
+1384	Experts métier
+1385	Périmètre du processus
+1386	Besoins des clients
+1387	Données
+1388	Définir la méthode SIPOC
+1389	Définir les fournisseurs
+1390	Définir les entrées
+1391	Définir les étapes
+1392	Définir les sorties
+1393	Définir les clients
+1394	Cartographier la chaîne de valeur
+1395	Diagrammes SIPOC
+1396	Cartes de la chaîne de valeur
+1397	Diagrammes de flux
+1398	Opportunités d'optimisation
+1399	Équipes Lean
+1400	Équipes d'amélioration
+1401	Élaboration des procédures et instructions de travail
+1402	Élaborer les procédures ; garantir la clarté ; valider la conformité.
+1403	Rédacteurs techniques
+1404	Exigences normatives
+1405	Normes documentaires
+1406	Définir la structure
+1407	Rédiger
+1408	Élaborer les instructions
+1409	Intégrer des supports visuels
+1410	Vérifier la conformité
+1411	Soumettre pour approbation
+1412	Former
+1413	Planifier les revues
+1414	Instructions de travail
+1415	Aides visuelles
+1416	Documentation approuvée
+1417	Équipes de formation
+1418	Gestion du plan de surveillance des processus
+1419	Identifier les points critiques de maîtrise ; définir les méthodes ; attribuer les responsabilités ; surveiller.
+1420	Ingénieurs procédés
+1421	Analyse des risques
+1422	Exigences de maîtrise
+1423	Exigences réglementaires
+1424	Spécifications client
+1425	Définir les méthodes
+1426	Définir les critères d'acceptation
+1427	Vérifier
+1428	Archiver
+1429	Enregistrements de surveillance
+1430	Enregistrements de vérification
+1431	Plans ajustés
+1432	Équipes qualité
+1433	Gestion des règles métier et de la logique des processus
+1434	Identifier les points de décision ; définir la logique conditionnelle ; définir les seuils ; simuler.
+1435	Analystes métier
+1436	Architectes informatiques
+1437	Exigences métier
+1438	Critères de décision
+1439	Contraintes réglementaires
+1440	Identifier les points de décision
+1441	Définir la logique
+1442	Documenter les exceptions
+1443	Définir les seuils
+1444	Tenir le journal
+1445	Règles métier
+1446	Documents de logique décisionnelle
+1447	Procédures d'exception
+1448	Équipes informatiques
+1449	Gestion des indicateurs de processus et des KPI
+1450	Définir les KPI ; les aligner sur les objectifs ; fixer les cibles ; automatiser et visualiser.

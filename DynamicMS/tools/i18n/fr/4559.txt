@@ -1,0 +1,442 @@
+4559	Approbations des politiques
+4560	Approuver ou rejeter les versions des politiques.
+4561	Approbations des processus cibles
+4562	Approuver les conceptions de processus cibles.
+4563	Décisions de revue de direction
+4564	Enregistrer les décisions de revue de direction.
+4565	Employé
+4566	Mon espace de travail
+4567	Mes documents
+4568	Lire, accuser réception et télécharger les documents.
+4569	Consultation
+4570	Signaler un problème
+4571	Déclarer des non-conformités.
+4572	Proposer une idée
+4573	Soumettre des idées d'amélioration.
+4574	Interroger le SMI
+4575	Rechercher sémantiquement les procédures, fiches et SIPOC.
+4576	Responsable de la gouvernance de l'IA
+4577	Gouvernance de l'IA
+4578	Activation des cas d'usage de l'IA
+4579	Activer les cas d'usage de l'IA par périmètre.
+4580	Administration
+4581	Approbations des IA personnalisées
+4582	Approuver ou rejeter les cas d'usage de l'IA personnalisés.
+4583	Essentiels PME
+4584	Base
+4585	Abonnement SaaS mensuel par locataire ; multiplicateur de déploiement applicable (DEP-1 à DEP-3)
+4586	Jusqu'à 25 utilisateurs ; 25 Go ; 500 fichiers générés/mois ; hiérarchie jusqu'au niveau 4
+4587	SMI professionnel multi-normes
+4588	Abonnement SaaS mensuel par locataire ; multiplicateur de déploiement applicable (DEP-1 à DEP-7)
+4589	Jusqu'à 100 utilisateurs ; 250 Go ; 5 000 fichiers générés/mois ; hiérarchie jusqu'au niveau 6
+4590	SMI entreprise réglementée
+4591	Jusqu'à 500 utilisateurs ; 2 To ; 50 000 fichiers générés/mois ; hiérarchie jusqu'au niveau 9
+4592	Pack automobile, industrie et fabrication
+4593	Secteur
+4594	Option mensuelle de DMS-PRO ou DMS-ENT
+4595	Hérite des limites du pack de base
+4596	Pack sciences de la vie et santé
+4597	Pack sécurité des aliments et biens de consommation
+4598	Pack procédés, énergie et infrastructures
+4599	Pack aéronautique et défense
+4600	Option mensuelle de DMS-ENT
+4601	Pack maritime et construction navale
+4602	Accélérateur de certification et d'audit
+4603	Capacité
+4604	Option mensuelle de tout pack de base
+4605	Intelligence et assurance par l'IA
+4606	Option mensuelle de tout pack de base (DEP-1 à DEP-6)
+4607	20 000 requêtes IA/mois ; hérite des limites du pack de base
+4608	Pack ESG et développement durable
+4609	Comportement : dirigeants soucieux des coûts, pressés et multi-rôles ; recherchent des gains rapides. Points de douleur : pas de personnel QHSE dédié ; outils d'entreprise complexes ; processus informels. Attentes : obtenir rapidement et à faible coût la certification ISO 9001/14001/45001 ; numériser le savoir tacite ; croître sans rompre la conformité.
+4610	25 Go
+4611	Modélisation simplifiée des processus
+4612	Modèles de documents
+4613	Gestion des utilisateurs multi-rôles
+4614	Tableau de bord des KPI essentiels
+4615	Tableau de bord du dirigeant
+4616	Registre des risques simplifié
+4617	NCP simplifié
+4618	Comportement : orienté processus, multi-sites, certifié ISO ; besoin d'évolutivité et de multi-normes. Points de douleur : données QHSE fragmentées ; normes cloisonnées ; audits manuels ; coût élevé du maintien des certifications. Attentes : SMI unifié entre normes ; visibilité en temps réel ; préparation automatisée aux audits ; cycles de certification prévisibles.
+4619	250 Go
+4620	Architecture des processus
+4621	Maîtrise documentaire
+4622	Management de la performance
+4623	CAPA
+4624	Qualité fournisseurs
+4625	Comportement : fortement réglementé, multinational, chaînes d'approvisionnement complexes ; besoin d'une conformité et d'une gouvernance approfondies. Points de douleur : certifications multiples ; surveillance réglementaire ; surcharge d'audits ; systèmes d'entreprise déconnectés (ERP, MES, LIMS). Attentes : source unique de vérité pour la conformité ; gestion prédictive des risques ; anticipation réglementaire ; traçabilité complète.
+4626	2 To
+4627	Tous les modules DMS-PRO + gouvernance avancée + multi-locataires + souveraineté des locataires + gouvernance des formules + contrôles continus + simulation d'entreprise
+4628	Comportement : critique pour la sécurité, grands volumes, piloté par IATF/ISO 26262 ; obsédé par le PPM et l'OTD. Points de douleur : complexité de la sécurité fonctionnelle ; conformité ASPICE ; escalade PPM fournisseurs ; minerais de conflit. Attentes : zéro défaut ; conformité ASIL/SIL ; visibilité multi-rangs sur les fournisseurs ; certification sans perturbation.
+4629	Gestion ASIL/SIL
+4630	TARA
+4631	Qualité du soudage
+4632	APQP/PPAP
+4633	MSP (SPC)
+4634	Comportement : piloté par FDA/MDR/JCI ; tolérance zéro pour le risque patient ; audits intensifs. Points de douleur : intégrité des données (ALCOA+) ; conformité de la validation informatique ; excursions en salle propre ; événements indésirables ; investigations OOS. Attentes : toujours prêt pour l'audit ; zéro observation 483 ; conformité MDR/IVDR ; excellence en sécurité des patients.
+4635	Laboratoire médical
+4636	Laboratoire d'essais
+4637	Données cliniques
+4638	Comportement : piloté par HACCP/FSSC/BRCGS ; sensible aux rappels ; forte intensité de chaîne d'approvisionnement. Points de douleur : contamination croisée par allergènes ; corps étrangers ; vérification des fournisseurs ; chaîne du froid ; conformité FSMA/FSVP. Attentes : zéro rappel ; traçabilité complète ; certification GFSI ; confiance des consommateurs.
+4639	Gestion des allergènes
+4640	Empreinte eau
+4641	Comportement : piloté par OSHA PSM/NERC CIP ; forte intensité d'actifs ; critique pour la sécurité. Points de douleur : conformité PSM ; intégrité mécanique ; audits NERC CIP ; efficacité hydrique ; surveillance des expositions. Attentes : zéro incident de sécurité des procédés ; conformité réglementaire ; fiabilité des actifs ; performance ESG.
+4642	PHA
+4643	PSSR
+4644	Gestion des modifications (MOC)
+4645	Surveillance des expositions
+4646	Comportement : piloté par AS9100D/NADCAP ; sensible à l'ITAR ; sécurité nationale. Points de douleur : conformité ITAR/EAR ; audits NADCAP ; pièces contrefaites ; contrôle des exportations ; CMMC. Attentes : zéro non-conformité ; conformité ITAR ; intégrité de la chaîne d'approvisionnement ; excellence en certification.
+4647	ITAR/EAR
+4648	Communication de crise
+4649	Comportement : piloté par SOLAS/MARPOL/IACS ; dépendant des sociétés de classification. Points de douleur : conformité OMI ; qualité du soudage ; pollution marine ; visites de classification. Attentes : zéro détention ; classification IACS ; conformité MARPOL ; livraison à l'heure.
+4650	Pollution marine
+4651	Visites de classification
+4652	Comportement : première certification ou extension multi-normes ; contrainte de délais. Points de douleur : consultants coûteux ; longs cycles de certification ; surprises d'audit ; écarts découverts tardivement. Attentes : certification plus rapide ; coût de conseil réduit ; audits prévisibles ; prêt pour l'audit en permanence.
+4653	Coordination de la certification
+4654	Portefeuille multi-normes
+4655	Diagnostic des écarts
+4656	Évaluation de la préparation
+4657	Comportement : piloté par la donnée, orienté innovation ; adopteurs précoces de l'IA. Points de douleur : conformité réactive ; signaux faibles manqués ; ACR manuelle ; CAPA lentes. Attentes : risque prédictif ; ACR automatisée ; CAPA assistées par l'IA ; anticipation plutôt que constat.
+4658	Risque prédictif par l'IA
+4659	CAPA automatisées
+4660	Base de connaissances NCP (RAG)
+4661	Orchestration des agents IA
+4662	Veille réglementaire automatisée
+4663	Comportement : ESG exigé par les investisseurs et les clients ; reporting CSRD/TCFD ; objectifs de durabilité. Points de douleur : données de scope 3 ; comptabilité carbone ; cadres de reporting ESG ; pression des parties prenantes. Attentes : conformité ESG ; trajectoire net zéro ; confiance des investisseurs ; différenciation de la marque.
+4664	Management ESG
+4665	Empreinte carbone
+4666	Scope 3
+4667	Opérations terrain mobiles
+4668	Mobilité
+4669	Applications natives iOS/Android ; saisie hors ligne ; preuves photo/vidéo/voix ; géolocalisation ; lecture de codes-barres
+4670	Comportement : activités à forte composante terrain (construction, services publics, services sur site). Points de douleur : formulaires papier ; saisie tardive ; ergonomie terrain médiocre. Attentes : données terrain en temps réel ; capture de preuves ; supervision à distance
+4671	Signalement vocal
+4672	Signalement mains libres des incidents/audits ; reconnaissance vocale en EN/FR/AR ; extraction de données structurées ; classification automatique
+4673	Comportement : main-d'œuvre multilingue (MENA, Afrique) ; rôles aux mains occupées. Points de douleur : lenteur de saisie ; barrières linguistiques ; rapports incomplets. Attentes : signalement rapide, précis et multilingue
+4674	Audits en réalité augmentée
+4675	Surimpressions en réalité augmentée pour guider l'audit ; instructions visuelles pas à pas ; assistance d'experts à distance ; capture de preuves en réalité augmentée
+4676	Comportement : équipements complexes ; expertise à distance nécessaire. Points de douleur : lacunes d'expertise des auditeurs ; coûts de déplacement ; audits hétérogènes. Attentes : audits guidés par des experts ; qualité homogène ; moins de déplacements
+4677	Signatures numériques (eIDAS)
+4678	Signatures juridiquement contraignantes ; conformité eIDAS/ESIGN ; workflows automatisés ; piste d'audit des signatures
+4679	Comportement : secteurs réglementés ; processus très papier. Points de douleur : signatures manuscrites ; approbations lentes ; risque de conformité. Attentes : zéro papier ; approbations rapides ; sécurité juridique
+4680	Confiance
+4681	Piste d'audit immuable ; enregistrements infalsifiables ; vérification de l'intégrité ; accès des régulateurs
+4682	Comportement : fortement réglementé ; conformité à fort enjeu. Points de douleur : risque de falsification des données ; coût de vérification des audits. Attentes : confiance immuable ; confiance des régulateurs
+4683	Écosystème
+4684	Libre-service fournisseurs ; soumissions qualité ; intégration automatisée ; tableaux de bord de performance ; collaboration sur les CAPA
+4685	Comportement : chaînes d'approvisionnement complexes ; visibilité multi-rangs. Points de douleur : relances pour obtenir les données fournisseurs ; SCAR manuelles. Attentes : visibilité en temps réel sur les fournisseurs ; réponse plus rapide
+4686	Portail des retours clients
+4687	Expérience client
+4688	Libre-service client ; saisie des réclamations ; routage automatique ; suivi du cycle de vie ; lien avec NCP/CAPA
+4689	Comportement : en contact avec des clients B2C ou B2B. Points de douleur : réclamations dispersées dans les e-mails ; résolution lente. Attentes : résolution rapide ; confiance des clients
+4690	Concepteur de processus low-code
+4691	Conception de workflows par glisser-déposer ; autonomie des développeurs citoyens ; tests en bac à sable ; gouvernance des versions
+4692	Comportement : avide d'innovation sur les processus ; ressources informatiques limitées. Points de douleur : backlog informatique ; changements lents. Attentes : numérisation rapide ; autonomie métier
+4693	Accès à la place de marché
+4694	Accès aux modèles, connecteurs et packs sectoriels ; contributions de tiers ; notes/avis
+4695	Comportement : orienté écosystème ; en recherche d'accélérateurs. Points de douleur : déploiement lent ; coût des développements spécifiques. Attentes : déploiement rapide ; réutilisation des bonnes pratiques
+4696	Simulation par jumeau numérique
+4697	Jumeau numérique des processus ; simulation de scénarios ; prédiction des résultats ; recommandations d'optimisation
+4698	Comportement : orienté innovation ; riche en données. Points de douleur : expérimentations coûteuses ; résultats incertains. Attentes : expérimentation virtuelle ; décisions assurées
+4699	Analyse de la voix du client
+4700	Agréger la VoC de toutes les sources ; identification des thèmes par TALN ; priorisation ; mesure de l'impact
+4701	Comportement : centré client ; piloté par la donnée. Points de douleur : bruit dans la VoC ; priorités floues. Attentes : VoC systématique ; priorisation des améliorations
+4702	Intégration des capteurs IoT
+4703	Industrie 4.0
+4704	Ingestion des capteurs en temps réel ; détection de seuils/d'anomalies ; workflows déclenchés automatiquement ; modèles prédictifs de qualité
+4705	Comportement : Industrie 4.0 ; visibilité en temps réel. Points de douleur : détection tardive ; surveillance manuelle. Attentes : qualité en temps réel ; sécurité prédictive
+4706	Intégration ERP Odoo
+4707	ERP
+4708	Synchroniser les données de référence (clients/fournisseurs/produits) ; créer automatiquement des NCP depuis le contrôle qualité ; récupérer le coût de la qualité ; transmettre les constats d'audit fournisseurs
+4709	Comportement : PME agiles et attentives aux coûts. Points de douleur : silos de données ; reporting manuel ; ROI qualité flou. Attentes : vision unifiée de l'activité ; automatisation ; ROI qualité démontré
+4710	Maroc : ERP le plus déployé parmi les PME. Europe : alternative modulaire en croissance. Afrique : « ERP à la plus forte croissance ». Moyen-Orient : acteur reconnu
+4711	Intégration ERP SAP / S/4HANA
+4712	Synchronisation bidirectionnelle des articles ; transmettre les résultats d'inspection à SAP QM ; récupérer les données de production/lots ; aligner les risques GRC
+4713	Comportement : complexe, réglementé, mondial. Points de douleur : déconnexion SAP-QHSE ; latence des données ; lacunes de conformité. Attentes : qualité en boucle fermée ; visibilité au niveau du conseil ; protection de la marque
+4714	Maroc : groupes internationaux. Europe : ~55 % de part de marché. Afrique : grandes entreprises. Moyen-Orient : entreprises du CCG avec ZATCA/WPS
+4715	Intégration SIRH ZenHR
+4716	Synchroniser les fiches des employés pour le RBAC ; déclencher arrivées/départs ; récupérer les absences ; transmettre les enregistrements de formation/compétences
+4717	Comportement : centré sur la région MENA, attentif à la réglementation. Points de douleur : déconnexion RH-QHSE ; conformité manuelle. Attentes : vision unifiée du personnel ; opérations conformes
+4718	Moyen-Orient : SIRH cloud de référence pour l'Arabie saoudite et la région MENA ; conforme au droit du travail local
+4719	Intégration RH Personio
+4720	Synchroniser les données des employés ; automatiser les dossiers du personnel pour les audits ; gérer la formation santé-sécurité ; suivre les absences
+4721	Comportement : PME européennes axées sur l'efficacité. Points de douleur : systèmes RH/QHSE fragmentés. Attentes : source unique de vérité ; preuves de conformité
+4722	Europe : plateforme RH de référence pour les PME (200 à 1 000 employés)
+4723	Intégration CRM HubSpot
+4724	CRM
+4725	Créer automatiquement des réclamations à partir des affaires/tickets ; relier CSAT/NPS ; déclencher les investigations ; renvoyer la résolution
+4726	Comportement : centré client, piloté par le marketing. Points de douleur : silo expérience client-QHSE ; réclamations récurrentes. Attentes : véritable orientation client ; fidélité
+4727	Maroc : apprécié des start-up/PME. Europe : CRM principal. Afrique : largement utilisé. Moyen-Orient : CRM reconnu
+4728	Intégration MES Siemens Opcenter
+4729	MES
+4730	Capter les données de production ; déclencher des NCP depuis l'atelier ; transmettre lots/généalogie ; instructions de travail numériques
+4731	Comportement : excellence opérationnelle, Industrie 4.0. Points de douleur : délai entre production et qualité ; gros lots non conformes. Attentes : contrôle qualité en temps réel ; zéro défaut
+4732	Europe : MES de référence. Afrique : leader de l'automatisation industrielle. Moyen-Orient : acteur majeur du CCG
+4733	LIMS Thermo Fisher SampleManager
+4734	LIMS
+4735	Créer automatiquement les investigations OOS/OOT ; synchroniser les résultats d'échantillons ; gérer étalonnage/compétences ; garantir l'intégrité des données
+4736	Comportement : scientifique, réglementé. Points de douleur : déconnexion LIMS-SMQ ; saisies manuelles. Attentes : prêt pour l'audit en permanence
+4737	Europe : acteur LIMS majeur. Afrique : ministère de la Santé du Kenya. Moyen-Orient : MAAZ en Arabie saoudite
+4738	Intégration GMAO ManWinWin
+4739	GMAO
+4740	Déclencher NCP/ordres de travail sur panne d'équipement ; synchroniser les calendriers d'étalonnage ; récupérer l'historique des équipements ; gérer la qualité des pièces détachées
+4741	Comportement : forte intensité d'actifs, pragmatique. Points de douleur : arrêts imprévisibles ; pas de lien avec le QHSE. Attentes : maintenance proactive ; excellence en fiabilité
+4742	Maroc/Afrique : forte présence dans les PALOP et en Zambie. Europe : bien implanté en Europe du Sud
+4743	Intégration du logiciel EHS EcoOnline
+4744	Consolider le signalement des incidents ; synchroniser les inventaires chimiques/FDS ; gérer les audits ; consolider les indicateurs ESG
+4745	Comportement : multinationale, GRC intégrée. Points de douleur : données EHS/QHSE fragmentées. Attentes : une entreprise, un système
+4746	Europe : SaaS EHSQ de référence. Afrique : disponible en Afrique du Sud
+4747	AVEVA System Platform / SCADA
+4748	SCADA
+4749	Ingérer les données des capteurs en temps réel ; déclencher automatiquement des NCP en cas de dépassement de seuil ; exploiter l'historique pour l'IA ; tableau de bord unifié
+4750	Comportement : forte intensité d'actifs, transformation numérique. Points de douleur : fossé OT/IT ; alertes manquées. Attentes : valoriser les données opérationnelles ; prévention proactive
+4751	Europe : leader du marché. Afrique : en expansion dans les mines et l'énergie. Moyen-Orient : grands projets de modernisation
+4752	Intégration paie Cercli
+4753	Paie
+4754	Synchroniser les données employés/paie ; calculer les salaires des arrêts maladie ; fournir les données de paie pour l'analyse de la fatigue ; conformité au droit du travail
+4755	Comportement : centré sur le CCG, conforme au WPS. Points de douleur : droit du travail complexe dans le CCG. Attentes : paie conforme reliée aux opérations
+4756	Moyen-Orient : plateforme moderne de données RH pour la région MENA ; automatise la paie, la conformité et les remboursements
+4757	Intégration paie PaySpace
+4758	Synchroniser les données des employés dans plus de 40 pays africains ; automatiser les cotisations légales ; gérer la paie transfrontalière ; indicateurs de diversité et d'inclusion
+4759	Comportement : opérateurs africains multi-pays. Points de douleur : conformité législative entre régimes. Attentes : vision unifiée du personnel africain
+4760	Afrique : véritable RH/paie cloud dans plus de 40 pays ; utilisé par le groupe Absa
+4761	SaaS (multi-locataires partagé)
+4762	Infrastructure partagée, isolation logique
+4763	PME, entreprises de taille intermédiaire
+4764	Logique
+4765	Contrôlée par l'éditeur
+4766	Cloud public — abonnement multi-locataires
+4767	Instance dédiée sur cloud partagé, logique multi-locataires
+4768	ETI, multi-sites
+4769	Logique + instance
+4770	Cloud public — abonnement mono-locataire
+4771	Infrastructure dédiée, client unique
+4772	Grandes entreprises, secteurs réglementés
+4773	Physique + logique
+4774	Région contrôlée par l'éditeur
+4775	Cloud privé du client
+4776	Environnement AWS/Azure/GCP du client
+4777	Grandes entreprises, secteurs réglementés
+4778	Physique + contrôlée par le client
+4779	Contrôlée par le client
+4780	Sur site client (centre de données)
+4781	Centre de données du client
+4782	Secteurs réglementés
+4783	Isolation complète
+4784	Entièrement contrôlée par le client
+4785	Hybride (cloud + sur site)
+4786	Combinaison de SaaS cloud et de périphérie sur site
+4787	Opérations distribuées
+4788	Mixte
+4789	Sur site client — isolé (air-gapped)
+4790	Entièrement isolé, sans internet
+4791	Défense, administration, infrastructures critiques
+4792	Physique + réseau
+4793	Cluster PME (V-30)
+4794	Dirigé par le propriétaire ; attentif aux coûts ; employés multi-rôles ; processus informels ; axé sur la croissance
+4795	Pas de personnel QHSE ; outils d'entreprise complexes ; conformité manuelle ; crainte des audits
+4796	Certification rapide ; faible coût ; savoir tacite numérisé ; croissance sans rupture
+4797	Cluster professionnel (MFG, ELE, AEC, CON, RET, DST, LOG, RFA, TEL, SSE, PED, PUED)
+4798	Orienté processus ; certifié ISO ; multi-sites ; axé sur l'efficacité
+4799	QHSE fragmenté ; normes cloisonnées ; audits manuels ; coût de certification élevé
+4800	SMI unifié ; visibilité en temps réel ; préparation automatisée aux audits
+4801	Cluster entreprises réglementées (AER, HLS, PHM, PHA, ENG, PCH, SHB, SEM, HCA)
+4802	Fortement réglementé ; multinational ; chaînes d'approvisionnement complexes ; audits intensifs
+4803	Certifications multiples ; surveillance réglementaire ; systèmes d'entreprise cloisonnés
+4804	Source unique de vérité ; risque prédictif ; anticipation réglementaire ; traçabilité complète
+4805	Cluster automobile (AUT, IND, SEM, FAB, MFG)
+4806	Critique pour la sécurité ; grands volumes ; piloté par IATF/ISO 26262 ; focalisé sur PPM/OTD
+4807	Sécurité fonctionnelle ; ASPICE ; PPM fournisseurs ; minerais de conflit
+4808	Zéro défaut ; conformité ASIL/SIL ; visibilité multi-rangs
+4809	Cluster sciences de la vie (HLS, PHM, PHA, HCA)
+4810	Piloté par FDA/MDR/JCI ; tolérance zéro pour le risque patient ; audits intensifs
+4811	Intégrité des données ; validation informatique ; salles propres ; événements indésirables ; OOS
+4812	Toujours prêt pour l'audit ; zéro observation 483 ; conformité MDR ; sécurité des patients
+4813	Cluster agroalimentaire et PGC (FNB, CPG, PCI, PPG)
+4814	Piloté par HACCP/FSSC ; sensible aux rappels ; forte intensité de chaîne d'approvisionnement
+4815	Allergènes ; corps étrangers ; vérification des fournisseurs ; FSMA/FSVP
+4816	Zéro rappel ; traçabilité complète ; certification GFSI
+4817	Cluster procédés et énergie (ENG, PCH, INF)
+4818	Piloté par OSHA PSM/NERC CIP ; forte intensité d'actifs ; critique pour la sécurité
+4819	PSM ; intégrité mécanique ; NERC CIP ; efficacité hydrique
+4820	Zéro incident de sécurité des procédés ; fiabilité des actifs ; ESG
+4821	Cluster aéronautique (AER)
+4822	Piloté par AS9100D/NADCAP ; sensible à l'ITAR ; sécurité nationale
+4823	ITAR/EAR ; audits NADCAP ; pièces contrefaites ; CMMC
+4824	Zéro non-conformité ; conformité ITAR ; excellence en certification
+4825	Cluster maritime (SHB)
+4826	Piloté par SOLAS/MARPOL/IACS ; dépendant des sociétés de classification
+4827	Conformité OMI ; qualité du soudage ; pollution marine
+4828	Zéro détention ; classification IACS ; livraison à l'heure
+4829	Standard
+4830	Professionnel
+4831	Entreprise
+4832	3 ans
+4833	Pack de base + 1 pack sectoriel
+4834	Pack de base + 1 sectoriel + 1 capacité
+4835	Pack de base + 1 sectoriel + 2 capacités
+4836	Pack de base + 2 sectoriels + 2 capacités
+4837	Contrat d'entreprise (3 ans)
+4838	Gestion des commandes clients
+4839	Traitement des réclamations clients
+4840	Recrutement et intégration
+4841	Compétences et formation
+4842	Planification et maîtrise de la production
+4843	Maintenance des équipements
+4844	Sélection et évaluation des fournisseurs
+4845	Gestion des commandes d'achat
+4846	Maîtrise des documents et enregistrements
+4847	Réceptionner et enregistrer la commande
+4848	Assistant(e) commercial(e)
+4849	Tâche (plus bas niveau)
+4850	Revoir la commande
+4851	Élément intermédiaire
+4852	Vérifier la faisabilité technique
+4853	Vérifier la capacité et la date de livraison
+4854	Planificateur de production
+4855	Vérifier le crédit et les prix
+4856	Vérifier la limite de crédit du client
+4857	Directeur financier
+4858	Valider le prix par rapport au tarif
+4859	Confirmer la commande au client
+4860	Enregistrer la réclamation
+4861	Instruire la réclamation
+4862	Répondre au client et clôturer la réclamation
+4863	Définir le besoin de recrutement
+4864	Manager de proximité
+4865	Sélectionner le candidat
+4866	Intégrer le nouvel employé
+4867	Identifier les besoins de formation
+4868	Dispenser la formation
+4869	Formateur
+4870	Évaluer l'efficacité de la formation
+4871	Planifier la production
+4872	Lancer l'ordre de fabrication
+4873	Surveiller la production
+4874	Chef d'équipe
+4875	Planifier la maintenance préventive
+4876	Réaliser l'intervention de maintenance
+4877	Technicien de maintenance
+4878	Consigner l'équipement
+4879	Exécuter l'intervention
+4880	Redémarrer et vérifier l'équipement
+4881	Présélectionner le fournisseur
+4882	Évaluer la performance du fournisseur
+4883	Créer la demande d'achat
+4884	Demandeur
+4885	Émettre la commande d'achat
+4886	Réceptionner et contrôler les marchandises
+4887	Magasinier
+4888	Créer ou réviser un document
+4889	Auteur du document
+4890	Approuver et publier le document
+4891	Archiver les documents obsolètes
+4892	Rendre compte de l'audit et en assurer le suivi
+4893	Commandes et demandes de devis des clients ; tarif ; capacité de production ; situation de crédit du client
+4894	Confirmation de commande ; commande client enregistrée dans l'ERP ; avis de refus de commande
+4895	Confirmer 100 % des commandes réalisables sous 48 h ; zéro commande acceptée au-delà de la capacité ; zéro erreur de prix
+4896	1 responsable commercial, 2 assistants commerciaux (saisie des commandes, contact client) ; maîtrise de la gamme et de l'ERP
+4897	Module commandes de l'ERP ; CRM ; e-mail ; liste de contrôle de revue de commande dans DynamicMS
+4898	Équipe commerciale ; responsable de production ; directeur financier ; responsable QHSE
+4899	Réclamations clients (portail, e-mail, téléphone) ; enregistrements de livraison et de lots
+4900	Réclamation enregistrée ; rapport d'instruction ; réponse au client ; demande d'action corrective
+4901	Accuser réception des réclamations sous 24 h ; en clôturer 90 % sous 15 jours ouvrés ; réduire les réclamations répétées
+4902	Assistant commercial (enregistrement), responsable QHSE (instruction) ; compétence en analyse des causes racines
+4903	Tickets CRM ; module NC de DynamicMS ; laboratoire d'analyse des échantillons
+4904	Équipe commerciale ; responsable QHSE ; responsable de production ; directeur général
+4905	Ingénieur QHSE
+4906	Effectifs approuvés ; fiches de poste ; candidatures
+4907	Contrat de travail signé ; liste d'intégration complétée ; fiche employé dans le SIRH
+4908	Pourvoir les postes approuvés sous 45 jours ; réaliser l'intégration, y compris l'accueil SST, avant la première prise de poste
+4909	Responsable RH, assistant RH ; jury d'entretien composé de managers
+4910	SIRH ; sites d'emploi ; portail d'intégration
+4911	Équipe RH ; managers de proximité ; responsable QHSE
+4912	Assistant RH
+4913	Exigences de compétences par rôle ; évaluations des écarts de compétences ; demandes de formation
+4914	Plan de formation annuel ; enregistrements de formation ; évaluations de l'efficacité
+4915	Résorber 80 % des écarts de compétences dans l'année ; 100 % des formations sécurité obligatoires dans les délais
+4916	Responsable RH, formateurs internes, organismes de formation externes
+4917	SIRH ; plateforme d'e-learning ; matrice des compétences de DynamicMS
+4918	Commandes clients confirmées ; niveaux de stock ; calendrier de capacité ; plan de maintenance
+4919	Plan de production ; ordres de fabrication lancés ; dossiers de lot ; rapports de production
+4920	Démarrages de production à l'heure au-dessus de 95 % ; taux de rebut inférieur à 2 % ; zéro incident environnemental
+4921	Responsable de production, planificateur, 3 chefs d'équipe, opérateurs
+4922	Module de planification de l'ERP ; lignes de production ; kits antipollution et bacs de rétention
+4923	Équipe de production ; responsable commercial ; responsable maintenance ; responsable QHSE
+4924	Registre des équipements ; plan de maintenance préventive ; demandes d'intervention sur panne
+4925	Interventions réalisées ; rapports de maintenance ; historique des équipements mis à jour
+4926	Respect de la maintenance planifiée au-dessus de 95 % ; zéro accident avec arrêt pendant les interventions
+4927	Responsable maintenance, 4 techniciens habilités en électricité et en mécanique
+4928	GMAO ; outillage ; kits de consignation ; magasin de pièces détachées
+4929	Équipe maintenance ; responsable de production ; responsable QHSE
+4930	Magasinier pièces détachées
+4931	Besoins d'achat ; questionnaires fournisseurs ; données de performance livraison et qualité
+4932	Liste des fournisseurs homologués ; rapports d'évaluation des fournisseurs ; plans de développement
+4933	100 % des fournisseurs critiques évalués chaque année ; livraisons fournisseurs à l'heure au-dessus de 95 %
+4934	Responsable des achats, acheteurs ; ingénieur QHSE pour les audits fournisseurs
+4935	Module fournisseurs de l'ERP ; portail fournisseurs
+4936	Équipe achats ; responsable QHSE ; responsable de production
+4937	Demandes d'achat ; liste des fournisseurs homologués ; budgets
+4938	Commandes d'achat émises ; réceptions ; enregistrements de contrôle à réception
+4939	Émettre les commandes sous 2 jours après approbation de la demande ; zéro commande à un fournisseur non homologué
+4940	Acheteurs, magasiniers
+4941	Module achats de l'ERP ; zone de réception et outils de contrôle
+4942	Équipe achats ; magasin ; directeur financier
+4943	Documents nouveaux ou modifiés ; demandes de modification ; règles de conservation
+4944	Versions de documents approuvées et publiées ; accusés de diffusion ; versions archivées
+4945	Cycle d'approbation sous 5 jours ouvrés ; aucune utilisation de document obsolète constatée en audit
+4946	Gestionnaire documentaire ; pilotes de processus en tant qu'auteurs
+4947	Maîtrise documentaire DynamicMS ; signature électronique
+4948	Tous les pilotes de processus ; responsable QHSE
+4949	Programme d'audit ; risques des processus ; résultats des audits précédents ; SIPOC et procédures comme critères d'audit
+4950	Plans d'audit ; rapports d'audit ; constats ; enregistrements de suivi
+4951	Réaliser 100 % du programme d'audit ; clôturer les constats aux dates convenues
+4952	Responsable QHSE, 4 auditeurs internes qualifiés
+4953	Module audit de DynamicMS ; tablettes pour les audits sur site
+4954	Responsable QHSE ; directeur général ; pilotes des processus audités
+4955	Auditeurs internes
+4956	Alimente
+4957	Commandes clients confirmées et dates de livraison
+4958	Reçoit les sorties de
+4959	Tendances des réclamations influant sur les conditions de commande
+4960	Causes de réclamations liées à la production
+4961	Causes de réclamations liées aux fournisseurs
+4962	Nouveaux employés nécessitant une formation d'accueil
+4963	Habilitations des techniciens
+4964	Commandes confirmées
+4965	Bidirectionnelle
+4966	Fenêtres de maintenance et disponibilité des équipements
+4967	Besoins en matières
+4968	Demandes de pièces détachées
+4969	Liste des fournisseurs homologués
+4970	Résultats de livraison et de contrôle à réception
+4971	Procédures et formulaires publiés
+4972	Versions courantes des documents utilisées comme critères d'audit
+4973	Constats nécessitant une révision documentaire
+4974	Données de réclamations utilisées pour la planification des audits
+4975	Enregistrer chaque commande sans erreur
+4976	Commande saisie dans l'ERP et le CRM
+4977	L'assistant commercial vérifie la complétude de la commande (articles, quantités, adresse de livraison, date souhaitée), crée la commande dans l'ERP et la relie à l'opportunité CRM.
+4978	N'accepter que les commandes réalisables
+4979	Vérifications de faisabilité, de capacité, de crédit et de prix
+4980	Revue décomposée en trois activités (faisabilité technique, capacité et date de livraison, crédit et prix) ; tout échec entraîne une négociation ou un refus.
+4981	Confirmer sous 48 h
+4982	Confirmation de commande envoyée
+4983	Confirmation générée depuis l'ERP avec la date de livraison confirmée et envoyée au client ; la confirmation signée est archivée comme enregistrement.
+4984	Saisir la réclamation sous 24 h
+4985	Réclamation enregistrée et accusée
+4986	Réclamation enregistrée avec preuves et références produit et lot, gravité évaluée et accusé de réception envoyé au client.
+4987	Identifier la cause racine
+4988	Instruction et analyse des causes racines
+4989	Le responsable QHSE analyse les échantillons et les enregistrements, réalise l'analyse des causes racines et décide si une action corrective est requise.
+4990	En clôturer 90 % sous 15 jours ouvrés
+4991	Réponse et clôture
+4992	Le responsable commercial envoie la réponse avec les actions menées ; la réclamation est clôturée dès l'acceptation du client ou après 10 jours ouvrés sans réponse.
+4993	Justifier chaque recrutement
+4994	Demande de recrutement approuvée
+4995	Le manager émet une demande sur l'effectif approuvé en référençant la fiche de poste.
+4996	Recruter le candidat le plus adapté
+4997	Présélection, entretiens, offre
+4998	Les RH trient les candidatures, organisent des entretiens en jury et émettent l'offre après vérification des références.
+4999	Opérationnel et en sécurité dès le premier jour
+5000	Liste d'accueil et d'intégration

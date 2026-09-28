@@ -1,0 +1,477 @@
+5001	Les RH déroulent la liste d'intégration, y compris l'accueil SST, les accès informatiques et l'affectation des formations propres au poste.
+5002	Couvrir tous les écarts de compétences
+5003	Les managers évaluent les compétences au regard des exigences et enregistrent les écarts.
+5004	Dispenser les formations planifiées dans les délais
+5005	Sessions de formation
+5006	Les formateurs animent les sessions ; présences et évaluations sont enregistrées.
+5007	Vérifier les compétences acquises
+5008	Les managers évaluent l'efficacité 30 à 90 jours après la formation et mettent à jour la matrice des compétences.
+5009	Plan réalisable respectant les dates de livraison
+5010	Plan de production hebdomadaire
+5011	Le planificateur construit le plan à partir des commandes confirmées, du stock, de la capacité et des fenêtres de maintenance.
+5012	Lancer uniquement lorsque matières et équipements sont prêts
+5013	Lancement des ordres
+5014	Le responsable de production lance les ordres après vérification de la disponibilité des matières et de l'état des équipements.
+5015	Détecter les écarts au plus tôt
+5016	Surveillance de ligne
+5017	Les chefs d'équipe surveillent la production, les rebuts et les maîtrises environnementales et enregistrent les écarts.
+5018	Maintenir la disponibilité des équipements
+5019	Plan préventif
+5020	Le responsable maintenance planifie les interventions à partir des échéances de la GMAO, alignées sur les fenêtres de production.
+5021	Intervention sûre et efficace
+5022	Consignation, intervention, redémarrage
+5023	Décomposée en activités de consignation, d'exécution de l'intervention et de vérification du redémarrage.
+5024	N'homologuer que des fournisseurs capables
+5025	Qualification
+5026	Questionnaire, revue des certificats et, pour les fournisseurs critiques, audit sur site.
+5027	Mesurer et améliorer la performance des fournisseurs
+5028	Évaluation périodique
+5029	Tableau de bord trimestriel sur la livraison, la qualité et la réactivité ; plan de développement sous le seuil.
+5030	Exprimer des besoins justifiés
+5031	Demande d'achat
+5032	Le demandeur crée une demande d'achat dans l'ERP dans la limite du budget.
+5033	Commander uniquement auprès de fournisseurs homologués
+5034	Commande d'achat
+5035	L'acheteur choisit un fournisseur homologué, négocie et émet la commande.
+5036	N'accepter que des marchandises conformes
+5037	Contrôle à réception
+5038	Le magasinier vérifie les quantités et les documents ; des échantillons sont contrôlés selon le plan.
+5039	Produire des documents clairs et exacts
+5040	Rédaction
+5041	L'auteur rédige ou révise le document dans DynamicMS avec un résumé des modifications.
+5042	Publier uniquement des versions approuvées
+5043	Approbation et publication
+5044	Les relecteurs commentent, l'approbateur signe, le système publie et diffuse la version.
+5045	Empêcher l'utilisation de versions obsolètes
+5046	Archivage
+5047	Les versions remplacées sont archivées et retirées des points d'utilisation.
+5048	Couverture d'audit fondée sur les risques
+5049	L'auditeur principal prépare le plan, le périmètre, les critères et l'équipe.
+5050	Recueillir des preuves objectives
+5051	Réalisation de l'audit
+5052	Réunion d'ouverture, entretiens, échantillonnage de preuves au regard du SIPOC et des procédures, réunion de clôture.
+5053	Constats clôturés dans les délais
+5054	Rapport et suivi
+5055	Rapport émis, actions correctives suivies jusqu'à clôture et efficacité vérifiée.
+5056	Délai de confirmation des commandes
+5057	Nombre moyen d'heures entre la réception et la confirmation de la commande
+5058	Heures
+5059	Commandes acceptées au-delà de la capacité
+5060	Nombre de commandes confirmées replanifiées ensuite pour cause de capacité
+5061	Nombre
+5062	Réclamations clôturées sous 15 jours
+5063	Réclamations clôturées sous 15 jours ouvrés / réclamations clôturées x 100
+5064	Taux de réclamations répétées
+5065	Réclamations de même cause racine sur 12 mois / total des réclamations x 100
+5066	Délai de recrutement
+5067	Nombre moyen de jours entre la demande approuvée et le contrat signé
+5068	Jours
+5069	Réalisation des formations sécurité obligatoires
+5070	Employés à jour de leur formation sécurité obligatoire / employés concernés x 100
+5071	Taux de rebut
+5072	Quantité rebutée / quantité totale produite x 100
+5073	Démarrage de production à l'heure
+5074	Ordres démarrés à la date planifiée / ordres lancés x 100
+5075	Respect de la maintenance préventive
+5076	Interventions préventives réalisées à temps / planifiées x 100
+5077	Accidents avec arrêt pendant la maintenance
+5078	Nombre d'accidents avec arrêt pendant les interventions
+5079	Commandes à des fournisseurs non homologués
+5080	Commandes d'achat émises à des fournisseurs non homologués
+5081	Nombre moyen de jours ouvrés entre la soumission et la publication
+5082	Constats clôturés à l'échéance / constats échus x 100
+5083	Exigences spécifiques des clients
+5084	Tableau
+5085	Les clients automobiles exigent un PPAP de niveau 3 pour les nouvelles pièces ; les clients du contact alimentaire exigent une déclaration de conformité.
+5086	Modèles de communication client
+5087	Pièce jointe
+5088	Modèles de lettres d'accusé de réception et de clôture en anglais, français et arabe.
+5089	Aspects environnementaux du processus
+5090	Émissions de solvants (significatives), eaux usées (significatives), déchets d'emballage (non significatifs) avec maîtrises opérationnelles.
+5091	Dangers et maîtrises SST
+5092	Liste de contrôle
+5093	Isolement électrique vérifié ; énergie mécanique libérée ; permis de travail signé ; EPI vérifiés.
+5094	Huiles usagées (déchet dangereux) collectées dans des contenants étiquetés ; manipulation des fluides frigorigènes par un technicien certifié.
+5095	Matrice d'indépendance des auditeurs
+5096	Chaque auditeur est associé aux processus qu'il ne doit pas auditer.
+5097	Fiche composite de la fonction Ventes
+5098	Ordre par fiche ; RACSI fusionné par rôle ; union des risques, documents et applications ; KPI listés par membre
+5099	Fiche composite Opérations (production + maintenance + achats)
+5100	Personnalisé
+5101	Ordre selon la chaîne de valeur ; interactions entre membres présentées sous forme de flux ; ressources partagées dédoublonnées
+5102	Fiche composite Management QHSE
+5103	Ordre selon les articles de l'ISO 9001 ; KPI des membres consolidés dans un seul tableau
+5104	Commande reçue par e-mail ou par téléphone
+5105	Clients ; commerciaux
+5106	Commande client (e-mail non structuré) ; information de prix orale
+5107	Commandes ressaisies manuellement dans l'ERP ; faisabilité vérifiée informellement par téléphone avec la production ; pas de contrôle de crédit avant confirmation ; confirmations envoyées depuis des boîtes personnelles.
+5108	Confirmation de commande (sans date de livraison confirmée)
+5109	Client ; production
+5110	Commande confirmée ou refusée oralement
+5111	Rien de formalisé
+5112	Commande reçue via le CRM, le portail client ou par e-mail
+5113	Clients ; CRM ; finance (situation de crédit) ; production (capacité)
+5114	Commande client structurée ; tarif ; calendrier de capacité ; situation de crédit
+5115	Commandes saisies une seule fois dans le CRM et synchronisées avec l'ERP ; revue menée via trois activités (faisabilité, capacité, crédit et prix) avec preuves ; confirmation générée depuis l'ERP avec date confirmée.
+5116	Confirmation de commande avec date de livraison confirmée ; commande client dans l'ERP
+5117	Client ; production ; magasin
+5118	Commande confirmée ; commande refusée avec motif
+5119	Go si réalisable, capacité disponible à la date demandée, crédit dans la limite et prix validé ; sinon No-Go et négociation
+5120	Réclamation reçue par téléphone ou par e-mail
+5121	Description de la réclamation
+5122	Réclamations consignées dans un tableur ; instruction attribuée de manière informelle ; aucun délai de réponse.
+5123	Réponse au client
+5124	Réponse envoyée
+5125	Réclamation reçue via le portail client, un ticket CRM, un e-mail ou le téléphone
+5126	Clients ; CRM
+5127	Réclamation avec preuves ; références produit et lot
+5128	Enregistrement sous 24 h ; classement de la gravité ; instruction avec analyse des causes racines ; action corrective pour les réclamations majeures ; réponse et clôture avec acceptation du client.
+5129	Rapport d'instruction ; réponse au client ; demande d'action corrective
+5130	Client ; production ; QHSE
+5131	Réclamation clôturée acceptée ; réclamation clôturée sans réponse après 10 jours
+5132	Go vers l'action corrective si gravité majeure ou cause racine répétée ; Go vers la clôture si le client accepte la réponse
+5133	Managers de proximité ; directeur général
+5134	Effectif approuvé ; fiche de poste
+5135	Sourcing, présélection, entretiens, offre, intégration avec accueil SST avant la première prise de poste.
+5136	Contrat signé ; liste d'intégration complétée
+5137	Nouvel employé ; manager de proximité
+5138	Employé opérationnel ; poste annulé
+5139	Go vers l'offre si le score du jury >= 70 % et les références sont positives
+5140	Cycle de planification annuel ou nouvel écart de compétences
+5141	Managers de proximité ; RH
+5142	Exigences de compétences ; évaluations des écarts
+5143	Besoins consolidés dans le plan annuel ; sessions dispensées ; efficacité évaluée 30 à 90 jours plus tard.
+5144	Plan de formation ; enregistrements de formation ; évaluations de l'efficacité
+5145	Employés ; managers de proximité
+5146	Compétence confirmée ; recyclage planifié
+5147	Go vers la confirmation de compétence si l'évaluation >= niveau requis
+5148	Cycle de planification hebdomadaire
+5149	Ventes ; magasin ; maintenance
+5150	Commandes confirmées ; stock ; capacité ; fenêtres de maintenance
+5151	Plan hebdomadaire établi dans l'ERP ; ordres lancés après vérification des matières et des équipements ; surveillance de ligne avec maîtrise des rebuts et de l'environnement.
+5152	Plan de production ; ordres lancés ; dossiers de lot
+5153	Ventes ; magasin ; clients
+5154	Ordre terminé ; ordre mis en attente
+5155	Go vers le lancement si les matières sont disponibles et l'équipement au statut Disponible
+5156	Panne signalée par un opérateur
+5157	Opérateurs de production
+5158	Signalement oral de la panne
+5159	Maintenance principalement corrective ; ordres de travail papier ; consignation pratiquée de façon inégale.
+5160	Équipement réparé
+5161	Équipement redémarré
+5162	Échéance préventive de la GMAO atteinte ou demande d'intervention sur panne
+5163	GMAO ; production
+5164	Plan de maintenance ; ordre de travail ; historique de l'équipement
+5165	Plan préventif aligné sur les fenêtres de production ; interventions sous consignation avec permis ; redémarrage vérifié par le chef d'équipe ; historique mis à jour dans la GMAO.
+5166	Intervention réalisée ; rapport de maintenance ; historique mis à jour
+5167	Production ; QHSE
+5168	Équipement remis en production ; équipement mis en quarantaine
+5169	Go vers le redémarrage uniquement si la consignation est retirée par la personne qui l'a posée et si l'essai fonctionnel est réussi
+5170	Nouveau fournisseur nécessaire ou fin de période d'évaluation
+5171	Achats ; QHSE
+5172	Questionnaire fournisseur ; certificats ; données de performance
+5173	Présélection par questionnaire et certificats ; audit des fournisseurs critiques ; tableaux de bord trimestriels ; plan de développement sous le seuil.
+5174	Liste des fournisseurs homologués ; rapports d'évaluation
+5175	Acheteurs ; production
+5176	Fournisseur homologué ; fournisseur bloqué
+5177	Go vers l'homologation si le score de qualification >= 70 et aucun constat critique
+5178	Demande d'achat approuvée
+5179	Demandeurs ; ERP
+5180	Demande d'achat ; liste des fournisseurs homologués ; budget
+5181	Fournisseur choisi dans la liste homologuée ; commande émise dans l'ERP ; marchandises réceptionnées et contrôlées selon le plan d'échantillonnage.
+5182	Commande d'achat ; réception ; enregistrement de contrôle
+5183	Demandeur ; finance
+5184	Marchandises acceptées ; marchandises refusées et retournées
+5185	Go vers l'acceptation si les quantités et les résultats de contrôle sont conformes
+5186	Modification de document demandée par e-mail
+5187	Fichiers Word sur un lecteur partagé
+5188	Documents modifiés sur le lecteur partagé ; approbations par e-mail ; anciennes copies conservées dans les dossiers.
+5189	Fichier mis à jour sur le lecteur partagé
+5190	Fichier enregistré
+5191	Demande de modification ou revue planifiée dans DynamicMS
+5192	Pilotes de processus ; auditeurs
+5193	Document brouillon ; résumé des modifications
+5194	Rédaction dans DynamicMS ; workflow de revue et d'approbation ; versionnage automatique ; publication avec diffusion et accusé ; versions remplacées archivées.
+5195	Version publiée ; fichiers générés (Word, PDF) ; accusés de réception
+5196	Tous les employés ; auditeurs
+5197	Version publiée ; modification rejetée
+5198	Go vers la publication uniquement après approbation par le rôle Autorité, distinct de l'auteur
+5199	Début de la période du programme d'audit
+5200	QHSE ; direction générale
+5201	Programme d'audit ; risques des processus ; SIPOC et procédures
+5202	Planification fondée sur les risques ; audit au regard du SIPOC cible et des procédures ; rapport sous 5 jours ; suivi des constats.
+5203	Plan d'audit ; rapport d'audit ; constats
+5204	Pilotes de processus ; direction générale
+5205	Audit clôturé ; audit de suivi planifié
+5206	Go vers la clôture lorsque tous les constats ont un plan d'action accepté
+5207	Prix des lignes de commande à valider
+5208	Assistant commercial ; ERP
+5209	Lignes de commande ; tarif en vigueur ; règles de remise
+5210	Chaque prix de ligne est comparé au tarif ; les remises supérieures à 10 % sont soumises au responsable commercial.
+5211	Prix validés ; approbations de remise
+5212	Prix validés ; prix renvoyés en négociation
+5213	Go si toutes les lignes correspondent au tarif ou à une remise approuvée
+5214	Réclamation reçue par un canal quelconque
+5215	Description de la réclamation ; preuves ; références produit et lot
+5216	Enregistrer la réclamation, rechercher les doublons, classer la gravité, envoyer l'accusé sous 24 h.
+5217	Réclamation enregistrée ; accusé de réception
+5218	Client ; responsable QHSE
+5219	Réclamation enregistrée ; doublon fusionné
+5220	Go vers l'instruction si la réclamation est valide et n'est pas un doublon
+5221	Ordre de travail attribué
+5222	Ordre de travail papier
+5223	Le technicien effectue la réparation ; pièces prises en magasin sans enregistrement.
+5224	Réparation effectuée
+5225	Équipement consigné et permis signé
+5226	Responsable maintenance ; GMAO
+5227	Ordre de travail ; pièces détachées ; permis de travail
+5228	Exécuter l'intervention selon l'instruction de travail ; enregistrer les pièces utilisées dans la GMAO ; consigner les constats et le temps passé.
+5229	Rapport d'intervention ; enregistrement de consommation de pièces
+5230	Chef d'équipe ; responsable maintenance
+5231	Intervention terminée ; intervention escaladée
+5232	Go vers l'activité de redémarrage si l'intervention est terminée et la zone nettoyée
+5233	Demande d'achat approuvée attribuée à l'acheteur
+5234	Demandeur ; ERP
+5235	Demande d'achat ; liste des fournisseurs homologués
+5236	Choisir un fournisseur homologué ; demander un devis au-delà du seuil ; émettre la commande ; l'envoyer au fournisseur.
+5237	Commande d'achat émise
+5238	Fournisseur ; demandeur
+5239	Commande émise ; demande retournée
+5240	Go vers l'émission uniquement si le fournisseur est homologué et le budget disponible
+5241	Version brouillon soumise pour approbation
+5242	Version brouillon ; résumé des modifications
+5243	Commentaires de revue résolus ; l'approbateur signe ; le système attribue la version, la publie et la diffuse.
+5244	Version publiée ; notifications de diffusion
+5245	Version publiée ; version rejetée
+5246	Go si tous les commentaires sont résolus et si l'approbateur n'est pas l'auteur
+5247	Enregistrer une réclamation client
+5248	Saisir chaque réclamation sous 24 h avec des informations complètes et en accuser réception.
+5249	S'applique à toutes les réclamations des clients, par tout canal et pour tous les produits ; exclut les demandes de garantie traitées par les distributeurs.
+5250	Réclamation : expression d'insatisfaction concernant un produit ou un service. Doublon : réclamation portant sur un lot et un défaut déjà enregistrés.
+5251	Client (portail, e-mail, téléphone) ; CRM (HubSpot)
+5252	Formulaire de réclamation ; références produit et lot ; photos ou échantillons ; ticket CRM
+5253	Réclamation enregistrée ; doublon fusionné ; réclamation rejetée car hors périmètre
+5254	Réclamation valide ? Doublon ? Gravité majeure ?
+5255	Rapport hebdomadaire du registre des réclamations au responsable commercial ; rapport mensuel des tendances à la direction
+5256	Alerte en l'absence d'accusé sous 24 h ; alerte au responsable QHSE en cas de gravité majeure
+5257	Émettre les commandes aux fournisseurs homologués sous 2 jours après l'approbation de la demande.
+5258	Tous les achats de matières, pièces détachées et services au-delà du seuil de la petite caisse.
+5259	Fournisseur homologué : fournisseur inscrit comme homologué dans la liste des fournisseurs homologués. Seuil de devis : achats au-delà du montant défini par le locataire.
+5260	Fournisseur ; ERP (Odoo)
+5261	Demande d'achat ; liste des fournisseurs homologués ; devis ; commande d'achat
+5262	Commande émise ; demande retournée au demandeur
+5263	Fournisseur homologué ? Devis requis ? Budget disponible ?
+5264	Rapport mensuel des commandes d'achat ; rapport des dépenses fournisseurs
+5265	Alerte si la demande est en attente depuis plus de 2 jours ; blocage si le fournisseur n'est pas homologué
+5266	Exécuter l'intervention de maintenance
+5267	Réaliser la maintenance en sécurité et rétablir la fonction de l'équipement.
+5268	Interventions préventives et correctives sur les équipements de production après consignation.
+5269	Permis de travail : autorisation d'intervenir sur un équipement isolé. LOTO : consignation/déconsignation.
+5270	GMAO (ManWinWin) ; fournisseur de pièces pour les urgences
+5271	Ordre de travail ; permis de travail ; instruction de travail ; pièces détachées ; rapport d'intervention
+5272	Intervention terminée ; intervention escaladée à un prestataire externe
+5273	Isolement vérifié ? Pièces disponibles ? Réparation réussie ?
+5274	Rapport d'intervention par ordre de travail ; rapport mensuel des KPI de maintenance
+5275	Alerte au responsable QHSE en cas de situation dangereuse ; alerte si l'intervention dépasse de 50 % la durée prévue
+5276	Publier uniquement des versions de documents revues et approuvées et en informer les utilisateurs.
+5277	Tous les documents internes maîtrisés, fiches, SIPOC et procédures.
+5278	Approbateur Autorité : rôle détenant le A du RACSI du document. Modification majeure : changement de contenu ou d'exigences ; mineure : rédactionnelle.
+5279	Aucune (interne)
+5280	Version brouillon ; commentaires de revue ; résumé des modifications ; fichiers générés
+5281	Tous les commentaires résolus ? Approbateur distinct de l'auteur ? Modification majeure ou mineure ?
+5282	Rapport d'historique des versions ; rapport hebdomadaire des approbations en attente
+5283	Alerte si l'approbation est en attente depuis plus de 5 jours ouvrés ; alerte sur les accusés en retard
+5284	Nominal
+5285	Réclamation reçue
+5286	Portail client ; e-mail ; téléphone
+5287	Message de réclamation
+5288	Événement de début
+5289	Enregistrer les détails de la réclamation
+5290	Ticket CRM ; formulaire de réclamation
+5291	Brouillon de fiche de réclamation
+5292	Vérifier la validité et les doublons
+5293	CRM ; registre des réclamations DynamicMS
+5294	Décision de validité
+5295	Passerelle exclusive
+5296	Go si dans le périmètre et sans réclamation ouverte sur le même lot et le même défaut
+5297	Classer la gravité
+5298	Matrice de gravité
+5299	Gravité (mineure/majeure)
+5300	Majeure si sécurité, réglementaire ou défaut répété
+5301	Envoyer l'accusé de réception au client
+5302	Modèle d'accusé de réception ; e-mail
+5303	Accusé de réception
+5304	Réclamation enregistrée
+5305	Réclamation enregistrée
+5306	Événement de fin
+5307	Exception
+5308	Fusionner le doublon avec la réclamation existante
+5309	Registre des réclamations DynamicMS
+5310	Réclamation mise à jour
+5311	Informer le client que la réclamation est hors périmètre
+5312	E-mail
+5313	Avis de hors périmètre
+5314	Notifier au responsable QHSE une réclamation majeure
+5315	Alerte DynamicMS
+5316	Doublon fusionné
+5317	Réclamation fusionnée
+5318	Demande d'achat approuvée
+5319	Demande approuvée
+5320	Choisir un fournisseur dans la liste homologuée
+5321	Liste des fournisseurs homologués ; ERP
+5322	Fournisseur choisi
+5323	Go uniquement si le fournisseur a le statut Homologué
+5324	Demander des devis au-delà du seuil
+5325	ERP ; e-mail
+5326	Devis
+5327	Go vers la commande lorsque la meilleure offre satisfait les exigences techniques
+5328	Vérifier la disponibilité budgétaire
+5329	Budget ERP
+5330	Contrôle budgétaire
+5331	Go si le budget restant couvre le montant de la commande
+5332	Émettre et envoyer la commande d'achat
+5333	Commande d'achat ERP
+5334	Commande d'achat émise
+5335	Commande émise
+5336	Lancer la présélection du fournisseur
+5337	Questionnaire fournisseur
+5338	Demande de qualification
+5339	Retourner la demande au demandeur
+5340	Demande retournée
+5341	Permis de travail ; kit de consignation
+5342	Permis signé
+5343	Vérifier l'absence d'énergie
+5344	Liste de contrôle de consignation
+5345	Isolement vérifié
+5346	Go uniquement si toutes les sources d'énergie sont isolées et vérifiées
+5347	Retirer les pièces détachées
+5348	GMAO ; magasin de pièces détachées
+5349	Enregistrement de sortie de pièces
+5350	Go si toutes les pièces sont disponibles
+5351	Réaliser l'intervention selon l'instruction de travail
+5352	Instruction de travail ; ordre de travail GMAO
+5353	Équipement réparé ou entretenu
+5354	Enregistrer l'intervention et les pièces dans la GMAO
+5355	Rapport d'intervention
+5356	Intervention terminée
+5357	Ordre de travail clôturé
+5358	Arrêter le travail et signaler la situation dangereuse
+5359	Formulaire d'incident DynamicMS
+5360	Signalement de situation dangereuse
+5361	Commander des pièces en urgence ou escalader à un prestataire
+5362	GMAO ; ERP
+5363	Demande d'achat urgente
+5364	Brouillon soumis pour approbation
+5365	Brouillon soumis
+5366	Résoudre les commentaires de revue
+5367	Revue DynamicMS
+5368	Commentaires résolus
+5369	Go si tous les commentaires sont résolus
+5370	Approuver la version
+5371	Approbateur Autorité
+5372	DynamicMS ; signature électronique
+5373	Version approuvée
+5374	Go si l'approbateur est distinct de l'auteur ; classer la modification majeure ou mineure
+5375	Publier, générer les fichiers et diffuser
+5376	Modèles DynamicMS
+5377	Version publiée ; fichiers Word et PDF ; notifications
+5378	Version publiée
+5379	Version publiée
+5380	Renvoyer le brouillon à l'auteur
+5381	Brouillon renvoyé
+5382	Rejeter la version
+5383	Rejet motivé
+5384	Document de référence
+5385	ISO 9001:2015 Systèmes de management de la qualité — Exigences
+5386	Actif
+5387	ISO 14001:2015 Systèmes de management environnemental — Exigences
+5388	ISO 45001:2018 Systèmes de management de la santé et de la sécurité au travail — Exigences
+5389	ISO/IEC 27001:2022 Systèmes de management de la sécurité de l'information — Exigences
+5390	ISO 19011:2018 Lignes directrices pour l'audit des systèmes de management
+5391	Registre du code du travail et des réglementations de sécurité au travail applicables
+5392	Registre des réglementations environnementales applicables
+5393	Conditions générales clients et contrats-cadres
+5394	Document interne
+5395	Procédure de revue des commandes
+5396	Procédure de traitement des réclamations clients
+5397	Procédure de recrutement et d'intégration
+5398	Procédure de gestion de la formation
+5399	Procédure de planification de la production
+5400	Procédure de maintenance, y compris la consignation
+5401	Procédure de sélection et d'évaluation des fournisseurs
+5402	Procédure achats
+5403	Procédure de maîtrise des documents et enregistrements
+5404	Procédure d'audit interne
+5405	Tarif
+5406	Fiches de poste
+5407	Plan de maintenance préventive
+5408	Confirmations de commande signées
+5409	Conservées 10 ans
+5410	Dossiers et réponses aux réclamations
+5411	Conservés 5 ans
+5412	Dossiers de recrutement
+5413	Conservés 2 ans après la décision
+5414	Enregistrements de formation et de compétences
+5415	Conservés pendant l'emploi + 5 ans
+5416	Ordres de fabrication et dossiers de lot
+5417	Rapports d'intervention de maintenance
+5418	Conservés pendant la vie de l'actif + 2 ans
+5419	Rapports d'évaluation des fournisseurs
+5420	Commandes d'achat et enregistrements de contrôle à réception
+5421	Liste maîtresse des documents et accusés de diffusion
+5422	Programme, plans et rapports d'audit
+5423	Conservés 6 ans
+5424	Application
+5425	ERP Odoo (intégration INT-01)
+5426	CRM HubSpot (intégration INT-05)
+5427	RH Personio (intégration INT-04)
+5428	GMAO ManWinWin (intégration INT-08)
+5429	Messagerie et suite bureautique
+5430	Commande acceptée au-delà de la capacité disponible
+5431	Ouvert
+5432	Prix erroné communiqué au client
+5433	Réponse tardive à une réclamation entraînant la perte du client
+5434	Poste clé vacant
+5435	Panne d'équipement imprévue
+5436	Défaillance de livraison d'un fournisseur
+5437	Utilisation d'un document obsolète
+5438	Programme d'audit omettant des processus à haut risque
+5439	Blessure lors d'une intervention de maintenance (SST)
+5440	Déversement chimique en production (environnement)
+5441	Opportunité
+5442	Portail de commande en libre-service pour les clients
+5443	Exploiter les données de réclamations pour améliorer les produits
+5444	Une intégration structurée améliore la fidélisation
+5445	Maintenance conditionnelle à partir des données de la GMAO
+5446	Consolidation du panel fournisseurs
+5447	Audits à distance des sites secondaires
+5448	Pack automobile
+5449	Pack aéronautique
+5450	Pack machines industrielles
+5451	Pack santé et sciences de la vie
+5452	Pack électronique et haute technologie
+5453	Pack AEC et construction
+5454	Pack agroalimentaire et boissons
+5455	Pack économie sociale et solidaire
+5456	Pack pharmaceutique et procédés
+5457	Pack distribution, chaussure et habillement
+5458	Pack produits de grande consommation
+5459	Pack énergie et services publics
+5460	Pack télécommunications
+5461	Pack procédés/pétrochimie
+5462	Pack construction navale
+5463	Pack produits de consommation étendus
+5464	Pack industries de procédés
+5465	Pack infrastructures
+5466	Pack fabrication et assemblage
+5467	Pack procédés/produits emballés
+5468	Pack semi-conducteurs et fabrication électronique
+5469	Pack commerce de détail
+5470	Pack distribution
+5471	Pack logistique
+5472	Pack pharmacie
+5473	Pack industrie manufacturière (générique)
+5474	Pack enseignement privé
+5475	Pack enseignement public
+5476	Pack santé (établissements de soins)
+5477	Pack PME

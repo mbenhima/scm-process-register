@@ -1,0 +1,600 @@
+2051	Certificats de conformité
+2052	Contrôle interne et certification SOX
+2053	Identifier les contrôles clés ; les concevoir et les relier aux risques ; s'auto-évaluer et tester ; certifier.
+2054	Propriétaire du contrôle
+2055	Exigences SOX
+2056	Concevoir
+2057	Relier aux risques
+2058	S'auto-évaluer
+2059	Documenter les déficiences
+2060	Maintenir le référentiel
+2061	Enregistrements de conception
+2062	Enregistrements de tests
+2063	Enregistrements de déficiences
+2064	Auditeurs externes
+2065	Surveillance des risques tiers et fournisseurs
+2066	Réaliser la due diligence ; évaluer le risque ; rédiger les clauses ; auditer et gérer la sortie.
+2067	Exigences contractuelles
+2068	Évaluer le risque
+2069	Attribuer les scores
+2070	Rédiger les clauses
+2071	Revoir annuellement
+2072	Gérer la sortie
+2073	Rapports de due diligence
+2074	Clauses contractuelles
+2075	Enregistrements de sortie
+2076	Alertes éthiques et enquêtes sur incidents
+2077	Exploiter des canaux confidentiels ; définir les protocoles ; sécuriser les preuves ; recommander et clôturer.
+2078	Juridique/RH
+2079	Preuves
+2080	Exigences d'enquête
+2081	Enregistrer
+2082	Déterminer le périmètre
+2083	Sécuriser les preuves
+2084	Recommander
+2085	Enregistrements de preuves
+2086	Recommandations
+2087	Continuité d'activité et préparation aux crises
+2088	Réaliser le BIA ; identifier les RTO/RPO ; concevoir les stratégies ; documenter le PCA ; tester.
+2089	Coordinateur PCA
+2090	Exigences RTO/RPO
+2091	Stratégies de reprise
+2092	Scénarios de crise
+2093	Identifier les RTO/RPO
+2094	Concevoir les stratégies
+2095	Documenter le PCA
+2096	Activer la cellule de crise
+2097	Rapport BIA
+2098	Définitions RTO/RPO
+2099	Rapports d'évaluation
+2100	Clients
+2101	Gestion des projets d'optimisation et d'automatisation
+2102	Fixer la périodicité ; identifier les opportunités ; gérer les projets ; valider les bénéfices.
+2103	Resp. optimisation
+2104	Chef de projet
+2105	Opportunités
+2106	Gérer la réingénierie (BPR)
+2107	Gérer l'automatisation
+2108	Suivre les jalons
+2109	Valider les bénéfices
+2110	Transférer
+2111	Projets d'optimisation
+2112	Enregistrements d'automatisation
+2113	Validation des bénéfices
+2114	Standardisation
+2115	Découverte et priorisation des macro-processus
+2116	Recueillir les points de friction ; scorer les processus ; définir la priorisation ; publier.
+2117	Analyste métier
+2118	Points de friction
+2119	Valeur stratégique
+2120	Recueillir les frictions
+2121	Scorer les processus
+2122	Classer
+2123	Construire le portefeuille
+2124	Réviser trimestriellement
+2125	Portefeuille de priorisation
+2126	Enregistrements de scoring
+2127	Enregistrements de validation
+2128	Portefeuille publié
+2129	Simulation d'entreprise et jumeau numérique
+2130	Construire le jumeau numérique ; calibrer ; définir les scénarios ; lancer les simulations ; valider.
+2131	Resp. simulation
+2132	Science des données
+2133	Définitions de scénarios
+2134	Données de référence
+2135	Calibrer
+2136	Définir les scénarios
+2137	Lancer les simulations
+2138	Comparer
+2139	Modèle de jumeau numérique
+2140	Rapports d'aide à la décision
+2141	Scoring d'automatisation des éléments de processus
+2142	Lire l'élément ; scorer les axes humain/workflow/RPA/IA ; citer les faits ; documenter avec le ROI.
+2143	Analyste processus
+2144	Architecte d'automatisation
+2145	Élément de processus
+2146	Critères d'automatisation
+2147	Données de faisabilité
+2148	Lire l'élément
+2149	Scorer l'axe humain
+2150	Scorer l'axe workflow
+2151	Scorer l'axe RPA
+2152	Scorer l'axe IA
+2153	Citer les faits
+2154	Identifier l'axe prédominant
+2155	Documenter avec le ROI
+2156	Scores d'automatisation
+2157	Axe prédominant
+2158	Estimations de ROI
+2159	Référentiel de formules et gouvernance des variables
+2160	Cataloguer les formules ; définir la syntaxe ; valider ; versionner et publier.
+2161	Resp. gouvernance des données
+2162	Formules métier
+2163	Exigences de syntaxe
+2164	Normes de métadonnées
+2165	Cataloguer les formules
+2166	Définir la syntaxe
+2167	Versionner
+2168	Maîtrise des changements
+2169	Relier aux données
+2170	Fournir la recherche
+2171	Référentiel de formules
+2172	Définitions de syntaxe
+2173	Enregistrements de versions
+2174	Utilisateurs des rapports
+2175	Orchestration de l'exécution et de la traçabilité des formules
+2176	Déployer les formules ; ingérer les données ; exécuter les calculs ; journaliser et tracer.
+2177	Ingénieur de données
+2178	Formules
+2179	Données d'entrée
+2180	Planifications
+2181	Exigences de traçabilité
+2182	Ingérer
+2183	Journaliser les paramètres
+2184	Capturer les étapes
+2185	Stocker avec traçabilité
+2186	Assurer la traçabilité
+2187	Détecter les anomalies
+2188	Résultats de calcul
+2189	Journaux de traçabilité
+2190	Enregistrements de paramètres
+2191	Alertes d'anomalies
+2192	Consommateurs des rapports
+2193	Gouvernance de la configuration et des paramètres
+2194	Cataloguer les paramètres ; définir les valeurs par environnement ; mettre en œuvre la maîtrise des changements ; surveiller les dérives.
+2195	Exploitation informatique
+2196	Resp. applicatif
+2197	Gestion des changements
+2198	Paramètres configurables
+2199	Exigences d'environnement
+2200	Demandes de changement
+2201	Données de test
+2202	Cataloguer les paramètres
+2203	Définir les valeurs
+2204	Déployer avec retour arrière
+2205	Tenir les journaux
+2206	Surveiller les dérives
+2207	Documenter les dépendances
+2208	Catalogue des paramètres
+2209	Enregistrements de configuration
+2210	Enregistrements de changements
+2211	Journaux d'audit
+2212	Gestion du cycle de vie du ROI
+2213	Définir la formule du ROI ; définir les seuils ; valider avec le directeur financier ; enregistrer et communiquer.
+2214	Resp. finance/stratégie
+2215	Données financières
+2216	Données d'investissement
+2217	Critères de seuil
+2218	Valider avec le directeur financier
+2219	Enregistrer dans UMS054
+2220	Planifier la revue
+2221	Définitions des seuils
+2222	Tous les consommateurs
+2223	Comité de direction
+2224	Gestion du cycle de vie de la VOI
+2225	Définir la composition de la VOI ; pondérations/profils ; valider ; enregistrer et communiquer.
+2226	Exigences VOI
+2227	Données de bénéfices
+2228	Critères de pondération
+2229	Définitions de profils
+2230	Définir la composition
+2231	Définir les pondérations
+2232	Définir les profils
+2233	Valider avec le comité
+2234	Composition de la VOI
+2235	Définitions des pondérations
+2236	Profils de bénéfices
+2237	Intelligence prédictive des risques par l'IA
+2238	Anticiper les risques avant qu'ils ne se concrétisent ; utiliser l'apprentissage automatique ; générer des alertes.
+2239	Niveau 3 — Différenciateurs de premier plan
+2240	Données externes
+2241	Données historiques de risques
+2242	Données de processus en temps réel
+2243	Signaux externes
+2244	Données d'incidents
+2245	Paramètres d'apprentissage automatique
+2246	Collecter/nettoyer
+2247	Entraîner/valider les modèles
+2248	Générer les prédictions
+2249	Identifier les tendances
+2250	Déclencher les alertes
+2251	Recommander des actions
+2252	Suivre la précision
+2253	Réentraîner
+2254	Alertes précoces
+2255	Recommandations préventives
+2256	Rapports de précision
+2257	Veille réglementaire automatisée
+2258	Surveiller les évolutions réglementaires ; évaluer l'impact ; alerter ; mettre à jour les obligations.
+2259	Moteurs IA/TALN
+2260	Bases de données externes
+2261	Bases de données juridiques
+2262	Données juridictionnelles
+2263	Profil de l'organisation
+2264	Appliquer le TALN
+2265	Classer l'urgence
+2266	Mettre à jour le registre
+2267	Suivre la mise en œuvre
+2268	Registre mis à jour
+2269	Actions de conformité
+2270	Correspondance automatisée multi-normes
+2271	Mettre en correspondance les exigences entre normes ; identifier recouvrements/écarts ; générer un cadre unifié.
+2272	Experts des normes
+2273	Moteur d'IA
+2274	Politiques internes
+2275	Appliquer la correspondance
+2276	Identifier recouvrements/écarts
+2277	Générer la matrice
+2278	Mettre à jour en cas de changement
+2279	Rendre compte de la couverture
+2280	Analyse des recouvrements
+2281	Cadre unifié
+2282	Génération intelligente de documents
+2283	Générer automatiquement les documents ; garantir la conformité ; réduire l'effort.
+2284	Gestionnaires documentaires
+2285	Documents historiques
+2286	Requêtes des utilisateurs
+2287	Rassembler les données
+2288	Générer le brouillon
+2289	Valider par rapport aux normes
+2290	Soumettre à relecture
+2291	Suivre la version
+2292	Documents générés
+2293	Validation de conformité
+2294	Historique des versions
+2295	Auteurs de documents
+2296	Simulation des processus par jumeau numérique
+2297	Créer le jumeau numérique ; simuler des scénarios ; prédire les résultats ; optimiser la conception.
+2298	Ingénieurs simulation
+2299	Modèles de ressources
+2300	Analyser les résultats
+2301	Recommander la conception
+2302	Mettre à jour le jumeau
+2303	Conception optimale
+2304	Gestion de la performance ESG et durable
+2305	Suivre les indicateurs ESG ; gérer les initiatives ; publier ; s'aligner sur GRI/SASB/TCFD.
+2306	Resp. développement durable
+2307	Objectifs de développement durable
+2308	Cadres de reporting
+2309	Définir indicateurs/cibles
+2310	Valider la qualité
+2311	Gérer les initiatives
+2312	S'aligner sur les cadres
+2313	Suivre les progrès
+2314	Tableaux de bord de durabilité
+2315	Scores ESG
+2316	Communications aux parties prenantes
+2317	Gestion de l'empreinte carbone
+2318	Calculer les scopes 1/2/3 ; fixer les objectifs ; suivre les compensations ; publier.
+2319	Équipe développement durable
+2320	Vérificateurs externes
+2321	Resp. énergie
+2322	Données énergétiques
+2323	Facteurs d'émission
+2324	Données de la chaîne d'approvisionnement
+2325	Données de compensation
+2326	Définir les périmètres
+2327	Collecter les données d'activité
+2328	Appliquer les facteurs
+2329	Calculer les scopes 1/2/3
+2330	Suivre les compensations
+2331	Mettre à jour annuellement
+2332	Rapport d'empreinte carbone
+2333	Calculs d'émissions
+2334	Objectifs de réduction
+2335	Résilience et traçabilité de la chaîne d'approvisionnement
+2336	Cartographier la chaîne d'approvisionnement ; identifier les vulnérabilités ; assurer la traçabilité ; bâtir la résilience.
+2337	Resp. chaîne d'approvisionnement
+2338	Données fournisseurs
+2339	Cartographier la chaîne d'approvisionnement
+2340	Identifier les vulnérabilités
+2341	Évaluer les risques
+2342	Mettre en œuvre la traçabilité
+2343	Surveiller les perturbations
+2344	Élaborer des plans de secours
+2345	Tester les scénarios
+2346	Rendre compte de la santé
+2347	Carte de la chaîne d'approvisionnement
+2348	Évaluation des vulnérabilités
+2349	Plans de résilience
+2350	Intelligence de l'écosystème fournisseurs
+2351	Surveiller l'écosystème fournisseurs ; anticiper les risques ; identifier l'innovation ; optimiser le portefeuille.
+2352	Flux d'actualités
+2353	Appliquer l'IA pour anticiper les risques
+2354	Surveiller la santé financière
+2355	Identifier l'innovation
+2356	Scorer la santé de l'écosystème
+2357	Recommander l'optimisation
+2358	Alerter sur les perturbations
+2359	Prédictions de risques fournisseurs
+2360	Scores de santé de l'écosystème
+2361	Opportunités d'innovation
+2362	Recommandations d'optimisation
+2363	Intelligence de l'expérience client
+2364	Capter les retours ; analyser le sentiment ; anticiper l'attrition ; piloter les améliorations.
+2365	Réseaux sociaux
+2366	Données de transactions
+2367	Capter les retours
+2368	Identifier les points de douleur
+2369	Anticiper l'attrition
+2370	Corréler avec la performance
+2371	Recommander des améliorations
+2372	Suivre l'impact
+2373	Rapports d'intelligence client
+2374	Prédictions d'attrition
+2375	Recommandations d'amélioration
+2376	Tableaux de bord de sentiment
+2377	Analyse de la voix du client
+2378	Agréger les données VoC ; identifier les thèmes ; relier aux améliorations ; mesurer l'impact.
+2379	Données de réclamations
+2380	Centre d'appels
+2381	Avis
+2382	Appliquer le TALN/le clustering
+2383	Identifier les thèmes
+2384	Relier aux améliorations
+2385	Prioriser par impact
+2386	Suivre les tendances
+2387	Mesurer l'impact
+2388	Analytique VoC
+2389	Identification des thèmes
+2390	Priorités d'amélioration
+2391	Rapports d'impact
+2392	Gestion du pipeline d'innovation
+2393	Capter les idées ; évaluer/prioriser ; gérer les projets ; mesurer le ROI.
+2394	Resp. innovation
+2395	Données de marché
+2396	Tendances technologiques
+2397	Évaluer faisabilité/impact
+2398	Gérer les projets
+2399	Valider les résultats
+2400	Mesurer le ROI
+2401	Standardiser les réussites
+2402	Portefeuille priorisé
+2403	Enregistrements de projets
+2404	Rapports de ROI
+2405	Graphe de connaissances et recherche sémantique
+2406	Construire le graphe de connaissances ; permettre la recherche sémantique ; relier l'information ; alimenter l'IA.
+2407	Resp. connaissances
+2408	Données du SMI
+2409	Données de relations
+2410	Extraire entités/relations
+2411	Construire le graphe
+2412	Indexer pour la recherche
+2413	Permettre les requêtes en langage naturel
+2414	Alimenter l'IA
+2415	Maintenir l'exactitude
+2416	Restituer les enseignements
+2417	Graphe de connaissances
+2418	Index de recherche
+2419	Résultats de requêtes
+2420	Recommandations de l'IA
+2421	Process mining en langage naturel
+2422	Extraire des enseignements sur les processus à partir de textes ; détecter les écarts ; identifier les améliorations.
+2423	Analystes processus
+2424	Journaux de processus
+2425	Données textuelles
+2426	E-mails
+2427	Journaux d'événements
+2428	Construire les modèles
+2429	Détecter les écarts
+2430	Identifier les goulets d'étranglement
+2431	Mettre à jour les modèles
+2432	Modèles découverts
+2433	Rapports d'écarts
+2434	Modèles mis à jour
+2435	Intelligence automatisée des causes racines
+2436	Automatiser l'ACR ; utiliser l'IA ; relier aux schémas historiques ; accélérer la résolution.
+2437	ACR historiques
+2438	Schémas de défaillance
+2439	Ingérer les données
+2440	Appliquer l'IA
+2441	Relier aux schémas
+2442	Classer les causes
+2443	Recommander la vérification
+2444	Valider avec les experts
+2445	Causes suggérées par l'IA
+2446	Causes classées
+2447	Recommandations de vérification
+2448	Base de connaissances mise à jour
+2449	Benchmarking inter-sites
+2450	Comparer la performance entre sites ; identifier les bonnes pratiques ; partager ; piloter la standardisation.
+2451	Resp. qualité
+2452	Resp. de sites
+2453	Données de bonnes pratiques
+2454	Normaliser et comparer
+2455	Identifier les meilleurs
+2456	Extraire les bonnes pratiques
+2457	Partager les enseignements
+2458	Piloter la standardisation
+2459	Bibliothèque de bonnes pratiques
+2460	Recommandations de standardisation
+2461	Suivi des améliorations
+2462	Tous les sites
+2463	Intelligence prédictive de conformité
+2464	Anticiper les risques de conformité ; identifier les processus à risque ; recommander des actions ; réduire les NC.
+2465	Constats d'audit
+2466	Données de NC
+2467	Entraîner les modèles
+2468	Anticiper les risques
+2469	Identifier les éléments à risque
+2470	Alerter la conformité
+2471	Prédictions de risques de conformité
+2472	Liste des éléments à risque
+2473	Piste d'audit blockchain
+2474	Créer une piste immuable ; garantir l'intégrité ; permettre des enregistrements infalsifiables ; simplifier la vérification.
+2475	Ingénieurs blockchain
+2476	Empreintes des documents
+2477	Enregistrements d'empreintes
+2478	Écrire dans la blockchain
+2479	Vérifier l'intégrité
+2480	Ouvrir l'accès
+2481	Fournir les outils
+2482	Surveiller la santé
+2483	Vérification de l'intégrité
+2484	Impact en temps réel des changements réglementaires
+2485	Évaluer l'impact réglementaire en temps réel ; identifier les éléments touchés ; recommander des actions.
+2486	Changements réglementaires
+2487	Cartographies des processus
+2488	Données d'obligations
+2489	Détecter le changement
+2490	Identifier les éléments touchés
+2491	Alerter les propriétaires
+2492	Listes des processus touchés
+2493	Recommandations d'actions
+2494	Suivi de la mise en œuvre
+2495	Moteur de recommandation automatisée de CAPA
+2496	Recommander des CAPA par l'IA ; apprendre de l'historique ; accélérer la résolution.
+2497	CAPA historiques
+2498	Données de causes racines
+2499	Données d'efficacité
+2500	Classer par efficacité
+2501	Relier aux réussites
+2502	Fournir des conseils
+2503	Suivre l'efficacité
+2504	Apprendre
+2505	Améliorer
+2506	Recommandations de CAPA
+2507	Classements d'efficacité
+2508	Conseils de mise en œuvre
+2509	Enregistrements d'apprentissage
+2510	Base de connaissances NCP et gestion du RAG
+2511	Construire/maintenir la base de connaissances vectorielle ; recherche sémantique ; RAG ; multilingue ; respectueuse du RBAC.
+2512	Niveau 4 — Intégrations NCP Solver
+2513	Ingénieurs IA
+2514	Pilotes amélioration continue
+2515	Fiches NCP clôturées
+2516	Entrées REX
+2517	Bibliothèque de normes
+2518	Modèles d'embeddings
+2519	Générer les embeddings
+2520	Indexer dans la base vectorielle
+2521	Configurer le RAG
+2522	Recherche respectueuse du RBAC
+2523	Multilingue
+2524	Surveiller la qualité
+2525	Mettre à jour à la clôture
+2526	Index RAG
+2527	Résultats de recherche
+2528	Rapports de santé de la base de connaissances
+2529	Agents IA
+2530	Équipes NCP
+2531	Orchestration des agents IA pour la résolution de problèmes
+2532	Coordonner 8 agents IA ; gérer la machine à états ; garantir le RBAC ; journaliser avec indice de confiance.
+2533	Transitions d'étapes
+2534	Configurations des agents
+2535	Requêtes des utilisateurs
+2536	Contexte de la base de connaissances
+2537	Initialiser l'orchestrateur
+2538	Déclencher la classification en E1
+2539	Déclencher la structuration en E2
+2540	Déclencher le confinement en E3
+2541	Déclencher l'ACR en E4
+2542	Déclencher la recommandation d'actions en E5
+2543	Déclencher la surveillance en E6
+2544	Déclencher le REX en E7
+2545	Gérer les transitions
+2546	Journaliser avec indice de confiance
+2547	Classifications de l'IA
+2548	Descriptions structurées
+2549	Actions recommandées
+2550	Causes suggérées
+2551	Prédictions de retard
+2552	Brouillon de REX
+2553	Moteur intelligent d'alertes et d'escalade
+2554	Déclencher 10 types d'alertes (A–J) ; les délivrer ; escalader ; paramétrable par locataire.
+2555	Administrateurs système
+2556	Événements de fiche
+2557	Échéances
+2558	Seuils des KPI
+2559	Rôles des utilisateurs
+2560	Configuration du locataire
+2561	Configurer A–J
+2562	Alerte A (haute priorité)
+2563	Alerte B (en retard)
+2564	Alerte C (évaluation en attente)
+2565	Alerte D (retard d'ACR)
+2566	Alerte E (capitalisation)
+2567	Alerte F (dépassement de KPI)
+2568	Alertes G–I (rappels J-1/J-2)
+2569	Alerte J (inactivité)
+2570	Escalader après 24 h
+2571	Journaliser
+2572	Notifications dans l'application
+2573	Alertes par e-mail
+2574	Journaux d'alertes
+2575	Propriétaires d'actions
+2576	Évaluateurs
+2577	Gouvernance des modules composables
+2578	Gérer des modules réutilisables ; garantir leur partage entre applications.
+2579	Architectes plateforme
+2580	Propriétaires de modules
+2581	Chefs de produit
+2582	Équipes de développement
+2583	Exigences de réutilisation
+2584	Matrice des versions
+2585	Établir les interfaces
+2586	Gestion des versions
+2587	Permettre le partage
+2588	Gouverner le RBAC/les locataires
+2589	Surveiller l'utilisation
+2590	Gérer le cycle de vie
+2591	Rendre compte de la réutilisation/du ROI
+2592	Indicateurs de réutilisation
+2593	Toutes les applications DynamicMS
+2594	Équipes produit
+2595	Isolation et gouvernance multi-locataires
+2596	Garantir une isolation complète des données ; appliquer la configuration, l'image de marque et le RBAC par locataire.
+2597	Administrateurs des locataires
+2598	Règles de partitionnement
+2599	Exigences de sécurité
+2600	Définir l'isolation
+2601	Mettre en œuvre la propagation du contexte
+2602	Imposer le tenant_id
+2603	Configurer au niveau locataire
+2604	Gérer l'arrivée/le départ des locataires
+2605	Surveiller les accès inter-locataires
+2606	Enregistrements d'isolation
+2607	Journaux d'accès
+2608	Tous les utilisateurs du locataire
+2609	Capitalisation et généralisation du REX
+2610	Documenter les enseignements ; identifier la standardisation (V1) et la généralisation (V2) ; mettre à jour la base de connaissances.
+2611	Fiches clôturées
+2612	Évaluations d'efficacité
+2613	Contexte de l'organisation
+2614	Documenter les enseignements (assisté par IA)
+2615	Identifier la généralisation
+2616	Désigner le responsable
+2617	Fixer les échéances
+2618	Mettre à jour les procédures
+2619	Indexer dans le RAG
+2620	Récit du REX
+2621	Plans de généralisation
+2622	Procédures mises à jour
+2623	Journal des enseignements
+2624	Tous les départements
+2625	Explicabilité de l'IA et indice de confiance
+2626	Journaliser les recommandations de l'IA avec leur indice de confiance ; fournir l'explicabilité ; humain dans la boucle.
+2627	Indices de confiance
+2628	Références des sources
+2629	Définir les exigences par agent
+2630	Joindre les références des sources
+2631	Permettre la revue humaine
+2632	Conduire des audits de biais
+2633	Journaux des recommandations de l'IA
+2634	Rapports d'explicabilité
+2635	Enregistrements de précision
+2636	Rapports d'audit de biais
+2637	Édition collaborative et co-rédaction en temps réel
+2638	Permettre l'édition simultanée ; signaler la présence ; résoudre les conflits ; historiser les versions.
+2639	Niveau 5 — Ajouts de leadership sur le marché
+2640	Fiches NCP
+2641	Sessions
+2642	Règles de collaboration
+2643	Autorisations
+2644	Activer les sessions multi-utilisateurs
+2645	Afficher la présence
+2646	Appliquer les CRDT
+2647	Suivre les contributions
+2648	Commentaires en ligne
+2649	Discussions en fil
+2650	Verrouiller pour approbation

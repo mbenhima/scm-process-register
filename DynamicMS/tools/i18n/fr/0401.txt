@@ -1,0 +1,500 @@
+401	Formule
+402	Graphe de connaissances
+403	Gestionnaire de données
+404	Directeur des données
+405	Consommateurs de données
+406	Référentiel de formules
+407	Resp. gouvernance des données
+408	Analystes de données
+409	Utilisateurs des rapports
+410	Exécution des formules
+411	Ingénieur de données
+412	Resp. connaissances
+413	Gouverner les données et les formules
+414	Gouverner les actifs de données
+415	Tâches de gouvernance des données
+416	Définir les domaines
+417	Domaines de données
+418	Règles de qualité
+419	Des exigences à la livraison
+420	Transformer les exigences en produits/services livrés
+421	Commande client, plan de production, intégration d'un fournisseur, exigence de soudage, essai de laboratoire ou écoconception
+422	Produits/services livrés ; fournisseurs maîtrisés ; traçabilité assurée ; qualité validée ; ACV réalisée
+423	Ce processus transforme les exigences en produits et services livrés. Il gère la planification et la maîtrise opérationnelles, les exigences relatives aux produits et services, la maîtrise des prestataires externes, la production et la prestation de services, la libération des produits et services, la maîtrise des éléments de sortie non conformes, la préparation aux situations d'urgence, la performance qualité des fournisseurs, la résilience et la traçabilité de la chaîne d'approvisionnement, l'intelligence de l'écosystème fournisseurs, les opérations terrain mobiles, la collaboration fournisseurs, la traçabilité et le rappel des produits, la qualité du soudage, les laboratoires d'essais et d'étalonnage, les laboratoires médicaux, l'écoconception, l'analyse du cycle de vie et — pour les PME — la numérisation des processus informels.
+424	Garantit que ce que reçoit le client correspond à ce qui lui a été promis — conforme, traçable, sûr et durable.
+425	Fournisseur
+426	Traçabilité
+427	Mobile
+428	Soudage
+429	Laboratoire
+430	Écoconception
+431	ACV
+432	Processus PME
+433	Ingénieur procédés
+434	Opérateurs
+435	Ingénieur qualité fournisseurs
+436	Équipe qualité
+437	Données terrain
+438	Opérateur terrain
+439	Ingénieur soudage
+440	Resp. laboratoire
+441	Ingénieur écoconception
+442	Resp. R&D
+443	Environnement
+444	Analyste ACV
+445	Processus PME
+446	Planifier et maîtriser les opérations
+447	Maîtriser les opérations
+448	Tâches opérationnelles
+449	Identifier les points critiques
+450	Conceptions de processus
+451	Plans de surveillance
+452	Maîtriser les fournisseurs
+453	Qualité fournisseurs
+454	Tâches fournisseurs
+455	Définir les critères
+456	Capacités des fournisseurs
+457	Homologations fournisseurs
+458	Assurer la traçabilité et la qualité
+459	Tracer et valider
+460	Tâches de traçabilité et de qualité
+461	Définir les exigences
+462	Données produit
+463	Essais
+464	Enregistrements de traçabilité
+465	Saisir les données terrain
+466	Données terrain
+467	Tâches mobiles
+468	Fournir des applications mobiles
+469	Listes de contrôle
+470	Enregistrements terrain
+471	Numériser
+472	De la vérification à la préparation
+473	Détecter, contenir, résoudre et capitaliser les non-conformités et les problèmes
+474	Non-conformité détectée, incident signalé ou problème identifié
+475	Problème résolu ; REX capitalisé ; base de connaissances mise à jour
+476	Ce processus détecte, contient, résout et capitalise les non-conformités et les problèmes. Il couvre la saisie et la définition des problèmes, les actions immédiates, la résolution des causes racines, l'exécution des actions correctives, la capitalisation et la clôture des non-conformités, la base de connaissances IA et le RAG, l'orchestration des agents IA, les alertes et escalades intelligentes, la capitalisation du REX, l'analyse automatisée des causes racines, la recommandation automatisée d'actions CAPA, le signalement par la voix et — pour les PME — la gestion simplifiée des non-conformités.
+477	Garantit que chaque problème n'est pas seulement corrigé mais transformé en connaissance réutilisable pour l'organisation.
+478	NCP
+479	Agent IA
+480	Base de connaissances
+481	Alerte
+482	NCP PME
+483	Saisie du problème
+484	Détecteur
+485	Équipe NCP
+486	Confinement
+487	Propriétaire de l'action
+488	Pilote amélioration continue
+489	Équipe terrain
+490	Superviseur
+491	Cause racine
+492	Animateur ACR
+493	Actions correctives
+494	Relecteurs
+495	Capitalisation
+496	Organisation
+497	Orchestration IA
+498	Agent orchestrateur
+499	Data scientists
+500	Alertes
+501	Système
+502	Saisir les problèmes
+503	Saisir la NC
+504	Tâches de saisie
+505	Créer la fiche
+506	Données du problème
+507	Fiche NCP
+508	Contenir immédiatement
+509	Contenir le problème
+510	Tâches de confinement
+511	Définir les actions
+512	Définition du problème
+513	Enregistrements de confinement
+514	Équipe processus
+515	Résoudre les causes racines
+516	Identifier les causes
+517	Tâches ACR
+518	Sélectionner la méthode
+519	Rapport ACR
+520	Exécuter les actions correctives
+521	Mettre en œuvre les corrections
+522	Tâches correctives
+523	Affecter les actions
+524	Plan correctif
+525	Enregistrements correctifs
+526	Capitaliser et clôturer
+527	Apprendre et clôturer
+528	Tâches de capitalisation
+529	Planifier l'atelier
+530	Rapport REX
+531	Orchestrer les agents IA
+532	Gérer les agents
+533	Tâches IA
+534	Initialiser l'orchestrateur
+535	Orchestrateur IA
+536	Données NCP
+537	Résultats de l'IA
+538	Gérer la base de connaissances
+539	Maintenir la base de connaissances
+540	Tâches de connaissance
+541	Définir le schéma
+542	NCP clôturées
+543	Base de connaissances vectorielle
+544	Gérer les alertes
+545	Déclencher les alertes
+546	Tâches d'alertes
+547	Configurer les alertes
+548	Événements NCP
+549	Enregistrements d'alertes
+550	Gérer les non-conformités
+551	Simplifier le NCP
+552	Tâches NCP
+553	Saisir le problème
+554	Fiches NCP
+555	De la surveillance à l'évaluation
+556	Surveiller la performance, évaluer les résultats, piloter l'organisation
+557	Périodicité de surveillance, écart de performance ou revue de gouvernance
+558	Performance évaluée ; décisions de gouvernance prises ; améliorations identifiées
+559	Ce processus surveille la performance, évalue les résultats et pilote l'organisation. Il gère les KPI, les alertes et escalades, les tableaux de bord en temps réel, la consolidation des indicateurs de performance, la surveillance de la performance du système, les revues de performance des processus opérationnels, les instances et revues de gouvernance, les baromètres de satisfaction client, les cycles d'audit interne, le reporting GRC de direction, le pipeline d'amélioration continue, l'intelligence de l'expérience client, l'analyse de la voix du client, le benchmarking inter-sites, les audits guidés en réalité augmentée, les audits à distance, les portails de réclamations clients et — pour les PME — le benchmarking entre pairs, les tableaux de bord de KPI essentiels et les tableaux de bord du dirigeant.
+560	Garantit que l'organisation connaît sa performance et décide sur la base de données réelles.
+561	KPI
+562	Tableau de bord
+563	Gouvernance
+564	Client
+565	Benchmarking
+566	Réalité augmentée
+567	Audit à distance
+568	KPI PME
+569	Revue de performance
+570	Animateur de réunion
+571	Satisfaction client
+572	Resp. expérience client
+573	Ventes
+574	Auditeur principal
+575	Resp. de sites
+576	Tous les sites
+577	Audits en réalité augmentée
+578	Auditeur
+579	Audits à distance
+580	Organismes de certification
+581	Benchmarking PME
+582	KPI PME
+583	Suivre les KPI
+584	Suivre la performance
+585	Tâches KPI
+586	Définir les indicateurs
+587	Définitions des KPI
+588	Tableaux de bord KPI
+589	Revoir la performance
+590	Évaluer les résultats
+591	Tâches de revue
+592	Données KPI
+593	Rapports de performance
+594	Orchestrer la gouvernance
+595	Conduire la gouvernance
+596	Tâches de gouvernance
+597	Fixer la périodicité
+598	Calendrier de gouvernance
+599	Comptes rendus de revue
+600	Gérer la satisfaction client
+601	Surveiller la satisfaction
+602	Tâches client
+603	Retours clients
+604	Rapports de satisfaction
+605	Auditer en interne
+606	Audit interne
+607	Tâches d'audit
+608	Planifier selon le risque
+609	Plan d'audit
+610	Rapports d'audit
+611	Benchmarker
+612	Comparer les sites
+613	Tâches de benchmarking
+614	Définir les métriques
+615	Performance des sites
+616	Rapports de benchmarking
+617	Guidage en réalité augmentée
+618	Tâches de réalité augmentée
+619	Définir le contenu
+620	Listes de contrôle d'audit
+621	Enregistrements d'audits en réalité augmentée
+622	Audit à distance
+623	Tâches à distance
+624	Définir les protocoles
+625	Rapports d'audits à distance
+626	Comparer la performance
+627	Se comparer aux pairs
+628	Sélectionner la catégorie
+629	Données de performance
+630	KPI essentiels
+631	Sélectionner les KPI
+632	Objectifs de l'entreprise
+633	Tableau de bord KPI
+634	De l'audit à l'assurance
+635	Apporter de l'assurance grâce à l'IA, la prospective, l'IoT, l'ESG et l'analytique
+636	Alerte d'analyse prédictive, changement réglementaire ou exigence d'assurance
+637	Risques anticipés ; conformité assurée ; ESG et carbone déclarés
+638	Ce processus apporte de l'assurance grâce à l'IA, la prospective, l'IoT, l'ESG et l'analytique avancée. Il couvre l'intelligence prédictive des risques par l'IA, la veille réglementaire automatisée, la correspondance automatisée entre normes, la génération intelligente de documents, la simulation par jumeau numérique, la performance ESG et durable, l'empreinte carbone, le process mining en langage naturel, la conformité prédictive, l'impact en temps réel des changements réglementaires, l'explicabilité de l'IA, l'intégration IoT, le task mining et les émissions de scope 3.
+639	Fait passer l'organisation d'une conformité réactive à une assurance prédictive — voir les risques et opportunités avant qu'ils ne se concrétisent.
+640	IA
+641	Réglementaire
+642	Document
+643	Simulation
+644	ESG
+645	Mining
+646	IoT
+647	Risque prédictif
+648	Horizon réglementaire
+649	Conseiller juridique
+650	Organismes de réglementation
+651	Correspondance entre normes
+652	Experts des normes
+653	Génération de documents
+654	Moteur d'IA
+655	Auteurs
+656	Ingénieurs simulation
+657	Resp. développement durable
+658	Auditeurs externes
+659	Investisseurs
+660	Process mining
+661	Analystes processus
+662	Équipes d'amélioration
+663	Conformité prédictive
+664	Équipe conformité
+665	Explicabilité de l'IA
+666	Ingénieurs IA
+667	Ingénieurs IoT
+668	Fournisseurs de solutions
+669	Anticiper les risques
+670	Prédiction des risques par l'IA
+671	Tâches de prédiction
+672	Collecter les données
+673	Données historiques
+674	Prédictions de risques
+675	Scruter l'horizon réglementaire
+676	Surveiller la réglementation
+677	Tâches de veille
+678	Agréger les flux
+679	Flux réglementaires
+680	Alertes réglementaires
+681	Mettre en correspondance les normes
+682	Cartographier les normes
+683	Intégrer les normes
+684	Normes ISO
+685	Matrice de correspondance
+686	Générer des documents
+687	Générer automatiquement
+688	Tâches de génération
+689	Documents générés
+690	Simuler les processus
+691	Simuler
+692	Tâches de simulation
+693	Construire le jumeau
+694	Données de processus
+695	Résultats de simulation
+696	Gérer l'ESG
+697	Suivre l'ESG
+698	Tâches ESG
+699	Données ESG
+700	Rapports ESG
+701	Explorer les processus
+702	Découvrir les processus
+703	Tâches de mining
+704	Journaux utilisateurs
+705	Prédire la conformité
+706	Prédire la conformité
+707	Données de conformité
+708	Expliquer l'IA
+709	Tâches d'explicabilité
+710	Journaux IA
+711	Intégrer l'IoT
+712	Intégrer les capteurs
+713	Tâches IoT
+714	Données des capteurs
+715	De la correction à l'innovation
+716	Piloter l'amélioration continue, l'innovation, l'automatisation et l'écosystème
+717	Opportunité d'amélioration, idée d'innovation ou candidat à l'automatisation
+718	Améliorations mises en œuvre ; innovations déployées ; écosystème élargi
+719	Ce processus pilote l'amélioration continue, l'innovation, l'automatisation et la croissance de l'écosystème. Il couvre la supervision du système de management de l'IA, la gestion des projets d'optimisation et d'automatisation, la découverte des macro-processus, la simulation d'entreprise, le scoring d'automatisation, le cycle de vie du ROI et de la VOI, le pipeline d'innovation, la piste d'audit blockchain, la gouvernance des modules composables, l'isolation multi-locataires, la collaboration en temps réel, les signatures numériques, le concepteur de workflows low-code, la place de marché de modèles et — pour les PME — la préparation à la croissance, l'amélioration à budget maîtrisé et la communauté collaborative.
+720	Garantit que l'organisation ne se contente pas de maintenir sa conformité mais s'améliore, innove et croît en continu.
+721	Amélioration
+722	ROI
+723	Innovation
+724	Blockchain
+725	Composable
+726	Signature
+727	Low-code
+728	Place de marché
+729	Croissance PME
+730	Amélioration PME
+731	Communauté PME
+732	Amélioration continue
+733	Resp. amélioration
+734	Experts Lean
+735	Supervision de l'IA
+736	Resp. gouvernance IA
+737	Resp. simulation
+738	ROI/VOI
+739	Resp. financier
+740	Resp. innovation
+741	Ingénieurs
+742	Modules composables
+743	Architecte plateforme
+744	Chefs de produit
+745	Développement
+746	Auteurs de documents
+747	Signature numérique
+748	Prestataires de signature
+749	Utilisateurs métier
+750	Équipe low-code
+751	Tous les départements
+752	Partenaires
+753	Experts sectoriels
+754	Équipe DynamicMS
+755	Communauté
+756	S'améliorer en continu
+757	Piloter l'amélioration
+758	Tâches d'amélioration
+759	Recueillir les idées
+760	Idées
+761	Performance
+762	Pipeline d'amélioration
+763	Superviser l'IA
+764	Gouverner l'IA
+765	Établir la politique
+766	Politique IA
+767	Simuler l'entreprise
+768	Construire le modèle
+769	Gérer le ROI et la VOI
+770	Gérer la valeur
+771	Tâches ROI
+772	Définir la formule
+773	Exigences ROI
+774	Formule ROI
+775	Innover
+776	Gérer l'innovation
+777	Tâches d'innovation
+778	Capter les idées
+779	Idées d'innovation
+780	Pipeline d'innovation
+781	Audit blockchain
+782	Audit immuable
+783	Tâches blockchain
+784	Données d'audit
+785	Piste immuable
+786	Composer les modules
+787	Gouverner les modules
+788	Tâches composables
+789	Définir le catalogue
+790	Catalogue de modules
+791	Collaborer en temps réel
+792	Co-rédiger
+793	Tâches de collaboration
+794	Activer les sessions
+795	Documents modifiés
+796	Signer numériquement
+797	Signatures numériques
+798	Tâches de signature
+799	Documents signés
+800	Construire en low-code
+801	Construire les workflows
+802	Tâches low-code
+803	Fournir le concepteur
+804	Workflows personnalisés
+805	Accéder à la place de marché
+806	Accéder à la place de marché
+807	Tâches de place de marché
+808	Catalogue de la place de marché
+809	Préparer la croissance
+810	Préparer la croissance
+811	Tâches de croissance
+812	Évaluer les plans
+813	Plans de croissance
+814	Préparation à la croissance
+815	Amélioration à budget maîtrisé
+816	Idées d'amélioration
+817	Rejoindre la communauté
+818	Relier les pairs
+819	Tâches de communauté
+820	Rejoindre la communauté
+821	Sujets de la communauté
+822	Profil communautaire
+823	E2E racine
+824	Chaîne maîtresse qui possède un domaine de processus
+825	Composante de partition
+826	Sous-chaîne appartenant à un E2E racine
+827	Composite
+828	Chaîne combinant plusieurs E2E racines
+829	Alimente
+830	La sortie de l'E2E-A devient l'entrée de l'E2E-B
+831	Déclenche
+832	L'achèvement de l'E2E-A déclenche le démarrage de l'E2E-B
+833	Informe
+834	L'E2E-A fournit des données ou des éclairages à l'E2E-B
+835	Dépend de
+836	L'E2E-A ne peut démarrer qu'après l'achèvement de l'E2E-B
+837	Partition de
+838	L'E2E-A est une composante de partition de l'E2E-B racine
+839	Compose
+840	L'E2E-C est un composite de plusieurs processus E2E racines
+841	Responsable SMI
+842	Responsable RH
+843	Responsable des risques
+844	Gestionnaire documentaire
+845	Responsable informatique
+846	Responsable des opérations
+847	Responsable qualité
+848	Responsable de la performance
+849	Responsable de l'audit interne
+850	Responsable de la transformation
+851	Stratégie et gouvernance
+852	Contexte, politique, objectifs, communication, instances de gouvernance et reporting de direction.
+853	Management de la qualité
+854	Résolution de problèmes, actions correctives, amélioration continue, métrologie, laboratoires et qualité du soudage.
+855	Santé, sécurité et environnement
+856	Santé et sécurité au travail, sécurité fonctionnelle et des procédés, sécurité maritime et protection de l'environnement.
+857	Responsable HSE
+858	Risques opérationnels et d'entreprise, contrôle interne, risques tiers, continuité et gestion de crise.
+859	Conformité et certification
+860	Obligations de conformité, veille réglementaire, harmonisation des normes, déploiement et certification.
+861	Audit interne et assurance
+862	Audit interne, qualification des auditeurs, enquêtes et assurance de la piste d'audit.
+863	Ressources humaines et compétences
+864	Compétences, formation et accès aux experts.
+865	Documentation et connaissance
+866	Cycle de vie des documents et enregistrements, génération de documents, co-rédaction, signatures et graphe de connaissances.
+867	Systèmes d'information et données
+868	Cybersécurité, protection des données, accès, architecture, configuration, formules, locataires et services informatiques.
+869	Opérations et chaîne d'approvisionnement
+870	Maîtrise opérationnelle, fournisseurs, traçabilité, opérations terrain, actifs, installations et salles propres.
+871	Performance et expérience client
+872	KPI, alertes, tableaux de bord, revues de performance, benchmarking et retours clients.
+873	Développement durable et ESG
+874	Performance ESG, carbone, eau, écoconception et analyse du cycle de vie.
+875	Responsable ESG
+876	Innovation et transformation numérique
+877	Management de l'IA, automatisation, simulation, ROI/VOI, innovation, IoT, low-code et écosystème.
+878	Architecture et excellence des processus
+879	Architecture des processus, SIPOC, procédures, plans de surveillance, règles métier et découverte des processus.
+880	Responsable excellence des processus
+881	Fonction
+882	Racine de chaque branche ; décomposée en macro-processus.
+883	Macro-processus
+884	Décompose une fonction ; porte la fiche macro-processus et le SIPOC.
+885	Tâche
+886	Niveau le plus bas par défaut ; devient un niveau intermédiaire lorsqu'il est décomposé davantage.
+887	Niveau 4
+888	Activité
+889	Décomposition facultative d'une tâche de niveau 3.
+890	Niveau 5
+891	Opération
+892	Décomposition facultative d'un élément de niveau 4.
+893	Niveau 6
+894	Étape
+895	Activé mais non utilisé dans le locataire exemple.
+896	Automobile et transport
+897	Sécurité fonctionnelle ASIL
+898	Cybersécurité TARA
+899	Rupture de la chaîne d'approvisionnement
+900	Garantie/défaillance terrain

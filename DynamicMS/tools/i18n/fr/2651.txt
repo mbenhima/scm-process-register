@@ -1,0 +1,600 @@
+2651	Rendre compte de l'analytique
+2652	Documents co-rédigés
+2653	Enregistrements de présence
+2654	Journaux de contributions
+2655	Commentaires
+2656	Analytique
+2657	Tous les utilisateurs de la plateforme
+2658	Opérations terrain mobiles et saisie hors ligne
+2659	Rendre le SMI accessible sur mobile ; saisie hors ligne avec synchronisation ; interface adaptée au terrain ; preuves.
+2660	Opérateurs terrain
+2661	Inspecteurs
+2662	Développeurs mobiles
+2663	Rapports d'incidents
+2664	Photos
+2665	Vidéos
+2666	Voix
+2667	GPS
+2668	Fournir des applications natives
+2669	Permettre la saisie hors ligne
+2670	Prendre en charge photo/vidéo/voix
+2671	Capturer GPS/horodatages
+2672	Listes de contrôle adaptées au terrain
+2673	Lecture de codes-barres/QR
+2674	Synchronisation automatique
+2675	Résoudre les conflits
+2676	Accès hors ligne aux procédures
+2677	Rapports d'inspection
+2678	Fichiers de preuves
+2679	Données GPS
+2680	Journaux de synchronisation
+2681	Analytique terrain
+2682	Signalement vocal des incidents et des audits
+2683	Signalement mains libres ; de la voix au texte structuré ; multilingue ; gain de temps.
+2684	Enregistrements vocaux
+2685	Observations d'audit
+2686	Préférences linguistiques
+2687	Capturer la voix
+2688	Reconnaissance vocale (EN/FR/AR)
+2689	Extraire des données structurées
+2690	Classer le type
+2691	Suggérer la gravité
+2692	Router vers le workflow
+2693	Joindre l'enregistrement
+2694	Permettre la revue
+2695	Rapports structurés
+2696	Preuves vocales
+2697	Enregistrements de classification
+2698	Indicateurs de précision
+2699	Équipes HSE
+2700	Intégration des données IoT et capteurs
+2701	Intégrer l'IoT/les équipements ; capter les données en temps réel ; déclencher alertes/workflows.
+2702	Ingénieurs IoT
+2703	Fournisseurs d'équipements
+2704	Télémétrie
+2705	Données environnementales
+2706	Seuils
+2707	Connecter les capteurs
+2708	Ingérer les flux
+2709	Détection de seuils/d'anomalies
+2710	Corréler avec la qualité
+2711	Modèles prédictifs de qualité
+2712	Stocker les séries temporelles
+2713	Fournir des tableaux de bord
+2714	Données en temps réel
+2715	Alertes automatisées
+2716	Workflows déclenchés
+2717	Modèles prédictifs
+2718	Tableaux de bord IoT
+2719	Audits et inspections guidés en réalité augmentée
+2720	Guider les auditeurs en réalité augmentée ; instructions pas à pas ; assistance d'experts à distance.
+2721	Développeurs de réalité augmentée
+2722	Données des équipements
+2723	Contenu de réalité augmentée
+2724	Apports d'experts
+2725	Données du site
+2726	Définir le contenu de réalité augmentée
+2727	Déployer les surimpressions
+2728	Guider pas à pas
+2729	Expert à distance
+2730	Capturer les preuves en réalité augmentée
+2731	Comparer réel et attendu
+2732	Journaliser automatiquement les constats
+2733	Mode formation en réalité augmentée
+2734	Mettre à jour le contenu
+2735	Preuves visuelles
+2736	Journaux d'assistance à distance
+2737	Constats
+2738	Bibliothèque de contenus de réalité augmentée
+2739	Workflow de signature numérique et électronique
+2740	Permettre des signatures juridiquement contraignantes ; respecter eIDAS/ESIGN ; automatiser les workflows.
+2741	Prestataires de signature
+2742	Workflows d'approbation
+2743	Exigences de signature
+2744	Données d'identité
+2745	Règles de conformité
+2746	Intégrer les prestataires
+2747	Vérifier l'identité
+2748	Router pour signature
+2749	Capturer avec horodatage
+2750	Stocker les certificats
+2751	Fournir la piste d'audit
+2752	Signatures en masse
+2753	Multipartite
+2754	Documents signés
+2755	Certificats de signature
+2756	Piste d'audit
+2757	Analytique des signatures
+2758	Enregistrements de conformité
+2759	Approbateurs
+2760	Gestion des packs de conformité sectoriels
+2761	Fournir des packs préconfigurés ; prendre en charge IATF/ISO 13485/AS9100/FSSC/BPF ; déploiement rapide.
+2762	Experts sectoriels
+2763	Organismes de normalisation
+2764	Normes sectorielles
+2765	Définir les packs
+2766	Fournir les listes de contrôle
+2767	Précharger les normes
+2768	Configurer les KPI
+2769	Fournir les modèles
+2770	Mettre à jour lors des révisions
+2771	Rendre compte de l'utilisation
+2772	Packs de conformité
+2773	Workflows préconfigurés
+2774	Bibliothèques de normes
+2775	Enregistrements de déploiement
+2776	Organisations locataires
+2777	Gestion du portefeuille de certifications multi-normes
+2778	Gérer plusieurs certifications ; suivre statuts/renouvellements ; coordonner les audits ; optimiser les coûts.
+2779	Données de certification
+2780	Calendriers d'audit
+2781	Dates de renouvellement
+2782	Enregistrer les certifications
+2783	Suivre le statut
+2784	Planifier les audits
+2785	Coordonner entre normes
+2786	Partager les preuves
+2787	Suivre les coûts
+2788	Alerter sur les renouvellements
+2789	Fournir le tableau de bord
+2790	Optimiser le calendrier
+2791	Portefeuille de certifications
+2792	Calendrier d'audits
+2793	Alertes de renouvellement
+2794	Rapports de coûts
+2795	Capacité d'audit à distance et virtuel
+2796	Permettre les audits à distance ; revue vidéo/écran/documentaire ; respecter l'IAF ; réduire les coûts.
+2797	Visioconférence
+2798	Référentiels documentaires
+2799	Protocoles à distance
+2800	Planifier les sessions
+2801	Entretiens vidéo
+2802	Partager les écrans
+2803	Revoir les documents
+2804	Capturer les preuves
+2805	Valider la technologie
+2806	Documenter les limites
+2807	Émettre les rapports
+2808	Enregistrements vidéo
+2809	Journaux de revue documentaire
+2810	Preuves d'audit à distance
+2811	Surveillance continue des contrôles et tests automatisés
+2812	Surveiller les contrôles en continu ; automatiser les tests ; détecter les défaillances ; réduire l'effort.
+2813	Propriétaires des contrôles
+2814	Scripts de test
+2815	Relier aux données
+2816	Construire les scripts de test
+2817	Exécuter en continu
+2818	Détecter les défaillances
+2819	Suivre la remédiation
+2820	Rendre compte de l'efficacité
+2821	Mettre à jour les scripts
+2822	Fournir des preuves prêtes pour l'audit
+2823	Tableau de bord de surveillance des contrôles
+2824	Résultats des tests
+2825	Alertes de défaillance
+2826	Enregistrements de remédiation
+2827	Task mining et découverte automatisée des processus
+2828	Découvrir les processus à partir des interactions ; identifier l'automatisation ; détecter les écarts.
+2829	Événements applicatifs
+2830	Appliquer le task mining
+2831	Reconstituer les flux
+2832	Comparer au processus conçu
+2833	Identifier l'automatisation
+2834	Scorer le potentiel
+2835	Candidats à l'automatisation
+2836	Concepteur de processus low-code et de workflows
+2837	Donner les moyens aux développeurs citoyens ; glisser-déposer ; réduire la dépendance à l'informatique ; accélérer la numérisation.
+2838	Utilisateurs métier
+2839	Équipe plateforme low-code
+2840	Exigences de processus
+2841	Conceptions de formulaires
+2842	Règles de workflow
+2843	Besoins d'intégration
+2844	Permettre la création de formulaires
+2845	Configurer les règles
+2846	Connecter données/API
+2847	Tester en bac à sable
+2848	Surveiller la performance
+2849	Gouvernance/versionnage
+2850	Permettre la formation
+2851	Rendre compte de l'adoption
+2852	Formulaires
+2853	Place de marché de modèles, connecteurs et packs sectoriels
+2854	Fournir une place de marché ; permettre les contributions ; accélérer le déploiement ; nouveaux revenus.
+2855	Développeurs
+2856	Équipe DynamicMS
+2857	Connecteurs
+2858	Packs sectoriels
+2859	Règles de contribution
+2860	Permettre l'intégration des contributeurs
+2861	Fournir les règles
+2862	Revoir/certifier
+2863	Permettre la navigation/l'achat
+2864	Notes/avis
+2865	Suivre l'analytique
+2866	Partage des revenus
+2867	Mettre à jour en continu
+2868	Modèles certifiés
+2869	Écosystème de partenaires
+2870	Équipe revenus DynamicMS
+2871	Portail de collaboration fournisseurs
+2872	Libre-service fournisseurs ; soumissions qualité ; automatiser l'intégration ; améliorer la transparence.
+2873	Soumissions qualité
+2874	Réponses aux audits
+2875	Fournir le portail
+2876	Automatiser les soumissions
+2877	Permettre les réponses aux audits
+2878	Tableaux de bord de performance
+2879	Collaboration sur les CAPA
+2880	Suivre le risque
+2881	Améliorer les relations
+2882	Portail fournisseurs
+2883	Enregistrements d'intégration
+2884	Enregistrements de collaboration
+2885	Portail des réclamations et retours clients
+2886	Libre-service client ; capter réclamations/retours ; automatiser le routage ; améliorer la satisfaction.
+2887	Service client
+2888	Réclamations
+2889	Données de service
+2890	Capter les réclamations
+2891	Classer/router automatiquement
+2892	Suivre le cycle de vie
+2893	Permettre la communication
+2894	Relier au NCP/aux CAPA
+2895	Fournir l'analytique
+2896	Suivre la satisfaction
+2897	Rendre compte des tendances
+2898	Améliorer l'expérience
+2899	Enregistrements de réclamations
+2900	Données de retours
+2901	Indicateurs de satisfaction
+2902	Microlearning et contenus de formation générés par l'IA
+2903	Générer automatiquement des formations à partir des données du SMI ; microlearning ; parcours personnalisés.
+2904	Resp. formation
+2905	Référentiels de compétences
+2906	Profils des apprenants
+2907	Ingérer le contenu
+2908	Traduire EN/FR/AR
+2909	Personnaliser les parcours
+2910	Diffuser sur mobile/web
+2911	Suivre l'achèvement
+2912	Mettre à jour à partir du REX
+2913	Délivrer la certification
+2914	Modules de microlearning
+2915	Parcours personnalisés
+2916	Enregistrements d'achèvement
+2917	Analytique d'apprentissage
+2918	Calendrier de conformité et planificateur d'obligations
+2919	Centraliser les obligations ; planifier tâches/échéances ; envoyer des rappels ; suivre le statut.
+2920	Obligations réglementaires
+2921	Échéances contractuelles
+2922	Agréger les obligations
+2923	Définir la récurrence
+2924	Affecter les propriétaires
+2925	Intégrer la gestion des tâches
+2926	Alerter sur les échéances
+2927	Rendre compte des indicateurs
+2928	Calendrier de conformité
+2929	Registre des obligations
+2930	Enregistrements de rappels
+2931	Tableaux de bord de statut
+2932	Indicateurs de conformité
+2933	Émissions de scope 3 et comptabilité carbone de la chaîne de valeur
+2934	Calculer le scope 3 ; mobiliser les fournisseurs ; déclarer selon le GHG Protocol ; soutenir le net zéro.
+2935	Données de la chaîne de valeur
+2936	Données d'activité
+2937	Cartographier la chaîne de valeur
+2938	Collecter les données fournisseurs
+2939	Calculer les catégories 1 à 15
+2940	Vérifier la qualité
+2941	Soutenir les objectifs net zéro
+2942	Mobiliser les fournisseurs
+2943	Suivre les progrès
+2944	Rapport scope 3
+2945	Enregistrements de mobilisation des fournisseurs
+2946	Objectifs net zéro
+2947	Traçabilité des produits et gestion des rappels
+2948	Traçabilité de bout en bout ; gérer les rappels ; respecter FDA/UE ; protéger la marque.
+2949	Données de lots
+2950	Données de distribution
+2951	Déclencheurs de rappel
+2952	Capturer lot/numéro de série
+2953	Suivre dans la chaîne d'approvisionnement
+2954	Détecter les déclencheurs
+2955	Lancer le rappel
+2956	Notifier autorités/clients
+2957	Gérer le devenir des produits
+2958	Mettre à jour à partir des enseignements
+2959	Enregistrements de rappels
+2960	Notifications
+2961	Enregistrements de devenir des produits
+2962	Communication de crise et gestion de la réputation
+2963	Gérer la communication de crise ; protéger la marque ; coordonner ; surveiller le sentiment.
+2964	Équipe communication
+2965	Agences de relations publiques
+2966	Déclencheurs de crise
+2967	Données des parties prenantes
+2968	Veille médias
+2969	Données de sentiment
+2970	Activer l'équipe
+2971	Rédiger/approuver les messages
+2972	Coordonner les parties prenantes
+2973	Surveiller le sentiment
+2974	Répondre à la désinformation
+2975	Suivre les indicateurs
+2976	Analyse post-crise
+2977	Mettre à jour le guide de crise
+2978	Communications de crise
+2979	Notifications aux parties prenantes
+2980	Rapports de sentiment
+2981	Indicateurs de réputation
+2982	Médias
+2983	Gestion du cycle de vie de la sécurité fonctionnelle
+2984	Gérer la sécurité fonctionnelle selon ISO 26262/IEC 61508 ; garantir l'atteinte des SIL/ASIL.
+2985	Niveau 6 — Conformité aux normes sectorielles
+2986	Ingénieurs sécurité
+2987	Architectes système
+2988	Ingénieurs matériel/logiciel
+2989	HARA
+2990	Objectifs de sécurité
+2991	Cibles ASIL/SIL
+2992	Définir l'élément/le périmètre
+2993	Réaliser la HARA
+2994	Déterminer l'ASIL/le SIL
+2995	Élaborer le concept de sécurité
+2996	Allouer les exigences
+2997	Concevoir les mécanismes
+2998	Mettre en œuvre les mesures
+2999	Gérer le dossier de sécurité
+3000	Surveiller le terrain
+3001	Mettre hors service
+3002	Dossier de sécurité
+3003	Concept de sécurité
+3004	Détermination de l'ASIL/du SIL
+3005	Enregistrements de vérification/validation
+3006	Rapports de sécurité terrain
+3007	Détermination du niveau d'intégrité de sécurité
+3008	Déterminer le SIL des fonctions instrumentées de sécurité selon IEC 61508/62061 ; garantir la réduction des risques.
+3009	Analystes des risques
+3010	LOPA
+3011	Contraintes d'architecture
+3012	Identifier les SIF
+3013	Réaliser la LOPA
+3014	Déterminer le SIL
+3015	Vérifier les contraintes
+3016	Calculer la PFD/PFH
+3017	Valider le SIL
+3018	Gérer les modifications
+3019	Rapport SIL
+3020	Registre des SIF
+3021	Enregistrements LOPA
+3022	PFD/PFH
+3023	Gestion du niveau d'intégrité de sécurité automobile
+3024	Gérer l'ASIL selon ISO 26262 ; garantir la sécurité fonctionnelle automobile.
+3025	Resp. sécurité
+3026	Ingénieurs système
+3027	Cibles ASIL
+3028	Déterminer l'ASIL
+3029	Élaborer le concept
+3030	Allouer aux éléments
+3031	Rapport HARA
+3032	Détermination de l'ASIL
+3033	Mesures ASIL
+3034	Analyse des menaces et évaluation des risques automobiles (TARA)
+3035	Réaliser la TARA selon ISO/SAE 21434 ; identifier les menaces ; définir les objectifs de cybersécurité.
+3036	Ingénieurs cybersécurité
+3037	Renseignement sur les menaces
+3038	Inventaire des actifs
+3039	Faisabilité
+3040	Analyse d'impact
+3041	Identifier les actifs
+3042	Identifier les menaces
+3043	Évaluer la faisabilité
+3044	Déterminer le risque
+3045	Définir les objectifs
+3046	Vérifier/valider
+3047	Rapport TARA
+3048	Registre des menaces
+3049	Objectifs de cybersécurité
+3050	Analyse des risques des procédés (PHA)
+3051	Réaliser la PHA selon OSHA PSM/Seveso ; identifier les dangers ; définir les barrières.
+3052	Ingénieurs sécurité des procédés
+3053	Animateurs
+3054	Conception du procédé
+3055	Schémas TI (P&ID)
+3056	Données chimiques
+3057	Incidents historiques
+3058	Choisir la méthodologie
+3059	Constituer l'équipe
+3060	Réaliser l'étude
+3061	Identifier les dangers
+3062	Identifier les barrières
+3063	Définir les recommandations
+3064	Suivre la clôture
+3065	Revalider
+3066	Rapport PHA
+3067	Registre des dangers
+3068	Journal des recommandations
+3069	Enregistrements de revalidation
+3070	Gestion de l'intégrité mécanique
+3071	Garantir l'intégrité selon API 510/570/ASME ; prévenir les défaillances catastrophiques.
+3072	Ingénieurs intégrité
+3073	Calendriers d'inspection
+3074	Données de corrosion
+3075	Défaillances
+3076	Enregistrer appareils/tuyauteries
+3077	Mesures d'épaisseur
+3078	Inspections visuelles
+3079	CND
+3080	Aptitude au service
+3081	Durée de vie résiduelle
+3082	Planifier les réparations
+3083	Enregistrements d'épaisseur
+3084	Évaluations d'aptitude au service
+3085	Estimations de durée de vie résiduelle
+3086	Enregistrements de réparations
+3087	Revue de sécurité avant démarrage (PSSR)
+3088	Réaliser la PSSR selon OSHA PSM ; garantir un démarrage sûr.
+3089	Résultats PHA
+3090	Achèvement de la construction
+3091	Documentation des équipements
+3092	Vérifier la construction
+3093	Vérifier la clôture de la PHA
+3094	Vérifier les procédures
+3095	Vérifier la formation
+3096	Vérifier les systèmes de sécurité
+3097	Conduire la revue
+3098	Approuver le démarrage
+3099	Rapport PSSR
+3100	Autorisation de démarrage
+3101	Documentation d'achèvement
+3102	Surveillance des expositions professionnelles
+3103	Surveiller les expositions selon OSHA/ISO 45001 ; garantir la santé des travailleurs.
+3104	Hygiénistes industriels
+3105	Santé au travail
+3106	Inventaire des produits chimiques
+3107	Valeurs limites d'exposition
+3108	Listes du personnel
+3109	Plans d'échantillonnage
+3110	Identifier les agents
+3111	Définir les limites
+3112	Élaborer la stratégie
+3113	Prélèvements individuels
+3114	Prélèvements d'ambiance
+3115	Comparer aux limites
+3116	Surveiller l'efficacité
+3117	Rapports d'exposition
+3118	Enregistrements de prélèvements
+3119	Résultats de laboratoire
+3120	Recommandations de maîtrise
+3121	Travailleurs
+3122	Surveillance médicale et dossiers de santé
+3123	Assurer la surveillance selon OSHA/ISO 45001 ; tenir des dossiers confidentiels.
+3124	Médecins du travail
+3125	Infirmiers
+3126	Données d'exposition
+3127	Exigences du poste
+3128	Questionnaires de santé
+3129	Protocoles médicaux
+3130	Visites d'embauche
+3131	Visites périodiques
+3132	Visites de fin de contrat
+3133	Analyser les données
+3134	Identifier les pathologies
+3135	Recommander des interventions
+3136	Publier les statistiques
+3137	Rapports de surveillance
+3138	Dossiers de santé
+3139	Aptitude au poste
+3140	Interventions
+3141	Inspection des appareils à pression et des tuyauteries
+3142	Inspecter selon API 510/570/NBIC ; garantir l'intégrité.
+3143	Plans d'inspection
+3144	Enregistrements historiques
+3145	Enregistrer
+3146	Définir les intervalles
+3147	Inspections externes
+3148	Inspections internes
+3149	Épreuves hydrostatiques
+3150	Évaluer les résultats
+3151	Définir les réparations
+3152	Recommandations de réparation
+3153	Fiabilité des actifs et gestion de la maintenance
+3154	Gérer la fiabilité selon ISO 55001 ; optimiser la maintenance ; maximiser la disponibilité.
+3155	Ingénieurs fiabilité
+3156	Planificateurs de maintenance
+3157	Fabricants d'équipements (OEM)
+3158	Registre des actifs
+3159	Données de défaillance
+3160	Historique de maintenance
+3161	Analyse de criticité
+3162	Enregistrer les actifs
+3163	Définir les stratégies
+3164	Planifier la maintenance préventive
+3165	Maintenance prédictive
+3166	Analyser les défaillances
+3167	Optimiser
+3168	Plans de maintenance
+3169	Ordres de travail
+3170	Analyse des défaillances
+3171	Rapports de fiabilité
+3172	Gestion de la sécurité maritime
+3173	Gérer la sécurité maritime selon SOLAS/OMI/IACS ; garantir la sécurité des navires et des équipages.
+3174	Officiers de sécurité maritime
+3175	Resp. flotte
+3176	Sociétés de classification
+3177	États du pavillon
+3178	Exigences SOLAS
+3179	Documents du navire
+3180	Brevets de l'équipage
+3181	Équipements de sécurité
+3182	Maintenir le SMS
+3183	Inspections des navires
+3184	Exercices/formation
+3185	Audits internes
+3186	Gérer les NC
+3187	Coordonner avec la société de classification
+3188	Intervention d'urgence
+3189	Documents du SMS
+3190	Enregistrements d'exercices
+3191	Rapports de performance sécurité
+3192	Gestion de flotte
+3193	Équipage
+3194	Prévention de la pollution marine
+3195	Prévenir la pollution selon MARPOL ; gérer les déchets, les hydrocarbures et les émissions.
+3196	Officiers environnement
+3197	Autorités portuaires
+3198	Exigences MARPOL
+3199	Opérations du navire
+3200	Registres des déchets
+3201	Données d'émissions
+3202	Maintenir le plan
+3203	Rejets d'hydrocarbures
+3204	Élimination des déchets
+3205	Émissions
+3206	Inspections environnementales
+3207	Former l'équipage
+3208	Coordonner avec les autorités
+3209	Plan de prévention
+3210	Rapports d'émissions
+3211	Enregistrements d'inspection
+3212	Classification et surveillance des salles propres
+3213	Classer/surveiller les salles propres selon ISO 14644 ; garantir la maîtrise de la contamination.
+3214	Resp. salles propres
+3215	Microbiologistes
+3216	Conception des salles propres
+3217	Données de contamination
+3218	Données CVC
+3219	Classer
+3220	Définir le plan
+3221	Surveillance particulaire
+3222	Surveillance microbiologique
+3223	Différentiels de pression
+3224	Température/humidité
+3225	Rapports de classification
+3226	Rapports de validation
+3227	Microbiologie
+3228	Gestion de la qualité du soudage
+3229	Gérer le soudage selon ISO 3834/14554/EN 1090 ; garantir l'intégrité des soudures.
+3230	Ingénieurs soudage
+3231	Inspecteurs soudage
+3232	Soudeurs
+3233	Modes opératoires de soudage
+3234	Qualifications des soudeurs
+3235	Certificats matière
+3236	Plans de soudage
+3237	Élaborer les DMOS (WPS)
+3238	Qualifier les QMOS (PQR)
+3239	Qualifier les soudeurs
+3240	Inspecter les opérations
+3241	Contrôle visuel
+3242	Évaluer la qualité
+3243	Gérer les réparations
+3244	Enregistrements DMOS/QMOS
+3245	Qualifications soudeurs
+3246	Enregistrements CND
+3247	Rapports qualité
+3248	Production
+3249	Gestion de la conformité des substances chimiques
+3250	Gérer la conformité chimique selon REACH/RoHS ; garantir la conformité des produits.

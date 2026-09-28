@@ -1,0 +1,9 @@
+node_modules/
+dist/
+server/data/
+server/backups/
+server/storage/
+server/licence/*.lic
+server/licence/*.pem
+*.log
+.env

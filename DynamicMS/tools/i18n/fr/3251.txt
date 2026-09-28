@@ -1,0 +1,600 @@
+3251	Responsables produits
+3252	Resp. conformité
+3253	Inventaire des substances
+3254	Déclarations des fournisseurs
+3255	Données matières
+3256	Évaluer l'applicabilité
+3257	Recueillir les déclarations
+3258	Évaluer le statut
+3259	Gérer les SVHC
+3260	Gérer les restrictions
+3261	Préparer la documentation
+3262	Gérer les NC
+3263	Évaluations de conformité
+3264	Déclarations
+3265	Gestion des fiches de données de sécurité
+3266	Gérer les FDS selon SGH/REACH ; assurer la communication sur les matières dangereuses.
+3267	Rédacteurs de FDS
+3268	EHS
+3269	Exigences SGH
+3270	Exigences REACH
+3271	FDS fournisseurs
+3272	Tenir l'inventaire
+3273	Rédiger selon le SGH
+3274	Revoir les FDS fournisseurs
+3275	Maintenir l'accès
+3276	Garantir la conformité
+3277	Fiches de données de sécurité
+3278	Gestion de la responsabilité élargie du producteur
+3279	Gérer la REP selon la réglementation européenne ; garantir la conformité à l'économie circulaire.
+3280	Resp. environnement
+3281	Exigences REP
+3282	Données d'emballages
+3283	Données de recyclage
+3284	Enregistrer les produits
+3285	Déclarer les volumes
+3286	Payer les éco-contributions
+3287	Gérer la reprise
+3288	Gérer le recyclage
+3289	Déclarer aux autorités
+3290	Gérer la conformité
+3291	Rendre compte de la performance
+3292	Enregistrements REP
+3293	Paiements des éco-contributions
+3294	Enregistrements de reprise
+3295	Devoir de vigilance en matière de droits humains
+3296	Exercer la vigilance selon SA8000/ISO 26000/UNGP ; garantir le respect des droits humains.
+3297	Resp. RH
+3298	ONG
+3299	Exigences des UNGP
+3300	Contributions des parties prenantes
+3301	Définir la politique
+3302	Réaliser l'évaluation
+3303	Identifier les enjeux saillants
+3304	Intégrer les résultats
+3305	Assurer la réparation
+3306	Impliquer les parties prenantes
+3307	Revoir/améliorer
+3308	Politique droits humains
+3309	Rapports d'évaluation
+3310	Enjeux saillants
+3311	Suivi de la performance
+3312	Reporting sur les minerais de conflit
+3313	Déclarer selon SEC 1502/UE 2017/821 ; garantir un approvisionnement responsable.
+3314	Resp. achats
+3315	Exigences de la SEC
+3316	Exigences de l'UE
+3317	Données des fonderies
+3318	Identifier les minerais
+3319	Interroger les fournisseurs
+3320	Identifier les fonderies
+3321	Exercer la due diligence
+3322	Évaluer la conformité des fonderies
+3323	Préparer la déclaration
+3324	Déposer le rapport
+3325	Surveiller la chaîne d'approvisionnement
+3326	Rapport sur les minerais de conflit
+3327	Enquêtes fournisseurs
+3328	Liste des fonderies
+3329	Enregistrements de due diligence
+3330	Déclarations déposées
+3331	Conformité en matière d'esclavage moderne
+3332	Se conformer au UK MSA/à la California Transparency ; garantir des chaînes d'approvisionnement éthiques.
+3333	Exigences du UK MSA
+3334	California Transparency
+3335	Élaborer la politique
+3336	Former les employés
+3337	Déclaration sur l'esclavage moderne
+3338	Gestion de la lutte contre la corruption
+3339	Gérer selon FCPA/UK Bribery Act/ISO 37001 ; garantir une conduite éthique.
+3340	Responsables conformité
+3341	Comité d'éthique
+3342	Exigences FCPA
+3343	UK Bribery Act
+3344	ISO 37001
+3345	Réaliser l'évaluation des risques
+3346	Attester la conformité
+3347	Politique anticorruption
+3348	Gestion de la sécurité routière
+3349	Gérer la sécurité routière selon ISO 39001 ; réduire les décès et blessures.
+3350	Resp. sécurité de la flotte
+3351	Assurance
+3352	ISO 39001
+3353	Données de flotte
+3354	Données des conducteurs
+3355	Former les conducteurs
+3356	Surveiller les comportements
+3357	Gérer la maintenance des véhicules
+3358	Politique de sécurité routière
+3359	Conducteurs
+3360	Gestion de l'efficacité hydrique
+3361	Gérer l'efficacité hydrique selon ISO 46001 ; réduire la consommation.
+3362	Services des eaux
+3363	ISO 46001
+3364	Données de consommation d'eau
+3365	Factures des services publics
+3366	Évaluer la consommation
+3367	Surveiller la consommation
+3368	Identifier les économies
+3369	Plan d'efficacité hydrique
+3370	Enregistrements d'économies
+3371	Gestion des installations
+3372	Gérer les installations selon ISO 41001 ; garantir performance et sécurité.
+3373	Resp. installations
+3374	Propriétaires
+3375	ISO 41001
+3376	Données des installations
+3377	Données de maintenance
+3378	Données d'occupation
+3379	Évaluer les besoins
+3380	Planifier les services
+3381	Gérer la maintenance
+3382	Gérer les espaces
+3383	Gérer les fluides
+3384	Gérer la sécurité
+3385	Plan de gestion des installations
+3386	Enregistrements de maintenance
+3387	Enregistrements des espaces
+3388	Gestion des services informatiques
+3389	Gérer les services informatiques selon ISO 20000 ; garantir qualité et disponibilité.
+3390	Resp. services informatiques
+3391	Exploitation informatique
+3392	ISO 20000
+3393	Catalogue de services
+3394	Données de SLA
+3395	Concevoir les services
+3396	Transition
+3397	Gérer les problèmes
+3398	Politique de gestion des services
+3399	SLA
+3400	Gestion de la sécurité et de la confidentialité du cloud
+3401	Gérer la sécurité et la confidentialité du cloud selon ISO 27017/27018 ; garantir la protection.
+3402	Architectes sécurité cloud
+3403	Fournisseurs cloud
+3404	ISO 27017
+3405	ISO 27018
+3406	Architecture cloud
+3407	Exigences de protection des données
+3408	Gérer la confidentialité des données
+3409	Contrôles de sécurité du cloud
+3410	Gestion des laboratoires d'essais et d'étalonnage
+3411	Gérer les laboratoires selon ISO 17025 ; garantir des essais/étalonnages compétents.
+3412	Resp. laboratoire
+3413	Techniciens de laboratoire
+3414	Organismes d'accréditation
+3415	ISO 17025
+3416	Méthodes d'essai
+3417	Enregistrements des équipements
+3418	Définir le système du laboratoire
+3419	Gérer les compétences
+3420	Gérer les équipements
+3421	Gérer les méthodes
+3422	Gérer les échantillons
+3423	Gérer les résultats
+3424	Gérer les rapports
+3425	Maintenir l'accréditation
+3426	Système du laboratoire
+3427	Rapports d'essais
+3428	Certificats d'étalonnage
+3429	Gestion des laboratoires de biologie médicale
+3430	Gérer les laboratoires médicaux selon ISO 15189 ; garantir des analyses médicales compétentes.
+3431	Pathologistes
+3432	Cliniciens
+3433	Échantillons des patients
+3434	Comptes rendus patients
+3435	Patients
+3436	Gestion des relations d'affaires collaboratives
+3437	Gérer les collaborations selon ISO 44001 ; garantir une valeur mutuelle.
+3438	Resp. partenariats
+3439	Développement commercial
+3440	ISO 44001
+3441	Données des partenaires
+3442	Objectifs de collaboration
+3443	Définir la stratégie
+3444	Identifier les partenaires
+3445	Évaluer l'adéquation
+3446	Élaborer l'accord
+3447	Gérer la collaboration
+3448	Gérer les difficultés
+3449	Stratégie de collaboration
+3450	Évaluations des partenaires
+3451	Accords
+3452	Unités opérationnelles
+3453	Gestion de l'écoconception
+3454	Gérer l'écoconception selon ISO 14006 ; réduire l'impact environnemental.
+3455	Ingénieurs écoconception
+3456	ISO 14006
+3457	Intégrer dans le développement
+3458	Politique d'écoconception
+3459	Évaluations environnementales
+3460	Analyse du cycle de vie (ACV)
+3461	Réaliser l'ACV selon ISO 14040/14044 ; quantifier les impacts environnementaux.
+3462	Analystes ACV
+3463	ISO 14040/14044
+3464	Définir l'objectif/le champ
+3465	Analyse de l'inventaire
+3466	Interpréter
+3467	Revue critique
+3468	Intégrer dans les décisions
+3469	Rapport d'ACV
+3470	Données d'inventaire
+3471	Revues critiques
+3472	Gestion de l'empreinte eau
+3473	Gérer l'empreinte eau selon ISO 14046 ; quantifier les impacts.
+3474	Analystes eau
+3475	ISO 14046
+3476	Données de qualité de l'eau
+3477	Inventaire eau
+3478	Rapport d'empreinte eau
+3479	Gestion de la communication environnementale
+3480	Gérer la communication selon ISO 14063 ; garantir une communication efficace.
+3481	Resp. communication
+3482	ISO 14063
+3483	Identifier les parties prenantes
+3484	Élaborer le plan
+3485	Politique de communication
+3486	Onboarding et démarrage rapide des PME
+3487	Déployer en quelques jours ; configuration guidée ; réduire la complexité.
+3488	Niveau 7 — Spécifique PME
+3489	Dirigeant de PME
+3490	Administrateur PME
+3491	Spécialiste onboarding DynamicMS
+3492	Bibliothèque de modèles
+3493	Segment sectoriel
+3494	Normes obligatoires
+3495	Effectif
+3496	Processus actuels
+3497	Sélectionner les normes
+3498	Configurer le profil
+3499	Activer le pack
+3500	Importer les documents
+3501	Inviter les utilisateurs
+3502	Lancer l'assistant
+3503	Configurer les workflows
+3504	Activer les KPI
+3505	Lancer
+3506	Planifier un point de suivi
+3507	Pack activé
+3508	Documents importés
+3509	Comptes utilisateurs
+3510	Workflows simplifiés
+3511	Employés de la PME
+3512	Administrateurs PME
+3513	Modélisation simplifiée des processus PME
+3514	Modèles prêts à l'emploi ; personnalisation rapide ; réduction de l'effort.
+3515	Pilote de processus PME
+3516	Resp. qualité PME
+3517	Concepteur de processus
+3518	Modèles sectoriels
+3519	Documents existants
+3520	Personnaliser
+3521	Attribuer les responsabilités
+3522	Configurer les approbations
+3523	Suivre l'adoption
+3524	Partager
+3525	Affectations RACI
+3526	Processus publiés
+3527	Pilotes de processus PME
+3528	Direction de la PME
+3529	Bibliothèque de modèles de documents PME
+3530	Modèles prêts à l'emploi ; alléger la charge ; garantir la conformité.
+3531	Gestionnaire documentaire PME
+3532	Bibliothèque de modèles
+3533	Parcourir
+3534	Sélectionner le type
+3535	Télécharger
+3536	Documents personnalisés
+3537	Documents approuvés
+3538	Calendriers de revue
+3539	Auditeurs PME
+3540	Accès des PME à des experts à temps partagé
+3541	Accès à la demande à des experts ; limiter les recrutements à temps plein ; garantir l'accompagnement.
+3542	Réseau d'experts DynamicMS
+3543	Question/difficulté
+3544	Contexte de la PME
+3545	Soumettre la demande
+3546	Trouver l'expert
+3547	Planifier
+3548	Consulter
+3549	Recevoir les recommandations
+3550	Assurer le suivi
+3551	Évaluer
+3552	Enregistrements de consultation
+3553	Évaluations des experts
+3554	Benchmarking PME entre pairs
+3555	Se comparer aux pairs ; identifier les améliorations ; apprendre.
+3556	Associations professionnelles
+3557	PME pairs
+3558	Données de benchmarking
+3559	Performance de la PME
+3560	Références sectorielles
+3561	Données des pairs
+3562	Définir le groupe de pairs
+3563	Identifier les points forts
+3564	Refaire le benchmark
+3565	Analyse des points forts
+3566	Comparaisons entre pairs
+3567	Gestion des utilisateurs multi-rôles PME
+3568	Prendre en charge le multi-rôle ; simplifier la gestion ; garantir l'accès.
+3569	Gestion des utilisateurs
+3570	Données des employés
+3571	Exigences d'accès
+3572	Structure organisationnelle
+3573	Attribuer plusieurs rôles
+3574	Configurer les autorisations
+3575	Mettre en place la délégation
+3576	Traiter les conflits
+3577	Revoir les accès
+3578	Mettre à jour les rôles
+3579	Enregistrements de délégation
+3580	Revues des accès
+3581	Registre des risques simplifié PME
+3582	Gestion simplifiée des risques ; réduire la complexité ; garantir la couverture.
+3583	Managers de la PME
+3584	Modèles de risques
+3585	Données de risques sectoriels
+3586	Risques sectoriels
+3587	Risques des processus
+3588	Contraintes de ressources
+3589	Identifier les principaux risques
+3590	Évaluer probabilité/impact
+3591	Définir l'atténuation
+3592	Revoir trimestriellement
+3593	Plans d'atténuation
+3594	Rapports de risques
+3595	Tableau de bord des KPI essentiels PME
+3596	KPI essentiels ; suivi simplifié ; décisions fondées sur les données.
+3597	Définir les cibles
+3598	Configurer les sources
+3599	Mettre en place le tableau de bord
+3600	Revoir quotidiennement
+3601	Agir
+3602	Rapports KPI
+3603	Enregistrements d'actions
+3604	Préparation rapide aux audits PME
+3605	Préparation rapide aux audits ; fournir des listes de contrôle ; réduire le stress.
+3606	Modèles d'audit
+3607	Constats précédents
+3608	Télécharger la liste de contrôle
+3609	Audit à blanc
+3610	Traiter les constats
+3611	Préparer le dossier
+3612	Coordonner avec l'auditeur
+3613	Enregistrements d'auto-évaluation
+3614	Rapports d'audit à blanc
+3615	Gestion simplifiée de la formation PME
+3616	Formation simplifiée ; garantir les compétences ; alléger la charge.
+3617	Organismes de formation
+3618	Module de formation
+3619	Sélectionner les modules
+3620	Enregistrer l'achèvement
+3621	Évaluer les compétences
+3622	Planifier les recyclages
+3623	Mettre à jour le plan
+3624	Rapports de formation
+3625	Conformité économique PME
+3626	Conformité économique ; prioriser l'essentiel ; réduire les coûts.
+3627	Modèles de conformité
+3628	Contraintes budgétaires
+3629	Identifier les obligations impératives
+3630	Prioriser selon le risque
+3631	Choisir les solutions
+3632	Revoir les coûts
+3633	Planifier la croissance
+3634	Plans de conformité
+3635	Allocations budgétaires
+3636	Enregistrements d'optimisation des coûts
+3637	Préparation à la croissance PME
+3638	Se préparer à la croissance ; faire évoluer les processus ; garantir le passage à l'échelle du SMI.
+3639	Direction de la PME
+3640	Conseillers en croissance
+3641	Plateforme DynamicMS
+3642	Exigences de passage à l'échelle
+3643	Projections de ressources
+3644	Planifier le passage à l'échelle
+3645	Faire évoluer la configuration
+3646	Ajouter des utilisateurs
+3647	Étendre la conformité
+3648	Ajouter des normes
+3649	Former les nouveaux
+3650	Revoir la préparation
+3651	Évaluation de la préparation à la croissance
+3652	Plans de passage à l'échelle
+3653	Configuration mise à niveau
+3654	Rapports de préparation
+3655	Futurs employés
+3656	Numérisation des processus informels PME
+3657	Numériser les processus informels ; capter le savoir tacite ; créer des processus reproductibles.
+3658	Modèles de processus
+3659	Processus informels
+3660	Savoir tacite
+3661	Contributions des employés
+3662	Identifier
+3663	Interviewer
+3664	Identifier les améliorations
+3665	Concevoir la version numérique
+3666	Configurer
+3667	Processus numérisés
+3668	Enseignements tirés
+3669	Tableau de bord du dirigeant de PME
+3670	Tableau de bord de direction simplifié ; décisions rapides ; indicateurs essentiels.
+3671	Statut de conformité
+3672	Sélectionner les indicateurs
+3673	Concevoir la mise en page
+3674	Paramétrer les alertes
+3675	Explorer le détail
+3676	Tableau de bord du dirigeant
+3677	Indicateurs essentiels
+3678	Conseil d'administration (le cas échéant)
+3679	Service d'alertes réglementaires PME
+3680	Alerter sur les évolutions réglementaires ; simplifier la veille ; se conformer à temps.
+3681	Resp. conformité PME
+3682	IA DynamicMS
+3683	Profil de la PME
+3684	S'abonner aux flux
+3685	Filtrer les évolutions
+3686	Alerter le propriétaire
+3687	Documents d'orientation
+3688	Gestion simplifiée des non-conformités PME
+3689	NCP simplifié ; réduire la complexité ; résolution de problèmes essentielle.
+3690	Modèles NCP
+3691	Module NCP
+3692	Saisir
+3693	Évaluer la gravité
+3694	Action immédiate
+3695	ACR simplifiée
+3696	Action corrective
+3697	Documenter l'enseignement
+3698	Rapports ACR
+3699	Amélioration à budget maîtrisé PME
+3700	Piloter l'amélioration sous contraintes ; prioriser le fort impact ; maximiser le ROI.
+3701	Évaluer coût/impact
+3702	Prioriser selon le ROI
+3703	Enregistrements de reconnaissance
+3704	Certification multi-normes rapide PME
+3705	Certifications multiples efficaces ; réduire les coûts ; rationaliser les audits.
+3706	Module de certification
+3707	Exigences de certification
+3708	Situation actuelle
+3709	Identifier les cibles
+3710	Évaluer la conformité
+3711	Audits à blanc
+3712	Coordonner les certificateurs
+3713	Accompagner les audits
+3714	Clôturer les constats
+3715	Maintenir
+3716	Plans de certification
+3717	Certificats
+3718	Calendriers de maintien
+3719	Communauté collaborative PME
+3720	Échanger avec des pairs ; partager les connaissances ; rompre l'isolement ; accélérer l'apprentissage.
+3721	Plateforme communautaire
+3722	Questions
+3723	Expériences
+3724	Rejoindre
+3725	Créer le profil
+3726	Poser des questions
+3727	Participer
+3728	Assister aux événements
+3729	Collaborer
+3730	Évaluer les contributions
+3731	Rendre compte de la valeur
+3732	Enregistrements de discussions
+3733	Bonnes pratiques partagées
+3734	Rapports de valeur
+3735	Cession et transition des PME
+3736	Accompagner la sortie/la cession/la transition ; préserver les enregistrements du SMI ; assurer une passation fluide.
+3737	Successeur
+3738	Acquéreur
+3739	Enregistrements du SMI
+3740	Documents de conformité
+3741	Exigences de transition
+3742	Évaluer l'état du SMI
+3743	Compiler les documents
+3744	Transférer les enregistrements
+3745	Former le successeur
+3746	Accompagner la due diligence
+3747	Coordonner avec l'acquéreur
+3748	Finaliser la passation
+3749	Clôturer le compte
+3750	Dossier documentaire du SMI
+3751	Enregistrements de passation
+3752	Enregistrements archivés
+3753	Planifier et préparer
+3754	Tâche utilisateur
+3755	Vérifier, enregistrer et clôturer
+3756	Gérer le cycle de vie de la politique du système de management
+3757	Sélectionner les normes et le type de périmètre de la politique
+3758	Choisir une norme (politique mono-norme, p. ex. SMQ) ou plusieurs (politique intégrée, p. ex. QHSE) et les sites couverts.
+3759	Rédiger la politique à partir d'un modèle
+3760	Tâche assistée par IA
+3761	Générer un brouillon de politique à partir du modèle choisi ; l'IA propose des engagements par norme soumis à revue humaine.
+3762	Revoir et approuver la version de la politique
+3763	Les relecteurs commentent ; la direction approuve ; le numéro de version s'incrémente selon le schéma de versionnage.
+3764	Publier la politique et générer les fichiers téléchargeables
+3765	Tâche de service
+3766	Moteur DynamicMS
+3767	Publier la version approuvée et la générer dans les formats configurés (DOCX, PDF) avec le modèle personnalisé du locataire.
+3768	Modéliser la hiérarchie des éléments de processus
+3769	Créer les fonctions et les décomposer en éléments de processus
+3770	Créer les fonctions de niveau 1, les décomposer en macro-processus de niveau 2 et en tâches de niveau 3, en ajoutant des niveaux 4+ si nécessaire.
+3771	Marquer les éléments de plus bas niveau comme tâches
+3772	Le moteur marque chaque élément sans enfant comme une tâche, quel que soit son niveau.
+3773	Générer la cartographie d'une fonction
+3774	Générer la cartographie d'une fonction sélectionnée : macro-processus, tâches, documents liés et applications liées.
+3775	Compiler les fiches macro-processus
+3776	Compiler la fiche macro-processus
+3777	Renseigner tous les attributs de la fiche (RACSI, objectifs, interactions, tâches, ressources, KPI, méthodes de surveillance, sections personnalisées).
+3778	Regrouper des fiches atomiques en fiche composite
+3779	Sélectionner deux fiches atomiques ou plus et assembler une fiche composite avec règles d'ordonnancement et d'agrégation.
+3780	Gérer les SIPOC existant et cible
+3781	Saisir le SIPOC existant si requis
+3782	Si l'existant est marqué Oui pour l'élément, documenter le SIPOC actuel.
+3783	Concevoir le SIPOC cible
+3784	Documenter le SIPOC cible obligatoire ; l'IA rédige les détails fins et les critères Go/No-Go pour revue.
+3785	Comparer les SIPOC existant et cible
+3786	Le moteur produit une comparaison côte à côte mettant en évidence les champs modifiés.
+3787	Approuver et déployer la version cible
+3788	Approuver la version cible ; elle devient le processus en vigueur.
+3789	Rédiger les procédures des tâches (cas d'usage)
+3790	Créer l'en-tête de la procédure
+3791	Enregistrer l'identifiant, les objectifs, le périmètre, les définitions, les documents de référence, les interactions externes, le propriétaire et les principaux documents.
+3792	Définir la séquence des étapes avec les exceptions
+3793	Saisir les étapes (identifiant, nom, acteur, documents/applications, sorties, clients) pour le flux nominal et les exceptions, les événements de fin et les décisions Go/No-Go.
+3794	Générer le diagramme BPMN à partir du tableau des étapes
+3795	Le moteur génère un diagramme BPMN 2.0 à partir du tableau des étapes, avec passerelles et événements de fin.
+3796	Rattacher les KPI, le reporting et les alertes
+3797	Relier les KPI, les sorties de rapport et les règles d'alerte à la procédure.
+3798	Gouverner les fréquences et le RACSI des KPI
+3799	Définir les fréquences de mesure et d'analyse des KPI
+3800	Sélectionner les fréquences de mesure et d'analyse/évaluation dans la liste Fréquence (valeurs système ou personnalisées).
+3801	Attribuer le RACSI des KPI
+3802	Attribuer les rôles Responsable, Autorité, Consulté, Soutien et Informé à chaque KPI.
+3803	Diffuser les documents publiés
+3804	Diffuser les documents publiés aux listes de diffusion
+3805	Envoyer chaque nouvelle version publiée à sa liste de diffusion et recueillir les accusés de lecture.
+3806	Suivre les accusés de diffusion
+3807	Le moteur suit les accusés de lecture par destinataire et escalade les retards.
+3808	Maîtriser les versions des documents gouvernés
+3809	Soumettre le document à revue
+3810	L'auteur soumet une version brouillon avec un résumé des modifications.
+3811	Approuver et publier la version
+3812	L'approbateur valide ; le moteur attribue le nouveau numéro de version.
+3813	Publier et notifier
+3814	Publier la version et notifier la liste de diffusion.
+3815	Remplacer et archiver la version précédente
+3816	Marquer la version précédente comme remplacée et l'archiver en lecture seule.
+3817	Personnaliser et générer les fichiers téléchargeables
+3818	Personnaliser le modèle de document
+3819	Ajuster le logo, les couleurs, l'en-tête/pied de page, l'ordre et la visibilité des sections et les sections personnalisées d'un type de document.
+3820	Générer les fichiers dans les formats choisis
+3821	Générer le document dans les formats demandés (Word, Excel, PDF et autres activés pour le type).
+3822	Télécharger ou partager le fichier généré
+3823	L'utilisateur télécharge le fichier ou partage un lien ; le téléchargement est journalisé sur la version.
+3824	Planifier et exécuter les méthodes de surveillance
+3825	Planifier les méthodes de surveillance
+3826	Planifier la surveillance par mode (p. ex. audit interne) et par fréquence.
+3827	Exécuter la surveillance et enregistrer les résultats
+3828	Réaliser la surveillance et enregistrer les conclusions.
+3829	Administrer les cas d'usage de l'IA
+3830	Activer les cas d'usage de l'IA par périmètre
+3831	Activer les cas d'usage de l'IA fournis globalement ou pour un groupe, une organisation ou un projet.
+3832	Approuver les cas d'usage de l'IA personnalisés
+3833	Examiner puis approuver ou rejeter les cas d'usage de l'IA personnalisés.
+3834	Gouverner les listes de valeurs personnalisées
+3835	Maintenir les listes de valeurs personnalisables
+3836	Ajouter ou retirer des valeurs personnalisées dans les listes déroulantes (fonctions, fréquences, modes de surveillance).
+3837	Retirer les valeurs personnalisées inutilisées
+3838	Retirer les valeurs de liste personnalisées qui ne sont plus utilisées ; les valeurs utilisées sont désactivées, non supprimées.
+3839	Configurer le cadre des processus
+3840	Nommer les niveaux de la hiérarchie
+3841	Nommer les niveaux 1 à n (p. ex. niveau 4 « Activité », niveau 5 « Opération »).
+3842	Configurer les listes de valeurs déroulantes
+3843	Définir les valeurs système et personnalisées des listes Fonction, Fréquence et Mode de surveillance.
+3844	Configurer les sections personnalisées des fiches
+3845	Définir les sections personnalisées réutilisables disponibles sur les fiches macro-processus.
+3846	Configurer les modèles de documents et le versionnage
+3847	Maintenir des modèles à la charte par type de document
+3848	Maintenir des modèles par type de document et par format de sortie.
+3849	Configurer le schéma de versionnage et de conservation
+3850	Définir les règles de version majeure/mineure, les exigences d'approbation et la durée de conservation des archives.

@@ -1,0 +1,400 @@
+1	Du contexte à la stratégie
+2	Définir le contexte, la politique, la stratégie, les objectifs, la conformité et la gouvernance
+3	Cycle de planification stratégique, résultat de revue de direction ou changement significatif de contexte
+4	Politique, stratégie, objectifs, registre des risques et cadre de conformité approuvés et en place
+5	Établit les fondations stratégiques du SMI — contexte, politique, objectifs, processus, risques, exigences et politiques.
+6	Ce processus établit les fondations stratégiques de l'ensemble du SMI. Il commence par la compréhension du contexte interne et externe de l'organisation — réglementaire, marché, technologique et culturel. À partir de cette compréhension, il définit la politique qualité, l'orientation stratégique et des objectifs mesurables. Il cartographie ensuite l'architecture des processus, gère les risques et opportunités de l'entreprise, harmonise les exigences qui se recouvrent entre normes et gouverne les politiques et procédures. Pour les PME, il fournit un onboarding et une modélisation des processus simplifiés.
+7	Garantit l'alignement du SMI sur la stratégie de l'entreprise dès le premier jour et fournit la base de chaque processus E2E suivant.
+8	Contexte
+9	Politique
+10	Objectifs
+11	Processus
+12	Risque
+13	Conformité
+14	PME
+15	Analyse du contexte
+16	Analyste stratégie
+17	Direction générale
+18	Juridique
+19	Marketing
+20	Resp. qualité
+21	Tous les employés
+22	Définition de la politique
+23	Équipe stratégie
+24	Déploiement des objectifs
+25	Finance
+26	Pilotes de processus
+27	Cartographie des processus
+28	Analyste processus
+29	Informatique
+30	Toutes les équipes
+31	Gestion des risques
+32	Resp. risques
+33	Conseil d'administration
+34	Harmonisation des exigences
+35	Resp. conformité
+36	Gouvernance des politiques
+37	Propriétaire de la politique
+38	Onboarding PME
+39	Administrateur PME
+40	Dirigeant PME
+41	Spécialiste onboarding
+42	Employés
+43	Modélisation des processus PME
+44	Pilote de processus PME
+45	DynamicMS
+46	Analyser le contexte et les parties prenantes
+47	Comprendre les enjeux ; identifier les parties
+48	Tâches de contexte
+49	Identifier les enjeux
+50	Enjeux internes/externes
+51	Rapport de contexte
+52	Registre des parties prenantes
+53	Définir la politique et la stratégie
+54	Établir la politique/l'orientation
+55	Tâches de politique
+56	Rédiger la politique
+57	Raison d'être
+58	Document de politique
+59	Déployer les objectifs
+60	Décliner les objectifs
+61	Tâches d'objectifs
+62	Définir des objectifs SMART
+63	Stratégie
+64	Objectifs stratégiques
+65	Indicateurs (KPI)
+66	Cartographier les processus
+67	Définir l'architecture
+68	Tâches de cartographie
+69	Définir le périmètre
+70	Périmètre
+71	Cartographie des processus
+72	SIPOC
+73	Gérer les risques et opportunités
+74	Identifier et traiter les risques
+75	Tâches risques
+76	Identifier les risques
+77	Données de contexte
+78	Registre des risques
+79	Harmoniser les exigences
+80	Unifier les exigences
+81	Tâches d'exigences
+82	Recueillir les exigences
+83	Contrats
+84	Normes
+85	Référentiel harmonisé
+86	Gouverner les politiques
+87	Gérer le cycle de vie des politiques
+88	Définir le cycle de vie
+89	Exigences
+90	Politiques
+91	Procédures
+92	Mettre en place DynamicMS
+93	Déployer la plateforme
+94	Tâches d'onboarding
+95	Sélectionner le segment
+96	Profil de l'entreprise
+97	Locataire configuré
+98	Employés PME
+99	Modéliser les processus
+100	Numériser les processus
+101	Tâches de modélisation
+102	Sélectionner un modèle
+103	Modèles
+104	Modèles de processus
+105	Du leadership à l'engagement
+106	Établir le leadership, les compétences, la communication et la capacité d'audit
+107	Achèvement de l'E2E-01 ou changement de direction
+108	Personnel compétent, plan de communication et auditeurs qualifiés en place
+109	Ce processus garantit que les fondations humaines et de communication du SMI sont en place. Il développe les compétences de l'ensemble du personnel, établit les canaux de communication internes et externes, qualifie et certifie les auditeurs internes, gère les relations d'affaires collaboratives avec les partenaires et prend en charge la communication environnementale. Pour les PME, il fournit l'accès à des experts à temps partagé et une gestion simplifiée de la formation.
+110	Garantit que les personnes sont compétentes, informées et alignées — le premier levier de réussite du SMI.
+111	Compétences
+112	Communication
+113	Audit
+114	Collaboration
+115	Communication environnementale
+116	Expert PME
+117	Formation PME
+118	Développement des compétences
+119	Resp. RH
+120	Chefs de service
+121	Formateurs
+122	Resp. communication
+123	Qualification des auditeurs
+124	RH
+125	Experts métier
+126	Équipe d'audit
+127	Resp. partenariats
+128	Achats
+129	Tous les partenaires
+130	Communication env.
+131	Resp. environnement
+132	Communication
+133	Toutes les parties prenantes
+134	Accès expert PME
+135	Réseau d'experts
+136	RH PME
+137	Managers
+138	Développer les compétences
+139	Personnel compétent
+140	Tâches de compétences
+141	Définir les référentiels
+142	Exigences de compétences
+143	Enregistrements de compétences
+144	Communiquer
+145	Canaux de communication
+146	Tâches de communication
+147	Fixer la périodicité
+148	Besoins de communication
+149	Plan de communication
+150	Accéder à l'aide d'experts
+151	Accompagnement d'experts
+152	Tâches d'expertise
+153	Identifier le besoin
+154	Besoins d'expertise
+155	Enregistrements d'expertise
+156	Gérer la formation
+157	Tâches de formation
+158	Identifier les besoins
+159	Besoins de formation
+160	Enregistrements de formation
+161	Du risque à la résilience
+162	Gérer les contrôles, les risques tiers, la continuité, la sécurité fonctionnelle, la sécurité des procédés et les crises
+163	Cycle d'évaluation des risques, incident, changement réglementaire ou exigence de sécurité fonctionnelle
+164	Contrôles en place, risques tiers maîtrisés, continuité testée, sécurité fonctionnelle et des procédés assurée, prêt face aux crises
+165	Ce processus rend l'organisation résiliente face aux risques opérationnels, de sécurité et réglementaires. Il couvre le contrôle interne (y compris SOX), les risques tiers et fournisseurs, les alertes éthiques et les enquêtes sur incidents, la continuité d'activité et la préparation aux crises, la surveillance continue des contrôles, la communication de crise ainsi que l'ensemble des macro-processus de sécurité fonctionnelle et de sécurité des procédés pour les industries à haut risque. Pour les PME, il fournit des registres de risques simplifiés et un accompagnement à la cession/transition.
+166	Protège l'organisation contre les défaillances catastrophiques — incidents de sécurité, cyberattaques, ruptures de la chaîne d'approvisionnement ou actions réglementaires.
+167	Contrôles
+168	Tiers
+169	Enquête
+170	Continuité
+171	Sécurité fonctionnelle
+172	Sécurité des procédés
+173	Hygiène industrielle
+174	Intégrité des actifs
+175	Maritime
+176	Sécurité routière
+177	Risques PME
+178	Contrôle interne
+179	Contrôleur
+180	Directeur financier
+181	Audit interne
+182	Risques tiers
+183	Chaîne d'approvisionnement
+184	Enquête sur incident
+185	Enquêteur
+186	Sûreté
+187	Comité d'audit
+188	Coordinateur PCA
+189	Services généraux
+190	Opérations
+191	Ingénieur sécurité
+192	Resp. ingénierie
+193	Qualité
+194	Resp. sécurité des procédés
+195	Resp. opérations
+196	Ingénierie
+197	HSE
+198	Hygiéniste industriel
+199	Resp. HSE
+200	Médical
+201	Ingénieur intégrité
+202	Resp. maintenance
+203	Sécurité maritime
+204	Officier de sécurité maritime
+205	Resp. flotte
+206	Resp. sécurité de la flotte
+207	Logistique
+208	Sortie PME
+209	Contrôler en interne
+210	Contrôles internes
+211	Tâches de contrôle
+212	Identifier les contrôles
+213	Contrôles clés
+214	Inventaire des contrôles
+215	Surveiller les tiers
+216	Risque fournisseurs
+217	Tâches tiers
+218	Due diligence
+219	Données des tiers
+220	Scores de risque
+221	Fournisseurs
+222	Gérer les incidents
+223	Enquêter sur les incidents
+224	Tâches d'enquête
+225	Exploiter les canaux
+226	Signalements
+227	Protocoles
+228	Rapports d'enquête
+229	Se préparer à la continuité et à la sécurité
+230	Préparation PCA et sécurité
+231	Tâches de continuité et de sécurité
+232	Réaliser le BIA
+233	Données BIA
+234	Exigences de sécurité
+235	PCA
+236	Dossiers de sécurité
+237	Gérer les risques
+238	Gestion simplifiée des risques
+239	Contexte métier
+240	Planifier la sortie
+241	Accompagner la transition
+242	Tâches de sortie
+243	Planifier la sortie
+244	Plans de sortie
+245	Plan de sortie
+246	De la conformité à la réussite
+247	Déployer, auditer, certifier et maintenir le système de management
+248	Préparation à la certification, audit de surveillance à venir ou nouvelle obligation de conformité
+249	Certification obtenue ou maintenue ; constats clôturés ; obligations de conformité respectées
+250	Ce processus gère le cycle de certification et les obligations de conformité. Il déploie le système de management, conduit des audits à blanc et des diagnostics d'écarts avant certification, coordonne les audits de certification et gère un portefeuille de certifications sur plusieurs normes. Il couvre aussi la conformité des substances chimiques, la gestion des FDS, la responsabilité élargie du producteur, le devoir de vigilance droits humains, le reporting sur les minerais de conflit, la conformité esclavage moderne et la lutte anticorruption. Pour les PME, il fournit une préparation rapide aux audits, une conformité économique, des alertes réglementaires et une certification multi-normes rapide.
+251	Obtient et maintient les certifications qui ouvrent des marchés, satisfont les clients et démontrent la conformité réglementaire.
+252	Déploiement
+253	Certification
+254	Gestion responsable des produits
+255	REP
+256	Droits humains
+257	Anticorruption
+258	Conformité PME
+259	Resp. déploiement
+260	Équipe projet
+261	Audit à blanc
+262	Auditeurs
+263	Consultant
+264	Organisme de certification
+265	Marché
+266	Conformité chimique
+267	Responsable produits
+268	R&D
+269	Gestion des FDS
+270	Rédacteur FDS
+271	Clients
+272	Régulateurs
+273	Parties prenantes
+274	Minerais de conflit
+275	Resp. achats
+276	Esclavage moderne
+277	Responsable conformité
+278	Préparation d'audit PME
+279	Resp. qualité PME
+280	Déployer le système de management
+281	Déployer le SMI
+282	Tâches de déploiement
+283	Définir les phases
+284	Conception du SMI
+285	Processus déployés
+286	Réaliser un audit à blanc
+287	Préparer la certification
+288	Tâches d'audit à blanc
+289	Documentation du SMI
+290	Rapport d'audit à blanc
+291	Coordonner la certification
+292	Obtenir la certification
+293	Tâches de certification
+294	Sélectionner le certificateur
+295	Évaluation de la préparation
+296	Certificat
+297	Se préparer à l'audit
+298	Préparation d'audit rapide
+299	Tâches de préparation d'audit
+300	Sélectionner le type d'audit
+301	Critères d'audit
+302	Dossier d'audit
+303	Assurer la conformité
+304	Conformité économique
+305	Tâches de conformité
+306	Identifier la conformité
+307	Exigences de conformité
+308	Rapports de conformité
+309	Des personnes aux capacités
+310	Fournir les personnes, les compétences, la documentation, les enregistrements, la mesure et la santé
+311	Déploiement du SMI, nouvelle embauche, changement documentaire ou exigence de surveillance médicale
+312	Personnes compétentes, documentation maîtrisée, équipements étalonnés, dossiers de santé
+313	Ce processus garantit que l'organisation dispose des personnes, de la documentation, des enregistrements, des ressources de mesure et de la surveillance de la santé. Il gère le cycle de vie complet des documents et enregistrements maîtrisés, étalonne et maîtrise les équipements de mesure, assure la surveillance médicale et tient les dossiers de santé, et — pour les PME — fournit des modèles de documents et une gestion des utilisateurs multi-rôles.
+314	Fournit l'épine dorsale opérationnelle du SMI — documents, enregistrements, équipements et santé des personnes dont dépend chaque processus.
+315	Documentation
+316	Enregistrements
+317	Métrologie
+318	Surveillance médicale
+319	Documents PME
+320	Gestionnaire documentaire
+321	Resp. enregistrements
+322	Mesure
+323	Métrologue
+324	Maintenance
+325	Santé au travail
+326	Documents PME
+327	Utilisateurs PME
+328	Maîtriser la documentation
+329	Cycle de vie documentaire
+330	Tâches documentaires
+331	Définir les métadonnées
+332	Auteur du document
+333	Pilote de processus
+334	Exigences documentaires
+335	Documents maîtrisés
+336	Maîtriser la mesure et la santé
+337	Mesure/santé
+338	Tâches de mesure et de santé
+339	Inventorier les équipements
+340	Technicien d'étalonnage
+341	Inventaire des équipements
+342	Exigences de santé
+343	Enregistrements d'étalonnage
+344	Gérer les documents
+345	Utiliser les modèles
+346	Tâches documentaires
+347	Parcourir la bibliothèque
+348	Exigences de documents
+349	Documents
+350	De l'infrastructure au bien-être
+351	Fournir l'infrastructure informatique, de sécurité, de données, technologique et environnementale
+352	Changement d'infrastructure informatique, menace de sécurité, exigence de protection des données, exigence environnementale ou changement d'installation
+353	SI sécurisé et conforme ; données protégées ; salles propres surveillées ; installations gérées ; fiabilité des actifs ; efficacité hydrique
+354	Ce processus fournit l'infrastructure informatique, de sécurité, de données, technologique et environnementale requise par le SMI. Il couvre la GRC cyber, la protection des données personnelles, la gouvernance des accès et des rôles, les référentiels d'applications et d'interfaces, le cycle de vie technologique, la souveraineté des locataires, la gouvernance de la configuration, la fiabilité des actifs, la classification et la surveillance des salles propres, l'efficacité hydrique, la gestion des installations, la gestion des services informatiques, la sécurité du cloud et l'empreinte eau.
+355	Garantit que l'infrastructure numérique et physique est sécurisée, conforme, fiable et responsable sur le plan environnemental.
+356	Protection des données
+357	Accès
+358	Architecture
+359	Actif
+360	Salle propre
+361	Eau
+362	Installation
+363	ITSM
+364	Sécurité du cloud
+365	GRC cyber
+366	RSSI
+367	Audit informatique
+368	DPO
+369	Sécurité informatique
+370	Personnes concernées
+371	Gouvernance des accès
+372	Resp. IAM
+373	Architecte d'entreprise
+374	DSI
+375	PMO
+376	Souveraineté des locataires
+377	Conformité souveraine
+378	Locataires
+379	Fiabilité des actifs
+380	Ingénieur fiabilité
+381	Resp. salle propre
+382	Efficacité hydrique
+383	Resp. installations
+384	Resp. services informatiques
+385	Métier
+386	Tous les utilisateurs
+387	Architecte sécurité cloud
+388	Gouverner l'informatique et la sécurité
+389	Sécuriser/gouverner le SI
+390	Tâches de gouvernance informatique
+391	Définir les contrôles
+392	ISO 27001/NIST
+393	RGPD
+394	De la connaissance à la maîtrise
+395	Gouverner les données, les formules, les calculs et la connaissance
+396	Exigence de gouvernance des données, changement de formule ou lacune de connaissance
+397	Données, formules, calculs et graphe de connaissances gouvernés
+398	Ce processus gouverne les données, les formules, les calculs et la connaissance comme des actifs de l'organisation. Il gère la qualité et la gouvernance des données de référence, les référentiels de formules et la gouvernance des variables, l'exécution et la traçabilité des formules ainsi que le graphe de connaissances qui alimente les recommandations de l'IA.
+399	Transforme les données et la connaissance en intelligence organisationnelle fiable, traçable et réutilisable.
+400	Gouvernance des données
