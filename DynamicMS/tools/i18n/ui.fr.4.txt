@@ -1,0 +1,92 @@
+746	Comment rouvrir une étape terminée ?
+747	Comment signaler un problème ?
+748	La même personne peut-elle porter et évaluer une action ?
+749	Qu'exige l'ISO 45001 pour l'identification des dangers ?
+750	Qu'est-ce qu'un plan d'exécution BIM ?
+751	Quels articles couvrent la revue de direction ?
+752	Quelles étapes sont en retard ?
+753	Quelles sont mes tâches ?
+754	Quels KPI sont hors cible ?
+755	Où en est le projet ?
+756	Quels sont les principaux risques ?
+757	Enjeux du contexte
+758	Parties intéressées
+759	Objectifs
+760	Obligations de conformité
+761	Certificats
+762	Idées d'amélioration
+763	Compétences
+764	Étalonnage
+765	Revues de direction
+766	Incidents
+767	Besoins et attentes
+768	Influence
+769	Intérêt
+770	KPI
+771	Valeur actuelle
+772	Échéance
+773	Évaluation
+774	Dernière évaluation
+775	Organisme de certification
+776	Délivré le
+777	Expiration
+778	Numéro
+779	Critique
+780	Dernière évaluation
+781	ROI (%)
+782	Effort
+783	Proposée par
+784	Titulaire
+785	Niveau
+786	Niveau requis
+787	Formé le
+788	Numéro de série
+789	Dernier étalonnage
+790	Prochain étalonnage
+791	Emplacement
+792	Participants
+793	Jours perdus
+794	Enquête menée
+795	Actions des règles
+796	Risques de processus
+797	KPI de processus
+798	Modèles de documents
+799	Politiques
+800	Classes d'objets
+801	Dictionnaire de données
+802	Listes de valeurs
+803	Menus par rôle
+804	Modules
+805	Étapes fonctionnelles unifiées
+806	Confinement
+807	Corrective
+808	Préventive
+809	Amélioration
+810	Go
+811	En attente
+812	No-Go
+813	terminée
+814	enregistrée
+815	rouverte
+816	attribuée
+817	créée
+818	modifiée
+819	Périodicité
+820	Éléments du registre
+821	Évaluation
+822	Décision
+823	Document
+824	Communication
+825	Formation
+826	Suivi
+827	Planification
+828	Réalisation
+829	Paramétrage
+830	Clôture
+831	Escalade
+832	Assistance IA
+833	Tâche automatique
+834	Génération de texte
+835	Synthèse
+836	Classification
+837	Prédiction

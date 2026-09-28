@@ -1,0 +1,249 @@
+251	Audit planifié.
+252	Audits internes, fournisseurs, à blanc et de certification du déploiement, avec leurs constats et actions correctives.
+253	Planifier un audit
+254	Norme
+255	Prévu
+256	Auditeur responsable
+257	Constats
+258	Date prévue
+259	Audit terminé.
+260	Constat enregistré.
+261	Réalisé
+262	Tous les audits
+263	Marquer comme terminé
+264	Ajouter un constat
+265	Article
+266	Constat
+267	Aucun constat enregistré.
+268	Périmètre
+269	Propriétaire de l'action
+270	Dans mon organisation
+271	Dans mon groupe
+272	j
+273	Le même catalogue d'indicateurs alimente les deux vues ; chaque indicateur précise son unité et si une valeur haute ou basse est meilleure.
+274	Périmètre du benchmark
+275	Comparer par
+276	Système de management
+277	Mode
+278	Parcours PME
+279	Plus c'est haut, mieux c'est.
+280	Plus c'est bas, mieux c'est.
+281	Valeur du segment
+282	Moyenne de l'organisation {v}
+283	{metric} par segment au regard de la moyenne de l'organisation.
+284	SMQ et QHSE
+285	{n} organisations partagent leurs données ; {x} ont refusé.
+286	Moins de {n} organisations partagent leurs données ; les résultats sont masqués par confidentialité.
+287	Moyenne du groupe
+288	Rang
+289	vous
+290	Secteur
+291	Valeur
+292	Classement par indicateur ; les valeurs égales partagent le même rang. {good}
+293	Document créé en brouillon {code}.
+294	Liste maîtresse des informations documentées. Chaque modification crée une version qui passe par brouillon, revue et publication ; l'auteur n'approuve jamais sa propre version.
+295	Nouveau document
+296	Rechercher des documents
+297	Prochaine revue
+298	Créer le brouillon
+299	Fréquence de revue
+300	Contenu
+301	Terminé.
+302	Nouvelle version brouillon créée.
+303	Tous les documents
+304	Nouvelle version
+305	Versions
+306	Aucun contenu.
+307	Auteur
+308	Approbateur
+309	Soumettre à la revue
+310	L'auteur ne peut pas approuver sa propre version.
+311	Approuver et publier
+312	Renvoyer en brouillon
+313	Type de modification
+314	Mineure (x.y+1)
+315	Majeure (x+1.0)
+316	Résumé de la modification
+317	Un article par module et les questions fréquentes. L'assistant IA répond à partir du même contenu.
+318	Demander à l'assistant
+319	Rechercher dans l'aide
+320	Articles
+321	Questions fréquentes
+322	Aucun projet sélectionné
+323	Choisissez un projet dans le sélecteur de l'en-tête.
+324	{mode} · {n} étapes terminées sur {total} · phase en cours {phase}
+325	Ouvrir le cycle de vie
+326	Avancement du cycle de vie
+327	{n} étapes en cours
+328	Étapes ouvertes pour mes rôles
+329	Étapes en retard
+330	Non-conformités ouvertes
+331	KPI hors cible
+332	{n} alertes non lues
+333	Avancement par phase du cycle de vie
+334	Détails
+335	Part des étapes terminées dans chaque phase de bout en bout du déploiement.
+336	Tendance du KPI
+337	Choisir un KPI
+338	Cible
+339	Valeur mesurée
+340	Valeurs mensuelles de {kpi} au regard de sa cible (ligne pointillée).
+341	Étapes terminées par mois
+342	étapes
+343	Nombre d'étapes du workflow terminées chaque mois depuis le début du déploiement.
+344	Prochaines étapes
+345	Carte thermique des risques
+346	Registre
+347	Probabilité
+348	Impact
+349	Nombre de risques, dangers et aspects par score de probabilité et d'impact.
+350	Audits à venir
+351	Aucun audit planifié.
+352	Suggestions de l'IA
+353	{a} acceptées, {e} modifiées, {r} rejetées sur {n}
+354	Synthèses en langage clair des normes utilisées par les déploiements, carte normes-processus et retours d'expérience de votre organisation.
+355	Vues de la base de connaissances
+356	Normes
+357	Carte des normes
+358	Retours d'expérience (REX)
+359	Articles clés
+360	Thème
+361	Appliquée dans les phases
+362	Synthèse d'orientation rédigée pour DynamicMS ; reportez-vous à la norme officielle pour les exigences.
+363	Macro-processus
+364	Secteurs
+365	Rechercher dans les REX
+366	Cause racine
+367	Recommandation
+368	Note
+369	Mesure enregistrée ; cible atteinte.
+370	Mesure enregistrée ; une alerte hors cible a été déclenchée.
+371	KPI créé.
+372	{on} KPI sur {n} atteignent leur cible à la dernière mesure.
+373	KPI personnalisé
+374	Dernière valeur
+375	Tendance
+376	Valeurs mensuelles au regard de la cible ({t}).
+377	Formule
+378	Mesuré
+379	Analysé
+380	Enregistrer une mesure
+381	Période
+382	Commentaire
+383	Unité
+384	Sens favorable
+385	Plus c'est haut, mieux c'est
+386	Plus c'est bas, mieux c'est
+387	Fréquence de mesure
+388	Fréquence d'analyse
+389	Pas plus fréquente que la mesure (BR-011).
+390	Dupliqué en brouillon.
+391	Pondérations enregistrées.
+392	Dupliquer
+393	Briques réutilisables pour les nouveaux projets : parcours PME, critères de complexité, jalons, listes de contrôle et modèles de projets.
+394	Modèles de projets
+395	Jalons
+396	Listes de contrôle
+397	Parcours PME
+398	Critères de complexité
+399	Modèle
+400	Système
+401	Jalon
+402	Critères de sortie
+403	Liste de contrôle
+404	Éléments
+405	Parcours
+406	Description
+407	Plage de score
+408	Éléments par jalon
+409	Semaines
+410	Critères pondérés
+411	Modifier les pondérations
+412	Critère
+413	Pondération
+414	Niveaux 1 → 5
+415	Total {n}/100
+416	Le score de complexité est la moyenne pondérée des niveaux, ramenée à 100 ; les facteurs sectoriels s'ajoutent aux critères de base.
+417	Publier
+418	Retirer
+419	Phases et jalons
+420	Rôles
+421	Objet
+422	Critères d'entrée
+423	obligatoire
+424	preuve requise
+425	Pas de jalon sur cette phase pour le parcours du projet. La phase se clôt quand ses étapes sont terminées.
+426	Preuve enregistrée dans les enregistrements des étapes
+427	Décision de jalon enregistrée.
+428	Décidé par {who} le {date}
+429	Figée
+430	{n} étapes encore ouvertes dans cette phase.
+431	Décision de jalon : {d}
+432	Enregistrer la décision
+433	Obligatoire pour No-Go et En attente.
+434	Les phases de bout en bout du système de management, dans l'ordre d'exécution. Ouvrez une phase pour voir ses macro-processus et son jalon.
+435	Synthèse du déploiement
+436	Déploiement complet
+437	{done} phases clôturées sur {n}
+438	{d} étapes du workflow terminées sur {s}, réparties sur {m} macro-processus.
+439	Phases
+440	Jalon franchi
+441	Déclencheur
+442	Événement final
+443	Macro-processus
+444	Un jalon passe en Go seulement quand toutes les étapes de la phase sont terminées et que chaque élément obligatoire de la liste de contrôle est coché. Les étapes terminées d'une phase franchie sont verrouillées.
+445	Trop de tentatives. Patientez une minute.
+446	E-mail ou mot de passe incorrect.
+447	Système de management intégré
+448	Se connecter
+449	Pilotez le cycle de vie de votre SMQ et de votre QHSE, de l'analyse du contexte à l'amélioration continue.
+450	E-mail
+451	Mot de passe
+452	Connexion…
+453	Comptes de démonstration
+454	Mot de passe de tous les comptes d'organisation : {pw}
+455	Compte renseigné. Sélectionnez Se connecter.
+456	Un cycle de vie, chaque étape tracée
+457	Chaque projet exécute les processus de bout en bout de son système de management. Chaque étape enregistre qui a fait quoi, quand et avec quelle preuve.
+458	processus de bout en bout, de la stratégie à l'amélioration
+459	macro-processus sur sept niveaux et 29 secteurs
+460	étapes de workflow, chacune avec son propre formulaire de saisie
+461	Fournisseurs
+462	Entrées
+463	Étapes du processus
+464	Sorties
+465	Clients
+466	Retour à la phase
+467	Niveau {n}
+468	{n} étapes
+469	Vues du macro-processus
+470	Tâches et étapes
+471	Diagramme BPMN
+472	Tâche
+473	Objectif
+474	KPI de ce processus
+475	Aucun KPI lié.
+476	SIPOC du macro-processus tel que défini dans la conception des processus (D01).
+477	Activité
+478	R réalise, A approuve (un seul), C consulté, S soutien, I informé.
+479	Règles métier
+480	Aucune règle sur ce processus.
+481	Contrôles
+482	Aucun contrôle sur ce processus.
+483	Aucun cas d'usage IA sur ce processus.
+484	Action créée.
+485	Le propriétaire et l'évaluateur doivent être des utilisateurs différents.
+486	Problème déclaré sous {code}.
+487	Les problèmes passent par cinq étapes : ouverture, analyse, action, vérification et clôture avec retour d'expérience.
+488	Signaler un problème
+489	Clôturées
+490	Criticité
+491	Étape
+492	Détectée
+493	Soumettre
+494	Ce qui s'est passé, où, quand, et ce que vous avez fait immédiatement.
+495	Critique déclenche une alerte au responsable qualité et à la direction.
+496	Passée à l'étape {s}.
+497	Non-conformité
+498	Toutes les non-conformités
+499	Étapes

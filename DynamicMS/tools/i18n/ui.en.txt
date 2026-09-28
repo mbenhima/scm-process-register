@@ -1,0 +1,837 @@
+1	Files attached.
+2	Attachments
+3	Attach files
+4	Download
+5	No file attached. PDF, images, Office and CSV files up to 10 MB.
+6	Diagram imported. Save to keep it.
+7	The file is not a valid BPMN 2.0 diagram.
+8	Diagram saved as a new version.
+9	Diagram reset to the process design.
+10	Saved diagram, version {v}
+11	Generated from the process design: one lane per role, one task per step, a gateway after each decision.
+12	Read-only view: pan with the mouse, zoom with the buttons.
+13	Zoom in
+14	Zoom out
+15	Fit to screen
+16	Export .bpmn
+17	Import
+18	Reset
+19	Save
+20	Modeling palette
+21	BPMN 2.0 diagram of {code}; tasks carry the step identifiers of the process design.
+22	Remove from favorites
+23	Add to favorites
+24	Skip to content
+25	Open menu
+26	Current project
+27	read-only
+28	Read-only
+29	Language
+30	Alerts ({n} unread)
+31	Sign out
+32	Main menu
+33	Menu layout
+34	Unpin menu
+35	Pin menu
+36	Work
+37	Home
+38	My tasks
+39	Lifecycle
+40	Alerts
+41	Governance
+42	Risks and opportunities
+43	KPIs
+44	RACSI matrix
+45	Rules and controls
+46	Records
+47	Nonconformities
+48	Actions
+49	Audits
+50	Documents
+51	Registers
+52	Planning and Gantt
+53	Insight
+54	Reports
+55	Portfolio
+56	Benchmarking
+57	Intelligence
+58	AI Assistant
+59	AI use cases
+60	Knowledge base
+61	Design
+62	Process design
+63	Libraries
+64	Traceability
+65	Organization
+66	New project
+67	Administration
+68	Help
+69	Settings
+70	Dock at start
+71	Dock at end
+72	Dock at top
+73	Dock at bottom
+74	History
+75	Reverted into a new current version.
+76	Version history
+77	Select version {v}
+78	Version
+79	current
+80	Date
+81	By
+82	Justification
+83	Revert
+84	No version recorded yet.
+85	Compare selected
+86	Field
+87	Justification for reverting to v{v}
+88	Cancel
+89	Loading…
+90	Not found or not accessible.
+91	You do not have permission for this action.
+92	This feature is not included in your configuration.
+93	Something went wrong.
+94	Try again
+95	No records yet.
+96	Showing {n} of {total}
+97	Close
+98	Saved.
+99	Every action has an owner who carries it out and a different evaluator who verifies its effectiveness.
+100	New action
+101	Filter
+102	Open
+103	Mine (owner or evaluator)
+104	All
+105	Kind
+106	Title
+107	Source
+108	Owner
+109	Evaluator
+110	Due
+111	Progress
+112	Status
+113	Effectiveness
+114	Restricted
+115	Progress (%)
+116	Due date
+117	Effectiveness verification
+118	Verdict
+119	Available once the owner reports 100% progress.
+120	Choose…
+121	Evidence of effectiveness
+122	The verdict is visible to the owner, the evaluator and process owners.
+123	Only the evaluator records the verdict.
+124	Permission updated; it applies immediately.
+125	Module
+126	All modules
+127	{p} permissions × {r} roles
+128	Permission
+129	Ticked cells grant the permission; changed defaults are outlined. Entitlement from the Solution Pack is checked separately.
+130	Configuration saved.
+131	Solution pack
+132	{u} users, {p} projects, AI {a}
+133	Capability and industry packs
+134	Add-ons
+135	Compliance & security standards
+136	{n} scaffold controls
+137	I understand this is not a certification.
+138	Deployment
+139	Deployment mode
+140	Monthly price
+141	Item
+142	Subtotal {s} · bundle discount {b}% · deployment {d}
+143	List prices of the packs catalog in USD per month; annual commitment saves 15%.
+144	Save configuration
+145	Connection test: {h}
+146	Integration
+147	Category
+148	Enabled
+149	Health
+150	Checked
+151	Test
+152	Record type
+153	All record types
+154	{n} entries
+155	User
+156	Record
+157	Action
+158	Change
+159	{n} records imported.
+160	Import data
+161	Data
+162	Suppliers (current project)
+163	Risks (current project)
+164	Users
+165	CSV content
+166	First row: column names. Separator: comma or semicolon.
+167	Use the sample
+168	Validate
+169	Validation result
+170	{a} of {n} records valid.
+171	Line
+172	Errors
+173	Validate the file to see accepted and rejected records before import.
+174	Backup {f} written, integrity {i}.
+175	Backups
+176	Back up now
+177	Daily automatic backup; files older than {d} days are removed.
+178	File
+179	Size
+180	Backups are managed by the platform administrator.
+181	Licence
+182	Seeded
+183	Permission matrix
+184	Configuration
+185	Integrations
+186	Audit trail
+187	Data import
+188	Operations
+189	Roles and permissions, commercial configuration, integrations, audit trail, data import and platform operations.
+190	Project setting saved.
+191	Custom use case created; approve it before activation.
+192	Tier available: {tier}. Every suggestion names a human checkpoint and is logged with its confidence and outcome.
+193	Custom use case
+194	AI views
+195	Library
+196	Usage log
+197	Code
+198	Use case
+199	Tier
+200	not licensed
+201	Risk
+202	Process
+203	Uses
+204	Accepted
+205	This project
+206	Confidence
+207	Outcome
+208	Task type
+209	Human checkpoint
+210	Linked step
+211	Approval
+212	Prompt
+213	Deactivate for the organization
+214	Approve and activate
+215	Create
+216	Name
+217	Linked process (MP-xxx)
+218	Who accepts, edits or rejects the suggestion, and when.
+219	Notifications
+220	Alert catalog
+221	Dispatch log
+222	Alerts are raised once per record and period, then sent in-app and by e-mail to the roles on the escalation path.
+223	Mark all as read
+224	Alert views
+225	Unread
+226	For my roles
+227	{n} alerts, {u} unread
+228	Mark read
+229	Dismiss
+230	No alert.
+231	Type
+232	Severity
+233	Alert engine
+234	Escalation
+235	Alert types enabled for the organization
+236	Recipient
+237	Subject
+238	Channel
+239	Answers come from the DynamicMS help, the standards knowledge base and your project records. No external AI service is called.
+240	Assistant mode
+241	Using the application
+242	Standards and processes
+243	My project data
+244	Ask a question or pick an example.
+245	Sources
+246	Confidence {c}%
+247	Your question
+248	Type your question
+249	Ask
+250	Examples
+251	Audit planned.
+252	Internal, supplier, mock and certification audits of the run, with their findings and corrective actions.
+253	Plan an audit
+254	Standard
+255	Planned
+256	Lead auditor
+257	Findings
+258	Planned date
+259	Audit completed.
+260	Finding recorded.
+261	Done
+262	All audits
+263	Mark completed
+264	Add finding
+265	Clause
+266	Finding
+267	No finding recorded.
+268	Scope
+269	Action owner
+270	Within my organization
+271	Across my group
+272	d
+273	The same metric catalog serves both views; each metric states its unit and whether higher or lower is better.
+274	Benchmark scope
+275	Compare by
+276	Management system
+277	Mode
+278	SME track
+279	Higher is better.
+280	Lower is better.
+281	Segment value
+282	Organization average {v}
+283	{metric} per segment against the organization average.
+284	QMS and QHSE
+285	{n} organizations share their data; {x} opted out.
+286	Fewer than {n} organizations share data; results are hidden to protect confidentiality.
+287	Group average
+288	Rank
+289	you
+290	Vertical
+291	Value
+292	Ranking per metric; equal values share the same rank. {good}
+293	Document created as draft {code}.
+294	Master list of documented information. Each change creates a version that goes draft, review, published; the author never approves their own version.
+295	New document
+296	Search documents
+297	Next review
+298	Create draft
+299	Review frequency
+300	Content
+301	Done.
+302	New draft version created.
+303	All documents
+304	New version
+305	Versions
+306	No content.
+307	Author
+308	Approver
+309	Submit for review
+310	The author cannot approve their own version.
+311	Approve and publish
+312	Send back to draft
+313	Change type
+314	Minor (x.y+1)
+315	Major (x+1.0)
+316	Summary of change
+317	One article per module and the frequent questions. The AI Assistant answers from the same content.
+318	Ask the assistant
+319	Search help
+320	Articles
+321	Frequent questions
+322	No project selected
+323	Choose a project in the header switcher.
+324	{mode} · {n} of {total} steps completed · current phase {phase}
+325	Open lifecycle
+326	Lifecycle progress
+327	{n} steps in progress
+328	Open steps for my roles
+329	Overdue steps
+330	Open nonconformities
+331	KPIs off target
+332	{n} unread alerts
+333	Progress by lifecycle phase
+334	Details
+335	Share of completed steps in each end-to-end phase of the run.
+336	KPI trend
+337	Choose a KPI
+338	Target
+339	Measured value
+340	Monthly values of {kpi} against its target (dashed line).
+341	Steps completed per month
+342	steps
+343	Number of workflow steps completed each month since the start of the run.
+344	Next steps
+345	Risk heatmap
+346	Register
+347	Likelihood
+348	Impact
+349	Number of risks, hazards and aspects per likelihood and impact score.
+350	Upcoming audits
+351	No audit planned.
+352	AI suggestions
+353	{a} accepted, {e} edited, {r} rejected out of {n}
+354	Plain-language summaries of the standards used by the runs, the standards-to-process map and the lessons learned of your organization.
+355	Knowledge views
+356	Standards
+357	Standards map
+358	Lessons learned (REX)
+359	Key clauses
+360	Topic
+361	Applied in phases
+362	Orientation summary written for DynamicMS; refer to the official standard for requirements.
+363	Macro processes
+364	Verticals
+365	Search lessons learned
+366	Root cause
+367	Recommendation
+368	Rating
+369	Measurement recorded; target met.
+370	Measurement recorded; an off-target alert was raised.
+371	KPI created.
+372	{on} of {n} KPIs meet their target on the last measurement.
+373	Custom KPI
+374	Last value
+375	Trend
+376	Monthly values against the target ({t}).
+377	Formula
+378	Measured
+379	Analysed
+380	Record a measurement
+381	Period
+382	Comment
+383	Unit
+384	Direction of good
+385	Higher is better
+386	Lower is better
+387	Measurement frequency
+388	Analysis frequency
+389	Not more frequent than the measurement (BR-011).
+390	Duplicated as a draft.
+391	Weights saved.
+392	Duplicate
+393	Reusable building blocks for new projects: SME tracks, complexity criteria, gates, checklists and project templates.
+394	Project templates
+395	Gates
+396	Checklists
+397	SME tracks
+398	Complexity criteria
+399	Template
+400	System
+401	Gate
+402	Exit criteria
+403	Checklist
+404	Items
+405	Track
+406	Description
+407	Score range
+408	Items per gate
+409	Weeks
+410	Weighted criteria
+411	Edit weights
+412	Criterion
+413	Weight
+414	Levels 1 → 5
+415	Total {n}/100
+416	The complexity score is the weighted average of the levels, scaled to 100; vertical drivers add to the base criteria.
+417	Publish
+418	Retire
+419	Phases and gates
+420	Roles
+421	Purpose
+422	Entry criteria
+423	mandatory
+424	evidence required
+425	No gate on this phase for the project track. The phase closes when its steps are complete.
+426	Evidence recorded in the step records
+427	Gate decision recorded.
+428	Decided by {who} on {date}
+429	Frozen
+430	{n} steps still open in this phase.
+431	Gate decision: {d}
+432	Record decision
+433	Required for No-Go and Hold.
+434	The end-to-end phases of the management system, in execution order. Open a phase to see its macro processes and its gate.
+435	Run summary
+436	Full run
+437	{done} of {n} phases closed
+438	{d} of {s} workflow steps completed across {m} macro processes.
+439	Phases
+440	Gate passed
+441	Trigger
+442	Terminal event
+443	Macro process
+444	A gate passes with Go only when every step of the phase is complete and every mandatory checklist item is ticked. Completed steps of a passed phase are locked.
+445	Too many attempts. Wait one minute.
+446	Email or password is incorrect.
+447	Integrated management system
+448	Sign in
+449	Run your QMS and QHSE lifecycle from context analysis to continual improvement.
+450	Email
+451	Password
+452	Signing in…
+453	Demonstration accounts
+454	Password for every organization account: {pw}
+455	Account filled in. Select Sign in.
+456	One lifecycle, every step traced
+457	Each project runs the end-to-end processes of its management system. Every step records who did what, when, and with which evidence.
+458	end-to-end processes, from strategy to improvement
+459	macro processes across seven tiers and 29 verticals
+460	workflow steps, each with its own input form
+461	Suppliers
+462	Inputs
+463	Process steps
+464	Outputs
+465	Customers
+466	Back to phase
+467	Tier {n}
+468	{n} steps
+469	Macro process views
+470	Tasks and steps
+471	BPMN diagram
+472	Task
+473	Objective
+474	KPIs of this process
+475	No KPI linked.
+476	SIPOC of the macro process as defined in the process design (D01).
+477	Activity
+478	R responsible, A accountable (exactly one), C consulted, S support, I informed.
+479	Business rules
+480	No rule on this process.
+481	Controls
+482	No control on this process.
+483	No AI use case on this process.
+484	Action created.
+485	The owner and the evaluator must be different users.
+486	Problem reported as {code}.
+487	Problems move through five stages: open, analysis, action, verification and closure with lessons learned.
+488	Report a problem
+489	Closed
+490	Criticality
+491	Stage
+492	Detected
+493	Submit
+494	What happened, where, when, and what you did immediately.
+495	Critical raises an alert to the Quality Manager and top management.
+496	Moved to {s}.
+497	Nonconformity
+498	All nonconformities
+499	Stages
+500	Add action
+501	No action yet.
+502	What went well
+503	What did not go well
+504	Analysis
+505	Not recorded yet
+506	Cost of the problem
+507	Move to {s}
+508	Save and continue
+509	Root cause (5 whys, fishbone…)
+510	Lessons learned before closure
+511	Close the nonconformity
+512	Suggestion applied item by item; review the fields below.
+513	Project created.
+514	Start from the template catalog, build it manually from the gate and checklist libraries, or let the assistant draft it from a short description.
+515	From the catalog
+516	Copies the phases, gates, checklists and roles of a published template.
+517	Manual
+518	You choose the system, the track and the gates attached to each phase.
+519	With AI
+520	Describe the project; accept, change or reject each suggested item.
+521	Describe the project
+522	Short description
+523	Example: ISO 45001 safety certification for our two sites before the customer audit in March.
+524	Draft the project
+525	Closest template
+526	Complexity levels
+527	Score {s}/100
+528	Apply accepted items
+529	Project
+530	QMS — ISO 9001
+531	QHSE — ISO 9001, 14001, 45001
+532	Start date
+533	Phases with a gate (from the Gate Library)
+534	Complexity score
+535	Recommended mode
+536	recommended track
+537	Recommended
+538	Justification for overriding the recommended track
+539	Creating…
+540	Create project
+541	The project starts with every licensed macro process of the organization activated for its vertical, all steps to do, and the first phase active.
+542	Node added.
+543	Independent organization
+544	employees
+545	Read-only view of a group organization
+546	Organization views
+547	Profile and configuration
+548	Projects
+549	Structure (OBS)
+550	Tenancy
+551	Industry packs
+552	Capability packs
+553	AI tier
+554	Licensed macro processes
+555	Features
+556	bundle discount {b}%
+557	SME onboarding
+558	Target {d} days · time to first value {v} days · {u} users activated
+559	day {d}
+560	Usage against quotas
+561	OBS nodes
+562	Custom AI use cases
+563	No vertical activated; universal processes only.
+564	Group benchmarking
+565	This organization shares its aggregated metrics with its group.
+566	This organization does not share its metrics with its group.
+567	Current phase
+568	Unread alerts
+569	Organizational breakdown structure
+570	Add node
+571	Add user
+572	Last sign-in
+573	Independent organizations
+574	Access
+575	Full
+576	The initial password is the demonstration password; the user changes it in Settings.
+577	Parent
+578	Work breakdown structure of the run: one node per phase with its actions, planned dates, progress and dependencies.
+579	Gantt chart
+580	Today
+581	Completed
+582	In progress
+583	Overdue
+584	Phases and their actions on a shared timeline; arrows show finish-to-start dependencies between phases.
+585	Edit node
+586	Start
+587	End
+588	One row per project and one column per lifecycle stage. Projects of other organizations of your group are read-only.
+589	Export CSV
+590	My organization
+591	Group
+592	{n} projects
+593	Completed per stage
+594	Status of every lifecycle stage per project; ×2 marks a stage that ran twice (recurring phases).
+595	The reference model every project runs: end-to-end processes, macro processes, tasks and steps, with their governance and vertical activation.
+596	End-to-end processes
+597	Tasks
+598	Steps
+599	SRS requirements
+600	Process design views
+601	E2E processes
+602	Activation matrix
+603	Reference lists
+604	Packs and pricing
+605	{m} macro processes · {s} steps
+606	Search by code or name
+607	All tiers
+608	All verticals
+609	Must-have standards
+610	Base pack
+611	Industry pack
+612	Active MPs
+613	Tiers
+614	✓ activated for the vertical, S selective (activated on need), blank not applicable.
+615	List
+616	Solution packs
+617	Pack
+618	Price
+619	Add-on
+620	Deployment modes
+621	Price multiplier
+622	Isolation
+623	Goals
+624	Narrative
+625	Boundaries
+626	Business value
+627	E2E views
+628	Unified flow
+629	Chains
+630	Unified step
+631	From
+632	Relation
+633	To
+634	Activation
+635	Step
+636	Role
+637	Input form
+638	RACSI updated.
+639	Who is Responsible, Accountable, Consulted, Support and Informed for each activity. Each activity has exactly one Accountable.
+640	Search activities
+641	Phase
+642	All phases
+643	A accountable (orange), R responsible, C consulted, S support, I informed. Select a row to edit it.
+644	Choose one letter per role. Exactly one role must be Accountable (A).
+645	Yes
+646	No
+647	Entry added.
+648	The registers each phase of the run fills in: context, parties, objectives, obligations, suppliers, ideas and more.
+649	Submit an idea
+650	Add entry
+651	Report downloaded.
+652	Every report is computed from the live records of the project and exported in the language you choose.
+653	Export options
+654	Format
+655	Your role can view reports but not export them.
+656	Preparing…
+657	Download {f}
+658	Report catalog of the process design
+659	Report
+660	Audience
+661	Refresh
+662	Risk register of the project, scored likelihood × impact on a 1–5 scale. QHSE runs also hold OH&S hazards and environmental aspects.
+663	Add
+664	Score
+665	Residual
+666	Heatmap
+667	Count of open risks, hazards and aspects per cell; red cells need treatment first.
+668	New entry
+669	Edit
+670	Likelihood (1–5)
+671	Impact (1–5)
+672	Residual score
+673	Treatment
+674	Business rules act on workflow steps; controls are classified by COSO component and linked to the steps they secure.
+675	New rule
+676	New control
+677	Governance lists
+678	Search
+679	Condition
+680	Active
+681	Control
+682	Frequency
+683	Triggering step (e.g. MP-018.3)
+684	Password changed.
+685	Your preferences are stored on the server and follow you on every device.
+686	Profile
+687	Menu
+688	Dock position
+689	Start (left in English, right in Arabic)
+690	Top
+691	Bottom
+692	Keep the menu pinned open
+693	Favorites
+694	Reset menu preferences
+695	Change password
+696	Current password
+697	New password
+698	At least 8 characters with a capital letter and a digit.
+699	Required
+700	Complete the required fields.
+701	Step completed.
+702	Draft saved.
+703	{n} business rule(s) checked on this step.
+704	Step reopened.
+705	No AI use case is configured for this step.
+706	Suggestion rejected and logged.
+707	Suggestion inserted. Review it before completing the step.
+708	Step {i} of {n}
+709	Previous step
+710	Next step
+711	What to record
+712	The gate of this phase is passed; the step is locked.
+713	This step is assigned to another role. You can read it but not complete it.
+714	Completed by {who} on {date}.
+715	Save draft
+716	Complete step
+717	Reopen
+718	AI assistance
+719	Suggest
+720	Accept
+721	Insert and edit
+722	Reject
+723	Context
+724	Step type
+725	Rules and controls on this step
+726	No change recorded yet.
+727	{n} versions kept.
+728	Reopen step
+729	Reopening keeps the previous value as a version and writes your justification to the audit trail.
+730	Workflow steps assigned to your roles, sorted by due date.
+731	Assigned to me
+732	All open
+733	Previous
+734	Page {p}
+735	Next
+736	Requirement traceability
+737	Each requirement of the Dynamic Apps Standard SRS v1.3 with the screen and API that implement it.
+738	Search requirements
+739	Family
+740	All families
+741	{n} requirements
+742	Section
+743	Requirement
+744	Screen
+745	Requirement texts are quoted in English, as in the source SRS.
+746	How do I reopen a completed step?
+747	How do I report a problem?
+748	Can the same person own and evaluate an action?
+749	What does ISO 45001 require for hazard identification?
+750	What is a BIM execution plan?
+751	Which clauses cover the management review?
+752	Which steps are overdue?
+753	What are my tasks?
+754	Which KPIs are off target?
+755	Where is the project?
+756	What are the top risks?
+757	Context issues
+758	Interested parties
+759	Objectives
+760	Compliance obligations
+761	Certificates
+762	Improvement ideas
+763	Competence
+764	Calibration
+765	Management reviews
+766	Incidents
+767	Needs and expectations
+768	Influence
+769	Interest
+770	KPI
+771	Current value
+772	Deadline
+773	Evaluation
+774	Last evaluated
+775	Certification body
+776	Issued
+777	Expiry
+778	Number
+779	Critical
+780	Last evaluation
+781	ROI (%)
+782	Effort
+783	Submitted by
+784	Holder
+785	Level
+786	Required level
+787	Trained on
+788	Serial number
+789	Last calibration
+790	Next calibration
+791	Location
+792	Attendees
+793	Lost days
+794	Investigated
+795	Rule actions
+796	Process risks
+797	Process KPIs
+798	Document templates
+799	Policies
+800	Object classes
+801	Data dictionary
+802	Value lists
+803	Role menus
+804	Modules
+805	Unified functional steps
+806	Containment
+807	Corrective
+808	Preventive
+809	Improvement
+810	Go
+811	Hold
+812	No-Go
+813	complete
+814	save
+815	reopen
+816	assign
+817	create
+818	update
+819	periodicity
+820	list
+821	assess
+822	decision
+823	document
+824	communicate
+825	train
+826	monitor
+827	plan
+828	execute
+829	configure
+830	close
+831	escalate
+832	ai
+833	service
+834	Text Generation
+835	Summarization
+836	Classification
+837	Prediction

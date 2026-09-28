@@ -28,6 +28,17 @@ export const LABELS = {
   Assistive: L('Assistive', 'Assistance', 'مساعد'), Augmented: L('Augmented', 'Augmentée', 'معزز'),
   QMS: L('QMS', 'SMQ', 'نظام إدارة الجودة'), QHSE: L('QHSE', 'QHSE', 'الجودة والصحة والسلامة والبيئة'), FULL: L('Full lifecycle', 'Cycle complet', 'دورة كاملة'), SME: L('SME', 'PME', 'مؤسسة صغيرة ومتوسطة'),
   'TRK-LIGHT': L('Light track', 'Parcours léger', 'المسار الخفيف'), 'TRK-STANDARD': L('Standard track', 'Parcours standard', 'المسار القياسي'), 'TRK-ADVANCED': L('Advanced track', 'Parcours avancé', 'المسار المتقدم'),
+  Inherit: L('Inherit', 'Hériter', 'وراثة'), Inactive: L('Inactive', 'Inactif', 'غير نشط'),
   Large: L('Large', 'Grande entreprise', 'مؤسسة كبيرة'),
+  Annual: L('Annual', 'Annuel', 'سنوي'), 'Semi-annual': L('Semi-annual', 'Semestriel', 'نصف سنوي'), Quarterly: L('Quarterly', 'Trimestriel', 'ربع سنوي'), Monthly: L('Monthly', 'Mensuel', 'شهري'), Weekly: L('Weekly', 'Hebdomadaire', 'أسبوعي'), Daily: L('Daily', 'Quotidien', 'يومي'), 'Per event': L('Per event', 'À chaque événement', 'عند كل حدث'),
+  Intranet: L('Intranet', 'Intranet', 'الشبكة الداخلية'), 'E-mail': L('E-mail', 'E-mail', 'البريد الإلكتروني'), Meeting: L('Meeting', 'Réunion', 'اجتماع'), 'Notice board': L('Notice board', 'Panneau d\'affichage', 'لوحة الإعلانات'), Portal: L('Portal', 'Portail', 'البوابة'),
+  Validation: L('Validation', 'Validation', 'التحقق'), Notification: L('Notification', 'Notification', 'إشعار'), Escalation: L('Escalation', 'Escalade', 'تصعيد'), Calculation: L('Calculation', 'Calcul', 'حساب'),
+  Detective: L('Detective', 'Détective', 'كشفي'), Manual: L('Manual', 'Manuel', 'يدوي'), Automated: L('Automated', 'Automatisé', 'آلي'),
+  'Control Activities': L('Control activities', 'Activités de contrôle', 'أنشطة الرقابة'), 'Control Environment': L('Control environment', 'Environnement de contrôle', 'بيئة الرقابة'), 'Risk Assessment': L('Risk assessment', 'Évaluation des risques', 'تقييم المخاطر'), 'Information & Communication': L('Information and communication', 'Information et communication', 'المعلومات والتواصل'), 'Monitoring Activities': L('Monitoring activities', 'Activités de pilotage', 'أنشطة المتابعة'),
+  'Not tested': L('Not tested', 'Non testé', 'لم يُختبر'), 'Needs improvement': L('Needs improvement', 'À améliorer', 'يحتاج إلى تحسين'),
+  Disabled: L('Disabled', 'Désactivé', 'معطّل'), Failed: L('Failed', 'Échec', 'فشل'), OK: L('OK', 'OK', 'سليم'), Delivered: L('Delivered', 'Délivré', 'تم التسليم'), Queued: L('Queued', 'En file', 'في الانتظار'),
+  Organization: L('Organization', 'Organisation', 'مؤسسة'), Site: L('Site', 'Site', 'موقع'), Department: L('Department', 'Service', 'قسم'), Project: L('Project', 'Projet', 'مشروع'),
+  catalog: L('From the catalog', 'Depuis le catalogue', 'من الكتالوج'), manual: L('Manual', 'Manuelle', 'يدوي'), ai: L('With AI', 'Avec l\'IA', 'بالذكاء الاصطناعي'),
+  universal: L('Universal', 'Universel', 'عام'), vertical: L('Vertical', 'Sectoriel', 'قطاعي'), Small: L('Small', 'Petite', 'صغيرة'), Medium: L('Medium', 'Moyenne', 'متوسطة'), Micro: L('Micro', 'Micro', 'صغرى'),
 };
 export const label = (code, lang) => (LABELS[code] ? LABELS[code][lang] ?? LABELS[code].en : code);

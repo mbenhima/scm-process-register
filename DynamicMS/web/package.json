@@ -1,0 +1,27 @@
+{
+  "name": "dynamicms-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "DynamicMS - Integrated Management System platform (web client)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5173"
+  },
+  "dependencies": {
+    "@fontsource/noto-naskh-arabic": "^5.1.0",
+    "@fontsource/noto-sans-arabic": "^5.1.0",
+    "@fontsource/source-sans-3": "^5.1.0",
+    "@fontsource/source-serif-4": "^5.1.0",
+    "bpmn-js": "^17.11.1",
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}

@@ -1,0 +1,246 @@
+500	Ajouter une action
+501	Aucune action pour l'instant.
+502	Ce qui a bien fonctionné
+503	Ce qui n'a pas bien fonctionné
+504	Analyse
+505	Pas encore enregistrée
+506	Coût du problème
+507	Passer à l'étape {s}
+508	Enregistrer et continuer
+509	Cause racine (5 pourquoi, Ishikawa…)
+510	Retour d'expérience avant clôture
+511	Clôturer la non-conformité
+512	Suggestion appliquée élément par élément ; vérifiez les champs ci-dessous.
+513	Projet créé.
+514	Partez du catalogue de modèles, construisez-le manuellement à partir des bibliothèques de jalons et de listes de contrôle, ou laissez l'assistant le rédiger à partir d'une courte description.
+515	Depuis le catalogue
+516	Copie les phases, jalons, listes de contrôle et rôles d'un modèle publié.
+517	Manuel
+518	Vous choisissez le système, le parcours et les jalons associés à chaque phase.
+519	Avec l'IA
+520	Décrivez le projet ; acceptez, modifiez ou rejetez chaque élément proposé.
+521	Décrire le projet
+522	Description courte
+523	Exemple : certification sécurité ISO 45001 de nos deux sites avant l'audit client de mars.
+524	Rédiger le projet
+525	Modèle le plus proche
+526	Niveaux de complexité
+527	Score {s}/100
+528	Appliquer les éléments acceptés
+529	Projet
+530	SMQ — ISO 9001
+531	QHSE — ISO 9001, 14001, 45001
+532	Date de début
+533	Phases avec jalon (bibliothèque de jalons)
+534	Score de complexité
+535	Mode recommandé
+536	parcours recommandé
+537	Recommandé
+538	Justification du choix d'un autre parcours que celui recommandé
+539	Création…
+540	Créer le projet
+541	Le projet démarre avec tous les macro-processus licenciés de l'organisation activés pour son secteur, toutes les étapes à faire et la première phase active.
+542	Nœud ajouté.
+543	Organisation indépendante
+544	salariés
+545	Vue en lecture seule d'une organisation du groupe
+546	Vues de l'organisation
+547	Profil et configuration
+548	Projets
+549	Structure (OBS)
+550	Structure du locataire
+551	Packs sectoriels
+552	Packs de capacités
+553	Niveau d'IA
+554	Macro-processus licenciés
+555	Fonctionnalités
+556	remise groupée {b} %
+557	Intégration PME
+558	Objectif {d} jours · premier résultat en {v} jours · {u} utilisateurs activés
+559	jour {d}
+560	Utilisation au regard des quotas
+561	Nœuds OBS
+562	Cas d'usage IA personnalisés
+563	Aucun secteur activé ; processus universels uniquement.
+564	Benchmarking de groupe
+565	Cette organisation partage ses indicateurs agrégés avec son groupe.
+566	Cette organisation ne partage pas ses indicateurs avec son groupe.
+567	Phase en cours
+568	Alertes non lues
+569	Organigramme des responsabilités (OBS)
+570	Ajouter un nœud
+571	Ajouter un utilisateur
+572	Dernière connexion
+573	Organisations indépendantes
+574	Accès
+575	Complet
+576	Le mot de passe initial est le mot de passe de démonstration ; l'utilisateur le modifie dans Paramètres.
+577	Parent
+578	Organigramme des tâches du déploiement : un nœud par phase avec ses actions, dates prévues, avancement et dépendances.
+579	Diagramme de Gantt
+580	Aujourd'hui
+581	Terminé
+582	En cours
+583	En retard
+584	Phases et actions sur une même échelle de temps ; les flèches montrent les dépendances fin-début entre phases.
+585	Modifier le nœud
+586	Début
+587	Fin
+588	Une ligne par projet et une colonne par étape du cycle de vie. Les projets des autres organisations de votre groupe sont en lecture seule.
+589	Exporter en CSV
+590	Mon organisation
+591	Groupe
+592	{n} projets
+593	Terminées par étape
+594	Statut de chaque étape du cycle de vie par projet ; ×2 signale une étape exécutée deux fois (phases récurrentes).
+595	Le modèle de référence exécuté par chaque projet : processus de bout en bout, macro-processus, tâches et étapes, avec leur gouvernance et leur activation sectorielle.
+596	Processus de bout en bout
+597	Tâches
+598	Étapes
+599	Exigences du SRS
+600	Vues de la conception des processus
+601	Processus E2E
+602	Matrice d'activation
+603	Listes de référence
+604	Packs et tarifs
+605	{m} macro-processus · {s} étapes
+606	Rechercher par code ou nom
+607	Tous les niveaux
+608	Tous les secteurs
+609	Normes incontournables
+610	Pack de base
+611	Pack sectoriel
+612	MP actifs
+613	Niveaux
+614	✓ activé pour le secteur, S sélectif (activé selon le besoin), vide : non applicable.
+615	Liste
+616	Solution Packs
+617	Pack
+618	Prix
+619	Option
+620	Modes de déploiement
+621	Coefficient de prix
+622	Isolation
+623	Objectifs
+624	Récit
+625	Périmètre
+626	Valeur métier
+627	Vues E2E
+628	Flux unifié
+629	Chaînes
+630	Étape unifiée
+631	De
+632	Relation
+633	Vers
+634	Activation
+635	Étape
+636	Rôle
+637	Formulaire de saisie
+638	RACSI mise à jour.
+639	Qui réalise, approuve, est consulté, soutient et est informé pour chaque activité. Chaque activité a exactement un approbateur (A).
+640	Rechercher des activités
+641	Phase
+642	Toutes les phases
+643	A approuve (orange), R réalise, C consulté, S soutien, I informé. Sélectionnez une ligne pour la modifier.
+644	Choisissez une lettre par rôle. Exactement un rôle doit être A.
+645	Oui
+646	Non
+647	Entrée ajoutée.
+648	Les registres que chaque phase du déploiement renseigne : contexte, parties, objectifs, obligations, fournisseurs, idées et plus.
+649	Proposer une idée
+650	Ajouter une entrée
+651	Rapport téléchargé.
+652	Chaque rapport est calculé à partir des enregistrements actuels du projet et exporté dans la langue de votre choix.
+653	Options d'export
+654	Format
+655	Votre rôle permet de consulter les rapports mais pas de les exporter.
+656	Préparation…
+657	Télécharger {f}
+658	Catalogue des rapports de la conception des processus
+659	Rapport
+660	Destinataires
+661	Actualisation
+662	Registre des risques du projet, notés probabilité × impact sur une échelle de 1 à 5. Les déploiements QHSE contiennent aussi les dangers SST et les aspects environnementaux.
+663	Ajouter
+664	Score
+665	Résiduel
+666	Carte thermique
+667	Nombre de risques, dangers et aspects ouverts par case ; les cases rouges sont à traiter en priorité.
+668	Nouvelle entrée
+669	Modifier
+670	Probabilité (1–5)
+671	Impact (1–5)
+672	Score résiduel
+673	Traitement
+674	Les règles métier agissent sur les étapes du workflow ; les contrôles sont classés par composante COSO et liés aux étapes qu'ils sécurisent.
+675	Nouvelle règle
+676	Nouveau contrôle
+677	Listes de gouvernance
+678	Rechercher
+679	Condition
+680	Active
+681	Contrôle
+682	Fréquence
+683	Étape déclenchante (ex. MP-018.3)
+684	Mot de passe modifié.
+685	Vos préférences sont stockées sur le serveur et vous suivent sur tous vos appareils.
+686	Profil
+687	Menu
+688	Position du menu
+689	Début (à gauche en français, à droite en arabe)
+690	Haut
+691	Bas
+692	Garder le menu épinglé
+693	Favoris
+694	Réinitialiser les préférences du menu
+695	Changer le mot de passe
+696	Mot de passe actuel
+697	Nouveau mot de passe
+698	Au moins 8 caractères avec une majuscule et un chiffre.
+699	Obligatoire
+700	Renseignez les champs obligatoires.
+701	Étape terminée.
+702	Brouillon enregistré.
+703	{n} règle(s) métier vérifiée(s) sur cette étape.
+704	Étape rouverte.
+705	Aucun cas d'usage IA n'est configuré pour cette étape.
+706	Suggestion rejetée et journalisée.
+707	Suggestion insérée. Vérifiez-la avant de terminer l'étape.
+708	Étape {i} sur {n}
+709	Étape précédente
+710	Étape suivante
+711	Ce qu'il faut saisir
+712	Le jalon de cette phase est franchi ; l'étape est verrouillée.
+713	Cette étape est attribuée à un autre rôle. Vous pouvez la consulter mais pas la terminer.
+714	Terminée par {who} le {date}.
+715	Enregistrer le brouillon
+716	Terminer l'étape
+717	Rouvrir
+718	Assistance IA
+719	Suggérer
+720	Accepter
+721	Insérer et modifier
+722	Rejeter
+723	Contexte
+724	Type d'étape
+725	Règles et contrôles de cette étape
+726	Aucune modification enregistrée.
+727	{n} versions conservées.
+728	Rouvrir l'étape
+729	La réouverture conserve la valeur précédente en version et inscrit votre justification dans la piste d'audit.
+730	Étapes du workflow attribuées à vos rôles, triées par échéance.
+731	Qui me sont attribuées
+732	Toutes les ouvertes
+733	Précédent
+734	Page {p}
+735	Suivant
+736	Traçabilité des exigences
+737	Chaque exigence du Dynamic Apps Standard SRS v1.3 avec l'écran et l'API qui la mettent en œuvre.
+738	Rechercher des exigences
+739	Famille
+740	Toutes les familles
+741	{n} exigences
+742	Section
+743	Exigence
+744	Écran
+745	Les exigences sont citées en anglais, comme dans le SRS source.

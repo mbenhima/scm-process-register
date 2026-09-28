@@ -1,0 +1,250 @@
+1	Fichiers joints.
+2	Pièces jointes
+3	Joindre des fichiers
+4	Télécharger
+5	Aucun fichier joint. PDF, images, fichiers Office et CSV jusqu'à 10 Mo.
+6	Diagramme importé. Enregistrez pour le conserver.
+7	Le fichier n'est pas un diagramme BPMN 2.0 valide.
+8	Diagramme enregistré dans une nouvelle version.
+9	Diagramme réinitialisé selon la conception des processus.
+10	Diagramme enregistré, version {v}
+11	Généré à partir de la conception des processus : un couloir par rôle, une tâche par étape, une passerelle après chaque décision.
+12	Vue en lecture seule : déplacez avec la souris, zoomez avec les boutons.
+13	Zoom avant
+14	Zoom arrière
+15	Ajuster à l'écran
+16	Exporter .bpmn
+17	Importer
+18	Réinitialiser
+19	Enregistrer
+20	Palette de modélisation
+21	Diagramme BPMN 2.0 de {code} ; les tâches portent les identifiants d'étape de la conception des processus.
+22	Retirer des favoris
+23	Ajouter aux favoris
+24	Aller au contenu
+25	Ouvrir le menu
+26	Projet en cours
+27	lecture seule
+28	Lecture seule
+29	Langue
+30	Alertes ({n} non lues)
+31	Se déconnecter
+32	Menu principal
+33	Disposition du menu
+34	Détacher le menu
+35	Épingler le menu
+36	Travail
+37	Accueil
+38	Mes tâches
+39	Cycle de vie
+40	Alertes
+41	Gouvernance
+42	Risques et opportunités
+43	KPI
+44	Matrice RACSI
+45	Règles et contrôles
+46	Enregistrements
+47	Non-conformités
+48	Actions
+49	Audits
+50	Documents
+51	Registres
+52	Planification et Gantt
+53	Pilotage
+54	Rapports
+55	Portefeuille
+56	Benchmarking
+57	Intelligence
+58	Assistant IA
+59	Cas d'usage IA
+60	Base de connaissances
+61	Conception
+62	Conception des processus
+63	Bibliothèques
+64	Traçabilité
+65	Organisation
+66	Nouveau projet
+67	Administration
+68	Aide
+69	Paramètres
+70	Ancrer au début
+71	Ancrer à la fin
+72	Ancrer en haut
+73	Ancrer en bas
+74	Historique
+75	Rétabli dans une nouvelle version courante.
+76	Historique des versions
+77	Sélectionner la version {v}
+78	Version
+79	courante
+80	Date
+81	Par
+82	Justification
+83	Rétablir
+84	Aucune version enregistrée.
+85	Comparer la sélection
+86	Champ
+87	Justification du retour à la v{v}
+88	Annuler
+89	Chargement…
+90	Introuvable ou inaccessible.
+91	Vous n'avez pas l'autorisation pour cette action.
+92	Cette fonctionnalité n'est pas incluse dans votre configuration.
+93	Une erreur s'est produite.
+94	Réessayer
+95	Aucun enregistrement pour l'instant.
+96	{n} affichés sur {total}
+97	Fermer
+98	Enregistré.
+99	Chaque action a un propriétaire qui la réalise et un évaluateur distinct qui vérifie son efficacité.
+100	Nouvelle action
+101	Filtre
+102	Ouvertes
+103	Les miennes (propriétaire ou évaluateur)
+104	Toutes
+105	Nature
+106	Titre
+107	Source
+108	Propriétaire
+109	Évaluateur
+110	Échéance
+111	Avancement
+112	Statut
+113	Efficacité
+114	Restreint
+115	Avancement (%)
+116	Date d'échéance
+117	Vérification de l'efficacité
+118	Verdict
+119	Disponible lorsque le propriétaire indique 100 % d'avancement.
+120	Choisir…
+121	Preuve d'efficacité
+122	Le verdict est visible par le propriétaire, l'évaluateur et les propriétaires de processus.
+123	Seul l'évaluateur enregistre le verdict.
+124	Autorisation mise à jour ; elle s'applique immédiatement.
+125	Module
+126	Tous les modules
+127	{p} autorisations × {r} rôles
+128	Autorisation
+129	Les cases cochées accordent l'autorisation ; les valeurs modifiées sont encadrées. Le droit d'usage du Solution Pack est vérifié séparément.
+130	Configuration enregistrée.
+131	Solution Pack
+132	{u} utilisateurs, {p} projets, IA {a}
+133	Packs de capacités et sectoriels
+134	Options
+135	Normes de conformité et de sécurité
+136	{n} contrôles de base
+137	Je comprends qu'il ne s'agit pas d'une certification.
+138	Déploiement
+139	Mode de déploiement
+140	Prix mensuel
+141	Élément
+142	Sous-total {s} · remise groupée {b} % · déploiement {d}
+143	Prix catalogue des packs en USD par mois ; l'engagement annuel fait économiser 15 %.
+144	Enregistrer la configuration
+145	Test de connexion : {h}
+146	Intégration
+147	Catégorie
+148	Activée
+149	Santé
+150	Vérifiée
+151	Tester
+152	Type d'enregistrement
+153	Tous les types
+154	{n} entrées
+155	Utilisateur
+156	Enregistrement
+157	Action
+158	Modification
+159	{n} enregistrements importés.
+160	Importer des données
+161	Données
+162	Fournisseurs (projet en cours)
+163	Risques (projet en cours)
+164	Utilisateurs
+165	Contenu CSV
+166	Première ligne : noms des colonnes. Séparateur : virgule ou point-virgule.
+167	Utiliser l'exemple
+168	Valider
+169	Résultat de la validation
+170	{a} enregistrements valides sur {n}.
+171	Ligne
+172	Erreurs
+173	Validez le fichier pour voir les enregistrements acceptés et rejetés avant l'import.
+174	Sauvegarde {f} écrite, intégrité {i}.
+175	Sauvegardes
+176	Sauvegarder maintenant
+177	Sauvegarde automatique quotidienne ; les fichiers de plus de {d} jours sont supprimés.
+178	Fichier
+179	Taille
+180	Les sauvegardes sont gérées par l'administrateur de la plateforme.
+181	Licence
+182	Données initialisées
+183	Matrice des autorisations
+184	Configuration
+185	Intégrations
+186	Piste d'audit
+187	Import de données
+188	Exploitation
+189	Rôles et autorisations, configuration commerciale, intégrations, piste d'audit, import de données et exploitation de la plateforme.
+190	Paramètre du projet enregistré.
+191	Cas d'usage personnalisé créé ; approuvez-le avant activation.
+192	Niveau disponible : {tier}. Chaque suggestion désigne un point de contrôle humain et est journalisée avec sa confiance et son issue.
+193	Cas d'usage personnalisé
+194	Vues IA
+195	Bibliothèque
+196	Journal d'utilisation
+197	Code
+198	Cas d'usage
+199	Niveau
+200	non licencié
+201	Risque
+202	Processus
+203	Utilisations
+204	Acceptées
+205	Ce projet
+206	Confiance
+207	Issue
+208	Type de tâche
+209	Point de contrôle humain
+210	Étape liée
+211	Approbation
+212	Invite
+213	Désactiver pour l'organisation
+214	Approuver et activer
+215	Créer
+216	Nom
+217	Processus lié (MP-xxx)
+218	Qui accepte, modifie ou rejette la suggestion, et à quel moment.
+219	Notifications
+220	Catalogue des alertes
+221	Journal d'envoi
+222	Les alertes sont déclenchées une fois par enregistrement et par période, puis envoyées dans l'application et par e-mail aux rôles du chemin d'escalade.
+223	Tout marquer comme lu
+224	Vues des alertes
+225	Non lues
+226	Pour mes rôles
+227	{n} alertes, {u} non lues
+228	Marquer comme lue
+229	Ignorer
+230	Aucune alerte.
+231	Type
+232	Gravité
+233	Moteur d'alertes
+234	Escalade
+235	Types d'alertes activés pour l'organisation
+236	Destinataire
+237	Objet
+238	Canal
+239	Les réponses proviennent de l'aide DynamicMS, de la base de connaissances des normes et des enregistrements de votre projet. Aucun service d'IA externe n'est appelé.
+240	Mode de l'assistant
+241	Utiliser l'application
+242	Normes et processus
+243	Données de mon projet
+244	Posez une question ou choisissez un exemple.
+245	Sources
+246	Confiance {c} %
+247	Votre question
+248	Saisissez votre question
+249	Demander
+250	Exemples

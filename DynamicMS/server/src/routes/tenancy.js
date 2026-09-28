@@ -25,7 +25,7 @@ r.get('/tree', requirePerm('tenancy.view', 'dashboard.view'), h((req, res) => {
   const projs = all('SELECT * FROM projects ORDER BY code');
   const byOrg = {};
   for (const p of projs) (byOrg[p.org_id] ||= []).push(p);
-  const orgOut = (o) => ({ id: o.id, name: P(o.name), code: o.short_code, sector: o.sector, size: o.size, access: orgAccess(req, o.id), groupId: o.group_id, projects: (byOrg[o.id] || []).map(p => ({ id: p.id, code: p.code, name: P(p.name), ms_type: p.ms_type, mode: p.mode, progress: p.progress_cache, scenario: p.scenario })) });
+  const orgOut = (o) => ({ id: o.id, name: P(o.name), code: o.short_code, sector: o.sector, size: o.size, access: orgAccess(req, o.id), groupId: o.group_id, projects: (byOrg[o.id] || []).map(p => ({ id: p.id, code: p.code, name: P(p.name), ms_type: p.ms_type, mode: p.mode, track: p.track, standards: P(p.standards), progress: p.progress_cache, scenario: p.scenario })) });
   const out = groups.map(g => ({ id: g.id, name: P(g.name), description: P(g.description), orgs: orgs.filter(o => o.group_id === g.id).map(orgOut) })).filter(g => g.orgs.length);
   const independent = orgs.filter(o => !o.group_id).map(orgOut);
   send(req, res, { groups: out, independent });
