@@ -8,10 +8,16 @@ const niceMax = v => { if (!v) return 10; const p = Math.pow(10, Math.floor(Math
 
 export function Figure({ caption, children, label }) { return <figure style={{ margin: 0 }} aria-label={label || caption}>{children}{caption && <figcaption className="caption">{caption}</figcaption>}</figure>; }
 
+/** Splits an axis label into at most two lines of about n characters, with an ellipsis when it is longer. */
+function wrap2(label, n) {
+  const words = String(label).split(/\s+/); const lines = ['']; 
+  for (const w of words) { const cur = lines[lines.length - 1]; if (!cur || (cur + ' ' + w).length <= n) lines[lines.length - 1] = cur ? cur + ' ' + w : w; else if (lines.length < 2) lines.push(w); else { lines[1] += ' ' + w; } }
+  return lines.map(l => (l.length > n ? l.slice(0, n - 1) + '…' : l));
+}
 /** Vertical bars; optional second series drawn as muted grey bars beside the first. */
 export function BarChart({ data, series = [{ key: 'value', label: '' }], height = 220, caption, max, unit = '' }) {
   const { dir } = useI18n(); const rtl = dir === 'rtl';
-  const W = 640, H = height, pl = 40, pb = 40, pt = 12; const iw = W - pl - 8, ih = H - pb - pt;
+  const W = 640, H = height, pl = 40, pb = 46, pt = 12; const iw = W - pl - 8, ih = H - pb - pt;
   const m = max ?? niceMax(Math.max(1, ...data.flatMap(d => series.map(s => Number(d[s.key]) || 0))));
   const bw = iw / Math.max(1, data.length); const inner = Math.min(36, (bw * 0.7) / series.length);
   const X = i => (rtl ? W - 8 - (i + 1) * bw : pl + i * bw);
@@ -19,7 +25,7 @@ export function BarChart({ data, series = [{ key: 'value', label: '' }], height 
     {[0, 0.25, 0.5, 0.75, 1].map(f => { const y = pt + ih - f * ih; return <g key={f}><line className="grid-line" x1={pl} x2={W - 8} y1={y} y2={y} /><text x={rtl ? W - 4 : pl - 6} y={y + 4} textAnchor={rtl ? 'start' : 'end'}>{Math.round(m * f)}{unit}</text></g>; })}
     {data.map((d, i) => <g key={i}>{series.map((s, k) => { const v = Number(d[s.key]) || 0; const h = (v / m) * ih; const x = X(i) + (bw - inner * series.length) / 2 + k * inner;
       return <rect key={s.key} x={x} y={pt + ih - h} width={inner - 2} height={h} rx="3" fill={k === 0 ? C.orange : C.line} stroke={k === 0 ? 'none' : C.medium} strokeDasharray={k === 0 ? '' : '3 2'}><title>{`${d.label}: ${v}${unit}`}</title></rect>; })}
-      <text x={X(i) + bw / 2} y={H - pb + 16} textAnchor="middle">{String(d.label).slice(0, 12)}</text></g>)}
+      <text x={X(i) + bw / 2} y={H - pb + 14} textAnchor="middle">{wrap2(d.label, Math.max(6, Math.floor(bw / 6.2))).map((ln, j) => <tspan key={j} x={X(i) + bw / 2} dy={j ? 13 : 0}>{ln}</tspan>)}<title>{d.label}</title></text></g>)}
   </svg>{series.length > 1 && <div className="legend">{series.map((s, k) => <span key={s.key}><i style={{ background: k === 0 ? C.orange : C.line }} />{s.label}</span>)}</div>}</Figure>);
 }
 

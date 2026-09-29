@@ -1,0 +1,35 @@
+name: CortexSkills CI
+on:
+  push:
+    paths: ['cortexskills/**', '.github/workflows/cortexskills-ci.yml']
+  pull_request:
+    paths: ['cortexskills/**', '.github/workflows/cortexskills-ci.yml']
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: cortexskills
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+      - name: Install server
+        working-directory: cortexskills/server
+        run: npm install
+      - name: Seed demonstration data
+        working-directory: cortexskills/server
+        run: npm run seed
+      - name: Cross-tenant and security tests
+        working-directory: cortexskills/server
+        run: npm test
+      - name: Install and build web client
+        working-directory: cortexskills/web
+        run: |
+          npm install
+          npm run build

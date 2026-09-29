@@ -95,7 +95,7 @@ function seedOrg(o) {
   rec('Webhook', 'w1', { name: 'Teams channel — L&D alerts', url: '', events: ['alerts'], enabled: false });
   rec('CustomKpi', 'ck1', { name: fillT({ en: 'Share of {core} supervisors certified', fr: 'Part des encadrants {core} certifiés', ar: 'نسبة مؤطري {core} المعتمدين' }, vals), formula: tr('Certified supervisors / supervisors x 100'), target: 90, unit: '%', owner: 'Head of L&D', process_tag: 'MP-14.3' });
   rec('CustomKpi', 'ck2', { name: tr('Average days from demand to session'), formula: tr('Mean days between demand validation and first session'), target: 45, unit: 'days', owner: 'L&D Planner', process_tag: 'MP-46.11' });
-  for (const [k, e2e] of [['b1', 'E2E-03'], ['b2', 'E2E-32'], ['b3', 'E2E-33']]) rec('BpmnDiagram', k, { title: cat.get('e2e', e2e).name, description: cat.get('e2e', e2e).goal, e2e_id: e2e, obs_node: fns[3].id, xml: bpmnXml(cat.get('e2e', e2e)) }, null, true);
+  for (const [k, e2e] of [['b1', 'E2E-03'], ['b2', 'E2E-32'], ['b3', 'E2E-33']]) rec('BpmnDiagram', k, { title: cat.get('e2e', e2e).name, description: cat.get('e2e', e2e).goal, e2e_id: e2e, obs_node: fns[3].id, xml: bpmnXml(cat.get('e2e', e2e), o.lang) }, null, true);
   for (const [k, title, body] of kbArticles(o, vals)) rec('KbArticle', k, { title, body, standard: o.v.standards[0], process_tag: 'MP-14' });
   for (const u of cat.list('aiUseCase').filter(x => x.isCustom)) rec('AIUseCase', u.id, { ...u, code: u.id, isCustom: true }, null, true);
   if (o.seg === 'SME') rec('OnboardingPlan', 'onb', { name: tr('SME onboarding — 30 days'), start: daysAgo(40).slice(0, 10), target_days: 30, status: 'Go-live done',
@@ -284,29 +284,39 @@ function kbArticles(o, vals) {
 }
 
 /** BPMN 2.0 XML with diagram interchange for one end-to-end process (start event, tasks, end event). */
-export function bpmnXml(e) {
+export function bpmnXml(e, lang = 'en') {
   const ufts = e.ufts.map(id => cat.get('uft', id)); const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
-  const W = 150, H = 80, GAP = 50, y = 120; let x = 80;
-  const shapes = []; const flows = []; const di = [];
-  shapes.push(`<bpmn:startEvent id="start" name="${esc(e.trigger.en).slice(0, 60)}"><bpmn:outgoing>f0</bpmn:outgoing></bpmn:startEvent>`);
-  di.push(`<bpmndi:BPMNShape id="start_di" bpmnElement="start"><dc:Bounds x="${x}" y="${y + 22}" width="36" height="36"/></bpmndi:BPMNShape>`);
-  let prev = 'start', px = x + 36; x += 36 + GAP;
+  // Snake layout: PER tasks per row, alternating direction, so the diagram fits a normal screen.
+  const W = 170, H = 80, GX = 60, GY = 70, PER = 4, X0 = 140, Y0 = 60;
+  const shapes = [], flows = [], di = [];
+  const pos = i => { const r = Math.floor(i / PER), c = i % PER, col = r % 2 ? PER - 1 - c : c; return { x: X0 + col * (W + GX), y: Y0 + r * (H + GY), r }; };
+  const mid = p => ({ x: p.x + W / 2, y: p.y + H / 2 });
+  shapes.push(`<bpmn:startEvent id="start" name="${esc(pick(e.trigger, lang)).slice(0, 60)}"><bpmn:outgoing>f0</bpmn:outgoing></bpmn:startEvent>`);
+  di.push(`<bpmndi:BPMNShape id="start_di" bpmnElement="start"><dc:Bounds x="60" y="${Y0 + 22}" width="36" height="36"/></bpmndi:BPMNShape>`);
+  let prev = 'start', prevPt = { x: 96, y: Y0 + 40 }, prevPos = null;
   ufts.forEach((u, i) => {
-    const id = 'T' + (i + 1);
-    shapes.push(`<bpmn:userTask id="${id}" name="${esc(u.id + ' ' + u.name.en)}"><bpmn:incoming>f${i}</bpmn:incoming><bpmn:outgoing>f${i + 1}</bpmn:outgoing></bpmn:userTask>`);
+    const id = 'T' + (i + 1), p = pos(i);
+    shapes.push(`<bpmn:userTask id="${id}" name="${esc(u.id + ' ' + pick(u.name, lang))}"><bpmn:incoming>f${i}</bpmn:incoming><bpmn:outgoing>f${i + 1}</bpmn:outgoing></bpmn:userTask>`);
     flows.push(`<bpmn:sequenceFlow id="f${i}" sourceRef="${prev}" targetRef="${id}"/>`);
-    di.push(`<bpmndi:BPMNShape id="${id}_di" bpmnElement="${id}"><dc:Bounds x="${x}" y="${y}" width="${W}" height="${H}"/></bpmndi:BPMNShape>`);
-    di.push(`<bpmndi:BPMNEdge id="f${i}_di" bpmnElement="f${i}"><di:waypoint x="${px}" y="${y + 40}"/><di:waypoint x="${x}" y="${y + 40}"/></bpmndi:BPMNEdge>`);
-    prev = id; px = x + W; x += W + GAP;
+    di.push(`<bpmndi:BPMNShape id="${id}_di" bpmnElement="${id}"><dc:Bounds x="${p.x}" y="${p.y}" width="${W}" height="${H}"/></bpmndi:BPMNShape>`);
+    let wps;
+    if (!prevPos) wps = [prevPt, { x: p.x, y: p.y + H / 2 }];
+    else if (prevPos.r !== p.r) wps = [{ x: mid(prevPos).x, y: prevPos.y + H }, { x: mid(p).x, y: p.y }];
+    else if (p.x > prevPos.x) wps = [{ x: prevPos.x + W, y: p.y + H / 2 }, { x: p.x, y: p.y + H / 2 }];
+    else wps = [{ x: prevPos.x, y: p.y + H / 2 }, { x: p.x + W, y: p.y + H / 2 }];
+    di.push(`<bpmndi:BPMNEdge id="f${i}_di" bpmnElement="f${i}">${wps.map(w => `<di:waypoint x="${w.x}" y="${w.y}"/>`).join('')}</bpmndi:BPMNEdge>`);
+    prev = id; prevPos = p;
   });
-  const n = ufts.length;
-  shapes.push(`<bpmn:endEvent id="end" name="${esc(e.terminal.en).slice(0, 60)}"><bpmn:incoming>f${n}</bpmn:incoming></bpmn:endEvent>`);
+  const n = ufts.length, last = prevPos || { x: 60, y: Y0, r: 0 };
+  const endX = last.r % 2 ? last.x - GX - 36 + (GX / 2) : last.x + W + GX / 2, endY = last.y + H / 2 - 18;
+  shapes.push(`<bpmn:endEvent id="end" name="${esc(pick(e.terminal, lang)).slice(0, 60)}"><bpmn:incoming>f${n}</bpmn:incoming></bpmn:endEvent>`);
   flows.push(`<bpmn:sequenceFlow id="f${n}" sourceRef="${prev}" targetRef="end"/>`);
-  di.push(`<bpmndi:BPMNShape id="end_di" bpmnElement="end"><dc:Bounds x="${x}" y="${y + 22}" width="36" height="36"/></bpmndi:BPMNShape>`);
-  di.push(`<bpmndi:BPMNEdge id="f${n}_di" bpmnElement="f${n}"><di:waypoint x="${px}" y="${y + 40}"/><di:waypoint x="${x}" y="${y + 40}"/></bpmndi:BPMNEdge>`);
+  di.push(`<bpmndi:BPMNShape id="end_di" bpmnElement="end"><dc:Bounds x="${endX}" y="${endY}" width="36" height="36"/></bpmndi:BPMNShape>`);
+  const ew = last.r % 2 ? [{ x: last.x, y: last.y + H / 2 }, { x: endX + 36, y: last.y + H / 2 }] : [{ x: last.x + W, y: last.y + H / 2 }, { x: endX, y: last.y + H / 2 }];
+  di.push(`<bpmndi:BPMNEdge id="f${n}_di" bpmnElement="f${n}">${ew.map(w => `<di:waypoint x="${w.x}" y="${w.y}"/>`).join('')}</bpmndi:BPMNEdge>`);
   return `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Defs_${e.id}" targetNamespace="https://cortexskills.app/bpmn">
-<bpmn:process id="P_${e.id.replace(/-/g, '_')}" name="${esc(e.id + ' ' + e.name.en)}" isExecutable="false">${shapes.join('')}${flows.join('')}</bpmn:process>
+<bpmn:process id="P_${e.id.replace(/-/g, '_')}" name="${esc(e.id + ' ' + pick(e.name, lang))}" isExecutable="false">${shapes.join('')}${flows.join('')}</bpmn:process>
 <bpmndi:BPMNDiagram id="D_${e.id}"><bpmndi:BPMNPlane id="PL_${e.id}" bpmnElement="P_${e.id.replace(/-/g, '_')}">${di.join('')}</bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
 </bpmn:definitions>`;
 }

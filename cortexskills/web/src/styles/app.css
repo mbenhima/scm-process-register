@@ -3,6 +3,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html, body, #root { height: 100%; }
 body { margin: 0; background: var(--pa-bg); color: var(--pa-grey-ink); font-family: var(--font-sans); font-size: var(--fs-16); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea, optgroup { font: inherit; color: inherit; }
 h1, h2, h3, h4 { font-family: var(--font-serif); color: var(--pa-grey-dark); margin: 0; line-height: 1.25; font-weight: 700; }
 h1 { font-size: var(--fs-30); } h2 { font-size: var(--fs-24); } h3 { font-size: var(--fs-18); } h4 { font-size: var(--fs-16); }
 p { margin: 0 0 var(--sp-3); }
@@ -93,7 +94,7 @@ a:hover { text-decoration-thickness: 2px; }
 .g-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .g-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .split { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); } .split-r { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
 @media (max-width: 1100px) { .g-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 720px) { .g-2, .g-3, .g-4, .split, .split-r { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 720px) { .g-2, .g-3, .g-4, .split, .split-r, .bpmn-layout { grid-template-columns: minmax(0, 1fr); } }
 .stack > * + * { margin-top: var(--sp-4); }
 .row { display: flex; gap: var(--sp-3); align-items: center; flex-wrap: wrap; }
 .muted { color: var(--pa-grey-medium); font-size: var(--fs-14); }
@@ -250,7 +251,7 @@ table.tbl { border-collapse: separate; border-spacing: 0; width: 100%; font-size
 
 /* Gantt */
 .gantt { font-size: var(--fs-12); }
-.gantt-row { display: grid; grid-template-columns: 220px 1fr; align-items: center; min-height: 28px; border-bottom: 1px solid var(--pa-grey-light); }
+.gantt-row { display: grid; grid-template-columns: minmax(200px, 360px) 1fr; gap: var(--sp-3); align-items: center; min-height: 28px; border-bottom: 1px solid var(--pa-grey-light); }
 .gantt-track { position: relative; height: 20px; }
 .gantt-bar { position: absolute; top: 4px; height: 12px; border-radius: 3px; background: var(--pa-grey-line); }
 .gantt-bar.completed { background: var(--pa-status-5); } .gantt-bar.inProgress { background: var(--pa-orange); } .gantt-bar.overdue { background: var(--pa-status-1); outline: 1px solid var(--pa-grey-medium); } .gantt-bar.planned { background: var(--pa-grey-line); }
@@ -286,3 +287,15 @@ table.tbl { border-collapse: separate; border-spacing: 0; width: 100%; font-size
 .tree ul { list-style: none; margin: 0; padding-inline-start: var(--sp-5); border-inline-start: 1px dashed var(--pa-grey-line); }
 .tree li { padding: var(--sp-1) 0; }
 .print-only { display: none; }
+
+.tbl td.nowrap { white-space: nowrap; }
+.gantt-label { display: flex; align-items: center; gap: var(--sp-1); min-width: 0; }
+.gantt-label .gantt-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.gantt-label .muted { flex-shrink: 0; }
+.bpmn-layout { grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); }
+@media (max-width: 720px) { .bpmn-layout { grid-template-columns: minmax(0, 1fr); } }
+.bpmn-host .djs-container text { font-family: var(--font-sans) !important; }
+/* Long labels (gate checklists, record names) wrap instead of forcing horizontal scroll on small screens. */
+.btn { max-width: 100%; }
+.btn.wrap, .row > .btn.sm { white-space: normal; text-align: start; height: auto; min-height: 32px; line-height: 1.3; padding-block: var(--sp-1); }
+@media (max-width: 720px) { .btn { white-space: normal; height: auto; min-height: 40px; line-height: 1.3; padding-block: var(--sp-2); } }

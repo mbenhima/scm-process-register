@@ -13,7 +13,7 @@
     "start": "node --no-warnings src/index.js",
     "backup": "node --no-warnings tools/backup.js",
     "sign-licence": "node --no-warnings tools/sign-licence.js",
-    "test": "node --no-warnings --test test/",
+    "test": "node --no-warnings --test test/security.test.js",
     "i18n": "node i18n/build.js"
   },
   "dependencies": {

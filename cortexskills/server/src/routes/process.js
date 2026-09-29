@@ -11,7 +11,7 @@ import { updateRecord } from '../entities.js';
 
 const r = Router();
 const KINDS = ['mp', 'task', 'step', 'e2e', 'uft', 'composite', 'glossary', 'module', 'packCatalog', 'solutionPack', 'integration', 'addOn', 'bundle', 'packagingRule',
-  'action', 'alertType', 'report', 'class', 'attribute', 'phase', 'gateSeed', 'complianceStandard', 'function', 'focusLabel', 'verticalSeed', 'smeMp', 'smeE2E', 'trace', 'decisionMatrix', 'legend', 'role'];
+  'action', 'alertType', 'report', 'class', 'attribute', 'phase', 'gateSeed', 'complianceStandard', 'function', 'focusLabel', 'verticalSeed', 'smeMp', 'smeE2E', 'smeTrackSeed', 'checklistSeedUniversal', 'themePool', 'trace', 'decisionMatrix', 'legend', 'role'];
 r.get('/catalog/:kind', requirePerm('catalog.view'), ah(req => { if (!KINDS.includes(req.params.kind)) throw new HttpError(404, 'err.notFound'); return cat.list(req.params.kind); }));
 
 r.get('/process/mp/:id', requirePerm('catalog.view'), ah(req => {

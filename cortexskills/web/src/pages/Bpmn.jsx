@@ -15,7 +15,7 @@ export function BpmnPage() {
   useEffect(() => { if (d.data && !sel) setSel(d.data.items.find(x => x.e2e_id === want) || d.data.items[0] || null); }, [d.data]); // eslint-disable-line
   return (<><PageHead eyebrow={t('navGroup.process')} title={t('nav.bpmn')} subtitle={t('bpmn.subtitle')} />
     <div className="notice grey" style={{ marginBottom: 'var(--sp-4)' }}><Icon name="Info" />{t('bpmn.documentOnly')}</div>
-    <Guard state={d}>{x => <div className="grid split-r"><Card title={t('bpmn.diagrams')}>{x.items.map(it => <button key={it.id} className="nav-item" aria-current={sel?.id === it.id ? 'page' : undefined} style={{ width: '100%', border: 0, background: 'none', textAlign: 'start' }} onClick={() => setSel(it)}><Icon name="Shapes" /><span>{it.e2e_id} · {L(it.title)}</span></button>)}
+    <Guard state={d}>{x => <div className="grid bpmn-layout"><Card title={t('bpmn.diagrams')}>{x.items.map(it => <button key={it.id} className="nav-item" aria-current={sel?.id === it.id ? 'page' : undefined} style={{ width: '100%', border: 0, background: 'none', textAlign: 'start' }} onClick={() => setSel(it)}><Icon name="Shapes" /><span>{it.e2e_id} · {L(it.title)}</span></button>)}
       {can('bpmn.edit') && <GenerateButton onDone={d.reload} />}</Card>
       {sel ? <Editor key={sel.id} rec={sel} canEdit={can('bpmn.edit')} onSaved={d.reload} /> : <Card><p className="muted">{t('bpmn.none')}</p></Card>}</div>}</Guard></>);
 }
@@ -29,7 +29,7 @@ function Editor({ rec, canEdit, onSaved }) {
   const { t, L } = useI18n(); const act = useAction(); const host = useRef(null); const palette = useRef(null); const inst = useRef(null); const fileRef = useRef(null);
   const [full, setFull] = useState(false); const [zoom, setZoom] = useState(1); const [dirty, setDirty] = useState(false); const [paletteOpen, setPaletteOpen] = useState(true);
   useEffect(() => {
-    const M = canEdit ? Modeler : NavigatedViewer; const bpmn = new M({ container: host.current }); inst.current = bpmn;
+    const M = canEdit ? Modeler : NavigatedViewer; const bpmn = new M({ container: host.current, textRenderer: { defaultStyle: { fontFamily: "'Source Sans 3', 'Noto Naskh Arabic', sans-serif", fontSize: 12 }, externalStyle: { fontFamily: "'Source Sans 3', 'Noto Naskh Arabic', sans-serif", fontSize: 12 } } }); inst.current = bpmn;
     const xml = rec.xml || emptyXml(rec.e2e_id || 'P1');
     bpmn.importXML(xml).then(() => { bpmn.get('canvas').zoom('fit-viewport'); setZoom(bpmn.get('canvas').zoom());
       if (canEdit) { const p = host.current.querySelector('.djs-palette'); if (p && palette.current) palette.current.appendChild(p); bpmn.on('commandStack.changed', () => setDirty(true)); }
