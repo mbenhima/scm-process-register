@@ -80,6 +80,8 @@ export function instantiateProject(project, { phases, users = [], seedRng = null
       const base = new Date(startDate).getTime() + (Math.max(ph.no, 1) - 1) * 28 * 86400000;
       const due0 = new Date(base).toISOString();
       let completed = 0;
+      const ownerE2e = users.find(x => x.roleNames.includes(pick(cat.get('mp', e.mps[0])?.owner, 'en')))?.id ?? users[0]?.id ?? null;
+      run(`INSERT OR IGNORE INTO e2e_instances(id,org_id,project_id,e2e_id,phase,status,progress,owner_id,due_date,sort) VALUES(?,?,?,?,?,'Not started',0,?,?,?)`, iid, project.org_id, project.id, e2eId, ph.no, ownerE2e, addDays(due0, 3 * n + 3), sort);
       e.ufts.forEach((uid, k) => {
         const u = ufts.get(uid); const tid = ids(`task:${project.id}:${uid}`);
         const status = k < doneCount ? 'Completed' : k === doneCount && phaseState !== 'none' ? (r() < 0.12 ? 'Blocked' : 'In progress') : 'Not started';
@@ -96,9 +98,7 @@ export function instantiateProject(project, { phases, users = [], seedRng = null
       });
       const progress = n ? Math.round((completed * 100) / n) : 0;
       const st = progress === 100 ? 'Completed' : progress > 0 || phaseState === 'mid' ? 'In progress' : 'Not started';
-      run(`INSERT OR IGNORE INTO e2e_instances(id,org_id,project_id,e2e_id,phase,status,progress,owner_id,started_at,completed_at,due_date,sort) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`,
-        iid, project.org_id, project.id, e2eId, ph.no, st, progress, users.find(x => x.roleNames.includes(pick(cat.get('mp', e.mps[0])?.owner, 'en')))?.id ?? users[0]?.id ?? null,
-        st !== 'Not started' ? due0 : null, st === 'Completed' ? addDays(due0, 3 * n) : null, addDays(due0, 3 * n + 3), sort);
+      run(`UPDATE e2e_instances SET status=?, progress=?, started_at=?, completed_at=? WHERE id=?`, st, progress, st !== 'Not started' ? due0 : null, st === 'Completed' ? addDays(due0, 3 * n) : null, iid);
     }
   }
   refreshProgress(project.id);

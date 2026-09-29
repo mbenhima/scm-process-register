@@ -1,0 +1,139 @@
+0	Définir score = probabilité x impact.	تعيين الدرجة = الاحتمال × الأثر.
+1	Refuser un responsable et un évaluateur identiques	رفض تطابق المسؤول والمقيّم
+2	Refuser l'enregistrement lorsque le responsable et l'évaluateur sont le même utilisateur.	رفض الحفظ عندما يكون المسؤول والمقيّم المستخدم نفسه.
+3	Refuser une seconde affectation Approbateur	رفض إسناد مسؤول نهائي ثانٍ
+4	Refuser une seconde affectation Approbateur sur l'activité.	رفض إسناد مسؤول نهائي ثانٍ على النشاط.
+5	Transmettre la fiche de poste pour validation	إحالة بطاقة الوصف الوظيفي للمصادقة
+6	Affecter la validation au partenaire RH et au manager du poste.	إسناد المصادقة إلى شريك الموارد البشرية ومدير المنصب.
+7	Transmettre les demandes à la validation des managers	إحالة الطلبات إلى مصادقة المدراء
+8	Affecter la liste priorisée aux managers pour validation.	إسناد القائمة المرتبة إلى المدراء للمصادقة.
+9	Signaler un contenu à revoir	وسم محتوى للمراجعة
+10	Positionner l'indicateur de revue et affecter le curateur de contenus.	تعيين علامة المراجعة وإسنادها إلى منتقي المحتوى.
+11	Retirer les contenus retirés des recommandations	استبعاد المحتوى المسحوب من التوصيات
+12	Exclure les éléments retirés du catalogue et des recommandations ; conserver les historiques.	استبعاد العناصر المسحوبة من الفهرس والتوصيات مع الاحتفاظ بالسجلات.
+13	Envoyer un rappel d'échéance de soumission	إرسال تذكير بأجل التقديم
+14	Rappeler au responsable conformité l'échéance qui approche.	تذكير مسؤول المطابقة بالأجل القريب.
+15	Calculer ROI = (bénéfices nets / coûts) x 100 pour le thème.	احتساب العائد = (الفوائد الصافية / التكاليف) × 100 للمحور.
+16	Supprimer l'alerte en double	منع التنبيه المكرر
+17	Ne pas lever une seconde alerte du même type sur la même entité dans la période.	عدم رفع تنبيه ثانٍ من النوع نفسه على الكيان نفسه خلال الفترة.
+18	Limiter les tentatives de connexion	تقييد محاولات الدخول
+19	Retarder de 15 minutes les nouvelles tentatives de connexion du client.	تأخير محاولات الدخول الإضافية من العميل لمدة 15 دقيقة.
+20	Journaliser le refus d'accès	تسجيل رفض الولوج
+21	Enregistrer l'accès refusé avec l'utilisateur, la cible et l'horodatage.	تسجيل الولوج المرفوض مع المستخدم والهدف والطابع الزمني.
+22	Supprimer les sauvegardes hors rétention	حذف النسخ الاحتياطية المتجاوزة لمدة الاحتفاظ
+23	Supprimer les sauvegardes dont expires_at est dépassé.	حذف النسخ التي تجاوز تاريخ expires_at الخاص بها.
+24	Signaler un rapport de veille obsolète	وسم تقرير يقظة متقادم
+25	Marquer le rapport comme obsolète et notifier l'analyste stratégie.	وسم التقرير بأنه متقادم وإشعار محلل الاستراتيجية.
+26	Lever une alerte vers le responsable formation avec l'écart du site.	رفع تنبيه إلى مسؤول التكوين مع انحراف الموقع.
+27	Transmettre l'association de coaching pour confirmation	إحالة مطابقة التوجيه للتأكيد
+28	Demander au coach d'accepter l'association proposée.	دعوة الموجه إلى قبول المطابقة المقترحة.
+29	Passer le poste au statut À développer	تغيير وضعية المنصب إلى للتطوير
+30	Marquer le poste À développer avec la preuve de l'écart.	وسم المنصب للتطوير مع دليل الفجوة.
+31	Marquer l'opportunité pourvue en interne	وسم الفرصة بأنها شُغلت داخليًا
+32	Définir le statut Pourvu et filled_internally = true.	تعيين الوضعية مشغول وfilled_internally = true.
+33	Notifier un jalon d'intégration en retard	الإشعار بمحطة إدماج متأخرة
+34	Notifier le manager recruteur et le partenaire RH.	إشعار مدير التوظيف وشريك الموارد البشرية.
+35	Anonymiser la réponse au questionnaire	إخفاء هوية إجابة الاستبيان
+36	Retirer l'identité du répondant avant la notation.	إزالة هوية المستجيب قبل التنقيط.
+37	Attribuer points et badge	منح النقاط والشارة
+38	Créditer les points et débloquer les badges dont les critères sont remplis.	إضافة النقاط وفتح الشارات المستوفية لمعاييرها.
+39	Répondre « introuvable » à une requête inter-locataires (HTTP 404)	الرد على طلب بين المستأجرين بأنه غير موجود (HTTP 404)
+40	Renvoyer 404, identique à un enregistrement inexistant.	إرجاع 404 مطابق لسجل غير موجود.
+41	Bloquer l'approbation de la conception	منع اعتماد التصميم
+42	Refuser l'approbation et lister les modules sans objectifs ou sans évaluation.	رفض الاعتماد وعرض الوحدات التي تنقصها الأهداف أو التقييم.
+43	Refuser un paquet de contenu invalide	رفض حزمة محتوى غير صالحة
+44	Refuser le chargement et signaler le contrôle en échec.	رفض التحميل والإبلاغ عن الفحص الفاشل.
+45	Bloquer la publication d'un contenu non relu	منع نشر محتوى غير مراجع
+46	Empêcher la publication tant que la revue ou les contrôles d'accessibilité ne sont pas réussis.	منع النشر حتى نجاح المراجعة أو فحوصات إمكانية الوصول.
+47	Escalader au responsable conformité	التصعيد إلى مسؤول المطابقة
+48	Lever une alerte critique vers le responsable conformité et le manager du collaborateur.	رفع تنبيه حرج إلى مسؤول المطابقة ومدير الموظف.
+49	Recalculer les totaux des lignes budgétaires	إعادة احتساب مجاميع بنود الميزانية
+50	Recalculer les montants engagés et réels.	إعادة احتساب المبالغ الملتزم بها والفعلية.
+51	Inscrire l'apprenant externe payant	تسجيل المتعلم الخارجي المؤدي
+52	Créer l'inscription et envoyer les accès.	إنشاء التسجيل وإرسال بيانات الولوج.
+53	Bloquer la clôture de la mission	منع إغلاق المهمة
+54	Refuser la clôture tant que l'acceptation du client n'est pas enregistrée.	رفض الإغلاق حتى تسجيل قبول العميل.
+55	Désactiver le compte utilisateur	تعطيل حساب المستخدم
+56	Désactiver le compte et révoquer les sessions actives.	تعطيل الحساب وإلغاء الجلسات النشطة.
+57	Générer le cahier des charges	توليد وثيقة نطاق العمل
+58	Générer le cahier des charges versionné (matrice des critères, orientation, parties prenantes) et verrouiller la version approuvée.	توليد وثيقة نطاق العمل ذات الإصدار (مصفوفة المعايير، التركيز، أصحاب المصلحة) وقفل النسخة المعتمدة.
+59	Enregistrer la partie prenante	تسجيل صاحب المصلحة
+60	Créer ou mettre à jour la fiche de la partie prenante avec rôle, fonction, niveau de décision, site et canal préféré.	إنشاء سجل صاحب المصلحة أو تحديثه بالدور والوظيفة ومستوى القرار والموقع والقناة المفضلة.
+61	Charger le modèle de questionnaire	تحميل نموذج الاستبيان
+62	Créer un questionnaire à partir de la version de modèle choisie (elaboration_mode = Load).	إنشاء استبيان من نسخة النموذج المختارة (elaboration_mode = Load).
+63	Générer le questionnaire par IA	توليد الاستبيان بالذكاء الاصطناعي
+64	Générer des questions à partir du cahier des charges approuvé ; les étiqueter générées par l'IA et « nécessite une revue humaine ».	توليد أسئلة من دفتر نطاق العمل المعتمد؛ ووسمها بأنها مولدة بالذكاء الاصطناعي و«تتطلب مراجعة بشرية».
+65	Adapter le questionnaire au secteur et à l'orientation	تكييف الاستبيان مع القطاع والتركيز
+66	Appliquer une formulation propre au secteur et à l'orientation ; consigner les notes d'adaptation et conserver la version précédente.	تطبيق صياغة خاصة بالقطاع والتركيز؛ وتسجيل ملاحظات التكييف والاحتفاظ بالنسخة السابقة.
+67	Affecter le RACSI à une section du questionnaire	توزيع RACSI على قسم من الاستبيان
+68	Enregistrer les affectations R/A/C/S/I par section ; refuser un second Approbateur.	حفظ إسنادات R/A/C/S/I لكل قسم؛ ورفض مسؤول نهائي ثانٍ.
+69	Diffuser le questionnaire via un canal	توزيع الاستبيان عبر قناة
+70	Diffuser via le pack face-à-face, l'e-mail, un canal hybride ou personnalisé et journaliser chaque envoi pour l'audit.	التوزيع عبر حزمة حضورية أو البريد أو قناة مختلطة أو مخصصة وتسجيل كل إرسال للتدقيق.
+71	Envoyer une relance	إرسال تذكير
+72	Relancer les non-répondants selon la cadence du canal ; journaliser la relance.	تذكير غير المستجيبين وفق وتيرة القناة؛ وتسجيل التذكير.
+73	Collecter et enregistrer la réponse	جمع الإجابة وحفظها
+74	Enregistrer la réponse uniquement si consent_given = true ; calculer la complétude ; sinon refuser et journaliser.	حفظ الإجابة فقط إذا كان consent_given = true؛ واحتساب الاكتمال؛ وإلا الرفض والتسجيل.
+75	Consolider le jeu de données des réponses	توحيد مجموعة بيانات الإجابات
+76	Consolider les réponses validées dans un jeu de données propre au locataire pour l'analyse des besoins, le diagnostic et le rapport.	توحيد الإجابات المعتمدة في مجموعة بيانات خاصة بالمستأجر لتحليل الاحتياجات والتشخيص والتقرير.
+77	Authentification par jeton signé et limité dans le temps	المصادقة برمز موقع ومحدد المدة
+78	Chaque appel d'API sauf la connexion exige un jeton signé valide ; les identifiants ne sont jamais renvoyés. Source : NFR-DA-SEC-01 ; FR-DA-RBAC-06.	يتطلب كل استدعاء للواجهة البرمجية عدا الدخول رمزًا موقعًا صالحًا؛ ولا تُعاد بيانات الاعتماد أبدًا. المصدر: NFR-DA-SEC-01؛ FR-DA-RBAC-06.
+79	Contrôle côté serveur du RBAC et des droits de l'offre	فرض الصلاحيات واستحقاقات الباقة من جهة الخادم
+80	Chaque route vérifie indépendamment côté serveur la permission et le droit offre/module ; l'un ou l'autre peut renvoyer 403. Source : NFR-DA-SEC-03 ; NFR-DA-SEC-09 ; FR-DA-RBAC-03 ; FR-DA-CFG-06.	يتحقق كل مسار بشكل مستقل من جهة الخادم من الصلاحية واستحقاق الباقة/الإضافة؛ وقد يعيد أي منهما 403. المصدر: NFR-DA-SEC-03؛ NFR-DA-SEC-09؛ FR-DA-RBAC-03؛ FR-DA-CFG-06.
+81	Prévention de l'expiration de licence	منع انتهاء الترخيص
+82	L'expiration de la licence est vérifiée à chaque démarrage et connexion ; avertissement à 30 jours, lecture seule à l'expiration. Source : schéma d'implémentation des licences D30 ; RULE-LIC-002.	يُتحقق من انتهاء الترخيص عند كل إقلاع ودخول؛ مع تحذير قبل 30 يومًا وقراءة فقط عند الانتهاء. المصدر: مخطط تنفيذ التراخيص D30؛ RULE-LIC-002.
+83	Hachage salé des mots de passe	تجزئة كلمات المرور بالملح
+84	Mots de passe stockés uniquement sous forme de hachages salés ; jamais journalisés en clair. Source : NFR-DA-SEC-02.	تُخزن كلمات المرور كتجزئات مملحة فقط؛ ولا تُسجل كنص صريح أبدًا. المصدر: NFR-DA-SEC-02.
+85	Accès aux données paramétré	الولوج إلى البيانات باستعلامات مهيأة
+86	Toutes les requêtes utilisent des instructions paramétrées ; aucune concaténation d'entrée non fiable. Source : NFR-DA-SEC-04.	تستعمل جميع الاستعلامات عبارات مهيأة؛ دون دمج أي مدخلات غير موثوقة. المصدر: NFR-DA-SEC-04.
+87	Séparation des tâches responsable/évaluateur	فصل المهام بين المسؤول والمقيّم
+88	Le responsable et l'évaluateur d'une action doivent différer, contrôlé côté serveur. Source : NFR-DA-SEC-05 ; FR-DA-RBAC-04.	يجب أن يختلف مسؤول الإجراء عن مقيّمه، ويُفرض ذلك من جهة الخادم. المصدر: NFR-DA-SEC-05؛ FR-DA-RBAC-04.
+89	Un seul Approbateur par activité RACSI	مسؤول نهائي واحد لكل نشاط RACSI
+90	Une contrainte de base de données autorise au plus un Approbateur par activité. Source : NFR-DA-SEC-06 ; FR-DA-GOV-07.	قيد في قاعدة البيانات يسمح بمسؤول نهائي واحد على الأكثر لكل نشاط. المصدر: NFR-DA-SEC-06؛ FR-DA-GOV-07.
+91	Identifiants LLM et d'intégration uniquement côté client	بيانات اعتماد النموذج اللغوي والتكامل من جهة العميل فقط
+92	Les clés d'API LLM restent côté client et ne servent qu'à un seul appel ; les identifiants d'intégration sont des références chiffrées, jamais journalisées. Source : NFR-DA-SEC-07 ; FR-DA-AI-08 ; FR-DA-CFG-11.	تبقى مفاتيح النموذج اللغوي لدى العميل وتُستعمل لاستدعاء واحد فقط؛ وبيانات اعتماد التكامل مراجع مشفرة لا تُسجل أبدًا. المصدر: NFR-DA-SEC-07؛ FR-DA-AI-08؛ FR-DA-CFG-11.
+93	Contrôle des quotas côté serveur	فرض الحصص من جهة الخادم
+94	Chaque quota lié à l'offre est vérifié à la création ; hors quota renvoie HTTP 409, jamais de création partielle. Source : NFR-DA-SEC-08 ; FR-DA-TEN-07.	يُتحقق من كل حصة مرتبطة بالباقة عند الإنشاء؛ ويعيد تجاوزها HTTP 409 دون أي إنشاء جزئي. المصدر: NFR-DA-SEC-08؛ FR-DA-TEN-07.
+95	Visibilité restreinte des données individuelles	ظهور مقيد للبيانات الفردية
+96	Évaluations individuelles, notes de coaching et verdicts d'évaluation ne sont visibles que par des rôles nommés ; les autres voient des agrégats. Source : NFR-DA-SEC-10 ; FR-DA-RBAC-09.	التقييمات الفردية وملاحظات التوجيه وأحكام التقييم مرئية فقط لأدوار محددة؛ ويرى الآخرون المجاميع. المصدر: NFR-DA-SEC-10؛ FR-DA-RBAC-09.
+97	Suite de tests automatisés d'accès inter-locataires	مجموعة اختبارات آلية للولوج بين المستأجرين
+98	La chaîne de publication exécute les tests inter-locataires ; un échec bloque la version. Source : NFR-DA-SEC-11 ; FR-DA-TEN-08.	تنفذ سلسلة الإصدار اختبارات بين المستأجرين؛ ويمنع أي فشل الإصدار. المصدر: NFR-DA-SEC-11؛ FR-DA-TEN-08.
+99	Limitation des connexions et en-têtes de sécurité	تقييد الدخول وترويسات الأمن
+100	La connexion est limitée par client ; les réponses portent les en-têtes nosniff, frame et cross-origin. Source : NFR-DA-SEC-12.	الدخول مقيد لكل عميل؛ وتحمل الاستجابات ترويسات nosniff وframe وcross-origin. المصدر: NFR-DA-SEC-12.
+101	Isolation des caches, sauvegardes et journaux par locataire	عزل الذاكرات المؤقتة والنسخ والسجلات حسب المستأجر
+102	Sauvegardes stockées hors des chemins servis par le web, lisibles uniquement par le compte de service et l'administrateur de la plateforme ; cache de lecture par utilisateur, 30 s maximum. Source : NFR-DA-SEC-13 ; NFR-DA-PERF-05.	النسخ الاحتياطية مخزنة خارج المسارات المتاحة عبر الويب ومقروءة فقط لحساب الخدمة ومسؤول المنصة؛ وذاكرة القراءة لكل مستخدم بحد أقصى 30 ثانية. المصدر: NFR-DA-SEC-13؛ NFR-DA-PERF-05.
+103	Suivi des niveaux de service de performance	مراقبة مستويات خدمة الأداء
+104	Surveille affichage des listes <= 2 s, suggestion IA <= 5 s, recherche <= 1 s, export <= 3 s, lecture P95 <= 1 s à 100 utilisateurs. Source : NFR-DA-PERF-01 ; NFR-DA-PERF-02 ; NFR-DA-PERF-03 ; NFR-DA-PERF-04 ; NFR-DA-PERF-05.	مراقبة عرض القوائم <= 2 ث، واقتراح الذكاء الاصطناعي <= 5 ث، والبحث <= 1 ث، والتصدير <= 3 ث، وقراءة P95 <= 1 ث عند 100 مستخدم. المصدر: NFR-DA-PERF-01؛ NFR-DA-PERF-02؛ NFR-DA-PERF-03؛ NFR-DA-PERF-04؛ NFR-DA-PERF-05.
+105	Dégradation gracieuse de l'IA	التدهور السلس للذكاء الاصطناعي
+106	En cas d'échec de l'appel réel, le résultat déterministe est fourni et l'opération CRUD réussit quand même. Source : NFR-DA-REL-01 ; FR-DA-AI-09 ; FR-DA-KB-04.	عند فشل الاستدعاء الفعلي تُقدم النتيجة الحتمية وتنجح عملية الإنشاء والتعديل مع ذلك. المصدر: NFR-DA-REL-01؛ FR-DA-AI-09؛ FR-DA-KB-04.
+107	Contrôle d'intégrité du fichier de licence (Ed25519)	فحص سلامة ملف الترخيص (Ed25519)
+108	Signature du fichier de licence vérifiée avec la clé publique Ed25519 de l'éditeur (sur site) ou HMAC (SaaS) avant activation. Source : schéma d'implémentation des licences D30 ; RULE-LIC-001.	يُتحقق من توقيع ملف الترخيص بالمفتاح العام Ed25519 للمورد (محليًا) أو HMAC (سحابيًا) قبل التفعيل. المصدر: مخطط تنفيذ التراخيص D30؛ RULE-LIC-001.
+109	Contrôle d'intégrité de l'activation des modules (idempotence + mention)	فحص سلامة تفعيل الإضافات (عدم التكرار + الإشعار)
+110	Une activation répétée ne crée pas de socle en double ; la mention de non-certification ne peut pas être masquée. Source : D30 section 2.1 ; RULE-LIC-004 ; FR-DA-CFG-05 ; FR-DA-CFG-09 ; NFR-DA-COMP-04.	لا ينشئ التفعيل المتكرر هيكلًا مكررًا؛ ولا يمكن إخفاء إشعار عدم الاعتماد. المصدر: D30 القسم 2.1؛ RULE-LIC-004؛ FR-DA-CFG-05؛ FR-DA-CFG-09؛ NFR-DA-COMP-04.
+111	Suivi de la disponibilité	مراقبة التوفر
+112	Point de santé interrogé ; disponibilité mesurée au regard de l'objectif de 99,9 %. Source : NFR-DA-REL-02 ; FR-DA-OPS-06.	استطلاع نقطة السلامة؛ والتقرير عن التوفر مقارنة بهدف 99.9%. المصدر: NFR-DA-REL-02؛ FR-DA-OPS-06.
+113	Intégrité en cas d'échec d'export	السلامة عند فشل التصدير
+114	Un export en échec renvoie une erreur structurée et ne modifie jamais les données du rapport. Source : NFR-DA-REL-03.	يعيد التصدير الفاشل خطأ منظمًا ولا يغير بيانات التقرير أبدًا. المصدر: NFR-DA-REL-03.
+115	Planning de sauvegarde et test de restauration	جدولة النسخ الاحتياطي واختبار الاستعادة
+116	La sauvegarde quotidienne limite la perte de données à 24 h ; rétention 14 jours ; restauration testée à chaque version. Source : NFR-DA-REL-04 ; NFR-DA-REL-05 ; FR-DA-OPS-01 ; FR-DA-OPS-02 ; FR-DA-OPS-03.	يحد النسخ اليومي فقدان البيانات في 24 ساعة؛ والاحتفاظ 14 يومًا؛ وتُختبر الاستعادة في كل إصدار. المصدر: NFR-DA-REL-04؛ NFR-DA-REL-05؛ FR-DA-OPS-01؛ FR-DA-OPS-02؛ FR-DA-OPS-03.
+117	Porte de test de charge et de montée en charge	بوابة اختبار الحمل وقابلية التوسع
+118	Chaque version est testée en charge à 100 utilisateurs simultanés par locataire ; couches web et API dimensionnées indépendamment ; persistance et index remplaçables derrière l'API. Source : NFR-DA-SCALE-01 ; NFR-DA-SCALE-02 ; NFR-DA-SCALE-03.	يُختبر كل إصدار تحت حمل 100 مستخدم متزامن لكل مستأجر؛ وتتوسع طبقتا الويب والواجهة البرمجية بشكل مستقل؛ والتخزين والفهرس قابلان للاستبدال خلف الواجهة البرمجية. المصدر: NFR-DA-SCALE-01؛ NFR-DA-SCALE-02؛ NFR-DA-SCALE-03.
+119	Conformité à l'identité visuelle	المطابقة للهوية البصرية
+120	Les documents générés et l'interface utilisent la palette, la typographie et un seul vocabulaire de badges de statut de la suite. Source : NFR-DA-UX-01 ; NFR-DA-UX-04 ; FR-DA-REP-02.	تستعمل الوثائق المولدة والواجهة لوحة الألوان والخطوط ومفردات موحدة لشارات الوضعية. المصدر: NFR-DA-UX-01؛ NFR-DA-UX-04؛ FR-DA-REP-02.
+121	Mise en page adaptative et cibles tactiles	تخطيط متجاوب وأهداف لمس
+122	Parcours principaux utilisables sur mobile ; cibles >= 24 px, >= 44 px en tactile. Source : NFR-DA-UX-02 ; NFR-DA-UX-05 ; NFR-DA-COMPAT-03.	مسارات العمل الأساسية قابلة للاستعمال على الهاتف؛ والأهداف >= 24 بكسل و>= 44 بكسل للمس. المصدر: NFR-DA-UX-02؛ NFR-DA-UX-05؛ NFR-DA-COMPAT-03.
+123	Analyse d'accessibilité automatisée	فحص آلي لإمكانية الوصول
+124	Analyse axe-core sans violation critique ou grave ; contraste AA ; notifications traduites et annoncées. Source : NFR-DA-UX-03 ; NFR-DA-UX-06 ; NFR-DA-UX-07.	فحص axe-core دون مخالفات حرجة أو خطيرة؛ وتباين AA؛ وإشعارات مترجمة ومعلنة. المصدر: NFR-DA-UX-03؛ NFR-DA-UX-06؛ NFR-DA-UX-07.
+125	Contrôle de l'affichage arabe de droite à gauche	فحص العرض العربي من اليمين إلى اليسار
+126	Navigation, tableaux et graphiques vérifiés en miroir en arabe. Source : NFR-DA-I18N-01 ; FR-DA-I18N-04.	التحقق من انعكاس التنقل والجداول والرسوم في العربية. المصدر: NFR-DA-I18N-01؛ FR-DA-I18N-04.
+127	Installabilité et contrôles au démarrage	قابلية التثبيت وحراس الإقلاع
+128	Installation avec Node.js uniquement ; les contrôles de démarrage signalent en langage clair l'environnement, le port et la base vide ; migrations additives. Source : NFR-DA-PORT-01 ; NFR-DA-PORT-02 ; NFR-DA-PORT-04 ; FR-DA-OPS-04 ; FR-DA-OPS-05.	التثبيت بـ Node.js فقط؛ وتبلغ حراس الإقلاع بلغة واضحة عن بيئة التشغيل والمنفذ والمخزن الفارغ؛ مع ترحيلات إضافية. المصدر: NFR-DA-PORT-01؛ NFR-DA-PORT-02؛ NFR-DA-PORT-04؛ FR-DA-OPS-04؛ FR-DA-OPS-05.
+129	Porte d'intégration continue multi-OS	بوابة التكامل المستمر متعدد الأنظمة
+130	L'intégration continue sous Linux, Windows et macOS installe, alimente, teste et construit chaque modification. Source : NFR-DA-PORT-03.	يثبت التكامل المستمر على Linux وWindows وmacOS كل تغيير ويعبئه ويختبره ويبنيه. المصدر: NFR-DA-PORT-03.
+131	Revue des moteurs composables et de l'interface IA	مراجعة المحركات القابلة للتركيب وواجهة الذكاء الاصطناعي
+132	Moteurs partagés réutilisables par les applications sœurs ; IA derrière une interface stable ; un seul point d'intégration LLM. Source : NFR-DA-MAINT-01 ; NFR-DA-MAINT-02 ; NFR-DA-MAINT-04.	محركات مشتركة قابلة لإعادة الاستعمال في التطبيقات الشقيقة؛ والذكاء الاصطناعي خلف واجهة مستقرة؛ ونقطة تكامل واحدة مع النموذج اللغوي. المصدر: NFR-DA-MAINT-01؛ NFR-DA-MAINT-02؛ NFR-DA-MAINT-04.
+133	Matrice unique des droits	مصفوفة استحقاقات موحدة
+134	Matrice des fonctionnalités et quotas des offres définie une seule fois et utilisée par chaque route. Source : NFR-DA-MAINT-03 ; FR-DA-CFG-01.	مصفوفة خصائص الباقات وحصصها محددة مرة واحدة ومستعملة في كل مسار. المصدر: NFR-DA-MAINT-03؛ FR-DA-CFG-01.
+135	Catalogue unique des alertes	فهرس تنبيهات موحد
+136	Noms d'alertes et correspondance avec les étapes définis dans un seul module utilisé par l'amorçage et le calcul en direct. Source : NFR-DA-MAINT-05 ; FR-DA-ALT-01.	أسماء التنبيهات وربطها بالمراحل محددة في وحدة واحدة يستعملها التعبئة الأولية والاحتساب المباشر. المصدر: NFR-DA-MAINT-05؛ FR-DA-ALT-01.
+137	Documentation générée à partir des sources	توثيق مولد من المصدر
+138	Guides d'installation et d'utilisation générés en Word et PDF avec table des matières ; parcours rejoués sur un amorçage neuf. Source : NFR-DA-MAINT-06.	دليلا التثبيت والاستخدام مولدان بصيغتي Word وPDF مع فهرس؛ وتُعاد الجولات على تعبئة جديدة. المصدر: NFR-DA-MAINT-06.

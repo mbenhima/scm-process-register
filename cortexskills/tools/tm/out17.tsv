@@ -1,0 +1,160 @@
+0	Validation de l'aller-retour BPMN	التحقق من الذهاب والإياب بصيغة BPMN
+1	Diagrammes de processus exportés et réimportés en XML BPMN 2.0 sans perte. Source : NFR-DA-COMPAT-02.	تصدير مخططات المسارات وإعادة استيرادها بصيغة BPMN 2.0 XML دون فقدان. المصدر: NFR-DA-COMPAT-02.
+2	Politique des navigateurs pris en charge	سياسة المتصفحات المدعومة
+3	Seuls les navigateurs à jour sur ordinateur, tablette et mobile sont pris en charge. Source : NFR-DA-COMPAT-01.	تُدعم فقط المتصفحات المحدثة على الحاسوب واللوحي والهاتف. المصدر: NFR-DA-COMPAT-01.
+4	Journalisation des suggestions IA avec confiance	تسجيل اقتراحات الذكاء الاصطناعي مع درجة الثقة
+5	Chaque suggestion IA est journalisée avec confiance, cas d'usage, enregistrement et utilisateur ; journal en ajout seul. Source : NFR-DA-COMP-01 ; FR-DA-AI-07.	يُسجل كل اقتراح مع الثقة وحالة الاستخدام والسجل والمستخدم؛ والسجل للإضافة فقط. المصدر: NFR-DA-COMP-01؛ FR-DA-AI-07.
+6	Revue de couverture des cinq composantes COSO	مراجعة تغطية مكونات COSO الخمسة
+7	Registre des contrôles revu pour la couverture des cinq composantes COSO. Source : NFR-DA-COMP-02 ; FR-DA-GOV-02.	مراجعة سجل الضوابط لتغطية مكونات COSO الخمسة. المصدر: NFR-DA-COMP-02؛ FR-DA-GOV-02.
+8	Historique des versions immuable	سجل إصدارات غير قابل للتغيير
+9	Versions conservées indéfiniment ; la restauration duplique vers l'avant, sans jamais supprimer. Source : NFR-DA-COMP-03 ; FR-DA-AI-03 ; FR-DA-VER-03.	تُحفظ الإصدارات دون حد؛ والاسترجاع ينسخ إلى الأمام ولا يحذف أبدًا. المصدر: NFR-DA-COMP-03؛ FR-DA-AI-03؛ FR-DA-VER-03.
+10	Aucune transmission à des tiers par défaut	لا إرسال لأطراف ثالثة افتراضيًا
+11	Les données du locataire ne quittent le déploiement que via une connexion LLM configurée et choisie par l'utilisateur, ou un envoi de canal au contenu minimal. Source : NFR-DA-DATA-01 ; FR-DA-COMM-05.	لا تغادر بيانات المستأجر النشر إلا عبر اتصال بنموذج لغوي يختاره المستخدم ويعده، أو إرسال عبر قناة بأدنى محتوى. المصدر: NFR-DA-DATA-01؛ FR-DA-COMM-05.
+12	Isolation selon l'option de déploiement	العزل حسب خيار النشر
+13	Les déploiements SaaS et dédiés/sur site conservent la même garantie d'isolation des locataires. Source : NFR-DA-DATA-02.	تحافظ عمليات النشر السحابية والمخصصة/المحلية على ضمان عزل المستأجرين نفسه. المصدر: NFR-DA-DATA-02.
+14	Gouvernance des modifications « préparer puis justifier »	حكامة التغييرات «التحضير ثم التبرير»
+15	Changements d'état et de score préparés, justifiés et ajoutés de façon atomique au journal d'audit. Source : FR-DA-AUD-01 ; FR-DA-AUD-02 ; FR-DA-RBAC-07.	تغييرات الوضعية والتنقيط تُحضّر وتُبرر وتضاف بشكل ذري إلى سجل التدقيق. المصدر: FR-DA-AUD-01؛ FR-DA-AUD-02؛ FR-DA-RBAC-07.
+16	Revue du journal d'audit immuable	مراجعة سجل التدقيق غير القابل للتغيير
+17	Journal d'audit en lecture seule, sans route de modification ou suppression ; les échecs d'écriture ne bloquent jamais l'opération principale. Source : FR-DA-AUD-03 ; FR-DA-AUD-04.	سجل التدقيق للقراءة فقط دون مسار للتعديل أو الحذف؛ ولا يمنع فشل الكتابة العملية الأساسية أبدًا. المصدر: FR-DA-AUD-03؛ FR-DA-AUD-04.
+18	Étiquetage de revue humaine des résultats IA	وسم مخرجات الذكاء الاصطناعي بالمراجعة البشرية
+19	Résultat IA étiqueté avec niveau et source, fondé sur des références indiquées, revu avant usage. Source : FR-DA-AI-06 ; FR-DA-AI-11.	مخرجات الذكاء الاصطناعي موسومة بالمستوى والمصدر، ومستندة إلى مراجع مصرح بها، ومراجعة قبل الاستعمال. المصدر: FR-DA-AI-06؛ FR-DA-AI-11.
+20	Périmètre RBAC de l'IA et de l'assistant	نطاق صلاحيات الذكاء الاصطناعي والمساعد
+21	La recherche et les réponses de l'IA ne dépassent jamais le périmètre RBAC de l'utilisateur ni son locataire. Source : FR-DA-AI-10 ; FR-DA-KB-03 ; FR-DA-AST-02 ; FR-DA-AST-03.	لا يتجاوز استرجاع الذكاء الاصطناعي وأجوبته نطاق صلاحيات المستخدم أو مستأجره. المصدر: FR-DA-AI-10؛ FR-DA-KB-03؛ FR-DA-AST-02؛ FR-DA-AST-03.
+22	Application de la conservation des données	فرض الاحتفاظ بالبيانات
+23	Règles de conservation par catégorie appliquées à l'archivage et à la purge (ex. évaluations 5 ans).	تطبيق قواعد الاحتفاظ لكل فئة عند الأرشفة والحذف (مثل التقييمات 5 سنوات).
+24	Santé des intégrations et journal des transactions	سلامة التكامل وسجل المعاملات
+25	Santé vérifiée à la demande et journalisée ; chaque transaction entrante/sortante auditée ; événements entrants authentifiés et limités au locataire. Source : FR-DA-CFG-12 ; FR-DA-CFG-13 ; FR-DA-CFG-14.	فحص السلامة عند الطلب وتسجيله؛ وتدقيق كل معاملة واردة/صادرة؛ والأحداث الواردة مصادق عليها ومحصورة في المستأجر. المصدر: FR-DA-CFG-12؛ FR-DA-CFG-13؛ FR-DA-CFG-14.
+26	Validation de la synchronisation SIRH	التحقق من مزامنة نظام الموارد البشرية
+27	Lignes invalides rejetées avec explication et revues avant l'exécution suivante.	رفض الأسطر غير الصالحة مع التفسير ومراجعتها قبل التشغيل التالي.
+28	Benchmark de groupe en agrégats uniquement	مقارنة المجموعة بالمجاميع فقط
+29	Les comparaisons de groupe n'affichent que des agrégats ; aucune comparaison hors du groupe. Source : FR-DA-BMK-04 ; FR-DA-BMK-08.	تعرض مقارنات المجموعة المجاميع فقط؛ ولا مقارنة خارج المجموعة. المصدر: FR-DA-BMK-04؛ FR-DA-BMK-08.
+30	Blocage des cas d'usage IA désactivés	منع حالات استخدام الذكاء الاصطناعي المعطلة
+31	Nouvelles suggestions bloquées immédiatement lorsque l'activation effective est désactivée ; contenus approuvés conservés. Source : FR-DA-AI-05.	منع الاقتراحات الجديدة فورًا عند تعطيل التفعيل الفعلي؛ مع الاحتفاظ بالمحتوى المعتمد. المصدر: FR-DA-AI-05.
+32	Identifiants opaques et 404 pour les enregistrements étrangers	معرفات مبهمة و404 للسجلات الأجنبية
+33	Les enregistrements utilisent des identifiants opaques ; celui d'un autre locataire renvoie 404. Source : FR-DA-TEN-11 ; FR-DA-TEN-08.	تستعمل السجلات معرفات مبهمة؛ ويعيد سجل مستأجر آخر 404. المصدر: FR-DA-TEN-11؛ FR-DA-TEN-08.
+34	Approbation à quatre yeux du plan et de la feuille de route	اعتماد الخطة وخارطة الطريق بمبدأ العيون الأربع
+35	Plan et feuille de route approuvés par le DRH, distinct du rédacteur.	الخطة وخارطة الطريق معتمدتان من مدير الموارد البشرية، وهو مختلف عن المُعدّ.
+36	Contrôle des engagements budgétaires	مراقبة الالتزامات المالية
+37	Un bon de commande ne peut dépasser le reste de la ligne budgétaire.	لا يمكن أن يتجاوز سند الطلب المبلغ المتبقي في بند الميزانية.
+38	Rapprochement à trois voies des factures	المطابقة الثلاثية للفواتير
+39	Paiement uniquement après rapprochement facture, BC et présence.	الأداء فقط بعد مطابقة الفاتورة وسند الطلب والحضور.
+40	Vérification de l'accréditation des prestataires	التحقق من اعتماد الموردين
+41	Formations remboursables commandées uniquement auprès de prestataires accrédités.	لا تُطلب التكوينات القابلة للاسترداد إلا من موردين معتمدين.
+42	Suivi de l'expiration des certifications	مراقبة انتهاء الشهادات
+43	Calcul quotidien de la validité avec inscription au renouvellement avant expiration.	احتساب يومي للصلاحية مع التسجيل للتجديد قبل الانتهاء.
+44	Revue de l'extrait d'audit de conformité	مراجعة مستخرج تدقيق المطابقة
+45	Extrait d'audit revu chaque trimestre par le responsable conformité.	يراجع مسؤول المطابقة مستخرج التدقيق كل ثلاثة أشهر.
+46	Suivi des échéances réglementaires	تتبع الآجال التنظيمية
+47	Soumissions suivies au regard des échéances du régulateur, avec rappels.	تتبع التقديمات مقارنة بآجال الجهة التنظيمية مع التذكيرات.
+48	Revue qualité du rapport d'ingénierie de formation	مراجعة جودة تقرير هندسة التكوين
+49	Chiffres du rapport rapprochés des registres sources avant approbation.	تتبع أرقام التقرير إلى السجلات المصدر قبل الاعتماد.
+50	Porte de complétude des intrants d'ingénierie	بوابة اكتمال مدخلات الهندسة
+51	Rédaction bloquée tant que les livrables amont obligatoires ne sont pas présents et à jour.	منع الصياغة حتى توفر المخرجات المغذية الإلزامية وتحديثها.
+52	Contrôle des conflits de session	فحص تعارض الدورات
+53	Conflits de salle, de formateur et d'apprenant rejetés à l'enregistrement.	رفض تعارضات القاعات والمكونين والمتعلمين عند الحفظ.
+54	Rapprochement présence et achèvement	مطابقة الحضور والإتمام
+55	Présences rapprochées des achèvements et des factures à chaque période.	مطابقة الحضور مع الإتمام والفواتير في كل فترة.
+56	Revue des contenus avant publication	مراجعة المحتوى قبل النشر
+57	Aucune publication sans approbation de l'expert.	لا نشر دون اعتماد الخبير.
+58	Revue de fraîcheur des contenus	مراجعة حداثة المحتوى
+59	Éléments dont la date de revue est dépassée signalés et revus.	وسم العناصر المتجاوزة لتاريخ المراجعة ومراجعتها.
+60	Modération des contenus utilisateurs	الإشراف على محتوى المستخدمين
+61	Contenus utilisateurs vérifiés au regard de la politique et relus par les pairs avant publication.	فحص محتوى المستخدمين وفق السياسة ومراجعته من الأقران قبل النشر.
+62	Modération de la communauté	الإشراف على المجتمع
+63	Publications signalées traitées sous 48 heures.	معالجة المنشورات المبلغ عنها خلال 48 ساعة.
+64	Validation de l'inventaire des compétences	المصادقة على جرد المهارات
+65	Inventaire validé par le responsable formation avant l'analyse des écarts.	يصادق مسؤول التكوين على الجرد قبل تحليل الفجوات.
+66	Validation du registre des besoins	المصادقة على سجل الاحتياجات
+67	Registre validé avec justification avant l'élaboration du rapport.	المصادقة على السجل مع التبرير قبل إعداد التقرير.
+68	Validation des fiches de poste	المصادقة على بطاقات الوصف الوظيفي
+69	Fiches validées par le manager et les RH avant publication.	يصادق المدير والموارد البشرية على البطاقات قبل النشر.
+70	Gouvernance des seuils RAG	حكامة عتبات الألوان
+71	Seuils RAG approuvés avant l'évaluation et appliqués uniformément.	اعتماد عتبات الألوان قبل التقييم وتطبيقها بشكل موحد.
+72	Anonymisation des réponses au diagnostic	إخفاء هوية إجابات التشخيص
+73	Réponses anonymisées avant notation ; taille minimale de groupe pour le reporting.	إخفاء هوية الإجابات قبل التنقيط؛ مع حد أدنى لحجم المجموعة في التقارير.
+74	Acceptation de la mission par le client	قبول العميل للمهمة
+75	La clôture de la mission exige une acceptation client enregistrée.	يتطلب إغلاق المهمة تسجيل قبول العميل.
+76	Consentement de l'expert à l'entretien	موافقة الخبير على المقابلة
+77	L'enregistrement ne commence qu'après recueil du consentement de l'expert.	لا يبدأ التسجيل إلا بعد الحصول على موافقة الخبير.
+78	Validation des plans de site	المصادقة على خطط المواقع
+79	Chaque plan de site validé au regard du plan groupe avant déploiement.	المصادقة على كل خطة موقع مقارنة بخطة المجموعة قبل النشر.
+80	Rapprochement de la passerelle de paiement	مطابقة بوابة الأداء
+81	Règlements de la passerelle rapprochés des inscriptions chaque semaine.	مطابقة تسويات البوابة مع التسجيلات أسبوعيًا.
+82	Validation des chiffres de ROI par la finance	مصادقة المالية على أرقام عائد الاستثمار
+83	Coûts et bénéfices validés par le directeur financier.	يصادق المدير المالي على أرقام التكاليف والفوائد.
+84	Revue humaine des prédictions	المراجعة البشرية للتنبؤات
+85	Aucune action préventive créée sans acceptation humaine de la prédiction.	لا يُنشأ أي إجراء وقائي دون قبول بشري للتنبؤ.
+86	Revue d'équité de la mobilité interne	مراجعة إنصاف التنقل الداخلي
+87	Listes restreintes revues pour leur cohérence avec les preuves de compétences.	مراجعة القوائم المختصرة لاتساقها مع أدلة المهارات.
+88	Validation en gouvernance du plan priorisé	مصادقة الحكامة على الخطة المرتبة
+89	Plan priorisé validé par le comité de pilotage avant publication.	تصادق لجنة القيادة على الخطة المرتبة قبل النشر.
+90	Revue d'actualisation de la veille	مراجعة تحديث اليقظة
+91	Rapport de veille actualisé au moins tous les 90 jours.	تحديث تقرير اليقظة مرة كل 90 يومًا على الأقل.
+92	Revue de l'alignement GPEC	مراجعة المواءمة مع التدبير التوقعي
+93	Part de la formation alignée sur la GPEC revue chaque année.	مراجعة نسبة التكوين المتوائم مع التدبير التوقعي سنويًا.
+94	Validation de la feuille de route par la direction	مصادقة القيادة على خارطة الطريق
+95	Feuille de route post-mission validée par la direction du client.	تصادق قيادة العميل على خارطة طريق ما بعد المهمة.
+96	Test d'efficacité des contrôles	اختبار فعالية الضوابط
+97	Contrôles testés selon leur fréquence et notés avec preuves.	اختبار الضوابط وفق وتيرتها وتقييمها بالأدلة.
+98	Revue des objectifs d'adoption	مراجعة أهداف التبني
+99	Adoption par groupe revue chaque mois au regard de l'objectif.	مراجعة التبني لكل مجموعة شهريًا مقارنة بالهدف.
+100	Revue de l'horizon des experts critiques	مراجعة أفق الخبراء الحرجين
+101	Experts partant sous 18 mois revus chaque trimestre.	مراجعة الخبراء المغادرين خلال 18 شهرًا كل ثلاثة أشهر.
+102	Suivi de l'exécution des étapes de service automatisées	مراقبة تنفيذ خطوات الخدمة الآلية
+103	Chaque étape exécutée par le système s'exécute comme tâche de fond journalisée avec relance et file d'échec ; les échecs notifient un opérateur et le résultat est écrit au journal d'audit. Source : NFR-DA-REL-02 ; NFR-DA-MAINT-01 (service de piste d'audit et moteur d'alertes et notifications comme moteurs partagés).	تُنفذ كل خطوة ينفذها النظام كمهمة خلفية مسجلة مع إعادة المحاولة ومعالجة الرسائل الفاشلة؛ ويرفع الفشل إشعارًا للمشغل وتُكتب النتيجة في سجل التدقيق. المصدر: NFR-DA-REL-02؛ NFR-DA-MAINT-01 (خدمة مسار التدقيق ومحرك التنبيهات والإشعارات كمحركين مشتركين).
+104	Consentement et confidentialité des répondants au questionnaire	موافقة المستجيبين على الاستبيان وخصوصيتهم
+105	Aucune réponse n'est enregistrée sans consentement consigné ; les questionnaires anonymes retirent l'identité du répondant avant stockage.	لا تُحفظ أي إجابة دون موافقة مسجلة؛ والاستبيانات مجهولة الهوية تزيل هوية المستجيب قبل الحفظ.
+106	Porte de validation et d'approbation du cahier des charges	بوابة التحقق من دفتر نطاق العمل واعتماده
+107	Périmètre validé par le responsable formation et approuvé par le DRH ou le chef de projet consultant avant publication ; toute modification après approbation exige une revalidation.	يتحقق مسؤول التكوين من النطاق ويعتمده مدير الموارد البشرية أو رئيس المشروع الاستشاري قبل النشر؛ وتتطلب التغييرات بعد الاعتماد إعادة التحقق.
+108	Gestion des versions des modèles de questionnaire	إدارة إصدارات نماذج الاستبيان
+109	Chaque modification de modèle crée une nouvelle version ; les questionnaires consignent la version utilisée.	ينشئ كل تغيير في النموذج إصدارًا جديدًا؛ وتسجل الاستبيانات إصدار النموذج المستعمل.
+110	Contrôle de complétude de l'affectation RACSI	فحص اكتمال توزيع RACSI
+111	Chaque section porte une affectation RACSI avec un seul Approbateur avant que la diffusion ne soit possible.	يحمل كل قسم توزيع RACSI بمسؤول نهائي واحد قبل تمكين التوزيع.
+112	Piste d'audit des envois multicanaux	مسار تدقيق الإرسال متعدد القنوات
+113	Chaque envoi, relance et réponse est journalisé par canal et rapproché de la liste de diffusion.	يُسجل كل إرسال وتذكير وإجابة لكل قناة ويطابق مع قائمة التوزيع.
+114	Accès non autorisé aux données du locataire	ولوج غير مرخص إلى بيانات المستأجر
+115	Sécurité	الأمن
+116	Requêtes inter-locataires et non autorisées refusées pour 1 000 appels d'API	الطلبات المرفوضة بين المستأجرين وغير المرخصة لكل 1000 استدعاء
+117	Fuite inter-locataires via la recherche IA ou l'assistant	تسرب بين المستأجرين عبر استرجاع الذكاء الاصطناعي أو المساعد
+118	Confidentialité	الخصوصية
+119	Réponses IA renvoyant des enregistrements hors périmètre / total des réponses IA x 100	أجوبة الذكاء الاصطناعي التي تعيد سجلات خارج النطاق / مجموع الأجوبة × 100
+120	Perte des données de la plateforme	فقدان بيانات المنصة
+121	Opérationnel	تشغيلي
+122	Heures depuis la dernière sauvegarde réussie	الساعات منذ آخر نسخة احتياطية ناجحة
+123	Expiration de la licence	انتهاء الترخيص
+124	Commercial	تجاري
+125	Jours restants avant expiry_date de la licence	الأيام المتبقية قبل تاريخ انتهاء الترخيص
+126	Plan de formation non aligné sur la stratégie	خطة تكوين غير متوائمة مع الاستراتيجية
+127	Objectifs stratégiques sans thème approuvé associé / total des objectifs x 100	الأهداف الاستراتيجية دون محور معتمد مرتبط / مجموع الأهداف × 100
+128	Données de compétences inexactes conduisant à de mauvais besoins	بيانات مهارات غير دقيقة تؤدي إلى احتياجات خاطئة
+129	Qualité des données	جودة البيانات
+130	Évaluations modifiées après validation / évaluations validées x 100	التقييمات المعدلة بعد المصادقة / التقييمات المعتمدة × 100
+131	Contenu IA non vérifié dans le rapport d'ingénierie de formation	محتوى ذكاء اصطناعي غير متحقق منه في تقرير هندسة التكوين
+132	Sections rédigées par l'IA publiées sans modification ni revue / sections rédigées par l'IA x 100	الأقسام المصاغة بالذكاء الاصطناعي المنشورة دون تعديل أو مراجعة / مجموع الأقسام المصاغة × 100
+133	Rapprochement des talents par IA biaisé	مطابقة مواهب منحازة بالذكاء الاصطناعي
+134	Jugement d'expert issu de la revue d'équité trimestrielle	حكم الخبراء من مراجعة الإنصاف الفصلية
+135	Certification obligatoire expirée	شهادة إلزامية منتهية
+136	Certifications expirées / certifications requises x 100	الشهادات المنتهية / الشهادات المطلوبة × 100
+137	Échéance de soumission réglementaire manquée et remboursement perdu	تفويت أجل التقديم التنظيمي وضياع الاسترداد
+138	Soumissions en brouillon à moins de 15 jours de l'échéance	تقديمات في وضعية مسودة قبل 15 يومًا من الأجل
+139	Dépassement du budget formation	تجاوز ميزانية التكوين
+140	Financier	مالي
+141	(Réel + engagé) / alloué x 100 par ligne budgétaire	(الفعلي + الملتزم به) / المخصص × 100 لكل بند
+142	Paiement d'une formation non réalisée	أداء مقابل تكوين غير منجز
+143	Factures payées au statut Écart / factures payées x 100	الفواتير المؤداة بوضعية فارق / الفواتير المؤداة × 100
+144	Un prestataire non accrédité rend la formation non remboursable	مورد غير معتمد يجعل التكوين غير قابل للاسترداد
+145	BC remboursables émis vers des prestataires sans accréditation valide	سندات طلب قابلة للاسترداد صادرة لموردين دون اعتماد ساري
+146	Faible adoption par les apprenants et utilisateurs	ضعف تبني المتعلمين والمستخدمين
+147	Adoption	التبني
+148	Utilisateurs actifs sur 30 jours / utilisateurs sous licence x 100	المستخدمون النشطون خلال 30 يومًا / المستخدمون المرخصون × 100
+149	Contenus obsolètes au catalogue	محتوى متقادم في الفهرس
+150	Qualité	الجودة
+151	Contenus publiés dont review_date est dépassée / contenus publiés x 100	الأصول المنشورة المتجاوزة لتاريخ المراجعة / الأصول المنشورة × 100
+152	Publication de contenus utilisateurs inappropriés	نشر محتوى مستخدمين غير لائق
+153	Réputation	السمعة
+154	Publications retirées après publication par mois	المنشورات المحذوفة بعد النشر شهريًا
+155	Savoirs critiques perdus au départ d'un expert	ضياع المعرفة الحرجة بمغادرة الخبير
+156	Experts critiques partant sous 12 mois sans plan de capture	خبراء حرجون يغادرون خلال 12 شهرًا دون خطة التقاط
+157	Fuite de clé d'API d'un fournisseur LLM	تسرب مفتاح واجهة مزود النموذج اللغوي
+158	Occurrences de clés dans les journaux ou réponses (analyse de sécurité)	حالات ظهور المفاتيح في السجلات أو الاستجابات (فحص أمني)
+159	Module de conformité présenté à tort comme une certification	تقديم إضافة المطابقة خطأً كشهادة اعتماد

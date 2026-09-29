@@ -1,0 +1,160 @@
+0	Définir les critères de priorisation	تحديد معايير الأولوية
+1	Définir des critères pondérés.	تحديد معايير مرجحة.
+2	L'IA note les thèmes selon les critères ; le stratège confirme le classement.	ينقط الذكاء الاصطناعي المحاور وفق المعايير؛ ويؤكد الاستراتيجي الترتيب.
+3	Estimer les jours par thème	تقدير الأيام لكل محور
+4	Estimer les jours de formation par thème.	تقدير أيام التكوين لكل محور.
+5	Planificateur formation	مخطط التكوين
+6	Définir le nombre de groupes par thème	تحديد عدد المجموعات لكل محور
+7	Définir les groupes selon la population et la capacité.	تحديد المجموعات حسب الفئة والسعة.
+8	Affecter les formateurs	تخصيص المكونين
+9	Affecter formateurs internes et externes.	تخصيص المكونين الداخليين والخارجيين.
+10	Estimer le budget du plan	تقدير ميزانية الخطة
+11	Estimer le coût à partir des jours, groupes et tarifs journaliers.	تقدير التكلفة من الأيام والمجموعات والأجر اليومي.
+12	Séquencer la réalisation	جدولة التنفيذ
+13	Répartir la réalisation sur l'année.	توزيع التنفيذ على السنة.
+14	Valider le plan en gouvernance	المصادقة على الخطة في الحكامة
+15	Valider avec le comité de pilotage.	المصادقة مع لجنة القيادة.
+16	Publier le plan priorisé	نشر الخطة المرتبة
+17	Publier le plan de formation priorisé.	نشر خطة التكوين المرتبة حسب الأولوية.
+18	Suivre l'exécution du plan	تتبع تنفيذ الخطة
+19	Suivre la réalisation par rapport au plan.	تتبع الإنجاز مقارنة بالخطة.
+20	Rendre compte de l'utilisation des ressources	التقرير عن استعمال الموارد
+21	Rendre compte de l'utilisation des formateurs et du budget.	التقرير عن استعمال المكونين والميزانية.
+22	Consolider les constats de la mission	توحيد نتائج المهمة
+23	Consolider tous les livrables de la mission.	توحيد جميع مخرجات المهمة.
+24	Définir les perspectives	تحديد الآفاق المستقبلية
+25	Définir les perspectives avec le client.	تحديد الآفاق المستقبلية مع العميل.
+26	Planifier le coaching individuel	تخطيط التوجيه الفردي
+27	Planifier le coaching individuel pour l'excellence des personnes.	تخطيط التوجيه الفردي لتميز الأفراد.
+28	Planifier l'optimisation organisationnelle	تخطيط التحسين التنظيمي
+29	Planifier l'optimisation des organigrammes, rôles, processus et indicateurs.	تخطيط تحسين الهياكل والأدوار والمسارات والمؤشرات.
+30	Planifier la réhabilitation du SI	تخطيط إعادة تأهيل نظام المعلومات
+31	Planifier la réhabilitation ou la réingénierie du système d'information.	تخطيط إعادة تأهيل نظام المعلومات أو إعادة هندسته.
+32	Définir les indicateurs et tableaux de bord	تحديد المؤشرات ولوحات القيادة
+33	Définir le cadre d'indicateurs de la feuille de route.	تحديد إطار المؤشرات لخارطة الطريق.
+34	Prioriser les missions futures	ترتيب المهام المستقبلية
+35	L'IA classe les missions par impact et effort, pour validation par le chef de projet.	يرتب الذكاء الاصطناعي المهام حسب الأثر والجهد لمصادقة رئيس المشروع.
+36	Valider la feuille de route avec la direction	المصادقة على خارطة الطريق مع القيادة
+37	Valider la feuille de route avec la direction du client.	المصادقة على خارطة الطريق مع قيادة العميل.
+38	Associé	الشريك
+39	Publier la feuille de route post-mission	نشر خارطة طريق ما بعد المهمة
+40	Publier la feuille de route auprès de la direction générale.	نشر خارطة الطريق للإدارة العليا.
+41	Suivre l'exécution de la feuille de route	تتبع تنفيذ خارطة الطريق
+42	Suivre les jalons des missions.	تتبع محطات المهام.
+43	Améliorer la feuille de route en continu	تحسين خارطة الطريق باستمرار
+44	Mettre à jour la feuille de route à partir des résultats.	تحديث خارطة الطريق من النتائج.
+45	Rendre compte de l'avancement de la feuille de route	التقرير عن تقدم خارطة الطريق
+46	Rendre compte de l'avancement au comité de pilotage.	رفع تقرير التقدم إلى لجنة القيادة.
+47	Créer un groupe, une organisation ou un projet	إنشاء مجموعة أو مؤسسة أو مشروع
+48	Créer les enregistrements de hiérarchie ; les organisations sans groupe sont marquées Indépendantes.	إنشاء سجلات الهرمية؛ وتوسم المؤسسات غير المنتمية لمجموعة بأنها مستقلة.
+49	Maintenir l'arborescence OBS	صيانة شجرة الهيكل التنظيمي
+50	Maintenir sites, fonctions et équipes sans parent hors arborescence.	صيانة المواقع والوظائف والفرق دون آباء من خارج الشجرة.
+51	Charger ou activer la licence	تحميل الترخيص أو تفعيله
+52	Charger le fichier .lic signé (sur site) ou activer l'enregistrement de licence SaaS.	تحميل ملف .lic الموقع (محليًا) أو تفعيل سجل ترخيص السحابة.
+53	Valider la signature et l'expiration de la licence	التحقق من توقيع الترخيص وانتهائه
+54	Vérifier la signature Ed25519/HMAC, la date d'expiration et maxUsers.	التحقق من توقيع Ed25519/HMAC وتاريخ الانتهاء والحد الأقصى للمستخدمين.
+55	Choisir l'offre et les modules complémentaires	اختيار الباقة والإضافات
+56	Enregistrer l'offre active et les activations indépendantes des modules.	تسجيل الباقة النشطة وتفعيلات الإضافات المستقلة.
+57	Appliquer les quotas à la création	فرض الحصص عند الإنشاء
+58	Rejeter côté serveur toute création hors quota avec HTTP 409.	رفض الإنشاء المتجاوز للحصة من جهة الخادم برمز HTTP 409.
+59	Configurer les langues et valeurs par défaut	إعداد اللغات والقيم الافتراضية
+60	Définir la langue par défaut de l'organisation (EN/FR/AR).	تحديد اللغة الافتراضية للمؤسسة (EN/FR/AR).
+61	Définir l'option de justification obligatoire	تحديد خيار إلزامية التبرير
+62	Définir si une justification est obligatoire avant l'enregistrement.	تحديد ما إذا كان التبرير إلزاميًا قبل الحفظ.
+63	Configurer les canaux de notification	إعداد قنوات الإشعار
+64	Activer les canaux in-app, e-mail, SMS, push et webhook.	تفعيل قنوات التطبيق والبريد والرسائل القصيرة والإشعارات الفورية وwebhook.
+65	Lancer la sauvegarde planifiée	تشغيل النسخ الاحتياطي المبرمج
+66	Effectuer la sauvegarde quotidienne cohérente en ligne et purger celles hors rétention.	إجراء النسخ الاحتياطي اليومي المتسق وحذف النسخ المتجاوزة لمدة الاحتفاظ.
+67	Appliquer les migrations au démarrage	تطبيق الترحيلات عند الإقلاع
+68	Appliquer des migrations additives sans écraser les modifications de l'administrateur.	تطبيق ترحيلات إضافية دون استبدال تعديلات المسؤول.
+69	Revoir les sauvegardes et l'état de santé	مراجعة النسخ الاحتياطية والسلامة
+70	Revoir la liste des sauvegardes, le point de santé et la vue de traçabilité.	مراجعة قائمة النسخ ونقطة السلامة وعرض التتبع.
+71	Choisir le module de norme de conformité	اختيار إضافة معيار المطابقة
+72	Activer la norme pour l'organisation.	تفعيل المعيار للمؤسسة.
+73	Afficher la mention de non-certification	عرض إشعار عدم الاعتماد
+74	Afficher l'avis non masquable indiquant que l'activation n'est pas une certification.	عرض الإشعار غير القابل للإخفاء بأن التفعيل ليس اعتمادًا.
+75	Créer le socle de contrôles de façon idempotente	إنشاء هيكل الضوابط دون تكرار
+76	Créer une seule fois les contrôles étiquetés ; une nouvelle activation ne crée pas de doublons.	إنشاء الضوابط الموسومة مرة واحدة؛ ولا ينشئ التفعيل المتكرر نسخًا مكررة.
+77	Affecter les responsables des contrôles	إسناد مسؤولي الضوابط
+78	Affecter un responsable et une fréquence de test à chaque contrôle créé.	إسناد مسؤول ووتيرة اختبار لكل ضابط منشأ.
+79	Tester l'efficacité des contrôles	اختبار فعالية الضوابط
+80	Tester le contrôle et noter son efficacité.	اختبار الضابط وتقييم فعاليته.
+81	Enregistrer les preuves de contrôle	تسجيل أدلة الضبط
+82	Joindre les preuves au test de contrôle.	إرفاق الأدلة باختبار الضابط.
+83	Revoir la couverture des composantes COSO	مراجعة تغطية مكونات COSO
+84	Vérifier la couverture des cinq composantes COSO.	التحقق من التغطية عبر مكونات COSO الخمسة.
+85	Désactiver la norme en conservant les contrôles	تعطيل المعيار مع الاحتفاظ بالضوابط
+86	Désactiver le module ; les contrôles étiquetés sont conservés.	تعطيل الإضافة؛ مع الاحتفاظ بالضوابط الموسومة.
+87	Définir le cadre (groupe oui/non)	تحديد إطار النطاق (مجموعة نعم/لا)
+88	Choisir si le périmètre couvre un groupe d'organisations (oui) ou une seule organisation (non).	اختيار ما إذا كان النطاق يشمل مجموعة مؤسسات (نعم) أو مؤسسة واحدة (لا).
+89	Sélectionner l'organisation	اختيار المؤسسة
+90	Sélectionner la ou les organisations concernées ; la frontière d'isolation des locataires s'applique.	اختيار المؤسسة أو المؤسسات ضمن النطاق؛ مع تطبيق حدود عزل المستأجرين.
+91	Sélectionner le secteur	اختيار القطاع
+92	Sélectionner le secteur dans la liste de référence (ex. agroalimentaire, banque, santé).	اختيار القطاع من اللائحة المرجعية (مثل الصناعات الغذائية، البنوك، الصحة).
+93	Sélectionner le niveau de décision (MS/MO/OP/personnalisé)	اختيار مستوى القرار (MS/MO/OP/مخصص)
+94	Sélectionner Management stratégique (MS), Management opérationnel (MO), Opérationnel (OP) ou un niveau personnalisé nommé.	اختيار الإدارة الاستراتيجية (MS) أو الإدارة العملياتية (MO) أو المستوى التنفيذي (OP) أو مستوى مخصص مسمى.
+95	Croiser fonctions × niveaux de décision	ربط الوظائف بمستويات القرار
+96	Construire la matrice des critères croisant les fonctions de l'architecture des emplois avec les niveaux de décision choisis.	إعداد مصفوفة معايير النطاق التي تربط وظائف هندسة الوظائف بمستويات القرار المختارة.
+97	Sélectionner l'orientation (tous/digital/IA/personnalisée)	اختيار التركيز (الكل/الرقمي/الذكاء الاصطناعي/مخصص)
+98	Sélectionner l'orientation de la mission : tous les besoins, digital, IA ou une orientation personnalisée nommée.	اختيار تركيز المهمة: جميع احتياجات التكوين أو الرقمي أو الذكاء الاصطناعي أو تركيز مخصص مسمى.
+99	Ajouter des critères personnalisés	إضافة معايير مخصصة
+100	Ajouter des critères propres à l'organisation avec type, valeur et poids ; marqués is_custom = true.	إضافة معايير خاصة بالمؤسسة بالنوع والقيمة والوزن؛ موسومة is_custom = true.
+101	Enregistrer les parties prenantes répondantes avec rôle, fonction, niveau de décision, site et canal préféré.	تسجيل أصحاب المصلحة المستجيبين بالدور والوظيفة ومستوى القرار والموقع والقناة المفضلة.
+102	Valider et approuver le périmètre	التحقق من النطاق واعتماده
+103	Le responsable formation valide le périmètre ; le DRH ou le chef de projet consultant l'approuve.	يتحقق مسؤول التكوين من النطاق؛ ويعتمده مدير الموارد البشرية أو رئيس المشروع الاستشاري.
+104	Publier le périmètre et enregistrer les parties prenantes	نشر النطاق وتسجيل أصحاب المصلحة
+105	Générer le cahier des charges, publier le périmètre et enregistrer les parties prenantes pour la conception du questionnaire et l'analyse des besoins.	توليد وثيقة نطاق العمل ونشر النطاق وتسجيل أصحاب المصلحة لتصميم الاستبيان وتحليل الاحتياجات.
+106	Sélectionner le modèle de questionnaire par orientation	اختيار نموذج الاستبيان حسب التركيز
+107	Sélectionner un modèle versionné dans la bibliothèque, filtré par orientation et secteur.	اختيار نموذج ذي إصدار من المكتبة مرشح حسب التركيز والقطاع.
+108	Élaborer le questionnaire (charger/IA/manuel)	إعداد الاستبيان (تحميل/ذكاء اصطناعي/يدوي)
+109	Charger un modèle, générer des questions par IA à partir du cahier des charges approuvé, ou les rédiger manuellement.	تحميل نموذج أو توليد أسئلة بالذكاء الاصطناعي من دفتر نطاق العمل المعتمد أو كتابتها يدويًا.
+110	Adapter au secteur et à l'orientation	التكييف مع القطاع والتركيز
+111	L'IA propose une formulation propre au secteur et à l'orientation ; l'analyste formation valide chaque changement avant diffusion.	يقترح الذكاء الاصطناعي صياغة خاصة بالقطاع والتركيز؛ ويصادق محلل التكوين على كل تغيير قبل التوزيع.
+112	Affecter le RACSI par section	توزيع أدوار RACSI لكل قسم
+113	Attribuer les rôles Réalisateur, Approbateur, Consulté, Support et Informé à chaque section, avec un seul Approbateur.	إسناد أدوار المنفذ والمسؤول النهائي والمستشار والداعم والمُخبَر لكل قسم، مع مسؤول نهائي واحد فقط.
+114	Choisir les canaux de diffusion	اختيار قنوات التوزيع
+115	Choisir face-à-face, e-mail, hybride ou canaux personnalisés par segment de parties prenantes.	اختيار قنوات حضورية أو البريد أو مختلطة أو مخصصة لكل فئة من أصحاب المصلحة.
+116	Diffuser aux parties prenantes	التوزيع على أصحاب المصلحة
+117	Envoyer le questionnaire via chaque canal choisi et journaliser chaque envoi.	إرسال الاستبيان عبر كل قناة مختارة وتسجيل كل إرسال.
+118	Envoyer les relances selon la cadence	إرسال التذكيرات وفق الوتيرة
+119	Relancer les non-répondants selon la cadence propre à chaque canal.	إرسال تذكيرات لغير المستجيبين وفق وتيرة كل قناة.
+120	Soumettre les réponses en ligne, ou les saisir hors ligne (face-à-face) avec synchronisation ultérieure.	تقديم الإجابات عبر الإنترنت أو التقاطها دون اتصال (حضوريًا) مع المزامنة لاحقًا.
+121	Partie prenante	صاحب المصلحة
+122	Valider la complétude et le consentement	التحقق من الاكتمال والموافقة
+123	Vérifier le consentement avant d'enregistrer toute réponse et calculer la complétude par réponse.	التحقق من الموافقة قبل حفظ أي إجابة واحتساب الاكتمال لكل إجابة.
+124	Consolider les réponses validées dans un jeu de données structuré propre au locataire.	توحيد الإجابات المعتمدة في مجموعة بيانات منظمة خاصة بالمستأجر.
+125	Alimenter l'analyse des besoins et le diagnostic	تغذية تحليل الاحتياجات والتشخيص بالإجابات
+126	Transmettre le jeu de données consolidé à MP-03 Analyse des besoins, MP-37 Diagnostic et MP-46 Collecte des demandes.	إرسال مجموعة البيانات الموحدة إلى MP-03 تحليل الاحتياجات وMP-37 التشخيص وMP-46 جمع الطلبات.
+127	Rendre compte du taux de réponse et de l'engagement	التقرير عن معدل الاستجابة والانخراط
+128	Rendre compte des taux de réponse, d'engagement et de complétude par canal, orientation et segment.	التقرير عن معدلات الاستجابة والانخراط والاكتمال لكل قناة وتركيز وفئة.
+129	De la stratégie au plan de formation	من الاستراتيجية إلى خطة التكوين
+130	Chaîne racine / maîtresse	السلسلة الجذرية / الرئيسية
+131	Traduire la stratégie de l'entreprise en un plan annuel de formation approuvé et un budget	ترجمة استراتيجية المؤسسة إلى خطة تكوين سنوية معتمدة وميزانية
+132	Racine	جذرية
+133	Ouverture du cycle stratégique annuel ou publication par le conseil d'objectifs révisés.	افتتاح الدورة الاستراتيجية السنوية أو نشر مجلس الإدارة لأهداف منقحة.
+134	Plan annuel de formation et enveloppe budgétaire approuvés par le comité de pilotage et verrouillés.	خطة التكوين السنوية والغلاف المالي معتمدان من لجنة القيادة ومقفلان.
+135	M01 Console stratégie ; M02 Hub compétences ; M03 Analyseur de besoins ; M04 Studio rapport et feuille de route ; M18 Console finance ; M19 Hub du changement	M01 وحدة الاستراتيجية؛ M02 مركز المهارات؛ M03 محلل الاحتياجات؛ M04 استوديو التقرير وخارطة الطريق؛ M18 وحدة المالية؛ M19 مركز التغيير
+136	Cette chaîne racine traduit la stratégie de l'entreprise en un plan annuel de formation approuvé. Elle enregistre les objectifs stratégiques, les relie aux fonctions et aux sites, fixe l'enveloppe budgétaire et le calendrier de gouvernance, et se termine par une décision du comité de pilotage qui verrouille le plan.	تترجم هذه السلسلة الجذرية استراتيجية المؤسسة إلى خطة تكوين سنوية معتمدة. فهي تسجل الأهداف الاستراتيجية وتربطها بالوظائف والمواقع، وتحدد الغلاف المالي وجدول الحكامة، وتنتهي بقرار من لجنة القيادة يقفل الخطة.
+137	Enregistrer les objectifs stratégiques	تسجيل الأهداف الاستراتيجية
+138	Saisir chaque objectif d'entreprise avec son responsable, son horizon et une cible mesurable.	إدخال كل هدف مؤسسي مع مسؤوله وأفقه وهدف قابل للقياس.
+139	Stratégie d'entreprise	استراتيجية المؤسسة
+140	Registre des objectifs stratégiques	سجل الأهداف الاستراتيجية
+141	Rattacher chaque objectif aux fonctions et sites concernés.	ربط كل هدف بالوظائف والمواقع المعنية.
+142	Responsables de fonction	رؤساء الوظائف
+143	Analyste	المحلل
+144	Carte objectifs-fonctions	خريطة الأهداف والوظائف
+145	Cadrer les priorités de compétences	تأطير أولويات المهارات
+146	Identifier les familles de compétences requises par chaque objectif.	تحديد عائلات الكفاءات التي يتطلبها كل هدف.
+147	Liste des compétences prioritaires	قائمة الكفاءات ذات الأولوية
+148	Pré-cadrer les besoins de formation	التحديد المسبق لاحتياجات التكوين
+149	Revoir la matrice actuelle des écarts au regard des objectifs.	مراجعة مصفوفة الفجوات الحالية مقارنة بالأهداف.
+150	Managers	المدراء
+151	Besoins pré-cadrés	احتياجات محددة مسبقًا
+152	Définir l'enveloppe budgétaire	تحديد الغلاف المالي
+153	Saisir le budget brut de formation et les remboursements prévus pour l'année du plan.	إدخال ميزانية التكوين الإجمالية والاستردادات المتوقعة لسنة الخطة.
+154	Enveloppe budgétaire	الغلاف المالي
+155	Planifier le changement et l'adoption	تخطيط التغيير والتبني
+156	Évaluer l'impact du changement lié au plan et rédiger le plan d'adoption.	تقييم أثر التغيير للخطة وصياغة خطة التبني.
+157	Responsables métiers	قادة الأعمال
+158	Plan d'adoption	خطة التبني
+159	Rassembler objectifs, budget et synthèse de la feuille de route ; planifier le comité.	تجميع الأهداف والميزانية وملخص خارطة الطريق؛ وبرمجة اللجنة.

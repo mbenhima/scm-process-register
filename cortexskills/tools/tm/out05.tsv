@@ -1,0 +1,160 @@
+0	Définir l'activation de l'IA par périmètre	تحديد تفعيل الذكاء الاصطناعي حسب النطاق
+1	Activer ou désactiver les cas d'usage IA par organisation ou par projet.	تفعيل حالات استخدام الذكاء الاصطناعي أو تعطيلها حسب المؤسسة أو المشروع.
+2	Revoir le journal d'usage de l'IA	مراجعة سجل استخدام الذكاء الاصطناعي
+3	Revoir les suggestions acceptées, modifiées et rejetées pour détecter les dérives.	مراجعة الاقتراحات المقبولة والمعدلة والمرفوضة لرصد الانحرافات.
+4	Provisionner les utilisateurs via SSO	تزويد المستخدمين عبر الدخول الموحد
+5	Créer, mettre à jour ou désactiver les comptes à partir des événements SSO/SCIM.	إنشاء الحسابات أو تحديثها أو تعطيلها من أحداث الدخول الموحد/SCIM.
+6	Attribuer des rôles à l'utilisateur	إسناد أدوار للمستخدم
+7	Attribuer un ou plusieurs rôles dans le périmètre de l'utilisateur.	إسناد دور أو أكثر ضمن نطاق المستخدم.
+8	Modifier la matrice des permissions	تعديل مصفوفة الصلاحيات
+9	Modifier les droits rôle par capacité, avec effet immédiat.	تعديل الصلاحيات حسب الدور والقدرة بأثر فوري.
+10	Revoir le journal des violations d'accès	مراجعة سجل انتهاكات الولوج
+11	Revoir les tentatives d'accès refusées et assurer le suivi.	مراجعة محاولات الولوج المرفوضة ومتابعتها.
+12	Émettre un jeton de session signé	إصدار رمز جلسة موقع
+13	Émettre un jeton signé et limité dans le temps à la connexion.	إصدار رمز موقع ومحدد المدة عند تسجيل الدخول.
+14	Appliquer la limite de tentatives de connexion	فرض حد محاولات الدخول
+15	Limiter les tentatives de connexion répétées par client.	تقييد محاولات الدخول المتكررة لكل عميل.
+16	Répartir le budget par thème et par site	توزيع الميزانية حسب المحور والموقع
+17	Découper l'enveloppe en lignes budgétaires par thème et par site.	تقسيم الغلاف المالي إلى بنود حسب المحور والموقع.
+18	Prévoir les remboursements OFPPT	توقع استردادات مكتب التكوين المهني
+19	Prévoir les montants remboursables par action éligible.	توقع المبالغ القابلة للاسترداد لكل إجراء مؤهل.
+20	Enregistrer les engagements et coûts réels	تسجيل الالتزامات والتكاليف الفعلية
+21	Comptabiliser les engagements depuis les bons de commande et les réalisations depuis les factures.	تسجيل الالتزامات من سندات الطلب والتكاليف الفعلية من الفواتير.
+22	Comparer les dépenses au budget	مقارنة النفقات بالميزانية
+23	Revoir l'écart par ligne budgétaire.	مراجعة الفارق لكل بند ميزانية.
+24	Déposer les demandes de remboursement	تقديم طلبات الاسترداد
+25	Déposer les demandes de remboursement avec les pièces requises.	تقديم طلبات الاسترداد مع الأدلة المطلوبة.
+26	Clôturer la période budgétaire	إقفال فترة الميزانية
+27	Clôturer la période et reporter les engagements approuvés.	إقفال الفترة وترحيل الالتزامات المعتمدة.
+28	Évaluer l'impact du changement	تقييم أثر التغيير
+29	Évaluer l'impact par groupe de parties prenantes.	تقييم الأثر لكل مجموعة من أصحاب المصلحة.
+30	Construire le plan d'adoption	إعداد خطة التبني
+31	Définir les actions de communication, de formation et d'accompagnement.	تحديد إجراءات التواصل والتكوين والدعم.
+32	Lancer la campagne de communication	إطلاق حملة التواصل
+33	Diffuser la campagne via les canaux choisis.	إرسال الحملة عبر القنوات المختارة.
+34	Suivre l'usage et l'adoption	تتبع استخدام التبني
+35	Calculer l'usage actif par groupe et fonctionnalité.	احتساب الاستخدام النشط لكل مجموعة وخاصية.
+36	Identifier les groupes à faible adoption	تحديد المجموعات ضعيفة التبني
+37	L'IA signale les groupes sous l'objectif d'adoption et propose des causes probables.	يرصد الذكاء الاصطناعي المجموعات دون هدف التبني ويقترح الأسباب المحتملة.
+38	Mener les actions de renforcement	تنفيذ إجراءات التعزيز
+39	Mener des actions ciblées et enregistrer leur résultat.	تنفيذ إجراءات موجهة وتسجيل نتائجها.
+40	Enregistrer un risque ou une opportunité	تسجيل خطر أو فرصة
+41	Enregistrer le type, la probabilité (1-5), l'impact (1-5) et le responsable.	تسجيل النوع والاحتمال (1-5) والأثر (1-5) والمسؤول.
+42	Affecter une action de maîtrise	إسناد إجراء تخفيف
+43	Créer une action avec responsable, évaluateur et échéance.	إنشاء إجراء بمسؤول ومقيّم وتاريخ استحقاق.
+44	Exécuter l'action d'amélioration	تنفيذ إجراء التحسين
+45	Exécuter l'action et joindre les preuves.	تنفيذ الإجراء وإرفاق الأدلة.
+46	Responsable de l'action	مسؤول الإجراء
+47	Évaluer l'efficacité de l'action	تقييم فعالية الإجراء
+48	Noter l'efficacité ; l'évaluateur doit être différent du responsable.	تقييم الفعالية؛ ويجب أن يكون المقيّم مختلفًا عن المسؤول.
+49	Évaluateur de l'action	مقيّم الإجراء
+50	Mener la revue qualité périodique	إجراء مراجعة الجودة الدورية
+51	Revoir les risques, les contrôles et les actions ouvertes.	مراجعة المخاطر والضوابط والإجراءات المفتوحة.
+52	Mettre à jour la note d'efficacité des contrôles	تحديث تقييم فعالية الضوابط
+53	Mettre à jour la note d'efficacité de chaque contrôle avec justification.	تحديث تقييم فعالية كل ضابط مع التبرير.
+54	Demander un coaching	طلب توجيه
+55	Soumettre une demande de coaching avec objectif et disponibilités.	تقديم طلب توجيه مع الهدف والتوفر.
+56	Associer un coach à l'apprenant	مطابقة موجّه مع المتعلم
+57	L'IA propose des coachs classés par expertise et disponibilité, pour confirmation.	يقترح الذكاء الاصطناعي موجهين مرتبين حسب الخبرة والتوفر للتأكيد.
+58	Planifier les séances de coaching	برمجة جلسات التوجيه
+59	Planifier les séances convenues.	برمجة الجلسات المتفق عليها.
+60	Coach	الموجّه
+61	Consigner les notes de séance	تسجيل ملاحظات الجلسة
+62	Enregistrer les notes confidentielles et les actions convenues.	تسجيل ملاحظات الجلسة السرية والإجراءات المتفق عليها.
+63	Évaluer les résultats du coaching	تقييم نتائج التوجيه
+64	Noter la progression au regard de l'objectif du coaching.	تقييم التقدم مقارنة بهدف التوجيه.
+65	Clôturer l'accompagnement	إغلاق مهمة التوجيه
+66	Clôturer l'accompagnement et déclencher la demande de REX.	إغلاق المهمة وإطلاق طلب الدروس المستفادة.
+67	Créer un sous-portail externe	إنشاء بوابة فرعية خارجية
+68	Créer un portail à la marque pour un public de partenaires ou de clients.	إنشاء بوابة بعلامة مخصصة لجمهور الشركاء أو العملاء.
+69	Configurer le catalogue externe et les tarifs	إعداد الفهرس الخارجي والأسعار
+70	Sélectionner les formations et fixer les prix.	اختيار الدورات وتحديد الأسعار.
+71	Traiter le paiement en ligne	معالجة الأداء الإلكتروني
+72	Traiter le paiement via la passerelle de paiement configurée.	معالجة الأداء عبر بوابة الأداء المعدة.
+73	Inscrire l'apprenant externe	تسجيل المتعلم الخارجي
+74	Inscrire l'apprenant payant et lui envoyer ses accès.	تسجيل المتعلم المؤدي وإرسال بيانات الولوج.
+75	Suivre l'achèvement externe	تتبع إتمام الخارجيين
+76	Suivre l'achèvement et les notes des apprenants externes.	تتبع إتمام المتعلمين الخارجيين ونتائجهم.
+77	Délivrer la certification partenaire	إصدار شهادة الشريك
+78	Délivrer la certification aux partenaires qualifiés.	إصدار الشهادة للشركاء المؤهلين.
+79	Demander une traduction	طلب ترجمة
+80	Demander les versions FR/AR d'un contenu.	طلب النسختين الفرنسية والعربية من أصل.
+81	Rédiger une traduction automatique	صياغة ترجمة آلية
+82	L'IA rédige la traduction, signalée comme nécessitant une revue humaine.	يصوغ الذكاء الاصطناعي الترجمة موسومة بأنها تتطلب مراجعة بشرية.
+83	Valider la traduction	المصادقة على الترجمة
+84	Valider la terminologie et le sens de la traduction.	التحقق من مصطلحات الترجمة ومعناها.
+85	Lancer le contrôle d'accessibilité	إجراء فحص إمكانية الوصول
+86	Vérifier le contenu selon les critères WCAG 2.1 AA.	فحص الأصل وفق معايير WCAG 2.1 AA.
+87	Corriger les problèmes d'accessibilité	إصلاح مشكلات إمكانية الوصول
+88	Corriger les problèmes signalés et relancer le contrôle.	تصحيح المشكلات المبلغ عنها وإعادة الفحص.
+89	Revoir l'équité de participation	مراجعة إنصاف المشاركة
+90	Comparer l'accès à la formation entre segments.	مقارنة الولوج إلى التكوين بين الفئات.
+91	Enregistrer les actions d'inclusion	تسجيل إجراءات الإدماج
+92	Enregistrer les actions pour les segments peu servis.	تسجيل إجراءات للفئات الأقل استفادة.
+93	Activer la personnalisation par périmètre	تفعيل التخصيص حسب النطاق
+94	Activer la personnalisation pour une organisation, un site ou un projet.	تفعيل التخصيص لمؤسسة أو موقع أو مشروع.
+95	Définir les règles d'adaptation	تحديد قواعد التكييف
+96	Définir les seuils de maîtrise et les branches de remédiation.	تحديد عتبات الإتقان وفروع المعالجة.
+97	Adapter le parcours à la performance de l'apprenant	تكييف المسار مع أداء المتعلم
+98	L'IA propose de passer ou d'ajouter des modules selon la performance ; l'apprenant confirme.	يقترح الذكاء الاصطناعي تخطي وحدات أو إضافتها حسب الأداء؛ ويؤكد المتعلم.
+99	Enregistrer la réponse de l'apprenant à l'adaptation	تسجيل رد المتعلم على التكييف
+100	Consigner les adaptations acceptées, modifiées ou rejetées dans le journal d'usage de l'IA.	تسجيل التكييفات المقبولة أو المعدلة أو المرفوضة في سجل استخدام الذكاء الاصطناعي.
+101	Revoir l'acceptation des recommandations	مراجعة قبول التوصيات
+102	Revoir les taux d'acceptation par population.	مراجعة معدلات القبول حسب الفئة.
+103	Ajuster les paramètres de personnalisation	ضبط إعدادات التخصيص
+104	Ajuster pondérations et exclusions avec justification.	ضبط الأوزان والاستثناءات مع التبرير.
+105	Rédiger une capsule de micro-apprentissage	تأليف كبسولة تعلم مصغر
+106	Rédiger une capsule de 3 à 5 minutes avec un seul objectif.	تأليف كبسولة من 3 إلى 5 دقائق بهدف واحد.
+107	Générer un projet de capsule à partir d'une source	توليد مسودة كبسولة من مصدر
+108	L'IA rédige une capsule à partir d'une procédure ou d'un module, pour revue.	يصوغ الذكاء الاصطناعي كبسولة من إجراء أو وحدة للمراجعة.
+109	Pousser la capsule vers un canal collaboratif	إرسال الكبسولة إلى قناة تعاون
+110	Pousser la capsule vers Teams, Slack ou WhatsApp selon les préférences de l'apprenant.	إرسال الكبسولة إلى Teams أو Slack أو WhatsApp حسب إعدادات المتعلم.
+111	Consulter la capsule sur mobile	استهلاك الكبسولة على الهاتف
+112	Ouvrir et terminer la capsule sur un écran mobile.	فتح الكبسولة وإتمامها على شاشة الهاتف.
+113	Suivre l'achèvement des capsules	تتبع إتمام الكبسولات
+114	Enregistrer vues, achèvement et résultat du quiz.	تسجيل المشاهدات والإتمام ونتيجة الاختبار.
+115	Retirer une capsule à faible valeur	سحب كبسولة ضعيفة القيمة
+116	Retirer les capsules sous le seuil d'utilité.	سحب الكبسولات دون عتبة الفائدة.
+117	Créer une cohorte d'apprentissage	إنشاء فوج تعلم
+118	Créer une cohorte liée à un parcours ou un thème.	إنشاء فوج مرتبط بمسار أو محور.
+119	Inviter les membres du groupe	دعوة أعضاء المجموعة
+120	Inviter apprenants, experts et managers.	دعوة المتعلمين والخبراء والمدراء.
+121	Publier une question ou une réponse	نشر سؤال أو جواب
+122	Publier une question, une réponse ou une ressource.	نشر سؤال أو جواب أو مورد.
+123	Valider la réponse d'un expert	اعتماد جواب الخبير
+124	Marquer une réponse comme validée.	وسم جواب بأنه معتمد.
+125	Signaler un contenu inapproprié	الإبلاغ عن محتوى غير لائق
+126	Signaler une publication qui enfreint la politique.	الإبلاغ عن منشور يخالف السياسة.
+127	Traiter le signalement de modération	معالجة بلاغ الإشراف
+128	Conserver, modifier ou supprimer la publication signalée.	الإبقاء على المنشور المبلغ عنه أو تعديله أو حذفه.
+129	Définir les règles de points et de badges	تحديد قواعد النقاط والشارات
+130	Définir la valeur des points et les critères de déblocage des badges.	تحديد قيم النقاط ومعايير فتح الشارات.
+131	Configurer le périmètre du classement	إعداد نطاق لوحة الترتيب
+132	Définir la population et la visibilité du classement.	تحديد فئة لوحة الترتيب وظهورها.
+133	Attribuer des points à l'achèvement	منح النقاط عند الإتمام
+134	Créditer des points lors des événements d'achèvement.	إضافة النقاط عند حدوث الإتمام.
+135	Débloquer un badge	فتح شارة
+136	Débloquer un badge lorsque ses critères sont remplis et notifier l'apprenant.	فتح شارة عند استيفاء معاييرها وإشعار المتعلم.
+137	Revoir le gain d'engagement	مراجعة تحسن الانخراط
+138	Comparer l'achèvement avant et après activation.	مقارنة الإتمام قبل التفعيل وبعده.
+139	Ajuster les règles de ludification	ضبط قواعد التلعيب
+140	Ajuster les règles qui induisent des comportements indésirables.	ضبط القواعد المسببة لسلوك غير مرغوب.
+141	Constituer le jeu de données analytique	إعداد مجموعة البيانات التحليلية
+142	Rassembler les données de compétences, RH et formation du locataire.	تجميع بيانات المهارات والموارد البشرية والتعلم للمستأجر.
+143	Valider la qualité du jeu de données	التحقق من جودة مجموعة البيانات
+144	Vérifier la complétude et les valeurs atypiques avant modélisation.	التحقق من الاكتمال والقيم الشاذة قبل النمذجة.
+145	Prévoir les écarts de compétences	توقع فجوات المهارات
+146	L'IA prévoit les compétences à risque sur un horizon de 6 à 18 mois.	يتوقع الذكاء الاصطناعي الكفاءات المعرضة للخطر على أفق من 6 إلى 18 شهرًا.
+147	Prédire le risque d'abandon des apprenants	التنبؤ بخطر انقطاع المتعلمين
+148	L'IA note les apprenants à risque de ne pas terminer les parcours obligatoires.	يقيّم الذكاء الاصطناعي المتعلمين المعرضين لعدم إتمام المسارات الإلزامية.
+149	Revoir les prédictions avec la formation	مراجعة التنبؤات مع فريق التكوين
+150	Accepter, modifier ou rejeter chaque prédiction.	قبول كل تنبؤ أو تعديله أو رفضه.
+151	Créer une action préventive	إنشاء إجراء وقائي
+152	Créer une action pour les prédictions acceptées.	إنشاء إجراء للتنبؤات المقبولة.
+153	Agréger les catalogues fournisseurs	تجميع فهارس المزودين
+154	Importer les catalogues des fournisseurs de contenus connectés.	استيراد الفهارس من مزودي المحتوى المتصلين.
+155	Recommander des éléments sélectionnés	التوصية بعناصر منتقاة
+156	L'IA classe les éléments selon leur pertinence pour les thèmes et écarts.	يرتب الذكاء الاصطناعي العناصر حسب ملاءمتها للمحاور والفجوات.
+157	Approuver l'élément sélectionné	اعتماد العنصر المنتقى
+158	Approuver un élément pour le catalogue interne.	اعتماد عنصر للفهرس الداخلي.
+159	Organiser une collection	تنظيم مجموعة منتقاة

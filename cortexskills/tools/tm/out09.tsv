@@ -1,0 +1,160 @@
+0	Administration	الإدارة
+1	Comité de pilotage	لجنة القيادة
+2	Dossier d'approbation	ملف الاعتماد
+3	Approuver et verrouiller le plan annuel de formation	اعتماد خطة التكوين السنوية وقفلها
+4	Enregistrer la décision du comité avec justification et verrouiller le plan.	تسجيل قرار اللجنة مع التبرير وقفل الخطة.
+5	Toutes les parties prenantes	جميع أصحاب المصلحة
+6	Plan annuel de formation approuvé	خطة التكوين السنوية المعتمدة
+7	Des compétences au diagnostic des écarts	من المهارات إلى تشخيص الفجوات
+8	Partition de E2E-01	جزء من E2E-01
+9	Produire un diagnostic validé des écarts de compétences	إنتاج تشخيص معتمد لفجوات المهارات
+10	Partition de	جزء من
+11	Plan annuel de formation approuvé ou campagne d'évaluation des compétences planifiée.	خطة تكوين سنوية معتمدة أو حملة تقييم مهارات مبرمجة.
+12	Diagnostic validé des écarts de compétences transmis à l'analyse des besoins.	تشخيص معتمد لفجوات المهارات محال إلى تحليل الاحتياجات.
+13	M02 Hub compétences ; M03 Analyseur de besoins ; M28 Hub d'analytique prédictive	M02 مركز المهارات؛ M03 محلل الاحتياجات؛ M28 مركز التحليلات التنبؤية
+14	Cette partition de E2E-01 maintient le référentiel de compétences, mène la campagne d'évaluation, valide l'inventaire et calcule la matrice des écarts qui alimente le rapport phare.	يحافظ هذا الجزء من E2E-01 على مرجعية الكفاءات، وينفذ حملة تقييم المهارات، ويعتمد الجرد، ويحتسب مصفوفة الفجوات التي تغذي التقرير الرئيسي.
+15	Définir les familles de compétences et les niveaux sur l'échelle 1 à 4.	تحديد عائلات الكفاءات ومستوياتها على سلم من 1 إلى 4.
+16	Architecture des emplois	هندسة الوظائف
+17	Référentiel de compétences	مرجعية الكفاءات
+18	Fixer la maîtrise requise par compétence et par poste.	تحديد الإتقان المطلوب لكل كفاءة ومنصب.
+19	Opérations RH	عمليات الموارد البشرية
+20	Cibles par poste	أهداف المناصب
+21	Choisir la population, les compétences, les évaluateurs et la date de clôture.	اختيار الفئة والكفاءات والمقيّمين وتاريخ الإغلاق.
+22	Collaborateurs	الموظفون
+23	Campagne ouverte	حملة مفتوحة
+24	Recueillir les auto-évaluations et évaluations managers	جمع التقييمات الذاتية وتقييمات المدراء
+25	Les collaborateurs s'auto-évaluent ; les managers valident chaque niveau.	يقيّم الموظفون أنفسهم؛ ويصادق المدراء على كل مستوى.
+26	Évaluations consolidées	تقييمات موحدة
+27	Revoir les niveaux proposés par l'IA à partir des preuves.	مراجعة المستويات المقترحة من الذكاء الاصطناعي استنادًا إلى الأدلة.
+28	Assistant IA	المساعد الذكي
+29	Niveaux proposés	المستويات المقترحة
+30	Valider l'inventaire avant le calcul des écarts.	اعتماد الجرد قبل احتساب الفجوات.
+31	Inventaire validé	جرد معتمد
+32	Calculer et prévoir les écarts	احتساب الفجوات وتوقعها
+33	Calculer la matrice des écarts et la prévision à 6-18 mois.	احتساب مصفوفة الفجوات وتوقعها على 6-18 شهرًا.
+34	Diagnostic des écarts de compétences	تشخيص فجوات المهارات
+35	Des besoins au rapport d'ingénierie de formation et à la feuille de route	من الاحتياجات إلى تقرير هندسة التكوين وخارطة الطريق
+36	Chaîne racine / maîtresse (phare)	السلسلة الجذرية / الرئيسية (المحورية)
+37	Produire le rapport d'ingénierie de formation et la feuille de route priorisée	إنتاج تقرير هندسة التكوين وخارطة طريق التكوين المرتبة
+38	Racine (phare)	جذرية (محورية)
+39	Utilise le livrable de E2E-02	تستعمل مخرجات E2E-02
+40	Diagnostic validé des écarts, demandes consolidées, cahier des charges approuvé ou constats de diagnostic disponibles.	تشخيص الفجوات المعتمد أو الطلبات الموحدة أو دفتر نطاق العمل المعتمد أو نتائج التشخيص متاحة.
+41	Rapport d'ingénierie de formation et feuille de route priorisée approuvés et publiés.	تقرير هندسة التكوين وخارطة الطريق المرتبة معتمدان ومنشوران.
+42	M01 Console stratégie ; M03 Analyseur de besoins ; M04 Studio rapport et feuille de route ; M18 Console finance ; M20 Centre qualité	M01 وحدة الاستراتيجية؛ M03 محلل الاحتياجات؛ M04 استوديو التقرير وخارطة الطريق؛ M18 وحدة المالية؛ M20 مركز الجودة
+43	La chaîne phare. Elle transforme écarts, demandes, réponses aux questionnaires et constats de diagnostic en un registre validé des besoins, rédige le rapport d'ingénierie de formation avec l'aide de l'IA, mène une revue qualité, puis séquence et approuve la feuille de route.	السلسلة المحورية. تحول الفجوات والطلبات وأدلة الاستبيانات ونتائج التشخيص إلى سجل احتياجات معتمد، وتصوغ تقرير هندسة التكوين بمساعدة الذكاء الاصطناعي، وتجري مراجعة للجودة، ثم تجدول خارطة الطريق وتعتمدها.
+44	Planifier les entretiens semi-directifs avec l'échantillon.	تخطيط المقابلات شبه الموجهة مع العينة.
+45	Cahier des charges approuvé	دفتر نطاق العمل المعتمد
+46	Plan d'entretiens	خطة المقابلات
+47	Enregistrer les constats par entretien et par fonction.	تسجيل النتائج لكل مقابلة ووظيفة.
+48	Constats d'entretien	نتائج المقابلات
+49	Regrouper les besoins en thèmes	تجميع الاحتياجات في محاور
+50	Accepter, fusionner ou scinder les thèmes de formation proposés par l'IA.	قبول محاور التكوين المقترحة من الذكاء الاصطناعي أو دمجها أو تقسيمها.
+51	Constats d'entretien, écarts, réponses	نتائج المقابلات، الفجوات، الإجابات
+52	Thèmes de formation	محاور التكوين
+53	Prioriser les besoins selon l'impact	ترتيب الاحتياجات حسب الأثر
+54	Noter chaque besoin selon l'impact métier et l'urgence.	تنقيط كل احتياج حسب الأثر على الأعمال والاستعجال.
+55	Besoins priorisés	احتياجات مرتبة
+56	Valider le registre des besoins avant la rédaction du rapport.	المصادقة على سجل الاحتياجات قبل صياغة التقرير.
+57	Registre des besoins validé	سجل الاحتياجات المعتمد
+58	Consolider les livrables amont et vérifier leur complétude.	توحيد المخرجات المغذية والتحقق من اكتمالها.
+59	Contrôle de complétude des intrants	فحص اكتمال المدخلات
+60	Générer le projet et compléter chaque section.	توليد المسودة وإكمال كل قسم.
+61	Projet de rapport	مسودة التقرير
+62	Mener la revue qualité	إجراء مراجعة الجودة
+63	Le responsable qualité revoit le rapport au regard de la liste de contrôle.	يراجع مسؤول الجودة التقرير وفق قائمة التحقق.
+64	Rapport revu	تقرير مراجع
+65	Séquencer et budgéter la feuille de route	جدولة خارطة الطريق وتقدير ميزانيتها
+66	Séquencer les initiatives et les confronter au budget.	جدولة المبادرات ومقارنتها بالميزانية.
+67	Projet de feuille de route	مسودة خارطة الطريق
+68	Approuver et publier le rapport et la feuille de route	اعتماد التقرير وخارطة الطريق ونشرهما
+69	Soumettre, approuver et publier le rapport et la feuille de route.	تقديم التقرير وخارطة الطريق واعتمادهما ونشرهما.
+70	Rapport d'ingénierie de formation et feuille de route approuvés	تقرير هندسة التكوين وخارطة الطريق المعتمدان
+71	De la feuille de route à la conception des cursus	من خارطة الطريق إلى تصميم المناهج
+72	Partition de E2E-03	جزء من E2E-03
+73	Convertir la feuille de route en cartes de cursus, parcours et documents de conception	تحويل خارطة الطريق إلى خرائط مناهج ومسارات تعلم ووثائق تصميم
+74	Rapport d'ingénierie de formation et feuille de route approuvés publiés.	تقرير هندسة التكوين وخارطة الطريق المعتمدان منشوران.
+75	Cartes de cursus, parcours d'apprentissage et documents de conception approuvés.	خرائط المناهج ومسارات التعلم ووثائق التصميم المعتمدة.
+76	M04 Studio rapport et feuille de route ; M05 Studio de conception ; M06 Bibliothèque de contenus ; M23 Centre localisation et accessibilité	M04 استوديو التقرير وخارطة الطريق؛ M05 استوديو التصميم؛ M06 مكتبة المحتوى؛ M23 مركز التوطين وإمكانية الوصول
+77	Cette partition de E2E-03 convertit la feuille de route en cartes de cursus et parcours, rédige la spécification de conception, la localise et la fait approuver.	يحول هذا الجزء من E2E-03 خارطة الطريق إلى خرائط مناهج ومسارات تعلم، ويصوغ مواصفات التصميم، ويوطنها، ويحصل على اعتمادها.
+78	Créer la carte des cursus	إنشاء خريطة المناهج
+79	Créer la carte des cursus à partir de la feuille de route approuvée.	إنشاء خريطة المناهج من خارطة الطريق المعتمدة.
+80	Feuille de route approuvée	خارطة الطريق المعتمدة
+81	Carte des cursus	خريطة المناهج
+82	Définir les parcours et modules	تحديد مسارات التعلم والوحدات
+83	Définir parcours et modules par population cible.	تحديد المسارات والوحدات لكل فئة مستهدفة.
+84	Parcours d'apprentissage	مسارات التعلم
+85	Rédiger les objectifs pédagogiques	صياغة الأهداف التعليمية
+86	Rédiger des objectifs mesurables par module.	صياغة أهداف قابلة للقياس لكل وحدة.
+87	Formateurs	المكونون
+88	Objectifs pédagogiques	الأهداف التعليمية
+89	Revoir la structure proposée par l'IA pour chaque module.	مراجعة البنية المقترحة من الذكاء الاصطناعي لكل وحدة.
+90	Structure des modules	بنية الوحدات
+91	Définir l'approche d'évaluation par module.	تحديد مقاربة التقييم لكل وحدة.
+92	Stratégie d'évaluation	استراتيجية التقييم
+93	Développer et étiqueter les contenus	تطوير المحتوى ووسمه
+94	Charger les contenus et les étiqueter avec les compétences.	تحميل الأصول ووسمها بالكفاءات.
+95	Contenus étiquetés	أصول محتوى موسومة
+96	Localiser et vérifier l'accessibilité	التوطين وفحص إمكانية الوصول
+97	Traduire en FR/AR et lancer le contrôle d'accessibilité.	الترجمة إلى الفرنسية والعربية وإجراء فحص إمكانية الوصول.
+98	Apprenants	المتعلمون
+99	Contenus localisés et accessibles	محتوى موطّن وميسر
+100	Revoir avec l'expert et approuver la conception.	المراجعة مع الخبير واعتماد التصميم.
+101	Document de conception approuvé	وثيقة التصميم المعتمدة
+102	De la conception à la réalisation	من التصميم إلى التنفيذ
+103	Réaliser la formation selon toutes les modalités	تنفيذ التكوين بجميع الأنماط
+104	Utilise le livrable de E2E-04	تستعمل مخرجات E2E-04
+105	Document de conception approuvé et plan de formation priorisé.	وثيقة التصميم المعتمدة وخطة التكوين المرتبة.
+106	Formation réalisée selon toutes les modalités avec présence et achèvement enregistrés.	التكوين منفذ بجميع الأنماط مع تسجيل الحضور والإتمام.
+107	M05 Studio de conception ; M06 Bibliothèque de contenus ; M07 Centre de réalisation ; M11 Console d'administration ; M17 Centre sécurité ; M25 Hub micro-apprentissage ; M30 Laboratoire d'apprentissage immersif	M05 استوديو التصميم؛ M06 مكتبة المحتوى؛ M07 مركز التنفيذ؛ M11 وحدة الإدارة؛ M17 مركز الأمن؛ M25 مركز التعلم المصغر؛ M30 مختبر التعلم الغامر
+108	Cette chaîne racine réalise la formation en présentiel, à distance, en micro-apprentissage et en immersif : elle publie les contenus, planifie les sessions, inscrit les apprenants, anime les sessions et les clôture avec présence et achèvement.	تنفذ هذه السلسلة الجذرية التكوين حضوريًا وافتراضيًا وبالتعلم المصغر والغامر: تنشر المحتوى، وتبرمج الدورات، وتسجل المتعلمين، وتنشط الدورات، وتغلقها مع تسجيل الحضور والإتمام.
+109	Publier les contenus relus au catalogue.	نشر المحتوى المراجع في الفهرس.
+110	Conception approuvée	تصميم معتمد
+111	Catalogue publié	فهرس منشور
+112	Réserver la logistique	حجز اللوجستيك
+113	Réserver salles, équipements et agendas des formateurs.	حجز القاعات والتجهيزات وجداول المكونين.
+114	Plan logistique	خطة اللوجستيك
+115	Créer les sessions et résoudre les conflits de planning.	إنشاء الدورات وحل تعارضات البرمجة.
+116	Planning des sessions	برنامج الدورات
+117	Inscrire les apprenants et envoyer les convocations	تسجيل المتعلمين وإرسال الاستدعاءات
+118	Inscrire les apprenants et envoyer les convocations sur leurs canaux.	تسجيل المتعلمين وإرسال الاستدعاءات عبر قنواتهم.
+119	Inscriptions	التسجيلات
+120	Pousser les capsules de micro-apprentissage	إرسال كبسولات التعلم المصغر
+121	Rédiger les capsules et les pousser dans le flux de travail.	تأليف الكبسولات وإرسالها في سياق العمل.
+122	Capsules dans le flux de travail	كبسولات في سياق العمل
+123	Mener les simulations immersives	تنفيذ المحاكاة الغامرة
+124	Définir, lancer et capturer les séances de simulation.	تحديد جلسات المحاكاة وإطلاقها والتقاطها.
+125	Résultats de simulation	نتائج المحاكاة
+126	Les formateurs enregistrent la présence par session.	يسجل المكونون الحضور لكل دورة.
+127	Feuilles de présence	سجلات الحضور
+128	Clôturer les sessions	إغلاق الدورات
+129	Clôturer chaque session et enregistrer l'achèvement.	إغلاق كل دورة وتسجيل الإتمام.
+130	Dossiers d'achèvement	سجلات الإتمام
+131	Rapprocher et archiver la période	مطابقة الفترة وأرشفتها
+132	Rapprocher les présences des factures et archiver.	مطابقة الحضور مع الفواتير والأرشفة.
+133	Période de réalisation clôturée	فترة تنفيذ مغلقة
+134	Du parcours apprenant à l'engagement	من رحلة المتعلم إلى الانخراط
+135	Partition de E2E-05	جزء من E2E-05
+136	Offrir une expérience d'apprentissage personnalisée et engageante	تقديم تجربة تعلم مخصصة ومحفزة
+137	Apprenant inscrit à un parcours ou à une session.	متعلم مسجل في مسار تعلم أو دورة.
+138	Parcours apprenant personnalisé terminé avec engagement mesuré.	رحلة تعلم مخصصة مكتملة مع قياس الانخراط.
+139	M08 Portail apprenant ; M21 Hub coaching ; M24 Moteur de personnalisation IA ; M25 Hub micro-apprentissage ; M26 Hub d'apprentissage social ; M27 Moteur de ludification	M08 بوابة المتعلم؛ M21 مركز التوجيه؛ M24 محرك التخصيص الذكي؛ M25 مركز التعلم المصغر؛ M26 مركز التعلم الاجتماعي؛ M27 محرك التلعيب
+140	Cette partition de E2E-05 offre une expérience personnalisée et engageante : plans personnels et recommandations, parcours adaptatifs, apprentissage social, ludification, coaching et suivi de l'engagement.	يقدم هذا الجزء من E2E-05 تجربة مخصصة ومحفزة: خطط شخصية وتوصيات، ومسارات تكيفية، وتعلم اجتماعي، وتلعيب، وتوجيه، وتتبع للانخراط.
+141	Générer le plan personnel de chaque apprenant.	توليد الخطة الشخصية لكل متعلم.
+142	Plans d'apprentissage personnels	خطط التعلم الشخصية
+143	Revoir les recommandations de l'IA par apprenant.	مراجعة توصيات الذكاء الاصطناعي لكل متعلم.
+144	Recommandations	التوصيات
+145	Adapter le parcours à la performance	تكييف المسار مع الأداء
+146	Adapter le parcours aux résultats de l'apprenant.	تكييف المسار مع نتائج المتعلم.
+147	Parcours adaptés	مسارات مكيفة
+148	Animer l'apprentissage social	تنشيط التعلم الاجتماعي
+149	Créer des cohortes ; publier, répondre et valider.	إنشاء الأفواج؛ والنشر والإجابة والاعتماد.
+150	Cohortes actives	أفواج نشطة
+151	Animer la ludification	تشغيل التلعيب
+152	Définir points et badges ; récompenser à l'achèvement.	تحديد النقاط والشارات؛ والمكافأة عند الإتمام.
+153	Récompenses	المكافآت
+154	Associer et mener le coaching	مطابقة التوجيه وتنفيذه
+155	Associer les coachs aux apprenants et consigner les séances.	مطابقة الموجهين مع المتعلمين وتسجيل الجلسات.
+156	Demandes des apprenants	طلبات المتعلمين
+157	Séances de coaching	جلسات التوجيه
+158	Recueillir les retours des apprenants	جمع ملاحظات المتعلمين
+159	Les apprenants s'inscrivent et donnent leur avis.	يسجل المتعلمون ويقدمون ملاحظاتهم.

@@ -1,0 +1,160 @@
+0	Regrouper les éléments en collections par thème.	تجميع العناصر في مجموعات حسب المحور.
+1	Signaler les contenus dont la date de revue est dépassée	الإشارة إلى المحتوى المتجاوز لتاريخ المراجعة
+2	Signaler les éléments dont la date de revue est passée.	الإشارة إلى العناصر التي تجاوزت تاريخ مراجعتها.
+3	Retirer les contenus obsolètes	سحب المحتوى المتقادم
+4	Retirer les éléments ; les historiques conservent les achèvements.	سحب العناصر؛ وتحتفظ السجلات بتاريخ الإتمام.
+5	Définir le scénario de simulation	تحديد سيناريو المحاكاة
+6	Définir le scénario, les points de décision et les états d'échec.	تحديد السيناريو ونقاط القرار وحالات الفشل.
+7	Configurer la notation de la simulation	إعداد تنقيط المحاكاة
+8	Définir la notation et les seuils de réussite.	تحديد التنقيط وعتبات النجاح.
+9	Lancer la séance de simulation	إطلاق جلسة المحاكاة
+10	Lancer la simulation pour un apprenant ou un groupe.	إطلاق المحاكاة لمتعلم أو مجموعة.
+11	Capturer la performance en simulation	التقاط أداء المحاكاة
+12	Capturer les scores, les erreurs et le temps.	التقاط النتائج والأخطاء والوقت.
+13	Débriefer l'apprenant	استخلاص النتائج مع المتعلم
+14	Analyser les erreurs et convenir des points d'amélioration.	مناقشة الأخطاء والاتفاق على نقاط التحسين.
+15	Enregistrer la preuve de simulation	تسجيل دليل المحاكاة
+16	Stocker le résultat comme preuve de compétence.	حفظ النتيجة كدليل على الكفاءة.
+17	Publier un poste interne	نشر منصب داخلي
+18	Publier une offre sur la place de marché.	نشر فرصة في السوق الداخلية.
+19	Définir les compétences requises	تحديد المهارات المطلوبة
+20	Fixer les compétences et niveaux requis.	تحديد الكفاءات والمستويات المطلوبة.
+21	Rapprocher les collaborateurs du poste	مطابقة الموظفين مع المنصب
+22	L'IA classe les collaborateurs par adéquation de compétences, en montrant les preuves utilisées.	يرتب الذكاء الاصطناعي الموظفين حسب ملاءمة المهارات مع عرض الأدلة المستعملة.
+23	Postuler à un poste interne	الترشح لمنصب داخلي
+24	Le collaborateur postule avec une note de motivation.	يترشح الموظف مع رسالة تحفيز.
+25	Collaborateur	الموظف
+26	Présélectionner les candidats	الانتقاء الأولي للمرشحين
+27	Présélectionner les candidats et consigner les raisons.	الانتقاء الأولي للمرشحين وتسجيل الأسباب.
+28	Affecter un plan de reconversion	إسناد خطة إعادة التأهيل
+29	Affecter un plan pour combler les écarts du candidat retenu.	إسناد خطة لسد فجوات المرشح المختار.
+30	Choisir le thème de l'étude ROI	اختيار محور دراسة عائد الاستثمار
+31	Choisir le thème et la population.	اختيار المحور والفئة.
+32	Définir les indicateurs métier	تحديد مؤشرات الأعمال
+33	Choisir les indicateurs (ex. TRS, non-conformités) et la situation de référence.	اختيار المؤشرات (مثل الفعالية الإجمالية للمعدات، حالات عدم المطابقة) وخط الأساس.
+34	Isoler l'effet de la formation	عزل أثر التكوين
+35	Appliquer un groupe témoin ou une isolation par tendance.	تطبيق مجموعة ضابطة أو العزل بخط الاتجاه.
+36	Calculer le ROI Phillips	احتساب عائد الاستثمار وفق فيليبس
+37	Calculer ROI = (bénéfices nets / coûts du programme) x 100.	احتساب العائد = (الفوائد الصافية / تكاليف البرنامج) × 100.
+38	Revoir le ROI avec la finance	مراجعة عائد الاستثمار مع المالية
+39	Valider les montants de coûts et de bénéfices.	التحقق من أرقام التكاليف والفوائد.
+40	Publier le rapport d'impact métier	نشر تقرير الأثر على الأعمال
+41	Publier le rapport d'impact pour la direction.	نشر تقرير الأثر للإدارة العليا.
+42	Soumettre un contenu utilisateur	تقديم محتوى من إنتاج المستخدم
+43	Soumettre une vidéo, un guide ou une astuce avec ses métadonnées.	تقديم فيديو أو دليل أو نصيحة مع البيانات الوصفية.
+44	Vérifier le contenu au regard de la politique	فحص المحتوى وفق السياسة
+45	Vérifier la taille, le format et les termes interdits.	التحقق من الحجم والصيغة والعبارات المحظورة.
+46	Relecture par les pairs	مراجعة الأقران للمحتوى
+47	Vérifier l'exactitude et la sécurité.	مراجعة الدقة والسلامة.
+48	Approuver la publication	اعتماد النشر
+49	Approuver et publier avec mention de l'auteur.	الاعتماد والنشر مع ذكر المؤلف.
+50	Transmettre le contenu approuvé à la curation	إحالة المحتوى المعتمد إلى الانتقاء
+51	Envoyer l'élément dans la file de curation.	إرسال العنصر إلى قائمة الانتقاء.
+52	Noter un contenu utilisateur	تقييم عنصر من إنتاج المستخدم
+53	Noter l'utilité de l'élément.	تقييم فائدة العنصر.
+54	Identifier les experts critiques	تحديد الخبراء الحرجين
+55	Lister les experts partant dans l'horizon et leurs compétences critiques.	إعداد قائمة الخبراء المغادرين ضمن الأفق ومهاراتهم الحرجة.
+56	Planifier les séances de capture	تخطيط جلسات الالتقاط
+57	Planifier les entretiens et les séances d'observation au poste.	تخطيط المقابلات وجلسات المرافقة في العمل.
+58	Enregistrer l'entretien d'expert	تسجيل مقابلة الخبير
+59	Enregistrer l'entretien avec consentement.	تسجيل المقابلة بموافقة.
+60	Structurer les savoirs à partir de la transcription	هيكلة المعرفة من النص المفرغ
+61	L'IA structure la transcription en procédures et astuces, pour revue.	يهيكل الذكاء الاصطناعي النص المفرغ في إجراءات ونصائح للمراجعة.
+62	Affecter le parcours au successeur	إسناد مسار التعلم للخلف
+63	Affecter le matériel capturé au successeur.	إسناد المادة الملتقطة إلى الخلف.
+64	Valider l'achèvement du transfert	المصادقة على إتمام النقل
+65	L'expert confirme l'autonomie du successeur.	يؤكد الخبير استقلالية الخلف.
+66	Créer le dossier d'intégration	إنشاء ملف الإدماج
+67	Créer le dossier avec rôle, site et date d'arrivée.	إنشاء الملف بالدور والموقع وتاريخ الالتحاق.
+68	Générer le parcours 30-60-90 jours	توليد مسار 30-60-90 يومًا
+69	Générer le parcours d'intégration à partir du modèle de rôle.	توليد مسار الإدماج من نموذج الدور.
+70	Réaliser les tâches d'intégration	إنجاز مهام الإدماج
+71	Réaliser les tâches et modules affectés.	إنجاز المهام والوحدات المسندة.
+72	Tenir le point d'étape	عقد لقاء المرحلة
+73	Tenir les points à 30, 60 et 90 jours.	عقد لقاءات 30 و60 و90 يومًا.
+74	Évaluer le délai d'atteinte de la productivité	تقييم مدة الوصول إلى الإنتاجية
+75	Enregistrer la date à laquelle le collaborateur est devenu autonome.	تسجيل تاريخ بلوغ الموظف الاستقلالية.
+76	Clôturer l'intégration	إغلاق الإدماج
+77	Clôturer le dossier et déclencher la demande de REX.	إغلاق الملف وإطلاق طلب الدروس المستفادة.
+78	Enregistrer la mission et le bon de commande	تسجيل المهمة وسند الطلب
+79	Créer la mission avec périmètre, bon de commande et équipe.	إنشاء المهمة بالنطاق وسند الطلب والفريق.
+80	Tenir la réunion de lancement	عقد اجتماع الانطلاق
+81	Animer le lancement avec le comité de pilotage du client.	تنشيط الانطلاق مع لجنة قيادة العميل.
+82	Rédiger le compte rendu de réunion	صياغة محضر الاجتماع
+83	L'IA rédige le compte rendu à partir des notes ; le chef de projet le valide avant envoi.	يصوغ الذكاء الاصطناعي المحضر من الملاحظات؛ ويصادق عليه رئيس المشروع قبل الإرسال.
+84	Planifier l'organigramme des tâches de la mission	تخطيط هيكل تجزئة أعمال المهمة
+85	Construire le WBS et le Gantt des livrables de la mission.	إعداد هيكل تجزئة الأعمال ومخطط غانت لمخرجات المهمة.
+86	Suivre les livrables de la mission	تتبع مخرجات المهمة
+87	Suivre l'avancement, les risques et les validations du client.	تتبع التقدم والمخاطر ومصادقات العميل.
+88	Remettre le rapport final	تسليم التقرير النهائي
+89	Remettre le rapport final et la feuille de route.	تسليم التقرير النهائي وخارطة الطريق.
+90	Obtenir l'acceptation du client	الحصول على قبول العميل
+91	Le sponsor client signe l'acceptation.	يوقع راعي العميل على القبول.
+92	Enregistrer le REX de la mission	تسجيل الدروس المستفادة من المهمة
+93	Enregistrer les enseignements pour les missions futures.	تسجيل الدروس المستفادة للمهام المستقبلية.
+94	Définir les axes et l'échantillon du diagnostic	تحديد محاور التشخيص والعينة
+95	Confirmer les cinq axes et l'échantillon d'entretiens/enquête.	تأكيد المحاور الخمسة وعينة المقابلات/الاستبيان.
+96	Diffuser le questionnaire de diagnostic	توزيع استبيان التشخيص
+97	Envoyer le questionnaire à l'échantillon.	إرسال الاستبيان إلى العينة.
+98	Mener les entretiens semi-directifs	إجراء المقابلات شبه الموجهة
+99	Mener les entretiens et consigner des notes structurées.	إجراء المقابلات وتسجيل ملاحظات منظمة.
+100	Consultant	المستشار
+101	Collecter les réponses au questionnaire	جمع إجابات الاستبيان
+102	Collecter et anonymiser les réponses.	جمع الإجابات وإخفاء هويتها.
+103	Noter les axes du diagnostic	تنقيط محاور التشخيص
+104	Calculer les scores par axe et par fonction.	احتساب النتائج لكل محور ووظيفة.
+105	Rédiger les constats du diagnostic	صياغة نتائج التشخيص
+106	L'IA rédige les constats à partir des scores et des notes d'entretien, en citant ses sources.	يصوغ الذكاء الاصطناعي النتائج من التنقيط وملاحظات المقابلات مع ذكر المصادر.
+107	Valider les constats avec le sponsor	المصادقة على النتائج مع الراعي
+108	Valider les constats avec le sponsor client.	المصادقة على النتائج مع راعي العميل.
+109	Choisir les niveaux du modèle de maturité	اختيار مستويات نموذج النضج
+110	Confirmer les cinq niveaux et les domaines de processus.	تأكيد المستويات الخمسة ومجالات المسارات.
+111	Définir les critères de preuve par niveau	تحديد معايير الأدلة لكل مستوى
+112	Définir les preuves requises pour chaque niveau.	تحديد الأدلة المطلوبة لكل مستوى.
+113	Noter la maturité par domaine de processus	تقييم النضج لكل مجال مسار
+114	Noter chaque domaine avec preuves et justification.	تقييم كل مجال مع الأدلة والتبرير.
+115	Calculer le profil de maturité	احتساب ملف النضج
+116	Calculer le profil et le niveau global.	احتساب الملف والمستوى العام.
+117	Produire le rapport de maturité	إعداد تقرير النضج
+118	Produire le rapport de maturité.	إعداد تقرير النضج.
+119	Convenir de la maturité cible	الاتفاق على النضج المستهدف
+120	Convenir du niveau cible par domaine de processus.	الاتفاق على المستوى المستهدف لكل مجال مسار.
+121	Charger les données d'exécution du plan N-1	تحميل بيانات تنفيذ خطة N-1
+122	Charger les actions prévues et réalisées du plan N-1.	تحميل الإجراءات المخططة مقابل المنجزة في خطة N-1.
+123	Définir les critères d'impact	تحديد معايير الأثر
+124	Définir les critères (taux de réalisation, coût, changement de comportement).	تحديد المعايير (معدل الإنجاز، التكلفة، تغير السلوك).
+125	Interroger participants et managers	استطلاع المشاركين والمدراء
+126	Envoyer l'enquête d'impact N-1.	إرسال استبيان أثر N-1.
+127	Comparer le prévu et le réalisé	مقارنة المخطط بالمنجز
+128	Analyser les écarts et leurs causes.	تحليل الفوارق وأسبابها.
+129	Rédiger les conclusions de l'étude d'impact	صياغة خلاصات دراسة الأثر
+130	L'IA rédige les conclusions à partir des écarts et des résultats d'enquête.	يصوغ الذكاء الاصطناعي الخلاصات من بيانات الفوارق ونتائج الاستبيان.
+131	Intégrer les conclusions à la mise à jour de la stratégie	إدماج الخلاصات في تحديث الاستراتيجية
+132	Transmettre les conclusions validées au MP-01.	إرسال الخلاصات المعتمدة إلى MP-01.
+133	Découper le plan par site	تقسيم الخطة حسب الموقع
+134	Générer un plan par site à partir du plan approuvé.	توليد خطة لكل موقع من الخطة المعتمدة.
+135	Adapter le plan de site aux contraintes locales	تكييف خطة الموقع مع القيود المحلية
+136	Adapter dates, langue et groupes au site.	تكييف التواريخ واللغة والمجموعات مع الموقع.
+137	Coordinateur formation de site	منسق التكوين بالموقع
+138	Valider le plan de site	المصادقة على خطة الموقع
+139	Valider chaque plan de site au regard du plan groupe.	المصادقة على كل خطة موقع مقارنة بخطة المجموعة.
+140	Déployer le planning du site	نشر برنامج الموقع
+141	Transmettre le planning du site à la réalisation.	إحالة برنامج الموقع إلى التنفيذ.
+142	Consolider le statut des sites	توحيد وضعية المواقع
+143	Consolider les taux de réalisation de tous les sites.	توحيد معدلات الإنجاز عبر المواقع.
+144	Escalader un écart de site	تصعيد انحراف موقع
+145	Escalader les sites dont l'écart dépasse la tolérance.	تصعيد المواقع التي تتجاوز الانحراف المسموح.
+146	Choisir le modèle réglementaire	اختيار النموذج التنظيمي
+147	Choisir le modèle du régulateur et l'échéance.	اختيار نموذج الجهة التنظيمية والأجل.
+148	Générer le dossier de soumission	توليد ملف التقديم
+149	Générer le dossier de soumission à partir du plan approuvé.	توليد ملف التقديم من الخطة المعتمدة.
+150	Soumettre le plan à l'organisme réglementaire	تقديم الخطة إلى الهيئة التنظيمية
+151	Soumettre le dossier et enregistrer le numéro de référence.	تقديم الملف وتسجيل الرقم المرجعي.
+152	Suivre le statut de la soumission	تتبع وضعية التقديم
+153	Suivre le statut et les demandes du régulateur.	تتبع الوضعية وطلبات الجهة التنظيمية.
+154	Enregistrer la décision du régulateur	تسجيل قرار الجهة التنظيمية
+155	Enregistrer l'approbation, l'approbation partielle ou le rejet.	تسجيل الاعتماد أو الاعتماد الجزئي أو الرفض.
+156	Archiver les preuves de soumission	أرشفة أدلة التقديم
+157	Archiver la soumission et la décision selon les règles de conservation.	أرشفة التقديم والقرار وفق قواعد الاحتفاظ.
+158	Lancer l'évaluation 360 du leadership	إطلاق تقييم 360 للقيادة
+159	Lancer une évaluation 360 pour la population de dirigeants.	إطلاق تقييم 360 لفئة القادة.

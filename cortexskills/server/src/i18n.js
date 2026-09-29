@@ -11,6 +11,7 @@ export function loadDictionary() {
   languages = JSON.parse(fs.readFileSync(path.join(dir, 'languages.json'), 'utf8'));
   return { keys: Object.keys(dict).length, languages: languages.map(l => l.code) };
 }
+loadDictionary();
 export const getDictionary = () => dict;
 export const getLanguages = () => languages;
 export function t(key, lang = 'en', params = {}) {

@@ -1,0 +1,160 @@
+0	Préparer les données	إعداد البيانات
+1	Prédire	التنبؤ
+2	Agir sur les prédictions	التصرف بناءً على التنبؤات
+3	Découvrir les contenus	اكتشاف المحتوى
+4	Sélectionner les contenus	انتقاء المحتوى
+5	Maintenir les contenus	صيانة المحتوى
+6	Concevoir la simulation	تصميم المحاكاة
+7	Réaliser la simulation	تنفيذ المحاكاة
+8	Débriefer la simulation	استخلاص نتائج المحاكاة
+9	Publier les opportunités	نشر الفرص
+10	Rapprocher les talents	مطابقة المواهب
+11	Décider	اتخاذ القرار
+12	Définir le périmètre du ROI	تحديد نطاق عائد الاستثمار
+13	Calculer le ROI	احتساب عائد الاستثمار
+14	Rendre compte de l'impact	التقرير عن الأثر
+15	Créer des contenus	إنشاء المحتوى
+16	Promouvoir les contenus	الترويج للمحتوى
+17	Identifier les savoirs à risque	تحديد المعارف المعرضة للضياع
+18	Capturer les savoirs	التقاط المعرفة
+19	Transférer les savoirs	نقل المعرفة
+20	Préparer l'intégration	التحضير للإدماج
+21	Réaliser l'intégration	تنفيذ الإدماج
+22	Confirmer la productivité	تأكيد الإنتاجية
+23	Lancer la mission	إطلاق المهمة
+24	Conduire la mission	تنفيذ المهمة
+25	Clôturer la mission	إغلاق المهمة
+26	Préparer le diagnostic	التحضير للتشخيص
+27	Collecter les preuves	جمع الأدلة
+28	Analyser le diagnostic	تحليل التشخيص
+29	Définir le modèle de maturité	تحديد نموذج النضج
+30	Évaluer la maturité	تقييم النضج
+31	Rendre compte de la maturité	التقرير عن النضج
+32	Cadrer l'étude d'impact	تحديد نطاق دراسة الأثر
+33	Évaluer l'impact	تقييم الأثر
+34	Conclure l'étude d'impact	اختتام دراسة الأثر
+35	Adapter les plans de site	تكييف خطط المواقع
+36	Déployer les plans de site	نشر خطط المواقع
+37	Suivre le déploiement	تتبع النشر
+38	Préparer la soumission	التحضير للتقديم
+39	Soumettre le plan	تقديم الخطة
+40	Clôturer la soumission	إغلاق التقديم
+41	Évaluer le leadership	تقييم القيادة
+42	Développer les dirigeants	تطوير القادة
+43	Revoir le vivier de dirigeants	مراجعة مشتل القادة
+44	Cadrer et analyser les forces	تحديد النطاق وتحليل القوى
+45	Surveiller l'environnement	رصد البيئة
+46	En déduire les implications pour la formation	استنتاج الانعكاسات على التكوين
+47	Diffuser la veille	نشر اليقظة
+48	Structurer l'organisation	هيكلة المؤسسة
+49	Décrire les postes	وصف المناصب
+50	Mettre à jour l'architecture	تحديث الهندسة
+51	Publier et suivre	النشر والتتبع
+52	Cadrer la GPEC	تأطير التدبير التوقعي
+53	Mettre à jour le socle de développement	تحديث أسس التطوير
+54	Renouveler carrières et évaluation	تجديد المسارات المهنية والتقييم
+55	Intégrer et rendre compte	الإدماج والتقرير
+56	Préparer la collecte	التحضير للجمع
+57	Collecter et consolider	الجمع والتوحيد
+58	Prioriser et valider	الترتيب والمصادقة
+59	Suivre la demande	تتبع الطلب
+60	Cadrer l'évaluation	تأطير التقييم
+61	Évaluer les niveaux	تقييم المستويات
+62	Visualiser la performance	عرض الأداء
+63	Exploiter les résultats	استثمار النتائج
+64	Cadrer le SWOT	تحديد نطاق SWOT
+65	Réaliser le SWOT	إنجاز SWOT
+66	Définir les axes d'amélioration	تحديد محاور التحسين
+67	Suivre les axes	تتبع المحاور
+68	Prioriser les thèmes	ترتيب المحاور
+69	Planifier les ressources	تخطيط الموارد
+70	Valider le plan	المصادقة على الخطة
+71	Publier et suivre le plan	نشر الخطة وتتبعها
+72	Cadrer les perspectives	تأطير الآفاق المستقبلية
+73	Planifier les missions futures	تخطيط المهام المستقبلية
+74	Approuver la feuille de route	اعتماد خارطة الطريق
+75	Améliorer en continu	التحسين المستمر
+76	Gérer la hiérarchie des locataires	تدبير هرمية المستأجرين
+77	Gérer la licence et les droits	تدبير الترخيص والاستحقاقات
+78	Configurer la plateforme	إعداد المنصة
+79	Exploiter la plateforme	تشغيل المنصة
+80	Activer la norme	تفعيل المعيار
+81	Exploiter les contrôles de la norme	تشغيل ضوابط المعيار
+82	Revoir la posture de conformité	مراجعة وضعية المطابقة
+83	Cadrer le périmètre	تأطير النطاق
+84	Définir le secteur et les niveaux de décision	تحديد القطاع ومستويات القرار
+85	Cartographier la couverture fonctionnelle	رسم التغطية الوظيفية
+86	Définir l'orientation et les critères	تحديد التركيز والمعايير
+87	Identifier les parties prenantes	تحديد أصحاب المصلحة
+88	Approuver et publier le périmètre	اعتماد النطاق ونشره
+89	Sélectionner le modèle	اختيار النموذج
+90	Élaborer le questionnaire	إعداد الاستبيان
+91	Affecter le RACSI	توزيع أدوار RACSI
+92	Planifier la diffusion	تخطيط التوزيع
+93	Diffuser le questionnaire	توزيع الاستبيان
+94	Collecter les réponses	جمع الإجابات
+95	Valider les réponses	التحقق من الإجابات
+96	Consolider les réponses	توحيد الإجابات
+97	Exploiter les réponses	استثمار الإجابات
+98	Enregistrer les objectifs stratégiques de l'entreprise	تسجيل الأهداف الاستراتيجية للمؤسسة
+99	Saisir chaque objectif stratégique avec son responsable, son horizon et une cible mesurable (ex. SO-1 zéro non-conformité majeure en sécurité alimentaire).	إدخال كل هدف استراتيجي مع مسؤوله وأفقه وهدف قابل للقياس (مثال: SO-1 صفر حالة عدم مطابقة كبرى في السلامة الغذائية).
+100	Relier les objectifs aux fonctions et aux sites	ربط الأهداف بالوظائف والمواقع
+101	Rattacher chaque objectif aux fonctions et sites concernés afin de cadrer l'analyse des besoins.	ربط كل هدف بالوظائف والمواقع المعنية لتحديد نطاق تحليل الاحتياجات.
+102	Stratège formation	استراتيجي التكوين
+103	Définir l'enveloppe budgétaire de la formation	تحديد الغلاف المالي للتكوين
+104	Saisir le budget brut de formation et le remboursement OFPPT prévu pour l'année du plan.	إدخال ميزانية التكوين الإجمالية والاسترداد المتوقع من مكتب التكوين المهني لسنة الخطة.
+105	Planifier les jalons du comité de pilotage	برمجة محطات لجنة القيادة
+106	Fixer les dates de revue et d'approbation du cycle stratégique dans le calendrier de gouvernance.	تحديد تواريخ المراجعة والاعتماد للدورة الاستراتيجية في جدول الحكامة.
+107	Constituer le dossier d'approbation du plan	إعداد ملف اعتماد الخطة
+108	Rassembler objectifs, enveloppe budgétaire et synthèse de la feuille de route dans un seul dossier d'approbation.	تجميع الأهداف والغلاف المالي وملخص خارطة الطريق في ملف اعتماد واحد.
+109	Système	النظام
+110	Enregistrer la décision du comité de pilotage	تسجيل قرار لجنة القيادة
+111	Approuver, rejeter ou demander des modifications ; la décision et sa justification sont ajoutées au journal d'audit.	الاعتماد أو الرفض أو طلب تعديلات؛ ويُضاف القرار ومبرره إلى سجل التدقيق.
+112	Verrouiller et diffuser le plan approuvé	قفل الخطة المعتمدة وتوزيعها
+113	Verrouiller le plan approuvé, générer son PDF et notifier les parties prenantes via leurs canaux activés.	قفل الخطة المعتمدة وتوليد ملف PDF الخاص بها وإشعار أصحاب المصلحة عبر قنواتهم المفعلة.
+114	Définir les familles et niveaux de compétences	تحديد عائلات الكفاءات ومستوياتها
+115	Créer les compétences sur l'échelle 1 à 4 (sensibilisé, praticien, autonome, expert), regroupées par famille.	إنشاء الكفاءات على سلم من 1 إلى 4 (مطّلع، ممارس، مستقل، خبير) مجمعة حسب العائلة.
+116	Fixer les niveaux cibles par poste	تحديد المستويات المستهدفة لكل منصب
+117	Fixer le niveau de maîtrise requis pour chaque compétence sur chaque poste.	تحديد مستوى الإتقان المطلوب لكل كفاءة في كل منصب.
+118	Partenaire RH	شريك الموارد البشرية
+119	Lancer la campagne d'évaluation	إطلاق حملة التقييم
+120	Choisir la population, les compétences, les évaluateurs et la date de clôture de la campagne.	اختيار الفئة والكفاءات والمقيّمين وتاريخ إغلاق الحملة.
+121	Soumettre les auto-évaluations et évaluations managers	تقديم التقييمات الذاتية وتقييمات المدراء
+122	Les collaborateurs s'auto-évaluent et les managers valident le niveau de maîtrise par compétence.	يقيّم الموظفون أنفسهم ويصادق المدراء على مستوى الإتقان لكل كفاءة.
+123	Manager	المدير
+124	Consolider les résultats d'évaluation	توحيد نتائج التقييم
+125	Calculer la maîtrise consolidée par collaborateur et par compétence à la clôture de la campagne.	احتساب الإتقان الموحد لكل موظف وكفاءة عند إغلاق الحملة.
+126	Proposer une maîtrise à partir des preuves	اقتراح مستوى الإتقان استنادًا إلى الأدلة
+127	L'IA propose des niveaux de maîtrise à partir des certifications et des preuves d'évaluation, pour revue humaine.	يقترح الذكاء الاصطناعي مستويات الإتقان استنادًا إلى الشهادات وأدلة التقييم للمراجعة البشرية.
+128	Revoir les valeurs atypiques et valider l'inventaire comme référence de l'analyse des écarts.	مراجعة القيم الشاذة واعتماد الجرد مرجعًا لتحليل الفجوات.
+129	Calculer la matrice des écarts	احتساب مصفوفة الفجوات
+130	Calculer le niveau cible moins le niveau validé par collaborateur, fonction, site et compétence.	احتساب المستوى المستهدف ناقص المستوى المعتمد لكل موظف ووظيفة وموقع وكفاءة.
+131	Revoir la matrice des écarts par site et par fonction	مراجعة مصفوفة الفجوات حسب الموقع والوظيفة
+132	Revoir les écarts critiques et signaler les anomalies de données avant interprétation.	مراجعة الفجوات الحرجة والإشارة إلى شذوذ البيانات قبل التفسير.
+133	Planifier les entretiens de diagnostic	تخطيط مقابلات التشخيص
+134	Choisir l'échantillon d'entretiens et le guide d'entretien semi-directif.	اختيار عينة المقابلات ودليل المقابلة شبه الموجهة.
+135	Enregistrer les constats d'entretien	تسجيل نتائج المقابلات
+136	Enregistrer les constats par entretien et les relier aux fonctions et compétences.	تسجيل النتائج لكل مقابلة وربطها بالوظائف والكفاءات.
+137	Regrouper les besoins en thèmes de formation	تجميع الاحتياجات في محاور تكوين
+138	L'IA regroupe écarts, demandes et constats en thèmes de formation candidats, pour revue.	يجمع الذكاء الاصطناعي الفجوات والطلبات والنتائج في محاور تكوين مقترحة للمراجعة.
+139	Prioriser les besoins selon l'impact métier	ترتيب الاحتياجات حسب الأثر على الأعمال
+140	Noter chaque besoin selon les objectifs stratégiques, le risque et la taille de la population.	تنقيط كل احتياج وفق الأهداف الاستراتيجية والمخاطر وحجم الفئة.
+141	Valider le registre des besoins	المصادقة على سجل الاحتياجات
+142	Valider le registre ; la validation est journalisée avec sa justification.	المصادقة على السجل؛ وتُسجل المصادقة مع مبررها.
+143	Consolider les livrables amont	توحيد المخرجات المغذية
+144	Rassembler registre des besoins, diagnostic, demandes, GPEC, SWOT et plan priorisé dans un même espace de travail.	تجميع سجل الاحتياجات والتشخيص والطلبات والتدبير التوقعي وSWOT والخطة المرتبة في فضاء عمل واحد.
+145	Vérifier la complétude des intrants	التحقق من اكتمال المدخلات
+146	Confirmer que chaque livrable amont obligatoire est présent et à jour avant la rédaction.	التأكد من وجود كل مخرج مغذٍّ إلزامي وتحديثه قبل الصياغة.
+147	Générer le projet de rapport	توليد مسودة التقرير
+148	L'IA rédige les sections du rapport à partir des intrants consolidés et indique ses références.	يصوغ الذكاء الاصطناعي أقسام التقرير استنادًا إلى المدخلات الموحدة ويفصح عن مراجعه.
+149	Modifier et compléter les sections du rapport	تعديل أقسام التقرير وإكمالها
+150	Relire, corriger et compléter chaque section rédigée par l'IA avant la revue qualité.	مراجعة كل قسم صاغه الذكاء الاصطناعي وتصحيحه وإكماله قبل مراجعة الجودة.
+151	Réaliser la revue qualité du rapport	إجراء مراجعة جودة التقرير
+152	Vérifier la cohérence des chiffres, la traçabilité aux intrants et la conformité au modèle.	التحقق من اتساق الأرقام وقابلية تتبعها إلى المدخلات ومطابقتها للنموذج.
+153	Séquencer les initiatives de la feuille de route	جدولة مبادرات خارطة الطريق
+154	Phaser les thèmes par priorité, dépendance et budget dans une feuille de route pluriannuelle.	توزيع المحاور على مراحل حسب الأولوية والتبعية والميزانية في خارطة طريق متعددة السنوات.
+155	Soumettre la feuille de route pour approbation	تقديم خارطة الطريق للاعتماد
+156	Soumettre le rapport et la feuille de route au comité de pilotage.	تقديم التقرير وخارطة الطريق إلى لجنة القيادة.
+157	Enregistrer l'approbation de la feuille de route	تسجيل اعتماد خارطة الطريق
+158	Approuver ou renvoyer la feuille de route avec justification.	اعتماد خارطة الطريق أو إرجاعها مع التبرير.
+159	Publier le rapport et la feuille de route approuvés	نشر التقرير وخارطة الطريق المعتمدين

@@ -1,0 +1,160 @@
+0	WBS de la mission	هيكل تجزئة أعمال المهمة
+1	Planifier l'accompagnement du changement	تخطيط دعم التغيير
+2	Planifier les actions de changement et d'adoption du client.	تخطيط إجراءات التغيير والتبني لدى العميل.
+3	Plan de changement	خطة التغيير
+4	Suivre chaque livrable jusqu'à son achèvement.	تتبع كل مخرج حتى إتمامه.
+5	Suivi des livrables	متتبع المخرجات
+6	Remettre le rapport final et obtenir l'acceptation	تسليم التقرير النهائي والحصول على القبول
+7	Remettre le rapport final et enregistrer l'acceptation.	تسليم التقرير النهائي وتسجيل القبول.
+8	Acceptation du client	قبول العميل
+9	Enregistrer ce qui a bien fonctionné, ce qui n'a pas fonctionné et pourquoi.	تسجيل ما نجح وما لم ينجح وسبب ذلك.
+10	REX de la mission	الدروس المستفادة من المهمة
+11	Du diagnostic multi-axes au rapport de maturité	من التشخيص متعدد المحاور إلى تقرير النضج
+12	Racine (diagnostic)	جذرية (تشخيص)
+13	Mener le diagnostic à 5 axes, la maturité CMM et l'évaluation du leadership	إجراء التشخيص بخمسة محاور ونضج CMM وتقييم القيادة
+14	Alimente E2E-03 et E2E-21	تغذي E2E-03 وE2E-21
+15	Lancement de mission ou cahier des charges approuvé demandant un diagnostic.	انطلاق مهمة أو دفتر نطاق عمل معتمد يطلب تشخيصًا.
+16	Rapport de diagnostic à 5 axes, maturité CMM et maturité du leadership validé avec le sponsor.	تقرير التشخيص بخمسة محاور ونضج CMM ونضج القيادة معتمد مع الراعي.
+17	M37 Studio de diagnostic ; M38 Moteur d'évaluation CMM ; M42 Hub de maturité du leadership ; M02 Hub compétences ; M03 Analyseur de besoins	M37 استوديو التشخيص؛ M38 محرك تقييم CMM؛ M42 مركز نضج القيادة؛ M02 مركز المهارات؛ M03 محلل الاحتياجات
+18	Cette chaîne racine de diagnostic définit les axes et l'échantillon, collecte les preuves d'entretiens et de questionnaires, note les axes, évalue la maturité CMM et du leadership, et valide les constats avec le sponsor.	تحدد هذه السلسلة الجذرية للتشخيص المحاور والعينة، وتجمع أدلة المقابلات والاستبيانات، وتنقط المحاور، وتقيّم نضج CMM ونضج القيادة، وتصادق على النتائج مع الراعي.
+19	Définir les cinq axes et l'échantillon.	تحديد المحاور الخمسة والعينة.
+20	Axes et échantillon	المحاور والعينة
+21	Diffuser le questionnaire à l'échantillon.	توزيع الاستبيان على العينة.
+22	Parties prenantes	أصحاب المصلحة
+23	Réponses au questionnaire	إجابات الاستبيان
+24	Interroger l'échantillon et consigner les constats.	مقابلة العينة وتسجيل النتائج.
+25	Noter chaque axe à partir des preuves.	تنقيط كل محور استنادًا إلى الأدلة.
+26	Constats d'entretien, réponses	نتائج المقابلات، الإجابات
+27	Scores par axe	نتائج المحاور
+28	Choisir le modèle de maturité	اختيار نموذج النضج
+29	Choisir les niveaux CMM et les critères de preuve.	اختيار مستويات CMM ومعايير الأدلة.
+30	Modèle de maturité	نموذج النضج
+31	Noter la maturité des processus	تقييم نضج المسارات
+32	Noter la maturité par domaine de processus.	تقييم النضج لكل مجال مسار.
+33	Profil de maturité	ملف النضج
+34	Évaluer la maturité du leadership	تقييم نضج القيادة
+35	Mener le 360 et calculer le niveau de leadership.	إجراء تقييم 360 واحتساب مستوى القيادة.
+36	Maturité du leadership	نضج القيادة
+37	Croiser compétences et besoins	مقاطعة المهارات والاحتياجات
+38	Croiser les constats avec les écarts et les besoins.	مقاطعة النتائج مع الفجوات والاحتياجات.
+39	Preuves consolidées	أدلة موحدة
+40	Revoir les constats rédigés par l'IA.	مراجعة النتائج التي صاغها الذكاء الاصطناعي.
+41	Projet de constats	مسودة النتائج
+42	Valider les constats et convenir de la maturité cible.	المصادقة على النتائج والاتفاق على النضج المستهدف.
+43	Rapport de diagnostic et de maturité	تقرير التشخيص والنضج
+44	De l'impact du plan précédent à la mise à jour de la stratégie	من أثر الخطة السابقة إلى تحديث الاستراتيجية
+45	Évaluer l'impact du plan N-1 et mettre à jour la stratégie	تقييم أثر خطة N-1 وتحديث الاستراتيجية
+46	Utilise E2E-20 ; alimente E2E-01 et E2E-03	تستعمل E2E-20؛ تغذي E2E-01 وE2E-03
+47	Début d'un nouveau cycle de plan avec les données d'exécution N-1 disponibles.	بداية دورة خطة جديدة مع توفر بيانات تنفيذ N-1.
+48	Conclusions d'impact N-1 intégrées à la mise à jour de la stratégie.	خلاصات أثر N-1 مدمجة في تحديث الاستراتيجية.
+49	M39 Hub d'étude d'impact ; M09 Moteur d'évaluation ; M32 Tableau de bord ROI ; M01 Console stratégie ; M04 Studio rapport et feuille de route	M39 مركز دراسة الأثر؛ M09 محرك التقييم؛ M32 لوحة عائد الاستثمار؛ M01 وحدة الاستراتيجية؛ M04 استوديو التقرير وخارطة الطريق
+50	Cette chaîne racine charge les données d'exécution du plan N-1, définit les critères d'impact, interroge participants et managers, compare le prévu au réalisé, rédige les conclusions et les intègre à la mise à jour de la stratégie.	تحمّل هذه السلسلة الجذرية بيانات تنفيذ خطة N-1، وتحدد معايير الأثر، وتستطلع المشاركين والمدراء، وتقارن المخطط بالمنجز، وتصوغ الخلاصات وتدمجها في تحديث الاستراتيجية.
+51	Charger le plan de l'année précédente et ses données d'exécution.	تحميل خطة السنة الماضية وبيانات تنفيذها.
+52	Plan N-1	خطة N-1
+53	Jeu de données N-1	مجموعة بيانات N-1
+54	Définir les critères de l'étude d'impact.	تحديد معايير دراسة الأثر.
+55	Critères d'impact	معايير الأثر
+56	Interroger les participants et leurs managers.	استطلاع المشاركين ومدرائهم.
+57	Résultats d'enquête	نتائج الاستبيان
+58	Comparer volumes, coûts et effets prévus et réalisés.	مقارنة الأحجام والتكاليف والآثار المخططة والمنجزة.
+59	Analyse prévu/réalisé	تحليل المخطط مقابل الفعلي
+60	Revoir le ROI N-1	مراجعة عائد استثمار N-1
+61	Revoir le ROI des principaux thèmes.	مراجعة عائد الاستثمار للمحاور الرئيسية.
+62	Rédiger les conclusions d'impact	صياغة خلاصات الأثر
+63	Revoir les conclusions rédigées par l'IA.	مراجعة الخلاصات التي صاغها الذكاء الاصطناعي.
+64	Projet de conclusions	مسودة الخلاصات
+65	Intégrer les conclusions à la stratégie	إدماج الخلاصات في الاستراتيجية
+66	Intégrer les conclusions à la mise à jour de la stratégie.	إدماج الخلاصات في تحديث الاستراتيجية.
+67	Intrants de stratégie	مدخلات الاستراتيجية
+68	Mettre à jour les priorités de la feuille de route	تحديث أولويات خارطة الطريق
+69	Ajuster les priorités de la feuille de route avec les enseignements.	ضبط أولويات خارطة الطريق بالدروس المستفادة.
+70	Priorités de la feuille de route mises à jour	أولويات خارطة الطريق المحدثة
+71	Du plan multi-sites au déploiement	من الخطة متعددة المواقع إلى النشر
+72	Adapter et déployer les plans sur les sites	تكييف الخطط ونشرها عبر المواقع
+73	Utilise E2E-03 ; alimente E2E-05	تستعمل E2E-03؛ تغذي E2E-05
+74	Feuille de route approuvée pour une organisation à plusieurs sites ou entités.	خارطة طريق معتمدة لمؤسسة متعددة المواقع أو الكيانات.
+75	Plans de site adaptés, validés et déployés, avec escalade des écarts.	خطط المواقع مكيفة ومعتمدة ومنشورة مع تصعيد الانحرافات.
+76	M40 Hub de déploiement multi-sites ; M04 Studio rapport et feuille de route ; M07 Centre de réalisation ; M11 Console d'administration ; M23 Centre localisation et accessibilité	M40 مركز النشر متعدد المواقع؛ M04 استوديو التقرير وخارطة الطريق؛ M07 مركز التنفيذ؛ M11 وحدة الإدارة؛ M23 مركز التوطين وإمكانية الوصول
+77	Cette partition de E2E-03 découpe le plan par site, l'adapte aux contraintes et langues locales, valide et déploie chaque planning de site et consolide le statut avec escalade des écarts.	يقسم هذا الجزء من E2E-03 الخطة حسب الموقع، ويكيفها مع القيود واللغات المحلية، ويصادق على برنامج كل موقع وينشره، ويوحد الوضعية مع تصعيد الانحرافات.
+78	Découper le plan approuvé par site.	تقسيم الخطة المعتمدة حسب الموقع.
+79	Coordinateurs formation de site	منسقو التكوين بالمواقع
+80	Plans de site	خطط المواقع
+81	Adapter chaque plan aux contraintes locales.	تكييف كل خطة مع القيود المحلية.
+82	Directeurs de site	مدراء المواقع
+83	Plans de site adaptés	خطط مواقع مكيفة
+84	Localiser les supports du site	توطين مواد الموقع
+85	Traduire les supports dans chaque langue de site.	ترجمة المواد إلى لغة كل موقع.
+86	Supports localisés	مواد موطّنة
+87	Valider chaque plan de site au niveau central.	المصادقة المركزية على كل خطة موقع.
+88	Plans de site validés	خطط مواقع معتمدة
+89	Planifier les sessions du site	برمجة دورات الموقع
+90	Planifier sessions et logistique par site.	برمجة الدورات واللوجستيك لكل موقع.
+91	Plannings de site	برامج المواقع
+92	Déployer et communiquer le planning.	نشر البرنامج والتواصل بشأنه.
+93	Plannings déployés	برامج منشورة
+94	Consolider le statut de tous les sites.	توحيد الوضعية عبر المواقع.
+95	Statut des sites	وضعية المواقع
+96	Escalader les écarts au-delà de la tolérance.	تصعيد الانحرافات المتجاوزة للحد المسموح.
+97	Statut du déploiement multi-sites	وضعية النشر متعدد المواقع
+98	De la soumission réglementaire à la validation	من التقديم التنظيمي إلى المصادقة
+99	Soumettre et faire valider les plans de formation auprès des organismes réglementaires	تقديم خطط التكوين والمصادقة عليها لدى الهيئات التنظيمية
+100	Racine (réglementaire)	جذرية (تنظيمية)
+101	Plan approuvé nécessitant une validation ou un financement externe (ex. OFPPT, GIAC-Agro).	خطة معتمدة تتطلب مصادقة أو تمويلًا خارجيًا (مثل مكتب التكوين المهني، GIAC-Agro).
+102	Plan validé par l'organisme réglementaire et preuves archivées.	الخطة مصادق عليها من الهيئة التنظيمية والأدلة مؤرشفة.
+103	M41 Console réglementaire ; M14 Centre conformité ; M18 Console finance ; M20 Centre qualité	M41 وحدة التنظيم؛ M14 مركز المطابقة؛ M18 وحدة المالية؛ M20 مركز الجودة
+104	Cette chaîne racine choisit le modèle réglementaire, génère le dossier de soumission, le soumet, suit son statut, enregistre la décision, dépose les demandes de remboursement et archive les preuves.	تختار هذه السلسلة الجذرية النموذج التنظيمي، وتولد ملف التقديم وتقدمه، وتتبع وضعيته، وتسجل القرار، وتقدم طلبات الاسترداد، وتؤرشف الأدلة.
+105	Choisir le modèle de l'organisme réglementaire.	اختيار نموذج الهيئة التنظيمية.
+106	Modèle choisi	النموذج المختار
+107	Générer le dossier de soumission et en contrôler la qualité.	توليد ملف التقديم وفحص جودته.
+108	Dossier de soumission	ملف التقديم
+109	Soumettre le dossier à l'organisme réglementaire.	تقديم الملف إلى الهيئة التنظيمية.
+110	Plan soumis	خطة مقدمة
+111	Suivre le statut et répondre aux demandes.	تتبع الوضعية والرد على الطلبات.
+112	Régulateur	الجهة التنظيمية
+113	Journal de statut	سجل الوضعية
+114	Enregistrer la décision et ses conditions.	تسجيل القرار وشروطه.
+115	Décision du régulateur	قرار الجهة التنظيمية
+116	Déposer les demandes de remboursement après la réalisation.	تقديم طلبات الاسترداد بعد التنفيذ.
+117	Demandes de remboursement	طلبات الاسترداد
+118	Archiver le dossier, la décision et les demandes.	أرشفة الملف والقرار والطلبات.
+119	Suivi des soumissions réglementaires	متتبع التقديمات التنظيمية
+120	De la veille concurrentielle à la stratégie	من اليقظة التنافسية إلى الاستراتيجية
+121	Racine (stratégique)	جذرية (استراتيجية)
+122	Analyser l'environnement externe et alimenter la stratégie de formation	تحليل البيئة الخارجية وتغذية استراتيجية التكوين
+123	Alimente E2E-01, E2E-20, E2E-29	تغذي E2E-01 وE2E-20 وE2E-29
+124	Rapport de veille concurrentielle validé alimentant la stratégie de formation et le diagnostic organisationnel.	تقرير يقظة تنافسية معتمد يغذي استراتيجية التكوين والتشخيص التنظيمي.
+125	M43 Hub de veille concurrentielle ; M01 Console stratégie ; M37 Studio de diagnostic ; M04 Studio rapport et feuille de route	M43 مركز اليقظة التنافسية؛ M01 وحدة الاستراتيجية؛ M37 استوديو التشخيص؛ M04 استوديو التقرير وخارطة الطريق
+126	Cette chaîne racine analyse l'environnement externe à l'aide des cinq forces de Porter, de la segmentation du marché et du benchmark concurrentiel. Elle produit les implications stratégiques pour la formation et alimente la stratégie, le diagnostic et le SWOT fonctionnel.	تحلل هذه السلسلة الجذرية بيئة الأعمال الخارجية باستعمال القوى الخمس لبورتر وتجزئة السوق ومقارنة المنافسين. وتنتج الانعكاسات الاستراتيجية على التكوين وتغذي مسارات الاستراتيجية والتشخيص وSWOT الوظيفي.
+127	Définir le périmètre de l'environnement externe à analyser.	تحديد نطاق البيئة الخارجية المراد تحليلها.
+128	Définir le périmètre	تحديد النطاق
+129	Documents de stratégie	وثائق الاستراتيجية
+130	Document de périmètre	وثيقة النطاق
+131	Réaliser les cinq forces de Porter	إجراء تحليل القوى الخمس لبورتر
+132	Analyser les forces concurrentielles.	تحليل القوى التنافسية.
+133	Analyser les forces	تحليل القوى
+134	Données de marché	بيانات السوق
+135	Rapport Porter	تقرير بورتر
+136	Segmenter le marché (ex. éleveurs, revendeurs).	تجزئة السوق (مثل المربين والموزعين).
+137	Cartographier les segments	رسم القطاعات
+138	Carte des segments	خريطة القطاعات
+139	Se comparer aux concurrents.	المقارنة مع المنافسين.
+140	Benchmark	المقارنة المرجعية
+141	Données concurrentielles	بيانات المنافسين
+142	Benchmark concurrentiel	مقارنة المنافسين
+143	Suivre les tendances réglementaires et technologiques	رصد الاتجاهات التنظيمية والتكنولوجية
+144	Suivre les évolutions externes.	تتبع التغيرات الخارجية.
+145	Suivre les tendances	تتبع الاتجاهات
+146	Réglementations	الأنظمة
+147	Rapport de tendances	تقرير الاتجاهات
+148	Identifier les implications pour la formation	تحديد الانعكاسات على التكوين
+149	Traduire la veille en implications pour la formation.	ترجمة اليقظة إلى انعكاسات على التكوين.
+150	Traduire les implications	ترجمة الانعكاسات
+151	Stratégie	الاستراتيجية
+152	Tous les constats	جميع النتائج
+153	Implications pour la formation	الانعكاسات على التكوين
+154	Publier le rapport de veille	نشر تقرير اليقظة
+155	Diffuser le rapport à la direction.	توزيع التقرير على القيادة.
+156	Publier le rapport	نشر التقرير
+157	Tous les livrables	جميع المخرجات
+158	Rapport de veille	تقرير اليقظة
+159	De l'architecture des emplois à la cartographie des compétences	من هندسة الوظائف إلى خريطة الكفاءات

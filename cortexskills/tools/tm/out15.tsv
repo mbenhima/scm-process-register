@@ -1,0 +1,160 @@
+0	Composite périmètre et questionnaire	المركب: النطاق والاستبيان
+1	Décision = Approuver ET justification enregistrée	القرار = اعتماد وتم تسجيل المبرر
+2	Décision enregistrée sans justification ET option de justification = Activée	قرار محفوظ دون مبرر وخيار التبرير = مفعل
+3	Somme des lignes budgétaires des thèmes > enveloppe budgétaire brute	مجموع بنود ميزانية المحاور > الغلاف المالي الإجمالي
+4	Le statut du plan passe à En revue	تغير وضعية الخطة إلى قيد المراجعة
+5	Date de clôture de la campagne atteinte	بلوغ تاريخ إغلاق الحملة
+6	Taux d'achèvement des évaluations < 80 % trois jours avant la clôture	نسبة إتمام التقييمات < 80% قبل ثلاثة أيام من الإغلاق
+7	gap_value >= 2 pour un couple collaborateur-compétence	gap_value >= 2 لزوج موظف-كفاءة
+8	L'utilisateur qui valide ne détient pas la permission needs.validate	المستخدم المصادق لا يملك صلاحية needs.validate
+9	Un livrable amont obligatoire manquant ou datant de plus de 12 mois	مخرج مغذٍّ إلزامي مفقود أو أقدم من 12 شهرًا
+10	Un chiffre du rapport diffère de la valeur de son registre source	رقم في التقرير يختلف عن قيمته في السجل المصدر
+11	Statut de la feuille de route = Soumis	وضعية خارطة الطريق = مقدمة
+12	Feuille de route sans décision 10 jours après soumission	خارطة طريق دون قرار بعد 10 أيام من التقديم
+13	Un module sans objectif mesurable ou sans méthode d'évaluation	وحدة تفتقر إلى هدف قابل للقياس أو طريقة تقييم
+14	Manifeste SCORM/xAPI invalide OU file_size_mb > 500	بيان SCORM/xAPI غير صالح أو file_size_mb > 500
+15	La décision de revue n'est pas Approuvé	قرار المراجعة ليس اعتمادًا
+16	Formateur ou salle déjà réservé sur un créneau qui se chevauche	المكون أو القاعة محجوزان في فترة متداخلة
+17	Inscriptions = capacité de la session	التسجيلات = سعة الدورة
+18	Présence non enregistrée 24 h après la fin de la session	الحضور غير مسجل بعد 24 ساعة من نهاية الدورة
+19	Aucune activité depuis 14 jours sur un parcours attribué	لا نشاط منذ 14 يومًا على مسار مسند
+20	L'apprenant accepte, modifie ou écarte une recommandation	المتعلم يقبل توصية أو يعدلها أو يرفضها
+21	Statut de la session = Clôturée	وضعية الدورة = مغلقة
+22	Moyenne niveau 1 < 3,5/5 OU taux de réussite niveau 2 < 70 % pour un module	متوسط المستوى 1 < 3.5/5 أو نسبة نجاح المستوى 2 < 70% لوحدة
+23	La valeur de l'indicateur franchit son seuil RAG	قيمة المؤشر تتجاوز عتبة الألوان
+24	L'utilisateur ne détient pas la permission associée à l'intention de requête reconnue	المستخدم لا يملك الصلاحية المرتبطة بنية الاستعلام المطابقة
+25	Justification vide ET option de justification = Activée	المبرر فارغ وخيار التبرير = مفعل
+26	Statut du projet = Clôturé OU statut de l'action = Terminée	وضعية المشروع = مغلق أو وضعية الإجراء = منجز
+27	Activation effective du cas d'usage IA = Désactivée	التفعيل الفعلي لحالة استخدام الذكاء الاصطناعي = معطل
+28	valid_until moins aujourd'hui <= 60 jours	valid_until ناقص اليوم <= 60 يومًا
+29	Statut de la certification = Expire bientôt ET aucune inscription au renouvellement	وضعية الشهادة = قريبة الانتهاء ولا يوجد تسجيل للتجديد
+30	Statut de la certification = Expirée pour un collaborateur concerné	وضعية الشهادة = منتهية لموظف ضمن النطاق
+31	Montant de la facture hors montant du BC +/- 2 % OU effectif présent < effectif facturé	مبلغ الفاتورة خارج مبلغ سند الطلب +/- 2% أو عدد الحاضرين < العدد المفوتر
+32	Résultat du rapprochement à trois voies = Rapproché	نتيجة المطابقة الثلاثية = مطابق
+33	Montant du BC > montant restant sur la ligne budgétaire	مبلغ سند الطلب > المبلغ المتبقي في بند الميزانية
+34	Ligne sans champ obligatoire (ex. code site)	سطر ينقصه حقل إلزامي (مثل رمز الموقع)
+35	Résultat de santé = Échec d'authentification OU Injoignable	نتيجة السلامة = فشل المصادقة أو تعذر الوصول
+36	Cas d'usage IA désactivé pour l'organisation ou le projet	حالة استخدام الذكاء الاصطناعي معطلة للمؤسسة أو المشروع
+37	Plus de 5 échecs de connexion d'un même client en 15 minutes	أكثر من 5 محاولات دخول فاشلة من عميل واحد خلال 15 دقيقة
+38	L'utilisateur cible appartient à une autre organisation	المستخدم المستهدف ينتمي إلى مؤسسة أخرى
+39	actual_amount + committed_amount > allocated_amount	actual_amount + committed_amount > allocated_amount
+40	Bon de commande émis ou facture comptabilisée	سند طلب صادر أو فاتورة مسجلة
+41	Usage actif du groupe < 50 % pendant 30 jours consécutifs	الاستخدام النشط للمجموعة < 50% لمدة 30 يومًا متتالية
+42	Probabilité ou impact saisi ou modifié	إدخال الاحتمال أو الأثر أو تعديله
+43	owner_user_id = evaluator_user_id	owner_user_id = evaluator_user_id
+44	L'activité RACSI a déjà un Approbateur	نشاط RACSI لديه مسؤول نهائي مسبقًا
+45	due_date dépassée ET statut différent de Terminé	تجاوز due_date والوضعية ليست منجزة
+46	Coach proposé choisi par le partenaire formation	الموجه المقترح مختار من طرف شريك التكوين
+47	Statut du paiement = Réussi	وضعية الأداء = ناجح
+48	Violation WCAG 2.1 AA critique ou grave détectée	رصد مخالفة حرجة أو خطيرة لمعايير WCAG 2.1 AA
+49	L'appel au LLM réel échoue ou dépasse 5 secondes	فشل استدعاء النموذج اللغوي الفعلي أو تجاوزه 5 ثوانٍ
+50	Taux d'achèvement de la capsule < 40 % sur 90 jours	نسبة إتمام الكبسولة < 40% خلال 90 يومًا
+51	Événement d'achèvement enregistré pour un élément ludifié	تسجيل حدث إتمام لعنصر ملعّب
+52	Écart critique prévu sous 12 mois sur une compétence détenue par 3 experts ou moins	فجوة حرجة متوقعة خلال 12 شهرًا في كفاءة يحملها 3 خبراء أو أقل
+53	review_date < aujourd'hui	review_date < اليوم
+54	Statut du contenu = Retiré	وضعية الأصل = مسحوب
+55	Montants de bénéfices et de coûts validés pour le thème	أرقام الفوائد والتكاليف معتمدة للمحور
+56	Terme interdit détecté OU file_size_mb > 500	رصد عبارة محظورة أو file_size_mb > 500
+57	Point à 30/60/90 jours en retard de 7 jours	لقاء 30/60/90 يومًا متأخر بـ 7 أيام
+58	Clôture demandée ET client_acceptance = false	طلب الإغلاق وclient_acceptance = false
+59	Réponse au questionnaire reçue	استلام إجابة على الاستبيان
+60	Taux de réalisation du site < taux du groupe moins 15 points	معدل إنجاز الموقع < معدل المجموعة ناقص 15 نقطة
+61	Échéance sous 15 jours ET statut de la soumission = Brouillon	الأجل خلال 15 يومًا ووضعية التقديم = مسودة
+62	last_updated_on antérieur à 90 jours	last_updated_on أقدم من 90 يومًا
+63	Projet de fiche de poste enregistré	حفظ مسودة بطاقة وصف وظيفي
+64	Les tâches documentées diffèrent de plus de 30 % des tâches observées	المهام الموثقة تختلف عن المهام الملاحظة بأكثر من 30%
+65	Priorité définie pour toutes les demandes d'une équipe	تحديد الأولوية لجميع طلبات فريق
+66	score_pct calculé pour une fonction et un niveau	احتساب score_pct لوظيفة ومستوى
+67	Budget du plan > enveloppe budgétaire approuvée	ميزانية الخطة > الغلاف المالي المعتمد
+68	Réalisation du thème < 50 % à mi-année	إنجاز المحور < 50% في منتصف السنة
+69	Nombre actuel >= quota de l'offre active pour la dimension	العدد الحالي >= حصة الباقة النشطة للبعد
+70	expires_at de la sauvegarde < maintenant	expires_at للنسخة الاحتياطية < الآن
+71	Le candidat retenu est un collaborateur interne	المرشح المختار موظف داخلي
+72	Alerte du même type déjà levée sur la même entité dans la période	تنبيه من النوع نفسه مرفوع مسبقًا على الكيان نفسه خلال الفترة
+73	Événement de départ SSO/SCIM reçu	استلام حدث مغادرة من الدخول الموحد/SCIM
+74	Expiration de la licence sous 30 jours	انتهاء الترخيص خلال 30 يومًا
+75	Le nom du module évoque un cadre de conformité, une certification ou une norme légale	اسم الإضافة يوحي بإطار مطابقة أو شهادة أو معيار قانوني
+76	Norme activée ET scaffold_seeded = false	المعيار مفعل وscaffold_seeded = false
+77	Suggestion IA générée pour une section de rapport	توليد اقتراح بالذكاء الاصطناعي لقسم من التقرير
+78	Requête refusée pour permission manquante ou accès hors périmètre	رفض طلب لغياب صلاحية أو ولوج خارج النطاق
+79	La signature de la licence ne se vérifie pas (Ed25519 sur site / HMAC SaaS)	تعذر التحقق من توقيع الترخيص (Ed25519 محليًا / HMAC سحابيًا)
+80	expiry_date < maintenant	expiry_date < الآن
+81	Nombre d'utilisateurs actifs >= max_users de la licence	عدد المستخدمين النشطين >= max_users في الترخيص
+82	Module déjà actif pour l'organisation	الإضافة مفعلة مسبقًا للمؤسسة
+83	Décision sur le périmètre = Approuver ET rôle de l'approbateur IN (DRH, chef de projet consultant) ; aucun autre rôle ne peut approuver	قرار النطاق = اعتماد ودور المعتمد ضمن (مدير الموارد البشرية، رئيس المشروع الاستشاري)؛ ولا يمكن لأي دور آخر الاعتماد
+84	Diffusion demandée ET chaque section du questionnaire a une affectation RACSI avec un seul Approbateur (sinon la diffusion est bloquée)	طلب التوزيع وكل أقسام الاستبيان لها توزيع RACSI بمسؤول نهائي واحد فقط (وإلا يُمنع التوزيع)
+85	Le questionnaire contient des questions générées ou adaptées par l'IA ET validated_by est vide (diffusion bloquée jusqu'à validation humaine)	الاستبيان يتضمن أسئلة مولدة أو مكيفة بالذكاء الاصطناعي وvalidated_by فارغ (يُمنع التوزيع حتى المصادقة البشرية)
+86	Réponse soumise ; enregistrée uniquement si consent_given = true, sinon rejetée et journalisée	إجابة مقدمة؛ تُحفظ فقط إذا كان consent_given = true، وإلا تُرفض وتُسجل
+87	Relance due selon la cadence du canal ET aucune réponse reçue de la partie prenante	حلول موعد التذكير وفق وتيرة القناة وعدم استلام إجابة من صاحب المصلحة
+88	Taux de réponse < 50 % lorsque 75 % de la fenêtre de collecte est écoulée	معدل الاستجابة < 50% عند مرور 75% من فترة الجمع
+89	Cahier des charges approuvé modifié (critères, orientation ou parties prenantes) → statut remis à En attente de revalidation	تعديل دفتر نطاق العمل المعتمد (المعايير أو التركيز أو أصحاب المصلحة) ← إعادة الوضعية إلى في انتظار إعادة التحقق
+90	Envoyer une notification au rôle responsable	إرسال إشعار إلى الدور المسؤول
+91	Rédiger une fois dans la langue du destinataire et envoyer via les canaux activés.	الصياغة مرة واحدة بلغة المستلم والإرسال عبر القنوات المفعلة.
+92	Verrouiller le plan de formation approuvé	قفل خطة التكوين المعتمدة
+93	Passer le plan au statut Verrouillé ; toute modification exige une nouvelle version.	تغيير وضعية الخطة إلى مقفلة؛ ويتطلب أي تعديل إصدارًا جديدًا.
+94	Refuser l'enregistrement en l'absence de justification	رفض الحفظ في انتظار المبرر
+95	Désactiver Enregistrer tant qu'aucune justification n'est saisie lorsque l'option de la plateforme est activée.	تعطيل زر الحفظ حتى إدخال مبرر عندما يكون خيار المنصة مفعلًا.
+96	Signaler un écart de compétence critique	الإشارة إلى فجوة مهارات حرجة
+97	Définir is_critical = true sur l'enregistrement d'écart.	تعيين is_critical = true في سجل الفجوة.
+98	Créer une action avec responsable, évaluateur et échéance, liée à l'enregistrement déclencheur.	إنشاء إجراء بمسؤول ومقيّم وتاريخ استحقاق مرتبط بالسجل المطلق.
+99	Escalader au responsable formation	التصعيد إلى مسؤول التكوين
+100	Lever une alerte élevée vers le responsable formation avec l'enregistrement déclencheur.	رفع تنبيه عالٍ إلى مسؤول التكوين مع السجل المطلق.
+101	Escalader au DRH	التصعيد إلى مدير الموارد البشرية
+102	Lever une alerte élevée vers le DRH (président du comité de pilotage).	رفع تنبيه عالٍ إلى مدير الموارد البشرية (رئيس لجنة القيادة).
+103	Bloquer la publication du rapport	منع نشر التقرير
+104	Empêcher le passage au statut Publié et lister les contrôles en échec.	منع تغيير الوضعية إلى منشور وعرض الفحوصات الفاشلة.
+105	Transmettre la feuille de route au comité de pilotage	إحالة خارطة الطريق إلى لجنة القيادة
+106	Passer au statut Soumis et affecter la tâche d'approbation au DRH.	تغيير الوضعية إلى مقدمة وإسناد مهمة الاعتماد إلى مدير الموارد البشرية.
+107	Calculer les écarts	احتساب قيم الفجوات
+108	Calculer niveau cible moins niveau validé par collaborateur et compétence.	احتساب المستوى المستهدف ناقص المستوى المعتمد لكل موظف وكفاءة.
+109	Refuser l'inscription au-delà de la capacité	رفض التسجيل المتجاوز للسعة
+110	Refuser l'inscription lorsque la session est complète.	رفض التسجيل عندما تكون الدورة ممتلئة.
+111	Ajouter l'apprenant à la liste d'attente	إضافة المتعلم إلى قائمة الانتظار
+112	Créer une inscription en liste d'attente ordonnée par date de demande.	إنشاء تسجيل في قائمة الانتظار مرتب حسب وقت الطلب.
+113	Bloquer la session en conflit	منع الدورة المتعارضة
+114	Refuser l'enregistrement de la session et afficher la réservation en conflit.	رفض حفظ الدورة وعرض الحجز المتعارض.
+115	Inscrire automatiquement à la session de renouvellement	التسجيل التلقائي في دورة التجديد
+116	Inscrire le titulaire de la certification à la prochaine session de renouvellement.	تسجيل حامل الشهادة في دورة التجديد التالية.
+117	Passer la certification au statut Expire bientôt	تغيير وضعية الشهادة إلى قريبة الانتهاء
+118	Mettre à jour le statut à Expire bientôt dans la fenêtre de renouvellement.	تحديث الوضعية إلى قريبة الانتهاء ضمن نافذة التجديد.
+119	Bloquer la facture pour revue d'écart	تعليق الفاتورة لمراجعة الفارق
+120	Définir match_status = Écart et bloquer le paiement.	تعيين match_status = فارق وتعليق الأداء.
+121	Transmettre la facture pour approbation du paiement	إحالة الفاتورة لاعتماد الأداء
+122	Affecter la tâche d'approbation du paiement au directeur financier.	إسناد مهمة اعتماد الأداء إلى المدير المالي.
+123	Signaler un dépassement budgétaire	الإشارة إلى تجاوز الميزانية
+124	Signaler la ligne budgétaire et bloquer tout engagement au-delà de l'allocation.	الإشارة إلى بند الميزانية ومنع أي التزامات تتجاوز المخصص.
+125	Refuser la création hors quota (HTTP 409)	رفض الإنشاء المتجاوز للحصة (HTTP 409)
+126	Refuser la requête avec HTTP 409 en nommant le quota dépassé.	رفض الطلب برمز HTTP 409 مع ذكر الحصة المتجاوزة.
+127	Refuser la requête non autorisée (HTTP 403)	رفض الطلب غير المرخص (HTTP 403)
+128	Refuser avec HTTP 403 en nommant la permission ou la fonctionnalité manquante.	الرفض برمز HTTP 403 مع ذكر الصلاحية أو الخاصية الناقصة.
+129	Désactiver les fonctionnalités d'une licence expirée	تعطيل خصائص الترخيص المنتهي
+130	Passer la licence au statut expirée et limiter l'accès à la lecture seule.	تغيير وضعية الترخيص إلى منتهٍ وحصر الولوج في القراءة فقط.
+131	Refuser un fichier de licence invalide	رفض ملف ترخيص غير صالح
+132	Refuser l'activation d'une licence dont la signature ne se vérifie pas.	رفض تفعيل ترخيص يتعذر التحقق من توقيعه.
+133	Bloquer la création d'utilisateurs au-delà de maxUsers	منع إنشاء مستخدمين يتجاوزون maxUsers
+134	Refuser la création de compte ou la connexion lorsque les utilisateurs actifs atteignent maxUsers.	رفض إنشاء حساب أو تسجيل الدخول عند بلوغ المستخدمين النشطين maxUsers.
+135	Ignorer l'activation en double d'un module	تجاهل التفعيل المكرر لإضافة
+136	Détecter l'activation existante, ne rien créer et journaliser la tentative.	رصد التفعيل القائم وعدم إنشاء أي شيء وتسجيل المحاولة.
+137	Afficher la mention de non-certification	عرض إشعار عدم الاعتماد
+138	Afficher la mention non masquable et enregistrer l'heure d'acceptation.	عرض الإشعار غير القابل للإخفاء وتسجيل وقت الإقرار.
+139	Créer le socle de contrôles	إنشاء هيكل الضوابط
+140	Créer les contrôles de départ de la norme, étiquetés à la norme.	إنشاء الضوابط الأولية للمعيار موسومة به.
+141	Basculer sur le générateur déterministe	الرجوع إلى المولد الحتمي
+142	Fournir le résultat déterministe et explicable du cas d'usage à la place de l'appel réel.	تقديم النتيجة الحتمية القابلة للتفسير لحالة الاستخدام بدل الاستدعاء الفعلي.
+143	Bloquer la suggestion d'un cas d'usage désactivé	منع اقتراح من حالة استخدام معطلة
+144	Refuser toute nouvelle suggestion lorsque l'activation effective est désactivée.	رفض الاقتراحات الجديدة عندما يكون التفعيل الفعلي معطلًا.
+145	Écrire une entrée dans le journal d'usage de l'IA	كتابة قيد في سجل استخدام الذكاء الاصطناعي
+146	Ajouter résultat, utilisateur, enregistrement, confiance et horodatage.	إضافة النتيجة والمستخدم والسجل والثقة والطابع الزمني.
+147	Étiqueter le résultat comme généré par l'IA	وسم المخرج بأنه مولد بالذكاء الاصطناعي
+148	Étiqueter le résultat avec le niveau, la source et « nécessite une revue humaine ».	وسم المخرج بالمستوى والمصدر و«يتطلب مراجعة بشرية».
+149	Rejeter la ligne de synchronisation avec motif	رفض سطر المزامنة مع السبب
+150	Ignorer la ligne invalide et journaliser l'explication pour revue.	تخطي السطر غير الصالح وتسجيل التفسير للمراجعة.
+151	Marquer l'intégration comme défaillante	وسم التكامل بأنه غير سليم
+152	Renseigner last_health_status et notifier l'architecte SI.	تعيين last_health_status وإشعار مهندس نظم المعلومات.
+153	Solliciter une fiche REX	طلب إدخال الدروس المستفادة
+154	Inviter l'utilisateur qui clôture à remplir ou ignorer une fiche REX.	دعوة المستخدم الذي يغلق إلى ملء بطاقة الدروس المستفادة أو تخطيها.
+155	Envoyer une relance de réengagement	إرسال تنبيه لإعادة الانخراط
+156	Envoyer une relance avec le prochain élément recommandé.	إرسال تنبيه مع العنصر الموصى به التالي.
+157	Calculer la note RAG	احتساب التصنيف اللوني
+158	Appliquer les seuils RAG à score_pct.	تطبيق عتبات الألوان على score_pct.
+159	Calculer le score de risque	احتساب درجة الخطر

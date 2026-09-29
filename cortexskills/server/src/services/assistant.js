@@ -51,7 +51,7 @@ function match(question) {
 
 export function ask(req, question, mode = 'auto') {
   const lang = req.lang;
-  const isHelp = /^(can|how|comment|puis|est-ce|هل|كيف)/i.test(question.trim());
+  const isHelp = /^(how (do|can|to|should)|can (i|it|we|the)|is it possible|comment (faire|puis|créer|approuver|changer|exporter)|puis-je|est-ce que (je|l)|peut-on|كيف (أ|يمكن|ن)|هل يمكن)/i.test(question.trim());
   const intent = mode === 'help' || (mode === 'auto' && isHelp) ? null : match(question);
   if (intent) {
     // Permission evaluated after matching and strictly before running the query.

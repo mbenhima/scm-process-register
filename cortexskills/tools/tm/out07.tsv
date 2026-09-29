@@ -1,0 +1,160 @@
+0	Calculer le niveau de maturité managériale	احتساب مستوى نضج القيادة
+1	Calculer le niveau, de la productivité personnelle au leadership de toute l'organisation.	احتساب المستوى من الإنتاجية الشخصية إلى قيادة المؤسسة بأكملها.
+2	Construire le plan de développement du leadership	إعداد خطة تطوير القيادة
+3	Construire le plan avec le dirigeant.	إعداد الخطة مع القائد.
+4	Proposer des actions de développement du leadership	اقتراح إجراءات تطوير القيادة
+5	L'IA propose des actions pour le niveau le plus faible du dirigeant.	يقترح الذكاء الاصطناعي إجراءات للمستوى الأضعف لدى القائد.
+6	Revoir la préparation aux rôles de direction critiques.	مراجعة الجاهزية للأدوار القيادية الحرجة.
+7	Réévaluer la maturité managériale	إعادة تقييم نضج القيادة
+8	Réévaluer à l'intervalle convenu.	إعادة التقييم في الفترة المتفق عليها.
+9	Définir le périmètre de veille	تحديد نطاق اليقظة
+10	Définir l'environnement externe, le marché et l'horizon à analyser.	تحديد البيئة الخارجية والسوق والأفق المراد تحليله.
+11	Analyste stratégie	محلل الاستراتيجية
+12	Réaliser l'analyse des cinq forces de Porter	إجراء تحليل القوى الخمس لبورتر
+13	Noter les cinq forces concurrentielles avec preuves.	تقييم القوى التنافسية الخمس بالأدلة.
+14	Cartographier les segments de marché	رسم خريطة قطاعات السوق
+15	Segmenter le marché (ex. éleveurs, revendeurs).	تجزئة السوق (مثل المربين والموزعين).
+16	Analyste marché	محلل السوق
+17	Analyser le positionnement des concurrents	تحليل تموقع المنافسين
+18	Comparer le positionnement à celui de concurrents nommés.	مقارنة التموقع مع منافسين محددين.
+19	Suivre les évolutions réglementaires	رصد التغيرات التنظيمية
+20	Enregistrer les évolutions réglementaires et leurs dates d'effet.	تسجيل التغيرات التنظيمية وتواريخ سريانها.
+21	Analyste réglementaire	محلل تنظيمي
+22	Suivre les tendances technologiques	تتبع الاتجاهات التكنولوجية
+23	L'IA synthétise les sources de tendances technologiques pour revue par l'analyste.	يلخص الذكاء الاصطناعي مصادر الاتجاهات التكنولوجية لمراجعة المحلل.
+24	Se comparer au secteur	المقارنة مع القطاع
+25	Comparer aux référentiels du secteur.	المقارنة مع المعايير القطاعية.
+26	Identifier les implications stratégiques pour la formation	تحديد الانعكاسات الاستراتيجية على التكوين
+27	Traduire les constats en implications de compétences.	ترجمة النتائج إلى انعكاسات على المهارات.
+28	Produire le rapport de veille	إعداد تقرير اليقظة
+29	L'IA rédige le rapport de veille à partir des constats validés.	يصوغ الذكاء الاصطناعي تقرير اليقظة من النتائج المعتمدة.
+30	Alimenter la stratégie et le diagnostic avec la veille	تغذية الاستراتيجية والتشخيص باليقظة
+31	Publier les constats vers MP-01, MP-37 et MP-48.	نشر النتائج إلى MP-01 وMP-37 وMP-48.
+32	Mettre à jour la veille en continu	تحديث اليقظة باستمرار
+33	Mettre à jour les constats au fil de l'évolution de l'environnement.	تحديث النتائج مع تغير البيئة.
+34	Rendre compte à la direction générale	رفع التقارير للإدارة العليا
+35	Présenter le rapport à la direction générale.	تقديم التقرير للإدارة العليا.
+36	Cartographier la structure organisationnelle	رسم الهيكل التنظيمي
+37	Cartographier la structure actuelle par site et par fonction.	رسم الهيكل الحالي حسب الموقع والوظيفة.
+38	Analyste RH	محلل الموارد البشرية
+39	Concevoir les organigrammes	تصميم الهياكل التنظيمية
+40	Créer les organigrammes par fonction.	إنشاء الهياكل التنظيمية لكل وظيفة.
+41	Consultant en organisation	مستشار التصميم التنظيمي
+42	Réaliser l'analyse des emplois	إجراء تحليل الوظائف
+43	Analyser les tâches et responsabilités par rôle.	تحليل المهام والمسؤوليات لكل دور.
+44	Analyste des emplois	محلل الوظائف
+45	Rédiger les fiches de poste	صياغة بطاقات الوصف الوظيفي
+46	L'IA rédige les fiches de poste à partir de l'analyse des emplois, pour revue.	يصوغ الذكاء الاصطناعي بطاقات الوصف الوظيفي من تحليل الوظائف للمراجعة.
+47	Valider les fiches avec les managers	المصادقة على البطاقات مع المدراء
+48	Valider chaque fiche avec son manager.	المصادقة على كل بطاقة مع مديرها.
+49	Analyser les écarts entre existant et réel	تحليل الفجوات بين القائم والفعلي
+50	Comparer les fiches documentées à la réalité observée.	مقارنة الأوصاف الموثقة بالواقع الملاحظ.
+51	Identifier les rôles à développer	تحديد الأدوار الواجب تطويرها
+52	Signaler les rôles marqués « à développer » avec la raison.	الإشارة إلى الأدوار الموسومة «للتطوير» مع السبب.
+53	Mettre à jour l'architecture des emplois	تحديث هندسة الوظائف
+54	Appliquer les modifications approuvées à l'architecture.	تطبيق التغييرات المعتمدة على الهندسة.
+55	Aligner sur le référentiel de compétences	المواءمة مع مرجعية الكفاءات
+56	Relier chaque poste à des cibles de compétences.	ربط كل منصب بأهداف كفاءات.
+57	Publier les fiches de poste approuvées	نشر بطاقات الوصف الوظيفي المعتمدة
+58	Publier les organigrammes et fiches approuvés.	نشر الهياكل والبطاقات المعتمدة.
+59	Suivre les évolutions de l'architecture des emplois	تتبع تغييرات هندسة الوظائف
+60	Versionner chaque modification de l'architecture.	إصدار نسخة لكل تغيير في الهندسة.
+61	Rendre compte de la santé de l'architecture	التقرير عن سلامة الهندسة
+62	Rendre compte de la couverture et de la fraîcheur des fiches.	التقرير عن تغطية الأوصاف وحداثتها.
+63	Définir le périmètre GPEC	تحديد نطاق التدبير التوقعي
+64	Définir les emplois, l'horizon et la population concernés.	تحديد الوظائف والأفق والفئة ضمن النطاق.
+65	Spécialiste GPEC	متخصص التدبير التوقعي
+66	Cartographier les orientations stratégiques RH	رسم التوجهات الاستراتيجية للموارد البشرية
+67	Relier les orientations RH aux emplois et compétences.	ربط توجهات الموارد البشرية بالوظائف والمهارات.
+68	Aligner la formation sur la GPEC	مواءمة التكوين مع التدبير التوقعي
+69	Aligner les thèmes de formation sur les résultats GPEC.	مواءمة محاور التكوين مع مخرجات التدبير التوقعي.
+70	Mettre à jour fiches de poste, objectifs et critères d'évaluation.	تحديث بطاقات الوصف والأهداف ومعايير التقييم.
+71	Soutenir le développement du capital humain	دعم تنمية الرأسمال البشري
+72	Définir des mesures de développement par famille d'emplois.	تحديد إجراءات التنمية لكل عائلة وظائف.
+73	Mettre à jour le répertoire des emplois et des compétences (REC)	تحديث دليل الوظائف والكفاءات (REC)
+74	Mettre à jour le REC avec les emplois nouveaux et en évolution.	تحديث الدليل بالوظائف الجديدة والمتطورة.
+75	Redynamiser les évaluations périodiques	إعادة تنشيط التقييمات الدورية
+76	Rafraîchir le système d'évaluation périodique.	تجديد نظام التقييم الدوري.
+77	Concevoir les parcours de carrière	تصميم المسارات المهنية
+78	Concevoir les parcours de carrière à partir du REC.	تصميم المسارات المهنية من الدليل.
+79	Documenter le processus de gestion des carrières	توثيق مسار تدبير المسارات المهنية
+80	Documenter le processus de gestion des carrières.	توثيق مسار تدبير المسارات المهنية.
+81	Mettre en place la rémunération collective	تنفيذ الأجر الجماعي
+82	Définir des règles de rémunération collective liées aux compétences.	تحديد قواعد أجر جماعي مرتبطة بالمهارات.
+83	Intégrer la GPEC aux besoins de formation	إدماج التدبير التوقعي في احتياجات التكوين
+84	Publier les résultats GPEC vers MP-03 et MP-49.	نشر مخرجات التدبير التوقعي إلى MP-03 وMP-49.
+85	Rendre compte de l'intégration GPEC	التقرير عن إدماج التدبير التوقعي
+86	Rendre compte de l'alignement de la formation sur la GPEC.	التقرير عن مواءمة التكوين مع التدبير التوقعي.
+87	Concevoir les formulaires de collecte des demandes	تصميم استمارات جمع الطلبات
+88	Créer les formulaires de demande individuelle et collective.	إنشاء استمارات الطلب الفردي والجماعي.
+89	Déployer la collecte des demandes individuelles	نشر جمع الطلبات الفردية
+90	Ouvrir la collecte des demandes individuelles aux collaborateurs.	فتح جمع الطلبات الفردية للموظفين.
+91	Déployer la collecte des demandes collectives	نشر جمع الطلبات الجماعية
+92	Ouvrir la collecte des demandes collectives aux managers.	فتح جمع الطلبات الجماعية للمدراء.
+93	Recueillir les recommandations des managers	جمع توصيات المدراء
+94	Recueillir les recommandations des managers par équipe.	جمع توصيات المدراء لكل فريق.
+95	Consolider les demandes par fonction	توحيد الطلبات حسب الوظيفة
+96	Consolider les demandes par fonction et par poste.	توحيد الطلبات حسب الوظيفة والمنصب.
+97	Rattacher les demandes aux compétences	ربط الطلبات بالكفاءات
+98	L'IA rattache les demandes en texte libre au référentiel de compétences, pour revue.	يربط الذكاء الاصطناعي الطلبات النصية الحرة بمرجعية الكفاءات للمراجعة.
+99	Prioriser les demandes	ترتيب الطلبات حسب الأولوية
+100	Prioriser les demandes selon les critères convenus.	ترتيب الطلبات وفق المعايير المتفق عليها.
+101	Valider les demandes avec les managers	المصادقة على الطلبات مع المدراء
+102	Valider la liste priorisée avec les managers.	المصادقة على القائمة المرتبة مع المدراء.
+103	Intégrer les demandes à l'analyse des besoins	إدماج الطلبات في تحليل الاحتياجات
+104	Transmettre les demandes validées au MP-03.	إرسال الطلبات المعتمدة إلى MP-03.
+105	Analyser les tendances des demandes	التقرير عن أنماط الطلبات
+106	Rendre compte du volume et des thèmes des demandes.	التقرير عن حجم الطلبات ومحاورها.
+107	Suivre la satisfaction des demandes	تتبع تلبية الطلبات
+108	Suivre les demandes planifiées et réalisées.	تتبع الطلبات المبرمجة والمنجزة.
+109	Améliorer la collecte des demandes	تحسين جمع الطلبات
+110	Améliorer les formulaires et la campagne à partir des retours.	تحسين الاستمارات والحملة استنادًا إلى الملاحظات.
+111	Définir le cadre MS/MO/OP	تحديد إطار MS/MO/OP
+112	Définir les trois niveaux de management et leurs indicateurs.	تحديد مستويات الإدارة الثلاثة ومؤشراتها.
+113	Définir les critères RAG	تحديد معايير التصنيف بالألوان
+114	Fixer les seuils (ex. vert ≥ 80 %, orange 60-79 %, rouge < 60 %).	تحديد العتبات (مثال: أخضر ≥ 80%، برتقالي 60-79%، أحمر < 60%).
+115	Collecter les données de performance par fonction	جمع بيانات الأداء حسب الوظيفة
+116	Importer les données de performance par fonction et par niveau.	استيراد بيانات الأداء لكل وظيفة ومستوى.
+117	Évaluer la performance MS	تقييم أداء MS
+118	Évaluer la performance du management stratégique.	تقييم أداء الإدارة الاستراتيجية.
+119	Évaluer la performance MO	تقييم أداء MO
+120	Évaluer la performance du management opérationnel.	تقييم أداء الإدارة العملياتية.
+121	Évaluer la performance OP	تقييم أداء OP
+122	Évaluer la performance du niveau opérationnel.	تقييم أداء المستوى التنفيذي.
+123	Appliquer les notes RAG	تطبيق التصنيف بالألوان
+124	Appliquer les seuils RAG à chaque fonction et niveau.	تطبيق عتبات الألوان على كل وظيفة ومستوى.
+125	Visualiser les tableaux de bord de performance	عرض لوحات قيادة الأداء
+126	Afficher le tableau de bord RAG.	عرض لوحة القيادة بالألوان.
+127	Identifier les écarts de performance	تحديد فجوات الأداء
+128	L'IA met en évidence les plus grands écarts et leurs causes probables en compétences.	يبرز الذكاء الاصطناعي أكبر الفجوات وأسبابها المحتملة في المهارات.
+129	Alimenter le rapport de diagnostic avec la performance	تغذية تقرير التشخيص بالأداء
+130	Publier les résultats vers MP-37 et MP-48.	نشر النتائج إلى MP-37 وMP-48.
+131	Suivre la progression de la performance	تتبع تطور الأداء
+132	Comparer au cycle précédent.	المقارنة مع الدورة السابقة.
+133	Présenter la performance à la direction	رفع تقرير الأداء للقيادة
+134	Présenter le tableau de bord à la direction.	تقديم لوحة القيادة للقيادة.
+135	Définir le périmètre de la fonction	تحديد نطاق الوظيفة
+136	Définir la fonction ou le département concerné.	تحديد الوظيفة أو القسم ضمن النطاق.
+137	Réaliser le SWOT de la fonction	إجراء SWOT للوظيفة
+138	Animer l'atelier SWOT avec la fonction.	تنشيط ورشة SWOT مع الوظيفة.
+139	Identifier les forces	تحديد نقاط القوة
+140	Enregistrer les forces internes avec preuves.	تسجيل نقاط القوة الداخلية بالأدلة.
+141	Identifier les faiblesses	تحديد نقاط الضعف
+142	Enregistrer les faiblesses internes avec preuves.	تسجيل نقاط الضعف الداخلية بالأدلة.
+143	Identifier les opportunités	تحديد الفرص
+144	L'IA propose des opportunités à partir du rapport de veille, pour validation par l'analyste.	يقترح الذكاء الاصطناعي فرصًا من تقرير اليقظة لمصادقة المحلل.
+145	Identifier les menaces	تحديد التهديدات
+146	Enregistrer les menaces externes.	تسجيل التهديدات الخارجية.
+147	Définir les axes d'amélioration par fonction.	تحديد محاور التحسين لكل وظيفة.
+148	Valider les axes avec les responsables de fonction	المصادقة على المحاور مع رؤساء الوظائف
+149	Valider les axes avec les responsables de fonction.	المصادقة على المحاور مع قادة الوظائف.
+150	Prioriser les axes d'amélioration	ترتيب محاور التحسين
+151	Prioriser les axes par impact.	ترتيب المحاور حسب الأثر.
+152	Alimenter le rapport de diagnostic avec le SWOT	تغذية تقرير التشخيص بتحليل SWOT
+153	Publier le SWOT et les axes vers MP-37 et MP-04.	نشر SWOT والمحاور إلى MP-37 وMP-04.
+154	Suivre la mise en œuvre des améliorations	تتبع تنفيذ التحسينات
+155	Suivre la mise en œuvre de chaque axe.	تتبع تنفيذ كل محور.
+156	Rendre compte de la performance de la fonction	التقرير عن أداء الوظيفة
+157	Rendre compte de l'avancement par fonction.	التقرير عن التقدم لكل وظيفة.
+158	Consolider les thèmes de formation	توحيد محاور التكوين
+159	Consolider les thèmes issus des besoins, demandes, GPEC et SWOT.	توحيد المحاور المستخلصة من الاحتياجات والطلبات والتدبير التوقعي وSWOT.

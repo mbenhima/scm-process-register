@@ -1,0 +1,160 @@
+0	Retours des apprenants	ملاحظات المتعلمين
+1	Suivre l'engagement et relancer	تتبع الانخراط والتنبيه
+2	Suivre les indicateurs et déclencher des relances de réengagement.	تتبع المؤشرات وإطلاق تنبيهات إعادة الانخراط.
+3	Rapport d'engagement	تقرير الانخراط
+4	De l'évaluation des acquis à l'évaluation de l'efficacité	من التقييم إلى قياس الفعالية
+5	Mesurer l'efficacité de la formation et la progression des compétences	قياس فعالية التكوين وتطور المهارات
+6	Utilise le livrable de E2E-05	تستعمل مخرجات E2E-05
+7	Session ou parcours de formation terminé.	اكتمال دورة أو مسار تكوين.
+8	Efficacité mesurée sur les niveaux Kirkpatrick 1 à 3 et progression des compétences calculée.	الفعالية مقاسة على مستويات كيركباتريك 1-3 وتطور المهارات محتسب.
+9	M09 Moteur d'évaluation ; M10 Tableau de bord analytique ; M20 Centre qualité	M09 محرك التقييم؛ M10 لوحة التحليلات؛ M20 مركز الجودة
+10	Cette chaîne racine construit les instruments d'évaluation, mène les évaluations de réaction, d'apprentissage et de comportement, calcule la progression des compétences et revoit les résultats.	تبني هذه السلسلة الجذرية أدوات التقييم، وتجري تقييمات رد الفعل والتعلم والسلوك، وتحتسب تطور المهارات، وتراجع النتائج.
+11	Créer l'instrument par module.	إنشاء الأداة لكل وحدة.
+12	Instrument d'évaluation	أداة التقييم
+13	Rédiger la banque de questions	صياغة بنك الأسئلة
+14	Revoir la banque de questions rédigée par l'IA.	مراجعة بنك الأسئلة الذي صاغه الذكاء الاصطناعي.
+15	Banque de questions	بنك الأسئلة
+16	Recueillir le questionnaire de réaction après chaque session.	جمع استبيان رد الفعل بعد كل دورة.
+17	Résultats de niveau 1	نتائج المستوى 1
+18	Enregistrer les résultats de test par apprenant.	تسجيل نتائج الاختبار لكل متعلم.
+19	Résultats de niveau 2	نتائج المستوى 2
+20	Les managers enregistrent le changement de comportement au poste.	يسجل المدراء تغير السلوك في العمل.
+21	Résultats de niveau 3	نتائج المستوى 3
+22	Calculer la progression au regard de l'inventaire.	احتساب التطور مقارنة بالجرد.
+23	Progression des compétences	تطور المهارات
+24	Revoir les résultats et signaler les modules peu efficaces.	مراجعة النتائج والإشارة إلى الوحدات ضعيفة الفعالية.
+25	Revue d'évaluation	مراجعة التقييم
+26	Publier le rapport d'évaluation	نشر تقرير التقييم
+27	Exporter et partager le rapport Kirkpatrick.	تصدير تقرير كيركباتريك ومشاركته.
+28	Rapport d'évaluation Kirkpatrick	تقرير تقييم كيركباتريك
+29	De l'apprentissage au ROI	من التعلم إلى عائد الاستثمار
+30	Partition de E2E-07	جزء من E2E-07
+31	Valider le ROI et l'impact métier	التحقق من عائد الاستثمار والأثر على الأعمال
+32	Résultats d'évaluation disponibles pour un thème choisi pour une étude de ROI.	نتائج التقييم متاحة لمحور مختار لدراسة عائد الاستثمار.
+33	ROI Phillips validé avec la finance et rapport d'impact métier publié.	عائد الاستثمار وفق فيليبس معتمد مع المالية وتقرير الأثر على الأعمال منشور.
+34	M09 Moteur d'évaluation ; M10 Tableau de bord analytique ; M18 Console finance ; M32 Tableau de bord ROI	M09 محرك التقييم؛ M10 لوحة التحليلات؛ M18 وحدة المالية؛ M32 لوحة عائد الاستثمار
+35	Cette partition de E2E-07 choisit un thème, définit les indicateurs métier, isole l'effet de la formation, calcule le ROI Phillips et publie le rapport d'impact métier.	يختار هذا الجزء من E2E-07 محورًا، ويحدد مؤشرات الأعمال، ويعزل أثر التكوين، ويحتسب عائد الاستثمار وفق فيليبس، وينشر تقرير الأثر على الأعمال.
+36	Choisir le thème et sa population.	اختيار المحور وفئته.
+37	Périmètre du ROI	نطاق عائد الاستثمار
+38	Définir les indicateurs métier à suivre.	تحديد مؤشرات الأعمال الواجب تتبعها.
+39	Jeu d'indicateurs	مجموعة المؤشرات
+40	Collecter les données de coûts	جمع بيانات التكاليف
+41	Collecter les coûts engagés et réels du thème.	جمع التكاليف الملتزم بها والفعلية للمحور.
+42	Données de coûts	بيانات التكاليف
+43	Isoler l'effet avec un groupe témoin ou une ligne de tendance.	عزل الأثر بمجموعة ضابطة أو خط اتجاه.
+44	Bénéfices isolés	الفوائد المعزولة
+45	Calculer le ROI et le ratio bénéfices/coûts.	احتساب عائد الاستثمار ونسبة الفائدة إلى التكلفة.
+46	Chiffres du ROI	أرقام عائد الاستثمار
+47	La finance revoit les chiffres et hypothèses.	تراجع المالية الأرقام والفرضيات.
+48	ROI validé	عائد استثمار معتمد
+49	Publier le rapport d'impact auprès de la direction.	نشر تقرير الأثر للقيادة.
+50	Direction générale	الإدارة العليا
+51	Rapport ROI et impact métier	تقرير عائد الاستثمار والأثر على الأعمال
+52	De la conformité à la certification	من المطابقة إلى الشهادة
+53	Garantir un personnel conforme avec des certifications valides	ضمان مطابقة الموظفين بشهادات سارية
+54	En parallèle de E2E-05 et E2E-07	بالتوازي مع E2E-05 وE2E-07
+55	Nouvelle exigence réglementaire ou certification proche de l'expiration.	متطلب تنظيمي جديد أو شهادة قريبة من الانتهاء.
+56	Personnel conforme avec certifications valides et extrait d'audit disponible.	موظفون مطابقون بشهادات سارية ومستخرج تدقيق متاح.
+57	M14 Centre conformité ; M07 Centre de réalisation ; M09 Moteur d'évaluation ; M10 Tableau de bord analytique	M14 مركز المطابقة؛ M07 مركز التنفيذ؛ M09 محرك التقييم؛ M10 لوحة التحليلات
+58	Cette chaîne racine enregistre les exigences réglementaires, affecte les formations obligatoires par poste, suit la validité des certifications, lance les renouvellements et produit l'extrait d'audit de conformité.	تسجل هذه السلسلة الجذرية المتطلبات التنظيمية، وتسند التكوينات الإلزامية حسب المنصب، وتتبع صلاحية الشهادات، وتطلق التجديدات، وتعد مستخرج تدقيق المطابقة.
+59	Enregistrer l'exigence avec sa source et sa période.	تسجيل المتطلب مع مصدره ومدته.
+60	Juridique	الشؤون القانونية
+61	Réglementation	التنظيم
+62	Fiche d'exigence	سجل المتطلب
+63	Affecter les formations obligatoires	إسناد التكوينات الإلزامية
+64	Affecter les formations obligatoires par poste.	إسناد التكوينات الإلزامية حسب المنصب.
+65	Affectations obligatoires	الإسنادات الإلزامية
+66	Réaliser les sessions obligatoires	تنفيذ الدورات الإلزامية
+67	Inscrire les apprenants et enregistrer la présence.	تسجيل المتعلمين وتسجيل الحضور.
+68	Présence	الحضور
+69	Évaluer et certifier	التقييم ومنح الشهادة
+70	Enregistrer les résultats et délivrer les certificats.	تسجيل النتائج وإصدار الشهادات.
+71	Certificats	الشهادات
+72	Calculer la validité et signaler les expirations.	احتساب الصلاحية والإشارة إلى حالات الانتهاء.
+73	Statut de validité	وضعية الصلاحية
+74	Lancer l'inscription au renouvellement et confirmer l'achèvement.	إطلاق التسجيل للتجديد وتأكيد الإتمام.
+75	Certificats renouvelés	الشهادات المجددة
+76	Produire l'extrait d'audit et le rapport de statut.	إعداد مستخرج التدقيق وتقرير الوضعية.
+77	Auditeur	المدقق
+78	Extrait d'audit de conformité	مستخرج تدقيق المطابقة
+79	Du talent à la mobilité	من المواهب إلى التنقل
+80	Favoriser la mobilité interne et la progression de carrière	تمكين التنقل الداخلي والتطور المهني
+81	Utilise les livrables de E2E-02 et E2E-06	تستعمل مخرجات E2E-02 وE2E-06
+82	Poste interne publié ou revue annuelle de carrière.	منصب داخلي منشور أو مراجعة مهنية سنوية.
+83	Mobilité interne décidée avec plan de reconversion affecté.	قرار التنقل الداخلي متخذ مع إسناد خطة إعادة التأهيل.
+84	M13 Centre carrières ; M31 Place de marché des talents ; M02 Hub compétences ; M08 Portail apprenant	M13 مركز المسارات المهنية؛ M31 سوق المواهب؛ M02 مركز المهارات؛ M08 بوابة المتعلم
+85	Cette chaîne racine modélise les parcours de carrière, publie les postes internes, rapproche les collaborateurs des postes, présélectionne les candidats et affecte les plans de reconversion.	تنمذج هذه السلسلة الجذرية المسارات المهنية، وتنشر المناصب الداخلية، وتطابق الموظفين معها، وتنتقي المرشحين، وتسند خطط إعادة التأهيل.
+86	Modéliser les parcours de carrière	نمذجة المسارات المهنية
+87	Modéliser les parcours de carrière reliés aux cibles de compétences.	نمذجة المسارات المهنية المرتبطة بأهداف الكفاءات.
+88	Parcours de carrière	المسارات المهنية
+89	Publier le poste avec ses compétences requises.	نشر المنصب مع المهارات المطلوبة.
+90	Poste interne	منصب داخلي
+91	Revoir les rapprochements IA entre compétences et poste.	مراجعة مطابقات الذكاء الاصطناعي بين المهارات والمنصب.
+92	Liste de rapprochement	قائمة المطابقة
+93	Les collaborateurs postulent au poste.	يترشح الموظفون للمنصب.
+94	Candidatures	الترشيحات
+95	Présélectionner les candidats sur preuves.	الانتقاء الأولي للمرشحين بالأدلة.
+96	Liste restreinte	القائمة المختصرة
+97	Créer le plan de développement avec les actions proposées.	إنشاء خطة التنمية مع الإجراءات المقترحة.
+98	Plans de développement	خطط التنمية
+99	Affecter le parcours de reconversion au candidat retenu.	إسناد مسار إعادة التأهيل للمرشح المختار.
+100	Plan de reconversion	خطة إعادة التأهيل
+101	Revoir carrières et succession	مراجعة المسارات المهنية والتعاقب
+102	Mener la revue de carrière et mettre à jour la préparation à la succession.	إجراء المراجعة المهنية وتحديث جاهزية التعاقب.
+103	Rapport de mobilité des talents	تقرير تنقل المواهب
+104	De l'intégration à la productivité	من الإدماج إلى الإنتاجية
+105	Accélérer l'atteinte de la productivité	تسريع الوصول إلى الإنتاجية
+106	Utilise les livrables de E2E-04 et E2E-05	تستعمل مخرجات E2E-04 وE2E-05
+107	Nouvelle recrue ou mobilité interne confirmée.	تأكيد موظف جديد أو متنقل داخلي.
+108	Collaborateur productif dans le délai cible et intégration clôturée.	الموظف منتج في الوقت المستهدف والإدماج مغلق.
+109	M35 Hub d'intégration ; M07 Centre de réalisation ; M08 Portail apprenant ; M13 Centre carrières	M35 مركز الإدماج؛ M07 مركز التنفيذ؛ M08 بوابة المتعلم؛ M13 مركز المسارات المهنية
+110	Cette chaîne racine prépare le dossier d'intégration, génère le parcours 30-60-90 jours, tient les points d'étape avec l'appui du coaching et confirme le délai d'atteinte de la productivité.	تعد هذه السلسلة الجذرية ملف الإدماج، وتولد مسار 30-60-90 يومًا، وتعقد لقاءات المتابعة بدعم التوجيه، وتؤكد مدة الوصول إلى الإنتاجية.
+111	Créer le dossier d'intégration de la nouvelle recrue.	إنشاء ملف الإدماج للموظف الجديد.
+112	Décision d'embauche	قرار التوظيف
+113	Dossier d'intégration	ملف الإدماج
+114	Générer le parcours à partir des cibles du poste.	توليد المسار من أهداف المنصب.
+115	Parcours 30-60-90	مسار 30-60-90
+116	S'inscrire aux sessions d'intégration	التسجيل في دورات الإدماج
+117	Inscrire le collaborateur aux sessions d'accueil.	تسجيل الموظف في دورات الاستقبال.
+118	Le collaborateur réalise les tâches d'intégration.	ينجز الموظف مهام الإدماج.
+119	Parrain	المرافق
+120	Tâches réalisées	المهام المنجزة
+121	Tenir les points d'étape	عقد لقاءات المراحل
+122	Tenir les points d'étape avec coaching si nécessaire.	عقد لقاءات المتابعة مع التوجيه عند الحاجة.
+123	Notes de point d'étape	ملاحظات لقاءات المتابعة
+124	Évaluer la productivité au regard de la cible.	تقييم الإنتاجية مقارنة بالهدف.
+125	Évaluation de la productivité	تقييم الإنتاجية
+126	Clôturer le dossier et relier le plan de développement.	إغلاق الملف وربط خطة التنمية.
+127	Intégration clôturée	إدماج مغلق
+128	De la capture au transfert des savoirs	من التقاط المعرفة إلى نقلها
+129	Capturer et transférer les savoirs institutionnels	التقاط المعرفة المؤسسية ونقلها
+130	Alimente E2E-13 et E2E-06	تغذي E2E-13 وE2E-06
+131	Expert critique identifié comme partant, en retraite ou détenteur de savoirs à risque.	تحديد خبير حرج مغادر أو متقاعد أو حامل لمعرفة معرضة للضياع.
+132	Savoirs capturés, publiés et transférés à un successeur validé.	المعرفة ملتقطة ومنشورة ومنقولة إلى خلف معتمد.
+133	M34 Coffre des savoirs d'experts ; M12 Hub communautaire ; M33 Studio de contenus entre pairs ; M06 Bibliothèque de contenus	M34 خزانة معرفة الخبراء؛ M12 مركز المجتمع؛ M33 استوديو محتوى الأقران؛ M06 مكتبة المحتوى
+134	Cette chaîne racine identifie les experts critiques, enregistre et structure leurs savoirs, les publie et valide leur transfert aux successeurs.	تحدد هذه السلسلة الجذرية الخبراء الحرجين، وتسجل معرفتهم وتهيكلها، وتنشرها، وتصادق على نقلها إلى الخلفاء.
+135	Identifier les experts détenteurs de savoirs à risque.	تحديد الخبراء الحاملين لمعرفة معرضة للضياع.
+136	Données d'effectifs	بيانات الموارد البشرية
+137	Liste des experts critiques	قائمة الخبراء الحرجين
+138	Planifier les séances d'entretien avec chaque expert.	تخطيط جلسات المقابلة مع كل خبير.
+139	Experts	الخبراء
+140	Plan de capture	خطة الالتقاط
+141	Enregistrer l'entretien et sa transcription.	تسجيل المقابلة ونصها المفرغ.
+142	Transcription d'entretien	النص المفرغ للمقابلة
+143	Structurer les savoirs	هيكلة المعرفة
+144	Revoir l'élément de savoir structuré par l'IA.	مراجعة عنصر المعرفة الذي هيكله الذكاء الاصطناعي.
+145	Savoirs structurés	معرفة مهيكلة
+146	Publier et indexer l'article pour la recherche.	نشر المقال وفهرسته للاسترجاع.
+147	Article publié	مقال منشور
+148	Affecter le parcours d'apprentissage au successeur.	إسناد مسار التعلم إلى الخلف.
+149	Successeur	الخلف
+150	Parcours du successeur	مسار الخلف
+151	L'expert valide la maîtrise du successeur.	يصادق الخبير على إتقان الخلف.
+152	Transfert validé	نقل معتمد
+153	Du contenu à la curation puis au retrait	من المحتوى إلى الانتقاء ثم السحب
+154	Publier, maintenir et retirer les contenus	نشر المحتوى وصيانته وسحبه
+155	Nouveau contenu publié ou contenu dont la date de revue est dépassée.	محتوى جديد منشور أو محتوى تجاوز تاريخ مراجعته.
+156	Catalogue sélectionné, maintenu et contenus obsolètes retirés.	الفهرس منتقى ومصان والمحتوى المتقادم مسحوب.
+157	M06 Bibliothèque de contenus ; M29 Moteur de curation ; M33 Studio de contenus entre pairs	M06 مكتبة المحتوى؛ M29 محرك الانتقاء؛ M33 استوديو محتوى الأقران
+158	Cette partition de E2E-05 agrège les catalogues fournisseurs, sélectionne et organise les éléments, promeut les contenus entre pairs, signale les contenus à revoir et retire ce qui est obsolète.	يجمع هذا الجزء من E2E-05 فهارس المزودين، وينتقي العناصر وينظمها، ويروج لمحتوى الأقران، ويشير إلى المحتوى المتجاوز للمراجعة، ويسحب المتقادم.
+159	Agréger les catalogues des fournisseurs externes.	تجميع فهارس المزودين الخارجيين.

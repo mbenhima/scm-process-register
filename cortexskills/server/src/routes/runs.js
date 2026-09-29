@@ -69,8 +69,8 @@ r.patch('/tasks/:id', requirePerm('tasks.execute'), ah(req => {
   }
   let output = J(t.output) || {};
   if (b.output !== undefined) {
-    const same = output.en === output.fr && output.fr === output.ar;
-    output = typeof b.output === 'object' ? b.output : (!t.output || same ? { en: b.output, fr: b.output, ar: b.output } : { ...output, [lang]: b.output });
+    // A person's own writing is shown as typed in every language (it is not machine-translated).
+    output = typeof b.output === 'object' ? b.output : { en: String(b.output), fr: String(b.output), ar: String(b.output) };
   }
   if (status === 'Completed' && !pick(output, lang).trim()) throw new HttpError(422, 'err.outputRequired');
   let steps = J(t.steps, []);

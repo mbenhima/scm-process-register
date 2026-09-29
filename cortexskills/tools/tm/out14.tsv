@@ -1,0 +1,160 @@
+0	Consolider tous les thèmes identifiés.	توحيد جميع المحاور المحددة.
+1	Consolider les thèmes	توحيد المحاور
+2	Thèmes	المحاور
+3	Liste des thèmes	قائمة المحاور
+4	Définir les critères de priorisation.	تحديد معايير الأولوية.
+5	Définir les critères	تحديد المعايير
+6	Critères	المعايير
+7	Prioriser les thèmes selon l'impact.	ترتيب المحاور حسب الأثر.
+8	Thèmes priorisés	محاور مرتبة
+9	Estimer les jours	تقدير الأيام
+10	Jours par thème	الأيام لكل محور
+11	Définir les groupes par thème	تحديد المجموعات لكل محور
+12	Définir le nombre de groupes par thème.	تحديد عدد المجموعات لكل محور.
+13	Définir les groupes	تحديد المجموعات
+14	Plan des groupes	خطة المجموعات
+15	Affecter formateurs et budget	تخصيص المكونين والميزانية
+16	Affecter les formateurs et le budget.	تخصيص المكونين والميزانية.
+17	Affecter les ressources	تخصيص الموارد
+18	Responsable formation	قائد التكوين
+19	Plan des ressources	خطة الموارد
+20	Publier le plan de formation priorisé	نشر خطة التكوين المرتبة
+21	Publier le « Plan de formation priorisé ».	نشر «خطة التكوين المرتبة حسب الأولوية».
+22	Publier le plan	نشر الخطة
+23	Plan priorisé	الخطة المرتبة
+24	De la mission à la feuille de route	من المهمة إلى خارطة الطريق
+25	Racine (feuille de route)	جذرية (خارطة الطريق)
+26	Définir la feuille de route post-mission et l'amélioration continue	تحديد خارطة طريق ما بعد المهمة والتحسين المستمر
+27	Utilise E2E-19 ; alimente E2E-17 et E2E-18	تستعمل E2E-19؛ تغذي E2E-17 وE2E-18
+28	Clôture de la mission d'ingénierie de formation en cours (E2E-19).	إغلاق مهمة هندسة التكوين الحالية (E2E-19).
+29	Feuille de route post-mission approuvée avec missions futures et plan d'amélioration continue.	خارطة طريق ما بعد المهمة معتمدة مع المهام المستقبلية وخطة التحسين المستمر.
+30	M50 Hub feuille de route ; M36 Console des missions ; M19 Hub du changement ; M12 Hub communautaire ; M16 Console de gouvernance des données	M50 مركز خارطة الطريق؛ M36 وحدة المهام؛ M19 مركز التغيير؛ M12 مركز المجتمع؛ M16 وحدة حكامة البيانات
+31	Cette chaîne racine définit la feuille de route à long terme au-delà de la mission en cours, y compris les missions futures (coaching individuel, optimisation organisationnelle, réhabilitation/réingénierie du SI), les indicateurs et les tableaux de bord.	تحدد هذه السلسلة الجذرية خارطة الطريق طويلة المدى بعد مهمة هندسة التكوين الحالية، بما في ذلك المهام المستقبلية (التوجيه الفردي، التحسين التنظيمي، إعادة تأهيل/هندسة نظام المعلومات) والمؤشرات ولوحات القيادة.
+32	Consolider les constats	توحيد النتائج
+33	Livrables de la mission	مخرجات المهمة
+34	Constats	النتائج
+35	Définir les perspectives.	تحديد الآفاق المستقبلية.
+36	Définir les perspectives	تحديد الآفاق
+37	Perspectives	الآفاق
+38	Planifier le coaching	تخطيط التوجيه
+39	Plan de coaching	خطة التوجيه
+40	Planifier l'optimisation organisationnelle (organigrammes, rôles, fiches, processus, indicateurs).	تخطيط التحسين التنظيمي (الهياكل، الأدوار، البطاقات، المسارات، المؤشرات).
+41	Planifier l'optimisation	تخطيط التحسين
+42	Plan d'optimisation	خطة التحسين
+43	Planifier la réhabilitation/réingénierie du SI.	تخطيط إعادة تأهيل/هندسة نظام المعلومات.
+44	Planifier le SI	تخطيط نظام المعلومات
+45	Plan SI	خطة نظام المعلومات
+46	Définir le cadre d'indicateurs et les tableaux de bord.	تحديد إطار المؤشرات ولوحات القيادة.
+47	Définir les indicateurs	تحديد المؤشرات
+48	Finance	المالية
+49	Cadre d'indicateurs	إطار المؤشرات
+50	Prioriser les missions futures.	ترتيب المهام المستقبلية.
+51	Prioriser les missions	ترتيب المهام
+52	Tous les plans	جميع الخطط
+53	Missions priorisées	مهام مرتبة
+54	Publier la feuille de route	نشر خارطة الطريق
+55	Publier la feuille de route post-mission.	نشر خارطة طريق ما بعد المهمة.
+56	Feuille de route post-mission	خارطة طريق ما بعد المهمة
+57	Du cahier des charges au plan d'ingénierie	من دفتر نطاق العمل إلى خطة الهندسة
+58	Racine — stratégique	جذرية — استراتيجية
+59	Définir et approuver le cahier des charges structuré et le registre des parties prenantes	تحديد دفتر نطاق العمل المنظم وسجل أصحاب المصلحة والمصادقة عليهما
+60	Alimente E2E-33, E2E-03, E2E-01	تغذي E2E-33 وE2E-03 وE2E-01
+61	Nouvelle mission d'ingénierie de formation, cycle du plan annuel ou demande de la direction.	مهمة جديدة لهندسة التكوين أو دورة الخطة السنوية أو طلب من الإدارة العليا.
+62	Cahier des charges approuvé avec matrice des critères et registre des parties prenantes transmis à la conception du questionnaire (E2E-33) et à l'analyse des besoins (E2E-03).	دفتر نطاق العمل معتمد مع مصفوفة المعايير وسجل أصحاب المصلحة ومحال إلى تصميم الاستبيان (E2E-33) وتحليل الاحتياجات (E2E-03).
+63	M53 Studio cahier des charges ; M01 Console stratégie ; M44 Hub architecture des emplois ; M45 Hub GPEC ; M03 Analyseur de besoins	M53 استوديو نطاق العمل؛ M01 وحدة الاستراتيجية؛ M44 مركز هندسة الوظائف؛ M45 مركز التدبير التوقعي؛ M03 محلل الاحتياجات
+64	Cette chaîne racine cadre une mission d'ingénierie de formation avant toute collecte de données. Elle précise si le périmètre couvre un groupe ou une seule organisation, le secteur, les niveaux de décision (management stratégique — MS, management opérationnel — MO, opérationnel — OP, ou un niveau personnalisé), les fonctions concernées, l'orientation (tous les besoins, digital, IA ou personnalisée) et les critères personnalisés. Elle identifie ensuite les parties prenantes qui répondront, fait valider le périmètre par le responsable formation et approuver par le DRH ou le chef de projet consultant, puis le publie vers la conception du questionnaire et l'analyse des besoins. Toute modification après approbation exige une nouvelle validation.	تؤطر هذه السلسلة الجذرية مهمة هندسة التكوين قبل جمع أي بيانات. فهي تسجل ما إذا كان النطاق يشمل مجموعة أو مؤسسة واحدة، والقطاع، ومستويات القرار (الإدارة الاستراتيجية — MS، الإدارة العملياتية — MO، المستوى التنفيذي — OP، أو مستوى مخصص)، والوظائف المعنية، والتركيز (جميع احتياجات التكوين، الرقمي، الذكاء الاصطناعي أو مخصص) وأي معايير مخصصة. ثم تحدد أصحاب المصلحة الذين سيجيبون، وتخضع النطاق لتحقق مسؤول التكوين واعتماد مدير الموارد البشرية أو رئيس المشروع الاستشاري، وتنشره لتصميم الاستبيان وتحليل الاحتياجات. ويتطلب أي تغيير بعد الاعتماد إعادة التحقق.
+65	Définir le cadre du périmètre	تحديد إطار النطاق
+66	Choisir le périmètre groupe (oui/non) et sélectionner la ou les organisations concernées.	اختيار نطاق المجموعة (نعم/لا) وتحديد المؤسسة أو المؤسسات ضمن النطاق.
+67	Demande de mission	طلب المهمة
+68	Cadre du périmètre	إطار النطاق
+69	Sélectionner le secteur dans la liste de référence.	اختيار القطاع من اللائحة المرجعية.
+70	Définir le secteur	تحديد القطاع
+71	Liste de référence des secteurs	اللائحة المرجعية للقطاعات
+72	Secteur	القطاع
+73	Sélectionner les niveaux de décision	اختيار مستويات القرار
+74	Sélectionner MS, MO, OP et/ou un niveau personnalisé nommé.	اختيار MS أو MO أو OP و/أو مستوى مخصص مسمى.
+75	Définir les niveaux de décision	تحديد مستويات القرار
+76	Cadre MS/MO/OP	إطار MS/MO/OP
+77	Niveaux de décision	مستويات القرار
+78	Croiser fonctions × niveaux de décision	ربط الوظائف بمستويات القرار
+79	Construire la matrice des critères à partir de l'architecture des emplois.	إعداد مصفوفة معايير النطاق من هندسة الوظائف.
+80	Construire la matrice des critères	إعداد مصفوفة المعايير
+81	Matrice des critères	مصفوفة المعايير
+82	Choisir l'orientation et ajouter des critères personnalisés	اختيار التركيز وإضافة معايير مخصصة
+83	Choisir l'orientation tous, digital, IA ou personnalisée ; ajouter des critères personnalisés pondérés.	اختيار التركيز: الكل أو الرقمي أو الذكاء الاصطناعي أو مخصص؛ وإضافة معايير مخصصة مرجحة.
+84	Définir l'orientation	تحديد التركيز
+85	Objectifs stratégiques	الأهداف الاستراتيجية
+86	Orientation et critères personnalisés	التركيز والمعايير المخصصة
+87	Enregistrer les répondants avec rôle, fonction, niveau de décision, site et canal préféré.	تسجيل المستجيبين بالدور والوظيفة ومستوى القرار والموقع والقناة المفضلة.
+88	Enregistrer les répondants	تسجيل المستجيبين
+89	Annuaire des collaborateurs	دليل الموظفين
+90	Liste des parties prenantes	قائمة أصحاب المصلحة
+91	Valider le périmètre	التحقق من النطاق
+92	Vérifier la complétude et la couverture du périmètre.	التحقق من اكتمال النطاق وتغطيته.
+93	Projet de périmètre	مسودة النطاق
+94	Périmètre validé	نطاق معتمد
+95	Approuver le périmètre	اعتماد النطاق
+96	Le DRH ou le chef de projet consultant approuve le cahier des charges.	يعتمد مدير الموارد البشرية أو رئيس المشروع الاستشاري دفتر نطاق العمل.
+97	DRH / chef de projet consultant	مدير الموارد البشرية / رئيس المشروع الاستشاري
+98	Générer le cahier des charges et transmettre le périmètre et les parties prenantes en aval.	توليد وثيقة نطاق العمل وإحالة النطاق وأصحاب المصلحة إلى المراحل اللاحقة.
+99	Publier le périmètre	نشر النطاق
+100	Cahier des charges et registre des parties prenantes publiés	دفتر نطاق العمل وسجل أصحاب المصلحة المنشوران
+101	Du questionnaire à la collecte des réponses	من الاستبيان إلى جمع الإجابات
+102	Racine — diagnostic	جذرية — تشخيص
+103	Concevoir, diffuser et collecter les réponses aux questionnaires sur plusieurs canaux	تصميم الاستبيانات وتوزيعها وجمع إجاباتها عبر القنوات
+104	Utilise E2E-32 ; alimente E2E-03, E2E-20, E2E-27	تستعمل E2E-32؛ تغذي E2E-03 وE2E-20 وE2E-27
+105	Un cahier des charges approuvé devient disponible (fin de E2E-32).	يصبح دفتر نطاق عمل معتمد متاحًا (نهاية E2E-32).
+106	Jeu de données consolidé et validé des réponses alimentant l'analyse des besoins (E2E-03), le diagnostic (E2E-20) et la collecte des demandes (E2E-27).	مجموعة بيانات موحدة ومعتمدة لإجابات الاستبيان تغذي تحليل الاحتياجات (E2E-03) والتشخيص (E2E-20) وجمع الطلبات (E2E-27).
+107	M54 Studio questionnaires ; M03 Analyseur de besoins ; M37 Studio de diagnostic ; M46 Hub de collecte des demandes	M54 استوديو الاستبيانات؛ M03 محلل الاحتياجات؛ M37 استوديو التشخيص؛ M46 مركز جمع الطلبات
+108	Cette chaîne racine transforme le cahier des charges approuvé en éléments probants. L'analyste formation choisit un modèle par orientation et secteur et élabore le questionnaire en chargeant un modèle, en générant des questions par IA ou en les rédigeant manuellement ; chaque question générée ou adaptée par l'IA est validée par un humain avant diffusion. Les rôles RACSI sont affectés à chaque section, avec un seul Approbateur. Le questionnaire est ensuite diffusé sur les canaux utilisés par chaque partie prenante (face-à-face, e-mail, hybride ou personnalisé), les relances suivent une cadence par canal et les réponses sont collectées — hors ligne en face-à-face, avec synchronisation ultérieure. Aucune réponse n'est enregistrée sans consentement. Les réponses complètes sont consolidées dans un jeu de données propre au locataire qui alimente l'analyse des besoins, le diagnostic et le rapport d'ingénierie de formation.	تحول هذه السلسلة الجذرية دفتر نطاق العمل المعتمد إلى أدلة. يختار محلل التكوين نموذجًا حسب التركيز والقطاع ويعد الاستبيان بتحميل نموذج أو توليد أسئلة بالذكاء الاصطناعي أو كتابتها يدويًا؛ ويصادق إنسان على كل سؤال مولد أو مكيف بالذكاء الاصطناعي قبل التوزيع. وتُوزع أدوار RACSI على كل قسم مع مسؤول نهائي واحد فقط. ثم يوزع الاستبيان عبر القنوات التي يستعملها كل صاحب مصلحة (حضوري، بريد إلكتروني، مختلط أو مخصص)، وتتبع التذكيرات وتيرة كل قناة، وتُجمع الإجابات — دون اتصال في الحالة الحضورية مع المزامنة لاحقًا. ولا تُحفظ أي إجابة دون موافقة. وتُوحد الإجابات المكتملة في مجموعة بيانات خاصة بالمستأجر تغذي تحليل الاحتياجات والتشخيص وتقرير هندسة التكوين.
+109	Sélectionner le modèle de questionnaire	اختيار نموذج الاستبيان
+110	Sélectionner un modèle par orientation et secteur.	اختيار نموذج حسب التركيز والقطاع.
+111	Cahier des charges approuvé	دفتر نطاق العمل المعتمد
+112	Charger un modèle, générer par IA ou rédiger manuellement.	تحميل نموذج أو التوليد بالذكاء الاصطناعي أو الكتابة يدويًا.
+113	Élaborer	الإعداد
+114	Modèle, invites IA	النموذج، موجهات الذكاء الاصطناعي
+115	Projet de questionnaire	مسودة الاستبيان
+116	Adapter et valider le contenu	تكييف المحتوى والمصادقة عليه
+117	Adapter la formulation au secteur et à l'orientation ; valider chaque question générée par l'IA.	تكييف الصياغة مع القطاع والتركيز؛ والمصادقة على كل سؤال مولد بالذكاء الاصطناعي.
+118	Adapter	التكييف
+119	Questionnaire validé	استبيان معتمد
+120	Affecter R/A/C/S/I par section, avec un seul Approbateur.	إسناد R/A/C/S/I لكل قسم مع مسؤول نهائي واحد فقط.
+121	Responsables de section	مسؤولو الأقسام
+122	Affectation RACSI	توزيع RACSI
+123	Choisir face-à-face, e-mail, hybride ou personnalisé par segment de parties prenantes.	اختيار حضوري أو بريد إلكتروني أو مختلط أو مخصص لكل فئة من أصحاب المصلحة.
+124	Choisir les canaux	اختيار القنوات
+125	Administrateur des enquêtes	مسؤول الاستبيانات
+126	Registre des parties prenantes	سجل أصحاب المصلحة
+127	Plan des canaux	خطة القنوات
+128	Envoyer aux parties prenantes ; chaque envoi est journalisé.	الإرسال إلى أصحاب المصلحة؛ مع تسجيل كل إرسال.
+129	Diffuser	التوزيع
+130	Journal de diffusion	سجل الإرسال
+131	Envoyer les relances	إرسال التذكيرات
+132	Relancer les non-répondants selon la cadence du canal.	تذكير غير المستجيبين وفق وتيرة القناة.
+133	Relancer	التذكير
+134	Journal des relances	سجل التذكيرات
+135	Collecter en ligne, ou hors ligne avec synchronisation ultérieure.	الجمع عبر الإنترنت أو دون اتصال مع المزامنة لاحقًا.
+136	Collecter	الجمع
+137	Enquêteurs	المحاورون
+138	Questionnaire	الاستبيان
+139	Réponses brutes	إجابات خام
+140	Valider la complétude	التحقق من الاكتمال
+141	Calculer la complétude et signaler les réponses incomplètes.	احتساب الاكتمال والإشارة إلى الإجابات الناقصة.
+142	Réponses validées	إجابات معتمدة
+143	Construire le jeu de données consolidé des réponses.	إعداد مجموعة بيانات الإجابات الموحدة.
+144	Consolider	التوحيد
+145	Jeu de données consolidé	مجموعة بيانات موحدة
+146	Vérifier le consentement et publier le jeu de données	التحقق من الموافقة وإتاحة مجموعة البيانات
+147	Confirmer le consentement pour chaque réponse enregistrée ; transmettre le jeu de données à E2E-03, E2E-20 et E2E-27.	تأكيد الموافقة لكل إجابة محفوظة؛ وإتاحة مجموعة البيانات لـ E2E-03 وE2E-20 وE2E-27.
+148	Publier le jeu de données	إتاحة مجموعة البيانات
+149	Jeu de données publié	مجموعة بيانات متاحة
+150	Rendre compte des réponses et de l'engagement	التقرير عن الإجابات والانخراط
+151	Publier le taux de réponse, le taux d'engagement et la complétude par canal, orientation et segment.	نشر معدل الاستجابة ومعدل الانخراط والاكتمال لكل قناة وتركيز وفئة.
+152	Rendre compte	التقرير
+153	Journaux de diffusion et de réponses	سجلات الإرسال والإجابات
+154	Rapport d'analyse des réponses	تقرير تحليل الإجابات
+155	Composite cycle de vie de l'apprentissage	المركب: دورة حياة التعلم
+156	Composite développement des talents	المركب: تنمية المواهب
+157	Composite gouvernance d'entreprise	المركب: حكامة المؤسسة
+158	Composite conseil et diagnostic	المركب: الاستشارة والتشخيص
+159	Composite stratégique et organisationnel	المركب: الاستراتيجي والتنظيمي

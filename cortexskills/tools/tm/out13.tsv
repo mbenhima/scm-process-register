@@ -1,0 +1,160 @@
+0	Racine (organisationnelle)	جذرية (تنظيمية)
+1	Gérer organigrammes, fiches de poste et analyse des écarts	تدبير الهياكل التنظيمية وبطاقات الوصف الوظيفي وتحليل الفجوات
+2	Alimente E2E-02, E2E-10, E2E-26	تغذي E2E-02 وE2E-10 وE2E-26
+3	Organigrammes, fiches de poste et cartographies de compétences approuvés avec analyse des écarts.	هياكل تنظيمية وبطاقات وصف وظيفي وخرائط كفاءات معتمدة مع تحليل الفجوات.
+4	M44 Hub architecture des emplois ; M02 Hub compétences ; M13 Centre carrières ; M37 Studio de diagnostic	M44 مركز هندسة الوظائف؛ M02 مركز المهارات؛ M13 مركز المسارات المهنية؛ M37 استوديو التشخيص
+5	Cette chaîne racine gère l'architecture des emplois (organigrammes, fiches de poste, profils de rôle), analyse les écarts entre les descriptions existantes et la réalité, et aligne l'architecture sur le référentiel de compétences.	تدبر هذه السلسلة الجذرية هندسة الوظائف في المؤسسة (الهياكل التنظيمية، بطاقات الوصف الوظيفي، ملفات الأدوار)، وتحلل الفجوات بين الأوصاف القائمة والواقع، وتوائم الهندسة مع مرجعية الكفاءات.
+6	Cartographier la structure organisationnelle actuelle.	رسم الهيكل التنظيمي الحالي.
+7	Cartographier la structure	رسم الهيكل
+8	Données organisationnelles	البيانات التنظيمية
+9	Carte de la structure	خريطة الهيكل
+10	Concevoir les organigrammes	تصميم الهياكل
+11	Organigrammes	الهياكل التنظيمية
+12	Analyser les tâches et les rôles.	تحليل المهام والأدوار.
+13	Analyser les emplois	تحليل الوظائف
+14	Analyse des emplois	تحليل الوظائف
+15	Rédiger les fiches de poste.	صياغة بطاقات الوصف الوظيفي.
+16	Rédiger les fiches	صياغة البطاقات
+17	Valider avec les managers	المصادقة مع المدراء
+18	Valider les fiches avec les managers.	المصادقة على البطاقات مع المدراء.
+19	Valider les fiches	المصادقة على البطاقات
+20	Fiches validées	بطاقات معتمدة
+21	Analyser les écarts	تحليل الفجوات
+22	Comparer les fiches existantes à la réalité.	مقارنة الأوصاف القائمة بالواقع.
+23	Analyse des écarts	تحليل الفجوات
+24	Signaler les rôles marqués « à développer ».	الإشارة إلى الأدوار الموسومة «للتطوير».
+25	Identifier les rôles	تحديد الأدوار
+26	Rôles à développer	أدوار للتطوير
+27	Publier l'architecture approuvée	نشر الهندسة المعتمدة
+28	Publier les organigrammes et fiches approuvés.	نشر الهياكل والبطاقات المعتمدة.
+29	Publier l'architecture	نشر الهندسة
+30	Architecture approuvée	هندسة معتمدة
+31	De la GPEC au plan de formation	من التدبير التوقعي إلى خطة التكوين
+32	Racine (intégration RH)	جذرية (إدماج الموارد البشرية)
+33	Intégrer la gestion prévisionnelle des emplois et des compétences dans la formation	إدماج التدبير التوقعي للوظائف والكفاءات في التكوين
+34	Utilise E2E-25 ; alimente E2E-03 et E2E-30	تستعمل E2E-25؛ تغذي E2E-03 وE2E-30
+35	Cycle annuel de planification stratégique RH ou revue GPEC (gestion prévisionnelle des emplois et des compétences).	دورة التخطيط الاستراتيجي السنوية للموارد البشرية أو مراجعة التدبير التوقعي للوظائف والكفاءات.
+36	M45 Hub GPEC ; M13 Centre carrières ; M04 Studio rapport et feuille de route ; M03 Analyseur de besoins ; M18 Console finance	M45 مركز التدبير التوقعي؛ M13 مركز المسارات المهنية؛ M04 استوديو التقرير وخارطة الطريق؛ M03 محلل الاحتياجات؛ M18 وحدة المالية
+37	Cette chaîne racine intègre la GPEC (gestion prévisionnelle des emplois et des compétences) et les orientations stratégiques RH dans le processus d'ingénierie de formation. Elle garantit que la formation soutient la planification des effectifs, les parcours de carrière et la stratégie RH.	تدمج هذه السلسلة الجذرية التدبير التوقعي للوظائف والكفاءات (GPEC) والتوجهات الاستراتيجية للموارد البشرية في مسار هندسة التكوين، وتضمن دعم التكوين لتخطيط الموارد البشرية والمسارات المهنية واستراتيجية الموارد البشرية.
+38	Définir le périmètre de la gestion prévisionnelle des emplois et des compétences.	تحديد نطاق التدبير التوقعي للوظائف والكفاءات.
+39	Stratégie RH	استراتيجية الموارد البشرية
+40	Périmètre GPEC	نطاق التدبير التوقعي
+41	Cartographier les orientations stratégiques RH.	رسم التوجهات الاستراتيجية للموارد البشرية.
+42	Cartographier les orientations	رسم التوجهات
+43	Conseil d'administration	مجلس الإدارة
+44	Carte des orientations	خريطة التوجهات
+45	Mettre à jour le socle de développement (fiches de poste, objectifs, évaluation).	تحديث أسس التطوير (بطاقات الوصف، الأهداف، التقييم).
+46	Mettre à jour le socle	تحديث الأسس
+47	Fiches de poste	بطاقات الوصف الوظيفي
+48	Socle mis à jour	أسس محدثة
+49	Mettre à jour le répertoire des emplois et des compétences.	تحديث دليل الوظائف والكفاءات.
+50	Mettre à jour le REC	تحديث الدليل
+51	Données des emplois	بيانات الوظائف
+52	REC mis à jour	دليل محدث
+53	Redynamiser les évaluations périodiques.	إعادة تنشيط التقييمات الدورية.
+54	Redynamiser les évaluations	إعادة تنشيط التقييمات
+55	Système d'évaluation	نظام التقييم
+56	Mises à jour de l'évaluation	تحديثات التقييم
+57	Concevoir les parcours de carrière.	تصميم المسارات المهنية.
+58	Concevoir les parcours	تصميم المسارات
+59	Documenter la gestion des carrières	توثيق تدبير المسارات المهنية
+60	Documenter le processus	توثيق المسار
+61	Document du processus carrière	وثيقة مسار المسارات المهنية
+62	Aligner le plan de formation sur les résultats GPEC.	مواءمة خطة التكوين مع مخرجات التدبير التوقعي.
+63	Aligner la formation	مواءمة التكوين
+64	Livrables GPEC	مخرجات التدبير التوقعي
+65	Alignement formation-GPEC	مواءمة التكوين مع التدبير التوقعي
+66	De la collecte des demandes à leur consolidation	من جمع الطلبات إلى توحيدها
+67	Racine (demande)	جذرية (الطلب)
+68	Collecter les demandes de formation individuelles et collectives	جمع طلبات التكوين الفردية والجماعية
+69	Alimente E2E-03 et E2E-30	تغذي E2E-03 وE2E-30
+70	Référentiel consolidé et priorisé des demandes intégré à l'analyse des besoins de formation.	مستودع طلبات موحد ومرتب مدمج في تحليل احتياجات التكوين.
+71	M46 Hub de collecte des demandes ; M03 Analyseur de besoins ; M04 Studio rapport et feuille de route ; M08 Portail apprenant	M46 مركز جمع الطلبات؛ M03 محلل الاحتياجات؛ M04 استوديو التقرير وخارطة الطريق؛ M08 بوابة المتعلم
+72	Cette chaîne racine collecte les demandes de formation individuelles et collectives à tous les niveaux de l'organisation et les consolide dans un référentiel structuré. Elle est le complément ascendant de l'analyse descendante des besoins.	تجمع هذه السلسلة الجذرية طلبات التكوين الفردية والجماعية من جميع مستويات المؤسسة وتوحدها في مستودع منظم، وهي المكمل التصاعدي لتحليل الاحتياجات التنازلي.
+73	Créer les formulaires individuels et collectifs.	إنشاء الاستمارات الفردية والجماعية.
+74	Concevoir les formulaires	تصميم الاستمارات
+75	Modèles	النماذج
+76	Formulaires	الاستمارات
+77	Lancer la collecte des demandes individuelles.	إطلاق جمع الطلبات الفردية.
+78	Déployer l'individuel	نشر الفردي
+79	Demandes individuelles	الطلبات الفردية
+80	Lancer la collecte des demandes collectives.	إطلاق جمع الطلبات الجماعية.
+81	Déployer le collectif	نشر الجماعي
+82	Demandes collectives	الطلبات الجماعية
+83	Recueillir les recommandations des managers.	جمع توصيات المدراء.
+84	Recueillir les recommandations	جمع التوصيات
+85	Consolider les demandes par fonction/poste.	توحيد الطلبات حسب الوظيفة/المنصب.
+86	Consolider les demandes	توحيد الطلبات
+87	Demandes	الطلبات
+88	Demandes consolidées	طلبات موحدة
+89	Rattacher les demandes au référentiel de compétences.	ربط الطلبات بمرجعية الكفاءات.
+90	Rattacher aux compétences	الربط بالكفاءات
+91	Carte demandes-compétences	خريطة الطلبات والكفاءات
+92	Prioriser et valider les demandes	ترتيب الطلبات والمصادقة عليها
+93	Prioriser et valider avec les managers.	الترتيب والمصادقة مع المدراء.
+94	Carte des demandes	خريطة الطلبات
+95	Demandes validées	طلبات معتمدة
+96	De l'évaluation de la performance au tableau de bord RAG	من تقييم الأداء إلى لوحة القيادة بالألوان
+97	Racine (performance)	جذرية (الأداء)
+98	Évaluer la performance MS/MO/OP avec des notes RAG	تقييم أداء MS/MO/OP بالتصنيف اللوني
+99	Alimente E2E-20 et E2E-29	تغذي E2E-20 وE2E-29
+100	Évaluation validée de la performance MS/MO/OP (management stratégique / management opérationnel / opérationnel) avec tableaux de bord RAG (vert/orange/rouge).	تقييم معتمد لأداء MS/MO/OP (الإدارة الاستراتيجية / الإدارة العملياتية / المستوى التنفيذي) مع لوحات قيادة بالألوان (أخضر/برتقالي/أحمر).
+101	M47 Hub d'évaluation de la performance ; M10 Tableau de bord analytique ; M37 Studio de diagnostic ; M04 Studio rapport et feuille de route	M47 مركز تقييم الأداء؛ M10 لوحة التحليلات؛ M37 استوديو التشخيص؛ M04 استوديو التقرير وخارطة الطريق
+102	Cette chaîne racine évalue et visualise la performance de l'organisation sur trois niveaux de management — management stratégique (MS), management opérationnel (MO) et opérationnel (OP) — avec un système de notation vert/orange/rouge (RAG). Elle alimente le diagnostic multi-axes et le SWOT fonctionnel.	تقيّم هذه السلسلة الجذرية أداء المؤسسة وتعرضه على ثلاثة مستويات — الإدارة الاستراتيجية (MS) والإدارة العملياتية (MO) والمستوى التنفيذي (OP) — باستعمال نظام تصنيف أخضر/برتقالي/أحمر، وتغذي التشخيص متعدد المحاور وSWOT الوظيفي.
+103	Définir les trois niveaux de management.	تحديد مستويات الإدارة الثلاثة.
+104	Définir le cadre	تحديد الإطار
+105	Cadre	الإطار
+106	Définir les critères vert/orange/rouge.	تحديد معايير الأخضر/البرتقالي/الأحمر.
+107	Définir le RAG	تحديد التصنيف اللوني
+108	Critères RAG	معايير التصنيف اللوني
+109	Rassembler les données par fonction.	تجميع البيانات حسب الوظيفة.
+110	Collecter les données	جمع البيانات
+111	Données par fonction	بيانات الوظائف
+112	Jeu de données	مجموعة البيانات
+113	Évaluer MS	تقييم MS
+114	Évaluation MS	تقييم MS
+115	Évaluer MO	تقييم MO
+116	Évaluation MO	تقييم MO
+117	Évaluer OP	تقييم OP
+118	Évaluation OP	تقييم OP
+119	Publier le tableau de bord RAG	نشر لوحة القيادة بالألوان
+120	Publier la visualisation RAG.	نشر العرض اللوني.
+121	Publier le tableau de bord	نشر لوحة القيادة
+122	Toutes les évaluations	جميع التقييمات
+123	Tableau de bord RAG	لوحة القيادة بالألوان
+124	Du SWOT fonctionnel aux axes d'amélioration	من SWOT الوظيفي إلى محاور التحسين
+125	Réaliser le SWOT par fonction et définir les axes d'amélioration	إجراء SWOT حسب الوظيفة وتحديد محاور التحسين
+126	Utilise E2E-24 et E2E-28 ; alimente E2E-20 et E2E-03	تستعمل E2E-24 وE2E-28؛ تغذي E2E-20 وE2E-03
+127	Phase de diagnostic d'une mission d'ingénierie de formation ou revue fonctionnelle annuelle.	مرحلة التشخيص في مهمة هندسة التكوين أو المراجعة الوظيفية السنوية.
+128	Rapports SWOT fonctionnels validés avec axes d'amélioration priorisés par fonction.	تقارير SWOT وظيفية معتمدة مع محاور تحسين مرتبة لكل وظيفة.
+129	M48 Hub SWOT fonctionnel ; M37 Studio de diagnostic ; M04 Studio rapport et feuille de route ; M20 Centre qualité	M48 مركز SWOT الوظيفي؛ M37 استوديو التشخيص؛ M04 استوديو التقرير وخارطة الطريق؛ M20 مركز الجودة
+130	Cette chaîne racine réalise l'analyse SWOT (forces, faiblesses, opportunités, menaces) au niveau de chaque fonction/département et définit des axes d'amélioration par fonction. Elle alimente le diagnostic multi-axes et le rapport d'ingénierie de formation.	تجري هذه السلسلة الجذرية تحليل SWOT (نقاط القوة، نقاط الضعف، الفرص، التهديدات) على مستوى الوظيفة/القسم، وتحدد محاور تحسين لكل وظيفة، وتغذي التشخيص متعدد المحاور وتقرير هندسة التكوين.
+131	Définir le périmètre de la fonction/du département.	تحديد نطاق الوظيفة/القسم.
+132	Périmètre	النطاق
+133	Réaliser l'analyse forces/faiblesses/opportunités/menaces.	إجراء تحليل نقاط القوة والضعف والفرص والتهديدات.
+134	Réaliser le SWOT	إجراء SWOT
+135	Identifier forces et faiblesses	تحديد نقاط القوة والضعف
+136	Documenter les facteurs internes.	توثيق العوامل الداخلية.
+137	Identifier l'interne	تحديد الداخلي
+138	Données d'entretien	بيانات المقابلات
+139	Facteurs internes	العوامل الداخلية
+140	Identifier opportunités et menaces	تحديد الفرص والتهديدات
+141	Documenter les facteurs externes.	توثيق العوامل الخارجية.
+142	Identifier l'externe	تحديد الخارجي
+143	Facteurs externes	العوامل الخارجية
+144	Définir les axes	تحديد المحاور
+145	Axes d'amélioration	محاور التحسين
+146	Valider avec les responsables de fonction	المصادقة مع رؤساء الوظائف
+147	Valider avec les responsables de fonction.	المصادقة مع قادة الوظائف.
+148	Valider	المصادقة
+149	Axes validés	محاور معتمدة
+150	Prioriser	الترتيب حسب الأولوية
+151	Axes priorisés	محاور مرتبة
+152	De la priorisation au plan de ressources	من الترتيب إلى خطة الموارد
+153	Racine (planification)	جذرية (التخطيط)
+154	Prioriser les thèmes et planifier jours, groupes, formateurs et budget	ترتيب المحاور وتخطيط الأيام والمجموعات والمكونين والميزانية
+155	Utilise E2E-26, E2E-27, E2E-29 ; alimente E2E-03 et E2E-05	تستعمل E2E-26 وE2E-27 وE2E-29؛ تغذي E2E-03 وE2E-05
+156	Thèmes de formation consolidés à prioriser et dont les ressources sont à planifier.	محاور تكوين موحدة تتطلب الترتيب وتخطيط الموارد.
+157	Plan de formation priorisé approuvé avec jours par thème, planification des groupes, affectation des formateurs et budget.	خطة تكوين مرتبة ومعتمدة بالأيام لكل محور وتخطيط المجموعات وتخصيص المكونين والميزانية.
+158	M49 Hub de priorisation ; M04 Studio rapport et feuille de route ; M18 Console finance ; M11 Console d'administration ; M07 Centre de réalisation	M49 مركز الترتيب؛ M04 استوديو التقرير وخارطة الطريق؛ M18 وحدة المالية؛ M11 وحدة الإدارة؛ M07 مركز التنفيذ
+159	Cette chaîne racine priorise les thèmes de formation et planifie les ressources (jours par thème, nombre de groupes, formateurs, budget). Elle produit le « Plan de formation priorisé ».	ترتب هذه السلسلة الجذرية محاور التكوين وتخطط الموارد (الأيام لكل محور، عدد المجموعات، المكونون، الميزانية) لخطة التكوين، وتنتج «خطة التكوين المرتبة حسب الأولوية».

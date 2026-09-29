@@ -4,14 +4,17 @@
   "description": "CortexSkills — Training Engineering platform API (REST, JSON, SQLite).",
   "type": "module",
   "private": true,
-  "engines": { "node": ">=22.13.0" },
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
-    "seed": "node seed/seed.js",
-    "dev": "node --watch-path=src src/index.js",
-    "start": "node src/index.js",
-    "backup": "node tools/backup.js",
-    "sign-licence": "node tools/sign-licence.js",
-    "test": "node --test test/"
+    "seed": "node i18n/build.js && node --no-warnings seed/seed.js",
+    "dev": "node --no-warnings --watch-path=src --watch-path=i18n/dictionary.json src/index.js",
+    "start": "node --no-warnings src/index.js",
+    "backup": "node --no-warnings tools/backup.js",
+    "sign-licence": "node --no-warnings tools/sign-licence.js",
+    "test": "node --no-warnings --test test/",
+    "i18n": "node i18n/build.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

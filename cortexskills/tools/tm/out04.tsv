@@ -1,0 +1,160 @@
+0	Publier les versions approuvées et transmettre les thèmes de la feuille de route à la conception.	نشر النسخ المعتمدة وإحالة محاور خارطة الطريق إلى التصميم.
+1	Créer la carte des cursus à partir de la feuille de route	إنشاء خريطة المناهج من خارطة الطريق
+2	Déduire la carte des cursus du thème à partir de la feuille de route approuvée.	استخلاص خريطة المناهج للمحور من خارطة الطريق المعتمدة.
+3	Définir le parcours d'apprentissage et les modules	تحديد مسار التعلم والوحدات
+4	Créer le parcours d'apprentissage avec ses modules, modalités et durées.	إنشاء مسار التعلم بوحداته وأنماطه ومدده.
+5	Rédiger les objectifs pédagogiques par module	صياغة الأهداف التعليمية لكل وحدة
+6	Rédiger des objectifs mesurables reliés aux niveaux de compétence cibles.	صياغة أهداف قابلة للقياس مرتبطة بمستويات الكفاءة المستهدفة.
+7	Proposer la structure des modules	اقتراح بنية الوحدات
+8	L'IA propose un découpage en modules et un mix de modalités pour revue par le concepteur.	يقترح الذكاء الاصطناعي تقسيمًا للوحدات ومزيجًا من الأنماط لمراجعة المصمم.
+9	Définir la stratégie d'évaluation	تحديد استراتيجية التقييم
+10	Définir la méthode d'évaluation et les critères de réussite par module.	تحديد طريقة التقييم ومعايير النجاح لكل وحدة.
+11	Revoir la conception avec l'expert métier	مراجعة التصميم مع خبير المجال
+12	Valider l'exactitude technique des objectifs et du plan de contenu.	التحقق من الدقة التقنية للأهداف ومخطط المحتوى.
+13	Expert métier	خبير المجال
+14	Approuver le document de conception	اعتماد وثيقة التصميم
+15	Approuver le document de conception pour le développement des contenus.	اعتماد وثيقة التصميم لتطوير المحتوى.
+16	Charger les contenus	تحميل أصول المحتوى
+17	Charger les contenus SCORM, xAPI, PDF ou vidéo avec leurs métadonnées.	تحميل أصول SCORM أو xAPI أو PDF أو الفيديو مع بياناتها الوصفية.
+18	Valider le format du paquet	التحقق من صيغة الحزمة
+19	Vérifier le manifeste SCORM/xAPI, la taille du fichier et la lecture avant revue.	التحقق من بيان SCORM/xAPI وحجم الملف والتشغيل قبل المراجعة.
+20	Soumettre le contenu à la revue de l'expert	إحالة المحتوى إلى مراجعة الخبير
+21	Transmettre le contenu à l'expert métier désigné avec une échéance.	إحالة الأصل إلى خبير المجال المعين مع تاريخ استحقاق.
+22	Enregistrer la décision de revue	تسجيل قرار المراجعة
+23	Approuver ou renvoyer le contenu avec commentaires.	اعتماد الأصل أو إرجاعه مع التعليقات.
+24	Étiqueter le contenu avec les compétences	وسم المحتوى بالكفاءات
+25	L'IA propose des étiquettes de compétence et de niveau ; le développeur les confirme.	يقترح الذكاء الاصطناعي وسوم الكفاءة والمستوى للأصل؛ ويؤكدها المطور.
+26	Publier le contenu au catalogue	نشر المحتوى في الفهرس
+27	Publier avec une visibilité limitée aux fonctions et sites cibles.	النشر مع حصر الظهور في الوظائف والمواقع المستهدفة.
+28	Créer la session de formation	إنشاء دورة التكوين
+29	Créer une session avec date, salle, formateur, modalité et capacité.	إنشاء دورة بالتاريخ والقاعة والمكون والنمط والسعة.
+30	Vérifier les conflits de planning	التحقق من تعارضات البرمجة
+31	Détecter les conflits de salle, de formateur et d'apprenant avant confirmation de la session.	رصد تعارضات القاعات والمكونين والمتعلمين قبل تأكيد الدورة.
+32	Inscrire les apprenants à la session	تسجيل المتعلمين في الدورة
+33	Inscrire les apprenants dans la limite de la capacité et des prérequis.	تسجيل المتعلمين في حدود السعة وقواعد المتطلبات المسبقة.
+34	Envoyer les convocations	إرسال الاستدعاءات
+35	Envoyer les convocations dans la langue d'affichage de chaque apprenant via les canaux activés.	إرسال الاستدعاءات بلغة العرض لكل متعلم عبر القنوات المفعلة.
+36	Enregistrer la présence	تسجيل الحضور
+37	Enregistrer la présence, l'absence et la présence partielle par apprenant.	تسجيل الحضور والغياب والحضور الجزئي لكل متعلم.
+38	Formateur	المكوّن
+39	Clôturer la session et enregistrer l'achèvement	إغلاق الدورة وتسجيل الإتمام
+40	Clôturer la session et inscrire l'achèvement dans l'historique des apprenants.	إغلاق الدورة وتسجيل الإتمام في سجلات المتعلمين.
+41	Générer le plan d'apprentissage personnel	توليد خطة التعلم الشخصية
+42	Construire le plan de l'apprenant à partir des écarts validés et des parcours attribués.	إعداد خطة المتعلم استنادًا إلى الفجوات المعتمدة والمسارات المسندة.
+43	Recommander des éléments d'apprentissage	التوصية بعناصر تعلم
+44	L'IA recommande des éléments du catalogue adaptés aux écarts de l'apprenant ; celui-ci accepte ou écarte chacun.	يوصي الذكاء الاصطناعي بعناصر من الفهرس ملائمة لفجوات المتعلم؛ ويقبل المتعلم كلًا منها أو يرفضه.
+45	Apprenant	المتعلم
+46	S'inscrire à l'élément recommandé	التسجيل في العنصر الموصى به
+47	S'inscrire soi-même à une recommandation acceptée selon les règles d'approbation.	التسجيل الذاتي في توصية مقبولة وفق قواعد الموافقة.
+48	Donner un retour sur l'apprentissage	تقديم ملاحظات عن التعلم
+49	Noter l'élément et indiquer sa pertinence, ce qui alimente les recommandations futures.	تقييم العنصر وبيان ملاءمته، مما يغذي التوصيات المستقبلية.
+50	Suivre les indicateurs d'engagement	تتبع مؤشرات الانخراط
+51	Suivre connexions, progression et achèvement par population.	تتبع عمليات الدخول والتقدم والإتمام حسب الفئة.
+52	Déclencher une relance de réengagement	إطلاق تنبيه لإعادة الانخراط
+53	Envoyer une relance aux apprenants inactifs au-delà du seuil configuré.	إرسال تنبيه للمتعلمين غير النشطين بعد تجاوز العتبة المحددة.
+54	Créer l'instrument d'évaluation	إنشاء أداة التقييم
+55	Créer un quiz, une liste de contrôle pratique ou une grille d'observation pour un module.	إنشاء اختبار أو قائمة تحقق تطبيقية أو شبكة ملاحظة لوحدة.
+56	Générer un projet de banque de questions	توليد مسودة بنك الأسئلة
+57	L'IA rédige des questions à partir des objectifs du module pour revue par le concepteur.	يصوغ الذكاء الاصطناعي أسئلة من أهداف الوحدة لمراجعة المصمم.
+58	Recueillir le questionnaire de satisfaction (niveau 1)	جمع استبيان الرضا (المستوى 1)
+59	Envoyer automatiquement le questionnaire de satisfaction après la session.	إرسال استبيان الرضا تلقائيًا بعد الدورة.
+60	Enregistrer les résultats d'apprentissage (niveau 2)	تسجيل نتائج التعلم (المستوى 2)
+61	Enregistrer les notes de test et la réussite/l'échec par apprenant.	تسجيل نتائج الاختبارات والنجاح/الرسوب لكل متعلم.
+62	Enregistrer l'observation en situation de travail (niveau 3)	تسجيل الملاحظة في موقع العمل (المستوى 3)
+63	Enregistrer le changement de comportement observé à la date de suivi convenue.	تسجيل تغير السلوك الملاحظ في تاريخ المتابعة المتفق عليه.
+64	Calculer la progression des compétences	احتساب تطور المهارات
+65	Mettre à jour la progression de la maîtrise à partir des preuves d'évaluation.	تحديث تطور الإتقان استنادًا إلى أدلة التقييم.
+66	Revoir les résultats d'évaluation	مراجعة نتائج التقييم
+67	Revoir les résultats par thème et signaler les modules inefficaces.	مراجعة النتائج حسب المحور والإشارة إلى الوحدات غير الفعالة.
+68	Définir le jeu d'indicateurs par public	تحديد مجموعة المؤشرات لكل فئة
+69	Choisir les indicateurs standard et personnalisés pour chaque rôle.	اختيار المؤشرات القياسية والمخصصة لكل دور.
+70	Configurer les widgets du tableau de bord	إعداد عناصر لوحة القيادة
+71	Organiser widgets, filtres et seuils RAG.	ترتيب العناصر والمرشحات وعتبات الألوان.
+72	Actualiser le calcul des indicateurs	تحديث احتساب المؤشرات
+73	Recalculer les indicateurs à partir des données actuelles du locataire.	إعادة احتساب المؤشرات من البيانات الحالية للمستأجر.
+74	Exporter le rapport	تصدير التقرير
+75	Exporter un rapport standard en PDF, Excel ou Word, nommé avec sa clé et sa date.	تصدير تقرير قياسي إلى PDF أو Excel أو Word مسمى بالمفتاح والتاريخ.
+76	Interroger les données via l'assistant IA	الاستعلام عن البيانات عبر المساعد الذكي
+77	L'assistant IA répond à une question en langage naturel après vérification de la permission RBAC de l'intention.	يجيب المساعد الذكي عن سؤال بلغة طبيعية بعد التحقق من صلاحية النية.
+78	Partager les enseignements avec les parties prenantes	مشاركة الخلاصات مع أصحاب المصلحة
+79	Partager une vue enregistrée ou un export avec des parties prenantes nommées.	مشاركة عرض محفوظ أو تصدير مع أصحاب مصلحة محددين.
+80	Réserver salles et équipements	حجز القاعات والتجهيزات
+81	Réserver salles et équipements pour les sessions confirmées.	حجز القاعات والتجهيزات للدورات المؤكدة.
+82	Gérer les agendas des formateurs	تدبير جداول المكونين
+83	Tenir à jour la disponibilité des formateurs et leurs tarifs journaliers.	تحديث توفر المكونين وتعيينات الأجر اليومي.
+84	Importer les dossiers de formation externes	استيراد سجلات التكوين الخارجية
+85	Importer les achèvements des prestataires externes ou du LMS.	استيراد حالات الإتمام من المزودين الخارجيين أو نظام إدارة التعلم.
+86	Corriger un dossier de formation avec justification	تصحيح سجل تكوين مع التبرير
+87	Préparer une correction, rédiger la justification et l'enregistrer dans le journal d'audit.	إعداد تصحيح وكتابة المبرر وحفظه في سجل التدقيق.
+88	Rapprocher présences et factures	مطابقة الحضور مع الفواتير
+89	Rapprocher les présences des factures prestataires avant approbation du paiement.	مطابقة الحضور مع فواتير الموردين قبل اعتماد الأداء.
+90	Archiver les dossiers de la période	أرشفة سجلات الفترة
+91	Archiver les dossiers de la période clôturée selon la politique de conservation.	أرشفة سجلات الفترة المغلقة وفق سياسة الاحتفاظ.
+92	Publier un article de connaissance	نشر مقال معرفي
+93	Publier un article de connaissance en anglais, français et arabe.	نشر مقال معرفي بالإنجليزية والفرنسية والعربية.
+94	Indexer l'article pour la recherche	فهرسة المقال للاسترجاع
+95	Indexer l'article dans le corpus de recherche du locataire.	فهرسة المقال في مدونة الاسترجاع الخاصة بالمستأجر.
+96	Créer un espace communautaire	إنشاء فضاء مجتمعي
+97	Créer un espace communautaire pour une fonction ou un thème.	إنشاء فضاء مجتمعي لوظيفة أو محور.
+98	Modérer les publications	الإشراف على المنشورات
+99	Revoir les publications signalées et appliquer la politique de modération.	مراجعة المنشورات المبلغ عنها وتطبيق سياسة الإشراف.
+100	Solliciter un REX à la clôture	طلب الدروس المستفادة عند الإغلاق
+101	Inviter l'utilisateur qui clôture à saisir un retour d'expérience sans bloquer la clôture.	دعوة المستخدم الذي يغلق إلى إدخال الدروس المستفادة دون منع الإغلاق.
+102	Enregistrer une fiche REX	تسجيل بطاقة الدروس المستفادة
+103	Enregistrer ce qui a bien fonctionné, ce qui n'a pas fonctionné, la cause racine, la recommandation et la note.	تسجيل ما نجح وما لم ينجح والسبب الجذري والتوصية والتقييم.
+104	Partenaire formation	شريك التكوين
+105	Modéliser le parcours de carrière	نمذجة المسار المهني
+106	Définir la séquence de postes qui forme un parcours de carrière.	تحديد تسلسل المناصب المكون للمسار المهني.
+107	Relier les étapes du parcours aux cibles de compétences	ربط مراحل المسار بأهداف الكفاءات
+108	Attacher des niveaux de maîtrise cibles à chaque étape du parcours.	ربط مستويات الإتقان المستهدفة بكل مرحلة من المسار.
+109	Créer le plan de développement individuel	إنشاء خطة التنمية الفردية
+110	Convenir des objectifs de développement avec le collaborateur.	الاتفاق على أهداف التنمية مع الموظف.
+111	Proposer des actions de développement	اقتراح إجراءات تنمية
+112	L'IA propose des actions de formation et d'expérience pour combler les écarts du parcours.	يقترح الذكاء الاصطناعي إجراءات تعلم وخبرة لسد فجوات مسار الموظف.
+113	Mener la revue de carrière	إجراء المراجعة المهنية
+114	Revoir l'avancement du plan avec le collaborateur et le manager.	مراجعة تقدم الخطة مع الموظف والمدير.
+115	Mettre à jour la préparation à la succession	تحديث جاهزية التعاقب
+116	Mettre à jour la note de préparation des successeurs aux rôles critiques.	تحديث تقييم جاهزية الخلفاء للأدوار الحرجة.
+117	Enregistrer une exigence réglementaire	تسجيل متطلب تنظيمي
+118	Enregistrer l'exigence (ex. HACCP) avec sa source, son périmètre et sa durée de validité.	تسجيل المتطلب (مثل HACCP) مع مصدره ونطاقه ومدة صلاحيته.
+119	Affecter les formations obligatoires par poste	إسناد التكوينات الإلزامية حسب المنصب
+120	Affecter la formation requise à chaque poste concerné.	إسناد التكوين المطلوب لكل منصب ضمن النطاق.
+121	Calculer la validité des certifications	احتساب صلاحية الشهادات
+122	Calculer la validité et la date d'expiration par collaborateur et certification.	احتساب الصلاحية وتاريخ الانتهاء لكل موظف وشهادة.
+123	Délivrer le certificat à l'achèvement	إصدار الشهادة عند الإتمام
+124	Délivrer un certificat vérifiable lorsque les critères d'achèvement sont remplis.	إصدار شهادة قابلة للتحقق عند استيفاء معايير الإتمام.
+125	Lancer l'inscription au renouvellement	إطلاق التسجيل للتجديد
+126	Inscrire automatiquement les titulaires avant expiration selon la fenêtre de renouvellement.	تسجيل الحاملين تلقائيًا قبل الانتهاء وفق نافذة التجديد.
+127	Confirmer l'achèvement du renouvellement	تأكيد إتمام التجديد
+128	Confirmer les renouvellements et traiter les exceptions.	تأكيد التجديدات ومعالجة الاستثناءات.
+129	Produire l'extrait d'audit de conformité	إعداد مستخرج تدقيق المطابقة
+130	Exporter l'extrait d'audit avec les preuves pour les inspecteurs.	تصدير مستخرج التدقيق مع الأدلة للمفتشين.
+131	Émettre un appel d'offres	إصدار طلب عروض
+132	Émettre un appel d'offres avec périmètre, dates et critères d'évaluation.	إصدار طلب عروض بالنطاق والتواريخ ومعايير التقييم.
+133	Noter les offres des prestataires	تنقيط عروض الموردين
+134	Noter les offres selon des critères pondérés et enregistrer la sélection.	تنقيط العروض وفق معايير مرجحة وتسجيل الاختيار.
+135	Enregistrer la fiche prestataire	تسجيل بطاقة المورد
+136	Créer le prestataire avec ses données juridiques, bancaires et de contact.	إنشاء المورد ببياناته القانونية والبنكية وبيانات الاتصال.
+137	Vérifier l'accréditation du prestataire	التحقق من اعتماد المورد
+138	Vérifier l'accréditation requise pour les formations remboursables.	التحقق من الاعتماد المطلوب للتكوينات القابلة للاسترداد.
+139	Émettre le bon de commande	إصدار سند الطلب
+140	Émettre le bon de commande sur une ligne budgétaire.	إصدار سند الطلب على بند ميزانية.
+141	Rapprocher facture, commande et présence	مطابقة الفاتورة مع الطلب والحضور
+142	Rapprochement à trois voies facture, bon de commande et présence.	مطابقة ثلاثية بين الفاتورة وسند الطلب والحضور.
+143	Approuver le paiement du prestataire	اعتماد أداء مستحقات المورد
+144	Approuver le paiement d'une facture rapprochée.	اعتماد أداء فاتورة مطابقة.
+145	Enregistrer une intégration externe	تسجيل تكامل خارجي
+146	Enregistrer une intégration (SIRH, ERP, SSO, LMS) avec la référence de ses identifiants.	تسجيل تكامل (نظام الموارد البشرية، تخطيط الموارد، الدخول الموحد، نظام إدارة التعلم) مع مرجع بيانات اعتماده.
+147	Mapper les champs de l'intégration	ربط حقول التكامل
+148	Faire correspondre les champs externes aux entités de la plateforme.	ربط الحقول الخارجية بكيانات المنصة.
+149	Vérifier la santé de l'intégration	التحقق من سلامة التكامل
+150	Tester la connectivité et enregistrer succès, échec d'authentification ou injoignable.	اختبار الاتصال وتسجيل النجاح أو فشل المصادقة أو تعذر الوصول.
+151	Lancer la synchronisation SIRH	تشغيل مزامنة نظام الموارد البشرية
+152	Créer ou mettre à jour les collaborateurs depuis le SIRH et rejeter les lignes invalides.	إنشاء الموظفين أو تحديثهم من نظام الموارد البشرية ورفض الأسطر غير الصالحة.
+153	Revoir les rejets de synchronisation	مراجعة حالات رفض المزامنة
+154	Revoir chaque ligne rejetée et son explication.	مراجعة كل سطر مرفوض وتفسيره.
+155	Définir une règle de conservation des données	تحديد قاعدة الاحتفاظ بالبيانات
+156	Définir la durée de conservation par catégorie de données (ex. évaluations 5 ans).	تحديد مدة الاحتفاظ حسب فئة البيانات (مثل التقييمات 5 سنوات).
+157	Délégué à la protection des données	مسؤول حماية البيانات
+158	Tenir le registre des cas d'usage IA	مسك سجل حالات استخدام الذكاء الاصطناعي
+159	Tenir à jour la finalité, les données utilisées, le responsable et la version de chaque cas d'usage IA.	تحديث الغاية والبيانات المستعملة والمسؤول والإصدار لكل حالة استخدام للذكاء الاصطناعي.
