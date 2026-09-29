@@ -1,0 +1,7 @@
+{
+  "name": "cortexskills-docs",
+  "private": true,
+  "description": "Generators for the guides, presentations and coverage checklist (not part of the application).",
+  "scripts": { "extract": "node extract.mjs && node extract-sectors.mjs", "guides": "node build-install.cjs && node build-user.cjs", "decks": "node build-deck.cjs en && node build-deck.cjs fr" },
+  "dependencies": { "pptxgenjs": "^3.12.0", "sharp": "^0.33.5", "lucide-static": "^0.460.0", "exceljs": "^4.4.0" }
+}
