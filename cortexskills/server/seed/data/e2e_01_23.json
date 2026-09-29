@@ -1,0 +1,433 @@
+{
+ "_format": "Each UFT line: name | description | linked D02 steps | Responsible | Accountable | Consulted | Supported | Informed | input | output",
+ "E2E-01": {
+  "trigger": "Annual strategy cycle opened or revised corporate objectives published by the board.",
+  "terminal": "Annual L&D plan and budget envelope approved by the Steering Committee and locked.",
+  "feedsInto": "E2E-02, E2E-03",
+  "supportedBy": "E2E-15, E2E-17",
+  "consumes": "E2E-21, E2E-24, E2E-32",
+  "modules": "M01 Strategy Console; M02 Skills Hub; M03 Needs Analyzer; M04 Report & Roadmap Studio; M18 Finance Console; M19 Change Hub",
+  "description": "This root chain translates corporate strategy into an approved annual L&D plan. It records strategic objectives, links them to functions and sites, sets the budget envelope and the governance calendar, and ends with a Steering Committee decision that locks the plan.",
+  "ufts": [
+   "Record strategic objectives|Enter each corporate objective with owner, horizon and measurable target.|MP-01.1|Head of L&D|HR Director|CEO|L&D Strategist|CHRO|Corporate strategy|Strategic objectives register",
+   "Link objectives to functions and sites|Map every objective to the functions and sites it affects.|MP-01.2|L&D Strategist|Head of L&D|Function Heads|Analyst|CHRO|Strategic objectives register|Objective-function map",
+   "Frame skills priorities|Identify the competency families each objective requires.|MP-02.1;MP-02.2|L&D Analyst|Head of L&D|HR Business Partner|Analyst|CHRO|Objective-function map|Priority competency list",
+   "Pre-scope training needs|Review the current gap matrix against the objectives.|MP-03.1;MP-03.2|L&D Analyst|Head of L&D|Managers|Analyst|CHRO|Priority competency list|Pre-scoped needs",
+   "Define budget envelope|Enter the gross L&D budget and the forecast refunds for the plan year.|MP-01.3;MP-18.1;MP-18.2|Finance Manager|CFO|Head of L&D|Analyst|CHRO|Pre-scoped needs|Budget envelope",
+   "Plan change and adoption|Assess the change impact of the plan and draft the adoption plan.|MP-19.1;MP-19.2|Change Manager|Head of L&D|Business Leaders|Analyst|CHRO|Budget envelope|Adoption plan",
+   "Compile plan approval pack|Assemble objectives, budget and roadmap summary; schedule the committee.|MP-01.4;MP-01.5;MP-04.1|Head of L&D|HR Director|Finance Manager|Admin|Steering Committee|Adoption plan|Approval pack",
+   "Approve and lock annual L&D plan|Record the committee decision with justification and lock the plan.|MP-01.6;MP-01.7|HR Director|CHRO|Head of L&D|Admin|All Stakeholders|Approval pack|Approved annual L&D plan"
+  ]
+ },
+ "E2E-02": {
+  "trigger": "Approved annual L&D plan or a scheduled skills assessment campaign.",
+  "terminal": "Validated skills gap diagnosis released to needs analysis.",
+  "feedsInto": "E2E-03, E2E-10",
+  "supportedBy": "E2E-15",
+  "consumes": "E2E-01, E2E-25",
+  "modules": "M02 Skills Hub; M03 Needs Analyzer; M28 Predictive Analytics Hub",
+  "description": "This partition of E2E-01 maintains the competency framework, runs the skills assessment campaign, validates the inventory and computes the gap matrix that feeds the flagship report.",
+  "ufts": [
+   "Maintain competency framework|Define competency families and levels on the 1-4 scale.|MP-02.1|L&D Analyst|Head of L&D|SME|Analyst|CHRO|Job architecture|Competency framework",
+   "Set target levels per position|Set the required proficiency per competency and position.|MP-02.2|HR Business Partner|Head of L&D|Managers|HR Ops|CHRO|Competency framework|Position targets",
+   "Launch assessment campaign|Select population, competencies, assessors and close date.|MP-02.3|L&D Analyst|Head of L&D|Managers|IT|Employees|Position targets|Open campaign",
+   "Collect self and manager assessments|Employees self-assess; managers validate each level.|MP-02.4;MP-02.5|Manager|Head of L&D|Employees|HR Ops|L&D Analyst|Open campaign|Consolidated assessments",
+   "Suggest proficiency from evidence|Review AI-suggested levels drawn from evidence.|MP-02.6|L&D Analyst|Head of L&D|Managers|AI Assistant|CHRO|Consolidated assessments|Suggested levels",
+   "Validate skills inventory|Validate the inventory before gap computation.|MP-02.7|Head of L&D|HR Director|L&D Analyst|Analyst|CHRO|Suggested levels|Validated inventory",
+   "Compute and forecast gaps|Compute the gap matrix and the 6-18 month gap forecast.|MP-03.1;MP-03.2;MP-28.3;MP-28.1|L&D Analyst|Head of L&D|Performance Analyst|IT|CHRO|Validated inventory|Skills gap diagnosis"
+  ]
+ },
+ "E2E-03": {
+  "trigger": "Validated skills gap diagnosis, consolidated demands, approved Scope of Work or diagnostic findings available.",
+  "terminal": "Training Engineering Report and prioritized roadmap approved and published.",
+  "feedsInto": "E2E-04, E2E-22, E2E-23",
+  "supportedBy": "E2E-15, E2E-18",
+  "consumes": "E2E-02, E2E-20, E2E-26, E2E-27, E2E-29, E2E-30, E2E-32, E2E-33",
+  "modules": "M01 Strategy Console; M03 Needs Analyzer; M04 Report & Roadmap Studio; M18 Finance Console; M20 Quality Center",
+  "description": "The flagship chain. It turns gaps, demands, questionnaire evidence and diagnostic findings into a validated needs register, drafts the Training Engineering Report with AI assistance, runs a quality review, and sequences and approves the roadmap.",
+  "ufts": [
+   "Plan diagnostic interviews|Plan semi-structured interviews with the sample.|MP-03.3|L&D Analyst|Head of L&D|Consultant PM|Analyst|CHRO|Approved Scope of Work|Interview plan",
+   "Record interview findings|Record findings per interview and function.|MP-03.4|L&D Analyst|Head of L&D|Managers|Analyst|CHRO|Interview plan|Interview findings",
+   "Cluster needs into themes|Accept, merge or split AI-proposed training themes.|MP-03.5|L&D Analyst|Head of L&D|SME|AI Assistant|CHRO|Interview findings, gaps, responses|Training themes",
+   "Prioritize needs by impact|Score each need by business impact and urgency.|MP-03.6|L&D Strategist|Head of L&D|Function Heads|Analyst|CHRO|Training themes|Prioritized needs",
+   "Validate needs register|Validate the needs register before report drafting.|MP-03.7|Head of L&D|HR Director|L&D Strategist|Analyst|CHRO|Prioritized needs|Validated needs register",
+   "Consolidate engineering inputs|Consolidate feeder outputs and check completeness.|MP-04.1;MP-04.2|L&D Analyst|Head of L&D|Consultant PM|IT|CHRO|Validated needs register|Input completeness check",
+   "Draft Training Engineering Report|Generate the draft and complete every section.|MP-04.3;MP-04.4|L&D Strategist|Head of L&D|Consultant PM|AI Assistant|CHRO|Input completeness check|Report draft",
+   "Run quality review|Quality Manager reviews the report against the checklist.|MP-04.5;MP-20.5|Quality Manager|Head of L&D|L&D Strategist|Analyst|CHRO|Report draft|Reviewed report",
+   "Sequence and budget roadmap|Sequence initiatives and check them against the budget.|MP-04.6;MP-18.1|L&D Strategist|Head of L&D|Finance Manager|Analyst|CHRO|Reviewed report|Draft roadmap",
+   "Approve and publish report and roadmap|Submit, approve and publish the report and roadmap.|MP-04.7;MP-04.8;MP-04.9;MP-01.6|Head of L&D|HR Director|Steering Committee|Admin|All Stakeholders|Draft roadmap|Approved Training Engineering Report and roadmap"
+  ]
+ },
+ "E2E-04": {
+  "trigger": "Approved Training Engineering Report and roadmap published.",
+  "terminal": "Approved curriculum maps, learning paths and design documents.",
+  "feedsInto": "E2E-05, E2E-11",
+  "supportedBy": "E2E-18",
+  "consumes": "E2E-03",
+  "modules": "M04 Report & Roadmap Studio; M05 Design Studio; M06 Content Library; M23 Localization & Accessibility Center",
+  "description": "This partition of E2E-03 converts the roadmap into curriculum maps and learning paths, writes the design specification, localizes it and gets it approved.",
+  "ufts": [
+   "Create curriculum map|Create the curriculum map from the approved roadmap.|MP-05.1|Instructional Designer|Head of L&D|L&D Strategist|Analyst|CHRO|Approved roadmap|Curriculum map",
+   "Define learning paths and modules|Define paths and modules per target population.|MP-05.2|Instructional Designer|Head of L&D|SME|Analyst|Managers|Curriculum map|Learning paths",
+   "Write learning objectives|Write measurable objectives per module.|MP-05.3|Instructional Designer|Head of L&D|SME|Analyst|Trainers|Learning paths|Learning objectives",
+   "Propose module structure|Review the AI-proposed structure per module.|MP-05.4|Instructional Designer|Head of L&D|SME|AI Assistant|Trainers|Learning objectives|Module structure",
+   "Set assessment strategy|Define the assessment approach per module.|MP-05.5|Instructional Designer|Head of L&D|L&D Analyst|Analyst|Trainers|Module structure|Assessment strategy",
+   "Develop and tag content|Upload assets and tag them with competencies.|MP-06.1;MP-06.2;MP-06.5|Content Developer|Head of L&D|SME|IT|Instructional Designer|Assessment strategy|Tagged content assets",
+   "Localize and check accessibility|Translate to FR/AR and run the accessibility check.|MP-23.1;MP-23.2;MP-23.3;MP-23.4;MP-23.5|Instructional Designer|Head of L&D|SME|AI Assistant|Learners|Tagged content assets|Localized accessible content",
+   "Approve design document|Review with the expert and approve the design.|MP-05.6;MP-05.7|Head of L&D|HR Director|SME|Admin|Training Administrator|Localized accessible content|Approved design document"
+  ]
+ },
+ "E2E-05": {
+  "trigger": "Approved design document and prioritized training plan.",
+  "terminal": "Training delivered across all modalities with attendance and completion recorded.",
+  "feedsInto": "E2E-06, E2E-07, E2E-13",
+  "supportedBy": "E2E-15, E2E-17",
+  "consumes": "E2E-04, E2E-22, E2E-23, E2E-30",
+  "modules": "M05 Design Studio; M06 Content Library; M07 Delivery Center; M11 Admin Console; M17 Security Center; M25 Microlearning Hub; M30 Immersive Learning Lab",
+  "description": "This root chain delivers training in class, virtual, microlearning and immersive modes: it publishes content, schedules sessions, enrolls learners, runs sessions and closes them with attendance and completion.",
+  "ufts": [
+   "Publish content to catalog|Publish reviewed content to the catalog.|MP-06.3;MP-06.4;MP-06.6|Content Developer|Head of L&D|SME|IT|Learners|Approved design|Published catalog",
+   "Book logistics|Book rooms, equipment and trainer calendars.|MP-11.1;MP-11.2|Training Administrator|Head of L&D|Trainers|Admin|Managers|Published catalog|Logistics plan",
+   "Schedule sessions|Create sessions and resolve scheduling conflicts.|MP-07.1;MP-07.2|Training Administrator|Head of L&D|Trainers|IT|Managers|Logistics plan|Session schedule",
+   "Enroll learners and send convocations|Enroll learners and send convocations on their channels.|MP-07.3;MP-07.4;MP-17.1|Training Administrator|Head of L&D|Managers|IT|Learners|Session schedule|Enrollments",
+   "Push microlearning capsules|Author capsules and push them into the flow of work.|MP-25.1;MP-25.2;MP-25.3;MP-25.4;MP-25.5|Instructional Designer|Head of L&D|SME|AI Assistant|Learners|Enrollments|Capsules in flow of work",
+   "Run immersive simulations|Define, launch and capture simulation sessions.|MP-30.1;MP-30.2;MP-30.3;MP-30.4;MP-30.5;MP-30.6|Trainer|Head of L&D|Instructional Designer|IT|Managers|Enrollments|Simulation results",
+   "Record attendance|Trainers record attendance per session.|MP-07.5|Trainer|Training Administrator|Learners|Admin|Managers|Session schedule|Attendance records",
+   "Close sessions|Close each session and record completion.|MP-07.6|Training Administrator|Head of L&D|Trainers|Admin|Managers|Attendance records|Completion records",
+   "Reconcile and archive period|Reconcile attendance with invoices and archive.|MP-11.5;MP-11.6;MP-11.3;MP-11.4|Training Administrator|Head of L&D|Finance Manager|Admin|CHRO|Completion records|Closed delivery period"
+  ]
+ },
+ "E2E-06": {
+  "trigger": "Learner enrolled in a learning path or session.",
+  "terminal": "Personalized learning journey completed with engagement measured.",
+  "feedsInto": "E2E-10, E2E-07",
+  "supportedBy": "E2E-15, E2E-17",
+  "consumes": "E2E-05, E2E-12",
+  "modules": "M08 Learner Portal; M21 Coaching Hub; M24 AI Personalization Engine; M25 Microlearning Hub; M26 Social Learning Hub; M27 Gamification Engine",
+  "description": "This partition of E2E-05 delivers a personalized, engaging experience: personal plans and recommendations, adaptive paths, social learning, gamification, coaching and engagement monitoring.",
+  "ufts": [
+   "Generate personal learning plan|Generate each learner's personal plan.|MP-08.1|L&D Analyst|Head of L&D|Managers|IT|Learners|Enrollments|Personal learning plans",
+   "Recommend learning items|Review AI recommendations per learner.|MP-08.2;MP-24.1|Learner|Head of L&D|Managers|AI Assistant|L&D Analyst|Personal learning plans|Recommendations",
+   "Adapt path to performance|Adapt the path to learner results.|MP-24.2;MP-24.3;MP-24.4|Instructional Designer|Head of L&D|L&D Analyst|AI Assistant|Learners|Recommendations|Adapted paths",
+   "Animate social learning|Create cohorts; post, answer and endorse.|MP-26.1;MP-26.2;MP-26.3;MP-26.4;MP-26.5;MP-26.6|Knowledge Manager|Head of L&D|SME|Admin|Learners|Adapted paths|Active cohorts",
+   "Run gamification|Define points and badges; award on completion.|MP-27.1;MP-27.2;MP-27.3;MP-27.4;MP-27.6|Instructional Designer|Head of L&D|L&D Analyst|IT|Learners|Active cohorts|Awards",
+   "Match and run coaching|Match coaches to learners and log sessions.|MP-21.1;MP-21.2;MP-21.3;MP-21.4;MP-21.5;MP-21.6|L&D Business Partner|Head of L&D|Managers|Coach|Learners|Learner requests|Coaching sessions",
+   "Collect learner feedback|Learners enroll and submit feedback.|MP-08.3;MP-08.4|Learner|Head of L&D|Managers|Admin|L&D Analyst|Coaching sessions|Learner feedback",
+   "Monitor engagement and nudge|Monitor indicators and trigger re-engagement nudges.|MP-08.5;MP-08.6;MP-24.5;MP-27.5;MP-24.6;MP-28.4;MP-28.5;MP-28.6|L&D Analyst|Head of L&D|Managers|IT|CHRO|Learner feedback|Engagement report"
+  ]
+ },
+ "E2E-07": {
+  "trigger": "Training session or path completed.",
+  "terminal": "Effectiveness measured on Kirkpatrick levels 1-3 and skill progression computed.",
+  "feedsInto": "E2E-08, E2E-21",
+  "supportedBy": "E2E-18",
+  "consumes": "E2E-05, E2E-06",
+  "modules": "M09 Assessment Engine; M10 Analytics Dashboard; M20 Quality Center",
+  "description": "This root chain builds assessment instruments, runs reaction, learning and behaviour evaluations, computes skill progression and reviews the results.",
+  "ufts": [
+   "Create assessment instrument|Create the instrument per module.|MP-09.1|Instructional Designer|Head of L&D|SME|Analyst|Trainers|Assessment strategy|Assessment instrument",
+   "Draft question bank|Review the AI-drafted question bank.|MP-09.2|Instructional Designer|Head of L&D|SME|AI Assistant|Trainers|Assessment instrument|Question bank",
+   "Collect reaction survey (Level 1)|Collect the reaction survey after each session.|MP-09.3|L&D Analyst|Head of L&D|Trainers|IT|Managers|Completion records|Level 1 results",
+   "Record learning results (Level 2)|Record test results per learner.|MP-09.4|Trainer|Head of L&D|Instructional Designer|Admin|Managers|Level 1 results|Level 2 results",
+   "Record on-the-job observation (Level 3)|Managers record behaviour change on the job.|MP-09.5|Manager|Head of L&D|Learners|HR Ops|L&D Analyst|Level 2 results|Level 3 results",
+   "Compute skill progression|Compute progression against the inventory.|MP-09.6;MP-10.3|L&D Analyst|Head of L&D|Performance Analyst|IT|CHRO|Level 3 results|Skill progression",
+   "Review evaluation results|Review results and flag low-effectiveness modules.|MP-09.7;MP-20.5|L&D Analyst|Head of L&D|Quality Manager|Analyst|CHRO|Skill progression|Evaluation review",
+   "Publish evaluation report|Export and share the Kirkpatrick report.|MP-10.4;MP-10.6;MP-10.2|L&D Analyst|Head of L&D|Instructional Designer|Analyst|Steering Committee|Evaluation review|Kirkpatrick evaluation report"
+  ]
+ },
+ "E2E-08": {
+  "trigger": "Evaluation results available for a theme selected for an ROI study.",
+  "terminal": "Phillips ROI validated with finance and business impact report published.",
+  "feedsInto": "E2E-21",
+  "supportedBy": "E2E-16",
+  "consumes": "E2E-07",
+  "modules": "M09 Assessment Engine; M10 Analytics Dashboard; M18 Finance Console; M32 ROI Dashboard",
+  "description": "This partition of E2E-07 selects a theme, defines business indicators, isolates the training effect, computes the Phillips ROI and publishes the business impact report.",
+  "ufts": [
+   "Select theme for ROI study|Select the theme and its population.|MP-32.1|Performance Analyst|Head of L&D|Finance Manager|Analyst|CHRO|Evaluation review|ROI scope",
+   "Define business indicators|Define the business indicators to track.|MP-32.2;MP-10.1|Performance Analyst|Head of L&D|Business Leaders|Analyst|CHRO|ROI scope|Indicator set",
+   "Collect cost data|Collect committed and actual costs for the theme.|MP-18.3;MP-18.4|Finance Manager|CFO|Head of L&D|Analyst|CHRO|Indicator set|Cost data",
+   "Isolate training effect|Isolate the effect with a control group or trend line.|MP-32.3;MP-09.6|Performance Analyst|Head of L&D|Managers|Analyst|CHRO|Cost data|Isolated benefits",
+   "Compute Phillips ROI|Compute ROI and benefit-cost ratio.|MP-32.4|Performance Analyst|Head of L&D|Finance Manager|IT|CHRO|Isolated benefits|ROI figures",
+   "Review ROI with finance|Finance reviews figures and assumptions.|MP-32.5|Finance Manager|CFO|Performance Analyst|Analyst|CHRO|ROI figures|Validated ROI",
+   "Publish business impact report|Publish the impact report to leadership.|MP-32.6;MP-10.4;MP-10.5|Head of L&D|HR Director|Finance Manager|Analyst|Executive Leadership|Validated ROI|ROI & business impact report"
+  ]
+ },
+ "E2E-09": {
+  "trigger": "New regulatory requirement or certification nearing expiry.",
+  "terminal": "Compliant workforce with valid certifications and an audit extract available.",
+  "feedsInto": "E2E-14",
+  "supportedBy": "E2E-18",
+  "consumes": "E2E-05",
+  "modules": "M14 Compliance Center; M07 Delivery Center; M09 Assessment Engine; M10 Analytics Dashboard",
+  "description": "This root chain registers regulatory requirements, assigns mandatory training by position, tracks certification validity, launches renewals and produces the compliance audit extract.",
+  "ufts": [
+   "Register regulatory requirement|Register the requirement with its source and period.|MP-14.1|Compliance Officer|Head of L&D|Legal|Analyst|CHRO|Regulation|Requirement record",
+   "Assign mandatory training|Assign mandatory training by position.|MP-14.2|Compliance Officer|Head of L&D|Managers|HR Ops|Employees|Requirement record|Mandatory assignments",
+   "Deliver mandatory sessions|Enroll learners and record attendance.|MP-07.3;MP-07.5|Training Administrator|Head of L&D|Trainers|Admin|Managers|Mandatory assignments|Attendance",
+   "Assess and certify|Record results and issue certificates.|MP-09.4;MP-14.4|Trainer|Compliance Officer|Instructional Designer|IT|Employees|Attendance|Certificates",
+   "Compute certification validity|Compute validity and flag expiries.|MP-14.3|Compliance Officer|Head of L&D|Managers|IT|Employees|Certificates|Validity status",
+   "Manage renewals|Launch renewal enrollment and confirm completion.|MP-14.5;MP-14.6|Compliance Officer|Head of L&D|Managers|IT|Employees|Validity status|Renewed certificates",
+   "Produce compliance audit extract|Produce the audit extract and status report.|MP-14.7;MP-10.4|Compliance Officer|Head of L&D|Auditor|Analyst|Executive Leadership|Renewed certificates|Compliance audit extract"
+  ]
+ },
+ "E2E-10": {
+  "trigger": "Internal opening published or annual career review.",
+  "terminal": "Internal move decided with a reskilling plan assigned.",
+  "feedsInto": "E2E-11",
+  "supportedBy": "E2E-15",
+  "consumes": "E2E-02, E2E-06, E2E-25",
+  "modules": "M13 Career Center; M31 Talent Marketplace; M02 Skills Hub; M08 Learner Portal",
+  "description": "This root chain models career paths, publishes internal openings, matches employees to openings, shortlists candidates and assigns reskilling plans.",
+  "ufts": [
+   "Model career paths|Model career paths linked to competency targets.|MP-13.1;MP-13.2|HR Director|CHRO|HR Business Partner|Analyst|Employees|Job architecture|Career paths",
+   "Publish internal opening|Publish the opening with its required skills.|MP-31.1;MP-31.2|HR Business Partner|HR Director|Hiring Manager|HR Ops|Employees|Career paths|Internal opening",
+   "Match employees to opening|Review AI matches between skills and opening.|MP-31.3;MP-02.7|HR Business Partner|HR Director|Hiring Manager|AI Assistant|CHRO|Internal opening|Match list",
+   "Apply to internal opening|Employees apply to the opening.|MP-31.4|Employee|Hiring Manager|Manager|HR Ops|HR Business Partner|Match list|Applications",
+   "Shortlist candidates|Shortlist candidates on evidence.|MP-31.5|Hiring Manager|HR Director|HR Business Partner|HR Ops|CHRO|Applications|Shortlist",
+   "Plan individual development|Create the development plan with suggested actions.|MP-13.3;MP-13.4;MP-42.3;MP-42.4|Manager|HR Director|Employee|AI Assistant|HR Business Partner|Shortlist|Development plans",
+   "Assign reskilling plan|Assign the reskilling path to the selected candidate.|MP-31.6;MP-08.1|HR Business Partner|HR Director|Head of L&D|HR Ops|Employees|Development plans|Reskilling plan",
+   "Review career and succession|Run the career review and update succession readiness.|MP-13.5;MP-13.6;MP-42.5;MP-42.6|HR Director|CHRO|Managers|Analyst|Executive Leadership|Reskilling plan|Talent mobility report"
+  ]
+ },
+ "E2E-11": {
+  "trigger": "New hire or internal mover confirmed.",
+  "terminal": "Employee productive within target time and onboarding closed.",
+  "feedsInto": "E2E-10",
+  "supportedBy": "E2E-17",
+  "consumes": "E2E-04, E2E-05",
+  "modules": "M35 Onboarding Hub; M07 Delivery Center; M08 Learner Portal; M13 Career Center",
+  "description": "This root chain prepares the onboarding record, generates the 30-60-90 day path, runs check-ins with coaching support and confirms time to productivity.",
+  "ufts": [
+   "Create onboarding record|Create the onboarding record for the new hire.|MP-35.1|Hiring Manager|HR Business Partner|HR Ops|Admin|Employee|Hiring decision|Onboarding record",
+   "Generate 30-60-90 day path|Generate the path from the position targets.|MP-35.2;MP-08.1|HR Business Partner|Head of L&D|Hiring Manager|IT|Employee|Onboarding record|30-60-90 path",
+   "Enroll in onboarding sessions|Enroll the employee in induction sessions.|MP-07.3;MP-07.4|Training Administrator|Head of L&D|Hiring Manager|Admin|Employee|30-60-90 path|Enrollments",
+   "Complete onboarding tasks|The employee completes onboarding tasks.|MP-35.3|Employee|Hiring Manager|Buddy|HR Ops|HR Business Partner|Enrollments|Completed tasks",
+   "Hold milestone check-ins|Hold check-ins with coaching where needed.|MP-35.4;MP-21.3|Hiring Manager|HR Business Partner|Coach|HR Ops|Employee|Completed tasks|Check-in notes",
+   "Assess time to productivity|Assess productivity against target.|MP-35.5|Hiring Manager|HR Director|HR Business Partner|Analyst|CHRO|Check-in notes|Productivity assessment",
+   "Close onboarding|Close the record and link the development plan.|MP-35.6;MP-13.3|HR Business Partner|HR Director|Hiring Manager|HR Ops|Employee|Productivity assessment|Closed onboarding"
+  ]
+ },
+ "E2E-12": {
+  "trigger": "Critical expert identified as leaving, retiring or holding at-risk knowledge.",
+  "terminal": "Knowledge captured, published and transferred to a validated successor.",
+  "feedsInto": "E2E-13, E2E-06",
+  "supportedBy": "E2E-17",
+  "consumes": "—",
+  "modules": "M34 Expert Knowledge Vault; M12 Community Hub; M33 Peer Content Studio; M06 Content Library",
+  "description": "This root chain identifies critical experts, records and structures their knowledge, publishes it and validates its transfer to successors.",
+  "ufts": [
+   "Identify critical experts|Identify experts holding at-risk knowledge.|MP-34.1|HR Business Partner|HR Director|Managers|Analyst|CHRO|Workforce data|Critical expert list",
+   "Plan capture sessions|Plan interview sessions with each expert.|MP-34.2|Knowledge Manager|Head of L&D|Experts|Admin|Managers|Critical expert list|Capture plan",
+   "Record expert interview|Record the interview and transcript.|MP-34.3|Knowledge Manager|Head of L&D|Experts|IT|Managers|Capture plan|Interview transcript",
+   "Structure knowledge|Review the AI-structured knowledge item.|MP-34.4|Knowledge Manager|Head of L&D|Experts|AI Assistant|Managers|Interview transcript|Structured knowledge",
+   "Publish knowledge article|Publish and index the article for retrieval.|MP-12.1;MP-12.2;MP-33.4|Knowledge Manager|Head of L&D|SME|IT|Employees|Structured knowledge|Published article",
+   "Assign successor learning path|Assign the learning path to the successor.|MP-34.5;MP-06.6|Manager|Head of L&D|Knowledge Manager|HR Ops|Successor|Published article|Successor path",
+   "Validate transfer completion|The expert validates the successor's mastery.|MP-34.6|Subject Matter Expert|Head of L&D|Manager|HR Ops|CHRO|Successor path|Validated transfer"
+  ]
+ },
+ "E2E-13": {
+  "trigger": "New content published or content past its review date.",
+  "terminal": "Catalog curated, maintained and outdated content retired.",
+  "feedsInto": "E2E-06",
+  "supportedBy": "E2E-18",
+  "consumes": "E2E-05, E2E-12",
+  "modules": "M06 Content Library; M29 Curation Engine; M33 Peer Content Studio",
+  "description": "This partition of E2E-05 aggregates provider catalogs, curates and organizes items, promotes peer content, flags content past review and retires what is outdated.",
+  "ufts": [
+   "Aggregate provider catalogs|Aggregate external provider catalogs.|MP-29.1|Content Curator|Head of L&D|Vendors|IT|L&D Analyst|Provider catalogs|Aggregated catalog",
+   "Recommend curated items|Review AI relevance ranking.|MP-29.2|Content Curator|Head of L&D|SME|AI Assistant|L&D Analyst|Aggregated catalog|Ranked items",
+   "Approve and organize collections|Approve items and organize collections.|MP-29.3;MP-29.4|Content Curator|Head of L&D|SME|Admin|Learners|Ranked items|Curated collections",
+   "Review peer content|Peer review and approve user content.|MP-33.1;MP-33.2;MP-33.3|Subject Matter Expert|Knowledge Manager|Content Curator|IT|Learners|User submissions|Approved peer content",
+   "Promote and rate content|Send approved content to curation; learners rate it.|MP-33.5;MP-33.6|Knowledge Manager|Head of L&D|Content Curator|IT|Learners|Approved peer content|Rated content",
+   "Flag content past review date|Flag items past their review date.|MP-29.5|Content Curator|Head of L&D|SME|IT|Content Developer|Rated content|Review queue",
+   "Retire outdated content|Retire outdated items and low-value capsules.|MP-29.6;MP-25.6|Content Curator|Head of L&D|SME|Admin|Learners|Review queue|Content library health report"
+  ]
+ },
+ "E2E-14": {
+  "trigger": "Partner, reseller or customer training program launched.",
+  "terminal": "External learners trained, paid and certified.",
+  "feedsInto": "—",
+  "supportedBy": "E2E-16",
+  "consumes": "E2E-05, E2E-09",
+  "modules": "M22 Extended Enterprise Portal; M07 Delivery Center; M14 Compliance Center; M18 Finance Console",
+  "description": "This root chain sets up an external sub-portal and catalog, processes payment and enrollment, tracks completion and issues partner certifications.",
+  "ufts": [
+   "Create external sub-portal|Create the branded sub-portal for the audience.|MP-22.1|Extended Enterprise Manager|Head of L&D|Sales|IT|Partners|Program brief|External portal",
+   "Configure catalog and pricing|Configure the external catalog and prices.|MP-22.2;MP-18.1|Extended Enterprise Manager|Head of L&D|Finance Manager|Admin|Partners|External portal|Priced catalog",
+   "Process payment and enroll|Process payment and enroll external learners.|MP-22.3;MP-22.4|Extended Enterprise Manager|Finance Manager|Sales|IT|Partners|Priced catalog|External enrollments",
+   "Deliver external sessions|Run sessions and record attendance.|MP-07.1;MP-07.5|Training Administrator|Extended Enterprise Manager|Trainers|Admin|Partners|External enrollments|Attendance",
+   "Track external completion|Track completion per external learner.|MP-22.5|Extended Enterprise Manager|Head of L&D|Trainers|IT|Partners|Attendance|Completion status",
+   "Issue partner certification|Issue certification to qualified partners.|MP-22.6;MP-14.4|Extended Enterprise Manager|Head of L&D|Compliance Officer|IT|Partners|Completion status|Partner certificates",
+   "Reconcile external revenue|Reconcile payments with the finance system.|MP-18.3;MP-18.4|Finance Manager|CFO|Extended Enterprise Manager|Analyst|Head of L&D|Partner certificates|Revenue reconciliation"
+  ]
+ },
+ "E2E-15": {
+  "trigger": "New integration, data source or AI use case to govern.",
+  "terminal": "Integrations, data and AI governed with health, retention and usage reviewed.",
+  "feedsInto": "All E2E processes",
+  "supportedBy": "—",
+  "consumes": "—",
+  "modules": "M16 Data Governance Console; M17 Security Center; M10 Analytics Dashboard; M24 AI Personalization Engine; M28 Predictive Analytics Hub",
+  "description": "This enabler registers integrations and maps fields, runs HRIS synchronisation, sets retention rules, maintains the AI Use Case register and its activation, and reviews AI usage.",
+  "ufts": [
+   "Register external integration|Register the connection and its credentials reference.|MP-16.1|Platform Administrator|IT Architect|Vendors|IT|CHRO|Integration request|Integration record",
+   "Map fields and check health|Map fields and run a health check.|MP-16.2;MP-16.3|IT Architect|CIO|Platform Administrator|IT|CHRO|Integration record|Healthy integration",
+   "Run HRIS synchronisation|Run the sync and review rejections.|MP-16.4;MP-16.5|IT Architect|CIO|HR Ops|IT|Head of L&D|Healthy integration|Synchronised directory",
+   "Set data retention rule|Set retention per data category.|MP-16.6|Data Protection Officer|CIO|Legal|IT|CHRO|Synchronised directory|Retention rules",
+   "Maintain AI use case register|Maintain and version AI use cases.|MP-16.7|Platform Administrator|CIO|IT Architect|IT|Head of L&D|Retention rules|AI register",
+   "Set AI activation per scope|Activate or deactivate use cases per scope.|MP-16.8;MP-24.1|Platform Administrator|CIO|Head of L&D|IT|All Users|AI register|AI activation state",
+   "Review AI usage log|Review accepted, edited and rejected suggestions.|MP-16.9;MP-28.2|IT Architect|CIO|Quality Manager|Analyst|Steering Committee|AI activation state|AI usage & governance report"
+  ]
+ },
+ "E2E-16": {
+  "trigger": "Training need requiring an external provider.",
+  "terminal": "Vendor selected, order issued and payment approved against attendance.",
+  "feedsInto": "E2E-05",
+  "supportedBy": "E2E-15",
+  "consumes": "E2E-30",
+  "modules": "M15 Vendor & Partner Console; M18 Finance Console; M11 Admin Console",
+  "description": "This partition of E2E-15 runs vendor selection, onboarding and accreditation, issues the purchase order and approves payment after matching invoice to order and attendance.",
+  "ufts": [
+   "Issue request for proposal|Issue the RFP to shortlisted vendors.|MP-15.1|Purchasing Officer|Finance Manager|Head of L&D|Admin|Vendors|Training need|RFP",
+   "Score vendor proposals|Score proposals against weighted criteria.|MP-15.2|Purchasing Officer|Finance Manager|Head of L&D|Analyst|Vendors|RFP|Scored proposals",
+   "Register and verify vendor|Register the vendor and verify accreditation.|MP-15.3;MP-15.4|Purchasing Officer|Finance Manager|Compliance Officer|Admin|Head of L&D|Scored proposals|Accredited vendor",
+   "Issue purchase order|Issue the purchase order against the budget line.|MP-15.5;MP-18.3|Purchasing Officer|Finance Manager|Head of L&D|Admin|Vendors|Accredited vendor|Purchase order",
+   "Match invoice to order and attendance|Match the invoice with order and attendance.|MP-15.6;MP-11.5|Training Administrator|Finance Manager|Purchasing Officer|IT|Head of L&D|Purchase order|Matched invoice",
+   "Approve vendor payment|Approve payment and update spend.|MP-15.7;MP-18.4|Finance Manager|CFO|Purchasing Officer|Analyst|Head of L&D|Matched invoice|Vendor performance & spend report"
+  ]
+ },
+ "E2E-17": {
+  "trigger": "Approved plan or new platform capability requiring adoption.",
+  "terminal": "Sustained adoption reached with low-adoption groups reinforced.",
+  "feedsInto": "E2E-01, E2E-05, E2E-06",
+  "supportedBy": "E2E-15",
+  "consumes": "E2E-31",
+  "modules": "M19 Change Hub; M12 Community Hub; M08 Learner Portal; M26 Social Learning Hub",
+  "description": "This enabler assesses change impact, builds the adoption plan, runs the communication campaign, tracks usage, detects low-adoption groups and runs reinforcement actions.",
+  "ufts": [
+   "Assess change impact|Assess the impact on each population.|MP-19.1|Change Manager|Head of L&D|Business Leaders|Analyst|CHRO|Approved plan|Impact assessment",
+   "Build adoption plan|Build the plan with sponsors and champions.|MP-19.2|Change Manager|Head of L&D|Managers|Analyst|CHRO|Impact assessment|Adoption plan",
+   "Launch communication campaign|Launch the campaign on each channel.|MP-19.3|Change Manager|Head of L&D|Communication|Admin|All Employees|Adoption plan|Campaign",
+   "Open community space|Open the community space and moderate it.|MP-12.3;MP-12.4;MP-26.1|Knowledge Manager|Head of L&D|Change Manager|Admin|All Employees|Campaign|Community space",
+   "Track adoption usage|Track usage by population.|MP-19.4;MP-08.5|L&D Analyst|Head of L&D|Change Manager|IT|CHRO|Community space|Usage indicators",
+   "Identify low-adoption groups|Review AI-detected low-adoption groups.|MP-19.5|Change Manager|Head of L&D|Managers|AI Assistant|CHRO|Usage indicators|Low-adoption list",
+   "Run reinforcement actions|Run targeted reinforcement actions.|MP-19.6;MP-08.6|Change Manager|Head of L&D|Managers|Admin|Steering Committee|Low-adoption list|Adoption dashboard"
+  ]
+ },
+ "E2E-18": {
+  "trigger": "Risk logged, periodic quality review due or control test scheduled.",
+  "terminal": "Risks mitigated, actions evaluated by a different person, controls rated.",
+  "feedsInto": "E2E-03, E2E-07, E2E-09",
+  "supportedBy": "—",
+  "consumes": "E2E-31",
+  "modules": "M20 Quality Center; M16 Data Governance Console; M17 Security Center; M09 Assessment Engine",
+  "description": "This enabler logs risks and opportunities, assigns and executes mitigation actions, has each action evaluated by a different user, runs periodic quality reviews and updates control effectiveness.",
+  "ufts": [
+   "Log risk or opportunity|Log the item with likelihood and impact (1-5).|MP-20.1|Quality Manager|Head of L&D|Process Owners|Analyst|CHRO|Issue or signal|Risk register entry",
+   "Assign mitigation action|Assign an owner and an evaluator to the action.|MP-20.2|Quality Manager|Head of L&D|Process Owners|Analyst|Action Owner|Risk register entry|Mitigation action",
+   "Execute improvement action|The owner executes the action with evidence.|MP-20.3|Action Owner|Quality Manager|Process Owners|Admin|Action Evaluator|Mitigation action|Executed action",
+   "Evaluate action effectiveness|A different user evaluates effectiveness.|MP-20.4|Action Evaluator|Quality Manager|Action Owner|Analyst|Head of L&D|Executed action|Effectiveness verdict",
+   "Review access and security|Review the access violation log.|MP-17.4;MP-17.6;MP-17.2;MP-17.3;MP-17.5|IT Architect|CIO|Platform Administrator|IT|Quality Manager|Security logs|Access review",
+   "Run periodic quality review|Review KPIs, alerts and evaluation results.|MP-20.5;MP-09.7|Quality Manager|Head of L&D|Auditor|Analyst|Steering Committee|Access review|Quality review minutes",
+   "Update control effectiveness|Update the effectiveness rating of each control.|MP-20.6|Quality Manager|Head of L&D|Compliance Officer|Analyst|Auditor|Quality review minutes|Governance register & risk heat-map"
+  ]
+ },
+ "E2E-19": {
+  "trigger": "Client purchase order or engagement request received.",
+  "terminal": "Engagement closed with client acceptance and REX recorded.",
+  "feedsInto": "E2E-20, E2E-03, E2E-31",
+  "supportedBy": "E2E-15, E2E-18",
+  "consumes": "—",
+  "modules": "M36 Engagement Console; M01 Strategy Console; M19 Change Hub; M20 Quality Center",
+  "description": "This consulting root chain registers the engagement and purchase order, holds the kickoff with AI-drafted minutes, plans the work breakdown, tracks deliverables and closes with acceptance and REX.",
+  "ufts": [
+   "Register engagement and purchase order|Register the engagement and its purchase order.|MP-36.1|Consultant PM|Partner|Client PM|Admin|Steering Committee|Client purchase order|Engagement record",
+   "Hold kickoff meeting|Hold the kickoff with the client team.|MP-36.2|Consultant PM|Partner|Client Leadership|Analyst|Steering Committee|Engagement record|Kickoff held",
+   "Draft meeting minutes|Review the AI-drafted minutes and RACSI.|MP-36.3|Consultant PM|Partner|Client PM|AI Assistant|Steering Committee|Kickoff held|Meeting minutes",
+   "Align with client strategy|Record the client's strategic objectives.|MP-01.1;MP-01.2|Consultant PM|Partner|Client Leadership|Analyst|CHRO|Meeting minutes|Strategic alignment",
+   "Plan engagement work breakdown|Plan the WBS and Gantt of deliverables.|MP-36.4|Consultant PM|Partner|Client PM|Analyst|Steering Committee|Strategic alignment|Engagement WBS",
+   "Plan change support|Plan the client's change and adoption actions.|MP-19.1;MP-19.2|Change Manager|Partner|Client PM|Analyst|Steering Committee|Engagement WBS|Change plan",
+   "Track engagement deliverables|Track each deliverable to completion.|MP-36.5;MP-20.5|Consultant PM|Partner|Client PM|Analyst|Steering Committee|Change plan|Deliverable tracker",
+   "Deliver final report and obtain acceptance|Deliver the final report and record acceptance.|MP-36.6;MP-36.7|Consultant PM|Partner|HR Director|Admin|Steering Committee|Deliverable tracker|Client acceptance",
+   "Record engagement REX|Record what went well, what did not and why.|MP-36.8;MP-12.6;MP-12.5|Consultant PM|Partner|Client PM|Analyst|Steering Committee|Client acceptance|Engagement REX"
+  ]
+ },
+ "E2E-20": {
+  "trigger": "Engagement kickoff or approved Scope of Work requesting a diagnostic.",
+  "terminal": "5-axis diagnostic, CMM maturity and leadership maturity report validated with the sponsor.",
+  "feedsInto": "E2E-03, E2E-21",
+  "supportedBy": "E2E-18",
+  "consumes": "E2E-19, E2E-24, E2E-28, E2E-29, E2E-33",
+  "modules": "M37 Diagnostic Studio; M38 CMM Assessment Engine; M42 Leadership Maturity Hub; M02 Skills Hub; M03 Needs Analyzer",
+  "description": "This diagnostic root chain defines the axes and sample, collects interview and questionnaire evidence, scores the axes, assesses CMM and leadership maturity, and validates the findings with the sponsor.",
+  "ufts": [
+   "Define diagnostic axes and sample|Define the five axes and the sample.|MP-37.1|Consultant PM|Partner|HR Director|Analyst|Steering Committee|Approved Scope of Work|Axes and sample",
+   "Deploy diagnostic questionnaire|Deploy the questionnaire to the sample.|MP-37.2;MP-37.4|Consultant PM|Partner|Client PM|IT|Stakeholders|Axes and sample|Questionnaire responses",
+   "Conduct semi-structured interviews|Interview the sample and record findings.|MP-37.3|Consultant|Consultant PM|Managers|Analyst|Client PM|Axes and sample|Interview findings",
+   "Score diagnostic axes|Score each axis from the evidence.|MP-37.5|Consultant|Consultant PM|Client PM|IT|Partner|Interview findings, responses|Axis scores",
+   "Select maturity model|Select the CMM levels and evidence criteria.|MP-38.1;MP-38.2|Consultant|Consultant PM|Client PM|Analyst|Partner|Axis scores|Maturity model",
+   "Rate process maturity|Rate maturity per process area.|MP-38.3;MP-38.4|Consultant|Consultant PM|Process Owners|IT|Partner|Maturity model|Maturity profile",
+   "Assess leadership maturity|Run the 360 and compute the leadership level.|MP-42.1;MP-42.2|HR Business Partner|HR Director|Managers|IT|Consultant PM|Maturity profile|Leadership maturity",
+   "Cross-check skills and needs|Cross-check findings with gaps and needs.|MP-02.7;MP-03.2|L&D Analyst|Head of L&D|Consultant|Analyst|Consultant PM|Leadership maturity|Consolidated evidence",
+   "Draft diagnostic findings|Review the AI-drafted findings.|MP-37.6;MP-38.5|Consultant|Consultant PM|Client PM|AI Assistant|Partner|Consolidated evidence|Draft findings",
+   "Validate findings with sponsor|Validate findings and agree target maturity.|MP-37.7;MP-38.6|Consultant PM|Partner|HR Director|Admin|Steering Committee|Draft findings|Diagnostic & maturity report"
+  ]
+ },
+ "E2E-21": {
+  "trigger": "Start of a new plan cycle with N-1 execution data available.",
+  "terminal": "N-1 impact conclusions fed into the strategy update.",
+  "feedsInto": "E2E-01, E2E-03",
+  "supportedBy": "E2E-18",
+  "consumes": "E2E-20, E2E-07, E2E-08",
+  "modules": "M39 Impact Study Hub; M09 Assessment Engine; M32 ROI Dashboard; M01 Strategy Console; M04 Report & Roadmap Studio",
+  "description": "This root chain loads N-1 plan execution data, defines impact criteria, surveys participants and managers, compares planned against realized, drafts conclusions and feeds them into the strategy update.",
+  "ufts": [
+   "Load N-1 plan execution data|Load last year's plan and execution data.|MP-39.1|L&D Analyst|Head of L&D|Finance Manager|IT|CHRO|N-1 plan|N-1 dataset",
+   "Define impact criteria|Define the criteria for the impact study.|MP-39.2|L&D Analyst|Head of L&D|Business Leaders|Analyst|CHRO|N-1 dataset|Impact criteria",
+   "Survey participants and managers|Survey participants and their managers.|MP-39.3;MP-09.5|L&D Analyst|Head of L&D|Managers|IT|Employees|Impact criteria|Survey results",
+   "Compare planned against realized|Compare planned and realized volumes, costs and effects.|MP-39.4;MP-32.3|L&D Analyst|Head of L&D|Finance Manager|Analyst|CHRO|Survey results|Plan-vs-actual analysis",
+   "Review N-1 ROI|Review the ROI of the main themes.|MP-32.4;MP-32.5|Performance Analyst|Head of L&D|Finance Manager|Analyst|CHRO|Plan-vs-actual analysis|N-1 ROI",
+   "Draft impact conclusions|Review the AI-drafted conclusions.|MP-39.5|L&D Analyst|Head of L&D|Consultant PM|AI Assistant|CHRO|N-1 ROI|Draft conclusions",
+   "Feed conclusions to strategy|Feed conclusions into the strategy update.|MP-39.6;MP-01.1|Head of L&D|HR Director|L&D Strategist|Analyst|Steering Committee|Draft conclusions|Strategy inputs",
+   "Update roadmap priorities|Adjust roadmap priorities with the lessons.|MP-04.6|L&D Strategist|Head of L&D|Function Heads|Analyst|Steering Committee|Strategy inputs|Updated roadmap priorities"
+  ]
+ },
+ "E2E-22": {
+  "trigger": "Approved roadmap for an organization with several sites or entities.",
+  "terminal": "Site plans adapted, validated and deployed, with deviations escalated.",
+  "feedsInto": "E2E-05",
+  "supportedBy": "E2E-15",
+  "consumes": "E2E-03",
+  "modules": "M40 Multi-Site Deployment Hub; M04 Report & Roadmap Studio; M07 Delivery Center; M11 Admin Console; M23 Localization & Accessibility Center",
+  "description": "This partition of E2E-03 splits the plan by site, adapts it to local constraints and languages, validates and deploys each site schedule and consolidates status with escalation of deviations.",
+  "ufts": [
+   "Split plan by site|Split the approved plan by site.|MP-40.1|Head of L&D|HR Director|Site L&D Coordinators|IT|CHRO|Approved roadmap|Site plans",
+   "Adapt site plan to local constraints|Adapt each plan to local constraints.|MP-40.2|Site L&D Coordinator|Head of L&D|Site Managers|Admin|CHRO|Site plans|Adapted site plans",
+   "Localize site materials|Translate materials for each site language.|MP-23.1;MP-23.3;MP-23.6;MP-23.7|Instructional Designer|Head of L&D|Site L&D Coordinator|AI Assistant|Learners|Adapted site plans|Localized materials",
+   "Validate site plan|Validate each site plan centrally.|MP-40.3|Head of L&D|HR Director|Site L&D Coordinator|Analyst|CHRO|Adapted site plans|Validated site plans",
+   "Schedule site sessions|Schedule sessions and logistics per site.|MP-07.1;MP-11.1|Training Administrator|Site L&D Coordinator|Trainers|Admin|Managers|Validated site plans|Site schedules",
+   "Deploy site schedule|Deploy and communicate the schedule.|MP-40.4|Site L&D Coordinator|Head of L&D|Managers|Admin|Employees|Site schedules|Deployed schedules",
+   "Consolidate site status|Consolidate status across sites.|MP-40.5|Head of L&D|HR Director|Site L&D Coordinators|IT|CHRO|Deployed schedules|Site status",
+   "Escalate site deviation|Escalate deviations beyond tolerance.|MP-40.6|Head of L&D|HR Director|Site Managers|Analyst|Steering Committee|Site status|Multi-site deployment status"
+  ]
+ },
+ "E2E-23": {
+  "trigger": "Approved plan requiring external validation or funding (e.g. OFPPT, GIAC-Agro).",
+  "terminal": "Plan validated by the regulatory body and evidence archived.",
+  "feedsInto": "E2E-05",
+  "supportedBy": "E2E-18",
+  "consumes": "E2E-03",
+  "modules": "M41 Regulatory Console; M14 Compliance Center; M18 Finance Console; M20 Quality Center",
+  "description": "This root chain selects the regulatory template, generates the submission file, submits it, tracks its status, records the decision, files refund claims and archives the evidence.",
+  "ufts": [
+   "Select regulatory template|Select the template of the regulatory body.|MP-41.1|Compliance Officer|Head of L&D|Finance Manager|Admin|CHRO|Approved plan|Selected template",
+   "Generate submission file|Generate and quality-check the submission file.|MP-41.2;MP-20.5|Compliance Officer|Head of L&D|Quality Manager|IT|CHRO|Selected template|Submission file",
+   "Submit plan to regulatory body|Submit the file to the regulatory body.|MP-41.3|Compliance Officer|Head of L&D|Finance Manager|Admin|CHRO|Submission file|Submitted plan",
+   "Track submission status|Track status and answer requests.|MP-41.4|Compliance Officer|Head of L&D|Regulator|Admin|Finance Manager|Submitted plan|Status log",
+   "Record regulator decision|Record the decision and its conditions.|MP-41.5;MP-14.1|Compliance Officer|Head of L&D|Legal|Admin|Steering Committee|Status log|Regulator decision",
+   "Submit refund claims|Submit refund claims after delivery.|MP-18.5|Finance Manager|CFO|Compliance Officer|Analyst|Head of L&D|Regulator decision|Refund claims",
+   "Archive submission evidence|Archive the file, decision and claims.|MP-41.6;MP-18.6|Compliance Officer|Head of L&D|Auditor|IT|CHRO|Refund claims|Regulatory submission tracker"
+  ]
+ }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "cortexskills-server",
+  "version": "1.0.0",
+  "description": "CortexSkills — Training Engineering platform API (REST, JSON, SQLite).",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "seed": "node seed/seed.js",
+    "dev": "node --watch-path=src src/index.js",
+    "start": "node src/index.js",
+    "backup": "node tools/backup.js",
+    "sign-licence": "node tools/sign-licence.js",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "docx": "^9.5.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "pdfkit": "^0.17.2",
+    "@fontsource/source-sans-3": "^5.2.5",
+    "@fontsource/source-serif-4": "^5.2.5",
+    "@fontsource/noto-naskh-arabic": "^5.2.5"
+  }
+}
