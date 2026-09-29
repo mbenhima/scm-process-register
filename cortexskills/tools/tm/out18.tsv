@@ -1,0 +1,160 @@
+0	Jugement d'expert issu de la revue des textes de l'interface et des documents	حكم الخبراء من مراجعة نصوص الواجهة والوثائق
+1	Plateforme indisponible pendant la réalisation	عدم توفر المنصة أثناء التنفيذ
+2	Disponibilité mensuelle en %	نسبة التوفر الشهري
+3	Une panne d'intégration laisse des données RH périmées	فشل التكامل يترك بيانات موارد بشرية متقادمة
+4	Intégration	التكامل
+5	Heures depuis la dernière synchronisation SIRH réussie	الساعات منذ آخر مزامنة ناجحة لنظام الموارد البشرية
+6	Violation de la séparation des tâches dans l'évaluation des actions	خرق فصل المهام في تقييم الإجراءات
+7	Actions où responsable = évaluateur (doit être 0)	إجراءات يكون فيها المسؤول = المقيّم (يجب أن تكون 0)
+8	Des contenus inaccessibles excluent des apprenants	محتوى غير ميسر يقصي متعلمين
+9	Contenus publiés avec des problèmes d'accessibilité critiques ouverts	أصول منشورة بها مشكلات إمكانية وصول حرجة مفتوحة
+10	Répondants au diagnostic identifiables	إمكانية التعرف على المستجيبين في التشخيص
+11	Groupes présentés sous la taille minimale	مجموعات مقدمة دون الحد الأدنى للحجم
+12	Une mauvaise classification RAG induit la direction en erreur	تصنيف لوني خاطئ يضلل القيادة
+13	Qualité des décisions	جودة القرار
+14	Fonctions renotées après publication / fonctions notées x 100	الوظائف المعاد تقييمها بعد النشر / الوظائف المقيمة × 100
+15	Des conflits de planning annulent des sessions	تعارضات البرمجة تلغي دورات
+16	Sessions annulées pour conflit / sessions planifiées x 100	الدورات الملغاة بسبب التعارض / الدورات المبرمجة × 100
+17	Mission de conseil clôturée sans acceptation du client	مهمة استشارية مغلقة دون قبول العميل
+18	Missions clôturées sans acceptation (doit être 0)	المهام المغلقة دون قبول (يجب أن تكون 0)
+19	Une mise à niveau casse une installation existante	ترقية إصدار تعطل تثبيتًا قائمًا
+20	Mises à niveau en échec / mises à niveau effectuées x 100	الترقيات الفاشلة / الترقيات المنفذة × 100
+21	Confiance excessive dans les résultats prédictifs	الاعتماد المفرط على المخرجات التنبؤية
+22	Actions préventives créées à partir de prédictions sans acceptation enregistrée	إجراءات وقائية منشأة من تنبؤات دون قبول مسجل
+23	Les fiches de poste s'écartent de la réalité	بطاقات الوصف الوظيفي تبتعد عن الواقع
+24	Organisationnel	تنظيمي
+25	Postes au statut « à développer » depuis plus de 6 mois	مناصب بوضعية «للتطوير» منذ أكثر من 6 أشهر
+26	Le déploiement d'un site s'écarte du plan groupe	نشر الموقع ينحرف عن خطة المجموعة
+27	Sites avec un écart de réalisation > 15 points	مواقع بفارق إنجاز > 15 نقطة
+28	Fraude au paiement dans les ventes de l'entreprise étendue	احتيال في الأداء ضمن مبيعات المؤسسة الممتدة
+29	Règlements de passerelle non rapprochés par mois	تسويات البوابة غير المطابقة شهريًا
+30	Faible taux de réponse au questionnaire	ضعف معدل الاستجابة للاستبيان
+31	Taux de réponse % (réponses reçues / questionnaires diffusés x 100)	معدل الاستجابة % (الإجابات المستلمة / الاستبيانات الموزعة × 100)
+32	Biais du questionnaire dû à un échantillon non représentatif	انحياز الاستبيان بسبب عينة غير ممثلة
+33	Jugement d'expert : part des cellules de critères (fonction × niveau de décision) avec moins de 3 répondants	حكم الخبراء: نسبة خلايا المعايير (الوظيفة × مستوى القرار) بأقل من 3 مستجيبين
+34	Cahier des charges non aligné sur la stratégie	دفتر نطاق عمل غير متوائم مع الاستراتيجية
+35	Part des critères du périmètre reliés à un objectif stratégique	نسبة معايير النطاق المرتبطة بهدف استراتيجي
+36	Couverture des objectifs stratégiques	تغطية الأهداف الاستراتيجية
+37	Objectifs reliés à au moins un thème approuvé / total des objectifs x 100	الأهداف المرتبطة بمحور معتمد واحد على الأقل / مجموع الأهداف × 100
+38	Taux de validation de l'inventaire des compétences	معدل المصادقة على جرد المهارات
+39	Évaluations validées / évaluations attendues x 100	التقييمات المعتمدة / التقييمات المتوقعة × 100
+40	≥ 95 %	≥ 95%
+41	Taux d'écarts critiques	معدل الفجوات الحرجة
+42	Écarts critiques / couples collaborateur-compétence évalués x 100	الفجوات الحرجة / أزواج الموظف-الكفاءة المقيمة × 100
+43	≤ 10 %	≤ 10%
+44	Délai de production du rapport d'ingénierie de formation	مدة إعداد تقرير هندسة التكوين
+45	Jours entre la validation du registre des besoins et l'approbation du rapport	الأيام من المصادقة على سجل الاحتياجات إلى اعتماد التقرير
+46	≤ 30 jours	≤ 30 يومًا
+47	Délai d'approbation de la conception	مدة اعتماد التصميم
+48	Médiane des jours entre l'affectation du thème et l'approbation de la conception	وسيط الأيام من إسناد المحور إلى اعتماد التصميم
+49	≤ 20 jours	≤ 20 يومًا
+50	Conformité de la licence %	نسبة المطابقة للترخيص
+51	Jours avec utilisateurs actifs <= maxUsers et licence valide / jours de la période x 100	الأيام التي يكون فيها المستخدمون النشطون <= maxUsers والترخيص ساريًا / أيام الفترة × 100
+52	Délai de publication des contenus	مدة نشر المحتوى
+53	Médiane des jours entre le chargement et la publication	وسيط الأيام من التحميل إلى النشر
+54	≤ 15 jours	≤ 15 يومًا
+55	Taux de remplissage des sessions	معدل ملء الدورات
+56	Inscriptions / capacité de la session x 100	التسجيلات / سعة الدورة × 100
+57	≥ 85 %	≥ 85%
+58	Taux de réalisation du plan	معدل إنجاز الخطة
+59	Jours de formation réalisés / jours de formation prévus x 100	أيام التكوين المنجزة / أيام التكوين المخططة × 100
+60	≥ 90 %	≥ 90%
+61	Taux d'achèvement des apprenants	معدل إتمام المتعلمين
+62	Inscriptions achevées / inscriptions à échéance x 100	التسجيلات المكتملة / التسجيلات المستحقة × 100
+63	≥ 80 %	≥ 80%
+64	Disponibilité de l'API	توفر الواجهة البرمجية
+65	Minutes disponibles / minutes totales x 100	الدقائق المتاحة / مجموع الدقائق × 100
+66	≥ 99,9 %	≥ 99.9%
+67	Satisfaction moyenne de niveau 1	متوسط الرضا في المستوى 1
+68	Score moyen de réaction sur les sessions clôturées (1-5)	متوسط درجة رد الفعل عبر الدورات المغلقة (1-5)
+69	≥ 4,2	≥ 4.2
+70	Taux de progression des compétences	معدل تطور المهارات
+71	Apprenants gagnant au moins un niveau en 6 mois / apprenants formés x 100	المتعلمون الذين ارتقوا مستوى واحدًا على الأقل خلال 6 أشهر / المتعلمون المكونون × 100
+72	≥ 70 %	≥ 70%
+73	Livraison des rapports dans les délais	تسليم التقارير في الوقت
+74	Rapports planifiés livrés à temps / rapports planifiés x 100	التقارير المبرمجة المسلمة في الوقت / التقارير المبرمجة × 100
+75	Taux de correction des dossiers de formation	معدل تصحيح سجلات التكوين
+76	Dossiers corrigés / dossiers créés x 100	السجلات المصححة / السجلات المنشأة × 100
+77	≤ 1 %	≤ 1%
+78	Taux de réutilisation des connaissances	معدل إعادة استعمال المعرفة
+79	Suggestions IA citant un élément de connaissance ou un REX / suggestions IA x 100	اقتراحات الذكاء الاصطناعي التي تستشهد بعنصر معرفة أو درس مستفاد / الاقتراحات × 100
+80	≥ 40 %	≥ 40%
+81	Couverture des PDI	تغطية خطط التنمية الفردية
+82	Collaborateurs avec un PDI actif / collaborateurs concernés x 100	الموظفون بخطة تنمية فردية نشطة / الموظفون ضمن النطاق × 100
+83	Conformité des certifications obligatoires	مطابقة الشهادات الإلزامية
+84	Certifications valides / certifications requises x 100	الشهادات السارية / الشهادات المطلوبة × 100
+85	Taux de rapprochement des factures prestataires	معدل مطابقة فواتير الموردين
+86	Factures rapprochées au premier passage / factures reçues x 100	الفواتير المطابقة من أول مرة / الفواتير المستلمة × 100
+87	≥ 98 %	≥ 98%
+88	Taux de réussite de la synchronisation des intégrations	معدل نجاح مزامنة التكاملات
+89	Lignes acceptées / lignes reçues x 100	الأسطر المقبولة / الأسطر المستلمة × 100
+90	≥ 99,5 %	≥ 99.5%
+91	Achèvement de la revue des accès	إتمام مراجعة الولوج
+92	Rôles revus dans le trimestre / rôles x 100	الأدوار المراجعة خلال الفصل / الأدوار × 100
+93	Écart d'exécution budgétaire	فارق تنفيذ الميزانية
+94	|Réel - alloué| / alloué x 100	|الفعلي - المخصص| / المخصص × 100
+95	≤ 5 %	≤ 5%
+96	Taux de recouvrement des remboursements OFPPT	معدل تحصيل استردادات مكتب التكوين المهني
+97	Remboursements reçus / remboursements prévus x 100	الاستردادات المستلمة / الاستردادات المتوقعة × 100
+98	Taux d'adoption active	معدل التبني النشط
+99	Utilisateurs actifs sur 30 jours / utilisateurs sous licence x 100	المستخدمون النشطون خلال 30 يومًا / المستخدمون المرخصون × 100
+100	≥ 75 %	≥ 75%
+101	Taux d'efficacité des actions	معدل فعالية الإجراءات
+102	Actions notées efficaces / actions évaluées x 100	الإجراءات المصنفة فعالة / الإجراءات المقيمة × 100
+103	Atteinte des objectifs de coaching	تحقيق أهداف التوجيه
+104	Accompagnements avec note de résultat >= 4 / accompagnements clôturés x 100	مهام التوجيه بتقييم نتيجة >= 4 / المهام المغلقة × 100
+105	Chiffre d'affaires de la formation externe	إيرادات التكوين الخارجي
+106	Somme des paiements externes réglés dans l'année	مجموع الأداءات الخارجية المسواة خلال السنة
+107	≥ 500 000 MAD	≥ 500,000 درهم
+108	Couverture des contenus localisés	تغطية المحتوى الموطّن
+109	Contenus publiés disponibles en FR et AR / contenus publiés x 100	الأصول المنشورة المتاحة بالفرنسية والعربية / الأصول المنشورة × 100
+110	Taux d'acceptation des recommandations IA	معدل قبول توصيات الذكاء الاصطناعي
+111	Suggestions acceptées + modifiées / suggestions x 100	الاقتراحات المقبولة + المعدلة / الاقتراحات × 100
+112	≥ 60 %	≥ 60%
+113	Taux d'achèvement des capsules	معدل إتمام الكبسولات
+114	Capsules terminées / capsules ouvertes x 100	الكبسولات المكتملة / الكبسولات المفتوحة × 100
+115	Taux de réponse de la communauté	معدل الإجابة في المجتمع
+116	Questions répondues sous 48 h / questions publiées x 100	الأسئلة المجاب عنها خلال 48 ساعة / الأسئلة المنشورة × 100
+117	Gain d'achèvement dû à la ludification	تحسن الإتمام بفضل التلعيب
+118	Taux d'achèvement après activation - taux avant (points)	معدل الإتمام بعد التفعيل - المعدل قبله (نقاط)
+119	≥ +10 pts	≥ +10 نقاط
+120	Précision des prédictions	دقة التنبؤات
+121	Écarts critiques prévus confirmés à l'horizon / écarts critiques prévus x 100	الفجوات الحرجة المتوقعة المؤكدة في الأفق / الفجوات الحرجة المتوقعة × 100
+122	Fraîcheur du catalogue sélectionné	حداثة الفهرس المنتقى
+123	Éléments sélectionnés dans leur date de revue / éléments sélectionnés x 100	العناصر المنتقاة ضمن تاريخ المراجعة / العناصر المنتقاة × 100
+124	Taux de réussite en simulation	معدل النجاح في المحاكاة
+125	Tentatives de simulation réussies / tentatives x 100	محاولات المحاكاة الناجحة / المحاولات × 100
+126	Taux de pourvoi interne	معدل الشغل الداخلي
+127	Postes pourvus en interne / postes pourvus x 100	المناصب المشغولة داخليًا / المناصب المشغولة × 100
+128	ROI de la formation	عائد الاستثمار في التكوين
+129	(Bénéfices nets du programme / coûts du programme) x 100 (Phillips)	(الفوائد الصافية للبرنامج / تكاليف البرنامج) × 100 (فيليبس)
+130	≥ 100 %	≥ 100%
+131	Délai d'approbation des contenus utilisateurs	مدة اعتماد محتوى المستخدمين
+132	Médiane des jours entre soumission et publication	وسيط الأيام من التقديم إلى النشر
+133	≤ 5 jours	≤ 5 أيام
+134	Savoirs critiques capturés	المعرفة الحرجة الملتقطة
+135	Experts critiques avec capture terminée / experts critiques partants x 100	الخبراء الحرجون المكتمل التقاط معرفتهم / الخبراء الحرجون المغادرون × 100
+136	Délai d'atteinte de la productivité	مدة الوصول إلى الإنتاجية
+137	Médiane des jours entre start_date et productive_date	وسيط الأيام من تاريخ البدء إلى تاريخ الإنتاجية
+138	≤ 90 jours	≤ 90 يومًا
+139	Clôture des missions dans les délais	إغلاق المهام في الوقت
+140	Missions clôturées à la date prévue / missions clôturées x 100	المهام المغلقة في التاريخ المخطط / المهام المغلقة × 100
+141	Taux de réponse au diagnostic	معدل الاستجابة للتشخيص
+142	Questionnaires remplis / questionnaires envoyés x 100	الاستبيانات المملوءة / الاستبيانات المرسلة × 100
+143	Gain de niveau de maturité	الارتقاء في مستوى النضج
+144	Niveau de maturité global actuel - niveau il y a 24 mois	مستوى النضج العام الحالي - المستوى قبل 24 شهرًا
+145	≥ +1 niveau	≥ +1 مستوى
+146	Taux de réalisation du plan N-1	معدل إنجاز خطة N-1
+147	Actions N-1 réalisées / actions N-1 prévues x 100	إجراءات N-1 المنجزة / إجراءات N-1 المخططة × 100
+148	Conformité du déploiement des sites	مطابقة نشر المواقع
+149	Sites à moins de 15 points de la réalisation du groupe / sites x 100	المواقع ضمن 15 نقطة من إنجاز المجموعة / المواقع × 100
+150	Taux d'approbation réglementaire	معدل الاعتماد التنظيمي
+151	Soumissions approuvées / soumissions décidées x 100	التقديمات المعتمدة / التقديمات المبتوت فيها × 100
+152	Préparation à la succession des dirigeants	جاهزية التعاقب القيادي
+153	Rôles de direction critiques avec un successeur prêt / rôles critiques x 100	الأدوار القيادية الحرجة ذات خلف جاهز / الأدوار الحرجة × 100
+154	Fraîcheur du rapport de veille	حداثة تقرير اليقظة
+155	Jours depuis last_updated_on	الأيام منذ last_updated_on
+156	Actualité des fiches de poste	حداثة بطاقات الوصف الوظيفي
+157	Postes publiés revus depuis moins de 24 mois / postes publiés x 100	المناصب المنشورة المراجعة خلال 24 شهرًا / المناصب المنشورة × 100
+158	Part de la formation alignée sur la GPEC	نسبة التكوين المتوائم مع التدبير التوقعي
+159	Jours de formation sur des thèmes liés à la GPEC / total des jours de formation x 100	أيام التكوين في المحاور المرتبطة بالتدبير التوقعي / مجموع أيام التكوين × 100

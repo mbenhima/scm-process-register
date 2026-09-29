@@ -1,0 +1,82 @@
+0	Le chef de projet consultant valide le compte rendu avant diffusion.	يصادق رئيس المشروع الاستشاري على المحضر قبل توزيعه.
+1	Rédaction des constats de diagnostic	صياغة نتائج التشخيص
+2	Le chef de projet consultant valide les constats avec le sponsor client.	يصادق رئيس المشروع الاستشاري على النتائج مع راعي العميل.
+3	Rédaction des conclusions d'impact N-1	صياغة خلاصات أثر N-1
+4	Le responsable formation valide les conclusions avant la mise à jour de la stratégie.	يصادق مسؤول التكوين على الخلاصات قبل تحديث الاستراتيجية.
+5	Suggestions de développement du leadership	اقتراحات تطوير القيادة
+6	Le partenaire RH convient des actions avec le dirigeant.	يتفق شريك الموارد البشرية على الإجراءات مع القائد.
+7	Synthèse des tendances technologiques	تلخيص الاتجاهات التكنولوجية
+8	L'analyste stratégie vérifie chaque tendance synthétisée au regard de sa source.	يتحقق محلل الاستراتيجية من كل اتجاه ملخص مقارنة بمصدره.
+9	Rédaction du rapport de veille	صياغة تقرير اليقظة
+10	L'analyste stratégie modifie ; le directeur de la stratégie approuve la publication.	يعدل محلل الاستراتيجية؛ ويعتمد مدير الاستراتيجية النشر.
+11	Rédaction des fiches de poste	صياغة بطاقات الوصف الوظيفي
+12	Le partenaire RH et le manager valident chaque fiche.	يصادق شريك الموارد البشرية والمدير على كل بطاقة.
+13	Rattachement des demandes aux compétences	ربط الطلبات بالكفاءات
+14	L'analyste formation confirme ou corrige chaque rattachement.	يؤكد محلل التكوين كل ربط أو يصححه.
+15	Mise en évidence des écarts de performance	إبراز فجوات الأداء
+16	L'analyste de la performance valide les écarts avant le reporting.	يصادق محلل الأداء على الفجوات قبل التقرير.
+17	Suggestions d'opportunités SWOT	اقتراحات فرص SWOT
+18	L'analyste formation valide les opportunités avec le responsable de fonction.	يصادق محلل التكوين على الفرص مع رئيس الوظيفة.
+19	Notation de priorisation des thèmes	تنقيط ترتيب المحاور
+20	Le stratège formation confirme le classement ; le comité de pilotage valide le plan.	يؤكد استراتيجي التكوين الترتيب؛ وتصادق لجنة القيادة على الخطة.
+21	Priorisation des missions futures	ترتيب المهام المستقبلية
+22	Le chef de projet consultant valide ; l'associé et la direction du client approuvent.	يصادق رئيس المشروع الاستشاري؛ ويعتمد الشريك وقيادة العميل.
+23	Générateur de banque de questions sécurité alimentaire (personnalisé)	مولد بنك أسئلة السلامة الغذائية (مخصص)
+24	Un concepteur pédagogique qualifié HACCP valide chaque élément avant usage.	يصادق مصمم بيداغوجي مؤهل في HACCP على كل عنصر قبل الاستعمال.
+25	Compte rendu de lancement avec extraction RACSI (personnalisé)	محضر الانطلاق مع استخراج RACSI (مخصص)
+26	Le chef de projet consultant valide le compte rendu et chaque affectation RACSI extraite.	يصادق رئيس المشروع الاستشاري على المحضر وكل إسناد RACSI مستخرج.
+27	Notation du sentiment individuel des apprenants (personnalisé)	تنقيط المشاعر الفردية للمتعلمين (مخصص)
+28	Refusé par la gouvernance : le sentiment individuel est une donnée restreinte (NFR-DA-SEC-10).	مرفوض من الحكامة: المشاعر الفردية بيانات مقيدة (NFR-DA-SEC-10).
+29	Génération de questionnaires par IA à partir du cahier des charges	توليد الاستبيانات بالذكاء الاصطناعي من دفتر نطاق العمل
+30	L'analyste formation valide chaque questionnaire généré avant diffusion.	يصادق محلل التكوين على كل استبيان مولد قبل التوزيع.
+31	Adaptation des questionnaires par IA au secteur et à l'orientation	تكييف الاستبيانات بالذكاء الاصطناعي مع القطاع والتركيز
+32	L'analyste formation valide l'adaptation avant diffusion.	يصادق محلل التكوين على التكييف قبل التوزيع.
+33	Accueil	الرئيسية
+34	Mon tableau de bord	لوحة القيادة الخاصة بي
+35	Cockpit personnel des indicateurs, tâches et alertes dans le périmètre de l'utilisateur.	لوحة شخصية للمؤشرات والمهام والتنبيهات ضمن نطاق المستخدم.
+36	Consulter ses indicateurs, tâches et alertes dans son périmètre.	عرض المؤشرات والمهام والتنبيهات الخاصة ضمن النطاق.
+37	Boîte des alertes	صندوق التنبيهات
+38	Centre de notifications avec indicateur de non-lu, marquage comme lu et options par type.	مركز الإشعارات بمؤشر غير المقروء ووسم كمقروء وخيارات حسب النوع.
+39	Lire, marquer comme lues et ignorer ses alertes.	قراءة التنبيهات الخاصة ووسمها كمقروءة وتجاهلها.
+40	Assistant flottant : requêtes de données limitées par le RBAC et aide à l'application.	مساعد عائم: استعلامات بيانات مقيدة بالصلاحيات ومساعدة في التطبيق.
+41	Poser des questions sur les données, traitées seulement si la permission de l'intention est détenue ; poser des questions pratiques.	طرح أسئلة عن البيانات لا يجاب عنها إلا عند امتلاك صلاحية النية المطابقة؛ وطرح أسئلة عن كيفية الاستعمال.
+42	Centre des rapports	مركز التقارير
+43	Rapports standard avec export PDF, Excel et Word.	تقارير قياسية مع تصدير PDF وExcel وWord.
+44	Ouvrir et exporter les rapports autorisés pour le rôle.	فتح التقارير المسموح بها للدور وتصديرها.
+45	Centre d'aide	مركز المساعدة
+46	Aide intégrée consultable en anglais, français et arabe.	مساعدة مدمجة قابلة للبحث بالإنجليزية والفرنسية والعربية.
+47	Rechercher et lire les articles d'aide dans la langue d'affichage.	البحث في مقالات المساعدة وقراءتها بلغة العرض.
+48	Mes paramètres	إعداداتي
+49	Langue, ancrage du menu (gauche/droite/haut/bas), épinglage, favoris et canaux.	اللغة، موضع القائمة (يسار/يمين/أعلى/أسفل)، التثبيت، المفضلة والقنوات.
+50	Modifier la langue, la position du menu, l'épinglage et les favoris (enregistrés côté serveur).	تغيير اللغة وموضع القائمة والتثبيت والمفضلة (محفوظة من جهة الخادم).
+51	Console de gouvernance des données	وحدة حكامة البيانات
+54	Centre sécurité	مركز الأمن
+57	Centre qualité	مركز الجودة
+60	Moteur de personnalisation IA	محرك التخصيص الذكي
+63	Console de configuration et de licences	وحدة الإعداد والتراخيص
+66	Normes de conformité et de sécurité (module)	معايير المطابقة والأمن (إضافة)
+69	DRH / président du comité de pilotage	مدير الموارد البشرية / رئيس لجنة القيادة
+70	Console stratégie	وحدة الاستراتيجية
+73	Studio rapport et feuille de route	استوديو التقرير وخارطة الطريق
+76	Tableau de bord analytique	لوحة التحليلات
+79	Centre carrières	مركز المسارات المهنية
+82	Console finance	وحدة المالية
+85	Place de marché des talents	سوق المواهب
+88	Tableau de bord ROI	لوحة عائد الاستثمار
+91	Conseil et diagnostic	الاستشارة والتشخيص
+92	Console des missions	وحدة المهام
+95	Moteur d'évaluation CMM	محرك تقييم CMM
+98	Hub de maturité du leadership	مركز نضج القيادة
+101	Stratégique et organisationnel	الاستراتيجي والتنظيمي
+102	Hub architecture des emplois	مركز هندسة الوظائف
+105	Hub GPEC	مركز التدبير التوقعي
+108	Hub d'évaluation de la performance	مركز تقييم الأداء
+111	Hub de priorisation	مركز الترتيب
+115	Hub compétences	مركز المهارات
+118	Analyseur de besoins	محلل الاحتياجات
+122	Studio de conception	استوديو التصميم
+125	Centre de réalisation	مركز التنفيذ
+128	Portail apprenant	بوابة المتعلم
+131	Moteur d'évaluation	محرك التقييم
+135	Centre conformité	مركز المطابقة
+138	Hub coaching	مركز التوجيه

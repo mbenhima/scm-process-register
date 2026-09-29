@@ -2,7 +2,7 @@
 import json,sys,glob,os,re
 SP=os.path.dirname(__file__); dst='/home/user/scm-process-register/cortexskills/server/seed/i18n'; os.makedirs(dst,exist_ok=True)
 for f in sorted(glob.glob(SP+'/out*.tsv')):
-  n=re.search(r'out(\d+)',f).group(1); src=json.load(open(f'{SP}/src{n}.json'))
+  n=re.search(r'out(\w+)\.tsv',f).group(1); src=json.load(open(f'{SP}/src{n}.json'))
   fr={};ar={};bad=[]
   for line in open(f,encoding='utf8'):
     line=line.rstrip('\n')

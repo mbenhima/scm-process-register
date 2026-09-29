@@ -1,0 +1,96 @@
+0	Chaque message de confirmation, d'avertissement et d'erreur affiché en notification temporaire doit être traduit (FR-DA-I18N-07), annoncé aux technologies d'assistance via une zone live polie, et rester lisible assez longtemps pour agir.	يجب أن تُترجم كل رسالة تأكيد أو تحذير أو خطأ تُعرض كإشعار مؤقت (FR-DA-I18N-07)، وأن تُعلن للتقنيات المساعدة عبر منطقة حية مهذبة، وأن تبقى مقروءة وقتًا كافيًا للتصرف.
+1	Les matrices et tableaux larges doivent défiler dans leur propre conteneur, en gardant la première colonne visible, afin que la page ne défile jamais horizontalement sur un écran de 390 pixels.	يجب أن تُمرر المصفوفات والجداول العريضة داخل حاويتها مع إبقاء العمود الأول ظاهرًا، لكي لا تُمرر الصفحة أفقيًا أبدًا على شاشة بعرض 390 بكسل.
+2	Les utilisateurs PME doivent terminer leur intégration en 1 jour et avoir besoin de moins de 4 heures de formation, aidés par des parcours guidés (cibles configurables).	يجب أن يتم مستخدمو المقاولات الصغرى والمتوسطة الإدماج خلال يوم واحد وأن يحتاجوا إلى أقل من 4 ساعات تكوين، بمساعدة مسارات عمل موجهة (أهداف قابلة للإعداد).
+3	La satisfaction des utilisateurs doit être mesurée, avec une cible configurable (par défaut un NPS de 30 ou plus).	يجب قياس رضا المستخدمين بهدف قابل للإعداد (افتراضيًا صافي نقاط الترويج 30 أو أكثر).
+4	Chaque mise en page — navigation, tableaux et graphiques — doit s'afficher correctement en miroir en arabe de droite à gauche, et pas seulement avec un sens du texte inversé.	يجب أن يُعرض كل تخطيط — التنقل والجداول والرسوم — معكوسًا بشكل صحيح في العربية من اليمين إلى اليسار، لا بعكس اتجاه النص فقط.
+5	Le système doit prendre en charge des langues configurables (par défaut anglais, français, arabe, espagnol, allemand), des devises (par défaut USD, EUR, MAD, ZAR) et les formats régionaux de date, d'heure et de nombre.	يجب أن يدعم النظام لغات قابلة للإعداد (افتراضيًا الإنجليزية والفرنسية والعربية والإسبانية والألمانية) وعملات (افتراضيًا USD وEUR وMAD وZAR) وصيغ التاريخ والوقت والأرقام الإقليمية.
+6	L'installation doit réussir sur une machine neuve avec seulement un environnement Node.js pris en charge — sans chaîne de compilation C/C++, sans serveur de base de données externe obligatoire et sans clé d'API externe obligatoire.	يجب أن ينجح التثبيت على جهاز جديد لا يحتوي إلا على بيئة Node.js مدعومة — دون أدوات بناء C/C++، ودون خادم قاعدة بيانات خارجي إلزامي، ودون مفتاح واجهة خارجي إلزامي.
+7	node:sqlite, dépendances JavaScript pures, npm install/seed/dev	node:sqlite واعتماديات JavaScript خالصة وnpm install/seed/dev
+8	Le même code source doit fonctionner sans modification sur les systèmes d'exploitation pris en charge via les commandes standard d'installation, de construction et de démarrage du gestionnaire de paquets.	يجب أن يعمل المصدر نفسه دون تعديل على أنظمة التشغيل المدعومة عبر أوامر التثبيت والبناء والتشغيل القياسية لمدير الحزم.
+9	Chaque modification doit être construite par une chaîne d'intégration continue sous Linux, Windows et macOS qui installe les dépendances, amorce les données de démonstration, exécute les tests automatisés — y compris la suite inter-locataires de NFR-DA-SEC-11 — et construit le client web.	يجب أن يُبنى كل تغيير عبر سلسلة تكامل مستمر على Linux وWindows وmacOS تثبت الاعتماديات وتعبئ البيانات التجريبية وتنفذ الاختبارات الآلية — بما في ذلك مجموعة الاختبارات بين المستأجرين في NFR-DA-SEC-11 — وتبني عميل الويب.
+10	Un workflow d'intégration continue pour Linux, Windows et macOS est fourni dans .github/workflows ; il s'exécute lorsque le dépôt est hébergé sur GitHub.	يُوفر مسار تكامل مستمر لـ Linux وWindows وmacOS في .github/workflows؛ ويعمل عند استضافة المستودع على GitHub.
+11	Chaque couche doit s'installer, s'amorcer et démarrer avec les commandes standard de son gestionnaire de paquets (install, seed, dev ou start), documentées dans un README à la racine de la livraison.	يجب أن تُثبت كل طبقة وتُعبأ وتشتغل بأوامر مدير الحزم القياسية (install وseed وdev أو start)، موثقة في ملف README في جذر التسليم.
+12	Les moteurs transverses — registre des actions/tâches, moteur d'alertes et de notifications, couche RBAC, moteur d'indicateurs/reporting et service de piste d'audit — doivent être des modules composables réutilisables par les Dynamic Apps sœurs via le même contrat d'API.	يجب أن تُنفذ المحركات المشتركة — سجل الإجراءات/المهام، ومحرك التنبيهات والإشعارات، وطبقة الصلاحيات، ومحرك المؤشرات/التقارير، وخدمة مسار التدقيق — كوحدات قابلة للتركيب يعاد استعمالها في تطبيقات Dynamic Apps الشقيقة عبر عقد الواجهة نفسه.
+13	Modules à source unique pour les droits, les alertes et l'IA	وحدات مصدر واحد للاستحقاقات والتنبيهات والذكاء الاصطناعي
+14	Les implémentations d'agents IA doivent être isolées derrière une interface interne stable, afin qu'une implémentation à base de règles puisse être remplacée par une implémentation LLM/base vectorielle sans modifier le code appelant.	يجب أن تُعزل تطبيقات وكلاء الذكاء الاصطناعي خلف واجهة داخلية مستقرة، ليمكن استبدال تطبيق قائم على القواعد بآخر قائم على نموذج لغوي/قاعدة متجهات دون تغيير الكود المستدعي.
+15	La matrice des fonctionnalités et quotas des offres doit être définie à un seul endroit et utilisée par chaque route de contrôle, afin que les droits ne divergent jamais entre routes.	يجب أن تُحدد مصفوفة خصائص الباقات وحصصها في مكان واحد فقط وتستعملها كل المسارات، لكي لا تتباين الاستحقاقات بين المسارات أبدًا.
+16	Le service de génération de la bibliothèque de cas d'usage IA doit être l'unique point d'intégration côté serveur pour un appel LLM réel et sa logique propre au fournisseur (identifiants, point d'accès) ; aucun autre module ne doit embarquer son propre client LLM.	يجب أن تكون خدمة التوليد في مكتبة حالات الاستخدام نقطة التكامل الوحيدة من جهة الخادم لاستدعاء النموذج الفعلي ومنطق بيانات الاعتماد ونقطة الوصول الخاصة بالمزود؛ ولا تتضمن أي وحدة أخرى عميلها الخاص لمزود النموذج.
+17	La correspondance type d'alerte → nom et type → étape/processus doit être définie dans un seul module partagé, utilisé par l'amorçage et le calcul en direct.	يجب أن يُحدد ربط نوع التنبيه بالاسم وبالمرحلة/المسار في وحدة مشتركة واحدة تستعملها التعبئة الأولية والاحتساب المباشر.
+18	Le guide d'installation et le guide utilisateur doivent être générés à partir des sources en Word et PDF, chacun avec une table des matières automatique, et les parcours pas à pas du guide utilisateur doivent être rejoués automatiquement sur une instance fraîchement amorcée, afin que la documentation ne s'écarte pas de l'application.	يجب أن يُولد دليل التثبيت ودليل المستخدم من المصدر بصيغتي Word وPDF مع فهرس آلي، وأن تُعاد جولات دليل المستخدم خطوة بخطوة آليًا على نسخة معبأة حديثًا، لكي لا تبتعد الوثائق عن التطبيق.
+19	Les guides sont générés à partir des sources en Word et PDF avec table des matières automatique ; le rejeu des parcours est scripté dans les outils et exécuté à chaque version.	تُولد الأدلة من المصدر بصيغتي Word وPDF مع فهرس آلي؛ وإعادة الجولات مبرمجة في الأدوات وتُنفذ عند الإصدار.
+20	Chaque parcours du guide utilisateur doit partir de la structure des locataires — créer ou choisir le groupe (oui/non), créer l'organisation, puis le ou les enregistrements principaux — et le guide doit inclure la matrice de décision de FR-DA-HLP-04.	يجب أن تبدأ كل جولة في دليل المستخدم من بنية المستأجرين — إنشاء المجموعة أو اختيارها (نعم/لا)، ثم إنشاء المؤسسة، ثم السجل أو السجلات الرئيسية — وأن يتضمن الدليل مصفوفة القرار الواردة في FR-DA-HLP-04.
+21	Verticales, parcours PME, critères de complexité, offres, modèles de projet, jalons et listes de contrôle doivent être des données de configuration chargées sans modification de code, et la plateforme doit être modulaire avec mises à niveau sans interruption, supervision, alertes et journalisation complète.	يجب أن تكون القطاعات ومسارات المقاولات الصغرى والمتوسطة ومعايير التعقيد والباقات ونماذج المشاريع والبوابات وقوائم التحقق بيانات إعداد تُحمّل دون تغيير الكود، وأن تكون المنصة نمطية بترقيات دون توقف ومراقبة وتنبيهات وتسجيل شامل.
+22	L'application doit cibler les navigateurs à jour sur ordinateur, tablette et mobile ; la prise en charge des anciens navigateurs est hors périmètre.	يجب أن يستهدف التطبيق المتصفحات المحدثة على الحاسوب واللوحي والهاتف؛ ودعم المتصفحات القديمة خارج النطاق.
+23	Navigateurs à jour ; aller-retour XML BPMN	متصفحات محدثة؛ ذهاب وإياب XML لـ BPMN
+24	Les diagrammes BPMN doivent être stockés et échangés en XML BPMN 2.0 valide, vérifié par un aller-retour import/export, afin qu'un diagramme créé dans une Dynamic App s'ouvre sans erreur dans tout autre outil conforme BPMN 2.0, et inversement.	يجب أن تُخزن مخططات BPMN وتُتبادل بصيغة BPMN 2.0 XML صالحة، يُتحقق منها بالاستيراد والتصدير المتبادل، لكي يفتح المخطط المنشأ في تطبيق Dynamic App دون خطأ في أي أداة مطابقة لـ BPMN 2.0، والعكس.
+25	Les parcours principaux de l'application (CRUD, approbations, alertes) doivent rester pleinement utilisables sur mobile sans application native séparée ; une application native ou web progressive installable, si elle est proposée, utilise la même API REST (section 7.2) sans point d'accès spécifique au mobile.	يجب أن تبقى مسارات العمل الأساسية (الإنشاء والتعديل، الاعتمادات، التنبيهات) قابلة للاستعمال كليًا على الهاتف دون تطبيق أصلي منفصل؛ ويستعمل أي غلاف أصلي أو تطبيق ويب تقدمي قابل للتثبيت، إن وُجد، الواجهة البرمجية REST نفسها (القسم 7.2) دون نقاط خاصة بالهاتف.
+26	Chaque suggestion générée par l'IA doit être journalisée avec un indicateur de confiance et être attribuable à un agent/cas d'usage et un enregistrement précis, ou, pour l'assistant IA, à l'utilisateur et à la question.	يجب أن يُسجل كل اقتراح مولد بالذكاء الاصطناعي مع مؤشر ثقة، وأن يُنسب إلى وكيل/حالة استخدام وسجل محددين، أو في حالة المساعد إلى المستخدم الطالب وسؤاله.
+27	Couverture COSO, confiance dans le journal IA, mention de non-certification	تغطية COSO، الثقة في سجل الذكاء الاصطناعي، إشعار عدم الاعتماد
+28	Le module des contrôles doit permettre de démontrer la couverture du référentiel COSO de contrôle interne sur ses cinq composantes.	يجب أن تدعم وحدة الضوابط إثبات تغطية إطار COSO للرقابة الداخلية عبر مكوناته الخمسة.
+29	Le système doit conserver indéfiniment l'historique complet des versions de chaque cas d'usage IA et de chaque modèle (aucune suppression définitive des versions antérieures lors d'une modification ou d'une restauration).	يجب أن يحتفظ النظام بالسجل الكامل لإصدارات كل حالة استخدام وكل نموذج دون حد (لا حذف نهائي للإصدارات السابقة عند التعديل أو الاسترجاع).
+30	Le système doit permettre d'associer les verticales à des normes sectorielles — par exemple IATF 16949 (automobile), AS9100 (aéronautique), EU MDR et ISO 13485 (dispositifs médicaux), FDA 21 CFR Part 11 (pharmacie), HACCP (sécurité alimentaire) — comme socles soumis à FR-DA-CFG-09 ; la certification (ISO/IEC 27001, SOC 2, RGPD) est un attribut d'un déploiement, pas du logiciel.	يجب أن يتيح النظام ربط القطاعات بالمعايير القطاعية — مثل IATF 16949 (السيارات) وAS9100 (الطيران) وEU MDR وISO 13485 (الأجهزة الطبية) وFDA 21 CFR Part 11 (الصيدلة) وHACCP (السلامة الغذائية) — كهياكل خاضعة لـ FR-DA-CFG-09؛ والاعتماد (ISO/IEC 27001، SOC 2، اللائحة العامة لحماية البيانات) خاصية للنشر وليس للبرنامج.
+31	Chaque exigence d'une Dynamic App doit être traçable jusqu'à son besoin métier, sa user story, son cas de test, sa version et, le cas échéant, l'engagement client, conformément à ISO/IEC/IEEE 29148 ; les changements d'exigences sont classés mineur, modéré, majeur ou rupture, avec l'approbation et le périmètre de non-régression correspondants.	يجب أن يكون كل متطلب في تطبيق Dynamic App قابلًا للتتبع إلى متطلب الأعمال وقصة المستخدم وحالة الاختبار والإصدار، وعند الاقتضاء التزام العميل، وفق ISO/IEC/IEEE 29148؛ وتُصنف تغييرات المتطلبات إلى طفيفة أو متوسطة أو كبرى أو كاسرة مع الاعتماد ونطاق اختبار التراجع الملائمين.
+32	Par défaut, et tant qu'aucune connexion LLM réelle n'est configurée, le système ne doit transmettre aucune donnée de locataire à un service tiers ; chaque capacité IA s'exécute entièrement dans l'infrastructure du déploiement avec des méthodes à base de règles/statistiques et un ancrage RAG. Seule une connexion LLM réelle explicitement configurée par l'utilisateur et stockée côté client peut envoyer une requête de génération unique au fournisseur tiers choisi — sur adhésion individuelle, jamais activée par défaut et jamais appliquée au mode de requête de données soumis aux permissions.	افتراضيًا، وما دام لم يُعد أي اتصال بنموذج لغوي فعلي، لا يرسل النظام بيانات المستأجر إلى أي خدمة خارجية؛ وتعمل كل قدرات الذكاء الاصطناعي داخل بنية النشر بأساليب قائمة على القواعد/الإحصاء مع تأسيس بالاسترجاع. ولا يمكن إلا لاتصال فعلي يعده المستخدم صراحة ويُخزن لدى العميل أن يرسل طلب توليد واحدًا إلى المزود الخارجي المختار — باختيار فردي، ودون تفعيل افتراضي، ولا يُطبق أبدًا على وضع استعلام البيانات المقيد بالصلاحيات.
+33	Aucun appel externe sauf si un utilisateur ajoute une clé de modèle	لا استدعاء خارجي ما لم يضف المستخدم مفتاح نموذج
+34	Le système doit prendre en charge des options de déploiement mutualisé (SaaS) et dédié/souverain par organisation, sans modifier la garantie d'isolation des locataires.	يجب أن يدعم النظام خيارات النشر على بنية مشتركة (سحابي) ومخصصة/سيادية لكل مؤسسة، دون تغيير ضمان عزل المستأجرين.
+35	Conformité IATF 16949	المطابقة لـ IATF 16949
+36	Niveau cible	المستوى المستهدف
+37	Technicien → analyste de données	تقني ← محلل بيانات
+38	Astuces entre pairs : première semaine avec le nouvel outil	نصائح الأقران: الأسبوع الأول مع الأداة الجديدة
+39	Chefs d'équipe certifiés / chefs d'équipe x 100	المشرفون الحاصلون على الشهادة / المشرفون × 100
+40	Délai moyen entre demande et session (jours)	متوسط الأيام من الطلب إلى الدورة
+41	Nombre moyen de jours entre la validation de la demande et la première session	متوسط الأيام بين المصادقة على الطلب وأول دورة
+42	GPEC — gestion prévisionnelle des emplois et des compétences	التدبير التوقعي للوظائف والكفاءات
+43	Loi 09-08 — données personnelles dans les questionnaires	القانون 09-08 — المعطيات الشخصية في الاستبيانات
+44	Tous les éléments obligatoires satisfaits ; preuves jointes.	جميع العناصر الإلزامية مستوفاة؛ والأدلة مرفقة.
+45	Responsable de fonction	رئيس الوظيفة
+46	Chef d'équipe	المشرف
+47	Opérateur	العامل
+48	Technicien	التقني
+49	Campagne de compétences 2026	حملة المهارات 2026
+50	Feuille de route de formation 2026-2027	خارطة طريق التكوين 2026-2027
+51	Plan de formation priorisé 2026	خطة التكوين المرتبة 2026
+52	Kirkpatrick niveau 1	كيركباتريك المستوى 1
+53	Kirkpatrick niveau 2	كيركباتريك المستوى 2
+54	Kirkpatrick niveau 3	كيركباتريك المستوى 3
+55	Dossier des contrats spéciaux de formation OFPPT	ملف العقود الخاصة للتكوين لدى مكتب التكوين المهني
+56	Équipe expérimentée ; processus stables	فريق متمرس؛ مسارات مستقرة
+57	Diagnostic à cinq axes	التشخيص بخمسة محاور
+58	Maturité CMM	نضج CMM
+59	Plan de développement individuel	خطة التنمية الفردية
+60	Coaching individuel	التوجيه الفردي
+61	Intégration — nouveau technicien	الإدماج — تقني جديد
+62	Facture INV-2026-118	الفاتورة INV-2026-118
+63	Contractualiser un second prestataire de formation	التعاقد مع مورد تكوين ثانٍ
+64	Mettre à jour 11 fiches de poste obsolètes	تحديث 11 بطاقة وصف وظيفي متقادمة
+65	Contrôle d'efficacité	فحص الفعالية
+66	Planification	التخطيط
+67	Le registre des parties prenantes et la diffusion multicanale ont fait progresser le taux de réponse.	رفع سجل أصحاب المصلحة والتوزيع متعدد القنوات معدل الاستجابة.
+68	Les éléments SWOT d'une fonction sont arrivés en retard.	وصلت مدخلات SWOT متأخرة من إحدى الوظائف.
+69	Aucun suppléant désigné pour le responsable de fonction.	لم يُعيّن نائب لرئيس الوظيفة.
+70	Désigner un suppléant pour chaque responsable de fonction dès le lancement.	تعيين نائب لكل رئيس وظيفة عند الانطلاق.
+71	Périmètre et preuves	النطاق والأدلة
+72	Diagnostic	التشخيص
+73	Rapport et plan	التقرير والخطة
+74	Intégration PME — 30 jours	إدماج المقاولات الصغرى والمتوسطة — 30 يومًا
+75	Provisionnement	التزويد
+76	Configuration du parcours	إعداد المسار
+77	Import des données	استيراد البيانات
+78	Validation	التحقق
+79	Formation des utilisateurs	تكوين المستخدمين
+80	Mise en service	الإطلاق
+81	Conformité AS9100	المطابقة لـ AS9100
+82	Conformité ISO 9001	المطابقة لـ ISO 9001
+83	Conformité ISO 13485	المطابقة لـ ISO 13485
+84	Conformité IPC-A-610	المطابقة لـ IPC-A-610
+85	Conformité ISO 19650	المطابقة لـ ISO 19650
+86	Conformité HACCP	المطابقة لـ HACCP
+87	Conformité ISO 26000	المطابقة لـ ISO 26000
+88	Conformité BPF UE	المطابقة لممارسات التصنيع الجيدة الأوروبية
+89	Conformité ISO 50001	المطابقة لـ ISO 50001
+90	Conformité ISO/IEC 27001	المطابقة لـ ISO/IEC 27001
+91	Conformité ISO 45001	المطابقة لـ ISO 45001
+92	Conformité ISO 55001	المطابقة لـ ISO 55001
+93	Conformité ISO 22000	المطابقة لـ ISO 22000
+94	Conformité ISO 21001	المطابقة لـ ISO 21001
+95	Conformité ISO 7101	المطابقة لـ ISO 7101

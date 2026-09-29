@@ -1,0 +1,68 @@
+0	Cœur de plateforme (toutes les offres) ; également listé dans PK-02	نواة المنصة (كل الباقات)؛ ومدرجة أيضًا في PK-02
+1	PK-02 Offre réalisation et expérience d'apprentissage	PK-02 باقة تنفيذ التعلم والتجربة
+3	PK-05 Offre talents et mobilité	PK-05 باقة المواهب والتنقل
+7	PK-08 Offre pilotage stratégique des effectifs et gouvernance	PK-08 باقة التخطيط الاستراتيجي للموارد البشرية والحكامة
+15	PK-06 Offre entreprise étendue	PK-06 باقة المؤسسة الممتدة
+27	Module AD-01 Apprentissage immersif (RV/RA/simulation)	إضافة AD-01 التعلم الغامر (الواقع الافتراضي/المعزز/المحاكاة)
+29	PK-03 Offre évaluation, analytique et ROI	PK-03 باقة التقييم والتحليلات وعائد الاستثمار
+31	Module AD-04 Apprentissage social et collaboratif	إضافة AD-04 التعلم الاجتماعي والتعاوني
+33	Module AD-07 Capture et transfert des savoirs d'experts	إضافة AD-07 التقاط معرفة الخبراء ونقلها
+35	PK-07 Offre conseil et diagnostic	PK-07 باقة الاستشارة والتشخيص
+37	Module AD-08 Déploiement multi-sites / multi-entités	إضافة AD-08 النشر متعدد المواقع / الكيانات
+43	Module (norme de conformité et de sécurité), indépendant du niveau/de l'offre	إضافة (معيار مطابقة وأمن)، مستقلة عن المستوى/الباقة
+44	Tarifé par norme (RGPD, ISO/IEC 27001, SOC 2), activé indépendamment du niveau/de l'offre ; prix non indiqué dans la source	مسعّر لكل معيار (اللائحة العامة لحماية البيانات، ISO/IEC 27001، SOC 2)، ويفعّل بشكل مستقل عن المستوى/الباقة؛ والسعر غير مذكور في المصدر
+49	Offre ingénierie de formation de base	باقة هندسة التكوين الأساسية
+50	PME, ETI	المقاولات الصغرى والمتوسطة، المقاولات المتوسطة الكبرى
+51	PME (50 à 500 salariés), ETI (500 à 5 000 salariés), équipes formation qui démarrent leur démarche d'ingénierie de formation	المقاولات الصغرى والمتوسطة (50–500 موظف)، والمقاولات المتوسطة الكبرى (500–5000 موظف)، وفرق التكوين التي تبدأ مسار هندسة التكوين
+52	99 USD/mois (jusqu'à 100 utilisateurs) ; 0,75 $/utilisateur/mois au-delà de 100 utilisateurs	99 دولارًا/شهر (حتى 100 مستخدم)؛ 0.75$/مستخدم/شهر بعد 100 مستخدم
+53	Les équipes formation gèrent aujourd'hui les besoins avec des tableurs et des outils déconnectés.	تدبر فرق التكوين حاليًا احتياجات التكوين بجداول بيانات وأدوات غير مترابطة.
+54	Elles peinent à produire un rapport formel d'ingénierie de formation et une feuille de route priorisée, d'où des investissements de formation réactifs et ponctuels.	وتجد صعوبة في إعداد تقرير رسمي لهندسة التكوين وخارطة طريق مرتبة، مما يؤدي إلى استثمارات تكوينية تفاعلية وظرفية.
+55	Une plateforme unique qui part d'un cahier des charges structuré, collecte les preuves via des questionnaires multicanaux, automatise l'analyse des besoins, produit le rapport phare d'ingénierie de formation et génère une feuille de route priorisée alignée sur la stratégie.	منصة واحدة تنطلق من دفتر نطاق عمل منظم، وتجمع الأدلة عبر استبيانات متعددة القنوات، وتؤتمت تحليل الاحتياجات، وتنتج التقرير الرئيسي لهندسة التكوين، وتولد خارطة طريق مرتبة متوائمة مع استراتيجية الأعمال.
+56	Offre réalisation et expérience d'apprentissage	باقة تنفيذ التعلم والتجربة
+57	PME, ETI, grandes entreprises	المقاولات الصغرى والمتوسطة، المتوسطة الكبرى، المقاولات الكبرى
+58	PME, ETI, grandes entreprises ; organisations centrées sur l'engagement des apprenants et la réalisation moderne	المقاولات الصغرى والمتوسطة والمتوسطة الكبرى والكبرى؛ والمؤسسات المركزة على انخراط المتعلمين والتنفيذ الحديث
+59	149 USD/mois (jusqu'à 250 utilisateurs) ; 0,60 $/utilisateur/mois au-delà de 250 utilisateurs	149 دولارًا/شهر (حتى 250 مستخدمًا)؛ 0.60$/مستخدم/شهر بعد 250 مستخدمًا
+60	Les collaborateurs se désintéressent des formations classiques pilotées par LMS ; la formation est vue comme une case à cocher.	ينفر الموظفون من التكوين التقليدي عبر نظام إدارة التعلم؛ ويُنظر إلى التعلم كإجراء شكلي.
+61	Faibles taux d'achèvement, expérience apprenant médiocre et incapacité à former dans le flux de travail.	معدلات إتمام ضعيفة وتجربة متعلم ضعيفة وعجز عن تقديم التعلم أثناء العمل.
+62	Une expérience d'apprentissage moderne, personnalisée et engageante avec micro-apprentissage, ludification, apprentissage social et recommandations par IA — pour un engagement et un achèvement mesurables.	تجربة تعلم حديثة ومخصصة ومحفزة بالتعلم المصغر والتلعيب والتعلم الاجتماعي وتوصيات الذكاء الاصطناعي — لتحقيق انخراط وإتمام قابلين للقياس.
+63	Offre évaluation, analytique et ROI	باقة التقييم والتحليلات وعائد الاستثمار
+64	ETI, grandes entreprises	المقاولات المتوسطة الكبرى، المقاولات الكبرى
+65	ETI, grandes entreprises ; organisations formation pilotées par les données et centrées sur la preuve de l'impact	المقاولات المتوسطة الكبرى والكبرى؛ ومؤسسات التكوين المعتمدة على البيانات والمركزة على إثبات الأثر
+66	129 USD/mois (jusqu'à 500 utilisateurs) ; 0,50 $/utilisateur/mois au-delà de 500 utilisateurs	129 دولارًا/شهر (حتى 500 مستخدم)؛ 0.50$/مستخدم/شهر بعد 500 مستخدم
+67	Les responsables formation doivent prouver l'impact métier de la formation mais s'appuient sur des indicateurs retardés (taux d'achèvement, satisfaction).	يتعرض قادة التكوين لضغط لإثبات أثر التكوين على الأعمال لكنهم يعتمدون على مؤشرات متأخرة (معدلات الإتمام، درجات الرضا).
+68	Incapacité à relier la formation aux indicateurs métier, à calculer le ROI ou à prévoir les écarts de compétences.	العجز عن ربط التكوين بمؤشرات الأعمال أو احتساب عائد الاستثمار أو توقع فجوات المهارات المستقبلية.
+69	Une suite analytique robuste qui mesure les niveaux Kirkpatrick 1 à 4, calcule le ROI selon la méthode Phillips et utilise l'analytique prédictive pour anticiper les besoins de compétences — faisant de la formation un partenaire stratégique.	حزمة تحليلات متينة تقيس مستويات كيركباتريك 1–4، وتحتسب عائد الاستثمار وفق منهجية فيليبس، وتستعمل التحليلات التنبؤية لاستباق احتياجات المهارات — لتحويل التكوين إلى شريك استراتيجي للأعمال.
+70	Offre conformité et certification	باقة المطابقة والشهادات
+71	Secteurs réglementés	القطاعات المنظمة
+72	Secteurs réglementés (santé, finance, pharmacie, agroalimentaire, aviation, énergie) ; organisations soumises à des formations obligatoires	القطاعات المنظمة (الصحة، المالية، الصيدلة، الصناعات الغذائية، الطيران، الطاقة)؛ والمؤسسات الخاضعة لمتطلبات تكوين إلزامية
+73	99 USD/mois (jusqu'à 300 utilisateurs) ; 0,55 $/utilisateur/mois au-delà de 300 utilisateurs	99 دولارًا/شهر (حتى 300 مستخدم)؛ 0.55$/مستخدم/شهر بعد 300 مستخدم
+74	Les responsables conformité et les équipes formation gèrent manuellement formations obligatoires et certifications, avec un fort risque de non-conformité.	يدبر مسؤولو المطابقة وفرق التكوين التكوينات الإلزامية والشهادات يدويًا، مع خطر مرتفع لعدم المطابقة.
+75	Échecs d'audit, certifications expirées, amendes réglementaires et incapacité à suivre l'achèvement sur les sites.	إخفاقات في التدقيق وشهادات منتهية وغرامات تنظيمية وعجز عن تتبع الإتمام عبر المواقع.
+76	Un moteur de conformité automatisé qui affecte, suit et renouvelle les certifications, avec pistes d'audit complètes, circuits de validation réglementaire (ex. OFPPT, GIAC-Agro) et tableaux de bord de conformité en temps réel.	محرك مطابقة آلي يسند الشهادات ويتتبعها ويجددها، مع مسارات تدقيق كاملة ومسارات مصادقة تنظيمية (مثل مكتب التكوين المهني، GIAC-Agro) ولوحات مطابقة آنية.
+77	Offre talents et mobilité	باقة المواهب والتنقل
+78	ETI, grandes entreprises ; organisations centrées sur la fidélisation, la mobilité interne et le développement de carrière	المقاولات المتوسطة الكبرى والكبرى؛ والمؤسسات المركزة على الاحتفاظ بالموظفين والتنقل الداخلي وتطوير المسارات المهنية
+79	119 USD/mois (jusqu'à 300 utilisateurs) ; 0,65 $/utilisateur/mois au-delà de 300 utilisateurs	119 دولارًا/شهر (حتى 300 مستخدم)؛ 0.65$/مستخدم/شهر بعد 300 مستخدم
+80	Les collaborateurs se sentent bloqués dans leur poste ; les managers peinent à pourvoir les postes critiques en interne.	يشعر الموظفون بالجمود في مناصبهم؛ ويجد المدراء صعوبة في شغل المناصب الحرجة داخليًا.
+81	Fort turnover, manque de visibilité sur les carrières et incapacité à rapprocher les talents internes des opportunités.	دوران مرتفع للموظفين وغياب الرؤية المهنية وعجز عن مطابقة المواهب الداخلية مع الفرص.
+82	Une place de marché des talents par compétences qui relie les collaborateurs aux opportunités internes, automatise l'intégration et la montée en compétences et offre des parcours de carrière clairs — pour améliorer la fidélisation et réduire les coûts de recrutement externe.	سوق مواهب قائم على المهارات يربط الموظفين بالفرص الداخلية، ويؤتمت الإدماج والارتقاء السريع بالمهارات، ويوفر مسارات مهنية واضحة — لتحسين الاحتفاظ وتقليص تكاليف التوظيف الخارجي.
+83	Offre entreprise étendue	باقة المؤسسة الممتدة
+84	Organismes de formation, grandes entreprises	مزودو التكوين، المقاولات الكبرى
+85	Organismes de formation, cabinets de conseil, entreprises formant partenaires, revendeurs et clients	مزودو التكوين ومكاتب الاستشارة والمقاولات التي تكوّن الشركاء والموزعين والعملاء
+86	109 USD/mois (jusqu'à 200 utilisateurs externes) ; 0,80 $/utilisateur externe/mois au-delà de 200 utilisateurs	109 دولارات/شهر (حتى 200 مستخدم خارجي)؛ 0.80$/مستخدم خارجي/شهر بعد 200 مستخدم
+87	Les organisations veulent monétiser la formation pour des publics externes mais n'ont pas l'infrastructure.	ترغب المؤسسات في تحقيق دخل من التكوين للجمهور الخارجي لكنها تفتقر إلى البنية التحتية.
+88	Inscription, paiement et suivi des certifications manuels pour partenaires et clients ; impossibilité de faire passer la formation externe à l'échelle.	تسجيل وأداء وتتبع شهادات يدوي للشركاء والعملاء؛ وعجز عن توسيع التكوين الخارجي.
+89	Un portail multi-locataires à la marque avec e-commerce, suivi des certifications et curation de contenus — faisant de la formation une source de revenus et renforçant les relations partenaires/clients.	بوابة متعددة المستأجرين بعلامة مخصصة مع التجارة الإلكترونية وتتبع الشهادات وانتقاء المحتوى — لتحويل التكوين إلى مصدر دخل وتعزيز العلاقات مع الشركاء والعملاء.
+90	Offre conseil et diagnostic	باقة الاستشارة والتشخيص
+91	Cabinets de conseil, grandes entreprises	مكاتب الاستشارة، المقاولات الكبرى
+92	Cabinets de conseil en formation, cabinets d'ingénierie de formation, équipes formation d'entreprise menant des diagnostics	مكاتب الاستشارة في التكوين ومكاتب هندسة التكوين وفرق التكوين في المقاولات التي تجري مهام تشخيص
+93	249 USD/mois (jusqu'à 50 missions simultanées) ; 5 $/mission/mois au-delà de 50	249 دولارًا/شهر (حتى 50 مهمة متزامنة)؛ 5$/مهمة/شهر بعد 50
+94	Les cabinets de conseil gèrent les missions d'ingénierie de formation avec des documents Word, des tableurs Excel et des entretiens manuels.	تدبر مكاتب الاستشارة مهام هندسة التكوين بوثائق Word وجداول Excel ومقابلات يدوية.
+95	Absence de cadres de diagnostic structurés, production manuelle des rapports et difficulté à faire passer les missions à l'échelle.	غياب أطر تشخيص منظمة وإعداد يدوي للتقارير وصعوبة في توسيع المهام الاستشارية.
+96	Une plateforme de conseil dédiée avec diagnostic multi-axes, évaluation de maturité CMM, évaluation de la maturité du leadership, étude d'impact N-1, génération automatisée du rapport d'ingénierie de formation et bibliothèques de questionnaires par secteur et orientation — pour des missions plus rapides et de meilleure qualité, à grande échelle.	منصة استشارية مخصصة بتشخيص متعدد المحاور وتقييم نضج CMM وتقييم نضج القيادة ودراسة أثر N-1 وتوليد آلي لتقرير هندسة التكوين ومكتبات استبيانات حسب القطاع والتركيز — لتمكين المستشارين من إنجاز مهام أسرع وأعلى جودة على نطاق واسع.
+97	Offre pilotage stratégique des effectifs et gouvernance	باقة التخطيط الاستراتيجي للموارد البشرية والحكامة
+98	Grandes entreprises, grandes organisations	المقاولات الكبرى، المؤسسات الكبرى
+99	Grandes entreprises, multinationales, holdings, administrations publiques	المقاولات الكبرى والشركات متعددة الجنسيات والشركات القابضة والإدارات العمومية
+5	PK-04 Offre conformité et certification ; PK-06 Offre entreprise étendue	PK-04 باقة المطابقة والشهادات؛ PK-06 باقة المؤسسة الممتدة
+23	PK-03 Offre évaluation, analytique et ROI ; module AD-03 Analytique prédictive	PK-03 باقة التقييم والتحليلات وعائد الاستثمار؛ إضافة AD-03 التحليلات التنبؤية
+39	PK-04 Offre conformité et certification ; module AD-09 Validation externe du plan de formation (réglementaire)	PK-04 باقة المطابقة والشهادات؛ إضافة AD-09 المصادقة الخارجية على خطة التكوين (تنظيمي)
+47	PK-01 Offre ingénierie de formation de base ; PK-07 Offre conseil et diagnostic ; PK-08 Offre pilotage stratégique des effectifs et gouvernance ; module AD-11 Bibliothèque de questionnaires et diffusion multicanale	PK-01 باقة هندسة التكوين الأساسية؛ PK-07 باقة الاستشارة والتشخيص؛ PK-08 باقة التخطيط الاستراتيجي للموارد البشرية والحكامة؛ إضافة AD-11 مكتبة الاستبيانات والتوزيع متعدد القنوات

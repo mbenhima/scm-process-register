@@ -1,0 +1,160 @@
+0	Compétence	الكفاءة
+1	Compétence du référentiel avec une échelle de maîtrise à quatre niveaux.	كفاءة في المرجعية بسلم إتقان من أربعة مستويات.
+2	Cible de compétence du poste	هدف الكفاءة للمنصب
+3	Niveau de maîtrise requis d'une compétence pour un poste.	مستوى الإتقان المطلوب لكفاءة في منصب.
+4	Évaluation des compétences	تقييم المهارات
+5	Maîtrise évaluée d'un collaborateur sur une compétence dans une campagne.	الإتقان المقيم لموظف في كفاءة ضمن حملة.
+6	Écart de compétence	فجوة المهارات
+7	Écart calculé entre le niveau cible et le niveau validé.	الفجوة المحتسبة بين المستوى المستهدف والمستوى المعتمد.
+8	Objectif stratégique	الهدف الاستراتيجي
+9	Objectif stratégique de l'entreprise que le plan de formation doit servir.	هدف استراتيجي مؤسسي يجب أن تخدمه خطة التكوين.
+10	Demande de formation	طلب التكوين
+11	Demande de formation individuelle ou collective collectée de façon ascendante.	طلب تكوين فردي أو جماعي مجمع من القاعدة.
+12	Besoin de formation	احتياج التكوين
+13	Besoin de formation validé dans le registre des besoins.	احتياج تكوين معتمد في سجل الاحتياجات.
+14	Thème de formation	محور التكوين
+15	Regroupement de besoins traités par une même réponse de formation.	تجميع احتياجات تعالجها استجابة تكوينية واحدة.
+16	Licence	الترخيص
+17	Licence signée (enregistrement SaaS ou fichier .lic sur site) définissant l'offre, l'expiration, maxUsers et les fonctionnalités.	سجل ترخيص موقع (سجل سحابي أو ملف .lic محلي) يحدد الباقة والانتهاء وmaxUsers والخصائص.
+18	Configuration	الإعداد
+19	Configuration effective par organisation : une offre active, les quotas et le mode de déploiement.	الإعداد الفعلي لكل مؤسسة: باقة نشطة واحدة والحصص ونمط النشر.
+20	Activation de module	تفعيل إضافة
+21	Activation indépendante et tarifée d'un module pour une organisation.	تفعيل مستقل ومسعّر لإضافة لدى مؤسسة.
+22	Activation de norme de conformité	تفعيل معيار مطابقة
+23	Activation d'un module de norme de conformité et de sécurité créant un socle de contrôles.	تفعيل إضافة معيار مطابقة وأمن تنشئ هيكل ضوابط.
+24	Rapport phare d'ingénierie de formation.	التقرير الرئيسي لهندسة التكوين.
+25	Feuille de route	خارطة الطريق
+26	Feuille de route de formation pluriannuelle priorisée.	خارطة طريق تكوين متعددة السنوات ومرتبة.
+27	Initiative de la feuille de route	مبادرة خارطة الطريق
+28	Une initiative phasée de la feuille de route.	مبادرة مرحلية في خارطة الطريق.
+29	Plan de formation	خطة التكوين
+30	Plan de formation annuel ou priorisé avec jours, groupes, formateurs et budget.	خطة تكوين سنوية أو مرتبة بالأيام والمجموعات والمكونين والميزانية.
+31	Parcours d'apprentissage	مسار التعلم
+32	Ensemble ordonné de modules traitant un thème.	مجموعة مرتبة من الوحدات تعالج محورًا.
+33	Module d'apprentissage	وحدة تعلم
+34	Module conçu avec objectifs, modalité et évaluation.	وحدة مصممة بأهداف ونمط وتقييم.
+35	Contenu pédagogique	أصل محتوى
+36	Contenu d'apprentissage (SCORM, xAPI, PDF, vidéo, capsule).	أصل محتوى تعليمي (SCORM، xAPI، PDF، فيديو، كبسولة).
+37	Élément de connaissance	عنصر معرفة
+38	Article de connaissance, contenu utilisateur ou savoir d'expert capturé.	مقال معرفي أو عنصر من إنتاج المستخدمين أو معرفة خبير ملتقطة.
+39	Session	الدورة
+40	Occurrence planifiée de réalisation d'un module.	تنفيذ مبرمج لوحدة.
+41	Inscription	التسجيل
+42	Inscription d'un apprenant à une session ou un parcours, avec présence et achèvement.	تسجيل متعلم في دورة أو مسار مع الحضور والإتمام.
+43	Évaluation	التقييم
+44	Résultat d'évaluation Kirkpatrick niveaux 1 à 3.	نتيجة تقييم كيركباتريك من المستوى 1 إلى 3.
+45	Certification	الشهادة
+46	Certification obligatoire détenue par un collaborateur.	شهادة إلزامية يحملها موظف.
+47	Soumission réglementaire	التقديم التنظيمي
+48	Soumission d'un plan de formation à un organisme réglementaire.	تقديم خطة تكوين إلى هيئة تنظيمية.
+49	Prestataire	المورد
+50	Organisme de formation externe.	مزود تكوين خارجي.
+51	Bon de commande	سند الطلب
+52	Commande émise à un prestataire sur une ligne budgétaire.	طلب صادر لمورد على بند ميزانية.
+53	Facture	الفاتورة
+54	Facture prestataire rapprochée d'un bon de commande et de la présence.	فاتورة مورد مطابقة لسند طلب وللحضور.
+55	Ligne budgétaire	بند الميزانية
+56	Allocation budgétaire par thème et par site.	تخصيص الميزانية حسب المحور والموقع.
+57	Mission de conseil	المهمة الاستشارية
+58	Espace de travail d'une mission de conseil (projet spécialisé).	فضاء عمل المهمة الاستشارية (مشروع متخصص).
+59	Évaluation diagnostique	التقييم التشخيصي
+60	Diagnostic organisationnel multi-axes.	تشخيص تنظيمي متعدد المحاور.
+61	Évaluation de maturité	تقييم النضج
+62	Évaluation de maturité CMM ou du leadership.	تقييم نضج CMM أو نضج القيادة.
+63	Évaluation de la performance	تقييم الأداء
+64	Évaluation de la performance MS/MO/OP par fonction avec note RAG.	تقييم أداء MS/MO/OP لكل وظيفة بتصنيف لوني.
+65	SWOT fonctionnel	SWOT الوظيفي
+66	Analyse SWOT d'une fonction.	تحليل SWOT لوظيفة.
+67	Axe d'amélioration	محور التحسين
+68	Axe d'amélioration issu d'un SWOT fonctionnel.	محور تحسين مستخلص من SWOT وظيفي.
+69	Rapport de veille	تقرير اليقظة
+70	Rapport de veille concurrentielle (Porter, segments, concurrents, tendances).	تقرير اليقظة التنافسية (بورتر، القطاعات، المنافسون، الاتجاهات).
+71	Parcours de carrière	المسار المهني
+72	Séquence de postes avec cibles de compétences.	تسلسل مناصب بأهداف كفاءات.
+73	Opportunité interne	فرصة داخلية
+74	Poste interne sur la place de marché des talents.	منصب داخلي في سوق المواهب.
+75	Plan de développement	خطة التنمية
+76	Plan de développement individuel (PDI), y compris plans de leadership et de succession.	خطة تنمية فردية، بما في ذلك خطط القيادة والخلافة.
+77	Accompagnement coaching	مهمة التوجيه
+78	Relation de coaching entre un coach et un apprenant.	علاقة توجيه بين موجه ومتعلم.
+79	Dossier d'intégration	ملف الإدماج
+80	Intégration d'une nouvelle recrue avec parcours 30-60-90 jours.	إدماج موظف جديد بمسار 30-60-90 يومًا.
+81	Récompense de ludification	مكافأة التلعيب
+82	Points ou badge attribués à un apprenant.	نقاط أو شارة ممنوحة لمتعلم.
+83	Action	الإجراء
+84	Action gouvernée (amélioration, prévention, renforcement) avec responsable et échéance.	إجراء محكوم (تحسين، وقاية، تعزيز) بمسؤول وتاريخ استحقاق.
+85	Évaluation d'action	تقييم الإجراء
+86	Verdict d'efficacité sur une action terminée.	حكم الفعالية على إجراء منجز.
+87	Règle métier	قاعدة العمل
+88	Règle de gouvernance condition-action typée, rattachée à un processus.	قاعدة حكامة شرط-إجراء مصنفة ومرتبطة بمسار.
+89	Contrôle	الضابط
+90	Contrôle classé COSO, éventuellement rattaché à une norme de conformité.	ضابط مصنف وفق COSO ومرتبط اختياريًا بمعيار مطابقة.
+91	Risque / opportunité	الخطر / الفرصة
+92	Risque ou opportunité avec probabilité, impact et score calculé.	خطر أو فرصة بالاحتمال والأثر والدرجة المحتسبة.
+93	Activité RACSI	نشاط RACSI
+94	Activité gouvernée avec affectations R/A/C/S/I.	نشاط محكوم بإسنادات R/A/C/S/I.
+95	Définition d'indicateur	تعريف المؤشر
+96	Indicateur standard ou personnalisé avec description de formule, cible et responsable.	مؤشر قياسي أو مخصص بوصف الصيغة والهدف والمالك.
+97	Cas d'usage IA	حالة استخدام الذكاء الاصطناعي
+98	Cas d'usage IA gouverné et versionné (assistif ou augmenté).	حالة استخدام ذكاء اصطناعي محكومة وذات إصدار (مساعدة أو معززة).
+99	Journal d'usage IA	سجل استخدام الذكاء الاصطناعي
+100	Enregistrement en ajout seul du résultat de chaque suggestion IA.	سجل إضافة فقط لنتيجة كل اقتراح ذكاء اصطناعي.
+101	Journal d'audit	سجل التدقيق
+102	Journal des modifications en ajout seul avec justification.	سجل تغييرات إضافة فقط مع التبرير.
+103	Alerte de notification	تنبيه الإشعار
+104	Instance d'un type d'alerte catalogué levée sur une entité.	مثيل لنوع تنبيه مفهرس مرفوع على كيان.
+105	Fiche REX	بطاقة الدروس المستفادة
+106	Retour d'expérience capturé à la clôture ; versionné et indexé.	دروس مستفادة ملتقطة عند الإغلاق؛ ذات إصدار ومفهرسة.
+107	Intégration externe	التكامل الخارجي
+108	Connexion enregistrée vers une application externe.	اتصال مسجل بتطبيق خارجي.
+109	Sauvegarde	النسخة الاحتياطية
+110	Copie cohérente et datée de la base de données.	نسخة متسقة ومؤرخة من مخزن البيانات.
+111	Cahier des charges	دفتر نطاق العمل
+112	Périmètre structuré d'une mission d'ingénierie de formation : cadre, organisation, secteur, niveaux de décision, orientation, critères personnalisés et approbation.	النطاق المنظم لمهمة هندسة التكوين: الإطار والمؤسسة والقطاع ومستويات القرار والتركيز والمعايير المخصصة والاعتماد.
+113	Critère du périmètre	معيار النطاق
+114	Un critère de la matrice du périmètre (fonction × niveau de décision, orientation ou critère personnalisé) avec son poids.	معيار واحد في مصفوفة النطاق (الوظيفة × مستوى القرار أو التركيز أو معيار مخصص) مع وزنه.
+115	Partie prenante répondante enregistrée pour une mission, avec rôle, fonction, niveau de décision, canal préféré et consentement.	صاحب مصلحة مستجيب مسجل في مهمة بالدور والوظيفة ومستوى القرار والقناة المفضلة والموافقة.
+116	Modèle de questionnaire	نموذج الاستبيان
+117	Modèle de questionnaire versionné, étiqueté par orientation, secteur et langue.	نموذج استبيان ذو إصدار موسوم بالتركيز والقطاع واللغة.
+118	Instance de questionnaire construite à partir d'un modèle, de l'IA ou manuellement, avec affectation RACSI, canaux et statut.	استبيان منشأ من نموذج أو بالذكاء الاصطناعي أو يدويًا، مع توزيع RACSI والقنوات والوضعية.
+119	Réponse au questionnaire	إجابة الاستبيان
+120	Réponses d'un répondant avec canal, consentement, complétude et validation.	إجابات مستجيب واحد مع القناة والموافقة والاكتمال والتحقق.
+121	Suggestion de maîtrise à partir des preuves	اقتراح الإتقان من الأدلة
+122	Le responsable formation valide chaque niveau proposé avant son entrée dans l'inventaire.	يصادق مسؤول التكوين على كل مستوى مقترح قبل إدراجه في الجرد.
+123	Regroupement des besoins en thèmes	تجميع الاحتياجات في محاور
+124	L'analyste formation accepte, fusionne ou scinde chaque thème proposé.	يقبل محلل التكوين كل محور مقترح أو يدمجه أو يقسمه.
+125	Rédaction du rapport d'ingénierie de formation	صياغة تقرير هندسة التكوين
+126	Le stratège formation modifie chaque section ; le responsable qualité relit avant approbation.	يعدل استراتيجي التكوين كل قسم؛ ويراجع مسؤول الجودة قبل الاعتماد.
+127	Proposition de structure de module	اقتراح بنية الوحدة
+128	Le concepteur pédagogique accepte ou modifie la structure proposée.	يقبل المصمم البيداغوجي البنية المقترحة أو يعدلها.
+129	Étiquetage des contenus par compétence	وسم المحتوى بالكفاءات
+130	Le développeur de contenus confirme les étiquettes avant publication.	يؤكد مطور المحتوى الوسوم قبل النشر.
+131	Recommandations d'apprentissage personnalisées	توصيات تعلم مخصصة
+132	L'apprenant accepte ou écarte ; le motif du rejet alimente le modèle.	يقبل المتعلم أو يرفض؛ ويغذي سبب الرفض النموذج.
+133	Rédaction de la banque de questions	صياغة بنك الأسئلة
+134	Le concepteur pédagogique valide chaque question et corrigé.	يصادق المصمم البيداغوجي على كل سؤال ومفتاح إجابة.
+135	Requête de données via l'assistant IA	استعلام البيانات عبر المساعد الذكي
+136	Permission vérifiée avant la requête ; l'utilisateur revoit la réponse et ses sources.	التحقق من الصلاحية قبل الاستعلام؛ ويراجع المستخدم الجواب ومصادره.
+137	Suggestions d'actions de développement	اقتراحات إجراءات التنمية
+138	Le manager convient des actions avec le collaborateur avant d'enregistrer le PDI.	يتفق المدير مع الموظف على الإجراءات قبل حفظ خطة التنمية.
+139	Détection des groupes à faible adoption	رصد المجموعات ضعيفة التبني
+140	Le responsable conduite du changement confirme les groupes signalés avant d'agir.	يؤكد مسؤول تدبير التغيير المجموعات الموسومة قبل التصرف.
+141	Association de coachs	مطابقة الموجهين
+142	Le partenaire formation confirme ; le coach accepte l'association.	يؤكد شريك التكوين؛ ويقبل الموجه المطابقة.
+143	Projet de traduction des contenus (FR/AR)	مسودة ترجمة المحتوى (الفرنسية/العربية)
+144	L'expert métier valide la terminologie avant publication.	يصادق خبير المجال على المصطلحات قبل النشر.
+145	Ajustement adaptatif du parcours	التعديل التكيفي للمسار
+146	L'apprenant confirme chaque saut ou remédiation.	يؤكد المتعلم كل تخطٍّ أو معالجة.
+147	Rédaction de capsules de micro-apprentissage	صياغة كبسولات التعلم المصغر
+148	Le concepteur pédagogique modifie et approuve la capsule.	يعدل المصمم البيداغوجي الكبسولة ويعتمدها.
+149	Prévision des écarts de compétences (6-18 mois)	توقع فجوات المهارات (6-18 شهرًا)
+150	Le responsable formation accepte ou rejette chaque prédiction avant toute action.	يقبل مسؤول التكوين كل تنبؤ أو يرفضه قبل أي إجراء.
+151	Score de risque d'abandon des apprenants	تنقيط خطر انقطاع المتعلمين
+152	Seuls des scores agrégés sont affichés hors des rôles nommés ; le responsable formation décide des actions.	لا تُعرض إلا الدرجات المجمعة خارج الأدوار المحددة؛ ويقرر مسؤول التكوين الإجراءات.
+153	Classement de pertinence pour la curation	ترتيب الملاءمة للانتقاء
+154	Le curateur de contenus approuve chaque élément.	يعتمد منتقي المحتوى كل عنصر.
+155	Rapprochement des talents internes	مطابقة المواهب الداخلية
+156	Le manager recruteur présélectionne ; les preuves sont affichées pour chaque rapprochement ; revue d'équité trimestrielle.	ينتقي مدير التوظيف؛ وتُعرض الأدلة لكل مطابقة؛ مع مراجعة إنصاف فصلية.
+157	Structuration des savoirs d'experts	هيكلة معرفة الخبراء
+158	Le gestionnaire des connaissances et l'expert valident le résultat structuré.	يصادق مدبر المعرفة والخبير على المخرج المهيكل.
+159	Rédaction de comptes rendus de réunion	صياغة محاضر الاجتماعات

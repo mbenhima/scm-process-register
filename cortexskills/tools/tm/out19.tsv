@@ -1,0 +1,160 @@
+0	Taux de satisfaction des demandes	معدل تلبية الطلبات
+1	Demandes validées satisfaites / demandes validées x 100	الطلبات المعتمدة الملباة / الطلبات المعتمدة × 100
+2	Part des fonctions notées vert	نسبة الوظائف المصنفة بالأخضر
+3	Évaluations par fonction notées vert / évaluations x 100	تقييمات الوظائف المصنفة بالأخضر / التقييمات × 100
+4	Mise en œuvre des axes d'amélioration	تنفيذ محاور التحسين
+5	Moyenne de implementation_pct des axes priorisés	متوسط implementation_pct للمحاور المرتبة
+6	Taux d'utilisation des formateurs	معدل استعمال المكونين
+7	Jours formateur réalisés / jours formateur disponibles x 100	أيام المكونين المنجزة / أيام المكونين المتاحة × 100
+8	Achèvement des missions de la feuille de route	إتمام مهام خارطة الطريق
+9	Missions terminées à temps / missions à échéance x 100	المهام المنجزة في الوقت / المهام المستحقة × 100
+10	Couverture des tests des contrôles de conformité	تغطية اختبار ضوابط المطابقة
+11	Contrôles étiquetés à la norme testés dans le cycle / contrôles étiquetés x 100	الضوابط الموسومة بالمعيار المختبرة في الدورة / الضوابط الموسومة × 100
+12	Taux de repli de l'IA	معدل رجوع الذكاء الاصطناعي إلى البديل
+13	Suggestions fournies par le repli déterministe / suggestions x 100	الاقتراحات المقدمة من البديل الحتمي / الاقتراحات × 100
+14	Utilisation des quotas	استعمال الحصص
+15	Nombre actuel / quota de l'offre x 100, par dimension	العدد الحالي / حصة الباقة × 100 لكل بعد
+16	< 90 %	< 90%
+17	Taux de réponse au questionnaire	معدل الاستجابة للاستبيان
+18	Réponses reçues / questionnaires diffusés x 100	الإجابات المستلمة / الاستبيانات الموزعة × 100
+19	Taux de couverture du périmètre	معدل تغطية النطاق
+20	Fonctions x niveaux de décision couverts / total de l'organisation x 100	الوظائف × مستويات القرار المغطاة / المجموع في المؤسسة × 100
+21	Taux d'engagement des parties prenantes	معدل انخراط أصحاب المصلحة
+22	Parties prenantes ayant répondu / parties prenantes enregistrées x 100	أصحاب المصلحة المستجيبون / أصحاب المصلحة المسجلون × 100
+23	Directeur financier → responsable formation (48 h) → DRH	المدير المالي ← مسؤول التكوين (48 ساعة) ← مدير الموارد البشرية
+24	Analyste formation → managers concernés → responsable formation (à la date de clôture)	محلل التكوين ← المدراء المعنيون ← مسؤول التكوين (في تاريخ الإغلاق)
+25	Analyste formation → responsable formation	محلل التكوين ← مسؤول التكوين
+26	Responsable formation → DRH (président du comité de pilotage)	مسؤول التكوين ← مدير الموارد البشرية (رئيس لجنة القيادة)
+27	Formateur → administrateur de formation (24 h) → responsable formation (72 h)	المكون ← إداري التكوين (24 ساعة) ← مسؤول التكوين (72 ساعة)
+28	Apprenant → manager (après la deuxième relance)	المتعلم ← المدير (بعد التنبيه الثاني)
+29	Analyste formation → concepteur pédagogique → responsable formation	محلل التكوين ← المصمم البيداغوجي ← مسؤول التكوين
+30	Responsable de l'indicateur → responsable formation	مالك المؤشر ← مسؤول التكوين
+31	Collaborateur → manager → responsable conformité	الموظف ← المدير ← مسؤول المطابقة
+32	Responsable conformité → manager → DRH (le jour même)	مسؤول المطابقة ← المدير ← مدير الموارد البشرية (في اليوم نفسه)
+33	Acheteur → directeur financier	مسؤول المشتريات ← المدير المالي
+34	Acheteur → directeur financier → responsable formation	مسؤول المشتريات ← المدير المالي ← مسؤول التكوين
+35	Architecte SI → administrateur de la plateforme	مهندس نظم المعلومات ← مسؤول المنصة
+36	Architecte SI → administrateur de la plateforme (4 h)	مهندس نظم المعلومات ← مسؤول المنصة (4 ساعات)
+37	Administrateur de la plateforme → architecte SI	مسؤول المنصة ← مهندس نظم المعلومات
+38	Directeur financier → responsable formation → DRH	المدير المالي ← مسؤول التكوين ← مدير الموارد البشرية
+39	Responsable conduite du changement → responsable formation	مسؤول تدبير التغيير ← مسؤول التكوين
+40	Responsable de l'action → responsable qualité (7 jours) → responsable formation	مسؤول الإجراء ← مسؤول الجودة (7 أيام) ← مسؤول التكوين
+41	Développeur de contenus → concepteur pédagogique	مطور المحتوى ← المصمم البيداغوجي
+42	Architecte SI (synthèse quotidienne)	مهندس نظم المعلومات (ملخص يومي)
+43	Analyste de la performance → responsable formation → DRH	محلل الأداء ← مسؤول التكوين ← مدير الموارد البشرية
+44	Curateur de contenus → développeur de contenus	منتقي المحتوى ← مطور المحتوى
+45	Manager recruteur → partenaire RH	مدير التوظيف ← شريك الموارد البشرية
+46	Chef de projet consultant → associé	رئيس المشروع الاستشاري ← الشريك
+47	Coordinateur formation de site → responsable formation	منسق التكوين بالموقع ← مسؤول التكوين
+48	Responsable conformité → responsable formation → directeur financier	مسؤول المطابقة ← مسؤول التكوين ← المدير المالي
+49	Analyste stratégie → directeur de la stratégie	محلل الاستراتيجية ← مدير الاستراتيجية
+50	Analyste des emplois → partenaire RH → DRH	محلل الوظائف ← شريك الموارد البشرية ← مدير الموارد البشرية
+51	Planificateur formation → responsable formation → comité de pilotage	مخطط التكوين ← مسؤول التكوين ← لجنة القيادة
+52	Administrateur de la plateforme → architecte SI → DRH	مسؤول المنصة ← مهندس نظم المعلومات ← مدير الموارد البشرية
+53	Administrateur de la plateforme → support de l'éditeur	مسؤول المنصة ← دعم المورد
+54	Administrateur de la plateforme → DRH	مسؤول المنصة ← مدير الموارد البشرية
+55	Administrateur de la plateforme → directeur financier	مسؤول المنصة ← المدير المالي
+56	Administrateur de la plateforme (synthèse quotidienne)	مسؤول المنصة (ملخص يومي)
+57	Concepteur pédagogique → responsable formation	المصمم البيداغوجي ← مسؤول التكوين
+58	Responsable qualité → stratège formation → responsable formation	مسؤول الجودة ← استراتيجي التكوين ← مسؤول التكوين
+59	Apprenant / partie prenante → manager (après la deuxième relance)	المتعلم / صاحب المصلحة ← المدير (بعد التذكير الثاني)
+60	Responsable formation → DRH (approbation en attente au-delà du SLA)	مسؤول التكوين ← مدير الموارد البشرية (موافقة معلقة بعد أجل الخدمة)
+61	Administrateur de la plateforme → responsable formation	مسؤول المنصة ← مسؤول التكوين
+62	Quota atteint	بلوغ الحصة
+63	Indicateur hors cible (rouge)	مؤشر خارج الهدف (أحمر)
+64	Rapport d'ingénierie de formation	تقرير هندسة التكوين
+65	Responsable formation ; DRH	مسؤول التكوين؛ مدير الموارد البشرية
+66	À la demande (par cycle de plan)	عند الطلب (لكل دورة خطة)
+67	Plan de formation priorisé	خطة التكوين المرتبة حسب الأولوية
+68	Responsable formation ; directeur financier ; comité de pilotage	مسؤول التكوين؛ المدير المالي؛ لجنة القيادة
+69	Hebdomadaire	أسبوعي
+70	Matrice des écarts de compétences	مصفوفة فجوات المهارات
+71	Analyste formation ; responsable formation ; manager	محلل التكوين؛ مسؤول التكوين؛ المدير
+72	Quotidien	يومي
+73	Matrice consolidée des demandes	مصفوفة الطلبات الموحدة
+74	Partenaire formation ; responsable formation	شريك التكوين؛ مسؤول التكوين
+75	Quotidien pendant la campagne	يومي خلال الحملة
+76	Tableau de bord RAG MS/MO/OP	لوحة القيادة بالألوان MS/MO/OP
+77	Direction générale ; responsable formation	الإدارة العليا؛ مسؤول التكوين
+78	Par cycle de performance	لكل دورة أداء
+79	SWOT fonctionnel et axes d'amélioration	SWOT الوظيفي ومحاور التحسين
+80	Responsables de fonction ; responsable formation	رؤساء الوظائف؛ مسؤول التكوين
+81	Mensuel	شهري
+82	Rapport de veille concurrentielle	تقرير اليقظة التنافسية
+83	Directeur de la stratégie ; direction générale	مدير الاستراتيجية؛ الإدارة العليا
+84	Trimestriel	فصلي
+85	Santé de l'architecture des emplois	سلامة هندسة الوظائف
+86	DRH ; DRH groupe	مدير الموارد البشرية؛ المدير العام للموارد البشرية
+87	Rapport d'intégration GPEC	تقرير إدماج التدبير التوقعي
+88	DRH ; spécialiste GPEC	مدير الموارد البشرية؛ متخصص التدبير التوقعي
+89	Annuel	سنوي
+90	Feuille de route post-mission	خارطة طريق ما بعد المهمة
+91	Direction générale ; comité de pilotage	الإدارة العليا؛ لجنة القيادة
+92	Budget vs réel	الميزانية مقابل الفعلي
+93	Directeur financier ; responsable formation	المدير المالي؛ مسؤول التكوين
+94	Rapport ROI et impact métier	تقرير عائد الاستثمار والأثر على الأعمال
+95	Responsable formation ; directeur financier ; direction générale	مسؤول التكوين؛ المدير المالي؛ الإدارة العليا
+96	Par étude de ROI	لكل دراسة عائد استثمار
+97	Statut de conformité et des certifications	وضعية المطابقة والشهادات
+98	Responsable conformité ; manager	مسؤول المطابقة؛ المدير
+99	Rapport de réalisation et de présence	تقرير التنفيذ والحضور
+100	Administrateur de formation ; responsable formation	إداري التكوين؛ مسؤول التكوين
+101	Cockpit d'engagement des apprenants	لوحة انخراط المتعلمين
+102	Analyste formation ; manager	محلل التكوين؛ المدير
+103	Rapport d'évaluation Kirkpatrick	تقرير تقييم كيركباتريك
+104	Analyste formation ; concepteur pédagogique	محلل التكوين؛ المصمم البيداغوجي
+105	Statut du déploiement multi-sites	وضعية النشر متعدد المواقع
+106	Responsable formation ; coordinateur formation de site	مسؤول التكوين؛ منسق التكوين بالموقع
+107	Suivi des soumissions réglementaires	متتبع التقديمات التنظيمية
+108	Responsable conformité ; directeur financier	مسؤول المطابقة؛ المدير المالي
+109	Statut des missions de conseil	وضعية المهام الاستشارية
+110	Chef de projet consultant ; associé	رئيس المشروع الاستشاري؛ الشريك
+111	Rapport de diagnostic et de maturité	تقرير التشخيص والنضج
+112	Chef de projet consultant ; DRH	رئيس المشروع الاستشاري؛ مدير الموارد البشرية
+113	Par mission	لكل مهمة
+114	Rapport du vivier de dirigeants	تقرير مشتل القادة
+115	Rapport de mobilité des talents	تقرير تنقل المواهب
+116	DRH ; partenaire RH	مدير الموارد البشرية؛ شريك الموارد البشرية
+117	Performance et dépenses prestataires	أداء الموردين والنفقات
+118	Acheteur ; directeur financier	مسؤول المشتريات؛ المدير المالي
+119	Registre de gouvernance et carte de chaleur des risques	سجل الحكامة وخريطة حرارة المخاطر
+120	Responsable qualité ; auditeur	مسؤول الجودة؛ المدقق
+121	Rapport d'usage et de gouvernance de l'IA	تقرير استخدام الذكاء الاصطناعي وحكامته
+122	Architecte SI ; administrateur de la plateforme	مهندس نظم المعلومات؛ مسؤول المنصة
+123	Usage de la licence et des quotas	استخدام الترخيص والحصص
+124	Administrateur de la plateforme ; directeur financier	مسؤول المنصة؛ المدير المالي
+125	Santé de la bibliothèque de contenus	سلامة مكتبة المحتوى
+126	Curateur de contenus ; responsable formation	منتقي المحتوى؛ مسؤول التكوين
+127	Tableau de bord d'adoption	لوحة قيادة التبني
+128	Responsable conduite du changement ; responsable formation	مسؤول تدبير التغيير؛ مسؤول التكوين
+129	Rapport de benchmark interne	تقرير المقارنة الداخلية
+130	Responsable formation ; administrateur de l'organisation	مسؤول التكوين؛ مسؤول المؤسسة
+131	Cockpit formation de la direction	لوحة التكوين للإدارة العليا
+132	DRH ; direction générale	مدير الموارد البشرية؛ الإدارة العليا
+133	Rapport d'intégration et de coaching	تقرير الإدماج والتوجيه
+134	Partenaire RH ; manager recruteur	شريك الموارد البشرية؛ مدير التوظيف
+135	Posture des contrôles des normes de conformité	وضعية ضوابط معايير المطابقة
+136	Responsable conformité ; auditeur	مسؤول المطابقة؛ المدقق
+137	Synthèse du cahier des charges	تقرير ملخص دفتر نطاق العمل
+138	Responsable formation ; chef de projet consultant ; comité de pilotage	مسؤول التكوين؛ رئيس المشروع الاستشاري؛ لجنة القيادة
+139	Rapport d'analyse des questionnaires	تقرير تحليلات الاستبيان
+140	Analyste formation ; chef de projet consultant	محلل التكوين؛ رئيس المشروع الاستشاري
+141	Groupe	المجموعة
+142	Entité holding facultative regroupant des organisations sœurs ; seule frontière du benchmark interne.	كيان قابض اختياري يجمع المؤسسات الشقيقة؛ وهو الحد الوحيد للمقارنة الداخلية.
+143	Organisation	المؤسسة
+144	Locataire et frontière stricte d'isolation des données ; porte le secteur, le pays et la langue par défaut.	المستأجر والحد الصارم لعزل البيانات؛ يحمل القطاع والبلد واللغة الافتراضية.
+145	Projet	المشروع
+146	Sous-entité d'une organisation couvrant une année de plan, une mission ou un programme ; décomptée du quota de l'offre.	كيان فرعي للمؤسسة يغطي سنة خطة أو مهمة أو برنامجًا؛ ويُحتسب ضمن حصة الباقة.
+147	Nœud OBS	عقدة الهيكل التنظيمي
+148	Nœud de l'organigramme des structures (OBS) : site, fonction, département ou équipe.	عقدة في الهيكل التنظيمي: موقع أو وظيفة أو قسم أو فريق.
+149	Utilisateur	المستخدم
+150	Personne authentifiée détenant un ou plusieurs rôles dans une organisation.	شخص مصادق عليه يحمل دورًا أو أكثر داخل مؤسسة.
+151	Rôle	الدور
+152	Rôle nommé rattaché à l'une des six classes d'utilisateurs de référence.	دور مسمى مرتبط بإحدى فئات المستخدمين الست المرجعية.
+153	Permission	الصلاحية
+154	Code de capacité global (module.action) accordé aux rôles via la matrice des permissions.	رمز قدرة عام (module.action) يُمنح للأدوار عبر مصفوفة الصلاحيات.
+155	Préférence utilisateur	تفضيلات المستخدم
+156	Paramètres par utilisateur côté serveur : langue, ancrage du menu, épinglage, favoris et canaux.	إعدادات لكل مستخدم من جهة الخادم: اللغة، موضع القائمة، التثبيت، المفضلة والقنوات.
+157	Fiche d'effectif synchronisée depuis le SIRH, liée à un poste et à un nœud OBS.	سجل موظف مزامن من نظام الموارد البشرية ومرتبط بمنصب وعقدة تنظيمية.
+158	Poste	المنصب
+159	Fiche de poste dans l'architecture des emplois.	بطاقة الوصف الوظيفي ضمن هندسة الوظائف.

@@ -1,0 +1,53 @@
+0	Moteur de ludification	محرك التلعيب
+3	Hub d'analytique prédictive	مركز التحليلات التنبؤية
+5	Hub d'étude d'impact	مركز دراسة الأثر
+8	Hub de déploiement multi-sites	مركز النشر متعدد المواقع
+11	Hub de collecte des demandes	مركز جمع الطلبات
+14	Hub SWOT fonctionnel	مركز SWOT الوظيفي
+17	Studio cahier des charges	استوديو نطاق العمل
+18	Espace de travail Studio cahier des charges — Définir et approuver le périmètre structuré d'une mission et enregistrer les parties prenantes répondantes.	فضاء عمل استوديو نطاق العمل — تحديد النطاق المنظم للمهمة واعتماده وتسجيل أصحاب المصلحة المستجيبين.
+20	Studio questionnaires	استوديو الاستبيانات
+21	Espace de travail Studio questionnaires — Concevoir les questionnaires par orientation et secteur, les diffuser sur plusieurs canaux et collecter les réponses.	فضاء عمل استوديو الاستبيانات — تصميم الاستبيانات حسب التركيز والقطاع وتوزيعها عبر القنوات وجمع الإجابات.
+23	Hub de veille concurrentielle	مركز اليقظة التنافسية
+25	Hub feuille de route	مركز خارطة الطريق
+27	Hub communautaire	مركز المجتمع
+29	Centre localisation et accessibilité	مركز التوطين وإمكانية الوصول
+32	Hub micro-apprentissage	مركز التعلم المصغر
+35	Laboratoire d'apprentissage immersif	مختبر التعلم الغامر
+38	Développeur / curateur de contenus	مطور / منتقي المحتوى
+39	Bibliothèque de contenus	مكتبة المحتوى
+42	Moteur de curation	محرك الانتقاء
+45	Console d'administration	وحدة الإدارة
+48	Formateur / coach	المكون / الموجه
+49	Collaborateur / apprenant	الموظف / المتعلم
+50	Hub d'apprentissage social	مركز التعلم الاجتماعي
+52	Studio de contenus entre pairs	استوديو محتوى الأقران
+54	Hub d'intégration	مركز الإدماج
+56	Manager / manager recruteur	المدير / مدير التوظيف
+57	Coffre des savoirs d'experts	خزانة معرفة الخبراء
+61	Analyste stratégie / directeur de la stratégie	محلل الاستراتيجية / مدير الاستراتيجية
+63	Partenaire RH / analyste des emplois	شريك الموارد البشرية / محلل الوظائف
+65	Console prestataires et partenaires	وحدة الموردين والشركاء
+68	Responsable conformité / DPO	مسؤول المطابقة / مسؤول حماية البيانات
+69	Console réglementaire	وحدة التنظيم
+72	Consultant (chef de projet / associé)	المستشار (رئيس المشروع / الشريك)
+73	Studio de diagnostic	استوديو التشخيص
+82	Hub du changement	مركز التغيير
+85	Portail entreprise étendue	بوابة المؤسسة الممتدة
+88	Auditeur (lecture seule)	المدقق (قراءة فقط)
+89	Ouvrir et exporter tous les rapports standard et la piste d'audit en lecture seule.	فتح جميع التقارير القياسية ومسار التدقيق للقراءة فقط وتصديرها.
+90	Socle de la plateforme et services communs	هيكل المنصة والخدمات المشتركة
+91	Cœur de plateforme (toutes les offres)	نواة المنصة (كل الباقات)
+92	Inclus dans chaque abonnement (sans frais séparés)	مضمن في كل اشتراك (دون رسوم منفصلة)
+93	PK-01 Offre ingénierie de formation de base ; PK-07 Offre conseil et diagnostic	PK-01 باقة هندسة التكوين الأساسية؛ PK-07 باقة الاستشارة والتشخيص
+94	Abonnement — PK-01 : 99 $/mois pour 100 utilisateurs inclus ; 0,75 $/utilisateur au-delà | PK-07 : 249 $/mois pour 50 missions simultanées incluses ; 5 $/mission au-delà	اشتراك — PK-01: 99$/شهر يشمل 100 مستخدم؛ 0.75$/مستخدم إضافي | PK-07: 249$/شهر يشمل 50 مهمة متزامنة؛ 5$/مهمة إضافية
+95	PK-01 Offre ingénierie de formation de base ; PK-05 Offre talents et mobilité	PK-01 باقة هندسة التكوين الأساسية؛ PK-05 باقة المواهب والتنقل
+96	Abonnement — PK-01 : 99 $/mois pour 100 utilisateurs inclus ; 0,75 $/utilisateur au-delà | PK-05 : 119 $/mois pour 300 utilisateurs inclus ; 0,65 $/utilisateur au-delà	اشتراك — PK-01: 99$/شهر يشمل 100 مستخدم؛ 0.75$/مستخدم إضافي | PK-05: 119$/شهر يشمل 300 مستخدم؛ 0.65$/مستخدم إضافي
+97	PK-01 Offre ingénierie de formation de base	PK-01 باقة هندسة التكوين الأساسية
+98	Abonnement — PK-01 : 99 $/mois pour 100 utilisateurs inclus ; 0,75 $/utilisateur au-delà	اشتراك — PK-01: 99$/شهر يشمل 100 مستخدم؛ 0.75$/مستخدم إضافي
+99	PK-02 Offre réalisation et expérience d'apprentissage ; PK-06 Offre entreprise étendue	PK-02 باقة تنفيذ التعلم والتجربة؛ PK-06 باقة المؤسسة الممتدة
+100	Abonnement — PK-02 : 149 $/mois pour 250 utilisateurs inclus ; 0,60 $/utilisateur au-delà | PK-06 : 109 $/mois pour 200 utilisateurs externes inclus ; 0,80 $/utilisateur externe au-delà	اشتراك — PK-02: 149$/شهر يشمل 250 مستخدمًا؛ 0.60$/مستخدم إضافي | PK-06: 109$/شهر يشمل 200 مستخدم خارجي؛ 0.80$/مستخدم خارجي إضافي
+101	PK-02 Offre réalisation et expérience d'apprentissage ; PK-05 Offre talents et mobilité	PK-02 باقة تنفيذ التعلم والتجربة؛ PK-05 باقة المواهب والتنقل
+102	Abonnement — PK-02 : 149 $/mois pour 250 utilisateurs inclus ; 0,60 $/utilisateur au-delà | PK-05 : 119 $/mois pour 300 utilisateurs inclus ; 0,65 $/utilisateur au-delà	اشتراك — PK-02: 149$/شهر يشمل 250 مستخدمًا؛ 0.60$/مستخدم إضافي | PK-05: 119$/شهر يشمل 300 مستخدم؛ 0.65$/مستخدم إضافي
+103	PK-02 Offre réalisation et expérience d'apprentissage ; PK-03 Offre évaluation, analytique et ROI ; PK-04 Offre conformité et certification	PK-02 باقة تنفيذ التعلم والتجربة؛ PK-03 باقة التقييم والتحليلات وعائد الاستثمار؛ PK-04 باقة المطابقة والشهادات
+104	Abonnement — PK-02 : 149 $/mois pour 250 utilisateurs inclus ; 0,60 $/utilisateur au-delà | PK-03 : 129 $/mois pour 500 utilisateurs inclus ; 0,50 $/utilisateur au-delà | PK-04 : 99 $/mois pour 300 utilisateurs inclus ; 0,55 $/utilisateur au-delà	اشتراك — PK-02: 149$/شهر يشمل 250 مستخدمًا؛ 0.60$/مستخدم إضافي | PK-03: 129$/شهر يشمل 500 مستخدم؛ 0.50$/مستخدم إضافي | PK-04: 99$/شهر يشمل 300 مستخدم؛ 0.55$/مستخدم إضافي
