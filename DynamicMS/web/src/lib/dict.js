@@ -4167,5 +4167,405 @@ export const DICT = {
 "Naming: {n} task name(s) should start with a verb and name their object: {list}": {
 "fr": "Nommage : {n} nom(s) de tâche devraient commencer par un verbe et nommer leur objet : {list}",
 "ar": "التسمية: {n} من أسماء المهام يجب أن تبدأ بفعل وتذكر موضوعها: {list}"
+},
+"Role saved (new version).": {
+"fr": "Rôle enregistré (nouvelle version).",
+"ar": "تم حفظ الدور (إصدار جديد)."
+},
+"Role retired; its assignments ended today.": {
+"fr": "Rôle retiré ; ses affectations se terminent aujourd'hui.",
+"ar": "تم سحب الدور؛ تنتهي تكليفاته اليوم."
+},
+"Person assigned to the role.": {
+"fr": "Personne affectée au rôle.",
+"ar": "تم تكليف الشخص بالدور."
+},
+"Assignment ended. {n} open actions of this person need a new owner.": {
+"fr": "Affectation terminée. {n} actions ouvertes de cette personne doivent avoir un nouveau responsable.",
+"ar": "انتهى التكليف. {n} إجراءات مفتوحة لهذا الشخص تحتاج إلى مسؤول جديد."
+},
+"Assignment ended.": {
+"fr": "Affectation terminée.",
+"ar": "انتهى التكليف."
+},
+"Role views": {
+"fr": "Vues des rôles",
+"ar": "عروض الأدوار"
+},
+"By role": {
+"fr": "Par rôle",
+"ar": "حسب الدور"
+},
+"By function": {
+"fr": "Par fonction",
+"ar": "حسب الوظيفة"
+},
+"By person": {
+"fr": "Par personne",
+"ar": "حسب الشخص"
+},
+"New role": {
+"fr": "Nouveau rôle",
+"ar": "دور جديد"
+},
+"A role is linked to one or more functions and can be played by several people; a person can play several roles. Roles describe what people do; access rights stay with the access roles.": {
+"fr": "Un rôle est rattaché à une ou plusieurs fonctions et peut être tenu par plusieurs personnes ; une personne peut tenir plusieurs rôles. Les rôles décrivent ce que font les personnes ; les droits d'accès restent portés par les rôles d'accès.",
+"ar": "يرتبط الدور بوظيفة أو أكثر ويمكن أن يشغله عدة أشخاص؛ ويمكن للشخص أن يشغل عدة أدوار. تصف الأدوار ما يقوم به الأشخاص؛ وتبقى صلاحيات الوصول مرتبطة بأدوار الوصول."
+},
+"{n} role(s) without a current holder.": {
+"fr": "{n} rôle(s) sans titulaire actuel.",
+"ar": "{n} دور بدون شاغل حالي."
+},
+"Functions": {
+"fr": "Fonctions",
+"ar": "الوظائف"
+},
+"Played by": {
+"fr": "Tenu par",
+"ar": "يشغله"
+},
+"Vacant": {
+"fr": "Vacant",
+"ar": "شاغر"
+},
+"Assign": {
+"fr": "Affecter",
+"ar": "تكليف"
+},
+"Function": {
+"fr": "Fonction",
+"ar": "الوظيفة"
+},
+"People": {
+"fr": "Personnes",
+"ar": "الأشخاص"
+},
+"Person": {
+"fr": "Personne",
+"ar": "الشخص"
+},
+"Roles played": {
+"fr": "Rôles tenus",
+"ar": "الأدوار المشغولة"
+},
+"Number of roles": {
+"fr": "Nombre de rôles",
+"ar": "عدد الأدوار"
+},
+"Edit role": {
+"fr": "Modifier le rôle",
+"ar": "تعديل الدور"
+},
+"Role name": {
+"fr": "Nom du rôle",
+"ar": "اسم الدور"
+},
+"Access role proposed to holders": {
+"fr": "Rôle d'accès proposé aux titulaires",
+"ar": "دور الوصول المقترح للشاغلين"
+},
+"Functions (at least one)": {
+"fr": "Fonctions (au moins une)",
+"ar": "الوظائف (واحدة على الأقل)"
+},
+"Mission": {
+"fr": "Mission",
+"ar": "المهمة"
+},
+"Responsibilities": {
+"fr": "Responsabilités",
+"ar": "المسؤوليات"
+},
+"since": {
+"fr": "depuis",
+"ar": "منذ"
+},
+"End assignment": {
+"fr": "Terminer l'affectation",
+"ar": "إنهاء التكليف"
+},
+"Change note": {
+"fr": "Note de modification",
+"ar": "ملاحظة التعديل"
+},
+"Assign a person to the role": {
+"fr": "Affecter une personne au rôle",
+"ar": "تكليف شخص بالدور"
+},
+"As": {
+"fr": "En tant que",
+"ar": "بصفة"
+},
+"Allocation (%)": {
+"fr": "Répartition (%)",
+"ar": "نسبة التخصيص (%)"
+},
+"End date": {
+"fr": "Date de fin",
+"ar": "تاريخ الانتهاء"
+},
+"Prompt specification": {
+"fr": "Spécification du prompt",
+"ar": "مواصفة الموجّه"
+},
+"Saved: {n} field(s) with a new version.": {
+"fr": "Enregistré : {n} champ(s) avec une nouvelle version.",
+"ar": "تم الحفظ: {n} حقل بإصدار جديد."
+},
+"Saved. The specification is incomplete, so the use case was deactivated.": {
+"fr": "Enregistré. La spécification est incomplète : le cas d'usage a été désactivé.",
+"ar": "تم الحفظ. المواصفة غير مكتملة، لذلك تم تعطيل حالة الاستخدام."
+},
+"History of the whole prompt ({n})": {
+"fr": "Historique du prompt complet ({n})",
+"ar": "سجل الموجّه كاملًا ({n})"
+},
+"View the assembled prompt": {
+"fr": "Voir le prompt assemblé",
+"ar": "عرض الموجّه المجمّع"
+},
+"Save changes ({n})": {
+"fr": "Enregistrer les modifications ({n})",
+"ar": "حفظ التعديلات ({n})"
+},
+"No linked step": {
+"fr": "Aucune étape liée",
+"ar": "لا توجد خطوة مرتبطة"
+},
+"Completeness": {
+"fr": "Complétude",
+"ar": "الاكتمال"
+},
+"Missing: {list}": {
+"fr": "Manquant : {list}",
+"ar": "الناقص: {list}"
+},
+"Complete — the use case can be activated": {
+"fr": "Complet — le cas d'usage peut être activé",
+"ar": "مكتمل — يمكن تفعيل حالة الاستخدام"
+},
+"Search steps, records, documents, people, help…": {
+"fr": "Rechercher étapes, enregistrements, documents, personnes, aide…",
+"ar": "ابحث في الخطوات والسجلات والوثائق والأشخاص والمساعدة…"
+},
+"Filter by type": {
+"fr": "Filtrer par type",
+"ar": "التصفية حسب النوع"
+},
+"Type at least 2 characters. Codes (MP-001.2, NC-…) are matched exactly.": {
+"fr": "Saisissez au moins 2 caractères. Les codes (MP-001.2, NC-…) sont recherchés à l'identique.",
+"ar": "اكتب حرفين على الأقل. تُطابق الرموز (MP-001.2، NC-…) تمامًا."
+},
+"Shortcut: Ctrl+K.": {
+"fr": "Raccourci : Ctrl+K.",
+"ar": "اختصار: Ctrl+K."
+},
+"Recent searches": {
+"fr": "Recherches récentes",
+"ar": "عمليات البحث الأخيرة"
+},
+"Searching…": {
+"fr": "Recherche…",
+"ar": "جارٍ البحث…"
+},
+"No result for \"{q}\".": {
+"fr": "Aucun résultat pour « {q} ».",
+"ar": "لا توجد نتيجة لـ \"{q}\"."
+},
+"Filter the menu…": {
+"fr": "Filtrer le menu…",
+"ar": "تصفية القائمة…"
+},
+"Filter the menu": {
+"fr": "Filtrer le menu",
+"ar": "تصفية القائمة"
+},
+"Process design editor": {
+"fr": "Éditeur de conception des processus",
+"ar": "محرر تصميم العمليات"
+},
+"Linked step (MP-xxx.n)": {
+"fr": "Étape liée (MP-xxx.n)",
+"ar": "الخطوة المرتبطة (MP-xxx.n)"
+},
+"The prompt specification is then populated for this step.": {
+"fr": "La spécification du prompt est alors renseignée pour cette étape.",
+"ar": "تُملأ عندئذٍ مواصفة الموجّه لهذه الخطوة."
+},
+"Custom frequency": {
+"fr": "Fréquence personnalisée",
+"ar": "تكرار مخصص"
+},
+"For example: once, 6 weeks before the certification audit.": {
+"fr": "Par exemple : une fois, 6 semaines avant l'audit de certification.",
+"ar": "مثال: مرة واحدة، قبل 6 أسابيع من تدقيق الاعتماد."
+},
+"Frequency saved.": {
+"fr": "Fréquence enregistrée.",
+"ar": "تم حفظ التكرار."
+},
+"Ref.": {
+"fr": "Réf.",
+"ar": "المرجع"
+},
+"Grading": {
+"fr": "Qualification",
+"ar": "التصنيف"
+},
+"Objective evidence": {
+"fr": "Preuve objective",
+"ar": "الدليل الموضوعي"
+},
+"Response due": {
+"fr": "Réponse attendue",
+"ar": "موعد الرد"
+},
+"Criteria": {
+"fr": "Critères",
+"ar": "المعايير"
+},
+"The requirement (criterion) not met, e.g. ISO 9001 §7.5.3.": {
+"fr": "L'exigence (critère) non satisfaite, p. ex. ISO 9001 §7.5.3.",
+"ar": "المتطلب (المعيار) غير المستوفى، مثل ISO 9001 §7.5.3."
+},
+"Default: 30 days for a major, 60 days for a minor nonconformity.": {
+"fr": "Par défaut : 30 jours pour une non-conformité majeure, 60 jours pour une mineure.",
+"ar": "الافتراضي: 30 يومًا لعدم المطابقة الرئيسية و60 يومًا للثانوية."
+},
+"Roles and functions": {
+"fr": "Rôles et fonctions",
+"ar": "الأدوار والوظائف"
+},
+"Element {id} created (version 1).": {
+"fr": "Élément {id} créé (version 1).",
+"ar": "تم إنشاء العنصر {id} (الإصدار 1)."
+},
+"Saved as version {v}.": {
+"fr": "Enregistré en version {v}.",
+"ar": "تم الحفظ كإصدار {v}."
+},
+"Deleted; it can be restored from its history.": {
+"fr": "Supprimé ; il peut être restauré depuis son historique.",
+"ar": "تم الحذف؛ يمكن استعادته من سجله."
+},
+"Retired: it is used by projects or is a reference element.": {
+"fr": "Retiré : il est utilisé par des projets ou c'est un élément de référence.",
+"ar": "تم السحب: يستخدمه مشروع أو هو عنصر مرجعي."
+},
+"Create, change, retire and restore every element of the process design. Every change is a new version; running projects keep the version they started with.": {
+"fr": "Créez, modifiez, retirez et restaurez chaque élément de la conception des processus. Chaque modification est une nouvelle version ; les projets en cours gardent la version avec laquelle ils ont démarré.",
+"ar": "أنشئ كل عنصر من تصميم العمليات وعدّله واسحبه واستعده. كل تعديل إصدار جديد؛ وتحتفظ المشاريع الجارية بالإصدار الذي بدأت به."
+},
+"New element": {
+"fr": "Nouvel élément",
+"ar": "عنصر جديد"
+},
+"Element types": {
+"fr": "Types d'éléments",
+"ar": "أنواع العناصر"
+},
+"Filter…": {
+"fr": "Filtrer…",
+"ar": "تصفية…"
+},
+"{n} elements": {
+"fr": "{n} éléments",
+"ar": "{n} عنصر"
+},
+"ID": {
+"fr": "ID",
+"ar": "المعرّف"
+},
+"Responsible role": {
+"fr": "Rôle responsable",
+"ar": "الدور المسؤول"
+},
+"Form kind": {
+"fr": "Type de formulaire",
+"ar": "نوع النموذج"
+},
+"Owner role": {
+"fr": "Rôle pilote",
+"ar": "الدور المالك"
+},
+"Own element": {
+"fr": "Élément propre",
+"ar": "عنصر خاص"
+},
+"Modified reference": {
+"fr": "Référence modifiée",
+"ar": "مرجع معدّل"
+},
+"Reference": {
+"fr": "Référence",
+"ar": "مرجع"
+},
+"Retire or delete": {
+"fr": "Retirer ou supprimer",
+"ar": "سحب أو حذف"
+},
+"Save as new version": {
+"fr": "Enregistrer comme nouvelle version",
+"ar": "حفظ كإصدار جديد"
+},
+"Used by": {
+"fr": "Utilisé par",
+"ar": "مستخدم من قبل"
+},
+"{r} runs in projects": {
+"fr": "{r} exécutions dans des projets",
+"ar": "{r} تشغيل في المشاريع"
+},
+"{c} child elements": {
+"fr": "{c} éléments enfants",
+"ar": "{c} عنصر فرعي"
+},
+"{d} documents": {
+"fr": "{d} documents",
+"ar": "{d} وثيقة"
+},
+"{a} AI use cases": {
+"fr": "{a} cas d'usage IA",
+"ar": "{a} حالة استخدام للذكاء الاصطناعي"
+},
+"Running projects keep the version they started with; this change applies to projects started after it.": {
+"fr": "Les projets en cours gardent la version avec laquelle ils ont démarré ; cette modification s'applique aux projets démarrés ensuite.",
+"ar": "تحتفظ المشاريع الجارية بالإصدار الذي بدأت به؛ ويسري هذا التعديل على المشاريع التي تبدأ بعده."
+},
+"Why this change; kept with the version.": {
+"fr": "Motif de la modification ; conservé avec la version.",
+"ar": "سبب التعديل؛ يُحفظ مع الإصدار."
+},
+"Name a step or task with a verb and its object, e.g. \"Identify the interested parties\".": {
+"fr": "Nommez une étape ou une tâche par un verbe et son objet, p. ex. « Identifier les parties intéressées ».",
+"ar": "سمِّ الخطوة أو المهمة بفعل ومفعوله، مثل \"تحديد الأطراف المعنية\"."
+},
+"Brief": {
+"fr": "Résumé",
+"ar": "الملخص"
+},
+"Detailed description": {
+"fr": "Description détaillée",
+"ar": "الوصف المفصل"
+},
+"Goal": {
+"fr": "Finalité",
+"ar": "الغاية"
+},
+"Phase (E2E)": {
+"fr": "Phase (E2E)",
+"ar": "المرحلة (E2E)"
+},
+"Order": {
+"fr": "Ordre",
+"ar": "الترتيب"
+},
+"Approvers (one per line)": {
+"fr": "Approbateurs (un par ligne)",
+"ar": "المعتمدون (واحد في كل سطر)"
+},
+"Items (one per line)": {
+"fr": "Éléments (un par ligne)",
+"ar": "البنود (واحد في كل سطر)"
 }
 };

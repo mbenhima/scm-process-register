@@ -1,0 +1,100 @@
+1043	Rôle enregistré (nouvelle version).
+1044	Rôle retiré ; ses affectations se terminent aujourd'hui.
+1045	Personne affectée au rôle.
+1046	Affectation terminée. {n} actions ouvertes de cette personne doivent avoir un nouveau responsable.
+1047	Affectation terminée.
+1048	Vues des rôles
+1049	Par rôle
+1050	Par fonction
+1051	Par personne
+1052	Nouveau rôle
+1053	Un rôle est rattaché à une ou plusieurs fonctions et peut être tenu par plusieurs personnes ; une personne peut tenir plusieurs rôles. Les rôles décrivent ce que font les personnes ; les droits d'accès restent portés par les rôles d'accès.
+1054	{n} rôle(s) sans titulaire actuel.
+1055	Fonctions
+1056	Tenu par
+1057	Vacant
+1058	Affecter
+1059	Fonction
+1060	Personnes
+1061	Personne
+1062	Rôles tenus
+1063	Nombre de rôles
+1064	Modifier le rôle
+1065	Nom du rôle
+1066	Rôle d'accès proposé aux titulaires
+1067	Fonctions (au moins une)
+1068	Mission
+1069	Responsabilités
+1070	depuis
+1071	Terminer l'affectation
+1072	Note de modification
+1073	Affecter une personne au rôle
+1074	En tant que
+1075	Répartition (%)
+1076	Date de fin
+1077	Spécification du prompt
+1078	Enregistré : {n} champ(s) avec une nouvelle version.
+1079	Enregistré. La spécification est incomplète : le cas d'usage a été désactivé.
+1080	Historique du prompt complet ({n})
+1081	Voir le prompt assemblé
+1082	Enregistrer les modifications ({n})
+1083	Aucune étape liée
+1084	Complétude
+1085	Manquant : {list}
+1086	Complet — le cas d'usage peut être activé
+1087	Rechercher étapes, enregistrements, documents, personnes, aide…
+1088	Filtrer par type
+1089	Saisissez au moins 2 caractères. Les codes (MP-001.2, NC-…) sont recherchés à l'identique.
+1090	Raccourci : Ctrl+K.
+1091	Recherches récentes
+1092	Recherche…
+1093	Aucun résultat pour « {q} ».
+1094	Filtrer le menu…
+1095	Filtrer le menu
+1096	Éditeur de conception des processus
+1097	Étape liée (MP-xxx.n)
+1098	La spécification du prompt est alors renseignée pour cette étape.
+1099	Fréquence personnalisée
+1100	Par exemple : une fois, 6 semaines avant l'audit de certification.
+1101	Fréquence enregistrée.
+1102	Réf.
+1103	Qualification
+1104	Preuve objective
+1105	Réponse attendue
+1106	Critères
+1107	L'exigence (critère) non satisfaite, p. ex. ISO 9001 §7.5.3.
+1108	Par défaut : 30 jours pour une non-conformité majeure, 60 jours pour une mineure.
+1109	Rôles et fonctions
+1110	Élément {id} créé (version 1).
+1111	Enregistré en version {v}.
+1112	Supprimé ; il peut être restauré depuis son historique.
+1113	Retiré : il est utilisé par des projets ou c'est un élément de référence.
+1114	Créez, modifiez, retirez et restaurez chaque élément de la conception des processus. Chaque modification est une nouvelle version ; les projets en cours gardent la version avec laquelle ils ont démarré.
+1115	Nouvel élément
+1116	Types d'éléments
+1117	Filtrer…
+1118	{n} éléments
+1119	ID
+1120	Rôle responsable
+1121	Type de formulaire
+1122	Rôle pilote
+1123	Élément propre
+1124	Référence modifiée
+1125	Référence
+1126	Retirer ou supprimer
+1127	Enregistrer comme nouvelle version
+1128	Utilisé par
+1129	{r} exécutions dans des projets
+1130	{c} éléments enfants
+1131	{d} documents
+1132	{a} cas d'usage IA
+1133	Les projets en cours gardent la version avec laquelle ils ont démarré ; cette modification s'applique aux projets démarrés ensuite.
+1134	Motif de la modification ; conservé avec la version.
+1135	Nommez une étape ou une tâche par un verbe et son objet, p. ex. « Identifier les parties intéressées ».
+1136	Résumé
+1137	Description détaillée
+1138	Finalité
+1139	Phase (E2E)
+1140	Ordre
+1141	Approbateurs (un par ligne)
+1142	Éléments (un par ligne)

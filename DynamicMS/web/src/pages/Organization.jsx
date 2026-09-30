@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import ObsRoles from '../components/ObsRoles.jsx';
 import { Plus, Building2, FolderTree } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
@@ -13,7 +14,8 @@ function Quota({ label, used, max }) {
 export default function Organization() {
   const { t, L, lang, project, me, tree, toast, can, setProjectId, fmtDate } = useApp();
   const navigate = useNavigate();
-  const [tab, setTab] = useState('profile');
+  const [params] = useSearchParams();
+  const [tab, setTab] = useState(params.get('tab') || 'profile');
   const orgId = project?.org?.id || me.org?.id;
   const org = useData(orgId ? `/orgs/${orgId}` : null);
   const obs = useData(tab === 'obs' && orgId ? `/orgs/${orgId}/obs` : null);
@@ -39,7 +41,7 @@ export default function Organization() {
   return (
     <>
       <PageHead eyebrow={o.group ? tx(o.group.name, lang) : t('Independent organization')} title={tx(o.name, lang)} subtitle={`${o.short_code} · ${o.sector} · ${L(o.size)}${o.sme_class ? ` (${L(o.sme_class)})` : ''} · ${o.employees} ${t('employees')} · ${tx(o.city, lang)}`}>{o.access === 'read' && <span className="tag s2" style={{ marginTop: 8 }}>{t('Read-only view of a group organization')}</span>}</PageHead>
-      <Tabs label={t('Organization views')} value={tab} onChange={setTab} tabs={[{ id: 'profile', label: t('Profile and configuration') }, { id: 'projects', label: t('Projects'), count: o.projects.length }, { id: 'obs', label: t('Structure (OBS)') }, { id: 'users', label: t('Users') }, { id: 'tenancy', label: t('Tenancy') }]} />
+      <Tabs label={t('Organization views')} value={tab} onChange={setTab} tabs={[{ id: 'profile', label: t('Profile and configuration') }, { id: 'projects', label: t('Projects'), count: o.projects.length }, { id: 'obs', label: t('Structure (OBS)') }, { id: 'roles', label: t('Roles and functions') }, { id: 'users', label: t('Users') }, { id: 'tenancy', label: t('Tenancy') }]} />
       {tab === 'profile' && (
         <div className="grid-main">
           <div className="stack">
@@ -71,6 +73,7 @@ export default function Organization() {
           </div>
         </div>
       )}
+      {tab === 'roles' && <ObsRoles orgId={orgId} write={write} />}
       {tab === 'projects' && <Table rows={o.projects} onRowClick={(p) => { setProjectId(p.id); navigate('/'); }} columns={[{ key: 'code', label: t('Code') }, { key: 'name', label: t('Project'), render: p => <span className="strong">{tx(p.name, lang)}</span> }, { key: 'ms_type', label: t('System') }, { key: 'mode', label: t('Mode'), render: p => L(p.mode) }, { key: 'track', label: t('Track'), render: p => (p.track ? L(p.track) : '—') }, { key: 'progress', label: t('Progress'), render: p => <div style={{ minWidth: 100 }}><Progress value={p.progress} /><span className="xsmall muted">{p.progress}%</span></div> }, { key: 'currentPhase', label: t('Current phase') }, { key: 'unreadAlerts', label: t('Unread alerts') }]} />}
       {tab === 'obs' && (obs.data ? (
         <Card title={t('Organizational breakdown structure')} action={can('obs.manage') && write && <button className="btn btn-sm" onClick={() => setNn({ name: '', type: 'Department', parentId: obs.data.find(n => !n.parent_id)?.id })}><Plus size={16} />{t('Add node')}</button>}>

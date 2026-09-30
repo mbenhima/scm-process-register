@@ -9,7 +9,7 @@ import { ask, suggest } from '../services/ai.js';
 import { catalog } from '../catalog/store.js';
 import { orgConfig } from '../packs.js';
 import { PROVIDERS, llmConfig, publicConfig, saveConfig, complete, toItems } from '../services/llm.js';
-import { buildPrompt } from '../services/aiprompt.js';
+import { specOf, specCompleteness, buildPrompt } from '../services/aiprompt.js';
 
 const r = Router();
 
@@ -75,6 +75,8 @@ r.post('/orgs/:id/ai/usecases', requirePerm('ai.manage'), h((req, res) => {
   if (n >= orgConfig(o).quotas.customAi) throw new HttpError(402, 'QUOTA_EXCEEDED', 'Custom AI use case quota reached.');
   if (!b.name || !b.checkpoint || !b.taskType) throw bad('FIELDS_REQUIRED', 'Name, task type and human checkpoint are required.');
   if (b.tier === 'Augmented') assertFeature(o.id, 'ai_augmented');
+  if (b.linkedStep && !catalog().stepById[b.linkedStep]) throw bad('BAD_STEP', 'Unknown step: use a code like MP-001.2.');
+  if (b.linkedStep) b.linkedMp = catalog().stepById[b.linkedStep].mp;
   const id = uid();
   const t = (v) => (v ? J({ [req.lang]: v }) : null);
   run('INSERT INTO ai_usecases(id,org_id,code,name,tier,module,trigger_,expected_output,checkpoint,prompt,task_type,risk_level,linked_step,linked_mp,custom,active,approval,version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,0,?,1,?)',
@@ -88,6 +90,7 @@ r.put('/ai/usecases/:id', requirePerm('ai.manage'), h((req, res) => {
   const b = req.body || {};
   if (b.active && u.tier === 'Augmented') assertFeature(u.org_id, 'ai_augmented');
   if (b.active && u.custom && u.approval !== 'Approved' && b.approval !== 'Approved') throw bad('APPROVAL_REQUIRED', 'A custom use case must be approved before activation.');
+  if (b.active) { const comp = specCompleteness(specOf(u), req.lang); if (!comp.complete) throw bad('PROMPT_INCOMPLETE', `Complete the prompt specification before activation: ${comp.missing.join(', ')}.`); }
   const t = (cur, v) => (v === undefined ? J(cur) : J({ ...(cur || {}), [req.lang]: v }));
   run('UPDATE ai_usecases SET name=?, checkpoint=?, prompt=?, active=COALESCE(?,active), approval=COALESCE(?,approval), risk_level=COALESCE(?,risk_level), version=version+1 WHERE id=?',
     t(u.name, b.name), t(u.checkpoint, b.checkpoint), t(u.prompt, b.prompt), b.active === undefined ? null : (b.active ? 1 : 0), b.approval || null, b.riskLevel || null, u.id);

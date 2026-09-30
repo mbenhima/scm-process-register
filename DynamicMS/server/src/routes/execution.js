@@ -1,5 +1,6 @@
 // Lifecycle execution: phases, macro processes, tasks and steps of a project, gate
 // decisions, checklists and BPMN diagrams (FR-DA-GTE, FR-DA-CHK, FR-DA-BPMN).
+import { designAt } from './design.js';
 import { Router } from 'express';
 import { all, get, run, uid, now, J, P } from '../db.js';
 import { requirePerm, can, assertFeature } from '../auth.js';
@@ -78,7 +79,11 @@ function stepRacsiOf(projectId, stepId) {
 }
 function stepDetail(req, e) {
   const c = catalog();
-  const s = c.stepById[e.step_id];
+  // The step as designed when the project started (FR-DA-PDM-06): an organization's later
+  // edits of the process design apply to projects started after them.
+  const pr = get('SELECT org_id, created_at FROM projects WHERE id=?', e.project_id);
+  const ov = designAt(pr.org_id, 'step', e.step_id, pr.created_at);
+  const s = ov ? { ...c.stepById[e.step_id], ...Object.fromEntries(Object.entries(ov).filter(([k]) => ['name', 'brief', 'description'].includes(k))), designVersion: true } : c.stepById[e.step_id];
   const m = c.mpById[e.mp_id];
   const siblings = all('SELECT id, step_id, status FROM step_exec WHERE project_id=? AND mp_id=? ORDER BY seq', e.project_id, e.mp_id);
   const i = siblings.findIndex(x => x.id === e.id);

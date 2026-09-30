@@ -336,3 +336,23 @@ table.data.rows .input, table.data.rows .select { min-height: 36px; padding: 6px
 .kv dd { margin: 0; font-size: 13px; padding: 6px 10px; }
 .doc-diagram { overflow-x: auto; border: 1px solid var(--line, #E3E3E4); border-radius: 8px; background: #fff; padding: 6px; }
 .doc-diagram svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+
+/* Global search (menu button, Ctrl+K) and menu filter */
+.nav-search { display: grid; gap: 6px; padding: 4px 4px 10px; border-bottom: 1px solid var(--pa-grey-line, #E3E3E4); margin-bottom: 8px; }
+.dock-top .nav-search, .dock-bottom .nav-search { display: flex; border: 0; padding: 0 8px 0 0; margin: 0; }
+.nav-search-btn { justify-content: flex-start; width: 100%; }
+.nav-filter { min-height: 32px; font-size: 13px; }
+.nav-handle-search { position: fixed; top: 76px; inset-inline-start: 4px; z-index: 41; background: var(--pa-orange, #F8931D); color: #fff; border-radius: 50%; }
+.search-overlay { position: fixed; inset: 0; background: rgba(58,58,60,.35); z-index: 100; display: flex; justify-content: center; align-items: flex-start; padding: 8vh 16px 16px; }
+.search-panel { width: min(760px, 100%); max-height: 80vh; display: flex; flex-direction: column; background: #fff; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.18); overflow: hidden; }
+.search-input { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--pa-grey-line, #E3E3E4); }
+.search-input input { flex: 1; border: 0; outline: none; font-size: 16px; background: transparent; }
+.search-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 14px; border-bottom: 1px solid var(--pa-grey-line, #E3E3E4); }
+.chip { border: 1px solid var(--pa-grey-line, #E3E3E4); background: #fff; border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; }
+.chip.on { background: var(--pa-orange-tint, #FDEEDA); border-color: var(--pa-orange, #F8931D); color: var(--pa-orange-deep, #E07B00); font-weight: 600; }
+.search-results { overflow: auto; padding: 10px 14px 16px; }
+.search-group { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--pa-orange-deep, #E07B00); margin: 12px 0 6px; }
+.search-list { list-style: none; margin: 0; padding: 0; }
+.search-item { display: flex; align-items: center; gap: 10px; width: 100%; text-align: start; border: 0; background: transparent; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+.search-item.active, .search-item:hover { background: var(--pa-grey-light, #F2F2F3); }
+.search-item mark { background: var(--pa-orange-tint, #FDEEDA); color: inherit; padding: 0 1px; border-radius: 2px; }

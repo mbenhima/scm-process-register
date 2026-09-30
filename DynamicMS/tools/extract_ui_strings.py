@@ -27,6 +27,7 @@ EXTRA_STRINGS = [
     'complete', 'save', 'reopen', 'assign', 'create', 'update',
     'periodicity', 'list', 'assess', 'decision', 'document', 'communicate', 'train', 'monitor', 'plan', 'execute', 'configure', 'close', 'escalate', 'ai', 'service',
     'Text Generation', 'Summarization', 'Classification', 'Recommendation', 'Prediction',
+    'Brief', 'Detailed description', 'Goal', 'Goals', 'Trigger', 'End', 'Phase (E2E)', 'Order', 'Purpose', 'Entry criteria', 'Exit criteria', 'Approvers (one per line)', 'Items (one per line)', 'Macro process', 'Task',
 ]
 
 

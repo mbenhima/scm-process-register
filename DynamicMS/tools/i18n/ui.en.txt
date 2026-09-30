@@ -1040,3 +1040,103 @@
 1040	Instructions (system)
 1041	Context of the step (user)
 1042	Naming: {n} task name(s) should start with a verb and name their object: {list}
+1043	Role saved (new version).
+1044	Role retired; its assignments ended today.
+1045	Person assigned to the role.
+1046	Assignment ended. {n} open actions of this person need a new owner.
+1047	Assignment ended.
+1048	Role views
+1049	By role
+1050	By function
+1051	By person
+1052	New role
+1053	A role is linked to one or more functions and can be played by several people; a person can play several roles. Roles describe what people do; access rights stay with the access roles.
+1054	{n} role(s) without a current holder.
+1055	Functions
+1056	Played by
+1057	Vacant
+1058	Assign
+1059	Function
+1060	People
+1061	Person
+1062	Roles played
+1063	Number of roles
+1064	Edit role
+1065	Role name
+1066	Access role proposed to holders
+1067	Functions (at least one)
+1068	Mission
+1069	Responsibilities
+1070	since
+1071	End assignment
+1072	Change note
+1073	Assign a person to the role
+1074	As
+1075	Allocation (%)
+1076	End date
+1077	Prompt specification
+1078	Saved: {n} field(s) with a new version.
+1079	Saved. The specification is incomplete, so the use case was deactivated.
+1080	History of the whole prompt ({n})
+1081	View the assembled prompt
+1082	Save changes ({n})
+1083	No linked step
+1084	Completeness
+1085	Missing: {list}
+1086	Complete — the use case can be activated
+1087	Search steps, records, documents, people, help…
+1088	Filter by type
+1089	Type at least 2 characters. Codes (MP-001.2, NC-…) are matched exactly.
+1090	Shortcut: Ctrl+K.
+1091	Recent searches
+1092	Searching…
+1093	No result for "{q}".
+1094	Filter the menu…
+1095	Filter the menu
+1096	Process design editor
+1097	Linked step (MP-xxx.n)
+1098	The prompt specification is then populated for this step.
+1099	Custom frequency
+1100	For example: once, 6 weeks before the certification audit.
+1101	Frequency saved.
+1102	Ref.
+1103	Grading
+1104	Objective evidence
+1105	Response due
+1106	Criteria
+1107	The requirement (criterion) not met, e.g. ISO 9001 §7.5.3.
+1108	Default: 30 days for a major, 60 days for a minor nonconformity.
+1109	Roles and functions
+1110	Element {id} created (version 1).
+1111	Saved as version {v}.
+1112	Deleted; it can be restored from its history.
+1113	Retired: it is used by projects or is a reference element.
+1114	Create, change, retire and restore every element of the process design. Every change is a new version; running projects keep the version they started with.
+1115	New element
+1116	Element types
+1117	Filter…
+1118	{n} elements
+1119	ID
+1120	Responsible role
+1121	Form kind
+1122	Owner role
+1123	Own element
+1124	Modified reference
+1125	Reference
+1126	Retire or delete
+1127	Save as new version
+1128	Used by
+1129	{r} runs in projects
+1130	{c} child elements
+1131	{d} documents
+1132	{a} AI use cases
+1133	Running projects keep the version they started with; this change applies to projects started after it.
+1134	Why this change; kept with the version.
+1135	Name a step or task with a verb and its object, e.g. "Identify the interested parties".
+1136	Brief
+1137	Detailed description
+1138	Goal
+1139	Phase (E2E)
+1140	Order
+1141	Approvers (one per line)
+1142	Items (one per line)

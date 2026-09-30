@@ -4,6 +4,7 @@ import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { PageHead, Loading, ErrorBox, Status, Tabs, Table, tx, Modal, Field, Card } from '../components/ui.jsx';
 import { VersionsButton } from '../components/Versions.jsx';
+import PromptSpecModal from '../components/PromptSpec.jsx';
 import { NoProject } from './Home.jsx';
 
 export default function AiUseCases() {
@@ -15,6 +16,7 @@ export default function AiUseCases() {
   const ov = useData(projectId ? `/projects/${projectId}/ai/overrides` : null);
   const [sel, setSel] = useState(null);
   const [nw, setNw] = useState(null);
+  const [spec, setSpec] = useState(null);
   if (!project) return <NoProject />;
   const manage = can('ai.manage') && !readOnly;
   const override = (id) => ov.data?.find(o => o.usecase_id === id)?.state || 'Inherit';
@@ -29,7 +31,7 @@ export default function AiUseCases() {
         <Table rows={lib.data.items} onRowClick={setSel} columns={[
           { key: 'code', label: t('Code'), width: 100 }, { key: 'name', label: t('Use case'), render: u => <span className="strong">{tx(u.name, lang)}</span>, sortValue: u => tx(u.name, lang) },
           { key: 'tier', label: t('Tier'), render: u => <span className={`tag ${u.entitled ? '' : 's1'}`}>{L(u.tier)}{u.entitled ? '' : ` · ${t('not licensed')}`}</span> },
-          { key: 'risk_level', label: t('Risk'), render: u => <Status value={u.risk_level} /> }, { key: 'linked_mp', label: t('Process') },
+          { key: 'risk_level', label: t('Risk'), render: u => <Status value={u.risk_level} /> }, { key: 'linked_step', label: t('Linked step'), render: u => u.linked_step || u.linked_mp || '—' },
           { key: 'usage', label: t('Uses'), render: u => u.usage?.n || 0, sortValue: u => u.usage?.n || 0 },
           { key: 'acc', label: t('Accepted'), render: u => (u.usage?.n ? `${Math.round(100 * ((u.usage.acc || 0) + (u.usage.ed || 0)) / u.usage.n)}%` : '—') },
           { key: 'active', label: t('Organization'), render: u => <Status value={u.active ? 'Active' : 'Disabled'} /> },
@@ -38,7 +40,7 @@ export default function AiUseCases() {
       ))}
       {tab === 'log' && (logs.data ? <Table rows={logs.data} columns={[{ key: 'created_at', label: t('Date'), render: l => fmtDate(l.created_at) }, { key: 'usecase_code', label: t('Use case'), render: l => `${l.usecase_code || '—'} ${tx(l.usecase_name, lang) || ''}` }, { key: 'user_name', label: t('User') }, { key: 'record_type', label: t('Record') }, { key: 'confidence', label: t('Confidence'), render: l => `${Math.round((l.confidence || 0) * 100)}%` }, { key: 'outcome', label: t('Outcome'), render: l => <Status value={l.outcome} /> }]} /> : <Loading />)}
       {sel && (
-        <Modal wide title={`${sel.code} — ${tx(sel.name, lang)}`} onClose={() => setSel(null)} footer={<><VersionsButton type="ai_usecase" id={sel.id} onReverted={lib.reload} /><button className="btn" onClick={() => setSel(null)}>{t('Close')}</button></>}>
+        <Modal wide title={`${sel.code} — ${tx(sel.name, lang)}`} onClose={() => setSel(null)} footer={<><button className="btn btn-primary" onClick={() => { setSpec(sel); setSel(null); }}>{t('Prompt specification')}</button><VersionsButton type="ai_usecase" id={sel.id} onReverted={lib.reload} /><button className="btn" onClick={() => setSel(null)}>{t('Close')}</button></>}>
           <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
             <Card tight className="flat"><div className="xsmall muted">{t('Task type')}</div><div className="small strong">{tx(sel.task_type, lang)}</div></Card>
             <Card tight className="flat"><div className="xsmall muted">{t('Human checkpoint')}</div><div className="small strong">{tx(sel.checkpoint, lang)}</div></Card>
@@ -55,6 +57,7 @@ export default function AiUseCases() {
           )}
         </Modal>
       )}
+      {spec && <PromptSpecModal usecase={spec} onClose={() => setSpec(null)} onSaved={lib.reload} />}
       {nw && (
         <Modal title={t('Custom use case')} onClose={() => setNw(null)} footer={<><button className="btn" onClick={() => setNw(null)}>{t('Cancel')}</button><button className="btn btn-primary" disabled={!nw.name || !nw.checkpoint} onClick={create}>{t('Create')}</button></>}>
           <div className="stack">
@@ -64,6 +67,7 @@ export default function AiUseCases() {
               <Field label={t('Tier')}>{(id) => <select id={id} className="select" value={nw.tier} onChange={e => setNw({ ...nw, tier: e.target.value })}><option value="Assistive">{L('Assistive')}</option><option value="Augmented">{L('Augmented')}</option></select>}</Field>
               <Field label={t('Risk')}>{(id) => <select id={id} className="select" value={nw.riskLevel} onChange={e => setNw({ ...nw, riskLevel: e.target.value })}>{['Low', 'Medium', 'High'].map(x => <option key={x} value={x}>{L(x)}</option>)}</select>}</Field>
               <Field label={t('Linked process (MP-xxx)')}>{(id) => <input id={id} className="input" value={nw.linkedMp || ''} onChange={e => setNw({ ...nw, linkedMp: e.target.value })} />}</Field>
+              <Field label={t('Linked step (MP-xxx.n)')} hint={t('The prompt specification is then populated for this step.')}>{(id) => <input id={id} className="input" value={nw.linkedStep || ''} onChange={e => setNw({ ...nw, linkedStep: e.target.value })} />}</Field>
             </div>
             <Field label={t('Human checkpoint')} required hint={t('Who accepts, edits or rejects the suggestion, and when.')}>{(id) => <input id={id} className="input" value={nw.checkpoint} onChange={e => setNw({ ...nw, checkpoint: e.target.value })} />}</Field>
             <Field label={t('Prompt')}>{(id) => <textarea id={id} className="textarea" value={nw.prompt} onChange={e => setNw({ ...nw, prompt: e.target.value })} />}</Field>

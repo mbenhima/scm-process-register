@@ -2,6 +2,8 @@
 // demonstration tenancy (2 groups + 1 independent organization, 60 organizations)
 // and 120 "full run" projects (QMS and QHSE for every organization).
 // Usage: npm run seed   (drops and recreates data/dynamicms.db)
+import { seedObsRoles } from '../services/obsroles.js';
+import { defaultSpec } from '../services/aiprompt.js';
 import fs from 'node:fs';
 import bcrypt from 'bcryptjs';
 import { config } from '../config.js';
@@ -172,6 +174,7 @@ function seedOrg(cat, o, idx, groupIds, libs, hash) {
     for (const role of deptRoles[j]) run('INSERT INTO obs_members(id,org_id,node_id,user_id,role_in_node) VALUES(?,?,?,?,?)', uid(), id, nid, users[role].id, role);
   });
   for (const role of ['top_management', 'ims_manager', 'auditor']) run('INSERT INTO obs_members(id,org_id,node_id,user_id,role_in_node) VALUES(?,?,?,?,?)', uid(), id, rootId, users[role].id, role);
+  seedObsRoles(id, created);
 
   // Organization-level governance: business rules, controls (+ compliance scaffolds), AI use cases, alerts
   const sevOf = Object.fromEntries(cat.alerts.map(a => [a.rule, a.severity]));
@@ -192,6 +195,8 @@ function seedOrg(cat, o, idx, groupIds, libs, hash) {
       aid, id, a.id, J(a.name), a.tier, cat.mpById[a.mp]?.module || null, J(cat.stepById[a.step]?.name || null), J(a.name), J(a.checkpoint), J(a.prompt || null), J(a.taskType), a.risk, a.step, a.mp, a.approval, created);
     aiUsecases.push({ id: aid, mp: a.mp, code: a.id });
   }
+  // Every use case gets its prompt specification, populated for its linked step (FR-DA-AIP-07).
+  for (const u of all('SELECT * FROM ai_usecases WHERE org_id=?', id)) run('UPDATE ai_usecases SET prompt_spec=? WHERE id=?', J(defaultSpec(u)), u.id);
   if (large) {
     const aid = uid();
     run('INSERT INTO ai_usecases(id,org_id,code,name,tier,module,trigger_,expected_output,checkpoint,prompt,task_type,risk_level,linked_step,linked_mp,custom,active,approval,version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,1,?)',

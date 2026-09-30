@@ -113,16 +113,17 @@ r.get('/audit-log', requirePerm('audit.view'), h((req, res) => {
 }));
 
 // ---- Generic version management (FR-DA-VER)
+import { REVERTERS } from '../services/revert.js';
 const VERSIONED = { rule: 'business_rules', control: 'controls', risk: 'risks', kpi: 'kpis', action: 'actions', register: 'registers', nc: 'ncs', ai_usecase: 'ai_usecases', project: 'projects', organization: 'organizations', bpmn: 'bpmn_diagrams', racsi: null, step: null, configuration: null };
 const PROTECTED = new Set(['id', 'org_id', 'project_id', 'created_at', 'code']);
-r.get('/versions/:type/:id', requirePerm('audit.view', 'governance.view', 'records.view'), h((req, res) => {
+r.get('/versions/:type/:id', requirePerm('audit.view', 'governance.view', 'records.view', 'process.view', 'ai.view'), h((req, res) => {
   const list = rows(versions(req.params.type, req.params.id));
   if (!list.length) return send(req, res, []);
   requireOrg(req, list[0].org_id);
   const users = Object.fromEntries(all('SELECT id, name FROM users WHERE org_id=?', list[0].org_id).map(u => [u.id, u.name]));
   send(req, res, list.map(v => ({ ...v, user_name: users[v.user_id] || null })));
 }));
-r.get('/versions/:type/:id/compare', requirePerm('audit.view', 'governance.view', 'records.view'), h((req, res) => {
+r.get('/versions/:type/:id/compare', requirePerm('audit.view', 'governance.view', 'records.view', 'process.view', 'ai.view'), h((req, res) => {
   const list = rows(versions(req.params.type, req.params.id));
   if (!list.length) throw notFound('Version');
   requireOrg(req, list[0].org_id);
@@ -131,7 +132,21 @@ r.get('/versions/:type/:id/compare', requirePerm('audit.view', 'governance.view'
   const keys = [...new Set([...Object.keys(a.data || {}), ...Object.keys(b.data || {})])];
   send(req, res, { a: a.version, b: b.version, fields: keys.map(k => ({ field: k, a: a.data?.[k] ?? null, b: b.data?.[k] ?? null, changed: JSON.stringify(a.data?.[k]) !== JSON.stringify(b.data?.[k]) })) });
 }));
-r.post('/versions/:type/:id/revert', requirePerm('governance.manage', 'records.manage'), h((req, res) => {
+r.post('/versions/:type/:id/revert', requirePerm('governance.manage', 'records.manage', 'process.design', 'obs.manage', 'ai.manage'), h((req, res) => {
+  const custom = REVERTERS[req.params.type];
+  if (custom) {
+    const v = get('SELECT * FROM entity_versions WHERE entity_type=? AND entity_id=? AND version=?', req.params.type, req.params.id, +req.body?.version);
+    if (!v) throw notFound('Version');
+    requireOrg(req, v.org_id, true);
+    if (!req.body?.justification) throw bad('JUSTIFICATION_REQUIRED', 'A justification is required to revert.');
+    const data = P(v.data) || {};
+    tx(() => {
+      custom(req, v, data);
+      const nv = snapshot(req, v.org_id, req.params.type, req.params.id, data, { [req.lang]: `Revert to v${v.version}: ${req.body.justification}` });
+      audit(req, v.org_id, req.params.type, req.params.id, 'revert', null, { toVersion: v.version, newVersion: nv }, req.body.justification);
+    });
+    return res.json({ ok: true });
+  }
   const table = VERSIONED[req.params.type];
   if (!table) throw bad('NOT_REVERTIBLE', 'This entity type is reverted through its own workflow.');
   const v = get('SELECT * FROM entity_versions WHERE entity_type=? AND entity_id=? AND version=?', req.params.type, req.params.id, +req.body?.version);

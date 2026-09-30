@@ -202,7 +202,7 @@ export function seedImsRecords(x) {
       category: CAT[e.cat], manufacturer: e.mfr, model: e.model, serial: `SN-${r.int(10000, 99999)}`, location: profile.line, user: uName(j % 2 ? 'operations_manager' : 'quality_manager'),
       range: e.range, resolution: e.res, tolerance: e.tol, method: METHOD[e.method], provider: e.method === 'External' ? S('Calibration laboratory (supplier SUP-05)', 'Laboratoire d\'étalonnage (fournisseur SUP-05)', 'مختبر المعايرة (المورد SUP-05)') : S('Quality department', 'Service qualité', 'قسم الجودة'),
       certificate: `CAL-${last.slice(0, 4)}-${r.int(100, 999)}`, frequencyMonths: e.months, lastCalibration: last, result: oot ? S('Adjusted', 'Ajusté', 'تم الضبط') : S('Pass', 'Conforme', 'مطابق'),
-      error: oot ? '+6 % → +0.8 %' : `${(r.next() * 0.6).toFixed(2)} × ${e.tol.replace('±', '').trim()}`, nextCalibration: next, traceability: TRACE, outOfTolerance: oot ? OOT : null,
+      error: oot ? '+6 % → +0.8 %' : `${Math.round(10 + r.next() * 50)} % MPE`, nextCalibration: next, traceability: TRACE, outOfTolerance: oot ? OOT : null,
       lastCalibrationResult: oot ? 'Adjusted' : 'Pass',
     }, status, 'MP-025');
   });

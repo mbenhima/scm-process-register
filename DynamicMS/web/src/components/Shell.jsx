@@ -6,11 +6,12 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, ListChecks, Workflow, Bell, ShieldAlert, Gauge, Grid3x3, Scale, AlertOctagon, CheckSquare, ClipboardCheck, FileText, BookOpen,
   GanttChart, FileBarChart, LayoutGrid, BarChart3, MessageSquare, Sparkles, Library, Network, Layers, ListTree, Building2, FolderPlus, Settings2,
-  LifeBuoy, UserCog, Star, Pin, PinOff, Menu, LogOut, ChevronDown, ChevronRight, PanelLeft, PanelRight, PanelTop, PanelBottom,
+  LifeBuoy, UserCog, Star, Search, PenTool, Pin, PinOff, Menu, LogOut, ChevronDown, ChevronRight, PanelLeft, PanelRight, PanelTop, PanelBottom,
 } from 'lucide-react';
 import { useApp } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { tx } from './ui.jsx';
+import SearchModal from './SearchModal.jsx';
 
 export const NAV = [
   { id: 'home', group: 'Work', label: 'Home', icon: LayoutDashboard, to: '/', perm: 'dashboard.view' },
@@ -34,6 +35,7 @@ export const NAV = [
   { id: 'ai', group: 'Intelligence', label: 'AI use cases', icon: Sparkles, to: '/ai', perm: 'ai.view' },
   { id: 'knowledge', group: 'Intelligence', label: 'Knowledge base', icon: Library, to: '/knowledge', perm: 'kb.view' },
   { id: 'process', group: 'Design', label: 'Process design', icon: Network, to: '/process', perm: 'process.view' },
+  { id: 'design', group: 'Design', label: 'Process design editor', icon: PenTool, to: '/design', perm: 'process.view' },
   { id: 'libraries', group: 'Design', label: 'Libraries', icon: Layers, to: '/libraries', perm: 'process.view' },
   { id: 'traceability', group: 'Design', label: 'Traceability', icon: ListTree, to: '/traceability', perm: 'process.view' },
   { id: 'organization', group: 'Organization', label: 'Organization', icon: Building2, to: '/organization', perm: 'tenancy.view' },
@@ -68,6 +70,8 @@ export default function Shell({ children }) {
   const [hoverOpen, setHoverOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState(null);
   const menuBtn = useRef(null);
+  const [search, setSearch] = useState(null);
+  const [filter, setFilter] = useState('');
   const dock = prefs.dock || 'start';
   const pinned = prefs.pinned !== false;
   const horizontal = dock === 'top' || dock === 'bottom';
@@ -77,8 +81,11 @@ export default function Shell({ children }) {
   useEffect(() => { setDrawer(false); setOpenGroup(null); setHoverOpen(false); }, [loc.pathname]);
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') { if (drawer) { setDrawer(false); menuBtn.current?.focus(); } setOpenGroup(null); setHoverOpen(false); } };
+    // Ctrl/Cmd+K opens the global search from any screen.
+    const onSearchKey = (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setSearch(''); } };
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    document.addEventListener('keydown', onSearchKey);
+    return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('keydown', onSearchKey); };
   }, [drawer]);
   useEffect(() => {
     if (!projectId) return undefined;
@@ -94,7 +101,10 @@ export default function Shell({ children }) {
   };
   const toggleFav = (id) => savePrefs({ favorites: favs.includes(id) ? favs.filter(x => x !== id) : [...favs, id] });
   const favItems = favs.map(id => items.find(i => i.id === id)).filter(Boolean);
-  const groups = [...(favItems.length ? [['Favorites', favItems]] : []), ...GROUPS.map(g => [g, items.filter(i => i.group === g)]).filter(([, l]) => l.length)];
+  // Typing in the menu search field filters the menu items (favorites first).
+  const f = filter.trim().toLowerCase();
+  const match = (n) => !f || t(n.label).toLowerCase().includes(f) || t(n.group).toLowerCase().includes(f);
+  const groups = [...(favItems.length ? [['Favorites', favItems.filter(match)]] : []), ...GROUPS.map(g => [g, items.filter(i => i.group === g && match(i))])].filter(([, l]) => l.length);
 
   const renderItem = (n) => (
     <NavLink key={n.id} to={n.to} end={n.to === '/'} className="nav-item">
@@ -137,10 +147,14 @@ export default function Shell({ children }) {
       </header>
 
       {drawer && <div className="drawer-backdrop" onClick={() => setDrawer(false)} />}
-      {unpinned && !hoverOpen && <button className="nav-handle" aria-label={t('Open menu')} onMouseEnter={() => setHoverOpen(true)} onFocus={() => setHoverOpen(true)} onClick={() => setHoverOpen(true)} />}
+      {unpinned && !hoverOpen && <><button className="nav-handle" aria-label={t('Open menu')} onMouseEnter={() => setHoverOpen(true)} onFocus={() => setHoverOpen(true)} onClick={() => setHoverOpen(true)} /><button className="nav-handle-search btn btn-icon btn-sm" aria-label={t('Search')} title={`${t('Search')} (Ctrl+K)`} onClick={() => setSearch('')}><Search size={16} /></button></>}
       <nav className={navClass} aria-label={t('Main menu')} onMouseLeave={() => unpinned && setHoverOpen(false)}>
+        <div className="nav-search" role="search">
+          <button className="btn btn-primary btn-sm nav-search-btn" onClick={() => setSearch(filter)} title="Ctrl+K"><Search size={16} aria-hidden="true" /><span>{t('Search')}</span></button>
+          {!horizontal && <input className="input nav-filter" value={filter} onChange={e => setFilter(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && filter.trim()) setSearch(filter); if (e.key === 'Escape') setFilter(''); }} placeholder={t('Filter the menu…')} aria-label={t('Filter the menu')} />}
+        </div>
         {groups.map(([g, list]) => {
-          const isCollapsed = horizontal ? openGroup !== g : collapsed.includes(g);
+          const isCollapsed = horizontal ? openGroup !== g : collapsed.includes(g) && !f;
           const active = list.some(n => (n.to === '/' ? loc.pathname === '/' : loc.pathname.startsWith(n.to)));
           return (
             <div key={g} className="nav-group">
@@ -157,6 +171,7 @@ export default function Shell({ children }) {
         </div>
       </nav>
       <main id="main" className="main" tabIndex={-1}>{children}</main>
+      {search !== null && <SearchModal initial={search} onClose={() => setSearch(null)} />}
     </div>
   );
 }

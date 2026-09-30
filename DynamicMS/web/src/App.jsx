@@ -27,6 +27,7 @@ import AiUseCases from './pages/AiUseCases.jsx';
 import Knowledge from './pages/Knowledge.jsx';
 import Process, { E2EDetail, CatalogMp } from './pages/Process.jsx';
 import Libraries from './pages/Libraries.jsx';
+import ProcessDesign from './pages/ProcessDesign.jsx';
 import Traceability from './pages/Traceability.jsx';
 import Organization from './pages/Organization.jsx';
 import NewProject from './pages/NewProject.jsx';
@@ -71,6 +72,7 @@ export default function App() {
         <Route path="/process/e2e/:id" element={<E2EDetail />} />
         <Route path="/process/mp/:id" element={<CatalogMp />} />
         <Route path="/libraries" element={<Libraries />} />
+        <Route path="/design" element={<ProcessDesign />} />
         <Route path="/traceability" element={<Traceability />} />
         <Route path="/organization" element={<Organization />} />
         <Route path="/projects/new" element={<NewProject />} />

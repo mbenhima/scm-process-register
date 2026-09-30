@@ -32,7 +32,7 @@ export default function VersionsModal({ type, id, onClose, onReverted }) {
             { key: 'at', label: t('Date'), render: v => fmtDate(v.at) },
             { key: 'user_name', label: t('By') },
             { key: 'justification', label: t('Justification'), render: v => tx(v.justification, lang) || '—' },
-            { key: 'act', label: '', sortable: false, render: v => (!v.is_current && (can('governance.manage') || can('records.manage')) ? <button className="btn btn-sm" onClick={() => setRev(v.version)}>{t('Revert')}</button> : null) },
+            { key: 'act', label: '', sortable: false, render: v => (!v.is_current && (can('governance.manage') || can('records.manage') || can('process.design') || can('obs.manage') || can('ai.manage')) ? <button className="btn btn-sm" onClick={() => setRev(v.version)}>{t('Revert')}</button> : null) },
           ]} empty={t('No version recorded yet.')} />
           <div className="row"><button className="btn btn-sm" disabled={pick.length !== 2} onClick={compare}>{t('Compare selected')}</button></div>
           {cmp && (

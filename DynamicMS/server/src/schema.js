@@ -262,6 +262,24 @@ CREATE INDEX IF NOT EXISTS ix_doctpl_org ON doc_templates(org_id, code);
 CREATE TABLE IF NOT EXISTS mp_readiness (
   project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE, org_id TEXT NOT NULL, mp_id TEXT NOT NULL,
   items TEXT NOT NULL, updated_by TEXT, updated_at TEXT, PRIMARY KEY (project_id, mp_id));
+
+-- Process design managed by an organization: its version of a catalog element (or its own
+-- element), current state only; every version is kept in entity_versions ('design').
+CREATE TABLE IF NOT EXISTS design_elements (
+  org_id TEXT NOT NULL, type TEXT NOT NULL, el_id TEXT NOT NULL, data TEXT NOT NULL, status TEXT DEFAULT 'Active',
+  custom INTEGER DEFAULT 0, version INTEGER DEFAULT 1, updated_by TEXT, updated_at TEXT, PRIMARY KEY (org_id, type, el_id));
+
+-- OBS roles (positions) defined in a unit, linked to one or more functions, played by people.
+CREATE TABLE IF NOT EXISTS obs_roles (
+  id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE, node_id TEXT, code TEXT, name TEXT NOT NULL,
+  mission TEXT, responsibilities TEXT, competences TEXT, functions TEXT NOT NULL, access_roles TEXT, reports_to TEXT,
+  status TEXT DEFAULT 'Active', version INTEGER DEFAULT 1, created_at TEXT, updated_at TEXT);
+CREATE INDEX IF NOT EXISTS ix_obsroles_org ON obs_roles(org_id);
+CREATE TABLE IF NOT EXISTS role_assignments (
+  id TEXT PRIMARY KEY, org_id TEXT NOT NULL, role_id TEXT NOT NULL REFERENCES obs_roles(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, holder_type TEXT DEFAULT 'Holder', allocation INTEGER DEFAULT 100,
+  start_date TEXT, end_date TEXT, created_at TEXT);
+CREATE INDEX IF NOT EXISTS ix_roleassign_org ON role_assignments(org_id);
 `;
 
 // Columns added after the first release are declared here so existing databases upgrade in place.
@@ -270,7 +288,7 @@ export const ADDITIVE_COLUMNS = {
   projects: { progress_cache: 'INTEGER' },
   documents: { target: 'TEXT', source_step: 'TEXT', updated_at: 'TEXT' },
   attachments: { version: 'INTEGER DEFAULT 1', group_id: 'TEXT', note: 'TEXT' },
-  ai_usecases: { model: 'TEXT' },
+  ai_usecases: { model: 'TEXT', prompt_spec: 'TEXT' },
   audits: { frequency: 'TEXT', frequency_custom: 'TEXT', criteria: 'TEXT', objectives: 'TEXT', team: 'TEXT', auditees: 'TEXT', method: 'TEXT', duration_h: 'REAL', processes: 'TEXT' },
   findings: { code: 'TEXT', requirement: 'TEXT', evidence: 'TEXT', area: 'TEXT', auditee: 'TEXT', due_date: 'TEXT', correction: 'TEXT', root_cause: 'TEXT', verification: 'TEXT', verified_at: 'TEXT' },
 };

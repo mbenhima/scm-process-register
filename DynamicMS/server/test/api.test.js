@@ -263,3 +263,48 @@ test('feedback: RACSI five columns, readiness checklist, LLM settings, tenancy c
   const ind = await call('POST', '/tenancy/orgs', pa, { name: 'Solo Org', sector: 'UNI', size: 'SME', emailDomain: 'solo-org.example', adminEmail: 'admin@solo-org.example' });
   assert.equal(ind.status, 201);
 });
+
+test('SRS 1.5: global search, process design versions, OBS roles, prompt specification, audit frequency', async () => {
+  const t = await login('ims@atlas-sme.example');
+  const admin = await login('admin@atlas-sme.example');
+  const me = (await call('GET', '/auth/me', t)).body;
+  const org = me.org.id;
+  const proj = (await call('GET', '/tenancy/tree', t)).body.independent[0].projects.find(p => p.ms_type === 'QMS');
+  // Search: rights-aware, codes matched exactly and ranked first
+  const s = (await call('GET', `/search?q=MP-001.2&projectId=${proj.id}`, t)).body;
+  assert.equal(s.groups[0].type, 'step'); assert.equal(s.groups[0].items[0].code, 'MP-001.2');
+  const rep = await login('employee@atlas-sme.example');
+  const sr = (await call('GET', `/search?q=policy&projectId=${proj.id}`, rep)).body;
+  assert.ok(!sr.groups.some(g => g.type === 'ai' && !g.items.length));
+  // Process design: edit creates a version, restore brings the reference back, naming enforced
+  assert.equal((await call('PUT', `/orgs/${org}/design/step/MP-002.4`, t, { name: 'Draft' })).status, 400);
+  assert.equal((await call('PUT', `/orgs/${org}/design/step/MP-002.4`, t, { name: 'Draft the policy statement with top management' })).status, 200);
+  const hist = (await call('GET', `/admin/versions/design/${org}:step:MP-002.4`, t)).body;
+  assert.equal(hist.length, 2);
+  assert.equal((await call('POST', `/admin/versions/design/${org}:step:MP-002.4/revert`, t, { version: 1, justification: 'Back to reference' })).status, 200);
+  const el = (await call('GET', `/orgs/${org}/design/step/MP-002.4`, t)).body;
+  assert.notEqual(el.data.name, 'Draft the policy statement with top management');
+  const created = await call('POST', `/orgs/${org}/design/task`, t, { name: 'Prepare the supplier review', mp: 'MP-024' });
+  assert.equal(created.status, 201);
+  assert.equal((await call('DELETE', `/orgs/${org}/design/task/${created.body.id}`, t, { justification: 'test' })).body.status, 'Deleted');
+  // OBS roles: one role, several functions; one person, several roles
+  const roles = (await call('GET', `/orgs/${org}/obs-roles`, t)).body;
+  assert.ok(roles.roles.length >= 10);
+  assert.ok(roles.people.some(p => p.roles.length > 1));
+  const role = roles.roles.find(r => r.code === 'quality_manager');
+  assert.equal((await call('PUT', `/obs-roles/${role.id}`, admin, { functions: [] })).status, 400);
+  assert.equal((await call('PUT', `/obs-roles/${role.id}`, admin, { functions: ['FN-02', 'FN-08'] })).status, 200);
+  assert.equal((await call('GET', `/admin/versions/obs_role/${role.id}`, admin)).body.length, 2);
+  // Prompt specification: 12 separate fields, field versions, completeness blocks activation
+  const uc = (await call('GET', `/orgs/${org}/ai/usecases`, admin)).body.items[0];
+  const spec = (await call('GET', `/ai/usecases/${uc.id}/spec?raw=1`, admin)).body;
+  assert.equal(spec.fields.length, 12); assert.ok(spec.completeness.complete);
+  const up = await call('PUT', `/ai/usecases/${uc.id}/spec`, admin, { fields: { constraints: '' } });
+  assert.equal(up.status, 200); assert.equal(up.body.completeness.complete, false);
+  assert.equal((await call('PUT', `/ai/usecases/${uc.id}`, admin, { active: true })).status, 400);
+  assert.equal((await call('POST', `/admin/versions/prompt_field/${uc.id}:constraints/revert`, admin, { version: 1, justification: 'restore' })).status, 200);
+  assert.equal((await call('PUT', `/ai/usecases/${uc.id}`, admin, { active: true })).status, 200);
+  // Audit frequency: list option or custom with its description
+  assert.equal((await call('POST', `/projects/${proj.id}/audits`, t, { title: 'Test audit', type: 'Internal', plannedDate: '2026-12-01', frequency: 'Custom' })).status, 400);
+  assert.equal((await call('POST', `/projects/${proj.id}/audits`, t, { title: 'Test audit', type: 'Internal', plannedDate: '2026-12-01', frequency: 'Custom', frequencyCustom: 'After each new service launch' })).status, 201);
+});
