@@ -31,11 +31,13 @@ Each organization has 19 accounts named `role@domain`: ims, quality, hse, risk, 
 
 ## Structure
 
-- `server/`: Express REST API, SQLite schema and migrations, catalog builder, full-run seed generator, reports (PDF, Excel, Word, CSV), AI engine (rules plus retrieval, no external provider), backups, licence tools and tests (`npm test`).
+- `server/`: Express REST API, SQLite schema and migrations, catalog builder, full-run seed generator, reports (PDF, Excel, Word, CSV), IMS document templates (37, in `src/content/templates.js`) and the generator that fills them from the project data (`src/services/docdata.js`), AI engine (rules plus retrieval, with optional language models: Claude, OpenAI, Azure OpenAI, Gemini, Mistral or a custom OpenAI-compatible endpoint, set under Administration › AI models), backups, licence tools and tests (`npm test`).
 - `web/`: React + Vite client. It uses design tokens in `src/styles/tokens.css`, a navigation shell that can be docked on any edge, and bundled fonts.
 - `tools/`: extraction of the source documents, translation tables, screenshot and document generators.
 - `docs/sources/`: the five source documents.
-- `deliverables/`: installation guide, user guides, presentations (EN, FR), coverage checklist and the application zip.
+- `deliverables/`: installation guide, user guides, IMS document templates, feedback response, presentations (EN, FR), coverage checklist, sample generated documents and the application zip.
+
+The seed generates 5,564 documents (Word, PDF or Excel) from the templates, filled with each project's data and ready to download from Records › Documents.
 
 ## Production
 
