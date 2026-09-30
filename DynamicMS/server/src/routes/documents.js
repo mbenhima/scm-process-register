@@ -11,8 +11,9 @@ import { requirePerm, can } from '../auth.js';
 import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadProject, loadOrgRow, conflict } from '../http.js';
 import { audit, snapshot } from '../services/audit.js';
 import { DOC_TEMPLATES, TEMPLATE_CATEGORIES, templateByCode } from '../content/templates.js';
-import { buildContent, documentModel } from '../services/docdata.js';
+import { buildContent, documentModel, diagramSvg, SOURCE_NAMES } from '../services/docdata.js';
 import { toPdf, toDocx, toXlsx } from '../services/render.js';
+import { materialize } from '../services/diagram.js';
 import { addDays } from '../seed/rng.js';
 import { config } from '../config.js';
 import { catalog } from '../catalog/store.js';
@@ -156,7 +157,7 @@ export function createDocument(req, p, b) {
   let title = b.title ? tr(req, b.title) : t.name;
   if (!b.title && t?.perMp && target.mp) title = Object.fromEntries(['en', 'fr', 'ar'].map(l => [l, `${t.name[l] ?? t.name.en} — ${cat.mpById[target.mp].name[l]}`]));
   if (!b.title && t?.perPhase && target.e2e) title = Object.fromEntries(['en', 'fr', 'ar'].map(l => [l, `${t.name[l] ?? t.name.en} — ${cat.e2eById[target.e2e].name[l]}`]));
-  const content = t ? buildContent(p.id, t.code, { template: t, docId: id, mpId: target.mp, e2e: target.e2e, ownerRole: t.owner, date: now().slice(0, 10) }) : tr(req, b.content || '');
+  const content = t ? buildContent(p.id, t.code, { template: t, docId: id, mpId: target.mp, e2e: target.e2e, target, ownerRole: t.owner, date: now().slice(0, 10) }) : tr(req, b.content || '');
   tx(() => {
     run(`INSERT INTO documents(id,org_id,project_id,code,title,doc_type,template_id,standards,scope_type,current_version,status,owner_role,review_frequency,next_review,mp_id,created_at,target,source_step,updated_at)
          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, id, p.org_id, p.id, code, J(title), b.docType || t?.docType || 'Procedure', t?.code || null, J(P(p.standards)),
@@ -214,7 +215,7 @@ r.post('/documents/:id/versions', requirePerm('records.manage'), h((req, res) =>
   const last = get('SELECT content FROM document_versions WHERE document_id=? ORDER BY created_at DESC LIMIT 1', d.id);
   const target = P(d.target) || {};
   let content;
-  if (b.regenerate && d.template_id) content = buildContent(d.project_id, d.template_id, { template: resolveTemplate(d.org_id, d.template_id), docId: d.id, mpId: target.mp, e2e: target.e2e, ownerRole: d.owner_role, date: now().slice(0, 10) });
+  if (b.regenerate && d.template_id) content = buildContent(d.project_id, d.template_id, { template: resolveTemplate(d.org_id, d.template_id), docId: d.id, mpId: target.mp, e2e: target.e2e, target, ownerRole: d.owner_role, date: now().slice(0, 10) });
   else if (b.content !== undefined) content = tr(req, b.content);
   else content = P(last?.content);
   run('INSERT INTO document_versions(id,org_id,document_id,version,status,change_type,summary,content,author,formats,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)', uid(), d.org_id, d.id, v, 'Draft', b.changeType || 'Minor', J(tr(req, b.summary || '')), J(content), req.user.id, J(['PDF', 'DOCX']), now());
@@ -286,9 +287,10 @@ r.get('/documents/:id/download', requirePerm('records.view'), h(async (req, res)
   const c = P(v.content);
   if (c && c.format === 'structured' && c.live && d.template_id) {
     const target = P(d.target) || {};
-    ver = { ...v, content: J(buildContent(d.project_id, d.template_id, { template: resolveTemplate(d.org_id, d.template_id), docId: d.id, mpId: target.mp, e2e: target.e2e, ownerRole: d.owner_role, date: (v.approved_at || v.created_at).slice(0, 10) })) };
+    ver = { ...v, content: J(buildContent(d.project_id, d.template_id, { template: resolveTemplate(d.org_id, d.template_id), docId: d.id, mpId: target.mp, e2e: target.e2e, target, ownerRole: d.owner_role, date: (v.approved_at || v.created_at).slice(0, 10) })) };
   }
   const model = documentModel(d, ver, req.lang, layoutOf(d.org_id));
+  if (fmt !== 'xlsx') await materialize(model);
   if (v.status !== 'Published') model.subtitle = `${model.subtitle ? model.subtitle + ' · ' : ''}${{ en: 'UNCONTROLLED DRAFT', fr: 'PROJET NON MAÎTRISÉ', ar: 'مسودة غير خاضعة للضبط' }[req.lang]}`;
   const name = `${safeName(d.code)}_v${v.version}.${fmt}`;
   res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(name)}"`);
@@ -298,13 +300,15 @@ r.get('/documents/:id/download', requirePerm('records.view'), h(async (req, res)
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   return res.send(Buffer.from(await toXlsx(model, req.lang)));
 }));
+// Names of the data sources a template section can use.
+r.get('/doc-sources', requirePerm('records.view'), h((req, res) => res.json(SOURCE_NAMES)));
 // Structure (sections) of the version, localized, for the document page.
 r.get('/document-versions/:id/structure', requirePerm('records.view'), h((req, res) => {
   const v = loadOrgRow(req, 'document_versions', req.params.id, false, 'Version');
   const d = get('SELECT * FROM documents WHERE id=?', v.document_id);
   let c = P(v.content);
-  if (c && c.format === 'structured' && c.live && d.template_id) { const target = P(d.target) || {}; c = buildContent(d.project_id, d.template_id, { template: resolveTemplate(d.org_id, d.template_id), docId: d.id, mpId: target.mp, e2e: target.e2e, ownerRole: d.owner_role }); }
-  send(req, res, c && c.format === 'structured' ? { structured: true, toc: c.toc, sections: c.sections.map(s => ({ key: s.key, type: s.type, title: s.title, text: s.text, source: s.source, block: s.block })) } : { structured: false, text: c });
+  if (c && c.format === 'structured' && c.live && d.template_id) { const target = P(d.target) || {}; c = buildContent(d.project_id, d.template_id, { template: resolveTemplate(d.org_id, d.template_id), docId: d.id, mpId: target.mp, e2e: target.e2e, target, ownerRole: d.owner_role }); }
+  send(req, res, c && c.format === 'structured' ? { structured: true, toc: c.toc, sections: c.sections.map(s => ({ key: s.key, type: s.type, title: s.title, text: s.text, source: s.source, blocks: (s.blocks || (s.block ? [s.block] : [])).map(b => (b.kind === 'diagram' ? { kind: 'diagram', svg: diagramSvg(b, req.lang), caption: b.caption } : b)) })) } : { structured: false, text: c });
 }));
 
 // ---------------------------------------------------------------- layout

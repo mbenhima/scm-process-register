@@ -327,3 +327,12 @@ table.data.rows .input, table.data.rows .select { min-height: 36px; padding: 6px
 .doc-section { border: 1px solid var(--pa-grey-line); border-radius: 8px; padding: var(--sp-12) var(--sp-16); background: var(--pa-white); }
 .doc-section h4 { margin: 0 0 var(--sp-8); font-family: var(--font-serif); color: var(--pa-grey-dark); font-size: var(--fs-16); }
 .swatch { width: 40px; height: 36px; padding: 2px; border: 1px solid var(--pa-grey-line); border-radius: 8px; background: var(--pa-white); }
+
+/* Generated document structure: key-value blocks and diagrams */
+.kv { margin: 0; display: grid; gap: 0; border: 1px solid var(--line, #E3E3E4); border-radius: 8px; overflow: hidden; }
+.kv > div { display: grid; grid-template-columns: minmax(120px, 30%) 1fr; }
+.kv > div:nth-child(even) dd { background: var(--grey-light, #F2F2F3); }
+.kv dt { background: var(--tint, #FDEEDA); font-weight: 600; font-size: 13px; padding: 6px 10px; color: var(--grey-dark, #3A3A3C); }
+.kv dd { margin: 0; font-size: 13px; padding: 6px 10px; }
+.doc-diagram { overflow-x: auto; border: 1px solid var(--line, #E3E3E4); border-radius: 8px; background: #fff; padding: 6px; }
+.doc-diagram svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }

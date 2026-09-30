@@ -103,6 +103,8 @@ export const DOCS = {
   hira: S('Hazard identification and risk assessment (HIRA)', 'Identification des dangers et évaluation des risques', 'تحديد المخاطر وتقييمها'),
   aspects: S('Environmental aspects and impacts register', 'Registre des aspects et impacts environnementaux', 'سجل الجوانب والآثار البيئية'),
   emergency: S('Emergency preparedness and response plan', 'Plan de préparation et de réponse aux urgences', 'خطة التأهب والاستجابة للطوارئ'),
+  auditReport: S('Internal audit report — {0}', 'Rapport d\'audit interne — {0}', 'تقرير التدقيق الداخلي — {0}'),
+  capa: S('Corrective action report (8D) — {0}', 'Rapport d\'action corrective (8D) — {0}', 'تقرير الإجراء التصحيحي (8D) — {0}'),
   legal: S('Legal and other requirements register', 'Registre des exigences légales et autres', 'سجل المتطلبات القانونية وغيرها'),
 };
 export const DOC_TYPES = { Policy: S('Policy', 'Politique', 'سياسة'), Manual: S('Manual', 'Manuel', 'دليل'), Procedure: S('Procedure', 'Procédure', 'إجراء'), Sheet: S('Process sheet', 'Fiche processus', 'بطاقة عملية'), Map: S('Process map', 'Cartographie', 'خريطة'), Plan: S('Plan', 'Plan', 'خطة'), Register: S('Register', 'Registre', 'سجل') };

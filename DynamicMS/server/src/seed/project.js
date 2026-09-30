@@ -10,6 +10,7 @@ import { buildContent } from '../services/docdata.js';
 import { ROLES } from '../permissions.js';
 import { CHECKLISTS, VERTICAL_CHECKLISTS, COMPLEXITY_CRITERIA, SME_TRACKS } from './libraries.js';
 import * as R from './records.js';
+import { seedImsRecords, supplierDetail, FINDING_DETAIL } from './imsdata.js';
 
 export const TODAY = '2026-09-28';
 const E2E_ORDER = ['E2E-01', 'E2E-02', 'E2E-03', 'E2E-04', 'E2E-05', 'E2E-06', 'E2E-07', 'E2E-08', 'E2E-09', 'E2E-10', 'E2E-11', 'E2E-12'];
@@ -431,20 +432,37 @@ export function generateProject(ctx) {
     const done = date < TODAY;
     const id = uid();
     const title = fill(R.AUDIT_TITLE, R.AUDIT_TYPES[type], cat.e2eById[e2e].name);
-    run(`INSERT INTO audits(id,org_id,project_id,code,title,type,standard,planned_date,done_date,status,lead_user,scope,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    const external = type === 'Certification' || type === 'Surveillance';
+    const freq = external ? 'Annual' : type === 'Supplier' ? 'Annual' : type === 'Mock' ? 'Custom' : j % 2 ? 'Semi-annual' : 'Annual';
+    const auditProcesses = cat.e2eById[e2e].mpIds.filter(m => mpSet.has(m)).slice(0, 4);
+    run(`INSERT INTO audits(id,org_id,project_id,code,title,type,standard,planned_date,done_date,status,lead_user,scope,created_at,frequency,frequency_custom,criteria,objectives,team,auditees,method,duration_h,processes) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       id, oid, pid, `AUD-${org.short_code}-${msType}-${String(j + 1).padStart(2, '0')}`, J(title), type, std, date, done ? date : null, done ? 'Completed' : 'Planned',
-      type === 'Certification' || type === 'Surveillance' ? U('auditor').id : U('audit_manager').id, J(cat.e2eById[e2e].name), ts(addDays(date, -30), r));
-    audits.push({ id, type, date, done });
+      external ? U('auditor').id : U('audit_manager').id, J(cat.e2eById[e2e].name), ts(addDays(date, -30), r),
+      freq, freq === 'Custom' ? J(S('Once, 6 weeks before the certification audit', 'Une fois, 6 semaines avant l\'audit de certification', 'مرة واحدة، قبل 6 أسابيع من تدقيق الاعتماد')) : null,
+      J(S(`${std}; procedures and records of the processes audited; applicable legal requirements`, `${std} ; procédures et enregistrements des processus audités ; exigences légales applicables`, `${std}؛ إجراءات وسجلات العمليات المدققة؛ المتطلبات القانونية المنطبقة`)),
+      J(external ? S('Certify conformity and effectiveness of the management system', 'Certifier la conformité et l\'efficacité du système de management', 'اعتماد مطابقة نظام الإدارة وفعاليته') : S('Verify conformity to the criteria and the effectiveness of the processes; identify improvement', 'Vérifier la conformité aux critères et l\'efficacité des processus ; identifier des améliorations', 'التحقق من المطابقة للمعايير وفعالية العمليات؛ تحديد فرص التحسين')),
+      J([external ? U('auditor').name : U('audit_manager').name, ...(external ? [] : [U(qhse ? 'hse_manager' : 'process_excellence_manager').name])]),
+      J(auditProcesses.map(m => cat.mpById[m].ownerRoleCode).filter(Boolean).map(rc => U(rc).name).filter((v, i, a) => a.indexOf(v) === i)),
+      J(S('Interviews, observation on site, sampling of records (ISO 19011)', 'Entretiens, observation sur site, échantillonnage d\'enregistrements (ISO 19011)', 'المقابلات والملاحظة الميدانية وأخذ عينات من السجلات (ISO 19011)')),
+      external ? 16 : type === 'Mock' ? 12 : 6, J(auditProcesses));
+    audits.push({ id, type, date, done, code: `AUD-${org.short_code}-${msType}-${String(j + 1).padStart(2, '0')}` });
     if (!done) return;
     const nF = type === 'Certification' ? 2 : r.int(2, 4);
     for (let f = 0; f < nF; f++) {
       const fp = findingsPool[(j * 3 + f) % findingsPool.length];
-      const ftype = type === 'Certification' ? (f === 0 ? 'Minor' : 'OFI') : r.pick(['Minor', 'Minor', 'Observation', 'OFI', 'Major']);
+      const ftype = type === 'Certification' ? (f === 0 ? 'Minor' : 'OFI') : f === 0 && type === 'Mock' ? 'Major' : f === 0 ? 'Minor' : r.pick(['Minor', 'Observation', 'OFI', 'OFI']);
       const text = fill(fp.t, profile.line);
       let actionId = null;
       if (['Major', 'Minor'].includes(ftype)) actionId = addAction('finding', null, 'Corrective', fill(R.ACTION_TITLES.finding, text), days(date, TODAY) > 60 ? 'Closed' : 'InProgress', addDays(date, 3), addDays(date, 45), 'quality_manager', 'audit_manager', 'MP-039');
-      run('INSERT INTO findings(id,org_id,audit_id,type,clause,text,status,action_id,mp_id) VALUES(?,?,?,?,?,?,?,?,?)', uid(), oid, id, ftype, fp.clause, J(text),
-        actionId && days(date, TODAY) > 60 ? 'Closed' : ['Observation', 'OFI'].includes(ftype) ? 'Noted' : 'Open', actionId, 'MP-039');
+      const det = FINDING_DETAIL[fp.clause] || FINDING_DETAIL['7.5.3'];
+      const nc = ['Major', 'Minor'].includes(ftype);
+      const fClosed = actionId && days(date, TODAY) > 60;
+      run('INSERT INTO findings(id,org_id,audit_id,type,clause,text,status,action_id,mp_id,code,requirement,evidence,area,auditee,due_date,correction,root_cause,verification,verified_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', uid(), oid, id, ftype, fp.clause, J(text),
+        fClosed ? 'Closed' : ['Observation', 'OFI'].includes(ftype) ? 'Noted' : 'Open', actionId, 'MP-039',
+        `F-${String(j + 1).padStart(2, '0')}-${f + 1}`, J(det.req), J(det.ev), J(det.area), U(r.pick(['operations_manager', 'quality_manager', 'document_controller'])).name,
+        nc ? addDays(date, ftype === 'Major' ? 30 : 60) : null, nc ? J(S('Immediate correction made on the day of the audit', 'Correction immédiate réalisée le jour de l\'audit', 'تم إجراء تصحيح فوري يوم التدقيق')) : null,
+        nc ? J(S('Requirement not translated into the working document; no check at the change', 'Exigence non traduite dans le document de travail ; aucun contrôle lors du changement', 'لم يُترجم المتطلب إلى وثيقة العمل؛ لا تحقق عند التغيير')) : null,
+        fClosed ? J(S('Evidence reviewed by the lead auditor; action effective', 'Preuves revues par l\'auditeur responsable ; action efficace', 'راجع المدقق الرئيسي الأدلة؛ الإجراء فعال')) : null, fClosed ? addDays(date, 58) : null);
     }
   });
 
@@ -479,7 +497,7 @@ export function generateProject(ctx) {
   const mpDocState = (mpId) => { const st = mpState[mpId]; if (!st) return 'NotStarted'; return st.n && st.done === st.n ? 'Completed' : st.done || st.first ? 'InProgress' : 'NotStarted'; };
   const mpDate = (mpId, j) => (mpState[mpId]?.last || mpState[mpId]?.first || ts(addDays(start, 20 + j * 12), r)).slice(0, 10);
   const docCode = (t, suffix) => `${org.short_code}-${msType}-${t.code.replace(/^TPL-/, '')}${suffix ? `-${suffix}` : ''}`;
-  DOC_TEMPLATES.filter(t => t.ms.includes(msType) && !t.perMp && !t.perPhase && !t.alternativeTo).forEach((t, j) => {
+  DOC_TEMPLATES.filter(t => t.ms.includes(msType) && !t.perMp && !t.perPhase && !t.perAudit && !t.perNc && !t.alternativeTo).forEach((t, j) => {
     const mandatory = Object.keys(t.mandatory).some(x => standards.includes(x));
     const state = mpSet.has(t.mp) ? mpDocState(t.mp) : (mandatory ? 'Completed' : null);
     if (!state || (state === 'NotStarted' && !mandatory)) return;
@@ -498,6 +516,13 @@ export function generateProject(ctx) {
       versionsFor(state, d0, state === 'Completed'), 'Annual', { e2e: e });
   });
 
+  const audTpl = DOC_TEMPLATES.find(t => t.code === 'TPL-AUDREP');
+  audits.filter(a => a.done && a.type !== 'Certification' && a.type !== 'Surveillance').forEach((a, j) => addDoc(docCode(audTpl, String(j + 1).padStart(2, '0')), fill(R.DOCS.auditReport, a.code), 'Report', 'TPL-AUDREP', scopeType, 'audit_manager', 'MP-039',
+    versionsFor('Completed', addDays(a.date, 7), false), 'Per event', { audit: a.id }));
+  const capaTpl = DOC_TEMPLATES.find(t => t.code === 'TPL-CAPA');
+  ncs.filter(n => ['Major', 'Critical'].includes(n.crit)).forEach((n) => addDoc(docCode(capaTpl, n.code.split('-').pop()), fill(R.DOCS.capa, n.code), 'Report', 'TPL-CAPA', scopeType, 'quality_manager', 'MP-020',
+    versionsFor(n.stage === 'Closed' ? 'Completed' : 'InProgress', n.detected, false), 'Per event', { nc: n.id }));
+
   // ---- Registers
   const reg = (register, code, title, data, status, mpId, date) => run('INSERT INTO registers(id,org_id,project_id,register,code,title,data,status,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)',
     uid(), oid, pid, register, code, J(title), J(data), status, mpId, ts(date || addDays(start, 10), r));
@@ -505,21 +530,19 @@ export function generateProject(ctx) {
   profile.defects.slice(0, 2).forEach((t, j) => reg('context', `CI-I${j + 1}`, t, { type: R.REG.issueInt, category: R.REG.pestle[3], impact: r.int(2, 4) }, 'Active', 'MP-001'));
   R.REG.parties.forEach(([p, need], j) => { if (!qhse && j === 5) return; reg('parties', `IP-${j + 1}`, fill(p, profile.customer, profile.supplier), { needs: fill(need, profile.product), influence: r.int(2, 5), interest: r.int(2, 5) }, 'Active', 'MP-001'); });
   for (const o of sbase.objectives) if (!o._ok) addAction('objective', o._registerId, 'Improvement', fill(R.ACTION_TITLES.objective, o.objective), 'InProgress', addDays(TODAY, -40), addDays(TODAY, 50), 'performance_manager', 'ims_manager', 'MP-003');
-  standards.forEach((s, j) => reg('obligations', `OB-${j + 1}`, { en: s, fr: s, ar: s }, { type: S('Standard', 'Norme', 'معيار'), evaluation: j < 2 ? S('Compliant', 'Conforme', 'مطابق') : S('Partially compliant', 'Partiellement conforme', 'مطابق جزئيًا'), lastEvaluated: addDays(TODAY, -r.int(20, 120)) }, 'Active', 'MP-028'));
-  if (qhse) R.REG.obligationsHse.forEach((t, j) => reg('obligations', `OB-L${j + 1}`, t, { type: S('Legal requirement', 'Exigence légale', 'متطلب قانوني'), evaluation: S('Compliant', 'Conforme', 'مطابق'), lastEvaluated: addDays(TODAY, -r.int(20, 120)) }, 'Active', 'MP-028'));
   const certAudit = audits.find(a => a.type === 'Certification');
   standards.slice(0, qhse ? 3 : 1).forEach((s, j) => reg('certificates', `CERT-${j + 1}`, { en: s, fr: s, ar: s }, { body: R.REG.certBody, issued: certAudit?.done ? addDays(certAudit.date, 30) : null, expiry: certAudit?.done ? addDays(certAudit.date, 30 + 1095) : null, number: `MCS-${org.short_code}-${String(r.int(1000, 9999))}` }, certAudit?.done ? 'Valid' : 'Planned', 'MP-017'));
-  R.REG.supplierNames.forEach((t, j) => { const score = r.int(62, 98); reg('suppliers', `SUP-${j + 1}`, fill(t, profile.supplier), { score, critical: j === 0, lastEvaluation: addDays(TODAY, -r.int(10, 150)) }, score >= 80 ? 'Approved' : score >= 70 ? 'Conditional' : 'Under review', 'MP-024'); });
+  R.REG.supplierNames.forEach((t, j) => { const score = r.int(62, 98); const det = supplierDetail(r, j, score, TODAY, addDays); reg('suppliers', `SUP-${j + 1}`, fill(t, profile.supplier), { ...det, critical: j === 0, lastEvaluation: addDays(TODAY, -r.int(10, 150)) }, det.score >= 80 ? 'Approved' : det.score >= 65 ? 'Conditional' : 'Under review', 'MP-024'); });
   R.REG.ideas.forEach((t, j) => {
     const roi = r.int(80, 420);
     const st = j < 2 ? 'Implemented' : j < 4 ? 'In progress' : 'Proposed';
     reg('ideas', `IDEA-${j + 1}`, fill(t, profile.line), { roi, effort: r.pick(['Low', 'Medium', 'High']), submittedBy: uName(r.pick(['employee', 'operations_manager', 'quality_manager'])) }, st, 'MP-023', addDays(start, 60 + j * 40));
     if (st !== 'Proposed') addAction('idea', null, 'Improvement', fill(R.ACTION_TITLES.idea, fill(t, profile.line)), st === 'Implemented' ? 'Closed' : 'InProgress', addDays(start, 70 + j * 40), addDays(start, 140 + j * 50), 'transformation_manager', 'process_excellence_manager', 'MP-023');
   });
-  [...R.REG.competences, ...(qhse ? R.REG.competencesHse : [])].forEach(([t, role], j) => reg('competence', `CMP-${j + 1}`, t, { role, holder: uName(role), level: r.int(2, 4), required: 3, trainedOn: addDays(start, 30 + j * 12) }, 'Active', 'MP-013'));
-  R.REG.equipment.forEach((t, j) => { const next = addDays(TODAY, j === 0 ? -4 : r.int(15, 200)); reg('calibration', `EQ-${j + 1}`, t, { serial: `SN-${r.int(10000, 99999)}`, lastCalibration: addDays(next, -365), nextCalibration: next, location: profile.line }, next < TODAY ? 'Overdue' : 'Valid', 'MP-025'); });
   ['2026-03', '2026-09'].forEach((p, j) => { const d = `${p}-${j ? '15' : '20'}`; if (d > TODAY || d < start) return; reg('reviews', `MR-${j + 1}`, fill(R.REG.reviewTitle, p), { date: d, attendees: ['top_management', 'ims_manager', 'quality_manager', qhse ? 'hse_manager' : 'performance_manager'].map(uName), outputs: fill(R.REG.reviewOut, profile.line) }, 'Held', 'MP-034', d); });
   if (qhse) R.REG.incidents.forEach(([type, t], j) => reg('incidents', `INC-${j + 1}`, fill(t, profile.line), { type, date: addDays(start, 50 + j * 70), lostDays: j === 1 ? 0 : 0, investigated: true }, 'Closed', 'MP-051', addDays(start, 50 + j * 70)));
+
+  seedImsRecords({ r, reg, profile, qhse, uName, TODAY, start, addDays, ncs, standards });
 
   // ---- Links between steps and the records they produced ("where are these records?")
   const regsByMp = {};
@@ -565,7 +588,7 @@ export function generateProject(ctx) {
   // rendered from the live data when downloaded).
   if (scenario) {
     for (const d of docs) {
-      const content = buildContent(pid, d.template, { docId: d.id, mpId: d.target?.mp || d.mp, e2e: d.target?.e2e, ownerRole: null, date: TODAY });
+      const content = buildContent(pid, d.template, { docId: d.id, mpId: d.target?.mp || d.mp, e2e: d.target?.e2e, target: d.target || {}, ownerRole: null, date: TODAY });
       if (content) run('UPDATE document_versions SET content=? WHERE id=?', J(content), d.lastVersion);
     }
   }

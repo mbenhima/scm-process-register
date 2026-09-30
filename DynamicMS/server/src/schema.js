@@ -271,4 +271,6 @@ export const ADDITIVE_COLUMNS = {
   documents: { target: 'TEXT', source_step: 'TEXT', updated_at: 'TEXT' },
   attachments: { version: 'INTEGER DEFAULT 1', group_id: 'TEXT', note: 'TEXT' },
   ai_usecases: { model: 'TEXT' },
+  audits: { frequency: 'TEXT', frequency_custom: 'TEXT', criteria: 'TEXT', objectives: 'TEXT', team: 'TEXT', auditees: 'TEXT', method: 'TEXT', duration_h: 'REAL', processes: 'TEXT' },
+  findings: { code: 'TEXT', requirement: 'TEXT', evidence: 'TEXT', area: 'TEXT', auditee: 'TEXT', due_date: 'TEXT', correction: 'TEXT', root_cause: 'TEXT', verification: 'TEXT', verified_at: 'TEXT' },
 };

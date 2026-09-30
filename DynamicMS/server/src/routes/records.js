@@ -121,13 +121,24 @@ r.get('/projects/:id/audits', requirePerm('records.view'), h((req, res) => {
   const p = loadProject(req, req.params.id);
   send(req, res, rows(all(`SELECT a.*, u.name AS lead_name, (SELECT COUNT(*) FROM findings f WHERE f.audit_id=a.id) AS findings FROM audits a LEFT JOIN users u ON u.id=a.lead_user WHERE a.project_id=? ORDER BY a.planned_date`, p.id)));
 }));
+const AUDIT_FREQ = ['Monthly', 'Quarterly', 'Semi-annual', 'Annual', 'Every 2 years', 'Every 3 years', 'Custom'];
+// Audit frequency: one of the standard options, or Custom with its description (FR-DA audit programme).
+function auditFrequency(req, b, current) {
+  if (b.frequency === undefined) return null;
+  if (!AUDIT_FREQ.includes(b.frequency)) throw bad('BAD_FREQUENCY', `Frequency must be one of: ${AUDIT_FREQ.join(', ')}.`);
+  const custom = String(b.frequencyCustom || '').trim();
+  if (b.frequency === 'Custom' && !custom) throw bad('CUSTOM_FREQUENCY_REQUIRED', 'Describe the custom frequency (for example "once, 6 weeks before the certification audit").');
+  return { frequency: b.frequency, custom: b.frequency === 'Custom' ? J(tr(req, custom, current)) : null };
+}
 r.post('/projects/:id/audits', requirePerm('records.manage'), h((req, res) => {
   const p = loadProject(req, req.params.id, true);
   const b = req.body || {};
   if (!b.title || !b.type || !b.plannedDate) throw bad('FIELDS_REQUIRED', 'Title, type and planned date are required.');
+  const fq = auditFrequency(req, { frequency: b.frequency || 'Annual', frequencyCustom: b.frequencyCustom });
   const n = get('SELECT COUNT(*) n FROM audits WHERE project_id=?', p.id).n;
   const id = uid();
-  run('INSERT INTO audits(id,org_id,project_id,code,title,type,standard,planned_date,status,lead_user,scope,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)', id, p.org_id, p.id, `AUD-${p.code}-${String(n + 1).padStart(2, '0')}`, J(tr(req, b.title)), b.type, b.standard || 'ISO 9001', b.plannedDate, 'Planned', userIn(p.org_id, b.leadUser)?.id || req.user.id, J(tr(req, b.scope || '')), now());
+  run('INSERT INTO audits(id,org_id,project_id,code,title,type,standard,planned_date,status,lead_user,scope,created_at,frequency,frequency_custom,criteria,objectives,duration_h,processes) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', id, p.org_id, p.id, `AUD-${p.code}-${String(n + 1).padStart(2, '0')}`, J(tr(req, b.title)), b.type, b.standard || 'ISO 9001', b.plannedDate, 'Planned', userIn(p.org_id, b.leadUser)?.id || req.user.id, J(tr(req, b.scope || '')), now(),
+    fq.frequency, fq.custom, b.criteria ? J(tr(req, b.criteria)) : null, b.objectives ? J(tr(req, b.objectives)) : null, b.durationH ? +b.durationH : null, J(Array.isArray(b.processes) ? b.processes : []));
   audit(req, p.org_id, 'audit', id, 'create', null, b, null);
   res.status(201).json({ id });
 }));
@@ -138,8 +149,10 @@ r.get('/audits/:id', requirePerm('records.view'), h((req, res) => {
 r.put('/audits/:id', requirePerm('records.manage'), h((req, res) => {
   const a = loadOrgRow(req, 'audits', req.params.id, true, 'Audit');
   const b = req.body || {};
+  const fq = auditFrequency(req, b, P(a.frequency_custom));
   run('UPDATE audits SET status=COALESCE(?,status), done_date=COALESCE(?,done_date), planned_date=COALESCE(?,planned_date) WHERE id=?', b.status || null, b.status === 'Completed' ? (b.doneDate || now().slice(0, 10)) : null, b.plannedDate || null, a.id);
-  audit(req, a.org_id, 'audit', a.id, 'update', { status: a.status }, b, null);
+  if (fq) run('UPDATE audits SET frequency=?, frequency_custom=? WHERE id=?', fq.frequency, fq.custom, a.id);
+  audit(req, a.org_id, 'audit', a.id, 'update', { status: a.status, frequency: a.frequency }, b, null);
   res.json({ ok: true });
 }));
 r.post('/audits/:id/findings', requirePerm('records.manage'), h((req, res) => {
@@ -151,7 +164,10 @@ r.post('/audits/:id/findings', requirePerm('records.manage'), h((req, res) => {
   tx(() => {
     if (['Major', 'Minor'].includes(b.type) && b.ownerUser) actionId = createAction(req, p, { title: b.text, ownerUser: b.ownerUser, evaluatorUser: b.evaluatorUser, dueDate: b.dueDate || addDays(now().slice(0, 10), 45), sourceType: 'finding', kind: 'Corrective' });
     const id = uid();
-    run('INSERT INTO findings(id,org_id,audit_id,type,clause,text,status,action_id,mp_id) VALUES(?,?,?,?,?,?,?,?,?)', id, a.org_id, a.id, b.type, b.clause || null, J(tr(req, b.text)), ['Observation', 'OFI'].includes(b.type) ? 'Noted' : 'Open', actionId, b.mpId || 'MP-039');
+    const nf = get('SELECT COUNT(*) n FROM findings WHERE audit_id=?', a.id).n;
+    run('INSERT INTO findings(id,org_id,audit_id,type,clause,text,status,action_id,mp_id,code,requirement,evidence,area,auditee,due_date,correction) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', id, a.org_id, a.id, b.type, b.clause || null, J(tr(req, b.text)), ['Observation', 'OFI'].includes(b.type) ? 'Noted' : 'Open', actionId, b.mpId || 'MP-039',
+      `F-${a.code.split('-').pop()}-${nf + 1}`, b.requirement ? J(tr(req, b.requirement)) : null, b.evidence ? J(tr(req, b.evidence)) : null, b.area ? J(tr(req, b.area)) : null, b.auditee || null,
+      ['Major', 'Minor'].includes(b.type) ? (b.dueDate || addDays(now().slice(0, 10), b.type === 'Major' ? 30 : 60)) : null, b.correction ? J(tr(req, b.correction)) : null);
     audit(req, a.org_id, 'finding', id, 'create', null, b, null);
   });
   res.status(201).json({ ok: true, actionId });
@@ -160,7 +176,8 @@ r.post('/audits/:id/findings', requirePerm('records.manage'), h((req, res) => {
 // ---- Documented information: see routes/documents.js
 
 // ---- Registers (context, interested parties, objectives, obligations, certificates, suppliers, ideas, competence, calibration, reviews, incidents)
-const REGISTERS = ['context', 'parties', 'objectives', 'obligations', 'certificates', 'suppliers', 'ideas', 'competence', 'calibration', 'reviews', 'incidents'];
+import { REGISTER_DEFS, REGISTERS } from '../content/registers.js';
+r.get('/register-defs', requirePerm('records.view'), h((req, res) => send(req, res, REGISTER_DEFS)));
 r.get('/projects/:id/registers', requirePerm('records.view'), h((req, res) => {
   const p = loadProject(req, req.params.id);
   send(req, res, REGISTERS.map(k => ({ key: k, count: get('SELECT COUNT(*) n FROM registers WHERE project_id=? AND register=?', p.id, k).n })));

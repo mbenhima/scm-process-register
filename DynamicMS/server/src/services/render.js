@@ -113,13 +113,17 @@ function pdfWriter(doc, lang) {
   return { text, height, rtl };
 }
 
+// Section items: new models carry sec.items; older report models carry sec.text / sec.table.
+export const itemsOf = (sec) => sec.items || [...(sec.text ? [{ type: 'text', text: sec.text }] : []), ...(sec.table ? [{ type: 'table', table: sec.table }] : [])];
+const cellFill = (t, r, key) => (r._cells && r._cells[key] !== undefined ? STATUS[r._cells[key]] : t.statusKey && key === t.statusKey && r._status !== undefined ? STATUS[r._status] : null);
+
 const hexOk = (v) => (typeof v === 'string' && /^#[0-9a-fA-F]{6}$/.test(v) ? v : null);
 export function palette(layout = {}) {
   return { primary: hexOk(layout.primaryColor) || C.orange, accent: hexOk(layout.accentColor) || C.deep, title: hexOk(layout.titleColor) || C.dark };
 }
 
 export function toPdf(model, lang, res) {
-  const doc = new PDFDocument({ size: 'A4', margins: { top: 54, bottom: 54, left: 48, right: 48 }, bufferPages: true, info: { Title: clean(model.title), Author: 'DynamicMS', Creator: 'DynamicMS' } });
+  const doc = new PDFDocument({ size: 'A4', layout: model.landscape ? 'landscape' : 'portrait', margins: { top: 54, bottom: 54, left: 48, right: 48 }, bufferPages: true, info: { Title: clean(model.title), Author: 'DynamicMS', Creator: 'DynamicMS' } });
   for (const [k, f] of Object.entries(FONTS)) doc.registerFont(k, f);
   doc.pipe(res);
   const pal = palette(model.layout);
@@ -151,6 +155,7 @@ export function toPdf(model, lang, res) {
     y += w.text((model.eyebrow || '').toUpperCase(), X, y, W, { size: 9, bold: true, color: pal.accent });
     y += 4 + w.text(model.title, X, y, W, { size: 22, serif: true, color: pal.title });
     if (model.subtitle) y += 2 + w.text(model.subtitle, X, y, W, { size: 11, color: C.ink });
+    if (model.docLine) y += 2 + w.text(model.docLine, X, y, W, { size: 8.5, color: C.medium });
     y += 10;
     doc.moveTo(X, y).lineTo(X + W, y).lineWidth(0.8).strokeColor(C.line).stroke();
     y += 12;
@@ -172,42 +177,73 @@ export function toPdf(model, lang, res) {
     });
     y += 70;
   }
+  const drawTable = (t) => {
+    const cols = t.columns; const tw = cols.reduce((a, c) => a + (c.width || 1), 0);
+    const cws = cols.map(c => ((c.width || 1) / tw) * W);
+    const fs = cols.length > 11 ? 6.8 : cols.length > 8 ? 7.6 : 8.5;
+    const colX = (i) => { let acc = 0; for (let j = 0; j < i; j++) acc += cws[j]; return rtl ? X + W - acc - cws[i] : X + acc; };
+    const header = () => {
+      const hh = Math.max(...cols.map((c, i) => w.height(c.label, cws[i] - 6, fs, true))) + 8;
+      ensure(hh + 42);
+      doc.rect(X, y, W, hh).fill(pal.primary);
+      cols.forEach((c, i) => w.text(c.label, colX(i) + 3, y + 4, cws[i] - 6, { size: fs, bold: true, color: C.white }));
+      y += hh;
+    };
+    header();
+    t.rows.forEach((r2, ri) => {
+      const vals = cols.map(c => clean(r2[c.key] ?? ''));
+      const hh = Math.max(...vals.map((v, i) => w.height(v, cws[i] - 6, fs))) + 6;
+      if (y + hh > bottom()) { newPage(); header(); }
+      doc.rect(X, y, W, hh).fill(ri % 2 ? C.light : C.white);
+      vals.forEach((v, i) => {
+        const fill = cellFill(t, r2, cols[i].key);
+        if (fill) doc.rect(colX(i), y, cws[i], hh).fill(fill);
+        w.text(v, colX(i) + 3, y + 3, cws[i] - 6, { size: fs, color: C.dark });
+      });
+      doc.moveTo(X, y + hh).lineTo(X + W, y + hh).lineWidth(0.4).strokeColor(C.line).stroke();
+      y += hh;
+    });
+    if (t.caption) { y += 4; const ch = w.height(t.caption, W, 8.5); ensure(ch); y += w.text(t.caption, X, y, W, { size: 8.5, italic: true, color: C.ink }); }
+    y += 12;
+  };
+  const drawKv = (rows) => {
+    const kw = Math.min(190, W * 0.3); const vw = W - kw;
+    rows.forEach(([k, v], ri) => {
+      const hh = Math.max(w.height(k, kw - 10, 9, true), w.height(clean(v), vw - 10, 9)) + 8;
+      ensure(hh);
+      const kx = rtl ? X + vw : X; const vx = rtl ? X : X + kw;
+      doc.rect(kx, y, kw, hh).fill(C.tint); doc.rect(vx, y, vw, hh).fill(ri % 2 ? C.light : C.white);
+      w.text(k, kx + 5, y + 4, kw - 10, { size: 9, bold: true, color: C.dark });
+      w.text(clean(v), vx + 5, y + 4, vw - 10, { size: 9, color: C.dark });
+      doc.moveTo(X, y + hh).lineTo(X + W, y + hh).lineWidth(0.4).strokeColor(C.line).stroke();
+      y += hh;
+    });
+    y += 10;
+  };
   for (const sec of model.sections || []) {
     ensure(60);
     tocEntries.push({ heading: sec.heading, page: doc.bufferedPageRange().count });
     y += 4 + w.text(sec.heading, X, y, W, { size: 14, serif: true, color: pal.title });
     y += 4;
-    if (sec.text) {
-      for (const chunk of String(sec.text).split('\n')) { const hh = w.height(chunk || ' ', W, 10); ensure(hh); y += w.text(chunk || ' ', X, y, W, { size: 10 }) + 2; }
-      y += 6;
-    }
-    if (sec.table) {
-      const cols = sec.table.columns; const tw = cols.reduce((a, c) => a + (c.width || 1), 0);
-      const cws = cols.map(c => ((c.width || 1) / tw) * W);
-      const colX = (i) => { let acc = 0; for (let j = 0; j < i; j++) acc += cws[j]; return rtl ? X + W - acc - cws[i] : X + acc; };
-      const header = () => {
-        const hh = Math.max(...cols.map((c, i) => w.height(c.label, cws[i] - 8, 8.5, true))) + 8;
-        ensure(hh + 18);
-        doc.rect(X, y, W, hh).fill(pal.primary);
-        cols.forEach((c, i) => w.text(c.label, colX(i) + 4, y + 4, cws[i] - 8, { size: 8.5, bold: true, color: C.white }));
-        y += hh;
-      };
-      header();
-      sec.table.rows.forEach((r2, ri) => {
-        const vals = cols.map(c => clean(r2[c.key] ?? ''));
-        const hh = Math.max(...vals.map((v, i) => w.height(v, cws[i] - 8, 8.5))) + 6;
-        if (y + hh > bottom()) { newPage(); header(); }
-        doc.rect(X, y, W, hh).fill(ri % 2 ? C.light : C.white);
-        vals.forEach((v, i) => {
-          const fill = sec.table.statusKey && cols[i].key === sec.table.statusKey && r2._status !== undefined ? STATUS[r2._status] : null;
-          if (fill) doc.rect(colX(i), y, cws[i], hh).fill(fill);
-          w.text(v, colX(i) + 4, y + 3, cws[i] - 8, { size: 8.5, color: C.dark });
-        });
-        doc.moveTo(X, y + hh).lineTo(X + W, y + hh).lineWidth(0.4).strokeColor(C.line).stroke();
-        y += hh;
-      });
-      if (sec.table.caption) { y += 4; y += w.text(sec.table.caption, X, y, W, { size: 8.5, italic: true, color: C.ink }); }
-      y += 12;
+    for (const it of itemsOf(sec)) {
+      if (it.type === 'sub') { ensure(40); y += 4 + w.text(it.text, X, y, W, { size: 11, bold: true, color: pal.accent }); y += 4; }
+      else if (it.type === 'text') { for (const chunk of String(it.text || '').split('\n')) { const hh = w.height(chunk || ' ', W, 10); ensure(hh); y += w.text(chunk || ' ', X, y, W, { size: 10 }) + 2; } y += 6; }
+      else if (it.type === 'bullets') {
+        if (it.intro) { const hh = w.height(it.intro, W, 10); ensure(hh); y += w.text(it.intro, X, y, W, { size: 10, bold: true, color: C.dark }) + 3; }
+        for (const b of it.items) { const hh = w.height(b, W - 14, 10); ensure(hh); w.text('•', rtl ? X + W - 8 : X + 2, y, 8, { size: 10, color: pal.primary }); y += w.text(b, rtl ? X : X + 14, y, W - 14, { size: 10 }) + 3; }
+        y += 6;
+      } else if (it.type === 'kv') drawKv(it.rows);
+      else if (it.type === 'table') drawTable(it.table);
+      else if (it.type === 'diagram' && it.png) {
+        let dw = Math.min(W, it.width * 0.8); let dh = (it.height / it.width) * dw;
+        const maxH = doc.page.height - 54 - 64 - 30;
+        if (dh > maxH) { dh = maxH; dw = (it.width / it.height) * dh; }
+        ensure(dh + 20);
+        doc.image(it.png, X + (W - dw) / 2, y, { width: dw, height: dh });
+        y += dh + 4;
+        if (it.caption) y += w.text(it.caption, X, y, W, { size: 8.5, italic: true, color: C.ink });
+        y += 12;
+      }
     }
   }
   if (tocPage !== null) {
@@ -256,31 +292,45 @@ export async function toXlsx(model, lang) {
   summary.addRow([]);
   for (const [k, v] of model.meta || []) { const r = summary.addRow([k, v]); r.getCell(1).font = { name: 'Calibri', bold: true, size: 10, color: { argb: 'FF3A3A3C' } }; r.getCell(2).font = { name: 'Calibri', size: 10, color: { argb: 'FF58595B' } }; }
   for (const k of model.kpis || []) { const r = summary.addRow([k.label, k.value]); r.getCell(2).font = { name: 'Cambria', bold: true, size: 12, color: { argb: 'FFE07B00' } }; }
-  const textSecs = (model.sections || []).filter(x => x.text && !x.table);
-  if (textSecs.length) {
-    summary.addRow([]);
-    for (const sec of textSecs) {
-      const hr = summary.addRow([sec.heading]); hr.getCell(1).font = { name: 'Cambria', bold: true, size: 12, color: { argb: argb(pal.title) } };
-      const tr2 = summary.addRow([sec.text]); summary.mergeCells(tr2.number, 1, tr2.number, 2); tr2.getCell(1).alignment = { wrapText: true, vertical: 'top' }; tr2.height = Math.min(400, 15 * (1 + Math.ceil(String(sec.text).length / 110) + (String(sec.text).match(/\n/g) || []).length));
+  // Text, bullets and key-value items go to the cover sheet; every table gets its own sheet.
+  const addText = (label, text, bold) => { const r = summary.addRow([label || '', text ?? '']); if (!text && label) { r.getCell(1).font = { name: 'Cambria', bold: true, size: bold ? 12 : 10.5, color: { argb: argb(pal.title) } }; return; } r.getCell(1).font = { name: 'Calibri', bold: true, size: 10, color: { argb: 'FF3A3A3C' } }; r.getCell(2).font = { name: 'Calibri', size: 10, color: { argb: 'FF58595B' } }; r.getCell(2).alignment = { wrapText: true, vertical: 'top' }; r.getCell(1).alignment = { wrapText: true, vertical: 'top' }; };
+  const tables = [];
+  for (const sec of model.sections || []) {
+    const items = itemsOf(sec);
+    const nonTable = items.filter(it => it.type !== 'table' && it.type !== 'diagram');
+    if (nonTable.length) {
+      summary.addRow([]); addText(sec.heading, null, true);
+      for (const it of nonTable) {
+        if (it.type === 'sub') addText(it.text, null, false);
+        else if (it.type === 'text') { const r = summary.addRow([it.text]); summary.mergeCells(r.number, 1, r.number, 2); r.getCell(1).alignment = { wrapText: true, vertical: 'top' }; r.height = Math.min(400, 15 * (1 + Math.ceil(String(it.text).length / 110) + (String(it.text).match(/\n/g) || []).length)); }
+        else if (it.type === 'bullets') { if (it.intro) addText(it.intro, null, false); for (const b of it.items) { const r = summary.addRow([`• ${b}`]); summary.mergeCells(r.number, 1, r.number, 2); r.getCell(1).alignment = { wrapText: true, vertical: 'top' }; } }
+        else if (it.type === 'kv') for (const [k, v] of it.rows) addText(k, v);
+      }
     }
+    items.filter(it => it.type === 'table').forEach((it, k, arr) => tables.push({ heading: arr.length > 1 ? `${sec.heading} ${k + 1}` : sec.heading, table: it.table }));
   }
-  (model.sections || []).filter(s => s.table).forEach((sec, si) => {
-    const ws = wb.addWorksheet(sheetName(sec.heading, si + 1), { views: [{ rightToLeft: rtl, state: 'frozen', ySplit: 1 }] });
-    ws.columns = sec.table.columns.map(c => ({ header: clean(c.label), key: c.key, width: Math.min(60, Math.max(10, (c.width || 1) * 14)) }));
+  const used = new Set([summary.name]);
+  tables.forEach((tb, si) => {
+    let nm = sheetName(tb.heading, si + 1); let n = 2; while (used.has(nm)) nm = `${nm.slice(0, 25)} ${n++}`; used.add(nm);
+    const t = tb.table;
+    const ws = wb.addWorksheet(nm, { views: [{ rightToLeft: rtl, state: 'frozen', ySplit: 1 }] });
+    ws.columns = t.columns.map(c => ({ header: clean(c.label), key: c.key, width: Math.min(60, Math.max(8, (c.width || 1) * 14)) }));
     const hdr = ws.getRow(1);
     hdr.eachCell(cell => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: argb(pal.primary) } }; cell.font = { name: 'Calibri', bold: true, size: 10, color: { argb: 'FFFFFFFF' } }; cell.alignment = { vertical: 'middle', wrapText: true }; });
-    sec.table.rows.forEach((r, i) => {
-      const row = ws.addRow(Object.fromEntries(sec.table.columns.map(c => [c.key, r[c.key] ?? ''])));
-      row.eachCell({ includeEmpty: true }, (cell, col) => {
+    t.rows.forEach((r, i) => {
+      const row = ws.addRow(Object.fromEntries(t.columns.map(c => [c.key, r[c.key] ?? ''])));
+      row.eachCell({ includeEmpty: true }, (cell, cn) => {
         cell.font = { name: 'Calibri', size: 9.5, color: { argb: 'FF3A3A3C' } };
         cell.alignment = { vertical: 'top', wrapText: true };
         cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: i % 2 ? 'FFF2F2F3' : 'FFFFFFFF' } };
-        const key = sec.table.columns[col - 1]?.key;
-        if (sec.table.statusKey && key === sec.table.statusKey && r._status !== undefined) cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + STATUS[r._status].slice(1) } };
+        const key = t.columns[cn - 1]?.key;
+        const f = key ? cellFill(t, r, key) : null;
+        if (f) cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + f.slice(1) } };
         cell.border = { bottom: { style: 'thin', color: { argb: 'FFE3E3E4' } } };
       });
     });
-    ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: sec.table.columns.length } };
+    if (t.caption) { ws.addRow([]); const cr = ws.addRow([t.caption]); cr.getCell(1).font = { name: 'Calibri', italic: true, size: 9, color: { argb: 'FF58595B' } }; }
+    ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: t.columns.length } };
   });
   return wb.xlsx.writeBuffer();
 }
@@ -303,6 +353,7 @@ export async function toDocx(model, lang) {
   children.push(para(run((model.eyebrow || '').toUpperCase(), { bold: true, color: pal.accent, size: 18 })));
   children.push(para(run(model.title, { font: 'Cambria', size: model.cover ? 52 : 40, bold: true, color: pal.title })));
   if (model.subtitle) children.push(para(run(model.subtitle, { size: 22 })));
+  if (model.docLine) children.push(para(run(model.docLine, { size: 16, color: C.medium })));
   for (const [k, v] of model.meta || []) children.push(para([run(`${k}: `, { bold: true, color: C.dark }), run(v)], { after: 40 }));
   if (model.cover) children.push(new Paragraph({ children: [new docx.PageBreak()] }));
   if (model.kpis?.length) children.push(para(model.kpis.flatMap((k, i) => [run(`${i ? '   ' : ''}${k.value} `, { font: 'Cambria', bold: true, color: C.deep, size: 24 }), run(k.label, { size: 18 })])));
@@ -311,24 +362,44 @@ export async function toDocx(model, lang) {
     children.push(new TableOfContents(model.tocLabel || 'TOC', { hyperlink: true, headingStyleRange: '1-2' }));
     children.push(new Paragraph({ children: [new docx.PageBreak()] }));
   }
+  const TW = model.landscape ? 14600 : 9600;
+  const tableOf = (t) => {
+    const cols = t.columns; const tw = cols.reduce((a, c) => a + (c.width || 1), 0);
+    const fsz = cols.length > 11 ? 13 : cols.length > 8 ? 15 : 18;
+    const cell = (tx2, i, o = {}) => new TableCell({ width: { size: Math.round(((cols[i].width || 1) / tw) * TW), type: WidthType.DXA }, shading: o.fill ? { type: ShadingType.CLEAR, color: 'auto', fill: o.fill.slice(1) } : undefined, borders: { top: border, bottom: border, left: border, right: border },
+      children: String(clean(tx2)).split('\n').map(line => new Paragraph({ bidirectional: rtl, children: [run(line, { size: fsz, bold: o.bold, color: o.color || C.dark })] })) });
+    const rows2 = [new TableRow({ tableHeader: true, children: cols.map((c, i) => cell(c.label, i, { fill: pal.primary, bold: true, color: C.white })) })];
+    t.rows.slice(0, 1500).forEach((r, ri) => rows2.push(new TableRow({ cantSplit: true, children: cols.map((c, i) => cell(r[c.key] ?? '', i, { fill: cellFill(t, r, c.key) || (ri % 2 ? C.light : C.white) })) })));
+    return new Table({ rows: rows2, width: { size: TW, type: WidthType.DXA }, columnWidths: cols.map(c => Math.round(((c.width || 1) / tw) * TW)), visuallyRightToLeft: rtl });
+  };
+  const kvTable = (rows) => {
+    const kw = Math.round(TW * 0.3); const vw = TW - kw;
+    const c2 = (tx2, width, o) => new TableCell({ width: { size: width, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, color: 'auto', fill: o.fill.slice(1) }, borders: { top: border, bottom: border, left: border, right: border }, children: String(clean(tx2)).split('\n').map(line => new Paragraph({ bidirectional: rtl, children: [run(line, { size: 19, bold: o.bold, color: C.dark })] })) });
+    return new Table({ width: { size: TW, type: WidthType.DXA }, columnWidths: [kw, vw], visuallyRightToLeft: rtl, rows: rows.map(([k, v], i) => new TableRow({ cantSplit: true, children: [c2(k, kw, { fill: C.tint, bold: true }), c2(v, vw, { fill: i % 2 ? C.light : C.white })] })) });
+  };
   for (const sec of model.sections || []) {
     children.push(para(run(sec.heading, { font: 'Cambria', size: 28, bold: true, color: pal.title }), { heading: HeadingLevel.HEADING_1 }));
-    if (sec.text) for (const chunk of String(sec.text).split('\n')) children.push(para(run(chunk), { after: 60 }));
-    if (sec.table) {
-      const cols = sec.table.columns; const tw = cols.reduce((a, c) => a + (c.width || 1), 0);
-      const cell = (t, i, o = {}) => new TableCell({ width: { size: Math.round(((cols[i].width || 1) / tw) * 9600), type: WidthType.DXA }, shading: o.fill ? { type: ShadingType.CLEAR, color: 'auto', fill: o.fill.slice(1) } : undefined, borders: { top: border, bottom: border, left: border, right: border },
-        children: [new Paragraph({ bidirectional: rtl, children: [run(clean(t), { size: 18, bold: o.bold, color: o.color || C.dark })] })] });
-      const rows2 = [new TableRow({ tableHeader: true, children: cols.map((c, i) => cell(c.label, i, { fill: pal.primary, bold: true, color: C.white })) })];
-      sec.table.rows.slice(0, 1500).forEach((r, ri) => rows2.push(new TableRow({ children: cols.map((c, i) => cell(r[c.key] ?? '', i, { fill: sec.table.statusKey === c.key && r._status !== undefined ? STATUS[r._status] : ri % 2 ? C.light : C.white })) })));
-      children.push(new Table({ rows: rows2, width: { size: 9600, type: WidthType.DXA }, visuallyRightToLeft: rtl }));
-      if (sec.table.caption) children.push(para(run(sec.table.caption, { italics: true, size: 18 })));
+    for (const it of itemsOf(sec)) {
+      if (it.type === 'sub') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : undefined, spacing: { before: 200, after: 100 }, children: [run(it.text, { font: 'Cambria', size: 23, bold: true, color: pal.accent })] }));
+      else if (it.type === 'text') for (const chunk of String(it.text || '').split('\n')) children.push(para(run(chunk), { after: 80 }));
+      else if (it.type === 'bullets') {
+        if (it.intro) children.push(para(run(it.intro, { bold: true, color: C.dark }), { after: 60 }));
+        for (const b of it.items) children.push(new Paragraph({ bullet: { level: 0 }, bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : undefined, spacing: { after: 60 }, children: [run(b)] }));
+      } else if (it.type === 'kv') { children.push(kvTable(it.rows)); children.push(para(run(''), { after: 60 })); }
+      else if (it.type === 'table') { children.push(tableOf(it.table)); if (it.table.caption) children.push(para(run(it.table.caption, { italics: true, size: 17 }))); else children.push(para(run(''), { after: 60 })); }
+      else if (it.type === 'diagram' && it.png) {
+        const maxW = model.landscape ? 960 : 630; const maxH = model.landscape ? 520 : 820;
+        let dw = Math.min(maxW, Math.round(it.width * 1.05)); let dh = Math.round((it.height / it.width) * dw); if (dh > maxH) { dh = maxH; dw = Math.round((it.width / it.height) * dh); }
+        children.push(new Paragraph({ alignment: AlignmentType.CENTER, children: [new docx.ImageRun({ data: it.png, type: 'png', transformation: { width: dw, height: dh } })] }));
+        if (it.caption) children.push(para(run(it.caption, { italics: true, size: 17 }), { align: AlignmentType.CENTER }));
+      }
     }
   }
   const d = new Document({
     creator: 'DynamicMS', title: clean(model.title), features: { updateFields: !!model.toc },
     styles: { default: { document: { run: { font: 'Calibri', size: 20, color: C.ink.slice(1) } } } },
     sections: [{
-      properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 1080, bottom: 1080, left: 1080, right: 1080 } } },
+      properties: { page: { size: model.landscape ? { width: 11906, height: 16838, orientation: docx.PageOrientation.LANDSCAPE } : { width: 11906, height: 16838 }, margin: { top: 1080, bottom: 1080, left: 1080, right: 1080 } } },
       headers: { default: new Header({ children: [para(run(lay.headerText || model.title, { size: 16, color: C.medium }))] }) },
       footers: { default: new Footer({ children: [new Paragraph({ bidirectional: rtl, alignment: AlignmentType.RIGHT, children: [run(`${model.footer || 'DynamicMS'} · ${model.pageLabel || 'Page'} `, { size: 16, color: C.medium }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: C.medium.slice(1) }), run(' / ', { size: 16, color: C.medium }), new TextRun({ children: [PageNumber.TOTAL_PAGES], size: 16, color: C.medium.slice(1) })] })] }) },
       children,
