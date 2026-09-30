@@ -164,6 +164,18 @@ export function suggest({ usecase, project, lang, input }) {
   }
   // Text generation / summarization: draft from the process design and project standards
   const std = JSON.parse(project.standards || '[]').join(', ');
+  // Policy drafting: a real draft built from the commitments recorded in the project.
+  if (/polic/i.test(loc(JSON.parse(usecase.name || 'null'), 'en') || '') || ['MP-002', 'MP-036'].includes(usecase.linked_mp)) {
+    const org = get('SELECT name FROM organizations WHERE id=?', project.org_id);
+    const commits = all("SELECT fields FROM step_exec WHERE project_id=? AND mp_id=? AND form_kind='list'", project.id, usecase.linked_mp || 'MP-002').flatMap(e => JSON.parse(e.fields || '{}').items || []).map(r => T(r.item)).filter(Boolean).slice(0, 6);
+    const base = commits.length ? commits : [L('Meet customer requirements on time and right first time', 'Satisfaire les exigences des clients à temps et du premier coup', 'تلبية متطلبات العملاء في الموعد ومن المرة الأولى'), L('Comply with applicable legal and contractual requirements', 'Respecter les exigences légales et contractuelles applicables', 'الامتثال للمتطلبات القانونية والتعاقدية المنطبقة'), L('Develop the competence of our staff', 'Développer les compétences de notre personnel', 'تطوير كفاءات موظفينا')];
+    const name = T(JSON.parse(org?.name || 'null')) || '';
+    const lower = (x) => (lang === 'ar' ? x : x.charAt(0).toLowerCase() + x.slice(1));
+    const draft = L(`${name} commits to: ${base.map(lower).join('; ')}; to set measurable objectives every year and to continually improve its management system (${std}).${text ? ` Context considered: ${text}` : ''}`,
+      `${name} s'engage à : ${base.map(lower).join(' ; ')} ; à fixer chaque année des objectifs mesurables et à améliorer en continu son système de management (${std}).${text ? ` Contexte pris en compte : ${text}` : ''}`,
+      `تلتزم ${name} بما يلي: ${base.join('؛ ')}؛ ووضع أهداف قابلة للقياس كل عام والتحسين المستمر لنظام إدارتها (${std}).${text ? ` السياق المعتمد: ${text}` : ''}`);
+    return { kind: 'Text Generation', items: [draft], confidence: commits.length ? 0.75 : 0.6, sources: [{ type: 'mp', id: mp?.id, title: `${mp?.code} — ${T(mp?.name)}` }, ...(commits.length ? [{ type: 'step', id: 'commitments', title: L('Commitments recorded in the consultation step', 'Engagements saisis à l\'étape de consultation', 'الالتزامات المسجلة في خطوة الاستشارة') }] : [])] };
+  }
   const outs = (mp?.sipoc?.O || []).slice(0, 3).map(T);
   const items = [
     L(`Purpose: ${T(mp?.goal) || T(mp?.name)}.`, `Objet : ${T(mp?.goal) || T(mp?.name)}.`, `الغرض: ${T(mp?.goal) || T(mp?.name)}.`),

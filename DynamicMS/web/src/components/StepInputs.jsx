@@ -1,9 +1,9 @@
 // Inputs of the step forms: plain fields, record tables with add / edit / delete (rows),
 // decision matrix, KPI picker with "new KPI", organization units and people from the OBS,
 // RACSI in five columns, document templates, standards and links to produced records.
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Trash2, X, FileText, Table2, ListChecks, Gauge, Grid3x3 } from 'lucide-react';
+import { Plus, Trash2, X, FileText, Table2, ListChecks, Gauge, Grid3x3, Maximize2, ChevronLeft, ChevronRight, Library, Sparkles } from 'lucide-react';
 import { api } from '../lib/api.js';
 import { Field, Modal, tx } from './ui.jsx';
 
@@ -116,8 +116,65 @@ export function KpiPicker({ value, onChange, kpis = [], disabled, t, lang, id, m
   );
 }
 
+// A list with a "Custom…" entry: choose a proposed value or type your own.
+// items: [{ key, label, value }]; the stored value is the item's value, or the typed text.
+export function Combo({ items, value, onChange, disabled, t, aria, id, lang }) {
+  const text = cellText(value, lang);
+  const match = items.find(x => (typeof value === 'string' && x.key === value) || (value && x.label === text));
+  const [chosen, setCustom] = useState(false);
+  // Custom when the user picked "Custom…" or when the value is not in the list (once the list is loaded).
+  const custom = chosen || (!!text && !match && items.length > 0);
+  if (disabled) return <span>{match ? match.label : text}</span>;
+  return (
+    <div className="combo">
+      <select id={id} className="select" aria-label={aria} value={custom ? '__custom' : match ? match.key : ''} onChange={e => {
+        if (e.target.value === '__custom') { setCustom(true); onChange(''); return; }
+        setCustom(false); const it = items.find(x => x.key === e.target.value); onChange(it ? it.value : '');
+      }}>
+        <option value="">{t('Choose…')}</option>
+        {items.map(x => <option key={x.key} value={x.key}>{x.label}</option>)}
+        <option value="__custom">{t('Custom…')}</option>
+      </select>
+      {custom && <input className="input" aria-label={`${aria} — ${t('Custom value')}`} placeholder={t('Type your own value')} value={text} onChange={e => onChange(e.target.value)} autoFocus />}
+    </div>
+  );
+}
+const optionItems = (options, lang, L, extra = []) => {
+  const seen = new Set(); const out = [];
+  for (const o of [...(options || []), ...extra]) {
+    if (o === null || o === undefined || o === '') continue;
+    const label = typeof o === 'object' ? tx(o, lang) : L ? L(o) : String(o);
+    if (!label || seen.has(label)) continue; seen.add(label);
+    out.push({ key: `o${out.length}`, label, value: o });
+  }
+  return out;
+};
+const mpItems = (mps, lang) => (mps || []).map(m => ({ key: m.id, label: `${m.code} (${tx(m.name, lang)})`, value: m.id }));
+export const mpLabel = (v, mps, lang) => { const m = typeof v === 'string' ? (mps || []).find(x => x.id === v) : null; return m ? `${m.code} (${tx(m.name, lang)})` : cellText(v, lang); };
+
+// Interested parties concerned by a need: several parties from the project, or typed.
+export function PartiesPicker({ value, onChange, parties = [], disabled, t, lang, aria }) {
+  const list = Array.isArray(value) ? value : [];
+  const [custom, setCustom] = useState('');
+  const [other, setOther] = useState(false);
+  const names = list.map(x => cellText(x?.name ?? x, lang));
+  if (disabled) return <span>{names.join(', ')}</span>;
+  const add = (p) => { if (!names.includes(cellText(p.name, lang))) onChange([...list, p]); };
+  return (
+    <div className="stack-8" style={{ gap: 6 }}>
+      <Chips items={names} label={t('Remove')} onRemove={(i) => onChange(list.filter((_, j) => j !== i))} />
+      <select className="select" aria-label={aria} value="" onChange={e => { if (e.target.value === '__other') { setOther(true); return; } const p = parties[+e.target.value]; if (p) add(p); }}>
+        <option value="">{t('Add an interested party…')}</option>
+        {parties.map((p, i) => <option key={i} value={i} disabled={names.includes(cellText(p.name, lang))}>{cellText(p.name, lang)}</option>)}
+        <option value="__other">{t('Other party (type)')}…</option>
+      </select>
+      {other && <div className="row" style={{ gap: 6, flexWrap: 'nowrap' }}><input className="input" placeholder={t('Other party (type)')} aria-label={t('Other party (type)')} value={custom} onChange={e => setCustom(e.target.value)} /><button type="button" className="btn btn-sm" disabled={!custom.trim()} onClick={() => { add({ id: null, name: custom.trim() }); setCustom(''); setOther(false); }}><Plus size={14} />{t('Add')}</button></div>}
+    </div>
+  );
+}
+
 // One editable cell of a record table.
-function Cell({ col, value, onChange, disabled, ctx }) {
+function Cell({ col, value, onChange, disabled, ctx, big, rows: tableRows }) {
   const { t, lang, L, pickers, mpId, stepId, reloadPickers } = ctx;
   const aria = tx(col.label, lang);
   if (disabled) {
@@ -125,11 +182,16 @@ function Cell({ col, value, onChange, disabled, ctx }) {
     if (col.type === 'role') return <span>{tx(pickers?.roles.find(r => r.code === value)?.name, lang) || value || ''}</span>;
     if (col.type === 'kpi') { const k = pickers?.kpis.find(x => x.id === value); return <span>{k ? `${k.code} — ${tx(k.name, lang)}` : ''}</span>; }
     if (col.type === 'select') return <span>{value ? L(value) : ''}</span>;
+    if (col.type === 'mp') return <span>{mpLabel(value, pickers?.mps, lang)}</span>;
+    if (col.type === 'parties') return <span>{(Array.isArray(value) ? value : []).map(x => cellText(x?.name ?? x, lang)).join(', ')}</span>;
     return <span style={{ whiteSpace: 'pre-wrap' }}>{cellText(value, lang)}</span>;
   }
   const v = value === null || value === undefined ? '' : value;
   switch (col.type) {
-    case 'textarea': return <textarea className="textarea compact" aria-label={aria} value={cellText(v, lang)} onChange={e => onChange(e.target.value)} />;
+    case 'textarea': return <textarea className={`textarea ${big ? '' : 'compact'}`} rows={big ? 6 : undefined} aria-label={aria} value={cellText(v, lang)} onChange={e => onChange(e.target.value)} />;
+    case 'combo': return <Combo t={t} lang={lang} aria={aria} value={v} onChange={onChange} items={optionItems(col.options, lang, L, (tableRows || []).map(r => r[col.key]))} />;
+    case 'mp': return <Combo t={t} lang={lang} aria={aria} value={v} onChange={onChange} items={mpItems(pickers?.mps, lang)} />;
+    case 'parties': return <PartiesPicker t={t} lang={lang} aria={aria} value={v} parties={pickers?.parties || []} onChange={onChange} />;
     case 'number': return <input className="input num" type="number" aria-label={aria} value={v} onChange={e => onChange(e.target.value)} />;
     case 'date': return <input className="input" type="date" aria-label={aria} value={v} onChange={e => onChange(e.target.value)} />;
     case 'score': return <div className="score compact" role="group" aria-label={aria}>{[1, 2, 3, 4, 5].map(n => <button key={n} type="button" aria-pressed={+v === n} onClick={() => onChange(n)}>{n}</button>)}</div>;
@@ -143,11 +205,61 @@ function Cell({ col, value, onChange, disabled, ctx }) {
 }
 
 // A table of records (items, sources, SMART objectives, activities, decisions...) with CRUD.
+// Full-size editor of one row, with scrolling, previous / next and a way back to the table.
+function RowModal({ field, rows, index, setIndex, set, onClose, disabled, ctx }) {
+  const { t, lang } = ctx;
+  const r = rows[index] || {};
+  const title = `${tx(field.label, lang)} — ${t('Row {n} of {m}', { n: index + 1, m: rows.length })}`;
+  return (
+    <Modal wide title={title} onClose={onClose} footer={<>
+      <button type="button" className="btn" disabled={index === 0} onClick={() => setIndex(index - 1)}><ChevronLeft size={16} />{t('Previous row')}</button>
+      <button type="button" className="btn" disabled={index >= rows.length - 1} onClick={() => setIndex(index + 1)}>{t('Next row')}<ChevronRight size={16} /></button>
+      <button type="button" className="btn btn-primary" onClick={onClose}>{t('Back to the table')}</button>
+    </>}>
+      <div className="stack">
+        {field.columns.map(c => <Field key={c.key} label={tx(c.label, lang)} required={c.required}>{() => <Cell col={c} big value={r[c.key]} disabled={disabled} ctx={ctx} rows={rows} onChange={(v) => set(index, c.key, v)} />}</Field>)}
+      </div>
+    </Modal>
+  );
+}
+
+// Needs library: needs recorded before in the organization and the reference list.
+function LibraryModal({ ctx, onAdd, onClose }) {
+  const { t, lang, stepId } = ctx;
+  const [items, setItems] = useState(null);
+  const [q, setQ] = useState('');
+  const [sel, setSel] = useState([]);
+  useEffect(() => { api(`/steps/${stepId}/needs-library`).then(r => setItems(r.items)).catch(() => setItems([])); }, [stepId]);
+  const shown = (items || []).map((x, i) => ({ ...x, i })).filter(x => !q || cellText(x.need, lang).toLowerCase().includes(q.toLowerCase()));
+  return (
+    <Modal wide title={t('Add needs from the library')} onClose={onClose} footer={<><button className="btn" onClick={onClose}>{t('Cancel')}</button><button className="btn btn-primary" disabled={!sel.length} onClick={() => onAdd(sel.map(i => items[i]))}>{t('Add {n} need(s)', { n: sel.length })}</button></>}>
+      <div className="stack-8">
+        <p className="small muted" style={{ margin: 0 }}>{t('Needs already recorded in the organization and a reference list. They are not linked to any party: link them to the interested parties in the table.')}</p>
+        <input className="input" placeholder={t('Filter…')} aria-label={t('Filter')} value={q} onChange={e => setQ(e.target.value)} />
+        {items === null ? <p className="small muted">{t('Loading…')}</p> : shown.map(x => <label key={x.i} className="checkbox small"><input type="checkbox" checked={sel.includes(x.i)} onChange={e => setSel(e.target.checked ? [...sel, x.i] : sel.filter(y => y !== x.i))} /><span>{cellText(x.need, lang)} <span className="xsmall muted">· {x.from === 'organization' ? t('Recorded in the organization') : t('Reference list')}</span></span></label>)}
+      </div>
+    </Modal>
+  );
+}
+
 export function RowsEditor({ field, value, onChange, disabled, ctx }) {
   const { t, lang } = ctx;
   const rows = Array.isArray(value) ? value : [];
+  const [open, setOpen] = useState(null);
+  const [lib, setLib] = useState(false);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiNote, setAiNote] = useState(null);
+  const blank = () => Object.fromEntries(field.columns.map(c => [c.key, c.type === 'obs' || c.type === 'parties' ? [] : '']));
+  const suggestNeeds = async () => {
+    setAiBusy(true); setAiNote(null);
+    try {
+      const r = await api(`/steps/${ctx.stepId}/needs-suggest`, { method: 'POST', body: {} });
+      onChange([...rows, ...r.rows.map(x => ({ ...blank(), ...x }))]);
+      setAiNote({ engine: r.engine, error: r.llmError, n: r.rows.length });
+    } catch (e) { setAiNote({ error: e.message, n: 0 }); } finally { setAiBusy(false); }
+  };
   const set = (i, key, v) => onChange(rows.map((r, j) => (j === i ? { ...r, [key]: v } : r)));
-  const add = () => onChange([...rows, Object.fromEntries(field.columns.map(c => [c.key, c.type === 'obs' ? [] : '']))]);
+  const add = () => { onChange([...rows, blank()]); setOpen(rows.length); };
   const del = (i) => onChange(rows.filter((_, j) => j !== i));
   const wide = field.columns.length > 4;
   const linked = rows.some(r => r._actionId || r._registerId);
@@ -155,21 +267,29 @@ export function RowsEditor({ field, value, onChange, disabled, ctx }) {
     <div className="rows-editor">
       <div className="table-wrap">
         <table className={`data rows ${wide ? 'wide' : ''}`}>
-          <thead><tr><th scope="col" style={{ width: 36 }}>#</th>{field.columns.map(c => <th key={c.key} scope="col">{tx(c.label, lang)}{c.required && <span className="req" aria-hidden="true">*</span>}</th>)}{linked && <th scope="col">{t('Record created')}</th>}{!disabled && <th scope="col" style={{ width: 44 }}><span className="sr-only">{t('Actions')}</span></th>}</tr></thead>
+          <thead><tr><th scope="col" style={{ width: 36 }}>#</th>{field.columns.map(c => <th key={c.key} scope="col">{tx(c.label, lang)}{c.required && <span className="req" aria-hidden="true">*</span>}</th>)}{linked && <th scope="col">{t('Record created')}</th>}<th scope="col" style={{ width: disabled ? 44 : 84 }}><span className="sr-only">{t('Actions')}</span></th></tr></thead>
           <tbody>
             {rows.map((r, i) => (
               <tr key={i}>
                 <td className="muted">{i + 1}</td>
-                {field.columns.map(c => <td key={c.key} style={disabled ? undefined : { minWidth: c.type === 'textarea' ? 200 : c.type === 'person' || c.type === 'kpi' || c.type === 'obs' ? 190 : c.type === 'date' ? 140 : 120 }}><Cell col={c} value={r[c.key]} disabled={disabled} ctx={ctx} onChange={(v) => set(i, c.key, v)} /></td>)}
+                {field.columns.map(c => <td key={c.key} style={disabled ? undefined : { minWidth: c.wide ? 280 : c.type === 'textarea' ? 220 : ['person', 'kpi', 'obs', 'parties', 'mp', 'combo'].includes(c.type) ? 210 : c.type === 'date' ? 140 : 120 }}><Cell col={c} value={r[c.key]} disabled={disabled} ctx={ctx} rows={rows} onChange={(v) => set(i, c.key, v)} /></td>)}
                 {linked && <td>{r._actionId ? <Link to="/actions" className="tag s4">{t('Action')}</Link> : r._registerId ? <Link to="/registers?reg=objectives" className="tag s4">{t('Objective')}</Link> : '—'}</td>}
-                {!disabled && <td><button type="button" className="btn btn-ghost btn-icon btn-sm" aria-label={t('Delete row {n}', { n: i + 1 })} onClick={() => del(i)}><Trash2 size={16} /></button></td>}
+                <td className="row-actions"><button type="button" className="btn btn-ghost btn-icon btn-sm" title={t('Open the row in a large window')} aria-label={t('Open row {n}', { n: i + 1 })} onClick={() => setOpen(i)}><Maximize2 size={16} /></button>{!disabled && <button type="button" className="btn btn-ghost btn-icon btn-sm" aria-label={t('Delete row {n}', { n: i + 1 })} onClick={() => del(i)}><Trash2 size={16} /></button>}</td>
               </tr>
             ))}
             {!rows.length && <tr><td colSpan={field.columns.length + 3} className="muted small">{t('No row yet.')}</td></tr>}
           </tbody>
         </table>
       </div>
-      {!disabled && <button type="button" className="btn btn-sm" onClick={add}><Plus size={14} />{t('Add a row')}</button>}
+      {!disabled && <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
+        <button type="button" className="btn btn-sm" onClick={add}><Plus size={14} />{field.needs ? t('Type a need') : t('Add a row')}</button>
+        {field.needs && <button type="button" className="btn btn-sm" onClick={() => setLib(true)}><Library size={14} />{t('Add from the library')}</button>}
+        {field.needs && <button type="button" className="btn btn-sm" disabled={aiBusy} onClick={suggestNeeds}><Sparkles size={14} />{aiBusy ? t('Preparing…') : t('Suggest with AI')}</button>}
+        <span className="xsmall muted">{t('Tip: open a row in a large window to type long texts.')}</span>
+      </div>}
+      {aiNote && <div className={`callout ${aiNote.error ? 'warn' : 'good'} small`} role="status"><span>{aiNote.n ? t('{n} need(s) suggested by {engine}: review them, link the parties and delete what does not apply.', { n: aiNote.n, engine: String(aiNote.engine || '').startsWith('rules') ? t('the built-in engine') : aiNote.engine }) : ''} {aiNote.error ? t('Language model: {e}', { e: aiNote.error }) : ''}</span></div>}
+      {open !== null && rows[open] && <RowModal field={field} rows={rows} index={open} setIndex={setOpen} set={set} disabled={disabled} ctx={ctx} onClose={() => setOpen(null)} />}
+      {lib && <LibraryModal ctx={ctx} onClose={() => setLib(false)} onAdd={(list) => { onChange([...rows, ...list.map(x => ({ ...blank(), need: x.need, origin: 'Library' }))]); setLib(false); }} />}
       {field.createsActions && <p className="hint">{t('On completion, each row becomes an action in the Action plan, with its owner and due date.')}</p>}
       {field.createsObjectives && <p className="hint">{t('On completion, each row becomes an entry of the objectives register.')}</p>}
     </div>
@@ -212,9 +332,10 @@ export function StepField({ f, value, onChange, disabled, lang, t, L, error, ctx
   if (f.type === 'matrix') return <Field label={label} required={f.required} error={error}>{() => <MatrixEditor field={f} value={value} onChange={onChange} disabled={disabled} ctx={ctx} scale={scale} />}</Field>;
   if (f.type === 'racsi') return <Field label={label} error={error} hint={t('RACSI of the macro process; step-level RACSI can be set on the macro process page.')}>{() => <RacsiGrid value={value} onChange={onChange} roles={ctx.pickers?.roles || []} disabled={disabled} t={t} lang={lang} />}</Field>;
   if (f.type === 'records') return <Field label={label}>{() => <RecordsList value={value} t={t} lang={lang} />}</Field>;
-  if (f.computed) return <Field label={label} error={error}>{(id) => <input id={id} className="input num" value={value ?? ''} readOnly aria-readonly="true" />}</Field>;
+  const hint = f.hint ? tx(f.hint, lang) : undefined;
+  if (f.computed) return <Field label={label} error={error} hint={hint}>{(id) => <input id={id} className="input num" value={value ?? ''} readOnly aria-readonly="true" placeholder={t('Computed from the matrix')} />}</Field>;
   return (
-    <Field label={label} required={f.required} error={error}>
+    <Field label={label} required={f.required} error={error} hint={hint}>
       {(id) => {
         const v = value ?? '';
         if (f.type === 'textarea') return <textarea id={id} className="textarea" value={cellText(v, lang)} onChange={e => onChange(e.target.value)} {...common} />;

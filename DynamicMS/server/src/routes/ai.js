@@ -65,7 +65,8 @@ r.get('/orgs/:id/ai/usecases', requirePerm('ai.view'), h((req, res) => {
   const tier = orgConfig(o).aiTier;
   const list = rows(all('SELECT * FROM ai_usecases WHERE org_id=? ORDER BY custom, code', req.params.id));
   const usage = Object.fromEntries(all('SELECT usecase_id, COUNT(*) n, SUM(outcome=\'Accepted\') acc, SUM(outcome=\'Edited\') ed, SUM(outcome=\'Rejected\') rej, AVG(confidence) conf FROM ai_usage_log WHERE org_id=? GROUP BY usecase_id', req.params.id).map(u => [u.usecase_id, u]));
-  send(req, res, { tier, items: list.map(u => ({ ...u, entitled: u.tier === 'Assistive' || tier.includes('Augmented'), usage: usage[u.id] || null })) });
+  const cat = catalog();
+  send(req, res, { tier, items: list.map(u => ({ ...u, step_name: cat.stepById[u.linked_step]?.name || null, mp_name: cat.mpById[u.linked_mp]?.name || null, entitled: u.tier === 'Assistive' || tier.includes('Augmented'), usage: usage[u.id] || null })) });
 }));
 r.post('/orgs/:id/ai/usecases', requirePerm('ai.manage'), h((req, res) => {
   requireOrg(req, req.params.id, true);
@@ -170,7 +171,8 @@ r.post('/ai/suggest', requirePerm('ai.use'), h(async (req, res) => {
   try {
     const r2 = await complete(p.org_id, { system: prompt.system, user: prompt.user, model: full.model || undefined });
     if (r2 && r2.text) { out = { kind: 'LLM', items: toItems(r2.text), confidence: 0.8, sources: [{ type: 'llm', id: r2.provider, title: `${r2.provider} · ${r2.model}` }] }; source = `llm:${r2.provider}:${r2.model}`; }
-  } catch (e) { warning = `LLM unavailable (${e.message}); built-in engine used.`; }
+    else if (!r2) warning = { en: 'No language model is enabled for this organization (Administration › AI models), so the built-in engine answered.', fr: 'Aucun modèle de langage n\'est activé pour cet organisme (Administration › Modèles d\'IA) : le moteur intégré a répondu.', ar: 'لا يوجد نموذج لغة مفعّل لهذه المؤسسة (الإدارة › نماذج الذكاء الاصطناعي)، لذلك أجاب المحرك المدمج.' }[req.lang || 'en'];
+  } catch (e) { warning = { en: `The language model returned an error (${e.message}); the built-in engine answered instead.`, fr: `Le modèle de langage a renvoyé une erreur (${e.message}) ; le moteur intégré a répondu à sa place.`, ar: `أعاد نموذج اللغة خطأ (${e.message})؛ وأجاب المحرك المدمج بدلًا منه.` }[req.lang || 'en']; }
   if (!out) out = suggest({ usecase: full, project: get('SELECT * FROM projects WHERE id=?', p.id), lang: req.lang, input: req.body?.input });
   const id = uid();
   run('INSERT INTO ai_usage_log(id,org_id,project_id,usecase_id,record_type,record_id,user_id,outcome,confidence,source,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)', id, p.org_id, p.id, u.id, req.body?.recordType || null, req.body?.recordId || null, req.user.id, 'Pending', out.confidence, source, now());

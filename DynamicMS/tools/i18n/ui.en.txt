@@ -1141,3 +1141,34 @@
 1141	Approvers (one per line)
 1142	Items (one per line)
 1143	Not used: this model sets its own sampling.
+1144	Search everything… (Ctrl+K)
+1145	Document templates and layout
+1146	Custom…
+1147	Custom value
+1148	Type your own value
+1149	Add an interested party…
+1150	Other party (type)
+1151	Row {n} of {m}
+1152	Previous row
+1153	Next row
+1154	Back to the table
+1155	Add needs from the library
+1156	Add {n} need(s)
+1157	Needs already recorded in the organization and a reference list. They are not linked to any party: link them to the interested parties in the table.
+1158	Recorded in the organization
+1159	Reference list
+1160	Open the row in a large window
+1161	Open row {n}
+1162	Type a need
+1163	Add from the library
+1164	Suggest with AI
+1165	Tip: open a row in a large window to type long texts.
+1166	{n} need(s) suggested by {engine}: review them, link the parties and delete what does not apply.
+1167	the built-in engine
+1168	Language model: {e}
+1169	Computed from the matrix
+1170	Customize the templates
+1171	Layout: logo and colours
+1172	To customize documents: Templates changes the sections, their order, their text and data source (copy a standard template, then edit it); Layout sets the logo, colours, header and footer of every Word, PDF and Excel file; on a draft document, Edit the structure changes that document only.
+1173	Open AI models
+1174	built-in engine (rules and retrieval)

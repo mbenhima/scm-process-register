@@ -13,6 +13,7 @@ import { DOC_TEMPLATES, templateByCode } from '../content/templates.js';
 import { PROFILES, COUNTRY_NAMES } from '../seed/profiles.js';
 import { ROLES } from '../permissions.js';
 import { bpmnSvgVertical, processMapSvg } from './diagram.js';
+import { formFor, stepRule } from '../catalog/stepforms.js';
 
 const L = (en, fr, ar) => ({ en, fr, ar });
 const LANGS = ['en', 'fr', 'ar'];
@@ -82,10 +83,25 @@ const val = (v) => (v === null || v === undefined ? '' : Array.isArray(v) ? cat(
 const mpLabel = (ctx, id) => { const m = ctx.cat.mpById[id]; return m ? cat(' ', m.code, m.name) : id; };
 const RAG = (ok) => (ok === null || ok === undefined ? undefined : ok ? 3 : 0);
 
+// Interested parties: the register, or the rows typed in the "identify interested parties"
+// step when the register has no entry yet.
+const txtKey = (t) => String((t && typeof t === 'object' ? t.en ?? Object.values(t)[0] : t) || '').trim().toLowerCase();
+function partiesOf(ctx) {
+  const reg = regs(ctx, 'parties');
+  if (reg.length) return reg;
+  const ex = all("SELECT * FROM step_exec WHERE project_id=? AND form_kind='list'", ctx.p.id).find(e => stepRule(ctx.cat.stepById[e.step_id])?.id === 'parties' && (P(e.fields)?.items || []).length);
+  return ex ? P(ex.fields).items.map((r, i) => ({ code: `IP-${i + 1}`, title: r.item, d: { needs: r.detail, category: r.category, influence: +r.influence || (r.priority === 'High' ? 4 : 3), interest: +r.interest || (r.priority === 'High' ? 4 : 3) } })) : [];
+}
+function needsOf(ctx) {
+  const ex = all("SELECT fields FROM step_exec WHERE project_id=? AND form_kind='needs'", ctx.p.id).map(e => P(e.fields)?.needs || []).find(x => x.length);
+  return ex || [];
+}
+const partyMatch = (need, title) => (need.parties || []).some(x => txtKey(x?.name ?? x) === txtKey(title));
+
 // Converts the "rows" field of a step into a table using the form definition.
 function stepRowsTable(exec) {
   if (!exec) return null;
-  const def = FORM_KINDS[exec.form_kind];
+  const def = formFor(catalog().stepById[exec.step_id], exec.form_kind);
   const f = P(exec.fields) || {};
   const fd = def?.fields.find(x => ['rows', 'kpis'].includes(x.type) && Array.isArray(f[x.key]) && f[x.key].length);
   if (!fd) return null;
@@ -98,6 +114,8 @@ function fmtCell(v, type) {
   if (type === 'person') return userName(v);
   if (type === 'role') return roleName(v);
   if (type === 'select') return lab(v);
+  if (type === 'mp') { const m = typeof v === 'string' ? catalog().mpById[v] : null; return m ? cat(' ', m.code, m.name) : v; }
+  if (type === 'parties') return Array.isArray(v) ? v.map(x => x?.name || x) : v;
   if (type === 'obs') return Array.isArray(v) ? v.map(x => x.name || x).map(x => (typeof x === 'object' ? x : String(x))) : (v.name || v);
   if (Array.isArray(v)) return v;
   return v;
@@ -127,6 +145,7 @@ const OUT_BY_KIND = {
   configure: L('Settings configured: {obj}', 'Paramètres configurés : {obj}', 'إعدادات مهيأة: {obj}'),
   escalate: L('Escalation record', 'Enregistrement d\'escalade', 'سجل التصعيد'),
   ai: L('AI suggestion reviewed and accepted', 'Suggestion IA revue et acceptée', 'مراجعة اقتراح الذكاء الاصطناعي وقبوله'),
+  needs: L('Needs and expectations mapped to the interested parties', 'Besoins et attentes rattachés aux parties intéressées', 'احتياجات وتوقعات مرتبطة بالأطراف المعنية'),
 };
 // The object of an explicit step name: the words after the verb ("Define or review the scope" -> "the scope").
 const objectOf = (name) => { const o = {}; for (const l of LANGS) { let w = String(name?.[l] ?? '').split(' ').slice(1); while (w.length > 2 && ['or', 'and', 'ou', 'et', 'أو', 'و'].includes(w[0])) w = w.slice(2); o[l] = w.join(' ') || String(name?.[l] ?? ''); } return o; };
@@ -379,14 +398,24 @@ const SOURCES = {
     return table([col('a', L('Strengths', 'Forces', 'نقاط القوة'), 2), col('b', L('Weaknesses', 'Faiblesses', 'نقاط الضعف'), 2), col('c', L('Opportunities', 'Opportunités', 'الفرص'), 2), col('d', L('Threats', 'Menaces', 'التهديدات'), 2)], [{ a: cat('\n', ...strengths), b: cat('\n', ...int.map(x => x.title)), c: cat('\n', ...opp), d: cat('\n', ...ext.filter(x => x.d.impact >= 4).map(x => x.title)) }]);
   },
   parties_full: (ctx) => {
-    const list = regs(ctx, 'parties');
+    const list = partiesOf(ctx);
+    if (!list.length) return null;
+    const needs = needsOf(ctx);
     const obl = new Set(['IP-1', 'IP-3']);
     return table([col('c', H.code), col('t', L('Interested party', 'Partie intéressée', 'الطرف المعني'), 2), col('k', L('Internal / external', 'Interne / externe', 'داخلي / خارجي')), col('n', L('Needs and expectations', 'Besoins et attentes', 'الاحتياجات والتوقعات'), 3), col('o', L('Compliance obligation', 'Obligation de conformité', 'التزام امتثال')), col('i', L('Influence', 'Influence', 'النفوذ')), col('r', L('Interest', 'Intérêt', 'الاهتمام')), col('p', L('Priority', 'Priorité', 'الأولوية')), col('m', L('How monitored', 'Mode de surveillance', 'طريقة المراقبة'), 2)],
-      list.map(x => { const pr = (x.d.influence || 0) * (x.d.interest || 0); return { c: x.code, t: x.title, k: x.code === 'IP-2' ? L('Internal', 'Interne', 'داخلي') : L('External', 'Externe', 'خارجي'), n: x.d.needs, o: yn(obl.has(x.code)), i: x.d.influence, r: x.d.interest, p: pr, m: x.code === 'IP-1' ? L('Survey and complaints', 'Enquête et réclamations', 'الاستبيان والشكاوى') : x.code === 'IP-3' ? L('Regulatory watch', 'Veille réglementaire', 'الرصد التنظيمي') : L('Meetings and feedback', 'Réunions et retours', 'الاجتماعات والملاحظات'), _cells: { p: pr >= 16 ? 0 : pr >= 9 ? 1 : 3 } }; }),
+      list.map(x => { const pr = (x.d.influence || 0) * (x.d.interest || 0); const mine = needs.filter(r => partyMatch(r, x.title)); return { c: x.code, t: x.title, k: x.d.category || (x.code === 'IP-2' ? L('Internal', 'Interne', 'داخلي') : L('External', 'Externe', 'خارجي')), n: mine.length ? cat('\n', ...mine.map(r => r.need)) : x.d.needs, o: yn(mine.length ? mine.some(r => r.obligation === 'Yes') : obl.has(x.code)), i: x.d.influence, r: x.d.interest, p: pr, m: x.code === 'IP-1' ? L('Survey and complaints', 'Enquête et réclamations', 'الاستبيان والشكاوى') : x.code === 'IP-3' ? L('Regulatory watch', 'Veille réglementaire', 'الرصد التنظيمي') : L('Meetings and feedback', 'Réunions et retours', 'الاجتماعات والملاحظات'), _cells: { p: pr >= 16 ? 0 : pr >= 9 ? 1 : 3 } }; }),
       L('Priority = influence × interest: 16 or more manage closely, 9–15 keep satisfied, below 9 keep informed.', 'Priorité = influence × intérêt : 16 et plus gérer étroitement, 9–15 satisfaire, moins de 9 informer.', 'الأولوية = النفوذ × الاهتمام: 16 فأكثر إدارة عن قرب، 9–15 إرضاء، أقل من 9 إعلام.'));
   },
+  // Needs and expectations mapped to the interested parties (many-to-many).
+  needs_parties: (ctx) => {
+    const list = needsOf(ctx);
+    if (!list.length) return null;
+    return table([col('n', L('Need or expectation', 'Besoin ou attente', 'الحاجة أو التوقع'), 3), col('p', L('Interested parties', 'Parties intéressées', 'الأطراف المعنية'), 2), col('t', L('Type', 'Type', 'النوع')), col('o', L('Compliance obligation', 'Obligation de conformité', 'التزام امتثال')), col('r', L('How addressed', 'Réponse de l\'organisme', 'طريقة المعالجة'), 2)],
+      list.map(r => ({ n: r.need, p: cat(', ', ...(r.parties || []).map(x => x?.name || x)), t: r.type, o: r.obligation ? lab(r.obligation) : '', r: r.response })));
+  },
   power_grid: (ctx) => {
-    const list = regs(ctx, 'parties');
+    const list = partiesOf(ctx);
+    if (!list.length) return null;
     const q = (hiI, hiR) => cat('\n', ...list.filter(x => (x.d.influence >= 4) === hiI && (x.d.interest >= 4) === hiR).map(x => x.title));
     return table([col('k', ''), col('a', L('Low interest', 'Intérêt faible', 'اهتمام منخفض'), 2), col('b', L('High interest', 'Intérêt fort', 'اهتمام مرتفع'), 2)], [
       { k: L('High influence', 'Influence forte', 'نفوذ مرتفع'), a: cat('\n', L('Keep satisfied:', 'Satisfaire :', 'إرضاء:'), q(true, false)), b: cat('\n', L('Manage closely:', 'Gérer étroitement :', 'إدارة عن قرب:'), q(true, true)) },

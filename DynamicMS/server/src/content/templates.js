@@ -136,6 +136,7 @@ export const DOC_TEMPLATES = [
       data('internal', L('Internal issues', 'Enjeux internes', 'القضايا الداخلية'), 'context_internal'),
       data('swot', L('SWOT synthesis', 'Synthèse SWOT', 'خلاصة SWOT'), 'swot'),
       data('parties', L('Interested parties and their requirements', 'Parties intéressées et leurs exigences', 'الأطراف المعنية ومتطلباتها'), 'parties_full'),
+      data('needs', L('Needs and expectations mapped to the interested parties', 'Besoins et attentes par partie intéressée', 'الاحتياجات والتوقعات حسب الطرف المعني'), 'needs_parties'),
       data('grid', L('Influence and interest grid', 'Grille influence / intérêt', 'شبكة النفوذ والاهتمام'), 'power_grid'),
       data('assessment', L('Assessment of needs and expectations', 'Évaluation des besoins et attentes', 'تقييم الاحتياجات والتوقعات'), 'step_matrix:MP-001.5'),
       data('interactions', L('Process interactions', 'Interactions entre processus', 'التفاعلات بين العمليات'), 'step_rows:MP-001.7'),
@@ -149,7 +150,7 @@ export const DOC_TEMPLATES = [
     name: L('Interested parties register', 'Registre des parties intéressées', 'سجل الأطراف المعنية'),
     description: L('Interested parties, needs and expectations, requirements adopted as compliance obligations, influence, interest, priority, monitoring and owner.', 'Parties intéressées, besoins et attentes, exigences retenues comme obligations de conformité, influence, intérêt, priorité, surveillance et responsable.', 'الأطراف المعنية واحتياجاتها وتوقعاتها والمتطلبات المعتمدة كالتزامات امتثال ونفوذها واهتمامها وأولويتها ومراقبتها والمسؤول.'),
     mandatory: {}, clauses: { 'ISO 9001': '4.2', 'ISO 14001': '4.2', 'ISO 45001': '4.2' },
-    sections: [ident, data('parties', L('Interested parties', 'Parties intéressées', 'الأطراف المعنية'), 'parties_full'), data('grid', L('Influence and interest grid', 'Grille influence / intérêt', 'شبكة النفوذ والاهتمام'), 'power_grid')],
+    sections: [ident, data('parties', L('Interested parties', 'Parties intéressées', 'الأطراف المعنية'), 'parties_full'), data('needs', L('Needs and expectations mapped to the interested parties', 'Besoins et attentes par partie intéressée', 'الاحتياجات والتوقعات حسب الطرف المعني'), 'needs_parties'), data('grid', L('Influence and interest grid', 'Grille influence / intérêt', 'شبكة النفوذ والاهتمام'), 'power_grid')],
   },
   {
     code: 'TPL-REG-RISK', category: 'context', docType: 'Register', formats: ['XLSX', 'PDF'], toc: false, ms: ['QMS', 'QHSE'], mp: 'MP-012', review: 'Semi-annual', owner: 'risk_manager',

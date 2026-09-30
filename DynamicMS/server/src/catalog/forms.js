@@ -16,6 +16,9 @@ export const SCORE_SCALE = [
 ];
 
 const col = (key, type, label, extra = {}) => ({ key, type, label, ...extra });
+// Why the score and conclusion fields exist (shown under them in the form).
+const HINT_SCORE = L('Computed from the decision matrix: Σ(weight × score) ÷ Σ(weight). It rates the whole assessment on the 1–5 scale (3 = Defined) and is printed in the documents; it cannot be typed.', 'Calculée à partir de la matrice : Σ(poids × note) ÷ Σ(poids). Elle situe l\'évaluation sur l\'échelle 1–5 (3 = Défini) et figure dans les documents ; elle ne se saisit pas.', 'تُحسب من مصفوفة القرار: Σ(الوزن × الدرجة) ÷ Σ(الوزن). تضع التقييم على سلم 1–5 (3 = محدد) وتظهر في الوثائق؛ ولا تُكتب يدويًا.');
+const HINT_CONCLUSION = L('What the assessment shows and the actions it calls for, in two or three sentences. It is the text management reads first and it is printed in the related document.', 'Ce que montre l\'évaluation et les actions qu\'elle appelle, en deux ou trois phrases. C\'est le texte que la direction lit en premier ; il figure dans le document associé.', 'ما يُظهره التقييم والإجراءات التي يستدعيها في جملتين أو ثلاث. هو النص الذي تقرؤه الإدارة أولًا ويظهر في الوثيقة المرتبطة.');
 
 export const FORM_KINDS = {
   standards: {
@@ -59,8 +62,35 @@ export const FORM_KINDS = {
         col('score', 'score', L('Score (1–5)', 'Note (1–5)', 'الدرجة (1–5)'), { required: true }),
         col('justification', 'textarea', L('Facts that justify the score', 'Faits qui justifient la note', 'الوقائع التي تبرر الدرجة')),
       ] },
-      { key: 'score', type: 'number', computed: true, label: L('Weighted score (1–5)', 'Note pondérée (1–5)', 'الدرجة المرجحة (1–5)'), required: true },
-      { key: 'rationale', type: 'textarea', label: L('Conclusion', 'Conclusion', 'الخلاصة'), required: true },
+      { key: 'score', type: 'number', computed: true, label: L('Weighted score (1–5)', 'Note pondérée (1–5)', 'الدرجة المرجحة (1–5)'), required: true, hint: HINT_SCORE },
+      { key: 'rationale', type: 'textarea', label: L('Conclusion', 'Conclusion', 'الخلاصة'), required: true, hint: HINT_CONCLUSION },
+    ],
+  },
+  // Needs and expectations of interested parties (ISO 9001 §4.2, ISO 14001 §4.2, ISO 45001 §4.2):
+  // one row per need, mapped to one or more interested parties; rows typed, taken from the
+  // library or suggested by the AI. The optional matrix rates how well the needs are handled.
+  needs: {
+    label: L('Needs and expectations', 'Besoins et attentes', 'الاحتياجات والتوقعات'),
+    scale: SCORE_SCALE,
+    fields: [
+      { key: 'needs', type: 'rows', required: true, needs: true, label: L('Needs and expectations of the interested parties', 'Besoins et attentes des parties intéressées', 'احتياجات الأطراف المعنية وتوقعاتها'), columns: [
+        col('need', 'textarea', L('Need or expectation', 'Besoin ou attente', 'الحاجة أو التوقع'), { required: true, wide: true }),
+        col('parties', 'parties', L('Interested parties concerned', 'Parties intéressées concernées', 'الأطراف المعنية'), { required: true }),
+        col('type', 'combo', L('Type of requirement', 'Type d\'exigence', 'نوع المتطلب'), { options: 'needType' }),
+        col('obligation', 'select', L('Adopted as a compliance obligation', 'Retenue comme obligation de conformité', 'معتمد كالتزام امتثال'), { options: ['Yes', 'No'] }),
+        col('response', 'textarea', L('How the organization addresses it (process, control)', 'Réponse de l\'organisme (processus, maîtrise)', 'كيف تستجيب المؤسسة (العملية، الضبط)'), { wide: true }),
+        col('priority', 'select', L('Relevance', 'Pertinence', 'الأهمية'), { options: PRIORITY }),
+        col('origin', 'select', L('Entered from', 'Origine de la saisie', 'مصدر الإدخال'), { options: ['Manual', 'Library', 'AI'] }),
+        col('source', 'textarea', L('Source / evidence', 'Source / preuve', 'المصدر / الدليل')),
+      ] },
+      { key: 'matrix', type: 'matrix', label: L('How well the needs are known and handled (optional decision matrix)', 'Degré de maîtrise des besoins (matrice de décision facultative)', 'مدى معرفة الاحتياجات ومعالجتها (مصفوفة قرار اختيارية)'), columns: [
+        col('criterion', 'text', L('Criterion', 'Critère', 'المعيار'), { required: true }),
+        col('weight', 'number', L('Weight (%)', 'Poids (%)', 'الوزن (%)'), { required: true }),
+        col('score', 'score', L('Score (1–5)', 'Note (1–5)', 'الدرجة (1–5)'), { required: true }),
+        col('justification', 'textarea', L('Facts that justify the score', 'Faits qui justifient la note', 'الوقائع التي تبرر الدرجة')),
+      ] },
+      { key: 'score', type: 'number', computed: true, label: L('Weighted score (1–5)', 'Note pondérée (1–5)', 'الدرجة المرجحة (1–5)'), hint: HINT_SCORE },
+      { key: 'rationale', type: 'textarea', label: L('Conclusion', 'Conclusion', 'الخلاصة'), required: true, hint: HINT_CONCLUSION },
     ],
   },
   decision: {
@@ -240,6 +270,7 @@ const RULES = [
   [/^(cascade$|cascade objectives|define smart|define objectives|set targets|set objectives|translate policy)/i, 'objectives'],
   [/^(approve|obtain approval|validate|confirm|certify|close and obtain|issue certification|accept|go\/no-go|lock for approval|approve startup|review and approve)/i, 'decision'],
   [/^(review periodically|plan review|schedule review|review$|review\/improve|review\/certify|mini-reviews|full reviews|exco|commercial committees|periodic review|review relevance|hold)/i, 'review'],
+  [/needs( and |\s*\/\s*|\s*&\s*)expectations|expectations of (the )?interested parties/i, 'needs'],
   [/^(assess|evaluate|analy[sz]e|score|calculate|quantify|compute|compare|rank|classify|prioriti[sz]e|determine|review effectiveness|test|verify|check)/i, 'assess'],
   [/^(document|draft|publish|issue|record|produce|write|register|file|prepare|compile|generate|author|create procedure|develop instructions|maintain (register|registry|log|records|repository|legal register|trails))/i, 'document'],
   [/^(communicate|notify|distribute|share|report|inform|present|alert|transmit|deliver report|send)/i, 'communicate'],

@@ -115,6 +115,10 @@ const doneAudit = smeAudits.find(a => a.status === 'Completed' && a.findings > 1
 await shoot(sme, 'AT-UNI-QMS', `/audits/${doneAudit.id}`, 'f-audit-detail');
 await shoot(sme, 'AT-UNI-QMS', '/registers?reg=calibration', 'f-register');
 await sme.page.locator('table tbody tr').first().click(); await sme.page.waitForTimeout(600); await sme.page.screenshot({ path: path.join(outDir, 'f-register-entry.png') }); process.stdout.write('.');
+// Round 3: needs mapped to interested parties; a row opened in the large editor.
+await shoot(sme, 'AT-UNI-QMS', `/steps/${smeSteps.items.find(x => x.step_id === 'MP-001.5').id}`, 'f-needs', { scroll: 420 });
+await shoot(sme, 'AT-UNI-QMS', `/steps/${smeSteps.items.find(x => x.step_id === 'MP-001.2').id}`, 'f-row-editor', { scroll: 380 });
+await sme.page.locator('.row-actions button').first().click(); await sme.page.waitForTimeout(700); await sme.page.screenshot({ path: path.join(outDir, 'f-row-editor.png') }); process.stdout.write('.');
 const asst = await session('quality@nova-aec.example');
 await asst.page.goto(`${BASE}/assistant`, { waitUntil: 'networkidle' });
 process.stdout.write('\n');

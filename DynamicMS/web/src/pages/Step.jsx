@@ -65,10 +65,11 @@ export default function Step() {
     setAiBusy(true);
     try {
       const uc = await orgUc();
-      const input = Object.values(vals).map(v => (typeof v === 'string' ? v : '')).filter(Boolean).join('. ');
+      // Only what the user typed in text fields is sent (not list choices such as "Edited").
+      const input = fields.filter(f => ['text', 'textarea'].includes(f.type) && f.key !== 'final').map(f => (typeof vals[f.key] === 'string' ? vals[f.key] : tx(vals[f.key], lang) || '')).map(x => x.trim().replace(/[.\s]+$/, '')).filter(Boolean).join('. ');
       const out = await api('/ai/suggest', { method: 'POST', body: { projectId: s.project_id, usecaseId: uc.id, recordType: 'step', recordId: s.id, input } });
       setAi(out);
-      if (out.warning) toast(out.warning, 'error');
+      if (out.warning && !String(out.engine).startsWith('rules')) toast(out.warning, 'error');
     } catch (e) { toast(e.message, 'error'); } finally { setAiBusy(false); }
   };
   const showPrompt = async () => { try { const uc = await orgUc(); setPrompt(await api(`/ai/usecases/${uc.id}/prompt?projectId=${s.project_id}&stepId=${s.id}`)); } catch (e) { toast(e.message, 'error'); } };
@@ -77,7 +78,7 @@ export default function Step() {
       await api('/ai/feedback', { method: 'POST', body: { logId: ai.logId, outcome } });
       if (outcome !== 'Rejected') {
         const rowsF = fields.find(f => f.type === 'rows');
-        const target = fields.find(f => f.type === 'textarea') || fields.find(f => f.type === 'text');
+        const target = fields.find(f => f.key === 'final') || fields.find(f => f.type === 'textarea') || fields.find(f => f.type === 'text');
         if (rowsF) { const k0 = rowsF.columns[0].key; setVals(v => ({ ...v, [rowsF.key]: [...(v[rowsF.key] || []), ...ai.items.map(x => ({ [k0]: x }))] })); }
         else if (target) setVals(v => ({ ...v, [target.key]: `${typeof v[target.key] === 'string' && v[target.key] ? v[target.key] + '\n' : tx(v[target.key], lang) ? tx(v[target.key], lang) + '\n' : ''}${ai.items.join('\n')}` }));
       }
@@ -135,8 +136,9 @@ export default function Step() {
               <p className="small">{aiUc.id} · {tx(aiUc.name, lang)} · <span className="muted">{tx(aiUc.checkpoint, lang)}</span></p>
               {ai && (
                 <div className="card tight stack-8">
-                  <ul className="small" style={{ margin: 0, paddingInlineStart: 20 }}>{ai.items.map((x, i) => <li key={i}>{x}</li>)}</ul>
-                  <p className="xsmall muted" style={{ margin: 0 }}>{t('Confidence {c}%', { c: Math.round(ai.confidence * 100) })} · {t('Engine')}: {ai.engine}{ai.sources?.length ? ` · ${t('Sources')}: ${ai.sources.map(x => x.title).join(', ')}` : ''}</p>
+                  {ai.items.length === 1 ? <p className="small" style={{ margin: 0, whiteSpace: 'pre-line' }}>{ai.items[0]}</p> : <ul className="small" style={{ margin: 0, paddingInlineStart: 20 }}>{ai.items.map((x, i) => <li key={i}>{x}</li>)}</ul>}
+                  {ai.warning && <div className="callout warn small" role="status"><span>{ai.warning} {can('ai.manage') && <Link to="/admin?tab=llm">{t('Open AI models')}</Link>}</span></div>}
+                  <p className="xsmall muted" style={{ margin: 0 }}>{t('Confidence {c}%', { c: Math.round(ai.confidence * 100) })} · {t('Engine')}: {String(ai.engine).startsWith('rules') ? t('built-in engine (rules and retrieval)') : ai.engine}{ai.sources?.length ? ` · ${t('Sources')}: ${ai.sources.map(x => x.title).join(', ')}` : ''}</p>
                   <div className="row"><button className="btn btn-sm btn-primary" onClick={() => aiOutcome('Accepted')}>{t('Accept')}</button><button className="btn btn-sm" onClick={() => aiOutcome('Edited')}>{t('Insert and edit')}</button><button className="btn btn-sm btn-danger" onClick={() => aiOutcome('Rejected')}>{t('Reject')}</button></div>
                 </div>
               )}

@@ -31,7 +31,7 @@ export default function AiUseCases() {
         <Table rows={lib.data.items} onRowClick={setSel} columns={[
           { key: 'code', label: t('Code'), width: 100 }, { key: 'name', label: t('Use case'), render: u => <span className="strong">{tx(u.name, lang)}</span>, sortValue: u => tx(u.name, lang) },
           { key: 'tier', label: t('Tier'), render: u => <span className={`tag ${u.entitled ? '' : 's1'}`}>{L(u.tier)}{u.entitled ? '' : ` · ${t('not licensed')}`}</span> },
-          { key: 'risk_level', label: t('Risk'), render: u => <Status value={u.risk_level} /> }, { key: 'linked_step', label: t('Linked step'), render: u => u.linked_step || u.linked_mp || '—' },
+          { key: 'risk_level', label: t('Risk'), render: u => <Status value={u.risk_level} /> }, { key: 'linked_step', label: t('Linked step'), render: u => (u.linked_step ? `${u.linked_step} (${tx(u.step_name, lang) || ''})` : u.linked_mp ? `${u.linked_mp} (${tx(u.mp_name, lang) || ''})` : '—') },
           { key: 'usage', label: t('Uses'), render: u => u.usage?.n || 0, sortValue: u => u.usage?.n || 0 },
           { key: 'acc', label: t('Accepted'), render: u => (u.usage?.n ? `${Math.round(100 * ((u.usage.acc || 0) + (u.usage.ed || 0)) / u.usage.n)}%` : '—') },
           { key: 'active', label: t('Organization'), render: u => <Status value={u.active ? 'Active' : 'Disabled'} /> },
@@ -44,7 +44,7 @@ export default function AiUseCases() {
           <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
             <Card tight className="flat"><div className="xsmall muted">{t('Task type')}</div><div className="small strong">{tx(sel.task_type, lang)}</div></Card>
             <Card tight className="flat"><div className="xsmall muted">{t('Human checkpoint')}</div><div className="small strong">{tx(sel.checkpoint, lang)}</div></Card>
-            <Card tight className="flat"><div className="xsmall muted">{t('Linked step')}</div><div className="small strong">{sel.linked_step || '—'}</div></Card>
+            <Card tight className="flat"><div className="xsmall muted">{t('Linked step')}</div><div className="small strong">{sel.linked_step ? `${sel.linked_step} (${tx(sel.step_name, lang) || ''})` : '—'}</div></Card>
             <Card tight className="flat"><div className="xsmall muted">{t('Approval')}</div><div className="small strong">{sel.approval}</div></Card>
           </div>
           {sel.prompt && <p className="small" style={{ marginTop: 16 }}><span className="strong">{t('Prompt')}: </span>{tx(sel.prompt, lang)}</p>}

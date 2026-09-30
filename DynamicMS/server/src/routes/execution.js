@@ -13,6 +13,8 @@ import { ROLES } from '../permissions.js';
 import { templatesForMp } from '../content/templates.js';
 import { checkName } from '../catalog/naming.js';
 import { templateLibrary } from './documents.js';
+import { formFor, stepRule } from '../catalog/stepforms.js';
+import { needsLibrary, suggestNeeds } from '../services/needs.js';
 
 const r = Router();
 const roleName = (c) => ROLES.find(x => x.code === c)?.name || (c === 'system' ? { en: 'DynamicMS Engine', fr: 'Moteur DynamicMS', ar: 'محرك DynamicMS' } : c);
@@ -91,7 +93,7 @@ function stepDetail(req, e) {
   const history = rows(all('SELECT a.action, a.at, a.justification, u.name AS user_name FROM audit_log a LEFT JOIN users u ON u.id=a.user_id WHERE a.entity_type=? AND a.entity_id=? ORDER BY a.at DESC', 'step', e.id));
   const canPerform = can(req, 'execution.perform') && (req.user.roles.includes(e.assignee_role) || can(req, 'project.manage'));
   return {
-    ...e, step: { ...s, form: c.forms[s.formKind] }, mp: { id: m.id, code: m.code, name: m.name, e2e: m.e2e, e2eName: c.e2eById[m.e2e].name, sipoc: m.sipoc, standards: P(get('SELECT standards FROM projects WHERE id=?', e.project_id).standards) || [], clauses: m.clauses },
+    ...e, step: { ...s, form: formFor(s, e.form_kind || s.formKind) }, mp: { id: m.id, code: m.code, name: m.name, e2e: m.e2e, e2eName: c.e2eById[m.e2e].name, sipoc: m.sipoc, standards: P(get('SELECT standards FROM projects WHERE id=?', e.project_id).standards) || [], clauses: m.clauses },
     task: (c.tasksByMp[m.id] || []).find(t => t.id === s.task)?.name, roleName: roleName(e.assignee_role),
     assignee: e.assignee_user ? get('SELECT id, name, email FROM users WHERE id=?', e.assignee_user) : null,
     completedBy: e.completed_by ? get('SELECT id, name FROM users WHERE id=?', e.completed_by) : null,
@@ -147,7 +149,33 @@ r.get('/projects/:id/pickers', requirePerm('execution.view'), h((req, res) => {
   const users = all('SELECT id, name, email, roles FROM users WHERE org_id=? AND status=? ORDER BY name', p.org_id, 'Active').map(u => ({ id: u.id, name: u.name, email: u.email, roles: JSON.parse(u.roles), units: members.filter(m => m.user_id === u.id).map(m => m.node_id) }));
   const kpis = rows(all('SELECT id, code, name, target_text, mp_id, unit FROM kpis WHERE project_id=? ORDER BY code', p.id));
   const stds = [...new Set([...(c.standards || []).map(x => x.code), 'ISO 9001', 'ISO 14001', 'ISO 45001', 'ISO 27001', 'ISO 50001'])].sort();
-  send(req, res, { users, obs: nodes, kpis, standards: stds, projectStandards: P(p.standards) || [], templates: templateLibrary(p.org_id).filter(t => t.ms.includes(p.ms_type)).map(t => ({ code: t.code, name: t.name, mp: t.mp, category: t.category })), roles: ROLES.filter(x => x.code !== 'platform_admin') });
+  const mps = all('SELECT mp_id, e2e_id FROM project_mps WHERE project_id=?', p.id).map(x => c.mpById[x.mp_id]).filter(Boolean).sort((a, b) => a.e2e.localeCompare(b.e2e) || a.code.localeCompare(b.code)).map(m => ({ id: m.id, code: m.code, name: m.name, e2e: m.e2e }));
+  send(req, res, { users, obs: nodes, kpis, mps, parties: projectParties(p.id), standards: stds, projectStandards: P(p.standards) || [], templates: templateLibrary(p.org_id).filter(t => t.ms.includes(p.ms_type)).map(t => ({ code: t.code, name: t.name, mp: t.mp, category: t.category })), roles: ROLES.filter(x => x.code !== 'platform_admin') });
+}));
+// Interested parties of a project: the register and the rows of "identify interested parties" steps.
+function projectParties(projectId) {
+  const c = catalog();
+  const seen = new Set(); const out = [];
+  const add = (name) => { const k = String((name && typeof name === 'object' ? name.en ?? Object.values(name)[0] : name) || '').trim().toLowerCase(); if (!k || seen.has(k)) return; seen.add(k); out.push({ id: null, name }); };
+  for (const e of all("SELECT step_id, fields FROM step_exec WHERE project_id=? AND form_kind='list'", projectId)) if (stepRule(c.stepById[e.step_id])?.id === 'parties') for (const r of P(e.fields)?.items || []) add(r.item);
+  for (const x of all("SELECT title FROM registers WHERE project_id=? AND register='parties' ORDER BY code", projectId)) add(P(x.title));
+  return out;
+}
+// Needs and expectations: library (typed before in the organization + reference list) and AI suggestion.
+r.get('/steps/:id/needs-library', requirePerm('execution.view'), h((req, res) => {
+  const e = loadOrgRow(req, 'step_exec', req.params.id, false, 'Step');
+  send(req, res, { items: needsLibrary(e.org_id) });
+}));
+r.post('/steps/:id/needs-suggest', requirePerm('execution.perform'), h(async (req, res) => {
+  const e = loadOrgRow(req, 'step_exec', req.params.id, true, 'Step');
+  const p = get('SELECT * FROM projects WHERE id=?', e.project_id);
+  const org = get('SELECT name, sector FROM organizations WHERE id=?', e.org_id);
+  const parties = Array.isArray(req.body?.parties) && req.body.parties.length ? req.body.parties : projectParties(e.project_id);
+  if (!parties.length) throw bad('NO_PARTIES', 'Identify the interested parties first (previous step), or choose them in the table.');
+  const nm = (v) => (v && typeof v === 'object' ? v[req.lang] ?? v.en : v);
+  const out = await suggestNeeds(e.org_id, { parties, lang: req.lang || 'en', context: `${nm(P(org.name))}, sector ${org.sector}; project ${nm(P(p.name))}; standards ${(P(p.standards) || []).join(', ')}` });
+  audit(req, e.org_id, 'step', e.id, 'ai_suggest_needs', null, { engine: out.engine, rows: out.rows.length, llmError: out.llmError || null }, null);
+  send(req, res, out);
 }));
 // A new KPI created from a step form (the performer may not hold governance rights).
 r.post('/steps/:id/kpis', requirePerm('execution.perform'), h((req, res) => {

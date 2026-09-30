@@ -4571,5 +4571,129 @@ export const DICT = {
 "Not used: this model sets its own sampling.": {
 "fr": "Non utilisée : ce modèle fixe lui-même son échantillonnage.",
 "ar": "غير مستخدمة: هذا النموذج يضبط أخذ العينات بنفسه."
+},
+"Search everything… (Ctrl+K)": {
+"fr": "Tout rechercher… (Ctrl+K)",
+"ar": "البحث في كل شيء… (Ctrl+K)"
+},
+"Document templates and layout": {
+"fr": "Modèles de documents et mise en page",
+"ar": "نماذج الوثائق والتنسيق"
+},
+"Custom…": {
+"fr": "Personnalisé…",
+"ar": "مخصص…"
+},
+"Custom value": {
+"fr": "Valeur personnalisée",
+"ar": "قيمة مخصصة"
+},
+"Type your own value": {
+"fr": "Saisissez votre propre valeur",
+"ar": "اكتب قيمتك الخاصة"
+},
+"Add an interested party…": {
+"fr": "Ajouter une partie intéressée…",
+"ar": "إضافة طرف معني…"
+},
+"Other party (type)": {
+"fr": "Autre partie (saisir)",
+"ar": "طرف آخر (اكتب)"
+},
+"Row {n} of {m}": {
+"fr": "Ligne {n} sur {m}",
+"ar": "السطر {n} من {m}"
+},
+"Previous row": {
+"fr": "Ligne précédente",
+"ar": "السطر السابق"
+},
+"Next row": {
+"fr": "Ligne suivante",
+"ar": "السطر التالي"
+},
+"Back to the table": {
+"fr": "Retour au tableau",
+"ar": "العودة إلى الجدول"
+},
+"Add needs from the library": {
+"fr": "Ajouter des besoins depuis la bibliothèque",
+"ar": "إضافة احتياجات من المكتبة"
+},
+"Add {n} need(s)": {
+"fr": "Ajouter {n} besoin(s)",
+"ar": "إضافة {n} حاجة"
+},
+"Needs already recorded in the organization and a reference list. They are not linked to any party: link them to the interested parties in the table.": {
+"fr": "Besoins déjà enregistrés dans l'organisme et liste de référence. Ils ne sont rattachés à aucune partie : rattachez-les aux parties intéressées dans le tableau.",
+"ar": "احتياجات مسجلة سابقًا في المؤسسة وقائمة مرجعية. غير مرتبطة بأي طرف: اربطها بالأطراف المعنية في الجدول."
+},
+"Recorded in the organization": {
+"fr": "Enregistré dans l'organisme",
+"ar": "مسجلة في المؤسسة"
+},
+"Reference list": {
+"fr": "Liste de référence",
+"ar": "القائمة المرجعية"
+},
+"Open the row in a large window": {
+"fr": "Ouvrir la ligne dans une grande fenêtre",
+"ar": "فتح السطر في نافذة كبيرة"
+},
+"Open row {n}": {
+"fr": "Ouvrir la ligne {n}",
+"ar": "فتح السطر {n}"
+},
+"Type a need": {
+"fr": "Saisir un besoin",
+"ar": "كتابة حاجة"
+},
+"Add from the library": {
+"fr": "Ajouter depuis la bibliothèque",
+"ar": "إضافة من المكتبة"
+},
+"Suggest with AI": {
+"fr": "Proposer avec l'IA",
+"ar": "اقتراح بالذكاء الاصطناعي"
+},
+"Tip: open a row in a large window to type long texts.": {
+"fr": "Astuce : ouvrez une ligne dans une grande fenêtre pour saisir des textes longs.",
+"ar": "نصيحة: افتح السطر في نافذة كبيرة لكتابة النصوص الطويلة."
+},
+"{n} need(s) suggested by {engine}: review them, link the parties and delete what does not apply.": {
+"fr": "{n} besoin(s) proposé(s) par {engine} : vérifiez-les, rattachez les parties et supprimez ce qui ne s'applique pas.",
+"ar": "{n} حاجة اقترحها {engine}: راجعها واربط الأطراف واحذف ما لا ينطبق."
+},
+"the built-in engine": {
+"fr": "le moteur intégré",
+"ar": "المحرك المدمج"
+},
+"Language model: {e}": {
+"fr": "Modèle de langage : {e}",
+"ar": "نموذج اللغة: {e}"
+},
+"Computed from the matrix": {
+"fr": "Calculée à partir de la matrice",
+"ar": "تُحسب من المصفوفة"
+},
+"Customize the templates": {
+"fr": "Personnaliser les modèles",
+"ar": "تخصيص النماذج"
+},
+"Layout: logo and colours": {
+"fr": "Mise en page : logo et couleurs",
+"ar": "التنسيق: الشعار والألوان"
+},
+"To customize documents: Templates changes the sections, their order, their text and data source (copy a standard template, then edit it); Layout sets the logo, colours, header and footer of every Word, PDF and Excel file; on a draft document, Edit the structure changes that document only.": {
+"fr": "Pour personnaliser les documents : Modèles modifie les sections, leur ordre, leur texte et leur source de données (copiez un modèle standard puis modifiez-le) ; Mise en page fixe le logo, les couleurs, l'en-tête et le pied de page de tous les fichiers Word, PDF et Excel ; sur un document en brouillon, Modifier la structure ne change que ce document.",
+"ar": "لتخصيص الوثائق: تغيّر النماذج الأقسام وترتيبها ونصها ومصدر بياناتها (انسخ نموذجًا قياسيًا ثم عدّله)؛ ويحدد التنسيق الشعار والألوان والترويسة والتذييل لجميع ملفات Word وPDF وExcel؛ وفي وثيقة مسودة يغيّر «تعديل البنية» تلك الوثيقة فقط."
+},
+"Open AI models": {
+"fr": "Ouvrir les modèles d'IA",
+"ar": "فتح نماذج الذكاء الاصطناعي"
+},
+"built-in engine (rules and retrieval)": {
+"fr": "moteur intégré (règles et recherche)",
+"ar": "المحرك المدمج (قواعد واسترجاع)"
 }
 };

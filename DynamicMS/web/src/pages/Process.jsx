@@ -3,11 +3,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useApp, useData } from '../lib/state.jsx';
 import { PageHead, Card, Loading, ErrorBox, Tabs, Table, tx, Search, Kpi } from '../components/ui.jsx';
 import { Sipoc } from './MacroProcess.jsx';
+import { useIdName } from '../lib/names.js';
 
 const REF = [['rules', 'Business rules'], ['actions', 'Rule actions'], ['controls', 'Controls'], ['risks', 'Process risks'], ['kpis', 'Process KPIs'], ['alerts', 'Alerts'], ['reports', 'Reports'], ['docTemplates', 'Document templates'], ['policies', 'Policies'], ['classes', 'Object classes'], ['dataDictionary', 'Data dictionary'], ['valueLists', 'Value lists'], ['roleMenus', 'Role menus'], ['modules', 'Modules'], ['uf', 'Unified functional steps']];
 const cell = (v, lang) => (v === null || v === undefined ? '' : Array.isArray(v) ? v.map(x => cell(x, lang)).join(', ') : typeof v === 'object' ? (v.en !== undefined || v.fr !== undefined ? tx(v, lang) : JSON.stringify(v)) : String(v));
 
 export default function Process() {
+  const idName = useIdName();
   const { t, L, lang } = useApp();
   const navigate = useNavigate();
   const [tab, setTab] = useState('e2e');
@@ -110,7 +112,7 @@ export function CatalogMp() {
   const act = Object.entries(m.activation || {}).filter(([, v]) => v === '✓' || v === 'S');
   return (
     <>
-      <PageHead eyebrow={`${m.id} · ${m.e2e} · ${t('Tier {n}', { n: m.tier })}`} title={`${m.code} — ${tx(m.name, lang)}`} subtitle={tx(m.goal, lang)} actions={<Link className="btn" to={`/process/e2e/${m.e2e}`}>{m.e2e}</Link>} />
+      <PageHead eyebrow={`${m.id} · ${m.e2e} · ${t('Tier {n}', { n: m.tier })}`} title={`${m.code} — ${tx(m.name, lang)}`} subtitle={tx(m.goal, lang)} actions={<Link className="btn" to={`/process/e2e/${m.e2e}`}>{idName(m.e2e)}</Link>} />
       <Tabs label={t('Macro process views')} value={tab} onChange={setTab} tabs={[{ id: 'tasks', label: t('Tasks and steps'), count: m.stepCount }, { id: 'sipoc', label: 'SIPOC' }, { id: 'gov', label: t('Governance') }, { id: 'act', label: t('Activation'), count: act.length }]} />
       {tab === 'tasks' && <div className="stack">{m.tasks.map(tk => <Card key={tk.id} title={`${tk.id} — ${tx(tk.name, lang)}`}><Table rows={tk.steps} columns={[{ key: 'id', label: 'ID', width: 100 }, { key: 'name', label: t('Step'), render: s => tx(s.name, lang) }, { key: 'typeName', label: t('Type'), render: s => tx(s.typeName, lang) }, { key: 'roleName', label: t('Role'), render: s => tx(s.roleName, lang) }, { key: 'formKind', label: t('Input form'), render: s => t(s.formKind) }]} /></Card>)}</div>}
       {tab === 'sipoc' && <Card><Sipoc sipoc={m.sipoc} lang={lang} t={t} /></Card>}

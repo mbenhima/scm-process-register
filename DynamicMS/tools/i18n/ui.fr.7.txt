@@ -1,0 +1,31 @@
+1144	Tout rechercher… (Ctrl+K)
+1145	Modèles de documents et mise en page
+1146	Personnalisé…
+1147	Valeur personnalisée
+1148	Saisissez votre propre valeur
+1149	Ajouter une partie intéressée…
+1150	Autre partie (saisir)
+1151	Ligne {n} sur {m}
+1152	Ligne précédente
+1153	Ligne suivante
+1154	Retour au tableau
+1155	Ajouter des besoins depuis la bibliothèque
+1156	Ajouter {n} besoin(s)
+1157	Besoins déjà enregistrés dans l'organisme et liste de référence. Ils ne sont rattachés à aucune partie : rattachez-les aux parties intéressées dans le tableau.
+1158	Enregistré dans l'organisme
+1159	Liste de référence
+1160	Ouvrir la ligne dans une grande fenêtre
+1161	Ouvrir la ligne {n}
+1162	Saisir un besoin
+1163	Ajouter depuis la bibliothèque
+1164	Proposer avec l'IA
+1165	Astuce : ouvrez une ligne dans une grande fenêtre pour saisir des textes longs.
+1166	{n} besoin(s) proposé(s) par {engine} : vérifiez-les, rattachez les parties et supprimez ce qui ne s'applique pas.
+1167	le moteur intégré
+1168	Modèle de langage : {e}
+1169	Calculée à partir de la matrice
+1170	Personnaliser les modèles
+1171	Mise en page : logo et couleurs
+1172	Pour personnaliser les documents : Modèles modifie les sections, leur ordre, leur texte et leur source de données (copiez un modèle standard puis modifiez-le) ; Mise en page fixe le logo, les couleurs, l'en-tête et le pied de page de tous les fichiers Word, PDF et Excel ; sur un document en brouillon, Modifier la structure ne change que ce document.
+1173	Ouvrir les modèles d'IA
+1174	moteur intégré (règles et recherche)

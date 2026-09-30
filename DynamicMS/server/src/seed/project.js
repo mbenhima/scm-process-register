@@ -1,7 +1,7 @@
 // Generates one "full run" project: the whole lifecycle of a QMS or QHSE management
 // system, from context analysis (E2E-01) to continual improvement (E2E-12), with every
 // activated macro process, task and step, and the records each phase produces.
-import { run, all, get, uid, J } from '../db.js';
+import { run, all, get, uid, J, P } from '../db.js';
 import { rng, iso, addDays, DAY } from './rng.js';
 import { stepValue, fill, S } from './text.js';
 import { smartObjectives } from './content.js';
@@ -528,7 +528,10 @@ export function generateProject(ctx) {
     uid(), oid, pid, register, code, J(title), J(data), status, mpId, ts(date || addDays(start, 10), r));
   segRisks.slice(0, 3).forEach((t, j) => reg('context', `CI-E${j + 1}`, t, { type: R.REG.issueExt, category: R.REG.pestle[[1, 4, 3][j] ?? 0], impact: r.int(3, 5) }, 'Active', 'MP-001'));
   profile.defects.slice(0, 2).forEach((t, j) => reg('context', `CI-I${j + 1}`, t, { type: R.REG.issueInt, category: R.REG.pestle[3], impact: r.int(2, 4) }, 'Active', 'MP-001'));
-  R.REG.parties.forEach(([p, need], j) => { if (!qhse && j === 5) return; reg('parties', `IP-${j + 1}`, fill(p, profile.customer, profile.supplier), { needs: fill(need, profile.product), influence: r.int(2, 5), interest: r.int(2, 5) }, 'Active', 'MP-001'); });
+  // Interested parties register: the parties identified in MP-001.4 (as completing the step does), or the reference list.
+  const ipRows = (P(get('SELECT fields FROM step_exec WHERE project_id=? AND step_id=?', pid, 'MP-001.4')?.fields) || {}).items || [];
+  if (ipRows.length) ipRows.forEach((x, j) => reg('parties', `IP-${j + 1}`, x.item, { needs: x.detail || null, category: x.category || null, influence: +x.influence || r.int(2, 5), interest: +x.interest || r.int(2, 5), source: x.source || null, stepId: 'MP-001.4' }, 'Active', 'MP-001'));
+  else R.REG.parties.forEach(([p, need], j) => { if (!qhse && j === 5) return; reg('parties', `IP-${j + 1}`, fill(p, profile.customer, profile.supplier), { needs: fill(need, profile.product), influence: r.int(2, 5), interest: r.int(2, 5) }, 'Active', 'MP-001'); });
   for (const o of sbase.objectives) if (!o._ok) addAction('objective', o._registerId, 'Improvement', fill(R.ACTION_TITLES.objective, o.objective), 'InProgress', addDays(TODAY, -40), addDays(TODAY, 50), 'performance_manager', 'ims_manager', 'MP-003');
   const certAudit = audits.find(a => a.type === 'Certification');
   standards.slice(0, qhse ? 3 : 1).forEach((s, j) => reg('certificates', `CERT-${j + 1}`, { en: s, fr: s, ar: s }, { body: R.REG.certBody, issued: certAudit?.done ? addDays(certAudit.date, 30) : null, expiry: certAudit?.done ? addDays(certAudit.date, 30 + 1095) : null, number: `MCS-${org.short_code}-${String(r.int(1000, 9999))}` }, certAudit?.done ? 'Valid' : 'Planned', 'MP-017'));

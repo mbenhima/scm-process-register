@@ -4,7 +4,9 @@
 import { FORM_KINDS, matrixScore } from '../catalog/forms.js';
 import { templatesForMp } from '../content/templates.js';
 import { addDays } from './rng.js';
-import { STEP_CONTENT, fv } from './content.js';
+import { STEP_CONTENT, fv, needsRows } from './content.js';
+import { formFor } from '../catalog/stepforms.js';
+import { catalog } from '../catalog/store.js';
 
 export const S = (en, fr, ar) => ({ en, fr, ar });
 const LANGS = ['en', 'fr', 'ar'];
@@ -134,6 +136,12 @@ export function stepValue(step, base, r, status, dueDate) {
       f = { matrix, score, rationale: fill(S('Weighted score {0}/5. Main gap: {1}. Action recorded in the action plan.', 'Note pondérée {0}/5. Écart principal : {1}. Action enregistrée dans le plan d\'actions.', 'الدرجة المرجحة {0}/5. الفجوة الرئيسية: {1}. سُجل إجراء في خطة العمل.'), score, r.pick([...c.segRisks.slice(0, 2), c.profile.defects[0]])) };
       break;
     }
+    case 'needs': {
+      const matrix = matrixFor(c, done, r);
+      const score = matrixScore(matrix);
+      f = { needs: needsRows(c), matrix, score, rationale: fill(S('Needs and expectations recorded for each relevant interested party; weighted score {0}/5. Main gap: {1}.', 'Besoins et attentes enregistrés pour chaque partie intéressée pertinente ; note pondérée {0}/5. Écart principal : {1}.', 'سُجلت الاحتياجات والتوقعات لكل طرف معني ذي صلة؛ الدرجة المرجحة {0}/5. الفجوة الرئيسية: {1}.'), score, r.pick([...c.segRisks.slice(0, 2), c.profile.defects[0]])) };
+      break;
+    }
     case 'decision': {
       const dec = done ? (r.chance(0.92) ? 'Go' : 'Hold') : 'Hold';
       f = { criteria: [
@@ -209,18 +217,21 @@ export function stepValue(step, base, r, status, dueDate) {
       f = { evidence: fill(S('{0} carried out on {1}; {2} updated.', '{0} réalisé sur {1} ; {2} mis à jour.', 'تم تنفيذ {0} في {1}؛ وتحديث {2}.'), step.name, c.profile.line, out1), completion: pct };
     }
   }
-  if (kind === 'assess' && Array.isArray(f.matrix)) f.score = matrixScore(f.matrix);
+  if ((kind === 'assess' || kind === 'needs') && Array.isArray(f.matrix)) f.score = matrixScore(f.matrix);
+  // Interactions between macro processes keep a readable item "A → B".
+  const mpTxt = (v) => { const m = typeof v === 'string' ? catalog().mpById[v] : null; return m ? Object.fromEntries(LANGS.map(l => [l, `${m.code} (${m.name[l] ?? m.name.en})`])) : v; };
+  if (Array.isArray(f.items)) f.items.forEach(row => { if (row.from && row.to && !row.item) { const a = mpTxt(row.from); const b = mpTxt(row.to); row.item = Object.fromEntries(LANGS.map(l => [l, `${a?.[l] ?? a?.en ?? ''} → ${b?.[l] ?? b?.en ?? ''}`])); } });
   // Row cells start with a capital letter (profile phrases are lower case for use inside sentences).
   const capT = (v) => (v && typeof v === 'object' && !Array.isArray(v) && (v.en || v.fr) ? Object.fromEntries(Object.entries(v).map(([l, x]) => [l, typeof x === 'string' && l !== 'ar' ? x.charAt(0).toUpperCase() + x.slice(1) : x])) : v);
   for (const [k, v] of Object.entries(f)) if (Array.isArray(v) && v.length && typeof v[0] === 'object' && !('id' in v[0] && 'name' in v[0])) f[k] = v.map(row => Object.fromEntries(Object.entries(row).map(([ck, cv]) => [ck, capT(cv)])));
   if (!done && f.completion === 100) f.completion = r.int(40, 80);
-  return { fields: f, summary: summaryOf(kind, f, c) };
+  return { fields: f, summary: summaryOf(kind, f, c, step) };
 }
 
 // One-line trilingual summary for lists (same rules as the live step summary).
-export function summaryOf(kind, f, c) {
+export function summaryOf(kind, f, c, step) {
   const txt = (v, l) => (v === null || v === undefined ? '' : typeof v === 'object' && !Array.isArray(v) ? (v.name ? txt(v.name, l) : v[l] ?? v.en ?? '') : Array.isArray(v) ? v.map(x => txt(x, l)).join(', ') : String(v));
-  const def = FORM_KINDS[kind] || FORM_KINDS.execute;
+  const def = formFor(step, kind);
   const rowsField = def.fields.find(x => x.columns && Array.isArray(f[x.key]) && f[x.key].length);
   const out = {};
   for (const l of LANGS) {
@@ -239,14 +250,15 @@ export function summaryOf(kind, f, c) {
 
 // "What to type" for the user guides (English): one entry per field; row tables are
 // returned as { columns, rows } so the guide can print a real table.
-export function guideExample(kind, fields, resolve = {}) {
-  const def = FORM_KINDS[kind] || FORM_KINDS.execute;
+export function guideExample(kind, fields, resolve = {}, step = null) {
+  const def = formFor(step, kind);
   const en = (v) => (v === null || v === undefined ? '' : typeof v === 'object' && !Array.isArray(v) ? (v.name ? en(v.name) : v.en ?? '') : Array.isArray(v) ? v.map(en).join(', ') : String(v));
   const cellText = (type, v) => {
     if (type === 'person') return resolve.user ? resolve.user(v) : en(v);
     if (type === 'role') return resolve.role ? resolve.role(v) : en(v);
     if (type === 'kpi') return resolve.kpi ? resolve.kpi(v) : en(v);
     if (type === 'roles') return (v || []).map(x => (resolve.role ? resolve.role(x) : x)).join(', ');
+    if (type === 'mp' && typeof v === 'string') { const m = catalog().mpById[v]; if (m) return `${m.code} (${m.name.en})`; }
     return en(v);
   };
   return def.fields.map(fd => {

@@ -4,10 +4,12 @@ import { LibraryBig, PencilRuler, Sparkles } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { PageHead, Card, Loading, Field, tx, IconBadge, Status } from '../components/ui.jsx';
+import { useIdName } from '../lib/names.js';
 
 const E2E = ['E2E-01', 'E2E-02', 'E2E-03', 'E2E-04', 'E2E-05', 'E2E-06', 'E2E-07', 'E2E-08', 'E2E-09', 'E2E-10', 'E2E-11', 'E2E-12'];
 
 export default function NewProject() {
+  const idName = useIdName();
   const { t, L, lang, me, project, toast, reloadTree, setProjectId } = useApp();
   const navigate = useNavigate();
   const orgId = project?.org?.access === 'write' ? project.org.id : me.org?.id;
@@ -92,7 +94,7 @@ export default function NewProject() {
                 )}
                 {mode === 'manual' && (
                   <fieldset style={{ border: 0, padding: 0, margin: 0 }}><legend className="strong small" style={{ marginBottom: 8 }}>{t('Phases with a gate (from the Gate Library)')}</legend>
-                    <div className="form-grid">{E2E.map(e => <label key={e} className="checkbox small"><input type="checkbox" checked={f.gates.includes(e)} onChange={ev => setF({ ...f, gates: ev.target.checked ? [...f.gates, e] : f.gates.filter(x => x !== e) })} /><span>{e}</span></label>)}</div>
+                    <div className="form-grid">{E2E.map(e => <label key={e} className="checkbox small"><input type="checkbox" checked={f.gates.includes(e)} onChange={ev => setF({ ...f, gates: ev.target.checked ? [...f.gates, e] : f.gates.filter(x => x !== e) })} /><span>{idName(e)}</span></label>)}</div>
                   </fieldset>
                 )}
               </div>

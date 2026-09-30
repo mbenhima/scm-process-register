@@ -219,7 +219,7 @@ function Llm({ orgId }) {
       </div>
       <Card title={t('Model per AI use case')}>
         <p className="small muted">{t('By default every use case uses the organization model; a use case can use another model of the same provider.')}</p>
-        {ucs.data ? <Table rows={ucs.data.items} maxRows={60} columns={[{ key: 'code', label: t('Code'), width: 110 }, { key: 'name', label: t('Use case'), render: u => tx(u.name, lang) }, { key: 'linked_step', label: t('Step'), width: 100 }, { key: 'model', label: t('Model'), sortable: false, render: u => <select className="select" aria-label={t('Model')} disabled={!edit || prov.kind === 'builtin'} value={u.model || ''} onChange={e => setModel(u, e.target.value || null)}><option value="">{t('Organization default')}</option>{prov.models.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}</select> }]} /> : <Loading />}
+        {ucs.data ? <Table rows={ucs.data.items} maxRows={60} columns={[{ key: 'code', label: t('Code'), width: 110 }, { key: 'name', label: t('Use case'), render: u => tx(u.name, lang) }, { key: 'linked_step', label: t('Step'), render: u => (u.linked_step ? `${u.linked_step} (${tx(u.step_name, lang) || ''})` : '—') }, { key: 'model', label: t('Model'), sortable: false, render: u => <select className="select" aria-label={t('Model')} disabled={!edit || prov.kind === 'builtin'} value={u.model || ''} onChange={e => setModel(u, e.target.value || null)}><option value="">{t('Organization default')}</option>{prov.models.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}</select> }]} /> : <Loading />}
       </Card>
     </div>
   );
@@ -238,7 +238,8 @@ export default function Admin() {
     ...(can('ai.view') ? [{ id: 'llm', label: t('AI models') }] : []),
     { id: 'ops', label: t('Operations') },
   ];
-  const [tab, setTab] = useState(tabs[0]?.id);
+  const wanted = new URLSearchParams(window.location.search).get('tab');
+  const [tab, setTab] = useState(tabs.some(x => x.id === wanted) ? wanted : tabs[0]?.id);
   if (!orgId && !me.user.isPlatformAdmin) return <ErrorBox error={{ status: 403, message: '' }} />;
   return (
     <>

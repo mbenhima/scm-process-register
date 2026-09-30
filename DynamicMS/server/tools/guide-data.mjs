@@ -79,7 +79,7 @@ const phaseOut = phases.map(ph => {
           return { id: s.id, seq: s.seq, name: en(s.name), sourceName: en(s.sourceName), brief: en(s.brief), detail: en(s.description), type: s.type, role: en(s.roleName), roleCode: x.assignee_role,
             user: who ? `${who.name} (${who.email})` : 'DynamicMS Engine (automatic)', form: en(def.label), kind: s.formKind, status: x.status, due: x.due_date,
             creates: def.fields.filter(f => f.createsActions || f.createsObjectives).map(f => (f.createsActions ? 'actions' : 'objectives')),
-            type_: guideExample(s.formKind, fields, resolve) };
+            type_: guideExample(s.formKind, fields, resolve, s) };
         }) })).filter(t => t.steps.length),
       };
     }),

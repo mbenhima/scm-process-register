@@ -152,6 +152,7 @@ def main():
         ['Response to the feedback on User Guide 2 (SME QMS, Scenario 1)', 'DynamicMS_Feedback_Response_User_Guide_2.docx / .pdf', OK],
         ['Application standard SRS 1.5 (application-agnostic features added)', 'DynamicCortex_Apps_Standard_SRS_v1_5.docx / .pdf', OK],
         ['Response to the feedback, round 2 (SRS 1.5 features and IMS documents)', 'DynamicMS_Feedback_Response_Round_2.docx / .pdf', OK],
+        ['Response to the feedback, round 3 (user experience and Scenario 1 notes)', 'DynamicMS_Feedback_Response_Round_3.docx / .pdf', OK],
     ], [8, 7.2, 2.8], size=9, status_col=2, status_fn=st)
 
     doc.add_heading('Feedback on User Guide 2 — SME QMS, Scenario 1', level=1)
@@ -165,6 +166,11 @@ def main():
     from build_feedback2_doc import SRS, ITEMS, EIGHT
     fb2 = [[a, c, OK] for a, b, c, d in SRS] + [[f'{n}) {a}', c, OK] for n, a, b, c in ITEMS] + [[f'8) {a}', 'Records › Documents', OK] for a, b in EIGHT]
     table(doc, ['Request', 'Where', 'Status'], fb2, [9.4, 5.8, 2.8], size=8.5, status_col=2, status_fn=st)
+    doc.add_heading('Feedback round 3 — user experience and Scenario 1', level=1)
+    para(doc, 'Each request of the third round and where it is answered. Details are in DynamicMS_Feedback_Response_Round_3.')
+    from build_feedback3_doc import GENERAL as G3, SCENARIO as S3
+    fb3 = [[f'{n}) {a}', c, OK] for n, a, b, c in G3] + [[f'{a}: {b}', 'Lifecycle › E2E-01', OK] for a, b, c in S3]
+    table(doc, ['Request', 'Where', 'Status'], fb3, [9.4, 5.8, 2.8], size=8.5, status_col=2, status_fn=st)
     callout(doc, 'The official POWERACT logo could not be downloaded from www.poweract.ma (the site refused the request). The deliverables show the POWERACT Consulting name as text. Place the logo at deliverables/assets/poweract-logo.png and run the builders again to insert it on covers, slides and footers.', 'Logo.')
     doc.save(OUT)
     print('saved', OUT)

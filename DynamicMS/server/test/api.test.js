@@ -318,3 +318,41 @@ test('SRS 1.5: global search, process design versions, OBS roles, prompt specifi
   assert.equal((await call('POST', `/projects/${proj.id}/audits`, t, { title: 'Test audit', type: 'Internal', plannedDate: '2026-12-01', frequency: 'Custom' })).status, 400);
   assert.equal((await call('POST', `/projects/${proj.id}/audits`, t, { title: 'Test audit', type: 'Internal', plannedDate: '2026-12-01', frequency: 'Custom', frequencyCustom: 'After each new service launch' })).status, 201);
 });
+
+test('round 3: qualified step forms, needs mapped to parties, registers and documents', async () => {
+  const t = await login('ims@atlas-sme.example');
+  const me = (await call('GET', '/auth/me', t)).body;
+  const tpls = (await call('GET', `/orgs/${me.org.id}/templates`, t)).body;
+  const pr = (await call('POST', `/orgs/${me.org.id}/projects`, t, { creationMode: 'catalog', templateId: tpls[0].id, name: 'Round 3 project', msType: 'QMS' })).body;
+  const steps = (await call('GET', `/projects/${pr.id}/steps?limit=400`, t)).body.items;
+  const sid = (code) => steps.find(x => x.step_id === code)?.id;
+  // Qualified columns: "External issue" with a PESTLE list + Custom; interactions pick macro processes.
+  const cols = (await call('GET', `/steps/${sid('MP-001.2')}`, t)).body.step.form.fields[0].columns;
+  assert.equal(cols[0].label, 'External issue'); assert.equal(cols[1].type, 'combo'); assert.ok(cols[1].options.length >= 8);
+  const inter = (await call('GET', `/steps/${sid('MP-001.7')}`, t)).body.step.form.fields[0].columns;
+  assert.deepEqual(inter.slice(0, 3).map(c => c.type), ['mp', 'mp', 'combo']);
+  assert.equal((await call('PUT', `/steps/${sid('MP-001.7')}`, t, { fields: { items: [{ from: 'MP-013', to: 'Invoicing', category: 'Support service' }] } })).status, 200);
+  const saved = (await call('GET', `/steps/${sid('MP-001.7')}`, t)).body.fields.items[0];
+  assert.match(saved.item, /UMS006 \(.*\) → Invoicing/);
+  // Interested parties: completing the step fills the register and the pickers.
+  const done = await call('POST', `/steps/${sid('MP-001.4')}/complete`, t, { fields: { items: [
+    { item: 'Customers', category: 'External party', detail: 'On-time delivery', influence: '5', interest: '4', priority: 'High', source: 'Survey 2025' },
+    { item: 'Municipality', category: 'External party', priority: 'Medium' }] } });
+  assert.equal(done.status, 200, JSON.stringify(done.body));
+  const pick = (await call('GET', `/projects/${pr.id}/pickers`, t)).body;
+  assert.ok(pick.parties.some(p => p.name === 'Municipality') && pick.mps.length > 10);
+  // Needs: library, AI suggestion (built-in engine here) mapped to the parties, completion.
+  const needsStep = (await call('GET', `/steps/${sid('MP-001.5')}`, t)).body;
+  assert.equal(needsStep.step.form.fields[0].key, 'needs');
+  assert.ok((await call('GET', `/steps/${sid('MP-001.5')}/needs-library`, t)).body.items.length >= 15);
+  const sug = (await call('POST', `/steps/${sid('MP-001.5')}/needs-suggest`, t, {})).body;
+  assert.ok(sug.rows.length >= 4 && sug.rows.every(x => x.parties.length === 1 && x.origin === 'AI'));
+  const needs = [...sug.rows, { need: 'Quote within 48 hours', parties: [{ id: null, name: 'Customers' }, { id: null, name: 'Municipality' }], obligation: 'Yes', origin: 'Manual' }];
+  const nd = await call('POST', `/steps/${sid('MP-001.5')}/complete`, t, { fields: { needs, rationale: 'Needs of both parties recorded.' } });
+  assert.equal(nd.status, 200, JSON.stringify(nd.body));
+  // The context analysis shows the parties and their needs typed in the steps.
+  const doc = await call('POST', `/projects/${pr.id}/documents`, t, { templateCode: 'TPL-CTX' });
+  assert.equal(doc.status, 201, JSON.stringify(doc.body));
+  const body = JSON.stringify((await call('GET', `/documents/${doc.body.id}`, t)).body);
+  assert.ok(body.includes('Municipality') && body.includes('Quote within 48 hours'));
+});

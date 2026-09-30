@@ -3,6 +3,7 @@
 import { run, get, all, uid, now, J, P, tx } from '../db.js';
 import { catalog } from '../catalog/store.js';
 import { FORM_KINDS, matrixScore } from '../catalog/forms.js';
+import { formFor } from '../catalog/stepforms.js';
 import { entitledMps, orgConfig } from '../packs.js';
 import { activatedMps, roleCodeOf, TRACK_GATES } from '../seed/project.js';
 import { COMPLEXITY_CRITERIA, SME_TRACKS, CHECKLISTS, VERTICAL_CHECKLISTS } from '../seed/libraries.js';
@@ -160,8 +161,8 @@ const hasGate = (phaseId) => !!get('SELECT 1 FROM checklists WHERE phase_id=? LI
 
 const isEmpty = (v) => v === null || v === undefined || v === '' || (typeof v === 'object' && !Array.isArray(v) && !Object.values(v).some(x => (typeof x === 'object' ? x && Object.keys(x).length : String(x ?? '').trim()))) || (Array.isArray(v) && !v.length);
 
-function validateFields(kind, fields) {
-  const def = FORM_KINDS[kind] || FORM_KINDS.execute;
+function validateFields(kind, fields, step) {
+  const def = formFor(step, kind);
   const missing = [];
   for (const f of def.fields) {
     const v = fields?.[f.key];
@@ -173,6 +174,7 @@ function validateFields(kind, fields) {
     }
   }
   if (kind === 'assess') { const s = +fields?.score; if (!(s >= 1 && s <= 5)) missing.push('score'); }
+  if (kind === 'needs' && Array.isArray(fields?.matrix) && fields.matrix.length) { const s = +fields?.score; if (!(s >= 1 && s <= 5)) missing.push('matrix'); }
   return [...new Set(missing)];
 }
 
@@ -183,7 +185,10 @@ function normCell(type, v, lang) {
   if (v === undefined) return undefined;
   if (['text', 'textarea'].includes(type)) return textVal(v, lang);
   if (['number', 'score'].includes(type)) return v === '' || v === null ? null : +v;
-  if (type === 'obs') return normObs(v, lang);
+  if (type === 'obs' || type === 'parties') return normObs(v, lang);
+  // A choice from the list is kept as its trilingual label; a custom value is stored as text.
+  if (type === 'combo') return v && typeof v === 'object' ? v : textVal(v, lang);
+  if (type === 'mp') return typeof v === 'string' && catalog().mpById[v] ? v : textVal(v, lang);
   return v;
 }
 function normObs(v, lang) {
@@ -191,8 +196,8 @@ function normObs(v, lang) {
   const one = (x) => (typeof x === 'string' ? { id: null, name: { [lang]: x } } : { id: x.id || null, name: typeof x.name === 'string' ? { [lang]: x.name } : x.name });
   return Array.isArray(v) ? v.filter(Boolean).map(one) : one(v);
 }
-function normalizeFields(kind, fields, lang) {
-  const def = FORM_KINDS[kind] || FORM_KINDS.execute;
+function normalizeFields(kind, fields, lang, step) {
+  const def = formFor(step, kind);
   const out = {};
   for (const f of def.fields) {
     const v = fields?.[f.key];
@@ -202,14 +207,18 @@ function normalizeFields(kind, fields, lang) {
         const o = {};
         for (const c of f.columns) { const x = normCell(c.type, r[c.key], lang); if (x !== undefined) o[c.key] = x; }
         for (const k of Object.keys(r)) if (k.startsWith('_')) o[k] = r[k];
+        // Interactions keep a readable item "Macro process 1 → Macro process 2".
+        if (f.rule === 'interactions' && (o.from || o.to)) o.item = mpPair(o.from, o.to);
         return o;
       });
     } else if (f.type === 'obs') out[f.key] = normObs(v, lang);
     else out[f.key] = normCell(f.type, v, lang);
   }
-  if (kind === 'assess' && Array.isArray(out.matrix)) out.score = matrixScore(out.matrix);
+  if ((kind === 'assess' || kind === 'needs') && Array.isArray(out.matrix)) out.score = matrixScore(out.matrix);
   return out;
 }
+const mpText = (v) => { const m = typeof v === 'string' ? catalog().mpById[v] : null; if (m) return Object.fromEntries(['en', 'fr', 'ar'].map(l => [l, `${m.code} (${m.name[l] ?? m.name.en})`])); return v && typeof v === 'object' ? v : { en: String(v ?? '') }; };
+function mpPair(a, b) { const x = mpText(a); const y = mpText(b); return Object.fromEntries(['en', 'fr', 'ar'].map(l => [l, `${x[l] ?? x.en ?? ''} → ${y[l] ?? y.en ?? ''}`])); }
 
 function phaseLocked(exec) {
   const ph = get('SELECT gate_decision FROM phases WHERE project_id=? AND e2e_id=?', exec.project_id, exec.e2e_id);
@@ -221,16 +230,16 @@ export function saveStep(req, exec, fields, complete) {
   if (exec.status === 'Done') throw conflict('STEP_DONE', 'Step is completed. Reopen it first.');
   if (phaseLocked(exec)) throw conflict('PHASE_LOCKED', 'The phase gate is decided; the step can no longer change.');
   const lang = req.lang || 'en';
-  const norm = normalizeFields(exec.form_kind, fields, lang);
-  const merged = { ...(P(exec.fields) || {}), ...norm };
   const step = cat.stepById[exec.step_id];
+  const norm = normalizeFields(exec.form_kind, fields, lang, step);
+  const merged = { ...(P(exec.fields) || {}), ...norm };
   const applied = cat.rules.filter(r => r.step === exec.step_id).map(r => ({ id: r.id, type: r.type, condition: r.condition, action: r.action }));
   if (complete) {
-    const missing = validateFields(exec.form_kind, merged);
+    const missing = validateFields(exec.form_kind, merged, step);
     if (missing.length) throw bad('FIELDS_REQUIRED', 'Complete the required fields.', { fields: missing });
     if (exec.form_kind === 'decision' && merged.decision === 'No-Go' && !merged.comment) throw bad('FIELDS_REQUIRED', 'A No-Go decision needs a comment.', { fields: ['comment'] });
   }
-  const summary = summarize(exec.form_kind, merged, lang);
+  const summary = summarize(exec.form_kind, merged, lang, step);
   const before = { status: exec.status, fields: P(exec.fields) };
   const status = complete ? 'Done' : 'InProgress';
   tx(() => {
@@ -258,7 +267,7 @@ export function saveStep(req, exec, fields, complete) {
 function userOfRole(orgId, role) { return get('SELECT id FROM users WHERE org_id=? AND roles LIKE ? AND status=? LIMIT 1', orgId, `%"${role}"%`, 'Active')?.id || null; }
 function applyCompletionEffects(req, exec, f, lang) {
   const cat = catalog();
-  const def = FORM_KINDS[exec.form_kind] || FORM_KINDS.execute;
+  const def = formFor(cat.stepById[exec.step_id], exec.form_kind);
   const mp = cat.mpById[exec.mp_id];
   const today = now().slice(0, 10);
   const refs = Array.isArray(f.records) ? f.records : [];
@@ -294,6 +303,8 @@ function applyCompletionEffects(req, exec, f, lang) {
         addRef({ type: 'register', register: 'objectives', id, title: textVal(row.objective, lang) });
       });
     }
+    if (fd.register) syncRegister(exec, fd, list, lang, addRef);
+    if (fd.needs) syncNeeds(exec, list);
     if (fd.type === 'kpis') {
       const period = today.slice(0, 7);
       for (const row of list) {
@@ -323,6 +334,46 @@ function applyCompletionEffects(req, exec, f, lang) {
   }
   if (refs.length && def.fields.some(x => x.key === 'records')) f.records = refs;
   else if (refs.length) f._links = refs;
+}
+
+// Rows of "identify issues / interested parties" steps become entries of the matching
+// register, so registers and documents show what was typed in the step.
+const LEVEL = { High: 5, Medium: 3, Low: 2 };
+function syncRegister(exec, fd, list, lang, addRef) {
+  const reg = fd.register;
+  const prefix = reg === 'context' ? (fd.rule === 'internal' ? 'CI-I' : 'CI-E') : 'IP-';
+  const existing = all('SELECT id, code, title FROM registers WHERE project_id=? AND register=?', exec.project_id, reg);
+  const key = (t) => String((t && typeof t === 'object' ? t.en ?? t[lang] ?? Object.values(t)[0] : t) || '').trim().toLowerCase();
+  let n = existing.filter(x => x.code.startsWith(prefix)).length;
+  for (const row of list) {
+    if (!row.item) continue;
+    const title = row.item && typeof row.item === 'object' ? row.item : textVal(row.item, lang);
+    const data = reg === 'context'
+      ? { type: fd.rule === 'internal' ? 'Internal' : 'External', category: row.category || null, impact: LEVEL[row.priority] || 3, detail: row.detail || null, source: row.source || null, stepId: exec.step_id }
+      : { needs: row.detail || null, category: row.category || null, influence: +row.influence || (row.priority === 'High' ? 4 : 3), interest: +row.interest || (row.priority === 'High' ? 4 : 3), source: row.source || null, stepId: exec.step_id };
+    const found = row._registerId ? existing.find(x => x.id === row._registerId) : existing.find(x => key(P(x.title)) === key(title));
+    if (found) { run('UPDATE registers SET title=?, data=? WHERE id=?', J(title), J(data), found.id); row._registerId = found.id; continue; }
+    n += 1;
+    const id = uid();
+    const code = `${prefix}${n}`;
+    run('INSERT INTO registers(id,org_id,project_id,register,code,title,data,status,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)', id, exec.org_id, exec.project_id, reg, code, J(title), J(data), 'Active', exec.mp_id, now());
+    row._registerId = id;
+    addRef({ type: 'register', register: reg, id, title });
+  }
+}
+// Needs mapped to interested parties are added to each party's register entry.
+function syncNeeds(exec, list) {
+  const parties = all('SELECT id, title, data FROM registers WHERE project_id=? AND register=?', exec.project_id, 'parties');
+  const norm = (t) => String((t && typeof t === 'object' ? t.en ?? Object.values(t)[0] : t) || '').trim().toLowerCase();
+  for (const p of parties) {
+    const pt = P(p.title);
+    const mine = list.filter(r => (r.parties || []).some(x => [norm(x?.name), norm(x)].includes(norm(pt))));
+    if (!mine.length) continue;
+    const d = P(p.data) || {};
+    d.needsList = mine.map(r => ({ need: r.need, type: r.type || null, obligation: r.obligation || null, response: r.response || null }));
+    d.obligation = mine.some(r => r.obligation === 'Yes');
+    run('UPDATE registers SET data=? WHERE id=?', J(d), p.id);
+  }
 }
 
 export function reopenStep(req, exec, justification) {
@@ -357,12 +408,13 @@ export function decideGate(req, phase, decision, comment) {
 }
 
 // One-line trilingual-ready summary of a step value for lists.
-function summarize(kind, f, lang) {
+function summarize(kind, f, lang, step) {
   const txt = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? (v[lang] ?? v.en ?? Object.values(v).find(x => typeof x === 'string') ?? '') : Array.isArray(v) ? v.map(x => (x && typeof x === 'object' ? (x.name ? txt(x.name) : x[lang] ?? x.en ?? '') : x)).join('; ') : v ?? '');
-  const def = FORM_KINDS[kind] || FORM_KINDS.execute;
+  const def = formFor(step, kind);
   const rowsField = def.fields.find(x => x.columns && Array.isArray(f[x.key]) && f[x.key].length);
   let s;
-  if (kind === 'assess') s = `${f.score ?? ''}/5 — ${txt(f.rationale)}`;
+  if (kind === 'needs') s = `${(f.needs || []).length} × ${(f.needs || []).slice(0, 2).map(r => txt(r.need)).join('; ')}${f.score ? ` — ${f.score}/5` : ''}`;
+  else if (kind === 'assess') s = `${f.score ?? ''}/5 — ${txt(f.rationale)}`;
   else if (kind === 'decision') s = `${f.decision || ''} — ${txt(f.comment)}`;
   else if (rowsField) { const first = rowsField.columns[0].key; s = `${f[rowsField.key].length} × ${f[rowsField.key].slice(0, 3).map(r => txt(r[first])).join('; ')}`; }
   else s = String(Object.values(f).map(txt).find(x => x && String(x).length > 0) || '');

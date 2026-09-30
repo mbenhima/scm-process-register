@@ -8,12 +8,14 @@ import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { PageHead, Loading, ErrorBox, Status, Tabs, Table, tx, Modal, Field, Card } from '../components/ui.jsx';
 import VersionsModal from '../components/Versions.jsx';
+import { useIdName } from '../lib/names.js';
 
 const TYPES = ['function', 'e2e', 'mp', 'task', 'step', 'gate', 'checklist'];
 const TEXT = ['name', 'brief', 'description', 'goal', 'goals', 'trigger', 'terminal', 'purpose', 'entry_criteria', 'exit_criteria'];
 const LONG = ['description', 'goal', 'goals', 'purpose', 'entry_criteria', 'exit_criteria', 'brief'];
 
 export default function ProcessDesign() {
+  const idName = useIdName();
   const { t, L, lang, project, me, toast, can, readOnly } = useApp();
   const [params, setParams] = useSearchParams();
   const [type, setType] = useState(params.get('type') || 'mp');
@@ -28,6 +30,8 @@ export default function ProcessDesign() {
   const [sel, setSel] = useState(null);
   const [ed, setEd] = useState(null);
   const [hist, setHist] = useState(null);
+  // The menu links to a given element type (e.g. Functions): follow the address.
+  useEffect(() => { const q = params.get('type'); if (q && q !== type && TYPES.includes(q)) setType(q); }, [params]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { setParams({ type }, { replace: true }); if (type === 'step' || type === 'task') setParent(p => p || 'MP-001'); else setParent(''); }, [type]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!orgId) return <Loading />;
   const manage = can('process.design') && !readOnly;
@@ -69,7 +73,7 @@ export default function ProcessDesign() {
           { key: 'id', label: t('ID'), width: 120 },
           { key: 'name', label: t('Name'), render: x => <span className="strong">{val(x.data.name)}</span>, sortValue: x => val(x.data.name) },
           ...(type === 'step' ? [{ key: 'role', label: t('Responsible role'), render: x => L(x.data.roleCode) }, { key: 'form', label: t('Form kind'), render: x => (forms?.[x.data.formKind] ? tx(forms[x.data.formKind].label, lang) : x.data.formKind) }] : []),
-          ...(type === 'mp' ? [{ key: 'fn', label: t('Function'), render: x => x.data.function }, { key: 'own', label: t('Owner role'), render: x => L(x.data.ownerRoleCode) }] : []),
+          ...(type === 'mp' ? [{ key: 'fn', label: t('Function'), render: x => idName(x.data.function) }, { key: 'own', label: t('Owner role'), render: x => L(x.data.ownerRoleCode) }] : []),
           { key: 'version', label: t('Version'), width: 80, render: x => `v${x.version}` },
           { key: 'origin', label: t('Origin'), render: x => (x.custom ? t('Own element') : x.modified ? t('Modified reference') : t('Reference')) },
           { key: 'status', label: t('Status'), render: x => <Status value={x.status} /> },

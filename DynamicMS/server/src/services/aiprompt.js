@@ -4,6 +4,7 @@
 import { get, all, P } from '../db.js';
 import { catalog, loc } from '../catalog/store.js';
 import { FORM_KINDS } from '../catalog/forms.js';
+import { formFor } from '../catalog/stepforms.js';
 
 const LANG_NAME = { en: 'English', fr: 'French', ar: 'Arabic' };
 const flat = (v, lang) => {
@@ -31,7 +32,7 @@ export function defaultSpec(u) {
   const step = c.stepById[u.linked_step];
   const mp = c.mpById[step?.mp || u.linked_mp];
   const e2e = mp ? c.e2eById[mp.e2e] : null;
-  const def = step ? FORM_KINDS[step.formKind] : null;
+  const def = step ? formFor(step) : null;
   const role = step?.roleName || mp?.ownerRoleName || L('process owner', 'pilote du processus', 'مالك العملية');
   const name = (v, l) => loc(v, l) || '';
   const fieldList = (l) => (def ? def.fields.map(f => (f.columns ? `${loc(f.label, l)} [${f.columns.map(x => loc(x.label, l)).join(', ')}]` : loc(f.label, l))).join('; ') : '');
@@ -78,7 +79,7 @@ export function buildPrompt(usecase, { projectId, stepExecId, input, lang = 'en'
   if (step) {
     lines.push(`Step: ${step.id} — ${loc(step.name, lang)} (${loc(step.roleName, lang)}).`);
     lines.push(`What the step requires: ${loc(step.description, lang).replace(/\n/g, ' ')}`);
-    const def = FORM_KINDS[step.formKind];
+    const def = formFor(step);
     if (def) lines.push(`Form fields: ${def.fields.map(f => loc(f.label, lang)).join(', ')}.`);
   }
   if (exec) {

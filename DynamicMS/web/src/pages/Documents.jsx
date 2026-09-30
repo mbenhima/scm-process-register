@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Plus, Download, FilePlus2, RefreshCw, Trash2, Pencil, ArrowUp, ArrowDown, Copy, Upload, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api, download } from '../lib/api.js';
@@ -242,12 +242,16 @@ function Layout({ orgId }) {
 
 export default function Documents() {
   const { t, projectId, project } = useApp();
-  const [tab, setTab] = useState('docs');
+  const [params, setParams] = useSearchParams();
+  const tab = ['docs', 'mandatory', 'templates', 'layout'].includes(params.get('tab')) ? params.get('tab') : 'docs';
+  const setTab = (v) => setParams(v === 'docs' ? {} : { tab: v }, { replace: true });
   if (!projectId) return <NoProject />;
   const orgId = project?.org?.id;
   return (
     <>
-      <PageHead eyebrow={t('Records')} title={t('Documents')} subtitle={t('Documented information of the project: generated from templates with the project data, versioned (draft, review, published) and downloadable in Word, PDF and Excel. The author never approves their own version.')} />
+      <PageHead eyebrow={t('Records')} title={t('Documents')} subtitle={t('Documented information of the project: generated from templates with the project data, versioned (draft, review, published) and downloadable in Word, PDF and Excel. The author never approves their own version.')}
+        actions={<><button className="btn" onClick={() => setTab('templates')}>{t('Customize the templates')}</button><button className="btn" onClick={() => setTab('layout')}>{t('Layout: logo and colours')}</button></>} />
+      {tab === 'docs' && <div className="callout neutral small" style={{ marginBottom: 16 }}><span>{t('To customize documents: Templates changes the sections, their order, their text and data source (copy a standard template, then edit it); Layout sets the logo, colours, header and footer of every Word, PDF and Excel file; on a draft document, Edit the structure changes that document only.')}</span></div>}
       <Tabs label={t('Documents')} value={tab} onChange={setTab} tabs={[{ id: 'docs', label: t('Documents') }, { id: 'mandatory', label: t('Required by the standards') }, { id: 'templates', label: t('Templates') }, { id: 'layout', label: t('Layout') }]} />
       {tab === 'docs' && <DocList projectId={projectId} orgId={orgId} />}
       {tab === 'mandatory' && <Mandatory projectId={projectId} />}

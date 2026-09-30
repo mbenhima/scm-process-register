@@ -5,6 +5,7 @@ import { catalog } from '../catalog/store.js';
 import { requirePerm } from '../auth.js';
 import { h, send, notFound } from '../http.js';
 import { LABELS } from '../content/labels.js';
+import { formFor } from '../catalog/stepforms.js';
 
 const r = Router();
 r.use(requirePerm('process.view'));
@@ -57,7 +58,7 @@ r.get('/steps/:id', h((req, res) => {
   const c = catalog();
   const s = c.stepById[req.params.id];
   if (!s) throw notFound('Step');
-  send(req, res, { ...s, form: c.forms[s.formKind], mp: mpBrief(c.mpById[s.mp]), rules: c.rules.filter(x => x.step === s.id), controls: c.controls.filter(x => x.steps.includes(s.id)), aiUseCases: c.aiUseCases.filter(a => a.step === s.id) });
+  send(req, res, { ...s, form: formFor(s), mp: mpBrief(c.mpById[s.mp]), rules: c.rules.filter(x => x.step === s.id), controls: c.controls.filter(x => x.steps.includes(s.id)), aiUseCases: c.aiUseCases.filter(a => a.step === s.id) });
 }));
 r.get('/forms', h((req, res) => send(req, res, catalog().forms)));
 r.get('/labels', h((req, res) => send(req, res, LABELS)));

@@ -6,7 +6,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, ListChecks, Workflow, Bell, ShieldAlert, Gauge, Grid3x3, Scale, AlertOctagon, CheckSquare, ClipboardCheck, FileText, BookOpen,
   GanttChart, FileBarChart, LayoutGrid, BarChart3, MessageSquare, Sparkles, Library, Network, Layers, ListTree, Building2, FolderPlus, Settings2,
-  LifeBuoy, UserCog, Star, Search, PenTool, Pin, PinOff, Menu, LogOut, ChevronDown, ChevronRight, PanelLeft, PanelRight, PanelTop, PanelBottom,
+  LifeBuoy, UserCog, Star, Search, Boxes, FileCog, PenTool, Pin, PinOff, Menu, LogOut, ChevronDown, ChevronRight, PanelLeft, PanelRight, PanelTop, PanelBottom,
 } from 'lucide-react';
 import { useApp } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
@@ -36,6 +36,8 @@ export const NAV = [
   { id: 'knowledge', group: 'Intelligence', label: 'Knowledge base', icon: Library, to: '/knowledge', perm: 'kb.view' },
   { id: 'process', group: 'Design', label: 'Process design', icon: Network, to: '/process', perm: 'process.view' },
   { id: 'design', group: 'Design', label: 'Process design editor', icon: PenTool, to: '/design', perm: 'process.view' },
+  { id: 'functions', group: 'Design', label: 'Functions', icon: Boxes, to: '/design?type=function', perm: 'process.view' },
+  { id: 'doctemplates', group: 'Records', label: 'Document templates and layout', icon: FileCog, to: '/documents?tab=templates', perm: 'records.view' },
   { id: 'libraries', group: 'Design', label: 'Libraries', icon: Layers, to: '/libraries', perm: 'process.view' },
   { id: 'traceability', group: 'Design', label: 'Traceability', icon: ListTree, to: '/traceability', perm: 'process.view' },
   { id: 'organization', group: 'Organization', label: 'Organization', icon: Building2, to: '/organization', perm: 'tenancy.view' },
@@ -134,6 +136,10 @@ export default function Shell({ children }) {
           </select>
           {project?.org?.access === 'read' && <span className="tag s2">{t('Read-only')}</span>}
         </div>
+        <form className="header-search" role="search" onSubmit={e => { e.preventDefault(); setSearch(e.currentTarget.q.value); }}>
+          <Search size={16} aria-hidden="true" />
+          <input name="q" className="input" placeholder={t('Search everything… (Ctrl+K)')} aria-label={t('Search')} onFocus={e => { setSearch(e.target.value); e.target.blur(); }} onChange={e => setSearch(e.target.value)} />
+        </form>
         <div className="tools">
           <label className="sr-only" htmlFor="lang-switch">{t('Language')}</label>
           <select id="lang-switch" className="select" style={{ width: 'auto', minHeight: 36 }} value={lang} onChange={e => setLang(e.target.value)}>
