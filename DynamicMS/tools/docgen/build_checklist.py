@@ -151,6 +151,7 @@ def main():
         ['Templates seeded, populated and ready to download (sample set of Scenario 1 and 2 SME)', 'In the application (Records › Documents) and DynamicMS_Sample_IMS_Documents.zip', OK],
         ['Response to the feedback on User Guide 2 (SME QMS, Scenario 1)', 'DynamicMS_Feedback_Response_User_Guide_2.docx / .pdf', OK],
         ['Application standard SRS 1.5 (application-agnostic features added)', 'DynamicCortex_Apps_Standard_SRS_v1_5.docx / .pdf', OK],
+        ['Application standard SRS 1.6 (document consistency and full CRUD, data entry usability, linked records, graded findings, AI transparency)', 'DynamicCortex_Apps_Standard_SRS_v1_6.docx / .pdf', OK],
         ['Response to the feedback, round 2 (SRS 1.5 features and IMS documents)', 'DynamicMS_Feedback_Response_Round_2.docx / .pdf', OK],
         ['Response to the feedback, round 3 (user experience and Scenario 1 notes)', 'DynamicMS_Feedback_Response_Round_3.docx / .pdf', OK],
     ], [8, 7.2, 2.8], size=9, status_col=2, status_fn=st)
