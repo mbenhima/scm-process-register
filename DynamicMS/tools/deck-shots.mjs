@@ -98,6 +98,23 @@ await shoot(sme, 'AT-UNI-QMS', '/documents', 'f-templates', { tab: L2.tpl });
 await shoot(sme, 'AT-UNI-QMS', '/mp/MP-004', 'f-racsi-mp', { tab: 'RACSI' });
 const tadm = await session('admin@atlas-sme.example');
 await shoot(tadm, 'AT-UNI-QMS', '/admin', 'f-llm', { tab: L2.llm });
+// SRS 1.5 features: global search, process design editor, roles and functions, prompt
+// specification, audit frequency, register entry details
+const L3 = { en: { search: 'interested parties', prompt: 'Prompt specification' }, fr: { search: 'parties intéressées', prompt: 'Spécification du prompt' } }[lang] || {};
+await fetch(`${BASE}/api/auth/prefs`, { method: 'PUT', headers: H(tadm.tk), body: JSON.stringify({ projectId: projByCode['AT-UNI-QMS'], lang }) });
+await tadm.page.goto(`${BASE}/`, { waitUntil: 'networkidle' }); await tadm.page.keyboard.press('Control+k'); await tadm.page.keyboard.type(L3.search); await tadm.page.waitForTimeout(1300);
+await tadm.page.screenshot({ path: path.join(outDir, 'f-search.png') }); await tadm.page.keyboard.press('Escape'); process.stdout.write('.');
+await shoot(tadm, 'AT-UNI-QMS', '/design?type=step', 'f-design');
+await tadm.page.locator('table tbody tr').nth(1).click(); await tadm.page.waitForTimeout(900); await tadm.page.screenshot({ path: path.join(outDir, 'f-design-edit.png') }); process.stdout.write('.');
+await shoot(tadm, 'AT-UNI-QMS', '/organization?tab=roles', 'f-roles');
+await tadm.page.goto(`${BASE}/ai`, { waitUntil: 'networkidle' }); await tadm.page.waitForTimeout(600); await tadm.page.locator('table tbody tr').first().click(); await tadm.page.waitForTimeout(500);
+await tadm.page.getByRole('button', { name: L3.prompt }).click(); await tadm.page.waitForTimeout(1200); await tadm.page.screenshot({ path: path.join(outDir, 'f-prompt.png') }); process.stdout.write('.');
+await shoot(sme, 'AT-UNI-QMS', '/audits', 'f-audits');
+const smeAudits = await (await fetch(`${BASE}/api/projects/${projByCode['AT-UNI-QMS']}/audits`, { headers: H(sme.tk) })).json();
+const doneAudit = smeAudits.find(a => a.status === 'Completed' && a.findings > 1) || smeAudits[0];
+await shoot(sme, 'AT-UNI-QMS', `/audits/${doneAudit.id}`, 'f-audit-detail');
+await shoot(sme, 'AT-UNI-QMS', '/registers?reg=calibration', 'f-register');
+await sme.page.locator('table tbody tr').first().click(); await sme.page.waitForTimeout(600); await sme.page.screenshot({ path: path.join(outDir, 'f-register-entry.png') }); process.stdout.write('.');
 const asst = await session('quality@nova-aec.example');
 await asst.page.goto(`${BASE}/assistant`, { waitUntil: 'networkidle' });
 process.stdout.write('\n');

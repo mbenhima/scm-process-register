@@ -8,3 +8,4 @@ server/licence/*.pem
 *.log
 .env
 deliverables/build/
+.~lock.*#

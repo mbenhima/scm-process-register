@@ -91,6 +91,7 @@ def getting_started(doc, example_email):
         'The Required by the standards tab lists the documented information that ISO 9001, ISO 14001 and ISO 45001 require for the standards of the project ("maintain" = a document, "retain" = a record), and the document that answers each one. Select Create for a missing one.',
         'The Templates tab lists the IMS templates (policy, scope, manual, context analysis, registers, procedures, plans, reports). Select a template to see its structure; select Copy to edit to adapt the sections and texts for your organization, or New template to create one.',
         'The Layout tab sets the logo, colors, header and footer applied to every generated document, like a Word template.',
+        'Documents follow market practice: the policy is a signed statement with the strategic axes and their objectives; procedures contain BPMN diagrams, the SIPOC of each step and the Go / No-Go decision of the phase; each audit has its own report with the detailed nonconformities; each major nonconformity has an 8D report; registers are laid out landscape.',
         'Open a document to see its structure section by section, edit its title and review frequency, create a new version (regenerated from the current project data or copied), edit the structure of a draft, submit, approve (by another person) and download it.',
     ])
     doc.add_heading('Administration', level=2)
@@ -98,6 +99,54 @@ def getting_started(doc, example_email):
         ('Groups and organizations. ', 'The platform administrator (admin@dynamicms.example) opens Administration › Groups and organizations: New group, and New organization with the question Part of a group? (No — independent organization, or Yes — member of a group). The organization is created with its administrator and a default structure (head office and departments).'),
         ('AI models. ', 'Administration › AI models: choose a standard provider and model (Anthropic Claude, OpenAI, Azure OpenAI, Google Gemini, Mistral) or a custom model with an OpenAI-compatible endpoint, type the API key (stored encrypted), test the connection and enable it. A use case can use another model of the same provider. Without a provider, the built-in engine answers.'),
     ])
+    deck = os.path.join(BUILD, 'deck-en')
+    doc.add_heading('Search', level=2)
+    bullets(doc, [
+        ('Search button. ', 'The Search button is at the top of the left menu, in every dock position; when the menu is unpinned, a round Search button stays on the edge. Ctrl+K (Cmd+K on a Mac) opens the search from any screen.'),
+        ('What is searched. ', 'Steps and macro processes of the project, nonconformities, actions, audits, documents, register entries, attachments, risks, KPIs, rules and controls, AI use cases, people, units and roles, the process design and the Help topics. Codes such as MP-001.2 or NC-… are matched exactly and listed first.'),
+        ('Results. ', 'Results are grouped by type and can be filtered by type; use the arrow keys and Enter, or select a result to open it. You only see what you are allowed to open.'),
+        ('Menu filter. ', 'Type in the field under the Search button to filter the menu items; press Enter to search everywhere for the same words.'),
+    ])
+    image(doc, os.path.join(deck, 'f-search.png'), 16, 'Figure — Global search: results grouped by type, with the words found highlighted.')
+    doc.add_heading('Process design editor', level=2)
+    numbered(doc, [
+        'Open Design › Process design editor and choose the element type: functions, end-to-end processes (phases), macro processes, tasks, steps, gates or checklists. For tasks and steps, choose the macro process.',
+        'Select an element to open it. The card shows how many project runs, child elements, documents and AI use cases use it.',
+        'Change the fields and type a change note, then select Save as new version. Every change is a new version; nothing is overwritten.',
+        'Select History to see every version with its author, date and note, compare two versions field by field, and restore any version (a restore creates a new version with the old content).',
+        'Select New element to create your own function, phase, macro process, task, step, gate or checklist. Steps and tasks must be named with a verb and their object.',
+        'Select Retire or delete: an element of your own that no project uses is deleted (and can be restored from its history); a reference element, or one used by projects, is retired.',
+    ])
+    callout(doc, 'Projects keep the version of the process design they started with. A change applies to the projects started after it; the steps of a new project then show the new names and descriptions.', 'Versions and running projects.')
+    image(doc, os.path.join(deck, 'f-design-edit.png'), 16, 'Figure — Editing a step: fields, usage, change note and history.')
+    doc.add_heading('Roles and functions', level=2)
+    bullets(doc, [
+        ('Model. ', 'The organization structure (OBS) is made of units, roles and people. A role is defined in a unit and linked to one or more functions (for example Quality Management and Documentation & Knowledge). A person can play several roles, as holder, deputy or acting, with an allocation and start and end dates.'),
+        ('Views. ', 'Organization › Roles and functions shows the roles (unit, functions, people), the functions (roles and people of each function) and the people (roles each person plays). Vacant roles are flagged.'),
+        ('Changes. ', 'New role, Edit and Retire create versions of the role (History to compare and restore). Assign adds a person to a role; End assignment closes it and lists the open actions of the person that need a new owner.'),
+        ('Access rights. ', 'A role proposes an access role to its holders, but access is always decided by the permission matrix.'),
+    ])
+    image(doc, os.path.join(deck, 'f-roles.png'), 16, 'Figure — Roles and functions: roles with their functions and the people who play them.')
+    doc.add_heading('Prompt specification of the AI use cases', level=2)
+    para(doc, 'Every AI use case is linked to the step it assists and carries its prompt as twelve separate fields, populated for that step: Role (persona), Context, Task (instruction), Inputs (variables), Knowledge sources, Constraints, Examples, Output format, Tone and language, Quality criteria, Human checkpoint and Model parameters.')
+    numbered(doc, [
+        'Open Intelligence › AI use cases, select a use case, then Prompt specification.',
+        'Edit any field and select Save changes: each field changed gets its own version, and the whole prompt a new version.',
+        'Select History on a field to compare and restore one of its versions, or History of the whole prompt to restore a complete version.',
+        'The completeness bar shows the required fields (role, context, task, constraints, output format, human checkpoint). A use case with an incomplete specification cannot be activated.',
+        'Select View the assembled prompt to see what is sent to the model, section by section.',
+    ])
+    image(doc, os.path.join(deck, 'f-prompt.png'), 16, 'Figure — Prompt specification: one field per aspect, each with its history.')
+    doc.add_heading('Audits: frequency and detailed findings', level=2)
+    bullets(doc, [
+        ('Frequency. ', 'When you plan an audit, choose its frequency in the list (monthly, quarterly, semi-annual, annual, every 2 years, every 3 years) or Custom and describe it (for example "once, 6 weeks before the certification audit"). Change it later on the audit page.'),
+        ('Findings. ', 'A finding is graded major nonconformity, minor nonconformity, observation or opportunity for improvement, with the clause, the requirement, the objective evidence and, for a nonconformity, the response due date (30 days for a major, 60 for a minor by default) and the corrective action.'),
+        ('Reports. ', 'Each audit carried out has its own internal audit report with the detailed report of every nonconformity; each major or critical nonconformity has an 8D corrective action report.'),
+    ])
+    image(doc, os.path.join(deck, 'f-audit-detail.png'), 16, 'Figure — An audit: scope, criteria, frequency and graded findings with their objective evidence.')
+    doc.add_heading('Registers', level=2)
+    para(doc, 'Records › Registers holds the registers of the project, including measuring equipment, training records, communication plan and log, changes, control plan, requirement reviews, releases, nonconforming outputs and 8D reports. Select an entry to see all its fields.')
+    image(doc, os.path.join(deck, 'f-register-entry.png'), 14, 'Figure — A measuring equipment entry with all its fields.')
 
 
 def users_table(doc, data):

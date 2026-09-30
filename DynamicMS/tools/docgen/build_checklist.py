@@ -150,6 +150,8 @@ def main():
         ['IMS document templates (suggested templates, sections, data sources, required documented information)', 'DynamicMS_IMS_Document_Templates.docx / .pdf', OK],
         ['Templates seeded, populated and ready to download (sample set of Scenario 1 and 2 SME)', 'In the application (Records › Documents) and DynamicMS_Sample_IMS_Documents.zip', OK],
         ['Response to the feedback on User Guide 2 (SME QMS, Scenario 1)', 'DynamicMS_Feedback_Response_User_Guide_2.docx / .pdf', OK],
+        ['Application standard SRS 1.5 (application-agnostic features added)', 'DynamicCortex_Apps_Standard_SRS_v1_5.docx / .pdf', OK],
+        ['Response to the feedback, round 2 (SRS 1.5 features and IMS documents)', 'DynamicMS_Feedback_Response_Round_2.docx / .pdf', OK],
     ], [8, 7.2, 2.8], size=9, status_col=2, status_fn=st)
 
     doc.add_heading('Feedback on User Guide 2 — SME QMS, Scenario 1', level=1)
@@ -158,6 +160,11 @@ def main():
     fb = [[a, c, PART if c == '—' else OK] for a, b, c in GENERAL] + [[a, 'Lifecycle › E2E-01 steps', OK] for a, b in INLINE]
     table(doc, ['Feedback', 'Where', 'Status'], fb, [9.4, 5.8, 2.8], size=8.5, status_col=2, status_fn=st)
     para(doc, 'Partly covered: the document mentioned for the QMS steps was not attached to the request; its content can be added when received.', size=10)
+    doc.add_heading('Feedback round 2 — SRS 1.5 features and IMS documents', level=1)
+    para(doc, 'Each request of the second round and where it is answered. Details are in DynamicMS_Feedback_Response_Round_2.')
+    from build_feedback2_doc import SRS, ITEMS, EIGHT
+    fb2 = [[a, c, OK] for a, b, c, d in SRS] + [[f'{n}) {a}', c, OK] for n, a, b, c in ITEMS] + [[f'8) {a}', 'Records › Documents', OK] for a, b in EIGHT]
+    table(doc, ['Request', 'Where', 'Status'], fb2, [9.4, 5.8, 2.8], size=8.5, status_col=2, status_fn=st)
     callout(doc, 'The official POWERACT logo could not be downloaded from www.poweract.ma (the site refused the request). The deliverables show the POWERACT Consulting name as text. Place the logo at deliverables/assets/poweract-logo.png and run the builders again to insert it on covers, slides and footers.', 'Logo.')
     doc.save(OUT)
     print('saved', OUT)

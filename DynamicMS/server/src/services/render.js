@@ -177,14 +177,32 @@ export function toPdf(model, lang, res) {
     });
     y += 70;
   }
-  const drawTable = (t) => {
+  // Height of the start of an item (header and first row, first line...), so a heading or a
+  // table header is never left alone at the bottom of a page.
+  const tableGeom = (t) => {
     const cols = t.columns; const tw = cols.reduce((a, c) => a + (c.width || 1), 0);
     const cws = cols.map(c => ((c.width || 1) / tw) * W);
     const fs = cols.length > 11 ? 6.8 : cols.length > 8 ? 7.6 : 8.5;
+    const hh = Math.max(...cols.map((c, i) => w.height(c.label, cws[i] - 6, fs, true))) + 8;
+    const r0 = t.rows[0] ? Math.max(...cols.map((c, i) => w.height(clean(t.rows[0][c.key] ?? ''), cws[i] - 6, fs))) + 6 : 0;
+    return { cols, cws, fs, hh, r0 };
+  };
+  const diagramSize = (it) => { let dw = Math.min(W, it.width * 0.8); let dh = (it.height / it.width) * dw; const maxH = doc.page.height - 54 - 64 - 30; if (dh > maxH) { dh = maxH; dw = (it.width / it.height) * dh; } return { dw, dh }; };
+  const startHeight = (it) => {
+    if (!it) return 20;
+    if (it.type === 'table') { const g = tableGeom(it.table); return g.hh + Math.min(g.r0, 160); }
+    if (it.type === 'kv') return 26;
+    if (it.type === 'diagram' && it.png) return diagramSize(it).dh + 16;
+    if (it.type === 'sub') return 60;
+    return 30;
+  };
+  const drawTable = (t) => {
+    const { cols, cws, fs } = tableGeom(t);
     const colX = (i) => { let acc = 0; for (let j = 0; j < i; j++) acc += cws[j]; return rtl ? X + W - acc - cws[i] : X + acc; };
     const header = () => {
       const hh = Math.max(...cols.map((c, i) => w.height(c.label, cws[i] - 6, fs, true))) + 8;
-      ensure(hh + 42);
+      const r0 = t.rows[0] ? Math.max(...cols.map((c, i) => w.height(clean(t.rows[0][c.key] ?? ''), cws[i] - 6, fs))) + 6 : 0;
+      ensure(hh + Math.min(r0, 160) + 4);
       doc.rect(X, y, W, hh).fill(pal.primary);
       cols.forEach((c, i) => w.text(c.label, colX(i) + 3, y + 4, cws[i] - 6, { size: fs, bold: true, color: C.white }));
       y += hh;
@@ -221,12 +239,12 @@ export function toPdf(model, lang, res) {
     y += 10;
   };
   for (const sec of model.sections || []) {
-    ensure(60);
+    ensure(34 + Math.min(startHeight(itemsOf(sec)[0]), doc.page.height - 200));
     tocEntries.push({ heading: sec.heading, page: doc.bufferedPageRange().count });
     y += 4 + w.text(sec.heading, X, y, W, { size: 14, serif: true, color: pal.title });
     y += 4;
     for (const it of itemsOf(sec)) {
-      if (it.type === 'sub') { ensure(40); y += 4 + w.text(it.text, X, y, W, { size: 11, bold: true, color: pal.accent }); y += 4; }
+      if (it.type === 'sub') { ensure(24 + Math.min(startHeight(itemsOf(sec)[itemsOf(sec).indexOf(it) + 1]), doc.page.height - 200)); y += 4 + w.text(it.text, X, y, W, { size: 11, bold: true, color: pal.accent }); y += 4; }
       else if (it.type === 'text') { for (const chunk of String(it.text || '').split('\n')) { const hh = w.height(chunk || ' ', W, 10); ensure(hh); y += w.text(chunk || ' ', X, y, W, { size: 10 }) + 2; } y += 6; }
       else if (it.type === 'bullets') {
         if (it.intro) { const hh = w.height(it.intro, W, 10); ensure(hh); y += w.text(it.intro, X, y, W, { size: 10, bold: true, color: C.dark }) + 3; }
@@ -235,9 +253,7 @@ export function toPdf(model, lang, res) {
       } else if (it.type === 'kv') drawKv(it.rows);
       else if (it.type === 'table') drawTable(it.table);
       else if (it.type === 'diagram' && it.png) {
-        let dw = Math.min(W, it.width * 0.8); let dh = (it.height / it.width) * dw;
-        const maxH = doc.page.height - 54 - 64 - 30;
-        if (dh > maxH) { dh = maxH; dw = (it.width / it.height) * dh; }
+        const { dw, dh } = diagramSize(it);
         ensure(dh + 20);
         doc.image(it.png, X + (W - dw) / 2, y, { width: dw, height: dh });
         y += dh + 4;
