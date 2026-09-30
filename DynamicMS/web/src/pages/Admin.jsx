@@ -192,6 +192,7 @@ function Llm({ orgId }) {
   if (!data || !f) return <Loading />;
   const prov = data.providers.find(p => p.id === f.provider) || data.providers[0];
   const edit = data.canEdit;
+  const noTemp = prov.models.find(m => m.id === f.model)?.temperature === false || /^claude-(opus-5|sonnet-5|fable|mythos|opus-4-[78])|^(gpt-5|o\d)/i.test(f.model || '');
   const save = async () => { try { await api(`/orgs/${orgId}/ai/llm`, { method: 'PUT', body: f }); toast(t('AI model settings saved.')); reload(); } catch (e) { toast(e.message, 'error'); } };
   const run = async () => { setTest(null); try { setTest(await api(`/orgs/${orgId}/ai/llm/test`, { method: 'POST' })); } catch (e) { setTest({ ok: false, message: e.message }); } };
   const setModel = async (uc, model) => { try { await api(`/ai/usecases/${uc.id}/model`, { method: 'PUT', body: { model } }); toast(t('Model of {c} updated.', { c: uc.code })); ucs.reload(); } catch (e) { toast(e.message, 'error'); } };
@@ -208,7 +209,7 @@ function Llm({ orgId }) {
             {prov.needsBaseUrl && <Field label={t('Endpoint URL (HTTPS)')} required>{(id) => <input id={id} className="input" disabled={!edit} value={f.baseUrl} onChange={e => setF({ ...f, baseUrl: e.target.value })} placeholder={prov.kind === 'azure' ? 'https://my-resource.openai.azure.com' : 'https://llm.example.org/v1'} />}</Field>}
             {prov.kind !== 'builtin' && <Field label={t('API key')} hint={data.config.hasKey ? t('A key is stored ({h}); leave empty to keep it.', { h: data.config.keyHint }) : t('Stored encrypted; never shown again.')}>{(id) => <div className="row" style={{ gap: 8 }}><KeyRound size={16} aria-hidden="true" /><input id={id} className="input" type="password" autoComplete="off" disabled={!edit} value={f.apiKey} onChange={e => setF({ ...f, apiKey: e.target.value })} /></div>}</Field>}
             <div className="form-grid">
-              <Field label={t('Temperature (0–1)')}>{(id) => <input id={id} className="input num" type="number" step="0.1" min="0" max="1" disabled={!edit} value={f.temperature} onChange={e => setF({ ...f, temperature: e.target.value })} />}</Field>
+              <Field label={t('Temperature (0–1)')} hint={noTemp ? t('Not used: this model sets its own sampling.') : undefined}>{(id) => <input id={id} className="input num" type="number" step="0.1" min="0" max="1" disabled={!edit || noTemp} value={f.temperature} onChange={e => setF({ ...f, temperature: e.target.value })} />}</Field>
               <Field label={t('Maximum answer length (tokens)')}>{(id) => <input id={id} className="input num" type="number" min="100" max="4000" disabled={!edit} value={f.maxTokens} onChange={e => setF({ ...f, maxTokens: e.target.value })} />}</Field>
             </div>
             <label className="checkbox"><input type="checkbox" disabled={!edit || prov.kind === 'builtin'} checked={!!f.enabled && prov.kind !== 'builtin'} onChange={e => setF({ ...f, enabled: e.target.checked })} /><span>{t('Use this model for the AI use cases (the built-in engine stays the fallback)')}</span></label>

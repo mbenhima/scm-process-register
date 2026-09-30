@@ -9,9 +9,9 @@ import { config } from '../config.js';
 export const PROVIDERS = [
   { id: 'builtin', name: 'DynamicMS built-in engine', kind: 'builtin', models: [{ id: 'rules-retrieval', name: 'Rules + retrieval (no external call)' }] },
   { id: 'anthropic', name: 'Anthropic (Claude)', kind: 'anthropic', baseUrl: 'https://api.anthropic.com', models: [
-    { id: 'claude-opus-5-5', name: 'Claude Opus 5.5' }, { id: 'claude-sonnet-5-5', name: 'Claude Sonnet 5.5' }, { id: 'claude-fable-5-1', name: 'Claude Fable 5.1' }, { id: 'claude-haiku-4-5-20251001', name: 'Claude Haiku 4.5' }] },
+    { id: 'claude-opus-5-5', name: 'Claude Opus 5.5', temperature: false }, { id: 'claude-sonnet-5-5', name: 'Claude Sonnet 5.5', temperature: false }, { id: 'claude-fable-5-1', name: 'Claude Fable 5.1', temperature: false }, { id: 'claude-haiku-4-5-20251001', name: 'Claude Haiku 4.5' }] },
   { id: 'openai', name: 'OpenAI', kind: 'openai', baseUrl: 'https://api.openai.com/v1', models: [
-    { id: 'gpt-5', name: 'GPT-5' }, { id: 'gpt-5-mini', name: 'GPT-5 mini' }, { id: 'gpt-4.1', name: 'GPT-4.1' }] },
+    { id: 'gpt-5', name: 'GPT-5', temperature: false }, { id: 'gpt-5-mini', name: 'GPT-5 mini', temperature: false }, { id: 'gpt-4.1', name: 'GPT-4.1' }] },
   { id: 'azure', name: 'Azure OpenAI', kind: 'azure', baseUrl: '', models: [{ id: 'deployment', name: 'Your deployment name' }], needsBaseUrl: true },
   { id: 'google', name: 'Google (Gemini)', kind: 'google', baseUrl: 'https://generativelanguage.googleapis.com/v1beta', models: [
     { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro' }, { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash' }] },
@@ -20,6 +20,16 @@ export const PROVIDERS = [
   { id: 'custom', name: 'Custom LLM (OpenAI-compatible API)', kind: 'openai', baseUrl: '', models: [], needsBaseUrl: true, customModel: true },
 ];
 const byId = Object.fromEntries(PROVIDERS.map(p => [p.id, p]));
+
+// Reasoning models fix their own sampling: recent Claude models (Opus 4.7 and later, Sonnet 5 and
+// later, Fable, Mythos) return 400 on `temperature`, and OpenAI GPT-5 and o-series accept only the
+// default. Earlier Claude models (3.x, Haiku 4.5, Opus/Sonnet 4.0–4.6) and other providers keep it.
+export function acceptsTemperature(kind, model) {
+  const m = String(model || '').toLowerCase();
+  if (kind === 'anthropic') return /^claude-(3|haiku-4-5)/.test(m) || /^claude-(opus|sonnet)-4(-[0-6](-|$)|-\d{8}|$)/.test(m);
+  if (kind === 'openai' || kind === 'azure') return !/^(gpt-5|o\d)/.test(m);
+  return true;
+}
 
 const key32 = () => crypto.createHash('sha256').update(`llm:${config.jwtSecret}`).digest();
 export function encrypt(text) {
@@ -75,14 +85,19 @@ export async function complete(orgId, { system, user, model: override }, fetchIm
   if (!key) throw new Error('API key missing or unreadable.');
   const model = override || c.model;
   const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), 30000);
+  const timer = setTimeout(() => ctl.abort(), 60000);
+  const sampling = acceptsTemperature(p.kind, model);
   try {
     let res; let text;
     if (p.kind === 'anthropic') {
       res = await fetchImpl(`${p.baseUrl}/v1/messages`, { method: 'POST', signal: ctl.signal, headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model, max_tokens: c.maxTokens, temperature: c.temperature, system, messages: [{ role: 'user', content: user }] }) });
+        // Models without sampling controls think by default; thinking tokens count toward max_tokens, so
+        // leave room for it and keep the effort low for these short suggestions.
+        body: JSON.stringify({ model, system, messages: [{ role: 'user', content: user }],
+          ...(sampling ? { max_tokens: c.maxTokens, temperature: c.temperature } : { max_tokens: Math.max(c.maxTokens, 16000), output_config: { effort: 'low' } }) }) });
       const j = await res.json();
-      if (!res.ok) throw new Error(j?.error?.message || `HTTP ${res.status}`);
+      if (!res.ok) throw new Error(res.status === 401 ? 'The API key was refused by Anthropic (401).' : j?.error?.message || `HTTP ${res.status}`);
+      if (j.stop_reason === 'refusal') throw new Error('The model declined this request (refusal).');
       text = (j.content || []).filter(x => x.type === 'text').map(x => x.text).join('\n');
     } else if (p.kind === 'google') {
       res = await fetchImpl(`${p.baseUrl}/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`, { method: 'POST', signal: ctl.signal, headers: { 'content-type': 'application/json' },
@@ -93,7 +108,7 @@ export async function complete(orgId, { system, user, model: override }, fetchIm
     } else {
       const url = p.kind === 'azure' ? `${c.baseUrl.replace(/\/$/, '')}/openai/deployments/${encodeURIComponent(model)}/chat/completions?api-version=${c.apiVersion}` : `${(p.baseUrl || c.baseUrl).replace(/\/$/, '')}/chat/completions`;
       const headers = { 'content-type': 'application/json', ...(p.kind === 'azure' ? { 'api-key': key } : { authorization: `Bearer ${key}` }) };
-      res = await fetchImpl(url, { method: 'POST', signal: ctl.signal, headers, body: JSON.stringify({ ...(p.kind === 'azure' ? {} : { model }), temperature: c.temperature, max_tokens: c.maxTokens, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }) });
+      res = await fetchImpl(url, { method: 'POST', signal: ctl.signal, headers, body: JSON.stringify({ ...(p.kind === 'azure' ? {} : { model }), ...(sampling ? { temperature: c.temperature, max_tokens: c.maxTokens } : { max_completion_tokens: Math.max(c.maxTokens, 16000) }), messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }) });
       const j = await res.json();
       if (!res.ok) throw new Error(j?.error?.message || `HTTP ${res.status}`);
       text = j.choices?.[0]?.message?.content || '';

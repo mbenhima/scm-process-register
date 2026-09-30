@@ -4567,5 +4567,9 @@ export const DICT = {
 "Items (one per line)": {
 "fr": "Éléments (un par ligne)",
 "ar": "البنود (واحد في كل سطر)"
+},
+"Not used: this model sets its own sampling.": {
+"fr": "Non utilisée : ce modèle fixe lui-même son échantillonnage.",
+"ar": "غير مستخدمة: هذا النموذج يضبط أخذ العينات بنفسه."
 }
 };

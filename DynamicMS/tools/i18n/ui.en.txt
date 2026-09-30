@@ -1140,3 +1140,4 @@
 1140	Order
 1141	Approvers (one per line)
 1142	Items (one per line)
+1143	Not used: this model sets its own sampling.

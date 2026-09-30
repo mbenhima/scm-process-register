@@ -255,6 +255,16 @@ test('feedback: RACSI five columns, readiness checklist, LLM settings, tenancy c
   assert.equal((await call('PUT', `/orgs/${me.org.id}/ai/llm`, admin, { provider: 'anthropic', model: 'claude-sonnet-5-5', enabled: true })).status, 400);
   const saved = await call('PUT', `/orgs/${me.org.id}/ai/llm`, admin, { provider: 'anthropic', model: 'claude-sonnet-5-5', apiKey: 'sk-test-1234', enabled: false });
   assert.equal(saved.status, 200); assert.equal(saved.body.keyHint, '••••1234'); assert.equal(saved.body.apiKeyEnc, undefined);
+  // Recent Claude models reject `temperature` (400): it is left out for them and kept for older ones.
+  const { complete } = await import('../src/services/llm.js');
+  const sent = [];
+  const stub = async (url, init) => { sent.push(JSON.parse(init.body)); return { ok: true, status: 200, json: async () => ({ stop_reason: 'end_turn', content: [{ type: 'text', text: 'OK' }] }) }; };
+  await call('PUT', `/orgs/${me.org.id}/ai/llm`, admin, { provider: 'anthropic', model: 'claude-opus-5-5', enabled: true, temperature: 0.2 });
+  assert.equal((await complete(me.org.id, { system: 's', user: 'u' }, stub)).text, 'OK');
+  assert.equal(sent[0].temperature, undefined); assert.ok(sent[0].max_tokens >= 16000); assert.equal(sent[0].output_config.effort, 'low');
+  await complete(me.org.id, { system: 's', user: 'u', model: 'claude-haiku-4-5-20251001' }, stub);
+  assert.equal(sent[1].temperature, 0.2); assert.equal(sent[1].output_config, undefined);
+  await call('PUT', `/orgs/${me.org.id}/ai/llm`, admin, { enabled: false });
   const pa = await login('admin@dynamicms.example', 'Admin@2026');
   const g = await call('POST', '/tenancy/groups', pa, { name: 'Test group' });
   assert.equal(g.status, 201);

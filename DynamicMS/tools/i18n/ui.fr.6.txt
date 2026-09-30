@@ -98,3 +98,4 @@
 1140	Ordre
 1141	Approbateurs (un par ligne)
 1142	Éléments (un par ligne)
+1143	Non utilisée : ce modèle fixe lui-même son échantillonnage.
