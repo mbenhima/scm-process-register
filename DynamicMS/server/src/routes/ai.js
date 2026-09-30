@@ -8,6 +8,8 @@ import { ALERT_TYPES } from '../services/alerts.js';
 import { ask, suggest } from '../services/ai.js';
 import { catalog } from '../catalog/store.js';
 import { orgConfig } from '../packs.js';
+import { PROVIDERS, llmConfig, publicConfig, saveConfig, complete, toItems } from '../services/llm.js';
+import { buildPrompt } from '../services/aiprompt.js';
 
 const r = Router();
 
@@ -116,16 +118,60 @@ r.get('/projects/:id/ai/overrides', requirePerm('ai.view'), h((req, res) => {
   res.json(all('SELECT usecase_id, state FROM ai_project_overrides WHERE project_id=?', p.id));
 }));
 
-r.post('/ai/suggest', requirePerm('ai.use'), h((req, res) => {
+// ---- LLM configuration (per organization)
+r.get('/orgs/:id/ai/llm', requirePerm('ai.view'), h((req, res) => {
+  requireOrg(req, req.params.id);
+  res.json({ providers: PROVIDERS, config: publicConfig(req.params.id), canEdit: can(req, 'ai.manage') });
+}));
+r.put('/orgs/:id/ai/llm', requirePerm('ai.manage'), h((req, res) => {
+  requireOrg(req, req.params.id, true);
+  const prev = llmConfig(req.params.id);
+  try { saveConfig(req.params.id, req.body || {}, prev); } catch (e) { throw bad(e.code || 'BAD_LLM', e.message); }
+  audit(req, req.params.id, 'llm', req.params.id, 'update', { provider: prev.provider, model: prev.model, enabled: prev.enabled }, { provider: req.body?.provider, model: req.body?.model, enabled: req.body?.enabled, keyChanged: !!req.body?.apiKey }, null);
+  res.json(publicConfig(req.params.id));
+}));
+r.post('/orgs/:id/ai/llm/test', requirePerm('ai.manage'), h(async (req, res) => {
+  requireOrg(req, req.params.id);
+  const c = llmConfig(req.params.id);
+  if (c.provider === 'builtin') return res.json({ ok: true, message: 'Built-in engine: no external call.' });
+  try {
+    const r2 = await complete(req.params.id, { system: 'Reply with the single word OK.', user: 'Connection test from DynamicMS.' });
+    if (!r2) return res.json({ ok: false, message: 'The provider is disabled; enable it first.' });
+    res.json({ ok: true, message: `${r2.provider} · ${r2.model}: ${r2.text.slice(0, 60)}` });
+  } catch (e) { res.json({ ok: false, message: e.message }); }
+}));
+r.put('/ai/usecases/:id/model', requirePerm('ai.manage'), h((req, res) => {
+  const u = loadOrgRow(req, 'ai_usecases', req.params.id, true, 'AI use case');
+  run('UPDATE ai_usecases SET model=? WHERE id=?', req.body?.model || null, u.id);
+  audit(req, u.org_id, 'ai_usecase', u.id, 'model', { model: u.model || null }, { model: req.body?.model || null }, null);
+  res.json({ ok: true });
+}));
+// The exact prompt a use case sends for a step (transparency before running it).
+r.get('/ai/usecases/:id/prompt', requirePerm('ai.view'), h((req, res) => {
+  const u = loadOrgRow(req, 'ai_usecases', req.params.id, false, 'AI use case');
+  const p = loadProject(req, req.query.projectId);
+  res.json(buildPrompt(get('SELECT * FROM ai_usecases WHERE id=?', u.id), { projectId: p.id, stepExecId: req.query.stepId || null, lang: req.lang }));
+}));
+
+r.post('/ai/suggest', requirePerm('ai.use'), h(async (req, res) => {
   const p = loadProject(req, req.body?.projectId, true);
   const u = loadOrgRow(req, 'ai_usecases', req.body?.usecaseId, false, 'AI use case');
   if (u.org_id !== p.org_id) throw notFound('AI use case');
   const ov = get('SELECT state FROM ai_project_overrides WHERE usecase_id=? AND project_id=?', u.id, p.id)?.state;
   if (!(ov === 'Active' || (ov !== 'Inactive' && u.active))) throw bad('USECASE_INACTIVE', 'This AI use case is not active for the project.');
   assertFeature(p.org_id, u.tier === 'Augmented' ? 'ai_augmented' : 'ai_assistive');
-  const out = suggest({ usecase: get('SELECT * FROM ai_usecases WHERE id=?', u.id), project: get('SELECT * FROM projects WHERE id=?', p.id), lang: req.lang, input: req.body?.input });
+  const full = get('SELECT * FROM ai_usecases WHERE id=?', u.id);
+  const prompt = buildPrompt(full, { projectId: p.id, stepExecId: req.body?.recordType === 'step' ? req.body?.recordId : null, input: req.body?.input, lang: req.lang });
+  let out = null; let source = 'rules+retrieval'; let warning = null;
+  // The organization's LLM (when configured and enabled) answers first; the built-in engine is the fallback.
+  try {
+    const r2 = await complete(p.org_id, { system: prompt.system, user: prompt.user, model: full.model || undefined });
+    if (r2 && r2.text) { out = { kind: 'LLM', items: toItems(r2.text), confidence: 0.8, sources: [{ type: 'llm', id: r2.provider, title: `${r2.provider} · ${r2.model}` }] }; source = `llm:${r2.provider}:${r2.model}`; }
+  } catch (e) { warning = `LLM unavailable (${e.message}); built-in engine used.`; }
+  if (!out) out = suggest({ usecase: full, project: get('SELECT * FROM projects WHERE id=?', p.id), lang: req.lang, input: req.body?.input });
   const id = uid();
-  run('INSERT INTO ai_usage_log(id,org_id,project_id,usecase_id,record_type,record_id,user_id,outcome,confidence,source,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)', id, p.org_id, p.id, u.id, req.body?.recordType || null, req.body?.recordId || null, req.user.id, 'Pending', out.confidence, 'rules+retrieval', now());
+  run('INSERT INTO ai_usage_log(id,org_id,project_id,usecase_id,record_type,record_id,user_id,outcome,confidence,source,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)', id, p.org_id, p.id, u.id, req.body?.recordType || null, req.body?.recordId || null, req.user.id, 'Pending', out.confidence, source, now());
+  out = { ...out, prompt, engine: source, warning };
   send(req, res, { logId: id, usecase: { id: u.id, code: u.code, name: u.name, checkpoint: u.checkpoint, tier: u.tier }, ...out });
 }));
 r.post('/ai/feedback', requirePerm('ai.use'), h((req, res) => {

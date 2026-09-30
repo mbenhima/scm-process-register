@@ -88,13 +88,22 @@ r.post('/orgs', requirePerm('tenancy.manage'), h((req, res) => {
     run(`INSERT INTO organizations(id,group_id,name,short_code,sector,size,sme_class,employees,country,city,default_lang,email_domain,benchmark_sharing,deployment_mode,pack,industry_packs,capability_packs,addons,compliance_standards,support_tier,seats,currency,created_at,logo_text)
          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,1,?,?,?,?,?,?,?,?,?,?,?)`, id, b.groupId || null, J({ [req.lang]: b.name }), code, b.sector, b.size, b.size === 'SME' ? (+b.employees < 10 ? 'Micro' : +b.employees < 50 ? 'Small' : 'Medium') : null,
     +b.employees || null, b.country || null, J({ [req.lang]: b.city || '' }), b.lang || 'en', b.emailDomain, 'DEP-1', b.size === 'SME' ? 'DMS-SME' : 'DMS-PRO', J([]), J([]), J([]), J([]), 'Standard', 25, 'USD', now(), code.slice(0, 3));
-    run('INSERT INTO obs_nodes(id,org_id,project_id,parent_id,name,type,created_at) VALUES(?,?,?,?,?,?,?)', uid(), id, null, null, J({ [req.lang]: b.name }), 'Organization', now());
+    // Default structure (OBS): root, head office and the usual departments, so the step forms
+    // can pick organization units from day one; the tenant adapts it in Organization > Structure.
+    const root = uid();
+    run('INSERT INTO obs_nodes(id,org_id,project_id,parent_id,name,type,created_at) VALUES(?,?,?,?,?,?,?)', root, id, null, null, J({ [req.lang]: b.name }), 'Organization', now());
+    const hq = uid();
+    run('INSERT INTO obs_nodes(id,org_id,project_id,parent_id,name,type,created_at) VALUES(?,?,?,?,?,?,?)', hq, id, null, root, J({ en: 'Head office', fr: 'Siège', ar: 'المقر الرئيسي' }), 'Site', now());
+    for (const d of [{ en: 'Management', fr: 'Direction', ar: 'الإدارة' }, { en: 'Quality', fr: 'Qualité', ar: 'الجودة' }, { en: 'Operations', fr: 'Opérations', ar: 'العمليات' }, { en: 'Human Resources', fr: 'Ressources humaines', ar: 'الموارد البشرية' }, { en: 'Finance and purchasing', fr: 'Finance et achats', ar: 'المالية والمشتريات' }])
+      run('INSERT INTO obs_nodes(id,org_id,project_id,parent_id,name,type,created_at) VALUES(?,?,?,?,?,?,?)', uid(), id, null, hq, J(d), 'Department', now());
     for (const t of ['STEP_OVERDUE', 'KPI_OFF_TARGET', 'NC_CRITICAL', 'ACTION_OVERDUE', 'DOC_REVIEW_DUE', 'GATE_PENDING']) run('INSERT INTO alert_settings(org_id,type,enabled) VALUES(?,?,1)', id, t);
     // Tenant provisioning: the organization's first administrator
+    if (b.groupId && !get('SELECT 1 FROM groups_ WHERE id=?', b.groupId)) throw bad('BAD_GROUP', 'Unknown group.');
+    if (b.adminEmail && get('SELECT 1 FROM users WHERE email=?', b.adminEmail.toLowerCase())) throw new HttpError(409, 'EMAIL_TAKEN', 'This administrator e-mail is already used.');
     if (b.adminEmail) run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at) VALUES(?,?,?,?,?,?,?,0,?,?)', uid(), id, b.adminEmail.toLowerCase(), b.adminName || 'Administrator', bcrypt.hashSync(b.adminPassword || config.demoPassword, 10), J(['tenant_admin']), b.lang || 'en', 'Active', now());
     const c = catalog();
-    for (const a of c.aiUseCases) run('INSERT INTO ai_usecases(id,org_id,code,name,tier,module,trigger_,expected_output,checkpoint,task_type,risk_level,linked_step,linked_mp,custom,active,approval,version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,0,1,?,1,?)',
-      uid(), id, a.id, J(a.name), a.tier, null, null, J(a.name), J(a.checkpoint), J(a.taskType), a.risk, a.step, a.mp, a.approval, now());
+    for (const a of c.aiUseCases) run('INSERT INTO ai_usecases(id,org_id,code,name,tier,module,trigger_,expected_output,checkpoint,prompt,task_type,risk_level,linked_step,linked_mp,custom,active,approval,version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,1,?,1,?)',
+      uid(), id, a.id, J(a.name), a.tier, null, J(c.stepById[a.step]?.name || null), J(a.name), J(a.checkpoint), J(a.prompt || null), J(a.taskType), a.risk, a.step, a.mp, a.approval, now());
     for (const b2 of c.rules) run('INSERT INTO business_rules(id,org_id,code,step_ref,mp_id,condition,action_code,action,rule_type,severity,owner_role,active,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,1,?)', uid(), id, b2.id, b2.step, b2.mp, J(b2.condition), b2.actionId, J(b2.action), b2.type, 'Medium', c.mpById[b2.mp]?.ownerRoleCode || 'ims_manager', now());
     for (const ct of c.controls) run('INSERT INTO controls(id,org_id,code,name,description,type,coso,frequency,owner_role,effectiveness,standard,step_refs,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', uid(), id, ct.id, J(ct.name), J(ct.description), ct.type, ct.coso, 'Quarterly', 'ims_manager', 'Not tested', 'ISO 9001', J(ct.steps), ct.steps[0]?.split('.')[0] || null, now());
     audit(req, id, 'organization', id, 'create', null, b, null);

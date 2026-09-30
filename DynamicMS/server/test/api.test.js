@@ -22,7 +22,14 @@ async function call(method, url, token, body, lang = 'en') {
   const ct = r.headers.get('content-type') || '';
   return { status: r.status, body: ct.includes('json') ? await r.json() : await r.arrayBuffer() };
 }
-const login = async (email, password = 'Demo@2026') => (await call('POST', '/auth/login', null, { email, password })).body.token;
+// Tokens are reused across tests: sign-in is rate limited (20 per minute).
+const tokens = {};
+const login = async (email, password = 'Demo@2026') => {
+  if (tokens[`${email}:${password}`]) return tokens[`${email}:${password}`];
+  const tk = (await call('POST', '/auth/login', null, { email, password })).body.token;
+  if (tk) tokens[`${email}:${password}`] = tk;
+  return tk;
+};
 
 test('login rejects bad credentials and accepts demo users', async () => {
   assert.equal((await call('POST', '/auth/login', null, { email: 'quality@atlas-sme.example', password: 'nope' })).status, 401);
@@ -166,4 +173,93 @@ test('admin: permission matrix edit, config disclosure, versions, backups', asyn
   const b = await call('POST', '/admin/backups', admin);
   assert.equal(b.status, 201);
   assert.equal(b.body.integrity, 'ok');
+});
+
+test('feedback: structured forms, actions from plans, SMART objectives, KPI from a step', async () => {
+  const t = await login('ims@atlas-sme.example');
+  const tree = (await call('GET', '/tenancy/tree', t)).body;
+  const proj = tree.independent[0].projects.find(p => p.ms_type === 'QMS');
+  const pick = (await call('GET', `/projects/${proj.id}/pickers`, t)).body;
+  assert.ok(pick.users.length && pick.obs.length && pick.kpis.length && pick.templates.length);
+  const todo = (await call('GET', `/projects/${proj.id}/steps?status=Todo&limit=400`, t)).body.items;
+  // A plan step: each row becomes an action of the Action plan
+  const plan = todo.find(s => s.form_kind === 'plan');
+  if (plan) {
+    const owner = pick.users.find(u => u.roles.includes('operations_manager')).id;
+    const r = await call('POST', `/steps/${plan.id}/complete`, t, { fields: { activities: [{ activity: 'Train the two new technicians on job sheets', owner, due: '2026-12-01' }] } });
+    assert.equal(r.status, 200, JSON.stringify(r.body));
+    const acts = (await call('GET', `/projects/${proj.id}/actions?limit=500`, t)).body;
+    const list = Array.isArray(acts) ? acts : acts.items;
+    assert.ok(list.some(a => JSON.stringify(a.title).includes('Train the two new technicians')));
+  }
+  // A row table with a missing required column is refused
+  const list = todo.find(s => s.form_kind === 'list');
+  if (list) assert.equal((await call('POST', `/steps/${list.id}/complete`, t, { fields: { items: [{ category: 'x' }] } })).status, 400);
+  // New KPI created from a step
+  const mon = todo.find(s => s.form_kind === 'monitor') || todo[0];
+  const k = await call('POST', `/steps/${mon.id}/kpis`, t, { name: 'Signed job sheets', target: 95, unit: '%' });
+  assert.equal(k.status, 201);
+  // Step detail: brief, detailed description, step-linked AI only
+  const det = (await call('GET', `/steps/${mon.id}`, t)).body;
+  assert.ok(det.step.brief && det.step.description);
+  assert.ok(det.aiUseCases.every(a => a.step === det.step_id));
+});
+
+test('feedback: IMS document templates, generation, structure, versions, downloads, layout', async () => {
+  const t = await login('ims@atlas-sme.example');
+  const me = (await call('GET', '/auth/me', t)).body;
+  const tree = (await call('GET', '/tenancy/tree', t)).body;
+  const proj = tree.independent[0].projects.find(p => p.ms_type === 'QMS');
+  const lib = (await call('GET', `/orgs/${me.org.id}/doc-templates?projectId=${proj.id}`, t)).body;
+  assert.ok(lib.items.length >= 30);
+  const mand = (await call('GET', `/projects/${proj.id}/documents/mandatory`, t)).body;
+  assert.ok(mand.items.length >= 10);
+  assert.equal(mand.missing, 0);
+  const d = await call('POST', `/projects/${proj.id}/documents`, t, { templateCode: 'TPL-CTX' });
+  assert.equal(d.status, 201);
+  const doc = (await call('GET', `/documents/${d.body.id}`, t)).body;
+  const st = (await call('GET', `/document-versions/${doc.versions[0].id}/structure`, t)).body;
+  assert.ok(st.structured && st.sections.some(s => s.block?.kind === 'table' && s.block.rows.length));
+  for (const f of ['pdf', 'docx', 'xlsx']) {
+    const r = await call('GET', `/documents/${d.body.id}/download?format=${f}`, t);
+    assert.equal(r.status, 200); assert.ok(r.body.byteLength > 2000);
+  }
+  // Structure editing on the draft, then delete (never published -> deleted)
+  assert.equal((await call('PUT', `/document-versions/${doc.versions[0].id}/sections`, t, { sections: [...st.sections.map(s => ({ key: s.key, title: s.title })), { title: 'Annex', text: 'Free text' }] })).status, 200);
+  assert.equal((await call('DELETE', `/documents/${d.body.id}`, t)).body.deleted, true);
+  // A published document is retired, with a justification
+  const pol = (await call('GET', `/projects/${proj.id}/documents`, t)).body.find(x => x.template_id === 'TPL-POL-Q');
+  assert.equal((await call('DELETE', `/documents/${pol.id}`, t)).status, 400);
+  // Tenant template: copy of a library template, edited, then retired
+  const cp = await call('POST', `/orgs/${me.org.id}/doc-templates`, t, { baseCode: 'TPL-WI' });
+  assert.equal(cp.status, 201);
+  assert.equal((await call('PUT', `/doc-templates/${cp.body.id}`, t, { sections: [{ key: 'purpose', type: 'text', title: { en: 'Purpose' }, text: { en: 'Do it right' } }] })).status, 200);
+  assert.equal((await call('PUT', `/orgs/${me.org.id}/doc-layout`, t, { primaryColor: 'orange' })).status, 400);
+  assert.equal((await call('PUT', `/orgs/${me.org.id}/doc-layout`, t, { primaryColor: '#3A6EA5', headerText: 'Controlled copy' })).status, 200);
+});
+
+test('feedback: RACSI five columns, readiness checklist, LLM settings, tenancy creation', async () => {
+  const t = await login('ims@atlas-sme.example');
+  const me = (await call('GET', '/auth/me', t)).body;
+  const tree = (await call('GET', '/tenancy/tree', t)).body;
+  const proj = tree.independent[0].projects.find(p => p.ms_type === 'QMS');
+  assert.equal((await call('PUT', `/projects/${proj.id}/mps/MP-004/racsi`, t, { letters: { A: ['ims_manager', 'top_management'] } })).status, 400);
+  assert.equal((await call('PUT', `/projects/${proj.id}/mps/MP-004/racsi`, t, { letters: { R: ['process_excellence_manager'], A: ['ims_manager'], C: ['quality_manager'], S: ['document_controller'], I: ['top_management'] } })).status, 200);
+  assert.equal((await call('PUT', `/projects/${proj.id}/mps/MP-004/racsi`, t, { stepId: 'MP-004.3', letters: { R: ['quality_manager'], A: ['process_excellence_manager'] } })).status, 200);
+  const rd = (await call('GET', `/projects/${proj.id}/mps/MP-004/readiness`, t)).body;
+  assert.ok(rd.items.length >= 4);
+  assert.equal((await call('PUT', `/projects/${proj.id}/mps/MP-004/readiness`, t, { itemId: rd.items[0].id, done: true })).status, 200);
+  const admin = await login('admin@atlas-sme.example');
+  const llm = (await call('GET', `/orgs/${me.org.id}/ai/llm`, admin)).body;
+  assert.ok(llm.providers.some(p => p.id === 'anthropic') && llm.providers.some(p => p.id === 'custom'));
+  assert.equal((await call('PUT', `/orgs/${me.org.id}/ai/llm`, admin, { provider: 'anthropic', model: 'claude-sonnet-5-5', enabled: true })).status, 400);
+  const saved = await call('PUT', `/orgs/${me.org.id}/ai/llm`, admin, { provider: 'anthropic', model: 'claude-sonnet-5-5', apiKey: 'sk-test-1234', enabled: false });
+  assert.equal(saved.status, 200); assert.equal(saved.body.keyHint, '••••1234'); assert.equal(saved.body.apiKeyEnc, undefined);
+  const pa = await login('admin@dynamicms.example', 'Admin@2026');
+  const g = await call('POST', '/tenancy/groups', pa, { name: 'Test group' });
+  assert.equal(g.status, 201);
+  const o = await call('POST', '/tenancy/orgs', pa, { name: 'Test Org', sector: 'UNI', size: 'SME', emailDomain: 'test-org.example', groupId: g.body.id, adminEmail: 'admin@test-org.example' });
+  assert.equal(o.status, 201);
+  const ind = await call('POST', '/tenancy/orgs', pa, { name: 'Solo Org', sector: 'UNI', size: 'SME', emailDomain: 'solo-org.example', adminEmail: 'admin@solo-org.example' });
+  assert.equal(ind.status, 201);
 });

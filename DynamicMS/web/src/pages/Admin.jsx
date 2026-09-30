@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ShieldCheck, Database, Upload } from 'lucide-react';
+import { ShieldCheck, Database, Upload, Plus, Building2, Users, Sparkles, KeyRound } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
-import { PageHead, Card, Loading, ErrorBox, Status, Tabs, Table, tx, Field, IconBadge } from '../components/ui.jsx';
+import { PageHead, Card, Loading, ErrorBox, Status, Tabs, Table, tx, Field, IconBadge, Modal } from '../components/ui.jsx';
 
 function Matrix() {
   const { t, lang, toast, can } = useApp();
@@ -118,6 +118,112 @@ function Operations() {
   );
 }
 
+// Groups and organizations (platform administrator): an organization can belong to a group
+// (read-only views and benchmarking across the group) or stay independent.
+function Tenancy() {
+  const { t, lang, L, toast, me, reloadTree } = useApp();
+  const groups = useData('/tenancy/groups');
+  const tree = useData('/tenancy/tree');
+  const verticals = useData('/catalog/verticals');
+  const [g, setG] = useState(null); const [o, setO] = useState(null);
+  const admin = me.user.isPlatformAdmin;
+  const saveGroup = async () => { try { if (g.id) await api(`/tenancy/groups/${g.id}`, { method: 'PUT', body: g }); else await api('/tenancy/groups', { method: 'POST', body: g }); toast(t('Group saved.')); setG(null); groups.reload(); } catch (e) { toast(e.message, 'error'); } };
+  const delGroup = async (x) => { if (!window.confirm(t('Delete group {n}?', { n: tx(x.name, lang) }))) return; try { await api(`/tenancy/groups/${x.id}`, { method: 'DELETE' }); groups.reload(); } catch (e) { toast(e.message, 'error'); } };
+  const saveOrg = async () => {
+    try {
+      const body = { ...o, groupId: o.inGroup === 'yes' ? o.groupId : null };
+      await api('/tenancy/orgs', { method: 'POST', body });
+      toast(t('Organization {n} created with its administrator and default structure.', { n: o.name })); setO(null); tree.reload(); groups.reload(); reloadTree?.();
+    } catch (e) { toast(e.message, 'error'); }
+  };
+  if (!admin) return <Card><p className="small">{t('Groups and organizations are created by the platform administrator (admin@dynamicms.example). Tenant administrators manage their own organization in Organization.')}</p></Card>;
+  const allOrgs = [...(tree.data?.groups || []).flatMap(x => x.orgs.map(y => ({ ...y, group: tx(x.name, lang) }))), ...(tree.data?.independent || []).map(y => ({ ...y, group: '—' }))];
+  return (
+    <div className="stack">
+      <Card title={t('Groups')} action={<button className="btn btn-primary btn-sm" onClick={() => setG({ name: '', description: '' })}><Plus size={16} />{t('New group')}</button>}>
+        {groups.data ? <Table rows={groups.data} columns={[{ key: 'name', label: t('Group'), render: x => <span className="strong">{tx(x.name, lang)}</span> }, { key: 'description', label: t('Description'), render: x => tx(x.description, lang) }, { key: 'orgCount', label: t('Organizations'), width: 120 }, { key: 'act', label: '', sortable: false, render: x => <span className="row" style={{ gap: 4 }}><button className="btn btn-sm btn-ghost" onClick={() => setG({ id: x.id, name: tx(x.name, lang), description: tx(x.description, lang) })}>{t('Edit')}</button>{!x.orgCount && <button className="btn btn-sm btn-ghost" onClick={() => delGroup(x)}>{t('Delete')}</button>}</span> }]} /> : <Loading />}
+      </Card>
+      <Card title={t('Organizations')} action={<button className="btn btn-primary btn-sm" onClick={() => setO({ name: '', inGroup: 'no', groupId: groups.data?.[0]?.id || '', sector: 'UNI', size: 'SME', employees: 50, country: 'MA', city: '', lang: 'fr', emailDomain: '', adminName: '', adminEmail: '' })}><Plus size={16} />{t('New organization')}</button>}>
+        {tree.data ? <Table rows={allOrgs} columns={[{ key: 'code', label: t('Code'), width: 100 }, { key: 'name', label: t('Organization'), render: x => <span className="strong">{tx(x.name, lang)}</span> }, { key: 'group', label: t('Group') }, { key: 'sector', label: t('Vertical') }, { key: 'size', label: t('Size'), render: x => L(x.size) }, { key: 'projects', label: t('Projects'), render: x => x.projects.length }]} maxRows={80} /> : <Loading />}
+      </Card>
+      {g && (
+        <Modal title={g.id ? t('Edit group') : t('New group')} onClose={() => setG(null)} footer={<><button className="btn" onClick={() => setG(null)}>{t('Cancel')}</button><button className="btn btn-primary" disabled={!g.name} onClick={saveGroup}>{t('Save')}</button></>}>
+          <div className="stack">
+            <Field label={t('Name')} required>{(id) => <input id={id} className="input" value={g.name} onChange={e => setG({ ...g, name: e.target.value })} />}</Field>
+            <Field label={t('Description')}>{(id) => <textarea id={id} className="textarea" value={g.description} onChange={e => setG({ ...g, description: e.target.value })} />}</Field>
+          </div>
+        </Modal>
+      )}
+      {o && (
+        <Modal wide title={t('New organization')} onClose={() => setO(null)} footer={<><button className="btn" onClick={() => setO(null)}>{t('Cancel')}</button><button className="btn btn-primary" disabled={!o.name || !o.emailDomain || !o.adminEmail || (o.inGroup === 'yes' && !o.groupId)} onClick={saveOrg}>{t('Create organization')}</button></>}>
+          <div className="stack">
+            <Field label={t('Name')} required>{(id) => <input id={id} className="input" value={o.name} onChange={e => setO({ ...o, name: e.target.value })} />}</Field>
+            <fieldset style={{ border: 0, padding: 0, margin: 0 }}><legend className="strong small" style={{ marginBottom: 8 }}>{t('Part of a group?')}</legend>
+              <div className="row"><label className="checkbox"><input type="radio" name="ing" checked={o.inGroup === 'no'} onChange={() => setO({ ...o, inGroup: 'no' })} /><span>{t('No — independent organization')}</span></label><label className="checkbox"><input type="radio" name="ing" checked={o.inGroup === 'yes'} onChange={() => setO({ ...o, inGroup: 'yes' })} /><span>{t('Yes — member of a group')}</span></label></div>
+            </fieldset>
+            {o.inGroup === 'yes' && <Field label={t('Group')} required>{(id) => <select id={id} className="select" value={o.groupId} onChange={e => setO({ ...o, groupId: e.target.value })}>{(groups.data || []).map(x => <option key={x.id} value={x.id}>{tx(x.name, lang)}</option>)}</select>}</Field>}
+            <div className="form-grid">
+              <Field label={t('Vertical')} required>{(id) => <select id={id} className="select" value={o.sector} onChange={e => setO({ ...o, sector: e.target.value })}><option value="UNI">{t('Universal (any sector)')}</option>{(verticals.data || []).filter(v => v.id !== 'SME').map(v => <option key={v.id} value={v.id}>{v.id} — {tx(v.name, lang)}</option>)}</select>}</Field>
+              <Field label={t('Size')} required>{(id) => <select id={id} className="select" value={o.size} onChange={e => setO({ ...o, size: e.target.value })}><option value="SME">{L('SME')}</option><option value="Large">{t('Large company')}</option></select>}</Field>
+              <Field label={t('Employees')}>{(id) => <input id={id} className="input num" type="number" value={o.employees} onChange={e => setO({ ...o, employees: e.target.value })} />}</Field>
+              <Field label={t('Language')}>{(id) => <select id={id} className="select" value={o.lang} onChange={e => setO({ ...o, lang: e.target.value })}><option value="en">English</option><option value="fr">Français</option><option value="ar">العربية</option></select>}</Field>
+              <Field label={t('Country (ISO code)')}>{(id) => <input id={id} className="input" value={o.country} onChange={e => setO({ ...o, country: e.target.value.toUpperCase().slice(0, 2) })} />}</Field>
+              <Field label={t('City')}>{(id) => <input id={id} className="input" value={o.city} onChange={e => setO({ ...o, city: e.target.value })} />}</Field>
+            </div>
+            <Field label={t('E-mail domain')} required hint={t('Users of the organization sign in with name@domain.')}>{(id) => <input id={id} className="input" value={o.emailDomain} onChange={e => setO({ ...o, emailDomain: e.target.value.toLowerCase() })} placeholder="example.org" />}</Field>
+            <div className="form-grid">
+              <Field label={t('Administrator name')}>{(id) => <input id={id} className="input" value={o.adminName} onChange={e => setO({ ...o, adminName: e.target.value })} />}</Field>
+              <Field label={t('Administrator e-mail')} required hint={t('Initial password: the demonstration password; to change at first sign-in.')}>{(id) => <input id={id} className="input" type="email" value={o.adminEmail} onChange={e => setO({ ...o, adminEmail: e.target.value })} />}</Field>
+            </div>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+// Large language models used by the AI use cases: standard providers and models, or a custom endpoint.
+function Llm({ orgId }) {
+  const { t, lang, toast } = useApp();
+  const { data, reload } = useData(`/orgs/${orgId}/ai/llm`);
+  const [f, setF] = useState(null); const [test, setTest] = useState(null);
+  const ucs = useData(`/orgs/${orgId}/ai/usecases`);
+  useEffect(() => { if (data) setF({ ...data.config, apiKey: '' }); }, [data]);
+  if (!data || !f) return <Loading />;
+  const prov = data.providers.find(p => p.id === f.provider) || data.providers[0];
+  const edit = data.canEdit;
+  const save = async () => { try { await api(`/orgs/${orgId}/ai/llm`, { method: 'PUT', body: f }); toast(t('AI model settings saved.')); reload(); } catch (e) { toast(e.message, 'error'); } };
+  const run = async () => { setTest(null); try { setTest(await api(`/orgs/${orgId}/ai/llm/test`, { method: 'POST' })); } catch (e) { setTest({ ok: false, message: e.message }); } };
+  const setModel = async (uc, model) => { try { await api(`/ai/usecases/${uc.id}/model`, { method: 'PUT', body: { model } }); toast(t('Model of {c} updated.', { c: uc.code })); ucs.reload(); } catch (e) { toast(e.message, 'error'); } };
+  return (
+    <div className="grid-main">
+      <div className="stack">
+        <Card title={t('Language model for the AI use cases')} action={<IconBadge icon={Sparkles} accent={f.enabled} size="sm" />}>
+          <div className="stack">
+            <p className="small muted">{t('Choose a standard provider and model, or a custom model with an OpenAI-compatible API. Without a provider, the built-in engine (rules and retrieval on your data) answers. Every suggestion stays a suggestion until a person accepts it.')}</p>
+            <div className="form-grid">
+              <Field label={t('Provider')}>{(id) => <select id={id} className="select" disabled={!edit} value={f.provider} onChange={e => { const p = data.providers.find(x => x.id === e.target.value); setF({ ...f, provider: e.target.value, model: p.models[0]?.id || '', baseUrl: p.needsBaseUrl ? f.baseUrl : '' }); }}>{data.providers.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}</select>}</Field>
+              <Field label={t('Model')}>{(id) => (prov.customModel || prov.kind === 'azure') ? <input id={id} className="input" disabled={!edit} value={f.model} onChange={e => setF({ ...f, model: e.target.value })} placeholder={prov.kind === 'azure' ? t('Deployment name') : t('Model name')} /> : <select id={id} className="select" disabled={!edit} value={f.model} onChange={e => setF({ ...f, model: e.target.value })}>{prov.models.map(m => <option key={m.id} value={m.id}>{m.name} ({m.id})</option>)}</select>}</Field>
+            </div>
+            {prov.needsBaseUrl && <Field label={t('Endpoint URL (HTTPS)')} required>{(id) => <input id={id} className="input" disabled={!edit} value={f.baseUrl} onChange={e => setF({ ...f, baseUrl: e.target.value })} placeholder={prov.kind === 'azure' ? 'https://my-resource.openai.azure.com' : 'https://llm.example.org/v1'} />}</Field>}
+            {prov.kind !== 'builtin' && <Field label={t('API key')} hint={data.config.hasKey ? t('A key is stored ({h}); leave empty to keep it.', { h: data.config.keyHint }) : t('Stored encrypted; never shown again.')}>{(id) => <div className="row" style={{ gap: 8 }}><KeyRound size={16} aria-hidden="true" /><input id={id} className="input" type="password" autoComplete="off" disabled={!edit} value={f.apiKey} onChange={e => setF({ ...f, apiKey: e.target.value })} /></div>}</Field>}
+            <div className="form-grid">
+              <Field label={t('Temperature (0–1)')}>{(id) => <input id={id} className="input num" type="number" step="0.1" min="0" max="1" disabled={!edit} value={f.temperature} onChange={e => setF({ ...f, temperature: e.target.value })} />}</Field>
+              <Field label={t('Maximum answer length (tokens)')}>{(id) => <input id={id} className="input num" type="number" min="100" max="4000" disabled={!edit} value={f.maxTokens} onChange={e => setF({ ...f, maxTokens: e.target.value })} />}</Field>
+            </div>
+            <label className="checkbox"><input type="checkbox" disabled={!edit || prov.kind === 'builtin'} checked={!!f.enabled && prov.kind !== 'builtin'} onChange={e => setF({ ...f, enabled: e.target.checked })} /><span>{t('Use this model for the AI use cases (the built-in engine stays the fallback)')}</span></label>
+            <div className="row">{edit && <button className="btn btn-primary" onClick={save}>{t('Save')}</button>}<button className="btn" onClick={run}>{t('Test the connection')}</button>{test && <span className={`tag ${test.ok ? 's5' : 's1'}`}>{test.message}</span>}</div>
+          </div>
+        </Card>
+      </div>
+      <Card title={t('Model per AI use case')}>
+        <p className="small muted">{t('By default every use case uses the organization model; a use case can use another model of the same provider.')}</p>
+        {ucs.data ? <Table rows={ucs.data.items} maxRows={60} columns={[{ key: 'code', label: t('Code'), width: 110 }, { key: 'name', label: t('Use case'), render: u => tx(u.name, lang) }, { key: 'linked_step', label: t('Step'), width: 100 }, { key: 'model', label: t('Model'), sortable: false, render: u => <select className="select" aria-label={t('Model')} disabled={!edit || prov.kind === 'builtin'} value={u.model || ''} onChange={e => setModel(u, e.target.value || null)}><option value="">{t('Organization default')}</option>{prov.models.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}</select> }]} /> : <Loading />}
+      </Card>
+    </div>
+  );
+}
+
 export default function Admin() {
   const { t, can, project, me } = useApp();
   const orgId = project?.org?.access === 'write' ? project.org.id : me.org?.id;
@@ -127,6 +233,8 @@ export default function Admin() {
     ...(can('integrations.manage') ? [{ id: 'integrations', label: t('Integrations') }] : []),
     ...(can('audit.view') ? [{ id: 'audit', label: t('Audit trail') }] : []),
     ...(can('users.manage') ? [{ id: 'import', label: t('Data import') }] : []),
+    ...(me.user.isPlatformAdmin || can('tenancy.manage') ? [{ id: 'tenancy', label: t('Groups and organizations') }] : []),
+    ...(can('ai.view') ? [{ id: 'llm', label: t('AI models') }] : []),
     { id: 'ops', label: t('Operations') },
   ];
   const [tab, setTab] = useState(tabs[0]?.id);
@@ -141,6 +249,8 @@ export default function Admin() {
       {tab === 'audit' && orgId && <AuditTrail orgId={orgId} />}
       {tab === 'import' && orgId && <Import orgId={orgId} />}
       {tab === 'ops' && <Operations />}
+      {tab === 'tenancy' && <Tenancy />}
+      {tab === 'llm' && orgId && <Llm orgId={orgId} />}
     </>
   );
 }

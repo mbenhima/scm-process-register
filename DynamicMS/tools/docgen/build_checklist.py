@@ -40,7 +40,7 @@ def main():
         ['End-to-end processes (goals, trigger, terminal event, narrative, business value)', c['e2e'], 'Process design › E2E processes; Lifecycle phases of every project', OK],
         ['Macro processes with goal, objective, owner, tier, module and SIPOC', c['mps'], 'Process design › Macro processes; Lifecycle › macro process › SIPOC', OK],
         ['Tasks (Task_Name grouping of the SIPOC P column)', c['tasks'], 'Macro process › Tasks and steps', OK],
-        ['Workflow steps with role, type and description', c['steps'], 'Step screen with one of 17 input forms; seeded in every run', OK],
+        ['Workflow steps with role, type and description', c['steps'], 'Step screen with one of 20 input forms (record tables, decision matrix, KPI picker, SMART, review, RACSI); explicit verb-first names; brief and detailed description; seeded in every run', OK],
         ['Unified functional steps (UF) and E2E flow (Part 6)', f"{c['uf']} UF · {c['flowRows']} flow rows", 'E2E detail › Unified flow', OK],
         ['RACSI per E2E activity', c['racsiE2E'], 'Governance › RACSI matrix (one Accountable enforced)', OK],
         ['Tier 6 RACSI', c['tier6Racsi'], 'Process design › Reference lists', OK],
@@ -73,7 +73,7 @@ def main():
         ('D02 Tasks & Steps', 'Every step of every run (84,603 executions)'), ('D02a Task Procedures', 'Catalog /catalog/sample'), ('D02b Procedure Steps', 'Catalog /catalog/sample'),
         ('D03 Business Rules', 'Governance › Rules and controls; checked at step completion'), ('D03a Actions Registry', 'Process design › Reference lists'), ('D04 Controls', 'Governance › Controls (COSO)'),
         ('D05 Risks', 'Governance › Risks (seeded per project)'), ('D06 KPIs', 'Governance › KPIs (12 monthly values per project)'), ('D07 Alerts', 'Alerts › Alert catalog; raised in runs'),
-        ('D08 Reports & Cockpits', 'Reports › Report catalog'), ('D08a Doc Templates & Formats', 'Documents (template on each document)'), ('D08b Document Versions', 'Documents › Versions'),
+        ('D08 Reports & Cockpits', 'Reports › Report catalog'), ('D08a Doc Templates & Formats', 'Records › Documents › Templates: 37 IMS templates (sections, data sources, formats, TOC), tenant copies and layout'), ('D08b Document Versions', 'Documents › Versions'),
         ('D08c MS Policies', 'Documents (policy per project, QMS single-standard / QHSE integrated)'), ('D09 Information Class Model', 'Process design › Reference lists'), ('D09a Tenant Reference Registry', 'Catalog /catalog/sample'),
         ('D10 Data Dictionary', 'Process design › Reference lists'), ('D10a Value Lists', 'Process design › Reference lists; form select lists'), ('D15 AI Use Cases (Extended)', 'AI use cases (library per organization)'),
         ('D15b Role Menus', 'Process design › Reference lists; roles of the permission matrix'), ('D26 Modules & Tiers', 'Configuration (licensed macro processes)'), ('Coverage Summary', 'Reflected by this checklist'),
@@ -134,7 +134,7 @@ def main():
         ['Light backgrounds; dark only for section dividers', 'Lifecycle run summary band; presentation dividers', OK],
         ['State tokens, spacing and type scale before building', 'Stated before the web build and documented in tokens.css', OK],
         ['POWERACT not mentioned in the application', 'Application screens and generated reports carry DynamicMS only', OK],
-        ['English, French and Arabic with right-to-left layout', '837 interface strings and all catalog content translated; dir="rtl" mirrors the shell', OK],
+        ['English, French and Arabic with right-to-left layout', '1,042 interface strings and all catalog content translated; dir="rtl" mirrors the shell', OK],
     ], [7, 8, 3], size=9, status_col=2, status_fn=st)
 
     doc.add_heading('Request — deliverables', level=1)
@@ -147,7 +147,17 @@ def main():
         ['Presentation with screenshots of every sector — French', 'DynamicMS_Presentation_FR.pptx / .pdf', OK],
         ['Source code', 'DynamicMS.zip and the Git branch claude/lucid-brahmagupta-xfc6ek', OK],
         ['This coverage checklist', 'DynamicMS_Coverage_Checklist.docx / .pdf', OK],
+        ['IMS document templates (suggested templates, sections, data sources, required documented information)', 'DynamicMS_IMS_Document_Templates.docx / .pdf', OK],
+        ['Templates seeded, populated and ready to download (sample set of Scenario 1 and 2 SME)', 'In the application (Records › Documents) and DynamicMS_Sample_IMS_Documents.zip', OK],
+        ['Response to the feedback on User Guide 2 (SME QMS, Scenario 1)', 'DynamicMS_Feedback_Response_User_Guide_2.docx / .pdf', OK],
     ], [8, 7.2, 2.8], size=9, status_col=2, status_fn=st)
+
+    doc.add_heading('Feedback on User Guide 2 — SME QMS, Scenario 1', level=1)
+    para(doc, 'Each note of the reviewed guide and where it is answered. Details are in DynamicMS_Feedback_Response_User_Guide_2.')
+    from build_feedback_doc import GENERAL, INLINE
+    fb = [[a, c, PART if c == '—' else OK] for a, b, c in GENERAL] + [[a, 'Lifecycle › E2E-01 steps', OK] for a, b in INLINE]
+    table(doc, ['Feedback', 'Where', 'Status'], fb, [9.4, 5.8, 2.8], size=8.5, status_col=2, status_fn=st)
+    para(doc, 'Partly covered: the document mentioned for the QMS steps was not attached to the request; its content can be added when received.', size=10)
     callout(doc, 'The official POWERACT logo could not be downloaded from www.poweract.ma (the site refused the request). The deliverables show the POWERACT Consulting name as text. Place the logo at deliverables/assets/poweract-logo.png and run the builders again to insert it on covers, slides and footers.', 'Logo.')
     doc.save(OUT)
     print('saved', OUT)

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
@@ -11,7 +12,8 @@ const FIELD_LABELS = { type: 'Type', category: 'Category', impact: 'Impact', nee
 export default function Registers() {
   const { t, L, lang, projectId, fmtDate, toast, can, readOnly } = useApp();
   const { data: regs } = useData(projectId ? `/projects/${projectId}/registers` : null);
-  const [reg, setReg] = useState('context');
+  const [params] = useSearchParams();
+  const [reg, setReg] = useState(params.get('reg') || 'context');
   const { data, loading, error, reload } = useData(projectId ? `/projects/${projectId}/registers/${reg}` : null, [reg]);
   const [nw, setNw] = useState(null);
   if (!projectId) return <NoProject />;

@@ -3347,5 +3347,825 @@ export const DICT = {
 "Prediction": {
 "fr": "Prédiction",
 "ar": "التنبؤ"
+},
+"New version attached; the previous one is kept in the history.": {
+"fr": "Nouvelle version jointe ; la précédente est conservée dans l'historique.",
+"ar": "أُرفق إصدار جديد؛ ويُحتفظ بالإصدار السابق في السجل."
+},
+"Note for the next upload (optional)": {
+"fr": "Note pour le prochain envoi (facultatif)",
+"ar": "ملاحظة للرفع القادم (اختياري)"
+},
+"History ({n})": {
+"fr": "Historique ({n})",
+"ar": "السجل ({n})"
+},
+"BPMN diagram in full screen": {
+"fr": "Diagramme BPMN en plein écran",
+"ar": "مخطط BPMN بملء الشاشة"
+},
+"Exit full screen": {
+"fr": "Quitter le plein écran",
+"ar": "الخروج من ملء الشاشة"
+},
+"Full screen": {
+"fr": "Plein écran",
+"ar": "ملء الشاشة"
+},
+"Remove": {
+"fr": "Retirer",
+"ar": "إزالة"
+},
+"Choose an organization unit…": {
+"fr": "Choisir une unité de l'organisation…",
+"ar": "اختر وحدة من المؤسسة…"
+},
+"Other (type)": {
+"fr": "Autre (saisir)",
+"ar": "أخرى (اكتب)"
+},
+"Choose a person…": {
+"fr": "Choisir une personne…",
+"ar": "اختر شخصًا…"
+},
+"Holders of the role": {
+"fr": "Titulaires du rôle",
+"ar": "شاغلو الدور"
+},
+"Other people": {
+"fr": "Autres personnes",
+"ar": "أشخاص آخرون"
+},
+"Add a role…": {
+"fr": "Ajouter un rôle…",
+"ar": "أضف دورًا…"
+},
+"Responsible": {
+"fr": "Réalise",
+"ar": "المنفذ"
+},
+"Accountable (one)": {
+"fr": "Approuve (un seul)",
+"ar": "المساءل (واحد)"
+},
+"Consulted": {
+"fr": "Consulté",
+"ar": "المستشار"
+},
+"Support": {
+"fr": "Support",
+"ar": "الداعم"
+},
+"Informed": {
+"fr": "Informé",
+"ar": "المُبلَّغ"
+},
+"New KPI": {
+"fr": "Nouveau KPI",
+"ar": "مؤشر جديد"
+},
+"Create KPI": {
+"fr": "Créer le KPI",
+"ar": "إنشاء المؤشر"
+},
+"e.g. signed job sheets / job sheets × 100": {
+"fr": "ex. fiches signées / fiches d'intervention × 100",
+"ar": "مثال: بطاقات العمل الموقعة / بطاقات العمل × 100"
+},
+"Direction": {
+"fr": "Sens",
+"ar": "الاتجاه"
+},
+"Choose a KPI…": {
+"fr": "Choisir un KPI…",
+"ar": "اختر مؤشرًا…"
+},
+"KPIs of this macro process": {
+"fr": "KPI de ce macro-processus",
+"ar": "مؤشرات هذه العملية الكلية"
+},
+"Other KPIs of the project": {
+"fr": "Autres KPI du projet",
+"ar": "مؤشرات أخرى في المشروع"
+},
+"Record created": {
+"fr": "Enregistrement créé",
+"ar": "السجل المنشأ"
+},
+"Delete row {n}": {
+"fr": "Supprimer la ligne {n}",
+"ar": "حذف السطر {n}"
+},
+"No row yet.": {
+"fr": "Aucune ligne pour l'instant.",
+"ar": "لا يوجد سطر بعد."
+},
+"Add a row": {
+"fr": "Ajouter une ligne",
+"ar": "إضافة سطر"
+},
+"On completion, each row becomes an action in the Action plan, with its owner and due date.": {
+"fr": "À la clôture, chaque ligne devient une action du plan d'actions, avec son responsable et son échéance.",
+"ar": "عند الإكمال يصبح كل سطر إجراءً في خطة العمل مع مسؤوله وموعد استحقاقه."
+},
+"On completion, each row becomes an entry of the objectives register.": {
+"fr": "À la clôture, chaque ligne devient une entrée du registre des objectifs.",
+"ar": "عند الإكمال يصبح كل سطر قيدًا في سجل الأهداف."
+},
+"Weighted score": {
+"fr": "Note pondérée",
+"ar": "الدرجة المرجحة"
+},
+"Total weight {w}% (aim for 100%)": {
+"fr": "Poids total {w} % (visez 100 %)",
+"ar": "إجمالي الأوزان {w}% (المستهدف 100%)"
+},
+"Scoring scale": {
+"fr": "Échelle de notation",
+"ar": "سلم التقييم"
+},
+"No linked record yet. Records are linked when the step is completed or a document is generated.": {
+"fr": "Aucun enregistrement lié pour l'instant. Les enregistrements sont liés à la clôture de l'étape ou à la génération d'un document.",
+"ar": "لا يوجد سجل مرتبط بعد. تُربط السجلات عند إكمال الخطوة أو توليد وثيقة."
+},
+"RACSI of the macro process; step-level RACSI can be set on the macro process page.": {
+"fr": "RACSI du macro-processus ; un RACSI par étape se définit sur la page du macro-processus.",
+"ar": "مصفوفة RACSI للعملية الكلية؛ يمكن تحديد RACSI لكل خطوة في صفحة العملية الكلية."
+},
+"Choose a template…": {
+"fr": "Choisir un modèle…",
+"ar": "اختر نموذجًا…"
+},
+"Suggested for this macro process": {
+"fr": "Suggérés pour ce macro-processus",
+"ar": "مقترحة لهذه العملية الكلية"
+},
+"All templates": {
+"fr": "Tous les modèles",
+"ar": "جميع النماذج"
+},
+"Group saved.": {
+"fr": "Groupe enregistré.",
+"ar": "تم حفظ المجموعة."
+},
+"Delete group {n}?": {
+"fr": "Supprimer le groupe {n} ?",
+"ar": "حذف المجموعة {n}؟"
+},
+"Organization {n} created with its administrator and default structure.": {
+"fr": "Organisation {n} créée avec son administrateur et sa structure par défaut.",
+"ar": "تم إنشاء المؤسسة {n} مع مسؤولها وهيكلها الافتراضي."
+},
+"Groups and organizations are created by the platform administrator (admin@dynamicms.example). Tenant administrators manage their own organization in Organization.": {
+"fr": "Les groupes et organisations sont créés par l'administrateur de la plateforme (admin@dynamicms.example). Les administrateurs de locataire gèrent leur organisation dans Organisation.",
+"ar": "يُنشئ مسؤول المنصة (admin@dynamicms.example) المجموعات والمؤسسات. ويدير مسؤولو المستأجرين مؤسساتهم في صفحة المؤسسة."
+},
+"Groups": {
+"fr": "Groupes",
+"ar": "المجموعات"
+},
+"New group": {
+"fr": "Nouveau groupe",
+"ar": "مجموعة جديدة"
+},
+"Organizations": {
+"fr": "Organisations",
+"ar": "المؤسسات"
+},
+"Delete": {
+"fr": "Supprimer",
+"ar": "حذف"
+},
+"New organization": {
+"fr": "Nouvelle organisation",
+"ar": "مؤسسة جديدة"
+},
+"Edit group": {
+"fr": "Modifier le groupe",
+"ar": "تعديل المجموعة"
+},
+"Create organization": {
+"fr": "Créer l'organisation",
+"ar": "إنشاء المؤسسة"
+},
+"Part of a group?": {
+"fr": "Membre d'un groupe ?",
+"ar": "هل هي جزء من مجموعة؟"
+},
+"No — independent organization": {
+"fr": "Non — organisation indépendante",
+"ar": "لا — مؤسسة مستقلة"
+},
+"Yes — member of a group": {
+"fr": "Oui — membre d'un groupe",
+"ar": "نعم — عضو في مجموعة"
+},
+"Universal (any sector)": {
+"fr": "Universel (tout secteur)",
+"ar": "عام (أي قطاع)"
+},
+"Large company": {
+"fr": "Grande entreprise",
+"ar": "مؤسسة كبيرة"
+},
+"Employees": {
+"fr": "Effectif",
+"ar": "عدد الموظفين"
+},
+"Country (ISO code)": {
+"fr": "Pays (code ISO)",
+"ar": "الدولة (رمز ISO)"
+},
+"City": {
+"fr": "Ville",
+"ar": "المدينة"
+},
+"E-mail domain": {
+"fr": "Domaine de messagerie",
+"ar": "نطاق البريد الإلكتروني"
+},
+"Users of the organization sign in with name@domain.": {
+"fr": "Les utilisateurs de l'organisation se connectent avec nom@domaine.",
+"ar": "يسجل مستخدمو المؤسسة الدخول بصيغة الاسم@النطاق."
+},
+"Administrator name": {
+"fr": "Nom de l'administrateur",
+"ar": "اسم المسؤول"
+},
+"Administrator e-mail": {
+"fr": "E-mail de l'administrateur",
+"ar": "بريد المسؤول"
+},
+"Initial password: the demonstration password; to change at first sign-in.": {
+"fr": "Mot de passe initial : le mot de passe de démonstration ; à changer à la première connexion.",
+"ar": "كلمة المرور الأولية: كلمة مرور العرض التجريبي؛ تُغيَّر عند أول دخول."
+},
+"AI model settings saved.": {
+"fr": "Paramètres du modèle d'IA enregistrés.",
+"ar": "تم حفظ إعدادات نموذج الذكاء الاصطناعي."
+},
+"Model of {c} updated.": {
+"fr": "Modèle de {c} mis à jour.",
+"ar": "تم تحديث نموذج {c}."
+},
+"Language model for the AI use cases": {
+"fr": "Modèle de langage des cas d'usage de l'IA",
+"ar": "النموذج اللغوي لحالات استخدام الذكاء الاصطناعي"
+},
+"Choose a standard provider and model, or a custom model with an OpenAI-compatible API. Without a provider, the built-in engine (rules and retrieval on your data) answers. Every suggestion stays a suggestion until a person accepts it.": {
+"fr": "Choisissez un fournisseur et un modèle standard, ou un modèle personnalisé avec une API compatible OpenAI. Sans fournisseur, le moteur intégré (règles et recherche sur vos données) répond. Chaque suggestion reste une suggestion tant qu'une personne ne l'accepte pas.",
+"ar": "اختر مزودًا ونموذجًا قياسيين أو نموذجًا مخصصًا بواجهة متوافقة مع OpenAI. وبدون مزود يجيب المحرك المدمج (قواعد واسترجاع من بياناتك). ويبقى كل اقتراح اقتراحًا حتى يقبله شخص."
+},
+"Provider": {
+"fr": "Fournisseur",
+"ar": "المزود"
+},
+"Model": {
+"fr": "Modèle",
+"ar": "النموذج"
+},
+"Deployment name": {
+"fr": "Nom du déploiement",
+"ar": "اسم النشر"
+},
+"Model name": {
+"fr": "Nom du modèle",
+"ar": "اسم النموذج"
+},
+"Endpoint URL (HTTPS)": {
+"fr": "URL du point d'accès (HTTPS)",
+"ar": "عنوان نقطة الوصول (HTTPS)"
+},
+"API key": {
+"fr": "Clé d'API",
+"ar": "مفتاح الواجهة البرمجية"
+},
+"A key is stored ({h}); leave empty to keep it.": {
+"fr": "Une clé est enregistrée ({h}) ; laissez vide pour la conserver.",
+"ar": "هناك مفتاح محفوظ ({h})؛ اتركه فارغًا للاحتفاظ به."
+},
+"Stored encrypted; never shown again.": {
+"fr": "Stockée chiffrée ; jamais réaffichée.",
+"ar": "يُخزَّن مشفرًا ولا يُعرض مرة أخرى."
+},
+"Temperature (0–1)": {
+"fr": "Température (0–1)",
+"ar": "درجة الحرارة (0–1)"
+},
+"Maximum answer length (tokens)": {
+"fr": "Longueur maximale de la réponse (jetons)",
+"ar": "الحد الأقصى لطول الإجابة (رموز)"
+},
+"Use this model for the AI use cases (the built-in engine stays the fallback)": {
+"fr": "Utiliser ce modèle pour les cas d'usage de l'IA (le moteur intégré reste la solution de repli)",
+"ar": "استخدام هذا النموذج لحالات استخدام الذكاء الاصطناعي (يبقى المحرك المدمج بديلًا احتياطيًا)"
+},
+"Test the connection": {
+"fr": "Tester la connexion",
+"ar": "اختبار الاتصال"
+},
+"Model per AI use case": {
+"fr": "Modèle par cas d'usage",
+"ar": "النموذج لكل حالة استخدام"
+},
+"By default every use case uses the organization model; a use case can use another model of the same provider.": {
+"fr": "Par défaut chaque cas d'usage utilise le modèle de l'organisation ; un cas d'usage peut utiliser un autre modèle du même fournisseur.",
+"ar": "تستخدم كل حالة استخدام افتراضيًا نموذج المؤسسة؛ ويمكن لحالة استخدام أن تستخدم نموذجًا آخر من المزود نفسه."
+},
+"Organization default": {
+"fr": "Modèle de l'organisation",
+"ar": "نموذج المؤسسة الافتراضي"
+},
+"Groups and organizations": {
+"fr": "Groupes et organisations",
+"ar": "المجموعات والمؤسسات"
+},
+"AI models": {
+"fr": "Modèles d'IA",
+"ar": "نماذج الذكاء الاصطناعي"
+},
+"From a template, filled with the project data": {
+"fr": "À partir d'un modèle, rempli avec les données du projet",
+"ar": "من نموذج، مملوء ببيانات المشروع"
+},
+"Blank document": {
+"fr": "Document vierge",
+"ar": "وثيقة فارغة"
+},
+"required": {
+"fr": "obligatoire",
+"ar": "إلزامي"
+},
+"Title (optional)": {
+"fr": "Titre (facultatif)",
+"ar": "العنوان (اختياري)"
+},
+"By default, the template name.": {
+"fr": "Par défaut, le nom du modèle.",
+"ar": "افتراضيًا اسم النموذج."
+},
+"All types": {
+"fr": "Tous les types",
+"ar": "جميع الأنواع"
+},
+"Documented information required by {s}: {n} items, {m} missing. \"Maintain\" = a document kept up to date; \"retain\" = a record kept as evidence.": {
+"fr": "Informations documentées exigées par {s} : {n} éléments, {m} manquants. « Tenir à jour » = un document ; « conserver » = un enregistrement gardé comme preuve.",
+"ar": "المعلومات الموثقة التي يتطلبها {s}: {n} بندًا، {m} مفقودة. \"الاحتفاظ محدثة\" = وثيقة؛ \"الاحتفاظ كدليل\" = سجل."
+},
+"Documented information": {
+"fr": "Information documentée",
+"ar": "المعلومات الموثقة"
+},
+"Required by": {
+"fr": "Exigé par",
+"ar": "مطلوبة بموجب"
+},
+"maintain": {
+"fr": "tenir à jour",
+"ar": "تُحفظ محدثة"
+},
+"retain": {
+"fr": "conserver",
+"ar": "تُحفظ كدليل"
+},
+"Document": {
+"fr": "Document",
+"ar": "الوثيقة"
+},
+"Missing": {
+"fr": "Manquant",
+"ar": "مفقودة"
+},
+"Requirements of ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 for the standards selected in the project.": {
+"fr": "Exigences d'ISO 9001:2015, ISO 14001:2015 et ISO 45001:2018 pour les normes choisies dans le projet.",
+"ar": "متطلبات ISO 9001:2015 وISO 14001:2015 وISO 45001:2018 للمعايير المختارة في المشروع."
+},
+"Template saved as version {v}.": {
+"fr": "Modèle enregistré en version {v}.",
+"ar": "تم حفظ النموذج بالإصدار {v}."
+},
+"Editable copy created for your organization.": {
+"fr": "Copie modifiable créée pour votre organisation.",
+"ar": "تم إنشاء نسخة قابلة للتعديل لمؤسستك."
+},
+"Copy to edit": {
+"fr": "Copier pour modifier",
+"ar": "نسخ للتعديل"
+},
+"Save template": {
+"fr": "Enregistrer le modèle",
+"ar": "حفظ النموذج"
+},
+"Library template (read-only). Copy it to adapt the sections, texts or layout for your organization; the copy replaces it in your library.": {
+"fr": "Modèle de la bibliothèque (lecture seule). Copiez-le pour adapter les sections, textes ou la mise en page à votre organisation ; la copie le remplace dans votre bibliothèque.",
+"ar": "نموذج من المكتبة (للقراءة فقط). انسخه لتكييف الأقسام أو النصوص أو التنسيق مع مؤسستك؛ وتحل النسخة محله في مكتبتك."
+},
+"Table of contents (Word and PDF)": {
+"fr": "Sommaire (Word et PDF)",
+"ar": "جدول المحتويات (Word وPDF)"
+},
+"Structure: sections ({n})": {
+"fr": "Structure : sections ({n})",
+"ar": "الهيكل: الأقسام ({n})"
+},
+"Untitled section": {
+"fr": "Section sans titre",
+"ar": "قسم بلا عنوان"
+},
+"Move up": {
+"fr": "Monter",
+"ar": "نقل لأعلى"
+},
+"Move down": {
+"fr": "Descendre",
+"ar": "نقل لأسفل"
+},
+"Delete section": {
+"fr": "Supprimer la section",
+"ar": "حذف القسم"
+},
+"Free text": {
+"fr": "Texte libre",
+"ar": "نص حر"
+},
+"Project data": {
+"fr": "Données du projet",
+"ar": "بيانات المشروع"
+},
+"Approval block": {
+"fr": "Bloc d'approbation",
+"ar": "كتلة الاعتماد"
+},
+"Data from the project": {
+"fr": "Données du projet utilisées",
+"ar": "البيانات المستخدمة من المشروع"
+},
+"The table or text is filled from this project data when the document is generated.": {
+"fr": "Le tableau ou le texte est rempli avec ces données du projet lors de la génération du document.",
+"ar": "يُملأ الجدول أو النص من بيانات المشروع هذه عند توليد الوثيقة."
+},
+"Text": {
+"fr": "Texte",
+"ar": "النص"
+},
+"Introduction (optional)": {
+"fr": "Introduction (facultatif)",
+"ar": "مقدمة (اختياري)"
+},
+"Placeholders: {org} {product} {line} {city} {customer} {supplier} {standards} {date}": {
+"fr": "Variables : {org} {product} {line} {city} {customer} {supplier} {standards} {date}",
+"ar": "المتغيرات: {org} {product} {line} {city} {customer} {supplier} {standards} {date}"
+},
+"New section": {
+"fr": "Nouvelle section",
+"ar": "قسم جديد"
+},
+"Add a section": {
+"fr": "Ajouter une section",
+"ar": "إضافة قسم"
+},
+"{n} templates in the library.": {
+"fr": "{n} modèles dans la bibliothèque.",
+"ar": "{n} نموذجًا في المكتبة."
+},
+"Template {code} created.": {
+"fr": "Modèle {code} créé.",
+"ar": "تم إنشاء النموذج {code}."
+},
+"Retire template {code}?": {
+"fr": "Retirer le modèle {code} ?",
+"ar": "سحب النموذج {code}؟"
+},
+"Template retired.": {
+"fr": "Modèle retiré.",
+"ar": "تم سحب النموذج."
+},
+"All categories": {
+"fr": "Toutes les catégories",
+"ar": "جميع الفئات"
+},
+"New template": {
+"fr": "Nouveau modèle",
+"ar": "نموذج جديد"
+},
+"Formats": {
+"fr": "Formats",
+"ar": "الصيغ"
+},
+"Sections": {
+"fr": "Sections",
+"ar": "الأقسام"
+},
+"Origin": {
+"fr": "Origine",
+"ar": "المصدر"
+},
+"Suggested IMS templates for ISO 9001, ISO 14001 and ISO 45001; each section is filled from the project data. Click a template to see its structure.": {
+"fr": "Modèles SMI proposés pour ISO 9001, ISO 14001 et ISO 45001 ; chaque section est remplie avec les données du projet. Cliquez sur un modèle pour voir sa structure.",
+"ar": "نماذج مقترحة لنظام الإدارة المتكامل وفق ISO 9001 وISO 14001 وISO 45001؛ يُملأ كل قسم من بيانات المشروع. انقر نموذجًا لعرض هيكله."
+},
+"Capital letters, digits and dashes.": {
+"fr": "Majuscules, chiffres et tirets.",
+"ar": "أحرف كبيرة وأرقام وشرطات."
+},
+"Layout saved; it applies to every document you download.": {
+"fr": "Mise en page enregistrée ; elle s'applique à chaque document téléchargé.",
+"ar": "تم حفظ التنسيق؛ ويُطبق على كل وثيقة تُنزَّل."
+},
+"Logo uploaded.": {
+"fr": "Logo envoyé.",
+"ar": "تم رفع الشعار."
+},
+"Document layout": {
+"fr": "Mise en page des documents",
+"ar": "تنسيق الوثائق"
+},
+"Like a Word template: logo, colors, header and footer applied to every generated document (DOCX, PDF and XLSX).": {
+"fr": "Comme un modèle Word : logo, couleurs, en-tête et pied de page appliqués à chaque document généré (DOCX, PDF et XLSX).",
+"ar": "مثل قالب Word: الشعار والألوان والترويسة والتذييل تُطبق على كل وثيقة مولَّدة (DOCX وPDF وXLSX)."
+},
+"Table header color": {
+"fr": "Couleur des en-têtes de tableau",
+"ar": "لون ترويسة الجداول"
+},
+"Accent color (labels, logo text)": {
+"fr": "Couleur d'accent (libellés, logo texte)",
+"ar": "لون التمييز (العناوين الصغيرة، الشعار النصي)"
+},
+"Title color": {
+"fr": "Couleur des titres",
+"ar": "لون العناوين"
+},
+"Logo text": {
+"fr": "Logo texte",
+"ar": "الشعار النصي"
+},
+"Used when no logo image is uploaded.": {
+"fr": "Utilisé tant qu'aucune image de logo n'est envoyée.",
+"ar": "يُستخدم ما لم تُرفع صورة شعار."
+},
+"Header text": {
+"fr": "Texte d'en-tête",
+"ar": "نص الترويسة"
+},
+"e.g. Controlled copy — do not print": {
+"fr": "ex. Copie maîtrisée — ne pas imprimer",
+"ar": "مثال: نسخة خاضعة للضبط — لا تُطبع"
+},
+"Footer text": {
+"fr": "Texte de pied de page",
+"ar": "نص التذييل"
+},
+"By default: organization, code and version": {
+"fr": "Par défaut : organisation, code et version",
+"ar": "افتراضيًا: المؤسسة والرمز والإصدار"
+},
+"Upload a logo (PNG or JPEG)": {
+"fr": "Envoyer un logo (PNG ou JPEG)",
+"ar": "رفع شعار (PNG أو JPEG)"
+},
+"Logo: {n}": {
+"fr": "Logo : {n}",
+"ar": "الشعار: {n}"
+},
+"Save layout": {
+"fr": "Enregistrer la mise en page",
+"ar": "حفظ التنسيق"
+},
+"Preview": {
+"fr": "Aperçu",
+"ar": "معاينة"
+},
+"ORGANIZATION · CODE": {
+"fr": "ORGANISATION · CODE",
+"ar": "المؤسسة · الرمز"
+},
+"Quality policy": {
+"fr": "Politique qualité",
+"ar": "سياسة الجودة"
+},
+"Example row": {
+"fr": "Ligne d'exemple",
+"ar": "سطر مثال"
+},
+"Published": {
+"fr": "Publié",
+"ar": "منشور"
+},
+"Organization · code · version · page 1 / 2": {
+"fr": "Organisation · code · version · page 1 / 2",
+"ar": "المؤسسة · الرمز · الإصدار · صفحة 1 / 2"
+},
+"Documented information of the project: generated from templates with the project data, versioned (draft, review, published) and downloadable in Word, PDF and Excel. The author never approves their own version.": {
+"fr": "Informations documentées du projet : générées à partir de modèles avec les données du projet, versionnées (brouillon, revue, publié) et téléchargeables en Word, PDF et Excel. L'auteur n'approuve jamais sa propre version.",
+"ar": "المعلومات الموثقة للمشروع: مولَّدة من نماذج ببيانات المشروع، ومحددة الإصدارات (مسودة، مراجعة، منشورة)، وقابلة للتنزيل بصيغ Word وPDF وExcel. ولا يعتمد المؤلف إصداره أبدًا."
+},
+"Required by the standards": {
+"fr": "Exigés par les normes",
+"ar": "مطلوبة بموجب المعايير"
+},
+"Templates": {
+"fr": "Modèles",
+"ar": "النماذج"
+},
+"Layout": {
+"fr": "Mise en page",
+"ar": "التنسيق"
+},
+"New draft generated from the current project data.": {
+"fr": "Nouveau brouillon généré à partir des données actuelles du projet.",
+"ar": "تم توليد مسودة جديدة من بيانات المشروع الحالية."
+},
+"Document updated.": {
+"fr": "Document mis à jour.",
+"ar": "تم تحديث الوثيقة."
+},
+"A published document is retired, not deleted. Justification:": {
+"fr": "Un document publié est retiré, pas supprimé. Justification :",
+"ar": "الوثيقة المنشورة تُسحب ولا تُحذف. المبرر:"
+},
+"Delete this draft document?": {
+"fr": "Supprimer ce document brouillon ?",
+"ar": "حذف هذه المسودة؟"
+},
+"Document retired.": {
+"fr": "Document retiré.",
+"ar": "تم سحب الوثيقة."
+},
+"Document deleted.": {
+"fr": "Document supprimé.",
+"ar": "تم حذف الوثيقة."
+},
+"Structure saved in the draft.": {
+"fr": "Structure enregistrée dans le brouillon.",
+"ar": "تم حفظ الهيكل في المسودة."
+},
+"From step {s}": {
+"fr": "Issu de l'étape {s}",
+"ar": "من الخطوة {s}"
+},
+"with table of contents": {
+"fr": "avec sommaire",
+"ar": "مع جدول المحتويات"
+},
+"no table of contents": {
+"fr": "sans sommaire",
+"ar": "بدون جدول المحتويات"
+},
+"Edit the structure": {
+"fr": "Modifier la structure",
+"ar": "تعديل الهيكل"
+},
+"Structure and content": {
+"fr": "Structure et contenu",
+"ar": "الهيكل والمحتوى"
+},
+"Regenerate the content from the current project data (otherwise the current content is copied)": {
+"fr": "Régénérer le contenu à partir des données actuelles du projet (sinon le contenu actuel est copié)",
+"ar": "إعادة توليد المحتوى من بيانات المشروع الحالية (وإلا يُنسخ المحتوى الحالي)"
+},
+"Edit the document": {
+"fr": "Modifier le document",
+"ar": "تعديل الوثيقة"
+},
+"Add, rename, reorder or delete sections of this draft. Data tables keep their content; free-text sections can be edited.": {
+"fr": "Ajoutez, renommez, réordonnez ou supprimez des sections de ce brouillon. Les tableaux de données gardent leur contenu ; les sections de texte libre sont modifiables.",
+"ar": "أضف أقسام هذه المسودة أو أعد تسميتها أو رتبها أو احذفها. تحتفظ جداول البيانات بمحتواها، وتُعدَّل أقسام النص الحر."
+},
+"Before you start (optional checklist)": {
+"fr": "Avant de commencer (liste facultative)",
+"ar": "قبل البدء (قائمة اختيارية)"
+},
+"checked by the system": {
+"fr": "vérifié par le système",
+"ar": "تحقق منه النظام"
+},
+"Not blocking: it helps check the inputs, owners, templates and KPIs before the first step.": {
+"fr": "Non bloquant : elle aide à vérifier entrées, pilotes, modèles et KPI avant la première étape.",
+"ar": "غير معيقة: تساعد على التحقق من المدخلات والمالكين والنماذج والمؤشرات قبل الخطوة الأولى."
+},
+"RACSI saved.": {
+"fr": "RACSI enregistré.",
+"ar": "تم حفظ RACSI."
+},
+"RACSI of the macro process": {
+"fr": "RACSI du macro-processus",
+"ar": "مصفوفة RACSI للعملية الكلية"
+},
+"Set a step-level RACSI": {
+"fr": "Définir un RACSI d'étape",
+"ar": "تحديد RACSI لخطوة"
+},
+"Macro process or step": {
+"fr": "Macro-processus ou étape",
+"ar": "العملية الكلية أو الخطوة"
+},
+"The macro process RACSI applies to all its steps by default; set a step-level RACSI only where a step differs. R responsible, A accountable (exactly one), C consulted, S support, I informed.": {
+"fr": "Le RACSI du macro-processus s'applique par défaut à toutes ses étapes ; définissez un RACSI d'étape seulement quand une étape diffère. R réalise, A approuve (un seul), C consulté, S support, I informé.",
+"ar": "تُطبق مصفوفة RACSI للعملية الكلية افتراضيًا على جميع خطواتها؛ حدد RACSI لخطوة فقط عندما تختلف. R المنفذ، A المساءل (واحد فقط)، C المستشار، S الداعم، I المُبلَّغ."
+},
+"Step-level RACSI": {
+"fr": "RACSI de l'étape",
+"ar": "RACSI على مستوى الخطوة"
+},
+"Choose a step…": {
+"fr": "Choisir une étape…",
+"ar": "اختر خطوة…"
+},
+"Leave all columns empty to remove the step-level RACSI (the macro process RACSI then applies).": {
+"fr": "Laissez toutes les colonnes vides pour supprimer le RACSI de l'étape (le RACSI du macro-processus s'applique alors).",
+"ar": "اترك جميع الأعمدة فارغة لحذف RACSI الخطوة (فتُطبق مصفوفة العملية الكلية)."
+},
+"New groups and organizations (member of a group or independent) are created in Administration > Groups and organizations.": {
+"fr": "Les nouveaux groupes et organisations (membres d'un groupe ou indépendantes) se créent dans Administration > Groupes et organisations.",
+"ar": "تُنشأ المجموعات والمؤسسات الجديدة (عضو في مجموعة أو مستقلة) في الإدارة > المجموعات والمؤسسات."
+},
+"Open Administration": {
+"fr": "Ouvrir l'administration",
+"ar": "فتح الإدارة"
+},
+"Document {code} generated from the project data.": {
+"fr": "Document {code} généré à partir des données du projet.",
+"ar": "تم توليد الوثيقة {code} من بيانات المشروع."
+},
+"Hide the detailed description": {
+"fr": "Masquer la description détaillée",
+"ar": "إخفاء الوصف التفصيلي"
+},
+"Show the detailed description": {
+"fr": "Afficher la description détaillée",
+"ar": "عرض الوصف التفصيلي"
+},
+"Records produced by this step": {
+"fr": "Enregistrements produits par cette étape",
+"ar": "السجلات الناتجة عن هذه الخطوة"
+},
+"View prompt": {
+"fr": "Voir le prompt",
+"ar": "عرض الموجّه"
+},
+"Engine": {
+"fr": "Moteur",
+"ar": "المحرك"
+},
+"Documents of this step": {
+"fr": "Documents de cette étape",
+"ar": "وثائق هذه الخطوة"
+},
+"Generate document": {
+"fr": "Générer un document",
+"ar": "توليد وثيقة"
+},
+"Download PDF": {
+"fr": "Télécharger le PDF",
+"ar": "تنزيل PDF"
+},
+"Download Word": {
+"fr": "Télécharger le Word",
+"ar": "تنزيل Word"
+},
+"No document linked yet. Generate one from a template: it is filled with the data recorded in the project.": {
+"fr": "Aucun document lié. Générez-en un à partir d'un modèle : il est rempli avec les données saisies dans le projet.",
+"ar": "لا توجد وثيقة مرتبطة بعد. ولّد وثيقة من نموذج: تُملأ بالبيانات المسجلة في المشروع."
+},
+"Standards of the project": {
+"fr": "Normes du projet",
+"ar": "معايير المشروع"
+},
+"Requirements answered": {
+"fr": "Exigences couvertes",
+"ar": "المتطلبات المستوفاة"
+},
+"RACSI of this step": {
+"fr": "RACSI de cette étape",
+"ar": "RACSI لهذه الخطوة"
+},
+"Generate": {
+"fr": "Générer",
+"ar": "توليد"
+},
+"The document is created as a draft (version 0.1) from the template and filled with the data already recorded in the project. It then follows the review and approval workflow in Documents.": {
+"fr": "Le document est créé en brouillon (version 0.1) à partir du modèle et rempli avec les données déjà saisies dans le projet. Il suit ensuite le circuit de revue et d'approbation dans Documents.",
+"ar": "تُنشأ الوثيقة كمسودة (الإصدار 0.1) من النموذج وتُملأ بالبيانات المسجلة في المشروع، ثم تتبع مسار المراجعة والاعتماد في الوثائق."
+},
+"Summary of the version (optional)": {
+"fr": "Résumé de la version (facultatif)",
+"ar": "ملخص الإصدار (اختياري)"
+},
+"Prompt sent for this step": {
+"fr": "Prompt envoyé pour cette étape",
+"ar": "الموجّه المرسل لهذه الخطوة"
+},
+"Instructions (system)": {
+"fr": "Instructions (système)",
+"ar": "التعليمات (النظام)"
+},
+"Context of the step (user)": {
+"fr": "Contexte de l'étape (utilisateur)",
+"ar": "سياق الخطوة (المستخدم)"
+},
+"Naming: {n} task name(s) should start with a verb and name their object: {list}": {
+"fr": "Nommage : {n} nom(s) de tâche devraient commencer par un verbe et nommer leur objet : {list}",
+"ar": "التسمية: {n} من أسماء المهام يجب أن تبدأ بفعل وتذكر موضوعها: {list}"
 }
 };

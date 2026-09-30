@@ -2,7 +2,7 @@
 // and reopen, progress roll-up and gate decisions.
 import { run, get, all, uid, now, J, P, tx } from '../db.js';
 import { catalog } from '../catalog/store.js';
-import { FORM_KINDS } from '../catalog/forms.js';
+import { FORM_KINDS, matrixScore } from '../catalog/forms.js';
 import { entitledMps, orgConfig } from '../packs.js';
 import { activatedMps, roleCodeOf, TRACK_GATES } from '../seed/project.js';
 import { COMPLEXITY_CRITERIA, SME_TRACKS, CHECKLISTS, VERTICAL_CHECKLISTS } from '../seed/libraries.js';
@@ -158,30 +158,56 @@ export function refreshProgress(projectId) {
 }
 const hasGate = (phaseId) => !!get('SELECT 1 FROM checklists WHERE phase_id=? LIMIT 1', phaseId);
 
+const isEmpty = (v) => v === null || v === undefined || v === '' || (typeof v === 'object' && !Array.isArray(v) && !Object.values(v).some(x => (typeof x === 'object' ? x && Object.keys(x).length : String(x ?? '').trim()))) || (Array.isArray(v) && !v.length);
+
 function validateFields(kind, fields) {
   const def = FORM_KINDS[kind] || FORM_KINDS.execute;
   const missing = [];
   for (const f of def.fields) {
-    if (!f.required) continue;
     const v = fields?.[f.key];
-    const empty = v === null || v === undefined || v === '' || (typeof v === 'object' && !Array.isArray(v) && !Object.values(v).some(x => String(x || '').trim())) || (Array.isArray(v) && !v.length);
-    if (empty) missing.push(f.key);
+    if (f.required && isEmpty(v)) { missing.push(f.key); continue; }
+    // Row tables: every row needs its required columns.
+    if (Array.isArray(v) && f.columns) {
+      const req = f.columns.filter(c => c.required).map(c => c.key);
+      if (v.some(row => req.some(k => isEmpty(row?.[k])))) missing.push(f.key);
+    }
   }
-  if (kind === 'score' || kind === 'assess') { const s = +fields?.score; if (!(s >= 1 && s <= 5)) missing.push('score'); }
-  return missing;
+  if (kind === 'assess') { const s = +fields?.score; if (!(s >= 1 && s <= 5)) missing.push('score'); }
+  return [...new Set(missing)];
 }
 
-// Localized text values entered by users are stored under the author's language.
+// Localized text values entered by users are stored under the author's language;
+// values already stored as {en, fr, ar} (seeded or untouched) are kept as they are.
+const textVal = (v, lang) => (v && typeof v === 'object' ? v : String(v ?? '').trim() ? { [lang]: String(v) } : null);
+function normCell(type, v, lang) {
+  if (v === undefined) return undefined;
+  if (['text', 'textarea'].includes(type)) return textVal(v, lang);
+  if (['number', 'score'].includes(type)) return v === '' || v === null ? null : +v;
+  if (type === 'obs') return normObs(v, lang);
+  return v;
+}
+function normObs(v, lang) {
+  if (v === null || v === undefined || v === '') return null;
+  const one = (x) => (typeof x === 'string' ? { id: null, name: { [lang]: x } } : { id: x.id || null, name: typeof x.name === 'string' ? { [lang]: x.name } : x.name });
+  return Array.isArray(v) ? v.filter(Boolean).map(one) : one(v);
+}
 function normalizeFields(kind, fields, lang) {
   const def = FORM_KINDS[kind] || FORM_KINDS.execute;
   const out = {};
   for (const f of def.fields) {
     const v = fields?.[f.key];
     if (v === undefined) continue;
-    if (['text', 'textarea'].includes(f.type) && typeof v === 'string') out[f.key] = v.trim() ? { [lang]: v } : null;
-    else if (f.type === 'number' || f.type === 'score') out[f.key] = v === '' || v === null ? null : +v;
-    else out[f.key] = v;
+    if (f.columns && Array.isArray(v)) {
+      out[f.key] = v.filter(r => r && typeof r === 'object').map(r => {
+        const o = {};
+        for (const c of f.columns) { const x = normCell(c.type, r[c.key], lang); if (x !== undefined) o[c.key] = x; }
+        for (const k of Object.keys(r)) if (k.startsWith('_')) o[k] = r[k];
+        return o;
+      });
+    } else if (f.type === 'obs') out[f.key] = normObs(v, lang);
+    else out[f.key] = normCell(f.type, v, lang);
   }
+  if (kind === 'assess' && Array.isArray(out.matrix)) out.score = matrixScore(out.matrix);
   return out;
 }
 
@@ -216,13 +242,7 @@ export function saveStep(req, exec, fields, complete) {
     for (const r of applied.filter(x => /Notification|Escalation/.test(x.type))) {
       raise({ orgId: exec.org_id, projectId: exec.project_id, type: r.id, title: r.condition, entityType: 'step', entityId: exec.id, escalation: [cat.mpById[exec.mp_id]?.ownerRoleCode || 'ims_manager'], stepRef: exec.step_id });
     }
-    if (complete && exec.form_kind === 'monitor' && merged.value !== undefined && merged.target) {
-      const m = String(merged.target).match(/(<=|>=|≤|≥|<|>)?\s*(-?\d+(?:\.\d+)?)/);
-      if (m) {
-        const down = /<|≤/.test(m[1] || ''); const t = +m[2]; const v = +merged.value;
-        if (down ? v > t : v < t) raise({ orgId: exec.org_id, projectId: exec.project_id, type: 'KPI_OFF_TARGET', title: { [lang]: `${typeof merged.metric === 'object' ? Object.values(merged.metric)[0] : merged.metric || step?.name?.[lang]} = ${v} (${merged.target})` }, entityType: 'step', entityId: exec.id, escalation: ['performance_manager', 'ims_manager'] });
-      }
-    }
+    if (complete) { applyCompletionEffects(req, exec, merged, lang); run('UPDATE step_exec SET fields=? WHERE id=?', J(merged), exec.id); }
     refreshProgress(exec.project_id);
     if (complete) {
       const ph = get('SELECT * FROM phases WHERE project_id=? AND e2e_id=?', exec.project_id, exec.e2e_id);
@@ -230,6 +250,79 @@ export function saveStep(req, exec, fields, complete) {
     }
   });
   return { status, rulesApplied: applied };
+}
+
+// Completing a step writes the records it produces into the matching modules:
+// plan and review decisions -> Action plan, SMART objectives -> objectives register,
+// RACSI -> RACSI matrix, standards -> project, KPI rows -> KPI values (with off-target alerts).
+function userOfRole(orgId, role) { return get('SELECT id FROM users WHERE org_id=? AND roles LIKE ? AND status=? LIMIT 1', orgId, `%"${role}"%`, 'Active')?.id || null; }
+function applyCompletionEffects(req, exec, f, lang) {
+  const cat = catalog();
+  const def = FORM_KINDS[exec.form_kind] || FORM_KINDS.execute;
+  const mp = cat.mpById[exec.mp_id];
+  const today = now().slice(0, 10);
+  const refs = Array.isArray(f.records) ? f.records : [];
+  const addRef = (ref) => { if (!refs.some(x => x.type === ref.type && x.id === ref.id)) refs.push(ref); };
+  for (const fd of def.fields) {
+    const list = Array.isArray(f[fd.key]) ? f[fd.key] : null;
+    if (!list) continue;
+    if (fd.createsActions) {
+      for (const row of list) {
+        const title = row.activity || row.decision;
+        if (!title || row._actionId) continue;
+        const owner = row.owner && get('SELECT id FROM users WHERE id=? AND org_id=?', row.owner, exec.org_id) ? row.owner : (exec.assignee_user || req.user.id);
+        let evaluator = userOfRole(exec.org_id, mp?.ownerRoleCode || 'ims_manager');
+        if (!evaluator || evaluator === owner) evaluator = userOfRole(exec.org_id, 'ims_manager');
+        if (!evaluator || evaluator === owner) evaluator = userOfRole(exec.org_id, 'quality_manager');
+        if (evaluator === owner) evaluator = null;
+        const id = uid();
+        run('INSERT INTO actions(id,org_id,project_id,source_type,source_id,kind,title,owner_user,evaluator_user,status,start_date,due_date,pct,predecessors,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,0,?,?)',
+          id, exec.org_id, exec.project_id, 'step', exec.id, fd.key === 'decisions' ? 'Review decision' : 'Planned', J(textVal(title, lang)), owner, evaluator, 'Open', row.start || today, row.due || addDays(today, 30), J([]), now());
+        row._actionId = id;
+        addRef({ type: 'action', id, title: textVal(title, lang) });
+      }
+    }
+    if (fd.createsObjectives) {
+      list.forEach((row) => {
+        if (!row.objective || row._registerId) return;
+        const n = get('SELECT COUNT(*) n FROM registers WHERE project_id=? AND register=?', exec.project_id, 'objectives').n;
+        const id = uid();
+        const kpi = row.kpi ? get('SELECT code FROM kpis WHERE id=? AND project_id=?', row.kpi, exec.project_id) : null;
+        run('INSERT INTO registers(id,org_id,project_id,register,code,title,data,status,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)', id, exec.org_id, exec.project_id, 'objectives', `OBJ-${n + 1}`,
+          J(textVal(row.objective, lang)), J({ kpi: kpi?.code || null, kpiId: row.kpi || null, baseline: row.baseline || null, target: row.target || null, deadline: row.deadline || null, ownerUser: row.owner || null, resources: row.resources || null, relevance: row.relevance || null, stepId: exec.step_id }), 'On track', exec.mp_id, now());
+        row._registerId = id;
+        addRef({ type: 'register', register: 'objectives', id, title: textVal(row.objective, lang) });
+      });
+    }
+    if (fd.type === 'kpis') {
+      const period = today.slice(0, 7);
+      for (const row of list) {
+        const k = row.kpi ? get('SELECT * FROM kpis WHERE id=? AND project_id=?', row.kpi, exec.project_id) : null;
+        if (!k || row.value === null || row.value === undefined || row.value === '') continue;
+        run('INSERT INTO kpi_values(kpi_id,org_id,period,value,comment) VALUES(?,?,?,?,?) ON CONFLICT(kpi_id,period) DO UPDATE SET value=excluded.value, comment=excluded.comment', k.id, exec.org_id, period, +row.value, J(textVal(row.why, lang)));
+        if (k.target !== null && (k.direction === 'down' ? +row.value > k.target : +row.value < k.target)) {
+          raise({ orgId: exec.org_id, projectId: exec.project_id, type: 'KPI_OFF_TARGET', title: { [lang]: `${P(k.name)?.[lang] || P(k.name)?.en} = ${row.value} (${k.target_text})` }, entityType: 'kpi', entityId: k.id, escalation: ['performance_manager', 'ims_manager'] });
+        }
+        addRef({ type: 'kpi', id: k.id, title: P(k.name) });
+      }
+    }
+  }
+  if (exec.form_kind === 'assign' && f.racsi && typeof f.racsi === 'object') {
+    const letters = f.racsi;
+    const a = (letters.A || []).filter(Boolean);
+    if (a.length > 1) throw bad('ONE_ACCOUNTABLE', 'Only one role can be Accountable (A).');
+    let act = get(`SELECT id FROM racsi_activities WHERE project_id=? AND mp_id=? AND linked_type='mp'`, exec.project_id, exec.mp_id);
+    if (!act) { const aid = uid(); run('INSERT INTO racsi_activities(id,org_id,project_id,e2e_id,mp_id,linked_type,linked_id,name,created_at) VALUES(?,?,?,?,?,?,?,?,?)', aid, exec.org_id, exec.project_id, exec.e2e_id, exec.mp_id, 'mp', exec.mp_id, J(mp?.name), now()); act = { id: aid }; }
+    run('DELETE FROM racsi_assignments WHERE activity_id=?', act.id);
+    for (const L of ['R', 'A', 'C', 'S', 'I']) for (const code of [...new Set(letters[L] || [])].filter(Boolean)) run('INSERT INTO racsi_assignments(id,activity_id,org_id,letter,assignee) VALUES(?,?,?,?,?)', uid(), act.id, exec.org_id, L, code);
+    addRef({ type: 'racsi', id: act.id, title: mp?.name });
+  }
+  if (exec.form_kind === 'standards' && Array.isArray(f.standards) && f.standards.length) {
+    run('UPDATE projects SET standards=? WHERE id=?', J(f.standards), exec.project_id);
+    run('UPDATE documents SET standards=? WHERE project_id=?', J(f.standards), exec.project_id);
+  }
+  if (refs.length && def.fields.some(x => x.key === 'records')) f.records = refs;
+  else if (refs.length) f._links = refs;
 }
 
 export function reopenStep(req, exec, justification) {
@@ -265,9 +358,14 @@ export function decideGate(req, phase, decision, comment) {
 
 // One-line trilingual-ready summary of a step value for lists.
 function summarize(kind, f, lang) {
-  const txt = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v[lang] ?? Object.values(v)[0] : Array.isArray(v) ? v.map(x => (x && typeof x === 'object' ? x[lang] ?? x.en : x)).join('; ') : v ?? '');
-  const firstText = Object.values(f).map(txt).find(x => x && String(x).length > 0) || '';
-  const s = kind === 'assess' ? `${f.score}/5 — ${txt(f.rationale)}` : kind === 'decision' ? `${f.decision || ''} — ${txt(f.comment)}` : kind === 'monitor' ? `${txt(f.metric)} = ${f.value} (${f.target || ''})` : String(firstText);
+  const txt = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? (v[lang] ?? v.en ?? Object.values(v).find(x => typeof x === 'string') ?? '') : Array.isArray(v) ? v.map(x => (x && typeof x === 'object' ? (x.name ? txt(x.name) : x[lang] ?? x.en ?? '') : x)).join('; ') : v ?? '');
+  const def = FORM_KINDS[kind] || FORM_KINDS.execute;
+  const rowsField = def.fields.find(x => x.columns && Array.isArray(f[x.key]) && f[x.key].length);
+  let s;
+  if (kind === 'assess') s = `${f.score ?? ''}/5 — ${txt(f.rationale)}`;
+  else if (kind === 'decision') s = `${f.decision || ''} — ${txt(f.comment)}`;
+  else if (rowsField) { const first = rowsField.columns[0].key; s = `${f[rowsField.key].length} × ${f[rowsField.key].slice(0, 3).map(r => txt(r[first])).join('; ')}`; }
+  else s = String(Object.values(f).map(txt).find(x => x && String(x).length > 0) || '');
   return { [lang]: s.slice(0, 240) };
 }
 

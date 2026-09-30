@@ -87,6 +87,17 @@ await shoot(ceo, 'HZ-AUT-QMS', '/portfolio', 'f-portfolio');
 await shoot(ceo, 'HZ-AUT-QMS', '/benchmark', 'f-benchmark', { tab: t.group, wait: 2500 });
 const sme = await session('ims@atlas-sme.example');
 await shoot(sme, 'AT-UNI-QMS', '/projects/new', 'f-newproject', { click: lang === 'fr' ? 'Avec l' : 'With AI' });
+// Features added after the feedback on User Guide 2
+const L2 = { en: { tpl: 'Templates', mand: 'Required by the standards', llm: 'AI models' }, fr: { tpl: 'Modèles', mand: 'Exigés par les normes', llm: "Modèles d'IA" } }[lang] || {};
+const smeSteps = await (await fetch(`${BASE}/api/projects/${projByCode['AT-UNI-QMS']}/steps?mp=MP-001&limit=20`, { headers: H(sme.tk) })).json();
+const smeMatrix = await (await fetch(`${BASE}/api/projects/${projByCode['AT-UNI-QMS']}/steps?mp=MP-002&limit=20`, { headers: H(sme.tk) })).json();
+await shoot(sme, 'AT-UNI-QMS', `/steps/${smeSteps.items.find(x => x.step_id === 'MP-001.2').id}`, 'f-rows', { scroll: 380 });
+await shoot(sme, 'AT-UNI-QMS', `/steps/${smeMatrix.items.find(x => x.step_id === 'MP-002.12').id}`, 'f-matrix', { scroll: 380 });
+await shoot(sme, 'AT-UNI-QMS', '/documents', 'f-mandatory', { tab: L2.mand });
+await shoot(sme, 'AT-UNI-QMS', '/documents', 'f-templates', { tab: L2.tpl });
+await shoot(sme, 'AT-UNI-QMS', '/mp/MP-004', 'f-racsi-mp', { tab: 'RACSI' });
+const tadm = await session('admin@atlas-sme.example');
+await shoot(tadm, 'AT-UNI-QMS', '/admin', 'f-llm', { tab: L2.llm });
 const asst = await session('quality@nova-aec.example');
 await asst.page.goto(`${BASE}/assistant`, { waitUntil: 'networkidle' });
 process.stdout.write('\n');

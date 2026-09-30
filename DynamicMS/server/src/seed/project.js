@@ -1,9 +1,12 @@
 // Generates one "full run" project: the whole lifecycle of a QMS or QHSE management
 // system, from context analysis (E2E-01) to continual improvement (E2E-12), with every
 // activated macro process, task and step, and the records each phase produces.
-import { run, uid, J } from '../db.js';
+import { run, all, get, uid, J } from '../db.js';
 import { rng, iso, addDays, DAY } from './rng.js';
 import { stepValue, fill, S } from './text.js';
+import { smartObjectives } from './content.js';
+import { DOC_TEMPLATES } from '../content/templates.js';
+import { buildContent } from '../services/docdata.js';
 import { ROLES } from '../permissions.js';
 import { CHECKLISTS, VERTICAL_CHECKLISTS, COMPLEXITY_CRITERIA, SME_TRACKS } from './libraries.js';
 import * as R from './records.js';
@@ -117,7 +120,9 @@ export function generateProject(ctx) {
   // ---- Standards in scope
   const must = seg ? seg.mustStandards || [] : [];
   const base = qhse ? ['ISO 9001', 'ISO 14001', 'ISO 45001'] : ['ISO 9001'];
-  const standards = [...new Set([...base, ...must.slice(0, qhse ? 2 : 3)])];
+  // A QMS run keeps quality standards only; environment and OH&S standards belong to QHSE runs.
+  const mustQ = must.filter(x => qhse || !/14001|45001|50001|14064|27001|27701|ISO 26000|SA8000/.test(x));
+  const standards = [...new Set([...base, ...mustQ.slice(0, qhse ? 2 : 3)])];
   const stdMain = standards[0];
 
   // ---- Macro processes and steps of the run, in lifecycle order
@@ -178,8 +183,34 @@ export function generateProject(ctx) {
          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, id, oid, pid, k.code, J(k.name), J(k.formula), k.unit ?? (tg.pct ? '%' : ''), tg.value, k.target, tg.dir,
     k.freq, 'Quarterly', k.mp, k.owner || 'performance_manager', 0, J(racsi), k.source, createdAt);
     periods.forEach((p, i) => run('INSERT INTO kpi_values(kpi_id,org_id,period,value,comment) VALUES(?,?,?,?,?)', id, oid, p, vals[i], null));
-    kpis.push({ id, code: k.code, name: k.name, sample: vals[vals.length - 1], targetText: k.target, target: tg.value, dir: tg.dir, last: vals[vals.length - 1], mp: k.mp });
+    kpis.push({ id, code: k.code, name: k.name, sample: vals[vals.length - 1], targetText: k.target, target: tg.value, dir: tg.dir, last: vals[vals.length - 1], mp: k.mp, source: k.source, freq: k.freq });
   }
+
+  // ---- Context shared by the step values: people, organization units, KPIs, SMART objectives
+  const obsList = all('SELECT n.id, n.name, n.type FROM obs_nodes n WHERE n.org_id=? AND n.project_id IS NULL ORDER BY n.created_at', oid).map(n => ({ id: n.id, name: JSON.parse(n.name), type: n.type }));
+  const obsUnits = obsList.filter(n => n.type !== 'Organization');
+  const memberUnit = {};
+  for (const m of all('SELECT m.node_id, m.role_in_node FROM obs_members m WHERE m.org_id=?', oid)) memberUnit[m.role_in_node] ||= m.node_id;
+  const obsRef = (n) => ({ id: n.id, name: n.name });
+  const kpiByCode = Object.fromEntries(kpis.map(k => [k.code, k]));
+  const sbase = {
+    profile, segRisks: seg && seg.risks && seg.risks.length ? seg.risks : cat.risks.slice(0, 5).map(x => x.name), standards, stdMain, qhse, ms: msType, orgCode: org.short_code, start,
+    roleName, userName: uName, user: (role) => U(role).id,
+    kpis: kpis.map(k => ({ ...k, core: k.source === 'core' })), kpiByCode,
+    obsAll: obsUnits.filter(n => n.type === 'Site').map(obsRef),
+    obsFor: (role) => { const n = obsList.find(x => x.id === memberUnit[role]); return n ? [obsRef(n)] : obsUnits.slice(0, 1).map(obsRef); },
+    obsName: (en) => { const n = obsList.find(x => x.name.en === en) || obsUnits[0]; return obsRef(n); },
+    v: { org: orgName, product: profile.product, line: profile.line, city: profile.city, customer: profile.customer, supplier: profile.supplier, d0: profile.defects[0], d1: profile.defects[1] || profile.defects[0], d2: profile.defects[2] || profile.defects[0], std: standards.join(', ') },
+  };
+  sbase.objectives = smartObjectives(sbase);
+  sbase.objectives.forEach((o, j) => {
+    const k = kpis.find(x => x.id === o.kpi);
+    const ok = k ? meets(k.last, k.target, k.dir) : true;
+    const id = uid();
+    run('INSERT INTO registers(id,org_id,project_id,register,code,title,data,status,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)', id, oid, pid, 'objectives', `OBJ-${j + 1}`, J(o.objective),
+      J({ kpi: k?.code, kpiId: o.kpi, target: o.target, baseline: o.baseline, current: k?.last, deadline: o.deadline, ownerUser: o.owner, resources: o.resources, relevance: o.relevance }), ok ? 'On track' : 'At risk', 'MP-003', ts(addDays(start, 20), r));
+    o._registerId = id; o._ok = ok; o._k = k;
+  });
 
   // ---- Step execution (the full run)
   const maturity = scenario ? 0.9 : large ? 0.8 + r.next() * 0.14 : 0.76 + r.next() * 0.16;
@@ -212,10 +243,7 @@ export function generateProject(ctx) {
     if (status === 'Done') by = assignee ? assignee.id : null;
     let fields = null; let summary = null;
     if (status !== 'Todo') {
-      const v = stepValue(s, {
-        mp, mpSteps: cat.stepsByMp[mp.id], profile, segRisks, kpiNames: kpis.map(k => k.name), kpis: kctx, standards, stdMain, qhse,
-        orgCode: org.short_code, roleName, userName: uName,
-      }, r, status, due);
+      const v = stepValue(s, { ...sbase, mp, mpSteps: cat.stepsByMp[mp.id] }, r, status, due);
       fields = v.fields; summary = v.summary;
     }
     const id = uid();
@@ -223,7 +251,7 @@ export function generateProject(ctx) {
     run(`INSERT INTO step_exec(id,org_id,project_id,mp_id,step_id,e2e_id,task_name,seq,status,assignee_role,assignee_user,due_date,completed_at,completed_by,form_kind,value,fields,notes,updated_at)
          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, id, oid, pid, mp.id, s.id, mp.e2e, task ? J(task.name) : null, i + 1, status, roleCode || 'system',
     assignee ? assignee.id : null, due, completedAt, by, s.formKind, J(summary), J(fields), null, completedAt || createdAt);
-    stepRows.push({ id, s, mp, status, due, completedAt, by, roleCode });
+    stepRows.push({ id, s, mp, status, due, completedAt, by, roleCode, fields });
     const st = (mpState[mp.id] ||= { n: 0, done: 0, first: null, last: null });
     st.n++; if (status === 'Done') { st.done++; st.first ||= completedAt; st.last = completedAt; } else if (status === 'InProgress') st.first ||= ts(addDays(TODAY, -5), r);
   });
@@ -420,53 +448,55 @@ export function generateProject(ctx) {
     }
   });
 
-  // ---- Documented information (E2E-05)
+  // ---- Documented information (E2E-05): one document per applicable IMS template, populated
+  // from the project's data (content is rendered from the live data, or snapshotted below).
   const docs = [];
-  const addDoc = (code, title, type, tplId, scopeType, ownerRole, mpId, versions, reviewFreq) => {
+  const LIVE = { format: 'structured', live: true };
+  const addDoc = (code, title, type, tplId, scopeType, ownerRole, mpId, versions, reviewFreq, target) => {
     const id = uid();
     const last = versions[versions.length - 1];
-    const nextReview = addDays(last.date, reviewFreq === 'Annual' ? 365 : 180);
-    run(`INSERT INTO documents(id,org_id,project_id,code,title,doc_type,template_id,standards,scope_type,current_version,status,owner_role,review_frequency,next_review,mp_id,created_at)
-         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, id, oid, pid, code, J(title), type, tplId, J(standards), scopeType, last.v, last.status, ownerRole, reviewFreq, nextReview, mpId, ts(versions[0].date, r));
-    versions.forEach((v, k) => {
+    const nextReview = addDays(last.date, reviewFreq === 'Annual' ? 365 : reviewFreq === 'Quarterly' ? 91 : reviewFreq === 'Monthly' ? 30 : 180);
+    run(`INSERT INTO documents(id,org_id,project_id,code,title,doc_type,template_id,standards,scope_type,current_version,status,owner_role,review_frequency,next_review,mp_id,created_at,target,updated_at)
+         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, id, oid, pid, code, J(title), type, tplId, J(standards), scopeType, last.v, last.status, ownerRole, reviewFreq, nextReview, mpId, ts(versions[0].date, r), J(target || {}), ts(last.date, r));
+    const vids = [];
+    versions.forEach((v) => {
+      const vid = uid(); vids.push(vid);
       run(`INSERT INTO document_versions(id,org_id,document_id,version,status,change_type,summary,content,author,approver,approved_at,formats,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-        uid(), oid, id, v.v, v.status, v.change, J(R.CHANGE[v.change]), J(v.content), U('document_controller').id, v.status === 'Draft' || v.status === 'In review' ? null : U(ownerRole).id,
+        vid, oid, id, v.v, v.status, v.change, J(v.summary || R.CHANGE[v.change]), J(v.content ?? LIVE), U('document_controller').id, v.status === 'Draft' || v.status === 'In review' ? null : U(ownerRole).id,
         v.status === 'Draft' || v.status === 'In review' ? null : ts(v.date, r), J(['PDF', 'DOCX']), ts(v.date, r));
-      if (v.status === 'Published') run('INSERT INTO audit_log(id,org_id,user_id,entity_type,entity_id,action,before_,after_,justification,at) VALUES(?,?,?,?,?,?,?,?,?,?)',
+      if (v.status === 'Published' || v.status === 'Superseded') run('INSERT INTO audit_log(id,org_id,user_id,entity_type,entity_id,action,before_,after_,justification,at) VALUES(?,?,?,?,?,?,?,?,?,?)',
         uid(), oid, U(ownerRole).id, 'document', id, 'approve', null, J({ version: v.v }), null, ts(v.date, r));
     });
-    docs.push({ id, code, title, nextReview });
+    docs.push({ id, code, title, nextReview, template: tplId, mp: mpId, target, lastVersion: vids[vids.length - 1] });
   };
-  const content = (subj) => fill(R.DOC_CONTENT, subj, orgName, profile.product, standards.join(', '));
-  const pol = qhse ? R.DOCS.policyI : R.DOCS.policyQ;
-  const polText = fill(qhse ? R.POLICY_I : R.POLICY_Q, orgName, profile.product, standards.join(', '));
-  const vset = (d0, extra) => [
-    { v: '1.0', status: 'Superseded', change: 'New', date: d0, content: extra },
-    { v: '1.1', status: 'Published', change: 'Minor', date: addDays(d0, 150), content: extra },
-  ];
-  addDoc(`${org.short_code}-${msType}-POL`, pol, 'Policy', 'TPL-01', qhse ? 'Integrated' : 'Single-standard', 'top_management', 'MP-002', vset(addDays(start, 20), polText), 'Annual');
-  addDoc(`${org.short_code}-${msType}-MAN`, R.DOCS.manual, 'Manual', null, qhse ? 'Integrated' : 'Single-standard', 'ims_manager', 'MP-036', vset(addDays(start, 45), content(R.DOCS.manual)), 'Annual');
-  addDoc(`${org.short_code}-${msType}-MAP`, R.DOCS.map, 'Map', 'TPL-04', qhse ? 'Integrated' : 'Single-standard', 'process_excellence_manager', 'MP-004', [{ v: '1.0', status: 'Published', change: 'New', date: addDays(start, 30), content: content(R.DOCS.map) }], 'Annual');
+  const scopeType = qhse ? 'Integrated' : 'Single-standard';
+  const clampDate = (d) => (d > TODAY ? addDays(TODAY, -3) : d);
+  const versionsFor = (state, d0, twice) => {
+    if (state === 'Completed') return twice ? [{ v: '1.0', status: 'Superseded', change: 'New', date: clampDate(d0) }, { v: '1.1', status: 'Published', change: 'Minor', date: clampDate(addDays(d0, 150)) }] : [{ v: '1.0', status: 'Published', change: 'New', date: clampDate(d0) }];
+    if (state === 'InProgress') return [{ v: '0.9', status: 'In review', change: 'New', date: clampDate(d0) }];
+    return [{ v: '0.1', status: 'Draft', change: 'New', date: clampDate(d0) }];
+  };
+  const mpDocState = (mpId) => { const st = mpState[mpId]; if (!st) return 'NotStarted'; return st.n && st.done === st.n ? 'Completed' : st.done || st.first ? 'InProgress' : 'NotStarted'; };
+  const mpDate = (mpId, j) => (mpState[mpId]?.last || mpState[mpId]?.first || ts(addDays(start, 20 + j * 12), r)).slice(0, 10);
+  const docCode = (t, suffix) => `${org.short_code}-${msType}-${t.code.replace(/^TPL-/, '')}${suffix ? `-${suffix}` : ''}`;
+  DOC_TEMPLATES.filter(t => t.ms.includes(msType) && !t.perMp && !t.perPhase && !t.alternativeTo).forEach((t, j) => {
+    const mandatory = Object.keys(t.mandatory).some(x => standards.includes(x));
+    const state = mpSet.has(t.mp) ? mpDocState(t.mp) : (mandatory ? 'Completed' : null);
+    if (!state || (state === 'NotStarted' && !mandatory)) return;
+    const twice = ['Policy', 'Manual', 'Scope'].includes(t.docType) || (t.docType === 'Register' && j % 2 === 0);
+    addDoc(docCode(t), t.name, t.docType, t.code, scopeType, t.owner, t.mp, versionsFor(state, mpDate(t.mp, j), twice), t.review, {});
+  });
+  const sheetTpl = DOC_TEMPLATES.find(t => t.code === 'TPL-PSHEET');
+  ordered.filter(m => m.tier === 1).slice(0, 6).forEach((mp, j) => addDoc(docCode(sheetTpl, mp.code), fill(R.DOCS.sheet, mp.name), 'Sheet', 'TPL-PSHEET', 'Single-standard', mp.ownerRoleCode, mp.id,
+    versionsFor(mpDocState(mp.id), mpDate(mp.id, j), false), 'Semi-annual', { mp: mp.id }));
+  const procTpl = DOC_TEMPLATES.find(t => t.code === 'TPL-PROC');
   phasesE2E.forEach((e, j) => {
     const ph = phaseInfo[e];
     const d0 = ph.start && ph.start < TODAY ? ph.start : addDays(start, 20 + j * 25);
-    const title = fill(R.DOCS.procedure, cat.e2eById[e].name);
-    const vs = ph.status === 'Planned' ? [{ v: '0.1', status: 'Draft', change: 'New', date: d0 < TODAY ? d0 : addDays(TODAY, -5), content: content(cat.e2eById[e].name) }]
-      : ph.status === 'Active' ? [{ v: '1.0', status: j % 3 === 0 ? 'In review' : 'Published', change: 'New', date: d0, content: content(cat.e2eById[e].name) }]
-        : vset(d0, content(cat.e2eById[e].name)).map((v, k) => (k === 1 && addDays(d0, 150) > TODAY ? { ...v, date: addDays(TODAY, -4) } : v));
-    addDoc(`${org.short_code}-${msType}-PR-${e.slice(4)}`, title, 'Procedure', 'TPL-07', qhse ? 'Integrated' : 'Single-standard', cat.e2eById[e].mpIds.map(m => cat.mpById[m]).find(m => mpSet.has(m.id))?.ownerRoleCode || 'ims_manager', null, vs, 'Annual');
+    const state = ph.status === 'Closed' ? 'Completed' : ph.status === 'Planned' ? 'NotStarted' : 'InProgress';
+    addDoc(docCode(procTpl, e.slice(4)), fill(R.DOCS.procedure, cat.e2eById[e].name), 'Procedure', 'TPL-PROC', scopeType, cat.e2eById[e].mpIds.map(m => cat.mpById[m]).find(m => mpSet.has(m.id))?.ownerRoleCode || 'ims_manager', null,
+      versionsFor(state, d0, state === 'Completed'), 'Annual', { e2e: e });
   });
-  ordered.filter(m => m.tier === 1).slice(0, 4).forEach((mp, j) => addDoc(`${org.short_code}-${msType}-SH-${mp.code}`, fill(R.DOCS.sheet, mp.name), 'Sheet', 'TPL-02', 'Single-standard', mp.ownerRoleCode, mp.id,
-    [{ v: '1.0', status: 'Published', change: 'New', date: addDays(start, 25 + j * 7), content: content(mp.name) }], 'Semi-annual'));
-  addDoc(`${org.short_code}-${msType}-CP`, fill(R.DOCS.controlPlan, profile.product), 'Plan', null, 'Single-standard', 'operations_manager', 'MP-007',
-    [{ v: '1.0', status: 'Published', change: 'New', date: addDays(start, 160), content: content(profile.line) }, { v: '2.0', status: 'In review', change: 'Major', date: addDays(TODAY, -6), content: content(profile.line) }], 'Semi-annual');
-  if (must[0]) addDoc(`${org.short_code}-${msType}-CM`, fill(R.DOCS.matrix, must[0]), 'Register', null, 'Single-standard', 'compliance_officer', 'MP-028', [{ v: '1.0', status: 'Published', change: 'New', date: addDays(start, 60), content: content(must[0]) }], 'Semi-annual');
-  if (qhse) {
-    addDoc(`${org.short_code}-QHSE-HIRA`, R.DOCS.hira, 'Register', null, 'Integrated', 'hse_manager', 'MP-012', vset(addDays(start, 40), content(R.DOCS.hira)), 'Semi-annual');
-    addDoc(`${org.short_code}-QHSE-ASP`, R.DOCS.aspects, 'Register', null, 'Integrated', 'hse_manager', 'MP-012', vset(addDays(start, 42), content(R.DOCS.aspects)), 'Semi-annual');
-    addDoc(`${org.short_code}-QHSE-ERP`, R.DOCS.emergency, 'Plan', null, 'Integrated', 'hse_manager', 'MP-052', [{ v: '1.0', status: 'Published', change: 'New', date: addDays(start, 90), content: content(R.DOCS.emergency) }], 'Annual');
-    addDoc(`${org.short_code}-QHSE-LEG`, R.DOCS.legal, 'Register', null, 'Integrated', 'compliance_officer', 'MP-028', [{ v: '1.0', status: 'Published', change: 'New', date: addDays(start, 55), content: content(R.DOCS.legal) }], 'Semi-annual');
-  }
 
   // ---- Registers
   const reg = (register, code, title, data, status, mpId, date) => run('INSERT INTO registers(id,org_id,project_id,register,code,title,data,status,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)',
@@ -474,13 +504,7 @@ export function generateProject(ctx) {
   segRisks.slice(0, 3).forEach((t, j) => reg('context', `CI-E${j + 1}`, t, { type: R.REG.issueExt, category: R.REG.pestle[[1, 4, 3][j] ?? 0], impact: r.int(3, 5) }, 'Active', 'MP-001'));
   profile.defects.slice(0, 2).forEach((t, j) => reg('context', `CI-I${j + 1}`, t, { type: R.REG.issueInt, category: R.REG.pestle[3], impact: r.int(2, 4) }, 'Active', 'MP-001'));
   R.REG.parties.forEach(([p, need], j) => { if (!qhse && j === 5) return; reg('parties', `IP-${j + 1}`, fill(p, profile.customer, profile.supplier), { needs: fill(need, profile.product), influence: r.int(2, 5), interest: r.int(2, 5) }, 'Active', 'MP-001'); });
-  const objList = [...R.REG.objectives, ...(qhse ? R.REG.objectivesHse : [])];
-  objList.forEach(([t, kc], j) => {
-    const k = kpis.find(x => x.code === kc);
-    const ok = k ? meets(k.last, k.target, k.dir) : true;
-    reg('objectives', `OBJ-${j + 1}`, fill(t, k?.targetText || ''), { kpi: kc, target: k?.targetText, current: k?.last, deadline: addDays(start, 365), owner: k ? (R.QMS_KPIS.concat(R.HSE_KPIS).find(x => x.code === kc)?.owner) : 'quality_manager' }, ok ? 'On track' : 'At risk', 'MP-003');
-    if (!ok) addAction('objective', null, 'Improvement', fill(R.ACTION_TITLES.objective, fill(t, k?.targetText || '')), 'InProgress', addDays(TODAY, -40), addDays(TODAY, 50), 'performance_manager', 'ims_manager', 'MP-003');
-  });
+  for (const o of sbase.objectives) if (!o._ok) addAction('objective', o._registerId, 'Improvement', fill(R.ACTION_TITLES.objective, o.objective), 'InProgress', addDays(TODAY, -40), addDays(TODAY, 50), 'performance_manager', 'ims_manager', 'MP-003');
   standards.forEach((s, j) => reg('obligations', `OB-${j + 1}`, { en: s, fr: s, ar: s }, { type: S('Standard', 'Norme', 'معيار'), evaluation: j < 2 ? S('Compliant', 'Conforme', 'مطابق') : S('Partially compliant', 'Partiellement conforme', 'مطابق جزئيًا'), lastEvaluated: addDays(TODAY, -r.int(20, 120)) }, 'Active', 'MP-028'));
   if (qhse) R.REG.obligationsHse.forEach((t, j) => reg('obligations', `OB-L${j + 1}`, t, { type: S('Legal requirement', 'Exigence légale', 'متطلب قانوني'), evaluation: S('Compliant', 'Conforme', 'مطابق'), lastEvaluated: addDays(TODAY, -r.int(20, 120)) }, 'Active', 'MP-028'));
   const certAudit = audits.find(a => a.type === 'Certification');
@@ -496,6 +520,55 @@ export function generateProject(ctx) {
   R.REG.equipment.forEach((t, j) => { const next = addDays(TODAY, j === 0 ? -4 : r.int(15, 200)); reg('calibration', `EQ-${j + 1}`, t, { serial: `SN-${r.int(10000, 99999)}`, lastCalibration: addDays(next, -365), nextCalibration: next, location: profile.line }, next < TODAY ? 'Overdue' : 'Valid', 'MP-025'); });
   ['2026-03', '2026-09'].forEach((p, j) => { const d = `${p}-${j ? '15' : '20'}`; if (d > TODAY || d < start) return; reg('reviews', `MR-${j + 1}`, fill(R.REG.reviewTitle, p), { date: d, attendees: ['top_management', 'ims_manager', 'quality_manager', qhse ? 'hse_manager' : 'performance_manager'].map(uName), outputs: fill(R.REG.reviewOut, profile.line) }, 'Held', 'MP-034', d); });
   if (qhse) R.REG.incidents.forEach(([type, t], j) => reg('incidents', `INC-${j + 1}`, fill(t, profile.line), { type, date: addDays(start, 50 + j * 70), lostDays: j === 1 ? 0 : 0, investigated: true }, 'Closed', 'MP-051', addDays(start, 50 + j * 70)));
+
+  // ---- Links between steps and the records they produced ("where are these records?")
+  const regsByMp = {};
+  for (const x of all('SELECT id, register, code, title, mp_id FROM registers WHERE project_id=?', pid)) (regsByMp[x.mp_id] ||= []).push(x);
+  const docsByMp = {};
+  for (const d of docs) if (d.mp) (docsByMp[d.mp] ||= []).push(d);
+  const docRef = (d) => ({ type: 'document', id: d.id, code: d.code, title: d.title });
+  const regRef = (x) => ({ type: 'register', register: x.register, id: x.id, code: x.code, title: JSON.parse(x.title) });
+  const stepActStatus = (due) => (due < addDays(TODAY, -45) ? 'Closed' : due < TODAY ? 'InProgress' : 'Open');
+  for (const x of stepRows) {
+    const f = x.fields;
+    if (!f || x.status !== 'Done') continue;
+    let changed = false;
+    for (const key of ['activities', 'decisions']) {
+      for (const row of Array.isArray(f[key]) ? f[key] : []) {
+        const ownerId = row.owner || U(x.roleCode || 'ims_manager').id;
+        let evalId = U(x.mp.ownerRoleCode || 'ims_manager').id;
+        if (evalId === ownerId) evalId = U('ims_manager').id;
+        if (evalId === ownerId) evalId = U('quality_manager').id;
+        const aid = uid(); const st = stepActStatus(row.due || x.due);
+        run(`INSERT INTO actions(id,org_id,project_id,source_type,source_id,kind,title,owner_user,evaluator_user,status,start_date,due_date,done_at,pct,effectiveness,verdict,predecessors,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          aid, oid, pid, 'step', x.id, key === 'decisions' ? 'Review decision' : 'Planned', J(row.activity || row.decision), ownerId, evalId, st, row.start || x.due, row.due || addDays(x.due, 30),
+          st === 'Closed' ? ts(row.due || x.due, r) : null, st === 'Closed' ? 100 : st === 'InProgress' ? 50 : 0, st === 'Closed' ? 'Effective' : null, st === 'Closed' ? J(R.VERDICT.Effective) : null, J([]), x.completedAt);
+        actions.push({ id: aid, status: st, mpId: x.mp.id, startDate: row.start || x.due, dueDate: row.due || addDays(x.due, 30), title: row.activity || row.decision });
+        row._actionId = aid; changed = true;
+      }
+    }
+    if (['document', 'execute', 'update', 'close', 'service'].includes(x.s.formKind)) {
+      const refs = [];
+      const md = docsByMp[x.mp.id] || [];
+      if (x.s.formKind === 'document') { const d = md.find(y => y.template === f.template) || md[0] || docs.find(y => y.template === f.template); if (d) refs.push(docRef(d)); }
+      else {
+        md.slice(0, x.s.formKind === 'service' ? 2 : 1).forEach(d => refs.push(docRef(d)));
+        (regsByMp[x.mp.id] || []).slice(0, x.s.formKind === 'service' ? 4 : 2).forEach(y => refs.push(regRef(y)));
+        const acts = actions.filter(a => a.mpId === x.mp.id).slice(0, 1);
+        acts.forEach(a => refs.push({ type: 'action', id: a.id, title: a.title }));
+      }
+      if (refs.length) { f.records = refs; changed = true; }
+    }
+    if (changed) run('UPDATE step_exec SET fields=? WHERE id=?', J(f), x.id);
+  }
+  // Scenario runs keep a frozen snapshot of each document's current version (the others are
+  // rendered from the live data when downloaded).
+  if (scenario) {
+    for (const d of docs) {
+      const content = buildContent(pid, d.template, { docId: d.id, mpId: d.target?.mp || d.mp, e2e: d.target?.e2e, ownerRole: null, date: TODAY });
+      if (content) run('UPDATE document_versions SET content=? WHERE id=?', J(content), d.lastVersion);
+    }
+  }
 
   // ---- AI usage log (human-in-the-loop outcomes)
   const aiSteps = stepRows.filter(x => x.status === 'Done' && x.s.formKind === 'ai');

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Building2, FolderTree } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
@@ -85,6 +85,7 @@ export default function Organization() {
       ) : <Loading />)}
       {tab === 'tenancy' && (
         <div className="stack">
+          <div className="callout neutral"><span>{t('New groups and organizations (member of a group or independent) are created in Administration > Groups and organizations.')} <Link to="/admin">{t('Open Administration')}</Link></span></div>
           {[...(tree?.groups || []).map(g => ({ key: g.id, title: tx(g.name, lang), orgs: g.orgs })), { key: 'ind', title: t('Independent organizations'), orgs: tree?.independent || [] }].filter(g => g.orgs.length).map(g => (
             <Card key={g.key} title={g.title}>
               <Table rows={g.orgs} columns={[{ key: 'code', label: t('Code'), width: 90 }, { key: 'name', label: t('Organization'), render: x => <span className="strong">{tx(x.name, lang)}</span> }, { key: 'sector', label: t('Vertical') }, { key: 'size', label: t('Size'), render: x => L(x.size) }, { key: 'projects', label: t('Projects'), render: x => x.projects.map(p => p.code).join(', ') }, { key: 'access', label: t('Access'), render: x => (x.access === 'write' ? t('Full') : t('Read-only')) }]} />

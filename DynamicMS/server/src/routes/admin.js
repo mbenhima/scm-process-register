@@ -162,20 +162,25 @@ r.post('/attachments', requirePerm('records.create', 'execution.perform'), uploa
   const dir = path.join(config.storageDir, ent.org_id);
   fs.mkdirSync(dir, { recursive: true });
   const ids = [];
+  // A new version of an existing file keeps the chain (group_id) and increments the version.
+  const prev = req.body?.replaces ? get('SELECT * FROM attachments WHERE id=? AND org_id=? AND entity_type=? AND entity_id=?', req.body.replaces, ent.org_id, req.body.entityType, ent.id) : null;
+  if (req.body?.replaces && !prev) throw bad('BAD_REPLACES', 'The file to replace was not found on this record.');
   for (const f of req.files) {
     const id = uid();
     fs.writeFileSync(path.join(dir, id), f.buffer);
-    run('INSERT INTO attachments(id,org_id,entity_type,entity_id,filename,mime,size,path,author,at) VALUES(?,?,?,?,?,?,?,?,?,?)', id, ent.org_id, req.body.entityType, ent.id, path.basename(f.originalname).slice(0, 200), f.mimetype, f.size, path.join(ent.org_id, id), req.user.id, now());
+    const group = prev ? (prev.group_id || prev.id) : id;
+    const version = prev ? (get('SELECT MAX(version) m FROM attachments WHERE group_id=? OR id=?', group, group).m || 1) + 1 : 1;
+    run('INSERT INTO attachments(id,org_id,entity_type,entity_id,filename,mime,size,path,author,at,version,group_id,note) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)', id, ent.org_id, req.body.entityType, ent.id, path.basename(f.originalname).slice(0, 200), f.mimetype, f.size, path.join(ent.org_id, id), req.user.id, now(), version, group, req.body?.note ? String(req.body.note).slice(0, 500) : null);
     ids.push(id);
   }
-  audit(req, ent.org_id, req.body.entityType, ent.id, 'attach', null, { files: req.files.map(f => f.originalname) }, null);
+  audit(req, ent.org_id, req.body.entityType, ent.id, prev ? 'attach_version' : 'attach', prev ? { file: prev.filename, version: prev.version || 1 } : null, { files: req.files.map(f => f.originalname), note: req.body?.note || null }, null);
   res.status(201).json({ ids });
 }));
 r.get('/attachments', requirePerm('records.view', 'execution.view'), h((req, res) => {
   const table = ENTITY_TABLE[req.query.entityType];
   if (!table) throw bad('BAD_ENTITY', 'Unsupported entity type.');
   const ent = loadOrgRow(req, table, req.query.entityId, false, 'Record');
-  res.json(all('SELECT a.id, a.filename, a.mime, a.size, a.at, u.name AS author FROM attachments a LEFT JOIN users u ON u.id=a.author WHERE a.entity_type=? AND a.entity_id=? ORDER BY a.at', req.query.entityType, ent.id));
+  res.json(all('SELECT a.id, a.filename, a.mime, a.size, a.at, COALESCE(a.version,1) AS version, COALESCE(a.group_id,a.id) AS group_id, a.note, u.name AS author FROM attachments a LEFT JOIN users u ON u.id=a.author WHERE a.entity_type=? AND a.entity_id=? ORDER BY a.at', req.query.entityType, ent.id));
 }));
 r.get('/attachments/:id/download', requirePerm('records.view', 'execution.view'), h((req, res) => {
   const a = loadOrgRow(req, 'attachments', req.params.id, false, 'Attachment');

@@ -189,7 +189,7 @@ function seedOrg(cat, o, idx, groupIds, libs, hash) {
   for (const a of cat.aiUseCases) {
     const aid = uid();
     run('INSERT INTO ai_usecases(id,org_id,code,name,tier,module,trigger_,expected_output,checkpoint,prompt,task_type,risk_level,linked_step,linked_mp,custom,active,approval,version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,1,?,1,?)',
-      aid, id, a.id, J(a.name), a.tier, cat.mpById[a.mp]?.module || null, J(cat.stepById[a.step]?.name || null), J(a.name), J(a.checkpoint), null, J(a.taskType), a.risk, a.step, a.mp, a.approval, created);
+      aid, id, a.id, J(a.name), a.tier, cat.mpById[a.mp]?.module || null, J(cat.stepById[a.step]?.name || null), J(a.name), J(a.checkpoint), J(a.prompt || null), J(a.taskType), a.risk, a.step, a.mp, a.approval, created);
     aiUsecases.push({ id: aid, mp: a.mp, code: a.id });
   }
   if (large) {

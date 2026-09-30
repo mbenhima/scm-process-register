@@ -251,10 +251,24 @@ CREATE TABLE IF NOT EXISTS bpmn_diagrams (
   id TEXT PRIMARY KEY, org_id TEXT NOT NULL, mp_id TEXT NOT NULL, name TEXT, xml TEXT NOT NULL, version INTEGER DEFAULT 1,
   status TEXT DEFAULT 'Draft', updated_by TEXT, updated_at TEXT);
 CREATE UNIQUE INDEX IF NOT EXISTS ux_bpmn_org_mp ON bpmn_diagrams(org_id, mp_id);
+
+CREATE TABLE IF NOT EXISTS doc_templates (
+  id TEXT PRIMARY KEY, org_id TEXT, code TEXT NOT NULL, name TEXT NOT NULL, description TEXT, category TEXT,
+  doc_type TEXT, formats TEXT, toc INTEGER DEFAULT 1, ms TEXT, mp_id TEXT, review TEXT, owner_role TEXT,
+  mandatory TEXT, clauses TEXT, sections TEXT NOT NULL, base_code TEXT, version INTEGER DEFAULT 1,
+  status TEXT DEFAULT 'Published', created_by TEXT, created_at TEXT, updated_at TEXT);
+CREATE INDEX IF NOT EXISTS ix_doctpl_org ON doc_templates(org_id, code);
+
+CREATE TABLE IF NOT EXISTS mp_readiness (
+  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE, org_id TEXT NOT NULL, mp_id TEXT NOT NULL,
+  items TEXT NOT NULL, updated_by TEXT, updated_at TEXT, PRIMARY KEY (project_id, mp_id));
 `;
 
 // Columns added after the first release are declared here so existing databases upgrade in place.
 export const ADDITIVE_COLUMNS = {
   organizations: { logo_text: 'TEXT' },
   projects: { progress_cache: 'INTEGER' },
+  documents: { target: 'TEXT', source_step: 'TEXT', updated_at: 'TEXT' },
+  attachments: { version: 'INTEGER DEFAULT 1', group_id: 'TEXT', note: 'TEXT' },
+  ai_usecases: { model: 'TEXT' },
 };

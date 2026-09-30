@@ -40,5 +40,13 @@ export const LABELS = {
   Organization: L('Organization', 'Organisation', 'مؤسسة'), Site: L('Site', 'Site', 'موقع'), Department: L('Department', 'Service', 'قسم'), Project: L('Project', 'Projet', 'مشروع'),
   catalog: L('From the catalog', 'Depuis le catalogue', 'من الكتالوج'), manual: L('Manual', 'Manuelle', 'يدوي'), ai: L('With AI', 'Avec l\'IA', 'بالذكاء الاصطناعي'),
   universal: L('Universal', 'Universel', 'عام'), vertical: L('Vertical', 'Sectoriel', 'قطاعي'), Small: L('Small', 'Petite', 'صغيرة'), Medium: L('Medium', 'Moyenne', 'متوسطة'), Micro: L('Micro', 'Micro', 'صغرى'),
+  // step form options and document types added with the structured forms
+  Yes: L('Yes', 'Oui', 'نعم'), No: L('No', 'Non', 'لا'), Partly: L('Partly', 'Partiellement', 'جزئيًا'),
+  'Single-standard': L('Single standard', 'Norme unique', 'معيار واحد'), Integrated: L('Integrated', 'Intégré', 'متكامل'),
+  Quiz: L('Quiz', 'Quiz', 'اختبار قصير'), 'On-the-job observation': L('On-the-job observation', 'Observation au poste', 'الملاحظة في موقع العمل'), 'Supervisor assessment': L('Supervisor assessment', 'Évaluation par le responsable', 'تقييم المشرف'), 'Practical test': L('Practical test', 'Test pratique', 'اختبار عملي'),
+  'Review decision': L('Review decision', 'Décision de revue', 'قرار مراجعة'), 'Per event': L('Per event', 'Par événement', 'عند كل حدث'),
+  Scope: L('Scope', 'Périmètre', 'النطاق'), Instruction: L('Work instruction', 'Instruction de travail', 'تعليمات العمل'), Report: L('Report', 'Rapport', 'تقرير'), Matrix: L('Matrix', 'Matrice', 'مصفوفة'),
+  Site: L('Site', 'Site', 'الموقع'), Department: L('Department', 'Service', 'القسم'), Organization: L('Organization', 'Organisation', 'المؤسسة'), Project: L('Project', 'Projet', 'المشروع'),
+  Weekly: L('Weekly', 'Hebdomadaire', 'أسبوعي'),
 };
 export const label = (code, lang) => (LABELS[code] ? LABELS[code][lang] ?? LABELS[code].en : code);

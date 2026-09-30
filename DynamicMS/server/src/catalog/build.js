@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from '../config.js';
 import { formKindOf } from './forms.js';
+import { explicitStepName, explicitTaskName, stepDescriptions } from './naming.js';
+import { MP_REORDER, MP_OBJECTS, MP_CLAUSES } from './objects.js';
 
 const DIR = path.join(ROOT, 'seed', 'catalog');
 
@@ -170,13 +172,22 @@ export function buildCatalog() {
         }
       } else desc = T(s.Description);
       steps.push({
-        id: s.Step_ID, mp: mpId, task: `${mpId}.T${tIdx}`, seq, name: T(s.Step_Name),
+        id: s.Step_ID, mp: mpId, task: `${mpId}.T${tIdx}`, seq, name: explicitStepName(T(s.Step_Name), mpId), sourceName: T(s.Step_Name),
         type: s.Step_Type, typeName: T(s.Step_Type), role: s.Responsible_Role, roleName: T(s.Responsible_Role),
-        roleCode: ROLE_CODES[s.Responsible_Role] || null, description: desc,
+        roleCode: ROLE_CODES[s.Responsible_Role] || null, sourceDescription: desc,
         formKind: formKindOf(s.Step_Name, s.Step_Type), isNewRequirement: !mm,
       });
     });
-    taskNames.forEach((tn, i) => tasks.push({ id: `${mpId}.T${i + 1}`, mp: mpId, seq: i + 1, name: T(tn) }));
+    taskNames.forEach((tn, i) => tasks.push({ id: `${mpId}.T${i + 1}`, mp: mpId, seq: i + 1, name: explicitTaskName(T(tn), mpId), sourceName: T(tn) }));
+  }
+  // Order fixes (e.g. MP-002: standards selected before any policy drafting)
+  for (const [mpId, order] of Object.entries(MP_REORDER)) {
+    const own = steps.filter(x => x.mp === mpId);
+    const start = steps.indexOf(own[0]);
+    const re = order.map(([id, task, kind], i) => { const st = own.find(x => x.id === id); st.seq = i + 1; st.task = `${mpId}.${task}`; if (kind) st.formKind = kind; return st; });
+    steps.splice(start, own.length, ...re);
+    const used = new Set(re.map(x => x.task));
+    for (let i = tasks.length - 1; i >= 0; i--) if (tasks[i].mp === mpId && !used.has(tasks[i].id)) tasks.splice(i, 1);
   }
 
   // ---- Macro processes
@@ -195,7 +206,13 @@ export function buildCatalog() {
     uf: ufByCode[m.code] || [], standards: stdByMp[m.id] || [],
     activation: actByCode[m.code] || {},
     stepCount: (byMp[m.id] || []).length,
+    object: MP_OBJECTS[m.id] ? { en: MP_OBJECTS[m.id][0], fr: MP_OBJECTS[m.id][1], ar: MP_OBJECTS[m.id][2] } : null, clauses: MP_CLAUSES[m.id] || null,
   }));
+  const mpIndex = Object.fromEntries(macroProcesses.map(m => [m.id, m]));
+  for (const st of steps) {
+    const d = stepDescriptions(st, mpIndex[st.mp], mpIndex[st.mp].stepCount, st.formKind);
+    st.brief = d.brief; st.description = d.detail;
+  }
 
   // ---- E2E
   const e2eWb = Object.fromEntries(en.e2eWorkbook.map(e => [e.E2E_ID, e]));
@@ -269,6 +286,28 @@ export function buildCatalog() {
     custom: a.Is_Custom === 'True', basedOn: a.Based_On_AI_Use_Case_ID, approval: a.Approval_Status,
     tier: ['Prediction', 'Classification', 'Recommendation'].includes(a.Model_Task_Type) ? 'Augmented' : 'Assistive',
   }));
+  // Every AI-assisted step gets its own use case, and every use case a prompt template
+  // written from its step (the step's goal, inputs, outputs, standards and role).
+  const ucSteps = new Set(aiUseCases.map(a => a.step));
+  let sn = 0;
+  for (const st of steps.filter(x => x.type === 'AI-Assisted Task' && !ucSteps.has(x.id))) {
+    sn += 1;
+    aiUseCases.push({ id: `AIUC-S${String(sn).padStart(2, '0')}`, name: tpl(X('Assistance IA : {0}', 'مساعدة الذكاء الاصطناعي: {0}', 'AI assistance: {0}'), st.name), step: st.id, mp: st.mp,
+      taskType: T('Text Generation'), risk: 'Low', riskName: T('Low'), checkpoint: tpl(X('Le rôle {0} accepte, modifie ou rejette la suggestion avant de terminer l\'étape.', 'يقبل {0} الاقتراح أو يعدّله أو يرفضه قبل إكمال الخطوة.', '{0} accepts, edits or rejects the suggestion before completing the step.'), st.roleName),
+      scope: 'Tenant', custom: false, approval: 'Approved', tier: 'Assistive', generated: true });
+  }
+  const PROMPT = X(
+    'Vous assistez le rôle {0} sur l\'étape « {1} » ({2}) du macro-processus {3}, phase {4}. Objet de l\'étape : {5} Utilisez les entrées : {6}. Produisez : {7}. Références : {8}. Répondez par des propositions numérotées, précises et propres à l\'organisme, que l\'utilisateur peut accepter, modifier ou rejeter. N\'inventez aucune donnée absente du contexte.',
+    'أنت تساعد {0} في الخطوة "{1}" ({2}) من العملية الكلية {3}، المرحلة {4}. غاية الخطوة: {5} استخدم المدخلات: {6}. أنتج: {7}. المراجع: {8}. أجب بمقترحات مرقمة ومحددة وخاصة بالمؤسسة يمكن للمستخدم قبولها أو تعديلها أو رفضها. لا تختلق بيانات غير موجودة في السياق.',
+    'You assist the {0} on the step "{1}" ({2}) of the macro process {3}, phase {4}. Purpose of the step: {5} Use these inputs: {6}. Produce: {7}. References: {8}. Answer with numbered, specific proposals for this organization that the user can accept, edit or reject. Do not invent data that is not in the context.');
+  for (const a of aiUseCases) {
+    const st = steps.find(x => x.id === a.step);
+    const m = mpsRaw.find(x => x.id === a.mp);
+    if (!st || !m) continue;
+    const mpName = T(m.name);
+    a.stepName = st.name;
+    a.prompt = tpl(PROMPT, st.roleName, st.name, st.id, { en: `${m.code} ${mpName.en}`, fr: `${m.code} ${mpName.fr}`, ar: `${m.code} ${mpName.ar}` }, m.e2e, T(m.goal), Tl(m.sipoc.I.slice(0, 4)), a.name, MP_CLAUSES[m.id] || 'ISO 9001');
+  }
   const roleMenus = en.roleMenus.map(r => ({
     role: r.Role_ID, roleName: T(r.Role_Name), roleCode: ROLE_CODES[r.Role_Name], order: r.Menu_Order, section: T(r.Menu_Section),
     itemId: r.Menu_Item_ID, item: T(r.Menu_Item), type: r.Item_Type, access: r.Access_Level, accessName: T(r.Access_Level),

@@ -835,3 +835,208 @@
 835	Summarization
 836	Classification
 837	Prediction
+838	New version attached; the previous one is kept in the history.
+839	Note for the next upload (optional)
+840	History ({n})
+841	BPMN diagram in full screen
+842	Exit full screen
+843	Full screen
+844	Remove
+845	Choose an organization unit…
+846	Other (type)
+847	Choose a person…
+848	Holders of the role
+849	Other people
+850	Add a role…
+851	Responsible
+852	Accountable (one)
+853	Consulted
+854	Support
+855	Informed
+856	New KPI
+857	Create KPI
+858	e.g. signed job sheets / job sheets × 100
+859	Direction
+860	Choose a KPI…
+861	KPIs of this macro process
+862	Other KPIs of the project
+863	Record created
+864	Delete row {n}
+865	No row yet.
+866	Add a row
+867	On completion, each row becomes an action in the Action plan, with its owner and due date.
+868	On completion, each row becomes an entry of the objectives register.
+869	Weighted score
+870	Total weight {w}% (aim for 100%)
+871	Scoring scale
+872	No linked record yet. Records are linked when the step is completed or a document is generated.
+873	RACSI of the macro process; step-level RACSI can be set on the macro process page.
+874	Choose a template…
+875	Suggested for this macro process
+876	All templates
+877	Group saved.
+878	Delete group {n}?
+879	Organization {n} created with its administrator and default structure.
+880	Groups and organizations are created by the platform administrator (admin@dynamicms.example). Tenant administrators manage their own organization in Organization.
+881	Groups
+882	New group
+883	Organizations
+884	Delete
+885	New organization
+886	Edit group
+887	Create organization
+888	Part of a group?
+889	No — independent organization
+890	Yes — member of a group
+891	Universal (any sector)
+892	Large company
+893	Employees
+894	Country (ISO code)
+895	City
+896	E-mail domain
+897	Users of the organization sign in with name@domain.
+898	Administrator name
+899	Administrator e-mail
+900	Initial password: the demonstration password; to change at first sign-in.
+901	AI model settings saved.
+902	Model of {c} updated.
+903	Language model for the AI use cases
+904	Choose a standard provider and model, or a custom model with an OpenAI-compatible API. Without a provider, the built-in engine (rules and retrieval on your data) answers. Every suggestion stays a suggestion until a person accepts it.
+905	Provider
+906	Model
+907	Deployment name
+908	Model name
+909	Endpoint URL (HTTPS)
+910	API key
+911	A key is stored ({h}); leave empty to keep it.
+912	Stored encrypted; never shown again.
+913	Temperature (0–1)
+914	Maximum answer length (tokens)
+915	Use this model for the AI use cases (the built-in engine stays the fallback)
+916	Test the connection
+917	Model per AI use case
+918	By default every use case uses the organization model; a use case can use another model of the same provider.
+919	Organization default
+920	Groups and organizations
+921	AI models
+922	From a template, filled with the project data
+923	Blank document
+924	required
+925	Title (optional)
+926	By default, the template name.
+927	All types
+928	Documented information required by {s}: {n} items, {m} missing. "Maintain" = a document kept up to date; "retain" = a record kept as evidence.
+929	Documented information
+930	Required by
+931	maintain
+932	retain
+933	Document
+934	Missing
+935	Requirements of ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 for the standards selected in the project.
+936	Template saved as version {v}.
+937	Editable copy created for your organization.
+938	Copy to edit
+939	Save template
+940	Library template (read-only). Copy it to adapt the sections, texts or layout for your organization; the copy replaces it in your library.
+941	Table of contents (Word and PDF)
+942	Structure: sections ({n})
+943	Untitled section
+944	Move up
+945	Move down
+946	Delete section
+947	Free text
+948	Project data
+949	Approval block
+950	Data from the project
+951	The table or text is filled from this project data when the document is generated.
+952	Text
+953	Introduction (optional)
+954	Placeholders: {org} {product} {line} {city} {customer} {supplier} {standards} {date}
+955	New section
+956	Add a section
+957	{n} templates in the library.
+958	Template {code} created.
+959	Retire template {code}?
+960	Template retired.
+961	All categories
+962	New template
+963	Formats
+964	Sections
+965	Origin
+966	Suggested IMS templates for ISO 9001, ISO 14001 and ISO 45001; each section is filled from the project data. Click a template to see its structure.
+967	Capital letters, digits and dashes.
+968	Layout saved; it applies to every document you download.
+969	Logo uploaded.
+970	Document layout
+971	Like a Word template: logo, colors, header and footer applied to every generated document (DOCX, PDF and XLSX).
+972	Table header color
+973	Accent color (labels, logo text)
+974	Title color
+975	Logo text
+976	Used when no logo image is uploaded.
+977	Header text
+978	e.g. Controlled copy — do not print
+979	Footer text
+980	By default: organization, code and version
+981	Upload a logo (PNG or JPEG)
+982	Logo: {n}
+983	Save layout
+984	Preview
+985	ORGANIZATION · CODE
+986	Quality policy
+987	Example row
+988	Published
+989	Organization · code · version · page 1 / 2
+990	Documented information of the project: generated from templates with the project data, versioned (draft, review, published) and downloadable in Word, PDF and Excel. The author never approves their own version.
+991	Required by the standards
+992	Templates
+993	Layout
+994	New draft generated from the current project data.
+995	Document updated.
+996	A published document is retired, not deleted. Justification:
+997	Delete this draft document?
+998	Document retired.
+999	Document deleted.
+1000	Structure saved in the draft.
+1001	From step {s}
+1002	with table of contents
+1003	no table of contents
+1004	Edit the structure
+1005	Structure and content
+1006	Regenerate the content from the current project data (otherwise the current content is copied)
+1007	Edit the document
+1008	Add, rename, reorder or delete sections of this draft. Data tables keep their content; free-text sections can be edited.
+1009	Before you start (optional checklist)
+1010	checked by the system
+1011	Not blocking: it helps check the inputs, owners, templates and KPIs before the first step.
+1012	RACSI saved.
+1013	RACSI of the macro process
+1014	Set a step-level RACSI
+1015	Macro process or step
+1016	The macro process RACSI applies to all its steps by default; set a step-level RACSI only where a step differs. R responsible, A accountable (exactly one), C consulted, S support, I informed.
+1017	Step-level RACSI
+1018	Choose a step…
+1019	Leave all columns empty to remove the step-level RACSI (the macro process RACSI then applies).
+1020	New groups and organizations (member of a group or independent) are created in Administration > Groups and organizations.
+1021	Open Administration
+1022	Document {code} generated from the project data.
+1023	Hide the detailed description
+1024	Show the detailed description
+1025	Records produced by this step
+1026	View prompt
+1027	Engine
+1028	Documents of this step
+1029	Generate document
+1030	Download PDF
+1031	Download Word
+1032	No document linked yet. Generate one from a template: it is filled with the data recorded in the project.
+1033	Standards of the project
+1034	Requirements answered
+1035	RACSI of this step
+1036	Generate
+1037	The document is created as a draft (version 0.1) from the template and filled with the data already recorded in the project. It then follows the review and approval workflow in Documents.
+1038	Summary of the version (optional)
+1039	Prompt sent for this step
+1040	Instructions (system)
+1041	Context of the step (user)
+1042	Naming: {n} task name(s) should start with a verb and name their object: {list}

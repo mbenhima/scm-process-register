@@ -1,0 +1,205 @@
+838	Nouvelle version jointe ; la précédente est conservée dans l'historique.
+839	Note pour le prochain envoi (facultatif)
+840	Historique ({n})
+841	Diagramme BPMN en plein écran
+842	Quitter le plein écran
+843	Plein écran
+844	Retirer
+845	Choisir une unité de l'organisation…
+846	Autre (saisir)
+847	Choisir une personne…
+848	Titulaires du rôle
+849	Autres personnes
+850	Ajouter un rôle…
+851	Réalise
+852	Approuve (un seul)
+853	Consulté
+854	Support
+855	Informé
+856	Nouveau KPI
+857	Créer le KPI
+858	ex. fiches signées / fiches d'intervention × 100
+859	Sens
+860	Choisir un KPI…
+861	KPI de ce macro-processus
+862	Autres KPI du projet
+863	Enregistrement créé
+864	Supprimer la ligne {n}
+865	Aucune ligne pour l'instant.
+866	Ajouter une ligne
+867	À la clôture, chaque ligne devient une action du plan d'actions, avec son responsable et son échéance.
+868	À la clôture, chaque ligne devient une entrée du registre des objectifs.
+869	Note pondérée
+870	Poids total {w} % (visez 100 %)
+871	Échelle de notation
+872	Aucun enregistrement lié pour l'instant. Les enregistrements sont liés à la clôture de l'étape ou à la génération d'un document.
+873	RACSI du macro-processus ; un RACSI par étape se définit sur la page du macro-processus.
+874	Choisir un modèle…
+875	Suggérés pour ce macro-processus
+876	Tous les modèles
+877	Groupe enregistré.
+878	Supprimer le groupe {n} ?
+879	Organisation {n} créée avec son administrateur et sa structure par défaut.
+880	Les groupes et organisations sont créés par l'administrateur de la plateforme (admin@dynamicms.example). Les administrateurs de locataire gèrent leur organisation dans Organisation.
+881	Groupes
+882	Nouveau groupe
+883	Organisations
+884	Supprimer
+885	Nouvelle organisation
+886	Modifier le groupe
+887	Créer l'organisation
+888	Membre d'un groupe ?
+889	Non — organisation indépendante
+890	Oui — membre d'un groupe
+891	Universel (tout secteur)
+892	Grande entreprise
+893	Effectif
+894	Pays (code ISO)
+895	Ville
+896	Domaine de messagerie
+897	Les utilisateurs de l'organisation se connectent avec nom@domaine.
+898	Nom de l'administrateur
+899	E-mail de l'administrateur
+900	Mot de passe initial : le mot de passe de démonstration ; à changer à la première connexion.
+901	Paramètres du modèle d'IA enregistrés.
+902	Modèle de {c} mis à jour.
+903	Modèle de langage des cas d'usage de l'IA
+904	Choisissez un fournisseur et un modèle standard, ou un modèle personnalisé avec une API compatible OpenAI. Sans fournisseur, le moteur intégré (règles et recherche sur vos données) répond. Chaque suggestion reste une suggestion tant qu'une personne ne l'accepte pas.
+905	Fournisseur
+906	Modèle
+907	Nom du déploiement
+908	Nom du modèle
+909	URL du point d'accès (HTTPS)
+910	Clé d'API
+911	Une clé est enregistrée ({h}) ; laissez vide pour la conserver.
+912	Stockée chiffrée ; jamais réaffichée.
+913	Température (0–1)
+914	Longueur maximale de la réponse (jetons)
+915	Utiliser ce modèle pour les cas d'usage de l'IA (le moteur intégré reste la solution de repli)
+916	Tester la connexion
+917	Modèle par cas d'usage
+918	Par défaut chaque cas d'usage utilise le modèle de l'organisation ; un cas d'usage peut utiliser un autre modèle du même fournisseur.
+919	Modèle de l'organisation
+920	Groupes et organisations
+921	Modèles d'IA
+922	À partir d'un modèle, rempli avec les données du projet
+923	Document vierge
+924	obligatoire
+925	Titre (facultatif)
+926	Par défaut, le nom du modèle.
+927	Tous les types
+928	Informations documentées exigées par {s} : {n} éléments, {m} manquants. « Tenir à jour » = un document ; « conserver » = un enregistrement gardé comme preuve.
+929	Information documentée
+930	Exigé par
+931	tenir à jour
+932	conserver
+933	Document
+934	Manquant
+935	Exigences d'ISO 9001:2015, ISO 14001:2015 et ISO 45001:2018 pour les normes choisies dans le projet.
+936	Modèle enregistré en version {v}.
+937	Copie modifiable créée pour votre organisation.
+938	Copier pour modifier
+939	Enregistrer le modèle
+940	Modèle de la bibliothèque (lecture seule). Copiez-le pour adapter les sections, textes ou la mise en page à votre organisation ; la copie le remplace dans votre bibliothèque.
+941	Sommaire (Word et PDF)
+942	Structure : sections ({n})
+943	Section sans titre
+944	Monter
+945	Descendre
+946	Supprimer la section
+947	Texte libre
+948	Données du projet
+949	Bloc d'approbation
+950	Données du projet utilisées
+951	Le tableau ou le texte est rempli avec ces données du projet lors de la génération du document.
+952	Texte
+953	Introduction (facultatif)
+954	Variables : {org} {product} {line} {city} {customer} {supplier} {standards} {date}
+955	Nouvelle section
+956	Ajouter une section
+957	{n} modèles dans la bibliothèque.
+958	Modèle {code} créé.
+959	Retirer le modèle {code} ?
+960	Modèle retiré.
+961	Toutes les catégories
+962	Nouveau modèle
+963	Formats
+964	Sections
+965	Origine
+966	Modèles SMI proposés pour ISO 9001, ISO 14001 et ISO 45001 ; chaque section est remplie avec les données du projet. Cliquez sur un modèle pour voir sa structure.
+967	Majuscules, chiffres et tirets.
+968	Mise en page enregistrée ; elle s'applique à chaque document téléchargé.
+969	Logo envoyé.
+970	Mise en page des documents
+971	Comme un modèle Word : logo, couleurs, en-tête et pied de page appliqués à chaque document généré (DOCX, PDF et XLSX).
+972	Couleur des en-têtes de tableau
+973	Couleur d'accent (libellés, logo texte)
+974	Couleur des titres
+975	Logo texte
+976	Utilisé tant qu'aucune image de logo n'est envoyée.
+977	Texte d'en-tête
+978	ex. Copie maîtrisée — ne pas imprimer
+979	Texte de pied de page
+980	Par défaut : organisation, code et version
+981	Envoyer un logo (PNG ou JPEG)
+982	Logo : {n}
+983	Enregistrer la mise en page
+984	Aperçu
+985	ORGANISATION · CODE
+986	Politique qualité
+987	Ligne d'exemple
+988	Publié
+989	Organisation · code · version · page 1 / 2
+990	Informations documentées du projet : générées à partir de modèles avec les données du projet, versionnées (brouillon, revue, publié) et téléchargeables en Word, PDF et Excel. L'auteur n'approuve jamais sa propre version.
+991	Exigés par les normes
+992	Modèles
+993	Mise en page
+994	Nouveau brouillon généré à partir des données actuelles du projet.
+995	Document mis à jour.
+996	Un document publié est retiré, pas supprimé. Justification :
+997	Supprimer ce document brouillon ?
+998	Document retiré.
+999	Document supprimé.
+1000	Structure enregistrée dans le brouillon.
+1001	Issu de l'étape {s}
+1002	avec sommaire
+1003	sans sommaire
+1004	Modifier la structure
+1005	Structure et contenu
+1006	Régénérer le contenu à partir des données actuelles du projet (sinon le contenu actuel est copié)
+1007	Modifier le document
+1008	Ajoutez, renommez, réordonnez ou supprimez des sections de ce brouillon. Les tableaux de données gardent leur contenu ; les sections de texte libre sont modifiables.
+1009	Avant de commencer (liste facultative)
+1010	vérifié par le système
+1011	Non bloquant : elle aide à vérifier entrées, pilotes, modèles et KPI avant la première étape.
+1012	RACSI enregistré.
+1013	RACSI du macro-processus
+1014	Définir un RACSI d'étape
+1015	Macro-processus ou étape
+1016	Le RACSI du macro-processus s'applique par défaut à toutes ses étapes ; définissez un RACSI d'étape seulement quand une étape diffère. R réalise, A approuve (un seul), C consulté, S support, I informé.
+1017	RACSI de l'étape
+1018	Choisir une étape…
+1019	Laissez toutes les colonnes vides pour supprimer le RACSI de l'étape (le RACSI du macro-processus s'applique alors).
+1020	Les nouveaux groupes et organisations (membres d'un groupe ou indépendantes) se créent dans Administration > Groupes et organisations.
+1021	Ouvrir l'administration
+1022	Document {code} généré à partir des données du projet.
+1023	Masquer la description détaillée
+1024	Afficher la description détaillée
+1025	Enregistrements produits par cette étape
+1026	Voir le prompt
+1027	Moteur
+1028	Documents de cette étape
+1029	Générer un document
+1030	Télécharger le PDF
+1031	Télécharger le Word
+1032	Aucun document lié. Générez-en un à partir d'un modèle : il est rempli avec les données saisies dans le projet.
+1033	Normes du projet
+1034	Exigences couvertes
+1035	RACSI de cette étape
+1036	Générer
+1037	Le document est créé en brouillon (version 0.1) à partir du modèle et rempli avec les données déjà saisies dans le projet. Il suit ensuite le circuit de revue et d'approbation dans Documents.
+1038	Résumé de la version (facultatif)
+1039	Prompt envoyé pour cette étape
+1040	Instructions (système)
+1041	Contexte de l'étape (utilisateur)
+1042	Nommage : {n} nom(s) de tâche devraient commencer par un verbe et nommer leur objet : {list}

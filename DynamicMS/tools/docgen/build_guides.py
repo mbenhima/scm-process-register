@@ -14,23 +14,26 @@ SHOTS = os.path.join(BUILD, 'shots')
 URL = 'http://localhost:5173'
 
 FORMS = [
-    ('Periodicity', 'Frequency (list), Next due date, Scope / notes'),
-    ('Register items', 'Items identified (one per line), Source / evidence'),
-    ('Assessment', 'Score 1–5 (buttons), Rationale and facts'),
-    ('Decision', 'Decision (Go, No-Go, Hold), Approver (role), Comment — required for No-Go'),
-    ('Document', 'Document reference, Version, Summary'),
-    ('Communication', 'Audience, Channel (list), Message'),
-    ('Training', 'Session, Participants, Effectiveness (%)'),
-    ('Monitoring', 'Metric, Value, Target, Comment'),
-    ('Plan', 'Planned activities (one per line), Start, End'),
-    ('Execution', 'Evidence of execution, Completion (%)'),
-    ('Assignment', 'Role (list), Person, Scope'),
-    ('Configuration', 'Setting, Value, Notes'),
-    ('Update', 'What changed, Reason'),
-    ('Closure', 'Closure evidence, Closure date'),
+    ('Standards and scope', 'Standards applied (tick boxes), Scope type (single standard or integrated), Organization units covered (OBS), Why these standards. Selected once per project, before the policy is drafted.'),
+    ('Periodicity', 'Frequency (list), Next due date, Review chaired by (role), Organization units in scope (OBS picker), Review inputs and notes'),
+    ('Register items', 'Items identified: a table, one row per item, with Item, Category, Description and impact, Relevance and Source / evidence (each row has its own source)'),
+    ('Assessment', 'Decision matrix: one row per criterion with Weight (%), Score 1–5 and the facts that justify it; the weighted score is computed; Conclusion'),
+    ('Decision', 'Decision criteria checked (table: criterion, met yes/partly/no, evidence), Decision (Go, No-Go, Hold), Approver (role), Comment and conditions'),
+    ('Document', 'Document template (list), Document reference, Version, Content summary, Generated document (link). Use Generate document to create it from the project data.'),
+    ('Communication', 'Communication records: one row per audience with Channel, Date, Key message and Communicated by (ISO 9001 §7.4)'),
+    ('Training', 'Session, Date, Units trained (OBS), Participants, Effectiveness evaluation method, Effectiveness (%)'),
+    ('Measurement', 'Indicators measured: one row per KPI chosen from the project list (or a new KPI), with Why this KPI for this step, Measured value and Target; Analysis'),
+    ('Review', 'Review frequency, Review date, Next review, Chaired by, Participants (roles), Inputs reviewed (table), Decisions and actions (table: each decision becomes an action)'),
+    ('Plan', 'Planned activities: one row per activity with Owner (person), Start, Due date and Deliverable; each row becomes an action of the Action plan'),
+    ('SMART objectives', 'One row per objective: Specific objective, Measure (KPI), Baseline, Achievable target, Relevant to, Owner, Time-bound deadline, Resources; each row becomes an entry of the objectives register'),
+    ('Execution', 'What was done, Records that prove it (links), Completion (%)'),
+    ('Assignment', 'Role, Person (from the OBS), Organization units covered, RACSI of the macro process in five columns (one Accountable)'),
+    ('Configuration', 'Settings table (setting, value, reason), Tested before use'),
+    ('Change', 'Change made, Reason, Documents or records updated (links)'),
+    ('Closure', 'Closure evidence, Records that prove effectiveness, Closure date'),
     ('Escalation', 'Escalated to (role), Reason'),
-    ('AI-assisted', 'Context given to the AI, Outcome (Accepted, Edited, Rejected), Final validated text'),
-    ('Automatic service', 'Result (filled by the DynamicMS Engine; no input)'),
+    ('AI-assisted draft', 'Context given to the assistant, Suggestion outcome (Accepted, Edited, Rejected), Final validated text'),
+    ('Automated service task', 'System result confirmed, Records produced (links); filled by the DynamicMS Engine'),
 ]
 
 
@@ -65,8 +68,36 @@ def getting_started(doc, example_email):
         'To correct a completed step, select Reopen and type a justification; the previous value is kept as a version. A step cannot be reopened once its phase gate is passed.',
     ])
     doc.add_heading('Input forms', level=2)
-    para(doc, 'Seventeen form kinds cover the 1,572 steps of the process design. The table lists the fields of each kind; required fields are marked with an asterisk on screen.')
-    table(doc, ['Form', 'Fields'], [[a, b] for a, b in FORMS], [4.5, 13.5], size=10, bold_first=True)
+    para(doc, 'Twenty form kinds cover the 1,572 steps of the process design. Lists of items are record tables: add, edit or delete one row per item, each with its own source. The table lists the fields of each kind; required fields are marked with an asterisk on screen.')
+    table(doc, ['Form', 'Fields'], [[a, b] for a, b in FORMS], [4.5, 13.5], size=9.5, bold_first=True)
+    doc.add_heading('The step page', level=2)
+    bullets(doc, [
+        ('Name and description. ', 'Every task and step name starts with a verb and names its object (for example "Fix quality policy review periodicity"). Under the name, a brief description; select Show the detailed description for the purpose, how to fill the form, the inputs, the expected result and the ISO clause.'),
+        ('Record tables. ', 'Select Add a row, fill each column, and use the bin to delete a row. People come from the organization structure (OBS); organization units can be picked or typed; KPIs are chosen from the project list or created with New KPI.'),
+        ('Records produced. ', 'On completion, plans and review decisions become actions of the Action plan, SMART objectives become entries of the objectives register, and the RACSI is written to the RACSI matrix. The step shows links to these records.'),
+        ('Documents of this step. ', 'Select Generate document, choose a template (suggested for the macro process first): the document is created as a draft, filled with the data already recorded in the project, and follows the review and approval workflow. Download it in PDF or Word from the step.'),
+        ('Attachments. ', 'Attach files to the step; select New version on a file to replace it while keeping the history (version, author, date, note).'),
+        ('AI assistance. ', 'Only the AI use case of this step is shown. Select View prompt to read exactly what is sent (step, form, values already typed, previous steps), then Suggest. Accept, edit or reject: nothing is saved without you.'),
+    ])
+    doc.add_heading('Macro process page', level=2)
+    bullets(doc, [
+        ('Before you start. ', 'An optional checklist lists the inputs, previous macro processes, owner and RACSI, document templates and KPIs to have in place. Items checked by the system are ticked automatically; tick the others yourself.'),
+        ('RACSI. ', 'The RACSI tab shows the RACSI of the macro process in five columns (R, A, C, S, I; exactly one A). It applies to all steps; select Set a step-level RACSI only for a step that differs.'),
+        ('BPMN diagram. ', 'Select Full screen to see the diagram on the whole screen; select Exit full screen or press Escape to come back.'),
+    ])
+    doc.add_heading('Documents and templates', level=2)
+    numbered(doc, [
+        'Open Records › Documents. The Documents tab lists the documented information with its version, status, next review and download buttons (PDF, Word, Excel).',
+        'The Required by the standards tab lists the documented information that ISO 9001, ISO 14001 and ISO 45001 require for the standards of the project ("maintain" = a document, "retain" = a record), and the document that answers each one. Select Create for a missing one.',
+        'The Templates tab lists the IMS templates (policy, scope, manual, context analysis, registers, procedures, plans, reports). Select a template to see its structure; select Copy to edit to adapt the sections and texts for your organization, or New template to create one.',
+        'The Layout tab sets the logo, colors, header and footer applied to every generated document, like a Word template.',
+        'Open a document to see its structure section by section, edit its title and review frequency, create a new version (regenerated from the current project data or copied), edit the structure of a draft, submit, approve (by another person) and download it.',
+    ])
+    doc.add_heading('Administration', level=2)
+    bullets(doc, [
+        ('Groups and organizations. ', 'The platform administrator (admin@dynamicms.example) opens Administration › Groups and organizations: New group, and New organization with the question Part of a group? (No — independent organization, or Yes — member of a group). The organization is created with its administrator and a default structure (head office and departments).'),
+        ('AI models. ', 'Administration › AI models: choose a standard provider and model (Anthropic Claude, OpenAI, Azure OpenAI, Google Gemini, Mistral) or a custom model with an OpenAI-compatible endpoint, type the API key (stored encrypted), test the connection and enable it. A use case can use another model of the same provider. Without a provider, the built-in engine answers.'),
+    ])
 
 
 def users_table(doc, data):
@@ -100,9 +131,10 @@ def records_section(doc, data, prefix):
         table(doc, ['Code', 'Audit', 'Standard', 'Planned', 'Status'], [[a['code'], a['title'], a['standard'], a['planned_date'], a['status']] for a in r['audits']], [3.6, 7, 3.4, 2.2, 1.8], size=9)
         para(doc, 'To add a finding: open the audit, select Add finding, choose the type (Major, Minor, Observation, OFI), type the clause and the finding; for Major and Minor choose the action owner and a different evaluator.')
     if r['documents']:
-        doc.add_heading('Documented information', level=3)
-        table(doc, ['Code', 'Title', 'Type', 'Version', 'Status'], [[d['code'], d['title'], d['doc_type'], d['current_version'], d['status']] for d in r['documents']], [4.4, 7.6, 2, 1.6, 2.4], size=9)
-        para(doc, 'To revise a document: open it, select New version, choose Minor or Major, type the summary of change and the content, then Submit for review. Another user approves and publishes it; the author cannot approve their own version.')
+        doc.add_heading('Documented information generated from the templates', level=3)
+        para(doc, 'Every document below is generated from an IMS template and filled with the data of this run (issues, interested parties, objectives, RACSI, KPIs, risks, audits, nonconformities...). Open Records › Documents and select Download to get it in PDF, Word or Excel.')
+        table(doc, ['Code', 'Title', 'Template', 'Version', 'Status'], [[d['code'], d['title'], d.get('template_id') or '—', d['current_version'], d['status']] for d in r['documents']], [4.6, 7.2, 2.6, 1.4, 2.2], size=8.5)
+        para(doc, 'To revise a document: open it, select New version, choose Minor or Major, type the summary of change and choose whether to regenerate the content from the current project data; then Submit for review. Another user approves and publishes it; the author cannot approve their own version.')
     doc.add_heading('Export the management review report', level=3)
     numbered(doc, ['Open Insight › Reports.', 'Choose the format (PDF, Excel, Word or CSV) and the language.', 'Select Download on Management review input. The report compiles objectives, KPIs, audit results, nonconformities and phase status.'])
 
@@ -145,15 +177,38 @@ def scenario(doc, n, title, data, shots_code):
         para(doc, f"{ph['trigger']} → {ph['terminal']}", 'From trigger to terminal event: ')
         for mp in ph['mps']:
             doc.add_heading(f"{mp['code']} ({mp['id']}) — {mp['name']}", level=3)
-            para(doc, f"{mp['goal']} Owner: {mp['owner']}. Tier {mp['tier']}.", size=11)
+            para(doc, f"{mp['goal']} Owner: {mp['owner']}. Tier {mp['tier']}." + (f" Requirements answered: {mp['clauses']}." if mp.get('clauses') else ''), size=11)
+            if mp.get('documents'):
+                para(doc, '; '.join(f"{d['code']} ({d['title']})" for d in mp['documents'][:6]) + '.', 'Documents of this macro process: ', size=10)
             rows = []
+            details = []
             for tk in mp['tasks']:
                 for s in tk['steps']:
-                    typed = [(f"{f['field']}: ", f['value'] or '—') for f in s['type_']]
-                    rows.append([s['id'], [s['name'], ('Task: ', tk['name'])], [s['role'], s['form']], typed])
-            table(doc, ['Step', 'Step and task', 'Role · form', 'What to type'], rows, [1.9, 4.6, 3.4, 8.1], size=8.5)
+                    typed = []
+                    for f in s['type_']:
+                        if f.get('columns') is not None:
+                            n = len(f.get('rows') or [])
+                            if f['type'] == 'racsi':
+                                r0 = (f.get('rows') or [[]])[0]
+                                typed.append((f"{f['field']}: ", ' · '.join(f"{k}: {v}" for k, v in zip(f['columns'], r0) if v) or '—'))
+                            else:
+                                typed.append((f"{f['field']}: ", f"{n} row{'s' if n != 1 else ''} — see the table below" if n else '—'))
+                                if n:
+                                    details.append((s, f))
+                        else:
+                            typed.append((f"{f['field']}: ", f.get('value') or '—'))
+                    if s.get('creates'):
+                        typed.append(('On completion: ', ' and '.join('rows become actions' if c == 'actions' else 'rows become objectives' for c in s['creates']) + '.'))
+                    rows.append([s['id'], [s['name'], ('Task: ', tk['name']), s['brief']], [s['role'], s['form']], typed])
+            table(doc, ['Step', 'Step, task and purpose', 'Role · form', 'What to type'], rows, [1.9, 5.0, 3.1, 8.0], size=8.5)
+            for s, f in details:
+                cols = f['columns']
+                w = [0.7] + [max(1.6, (17.3 / len(cols)) * (1.5 if any(k in c for k in ('Description', 'Facts', 'message', 'Finding', 'Why', 'objective')) else 0.85)) for c in cols]
+                tot = sum(w); w = [x * 18 / tot for x in w]
+                para(doc, f"{s['id']} — {s['name']} · {f['field']}", size=9.5, bold_lead=None)
+                table(doc, ['#'] + cols, [[str(i + 1)] + [str(x) for x in r] for i, r in enumerate(f['rows'])], w, size=8)
             if first_step_shot:
-                shot(doc, shots_code, 'step', 'Figure — A step form: fill the fields, then select Complete step.')
+                shot(doc, shots_code, 'step', 'Figure — A step form with a record table: one row per item, each with its own source; add, edit or delete rows.')
                 first_step_shot = False
         if ph['gate']:
             g = ph['gate']
@@ -165,6 +220,7 @@ def scenario(doc, n, title, data, shots_code):
             para(doc, 'This phase has no gate for the project track; it closes when its last step is completed.', italic=True)
     records_section(doc, data, '')
     shot(doc, shots_code, 'ncs', 'Figure — Nonconformity register of the project.')
+    shot(doc, shots_code, 'documents', 'Figure — Documents: documented information generated from the templates, with versions and downloads.')
     shot(doc, shots_code, 'reports', 'Figure — Reports: choose the format and language, then download.')
 
 
@@ -189,7 +245,8 @@ def build(file_no, title, subtitle, scenarios, fname, example_email):
         ['The Go button is disabled.', 'Some steps of the phase are still open. The gate panel shows how many.'],
         ['Can the same person own and evaluate an action?', 'No. The application refuses it on screen and on the server.'],
         ['Where are my changes recorded?', 'Every change is written to the audit trail (Administration › Audit trail) and versioned records keep their history.'],
-        ['Does the AI Assistant send my data outside?', 'No. Answers are built from DynamicMS content and your records; no external AI service is called.'],
+        ['Does the AI send my data outside?', 'Only if your administrator enables an external language model in Administration › AI models. Otherwise answers are built from DynamicMS content and your records. View prompt shows what would be sent.'],
+        ['Where are the records produced by a step?', 'The step shows them under Records produced by this step and Documents of this step: actions (Action plan), objectives (Registers), RACSI (RACSI matrix), KPI values (KPIs) and documents (Documents).'],
     ], [6, 12], size=10, bold_first=True)
     path = os.path.join(OUT, fname)
     doc.save(path)

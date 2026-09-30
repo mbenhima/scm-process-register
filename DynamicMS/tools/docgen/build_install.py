@@ -94,8 +94,19 @@ def main():
     code_block(doc, ['npm run sign-licence -- --customer "Horizon Industrial Group" --seats 1500 --expires 2027-12-31 --packs DMS-ENT,DMS-AI', 'set DEPLOYMENT_MODE=onprem   (Windows)  |  export DEPLOYMENT_MODE=onprem', 'npm start'])
     callout(doc, 'The first signing creates the key pair in server/licence. Keep private.pem with the vendor; the customer server needs only public.pem and licence.lic.', 'Security.')
 
+    doc.add_heading('AI models (optional)', level=1)
+    para(doc, 'The AI use cases work without any external service: the built-in engine answers from the DynamicMS content and the organization data. To use a large language model instead, the tenant administrator opens Administration › AI models, chooses a standard provider and model (Anthropic Claude, OpenAI, Azure OpenAI, Google Gemini, Mistral) or a custom model with an OpenAI-compatible HTTPS endpoint, types the API key, selects Test the connection and enables it.')
+    bullets(doc, [
+        ('Keys. ', 'API keys are encrypted at rest (AES-256-GCM, key derived from JWT_SECRET) and never sent back to the browser. Changing JWT_SECRET makes stored keys unreadable: type them again.'),
+        ('Network. ', 'The server calls the provider from its own network: allow outbound HTTPS to the provider host (for example api.anthropic.com) in the firewall or proxy.'),
+        ('Fallback. ', 'If the provider does not answer within 30 seconds or returns an error, the built-in engine answers and the user sees a warning.'),
+    ])
+
+    doc.add_heading('Document layout and templates', level=1)
+    para(doc, 'Generated documents (Word, PDF, Excel) use the layout of the organization: Records › Documents › Layout (logo image in PNG or JPEG up to 2 MB, colors, header and footer). Logos are stored in STORAGE_DIR. The 37 IMS templates are delivered with the application; organizations copy and adapt them in Records › Documents › Templates.')
+
     doc.add_heading('Automated tests', level=1)
-    para(doc, 'In the server folder, npm test runs the API test suite on a copy of the seeded database: sign-in, full-run step completion and reopen, gate rules, cross-tenant isolation, RBAC, one-Accountable RACSI rule, owner-evaluator separation, report exports in three languages and four formats, AI suggestions, benchmarking, project creation modes, permission matrix, compliance disclosure and backups.')
+    para(doc, 'In the server folder, npm test runs the 12 API tests on a copy of the seeded database: sign-in, full-run step completion and reopen, gate rules, cross-tenant isolation, RBAC, one-Accountable RACSI rule, owner-evaluator separation, report exports in three languages and four formats, AI suggestions, benchmarking, project creation modes, permission matrix, compliance disclosure, backups, and the structured forms (record tables, actions from plans, SMART objectives, KPI from a step), document templates (generation, structure, versions, downloads, layout), RACSI per macro process and step, readiness checklist, AI model settings and group and organization creation.')
     code_block(doc, ['cd server', 'npm test'])
 
     doc.add_heading('Troubleshooting', level=1)

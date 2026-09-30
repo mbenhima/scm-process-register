@@ -157,61 +157,7 @@ r.post('/audits/:id/findings', requirePerm('records.manage'), h((req, res) => {
   res.status(201).json({ ok: true, actionId });
 }));
 
-// ---- Documented information and versions
-r.get('/projects/:id/documents', requirePerm('records.view'), h((req, res) => {
-  const p = loadProject(req, req.params.id);
-  send(req, res, rows(all('SELECT * FROM documents WHERE project_id=? ORDER BY doc_type, code', p.id)));
-}));
-r.get('/documents/:id', requirePerm('records.view'), h((req, res) => {
-  const d = loadOrgRow(req, 'documents', req.params.id, false, 'Document');
-  send(req, res, { ...d, versions: rows(all('SELECT v.*, a.name AS author_name, ap.name AS approver_name FROM document_versions v LEFT JOIN users a ON a.id=v.author LEFT JOIN users ap ON ap.id=v.approver WHERE v.document_id=? ORDER BY v.created_at DESC', d.id)) });
-}));
-r.post('/projects/:id/documents', requirePerm('records.manage'), h((req, res) => {
-  const p = loadProject(req, req.params.id, true);
-  const b = req.body || {};
-  if (!b.title || !b.docType) throw bad('FIELDS_REQUIRED', 'Title and document type are required.');
-  const n = get('SELECT COUNT(*) n FROM documents WHERE project_id=?', p.id).n;
-  const id = uid();
-  const code = b.code || `${p.code}-DOC-${String(n + 1).padStart(3, '0')}`;
-  tx(() => {
-    run('INSERT INTO documents(id,org_id,project_id,code,title,doc_type,template_id,standards,scope_type,current_version,status,owner_role,review_frequency,next_review,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-      id, p.org_id, p.id, code, J(tr(req, b.title)), b.docType, b.templateId || null, J(p.standards), p.ms_type === 'QHSE' ? 'Integrated' : 'Single-standard', '0.1', 'Draft', b.ownerRole || 'document_controller', b.reviewFrequency || 'Annual', null, b.mpId || null, now());
-    run('INSERT INTO document_versions(id,org_id,document_id,version,status,change_type,summary,content,author,formats,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)', uid(), p.org_id, id, '0.1', 'Draft', 'New', J(tr(req, 'New document')), J(tr(req, b.content || '')), req.user.id, J(['PDF', 'DOCX']), now());
-    audit(req, p.org_id, 'document', id, 'create', null, { code, title: b.title }, null);
-  });
-  res.status(201).json({ id, code });
-}));
-r.post('/documents/:id/versions', requirePerm('records.manage'), h((req, res) => {
-  const d = loadOrgRow(req, 'documents', req.params.id, true, 'Document');
-  const b = req.body || {};
-  if (get(`SELECT 1 FROM document_versions WHERE document_id=? AND status IN ('Draft','In review')`, d.id)) throw conflict('DRAFT_EXISTS', 'Finish the current draft first.');
-  const [maj, min] = String(d.current_version || '0.0').split('.').map(Number);
-  const v = b.changeType === 'Major' ? `${maj + 1}.0` : `${maj}.${(min || 0) + 1}`;
-  run('INSERT INTO document_versions(id,org_id,document_id,version,status,change_type,summary,content,author,formats,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)', uid(), d.org_id, d.id, v, 'Draft', b.changeType || 'Minor', J(tr(req, b.summary || '')), J(tr(req, b.content || '')), req.user.id, J(['PDF', 'DOCX']), now());
-  audit(req, d.org_id, 'document', d.id, 'new_version', { version: d.current_version }, { version: v }, null);
-  res.status(201).json({ version: v });
-}));
-r.post('/document-versions/:id/:action', requirePerm('records.manage'), h((req, res) => {
-  const v = loadOrgRow(req, 'document_versions', req.params.id, true, 'Version');
-  const d = get('SELECT * FROM documents WHERE id=?', v.document_id);
-  const act = req.params.action;
-  if (act === 'submit') {
-    if (v.status !== 'Draft') throw conflict('BAD_STATE', 'Only drafts can be submitted.');
-    run(`UPDATE document_versions SET status='In review' WHERE id=?`, v.id);
-  } else if (act === 'approve' || act === 'reject') {
-    if (v.status !== 'In review') throw conflict('BAD_STATE', 'Only versions in review can be approved or rejected.');
-    if (v.author === req.user.id) throw bad('AUTHOR_CANNOT_APPROVE', 'The author cannot approve their own version.');
-    if (act === 'reject') run(`UPDATE document_versions SET status='Draft' WHERE id=?`, v.id);
-    else tx(() => {
-      run(`UPDATE document_versions SET status='Superseded' WHERE document_id=? AND status='Published'`, d.id);
-      run(`UPDATE document_versions SET status='Published', approver=?, approved_at=? WHERE id=?`, req.user.id, now(), v.id);
-      const days = d.review_frequency === 'Annual' ? 365 : 182;
-      run(`UPDATE documents SET current_version=?, status='Published', next_review=? WHERE id=?`, v.version, addDays(now().slice(0, 10), days), d.id);
-    });
-  } else throw notFound('Action');
-  audit(req, v.org_id, 'document', d.id, act, { status: v.status }, { version: v.version }, req.body?.comment || null);
-  res.json({ ok: true });
-}));
+// ---- Documented information: see routes/documents.js
 
 // ---- Registers (context, interested parties, objectives, obligations, certificates, suppliers, ideas, competence, calibration, reviews, incidents)
 const REGISTERS = ['context', 'parties', 'objectives', 'obligations', 'certificates', 'suppliers', 'ideas', 'competence', 'calibration', 'reviews', 'incidents'];

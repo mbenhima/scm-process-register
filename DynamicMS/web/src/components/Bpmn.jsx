@@ -1,7 +1,7 @@
 // BPMN 2.0 viewer/modeler (bpmn-js) restyled to the design tokens. The palette lives
 // in its own panel beside the canvas (FR-DA-BPMN-03); export/import .bpmn files.
 import { useEffect, useRef, useState } from 'react';
-import { Download, Upload, Save, RotateCcw, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
+import { Download, Upload, Save, RotateCcw, ZoomIn, ZoomOut, Scan, Maximize2, Minimize2 } from 'lucide-react';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
@@ -15,6 +15,17 @@ export default function Bpmn({ projectId, mpId, code }) {
   const { t, toast, readOnly } = useApp();
   const canvasRef = useRef(null); const paletteRef = useRef(null); const inst = useRef(null); const fileRef = useRef(null);
   const [meta, setMeta] = useState(null); const [error, setError] = useState(null); const [dirty, setDirty] = useState(false);
+  const shellRef = useRef(null); const [full, setFull] = useState(false);
+  // Full screen: the diagram takes the whole screen; Esc or the button returns to the page.
+  useEffect(() => {
+    const refit = () => setTimeout(() => { const c = inst.current?.get('canvas'); if (c) { c.resized(); c.zoom('fit-viewport'); } }, 60);
+    refit();
+    if (!full) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setFull(false); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [full]);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,7 +63,7 @@ export default function Bpmn({ projectId, mpId, code }) {
     try { await inst.current.importXML(await file.text()); inst.current.get('canvas').zoom('fit-viewport'); setDirty(true); toast(t('Diagram imported. Save to keep it.')); } catch (e) { toast(t('The file is not a valid BPMN 2.0 diagram.'), 'error'); }
   };
   const save = async () => {
-    try { const { xml } = await inst.current.saveXML({ format: true }); await api(`/projects/${projectId}/bpmn/${mpId}`, { method: 'PUT', body: { xml } }); setDirty(false); toast(t('Diagram saved as a new version.')); } catch (e) { toast(e.message, 'error'); }
+    try { const { xml } = await inst.current.saveXML({ format: true }); const r = await api(`/projects/${projectId}/bpmn/${mpId}`, { method: 'PUT', body: { xml } }); setDirty(false); toast(t('Diagram saved as a new version.')); if (r.warnings?.length) toast(t('Naming: {n} task name(s) should start with a verb and name their object: {list}', { n: r.warnings.length, list: r.warnings.slice(0, 3).join('; ') }), 'error'); } catch (e) { toast(e.message, 'error'); }
   };
   const reset = async () => { try { await api(`/projects/${projectId}/bpmn/${mpId}`, { method: 'DELETE' }); toast(t('Diagram reset to the process design.')); window.location.reload(); } catch (e) { toast(e.message, 'error'); } };
   const zoom = (f) => { const c = inst.current?.get('canvas'); if (!c) return; if (f === 0) c.zoom('fit-viewport'); else c.zoom(c.zoom() * f); };
@@ -60,13 +71,14 @@ export default function Bpmn({ projectId, mpId, code }) {
   if (error) return <ErrorBox error={error} />;
   const edit = meta?.canEdit && !readOnly;
   return (
-    <div className="stack">
+    <div className={`stack ${full ? 'bpmn-full' : ''}`} ref={shellRef} role={full ? 'dialog' : undefined} aria-modal={full ? 'true' : undefined} aria-label={full ? t('BPMN diagram in full screen') : undefined}>
       <div className="row-between">
         <p className="small muted" style={{ margin: 0 }}>{meta ? (meta.saved ? t('Saved diagram, version {v}', { v: meta.version }) : t('Generated from the process design: one lane per role, one task per step, a gateway after each decision.')) : ''}{!edit && meta ? ` ${t('Read-only view: pan with the mouse, zoom with the buttons.')}` : ''}</p>
         <div className="row">
           <button className="btn btn-sm btn-icon" onClick={() => zoom(1.2)} aria-label={t('Zoom in')}><ZoomIn size={16} /></button>
           <button className="btn btn-sm btn-icon" onClick={() => zoom(0.8)} aria-label={t('Zoom out')}><ZoomOut size={16} /></button>
-          <button className="btn btn-sm btn-icon" onClick={() => zoom(0)} aria-label={t('Fit to screen')}><Maximize size={16} /></button>
+          <button className="btn btn-sm btn-icon" onClick={() => zoom(0)} aria-label={t('Fit to screen')} title={t('Fit to screen')}><Scan size={16} /></button>
+          <button className="btn btn-sm" onClick={() => setFull(f => !f)} aria-pressed={full}>{full ? <Minimize2 size={16} /> : <Maximize2 size={16} />}{full ? t('Exit full screen') : t('Full screen')}</button>
           <button className="btn btn-sm" onClick={exportXml}><Download size={16} />{t('Export .bpmn')}</button>
           {edit && <><button className="btn btn-sm" onClick={() => fileRef.current?.click()}><Upload size={16} />{t('Import')}</button><input ref={fileRef} type="file" accept=".bpmn,.xml" hidden onChange={e => e.target.files[0] && importXml(e.target.files[0])} />
             {meta?.saved && <button className="btn btn-sm" onClick={reset}><RotateCcw size={16} />{t('Reset')}</button>}

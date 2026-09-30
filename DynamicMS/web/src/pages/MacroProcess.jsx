@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Check, Circle, Clock } from 'lucide-react';
+import { Check, Circle, Clock, ClipboardCheck, Pencil } from 'lucide-react';
+import { api } from '../lib/api.js';
+import { RacsiGrid } from '../components/StepInputs.jsx';
 import { useApp, useData } from '../lib/state.jsx';
-import { PageHead, Card, Loading, ErrorBox, Status, Progress, Tabs, Table, tx } from '../components/ui.jsx';
+import { PageHead, Card, Loading, ErrorBox, Status, Progress, Tabs, Table, tx, Modal, Field, IconBadge } from '../components/ui.jsx';
 import Bpmn from '../components/Bpmn.jsx';
 import { NoProject } from './Home.jsx';
 
@@ -17,6 +19,55 @@ export function Sipoc({ sipoc, lang, t }) {
         </div>
       ))}
     </div>
+  );
+}
+
+// Optional checklist of what should be in place before starting the macro process.
+function Readiness({ projectId, mpId }) {
+  const { t, lang, toast, fmtDate, readOnly } = useApp();
+  const { data, reload } = useData(`/projects/${projectId}/mps/${mpId}/readiness`);
+  if (!data) return null;
+  const tick = async (it, done) => { try { await api(`/projects/${projectId}/mps/${mpId}/readiness`, { method: 'PUT', body: { itemId: it.id, done } }); reload(); } catch (e) { toast(e.message, 'error'); } };
+  return (
+    <Card title={t('Before you start (optional checklist)')} action={<span className="small muted">{data.ready} / {data.total}</span>}>
+      <ul className="list small">{data.items.map(it => (
+        <li key={it.id}><label className="checkbox"><input type="checkbox" checked={!!it.done} disabled={!data.canEdit || readOnly} onChange={e => tick(it, e.target.checked)} /><span>{tx(it.text, lang)}{it.doneBy ? <span className="xsmall muted"> · {it.doneBy} · {fmtDate(it.doneAt)}</span> : it.auto !== undefined && it.done ? <span className="xsmall muted"> · {t('checked by the system')}</span> : null}</span></label></li>
+      ))}</ul>
+      <p className="caption">{t('Not blocking: it helps check the inputs, owners, templates and KPIs before the first step.')}</p>
+    </Card>
+  );
+}
+
+function RacsiEditor({ projectId, data, reload }) {
+  const { t, lang, toast, readOnly } = useApp();
+  const { data: pick } = useData(projectId ? `/projects/${projectId}/pickers` : null);
+  const [ed, setEd] = useState(null);
+  const roles = pick?.roles || [];
+  const lettersOf = (a) => { const o = { R: [], A: [], C: [], S: [], I: [] }; for (const x of a?.assignments || []) o[x.letter].push(x.assignee); return o; };
+  const mpAct = data.racsi.find(a => a.level === 'mp');
+  const stepActs = data.racsi.filter(a => a.level === 'step');
+  const steps = data.tasks.flatMap(tk => tk.steps);
+  const save = async () => { try { await api(`/projects/${projectId}/mps/${data.mp.id}/racsi`, { method: 'PUT', body: { letters: ed.letters, stepId: ed.stepId || undefined } }); toast(t('RACSI saved.')); setEd(null); reload(); } catch (e) { toast(e.message, 'error'); } };
+  const rowsTbl = [{ id: 'mp', name: `${data.mp.code} — ${tx(data.mp.name, lang)}`, level: 'mp', act: mpAct }, ...stepActs.map(a => ({ id: a.id, name: `${a.stepId} — ${tx(steps.find(s => s.id === a.stepId)?.name || a.name, lang)}`, level: 'step', stepId: a.stepId, act: a }))];
+  const nm = (c) => tx(roles.find(r => r.code === c)?.name, lang) || c;
+  return (
+    <Card title={t('RACSI of the macro process')} action={data.canEditRacsi && !readOnly && <button className="btn btn-sm" onClick={() => setEd({ stepId: '', letters: lettersOf(null), isNew: true })}>{t('Set a step-level RACSI')}</button>}>
+      <Table rows={rowsTbl} columns={[
+        { key: 'name', label: t('Macro process or step'), render: r => <span className={r.level === 'mp' ? 'strong' : ''}>{r.name}</span> },
+        ...['R', 'A', 'C', 'S', 'I'].map(Lt => ({ key: Lt, label: Lt, sortable: false, render: r => lettersOf(r.act)[Lt].map(nm).join(', ') })),
+        ...(data.canEditRacsi && !readOnly ? [{ key: 'edit', label: '', sortable: false, render: r => <button className="btn btn-sm btn-ghost" aria-label={t('Edit')} onClick={() => setEd({ stepId: r.stepId || '', letters: lettersOf(r.act) })}><Pencil size={16} /></button> }] : []),
+      ]} />
+      <p className="caption">{t('The macro process RACSI applies to all its steps by default; set a step-level RACSI only where a step differs. R responsible, A accountable (exactly one), C consulted, S support, I informed.')}</p>
+      {ed && (
+        <Modal wide title={ed.stepId ? t('Step-level RACSI') : t('RACSI of the macro process')} onClose={() => setEd(null)} footer={<><button className="btn" onClick={() => setEd(null)}>{t('Cancel')}</button><button className="btn btn-primary" disabled={ed.isNew && !ed.stepId} onClick={save}>{t('Save')}</button></>}>
+          <div className="stack">
+            {ed.isNew && <Field label={t('Step')} required>{(id) => <select id={id} className="select" value={ed.stepId} onChange={e => setEd({ ...ed, stepId: e.target.value, letters: e.target.value ? lettersOf(data.racsi.find(a => a.stepId === e.target.value) || mpAct) : lettersOf(null) })}><option value="">{t('Choose a step…')}</option>{steps.map(s => <option key={s.id} value={s.id}>{s.id} — {tx(s.name, lang)}</option>)}</select>}</Field>}
+            <RacsiGrid value={ed.letters} onChange={(v) => setEd({ ...ed, letters: v })} roles={roles} t={t} lang={lang} />
+            {ed.stepId && <p className="hint">{t('Leave all columns empty to remove the step-level RACSI (the macro process RACSI then applies).')}</p>}
+          </div>
+        </Modal>
+      )}
+    </Card>
   );
 }
 
@@ -66,6 +117,7 @@ export default function MacroProcess() {
             ))}
           </div>
           <div className="stack">
+            <Readiness projectId={projectId} mpId={m.id} />
             <Card title={t('Objective')}><p className="small">{tx(m.objective, lang)}</p><p className="small"><span className="strong">{t('Trigger')}: </span>{tx(m.trigger, lang)}</p><p className="small" style={{ margin: 0 }}><span className="strong">{t('Terminal event')}: </span>{tx(m.terminal, lang)}</p></Card>
             <Card title={t('KPIs of this process')}>{data.kpis.length ? <ul className="list small">{data.kpis.map(k => <li key={k.id}><Link to="/kpis">{k.code}</Link> — {tx(k.name, lang)} <span className="muted ltr">({k.target_text})</span></li>)}</ul> : <p className="small muted">{t('No KPI linked.')}</p>}</Card>
           </div>
@@ -73,12 +125,7 @@ export default function MacroProcess() {
       )}
       {tab === 'sipoc' && <Card><Sipoc sipoc={m.sipoc} lang={lang} t={t} /><p className="caption">{t('SIPOC of the macro process as defined in the process design (D01).')}</p></Card>}
       {tab === 'diagram' && <Card><Bpmn projectId={projectId} mpId={m.id} code={m.code} /></Card>}
-      {tab === 'racsi' && (
-        <Card>
-          <Table rows={data.racsi.map((a, i) => ({ id: i, ...a }))} columns={[{ key: 'name', label: t('Activity'), render: a => tx(a.name, lang) }, ...['R', 'A', 'C', 'S', 'I'].map(Lt => ({ key: Lt, label: Lt, sortable: false, render: a => a.assignments.filter(x => x.letter === Lt).map(x => tx(x.roleName, lang)).join(', ') }))]} />
-          <p className="caption">{t('R responsible, A accountable (exactly one), C consulted, S support, I informed.')}</p>
-        </Card>
-      )}
+      {tab === 'racsi' && <RacsiEditor projectId={projectId} data={data} reload={reload} />}
       {tab === 'gov' && (
         <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
           <Card title={t('Business rules')}>{data.rules.length ? <ul className="list small">{data.rules.map(r => <li key={r.id}><span className="strong">{r.id}</span> · {L(r.type)}<br />{tx(r.condition, lang)} → <span className="muted">{tx(r.action, lang)}</span></li>)}</ul> : <p className="small muted">{t('No rule on this process.')}</p>}</Card>
