@@ -219,7 +219,7 @@ test('feedback: IMS document templates, generation, structure, versions, downloa
   assert.equal(d.status, 201);
   const doc = (await call('GET', `/documents/${d.body.id}`, t)).body;
   const st = (await call('GET', `/document-versions/${doc.versions[0].id}/structure`, t)).body;
-  assert.ok(st.structured && st.sections.some(s => s.block?.kind === 'table' && s.block.rows.length));
+  assert.ok(st.structured && st.sections.some(s => (s.blocks || []).some(b => b.kind === 'table' && b.rows.length)));
   for (const f of ['pdf', 'docx', 'xlsx']) {
     const r = await call('GET', `/documents/${d.body.id}/download?format=${f}`, t);
     assert.equal(r.status, 200); assert.ok(r.body.byteLength > 2000);
