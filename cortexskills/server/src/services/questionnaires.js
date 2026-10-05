@@ -71,7 +71,7 @@ export function formOf(q, code) { return (q.forms || []).find(f => f.code === co
 
 /** Copies library templates into a questionnaire's forms; each question keeps its origin (FR-DA-QLT-02). */
 export function formsFromTemplates(templates) {
-  return templates.map(tp => ({ code: tp.code, template_id: tp.id, name: tp.name, population: tp.population, decision_level: tp.decision_level, form: tp.form,
+  return templates.map(tp => ({ code: tp.code, template_id: tp.id, template_version: tp.version_no || tp.version || 1, name: tp.name, population: tp.population, decision_level: tp.decision_level, form: tp.form,
     sections: (tp.sections || []).map(s => ({ ...s, origin: 'template', racsi: s.racsi || { R: 'L&D Analyst', A: 'Head of L&D', C: 'Consultant PM', S: 'Function head', I: 'HR Director' } })) }));
 }
 

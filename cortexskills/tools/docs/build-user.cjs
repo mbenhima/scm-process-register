@@ -18,7 +18,7 @@ body.push(...tocPage());
 // ---------------------------------------------------------------- 1. About this guide
 body.push(H1('1. About this guide'),
   P('CortexSkills guides a training engineering engagement from its scope to the evaluation of its results: 33 end-to-end processes, grouped into seven phases, each made of user tasks and steps. This guide tells you where to click and, for every task, exactly what to type. The examples come from the demonstration data, so you can follow them on screen.'),
-  P('Parts 6 to 9 each follow one type of organization from start to finish:'),
+  P('Parts 6 to 9 each follow one type of organization from start to finish. Parts 10 to 14 cover questionnaires and their channels, e-mail and WhatsApp, the training plan, generated documents and the global search.'),
   table(['Part', 'Audience', 'Example organization used', 'Sign in as'], data.audiences.map((a, i) => [`${6 + i}`, en(a.title), `${en(a.org.name)} — ${en(a.org.sectorName)}, ${a.org.segment === 'SME' ? 'SME' : 'large company'}`, a.org.login]), [700, 3000, 3600, 2446]),
   spacer(),
   P('Every organization has two full runs: a Digital skills run and an AI skills run. Both follow the same tasks; the task tables show what to type in the Digital run and, where the text differs, what to type in the AI run.'),
@@ -41,6 +41,7 @@ body.push(H1('2. Getting around the application'),
     ['Organization selector', 'Chooses the organization you work in. Only the platform administrator sees every organization; Group members can read sister organizations.'],
     ['Project selector', 'Limits every screen to one project (run), or shows all projects.'],
     ['EN · FR · AR', 'Changes the language at once. Arabic turns the whole application right-to-left. Your choice is remembered.'],
+    ['Search bar · Ctrl+K', 'Searches the whole organization: projects, questionnaires, trainings, records, governance, processes, AI use cases, reports, people and help. Type a code (for example UFT-03-04 or TR-AI-01) or words; arrow keys and Enter open a result.'],
     ['Bell', 'Opens your alerts. The number shows unread alerts.'],
     ['Speech bubble', 'Opens the AI Assistant from any screen.'],
     ['Person icon', 'Your settings and sign-out.'],
@@ -149,8 +150,82 @@ data.audiences.forEach((a, ai) => {
   });
 });
 
-// ---------------------------------------------------------------- 10. Administration
-body.push(H1('10. Administration'),
+
+// ---------------------------------------------------------------- 10–14. Release 1.1
+const R = f => S('r11_' + f);
+body.push(H1('10. Questionnaires: who responds, through which channel'),
+  P('Questionnaires collect the evidence of the needs analysis. Each campaign uses the IF-PAC forms: one for the General Manager (workshop), one for Management (directors, managers, process owners) and one for team members. Open Portfolio › Questionnaires, with your project selected.'),
+  ...shot(R('q_list'), 'Figure — Portfolio › Questionnaires: campaigns with their channel, response rate and completeness'),
+  H2('10.1 Elaborate the questionnaire'),
+  ...steps(['Click New questionnaire, choose the forms to load (General Manager, Management, Team member) and tick “Tailor with AI” if you want sections specific to the project focus.', 'In Forms and questions, review each section. Every section shows its origin (Template, AI or Manual) and its RACSI; exactly one Accountable is required.', 'Validate the AI sections one by one, or all at once. Distribution stays blocked until every AI section is validated and every section has an Accountable.']),
+  ...shot(R('q_forms'), 'Figure — Forms and questions: sections with their origin and RACSI'),
+  H2('10.2 Define who will respond'),
+  P('In Who responds, click Add respondents. Candidates come from the project stakeholders and users. Each respondent is placed in a population, which decides the form:'),
+  table(['Population', 'Form', 'Who'], [['General Manager', 'QT-IFPAC-DG', 'The General Manager, in a workshop'], ['Management', 'QT-IFPAC-MGT', 'Directors, managers and process owners (decision level MS or MO)'], ['Team member', 'QT-IFPAC-MBR', 'Operational staff (decision level OP)']], [2200, 2200, 5346]),
+  spacer(),
+  P('Filter the list by population with the buttons above the table; select several rows to change their population or channel plan at once.'),
+  ...shot(R('q_who'), 'Figure — Who responds: population, form, contact and channel plan of each respondent'),
+  H2('10.3 Choose the channel to respond'),
+  P('Each respondent follows a channel plan: one channel, or several played in sequence. Open a respondent (pencil) to change it, or set the default in Channels and reminders.'),
+  table(['Channel', 'How the respondent answers'], [
+    ['Face-to-Face', 'An interview with the printable pack (Word or PDF). The interviewer records the answers in the application, offline if needed.'],
+    ['Email', 'An invitation and reminders by e-mail with a personal link; a returned form can also be recorded.'],
+    ['WhatsApp', 'An invitation and reminders by WhatsApp with the personal link.'],
+    ['Application', 'An in-app notification for users of the application, an e-mail with the link for the others.'],
+    ['Combination', 'Several channels in sequence, for example e-mail on day 0, WhatsApp on day 3, then a face-to-face interview on day 8.'],
+  ], [2200, 7546]),
+  spacer(),
+  P('Each step has a channel, an action (invite, remind or interview) and a day D+n after distribution. The plan stops as soon as the respondent answers. Default plans by population:'),
+  table(['Population', 'Default plan'], [['General Manager', 'E-mail D+0 → face-to-face interview D+3'], ['Management', 'E-mail D+0 → e-mail reminder D+4 → face-to-face interview D+8'], ['Team member', 'WhatsApp D+0 (e-mail or application without a mobile) → reminder D+3 → e-mail reminder D+6 → face-to-face interview D+10']], [2200, 7546]),
+  spacer(),
+  ...shot(R('q_channels'), 'Figure — Channels and reminders: response channel, default plans and providers'),
+  H2('10.4 Distribute, follow and capture'),
+  ...steps(['Click Distribute. The first step of every plan is played at once; the next steps are played on their day (or click Play due steps now).', 'Respondents open their personal link, give their consent, answer, save a draft or decline. Nothing is stored without consent.', 'For a face-to-face interview, click the capture icon of the respondent, tick the consent and type the answers. Without a connection, answers are queued on the device and sent when the connection returns, without duplicates.', 'Follow the response rate, engagement and completeness on the cards. Responses below the completeness threshold (70% by default) are excluded unless you include them with a justification.', 'Close the questionnaire, then click Feed the needs analysis in Consolidation.']),
+  ...shot(R('respond'), 'Figure — The respondent’s page: consent, sections, progress, save and send'),
+  ...shot(R('q_capture'), 'Figure — Capture of a face-to-face interview'),
+  ...shot(R('q_consolidation'), 'Figure — Consolidation: soft skills, competences, performance, leadership and SWOT'),
+  ...shot(R('q_log'), 'Figure — Log and outbox: every invitation, reminder, opening and response, per channel'),
+);
+body.push(H1('11. E-mail and WhatsApp channels'),
+  P('Administration › Channels holds the providers of the organization. Without a provider, the channel runs in sandbox: messages are composed and kept in the outbox, so a campaign can be rehearsed safely.'),
+  table(['Channel', 'What to type', 'Where to find it'], [
+    ['E-mail (SMTP)', 'SMTP server, port, TLS, user name, password, sender, reply-to', 'Your mail provider (Microsoft 365, Google Workspace or your own server).'],
+    ['WhatsApp (Cloud API)', 'Phone number ID, business account ID, access token, approved template name and language, webhook verify token, app secret, default country code', 'Meta Business › WhatsApp › API setup. Declare the webhook URL shown on the card in Meta so delivery statuses and replies come back.'],
+  ], [2000, 3900, 3846]),
+  spacer(),
+  ...steps(['Fill the fields and the secret (it is stored encrypted and never shown again).', 'Choose Live, tick Enabled and save.', 'Type a test address or mobile number and click Send a test. The result says in plain language whether the provider accepted the message.']),
+  ...shot(R('channels'), 'Figure — Administration › Channels: e-mail and WhatsApp providers, test and outbox'),
+);
+body.push(H1('12. Training plan'),
+  P('Portfolio › Training plan shows the plan of the selected project: its programs, its trainings and the value of each training for each persona.'),
+  ...shot(R('plan'), 'Figure — Training plan: programs, trainings, golden rules and status'),
+  H2('12.1 What a training contains'),
+  table(['Field', 'What to type'], [
+    ['Program', 'The program the training belongs to (for example PRG-1 — AI skills for the core function).'],
+    ['Level', 'Foundation, Intermediate, Advanced or Expert, or your own level.'],
+    ['Training ID and name', 'A unique code (for example TR-AI-01) and the name of the training.'],
+    ['Objectives', 'One line per objective, starting with a verb (Explain, Apply, Plan…).'],
+    ['Duration and prerequisites', 'Duration in days, by half-days (0.5, 1, 1.5…), and what participants must know before.'],
+    ['Detailed agenda', 'Half-day by half-day: lectures, one quiz and one workshop, each with its title and minutes.'],
+    ['Value proposition per persona', 'For each persona (General Manager, Management, Team member): the fit of the training with their behaviour, pain points and hopes.'],
+  ], [2600, 7146]),
+  spacer(),
+  callout('Golden rules', ['The agenda is given half-day by half-day: the number of half-days equals the duration × 2.', 'Every half-day has exactly one quiz and one workshop, and at least one lecture.', 'A training that breaks a rule cannot be approved; an approved training edited into breaking a rule goes back to Draft.', 'A half-day outside 150–240 minutes is shown as a warning.']),
+  ...shot(R('training'), 'Figure — Training editor: objectives, half-day agenda with live rule checks'),
+  P('Click AI draft to propose the agenda, the objectives and the persona fit (AI use case AIUC-04); nothing is saved until you accept. Personas are edited from the Personas button. Export the plan in Word, PDF or Excel.'),
+);
+body.push(H1('13. Generated documents'),
+  P('Reports › Documents generates the Training Engineering Report of the project from its data: company description, previous plan, needs (strategic, by function, competences, soft skills, leadership), perspectives, the training plan with agendas and personas, annexes and sources.'),
+  ...steps(['Choose the language and click Generate a new version. Sections without data show a notice naming the step to complete.', 'Read the consistency checks (golden rules, budget totals, missing data). Blocking findings prevent publication.', 'Submit for review. Another person publishes it (two-person rule); the previous published version is superseded.', 'Download any version in Word, PDF or Excel. A published version can be retired with a justification; a draft can be deleted.']),
+  ...shot(R('docview'), 'Figure — A generated report: identification, checks and sections'),
+);
+body.push(H1('14. Global search'),
+  P('Press Ctrl+K (⌘K on Mac), click Search in the menu or type in the header bar. Results are grouped by type and show their code, title, location and status. Use the type chips to filter, the scope list to stay in the current project, the arrow keys to move and Enter to open. Codes match exactly and rank first; words ignore case and accents. You only see what you may open.'),
+  ...shot(R('search'), 'Figure — Global search: grouped results with matched words highlighted'),
+);
+
+// ---------------------------------------------------------------- 15. Administration
+body.push(H1('15. Administration'),
   table(['Task', 'Where', 'What to type or choose'], [
     ['Add a user', 'Administration › Users › New user', 'Name, e-mail in the organization’s domain, one or more roles, language. The licence limits the number of active users.'],
     ['Change what a role can do', 'Administration › Permissions', 'Tick or untick a permission for a role. The change applies at once.'],
@@ -159,7 +234,8 @@ body.push(H1('10. Administration'),
     ['Upload a licence', 'Administration › Configuration › Licence', 'Choose the .lic file. The signature and expiry date are checked.'],
     ['Back up now', 'Administration › Backups', 'Click Back up now. Backups are kept 14 days.'],
     ['Read the audit log', 'Administration › Audit log', 'Filter by record, user or date. The log cannot be edited.'],
-    ['Check requirement coverage', 'Administration › Traceability', 'Each requirement of the standard with its status and evidence.'],
+    ['Set up e-mail and WhatsApp', 'Administration › Channels', 'See Part 11.'],
+    ['Check requirement coverage', 'Administration › Traceability', 'Each requirement of the standard SRS v1.6 with its status (Met, Partial, Not met, Deployment responsibility) and evidence.'],
   ], [2600, 3000, 4146]),
   ...shot(S('config'), 'Figure — Administration › Configuration: pack, add-ons, quotas and licence'),
 );

@@ -11,7 +11,7 @@ import * as CH from '../services/channels.js';
 const r = Router();
 r.post('/auth/login', ah(req => login(req)));
 // Liveness only: no tenant data (FR-DA-OPS-06).
-r.get('/health', (req, res) => res.json({ status: 'ok', initialized: isSeeded(), mode: config.deploymentMode, version: one(`SELECT value FROM meta WHERE key='version'`)?.value || '1.0.0' }));
+r.get('/health', (req, res) => res.json({ status: 'ok', initialized: isSeeded(), mode: config.deploymentMode, version: one(`SELECT value FROM meta WHERE key='version'`)?.value || 'unknown' }));
 r.get('/i18n', (req, res) => res.json({ languages: getLanguages(), dictionary: getDictionary() }));
 
 // ------------------------------------------------------------------ respondent link (Application channel)

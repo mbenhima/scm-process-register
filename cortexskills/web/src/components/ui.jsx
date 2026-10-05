@@ -26,7 +26,7 @@ export function Progress({ value, lg, label }) {
 
 const STATUS_CLASS = { 'Completed': 's5', 'Done': 's5', 'Green': 's4', 'Approved': 's5', 'Published': 's5', 'Active': 's4', 'Validated': 's4', 'Signed off': 's5', 'Go': 's5', 'Effective': 's4', 'Valid': 's4', 'Given': 's4', 'Matched': 's4', 'Locked': 's5', 'Filled': 's5', 'Met': 's4', 'Closed': 's4',
   'In progress': 'tint', 'In Review': 's3', 'Submitted': 's3', 'Pending Validation': 's3', 'Pending Re-validation': 's2', 'Amber': 's2', 'Expiring': 's2', 'Partially effective': 's2', 'Hold': 's2', 'Partial': 's2', 'Distributed': 's3', 'Open': 's3', 'Review': 's3', 'Shortlisting': 's3',
-  'Blocked': 's1', 'Red': 's1', 'Rejected': 's1', 'Expired': 's1', 'No-Go': 's1', 'Ineffective': 's1', 'Refused': 's1', 'Unmatched': 's1', 'Deprecated': 's2', 'Retired': '', 'Draft': '', 'Not started': '', 'Deployment responsibility': 'tint' };
+  'Blocked': 's1', 'Red': 's1', 'Rejected': 's1', 'Expired': 's1', 'No-Go': 's1', 'Ineffective': 's1', 'Refused': 's1', 'Unmatched': 's1', 'Not met': 's1', 'Deprecated': 's2', 'Retired': '', 'Draft': '', 'Not started': '', 'Deployment responsibility': 'tint' };
 export function StatusPill({ value }) { const { t } = useI18n(); if (value == null || value === '') return <span className="muted">—</span>; return <span className={`pill ${STATUS_CLASS[value] ?? ''}`}>{t('status.' + value)}</span>; }
 export function AiBadge({ tier }) { const { t } = useI18n(); return <span className={`pill tint ai ${tier === 'Augmented' ? 'aug' : ''}`} title={t('ai.tier.' + tier + '.hint')}><Icon name={tier === 'Augmented' ? 'Sparkles' : 'Wand2'} size={12} />{t('ai.tier.' + tier)}</span>; }
 

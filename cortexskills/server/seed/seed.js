@@ -64,7 +64,7 @@ const lic = orgs.map(o => { const l = JSON.parse(one(`SELECT data FROM licences 
 fs.writeFileSync(config.licenceFile, JSON.stringify(lic, null, 2));
 
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('seeded_at',?)`, now());
-run(`INSERT OR REPLACE INTO meta(key,value) VALUES('version','1.0.0')`);
+run(`INSERT OR REPLACE INTO meta(key,value) VALUES('version',?)`, JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version);
 const { backupNow } = await import('../src/services/ops.js');
 backupNow('seed');
 const count = t => one(`SELECT COUNT(*) n FROM ${t}`).n;
@@ -79,7 +79,7 @@ console.log(`  Example: headld@${orgs[0].domain}  ·  headld@${orgs.find(o => o.
 db.close();
 
 function traceability(reqs) {
-  // Implementation status of every requirement of the Dynamic Apps Standard SRS v1.3 (FR-DA-OPS-08).
+  // Implementation status of every requirement of the Dynamic Apps Standard SRS v1.6 (FR-DA-OPS-08).
   const PARTIAL = {
     'FR-DA-OPS-07': 'Two full runs per organization (Digital and AI) instead of ten instances of each E2E process; every E2E process is instantiated in every run.',
     'NFR-DA-SEC-14': 'SSO is registered as an external integration (INT-SSO-01); SAML/OIDC login and MFA need an identity provider at deployment.',
@@ -105,6 +105,8 @@ function traceability(reqs) {
     PORT: 'node:sqlite, pure-JavaScript dependencies, npm install/seed/dev', MAINT: 'Single-source modules for entitlements, alerts, AI', COMPAT: 'Evergreen browsers; BPMN XML round trip', COMP: 'COSO coverage, AI log confidence, non-certification disclosure', DATA: 'No external call unless a user adds a model key' };
   return reqs.map(r => {
     const fam = r.id.split('-')[2];
+    // Requirements added by SRS revisions 1.4 to 1.6 carry their own assessed status and evidence.
+    if (r.v16) return { id: r.id, section: r.section, text: tr(r.text), status: r.v16.status, evidence: tr(r.v16.evidence) };
     const status = PARTIAL[r.id] ? 'Partial' : DEPLOY.includes(r.id) ? 'Deployment responsibility' : 'Met';
     return { id: r.id, section: r.section, text: tr(r.text), status, evidence: tr(PARTIAL[r.id] || (DEPLOY.includes(r.id) ? 'Target for the production hosting (sizing, uptime, encryption at rest, residency).' : EVID[fam] || 'Implemented')) };
   });

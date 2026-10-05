@@ -2,6 +2,16 @@
 
 Training engineering platform: 33 end-to-end processes in seven phases, from the scope of work to the evaluation of results, for large companies and SMEs in 29 sectors, in English, French and Arabic.
 
+## What is new in 1.1
+
+- **Questionnaires (IF-PAC)**: General Manager, Management and Team member forms; choose who responds and the channel to respond (Face-to-Face, E-mail, WhatsApp, Application or a Combination in sequence); consent, offline capture, completeness and consolidation into the needs analysis.
+- **E-mail and WhatsApp channels**: SMTP and WhatsApp Business Cloud API per organization, encrypted secrets, test, outbox, retries and delivery webhooks; sandbox when no provider is set.
+- **Training plan**: programs, trainings (level, ID, name, objectives, duration, prerequisites), half-day agendas of lectures, quizzes and workshops, and the value proposition per persona. Golden rules: one quiz and one workshop per half-day.
+- **Training Engineering Report**: generated from the data, checked, published by a second person, in Word, PDF and Excel.
+- **Global search** (Ctrl+K) and traceability against SRS v1.6.
+
+E-mail and WhatsApp settings are described in the Installation Guide, section 9.1.
+
 ## Start in three steps
 
 You need **Node.js 22.13 or newer** (free, from https://nodejs.org — choose the LTS version).

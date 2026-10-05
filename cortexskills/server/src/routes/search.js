@@ -47,7 +47,7 @@ r.get('/search', requirePerm('dashboard.view'), ah(req => {
     const rows = all(`SELECT id, entity, project_id, ref, data FROM records WHERE (org_id=? OR (org_id IS NULL AND entity IN ('QuestionnaireTemplate','ChecklistTemplate','ProjectTemplate','GateDefinition','Vertical'))) AND entity IN (${ph}) ${projectId ? 'AND (project_id=? OR project_id IS NULL)' : ''} LIMIT 60000`, req.orgId, ...allowed, ...(projectId ? [projectId] : []));
     for (const x of rows) {
       if (!norm(x.data).includes(q.split(/\s+/)[0])) continue;
-      const d = J(x.data, {}); const code = d.code || d.training_code || x.ref || '';
+      const d = J(x.data, {}); const code = d.code || d.training_code || (/[-_]/.test(x.ref || '') ? x.ref : '');
       const labelField = LABELS.find(f => d[f] != null && typeof d[f] !== 'boolean');
       const s = score(q, code, LABELS.flatMap(f => textsOf(d[f])));
       const gov = ['BusinessRule', 'Control', 'RiskOpportunity', 'KpiDefinition', 'Action', 'RexEntry'].includes(x.entity);

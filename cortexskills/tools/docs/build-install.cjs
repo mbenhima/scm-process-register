@@ -97,6 +97,19 @@ const body = [
     ['PORT', '4000', 'Port of the server'], ['DEPLOYMENT_MODE', 'saas', 'saas or onprem (licence provider)'], ['DATA_DIR', 'server/data', 'Where the data, backups and attachments are kept'],
     ['JWT_SECRET', 'development value', 'Signs the sign-in tokens — change it in production'], ['BACKUP_RETENTION_DAYS', '14', 'How long backups are kept'], ['CORS_ORIGIN', '*', 'Allowed web addresses'],
   ], [3000, 2400, 4346]),
+  H2('9.1 Questionnaire channels: e-mail and WhatsApp'),
+  P('Questionnaire invitations and reminders go out by e-mail (SMTP) and WhatsApp (WhatsApp Business Cloud API). Each organization can enter its own providers in Administration › Channels; the settings below give a platform default used by organizations that have none. Without any provider, messages are kept in the outbox (sandbox) and nothing is sent.'),
+  table(['Setting (server/.env)', 'Default', 'Purpose'], [
+    ['PUBLIC_URL', 'address of the request', 'Public address of the application, used in the personal links sent to respondents (for example https://skills.example.com)'],
+    ['CHANNEL_SECRET_KEY', 'JWT_SECRET', 'Key that encrypts the channel passwords and tokens (AES-256-GCM) — set a long private value and keep it'],
+    ['SMTP_HOST, SMTP_PORT', '—, 587', 'Mail server and port'], ['SMTP_SECURE', 'false', 'true for TLS from the start (port 465)'],
+    ['SMTP_USER, SMTP_PASS', '—', 'Mail account'], ['SMTP_FROM', '—', 'Sender address shown to respondents'],
+    ['WHATSAPP_TOKEN', '—', 'Access token of the WhatsApp Business app'], ['WHATSAPP_PHONE_NUMBER_ID', '—', 'Phone number ID from Meta › WhatsApp › API setup'],
+    ['WHATSAPP_TEMPLATE, WHATSAPP_TEMPLATE_LANG', '—', 'Approved message template used for the first contact, and its language code'],
+    ['WHATSAPP_VERIFY_TOKEN', '—', 'Token you choose and type in Meta when declaring the webhook'], ['WHATSAPP_APP_SECRET', '—', 'App secret used to check the signature of webhook calls'],
+    ['WHATSAPP_API_BASE', 'https://graph.facebook.com/v21.0', 'Cloud API address'],
+  ], [3000, 2400, 4346]),
+  P('Declare the webhook <PUBLIC_URL>/api/public/whatsapp/webhook in Meta so delivery statuses (sent, delivered, read, failed) and replies come back. The server retries failed messages every minute and plays due reminders every 10 minutes.'),
 
   H1('10. If something goes wrong'),
   table(['Message or symptom', 'What to do'], [

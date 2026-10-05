@@ -91,7 +91,33 @@ const ui = [
 const files = fs.readdirSync(outDir);
 const want = [['Application zip (server + web)', 'CortexSkills-app.zip'], ['Source code zip', 'CortexSkills-source.zip'], ['Installation Guide (Word)', 'CortexSkills_Installation_Guide.docx'], ['Installation Guide (PDF)', 'CortexSkills_Installation_Guide.pdf'],
   ['User Guide (Word)', 'CortexSkills_User_Guide.docx'], ['User Guide (PDF)', 'CortexSkills_User_Guide.pdf'], ['Presentation EN (PowerPoint)', 'CortexSkills_Presentation_EN.pptx'], ['Presentation EN (PDF)', 'CortexSkills_Presentation_EN.pdf'],
-  ['Presentation FR (PowerPoint)', 'CortexSkills_Presentation_FR.pptx'], ['Presentation FR (PDF)', 'CortexSkills_Presentation_FR.pdf'], ['Coverage checklist (Excel)', 'CortexSkills_Coverage_Checklist.xlsx']];
+  ['Presentation FR (PowerPoint)', 'CortexSkills_Presentation_FR.pptx'], ['Presentation FR (PDF)', 'CortexSkills_Presentation_FR.pdf'], ['Coverage checklist (Excel)', 'CortexSkills_Coverage_Checklist.xlsx'],
+  ['Healthcare presentation EN (PowerPoint)', 'CortexSkills_Healthcare_Presentation_EN.pptx'], ['Healthcare presentation EN (PDF)', 'CortexSkills_Healthcare_Presentation_EN.pdf'],
+  ['Healthcare presentation FR (PowerPoint)', 'CortexSkills_Healthcare_Presentation_FR.pptx'], ['Healthcare presentation FR (PDF)', 'CortexSkills_Healthcare_Presentation_FR.pdf']];
+// --- Release 1.1: change request, IF-PAC templates and the training engineering report structure
+const one = (q, ...a) => db.prepare(q).get(...a);
+const n = (q, ...a) => one(q, ...a).n;
+const tpls = db.prepare(`SELECT data FROM records WHERE entity='QuestionnaireTemplate'`).all().map(r => JSON.parse(r.data));
+const chanCount = ch => n(`SELECT COUNT(*) n FROM messages WHERE channel=?`, ch);
+const courses = db.prepare(`SELECT data FROM records WHERE entity='TrainingCourse'`).all().map(r => JSON.parse(r.data));
+const cr = [
+  ['1. Define who will respond', 'Respondents added from stakeholders and users, each in a population (General Manager, Management, Team member) that selects the IF-PAC form; bulk change of population and plan', `${n("SELECT COUNT(*) n FROM q_invitations")} respondents seeded`, 'Met'],
+  ['2. Channel to respond: Face-to-Face, Email, Application, Combination', 'Channel plan per respondent: one channel or several in sequence with a day D+n each (for example e-mail, then WhatsApp, then face-to-face); default plans per population', `${n("SELECT COUNT(*) n FROM q_invitations WHERE json_array_length(channel_plan) > 1")} combination plans`, 'Met'],
+  ['2a. Start by e-mail, continue face-to-face, any combination', 'Steps are played in order; the plan stops at the response; interviews scheduled when the face-to-face step is reached', `${n("SELECT COUNT(*) n FROM q_invitations WHERE status LIKE 'Interview%'")} interviews to schedule or scheduled`, 'Met'],
+  ['3.1 E-mail channel', 'SMTP provider per organization or platform default; secrets encrypted; test; outbox with delivery status; retries', `${chanCount('email')} e-mails composed (sandbox)`, 'Met'],
+  ['3.2 WhatsApp channel', 'WhatsApp Business Cloud API: template or text messages, webhook with signature check for delivery statuses and replies, opt-out', `${chanCount('whatsapp')} WhatsApp messages composed (sandbox)`, 'Met'],
+  ['4. Training plan: Program, Level, Training ID, Training Name', 'Programs and trainings with level, code and name', `${n("SELECT COUNT(*) n FROM records WHERE entity='TrainingProgram'")} programs · ${courses.length} trainings`, 'Met'],
+  ['4. Training Objectives, Duration, Prerequisites', 'Objectives list, duration in half-days, prerequisites', `${courses.filter(c => (c.objectives || []).length && c.duration_days && c.prerequisites).length} of ${courses.length} trainings complete`, 'Met'],
+  ['4. Detailed agenda with Lectures, Quizzes, Workshops, half-day by half-day', 'Agenda builder by half-day with item type, title and minutes; AI draft (AIUC-04)', `${courses.reduce((a, c) => a + (c.agenda || []).length, 0)} half-days seeded`, 'Met'],
+  ['4. Value proposition per persona (behaviour, pain points, hopes)', 'Personas per organization; fit of each training with the behaviour, pain points and hopes of each persona', `${n("SELECT COUNT(*) n FROM records WHERE entity='Persona'")} personas`, 'Met'],
+  ['Golden rules: one quiz and one workshop per half-day', 'Checked live in the editor, in the plan, before approval (blocked) and in the report consistency checks; approved training reverts to Draft when edited into breaking a rule', `${courses.filter(c => (c.agenda || []).every(h => (h.items || []).filter(i => i.type === 'Quiz').length === 1 && (h.items || []).filter(i => i.type === 'Workshop').length === 1)).length} of ${courses.length} trainings compliant (the others are demonstration cases)`, 'Met'],
+];
+const ter = ['Identification (reference, version, status, author, approver, data date, classification)', '1. Company description: vision, organization chart, history, SWOT, mission, sample', '2. Previous training plan', '3. Needs: strategic, by function, competences, demands, HR orientations, change management, soft skills, leadership, transverse skills, impact', '4. Perspectives', '5. Training plan: trainings, half-day agendas, personas', '6. Annexes, sources, revisions, approval'];
+const ifpac = [
+  ...tpls.map(t => [`Template ${t.code}`, `${en(t.name)} — population ${t.population}, ${(t.sections || []).length} sections (${[...new Set((t.sections || []).map(x => x.type))].join(', ')})`, 'DG_/Management_/Membre_Template_IF_PAC.docx', 'Met']),
+  ...ter.map(x => ['Training Engineering Report', x, 'Rapport_ding_nierie_de_formation_Soci_t_X_S3.docx', 'Met']),
+  ['Generated reports', `${n("SELECT COUNT(*) n FROM documents")} reports (${n("SELECT COUNT(*) n FROM documents WHERE status='Published'")} published) in Word, PDF and Excel`, 'Reports › Documents', 'Met'],
+];
 const delRows = want.map(([a, f]) => [a, f, files.includes(f) || f.endsWith('.xlsx') ? 'Met' : 'Pending']);
 // Seed facts
 const facts = [['Organizations', db.prepare('SELECT COUNT(*) n FROM organizations').get().n], ['Groups', db.prepare('SELECT COUNT(*) n FROM groups_').get().n], ['Users', db.prepare('SELECT COUNT(*) n FROM users').get().n],
@@ -119,12 +145,14 @@ function sheet(name, headers, rows, widths, statusCol, title) {
 const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 + '%' : '—');
 const d01Total = sheetRows.reduce((s, r) => s + r[1], 0), d01Cov = sheetRows.reduce((s, r) => s + r[2], 0);
 const summary = [
-  ['Dynamic_Apps_Standard_SRS_v1.3.docx', trace.length, tc('Met'), tc('Partial'), tc('Deployment responsibility'), tc('Not met'), pct(tc('Met') + tc('Partial') + tc('Deployment responsibility'), trace.length), 'Sheet “SRS requirements”; also Administration › Traceability in the app'],
+  ['DynamicCortex_Apps_Standard_SRS_v1_6.docx (with v1.3)', trace.length, tc('Met'), tc('Partial'), tc('Deployment responsibility'), tc('Not met'), pct(tc('Met') + tc('Partial') + tc('Deployment responsibility'), trace.length), 'Sheet “SRS requirements”; also Administration › Traceability in the app'],
   ['CortexSkills_Deliverables_D01D10_D15_D26.xlsx', d01Total, d01Cov, 0, 0, d01Total - d01Cov, pct(d01Cov, d01Total), 'Sheets “Deliverables D01–D26” and “Deliverable items”'],
   ['CortexSkills_Process_Design_E2E_v4.docx', e2eRows.length + verts.length + tracks.length, e2eRows.filter(r => r[5] === 'Met').length + verts.length + tracks.length, 0, 0, e2eRows.filter(r => r[5] !== 'Met').length, pct(e2eRows.filter(r => r[5] === 'Met').length + verts.length + tracks.length, e2eRows.length + verts.length + tracks.length), '33 E2E processes instantiated in 116 full runs; 29 verticals; 3 SME tracks'],
   ['CortexSkills_Packs_Integrations_AddOns.docx', packRows.length, packRows.length, 0, 0, 0, '100%', 'Sheet “Packs, add-ons, integrations”'],
   ['CD_D30_Licensing_Implementation_Schema.docx', d30.length, d30.filter(r => r[3] === 'Met').length, 0, d30.filter(r => r[3] !== 'Met').length, 0, '100%', 'Sheet “D30 licensing”'],
   ['UI instructions (brief)', ui.length, ui.length, 0, 0, 0, '100%', 'Sheet “UI rules”'],
+  ['Change request (respondents, channels, training plan)', cr.length, cr.filter(r => r[3] === 'Met').length, cr.filter(r => r[3] === 'Partial').length, 0, cr.filter(r => r[3] === 'Not met').length, pct(cr.filter(r => r[3] !== 'Not met').length, cr.length), 'Sheet “Change request 1.1”'],
+  ['IF-PAC templates (DG, Management, Member) and Société X report', ifpac.length, ifpac.length, 0, 0, 0, '100%', 'Sheet “IF-PAC & report”'],
 ];
 sheet('Summary', ['Source file', 'Items', 'Met', 'Partial', 'Deployment responsibility', 'Not met', 'Covered', 'Where to check'], summary, [44, 8, 8, 8, 14, 9, 10, 60], null, `CortexSkills — coverage checklist of the source documents · ${new Date().toISOString().slice(0, 10)}`);
 const ws0 = out.getWorksheet('Summary'); ws0.addRow([]); ws0.addRow(['Seeded demonstration data']).font = { name: 'Calibri', size: 12, bold: true, color: { argb: C.dark } };
@@ -142,6 +170,8 @@ sheet('Verticals & SME', ['Kind', 'ID', 'Name', 'Details', 'Status'], [
 sheet('Packs, add-ons, integrations', ['Kind', 'ID', 'Name', 'Where in the application', 'Status'], packRows, [18, 12, 46, 70, 10], 5);
 sheet('D30 licensing', ['D30 section', 'Implementation', 'Source file', 'Status'], d30, [42, 70, 44, 22], 4);
 sheet('UI rules', ['Rule', 'Implementation', 'Status'], ui, [60, 80, 10], 3);
+sheet('Change request 1.1', ['Request', 'Implementation', 'Seeded evidence', 'Status'], cr, [44, 80, 36, 10], 4);
+sheet('IF-PAC & report', ['Item', 'Content', 'Source', 'Status'], ifpac, [28, 90, 44, 10], 4);
 sheet('Delivered files', ['Deliverable', 'File', 'Status'], delRows, [40, 50, 12], 3);
 fs.mkdirSync(outDir, { recursive: true });
 const f = path.join(outDir, 'CortexSkills_Coverage_Checklist.xlsx'); await out.xlsx.writeFile(f);
