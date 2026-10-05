@@ -1,5 +1,7 @@
-"""Shared Word styling for the deliverables (brand guide: Times New Roman, orange
-headings, orange table headers, A4 with 0.75 in margins, TOC, page X of Y)."""
+"""Shared Word styling for the deliverables — AI Value graphical chart v1.0: Open Sans 11 pt
+body (Ink), Montserrat headings (Navy), Navy table headers with alternating white / #F5F8FB
+rows and 1 px #E1E8F0 borders, A4 with 2 cm margins, AI Value logo, TOC, page X of Y.
+Every fixed text is available in English and French (set_lang)."""
 import os
 from docx import Document
 from docx.enum.section import WD_ORIENT
@@ -9,18 +11,62 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt, RGBColor, Cm, Emu
 
-ORANGE = 'F8931D'
-DEEP = 'E07B00'
-TINT = 'FDEEDA'
-DARK = '3A3A3C'
-INK = '58595B'
-MEDIUM = '808184'
-LIGHT = 'F2F2F3'
-LINE = 'E3E3E4'
+# AI Value core palette (hex without #)
+NAVY = '123A5F'
+NAVY_DARK = '0D2A47'
+AZURE = '1876C6'
+GREEN = '28C87C'
+TEAL = '17A2B8'
+BG = 'F5F8FB'
+INK = '2C3E50'
+MUTED = '5A6B7B'
+LINE = 'E1E8F0'
+AZURE_TINT = 'E8F1FB'
+GREEN_TINT = 'E7F9F0'
 ST = ['F4C7C3', 'FBE0B5', 'FFF3B0', 'D9EAD3', 'B6D7A8']
-FONT = 'Times New Roman'
+# Names used by the builders
+ORANGE = NAVY        # table header fill
+DEEP = AZURE         # accent (eyebrows, large display text only)
+TINT = AZURE_TINT    # callouts
+DARK = NAVY          # titles, strong text
+MEDIUM = MUTED
+LIGHT = BG
+FONT = 'Open Sans'
+HEAD = 'Montserrat'
+USABLE_CM = 17.0     # A4 width 21 cm - 2 x 2 cm margins
 HERE = os.path.dirname(os.path.abspath(__file__))
-LOGO = os.path.join(HERE, '..', '..', 'deliverables', 'assets', 'poweract-logo.png')
+ASSETS = os.path.join(HERE, '..', '..', 'deliverables', 'assets')
+LOGO = os.path.join(ASSETS, 'aivalue-logo.png')
+ICON = os.path.join(ASSETS, 'aivalue-icon.png')
+APP_LOGO = os.path.join(ASSETS, 'dynamicms-logo.png')
+COMPANY = 'AI Value'
+DESCRIPTOR = 'Digital & AI Transformation'
+TAGLINE = 'MEASURABLE · GOVERNED · SUSTAINABLE'
+LANG = 'en'
+WORDS = {
+    'en': {'toc': 'Table of Contents', 'toc_hint': 'Right-click and choose Update Field to refresh the table of contents.', 'page': 'Page ', 'of': ' of '},
+    'fr': {'toc': 'Table des matières', 'toc_hint': 'Clic droit puis Mettre à jour les champs pour actualiser la table des matières.', 'page': 'Page ', 'of': ' sur '},
+}
+
+
+def set_lang(lang):
+    global LANG
+    LANG = lang if lang in WORDS else 'en'
+
+
+def W(k):
+    return WORDS[LANG][k]
+
+
+def _fonts(rpr, name):
+    rf = rpr.find(qn('w:rFonts'))
+    if rf is None:
+        rf = OxmlElement('w:rFonts'); rpr.append(rf)
+    for a in ('w:ascii', 'w:hAnsi', 'w:cs', 'w:eastAsia'):
+        rf.set(qn(a), name)
+    for a in ('w:asciiTheme', 'w:hAnsiTheme', 'w:eastAsiaTheme', 'w:cstheme'):
+        if rf.get(qn(a)) is not None:
+            del rf.attrib[qn(a)]
 
 
 def rgb(h):
@@ -41,34 +87,28 @@ def new_document(title, header_text):
     sec = doc.sections[0]
     sec.page_width, sec.page_height = Emu(7560310), Emu(10692130)  # A4
     for side in ('left_margin', 'right_margin', 'top_margin', 'bottom_margin'):
-        setattr(sec, side, Emu(685800))  # 0.75 in
+        setattr(sec, side, Cm(2))
     st = doc.styles
     normal = st['Normal']
     normal.font.name = FONT
-    normal.font.size = Pt(12)
+    normal.font.size = Pt(11)
     normal.font.color.rgb = rgb(INK)
-    normal.element.rPr.rFonts.set(qn('w:eastAsia'), FONT)
-    normal.element.rPr.rFonts.set(qn('w:cs'), FONT)
+    _fonts(normal.element.get_or_add_rPr(), FONT)
     pf = normal.paragraph_format
-    pf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    pf.alignment = WD_ALIGN_PARAGRAPH.LEFT
     pf.line_spacing = 1.15
     pf.space_after = Pt(6)
-    for name, size, color, before, after in (('Heading 1', 17, DEEP, 18, 8), ('Heading 2', 13.5, DARK, 14, 6), ('Heading 3', 12, DEEP, 10, 4)):
+    for lst in ('List Bullet', 'List Number'):
+        _fonts(st[lst].element.get_or_add_rPr(), FONT)
+    # H1 Montserrat 20 pt Navy bold; H2 Montserrat SemiBold 16 pt Navy; H3 Montserrat 12.5 pt Navy bold
+    for name, size, font, bold, before, after in (('Heading 1', 20, HEAD, True, 18, 8), ('Heading 2', 16, HEAD + ' SemiBold', False, 14, 6), ('Heading 3', 12.5, HEAD, True, 10, 4)):
         s = st[name]
-        s.font.name = FONT
+        s.font.name = font
         s.font.size = Pt(size)
-        s.font.bold = True
+        s.font.bold = bold
         s.font.italic = False
-        s.font.color.rgb = rgb(color)
-        rpr = s.element.get_or_add_rPr()
-        rf = rpr.find(qn('w:rFonts'))
-        if rf is None:
-            rf = OxmlElement('w:rFonts'); rpr.append(rf)
-        for a in ('w:ascii', 'w:hAnsi', 'w:cs', 'w:eastAsia'):
-            rf.set(qn(a), FONT)
-        for a in ('w:asciiTheme', 'w:hAnsiTheme', 'w:eastAsiaTheme', 'w:cstheme'):
-            if rf.get(qn(a)) is not None:
-                del rf.attrib[qn(a)]
+        s.font.color.rgb = rgb(NAVY)
+        _fonts(s.element.get_or_add_rPr(), font)
         s.paragraph_format.space_before = Pt(before)
         s.paragraph_format.space_after = Pt(after)
         s.paragraph_format.keep_with_next = True
@@ -76,21 +116,26 @@ def new_document(title, header_text):
         if name == 'Heading 1':
             ppr = s.element.get_or_add_pPr()
             pbdr = OxmlElement('w:pBdr')
-            pbdr.append(_border(None, 'w:bottom', 8, DEEP))
+            pbdr.append(_border(None, 'w:bottom', 6, LINE))
             ppr.append(pbdr)
     doc.core_properties.title = title
-    doc.core_properties.author = 'POWERACT Consulting'
-    # Header and footer
+    doc.core_properties.author = COMPANY
+    # Header: AI Value icon (above the 8 mm minimum) at the start, document name at the end
     hp = sec.header.paragraphs[0]
-    hp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    r = hp.add_run(header_text)
+    hp.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    tabs = hp.paragraph_format.tab_stops
+    from docx.enum.text import WD_TAB_ALIGNMENT
+    tabs.add_tab_stop(Cm(USABLE_CM), WD_TAB_ALIGNMENT.RIGHT)
+    if os.path.exists(ICON):
+        hp.add_run().add_picture(ICON, height=Cm(0.9))
+    r = hp.add_run('\t' + header_text)
     r.font.size = Pt(9); r.font.color.rgb = rgb(MEDIUM)
     fp = sec.footer.paragraphs[0]
     fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = fp.add_run('POWERACT Consulting  ·  Page ')
+    r = fp.add_run(f'{COMPANY} — {DESCRIPTOR}  ·  ' + W('page'))
     r.font.size = Pt(9); r.font.color.rgb = rgb(MEDIUM)
     _field(fp, 'PAGE')
-    r = fp.add_run(' of ')
+    r = fp.add_run(W('of'))
     r.font.size = Pt(9); r.font.color.rgb = rgb(MEDIUM)
     _field(fp, 'NUMPAGES')
     sec.different_first_page_header_footer = True
@@ -110,33 +155,42 @@ def _field(p, code):
     e = OxmlElement('w:fldChar'); e.set(qn('w:fldCharType'), 'end'); r5._r.append(e)
 
 
-def cover(doc, eyebrow, title, subtitle, meta):
-    for _ in range(3):
-        doc.add_paragraph()
-    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+def cover(doc, eyebrow, title, subtitle, meta, app_logo=True):
+    """Cover: AI Value logo (full lockup, 6 cm), product logo, eyebrow (Azure, uppercase,
+    tracked), title (Montserrat, Navy), subtitle (Ink), meta (Muted), tagline (Green)."""
+    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     if os.path.exists(LOGO):
         p.add_run().add_picture(LOGO, width=Cm(6))
-    else:
-        r = p.add_run('POWERACT'); r.bold = True; r.font.size = Pt(30); r.font.color.rgb = rgb(DARK)
-        p2 = doc.add_paragraph(); p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        r = p2.add_run('C O N S U L T I N G'); r.font.size = Pt(11); r.bold = True; r.font.color.rgb = rgb(DEEP)
-    for _ in range(4):
+    for _ in range(2):
         doc.add_paragraph()
-    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run(eyebrow.upper()); r.bold = True; r.font.size = Pt(11); r.font.color.rgb = rgb(DEEP)
-    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run(title); r.bold = True; r.font.size = Pt(28); r.font.color.rgb = rgb(DARK)
-    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run(subtitle); r.font.size = Pt(14); r.font.color.rgb = rgb(INK)
-    for _ in range(6):
+    if app_logo and os.path.exists(APP_LOGO):
+        p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p.add_run().add_picture(APP_LOGO, width=Cm(3.6))
+    doc.add_paragraph()
+    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    r = p.add_run(eyebrow.upper()); r.bold = True; r.font.size = Pt(10); r.font.color.rgb = rgb(AZURE)
+    _spacing(r, 40)
+    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    r = p.add_run(title); r.bold = True; r.font.size = Pt(30); r.font.color.rgb = rgb(NAVY); r.font.name = HEAD; _fonts(r._r.get_or_add_rPr(), HEAD)
+    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    r = p.add_run(subtitle); r.font.size = Pt(13); r.font.color.rgb = rgb(INK)
+    for _ in range(5):
         doc.add_paragraph()
-    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     r = p.add_run(meta); r.font.size = Pt(10); r.font.color.rgb = rgb(MEDIUM)
+    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    r = p.add_run(TAGLINE); r.bold = True; r.font.size = Pt(9.5); r.font.color.rgb = rgb(GREEN)
+    _spacing(r, 60)
     page_break(doc)
 
 
-def toc(doc, label='Table of Contents'):
-    h = doc.add_paragraph(); r = h.add_run(label); r.bold = True; r.font.size = Pt(17); r.font.color.rgb = rgb(DEEP)
+def _spacing(run, twentieths):
+    rpr = run._r.get_or_add_rPr()
+    sp = OxmlElement('w:spacing'); sp.set(qn('w:val'), str(twentieths)); rpr.append(sp)
+
+
+def toc(doc, label=None):
+    h = doc.add_paragraph(); r = h.add_run(label or W('toc')); r.bold = True; r.font.size = Pt(20); r.font.color.rgb = rgb(NAVY); r.font.name = HEAD; _fonts(r._r.get_or_add_rPr(), HEAD)
     p = doc.add_paragraph()
     r = p.add_run()
     b = OxmlElement('w:fldChar'); b.set(qn('w:fldCharType'), 'begin'); b.set(qn('w:dirty'), 'true'); r._r.append(b)
@@ -144,7 +198,7 @@ def toc(doc, label='Table of Contents'):
     t = OxmlElement('w:instrText'); t.set(qn('xml:space'), 'preserve'); t.text = ' TOC \\o "1-3" \\h \\z \\u '; r2._r.append(t)
     r3 = p.add_run()
     s = OxmlElement('w:fldChar'); s.set(qn('w:fldCharType'), 'separate'); r3._r.append(s)
-    p.add_run('Right-click and choose Update Field to refresh the table of contents.')
+    p.add_run(W('toc_hint'))
     r5 = p.add_run()
     e = OxmlElement('w:fldChar'); e.set(qn('w:fldCharType'), 'end'); r5._r.append(e)
     page_break(doc)
@@ -182,9 +236,31 @@ def bullets(doc, items, size=None):
         p.paragraph_format.space_after = Pt(2)
 
 
+def _new_num(doc, style):
+    # A fresh w:num on the style's abstract list, with its level 0 restarted at 1
+    numbering = doc.part.numbering_part.numbering_definitions._numbering
+    pPr = doc.styles[style].element.pPr
+    num_id = int(pPr.numPr.numId.val)
+    abstract = None
+    for n in numbering.findall(qn('w:num')):
+        if int(n.get(qn('w:numId'))) == num_id:
+            abstract = n.find(qn('w:abstractNumId')).get(qn('w:val'))
+    new_id = max(int(n.get(qn('w:numId'))) for n in numbering.findall(qn('w:num'))) + 1
+    num = OxmlElement('w:num'); num.set(qn('w:numId'), str(new_id))
+    a = OxmlElement('w:abstractNumId'); a.set(qn('w:val'), abstract); num.append(a)
+    ov = OxmlElement('w:lvlOverride'); ov.set(qn('w:ilvl'), '0')
+    st = OxmlElement('w:startOverride'); st.set(qn('w:val'), '1'); ov.append(st); num.append(ov)
+    numbering.append(num)
+    return new_id
+
+
 def numbered(doc, items):
+    num_id = _new_num(doc, 'List Number')
     for it in items:
         p = doc.add_paragraph(style='List Number')
+        numPr = p._p.get_or_add_pPr().get_or_add_numPr()
+        numPr.get_or_add_ilvl().val = 0
+        numPr.get_or_add_numId().val = num_id
         p.add_run(it)
         p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
         p.paragraph_format.space_after = Pt(2)
@@ -205,8 +281,11 @@ def _cell_margins(table, top=50, bottom=50, left=80, right=80):
 
 
 def table(doc, headers, rows, widths_cm, size=9.5, status_col=None, status_fn=None, bold_first=False):
-    """Orange header with bold white text, alternating white / grey-light rows,
-    thin grey-line borders; column widths sum to the usable width (18 cm)."""
+    """Navy header with bold white text, alternating white / #F5F8FB rows, thin #E1E8F0
+    borders; column widths are scaled to the usable width (17 cm)."""
+    tot = sum(widths_cm)
+    if tot > USABLE_CM:
+        widths_cm = [w * USABLE_CM / tot for w in widths_cm]
     t = doc.add_table(rows=1, cols=len(headers))
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
@@ -263,7 +342,7 @@ def table(doc, headers, rows, widths_cm, size=9.5, status_col=None, status_fn=No
 
 def caption(doc, text):
     p = doc.add_paragraph()
-    r = p.add_run(text); r.italic = True; r.font.size = Pt(10); r.font.color.rgb = rgb(INK)
+    r = p.add_run(text); r.italic = True; r.font.size = Pt(9.5); r.font.color.rgb = rgb(MUTED)
     p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
 
 
@@ -271,7 +350,7 @@ def callout(doc, text, title=None, fill=TINT):
     t = doc.add_table(rows=1, cols=1)
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     c = t.rows[0].cells[0]
-    c.width = Cm(18)
+    c.width = Cm(USABLE_CM)
     _cell_fill(c, fill)
     _cell_margins(t, 120, 120, 160, 160)
     p = c.paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.LEFT
@@ -284,6 +363,7 @@ def callout(doc, text, title=None, fill=TINT):
 def image(doc, path, width_cm=17, cap=None):
     if not os.path.exists(path):
         return
+    width_cm = min(width_cm, USABLE_CM)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.add_run().add_picture(path, width=Cm(width_cm))
     if cap:

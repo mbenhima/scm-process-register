@@ -23,7 +23,7 @@ if (projectCode) {
   await fetch(`${BASE}/api/auth/prefs`, { method: 'PUT', headers: H, body: JSON.stringify({ projectId, lang }) });
 }
 const browser = await chromium.launch({ executablePath: process.env.CHROME || undefined });
-const ctx = await browser.newContext({ viewport: { width: +width, height: 900 }, deviceScaleFactor: 1 });
+const ctx = await browser.newContext({ viewport: { width: +width, height: 900 }, deviceScaleFactor: 1, locale: lang === "fr" ? "fr-FR" : "en-GB" });
 await ctx.addInitScript(([tk, lg]) => { sessionStorage.setItem('dms.token', tk); localStorage.setItem('dms.lang', lg); localStorage.setItem('dms.lang.chosen', '1'); }, [token, lang]);
 const page = await ctx.newPage();
 const errors = [];

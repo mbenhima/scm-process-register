@@ -6,7 +6,7 @@ import { NoProject } from './Home.jsx';
 import { useIdName } from '../lib/names.js';
 
 const LETTERS = ['', 'R', 'A', 'C', 'S', 'I'];
-const COLOR = { A: 'var(--pa-orange)', R: 'var(--pa-orange-tint)', C: 'var(--st-3)', S: 'var(--st-4)', I: 'var(--pa-grey-light)' };
+const COLOR = { A: 'var(--aiv-azure)', R: 'var(--aiv-azure-tint)', C: 'var(--st-3)', S: 'var(--st-4)', I: 'var(--aiv-bg)' };
 
 export default function Racsi() {
   const idName = useIdName();
@@ -41,7 +41,7 @@ export default function Racsi() {
             {rows.map(a => (
               <tr key={a.id} className={manage ? 'clickable' : ''} tabIndex={manage ? 0 : undefined} onClick={manage ? () => setEdit({ a, map: Object.fromEntries(roles.map(r => [r.code, letterOf(a, r.code)])) }) : undefined} onKeyDown={manage ? (ev) => { if (ev.key === 'Enter') setEdit({ a, map: Object.fromEntries(roles.map(r => [r.code, letterOf(a, r.code)])) }); } : undefined}>
                 <td style={{ position: 'sticky', insetInlineStart: 0 }}><span className="xsmall muted">{idName(a.e2e_id)}{a.mp_id ? ` · ${idName(a.mp_id)}` : ''}</span><br /><span className="strong">{tx(a.name, lang)}</span></td>
-                {roles.map(r => { const l = letterOf(a, r.code); return <td key={r.code} style={{ padding: 4, textAlign: 'center' }}>{l && <span className="matrix-cell" style={{ background: COLOR[l[0]], color: 'var(--pa-grey-dark)' }}>{l}</span>}</td>; })}
+                {roles.map(r => { const l = letterOf(a, r.code); return <td key={r.code} style={{ padding: 4, textAlign: 'center' }}>{l && <span className="matrix-cell" style={{ background: COLOR[l[0]], color: 'var(--aiv-navy)' }}>{l}</span>}</td>; })}
               </tr>
             ))}
           </tbody>

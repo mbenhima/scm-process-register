@@ -16,10 +16,10 @@
     "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 test/api.test.js"
   },
   "dependencies": {
+    "@fontsource/montserrat": "^5.3.0",
     "@fontsource/noto-naskh-arabic": "^5.1.0",
     "@fontsource/noto-sans-arabic": "^5.1.0",
-    "@fontsource/source-sans-3": "^5.1.0",
-    "@fontsource/source-serif-4": "^5.1.0",
+    "@fontsource/open-sans": "^5.3.0",
     "@resvg/resvg-wasm": "^2.6.2",
     "bcryptjs": "^2.4.3",
     "bidi-js": "^1.0.3",

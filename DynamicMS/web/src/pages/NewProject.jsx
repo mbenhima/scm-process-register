@@ -101,7 +101,7 @@ export default function NewProject() {
             </Card>
           </div>
           <div className="stack">
-            <Card title={t('Complexity score')} action={score && <span className="serif" style={{ fontSize: 30, fontWeight: 700, color: 'var(--pa-orange-deep)' }}>{score.score}</span>}>
+            <Card title={t('Complexity score')} action={score && <span className="serif" style={{ fontSize: 30, fontWeight: 700, color: 'var(--aiv-azure)' }}>{score.score}</span>}>
               <div className="stack-8">
                 {(criteria || []).filter(c => !c.vertical || c.vertical === org.data.sector).map(c => (
                   <Field key={c.code} label={`${tx(c.name, lang)} (${c.weight})`}>{(id) => <select id={id} className="select" value={levels[c.code] || 3} onChange={e => setLevels({ ...levels, [c.code]: +e.target.value })}>{[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}{c.levels?.[n - 1] ? ` — ${tx(c.levels[n - 1], lang)}` : ''}</option>)}</select>}</Field>

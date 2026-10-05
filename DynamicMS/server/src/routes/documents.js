@@ -317,13 +317,13 @@ r.get('/orgs/:id/doc-layout', requirePerm('records.view'), h((req, res) => {
   requireOrg(req, req.params.id);
   const l = layoutOf(req.params.id);
   const s = P(get('SELECT value FROM settings WHERE org_id=? AND key=?', req.params.id, 'doc_layout')?.value) || {};
-  res.json({ primaryColor: l.primaryColor || '#F8931D', accentColor: l.accentColor || '#E07B00', titleColor: l.titleColor || '#3A3A3C', headerText: l.headerText || '', footerText: l.footerText || '', logoText: l.logoText || '', hasLogo: !!l.logoFile, logoName: s.logoName || null, canEdit: manageTemplates(req) });
+  res.json({ primaryColor: l.primaryColor || '#123A5F', accentColor: l.accentColor || '#1876C6', titleColor: l.titleColor || '#123A5F', headerText: l.headerText || '', footerText: l.footerText || '', logoText: l.logoText || '', hasLogo: !!l.logoFile, logoName: s.logoName || null, canEdit: manageTemplates(req) });
 }));
 r.put('/orgs/:id/doc-layout', requirePerm('records.view'), h((req, res) => {
   requireOrg(req, req.params.id, true);
   if (!manageTemplates(req)) throw forbidden();
   const b = req.body || {};
-  const hex = (v, k) => { if (v === undefined || v === null || v === '') return undefined; if (!/^#[0-9a-fA-F]{6}$/.test(v)) throw bad('BAD_COLOR', `${k} must be a color like #F8931D.`); return v; };
+  const hex = (v, k) => { if (v === undefined || v === null || v === '') return undefined; if (!/^#[0-9a-fA-F]{6}$/.test(v)) throw bad('BAD_COLOR', `${k} must be a color like #123A5F.`); return v; };
   const prev = P(get('SELECT value FROM settings WHERE org_id=? AND key=?', req.params.id, 'doc_layout')?.value) || {};
   const next = { ...prev, primaryColor: hex(b.primaryColor, 'Primary color'), accentColor: hex(b.accentColor, 'Accent color'), titleColor: hex(b.titleColor, 'Title color'), headerText: String(b.headerText ?? prev.headerText ?? '').slice(0, 120), footerText: String(b.footerText ?? prev.footerText ?? '').slice(0, 160), logoText: String(b.logoText ?? prev.logoText ?? '').slice(0, 60) };
   if (b.removeLogo) { delete next.logoFile; delete next.logoName; }

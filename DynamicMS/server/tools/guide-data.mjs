@@ -13,11 +13,12 @@ import { profileOf } from '../src/services/docdata.js';
 import { templateByCode } from '../src/content/templates.js';
 import { ROLES } from '../src/permissions.js';
 import { rng } from '../src/seed/rng.js';
+import { label } from '../src/content/labels.js';
 
-const [code, out] = process.argv.slice(2);
+const [code, out, lang = 'en'] = process.argv.slice(2);
 openDb();
 const c = catalog();
-const en = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v.en ?? '' : v ?? '');
+const en = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v[lang] ?? v.en ?? '' : v ?? '');
 const p = get('SELECT * FROM projects WHERE code=?', code);
 if (!p) { console.error('No project', code); process.exit(1); }
 const org = get('SELECT * FROM organizations WHERE id=?', p.org_id);
@@ -50,7 +51,8 @@ const resolve = {
   user: (id) => users.find(u => u.id === id)?.name || '',
   role: (rc) => (rc ? en(roleName(rc)) : ''),
   kpi: (id) => { const k = kpis.find(x => x.id === id); return k ? `${k.code} — ${en(k.name)}` : ''; },
-  template: (tc) => (templateByCode[tc] ? `${tc} — ${templateByCode[tc].name.en}` : tc || ''),
+  template: (tc) => (templateByCode[tc] ? `${tc} — ${en(templateByCode[tc].name)}` : tc || ''),
+  label: (x) => label(x, lang), lang,
 };
 const execs = all('SELECT * FROM step_exec WHERE project_id=? ORDER BY seq', p.id);
 const phases = all('SELECT * FROM phases WHERE project_id=? ORDER BY seq', p.id);
@@ -77,7 +79,7 @@ const phaseOut = phases.map(ph => {
           const who = x.assignee_role === 'system' ? null : userOf(x.assignee_role);
           const def = FORM_KINDS[s.formKind] || FORM_KINDS.execute;
           return { id: s.id, seq: s.seq, name: en(s.name), sourceName: en(s.sourceName), brief: en(s.brief), detail: en(s.description), type: s.type, role: en(s.roleName), roleCode: x.assignee_role,
-            user: who ? `${who.name} (${who.email})` : 'DynamicMS Engine (automatic)', form: en(def.label), kind: s.formKind, status: x.status, due: x.due_date,
+            user: who ? `${who.name} (${who.email})` : (lang === 'fr' ? 'Moteur DynamicMS (automatique)' : 'DynamicMS Engine (automatic)'), form: en(def.label), kind: s.formKind, status: x.status, due: x.due_date,
             creates: def.fields.filter(f => f.createsActions || f.createsObjectives).map(f => (f.createsActions ? 'actions' : 'objectives')),
             type_: guideExample(s.formKind, fields, resolve, s) };
         }) })).filter(t => t.steps.length),
@@ -96,11 +98,11 @@ const data = {
   score: get('SELECT score, recommended_track, chosen_track FROM complexity_scores WHERE project_id=?', p.id),
   phases: phaseOut,
   records: {
-    ncs: pick('SELECT code, title, description, source, criticality, stage, root_cause FROM ncs WHERE project_id=? ORDER BY detected_at LIMIT 3', p.id).map(n => ({ code: n.code, title: en(P(n.title)), description: en(P(n.description)), source: n.source, criticality: n.criticality, stage: n.stage, rootCause: en(P(n.root_cause)) })),
-    risks: pick('SELECT code, kind, title, likelihood, impact, treatment FROM risks WHERE project_id=? ORDER BY score DESC LIMIT 5', p.id).map(x => ({ code: x.code, kind: x.kind, title: en(P(x.title)), l: x.likelihood, i: x.impact, treatment: en(P(x.treatment)) })),
+    ncs: pick('SELECT code, title, description, source, criticality, stage, root_cause FROM ncs WHERE project_id=? ORDER BY detected_at LIMIT 3', p.id).map(n => ({ code: n.code, title: en(P(n.title)), description: en(P(n.description)), source: label(n.source, lang), criticality: label(n.criticality, lang), stage: label(n.stage, lang), rootCause: en(P(n.root_cause)) })),
+    risks: pick('SELECT code, kind, title, likelihood, impact, treatment FROM risks WHERE project_id=? ORDER BY score DESC LIMIT 5', p.id).map(x => ({ code: x.code, kind: label(x.kind, lang), title: en(P(x.title)), l: x.likelihood, i: x.impact, treatment: en(P(x.treatment)) })),
     kpis: kpis.slice(0, 6).map(k => ({ code: k.code, name: en(k.name), target: k.targetText, last: k.sample })),
-    audits: pick('SELECT code, title, type, standard, planned_date, status FROM audits WHERE project_id=? ORDER BY planned_date', p.id).map(a => ({ ...a, title: en(P(a.title)) })),
-    documents: pick('SELECT code, title, doc_type, template_id, current_version, status FROM documents WHERE project_id=? ORDER BY code', p.id).map(d => ({ ...d, title: en(P(d.title)) })),
+    audits: pick('SELECT code, title, type, standard, planned_date, status FROM audits WHERE project_id=? ORDER BY planned_date', p.id).map(a => ({ ...a, title: en(P(a.title)), status: label(a.status, lang) })),
+    documents: pick('SELECT code, title, doc_type, template_id, current_version, status FROM documents WHERE project_id=? ORDER BY code', p.id).map(d => ({ ...d, title: en(P(d.title)), status: label(d.status, lang) })),
     registers: pick('SELECT register, code, title, status FROM registers WHERE project_id=? ORDER BY register, code', p.id).map(x => ({ ...x, title: en(P(x.title)) })),
   },
 };

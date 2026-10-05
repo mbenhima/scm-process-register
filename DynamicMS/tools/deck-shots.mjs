@@ -26,7 +26,7 @@ const browser = await chromium.launch();
 const errors = [];
 async function session(email, password) {
   const tk = await tokenFor(email, password);
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 860 }, deviceScaleFactor: 1.5 });
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 860 }, deviceScaleFactor: 1.5, locale: lang === "fr" ? "fr-FR" : "en-GB" });
   await ctx.addInitScript(([t, l]) => { sessionStorage.setItem('dms.token', t); localStorage.setItem('dms.lang', l); localStorage.setItem('dms.lang.chosen', '1'); }, [tk, lang]);
   const page = await ctx.newPage();
   page.on('pageerror', e => errors.push(e.message));

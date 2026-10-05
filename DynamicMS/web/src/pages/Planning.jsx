@@ -31,7 +31,7 @@ export default function Planning() {
   const rtl = lang === 'ar';
   const x = (d) => { const v = LW + ((d2n(d) - min) / (max - min)) * (W - LW - 10); return rtl ? W - v : v; };
   const months = []; { const s = new Date(min); s.setUTCDate(1); for (let m = new Date(s); m.getTime() < max; m.setUTCMonth(m.getUTCMonth() + 1)) months.push(m.toISOString().slice(0, 10)); }
-  const colour = (r) => (r.pct >= 100 || r.status === 'Closed' ? 'var(--st-5)' : r.end_date < today ? 'var(--st-1)' : r.pct > 0 || r.status === 'InProgress' ? 'var(--pa-orange)' : 'var(--pa-grey-line)');
+  const colour = (r) => (r.pct >= 100 || r.status === 'Closed' ? 'var(--st-5)' : r.end_date < today ? 'var(--st-1)' : r.pct > 0 || r.status === 'InProgress' ? 'var(--aiv-azure)' : 'var(--aiv-line)');
   const idx = Object.fromEntries(rows.map((r, i) => [r.id, i]));
   const manage = can('records.manage') && !readOnly;
   const save = async () => {
@@ -42,24 +42,24 @@ export default function Planning() {
       <PageHead eyebrow={t('Records')} title={t('Planning and Gantt')} subtitle={t('Work breakdown structure of the run: one node per phase with its actions, planned dates, progress and dependencies.')} actions={manage && <button className="btn btn-primary" onClick={() => setEdit({ form: { name: '', startDate: today, endDate: today } })}><Plus size={16} />{t('Add node')}</button>} />
       <div className="gantt">
         <svg width={W} height={H} role="img" aria-label={t('Gantt chart')}>
-          {months.map(m => <g key={m}><line x1={x(m)} x2={x(m)} y1={24} y2={H} stroke="var(--pa-grey-line)" /><text x={x(m) + (rtl ? -4 : 4)} y={16} textAnchor={rtl ? 'end' : 'start'} style={{ fill: 'var(--pa-grey-medium)' }}>{m.slice(0, 7)}</text></g>)}
-          <line x1={x(today)} x2={x(today)} y1={20} y2={H} stroke="var(--pa-grey-dark)" strokeDasharray="4 3" /><text x={x(today)} y={H - 4} textAnchor="middle" style={{ fill: 'var(--pa-grey-dark)', fontWeight: 700 }}>{t('Today')}</text>
+          {months.map(m => <g key={m}><line x1={x(m)} x2={x(m)} y1={24} y2={H} stroke="var(--aiv-line)" /><text x={x(m) + (rtl ? -4 : 4)} y={16} textAnchor={rtl ? 'end' : 'start'} style={{ fill: 'var(--aiv-muted)' }}>{m.slice(0, 7)}</text></g>)}
+          <line x1={x(today)} x2={x(today)} y1={20} y2={H} stroke="var(--aiv-navy)" strokeDasharray="4 3" /><text x={x(today)} y={H - 4} textAnchor="middle" style={{ fill: 'var(--aiv-navy)', fontWeight: 700 }}>{t('Today')}</text>
           {rows.map((r, i) => {
             const y = 30 + i * RH;
             const x1 = x(r.start_date); const x2 = x(r.end_date); const bx = Math.min(x1, x2); const bw = Math.max(4, Math.abs(x2 - x1));
             return (
               <g key={`${r.kind}${r.id}`} style={{ cursor: manage && r.kind === 'node' ? 'pointer' : 'default' }} onClick={() => manage && r.kind === 'node' && setEdit({ id: r.id, form: { name: tx(r.name, lang), startDate: r.start_date, endDate: r.end_date, pct: r.pct } })}>
-                {i % 2 === 1 && <rect x={0} y={y - 4} width={W} height={RH} fill="var(--pa-grey-light)" />}
+                {i % 2 === 1 && <rect x={0} y={y - 4} width={W} height={RH} fill="var(--aiv-bg)" />}
                 <text x={rtl ? W - 8 - r.depth * 14 : 8 + r.depth * 14} y={y + 14} textAnchor={rtl ? 'end' : 'start'} style={{ fontWeight: r.kind === 'node' ? 700 : 400 }}>{(tx(r.name, lang) || '').slice(0, 42)}</text>
-                <rect x={bx} y={y + 3} width={bw} height={r.kind === 'node' ? 16 : 12} rx="3" fill={colour(r)} stroke={r.kind === 'node' ? 'var(--pa-grey-ink)' : 'none'} strokeWidth="0.5"><title>{`${tx(r.name, lang)} · ${fmtDate(r.start_date)} → ${fmtDate(r.end_date)} · ${r.pct}%`}</title></rect>
-                {r.kind === 'node' && (r.predecessors || []).map(p => idx[p] !== undefined && <path key={p} d={`M${x(rows[idx[p]].end_date)},${30 + idx[p] * RH + 12} C${x(rows[idx[p]].end_date) + (rtl ? -12 : 12)},${30 + idx[p] * RH + 12} ${bx + (rtl ? bw + 12 : -12)},${y + 11} ${rtl ? bx + bw : bx},${y + 11}`} fill="none" stroke="var(--pa-grey-medium)" strokeWidth="1" markerEnd="url(#arr)" />)}
+                <rect x={bx} y={y + 3} width={bw} height={r.kind === 'node' ? 16 : 12} rx="3" fill={colour(r)} stroke={r.kind === 'node' ? 'var(--aiv-ink)' : 'none'} strokeWidth="0.5"><title>{`${tx(r.name, lang)} · ${fmtDate(r.start_date)} → ${fmtDate(r.end_date)} · ${r.pct}%`}</title></rect>
+                {r.kind === 'node' && (r.predecessors || []).map(p => idx[p] !== undefined && <path key={p} d={`M${x(rows[idx[p]].end_date)},${30 + idx[p] * RH + 12} C${x(rows[idx[p]].end_date) + (rtl ? -12 : 12)},${30 + idx[p] * RH + 12} ${bx + (rtl ? bw + 12 : -12)},${y + 11} ${rtl ? bx + bw : bx},${y + 11}`} fill="none" stroke="var(--aiv-muted)" strokeWidth="1" markerEnd="url(#arr)" />)}
               </g>
             );
           })}
-          <defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--pa-grey-medium)" /></marker></defs>
+          <defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--aiv-muted)" /></marker></defs>
         </svg>
       </div>
-      <div className="legend"><span><i style={{ background: 'var(--st-5)' }} />{t('Completed')}</span><span><i style={{ background: 'var(--pa-orange)' }} />{t('In progress')}</span><span><i style={{ background: 'var(--pa-grey-line)' }} />{t('Planned')}</span><span><i style={{ background: 'var(--st-1)' }} />{t('Overdue')}</span></div>
+      <div className="legend"><span><i style={{ background: 'var(--st-5)' }} />{t('Completed')}</span><span><i style={{ background: 'var(--aiv-azure)' }} />{t('In progress')}</span><span><i style={{ background: 'var(--aiv-line)' }} />{t('Planned')}</span><span><i style={{ background: 'var(--st-1)' }} />{t('Overdue')}</span></div>
       <p className="caption">{t('Phases and their actions on a shared timeline; arrows show finish-to-start dependencies between phases.')}</p>
       {edit && (
         <Modal title={edit.id ? t('Edit node') : t('Add node')} onClose={() => setEdit(null)} footer={<><button className="btn" onClick={() => setEdit(null)}>{t('Cancel')}</button><button className="btn btn-primary" disabled={!edit.form.name} onClick={save}>{t('Save')}</button></>}>

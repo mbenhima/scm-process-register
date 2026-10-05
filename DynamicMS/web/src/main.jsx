@@ -1,12 +1,15 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import '@fontsource/source-sans-3/400.css';
-import '@fontsource/source-sans-3/600.css';
-import '@fontsource/source-sans-3/700.css';
-import '@fontsource/source-sans-3/400-italic.css';
-import '@fontsource/source-serif-4/600.css';
-import '@fontsource/source-serif-4/700.css';
+// AI Value typography: Montserrat (headings, KPI numbers), Open Sans (body and UI), JetBrains Mono (codes).
+import '@fontsource/montserrat/700.css';
+import '@fontsource/montserrat/800.css';
+import '@fontsource/montserrat/900.css';
+import '@fontsource/open-sans/400.css';
+import '@fontsource/open-sans/600.css';
+import '@fontsource/open-sans/700.css';
+import '@fontsource/open-sans/400-italic.css';
+import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/noto-sans-arabic/400.css';
 import '@fontsource/noto-sans-arabic/600.css';
 import '@fontsource/noto-sans-arabic/700.css';

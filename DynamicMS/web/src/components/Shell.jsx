@@ -57,8 +57,8 @@ export function useNavItems() {
 function Brand() {
   return (
     <NavLink to="/" className="brand" aria-label="DynamicMS">
-      <svg className="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#3A3A3C" /><path d="M9 8h7a8 8 0 0 1 0 16H9z" fill="none" stroke="#F8931D" strokeWidth="3" /></svg>
-      <span>DynamicMS</span>
+      <img className="brand-mark" src="/dynamicms-logo.png" alt="" width="40" height="40" />
+      <span className="brand-word">Dynamic<span>MS</span></span>
     </NavLink>
   );
 }
@@ -164,7 +164,7 @@ export default function Shell({ children }) {
           const active = list.some(n => (n.to === '/' ? loc.pathname === '/' : loc.pathname.startsWith(n.to)));
           return (
             <div key={g} className="nav-group">
-              <button aria-expanded={!isCollapsed} onClick={() => toggleGroup(g)} style={horizontal && active ? { color: 'var(--pa-grey-dark)' } : undefined}>
+              <button aria-expanded={!isCollapsed} onClick={() => toggleGroup(g)} style={horizontal && active ? { color: 'var(--aiv-navy)' } : undefined}>
                 <span>{t(g)}</span>{isCollapsed ? <ChevronRight size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
               </button>
               {!isCollapsed && <div className="nav-items stack-8" style={{ gap: 2 }}>{list.map(renderItem)}</div>}
@@ -173,7 +173,7 @@ export default function Shell({ children }) {
         })}
         <div className="nav-foot" role="group" aria-label={t('Menu layout')}>
           {!horizontal && <button className="btn btn-ghost btn-icon btn-sm" aria-pressed={pinned} aria-label={pinned ? t('Unpin menu') : t('Pin menu')} title={pinned ? t('Unpin menu') : t('Pin menu')} onClick={() => savePrefs({ pinned: !pinned })}>{pinned ? <PinOff size={16} /> : <Pin size={16} />}</button>}
-          {DOCKS.map(([d, Icon, label]) => <button key={d} className="btn btn-ghost btn-icon btn-sm" aria-pressed={dock === d} aria-label={t(label)} title={t(label)} onClick={() => savePrefs({ dock: d })} style={dock === d ? { background: 'var(--pa-orange-tint)' } : undefined}><Icon size={16} /></button>)}
+          {DOCKS.map(([d, Icon, label]) => <button key={d} className="btn btn-ghost btn-icon btn-sm" aria-pressed={dock === d} aria-label={t(label)} title={t(label)} onClick={() => savePrefs({ dock: d })} style={dock === d ? { background: 'var(--aiv-azure-tint)' } : undefined}><Icon size={16} /></button>)}
         </div>
       </nav>
       <main id="main" className="main" tabIndex={-1}>{children}</main>

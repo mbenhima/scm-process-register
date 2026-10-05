@@ -33,7 +33,7 @@ async function init() {
     const wasm = require.resolve('@resvg/resvg-wasm/index_bg.wasm');
     await resvg.initWasm(fs.readFileSync(wasm));
     fonts = [
-      fontFile('source-sans-3', 'source-sans-3-latin-400-normal.woff'), fontFile('source-sans-3', 'source-sans-3-latin-700-normal.woff'),
+      fontFile('open-sans', 'open-sans-latin-400-normal.woff'), fontFile('open-sans', 'open-sans-latin-700-normal.woff'),
       fontFile('noto-naskh-arabic', 'noto-naskh-arabic-arabic-400-normal.woff'), fontFile('noto-naskh-arabic', 'noto-naskh-arabic-arabic-700-normal.woff'),
     ].map(f => woffToSfnt(fs.readFileSync(f)));
   })();
@@ -42,7 +42,7 @@ async function init() {
 
 export async function svgToPng(svg, zoom = 2) {
   await init();
-  const r = new resvg.Resvg(svg, { font: { fontBuffers: fonts, loadSystemFonts: false, defaultFontFamily: 'Source Sans 3' }, fitTo: { mode: 'zoom', value: zoom } });
+  const r = new resvg.Resvg(svg, { font: { fontBuffers: fonts, loadSystemFonts: false, defaultFontFamily: 'Open Sans' }, fitTo: { mode: 'zoom', value: zoom } });
   return Buffer.from(r.render().asPng());
 }
 
@@ -55,7 +55,7 @@ export async function materialize(model) {
 // ---------------------------------------------------------------- SVG helpers
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const AR = /[؀-ۿ]/;
-const FONT = (s) => (AR.test(s) ? 'Noto Naskh Arabic, Source Sans 3' : 'Source Sans 3, Noto Naskh Arabic');
+const FONT = (s) => (AR.test(s) ? 'Noto Naskh Arabic, Open Sans' : 'Open Sans, Noto Naskh Arabic');
 // Word wrap by an approximate average glyph width.
 function wrap(text, maxW, size) {
   const cw = size * (AR.test(text) ? 0.5 : 0.52);
@@ -129,16 +129,16 @@ export function bpmnSvg(spec) {
     else if (n.type === 'end') { out.push(`<circle cx="${x}" cy="${y}" r="16" fill="#FFFFFF" stroke="#B3261E" stroke-width="4"/>`); }
     else if (n.type === 'link') {
       out.push(`<circle cx="${x}" cy="${y}" r="16" fill="#FFFFFF" stroke="${C.ink}" stroke-width="1.4"/><circle cx="${x}" cy="${y}" r="12.5" fill="#FFFFFF" stroke="${C.ink}" stroke-width="1.2"/>`);
-      out.push(`<text x="${x}" y="${y + 4.5}" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700" fill="${C.dark}">${esc(n.letter || 'A')}</text>`);
+      out.push(`<text x="${x}" y="${y + 4.5}" text-anchor="middle" font-family="Open Sans" font-size="12" font-weight="700" fill="${C.dark}">${esc(n.letter || 'A')}</text>`);
     }
     else if (n.type === 'gateway') {
       out.push(`<path d="M${x},${y - 24} L${x + 24},${y} L${x},${y + 24} L${x - 24},${y} z" fill="${C.tint}" stroke="${C.orange}" stroke-width="1.6"/>`);
-      out.push(`<text x="${x}" y="${y + 6}" text-anchor="middle" font-family="Source Sans 3" font-size="18" font-weight="700" fill="${C.deep}">×</text>`);
+      out.push(`<text x="${x}" y="${y + 6}" text-anchor="middle" font-family="Open Sans" font-size="18" font-weight="700" fill="${C.deep}">×</text>`);
     } else {
       const sub = n.type === 'sub';
       out.push(`<rect x="${x - taskW / 2}" y="${y - taskH / 2}" width="${taskW}" height="${taskH}" rx="9" fill="${sub ? C.tint : '#FFFFFF'}" stroke="${sub ? C.deep : C.orange}" stroke-width="${sub ? 1.8 : 1.4}"/>`);
-      if (sub) out.push(`<rect x="${x - 6}" y="${y + taskH / 2 - 13}" width="12" height="11" fill="none" stroke="${C.deep}"/><text x="${x}" y="${y + taskH / 2 - 4}" text-anchor="middle" font-size="10" font-family="Source Sans 3" fill="${C.deep}">+</text>`);
-      if (n.code) out.push(`<text x="${x - taskW / 2 + 6}" y="${y - taskH / 2 + 11}" font-family="Source Sans 3" font-size="8.5" fill="${C.medium}">${esc(n.code)}</text>`);
+      if (sub) out.push(`<rect x="${x - 6}" y="${y + taskH / 2 - 13}" width="12" height="11" fill="none" stroke="${C.deep}"/><text x="${x}" y="${y + taskH / 2 - 4}" text-anchor="middle" font-size="10" font-family="Open Sans" fill="${C.deep}">+</text>`);
+      if (n.code) out.push(`<text x="${x - taskW / 2 + 6}" y="${y - taskH / 2 + 11}" font-family="Open Sans" font-size="8.5" fill="${C.medium}">${esc(n.code)}</text>`);
     }
     if (n.type === 'task' || n.type === 'sub') out.push(textBlock(n.label, x, y + (n.code ? 4 : 0) - (n.type === 'sub' ? 5 : 0), taskW - 12, { size: 10, maxLines: n.type === 'sub' ? 3 : 4 }));
     else if (n.label) out.push(textBlock(n.label, x, y + (n.type === 'gateway' ? -36 : 30), colW - 14, { size: 9.5, bold: n.type === 'gateway', color: n.type === 'gateway' ? C.deep : C.ink, maxLines: 2 }));
@@ -219,13 +219,13 @@ export function bpmnSvgVertical(spec) {
     const x = cx(p); const y = cy(p); const n = p.n;
     if (n.type === 'start') out.push(`<circle cx="${x}" cy="${y}" r="16" fill="#FFFFFF" stroke="#5AA469" stroke-width="2"/>`);
     else if (n.type === 'end') out.push(`<circle cx="${x}" cy="${y}" r="16" fill="#FFFFFF" stroke="#B3261E" stroke-width="4"/>`);
-    else if (n.type === 'link') out.push(`<circle cx="${x}" cy="${y}" r="16" fill="#FFFFFF" stroke="${C.ink}" stroke-width="1.4"/><circle cx="${x}" cy="${y}" r="12.5" fill="#FFFFFF" stroke="${C.ink}" stroke-width="1.2"/><text x="${x}" y="${y + 4.5}" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700" fill="${C.dark}">${esc(n.letter || 'A')}</text>`);
-    else if (n.type === 'gateway') out.push(`<path d="M${x},${y - 24} L${x + 24},${y} L${x},${y + 24} L${x - 24},${y} z" fill="${C.tint}" stroke="${C.orange}" stroke-width="1.6"/><text x="${x}" y="${y + 6}" text-anchor="middle" font-family="Source Sans 3" font-size="18" font-weight="700" fill="${C.deep}">×</text>`);
+    else if (n.type === 'link') out.push(`<circle cx="${x}" cy="${y}" r="16" fill="#FFFFFF" stroke="${C.ink}" stroke-width="1.4"/><circle cx="${x}" cy="${y}" r="12.5" fill="#FFFFFF" stroke="${C.ink}" stroke-width="1.2"/><text x="${x}" y="${y + 4.5}" text-anchor="middle" font-family="Open Sans" font-size="12" font-weight="700" fill="${C.dark}">${esc(n.letter || 'A')}</text>`);
+    else if (n.type === 'gateway') out.push(`<path d="M${x},${y - 24} L${x + 24},${y} L${x},${y + 24} L${x - 24},${y} z" fill="${C.tint}" stroke="${C.orange}" stroke-width="1.6"/><text x="${x}" y="${y + 6}" text-anchor="middle" font-family="Open Sans" font-size="18" font-weight="700" fill="${C.deep}">×</text>`);
     else {
       const sub = n.type === 'sub';
       out.push(`<rect x="${x - taskW / 2}" y="${y - taskH / 2}" width="${taskW}" height="${taskH}" rx="9" fill="${sub ? C.tint : '#FFFFFF'}" stroke="${sub ? C.deep : C.orange}" stroke-width="${sub ? 1.8 : 1.4}"/>`);
-      if (sub) out.push(`<rect x="${x - 6}" y="${y + taskH / 2 - 13}" width="12" height="11" fill="none" stroke="${C.deep}"/><text x="${x}" y="${y + taskH / 2 - 4}" text-anchor="middle" font-size="10" font-family="Source Sans 3" fill="${C.deep}">+</text>`);
-      if (n.code) out.push(`<text x="${x - taskW / 2 + 6}" y="${y - taskH / 2 + 11}" font-family="Source Sans 3" font-size="9" fill="${C.medium}">${esc(n.code)}</text>`);
+      if (sub) out.push(`<rect x="${x - 6}" y="${y + taskH / 2 - 13}" width="12" height="11" fill="none" stroke="${C.deep}"/><text x="${x}" y="${y + taskH / 2 - 4}" text-anchor="middle" font-size="10" font-family="Open Sans" fill="${C.deep}">+</text>`);
+      if (n.code) out.push(`<text x="${x - taskW / 2 + 6}" y="${y - taskH / 2 + 11}" font-family="Open Sans" font-size="9" fill="${C.medium}">${esc(n.code)}</text>`);
       out.push(textBlock(n.label, x, y + (n.code ? 5 : 0) - (sub ? 5 : 0), taskW - 12, { size: 10.5, maxLines: 3 }));
     }
     if (n.type === 'gateway' && n.label) out.push(textBlock(n.label, x - 30, y + 4, laneW / 2 - 12, { size: 9.5, bold: true, color: C.deep, anchor: 'end', maxLines: 2 }));

@@ -1172,3 +1172,4 @@
 1172	To customize documents: Templates changes the sections, their order, their text and data source (copy a standard template, then edit it); Layout sets the logo, colours, header and footer of every Word, PDF and Excel file; on a draft document, Edit the structure changes that document only.
 1173	Open AI models
 1174	built-in engine (rules and retrieval)
+1175	A solution by

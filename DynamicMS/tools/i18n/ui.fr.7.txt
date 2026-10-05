@@ -29,3 +29,4 @@
 1172	Pour personnaliser les documents : Modèles modifie les sections, leur ordre, leur texte et leur source de données (copiez un modèle standard puis modifiez-le) ; Mise en page fixe le logo, les couleurs, l'en-tête et le pied de page de tous les fichiers Word, PDF et Excel ; sur un document en brouillon, Modifier la structure ne change que ce document.
 1173	Ouvrir les modèles d'IA
 1174	moteur intégré (règles et recherche)
+1175	Une solution de

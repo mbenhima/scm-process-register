@@ -227,7 +227,7 @@ function Layout({ orgId }) {
         </div>
       </Card>
       <Card title={t('Preview')}>
-        <div style={{ border: '1px solid var(--pa-grey-line)', borderRadius: 8, padding: 16, background: 'var(--pa-white)' }}>
+        <div style={{ border: '1px solid var(--aiv-line)', borderRadius: 8, padding: 16, background: 'var(--aiv-white)' }}>
           <div className="serif strong" style={{ color: f.accentColor, fontSize: 18 }}>{f.logoText}</div>
           <p className="xsmall" style={{ color: f.accentColor, fontWeight: 700, letterSpacing: '.08em', margin: '24px 0 4px' }}>{t('ORGANIZATION · CODE')}</p>
           <div className="serif" style={{ color: f.titleColor, fontSize: 22, fontWeight: 700 }}>{t('Quality policy')}</div>
@@ -263,7 +263,7 @@ export default function Documents() {
 
 function Block({ block, lang, t }) {
   if (!block) return null;
-  if (block.kind === 'sub') return <h5 style={{ margin: '8px 0 0', color: 'var(--accent-deep, #E07B00)' }}>{tx(block.text, lang)}</h5>;
+  if (block.kind === 'sub') return <h5 style={{ margin: '8px 0 0', color: 'var(--aiv-azure)' }}>{tx(block.text, lang)}</h5>;
   if (block.kind === 'text') return <p className="small" style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{tx(block.text, lang)}</p>;
   if (block.kind === 'bullets') return <>{block.intro && <p className="small strong" style={{ margin: 0 }}>{tx(block.intro, lang)}</p>}<ul className="small" style={{ margin: 0, paddingInlineStart: 20 }}>{block.items.map((x, i) => <li key={i}>{tx(x, lang)}</li>)}</ul></>;
   const cell = (v) => (Array.isArray(v) ? v.map(x => tx(x, lang)).join(', ') : tx(v, lang));
@@ -307,7 +307,7 @@ export function DocumentDetail() {
       </PageHead>
       <div className="grid-side">
         <Card title={t('Versions')}>
-          <ul className="list">{d.versions.map(x => <li key={x.id}><button className="list-btn" aria-current={x.id === v?.id} onClick={() => setSel(x.id)} style={x.id === v?.id ? { background: 'var(--pa-orange-tint)' } : undefined}><span className="stack-8" style={{ gap: 2 }}><span className="strong small">v{x.version} · {L(x.change_type)}</span><span className="xsmall muted">{x.author_name} · {fmtDate(x.created_at)}</span></span><span style={{ marginInlineStart: 'auto' }}><Status value={x.status} /></span></button></li>)}</ul>
+          <ul className="list">{d.versions.map(x => <li key={x.id}><button className="list-btn" aria-current={x.id === v?.id} onClick={() => setSel(x.id)} style={x.id === v?.id ? { background: 'var(--aiv-azure-tint)' } : undefined}><span className="stack-8" style={{ gap: 2 }}><span className="strong small">v{x.version} · {L(x.change_type)}</span><span className="xsmall muted">{x.author_name} · {fmtDate(x.created_at)}</span></span><span style={{ marginInlineStart: 'auto' }}><Status value={x.status} /></span></button></li>)}</ul>
         </Card>
         {v && (
           <div className="stack">

@@ -26,7 +26,7 @@ export default function Login() {
     <div className="login">
       <div className="login-panel">
         <div className="row-between">
-          <span className="brand"><svg className="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#3A3A3C" /><path d="M9 8h7a8 8 0 0 1 0 16H9z" fill="none" stroke="#F8931D" strokeWidth="3" /></svg><span>DynamicMS</span></span>
+          <img className="login-logo" src="/dynamicms-logo.png" alt="DynamicMS" width="112" height="112" />
           <label className="sr-only" htmlFor="login-lang">{t('Language')}</label>
           <select id="login-lang" className="select" style={{ width: 'auto' }} value={lang} onChange={e => setLang(e.target.value)}><option value="en">English</option><option value="fr">Français</option><option value="ar">العربية</option></select>
         </div>
@@ -48,7 +48,7 @@ export default function Login() {
           </ul>
         </details>
       </div>
-      <aside className="login-aside" aria-hidden="true">
+      <aside className="login-aside">
         <span className="ring" style={{ width: 420, height: 420, insetInlineEnd: -140, top: -120 }} />
         <span className="ring" style={{ width: 260, height: 260, insetInlineStart: -90, bottom: -60 }} />
         <div style={{ position: 'relative', maxWidth: 520 }} className="stack">
@@ -56,9 +56,10 @@ export default function Login() {
           <p>{t('Each project runs the end-to-end processes of its management system. Every step records who did what, when, and with which evidence.')}</p>
           <div className="stack">
             {[[Workflow, '12', t('end-to-end processes, from strategy to improvement')], [Layers, '162', t('macro processes across seven tiers and 29 verticals')], [ListChecks, '1,572', t('workflow steps, each with its own input form')]].map(([I, n, l]) => (
-              <div key={n} className="row" style={{ alignItems: 'center' }}><IconBadge icon={I} accent /><span className="serif" style={{ fontSize: 30, fontWeight: 700, color: 'var(--pa-orange-deep)' }}>{n}</span><span className="small" style={{ color: 'var(--pa-grey-dark)', maxWidth: 260 }}>{l}</span></div>
+              <div key={n} className="row" style={{ alignItems: 'center' }}><IconBadge icon={I} accent /><span className="serif" style={{ fontSize: 30, fontWeight: 900, color: 'var(--aiv-navy)' }}>{n}</span><span className="small" style={{ color: 'var(--aiv-navy)', maxWidth: 260 }}>{l}</span></div>
             ))}
           </div>
+          <div className="login-by"><span className="xsmall muted">{t('A solution by')}</span><img src="/aivalue-logo.png" alt="AI Value — Digital & AI Transformation" width="180" /></div>
         </div>
       </aside>
     </div>

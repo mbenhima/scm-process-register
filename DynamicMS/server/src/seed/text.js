@@ -252,21 +252,24 @@ export function summaryOf(kind, f, c, step) {
 // returned as { columns, rows } so the guide can print a real table.
 export function guideExample(kind, fields, resolve = {}, step = null) {
   const def = formFor(step, kind);
-  const en = (v) => (v === null || v === undefined ? '' : typeof v === 'object' && !Array.isArray(v) ? (v.name ? en(v.name) : v.en ?? '') : Array.isArray(v) ? v.map(en).join(', ') : String(v));
+  const lg = resolve.lang || 'en';
+  const lab = (t) => (t && typeof t === 'object' ? t[lg] ?? t.en : t);
+  const en = (v) => (v === null || v === undefined ? '' : typeof v === 'object' && !Array.isArray(v) ? (v.name ? en(v.name) : v[lg] ?? v.en ?? '') : Array.isArray(v) ? v.map(en).join(', ') : String(v));
   const cellText = (type, v) => {
+    if (type === 'select' && typeof v === 'string' && resolve.label) return resolve.label(v);
     if (type === 'person') return resolve.user ? resolve.user(v) : en(v);
     if (type === 'role') return resolve.role ? resolve.role(v) : en(v);
     if (type === 'kpi') return resolve.kpi ? resolve.kpi(v) : en(v);
     if (type === 'roles') return (v || []).map(x => (resolve.role ? resolve.role(x) : x)).join(', ');
-    if (type === 'mp' && typeof v === 'string') { const m = catalog().mpById[v]; if (m) return `${m.code} (${m.name.en})`; }
+    if (type === 'mp' && typeof v === 'string') { const m = catalog().mpById[v]; if (m) return `${m.code} (${m.name[lg] ?? m.name.en})`; }
     return en(v);
   };
   return def.fields.map(fd => {
     const v = fields ? fields[fd.key] : '';
-    if (fd.columns) return { field: fd.label.en, type: fd.type, columns: fd.columns.map(c => c.label.en), rows: (Array.isArray(v) ? v : []).map(row => fd.columns.map(c => cellText(c.type, row[c.key]))), createsActions: !!fd.createsActions, createsObjectives: !!fd.createsObjectives };
-    if (fd.type === 'racsi') return { field: fd.label.en, type: 'racsi', columns: ['R', 'A', 'C', 'S', 'I'], rows: v ? [['R', 'A', 'C', 'S', 'I'].map(L => (v[L] || []).map(x => (resolve.role ? resolve.role(x) : x)).join(', '))] : [] };
-    if (fd.type === 'records') return { field: fd.label.en, type: 'records', value: (Array.isArray(v) ? v : []).map(x => `${x.code ? x.code + ' — ' : ''}${en(x.title)}`).join('; ') };
-    if (fd.type === 'template') return { field: fd.label.en, type: 'template', value: resolve.template ? resolve.template(v) : en(v) };
-    return { field: fd.label.en, type: fd.type, value: cellText(fd.type, v) };
+    if (fd.columns) return { field: lab(fd.label), type: fd.type, columns: fd.columns.map(c => lab(c.label)), rows: (Array.isArray(v) ? v : []).map(row => fd.columns.map(c => cellText(c.type, row[c.key]))), createsActions: !!fd.createsActions, createsObjectives: !!fd.createsObjectives };
+    if (fd.type === 'racsi') return { field: lab(fd.label), type: 'racsi', columns: ['R', 'A', 'C', 'S', 'I'], rows: v ? [['R', 'A', 'C', 'S', 'I'].map(L => (v[L] || []).map(x => (resolve.role ? resolve.role(x) : x)).join(', '))] : [] };
+    if (fd.type === 'records') return { field: lab(fd.label), type: 'records', value: (Array.isArray(v) ? v : []).map(x => `${x.code ? x.code + ' — ' : ''}${en(x.title)}`).join('; ') };
+    if (fd.type === 'template') return { field: lab(fd.label), type: 'template', value: resolve.template ? resolve.template(v) : en(v) };
+    return { field: lab(fd.label), type: fd.type, value: cellText(fd.type, v) };
   });
 }

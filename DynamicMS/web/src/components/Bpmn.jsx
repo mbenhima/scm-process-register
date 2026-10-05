@@ -9,7 +9,7 @@ import { useApp } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { Loading, ErrorBox } from './ui.jsx';
 
-const RENDER = { defaultFillColor: '#FFFFFF', defaultStrokeColor: '#58595B', defaultLabelColor: '#3A3A3C' };
+const RENDER = { defaultFillColor: '#FFFFFF', defaultStrokeColor: '#2C3E50', defaultLabelColor: '#123A5F' };
 
 export default function Bpmn({ projectId, mpId, code }) {
   const { t, toast, readOnly } = useApp();

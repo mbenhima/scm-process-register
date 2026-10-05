@@ -18,7 +18,7 @@ export default function Knowledge() {
       <Tabs label={t('Knowledge views')} value={tab} onChange={setTab} tabs={[{ id: 'kb', label: t('Standards') }, { id: 'map', label: t('Standards map') }, { id: 'rex', label: t('Lessons learned (REX)') }]} />
       {tab === 'kb' && (kb.data ? (
         <div className="grid-side">
-          <Card title={t('Standards')}><ul className="list">{kb.data.map(k => <li key={k.id}><button className="list-btn" onClick={() => setSel(k)} style={sel?.id === k.id ? { background: 'var(--pa-orange-tint)' } : undefined}><IconBadge icon={BookMarked} size="sm" accent={sel?.id === k.id} /><span><span className="strong small">{k.standard}</span><br /><span className="xsmall muted">{tx(k.title, lang)}</span></span></button></li>)}</ul></Card>
+          <Card title={t('Standards')}><ul className="list">{kb.data.map(k => <li key={k.id}><button className="list-btn" onClick={() => setSel(k)} style={sel?.id === k.id ? { background: 'var(--aiv-azure-tint)' } : undefined}><IconBadge icon={BookMarked} size="sm" accent={sel?.id === k.id} /><span><span className="strong small">{k.standard}</span><br /><span className="xsmall muted">{tx(k.title, lang)}</span></span></button></li>)}</ul></Card>
           {(sel || kb.data[0]) && (() => { const k = sel || kb.data[0]; return (
             <Card title={tx(k.title, lang)}>
               <p>{tx(k.summary, lang)}</p>

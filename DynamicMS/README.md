@@ -35,7 +35,8 @@ Each organization has 19 accounts named `role@domain`: ims, quality, hse, risk, 
 - `web/`: React + Vite client. It uses design tokens in `src/styles/tokens.css`, a navigation shell that can be docked on any edge, and bundled fonts.
 - `tools/`: extraction of the source documents, translation tables, screenshot and document generators.
 - `docs/sources/`: the five source documents.
-- `deliverables/`: installation guide, user guides, IMS document templates, feedback responses (round 1 and 2), application standard SRS 1.5, presentations (EN, FR), coverage checklist, sample generated documents and the application zip.
+- `deliverables/`: installation guide, user guides (EN, FR), IMS document templates (EN, FR), sample generated IMS documents (EN, FR), feedback responses, application standard SRS, presentations (EN, FR), coverage checklist, the application zip and the source code zip.
+- Visual identity: AI Value graphical chart (navy, azure, green and teal palette; Montserrat, Open Sans and JetBrains Mono), with the DynamicMS logo in the app and the AI Value logo on every document.
 
 The seed generates 5,564 documents (Word, PDF or Excel) from the templates, filled with each project's data and ready to download from Records › Documents.
 

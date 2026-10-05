@@ -1,5 +1,5 @@
-// Renders a report model to PDF, XLSX, DOCX or CSV with the application's visual
-// identity (light page, orange table headers, serif titles, sans body) and full
+// Renders a report model to PDF, XLSX, DOCX or CSV with the AI Value graphical chart
+// (light page, navy table headers, azure accents, Montserrat titles, Open Sans body) and full
 // Arabic right-to-left support (NFR-DA-UX, NFR-DA-I18N, FR-DA-REP-02/04).
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -10,14 +10,20 @@ import * as docx from 'docx';
 const require = createRequire(import.meta.url);
 const fontFile = (pkg, file) => path.join(path.dirname(require.resolve(`@fontsource/${pkg}/package.json`)), 'files', file);
 const FONTS = {
-  sans: fontFile('source-sans-3', 'source-sans-3-latin-400-normal.woff'),
-  sansBold: fontFile('source-sans-3', 'source-sans-3-latin-700-normal.woff'),
-  sansItalic: fontFile('source-sans-3', 'source-sans-3-latin-400-italic.woff'),
-  serif: fontFile('source-serif-4', 'source-serif-4-latin-700-normal.woff'),
+  sans: fontFile('open-sans', 'open-sans-latin-400-normal.woff'),
+  sansBold: fontFile('open-sans', 'open-sans-latin-700-normal.woff'),
+  sansItalic: fontFile('open-sans', 'open-sans-latin-400-italic.woff'),
+  serif: fontFile('montserrat', 'montserrat-latin-800-normal.woff'),
   ar: fontFile('noto-naskh-arabic', 'noto-naskh-arabic-arabic-400-normal.woff'),
   arBold: fontFile('noto-naskh-arabic', 'noto-naskh-arabic-arabic-700-normal.woff'),
 };
-export const C = { orange: '#F8931D', deep: '#E07B00', tint: '#FDEEDA', dark: '#3A3A3C', ink: '#58595B', medium: '#808184', light: '#F2F2F3', line: '#E3E3E4', bg: '#FDFDFC', white: '#FFFFFF' };
+// AI Value palette. Historic keys kept for the callers: orange = table header fill (navy),
+// deep = accent (azure), tint = azure tint, dark = titles (navy), ink = body, medium = muted.
+export const C = { orange: '#123A5F', deep: '#1876C6', tint: '#E8F1FB', dark: '#123A5F', ink: '#2C3E50', medium: '#5A6B7B', light: '#F5F8FB', line: '#E1E8F0', bg: '#F5F8FB', white: '#FFFFFF',
+  navy: '#123A5F', azure: '#1876C6', green: '#28C87C', teal: '#17A2B8' };
+const HEAD_FONT = 'Montserrat'; const BODY_FONT = 'Open Sans';
+// Product attribution printed at the foot of every cover page.
+const MADE_WITH = { en: 'Generated with DynamicMS · AI Value — Digital & AI Transformation', fr: 'Généré avec DynamicMS · AI Value — Digital & AI Transformation', ar: 'أُنشئ باستخدام DynamicMS · AI Value' };
 export const STATUS = ['#F4C7C3', '#FBE0B5', '#FFF3B0', '#D9EAD3', '#B6D7A8'];
 
 const AR = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/;
@@ -149,6 +155,7 @@ export function toPdf(model, lang, res) {
     doc.rect(X, y, W, 3).fill(pal.primary);
     y += 20;
     for (const [k, v] of model.meta || []) { const kw = 150; const kx = rtl ? X + W - kw : X; const vx = rtl ? X : X + kw; const hh = Math.max(w.text(k, kx, y, kw, { size: 10.5, bold: true, color: C.dark }), w.text(String(v ?? ''), vx, y, W - kw, { size: 10.5, color: C.ink })); y += hh + 4; }
+    w.text(MADE_WITH[lang] || MADE_WITH.en, X, bottom() - 6, W, { size: 8.5, color: C.medium });
     newPage();
   } else {
     // Title block: eyebrow, title, subtitle
@@ -244,7 +251,7 @@ export function toPdf(model, lang, res) {
     y += 4 + w.text(sec.heading, X, y, W, { size: 14, serif: true, color: pal.title });
     y += 4;
     for (const it of itemsOf(sec)) {
-      if (it.type === 'sub') { ensure(24 + Math.min(startHeight(itemsOf(sec)[itemsOf(sec).indexOf(it) + 1]), doc.page.height - 200)); y += 4 + w.text(it.text, X, y, W, { size: 11, bold: true, color: pal.accent }); y += 4; }
+      if (it.type === 'sub') { ensure(24 + Math.min(startHeight(itemsOf(sec)[itemsOf(sec).indexOf(it) + 1]), doc.page.height - 200)); y += 4 + w.text(it.text, X, y, W, { size: 11.5, serif: true, color: pal.title }); y += 4; }
       else if (it.type === 'text') { for (const chunk of String(it.text || '').split('\n')) { const hh = w.height(chunk || ' ', W, 10); ensure(hh); y += w.text(chunk || ' ', X, y, W, { size: 10 }) + 2; } y += 6; }
       else if (it.type === 'bullets') {
         if (it.intro) { const hh = w.height(it.intro, W, 10); ensure(hh); y += w.text(it.intro, X, y, W, { size: 10, bold: true, color: C.dark }) + 3; }
@@ -301,15 +308,15 @@ export async function toXlsx(model, lang) {
   const argb = (hex) => 'FF' + hex.slice(1).toUpperCase();
   const summary = wb.addWorksheet(sheetName(model.summaryLabel || 'Summary', 0), { views: [{ rightToLeft: rtl, showGridLines: false }] });
   summary.getColumn(1).width = 34; summary.getColumn(2).width = 70;
-  if (model.layout?.logoText) { summary.addRow([model.layout.logoText]).font = { name: 'Cambria', size: 14, bold: true, color: { argb: argb(pal.accent) } }; summary.addRow([]); }
-  summary.addRow([model.eyebrow?.toUpperCase() || '']).font = { name: 'Calibri', size: 10, bold: true, color: { argb: argb(pal.accent) } };
-  summary.addRow([model.title]).font = { name: 'Cambria', size: 18, bold: true, color: { argb: argb(pal.title) } };
-  if (model.subtitle) summary.addRow([model.subtitle]).font = { name: 'Calibri', size: 11, color: { argb: 'FF58595B' } };
+  if (model.layout?.logoText) { summary.addRow([model.layout.logoText]).font = { name: HEAD_FONT, size: 14, bold: true, color: { argb: argb(pal.accent) } }; summary.addRow([]); }
+  summary.addRow([model.eyebrow?.toUpperCase() || '']).font = { name: BODY_FONT, size: 10, bold: true, color: { argb: argb(pal.accent) } };
+  summary.addRow([model.title]).font = { name: HEAD_FONT, size: 18, bold: true, color: { argb: argb(pal.title) } };
+  if (model.subtitle) summary.addRow([model.subtitle]).font = { name: BODY_FONT, size: 11, color: { argb: 'FF5A6B7B' } };
   summary.addRow([]);
-  for (const [k, v] of model.meta || []) { const r = summary.addRow([k, v]); r.getCell(1).font = { name: 'Calibri', bold: true, size: 10, color: { argb: 'FF3A3A3C' } }; r.getCell(2).font = { name: 'Calibri', size: 10, color: { argb: 'FF58595B' } }; }
-  for (const k of model.kpis || []) { const r = summary.addRow([k.label, k.value]); r.getCell(2).font = { name: 'Cambria', bold: true, size: 12, color: { argb: 'FFE07B00' } }; }
+  for (const [k, v] of model.meta || []) { const r = summary.addRow([k, v]); r.getCell(1).font = { name: BODY_FONT, bold: true, size: 10, color: { argb: 'FF2C3E50' } }; r.getCell(2).font = { name: BODY_FONT, size: 10, color: { argb: 'FF5A6B7B' } }; }
+  for (const k of model.kpis || []) { const r = summary.addRow([k.label, k.value]); r.getCell(2).font = { name: HEAD_FONT, bold: true, size: 12, color: { argb: 'FF1876C6' } }; }
   // Text, bullets and key-value items go to the cover sheet; every table gets its own sheet.
-  const addText = (label, text, bold) => { const r = summary.addRow([label || '', text ?? '']); if (!text && label) { r.getCell(1).font = { name: 'Cambria', bold: true, size: bold ? 12 : 10.5, color: { argb: argb(pal.title) } }; return; } r.getCell(1).font = { name: 'Calibri', bold: true, size: 10, color: { argb: 'FF3A3A3C' } }; r.getCell(2).font = { name: 'Calibri', size: 10, color: { argb: 'FF58595B' } }; r.getCell(2).alignment = { wrapText: true, vertical: 'top' }; r.getCell(1).alignment = { wrapText: true, vertical: 'top' }; };
+  const addText = (label, text, bold) => { const r = summary.addRow([label || '', text ?? '']); if (!text && label) { r.getCell(1).font = { name: HEAD_FONT, bold: true, size: bold ? 12 : 10.5, color: { argb: argb(pal.title) } }; return; } r.getCell(1).font = { name: BODY_FONT, bold: true, size: 10, color: { argb: 'FF2C3E50' } }; r.getCell(2).font = { name: BODY_FONT, size: 10, color: { argb: 'FF5A6B7B' } }; r.getCell(2).alignment = { wrapText: true, vertical: 'top' }; r.getCell(1).alignment = { wrapText: true, vertical: 'top' }; };
   const tables = [];
   for (const sec of model.sections || []) {
     const items = itemsOf(sec);
@@ -332,20 +339,20 @@ export async function toXlsx(model, lang) {
     const ws = wb.addWorksheet(nm, { views: [{ rightToLeft: rtl, state: 'frozen', ySplit: 1 }] });
     ws.columns = t.columns.map(c => ({ header: clean(c.label), key: c.key, width: Math.min(60, Math.max(8, (c.width || 1) * 14)) }));
     const hdr = ws.getRow(1);
-    hdr.eachCell(cell => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: argb(pal.primary) } }; cell.font = { name: 'Calibri', bold: true, size: 10, color: { argb: 'FFFFFFFF' } }; cell.alignment = { vertical: 'middle', wrapText: true }; });
+    hdr.eachCell(cell => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: argb(pal.primary) } }; cell.font = { name: BODY_FONT, bold: true, size: 10, color: { argb: 'FFFFFFFF' } }; cell.alignment = { vertical: 'middle', wrapText: true }; });
     t.rows.forEach((r, i) => {
       const row = ws.addRow(Object.fromEntries(t.columns.map(c => [c.key, r[c.key] ?? ''])));
       row.eachCell({ includeEmpty: true }, (cell, cn) => {
-        cell.font = { name: 'Calibri', size: 9.5, color: { argb: 'FF3A3A3C' } };
+        cell.font = { name: BODY_FONT, size: 9.5, color: { argb: 'FF2C3E50' } };
         cell.alignment = { vertical: 'top', wrapText: true };
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: i % 2 ? 'FFF2F2F3' : 'FFFFFFFF' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: i % 2 ? 'FFF5F8FB' : 'FFFFFFFF' } };
         const key = t.columns[cn - 1]?.key;
         const f = key ? cellFill(t, r, key) : null;
         if (f) cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + f.slice(1) } };
-        cell.border = { bottom: { style: 'thin', color: { argb: 'FFE3E3E4' } } };
+        cell.border = { bottom: { style: 'thin', color: { argb: 'FFE1E8F0' } } };
       });
     });
-    if (t.caption) { ws.addRow([]); const cr = ws.addRow([t.caption]); cr.getCell(1).font = { name: 'Calibri', italic: true, size: 9, color: { argb: 'FF58595B' } }; }
+    if (t.caption) { ws.addRow([]); const cr = ws.addRow([t.caption]); cr.getCell(1).font = { name: BODY_FONT, italic: true, size: 9, color: { argb: 'FF5A6B7B' } }; }
     ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: t.columns.length } };
   });
   return wb.xlsx.writeBuffer();
@@ -355,7 +362,7 @@ export async function toXlsx(model, lang) {
 export async function toDocx(model, lang) {
   const rtl = lang === 'ar';
   const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType, Header, Footer, PageNumber, BorderStyle, HeadingLevel, TableOfContents } = docx;
-  const run = (t, o = {}) => new TextRun({ text: String(t ?? ''), font: o.font || 'Calibri', size: o.size || 20, bold: o.bold, italics: o.italics, color: (o.color || C.ink).slice(1), rightToLeft: rtl });
+  const run = (t, o = {}) => new TextRun({ text: String(t ?? ''), font: o.font || BODY_FONT, size: o.size || 20, bold: o.bold, italics: o.italics, color: (o.color || C.ink).slice(1), rightToLeft: rtl });
   const para = (children, o = {}) => new Paragraph({ children: Array.isArray(children) ? children : [children], bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : o.align, spacing: { after: o.after ?? 120 }, heading: o.heading });
   const border = { style: BorderStyle.SINGLE, size: 4, color: C.line.slice(1) };
   const pal = palette(model.layout);
@@ -363,18 +370,18 @@ export async function toDocx(model, lang) {
   const children = [];
   if (model.cover) {
     if (lay.logoBuffer) children.push(new Paragraph({ alignment: rtl ? AlignmentType.RIGHT : AlignmentType.LEFT, children: [new docx.ImageRun({ data: lay.logoBuffer, transformation: { width: 160, height: 60 }, type: lay.logoType || 'png' })] }));
-    else if (lay.logoText) children.push(para(run(lay.logoText, { font: 'Cambria', size: 32, bold: true, color: pal.accent })));
+    else if (lay.logoText) children.push(para(run(lay.logoText, { font: HEAD_FONT, size: 32, bold: true, color: pal.accent })));
     children.push(new Paragraph({ spacing: { before: 2400 }, children: [] }));
   }
   children.push(para(run((model.eyebrow || '').toUpperCase(), { bold: true, color: pal.accent, size: 18 })));
-  children.push(para(run(model.title, { font: 'Cambria', size: model.cover ? 52 : 40, bold: true, color: pal.title })));
+  children.push(para(run(model.title, { font: HEAD_FONT, size: model.cover ? 52 : 40, bold: true, color: pal.title })));
   if (model.subtitle) children.push(para(run(model.subtitle, { size: 22 })));
   if (model.docLine) children.push(para(run(model.docLine, { size: 16, color: C.medium })));
   for (const [k, v] of model.meta || []) children.push(para([run(`${k}: `, { bold: true, color: C.dark }), run(v)], { after: 40 }));
-  if (model.cover) children.push(new Paragraph({ children: [new docx.PageBreak()] }));
-  if (model.kpis?.length) children.push(para(model.kpis.flatMap((k, i) => [run(`${i ? '   ' : ''}${k.value} `, { font: 'Cambria', bold: true, color: C.deep, size: 24 }), run(k.label, { size: 18 })])));
+  if (model.cover) children.push(new Paragraph({ spacing: { before: 1600 }, children: [] }), para(run(MADE_WITH[lang] || MADE_WITH.en, { size: 16, color: C.medium })), new Paragraph({ children: [new docx.PageBreak()] }));
+  if (model.kpis?.length) children.push(para(model.kpis.flatMap((k, i) => [run(`${i ? '   ' : ''}${k.value} `, { font: HEAD_FONT, bold: true, color: C.navy, size: 24 }), run(k.label, { size: 18 })])));
   if (model.toc) {
-    if (model.tocLabel) children.push(para(run(model.tocLabel, { font: 'Cambria', size: 32, bold: true, color: pal.title })));
+    if (model.tocLabel) children.push(para(run(model.tocLabel, { font: HEAD_FONT, size: 32, bold: true, color: pal.title })));
     children.push(new TableOfContents(model.tocLabel || 'TOC', { hyperlink: true, headingStyleRange: '1-2' }));
     children.push(new Paragraph({ children: [new docx.PageBreak()] }));
   }
@@ -394,9 +401,9 @@ export async function toDocx(model, lang) {
     return new Table({ width: { size: TW, type: WidthType.DXA }, columnWidths: [kw, vw], visuallyRightToLeft: rtl, rows: rows.map(([k, v], i) => new TableRow({ cantSplit: true, children: [c2(k, kw, { fill: C.tint, bold: true }), c2(v, vw, { fill: i % 2 ? C.light : C.white })] })) });
   };
   for (const sec of model.sections || []) {
-    children.push(para(run(sec.heading, { font: 'Cambria', size: 28, bold: true, color: pal.title }), { heading: HeadingLevel.HEADING_1 }));
+    children.push(para(run(sec.heading, { font: HEAD_FONT, size: 28, bold: true, color: pal.title }), { heading: HeadingLevel.HEADING_1 }));
     for (const it of itemsOf(sec)) {
-      if (it.type === 'sub') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : undefined, spacing: { before: 200, after: 100 }, children: [run(it.text, { font: 'Cambria', size: 23, bold: true, color: pal.accent })] }));
+      if (it.type === 'sub') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : undefined, spacing: { before: 200, after: 100 }, children: [run(it.text, { font: HEAD_FONT, size: 23, bold: true, color: pal.title })] }));
       else if (it.type === 'text') for (const chunk of String(it.text || '').split('\n')) children.push(para(run(chunk), { after: 80 }));
       else if (it.type === 'bullets') {
         if (it.intro) children.push(para(run(it.intro, { bold: true, color: C.dark }), { after: 60 }));
@@ -413,7 +420,7 @@ export async function toDocx(model, lang) {
   }
   const d = new Document({
     creator: 'DynamicMS', title: clean(model.title), features: { updateFields: !!model.toc },
-    styles: { default: { document: { run: { font: 'Calibri', size: 20, color: C.ink.slice(1) } } } },
+    styles: { default: { document: { run: { font: BODY_FONT, size: 20, color: C.ink.slice(1) } } } },
     sections: [{
       properties: { page: { size: model.landscape ? { width: 11906, height: 16838, orientation: docx.PageOrientation.LANDSCAPE } : { width: 11906, height: 16838 }, margin: { top: 1080, bottom: 1080, left: 1080, right: 1080 } } },
       headers: { default: new Header({ children: [para(run(lay.headerText || model.title, { size: 16, color: C.medium }))] }) },

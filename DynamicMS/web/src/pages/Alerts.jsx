@@ -31,7 +31,7 @@ export default function Alerts() {
       {tab === 'inbox' && (
         <>
           <div className="row" style={{ marginBottom: 16 }} role="group" aria-label={t('Filter')}>
-            {[['', t('All')], ['&unread=1', t('Unread')], ['&mine=1', t('For my roles')], ['&severity=Critical', L('Critical')], ['&severity=High', L('High')]].map(([v, l]) => <button key={v} className="btn btn-sm" aria-pressed={filter === v} style={filter === v ? { background: 'var(--pa-orange-tint)', borderColor: 'var(--pa-orange)' } : undefined} onClick={() => setFilter(v)}>{l}</button>)}
+            {[['', t('All')], ['&unread=1', t('Unread')], ['&mine=1', t('For my roles')], ['&severity=Critical', L('Critical')], ['&severity=High', L('High')]].map(([v, l]) => <button key={v} className="btn btn-sm" aria-pressed={filter === v} style={filter === v ? { background: 'var(--aiv-azure-tint)', borderColor: 'var(--aiv-azure)' } : undefined} onClick={() => setFilter(v)}>{l}</button>)}
           </div>
           {list.error && <ErrorBox error={list.error} />}
           {list.loading && !list.data ? <Loading /> : list.data && (list.data.items.length ? (

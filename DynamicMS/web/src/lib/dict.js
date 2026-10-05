@@ -4695,5 +4695,9 @@ export const DICT = {
 "built-in engine (rules and retrieval)": {
 "fr": "moteur intégré (règles et recherche)",
 "ar": "المحرك المدمج (قواعد واسترجاع)"
+},
+"A solution by": {
+"fr": "Une solution de",
+"ar": "حل من"
 }
 };

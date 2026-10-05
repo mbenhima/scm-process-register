@@ -68,12 +68,12 @@ export default function Lifecycle() {
       <PageHead eyebrow={`${project.code} · ${L(project.ms_type)}`} title={t('Lifecycle')} subtitle={t('The end-to-end phases of the management system, in execution order. Open a phase to see its macro processes and its gate.')} />
       <section className="divider-band" style={{ marginBottom: 'var(--sp-24)' }} aria-label={t('Run summary')}>
         <div><p className="eyebrow">{t('Full run')}</p><h2>{t('{done} of {n} phases closed', { done, n: data.length })}</h2><p style={{ margin: '8px 0 0' }}>{t('{d} of {s} workflow steps completed across {m} macro processes.', { d: doneSteps, s: steps, m: data.reduce((a, p) => a + p.mps.length, 0) })}</p></div>
-        <div className="row" style={{ justifyContent: 'flex-end' }}><span className="serif" style={{ fontSize: 36, fontWeight: 700, color: 'var(--pa-orange)' }}>{Math.round((100 * doneSteps) / Math.max(1, steps))}%</span></div>
+        <div className="row" style={{ justifyContent: 'flex-end' }}><span className="serif" style={{ fontSize: 36, fontWeight: 700, color: 'var(--aiv-azure)' }}>{Math.round((100 * doneSteps) / Math.max(1, steps))}%</span></div>
       </section>
       <nav className="timeline" aria-label={t('Phases')} style={{ marginBottom: 'var(--sp-24)' }}>
         {data.map(p => (
           <button key={p.id} className="phase-card" aria-current={p.e2e_id === current.e2e_id} onClick={() => navigate(`/lifecycle/${p.e2e_id}`)}>
-            <span className="row-between"><span className="phase-id">{p.e2e_id}</span>{p.gate_decision === 'Go' ? <CheckCircle2 size={18} color="var(--pa-grey-dark)" aria-label={t('Gate passed')} /> : p.gate ? <Flag size={16} color="var(--pa-grey-medium)" aria-label={t('Gate')} /> : null}</span>
+            <span className="row-between"><span className="phase-id">{p.e2e_id}</span>{p.gate_decision === 'Go' ? <CheckCircle2 size={18} color="var(--aiv-navy)" aria-label={t('Gate passed')} /> : p.gate ? <Flag size={16} color="var(--aiv-muted)" aria-label={t('Gate')} /> : null}</span>
             <span className="strong small">{tx(p.name, lang)}</span>
             <Progress value={p.progress} label={tx(p.name, lang)} />
             <span className="row-between xsmall"><Status value={p.status} /><span className="muted">{p.done}/{p.steps}</span></span>
