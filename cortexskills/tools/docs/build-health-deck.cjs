@@ -1,25 +1,42 @@
-// Healthcare customer presentation (English): node build-health-deck.cjs [outDir]
+// Healthcare customer presentation: node build-health-deck.cjs [en|fr] [outDir]
 // Every figure comes from health-data.json (extract-health.mjs, seeded demonstration instance) and the screenshots in shots/.
 const path = require('path'); const fs = require('fs');
 const PptxGenJS = require('pptxgenjs'); const sharp = require('sharp'); const lucide = require('lucide-static');
-const out = process.argv[2] || path.join(__dirname, '../../deliverables');
+const LANG = ['en', 'fr'].includes(process.argv[2]) ? process.argv[2] : 'en';
+const out = process.argv[3] || path.join(__dirname, '../../deliverables');
+// French: every string reaching a slide goes through the dictionary below; data values come in French from the data pack.
+const FR = LANG === 'fr' ? JSON.parse(fs.readFileSync(path.join(__dirname, 'health-deck-fr.json'), 'utf8')) : {};
+const MISSING = new Set(); const SEEN = new Set();
+const _ = s => { if (LANG !== 'fr' || typeof s !== 'string' || !/[A-Za-z]{2}/.test(s)) return s; SEEN.add(s); const k = s.replace(/\u00a0/g, ' '); if (FR[k] != null) return FR[k]; MISSING.add(s); return s; };
 const D = JSON.parse(fs.readFileSync(path.join(__dirname, 'health-data.json'), 'utf8'));
-const L = x => (x && typeof x === 'object' ? x.en ?? '' : x ?? '');
+const L = x => (x && typeof x === 'object' ? x[LANG] ?? x.en ?? '' : x ?? '');
 const C = { orange: 'F8931D', deep: 'E07B00', tint: 'FDEEDA', dark: '3A3A3C', ink: '58595B', medium: '808184', light: 'F2F2F3', line: 'E3E3E4', bg: 'FDFDFC', white: 'FFFFFF' };
 const S = ['F4C7C3', 'FBE0B5', 'FFF3B0', 'D9EAD3', 'B6D7A8']; const RAG = { Red: S[0], Amber: S[1], Green: S[3] };
 const TITLE = 'Cambria', BODY = 'Calibri';
 const shot = (...p) => path.join(__dirname, 'shots', ...p);
 const H_ = D.hospital, CL = D.clinic, HA = H_.projects.AI, HD = H_.projects.Digital, R = HA.records, CA = CL.projects.AI, CD = CL.projects.Digital;
 const V = Object.fromEntries(D.verticals.map(v => [v.id, v])); const HC = V.HCPR;
-const num = n => Math.round(n).toLocaleString('en-US');
+const num = n => Math.round(n).toLocaleString(LANG === 'fr' ? 'fr-FR' : 'en-US').replace(/\u202f/g, '\u00a0');
 const pct = t => Math.round((t.done / t.n) * 100);
-const date = s => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const date = s => new Date(s).toLocaleDateString(LANG === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 const cnt = (a, f) => a.reduce((m, x) => ((m[f(x)] = (m[f(x)] || 0) + 1), m), {});
 const sum = (a, f) => a.reduce((p, x) => p + f(x), 0);
 const byPhase = p => D.phases.map(ph => { const r = p.e2e.filter(e => e.phase === ph.no); return Math.round(sum(r, e => e.done) / (sum(r, e => e.tasks) || 1) * 100); });
 const phaseShort = ['Enablers', 'Scope', 'Diagnosis', 'Report & plan', 'Delivery', 'Evaluation', 'Improvement'];
 
-const pres = new PptxGenJS(); pres.layout = 'LAYOUT_WIDE'; pres.title = 'CortexSkills for Healthcare'; pres.author = 'POWERACT Consulting'; pres.lang = 'en-GB';
+const pres = new PptxGenJS(); pres.layout = 'LAYOUT_WIDE'; pres.title = LANG === 'fr' ? 'CortexSkills pour la santé' : 'CortexSkills for Healthcare'; pres.author = 'POWERACT Consulting'; pres.lang = LANG === 'fr' ? 'fr-FR' : 'en-GB';
+// Translation at the slide level: text boxes, tables and charts.
+const addSlide0 = pres.addSlide.bind(pres);
+pres.addSlide = (...a) => {
+  const sl = addSlide0(...a); const t0 = sl.addText.bind(sl), tb0 = sl.addTable.bind(sl), ch0 = sl.addChart.bind(sl);
+  sl.addText = (t, o) => t0(Array.isArray(t) ? t.map(x => ({ ...x, text: _(x.text) })) : _(t), o);
+  sl.addTable = (rows, o) => tb0(rows.map(r => r.map(c => (c && typeof c === 'object' ? { ...c, text: _(c.text) } : _(c)))), o);
+  sl.addChart = (ty, data, o) => ch0(ty, Array.isArray(data) ? data.map(d => ({ ...d, name: _(d.name), labels: (d.labels || []).map(_) })) : data, o);
+  return sl;
+};
+const shotH = n => { const f = shot('health_' + LANG, n); return LANG !== 'en' && fs.existsSync(f) ? f : shot('health', n); };
+const stripV = s => String(s).replace('Healthcare Providers ', '').replace(/ — Établissements de santé$/, '');
+const CORE = () => L(HC.coreFunction.name);
 const W = 13.333, H = 7.5, M = 0.6;
 let pageNo = 0, section = '', demo = false;
 const icons = {};
@@ -45,7 +62,7 @@ function content(eyebrow, title, subtitle) {
   txt(s, title, M, 0.72, W - 2 * M, 0.75, { fontFace: TITLE, fontSize: 30, bold: true, fit: 'shrink', valign: 'middle' });
   if (subtitle) txt(s, subtitle, M, 1.45, W - 2 * M, 0.4, { fontSize: 16, color: C.ink });
   wordmark(s, M, H - 0.42, 10);
-  txt(s, section + (demo ? '  ·  Demonstration data — fictional organization' : ''), 2.6, H - 0.44, 8.1, 0.3, { fontSize: 10, color: C.medium, align: 'center' });
+  txt(s, _(section) + (demo ? '  ·  ' + _('Demonstration data — fictional organization') : ''), 2.6, H - 0.44, 8.1, 0.3, { fontSize: 10, color: C.medium, align: 'center' });
   txt(s, String(pageNo), W - M - 1, H - 0.44, 1, 0.3, { fontSize: 10, color: C.medium, align: 'right' });
   return s;
 }
@@ -62,7 +79,7 @@ function screenshot(s, file, x, y, w, maxH = 5) {
   if (!fs.existsSync(file)) { console.warn('missing', file); return 0; }
   const buf = fs.readFileSync(file); const r = buf.readUInt32BE(20) / buf.readUInt32BE(16); let h = w * r; if (h > maxH) { h = maxH; w = h / r; }
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x - 0.06, y: y - 0.06, w: w + 0.12, h: h + 0.12, fill: { color: C.white }, line: { color: C.line, width: 0.75 }, rectRadius: 0.08, shadow: shadow() });
-  s.addImage({ path: file, x, y, w, h, altText: 'Screenshot of the application' }); return h;
+  s.addImage({ path: file, x, y, w, h, altText: _('Screenshot of the application') }); return h;
 }
 function table(s, head, rows, x, y, w, colW, o = {}) {
   const fs_ = o.fontSize || 11;
@@ -94,11 +111,11 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     txt(s, 'CortexSkills for Healthcare', M, 2.25, 5.8, 1.6, { fontFace: TITLE, fontSize: 44, bold: true });
     txt(s, 'Training engineering for hospitals and clinics — from accreditation requirements to certified, evaluated staff', M, 3.9, 5.5, 1.3, { fontSize: 19, color: C.ink });
     txt(s, 'POWERACT Consulting', M, 6.6, 5, 0.3, { fontSize: 11, color: C.medium });
-    screenshot(s, shot('health', 'dashboard.png'), 6.5, 1.35, 6.3); }
+    screenshot(s, shotH('dashboard.png'), 6.5, 1.35, 6.3); }
 
   // 2 — Agenda
   { section = 'Agenda'; const s = content('Agenda', 'What this presentation covers');
-    const ag = [['01', 'The healthcare challenge', 'Accreditation, patient safety and new skills'], ['02', 'The solution', 'Lifecycle, gates, healthcare processes'], ['03', 'Case study: a hospital group', 'A full AI skills run, phase by phase'], ['04', 'Case study: a clinic', 'The same method on an SME track'], ['05', 'The health ecosystem', 'Life sciences and pharma'], ['06', 'Trust and next steps', 'Security, deployment, packs, plan']];
+    const ag = [['01', 'The healthcare challenge', 'Accreditation, patient safety and new skills'], ['02', 'The solution', 'Lifecycle, gates, healthcare processes'], ['03', 'Case study: hospital group', 'A full AI skills run, phase by phase'], ['04', 'Case study: a clinic', 'The same method on an SME track'], ['05', 'The health ecosystem', 'Life sciences and pharma'], ['06', 'Trust and next steps', 'Security, deployment, packs, plan']];
     const ic = ['HeartPulse', 'RefreshCw', 'Hospital', 'Stethoscope', 'FlaskConical', 'ShieldCheck'];
     for (let i = 0; i < 6; i++) { const x = M + (i % 3) * 4.1, y = 2.0 + Math.floor(i / 3) * 2.35; card(s, x, y, 3.85, 2.1);
       await badge(s, ic[i], x + 0.3, y + 0.3, 0.7, i === 0 ? C.orange : C.ink);
@@ -163,12 +180,12 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     const mps = D.verticalMp.filter(m => String(m.id).startsWith('HCPR'));
     for (const [i, m] of mps.entries()) { const x = M + i * 4.1; card(s, x, 2.1, 3.85, 4.3, i === 0 ? C.tint : C.white); await badge(s, ['ShieldCheck', 'Award', 'Cpu'][i], x + 0.3, 2.35, 0.65, i ? C.ink : C.orange);
       txt(s, m.id, x + 1.1, 2.45, 2.5, 0.4, { fontSize: 12, bold: true, color: C.deep, charSpacing: 2, valign: 'middle' });
-      txt(s, L(m.name).replace('Healthcare Providers ', ''), x + 0.3, 3.2, 3.3, 0.9, { fontFace: TITLE, fontSize: 17, bold: true });
+      txt(s, stripV(L(m.name)), x + 0.3, 3.2, 3.3, 0.9, { fontFace: TITLE, fontSize: 17, bold: true });
       txt(s, L(m.objective), x + 0.3, 4.15, 3.3, 1.3, { fontSize: 13.5, color: C.ink }); txt(s, 'Owner: ' + L(m.owner), x + 0.3, 5.75, 3.3, 0.35, { fontSize: 12, bold: true }); } }
   { const s = content('Healthcare processes', 'Two healthcare end-to-end processes', 'Each has a trigger, an end state, the macro processes it crosses and its user-facing tasks.');
     const e2 = D.verticalE2E.filter(e => String(e.id).startsWith('HCPR'));
     for (const [i, e] of e2.entries()) { const x = M + i * 6.13; card(s, x, 2.05, 5.95, 4.55);
-      txt(s, e.id, x + 0.3, 2.25, 3, 0.35, { fontSize: 12, bold: true, color: C.deep, charSpacing: 2 }); txt(s, L(e.name).replace('Healthcare Providers ', ''), x + 0.3, 2.6, 5.4, 0.8, { fontFace: TITLE, fontSize: 18, bold: true });
+      txt(s, e.id, x + 0.3, 2.25, 3, 0.35, { fontSize: 12, bold: true, color: C.deep, charSpacing: 2 }); txt(s, stripV(L(e.name)), x + 0.3, 2.6, 5.4, 0.8, { fontFace: TITLE, fontSize: 18, bold: true });
       const rows = [['Goal', L(e.goal)], ['Trigger', L(e.trigger)], ['End state', L(e.terminal)], ['Crosses', (e.mps || []).join(' · ')], ['Tasks', `${e.stepsCount || (e.ufts || []).length} user-facing tasks`]];
       rows.forEach(([a, b], k) => { txt(s, a, x + 0.3, 3.5 + k * 0.6, 1.2, 0.55, { fontSize: 12, bold: true, color: C.ink }); txt(s, b, x + 1.5, 3.5 + k * 0.6, 4.2, 0.58, { fontSize: 12.5, fit: 'shrink' }); }); } }
   { const s = content('Compliance scaffolding', 'A readiness checklist for Healthcare Providers', 'Published once for the vertical; used at the gates and in the compliance extract.');
@@ -177,9 +194,9 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     card(s, M, 4.6, 6.4, 1.95, C.tint); await badge(s, 'Info', M + 0.3, 4.85, 0.55, C.ink);
     txt(s, 'Readiness support, not certification', M + 1.05, 4.85, 5.1, 0.45, { fontFace: TITLE, fontSize: 16, bold: true });
     txt(s, 'The application organizes evidence and checks readiness against ISO 7101, JCI and ISO 15189. The certification decision stays with the accreditation body.', M + 1.05, 5.3, 5.1, 1.2, { fontSize: 12.5, color: C.ink });
-    screenshot(s, shot('health', 'checklists.png'), 7.4, 2.1, 5.3); }
+    screenshot(s, shotH('checklists.png'), 7.4, 2.1, 5.3); }
   { const s = content('Roles and accountability', `${D.roles.length} roles, one Accountable per activity`, 'RACSI: Responsible, Accountable, Consulted, Supported, Informed — allocated for every activity of the run.');
-    screenshot(s, shot('health', 'racsi.png'), M, 2.05, 7.6);
+    screenshot(s, shotH('racsi.png'), M, 2.05, 7.6);
     const x = 8.6, w = W - M - x; const roles = ['R-02', 'R-03', 'R-04', 'R-05', 'R-06', 'R-07', 'R-08', 'R-10'].map(id => D.roles.find(r => r.id === id)).filter(Boolean);
     txt(s, 'Examples of roles', x, 2.05, w, 0.35, { fontSize: 13, bold: true });
     txt(s, roles.map((r, j) => ({ text: L(r.name), options: { bullet: { indent: 12 }, breakLine: j < roles.length - 1 } })), x, 2.45, w, 2.6, { fontSize: 12.5, color: C.ink });
@@ -199,7 +216,7 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     const cfg = H_.config, bnd = D.bundles.find(b => b.id === cfg.pack_id), ad = JSON.parse(cfg.addons).map(id => L(D.addOns.find(a => a.id === id)?.name));
     table(s, ['Setting', 'Value'], [['Functions', H_.obsNodes.filter(n => n.type === 'Function').map(n => L(n.name)).join(', ')], ['Solution', `${bnd.id} ${L(bnd.name)} (${bnd.packsText})`], ['Add-ons', ad.join('; ')], ['Data protection frameworks', JSON.parse(cfg.compliance).map(id => L(D.compliance.find(c => c.id === id)?.name)).join(', ')], ['Deployment · seats', `${cfg.deployment} · ${cfg.seats} seats`], ['Justification on governed changes', cfg.justification_required ? 'Required' : 'Optional']], M, 3.75, W - 2 * M, [3.2, 8.93], { fontSize: 12, rowH: 0.43 }); }
   { const s = content('Case study · workspace', 'The AI skills run on one screen', L(HA.project.name));
-    screenshot(s, shot('health', 'ws.png'), M, 1.95, 7.9);
+    screenshot(s, shotH('ws.png'), M, 1.95, 7.9);
     await bullets(s, [`${pct(tH)}% of ${tH.n} tasks completed; ${tH.wip} in progress, ${tH.blocked} blocked.`, `${tH.overdue} tasks overdue — each raises an alert with an escalation chain.`, `Complexity score ${cs.score}: Full mode, all seven phases and six gates.`], 9.0, 2.1, W - M - 9.0, 1.4, 14.5); }
   { const s = content('Case study · two runs', 'Two runs: the Digital run leads on delivery and evaluation', 'Share of tasks completed per phase, same organization, same template.');
     s.addChart(pres.charts.BAR, [{ name: `AI run (${pct(tH)}%)`, labels: phaseShort, values: byPhase(HA) }, { name: `Digital run (${pct(tD)}%)`, labels: phaseShort, values: byPhase(HD) }], { x: M, y: 1.95, w: 8.3, h: 4.55, barDir: 'col', barGrouping: 'clustered', chartColors: [C.orange, C.medium], showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '0"%"', dataLabelFontSize: 9, valAxisMaxVal: 110, valAxisMinVal: 0, valAxisHidden: true, valGridLine: { style: 'none' }, ...axis, showLegend: true, legendPos: 'b' });
@@ -247,8 +264,8 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     const cell = (f, l) => pa.find(p => L(p.function_name) === f && p.level === l);
     table(s, ['Function', 'MS', 'MO', 'OP'], fns.map(f => [{ text: L(f), bold: true }, ...['MS', 'MO', 'OP'].map(l => { const c = cell(f, l); return { text: `${c.score_pct}%`, fill: RAG[c.rag], align: 'center' }; })]), M, 2.05, 7.4, [3.2, 1.4, 1.4, 1.4], { fontSize: 13, rowH: 0.52 });
     cap(s, 'Score per cell; fill shows the RAG status (red, amber, green)', M, 6.3, 7.4);
-    const x = 8.5, w = W - M - x; const cc = pa.filter(p => L(p.function_name) === 'Clinical Care & Nursing');
-    card(s, x, 2.05, w, 4.2, C.white); txt(s, 'Clinical Care & Nursing', x + 0.3, 2.25, w - 0.6, 0.4, { fontFace: TITLE, fontSize: 17, bold: true });
+    const x = 8.5, w = W - M - x; const cc = pa.filter(p => L(p.function_name) === CORE());
+    card(s, x, 2.05, w, 4.2, C.white); txt(s, CORE(), x + 0.3, 2.25, w - 0.6, 0.4, { fontFace: TITLE, fontSize: 17, bold: true });
     cc.forEach((c, k) => { const y = 2.85 + k * 1.05; txt(s, c.level, x + 0.3, y, 0.7, 0.4, { fontSize: 13, bold: true, color: C.white, fill: { color: c.rag === 'Red' ? C.ink : C.medium }, align: 'center', valign: 'middle' });
       txt(s, `${c.score_pct}% · ${c.rag}`, x + 1.15, y - 0.02, w - 1.4, 0.35, { fontSize: 13, bold: true }); txt(s, 'Gap: ' + L(c.gap_comment), x + 1.15, y + 0.33, w - 1.4, 0.6, { fontSize: 11.5, color: C.ink }); }); }
   { const sw = R.FunctionalSwot[0]; const s = content('Phase 2 · SWOT and improvement axes', 'Four improvement axes, ranked', `Functional SWOT ${sw.status.toLowerCase()} for ${R.FunctionalSwot.map(x => L(x.function_name)).join(' and ')}.`);
@@ -283,7 +300,7 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     const ir = R.IntelligenceReport[0]; txt(s, `Input: ${L(ir.label)}, updated ${date(ir.last_updated_on)}.`, x, 5.7, w, 0.6, { fontSize: 11.5, color: C.ink }); }
   { const bl = R.BudgetLine; const s = content('Phase 3 · plan and budget', `${plan.plan_year} plan locked: ${num(plan.total_budget)} budgeted, ${plan.realization_rate}% realized`, 'Planned, committed and actual amounts per theme, as recorded (currency set per organization).');
     const lab = bl.map(b => L(b.label).replace('and clinical decision support', '& decision support'));
-    s.addChart(pres.charts.BAR, [{ name: 'Planned', labels: lab, values: bl.map(b => b.planned_amount) }, { name: 'Committed', labels: lab, values: bl.map(b => b.committed_amount) }, { name: 'Actual', labels: lab, values: bl.map(b => b.actual_amount) }], { x: M, y: 1.95, w: 8.6, h: 4.55, barDir: 'bar', barGrouping: 'clustered', chartColors: [C.line, C.medium, C.orange], showValue: false, ...axis, catAxisLabelFontSize: 10, valAxisLabelFormatCode: '#,##0', catAxisOrientation: 'maxMin', showLegend: true, legendPos: 'b' });
+    s.addChart(pres.charts.BAR, [{ name: 'Planned', labels: lab, values: bl.map(b => b.planned_amount) }, { name: 'Committed', labels: lab, values: bl.map(b => b.committed_amount) }, { name: 'Actual', labels: lab, values: bl.map(b => b.actual_amount) }], { x: M, y: 1.95, w: 8.6, h: 4.55, barDir: 'bar', barGrouping: 'clustered', chartColors: [C.line, C.medium, C.orange], showValue: false, ...axis, catAxisLabelFontSize: 10, valAxisLabelFormatCode: LANG === 'fr' ? '# ##0' : '#,##0', catAxisOrientation: 'maxMin', showLegend: true, legendPos: 'b' });
     cap(s, 'Planned, committed and actual spend per theme', M, 6.55, 8.6);
     const x = 9.6, w = W - M - x; const tot = k => sum(bl, b => b[k]);
     await kpi(s, x, 2.0, w, num(tot('committed_amount')), `committed (${Math.round(tot('committed_amount') / tot('planned_amount') * 100)}% of planned)`, 'FileSignature', C.ink);
@@ -301,7 +318,7 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     await kpi(s, x, 3.65, w, String(sum(R.Session, x => x.capacity)), 'seats scheduled across the sessions', 'CalendarDays');
     txt(s, 'Attendance is recorded per session; a missing attendance record raises an alert to the Training Administrator.', x, 5.2, w, 1.2, { fontSize: 13, color: C.ink }); }
   { const s = content('Every task · what to type', 'Guidance written for this hospital and this sector', 'The task panel shows the expected answer, the inputs and outputs, the owner and the evaluator.');
-    screenshot(s, shot('health', 'task03.png'), M, 1.95, 7.9);
+    screenshot(s, shotH('task03.png'), M, 1.95, 7.9);
     await bullets(s, ['“What to type” is specific to the organization, its sector and the focus of the run.', 'AI help proposes a draft, labelled with its confidence and sources.', 'Owner and evaluator are two different people: segregation of duties is enforced.'], 9.0, 2.1, W - M - 9.0, 1.4, 14.5); }
   { const ev = R.Evaluation, ce = R.Certification; const s = content('Phase 5 · evaluation and certification', 'Kirkpatrick levels 1 to 3, and certificate validity', 'Evaluation results per enrollment; certificates tracked against their expiry date.');
     const lv = [1, 2, 3]; const a = ev.filter((_, i) => i < 3), b = ev.filter((_, i) => i >= 3);
@@ -334,7 +351,7 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     const s = content('Governance · controls', `${ct.length} controls mapped to the COSO components`, `${sum(Object.values(co), v => v.e)} rated effective · ${H_.orgRecords.BusinessRule.length} business rules enforce them in the workflow`);
     s.addChart(pres.charts.BAR, [{ name: 'Controls', labels: ks, values: ks.map(k => co[k]?.n || 0) }, { name: 'Rated effective', labels: ks, values: ks.map(k => co[k]?.e || 0) }], { x: M, y: 1.95, w: 7.6, h: 4.55, barDir: 'col', barGrouping: 'clustered', chartColors: [C.orange, C.medium], showValue: true, dataLabelPosition: 'outEnd', ...axis, catAxisLabelFontSize: 10, showLegend: true, legendPos: 'b' });
     cap(s, 'Controls and effective controls per COSO component', M, 6.55, 7.6);
-    screenshot(s, shot('health', 'controls.png'), 8.6, 2.05, 4.1); }
+    screenshot(s, shotH('controls.png'), 8.6, 2.05, 4.1); }
   { const k = ['KPI-001', 'KPI-002', 'KPI-003', 'KPI-010', 'KPI-020', 'KPI-061'].filter(id => HA.kpis.some(v => v.kpi_id === id));
     const s = content('Governance · KPIs', `${D.kpiDefs.length} standard KPIs, measured monthly`, `Plus ${H_.orgRecords.CustomKpi.length} custom KPIs, e.g. “${L(H_.orgRecords.CustomKpi[0].name)}”.`);
     const last = id => HA.kpis.filter(v => v.kpi_id === id).slice(-1)[0]; const def = id => D.kpiDefs.find(d => d.id === id);
@@ -348,11 +365,11 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
   { const au = H_.aiUsage; const o = cnt(au.flatMap(a => Array(a.n).fill(a.outcome)), x => x); const s = content('AI governance · usage log', `${sum(au, a => a.n)} AI suggestions logged: ${o.Accepted} accepted, ${o.Edited} edited, ${o.Rejected} rejected`, 'The usage log is append-only; each line keeps the use case, the user, the confidence and the decision.');
     s.addChart(pres.charts.DOUGHNUT, [{ name: 'Outcome', labels: ['Accepted', 'Edited', 'Rejected'], values: [o.Accepted, o.Edited, o.Rejected] }], { x: M, y: 1.95, w: 4.6, h: 4.4, holeSize: 58, chartColors: [C.orange, C.medium, C.line], showValue: true, showPercent: false, dataLabelColor: C.dark, dataLabelFontSize: 12, showLegend: true, legendPos: 'b', legendFontFace: BODY, legendFontSize: 12, legendColor: C.ink });
     cap(s, 'AI suggestions by outcome of the human review', M, 6.4, 4.6);
-    screenshot(s, shot('health', 'usage.png'), 5.7, 2.05, 7.0); }
+    screenshot(s, shotH('usage.png'), 5.7, 2.05, 7.0); }
   { const s = content('Planning', 'The whole run on one timeline', 'Phases, processes and tasks with dependencies; summary bars are computed from the tasks.');
-    screenshot(s, shot('health', 'gantt.png'), M + 1.3, 1.95, 9.5, 4.8); }
+    screenshot(s, shotH('gantt.png'), M + 1.3, 1.95, 9.5, 4.8); }
   { const s = content('Reports and questions', `${D.reports.length} standard reports and a data-aware assistant`, 'Reports export to PDF, Excel and Word. The assistant answers within the user’s permissions.');
-    screenshot(s, shot('health', 'reports.png'), M, 1.95, 6.0); screenshot(s, shot('health', 'assistant.png'), 6.9, 1.95, 5.8); }
+    screenshot(s, shotH('reports.png'), M, 1.95, 6.0); screenshot(s, shotH('assistant.png'), 6.9, 1.95, 5.8); }
   { const rx = R.RexEntry[0]; const kb = H_.orgRecords.KbArticle; const s = content('Phase 6 · knowledge and improvement', 'Lessons learned feed the next cycle', `Return on experience rated ${rx.rating}/5 · ${kb.length} knowledge base articles for the sector standards`);
     const q = [['What went well', rx.what_went_well], ['What did not', rx.what_did_not], ['Root cause', rx.root_cause], ['Recommendation', rx.recommendation]];
     q.forEach(([a, b], i) => { const y = 2.05 + i * 1.12; card(s, M, y, 6.6, 0.98, i === 3 ? C.tint : C.white); txt(s, a, M + 0.25, y + 0.1, 1.9, 0.78, { fontSize: 13, bold: true, color: i === 3 ? C.deep : C.dark, valign: 'middle' }); txt(s, L(b), M + 2.2, y + 0.1, 4.2, 0.78, { fontSize: 13, color: C.ink, valign: 'middle' }); });
@@ -367,10 +384,10 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     s.addChart(pres.charts.BAR, [{ name: 'Clinic', labels: k.map(x => lab[x]), values: k.map(x => cc.values[x]) }, { name: 'Hospital group', labels: k.map(x => lab[x]), values: k.map(x => cs.values[x]) }], { x: M, y: 4.4, w: W - 2 * M, h: 2.2, barDir: 'col', barGrouping: 'clustered', chartColors: [C.orange, C.medium], showValue: true, dataLabelPosition: 'outEnd', valAxisHidden: true, valAxisMaxVal: 6, valGridLine: { style: 'none' }, ...axis, showLegend: true, legendPos: 'r' });
     cap(s, 'Complexity ratings (1–5), clinic compared with the hospital group: investment and scope drive the difference', M, 6.65, W - 2 * M); }
   { const s = content('SME · workspace', 'Same lifecycle, fewer items to complete', `${L(CA.project.name)} · ${pct(CA.tasks)}% of ${CA.tasks.n} tasks completed`);
-    screenshot(s, shot('en', 'sme_ws2.png'), M, 1.95, 7.9);
+    screenshot(s, shot(LANG, LANG === 'fr' ? 'sme_ws.png' : 'sme_ws2.png'), M, 1.95, 7.9);
     await bullets(s, [`Digital run: ${pct(CD.tasks)}% of ${CD.tasks.n} tasks completed; AI run: ${pct(CA.tasks)}%.`, 'Six gates with five items each on track T3, instead of the Full-mode checklists.', 'The recommended track is kept; another choice needs a written justification.'], 9.0, 2.1, W - M - 9.0, 1.4, 14.5); }
   { const s = content('SME · any screen, any language', 'The same guidance in English, French and Arabic', 'The task panel on a desktop, the workspace in Arabic on a phone (right-to-left layout).');
-    screenshot(s, shot('en', 'sme_task2.png'), M, 1.95, 8.6, 4.8); const m = shot('en', 'm_ar.png'); screenshot(s, m, 10.0, 1.95, 2.35, 4.8); }
+    screenshot(s, shot(LANG, LANG === 'fr' ? 'sme_task.png' : 'sme_task2.png'), M, 1.95, 8.6, 4.8); const m = shot('en', 'm_ar.png'); screenshot(s, m, 10.0, 1.95, 2.35, 4.8); }
   { const s = content('Large vs SME', 'One method, sized to the organization', 'Comparison of the two healthcare providers in the demonstration instance.');
     const cc = CA.records.ComplexityScore[0];
     const row = (a, b, c) => [{ text: a, bold: true }, b, c];
@@ -382,7 +399,7 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
   for (const code of ['HLS', 'PHAR', 'PHPR']) {
     const v = V[code], lg = org(code, 'LARGE'), sm = org(code, 'SME');
     const s = content(`Sector · ${code}`, L(v.name), `Core function: ${L(v.coreFunction?.name)} · ${v.standards.join(', ')}`);
-    screenshot(s, shot('sectors_en', code + '.png'), M, 2.05, 7.3);
+    screenshot(s, shot('sectors_' + LANG, code + '.png'), M, 2.05, 7.3);
     const x = 8.3, w = W - M - x;
     [['Large company', lg], ['SME', sm]].forEach(([k, o], i) => txt(s, [{ text: k + ' — ', options: { bold: true } }, { text: `${L(o.name)} (${o.employees})`, options: { color: C.ink } }], x, 1.98 + i * 0.3, w, 0.3, { fontSize: 12, fit: 'shrink' }));
     s.addChart(pres.charts.BAR, [{ name: 'Digital', labels: ['SME', 'Large'], values: [sm.runs.Digital.progress, lg.runs.Digital.progress] }, { name: 'AI', labels: ['SME', 'Large'], values: [sm.runs.AI.progress, lg.runs.AI.progress] }], { x: x - 0.1, y: 2.62, w: w + 0.1, h: 1.9, barDir: 'bar', barGrouping: 'clustered', chartColors: [C.medium, C.orange], showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '0"%"', valAxisHidden: true, valAxisMaxVal: 115, valAxisMinVal: 0, valGridLine: { style: 'none' }, ...axis, showLegend: true, legendPos: 'b', legendFontSize: 10 });
@@ -425,7 +442,7 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
       txt(s, why[p.id], x + 0.25, 4.85, 2.4, 1.4, { fontSize: 12.5 }); } }
   { const s = content('Add-ons and bundles', 'Add-ons that fit hospital groups', 'Catalog prices per month, in USD.');
     const ad = ['AD-08', 'AD-09', 'AD-11', 'AD-01', 'AD-07'].map(id => D.addOns.find(a => a.id === id));
-    table(s, ['Add-on', 'Price', 'What it adds'], ad.map(a => [{ text: `${a.id} · ${L(a.name)}`, bold: true }, { text: '$' + a.price, align: 'center' }, L(a.goals).split(/;\s|\.\s/)[0].replace(/\.$/, '') + '.']), M, 2.05, 7.9, [2.7, 0.8, 4.4], { fontSize: 11, rowH: 0.72 });
+    table(s, ['Add-on', 'Price', 'What it adds'], ad.map(a => [{ text: `${a.id} · ${L(a.name)}`, bold: true }, { text: '$' + a.price, align: 'center' }, L(a.goals).split(/;\s|(?<!ex)\.\s(?=[A-ZÀ-Ý])/)[0].replace(/\s*\.$/, '') + '.']), M, 2.05, 7.9, [2.7, 0.8, 4.4], { fontSize: 11, rowH: 0.72 });
     table(s, ['Bundle', 'Packs', 'Price'], D.bundles.map(b => [L(b.name), b.packsText, { text: `$${b.price} (−${b.discount}%)`, align: 'right' }]), 8.8, 2.05, W - M - 8.8, [1.25, 1.35, 1.33], { fontSize: 10.5, rowH: 0.55 }); }
   { const s = content('Implementation', 'A first run in four steps', 'Sized by the complexity score: about 30, 60 or 90 days on an SME track; a full run for a hospital group.');
     const st = [['Settings', 'Set up', 'Group, organization, functions, users and roles; connect the HR system.'], ['ClipboardList', 'Scope and evidence', 'Approve the Scope of Work, send questionnaires, pass gate G1.'], ['Search', 'Diagnose and plan', 'Five-axis diagnostic, gaps, prioritized themes, report, budget; gates G2 and G3.'], ['GraduationCap', 'Deliver and evaluate', 'Sessions, Kirkpatrick evaluation, certificates, return on experience; gates G4 to G6.']];
@@ -441,5 +458,6 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     txt(s, 'Figures in this presentation come from the demonstration instance. Organizations and people are fictional.', 9.0, 3.6, 3.4, 1.8, { fontSize: 12.5, color: C.ink, italic: true }); }
 
   fs.mkdirSync(out, { recursive: true });
-  const f = path.join(out, 'CortexSkills_Healthcare_Presentation_EN.pptx'); await pres.writeFile({ fileName: f }); console.log('written', f, pageNo, 'slides');
+  const f = path.join(out, `CortexSkills_Healthcare_Presentation_${LANG.toUpperCase()}.pptx`); await pres.writeFile({ fileName: f }); console.log('written', f, pageNo, 'slides');
+  if (LANG === 'fr') { fs.writeFileSync(path.join(__dirname, 'health-deck-fr.seen.json'), JSON.stringify([...SEEN], null, 1)); if (MISSING.size) console.log('untranslated:', MISSING.size, '(see health-deck-fr.seen.json)'); }
 })();
