@@ -1,0 +1,1762 @@
+{
+ "nav.questionnaires": [
+  "Questionnaires",
+  "Questionnaires",
+  "الاستبيانات"
+ ],
+ "nav.trainingPlan": [
+  "Training plan",
+  "Plan de formation",
+  "مخطط التكوين"
+ ],
+ "nav.documents": [
+  "Documents",
+  "Documents",
+  "الوثائق"
+ ],
+ "nav.channels": [
+  "Channels (e-mail, WhatsApp)",
+  "Canaux (e-mail, WhatsApp)",
+  "القنوات (البريد، واتساب)"
+ ],
+ "nav.search": [
+  "Search",
+  "Rechercher",
+  "بحث"
+ ],
+ "common.create": [
+  "Create",
+  "Créer",
+  "إنشاء"
+ ],
+ "common.edit": [
+  "Edit",
+  "Modifier",
+  "تعديل"
+ ],
+ "common.discard": [
+  "Discard your unsaved changes?",
+  "Abandonner les modifications non enregistrées ?",
+  "تجاهل التعديلات غير المحفوظة؟"
+ ],
+ "common.up": [
+  "Move up",
+  "Monter",
+  "إلى الأعلى"
+ ],
+ "status.Excluded": [
+  "Excluded",
+  "Exclue",
+  "مستبعد"
+ ],
+ "status.Included": [
+  "Included",
+  "Incluse",
+  "مدرج"
+ ],
+ "q.eyebrow": [
+  "Evidence collection",
+  "Collecte des preuves",
+  "جمع الأدلة"
+ ],
+ "q.subtitle": [
+  "IF-PAC campaigns: who responds, through which channels, with which forms.",
+  "Campagnes IF-PAC : qui répond, par quels canaux, avec quels formulaires.",
+  "حملات IF-PAC: من يجيب، عبر أية قنوات، وبأية استمارات."
+ ],
+ "q.templates": [
+  "Template library",
+  "Bibliothèque de modèles",
+  "مكتبة النماذج"
+ ],
+ "q.new": [
+  "New questionnaire",
+  "Nouveau questionnaire",
+  "استبيان جديد"
+ ],
+ "q.pickProject": [
+  "Choose a project to see its questionnaires and plan.",
+  "Choisissez un projet pour voir ses questionnaires et son plan.",
+  "اختر مشروعا لعرض استبياناته ومخططه."
+ ],
+ "q.forms": [
+  "Forms",
+  "Formulaires",
+  "الاستمارات"
+ ],
+ "q.channelMode": [
+  "Response channel",
+  "Canal de réponse",
+  "قناة الإجابة"
+ ],
+ "q.none": [
+  "No questionnaire yet.",
+  "Aucun questionnaire pour l’instant.",
+  "لا يوجد أي استبيان بعد."
+ ],
+ "q.newHint": [
+  "Load one or more forms from the library; you can then tailor them with AI and add your own questions. Every AI question must be validated before distribution.",
+  "Chargez un ou plusieurs formulaires de la bibliothèque ; vous pourrez ensuite les adapter avec l’IA et ajouter vos propres questions. Chaque question IA doit être validée avant la diffusion.",
+  "حمّل استمارة أو أكثر من المكتبة؛ يمكنك بعدها تكييفها بالذكاء الاصطناعي وإضافة أسئلتك. يجب المصادقة على كل سؤال مولد قبل التوزيع."
+ ],
+ "q.loadFrom": [
+  "Load from the library",
+  "Charger depuis la bibliothèque",
+  "التحميل من المكتبة"
+ ],
+ "q.sectionsN": [
+  "{n} sections",
+  "{n} sections",
+  "{n} أقسام"
+ ],
+ "q.orgTemplate": [
+  "Organization template",
+  "Modèle de l’organisation",
+  "نموذج المؤسسة"
+ ],
+ "q.labelPh": [
+  "IF-PAC questionnaire campaign",
+  "Campagne de questionnaires IF-PAC",
+  "حملة استبيانات IF-PAC"
+ ],
+ "q.modeHint": [
+  "Default for new respondents; each respondent can have their own plan.",
+  "Par défaut pour les nouveaux répondants ; chaque répondant peut avoir son propre plan.",
+  "افتراضي للمجيبين الجدد؛ يمكن لكل مجيب أن يكون له مخططه."
+ ],
+ "q.aiTailor": [
+  "Tailor with AI to the sector and focus (questions to validate)",
+  "Adapter avec l’IA au secteur et à l’orientation (questions à valider)",
+  "التكييف بالذكاء الاصطناعي مع القطاع والمحور (أسئلة للمصادقة)"
+ ],
+ "qmode.Load": [
+  "Load",
+  "Chargement",
+  "تحميل"
+ ],
+ "qmode.AI": [
+  "AI",
+  "IA",
+  "الذكاء الاصطناعي"
+ ],
+ "qmode.Manual": [
+  "Manual",
+  "Manuel",
+  "يدوي"
+ ],
+ "qmode.Load + AI": [
+  "Load + AI",
+  "Chargement + IA",
+  "تحميل + ذكاء اصطناعي"
+ ],
+ "q.threshold": [
+  "completeness threshold {n}%",
+  "seuil de complétude {n} %",
+  "عتبة الاكتمال {n}٪"
+ ],
+ "q.blocked": [
+  "Resolve the issues listed below first",
+  "Résolvez d’abord les points listés ci-dessous",
+  "عالج أولا النقاط المذكورة أدناه"
+ ],
+ "q.distribute": [
+  "Distribute",
+  "Diffuser",
+  "توزيع"
+ ],
+ "q.distributed": [
+  "Questionnaire distributed",
+  "Questionnaire diffusé",
+  "تم توزيع الاستبيان"
+ ],
+ "q.advanced": [
+  "{s} plan step(s) and {r} reminder(s) sent",
+  "{s} étape(s) de plan et {r} rappel(s) envoyés",
+  "تم إرسال {s} مرحلة و{r} تذكير"
+ ],
+ "q.advance": [
+  "Play due steps now",
+  "Jouer les étapes dues",
+  "تنفيذ المراحل المستحقة الآن"
+ ],
+ "q.confirmClose": [
+  "Close the questionnaire? Respondents who have not answered will be marked expired.",
+  "Clôturer le questionnaire ? Les répondants sans réponse seront marqués expirés.",
+  "إغلاق الاستبيان؟ سيعتبر المجيبون دون جواب منتهين."
+ ],
+ "q.close": [
+  "Close",
+  "Clôturer",
+  "إغلاق"
+ ],
+ "q.report": [
+  "Report (Excel)",
+  "Rapport (Excel)",
+  "التقرير (Excel)"
+ ],
+ "q.respondents": [
+  "Respondents",
+  "Répondants",
+  "المجيبون"
+ ],
+ "q.respondedN": [
+  "{n} responses, {i} included",
+  "{n} réponses, {i} retenues",
+  "{n} جوابا، {i} مدرج"
+ ],
+ "q.issues": [
+  "Before distribution",
+  "Avant la diffusion",
+  "قبل التوزيع"
+ ],
+ "q.tabRespondents": [
+  "Who responds",
+  "Qui répond",
+  "من يجيب"
+ ],
+ "q.tabDesign": [
+  "Forms and questions",
+  "Formulaires et questions",
+  "الاستمارات والأسئلة"
+ ],
+ "q.tabChannels": [
+  "Channels and reminders",
+  "Canaux et rappels",
+  "القنوات والتذكيرات"
+ ],
+ "q.tabResponses": [
+  "Responses",
+  "Réponses",
+  "الأجوبة"
+ ],
+ "q.tabDataset": [
+  "Consolidation",
+  "Consolidation",
+  "التجميع"
+ ],
+ "q.tabLog": [
+  "Log and outbox",
+  "Journal et boîte d’envoi",
+  "السجل وصندوق الإرسال"
+ ],
+ "q.sendResult": [
+  "{channel}: {status}",
+  "{channel} : {status}",
+  "{channel}: {status}"
+ ],
+ "q.linkCopied": [
+  "Response link copied",
+  "Lien de réponse copié",
+  "تم نسخ رابط الإجابة"
+ ],
+ "q.link": [
+  "Response link",
+  "Lien de réponse",
+  "رابط الإجابة"
+ ],
+ "q.whoResponds": [
+  "Who will respond",
+  "Qui va répondre",
+  "من سيجيب"
+ ],
+ "q.population": [
+  "Population",
+  "Population",
+  "الفئة"
+ ],
+ "q.setMode": [
+  "Set the channel",
+  "Définir le canal",
+  "تحديد القناة"
+ ],
+ "q.setModeN": [
+  "Set the channel of {n} respondent(s)…",
+  "Définir le canal de {n} répondant(s)…",
+  "تحديد قناة {n} مجيب…"
+ ],
+ "q.addRespondents": [
+  "Add respondents",
+  "Ajouter des répondants",
+  "إضافة مجيبين"
+ ],
+ "q.whoHint": [
+  "Each respondent receives the form of their population — General Manager, management or team member — and follows a channel plan: one channel, or several in sequence (for example e-mail first, then face-to-face).",
+  "Chaque répondant reçoit le formulaire de sa population — direction générale, management ou membre de l’équipe — et suit un plan de canaux : un seul canal, ou plusieurs en séquence (par exemple d’abord l’e-mail, puis le face-à-face).",
+  "يتلقى كل مجيب استمارة فئته — المدير العام أو الأطر المسيرة أو عضو الفريق — ويتبع مخطط قنوات: قناة واحدة أو عدة قنوات متتالية (مثلا البريد أولا ثم المقابلة المباشرة)."
+ ],
+ "q.form": [
+  "Form",
+  "Formulaire",
+  "الاستمارة"
+ ],
+ "q.contact": [
+  "E-mail · mobile",
+  "E-mail · mobile",
+  "البريد · الهاتف"
+ ],
+ "q.channelPlan": [
+  "Channel plan",
+  "Plan de canaux",
+  "مخطط القنوات"
+ ],
+ "q.optedOut": [
+  "Asked not to be contacted",
+  "A demandé à ne plus être contacté",
+  "طلب عدم الاتصال"
+ ],
+ "q.sendNow": [
+  "Send now (next step)",
+  "Envoyer maintenant (étape suivante)",
+  "الإرسال الآن (المرحلة الموالية)"
+ ],
+ "q.copyLink": [
+  "Copy the response link",
+  "Copier le lien de réponse",
+  "نسخ رابط الإجابة"
+ ],
+ "q.capture": [
+  "Record the answers (interview)",
+  "Saisir les réponses (entretien)",
+  "تسجيل الأجوبة (مقابلة)"
+ ],
+ "q.pack": [
+  "Printable interview pack",
+  "Dossier d’entretien imprimable",
+  "ملف المقابلة القابل للطباعة"
+ ],
+ "q.addN": [
+  "Add {n}",
+  "Ajouter {n}",
+  "إضافة {n}"
+ ],
+ "q.addHint": [
+  "Respondents come from the stakeholder register of the Scope of Work. Their population sets the form; the channel can be changed per person afterwards.",
+  "Les répondants proviennent du registre des parties prenantes du périmètre. Leur population détermine le formulaire ; le canal peut être modifié par personne ensuite.",
+  "يأتي المجيبون من سجل الأطراف المعنية في نطاق العمل. تحدد فئتهم الاستمارة؛ ويمكن تغيير القناة لكل شخص لاحقا."
+ ],
+ "q.selectAll": [
+  "Select all ({n})",
+  "Tout sélectionner ({n})",
+  "تحديد الكل ({n})"
+ ],
+ "q.level": [
+  "Level",
+  "Niveau",
+  "المستوى"
+ ],
+ "q.preferred": [
+  "Preferred channel",
+  "Canal préféré",
+  "القناة المفضلة"
+ ],
+ "q.consent": [
+  "Consent",
+  "Consentement",
+  "الموافقة"
+ ],
+ "q.language": [
+  "Language",
+  "Langue",
+  "اللغة"
+ ],
+ "q.orgLanguage": [
+  "Organization language",
+  "Langue de l’organisation",
+  "لغة المؤسسة"
+ ],
+ "q.email": [
+  "E-mail",
+  "E-mail",
+  "البريد الإلكتروني"
+ ],
+ "q.mobile": [
+  "Mobile (WhatsApp)",
+  "Mobile (WhatsApp)",
+  "الهاتف (واتساب)"
+ ],
+ "q.mobileHint": [
+  "International format, e.g. +212 6…; a leading 0 becomes +212.",
+  "Format international, ex. +212 6… ; un 0 initial devient +212.",
+  "الصيغة الدولية، مثل +212 6…؛ يتحول الصفر الأول إلى +212."
+ ],
+ "q.interviewAt": [
+  "Face-to-face interview",
+  "Entretien en face-à-face",
+  "المقابلة المباشرة"
+ ],
+ "q.interviewer": [
+  "Interviewer",
+  "Intervieweur",
+  "المحاور"
+ ],
+ "q.planHint": [
+  "Steps are played in order on the day shown (J+n after distribution). The respondent can answer at any step; the plan stops at the response.",
+  "Les étapes sont jouées dans l’ordre au jour indiqué (J+n après la diffusion). Le répondant peut répondre à toute étape ; le plan s’arrête à la réponse.",
+  "تنفذ المراحل بالترتيب في اليوم المحدد (ي+n بعد التوزيع). يمكن للمجيب الإجابة في أية مرحلة؛ ويتوقف المخطط عند الإجابة."
+ ],
+ "q.channel": [
+  "Channel",
+  "Canal",
+  "القناة"
+ ],
+ "q.action": [
+  "Action",
+  "Action",
+  "الإجراء"
+ ],
+ "q.afterDays": [
+  "Day (J+n)",
+  "Jour (J+n)",
+  "اليوم (ي+n)"
+ ],
+ "qact.interview": [
+  "Interview",
+  "Entretien",
+  "مقابلة"
+ ],
+ "qact.invite": [
+  "Invitation",
+  "Invitation",
+  "دعوة"
+ ],
+ "qact.remind": [
+  "Reminder",
+  "Rappel",
+  "تذكير"
+ ],
+ "q.addStep": [
+  "Add a step",
+  "Ajouter une étape",
+  "إضافة مرحلة"
+ ],
+ "qplan.after": [
+  "Day {n} after distribution",
+  "Jour {n} après la diffusion",
+  "اليوم {n} بعد التوزيع"
+ ],
+ "q.newSection": [
+  "New section",
+  "Nouvelle section",
+  "قسم جديد"
+ ],
+ "q.aiAdded": [
+  "{n} AI question(s) added — validate them before distribution",
+  "{n} question(s) IA ajoutée(s) — validez-les avant la diffusion",
+  "تمت إضافة {n} سؤال مولد — صادق عليها قبل التوزيع"
+ ],
+ "q.aiTailorNow": [
+  "Tailor with AI",
+  "Adapter avec l’IA",
+  "التكييف بالذكاء الاصطناعي"
+ ],
+ "q.aiPending": [
+  "{n} AI element(s) to validate",
+  "{n} élément(s) IA à valider",
+  "{n} عنصر مولد للمصادقة"
+ ],
+ "q.aiPendingHint": [
+  "Read each AI question; validate or reject it. Distribution stays blocked until all are validated.",
+  "Lisez chaque question IA ; validez-la ou rejetez-la. La diffusion reste bloquée tant que tout n’est pas validé.",
+  "اقرأ كل سؤال مولد؛ صادق عليه أو ارفضه. يبقى التوزيع متوقفا حتى المصادقة على الكل."
+ ],
+ "q.validateAll": [
+  "Validate all",
+  "Tout valider",
+  "المصادقة على الكل"
+ ],
+ "q.preview": [
+  "Preview",
+  "Aperçu",
+  "معاينة"
+ ],
+ "q.blankForm": [
+  "Blank form (Word)",
+  "Formulaire vierge (Word)",
+  "استمارة فارغة (Word)"
+ ],
+ "q.addSection": [
+  "Add a section",
+  "Ajouter une section",
+  "إضافة قسم"
+ ],
+ "q.designHint": [
+  "Each section has its RACSI with exactly one Accountable (A). Questions keep their origin: template, AI or manual.",
+  "Chaque section a son RACSI avec un seul Approbateur (A). Les questions gardent leur origine : modèle, IA ou manuelle.",
+  "لكل قسم مصفوفة RACSI بمسؤول معتمد واحد (A). تحتفظ الأسئلة بأصلها: نموذج أو ذكاء اصطناعي أو يدوي."
+ ],
+ "qtype.note": [
+  "Instructions",
+  "Consignes",
+  "توجيهات"
+ ],
+ "qtype.identity": [
+  "Identity",
+  "Identité",
+  "الهوية"
+ ],
+ "qtype.table": [
+  "Table",
+  "Tableau",
+  "جدول"
+ ],
+ "qtype.grid": [
+  "Grid",
+  "Grille",
+  "شبكة"
+ ],
+ "qtype.questions": [
+  "Open questions",
+  "Questions ouvertes",
+  "أسئلة مفتوحة"
+ ],
+ "qtype.rating": [
+  "Rating",
+  "Notation",
+  "تقييم"
+ ],
+ "qtype.swot": [
+  "SWOT",
+  "SWOT",
+  "SWOT"
+ ],
+ "qtype.yesno": [
+  "Yes / no",
+  "Oui / non",
+  "نعم / لا"
+ ],
+ "qorigin.template": [
+  "Template",
+  "Modèle",
+  "نموذج"
+ ],
+ "qorigin.ai": [
+  "AI",
+  "IA",
+  "ذكاء اصطناعي"
+ ],
+ "qorigin.manual": [
+  "Manual",
+  "Manuel",
+  "يدوي"
+ ],
+ "q.validated": [
+  "Validated",
+  "Validée",
+  "مصادق"
+ ],
+ "q.toValidate": [
+  "To validate",
+  "À valider",
+  "للمصادقة"
+ ],
+ "q.question": [
+  "Question",
+  "Question",
+  "السؤال"
+ ],
+ "q.validate": [
+  "Validate",
+  "Valider",
+  "مصادقة"
+ ],
+ "q.reject": [
+  "Reject",
+  "Rejeter",
+  "رفض"
+ ],
+ "q.addQuestion": [
+  "Add a question",
+  "Ajouter une question",
+  "إضافة سؤال"
+ ],
+ "q.elements": [
+  "{n} elements",
+  "{n} éléments",
+  "{n} عناصر"
+ ],
+ "q.changeDistributed": [
+  "Change a distributed questionnaire",
+  "Modifier un questionnaire diffusé",
+  "تعديل استبيان موزع"
+ ],
+ "q.modeExplain": [
+  "Choose how respondents answer: in a face-to-face interview, by e-mail, by WhatsApp, in the application through their personal link, or with a combination played in sequence.",
+  "Choisissez comment les répondants répondent : en entretien face-à-face, par e-mail, par WhatsApp, dans l’application via leur lien personnel, ou par une combinaison jouée en séquence.",
+  "اختر كيف يجيب المجيبون: في مقابلة مباشرة، بالبريد الإلكتروني، عبر واتساب، في التطبيق عبر رابطهم الشخصي، أو بمزيج متتال."
+ ],
+ "qmodeHint.Face-to-Face": [
+  "Interview with the printable pack; answers recorded in the application, offline if needed.",
+  "Entretien avec le dossier imprimable ; réponses saisies dans l’application, hors ligne si besoin.",
+  "مقابلة بالملف المطبوع؛ تسجل الأجوبة في التطبيق، دون اتصال عند الحاجة."
+ ],
+ "qmodeHint.Email": [
+  "Invitation and reminders by e-mail with the personal link; a returned form can be recorded.",
+  "Invitation et rappels par e-mail avec le lien personnel ; un formulaire retourné peut être saisi.",
+  "دعوة وتذكيرات بالبريد مع الرابط الشخصي؛ يمكن تسجيل استمارة معادة."
+ ],
+ "qmodeHint.WhatsApp": [
+  "Invitation and reminders by WhatsApp with the personal link.",
+  "Invitation et rappels par WhatsApp avec le lien personnel.",
+  "دعوة وتذكيرات عبر واتساب مع الرابط الشخصي."
+ ],
+ "qmodeHint.Application": [
+  "In-app notification for users; e-mail with the link for others.",
+  "Notification dans l’application pour les utilisateurs ; e-mail avec le lien pour les autres.",
+  "إشعار داخل التطبيق للمستخدمين؛ بريد مع الرابط للآخرين."
+ ],
+ "qmodeHint.Combination": [
+  "Several channels in sequence, e.g. e-mail, then WhatsApp, then face-to-face.",
+  "Plusieurs canaux en séquence, ex. e-mail, puis WhatsApp, puis face-à-face.",
+  "عدة قنوات متتالية، مثلا البريد ثم واتساب ثم المقابلة المباشرة."
+ ],
+ "q.defaultPlans": [
+  "Default plans by population",
+  "Plans par défaut selon la population",
+  "المخططات الافتراضية حسب الفئة"
+ ],
+ "q.defaultPlansHint": [
+  "Applied to respondents added from now on; a respondent without a mobile number gets e-mail instead of WhatsApp.",
+  "Appliqués aux répondants ajoutés désormais ; un répondant sans mobile reçoit l’e-mail au lieu de WhatsApp.",
+  "تطبق على المجيبين المضافين من الآن؛ المجيب دون هاتف يتلقى البريد بدل واتساب."
+ ],
+ "q.reminders": [
+  "Reminder cadence per channel",
+  "Cadence des rappels par canal",
+  "وتيرة التذكير حسب القناة"
+ ],
+ "q.everyDays": [
+  "Every (days)",
+  "Tous les (jours)",
+  "كل (أيام)"
+ ],
+ "q.maxReminders": [
+  "Maximum",
+  "Maximum",
+  "الحد الأقصى"
+ ],
+ "q.remindersHint": [
+  "Reminders go only to respondents who have not answered and stop at the response, at closure or at the deadline.",
+  "Les rappels ne vont qu’aux répondants sans réponse et s’arrêtent à la réponse, à la clôture ou à l’échéance.",
+  "تذهب التذكيرات فقط لمن لم يجب وتتوقف عند الإجابة أو الإغلاق أو انتهاء الأجل."
+ ],
+ "q.thresholdLabel": [
+  "Completeness threshold (%)",
+  "Seuil de complétude (%)",
+  "عتبة الاكتمال (%)"
+ ],
+ "q.thresholdHint": [
+  "A response below the threshold is excluded from the consolidation unless included with a justification.",
+  "Une réponse sous le seuil est exclue de la consolidation sauf inclusion justifiée.",
+  "يستبعد الجواب دون العتبة من التجميع إلا بإدراج مبرر."
+ ],
+ "q.providers": [
+  "Providers",
+  "Fournisseurs",
+  "المزودون"
+ ],
+ "channel.whatsapp": [
+  "WhatsApp",
+  "WhatsApp",
+  "واتساب"
+ ],
+ "channelMode.sandbox": [
+  "Sandbox — messages kept in the outbox",
+  "Bac à sable — messages conservés dans la boîte d’envoi",
+  "بيئة تجريبية — الرسائل في صندوق الإرسال"
+ ],
+ "channelMode.live": [
+  "Live — sent by the provider",
+  "En production — envoyés par le fournisseur",
+  "مفعل — ترسل عبر المزود"
+ ],
+ "channelMode.platform": [
+  "Platform provider",
+  "Fournisseur de la plateforme",
+  "مزود المنصة"
+ ],
+ "q.sandboxHint": [
+  "Without a configured provider, messages are composed and kept in the outbox, so the run can be rehearsed safely.",
+  "Sans fournisseur configuré, les messages sont composés et conservés dans la boîte d’envoi, pour répéter le déroulé sans risque.",
+  "دون مزود مهيأ، تصاغ الرسائل وتحفظ في صندوق الإرسال لتجريب العملية بأمان."
+ ],
+ "q.channelSettings": [
+  "Channel settings",
+  "Paramètres des canaux",
+  "إعدادات القنوات"
+ ],
+ "q.respondVia": [
+  "How respondents answer",
+  "Comment les répondants répondent",
+  "كيف يجيب المجيبون"
+ ],
+ "q.respondViaText": [
+  "Through their personal link (application), by returning the form by e-mail, or in a face-to-face interview recorded by the interviewer. Consent is asked before anything is stored.",
+  "Via leur lien personnel (application), en renvoyant le formulaire par e-mail, ou en entretien face-à-face saisi par l’intervieweur. Le consentement est demandé avant tout enregistrement.",
+  "عبر رابطهم الشخصي (التطبيق)، أو بإعادة الاستمارة بالبريد، أو في مقابلة مباشرة يسجلها المحاور. تطلب الموافقة قبل أي حفظ."
+ ],
+ "q.respondent": [
+  "Respondent",
+  "Répondant",
+  "المجيب"
+ ],
+ "q.submitted": [
+  "Submitted",
+  "Soumise le",
+  "تاريخ الإرسال"
+ ],
+ "q.included": [
+  "Consolidation",
+  "Consolidation",
+  "التجميع"
+ ],
+ "q.belowThreshold": [
+  "Below threshold",
+  "Sous le seuil",
+  "دون العتبة"
+ ],
+ "q.include": [
+  "Include",
+  "Inclure",
+  "إدراج"
+ ],
+ "q.exclude": [
+  "Exclude",
+  "Exclure",
+  "استبعاد"
+ ],
+ "q.datasetIntro": [
+  "Consolidated from {n} included responses of this Organization; it feeds the needs analysis, the diagnosis and the Training Engineering Report.",
+  "Consolidé à partir de {n} réponses retenues de cette organisation ; il alimente l’analyse des besoins, le diagnostic et le rapport d’ingénierie de formation.",
+  "مجمع من {n} جوابا مدرجا لهذه المؤسسة؛ يغذي تحليل الحاجيات والتشخيص وتقرير هندسة التكوين."
+ ],
+ "q.fed": [
+  "{n} training need(s) created as drafts",
+  "{n} besoin(s) de formation créé(s) en brouillon",
+  "تم إنشاء {n} حاجة تكوينية كمسودة"
+ ],
+ "q.feed": [
+  "Feed the needs analysis",
+  "Alimenter l’analyse des besoins",
+  "تغذية تحليل الحاجيات"
+ ],
+ "q.softCaption": [
+  "Average self-assessment (1–5) of the weakest soft skills",
+  "Auto-évaluation moyenne (1–5) des soft skills les plus faibles",
+  "متوسط التقييم الذاتي (1–5) لأضعف المهارات الشخصية"
+ ],
+ "q.leadership": [
+  "Leadership levels",
+  "Niveaux de leadership",
+  "مستويات القيادة"
+ ],
+ "q.strategy": [
+  "Strategic orientations (General Manager)",
+  "Orientations stratégiques (direction générale)",
+  "التوجهات الاستراتيجية (المدير العام)"
+ ],
+ "q.noStrategy": [
+  "Not yet collected — workshop with the General Manager (form F1).",
+  "Pas encore recueillies — workshop avec le DG (formulaire F1).",
+  "لم تجمع بعد — الورشة مع المدير العام (الاستمارة F1)."
+ ],
+ "q.events": [
+  "Questionnaire log",
+  "Journal du questionnaire",
+  "سجل الاستبيان"
+ ],
+ "q.eventsHint": [
+  "Append-only: every dispatch, reminder, opening and response, per channel.",
+  "En ajout seul : chaque envoi, rappel, ouverture et réponse, par canal.",
+  "إضافة فقط: كل إرسال وتذكير وفتح وجواب حسب القناة."
+ ],
+ "q.event": [
+  "Event",
+  "Événement",
+  "الحدث"
+ ],
+ "q.recipient": [
+  "Recipient",
+  "Destinataire",
+  "المستلم"
+ ],
+ "q.outbox": [
+  "Outbox",
+  "Boîte d’envoi",
+  "صندوق الإرسال"
+ ],
+ "q.outboxHint": [
+  "Every e-mail and WhatsApp message with its delivery status.",
+  "Chaque e-mail et message WhatsApp avec son statut de remise.",
+  "كل رسالة بريد وواتساب مع حالة تسليمها."
+ ],
+ "q.provider": [
+  "Provider",
+  "Fournisseur",
+  "المزود"
+ ],
+ "q.error": [
+  "Error",
+  "Erreur",
+  "خطأ"
+ ],
+ "qev.questionnaire.created": [
+  "Questionnaire created",
+  "Questionnaire créé",
+  "إنشاء الاستبيان"
+ ],
+ "qev.ai.tailored": [
+  "AI tailoring",
+  "Adaptation par l’IA",
+  "التكييف بالذكاء الاصطناعي"
+ ],
+ "qev.ai.validated": [
+  "AI questions validated",
+  "Questions IA validées",
+  "المصادقة على الأسئلة المولدة"
+ ],
+ "qev.questionnaire.distributed": [
+  "Distributed",
+  "Diffusé",
+  "تم التوزيع"
+ ],
+ "qev.questionnaire.closed": [
+  "Closed",
+  "Clôturé",
+  "تم الإغلاق"
+ ],
+ "qev.invite": [
+  "Invitation",
+  "Invitation",
+  "دعوة"
+ ],
+ "qev.remind": [
+  "Reminder",
+  "Rappel",
+  "تذكير"
+ ],
+ "qev.interview": [
+  "Interview notice",
+  "Avis d’entretien",
+  "إشعار مقابلة"
+ ],
+ "qev.interview.planned": [
+  "Interview to schedule",
+  "Entretien à planifier",
+  "مقابلة للبرمجة"
+ ],
+ "qev.opened": [
+  "Link opened",
+  "Lien ouvert",
+  "فتح الرابط"
+ ],
+ "qev.response": [
+  "Response stored",
+  "Réponse enregistrée",
+  "حفظ الجواب"
+ ],
+ "qev.response.draft": [
+  "Draft saved",
+  "Brouillon enregistré",
+  "حفظ المسودة"
+ ],
+ "qev.response.synced": [
+  "Offline capture synchronized",
+  "Saisie hors ligne synchronisée",
+  "مزامنة التسجيل دون اتصال"
+ ],
+ "qev.consent.refused": [
+  "Not stored: no consent",
+  "Non enregistrée : pas de consentement",
+  "لم يحفظ: دون موافقة"
+ ],
+ "qev.declined": [
+  "Declined",
+  "A décliné",
+  "اعتذر"
+ ],
+ "qev.opt-out": [
+  "Opt-out (STOP)",
+  "Désinscription (STOP)",
+  "إلغاء الاشتراك (STOP)"
+ ],
+ "qev.inbound": [
+  "WhatsApp reply",
+  "Réponse WhatsApp",
+  "رد واتساب"
+ ],
+ "qev.status": [
+  "Delivery status",
+  "Statut de remise",
+  "حالة التسليم"
+ ],
+ "qev.respondent.added": [
+  "Respondent added",
+  "Répondant ajouté",
+  "إضافة مجيب"
+ ],
+ "qev.respondent.updated": [
+  "Respondent updated",
+  "Répondant modifié",
+  "تعديل مجيب"
+ ],
+ "qev.respondent.removed": [
+  "Respondent removed",
+  "Répondant retiré",
+  "حذف مجيب"
+ ],
+ "qev.response.included": [
+  "Response included",
+  "Réponse incluse",
+  "إدراج الجواب"
+ ],
+ "qev.response.excluded": [
+  "Response excluded",
+  "Réponse exclue",
+  "استبعاد الجواب"
+ ],
+ "qev.dataset.fed": [
+  "Needs analysis fed",
+  "Analyse des besoins alimentée",
+  "تغذية تحليل الحاجيات"
+ ],
+ "qev.test": [
+  "Test",
+  "Test",
+  "اختبار"
+ ],
+ "qev.message": [
+  "Message",
+  "Message",
+  "رسالة"
+ ],
+ "q.templatesSub": [
+  "IF-PAC forms for the General Manager, management and team members, and the Organization’s own templates.",
+  "Formulaires IF-PAC pour la direction générale, le management et les membres des équipes, et les modèles propres à l’organisation.",
+  "استمارات IF-PAC للمدير العام والأطر المسيرة وأعضاء الفرق، ونماذج المؤسسة."
+ ],
+ "q.import": [
+  "Import (JSON)",
+  "Importer (JSON)",
+  "استيراد (JSON)"
+ ],
+ "q.library": [
+  "Library",
+  "Bibliothèque",
+  "المكتبة"
+ ],
+ "q.code": [
+  "Code",
+  "Code",
+  "الرمز"
+ ],
+ "q.sections": [
+  "Sections",
+  "Sections",
+  "الأقسام"
+ ],
+ "q.version": [
+  "Version",
+  "Version",
+  "الإصدار"
+ ],
+ "q.copyAdapt": [
+  "Copy and adapt",
+  "Copier et adapter",
+  "نسخ وتكييف"
+ ],
+ "q.savedOffline": [
+  "No connection: saved on this device, it will be sent when the connection returns.",
+  "Pas de connexion : enregistré sur cet appareil, l’envoi se fera au retour de la connexion.",
+  "لا يوجد اتصال: حفظ على هذا الجهاز وسيرسل عند عودة الاتصال."
+ ],
+ "q.online": [
+  "Online",
+  "En ligne",
+  "متصل"
+ ],
+ "q.offline": [
+  "Offline",
+  "Hors ligne",
+  "دون اتصال"
+ ],
+ "q.synced": [
+  "{n} capture(s) sent",
+  "{n} saisie(s) envoyée(s)",
+  "تم إرسال {n} تسجيل"
+ ],
+ "q.syncN": [
+  "Send {n} offline capture(s)",
+  "Envoyer {n} saisie(s) hors ligne",
+  "إرسال {n} تسجيل دون اتصال"
+ ],
+ "q.consentObtained": [
+  "The respondent gave consent",
+  "Le participant a donné son consentement",
+  "وافق المشارك"
+ ],
+ "q.consentObtainedHint": [
+  "Ask before recording any answer; without consent nothing is stored.",
+  "Demandez-le avant toute saisie ; sans consentement rien n’est enregistré.",
+  "اطلبها قبل تسجيل أي جواب؛ دون موافقة لا يحفظ شيء."
+ ],
+ "q.capturedVia": [
+  "Answers collected by",
+  "Réponses recueillies par",
+  "تم جمع الأجوبة عبر"
+ ],
+ "q.recordResponse": [
+  "Record the response",
+  "Enregistrer la réponse",
+  "تسجيل الجواب"
+ ],
+ "q.captured": [
+  "Response recorded",
+  "Réponse enregistrée",
+  "تم تسجيل الجواب"
+ ],
+ "respond.completeness": [
+  "Completed: {pct}%",
+  "Rempli : {pct} %",
+  "مكتمل: {pct}٪"
+ ],
+ "respond.completenessLabel": [
+  "Completeness",
+  "Complétude",
+  "الاكتمال"
+ ],
+ "respond.saveDraft": [
+  "Save draft",
+  "Enregistrer le brouillon",
+  "حفظ المسودة"
+ ],
+ "respond.consentNeeded": [
+  "Give your consent to save or send your answers.",
+  "Donnez votre consentement pour enregistrer ou envoyer vos réponses.",
+  "وافق لحفظ أجوبتك أو إرسالها."
+ ],
+ "respond.invalid": [
+  "This link is not valid",
+  "Ce lien n’est pas valide",
+  "هذا الرابط غير صالح"
+ ],
+ "respond.hello": [
+  "Hello {name}",
+  "Bonjour {name}",
+  "مرحبا {name}"
+ ],
+ "respond.due": [
+  "answer by {date}",
+  "réponse avant le {date}",
+  "الإجابة قبل {date}"
+ ],
+ "respond.thanks": [
+  "Thank you, your answers have been recorded.",
+  "Merci, vos réponses ont été enregistrées.",
+  "شكرا، تم تسجيل أجوبتك."
+ ],
+ "respond.thanksText": [
+  "They will be used for the training plan. You can close this page.",
+  "Elles serviront au plan de formation. Vous pouvez fermer cette page.",
+  "ستستعمل في مخطط التكوين. يمكنك إغلاق هذه الصفحة."
+ ],
+ "respond.closed": [
+  "This questionnaire is closed.",
+  "Ce questionnaire est clôturé.",
+  "هذا الاستبيان مغلق."
+ ],
+ "respond.consent": [
+  "I agree that my answers are stored and used",
+  "J’accepte que mes réponses soient enregistrées et utilisées",
+  "أوافق على حفظ أجوبتي واستعمالها"
+ ],
+ "respond.consentText": [
+  "Your answers are used only for the training engineering of {org}. Without your consent, nothing is stored.",
+  "Vos réponses servent uniquement à l’ingénierie de formation de {org}. Sans votre consentement, rien n’est enregistré.",
+  "تستعمل أجوبتك فقط لهندسة التكوين لدى {org}. دون موافقتك لا يحفظ شيء."
+ ],
+ "respond.threshold": [
+  "Answers below {n}% complete are reviewed before being used.",
+  "Les réponses complètes à moins de {n} % sont revues avant d’être utilisées.",
+  "تراجع الأجوبة المكتملة بأقل من {n}٪ قبل استعمالها."
+ ],
+ "respond.saved": [
+  "Draft saved",
+  "Brouillon enregistré",
+  "تم حفظ المسودة"
+ ],
+ "respond.declineConfirm": [
+  "Decline to answer? You will not receive reminders.",
+  "Refuser de répondre ? Vous ne recevrez plus de rappels.",
+  "رفض الإجابة؟ لن تتلقى تذكيرات."
+ ],
+ "respond.decline": [
+  "Decline",
+  "Refuser",
+  "رفض"
+ ],
+ "respond.submit": [
+  "Send my answers",
+  "Envoyer mes réponses",
+  "إرسال أجوبتي"
+ ],
+ "qf.functionOrCustom": [
+  "Function (or type another)",
+  "Fonction (ou en saisir une autre)",
+  "الوظيفة (أو اكتب أخرى)"
+ ],
+ "qf.section": [
+  "Section {n}",
+  "Section {n}",
+  "القسم {n}"
+ ],
+ "qf.aiQuestion": [
+  "AI questions",
+  "Questions IA",
+  "أسئلة مولدة"
+ ],
+ "qf.hadPreviousPlan": [
+  "The company had a training plan last year",
+  "L’entreprise avait un plan de formation l’année dernière",
+  "كان للمؤسسة مخطط تكوين السنة الماضية"
+ ],
+ "qf.hrFunction": [
+  "I work in the HR function",
+  "Je travaille dans la fonction RH",
+  "أعمل في وظيفة الموارد البشرية"
+ ],
+ "qf.ai": [
+  "AI",
+  "IA",
+  "ذكاء اصطناعي"
+ ],
+ "qf.competence": [
+  "Competence",
+  "Compétence",
+  "الكفاءة"
+ ],
+ "qf.rating": [
+  "Rating",
+  "Note",
+  "التقييم"
+ ],
+ "qf.comment": [
+  "Comment",
+  "Commentaire",
+  "تعليق"
+ ],
+ "qf.noRows": [
+  "No row",
+  "Aucune ligne",
+  "لا يوجد سطر"
+ ],
+ "qf.addRow": [
+  "Add a row",
+  "Ajouter une ligne",
+  "إضافة سطر"
+ ],
+ "tp.halfDayLabel": [
+  "Day {d} — {p}",
+  "Jour {d} — {p}",
+  "اليوم {d} — {p}"
+ ],
+ "tp.morning": [
+  "morning",
+  "matin",
+  "الصباح"
+ ],
+ "tp.afternoon": [
+  "afternoon",
+  "après-midi",
+  "بعد الزوال"
+ ],
+ "tp.eyebrow": [
+  "Training plan",
+  "Plan de formation",
+  "مخطط التكوين"
+ ],
+ "tp.subtitle": [
+  "Programs, trainings, half-day agendas and the value of each training for each persona.",
+  "Programmes, formations, agendas par demi-journée et valeur de chaque formation pour chaque persona.",
+  "البرامج والتكوينات وبرامج أنصاف الأيام وقيمة كل تكوين لكل شخصية."
+ ],
+ "tp.personas": [
+  "Personas",
+  "Personas",
+  "الشخصيات"
+ ],
+ "tp.approve": [
+  "Approve the plan",
+  "Approuver le plan",
+  "المصادقة على المخطط"
+ ],
+ "tp.submit": [
+  "Submit for review",
+  "Soumettre à la revue",
+  "الإرسال للمراجعة"
+ ],
+ "tp.programs": [
+  "Programs",
+  "Programmes",
+  "البرامج"
+ ],
+ "tp.trainings": [
+  "Trainings",
+  "Formations",
+  "التكوينات"
+ ],
+ "tp.compliantN": [
+  "{n} of {m} meet the golden rules",
+  "{n} sur {m} respectent les règles d’or",
+  "{n} من {m} تحترم القواعد الذهبية"
+ ],
+ "tp.halfDaysTotal": [
+  "Half-days of content",
+  "Demi-journées de contenu",
+  "أنصاف أيام المحتوى"
+ ],
+ "tp.trainingDays": [
+  "Training days",
+  "Jours de formation",
+  "أيام التكوين"
+ ],
+ "tp.trainingDaysHint": [
+  "duration × groups",
+  "durée × groupes",
+  "المدة × المجموعات"
+ ],
+ "tp.goldenTitle": [
+  "Golden rules:",
+  "Règles d’or :",
+  "القواعد الذهبية:"
+ ],
+ "tp.goldenText": [
+  "the agenda is given half-day by half-day, and every half-day has exactly one quiz and one workshop, with at least one lecture. A training that breaks a rule cannot be approved.",
+  "l’agenda est donné demi-journée par demi-journée, et chaque demi-journée comporte exactement un quiz et un atelier, avec au moins un exposé. Une formation qui enfreint une règle ne peut pas être approuvée.",
+  "يقدم البرنامج نصف يوم بنصف يوم، ويتضمن كل نصف يوم اختبارا واحدا وورشة واحدة بالضبط، مع عرض واحد على الأقل. لا يمكن المصادقة على تكوين يخالف قاعدة."
+ ],
+ "tp.newTraining": [
+  "New training",
+  "Nouvelle formation",
+  "تكوين جديد"
+ ],
+ "tp.addTraining": [
+  "Add a training",
+  "Ajouter une formation",
+  "إضافة تكوين"
+ ],
+ "tp.noTrainings": [
+  "No training in this program",
+  "Aucune formation dans ce programme",
+  "لا يوجد أي تكوين في هذا البرنامج"
+ ],
+ "tp.addProgram": [
+  "Add a program",
+  "Ajouter un programme",
+  "إضافة برنامج"
+ ],
+ "tp.empty": [
+  "No program yet",
+  "Aucun programme",
+  "لا يوجد أي برنامج"
+ ],
+ "tp.emptyText": [
+  "Add a program, then its trainings.",
+  "Ajoutez un programme, puis ses formations.",
+  "أضف برنامجا ثم تكويناته."
+ ],
+ "tp.programName": [
+  "Program name",
+  "Nom du programme",
+  "اسم البرنامج"
+ ],
+ "tp.axis": [
+  "Axis",
+  "Axe",
+  "المحور"
+ ],
+ "tp.aiDraft": [
+  "Draft with AI",
+  "Rédiger avec l’IA",
+  "الصياغة بالذكاء الاصطناعي"
+ ],
+ "tp.fixRules": [
+  "Fix the golden rules first",
+  "Corrigez d’abord les règles d’or",
+  "صحح القواعد الذهبية أولا"
+ ],
+ "tp.saveFirst": [
+  "Save first",
+  "Enregistrez d’abord",
+  "احفظ أولا"
+ ],
+ "tp.approveTraining": [
+  "Approve the training",
+  "Approuver la formation",
+  "المصادقة على التكوين"
+ ],
+ "tp.levelHint": [
+  "Choose a level or type your own",
+  "Choisissez un niveau ou saisissez le vôtre",
+  "اختر مستوى أو اكتب مستواك"
+ ],
+ "tp.durationDays": [
+  "Duration (days)",
+  "Durée (jours)",
+  "المدة (أيام)"
+ ],
+ "tp.durationHint": [
+  "In half-days: 0.5, 1, 1.5…",
+  "Par demi-journées : 0,5, 1, 1,5…",
+  "بأنصاف الأيام: 0.5، 1، 1.5…"
+ ],
+ "tp.objective": [
+  "Objective",
+  "Objectif",
+  "الهدف"
+ ],
+ "tp.addObjective": [
+  "Add an objective",
+  "Ajouter un objectif",
+  "إضافة هدف"
+ ],
+ "tp.agenda": [
+  "Detailed agenda",
+  "Agenda détaillé",
+  "البرنامج المفصل"
+ ],
+ "tp.valuePropositionTab": [
+  "Value proposition per persona",
+  "Proposition de valeur par persona",
+  "القيمة المقترحة لكل شخصية"
+ ],
+ "tp.add": [
+  "Add a {type}",
+  "Ajouter : {type}",
+  "إضافة {type}"
+ ],
+ "tp.personaHint": [
+  "For each persona concerned, state their behaviour, pain points and hopes, and how this training fits them.",
+  "Pour chaque persona concerné, indiquez son comportement, ses points de douleur et ses attentes, et en quoi cette formation lui correspond.",
+  "لكل شخصية معنية، اذكر سلوكها ونقاط ألمها وتطلعاتها وكيف يلائمها هذا التكوين."
+ ],
+ "tp.aiDraftTitle": [
+  "AI draft — agenda, objectives and persona fit",
+  "Brouillon IA — agenda, objectifs et adéquation aux personas",
+  "مسودة الذكاء الاصطناعي — البرنامج والأهداف والملاءمة"
+ ],
+ "tp.acceptDraft": [
+  "Use this draft",
+  "Utiliser ce brouillon",
+  "استعمال هذه المسودة"
+ ],
+ "tp.engine": [
+  "engine: {e}",
+  "moteur : {e}",
+  "المحرك: {e}"
+ ],
+ "tp.draftRules": [
+  "Golden rules: {ok}",
+  "Règles d’or : {ok}",
+  "القواعد الذهبية: {ok}"
+ ],
+ "tp.personasHint": [
+  "Personas describe who the trainings are for; they are shared by all the projects of the Organization.",
+  "Les personas décrivent à qui s’adressent les formations ; ils sont partagés par tous les projets de l’organisation.",
+  "تصف الشخصيات من تستهدفهم التكوينات؛ وهي مشتركة بين جميع مشاريع المؤسسة."
+ ],
+ "tp.addPersona": [
+  "Add a persona",
+  "Ajouter un persona",
+  "إضافة شخصية"
+ ],
+ "tp.trainingsCount": [
+  "Trainings",
+  "Formations",
+  "التكوينات"
+ ],
+ "ch.subtitle": [
+  "E-mail and WhatsApp providers used to reach questionnaire respondents.",
+  "Fournisseurs e-mail et WhatsApp utilisés pour joindre les répondants.",
+  "مزودو البريد وواتساب المستعملون للوصول إلى المجيبين."
+ ],
+ "ch.outboxHint": [
+  "Every message composed, with its delivery status; failed messages are retried on their own channel.",
+  "Chaque message composé, avec son statut de remise ; les échecs sont relancés sur leur propre canal.",
+  "كل رسالة مصاغة مع حالة تسليمها؛ يعاد إرسال الفاشلة على قناتها."
+ ],
+ "ch.subject": [
+  "Subject",
+  "Objet",
+  "الموضوع"
+ ],
+ "ch.attempts": [
+  "Attempts",
+  "Tentatives",
+  "المحاولات"
+ ],
+ "ch.enabled": [
+  "Enabled",
+  "Activé",
+  "مفعل"
+ ],
+ "ch.mode": [
+  "Mode",
+  "Mode",
+  "الوضع"
+ ],
+ "ch.hint.email": [
+  "SMTP server of the Organization (Microsoft 365, Google Workspace, your mail provider). The password is stored encrypted and never shown again.",
+  "Serveur SMTP de l’organisation (Microsoft 365, Google Workspace, votre fournisseur). Le mot de passe est chiffré et n’est plus jamais affiché.",
+  "خادم SMTP الخاص بالمؤسسة (Microsoft 365، Google Workspace، مزودكم). تحفظ كلمة المرور مشفرة ولا تعرض مجددا."
+ ],
+ "ch.hint.whatsapp": [
+  "WhatsApp Business Cloud API (Meta): phone number ID, access token and an approved message template for the first contact. Delivery statuses and replies come back through the webhook.",
+  "API WhatsApp Business Cloud (Meta) : ID du numéro, jeton d’accès et modèle de message approuvé pour le premier contact. Les statuts de remise et les réponses reviennent par le webhook.",
+  "واجهة WhatsApp Business Cloud (Meta): معرف الرقم ورمز الولوج ونموذج رسالة معتمد للاتصال الأول. تعود حالات التسليم والردود عبر الـwebhook."
+ ],
+ "ch.email.host": [
+  "SMTP server",
+  "Serveur SMTP",
+  "خادم SMTP"
+ ],
+ "ch.email.port": [
+  "Port",
+  "Port",
+  "المنفذ"
+ ],
+ "ch.email.secure": [
+  "TLS from the start (port 465)",
+  "TLS dès la connexion (port 465)",
+  "TLS منذ البداية (المنفذ 465)"
+ ],
+ "ch.email.user": [
+  "User name",
+  "Nom d’utilisateur",
+  "اسم المستخدم"
+ ],
+ "ch.email.from": [
+  "Sender (From)",
+  "Expéditeur (From)",
+  "المرسل (From)"
+ ],
+ "ch.email.replyTo": [
+  "Reply-to",
+  "Adresse de réponse",
+  "عنوان الرد"
+ ],
+ "ch.email.secret": [
+  "Password",
+  "Mot de passe",
+  "كلمة المرور"
+ ],
+ "ch.whatsapp.phoneNumberId": [
+  "Phone number ID",
+  "ID du numéro de téléphone",
+  "معرف رقم الهاتف"
+ ],
+ "ch.whatsapp.businessAccountId": [
+  "Business account ID",
+  "ID du compte Business",
+  "معرف الحساب التجاري"
+ ],
+ "ch.whatsapp.template": [
+  "Approved template name",
+  "Nom du modèle approuvé",
+  "اسم النموذج المعتمد"
+ ],
+ "ch.whatsapp.templateLang": [
+  "Template language code",
+  "Code langue du modèle",
+  "رمز لغة النموذج"
+ ],
+ "ch.whatsapp.verifyToken": [
+  "Webhook verify token",
+  "Jeton de vérification du webhook",
+  "رمز التحقق من الـwebhook"
+ ],
+ "ch.whatsapp.defaultCountryCode": [
+  "Default country code",
+  "Indicatif pays par défaut",
+  "رمز البلد الافتراضي"
+ ],
+ "ch.whatsapp.apiBase": [
+  "API base URL",
+  "URL de base de l’API",
+  "عنوان قاعدة الواجهة"
+ ],
+ "ch.whatsapp.secret": [
+  "Access token",
+  "Jeton d’accès",
+  "رمز الولوج"
+ ],
+ "ch.whatsapp.appSecret": [
+  "App secret (webhook signature)",
+  "Secret de l’application (signature du webhook)",
+  "سر التطبيق (توقيع الـwebhook)"
+ ],
+ "ch.secretSet": [
+  "Stored ({hint}); leave empty to keep it",
+  "Enregistré ({hint}) ; laissez vide pour le conserver",
+  "محفوظ ({hint})؛ اتركه فارغا للإبقاء عليه"
+ ],
+ "ch.secretSetPlain": [
+  "Stored; leave empty to keep it",
+  "Enregistré ; laissez vide pour le conserver",
+  "محفوظ؛ اتركه فارغا للإبقاء عليه"
+ ],
+ "ch.secretNone": [
+  "Not set",
+  "Non renseigné",
+  "غير محدد"
+ ],
+ "ch.webhook": [
+  "Webhook URL to declare in Meta",
+  "URL du webhook à déclarer chez Meta",
+  "عنوان الـwebhook للتصريح به لدى Meta"
+ ],
+ "ch.platformDefault": [
+  "A platform provider is configured on the server; it is used when this channel is not enabled here.",
+  "Un fournisseur de plateforme est configuré sur le serveur ; il est utilisé quand ce canal n’est pas activé ici.",
+  "تم تهيئة مزود للمنصة على الخادم؛ يستعمل حين لا تكون هذه القناة مفعلة هنا."
+ ],
+ "ch.testTo": [
+  "Test recipient",
+  "Destinataire du test",
+  "مستلم الاختبار"
+ ],
+ "ch.test": [
+  "Send a test",
+  "Envoyer un test",
+  "إرسال اختبار"
+ ],
+ "ch.testResult.simulated": [
+  "Sandbox: the test message was composed and kept in the outbox.",
+  "Bac à sable : le message de test a été composé et conservé dans la boîte d’envoi.",
+  "بيئة تجريبية: تمت صياغة رسالة الاختبار وحفظها."
+ ],
+ "ch.testResult.sent": [
+  "The provider accepted the message.",
+  "Le fournisseur a accepté le message.",
+  "قبل المزود الرسالة."
+ ],
+ "ch.testResult.failed": [
+  "The provider refused the message: {error}",
+  "Le fournisseur a refusé le message : {error}",
+  "رفض المزود الرسالة: {error}"
+ ],
+ "doc.subtitle": [
+  "Documents generated from the project’s data, versioned, checked and approved by a second person.",
+  "Documents générés à partir des données du projet, versionnés, vérifiés et approuvés par une seconde personne.",
+  "وثائق مولدة من بيانات المشروع، بإصدارات، مدققة ومصادق عليها من شخص ثان."
+ ],
+ "doc.generate": [
+  "Generate a new version",
+  "Générer une nouvelle version",
+  "توليد إصدار جديد"
+ ],
+ "doc.generated": [
+  "New draft version generated",
+  "Nouvelle version brouillon générée",
+  "تم توليد مسودة جديدة"
+ ],
+ "doc.ter": [
+  "Training Engineering Report and Training Plan",
+  "Rapport d’ingénierie de formation et plan de formation",
+  "تقرير هندسة التكوين ومخطط التكوين"
+ ],
+ "doc.terHint": [
+  "Company description, previous plan, competence needs, perspectives and the prioritized plan with its detailed trainings — every table drawn from the records, with its sources and data date.",
+  "Description de l’entreprise, plan précédent, besoins en compétences, perspectives et plan priorisé avec ses formations détaillées — chaque tableau issu des enregistrements, avec ses sources et sa date de données.",
+  "وصف المؤسسة، المخطط السابق، الحاجيات من الكفاءات، الآفاق والمخطط المرتب بتكويناته المفصلة — كل جدول مأخوذ من السجلات مع مصادره وتاريخ بياناته."
+ ],
+ "doc.stale": [
+  "Data changed since generation",
+  "Données modifiées depuis la génération",
+  "تغيرت البيانات منذ التوليد"
+ ],
+ "doc.findings": [
+  "Checks",
+  "Contrôles",
+  "المراقبات"
+ ],
+ "doc.none": [
+  "No document yet",
+  "Aucun document",
+  "لا توجد أية وثيقة"
+ ],
+ "doc.submit": [
+  "Send for review",
+  "Envoyer en revue",
+  "إرسال للمراجعة"
+ ],
+ "doc.publish": [
+  "Approve and publish",
+  "Approuver et publier",
+  "المصادقة والنشر"
+ ],
+ "doc.retire": [
+  "Retire",
+  "Retirer",
+  "سحب"
+ ],
+ "doc.meta": [
+  "Author {a} · approver {p} · data as of {d}",
+  "Auteur {a} · approbateur {p} · données au {d}",
+  "الكاتب {a} · المصادق {p} · البيانات بتاريخ {d}"
+ ],
+ "doc.checks": [
+  "Consistency checks",
+  "Contrôles de cohérence",
+  "مراقبات الانسجام"
+ ],
+ "docf.goldenRules": [
+  "{n} golden-rule issue(s)",
+  "{n} écart(s) aux règles d’or",
+  "{n} خلل في القواعد الذهبية"
+ ],
+ "docf.budgetTotal": [
+  "Budget lines ({planned}) differ from the plan total ({total})",
+  "Les lignes budgétaires ({planned}) diffèrent du total du plan ({total})",
+  "بنود الميزانية ({planned}) تختلف عن مجموع المخطط ({total})"
+ ],
+ "docf.noThemes": [
+  "No prioritized theme",
+  "Aucun thème priorisé",
+  "لا يوجد أي موضوع مرتب"
+ ],
+ "docf.missingData": [
+  "Section without data (notice printed)",
+  "Section sans données (avis imprimé)",
+  "قسم دون بيانات (تمت طباعة إشعار)"
+ ],
+ "search.placeholder": [
+  "Search everything…",
+  "Rechercher partout…",
+  "البحث في كل شيء…"
+ ],
+ "search.title": [
+  "Search",
+  "Recherche",
+  "البحث"
+ ],
+ "search.scope": [
+  "Scope",
+  "Portée",
+  "النطاق"
+ ],
+ "search.scopeOrg": [
+  "Whole organization",
+  "Toute l’organisation",
+  "كامل المؤسسة"
+ ],
+ "search.scopeProject": [
+  "Current project",
+  "Projet en cours",
+  "المشروع الحالي"
+ ],
+ "search.recent": [
+  "Recent searches",
+  "Recherches récentes",
+  "عمليات البحث الأخيرة"
+ ],
+ "search.hint": [
+  "Type a code (for example UFT-03-04, RISK-014, TR-AI-01) or words; accents and case are ignored.",
+  "Saisissez un code (par exemple UFT-03-04, RISK-014, TR-AI-01) ou des mots ; les accents et la casse sont ignorés.",
+  "اكتب رمزا (مثل UFT-03-04 أو RISK-014 أو TR-AI-01) أو كلمات؛ يتم تجاهل الحركات وحالة الأحرف."
+ ],
+ "search.none": [
+  "Nothing found for “{q}”",
+  "Aucun résultat pour « {q} »",
+  "لا توجد نتائج لـ «{q}»"
+ ],
+ "search.more": [
+  "{n} more — refine the search",
+  "{n} de plus — précisez la recherche",
+  "{n} أخرى — دقق البحث"
+ ],
+ "search.type.project": [
+  "Projects",
+  "Projets",
+  "المشاريع"
+ ],
+ "search.type.questionnaire": [
+  "Questionnaires",
+  "Questionnaires",
+  "الاستبيانات"
+ ],
+ "search.type.training": [
+  "Trainings",
+  "Formations",
+  "التكوينات"
+ ],
+ "search.type.record": [
+  "Records",
+  "Enregistrements",
+  "السجلات"
+ ],
+ "search.type.governance": [
+  "Governance",
+  "Gouvernance",
+  "الحكامة"
+ ],
+ "search.type.process": [
+  "Processes",
+  "Processus",
+  "المسارات"
+ ],
+ "search.type.ai": [
+  "AI use cases",
+  "Cas d’usage IA",
+  "حالات استعمال الذكاء الاصطناعي"
+ ],
+ "search.type.report": [
+  "Reports",
+  "Rapports",
+  "التقارير"
+ ],
+ "search.type.people": [
+  "People and units",
+  "Personnes et unités",
+  "الأشخاص والوحدات"
+ ],
+ "search.type.help": [
+  "Help",
+  "Aide",
+  "المساعدة"
+ ],
+ "search.entity.uft": [
+  "Task",
+  "Tâche",
+  "مهمة"
+ ],
+ "search.entity.step": [
+  "Step",
+  "Étape",
+  "خطوة"
+ ],
+ "search.entity.mp": [
+  "Macro process",
+  "Macro-processus",
+  "مسار كبير"
+ ],
+ "search.entity.e2e": [
+  "End-to-end process",
+  "Processus de bout en bout",
+  "مسار من البداية إلى النهاية"
+ ],
+ "search.entity.kpi": [
+  "KPI",
+  "Indicateur",
+  "مؤشر"
+ ],
+ "search.entity.TrainingCourse": [
+  "Training",
+  "Formation",
+  "تكوين"
+ ],
+ "search.entity.Questionnaire": [
+  "Questionnaire",
+  "Questionnaire",
+  "استبيان"
+ ]
+}

@@ -28,6 +28,14 @@ const EXTRA = {
   Pack: { module: 'M51', perm: 'config', global: true, fields: [f('code', 'string'), f('name', 'text', { ml: true }), f('kind', 'string'), f('price', 'number'), f('segment', 'string'), f('contents', 'json'), f('rules', 'json')] },
   OnboardingPlan: { module: 'M51', perm: 'onboarding', fields: [f('name', 'text', { ml: true }), f('start', 'date'), f('target_days', 'number'), f('steps', 'json'), f('imports', 'json'), f('metrics', 'json'), f('status', 'string')] },
   Webhook: { module: 'M16', perm: 'integrations', fields: [f('name', 'string', { required: true }), f('url', 'string'), f('events', 'json'), f('enabled', 'boolean')] },
+  // Training plan structure (release 1.1): program → training with level, identifier, objectives, duration,
+  // prerequisites, a half-day agenda of lectures, quizzes and workshops, and its value proposition per persona.
+  Persona: { module: 'M49', perm: 'training', fields: [f('code', 'string', { required: true }), f('name', 'text', { required: true, ml: true }), f('population', 'enum', { options: ['DG', 'Management', 'Member', 'Custom'] }), f('description', 'text', { ml: true }),
+    f('behaviour', 'longtext', { ml: true }), f('pain_points', 'longtext', { ml: true }), f('hopes', 'longtext', { ml: true })] },
+  TrainingProgram: { module: 'M49', perm: 'training', fields: [f('code', 'string', { required: true }), f('name', 'text', { required: true, ml: true }), f('description', 'longtext', { ml: true }), f('axis', 'text', { ml: true }), f('year', 'number'), f('sort', 'number')] },
+  TrainingCourse: { module: 'M49', perm: 'training', versioned: true, fields: [f('program_id', 'ref', { ref: 'TrainingProgram', required: true }), f('training_code', 'string', { required: true }), f('name', 'text', { required: true, ml: true }), f('level', 'string', { required: true }),
+    f('objectives', 'json'), f('duration_days', 'number', { required: true }), f('prerequisites', 'longtext', { ml: true }), f('agenda', 'json'), f('personas', 'json'), f('theme_id', 'ref', { ref: 'TrainingTheme' }), f('groups', 'number'), f('modality', 'string'),
+    f('status', 'enum', { options: ['Draft', 'In Review', 'Approved'] }), f('sort', 'number')] },
   KbArticle: { module: 'M12', perm: 'kb', fields: [f('title', 'text', { required: true, ml: true }), f('body', 'longtext', { ml: true }), f('standard', 'string'), f('process_tag', 'string'), f('language', 'string')] },
 };
 const GOVERNED = /(^|_)(status|score|rating|level|rank|priority|effectiveness|decision|approval_status|lifecycle|rag|verdict)($|_)/;
@@ -66,6 +74,13 @@ export function entityRegistry() {
   for (const g of ['BusinessRule', 'Control', 'RiskOpportunity', 'KpiDefinition', 'Action', 'ActionEvaluation', 'RexEntry']) if (registry[g]) registry[g].perm = g === 'RexEntry' ? 'rex' : 'governance';
   if (registry.AIUseCase) { registry.AIUseCase.perm = 'ai'; registry.AIUseCase.versioned = true; }
   if (registry.ExternalIntegration) registry.ExternalIntegration.perm = 'integrations';
+  // Release 1.1: the template library is shared by the platform (org_id NULL) and extended by each Organization;
+  // WhatsApp and Application join the response channels; Combination names a plan played over several channels.
+  if (registry.QuestionnaireTemplate) registry.QuestionnaireTemplate.global = true;
+  const addOptions = (entity, field, extra) => { const f = registry[entity]?.fields.find(x => x.name === field); if (f?.options) f.options = [...new Set([...f.options, ...extra])]; };
+  addOptions('QuestionnaireResponse', 'channel_used', ['Application', 'WhatsApp']);
+  addOptions('Stakeholder', 'preferred_channel', ['Application', 'WhatsApp', 'Combination']);
+  addOptions('Questionnaire', 'elaboration_mode', ['Load + AI', 'Load + Manual', 'Load + AI + Manual', 'AI + Manual']);
   return registry;
 }
 const toSnake = s => s.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
@@ -90,6 +105,7 @@ export function permFor(def, write) {
     case 'onboarding': return write ? 'onboarding.manage' : 'config.view';
     case 'integrations': return write ? 'integrations.manage' : 'config.view';
     case 'kb': return write ? 'kb.manage' : 'ai.view';
+    case 'training': return write ? 'm49.edit' : 'm49.view';
     default: return `${def.module.toLowerCase()}.${write ? 'edit' : 'view'}`;
   }
 }

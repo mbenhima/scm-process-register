@@ -29,6 +29,14 @@ export const config = {
   deploymentMode: (process.env.DEPLOYMENT_MODE || 'saas').toLowerCase(),
   backupRetentionDays: Number(process.env.BACKUP_RETENTION_DAYS || 14),
   corsOrigin: process.env.CORS_ORIGIN || '*',
+  // Base URL of the web client, used in the response links sent by email and WhatsApp (falls back to the request origin).
+  publicUrl: (process.env.PUBLIC_URL || '').replace(/\/$/, ''),
+  // Key protecting stored channel credentials and response links (AES-256-GCM). Set it in production.
+  secretKey: process.env.CHANNEL_SECRET_KEY || process.env.JWT_SECRET || 'cortexskills-local-development-secret-change-me',
+  // Platform-wide channel defaults, used by an Organization that has not configured its own provider.
+  smtp: { host: process.env.SMTP_HOST || '', port: Number(process.env.SMTP_PORT || 587), secure: process.env.SMTP_SECURE === 'true', user: process.env.SMTP_USER || '', pass: process.env.SMTP_PASS || '', from: process.env.SMTP_FROM || '' },
+  whatsapp: { apiBase: (process.env.WHATSAPP_API_BASE || 'https://graph.facebook.com/v21.0').replace(/\/$/, ''), token: process.env.WHATSAPP_TOKEN || '', phoneNumberId: process.env.WHATSAPP_PHONE_NUMBER_ID || '',
+    verifyToken: process.env.WHATSAPP_VERIFY_TOKEN || '', appSecret: process.env.WHATSAPP_APP_SECRET || '', template: process.env.WHATSAPP_TEMPLATE || '', templateLang: process.env.WHATSAPP_TEMPLATE_LANG || '' },
   minNode: '22.13.0',
   cacheTtlMs: 30000,
 };

@@ -35,6 +35,8 @@ r.put('/me/prefs', ah(req => {
   if (typeof b.pinned === 'boolean') next.pinned = b.pinned;
   if (Array.isArray(b.favorites)) next.favorites = b.favorites.filter(x => typeof x === 'string').slice(0, 30);
   if (Array.isArray(b.collapsed)) next.collapsed = b.collapsed.filter(x => typeof x === 'string');
+  // Recent global searches, kept as a personal preference (FR-DA-SRCH-05).
+  if (Array.isArray(b.recentSearches)) next.recentSearches = b.recentSearches.filter(x => typeof x === 'string').map(x => x.slice(0, 80)).slice(0, 10);
   if (b.channels && typeof b.channels === 'object') next.channels = b.channels;
   run(`INSERT INTO user_prefs(user_id,data) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data`, req.user.id, S(next));
   return next;
@@ -53,5 +55,8 @@ r.get('/context/orgs', ah(req => {
     : all(`SELECT o.id, o.name, o.sector, o.segment, o.group_id, g.name group_name FROM organizations o LEFT JOIN groups_ g ON g.id=o.group_id WHERE o.id=? OR (o.group_id IS NOT NULL AND o.group_id=?)`, req.user.org_id, home?.group_id ?? '__none__');
   return rows.map(o => ({ ...parseMl(o), readOnly: !req.user.is_platform && o.id !== req.user.org_id }));
 }));
+// Pickers drawn from the Organization: people with their title, and functions of the OBS (FR-DA-OBS-08, FR-DA-DEU-04).
+r.get('/context/users', ah(req => all(`SELECT id, name, title FROM users WHERE org_id=? AND active=1 ORDER BY name`, req.orgId)));
+r.get('/context/functions', ah(req => all(`SELECT id, name FROM obs_nodes WHERE org_id=? AND type='Function' ORDER BY name`, req.orgId).map(f => ({ id: f.id, name: J(f.name, f.name) }))));
 r.get('/context/projects', ah(req => all(`SELECT id, name, focus, segment, mode, track, status, progress, plan_year FROM projects WHERE org_id=? ORDER BY plan_year DESC, focus`, req.orgId).map(parseMl)));
 export default r;

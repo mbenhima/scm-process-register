@@ -19,6 +19,12 @@ import governanceRoutes from './routes/governance.js';
 import aiRoutes from './routes/ai.js';
 import reportRoutes from './routes/reports.js';
 import adminRoutes from './routes/admin.js';
+import questionnaireRoutes from './routes/questionnaires.js';
+import trainingRoutes from './routes/training.js';
+import searchRoutes from './routes/search.js';
+import documentRoutes from './routes/documents.js';
+import { retryMessages } from './services/channels.js';
+import { tickAll } from './services/questionnaires.js';
 
 export async function createApp({ background = true } = {}) {
   migrate();
@@ -29,10 +35,11 @@ export async function createApp({ background = true } = {}) {
   app.set('trust proxy', 'loopback');
   app.use(securityHeaders);
   app.use(cors({ origin: config.corsOrigin === '*' ? true : config.corsOrigin.split(','), exposedHeaders: ['Content-Disposition'] }));
-  app.use(express.json({ limit: '5mb' }));
+  // The raw body is kept for webhook signature checks (WhatsApp X-Hub-Signature-256).
+  app.use(express.json({ limit: '5mb', verify: (req, res, buf) => { if (req.url.startsWith('/api/public/')) req.rawBody = buf; } }));
   app.use('/api', publicRoutes);          // login, health, dictionary (no token)
   app.use('/api', authenticate);
-  for (const r of [coreRoutes, tenancyRoutes, processRoutes, runRoutes, governanceRoutes, aiRoutes, reportRoutes, adminRoutes]) app.use('/api', r);
+  for (const r of [coreRoutes, tenancyRoutes, processRoutes, runRoutes, governanceRoutes, aiRoutes, reportRoutes, adminRoutes, questionnaireRoutes, trainingRoutes, searchRoutes, documentRoutes]) app.use('/api', r);
   app.use('/api', (req, res, next) => next(Object.assign(new Error('nf'), { status: 404 })));
   // Optional production mode: serve the built web client from ../web/dist when present.
   const dist = path.resolve(ROOT, '..', 'web', 'dist');
@@ -41,6 +48,10 @@ export async function createApp({ background = true } = {}) {
     app.get(/^(?!\/api).*/, (req, res) => res.sendFile(path.join(dist, 'index.html')));
   }
   app.use((err, req, res, next) => (err.status === 404 && err.message === 'nf') ? res.status(404).json({ error: 'err.notFound', message: 'Not found' }) : errorHandler(err, req, res, next));
-  if (background) { scheduleDailyBackup(); setInterval(retryFailed, 60000).unref(); }
+  if (background) {
+    scheduleDailyBackup(); setInterval(retryFailed, 60000).unref();
+    setInterval(() => retryMessages().catch(() => {}), 60000).unref();
+    setInterval(() => tickAll().catch(() => {}), 10 * 60000).unref(); // questionnaire plans and reminders
+  }
   return app;
 }

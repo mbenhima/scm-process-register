@@ -23,6 +23,7 @@ cat.clearCatalogCache();
 
 const { syncPermissions } = await import('../src/rbac.js');
 const { insertRecord } = await import('../src/services/projects.js');
+const { seedTemplateLibrary } = await import('./release11.js');
 tx(() => {
   cat.list('role').forEach((r, i) => run(`INSERT INTO roles(id,name,baseline,sort) VALUES(?,?,?,?)`, r.id, S(r.name), null, i));
   syncPermissions();
@@ -48,6 +49,7 @@ tx(() => {
       description: v.risk, scope: 'Vertical', vertical_id: v.id, mode, track: mode === 'SME' ? 'SME-T2' : null, focus, status: 'Published', phases: phasesOf(mode, v.id), roles: ['Head of L&D', 'Compliance Officer'], milestones: ['G1', 'G3', 'G5', 'G6'], use_count: 1, platform: true });
   }
   P('ProjectTemplate', 'tpl:draft:example', { name: T(['Draft — Leadership academy', 'Brouillon — Académie du leadership', 'مسودة — أكاديمية القيادة']), scope: 'Universal', mode: 'Full', focus: 'All', status: 'Draft', phases: phasesOf('Full', null), use_count: 0, platform: true });
+  seedTemplateLibrary();
   for (const sp of cat.list('solutionPack')) P('Pack', 'pack:' + sp.id, { code: sp.id, name: sp.name, kind: sp.kind, price: sp.price, segment: sp.segment || '', contents: sp.packs, rules: { includedUsers: sp.includedUsers, overage: sp.overage, discount: sp.discount || 0, minUsers: sp.kind === 'sme' ? 5 : 1 } });
 });
 

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSession } from './lib/session.jsx';
 import { useI18n } from './lib/i18n.jsx';
 import Shell from './components/Shell.jsx';
@@ -14,9 +14,16 @@ import { AiUseCases, AiUsage, Kb, AiModel } from './pages/Ai.jsx';
 import { Reports, Benchmark } from './pages/Reports.jsx';
 import { Users, Permissions, Configuration, Pricing, Integrations, Onboarding, Audit, Backups, Traceability } from './pages/Admin.jsx';
 import { Settings, Help } from './pages/Settings.jsx';
+import { Questionnaires, QuestionnaireDetail, QuestionnaireTemplates, CaptureResponse } from './pages/Questionnaires.jsx';
+import { TrainingPlan } from './pages/TrainingPlan.jsx';
+import { ChannelSettings } from './pages/Channels.jsx';
+import { Documents } from './pages/Documents.jsx';
+import Respond from './pages/Respond.jsx';
 
 export default function App() {
-  const { me, loading } = useSession(); const { ready } = useI18n();
+  const { me, loading } = useSession(); const { ready } = useI18n(); const loc = useLocation();
+  // The respondent's page is public: it opens from the link sent by e-mail or WhatsApp, without signing in.
+  if (loc.pathname.startsWith('/respond/')) return ready ? <Routes><Route path="/respond/:token" element={<Respond />} /></Routes> : <Loading />;
   if (!ready || loading) return <Loading />;
   if (!me) return <><Login /><Toasts /></>;
   return (<Shell><Routes>
@@ -24,6 +31,8 @@ export default function App() {
     <Route path="/tenancy" element={<Tenancy />} /><Route path="/projects" element={<Projects />} /><Route path="/projects/new" element={<NewProject />} /><Route path="/projects/:id" element={<ProjectWorkspace />} />
     <Route path="/projects/:id/gantt" element={<Gantt />} /><Route path="/runs/:id" element={<E2EInstance />} /><Route path="/portfolio" element={<Portfolio />} />
     <Route path="/modules" element={<Modules />} /><Route path="/modules/:id" element={<ModuleWorkspace />} /><Route path="/records" element={<Records />} /><Route path="/records/:entity" element={<Records />} />
+    <Route path="/questionnaires" element={<Questionnaires />} /><Route path="/questionnaires/templates" element={<QuestionnaireTemplates />} /><Route path="/questionnaires/capture/:id" element={<CaptureResponse />} /><Route path="/questionnaires/:id" element={<QuestionnaireDetail />} />
+    <Route path="/training-plan" element={<TrainingPlan />} /><Route path="/documents" element={<Documents />} /><Route path="/admin/channels" element={<ChannelSettings />} />
     <Route path="/process/mp" element={<MacroProcesses />} /><Route path="/process/mp/:id" element={<MacroProcess />} /><Route path="/process/e2e" element={<E2EList />} /><Route path="/process/e2e/:id" element={<E2EDetail />} />
     <Route path="/process/chain" element={<Chain />} /><Route path="/process/coverage" element={<Coverage />} /><Route path="/process/bpmn" element={<BpmnPage />} /><Route path="/process/model" element={<InfoModel />} />
     <Route path="/process/verticals" element={<Verticals />} /><Route path="/process/sme" element={<Sme />} /><Route path="/process/templates" element={<Templates />} /><Route path="/process/gates" element={<Gates />} /><Route path="/process/checklists" element={<Checklists />} />

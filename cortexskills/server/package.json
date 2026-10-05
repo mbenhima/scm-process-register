@@ -17,6 +17,9 @@
     "i18n": "node i18n/build.js"
   },
   "dependencies": {
+    "@fontsource/noto-naskh-arabic": "^5.2.5",
+    "@fontsource/source-sans-3": "^5.2.5",
+    "@fontsource/source-serif-4": "^5.2.5",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "docx": "^9.5.1",
@@ -24,9 +27,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
-    "pdfkit": "^0.17.2",
-    "@fontsource/source-sans-3": "^5.2.5",
-    "@fontsource/source-serif-4": "^5.2.5",
-    "@fontsource/noto-naskh-arabic": "^5.2.5"
+    "nodemailer": "^7.0.13",
+    "pdfkit": "^0.17.2"
   }
 }

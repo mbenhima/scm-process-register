@@ -12,6 +12,7 @@ import { computeAlerts } from '../src/services/alerts.js';
 import { config } from '../src/config.js';
 import { t as tx } from '../src/i18n.js';
 import { T, tr, fillT } from './lib.js';
+import { seedQuestionnaires, seedPersonas, seedTraining, seedDocuments } from './release11.js';
 
 const U = detUuid;
 const NOW = new Date();
@@ -102,6 +103,7 @@ function seedOrg(o) {
     steps: ['Provisioning', 'Track configuration', 'Data import', 'Validation', 'User training', 'Go-live'].map((s, i) => ({ step: tr(s), done: true, day: [1, 3, 8, 12, 20, 28][i] })),
     imports: [{ file: 'employees.csv', accepted: 10, rejected: 1, reason: 'missing position' }], metrics: { timeToValueDays: 26, dataQuality: 96, adoption: 82, satisfaction: 4.4 } });
 
+  seedPersonas(o);
   // ---- Two full runs per organization
   for (const focus of ['Digital', 'AI']) seedProject(o, focus, { comps, positions, emps, vendors, fns, vals, r });
   // Organization-level RACSI matrix for every user-facing task of the runs (one Accountable each).
@@ -152,6 +154,9 @@ function seedProject(o, focus, ctx) {
   seedBusinessObjects(o, project, focus, lvl, ctx);
   seedKpis(o, project, lvl);
   seedActivity(o, project, lvl);
+  const doneE = e2e => one(`SELECT status FROM e2e_instances WHERE project_id=? AND e2e_id=?`, pid, e2e)?.status === 'Completed';
+  seedTraining(o, project, focus, lvl, { done: doneE });
+  seedDocuments(o, project, { done: doneE });
 }
 
 function seedBusinessObjects(o, p, focus, lvl, ctx) {
@@ -170,19 +175,12 @@ function seedBusinessObjects(o, p, focus, lvl, ctx) {
   ctx.fns.forEach((f, i) => LV.forEach((l, j) => { if ((i + j) % 4 === 3) return; rec('ScopeCriterion', `crit${i}${j}`, { sow_id: sow, criterion_type: 'Function x Level', criterion_value: f.name, label: fillT({ en: `${f.name.en} × ${l}`, fr: `${f.name.fr} × ${l}`, ar: `${f.name.ar} × ${l}` }, {}), decision_level: l, function_id: f.id, is_custom: false, weight: 1 }); }));
   rec('ScopeCriterion', 'custom', { sow_id: sow, criterion_type: 'Custom', criterion_value: themesML[0].en, label: { en: `Readiness for ${themesML[0].en}`, fr: `Préparation à ${themesML[0].fr}`, ar: `الجاهزية لـ ${themesML[0].ar}` }, is_custom: true, weight: 2 });
   const roles = ['Function head', 'Manager', 'Supervisor', 'Operator', 'Technician', 'Analyst'];
-  const stakes = Array.from({ length: nStake }, (_, i) => { const nm = person(r, i); const lvlS = LV[i % 3];
-    return rec('Stakeholder', 's' + i, { name: nm, label: { en: nm, fr: nm, ar: nm }, email: `${slug(nm)}@${o.domain}`, role: roles[i % roles.length], role_t: tr(roles[i % roles.length]), function_id: ctx.fns[i % ctx.fns.length].id, decision_level: lvlS,
-      preferred_channel: lvlS === 'OP' ? (i % 2 ? 'Face-to-Face' : 'Hybrid') : 'Email', consent_status: done('E2E-33') || i % 5 ? 'Given' : 'Unknown', last_contacted_on: daysAgo(10 + (i % 9)) }); });
-  const qt = rec('QuestionnaireTemplate', 'qt', { name: { en: `${p.focus} needs — ${o.v.name.en}`, fr: `Besoins ${cat.get('focusLabel', p.focus).label.fr} — ${o.v.name.fr}`, ar: `احتياجات ${cat.get('focusLabel', p.focus).label.ar} — ${o.v.name.ar}` }, focus: p.focus, sector: o.v.id, language: o.lang, version_no: 2, owner_role: 'Head of L&D', sections_count: 5 });
-  const qStatus = done('E2E-33') ? 'Closed' : started('E2E-33') ? 'Distributed' : 'Draft';
-  const q = rec('Questionnaire', 'q', { label: { en: `Questionnaire ${p.focus} ${p.plan_year}`, fr: `Questionnaire ${p.focus} ${p.plan_year}`, ar: `استبيان ${p.focus} ${p.plan_year}` }, sow_id: sow, template_id: qt, elaboration_mode: 'AI', ai_generated: true,
-    tailoring_notes: fillT({ en: 'Tailored to {sector}; 5 questions reworded with {core} vocabulary.', fr: 'Adapté au secteur {sector} ; 5 questions reformulées avec le vocabulaire {core}.', ar: 'مكيف مع {sector}؛ إعادة صياغة 5 أسئلة بمصطلحات {core}.' }, ctx.vals),
-    racsi_allocation: ['Context', 'Current practices', 'Needs', 'Priorities', 'Consent'].map(s => ({ section: s, R: 'L&D Analyst', A: 'Head of L&D', C: 'Consultant PM', S: 'IT', I: 'CHRO' })), channels: ['Email', 'Face-to-Face', 'Hybrid'],
-    status: qStatus, distributed_on: qStatus !== 'Draft' ? addDays(p.start_date, 14) : null, due_date: addDays(p.start_date, 30).slice(0, 10), response_count: 0 });
-  const nResp = qStatus === 'Draft' ? 0 : Math.round(nStake * (qStatus === 'Closed' ? 0.85 : 0.5));
-  for (let i = 0; i < nResp; i++) rec('QuestionnaireResponse', 'r' + i, { questionnaire_id: q, stakeholder_id: stakes[i], stakeholder_ref: stakes[i], label: { en: `Response ${i + 1}`, fr: `Réponse ${i + 1}`, ar: `رد ${i + 1}` }, channel_used: i % 3 === 0 ? 'Face-to-Face' : 'Email', submitted_at: addDays(p.start_date, 16 + (i % 12)), consent_given: true,
-    completeness_pct: 80 + Math.round(r() * 20), answers_json: { q1: 1 + (i % 4), q2: themes[i % 3].en, q3: 1 + Math.round(r() * 4) }, validated_by: users[0].id, validated_on: addDays(p.start_date, 30) });
-  run(`UPDATE records SET data=json_set(data,'$.response_count',?) WHERE id=?`, nResp, q);
+  // Respondents: the General Manager, the management (MS / MO) and team members (OP); about two thirds have a mobile number.
+  const stakes = Array.from({ length: nStake }, (_, i) => { const nm = person(r, i); const lvlS = i === 0 ? 'MS' : LV[i % 3]; const role = i === 0 ? 'General Manager' : roles[i % roles.length];
+    const population = i === 0 ? 'DG' : lvlS === 'OP' ? 'Member' : 'Management';
+    return rec('Stakeholder', 's' + i, { name: nm, label: { en: nm, fr: nm, ar: nm }, email: `${slug(nm)}${i}@${o.domain}`, phone: i % 4 === 3 ? null : `06${String(10000000 + Math.floor(r() * 89999999)).slice(0, 8)}`, role, role_t: tr(role), population, function_id: i === 0 ? ctx.fns[0].id : ctx.fns[i % ctx.fns.length].id, decision_level: lvlS,
+      preferred_channel: population === 'DG' ? 'Face-to-Face' : population === 'Management' ? 'Combination' : (i % 3 === 2 ? 'Email' : 'WhatsApp'), consent_status: done('E2E-33') || i % 5 ? 'Given' : 'Unknown', last_contacted_on: daysAgo(10 + (i % 9)) }); });
+  seedQuestionnaires(o, p, focus, lvl, ctx, { sow, stakes, done, started, themesML, users });
   const skAs = []; ctx.emps.slice(0, 12).forEach((e, i) => skAs.push(rec('SkillAssessment', 'sa' + i, { employee_id: e, competency_id: ctx.comps[i % 3 + (focus === 'AI' ? 3 : 0)], self_level: 1 + (i % 3), validated_level: 1 + (i % 3), campaign_close_date: addDays(p.start_date, 40).slice(0, 10), label: tr('Skills campaign 2026') })));
   const gaps = ctx.emps.slice(0, 8).map((e, i) => rec('SkillGap', 'g' + i, { employee_id: e, competency_id: ctx.comps[i % 3 + (focus === 'AI' ? 3 : 0)], competency: themes[i % 3], gap_value: 1 + (i % 3), is_critical: i % 3 === 2, label: themes[i % 3] }));
   const themeIds = themes.slice(0, 6).map((t, i) => rec('TrainingTheme', 't' + i, { name: t, label: t, priority_rank: i + 1, days_per_group: [3, 2, 2.5, 1.5, 1, 2][i], group_count: o.seg === 'SME' ? 1 + (i % 2) : [6, 4, 3, 3, 2, 2][i], impact_score: 5 - (i % 3), urgency: 4 - (i % 2), trainer: i % 2 ? 'Vendor A' : 'Internal', budget: (o.seg === 'SME' ? 8000 : 60000) * (6 - i) }));

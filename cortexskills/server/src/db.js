@@ -56,6 +56,15 @@ const TABLES = {
   backups: `id TEXT PRIMARY KEY, file TEXT, size INTEGER, created_at TEXT, expires_at TEXT, kind TEXT`,
   vertical_activation: `org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE, vertical_id TEXT NOT NULL, version INTEGER, sort INTEGER, validated INTEGER, activated_at TEXT, PRIMARY KEY (org_id, vertical_id)`,
   integration_log: `id TEXT PRIMARY KEY, org_id TEXT, integration_id TEXT, direction TEXT, record TEXT, result TEXT, created_at TEXT`,
+  // Release 1.1 (SRS 1.4 – 1.6): questionnaire respondents and channels, messages, generated documents.
+  channel_settings: `org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE, channel TEXT NOT NULL, enabled INTEGER DEFAULT 0, mode TEXT DEFAULT 'sandbox', config TEXT DEFAULT '{}', secret TEXT, updated_by TEXT, updated_at TEXT, PRIMARY KEY (org_id, channel)`,
+  messages: `id TEXT PRIMARY KEY, org_id TEXT NOT NULL, project_id TEXT, questionnaire_id TEXT, invitation_id TEXT, kind TEXT, channel TEXT NOT NULL, recipient TEXT, subject TEXT, body TEXT, lang TEXT, status TEXT, provider TEXT, provider_id TEXT, error TEXT, attempts INTEGER DEFAULT 0, next_retry TEXT, created_by TEXT, created_at TEXT, updated_at TEXT`,
+  q_invitations: `id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE, project_id TEXT, questionnaire_id TEXT NOT NULL, stakeholder_id TEXT, user_id TEXT, name TEXT, email TEXT, phone TEXT, population TEXT, template_code TEXT, function_id TEXT, function_name TEXT, decision_level TEXT, lang TEXT,
+    channel_plan TEXT, step_index INTEGER DEFAULT -1, status TEXT DEFAULT 'Planned', token_hash TEXT UNIQUE, token_enc TEXT, consent TEXT, draft TEXT, response_id TEXT, interview_at TEXT, interviewer_id TEXT, opted_out INTEGER DEFAULT 0,
+    last_sent_at TEXT, reminders_sent INTEGER DEFAULT 0, opened_at TEXT, responded_at TEXT, created_at TEXT, updated_at TEXT`,
+  q_events: `id TEXT PRIMARY KEY, org_id TEXT NOT NULL, questionnaire_id TEXT, invitation_id TEXT, kind TEXT NOT NULL, channel TEXT, recipient TEXT, status TEXT, detail TEXT, user_id TEXT, created_at TEXT`,
+  documents: `id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE, project_id TEXT, doc_type TEXT NOT NULL, version INTEGER NOT NULL, status TEXT NOT NULL, lang TEXT, title TEXT, data_as_of TEXT, model TEXT, sources TEXT, findings TEXT,
+    author_id TEXT, approver_id TEXT, change_note TEXT, created_at TEXT, updated_at TEXT, published_at TEXT`,
 };
 const INDEXES = [
   `CREATE INDEX IF NOT EXISTS ix_records ON records(entity, org_id, project_id)`,
@@ -73,6 +82,14 @@ const INDEXES = [
   `CREATE INDEX IF NOT EXISTS ix_racsi ON racsi_activities(org_id, ref_type, ref_id)`,
   `CREATE INDEX IF NOT EXISTS ix_projects_org ON projects(org_id)`,
   `CREATE INDEX IF NOT EXISTS ix_usage ON ai_usage_log(org_id, created_at)`,
+  `CREATE INDEX IF NOT EXISTS ix_inv_q ON q_invitations(questionnaire_id, status)`,
+  `CREATE INDEX IF NOT EXISTS ix_qev ON q_events(questionnaire_id, created_at)`,
+  `CREATE INDEX IF NOT EXISTS ix_msg ON messages(org_id, created_at)`,
+  `CREATE INDEX IF NOT EXISTS ix_msg_provider ON messages(provider_id)`,
+  `CREATE INDEX IF NOT EXISTS ix_docs ON documents(org_id, project_id, doc_type, version)`,
+  // The questionnaire event log is immutable (FR-DA-COMM-08): updates and deletes are refused by the data layer.
+  `CREATE TRIGGER IF NOT EXISTS q_events_no_update BEFORE UPDATE ON q_events BEGIN SELECT RAISE(ABORT, 'q_events is append-only'); END`,
+  `CREATE TRIGGER IF NOT EXISTS q_events_no_delete BEFORE DELETE ON q_events WHEN (SELECT COUNT(*) FROM organizations WHERE id=OLD.org_id) > 0 BEGIN SELECT RAISE(ABORT, 'q_events is append-only'); END`,
 ];
 // Columns added by later releases are appended here: [table, column, definition].
 const COLUMNS = [

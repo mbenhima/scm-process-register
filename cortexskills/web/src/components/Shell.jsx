@@ -4,6 +4,7 @@ import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post } from '../lib/api.js';
 import { Icon, Btn } from './ui.jsx';
+import { HeaderSearch, SearchDialog, openSearch } from './GlobalSearch.jsx';
 
 export default function Shell({ children }) {
   const { me, nav, savePrefs } = useSession(); const { t } = useI18n(); const loc = useLocation();
@@ -32,6 +33,7 @@ export default function Shell({ children }) {
       <div className="nav-head"><Link to="/" className="brand"><img src="/cortexskills-mark.png" alt="" />CortexSkills</Link>
         {!horizontal && !mobile && <Btn icon={pinned ? 'PinOff' : 'Pin'} kind="ghost" size="sm" aria-label={pinned ? t('nav.unpin') : t('nav.pin')} onClick={() => savePrefs({ pinned: !pinned })} />}
         {mobile && <Btn icon="X" kind="ghost" aria-label={t('common.close')} onClick={() => setOpen(false)} />}</div>
+      <button type="button" className="nav-item nav-search" onClick={() => openSearch()}><Icon name="Search" /><span>{t('nav.search')}</span><kbd className="xs">Ctrl K</kbd></button>
       <div className="nav-scroll">{groups.map(g => {
         const isCollapsed = horizontal ? dropdown !== g.id : collapsed.has(g.id);
         return (<div className="nav-group" key={g.id} onMouseLeave={() => horizontal && setDropdown(null)}>
@@ -42,7 +44,7 @@ export default function Shell({ children }) {
       <button type="button" className="nav-handle" aria-label={t('nav.open')} aria-expanded={open} onFocus={() => setOpen(true)} onClick={() => setOpen(o => !o)} />
     </nav>
     <div className="shell-main"><Header onMenu={() => setOpen(o => !o)} showMenu={mobile || (!pinned && !horizontal)} /><main id="main" className="content" tabIndex={-1}>{children}</main></div>
-    <AssistantWidget />
+    <AssistantWidget /><SearchDialog />
   </div>);
 }
 
@@ -59,6 +61,7 @@ function Header({ onMenu, showMenu }) {
       <option value="">{t('header.allProjects')}</option>{projects.map(p => <option key={p.id} value={p.id}>{L(p.name)}</option>)}</select>
     {me.foreignReadOnly && <span className="pill s3 hide-mobile">{t('header.readOnlyGroup')}</span>}
     <span className="spacer" />
+    <HeaderSearch />
     <div className="seg hide-mobile" role="group" aria-label={t('header.language')}>{languages.map(l => <button key={l.code} aria-pressed={lang === l.code} onClick={() => changeLang(l.code)} lang={l.code}>{l.code.toUpperCase()}</button>)}</div>
     <select className="input show-mobile" style={{ width: 72 }} aria-label={t('header.language')} value={lang} onChange={e => changeLang(e.target.value)}>{languages.map(l => <option key={l.code} value={l.code}>{l.code.toUpperCase()}</option>)}</select>
     <div className="rel"><Btn icon="Bell" kind="ghost" aria-label={t('nav.alerts') + ` (${unread.data?.n || 0})`} onClick={() => navigate('/alerts')} />{unread.data?.n > 0 && <span className="bell-count" aria-hidden="true">{unread.data.n > 99 ? '99+' : unread.data.n}</span>}</div>
