@@ -57,7 +57,7 @@ export function seedQuestionnaires(o, p, focus, lvl, ctx, { sow, done, started, 
   const q = { id: qid, project_id: p.id, ...data };
   const fnName = new Map(ctx.fns.map(f => [f.id, f.name]));
   const stakeholders = all(`SELECT id, data FROM records WHERE entity='Stakeholder' AND project_id=? ORDER BY ref`, p.id).map(x => ({ id: x.id, ...J(x.data, {}) })).map(s => ({ ...s, function_name: fnName.get(s.function_id) }));
-  Q.addInvitations(o.id, q, stakeholders, { userId: head.id });
+  Q.addInvitations(o.id, q, stakeholders, { userId: head.id, at: addDays(p.start_date, 7) });
   if (status === 'Draft') return;
   Q.event(o.id, qid, null, 'questionnaire.distributed', { detail: { respondents: stakeholders.length }, userId: head.id, at: distributedOn });
   const t0 = new Date(distributedOn).getTime(); const nowT = Date.now();

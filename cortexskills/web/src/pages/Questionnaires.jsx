@@ -15,7 +15,7 @@ const CHANNELS = ['Face-to-Face', 'Email', 'WhatsApp', 'Application'];
 const MODES = ['Face-to-Face', 'Email', 'WhatsApp', 'Application', 'Combination'];
 const CH_ICON = { 'Face-to-Face': 'Users', Email: 'Mail', WhatsApp: 'MessageCircle', Application: 'MonitorSmartphone', Combination: 'Shuffle' };
 export function ChannelChip({ ch }) { const { t } = useI18n(); return <span className="pill xs"><Icon name={CH_ICON[ch] || 'Circle'} size={12} />{t('qch.' + ch)}</span>; }
-export function PlanSteps({ plan }) { const { t } = useI18n(); return <span className="plan-steps">{(plan || []).map((s, i) => <span key={i} className="plan-step" title={t('qplan.after', { n: s.after_days })}><Icon name={CH_ICON[s.channel]} size={12} />{t('qch.' + s.channel)}<span className="xs muted"> J+{s.after_days}</span>{i < plan.length - 1 && <Icon name="ChevronRight" size={12} />}</span>)}</span>; }
+export function PlanSteps({ plan }) { const { t } = useI18n(); return <span className="plan-steps">{(plan || []).map((s, i) => <span key={i} className="plan-step" title={t('qplan.after', { n: s.after_days })}><Icon name={CH_ICON[s.channel]} size={12} />{t('qch.' + s.channel)}<span className="xs muted"> {t('qplan.dayShort', { n: s.after_days })}</span>{i < plan.length - 1 && <Icon name="ChevronRight" size={12} />}</span>)}</span>; }
 
 // ------------------------------------------------------------------ list
 export function Questionnaires() {
@@ -101,7 +101,7 @@ function Respondents({ q, edit, reload }) {
     <DataTable rows={shown} csvName="respondents" columns={[
       ...(edit ? [{ key: 'sel', label: '', noSort: true, noCsv: true, render: r => <input type="checkbox" aria-label={r.name} checked={sel.includes(r.id)} onChange={e => setSel(s => e.target.checked ? [...s, r.id] : s.filter(x => x !== r.id))} /> }] : []),
       { key: 'name', label: t('col.name'), render: r => <span><span className="strong">{r.name}</span><br /><span className="xs muted">{r.function_name || ''}{r.decision_level ? ' · ' + r.decision_level : ''}</span></span>, text: r => r.name },
-      { key: 'population', label: t('q.population'), text: r => t('pop.' + r.population) }, { key: 'form', label: t('q.form'), text: r => L((q.forms.find(f => f.code === r.template_code) || {}).name) || r.template_code },
+      { key: 'population', label: t('q.population'), render: r => <span>{t('pop.' + r.population)}<br /><span className="xs muted">{r.template_code}</span></span>, text: r => `${t('pop.' + r.population)} · ${L((q.forms.find(f => f.code === r.template_code) || {}).name) || r.template_code}` },
       { key: 'contact', label: t('q.contact'), render: r => <span className="xs">{r.email || '—'}<br />{r.phone ? '+' + r.phone : '—'}</span>, text: r => `${r.email || ''} ${r.phone || ''}` },
       { key: 'plan', label: t('q.channelPlan'), render: r => <span><ChannelChip ch={r.mode} /><br /><PlanSteps plan={r.channel_plan} /></span>, text: r => r.mode },
       { key: 'status', label: t('col.status'), render: r => <span><StatusPill value={r.status} />{r.interview_at && <div className="xs muted">{fmtDate(r.interview_at)}</div>}{r.opted_out ? <div className="xs muted">{t('q.optedOut')}</div> : null}</span>, text: r => r.status },
@@ -267,11 +267,11 @@ function Dataset({ q, edit }) {
 
 // ------------------------------------------------------------------ immutable log and outbox
 function Log({ q }) {
-  const { t, fmtDate } = useI18n(); const ev = useData(`/questionnaires/${q.id}/events`); const msg = useData(`/messages?questionnaire=${q.id}`); const [m, setM] = useState(null);
+  const { t, fmtDate, fmtDateTime } = useI18n(); const ev = useData(`/questionnaires/${q.id}/events`); const msg = useData(`/messages?questionnaire=${q.id}`); const [m, setM] = useState(null);
   return (<div className="grid g-2">
-    <Card title={t('q.events')}><p className="xs muted">{t('q.eventsHint')}</p><Guard state={ev}>{rows => <DataTable rows={rows} csvName="questionnaire_log" columns={[{ key: 'created_at', label: t('col.date'), value: r => new Date(r.created_at).toLocaleString(), sortValue: r => r.created_at },
+    <Card title={t('q.events')}><p className="xs muted">{t('q.eventsHint')}</p><Guard state={ev}>{rows => <DataTable rows={rows} csvName="questionnaire_log" columns={[{ key: 'created_at', label: t('col.date'), value: r => fmtDateTime(r.created_at), sortValue: r => r.created_at },
       { key: 'kind', label: t('q.event'), text: r => t('qev.' + r.kind) }, { key: 'channel', label: t('q.channel'), text: r => (r.channel ? t('qch.' + r.channel) : '—') }, { key: 'recipient', label: t('q.recipient') }, { key: 'status', label: t('col.status'), text: r => (r.status ? t('status.' + r.status) : '—') }, { key: 'user_name', label: t('col.user') }]} />}</Guard></Card>
-    <Card title={t('q.outbox')}><p className="xs muted">{t('q.outboxHint')}</p><Guard state={msg}>{rows => <DataTable rows={rows} csvName="messages" onRow={setM} columns={[{ key: 'created_at', label: t('col.date'), value: r => new Date(r.created_at).toLocaleString(), sortValue: r => r.created_at },
+    <Card title={t('q.outbox')}><p className="xs muted">{t('q.outboxHint')}</p><Guard state={msg}>{rows => <DataTable rows={rows} csvName="messages" onRow={setM} columns={[{ key: 'created_at', label: t('col.date'), value: r => fmtDateTime(r.created_at), sortValue: r => r.created_at },
       { key: 'channel', label: t('q.channel'), text: r => t('channel.' + r.channel) }, { key: 'kind', label: t('q.event'), text: r => t('qev.' + r.kind) }, { key: 'recipient', label: t('q.recipient') }, { key: 'status', label: t('col.status'), render: r => <StatusPill value={r.status} /> }]} />}</Guard></Card>
     {m && <Modal title={m.subject || t('channel.' + m.channel)} onClose={() => setM(null)}><KV items={[[t('q.channel'), t('channel.' + m.channel)], [t('q.recipient'), m.recipient], [t('col.status'), t('status.' + m.status)], [t('q.provider'), m.provider || '—'], m.error && [t('q.error'), m.error]]} /><pre className="message-body">{m.body}</pre></Modal>}
   </div>);

@@ -19,7 +19,8 @@ export function I18nProvider({ children }) {
   const L = useCallback(v => { if (v == null) return ''; if (typeof v === 'string') return v; return v[lang] || v.en || ''; }, [lang]);
   const fmtNum = useCallback((n, o) => (n == null || Number.isNaN(Number(n)) ? '—' : Number(n).toLocaleString(lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-MA' : 'en-GB', o)), [lang]);
   const fmtDate = useCallback(d => (d ? new Date(d).toLocaleDateString(lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-GB', { year: 'numeric', month: 'short', day: 'numeric' }) : '—'), [lang]);
-  const value = useMemo(() => ({ t, L, lang, setLang, dir, languages, ready: !!dict, fmtNum, fmtDate }), [t, L, lang, setLang, dir, languages, dict, fmtNum, fmtDate]);
+  const fmtDateTime = useCallback(d => (d ? new Date(d).toLocaleString(lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-GB', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'), [lang]);
+  const value = useMemo(() => ({ t, L, lang, setLang, dir, languages, ready: !!dict, fmtNum, fmtDate, fmtDateTime }), [t, L, lang, setLang, dir, languages, dict, fmtNum, fmtDate, fmtDateTime]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 export const useI18n = () => useContext(Ctx);

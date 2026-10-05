@@ -122,7 +122,7 @@ export function populationOf(st) {
   if (st.decision_level === 'MS' || /head|director|manager|responsable|pilot/.test(role)) return 'Management';
   return 'Member';
 }
-export function addInvitations(orgId, q, stakeholders, { population, templateCode, plan, mode, lang, userId } = {}) {
+export function addInvitations(orgId, q, stakeholders, { population, templateCode, plan, mode, lang, userId, at } = {}) {
   const added = []; const orgLang = one(`SELECT default_language l FROM organizations WHERE id=?`, orgId)?.l || 'en';
   for (const st of stakeholders) {
     if (one(`SELECT id FROM q_invitations WHERE questionnaire_id=? AND stakeholder_id=?`, q.id, st.id)) continue;
@@ -130,11 +130,11 @@ export function addInvitations(orgId, q, stakeholders, { population, templateCod
     const form = (q.forms || []).find(f => f.code === templateCode) || (q.forms || []).find(f => f.population === pop) || (q.forms || [])[0];
     const phone = st.phone ? normalizePhone(st.phone) : null;
     const p = plan ? validatePlan(plan) : planForMode(mode || q.channel_mode || 'Combination', pop, { hasPhone: !!phone, hasUser: !!st.user_id });
-    const { token, hash } = newToken(); const id = uuid(); const tm = now();
+    const { token, hash } = newToken(); const id = uuid(); const tm = at || now();
     run(`INSERT INTO q_invitations(id,org_id,project_id,questionnaire_id,stakeholder_id,user_id,name,email,phone,population,template_code,function_id,function_name,decision_level,lang,channel_plan,step_index,status,token_hash,token_enc,created_at,updated_at)
       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,-1,'Planned',?,?,?,?)`, id, orgId, q.project_id, q.id, st.id, st.user_id || null, pick(st.name, 'en') || pick(st.label, 'en'), st.email || null, phone, pop, form?.code || null,
       st.function_id || null, st.function_name ? (typeof st.function_name === 'object' ? pick(st.function_name, lang || orgLang) : String(st.function_name)) : null, st.decision_level || null, lang || st.language || null, S(p), hash, seal(token), tm, tm);
-    event(orgId, q.id, id, 'respondent.added', { detail: { population: pop, form: form?.code, mode: modeOfPlan(p) }, userId });
+    event(orgId, q.id, id, 'respondent.added', { detail: { population: pop, form: form?.code, mode: modeOfPlan(p) }, userId, at: tm });
     added.push(id);
   }
   return added;

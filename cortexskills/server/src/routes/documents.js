@@ -14,7 +14,14 @@ const r = Router();
 const userName = id => one(`SELECT name FROM users WHERE id=?`, id)?.name || null;
 const docOut = (d, withModel = false) => d && ({ id: d.id, project_id: d.project_id, doc_type: d.doc_type, version: d.version, status: d.status, lang: d.lang, title: d.title, data_as_of: d.data_as_of,
   author: userName(d.author_id), author_id: d.author_id, approver: userName(d.approver_id), change_note: d.change_note, created_at: d.created_at, published_at: d.published_at,
-  findings: J(d.findings, []), sources: J(d.sources, []), ...(withModel ? { model: J(d.model, null) } : {}) });
+  findings: J(d.findings, []), sources: J(d.sources, []), ...(withModel ? { model: liveModel(d) } : {}) });
+/** The stored snapshot keeps its content; only the identification rows (status, approver) follow the document's lifecycle. */
+function liveModel(d) {
+  const model = J(d.model, null); if (!model) return model;
+  const set = { [t('ter.status', d.lang)]: t('status.' + d.status, d.lang), [t('ter.approver', d.lang)]: userName(d.approver_id) || '—' };
+  for (const s of model.sections || []) for (const row of s.table?.rows || []) if (row.length === 2 && row[0] in set) row[1] = set[row[0]];
+  return model;
+}
 function getDoc(req, id) { const d = one(`SELECT * FROM documents WHERE id=? AND org_id=?`, id, req.orgId); if (!d) throw new HttpError(404, 'err.notFound'); return d; }
 
 r.get('/projects/:id/documents', requirePerm('reports.view'), ah(req => {
@@ -65,7 +72,7 @@ r.delete('/documents/:id', requirePerm('reports.export'), ah(req => {
 }));
 r.get('/documents/:id/download', requirePerm('reports.export'), ah(async (req, res) => {
   const d = getDoc(req, req.params.id); const fmt = ['pdf', 'xlsx', 'docx'].includes(req.query.format) ? req.query.format : 'docx';
-  const model = J(d.model, {}); const buf = await exportModel(model, fmt);
+  const model = liveModel(d) || {}; const buf = await exportModel(model, fmt);
   res.set('Content-Type', MIME[fmt]).set('Content-Disposition', `attachment; filename="${d.doc_type}_v${d.version}_${d.status}.${fmt}"`).send(buf);
 }));
 export default r;

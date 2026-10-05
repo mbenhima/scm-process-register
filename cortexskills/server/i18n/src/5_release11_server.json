@@ -1,59 +1,767 @@
 {
-"qmsg.invite.subject":["{org} — {title}: your input is requested","{org} — {title} : votre avis est attendu","{org} — {title}: نرجو مشاركتكم"],
-"qmsg.invite.body":["Hello {name},\n{org} is preparing its training plan and would value your input in the questionnaire “{title}”.\nAnswer online, at your own pace (your draft is saved): {link}\nDeadline: {due}.","Bonjour {name},\n{org} prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « {title} ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : {link}\nDate limite : {due}.","مرحبا {name}،\nتعد {org} مخطط التكوين الخاص بها وتود معرفة رأيكم في الاستبيان «{title}».\nأجيبوا عبر الإنترنت وفق وتيرتكم (يتم حفظ المسودة): {link}\nآخر أجل: {due}."],
-"qmsg.reminder.subject":["Reminder — {title}","Rappel — {title}","تذكير — {title}"],
-"qmsg.reminder.body":["Hello {name},\nA reminder that your answers to “{title}” are expected by {due}.\nYour link: {link}","Bonjour {name},\nPetit rappel : vos réponses au questionnaire « {title} » sont attendues avant le {due}.\nVotre lien : {link}","مرحبا {name}،\nنذكركم بأن أجوبتكم على «{title}» منتظرة قبل {due}.\nرابطكم: {link}"],
-"qmsg.interview.subject":["{title}: face-to-face interview","{title} : entretien en face-à-face","{title}: مقابلة مباشرة"],
-"qmsg.interview.body":["Hello {name},\nA face-to-face interview is planned with you for “{title}”: {interview}.\nYou can prepare by reading or filling in the form beforehand: {link}","Bonjour {name},\nUn entretien en face-à-face est prévu avec vous pour « {title} » : {interview}.\nVous pouvez le préparer en consultant ou en remplissant le formulaire à l’avance : {link}","مرحبا {name}،\nتمت برمجة مقابلة مباشرة معكم بخصوص «{title}»: {interview}.\nيمكنكم التحضير بالاطلاع على الاستمارة أو ملئها مسبقا: {link}"],
-"qmsg.footer":["Your answers are used only for the training engineering of {org} and are stored only after your consent. Reply STOP to stop these messages.","Vos réponses servent uniquement à l’ingénierie de formation de {org} et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages.","تستعمل أجوبتكم فقط لهندسة التكوين لدى {org} ولا تحفظ إلا بعد موافقتكم. أجيبوا بكلمة STOP لإيقاف هذه الرسائل."],
-"qmsg.button":["Open the questionnaire","Ouvrir le questionnaire","فتح الاستبيان"],
-"qmsg.interviewToSchedule":["Interview to schedule: {name}","Entretien à planifier : {name}","مقابلة يجب برمجتها: {name}"],
-"qai.section":["Sector-specific questions — {sector} · {focus}","Questions spécifiques au secteur — {sector} · {focus}","أسئلة خاصة بالقطاع — {sector} · {focus}"],
-"qai.q1":["How often do you use {theme1} in your work today, and for which tasks?","À quelle fréquence utilisez-vous {theme1} dans votre travail aujourd’hui, et pour quelles tâches ?","كم مرة تستعمل {theme1} في عملك حاليا، ولأية مهام؟"],
-"qai.q2":["What prevents you today from using {theme2} in {core}?","Qu’est-ce qui vous empêche aujourd’hui d’utiliser {theme2} dans {core} ?","ما الذي يمنعك حاليا من استعمال {theme2} في {core}؟"],
-"qai.q3":["Which {standard} requirements should a training on {theme1} cover?","Quelles exigences {standard} une formation sur {theme1} devrait-elle couvrir ?","ما هي متطلبات {standard} التي يجب أن يغطيها تكوين حول {theme1}؟"],
-"qai.q4":["Which skills do you need to apply {theme3} safely?","De quelles compétences avez-vous besoin pour appliquer {theme3} en toute sécurité ?","ما هي الكفاءات التي تحتاجها لتطبيق {theme3} بأمان؟"],
-"qai.q5":["How would you prefer to learn: classroom, e-learning, coaching or on the job?","Comment préférez-vous apprendre : présentiel, e-learning, coaching ou en situation de travail ?","كيف تفضل التعلم: حضوريا، عن بعد، بالمواكبة أو في وضعية العمل؟"],
-"qissue.aiUnvalidated":["{n} AI question(s) to validate in {form}","{n} question(s) IA à valider dans {form}","{n} سؤال مولد بالذكاء الاصطناعي يجب المصادقة عليه في {form}"],
-"qissue.noAccountable":["Section {section} of {form} has no Accountable","La section {section} de {form} n’a pas d’Approbateur","القسم {section} من {form} بدون مسؤول معتمد"],
-"qissue.manyAccountable":["Section {section} of {form} has more than one Accountable","La section {section} de {form} a plus d’un Approbateur","القسم {section} من {form} له أكثر من مسؤول معتمد"],
-"qissue.noRespondents":["No respondent defined","Aucun répondant défini","لم يحدد أي مجيب"],
-"qissue.missingAddress":["{n} respondent(s) without the e-mail or mobile number their channel needs","{n} répondant(s) sans l’e-mail ou le mobile requis par leur canal","{n} مجيب دون البريد الإلكتروني أو الهاتف الذي تتطلبه قناته"],
-"qissue.noDueDate":["No deadline set","Aucune date limite","لم يحدد أي أجل"],
-"pack.field":["Field","Champ","الحقل"],"pack.answer":["Answer","Réponse","الجواب"],"pack.question":["Question","Question","السؤال"],"pack.competence":["Competence","Compétence","الكفاءة"],"pack.rating":["Rating","Note","التقييم"],
-"pack.yesNo":["Yes / No","Oui / Non","نعم / لا"],"pack.comment":["Comment","Commentaire","تعليق"],"pack.cadence":["Face-to-face interview pack","Dossier d’entretien en face-à-face","ملف المقابلة المباشرة"],"pack.blank":["Blank form","Formulaire vierge","استمارة فارغة"],
-"pack.consentTitle":["Consent","Consentement","الموافقة"],"pack.consentText":["Ask for the respondent’s consent before recording any answer. Without consent, the answers are not stored.","Recueillir le consentement du participant avant d’enregistrer toute réponse. Sans consentement, les réponses ne sont pas enregistrées.","اطلب موافقة المشارك قبل تسجيل أي جواب. دون موافقة لا تحفظ الأجوبة."],
-"pack.consentGiven":["Consent given","Consentement donné","تمت الموافقة"],"pack.interviewDate":["Interview date","Date de l’entretien","تاريخ المقابلة"],"pack.interviewer":["Interviewer","Intervieweur","المحاور"],
-"q.invited":["Invited","Invités","المدعوون"],"q.responded":["Responded","Répondants","المجيبون"],"q.responseRate":["Response rate","Taux de réponse","معدل الاستجابة"],"q.engagementRate":["Engagement rate","Taux d’engagement","معدل التفاعل"],"q.completeness":["Completeness","Complétude","الاكتمال"],
-"q.reportCadence":["Questionnaire report","Rapport de questionnaire","تقرير الاستبيان"],"q.reportAudience":["Head of L&D, Consultant PM","Responsable formation, chef de projet consultant","مسؤول التكوين، رئيس مشروع الاستشارة"],
-"q.byChannel":["By channel","Par canal","حسب القناة"],"q.byPopulation":["By population","Par population","حسب الفئة"],"q.byFunction":["By function","Par fonction","حسب الوظيفة"],"q.softSkills":["Soft skills — average self-assessment","Soft skills — auto-évaluation moyenne","المهارات الشخصية — متوسط التقييم الذاتي"],
-"q.competences":["Competences to develop, as named by respondents","Compétences à développer citées par les répondants","الكفاءات المراد تطويرها كما ذكرها المجيبون"],"q.performance":["Performance by function (1 – 5)","Performance par fonction (1 – 5)","الأداء حسب الوظيفة (1 – 5)"],"q.transverse":["Cross-functional processes","Processus transverses","المسارات العرضانية"],
-"q.average":["Average","Moyenne","المتوسط"],"q.mentions":["Mentions","Mentions","الإشارات"],"q.populations":["Populations","Populations","الفئات"],"q.documented":["Documented","Documenté","موثق"],"q.owner":["Process owner","Pilote","قائد المسار"],"q.score":["Score","Score","النقطة"],
-"col.function":["Function","Fonction","الوظيفة"],"col.process":["Process","Processus","المسار"],
-"qch.Face-to-Face":["Face-to-face","Face-à-face","مقابلة مباشرة"],"qch.Email":["E-mail","E-mail","البريد الإلكتروني"],"qch.WhatsApp":["WhatsApp","WhatsApp","واتساب"],"qch.Application":["Application","Application","التطبيق"],"qch.Combination":["Combination","Combinaison","مزيج"],
-"pop.DG":["General Manager","Direction générale","المدير العام"],"pop.Management":["Management","Management","الأطر المسيرة"],"pop.Member":["Team member","Membre de l’équipe","عضو الفريق"],"pop.Custom":["Custom","Personnalisée","مخصصة"],"pop.—":["—","—","—"],"pop.undefined":["—","—","—"],
-"status.Superseded":["Superseded","Remplacé","متجاوز"],"status.Invited":["Invited","Invité","مدعو"],"status.Opened":["Opened","Ouvert","مفتوح"],"status.Interview to schedule":["Interview to schedule","Entretien à planifier","مقابلة للبرمجة"],"status.Interview scheduled":["Interview scheduled","Entretien planifié","مقابلة مبرمجة"],
-"status.Responded":["Responded","A répondu","أجاب"],"status.Declined":["Declined","A décliné","اعتذر"],"status.simulated":["Simulated (sandbox)","Simulé (bac à sable)","محاكاة (بيئة تجريبية)"],"status.sent":["Sent","Envoyé","مرسل"],"status.delivered":["Delivered","Remis","مسلم"],"status.read":["Read","Lu","مقروء"],"status.failed":["Failed","Échec","فشل"],"status.queued":["Queued","En file","في الانتظار"],
-"tp.title":["Training plan {year}","Plan de formation {year}","مخطط التكوين {year}"],"tp.audience":["Head of L&D, HR Director, Steering Committee","Responsable formation, DRH, comité de pilotage","مسؤول التكوين، مدير الموارد البشرية، لجنة القيادة"],"tp.overview":["Plan overview","Vue d’ensemble du plan","نظرة عامة على المخطط"],
-"tp.program":["Program","Programme","البرنامج"],"tp.trainingId":["Training ID","ID formation","رمز التكوين"],"tp.trainingName":["Training name","Intitulé de la formation","اسم التكوين"],"tp.level":["Level","Niveau","المستوى"],"tp.duration":["Duration","Durée","المدة"],"tp.groups":["Groups","Groupes","المجموعات"],
-"tp.prerequisites":["Prerequisites","Prérequis","المتطلبات القبلية"],"tp.rules":["Golden rules","Règles d’or","القواعد الذهبية"],"tp.rulesOk":["Met","Respectées","محترمة"],"tp.rulesKo":["{n} issue(s)","{n} écart(s)","{n} خلل"],"tp.days":["{n} day(s)","{n} jour(s)","{n} يوم"],"tp.halfDays":["half-days","demi-journées","أنصاف أيام"],
-"tp.objectives":["Objectives","Objectifs","الأهداف"],"tp.halfDay":["Half-day","Demi-journée","نصف اليوم"],"tp.itemType":["Type","Type","النوع"],"tp.itemTitle":["Content","Contenu","المحتوى"],"tp.minutes":["Minutes","Minutes","الدقائق"],
-"tp.valueProposition":["value proposition per persona","proposition de valeur par persona","القيمة المقترحة لكل شخصية"],"tp.persona":["Persona","Persona","الشخصية"],"tp.behaviour":["Behaviour","Comportement","السلوك"],"tp.painPoints":["Pain points","Points de douleur","نقاط الألم"],"tp.hopes":["Hopes","Attentes","التطلعات"],"tp.fit":["Fit with the training","Adéquation avec la formation","الملاءمة مع التكوين"],
-"level.Foundation":["Foundation","Fondamentaux","أساسي"],"level.Intermediate":["Intermediate","Intermédiaire","متوسط"],"level.Advanced":["Advanced","Avancé","متقدم"],"level.Expert":["Expert","Expert","خبير"],
-"item.Lecture":["Lecture","Exposé","عرض"],"item.Quiz":["Quiz","Quiz","اختبار"],"item.Workshop":["Workshop","Atelier","ورشة"],
-"rule.durationHalfDays":["The duration must be a whole number of half-days","La durée doit être un nombre entier de demi-journées","يجب أن تكون المدة عددا صحيحا من أنصاف الأيام"],
-"rule.halfDayCount":["The agenda has {found} half-day(s) for a duration of {expected}","L’agenda compte {found} demi-journée(s) pour une durée de {expected}","يتضمن البرنامج {found} نصف يوم لمدة {expected}"],
-"rule.noQuiz":["Half-day {halfDay} has no quiz","La demi-journée {halfDay} n’a pas de quiz","نصف اليوم {halfDay} بدون اختبار"],"rule.manyQuiz":["Half-day {halfDay} has {n} quizzes (one expected)","La demi-journée {halfDay} a {n} quiz (un seul attendu)","نصف اليوم {halfDay} به {n} اختبارات (المنتظر واحد)"],
-"rule.noWorkshop":["Half-day {halfDay} has no workshop","La demi-journée {halfDay} n’a pas d’atelier","نصف اليوم {halfDay} بدون ورشة"],"rule.manyWorkshop":["Half-day {halfDay} has {n} workshops (one expected)","La demi-journée {halfDay} a {n} ateliers (un seul attendu)","نصف اليوم {halfDay} به {n} ورشات (المنتظر واحدة)"],
-"rule.noLecture":["Half-day {halfDay} has no lecture","La demi-journée {halfDay} n’a pas d’exposé","نصف اليوم {halfDay} بدون عرض"],"rule.untitledItem":["Half-day {halfDay} has an item without a title","La demi-journée {halfDay} a un élément sans titre","نصف اليوم {halfDay} به عنصر دون عنوان"],
-"rule.halfDayMinutes":["Half-day {halfDay} lasts {minutes} min (150–240 expected)","La demi-journée {halfDay} dure {minutes} min (150 à 240 attendues)","مدة نصف اليوم {halfDay} هي {minutes} دقيقة (المنتظر 150–240)"],"rule.noObjective":["No objective","Aucun objectif","لا يوجد هدف"],"rule.noLevel":["No level","Aucun niveau","لا يوجد مستوى"],
-"rule.noPrerequisites":["No prerequisites stated","Prérequis non renseignés","المتطلبات القبلية غير محددة"],"rule.noPersona":["No persona value proposition","Aucune proposition de valeur par persona","لا توجد قيمة مقترحة لأي شخصية"],"rule.personaIncomplete":["A persona has an empty behaviour, pain point, hope or fit","Un persona a un comportement, un point de douleur, une attente ou une adéquation vide","إحدى الشخصيات بسلوك أو ألم أو تطلع أو ملاءمة فارغة"],
-"err.planEmpty":["The plan is empty","Le plan est vide","المخطط فارغ"],"err.planOrder":["Plan steps must be in day order","Les étapes du plan doivent suivre l’ordre des jours","يجب أن تتبع مراحل المخطط ترتيب الأيام"],"err.channelIncomplete":["Channel settings incomplete: {fields}","Paramètres du canal incomplets : {fields}","إعدادات القناة غير مكتملة: {fields}"],
-"err.invalidEmail":["Invalid e-mail address","Adresse e-mail invalide","عنوان بريد إلكتروني غير صالح"],"err.invalidPhone":["Invalid mobile number","Numéro de mobile invalide","رقم هاتف غير صالح"],"err.consentRequired":["Consent is required before any answer is stored","Le consentement est requis avant l’enregistrement des réponses","الموافقة ضرورية قبل حفظ أي جواب"],
-"err.alreadyResponded":["This respondent has already answered","Ce répondant a déjà répondu","سبق لهذا المجيب أن أجاب"],"err.linkInvalid":["This link is not valid","Ce lien n’est pas valide","هذا الرابط غير صالح"],"err.questionnaireClosed":["The questionnaire is closed","Le questionnaire est clôturé","الاستبيان مغلق"],
-"err.notDistributed":["The questionnaire is not distributed","Le questionnaire n’est pas diffusé","الاستبيان غير موزع"],"err.optedOut":["The respondent asked not to be contacted","Le répondant a demandé à ne plus être contacté","طلب المجيب عدم الاتصال به"],"err.invalidTransition":["Not possible from {from} to {to}","Impossible de passer de {from} à {to}","لا يمكن الانتقال من {from} إلى {to}"],
-"err.distributionBlocked":["Distribution blocked: {reasons}","Diffusion bloquée : {reasons}","التوزيع متوقف: {reasons}"],"err.templateInUse":["The template is used by a questionnaire","Le modèle est utilisé par un questionnaire","النموذج مستعمل في استبيان"],"err.invalidFile":["Invalid file","Fichier invalide","ملف غير صالح"],"err.tooLarge":["Too large","Trop volumineux","حجم كبير جدا"],
-"err.programInUse":["The program has {n} training(s)","Le programme contient {n} formation(s)","يتضمن البرنامج {n} تكوين"],"err.personaInUse":["The persona is used by {n} training(s)","Le persona est utilisé par {n} formation(s)","الشخصية مستعملة في {n} تكوين"],"err.durationHalfDays":["The duration must be a whole number of half-days","La durée doit être un nombre entier de demi-journées","يجب أن تكون المدة عددا صحيحا من أنصاف الأيام"],
-"err.goldenRules":["The golden rules are not met ({n}): {first}","Les règles d’or ne sont pas respectées ({n}) : {first}","القواعد الذهبية غير محترمة ({n}): {first}"],"err.goldenRulesPlan":["{n} training(s) break the golden rules: {codes}","{n} formation(s) ne respectent pas les règles d’or : {codes}","{n} تكوين لا يحترم القواعد الذهبية: {codes}"],
-"err.documentBlocked":["{n} blocking finding(s) to correct before review","{n} constat(s) bloquant(s) à corriger avant la revue","{n} ملاحظة معيقة يجب تصحيحها قبل المراجعة"],"err.twoPerson":["The author cannot approve their own document","L’auteur ne peut pas approuver son propre document","لا يمكن للكاتب المصادقة على وثيقته"],"err.publishedNoDelete":["A published document is retired, not deleted","Un document publié est retiré, pas supprimé","الوثيقة المنشورة تسحب ولا تحذف"]
+ "qmsg.invite.subject": [
+  "{org} — {title}: your input is requested",
+  "{org} — {title} : votre avis est attendu",
+  "{org} — {title}: نرجو مشاركتكم"
+ ],
+ "qmsg.invite.body": [
+  "Hello {name},\n{org} is preparing its training plan and would value your input in the questionnaire “{title}”.\nAnswer online, at your own pace (your draft is saved): {link}\nDeadline: {due}.",
+  "Bonjour {name},\n{org} prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « {title} ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : {link}\nDate limite : {due}.",
+  "مرحبا {name}،\nتعد {org} مخطط التكوين الخاص بها وتود معرفة رأيكم في الاستبيان «{title}».\nأجيبوا عبر الإنترنت وفق وتيرتكم (يتم حفظ المسودة): {link}\nآخر أجل: {due}."
+ ],
+ "qmsg.reminder.subject": [
+  "Reminder — {title}",
+  "Rappel — {title}",
+  "تذكير — {title}"
+ ],
+ "qmsg.reminder.body": [
+  "Hello {name},\nA reminder that your answers to “{title}” are expected by {due}.\nYour link: {link}",
+  "Bonjour {name},\nPetit rappel : vos réponses au questionnaire « {title} » sont attendues avant le {due}.\nVotre lien : {link}",
+  "مرحبا {name}،\nنذكركم بأن أجوبتكم على «{title}» منتظرة قبل {due}.\nرابطكم: {link}"
+ ],
+ "qmsg.interview.subject": [
+  "{title}: face-to-face interview",
+  "{title} : entretien en face-à-face",
+  "{title}: مقابلة مباشرة"
+ ],
+ "qmsg.interview.body": [
+  "Hello {name},\nA face-to-face interview is planned with you for “{title}”: {interview}.\nYou can prepare by reading or filling in the form beforehand: {link}",
+  "Bonjour {name},\nUn entretien en face-à-face est prévu avec vous pour « {title} » : {interview}.\nVous pouvez le préparer en consultant ou en remplissant le formulaire à l’avance : {link}",
+  "مرحبا {name}،\nتمت برمجة مقابلة مباشرة معكم بخصوص «{title}»: {interview}.\nيمكنكم التحضير بالاطلاع على الاستمارة أو ملئها مسبقا: {link}"
+ ],
+ "qmsg.footer": [
+  "Your answers are used only for the training engineering of {org} and are stored only after your consent. Reply STOP to stop these messages.",
+  "Vos réponses servent uniquement à l’ingénierie de formation de {org} et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages.",
+  "تستعمل أجوبتكم فقط لهندسة التكوين لدى {org} ولا تحفظ إلا بعد موافقتكم. أجيبوا بكلمة STOP لإيقاف هذه الرسائل."
+ ],
+ "qmsg.button": [
+  "Open the questionnaire",
+  "Ouvrir le questionnaire",
+  "فتح الاستبيان"
+ ],
+ "qmsg.interviewToSchedule": [
+  "Interview to schedule: {name}",
+  "Entretien à planifier : {name}",
+  "مقابلة يجب برمجتها: {name}"
+ ],
+ "qai.section": [
+  "Sector-specific questions — {sector} · {focus}",
+  "Questions spécifiques au secteur — {sector} · {focus}",
+  "أسئلة خاصة بالقطاع — {sector} · {focus}"
+ ],
+ "qai.q1": [
+  "How often do you use {theme1} in your work today, and for which tasks?",
+  "À quelle fréquence utilisez-vous {theme1} dans votre travail aujourd’hui, et pour quelles tâches ?",
+  "كم مرة تستعمل {theme1} في عملك حاليا، ولأية مهام؟"
+ ],
+ "qai.q2": [
+  "What prevents you today from using {theme2} in {core}?",
+  "Qu’est-ce qui vous empêche aujourd’hui d’utiliser {theme2} dans {core} ?",
+  "ما الذي يمنعك حاليا من استعمال {theme2} في {core}؟"
+ ],
+ "qai.q3": [
+  "Which {standard} requirements should a training on {theme1} cover?",
+  "Quelles exigences {standard} une formation sur {theme1} devrait-elle couvrir ?",
+  "ما هي متطلبات {standard} التي يجب أن يغطيها تكوين حول {theme1}؟"
+ ],
+ "qai.q4": [
+  "Which skills do you need to apply {theme3} safely?",
+  "De quelles compétences avez-vous besoin pour appliquer {theme3} en toute sécurité ?",
+  "ما هي الكفاءات التي تحتاجها لتطبيق {theme3} بأمان؟"
+ ],
+ "qai.q5": [
+  "How would you prefer to learn: classroom, e-learning, coaching or on the job?",
+  "Comment préférez-vous apprendre : présentiel, e-learning, coaching ou en situation de travail ?",
+  "كيف تفضل التعلم: حضوريا، عن بعد، بالمواكبة أو في وضعية العمل؟"
+ ],
+ "qissue.aiUnvalidated": [
+  "{n} AI question(s) to validate in {form}",
+  "{n} question(s) IA à valider dans {form}",
+  "{n} سؤال مولد بالذكاء الاصطناعي يجب المصادقة عليه في {form}"
+ ],
+ "qissue.noAccountable": [
+  "Section {section} of {form} has no Accountable",
+  "La section {section} de {form} n’a pas d’Approbateur",
+  "القسم {section} من {form} بدون مسؤول معتمد"
+ ],
+ "qissue.manyAccountable": [
+  "Section {section} of {form} has more than one Accountable",
+  "La section {section} de {form} a plus d’un Approbateur",
+  "القسم {section} من {form} له أكثر من مسؤول معتمد"
+ ],
+ "qissue.noRespondents": [
+  "No respondent defined",
+  "Aucun répondant défini",
+  "لم يحدد أي مجيب"
+ ],
+ "qissue.missingAddress": [
+  "{n} respondent(s) without the e-mail or mobile number their channel needs",
+  "{n} répondant(s) sans l’e-mail ou le mobile requis par leur canal",
+  "{n} مجيب دون البريد الإلكتروني أو الهاتف الذي تتطلبه قناته"
+ ],
+ "qissue.noDueDate": [
+  "No deadline set",
+  "Aucune date limite",
+  "لم يحدد أي أجل"
+ ],
+ "pack.field": [
+  "Field",
+  "Champ",
+  "الحقل"
+ ],
+ "pack.answer": [
+  "Answer",
+  "Réponse",
+  "الجواب"
+ ],
+ "pack.question": [
+  "Question",
+  "Question",
+  "السؤال"
+ ],
+ "pack.competence": [
+  "Competence",
+  "Compétence",
+  "الكفاءة"
+ ],
+ "pack.rating": [
+  "Rating",
+  "Note",
+  "التقييم"
+ ],
+ "pack.yesNo": [
+  "Yes / No",
+  "Oui / Non",
+  "نعم / لا"
+ ],
+ "pack.comment": [
+  "Comment",
+  "Commentaire",
+  "تعليق"
+ ],
+ "pack.cadence": [
+  "Face-to-face interview pack",
+  "Dossier d’entretien en face-à-face",
+  "ملف المقابلة المباشرة"
+ ],
+ "pack.blank": [
+  "Blank form",
+  "Formulaire vierge",
+  "استمارة فارغة"
+ ],
+ "pack.consentTitle": [
+  "Consent",
+  "Consentement",
+  "الموافقة"
+ ],
+ "pack.consentText": [
+  "Ask for the respondent’s consent before recording any answer. Without consent, the answers are not stored.",
+  "Recueillir le consentement du participant avant d’enregistrer toute réponse. Sans consentement, les réponses ne sont pas enregistrées.",
+  "اطلب موافقة المشارك قبل تسجيل أي جواب. دون موافقة لا تحفظ الأجوبة."
+ ],
+ "pack.consentGiven": [
+  "Consent given",
+  "Consentement donné",
+  "تمت الموافقة"
+ ],
+ "pack.interviewDate": [
+  "Interview date",
+  "Date de l’entretien",
+  "تاريخ المقابلة"
+ ],
+ "pack.interviewer": [
+  "Interviewer",
+  "Intervieweur",
+  "المحاور"
+ ],
+ "q.invited": [
+  "Invited",
+  "Invités",
+  "المدعوون"
+ ],
+ "q.responded": [
+  "Responded",
+  "Répondants",
+  "المجيبون"
+ ],
+ "q.responseRate": [
+  "Response rate",
+  "Taux de réponse",
+  "معدل الاستجابة"
+ ],
+ "q.engagementRate": [
+  "Engagement rate",
+  "Taux d’engagement",
+  "معدل التفاعل"
+ ],
+ "q.completeness": [
+  "Completeness",
+  "Complétude",
+  "الاكتمال"
+ ],
+ "q.reportCadence": [
+  "Questionnaire report",
+  "Rapport de questionnaire",
+  "تقرير الاستبيان"
+ ],
+ "q.reportAudience": [
+  "Head of L&D, Consultant PM",
+  "Responsable formation, chef de projet consultant",
+  "مسؤول التكوين، رئيس مشروع الاستشارة"
+ ],
+ "q.byChannel": [
+  "By channel",
+  "Par canal",
+  "حسب القناة"
+ ],
+ "q.byPopulation": [
+  "By population",
+  "Par population",
+  "حسب الفئة"
+ ],
+ "q.byFunction": [
+  "By function",
+  "Par fonction",
+  "حسب الوظيفة"
+ ],
+ "q.softSkills": [
+  "Soft skills — average self-assessment",
+  "Soft skills — auto-évaluation moyenne",
+  "المهارات الشخصية — متوسط التقييم الذاتي"
+ ],
+ "q.competences": [
+  "Competences to develop, as named by respondents",
+  "Compétences à développer citées par les répondants",
+  "الكفاءات المراد تطويرها كما ذكرها المجيبون"
+ ],
+ "q.performance": [
+  "Performance by function (1 – 5)",
+  "Performance par fonction (1 – 5)",
+  "الأداء حسب الوظيفة (1 – 5)"
+ ],
+ "q.transverse": [
+  "Cross-functional processes",
+  "Processus transverses",
+  "المسارات العرضانية"
+ ],
+ "q.average": [
+  "Average",
+  "Moyenne",
+  "المتوسط"
+ ],
+ "q.mentions": [
+  "Mentions",
+  "Mentions",
+  "الإشارات"
+ ],
+ "q.populations": [
+  "Populations",
+  "Populations",
+  "الفئات"
+ ],
+ "q.documented": [
+  "Documented",
+  "Documenté",
+  "موثق"
+ ],
+ "q.owner": [
+  "Process owner",
+  "Pilote",
+  "قائد المسار"
+ ],
+ "q.score": [
+  "Score",
+  "Score",
+  "النقطة"
+ ],
+ "col.function": [
+  "Function",
+  "Fonction",
+  "الوظيفة"
+ ],
+ "col.process": [
+  "Process",
+  "Processus",
+  "المسار"
+ ],
+ "qch.Face-to-Face": [
+  "Face-to-face",
+  "Face-à-face",
+  "مقابلة مباشرة"
+ ],
+ "qch.Email": [
+  "E-mail",
+  "E-mail",
+  "البريد الإلكتروني"
+ ],
+ "qch.WhatsApp": [
+  "WhatsApp",
+  "WhatsApp",
+  "واتساب"
+ ],
+ "qch.Application": [
+  "Application",
+  "Application",
+  "التطبيق"
+ ],
+ "qch.Combination": [
+  "Combination",
+  "Combinaison",
+  "مزيج"
+ ],
+ "pop.DG": [
+  "General Manager",
+  "Direction générale",
+  "المدير العام"
+ ],
+ "pop.Management": [
+  "Management",
+  "Management",
+  "الأطر المسيرة"
+ ],
+ "pop.Member": [
+  "Team member",
+  "Membre de l’équipe",
+  "عضو الفريق"
+ ],
+ "pop.Custom": [
+  "Custom",
+  "Personnalisée",
+  "مخصصة"
+ ],
+ "pop.—": [
+  "—",
+  "—",
+  "—"
+ ],
+ "pop.undefined": [
+  "—",
+  "—",
+  "—"
+ ],
+ "status.Superseded": [
+  "Superseded",
+  "Remplacé",
+  "متجاوز"
+ ],
+ "status.Invited": [
+  "Invited",
+  "Invité",
+  "مدعو"
+ ],
+ "status.Opened": [
+  "Opened",
+  "Ouvert",
+  "مفتوح"
+ ],
+ "status.Interview to schedule": [
+  "Interview to schedule",
+  "Entretien à planifier",
+  "مقابلة للبرمجة"
+ ],
+ "status.Interview scheduled": [
+  "Interview scheduled",
+  "Entretien planifié",
+  "مقابلة مبرمجة"
+ ],
+ "status.Responded": [
+  "Responded",
+  "A répondu",
+  "أجاب"
+ ],
+ "status.Declined": [
+  "Declined",
+  "A décliné",
+  "اعتذر"
+ ],
+ "status.simulated": [
+  "Simulated (sandbox)",
+  "Simulé (bac à sable)",
+  "محاكاة (بيئة تجريبية)"
+ ],
+ "status.sent": [
+  "Sent",
+  "Envoyé",
+  "مرسل"
+ ],
+ "status.delivered": [
+  "Delivered",
+  "Remis",
+  "مسلم"
+ ],
+ "status.read": [
+  "Read",
+  "Lu",
+  "مقروء"
+ ],
+ "status.failed": [
+  "Failed",
+  "Échec",
+  "فشل"
+ ],
+ "status.queued": [
+  "Queued",
+  "En file",
+  "في الانتظار"
+ ],
+ "tp.title": [
+  "Training plan {year}",
+  "Plan de formation {year}",
+  "مخطط التكوين {year}"
+ ],
+ "tp.audience": [
+  "Head of L&D, HR Director, Steering Committee",
+  "Responsable formation, DRH, comité de pilotage",
+  "مسؤول التكوين، مدير الموارد البشرية، لجنة القيادة"
+ ],
+ "tp.overview": [
+  "Plan overview",
+  "Vue d’ensemble du plan",
+  "نظرة عامة على المخطط"
+ ],
+ "tp.program": [
+  "Program",
+  "Programme",
+  "البرنامج"
+ ],
+ "tp.trainingId": [
+  "Training ID",
+  "ID formation",
+  "رمز التكوين"
+ ],
+ "tp.trainingName": [
+  "Training name",
+  "Intitulé de la formation",
+  "اسم التكوين"
+ ],
+ "tp.level": [
+  "Level",
+  "Niveau",
+  "المستوى"
+ ],
+ "tp.duration": [
+  "Duration",
+  "Durée",
+  "المدة"
+ ],
+ "tp.groups": [
+  "Groups",
+  "Groupes",
+  "المجموعات"
+ ],
+ "tp.prerequisites": [
+  "Prerequisites",
+  "Prérequis",
+  "المتطلبات القبلية"
+ ],
+ "tp.rules": [
+  "Golden rules",
+  "Règles d’or",
+  "القواعد الذهبية"
+ ],
+ "tp.rulesOk": [
+  "Met",
+  "Respectées",
+  "محترمة"
+ ],
+ "tp.rulesKo": [
+  "{n} issue(s)",
+  "{n} écart(s)",
+  "{n} خلل"
+ ],
+ "tp.days": [
+  "{n} day(s)",
+  "{n} jour(s)",
+  "{n} يوم"
+ ],
+ "tp.halfDays": [
+  "half-days",
+  "demi-journées",
+  "أنصاف أيام"
+ ],
+ "tp.objectives": [
+  "Objectives",
+  "Objectifs",
+  "الأهداف"
+ ],
+ "tp.halfDay": [
+  "Half-day",
+  "Demi-journée",
+  "نصف اليوم"
+ ],
+ "tp.itemType": [
+  "Type",
+  "Type",
+  "النوع"
+ ],
+ "tp.itemTitle": [
+  "Content",
+  "Contenu",
+  "المحتوى"
+ ],
+ "tp.minutes": [
+  "Minutes",
+  "Minutes",
+  "الدقائق"
+ ],
+ "tp.valueProposition": [
+  "value proposition per persona",
+  "proposition de valeur par persona",
+  "القيمة المقترحة لكل شخصية"
+ ],
+ "tp.persona": [
+  "Persona",
+  "Persona",
+  "الشخصية"
+ ],
+ "tp.behaviour": [
+  "Behaviour",
+  "Comportement",
+  "السلوك"
+ ],
+ "tp.painPoints": [
+  "Pain points",
+  "Points de douleur",
+  "نقاط الألم"
+ ],
+ "tp.hopes": [
+  "Hopes",
+  "Attentes",
+  "التطلعات"
+ ],
+ "tp.fit": [
+  "Fit with the training",
+  "Adéquation avec la formation",
+  "الملاءمة مع التكوين"
+ ],
+ "level.Foundation": [
+  "Foundation",
+  "Fondamentaux",
+  "أساسي"
+ ],
+ "level.Intermediate": [
+  "Intermediate",
+  "Intermédiaire",
+  "متوسط"
+ ],
+ "level.Advanced": [
+  "Advanced",
+  "Avancé",
+  "متقدم"
+ ],
+ "level.Expert": [
+  "Expert",
+  "Expert",
+  "خبير"
+ ],
+ "item.Lecture": [
+  "Lecture",
+  "Exposé",
+  "عرض"
+ ],
+ "item.Quiz": [
+  "Quiz",
+  "Quiz",
+  "اختبار"
+ ],
+ "item.Workshop": [
+  "Workshop",
+  "Atelier",
+  "ورشة"
+ ],
+ "rule.durationHalfDays": [
+  "The duration must be a whole number of half-days",
+  "La durée doit être un nombre entier de demi-journées",
+  "يجب أن تكون المدة عددا صحيحا من أنصاف الأيام"
+ ],
+ "rule.halfDayCount": [
+  "The agenda has {found} half-day(s) for a duration of {expected}",
+  "L’agenda compte {found} demi-journée(s) pour une durée de {expected}",
+  "يتضمن البرنامج {found} نصف يوم لمدة {expected}"
+ ],
+ "rule.noQuiz": [
+  "Half-day {halfDay} has no quiz",
+  "La demi-journée {halfDay} n’a pas de quiz",
+  "نصف اليوم {halfDay} بدون اختبار"
+ ],
+ "rule.manyQuiz": [
+  "Half-day {halfDay} has {n} quizzes (one expected)",
+  "La demi-journée {halfDay} a {n} quiz (un seul attendu)",
+  "نصف اليوم {halfDay} به {n} اختبارات (المنتظر واحد)"
+ ],
+ "rule.noWorkshop": [
+  "Half-day {halfDay} has no workshop",
+  "La demi-journée {halfDay} n’a pas d’atelier",
+  "نصف اليوم {halfDay} بدون ورشة"
+ ],
+ "rule.manyWorkshop": [
+  "Half-day {halfDay} has {n} workshops (one expected)",
+  "La demi-journée {halfDay} a {n} ateliers (un seul attendu)",
+  "نصف اليوم {halfDay} به {n} ورشات (المنتظر واحدة)"
+ ],
+ "rule.noLecture": [
+  "Half-day {halfDay} has no lecture",
+  "La demi-journée {halfDay} n’a pas d’exposé",
+  "نصف اليوم {halfDay} بدون عرض"
+ ],
+ "rule.untitledItem": [
+  "Half-day {halfDay} has an item without a title",
+  "La demi-journée {halfDay} a un élément sans titre",
+  "نصف اليوم {halfDay} به عنصر دون عنوان"
+ ],
+ "rule.halfDayMinutes": [
+  "Half-day {halfDay} lasts {minutes} min (150–240 expected)",
+  "La demi-journée {halfDay} dure {minutes} min (150 à 240 attendues)",
+  "مدة نصف اليوم {halfDay} هي {minutes} دقيقة (المنتظر 150–240)"
+ ],
+ "rule.noObjective": [
+  "No objective",
+  "Aucun objectif",
+  "لا يوجد هدف"
+ ],
+ "rule.noLevel": [
+  "No level",
+  "Aucun niveau",
+  "لا يوجد مستوى"
+ ],
+ "rule.noPrerequisites": [
+  "No prerequisites stated",
+  "Prérequis non renseignés",
+  "المتطلبات القبلية غير محددة"
+ ],
+ "rule.noPersona": [
+  "No persona value proposition",
+  "Aucune proposition de valeur par persona",
+  "لا توجد قيمة مقترحة لأي شخصية"
+ ],
+ "rule.personaIncomplete": [
+  "A persona has an empty behaviour, pain point, hope or fit",
+  "Un persona a un comportement, un point de douleur, une attente ou une adéquation vide",
+  "إحدى الشخصيات بسلوك أو ألم أو تطلع أو ملاءمة فارغة"
+ ],
+ "err.planEmpty": [
+  "The plan is empty",
+  "Le plan est vide",
+  "المخطط فارغ"
+ ],
+ "err.planOrder": [
+  "Plan steps must be in day order",
+  "Les étapes du plan doivent suivre l’ordre des jours",
+  "يجب أن تتبع مراحل المخطط ترتيب الأيام"
+ ],
+ "err.channelIncomplete": [
+  "Channel settings incomplete: {fields}",
+  "Paramètres du canal incomplets : {fields}",
+  "إعدادات القناة غير مكتملة: {fields}"
+ ],
+ "err.invalidEmail": [
+  "Invalid e-mail address",
+  "Adresse e-mail invalide",
+  "عنوان بريد إلكتروني غير صالح"
+ ],
+ "err.invalidPhone": [
+  "Invalid mobile number",
+  "Numéro de mobile invalide",
+  "رقم هاتف غير صالح"
+ ],
+ "err.consentRequired": [
+  "Consent is required before any answer is stored",
+  "Le consentement est requis avant l’enregistrement des réponses",
+  "الموافقة ضرورية قبل حفظ أي جواب"
+ ],
+ "err.alreadyResponded": [
+  "This respondent has already answered",
+  "Ce répondant a déjà répondu",
+  "سبق لهذا المجيب أن أجاب"
+ ],
+ "err.linkInvalid": [
+  "This link is not valid",
+  "Ce lien n’est pas valide",
+  "هذا الرابط غير صالح"
+ ],
+ "err.questionnaireClosed": [
+  "The questionnaire is closed",
+  "Le questionnaire est clôturé",
+  "الاستبيان مغلق"
+ ],
+ "err.notDistributed": [
+  "The questionnaire is not distributed",
+  "Le questionnaire n’est pas diffusé",
+  "الاستبيان غير موزع"
+ ],
+ "err.optedOut": [
+  "The respondent asked not to be contacted",
+  "Le répondant a demandé à ne plus être contacté",
+  "طلب المجيب عدم الاتصال به"
+ ],
+ "err.invalidTransition": [
+  "Not possible from {from} to {to}",
+  "Impossible de passer de {from} à {to}",
+  "لا يمكن الانتقال من {from} إلى {to}"
+ ],
+ "err.distributionBlocked": [
+  "Distribution blocked: {reasons}",
+  "Diffusion bloquée : {reasons}",
+  "التوزيع متوقف: {reasons}"
+ ],
+ "err.templateInUse": [
+  "The template is used by a questionnaire",
+  "Le modèle est utilisé par un questionnaire",
+  "النموذج مستعمل في استبيان"
+ ],
+ "err.invalidFile": [
+  "Invalid file",
+  "Fichier invalide",
+  "ملف غير صالح"
+ ],
+ "err.tooLarge": [
+  "Too large",
+  "Trop volumineux",
+  "حجم كبير جدا"
+ ],
+ "err.programInUse": [
+  "The program has {n} training(s)",
+  "Le programme contient {n} formation(s)",
+  "يتضمن البرنامج {n} تكوين"
+ ],
+ "err.personaInUse": [
+  "The persona is used by {n} training(s)",
+  "Le persona est utilisé par {n} formation(s)",
+  "الشخصية مستعملة في {n} تكوين"
+ ],
+ "err.durationHalfDays": [
+  "The duration must be a whole number of half-days",
+  "La durée doit être un nombre entier de demi-journées",
+  "يجب أن تكون المدة عددا صحيحا من أنصاف الأيام"
+ ],
+ "err.goldenRules": [
+  "The golden rules are not met ({n}): {first}",
+  "Les règles d’or ne sont pas respectées ({n}) : {first}",
+  "القواعد الذهبية غير محترمة ({n}): {first}"
+ ],
+ "err.goldenRulesPlan": [
+  "{n} training(s) break the golden rules: {codes}",
+  "{n} formation(s) ne respectent pas les règles d’or : {codes}",
+  "{n} تكوين لا يحترم القواعد الذهبية: {codes}"
+ ],
+ "err.documentBlocked": [
+  "{n} blocking finding(s) to correct before review",
+  "{n} constat(s) bloquant(s) à corriger avant la revue",
+  "{n} ملاحظة معيقة يجب تصحيحها قبل المراجعة"
+ ],
+ "err.twoPerson": [
+  "The author cannot approve their own document",
+  "L’auteur ne peut pas approuver son propre document",
+  "لا يمكن للكاتب المصادقة على وثيقته"
+ ],
+ "err.publishedNoDelete": [
+  "A published document is retired, not deleted",
+  "Un document publié est retiré, pas supprimé",
+  "الوثيقة المنشورة تسحب ولا تحذف"
+ ],
+ "tr.autoDraft": [
+  "Back to Draft: the edited agenda no longer meets the golden rules.",
+  "Retour en brouillon : l’agenda modifié ne respecte plus les règles d’or.",
+  "عودة إلى المسودة: البرنامج المعدل لم يعد يحترم القواعد الذهبية."
+ ]
 }

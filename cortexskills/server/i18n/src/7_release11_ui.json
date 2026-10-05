@@ -390,7 +390,7 @@
   "المحاور"
  ],
  "q.planHint": [
-  "Steps are played in order on the day shown (J+n after distribution). The respondent can answer at any step; the plan stops at the response.",
+  "Steps are played in order on the day shown (D+n after distribution). The respondent can answer at any step; the plan stops at the response.",
   "Les étapes sont jouées dans l’ordre au jour indiqué (J+n après la diffusion). Le répondant peut répondre à toute étape ; le plan s’arrête à la réponse.",
   "تنفذ المراحل بالترتيب في اليوم المحدد (ي+n بعد التوزيع). يمكن للمجيب الإجابة في أية مرحلة؛ ويتوقف المخطط عند الإجابة."
  ],
@@ -405,7 +405,7 @@
   "الإجراء"
  ],
  "q.afterDays": [
-  "Day (J+n)",
+  "Day (D+n)",
   "Jour (J+n)",
   "اليوم (ي+n)"
  ],
@@ -1758,5 +1758,10 @@
   "Questionnaire",
   "Questionnaire",
   "استبيان"
+ ],
+ "qplan.dayShort": [
+  "D+{n}",
+  "J+{n}",
+  "ي+{n}"
  ]
 }

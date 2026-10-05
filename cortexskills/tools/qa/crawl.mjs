@@ -5,7 +5,7 @@ import fs from 'node:fs';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PW || 'playwright');
 const [base = 'http://localhost:4000', email = 'admin@cortexskills.app', password = 'Admin#2026', langs = 'en', out = ''] = process.argv.slice(2);
-const KEY = /\b(?:nav|navGroup|common|col|status|field|entity|err|ai|assistant|alert|notify|report|settings|help|page|header|login|home|portfolio|process|workspace|governance|admin|dashboard|enum|mode|focus|severity|channel|gate|racsi|quota|coso|segment|phase|bmk|chain|coverage|licence|config|scope|stepType|pf|sipoc|tpl|task|run|rex|bpmn|kpi|ops|user|org|project)\.[a-zA-Z][\w.]*\b/g;
+const KEY = /\b(?:nav|navGroup|common|col|status|field|entity|err|ai|assistant|alert|notify|report|settings|help|page|header|login|home|portfolio|process|workspace|governance|admin|dashboard|enum|mode|focus|severity|channel|gate|racsi|quota|coso|segment|phase|bmk|chain|coverage|licence|config|scope|stepType|pf|sipoc|tpl|task|run|rex|bpmn|kpi|ops|user|org|project|q|qch|qev|qact|qplan|qmsg|pop|doc|docf|ch|channelMode|search|rule|ter|tr|persona|lvl|item)\.[a-zA-Z][\w.]*\b/g;
 const browser = await chromium.launch({ executablePath: process.env.CHROME || undefined });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const issues = [];

@@ -77,6 +77,8 @@ r.put('/trainings/:id', requirePerm('m49.edit'), ah(req => {
   if (b.training_code) { const cur = getRecord(req, 'TrainingCourse', req.params.id); if (rows('TrainingCourse', `project_id=? AND json_extract(data,'$.training_code')=? AND id<>?`, cur.project_id, b.training_code, cur.id).length) throw new HttpError(409, 'err.duplicate'); }
   // Approval follows the golden rules: a training that breaks them cannot be approved.
   if (b.status === 'Approved') { const next = { ...getRecord(req, 'TrainingCourse', req.params.id), ...b }; const chk = TR.checkRules(next); if (!chk.ok) throw new HttpError(409, 'err.goldenRules', { n: chk.issues.length, first: t('rule.' + chk.issues[0].code, req.lang, chk.issues[0]) }); }
+  // An approved training edited into breaking the rules goes back to Draft instead of staying approved.
+  if (!b.status) { const cur = getRecord(req, 'TrainingCourse', req.params.id); if (cur.status === 'Approved' && !TR.checkRules({ ...cur, ...b }).ok) { b.status = 'Draft'; b._justification = req.body?._justification || t('tr.autoDraft', req.lang); } }
   const c = updateRecord(req, 'TrainingCourse', req.params.id, b); return { ...c, rules: TR.checkRules(c) };
 }));
 r.post('/trainings/:id/duplicate', requirePerm('m49.edit'), ah(req => {

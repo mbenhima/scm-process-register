@@ -17,7 +17,7 @@ const identity = extraNote => ({
   title: L('Respondent', 'Participant', 'المشارك'), instructions: extraNote || null,
   fields: [
     item('full_name', L('Full name', 'Nom complet', 'الاسم الكامل')),
-    item('position', L('Position', 'Position', 'المنصب')),
+    item('position', L('Position', 'Poste', 'المنصب')),
     item('reports_to', L('Reports to', 'Reporte à', 'يرفع تقاريره إلى')),
     item('experience_years', L('Years of experience', "Nombre d'années d'expérience", 'عدد سنوات الخبرة'), { kind: 'number' }),
     item('years_in_position', L('Years in the position', 'Ancienneté dans le poste (ans)', 'الأقدمية في المنصب (سنوات)'), { kind: 'number' }),
