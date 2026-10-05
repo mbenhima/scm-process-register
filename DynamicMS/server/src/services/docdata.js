@@ -14,6 +14,33 @@ import { PROFILES, COUNTRY_NAMES } from '../seed/profiles.js';
 import { ROLES } from '../permissions.js';
 import { bpmnSvgVertical, processMapSvg } from './diagram.js';
 import { formFor, stepRule } from '../catalog/stepforms.js';
+import fs from 'node:fs';
+import path from 'node:path';
+import { config } from '../config.js';
+
+// Pictures inserted in document templates and documents (stored per organization).
+export function imageDims(buf) {
+  if (!buf || buf.length < 24) return null;
+  if (buf[0] === 0x89 && buf[1] === 0x50) return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20), type: 'png' };
+  if (buf[0] === 0xff && buf[1] === 0xd8) {
+    let i = 2;
+    while (i < buf.length) {
+      if (buf[i] !== 0xff) { i += 1; continue; }
+      const m = buf[i + 1];
+      if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) return { h: buf.readUInt16BE(i + 5), w: buf.readUInt16BE(i + 7), type: 'jpg' };
+      i += 2 + buf.readUInt16BE(i + 2);
+    }
+  }
+  return null;
+}
+export function readImage(rel) {
+  if (!rel || rel.includes('..')) return null;
+  const f = path.join(config.storageDir, rel);
+  if (!fs.existsSync(f)) return null;
+  const data = fs.readFileSync(f);
+  const d = imageDims(data);
+  return d ? { data, ...d } : null;
+}
 
 const L = (en, fr, ar) => ({ en, fr, ar });
 const LANGS = ['en', 'fr', 'ar'];
@@ -927,9 +954,12 @@ export function buildContent(projectId, templateCode, opts = {}) {
       out.source = src;
     }
     if (s.type === 'signature') out.blocks = [signatureBlock(ctx, opts)];
+    if (s.type === 'image') { out.blocks = [{ kind: 'image', file: s.image || null, caption: s.caption || null, widthPct: s.widthPct || 60, align: s.align || 'center' }]; if (s.text) out.text = fillText(s.text, ctx.vars); }
+    if (s.style) out.style = s.style;
     return out;
   });
-  return { format: 'structured', template: t.code, toc: !!t.toc, cover: t.cover !== false, numbered: !!t.toc, generatedAt: new Date().toISOString(), sections };
+  const fmt = t.format || {};
+  return { format: 'structured', template: t.code, toc: fmt.toc ?? !!t.toc, cover: fmt.cover ?? (t.cover !== false), numbered: fmt.numbered ?? !!t.toc, style: Object.keys(fmt).length ? fmt : undefined, generatedAt: new Date().toISOString(), sections };
 }
 
 function matrixBlock(exec) {
@@ -982,6 +1012,10 @@ export function documentModel(doc, version, lang, layout = {}) {
         else if (b.kind === 'bullets') items.push({ type: 'bullets', intro: b.intro ? tr(b.intro) : undefined, items: b.items.map(tr) });
         else if (b.kind === 'kv') items.push({ type: 'kv', rows: b.rows.map(([k, v]) => [tr(k), strCell(v)]) });
         else if (b.kind === 'table') items.push({ type: 'table', table: { columns: b.columns.map(c => ({ key: c.key, label: tr(c.label), width: c.width })), rows: b.rows.map(r => { const o = {}; for (const c of b.columns) o[c.key] = strCell(r[c.key]); if (r._status !== undefined) o._status = r._status; if (r._cells) o._cells = r._cells; return o; }), caption: b.caption ? tr(b.caption) : undefined, statusKey: b.rows.some(r => r._status !== undefined) ? (b.columns.find(c => c.key === 'st') || b.columns.find(c => c.key === 's'))?.key : undefined } });
+        else if (b.kind === 'image') {
+          const img = readImage(b.file);
+          if (img) items.push({ type: 'image', data: img.data, imgType: img.type, w: img.w, h: img.h, widthPct: b.widthPct, align: b.align, caption: b.caption ? tr(b.caption) : undefined });
+        }
         else if (b.kind === 'diagram') {
           const loc2 = (o) => JSON.parse(JSON.stringify(o), (k, v) => (v && typeof v === 'object' && !Array.isArray(v) && 'en' in v && 'fr' in v ? tr(v) : v));
           const spec = loc2(b.spec);
@@ -989,29 +1023,44 @@ export function documentModel(doc, version, lang, layout = {}) {
           items.push({ type: 'diagram', svg: d.svg, width: d.width, height: d.height, caption: b.caption ? tr(b.caption) : undefined });
         }
       }
-      sections.push({ heading, items });
+      sections.push({ heading, items, style: s.style || undefined });
     }
   } else {
     sections.push({ heading: tr(L('Content', 'Contenu', 'المحتوى')), items: [{ type: 'text', text: tr(content) || '' }] });
   }
   const V = { en: 'Version', fr: 'Version', ar: 'الإصدار' }[lang];
   const S = { en: 'Status', fr: 'Statut', ar: 'الحالة' }[lang];
-  const cover = content?.format === 'structured' ? content.cover !== false && t?.cover !== false : true;
+  const style = content?.format === 'structured' ? content.style || null : null;
+  const cover = content?.format === 'structured' ? (style?.cover !== undefined ? !!style.cover : content.cover !== false && t?.cover !== false) : true;
+  // The template's formatting overrides the organization layout: colours, header and footer
+  // texts, and its own logo (or no logo).
+  const lay = { ...layout };
+  if (style) {
+    if (style.headingColor) lay.titleColor = style.headingColor;
+    if (style.tableHeaderColor) lay.primaryColor = style.tableHeaderColor;
+    if (style.accentColor) lay.accentColor = style.accentColor;
+    if (style.headerText) lay.headerText = tr(style.headerText);
+    if (style.footerText) lay.footerText = tr(style.footerText);
+    if (style.logo === 'none') { delete lay.logoFile; delete lay.logoBuffer; lay.logoText = ''; }
+    if (style.logo === 'template' && style.logoFile) { const img = readImage(style.logoFile); if (img) { lay.logoBuffer = img.data; lay.logoType = img.type; lay.logoW = img.w; lay.logoH = img.h; delete lay.logoFile; } }
+  }
+  if (lay.logoBuffer && !lay.logoW) { const d = imageDims(lay.logoBuffer); if (d) { lay.logoW = d.w; lay.logoH = d.h; } }
   return {
     eyebrow: `${tr(P(org.name))} · ${doc.code}`,
     title: tr(P(doc.title)),
     subtitle: cover && t ? tr(t.description) : '',
     meta: cover ? [[V, version.version], [S, tr(LABELS[version.status] || version.status)], [{ en: 'Standards', fr: 'Normes', ar: 'المعايير' }[lang], (P(doc.standards) || []).join(', ')], [{ en: 'Owner', fr: 'Responsable', ar: 'المسؤول' }[lang], tr(roleName(doc.owner_role))], [{ en: 'Next review', fr: 'Prochaine revue', ar: 'المراجعة التالية' }[lang], doc.next_review || '—']] : [],
     docLine: cover ? null : `${doc.code} · ${V} ${version.version} · ${tr(LABELS[version.status] || version.status)}`,
-    toc: content?.format === 'structured' ? !!content.toc : false,
+    toc: content?.format === 'structured' ? (style?.toc !== undefined ? !!style.toc : !!content.toc) : false,
     cover,
-    landscape: !!t?.formats?.includes('XLSX'),
+    landscape: style?.orientation === 'landscape' ? true : style?.orientation === 'portrait' ? false : !!t?.formats?.includes('XLSX'),
+    style: style || undefined,
     sections,
-    footer: layout.footerText || `${tr(P(org.name))} · ${doc.code} v${version.version}`,
+    footer: lay.footerText || `${tr(P(org.name))} · ${doc.code} v${version.version}`,
     generatedAt: new Date().toISOString().slice(0, 10),
     pageLabel: { en: 'Page', fr: 'Page', ar: 'صفحة' }[lang],
     tocLabel: { en: 'Contents', fr: 'Sommaire', ar: 'المحتويات' }[lang],
     summaryLabel: { en: 'Cover', fr: 'Page de garde', ar: 'الغلاف' }[lang],
-    layout,
+    layout: lay,
   };
 }

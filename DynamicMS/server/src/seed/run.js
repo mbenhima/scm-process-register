@@ -20,6 +20,10 @@ import { SME_TRACKS, COMPLEXITY_CRITERIA, VERTICAL_DRIVERS, GATES, CHECKLISTS, V
 import { generateProject, TODAY, TRACK_GATES } from './project.js';
 import { S, fill } from './text.js';
 import { rng, addDays } from './rng.js';
+import path from 'node:path';
+import { defaultLists, defaultMps, emptyBlueprint } from '../services/blueprint.js';
+import { templateByCode } from '../content/templates.js';
+import { svgToPng } from '../services/diagram.js';
 
 const t0 = Date.now();
 const log = (...a) => console.log(`[seed ${((Date.now() - t0) / 1000).toFixed(1)}s]`, ...a);
@@ -254,12 +258,55 @@ async function main() {
     nProj += res.length; nSteps += res.reduce((a, b) => a + b.steps, 0);
     log(`${o.code.padEnd(8)} ${o.size.padEnd(5)} ` + res.map(x => `${x.mps} MPs/${x.steps} steps (${Math.round(100 * x.done / x.steps)}%)${x.track ? ' ' + x.track : ''}`).join(' | '));
   });
+  await seedDemoTemplates();
   run("INSERT INTO meta(key,value) VALUES('seeded_at',?)", new Date().toISOString());
   run("INSERT INTO meta(key,value) VALUES('seed_today',?)", TODAY);
   const count = (t) => get(`SELECT COUNT(*) n FROM ${t}`).n;
   log(`done: ${orgs.length} organizations, ${nProj} projects, ${nSteps} steps; users ${count('users')}, KPIs ${count('kpis')}, NCs ${count('ncs')}, actions ${count('actions')}, documents ${count('documents')}, alerts ${count('alerts')}`);
   getDbCheckpoint();
   closeDb();
+}
+// Demonstration of customized templates for Atlas Universal SME (user guide 2): a project
+// template adapted from the library and a document template with formatting and a picture.
+async function seedDemoTemplates() {
+  const org = get("SELECT * FROM organizations WHERE short_code LIKE 'AT%' AND size='SME' ORDER BY short_code LIMIT 1") || get("SELECT * FROM organizations WHERE size='SME' LIMIT 1");
+  if (!org) return;
+  const admin = get("SELECT id FROM users WHERE org_id=? AND roles LIKE '%ims_manager%' LIMIT 1", org.id);
+  const src = get("SELECT * FROM project_templates WHERE org_id IS NULL AND mode='SME' AND ms_type='QMS' AND vertical IS NULL LIMIT 1");
+  if (src) {
+    const bp = { ...emptyBlueprint(), lists: defaultLists(src) };
+    const mps = defaultMps(src).filter(m => m.e2e === 'E2E-01');
+    if (mps[2]) bp.mp[mps[2].id] = { include: false };
+    bp.step['MP-001.2'] = { name: S('Identify the external issues (PESTLE)', 'Identifier les enjeux externes (PESTEL)', 'تحديد القضايا الخارجية (PESTLE)'), role: 'quality_manager' };
+    bp.custom.step.push({ id: 'MP-001.TATL1', mp: 'MP-001', name: S('Check the list of critical suppliers', 'Vérifier la liste des fournisseurs critiques', 'التحقق من قائمة الموردين الحرجين'), role: 'quality_manager', type: 'User Task', brief: S('Confirm the critical suppliers that the context analysis must cover.', 'Confirmer les fournisseurs critiques que l\'analyse du contexte doit couvrir.', 'تأكيد الموردين الحرجين الذين يجب أن يشملهم تحليل السياق.'), seq: 1001 });
+    bp.lists.kpis.push({ id: 'KPI-ATL-01', name: S('Supplier on-time delivery', 'Livraison à l\'heure des fournisseurs', 'تسليم الموردين في الموعد'), formula: S('Deliveries on time / deliveries x 100', 'Livraisons à l\'heure / livraisons x 100', 'التسليمات في الموعد / التسليمات × 100'), target: '≥ 95%', unit: '%', frequency: 'Monthly', owner: 'quality_manager', mp: 'MP-001' });
+    bp.lists.risks.push({ id: 'RSK-ATL-01', kind: 'Risk', title: S('Single source for a critical component', 'Source unique pour un composant critique', 'مصدر وحيد لمكون حرج'), category: 'Operational', likelihood: 3, impact: 4, owner: 'quality_manager', treatment: S('Qualify a second supplier', 'Qualifier un second fournisseur', 'تأهيل مورد ثانٍ'), mp: '' });
+    run(`INSERT INTO project_templates(id,org_id,code,name,description,scope,vertical,mode,track,ms_type,status,version,fields,phases,roles,milestones,use_count,created_at,content,updated_at,updated_by,source_id)
+         VALUES(?,?,?,?,?,?,?,?,?,?,'Published',3,?,?,?,?,0,?,?,?,?,?)`, uid(), org.id, `TPL-${org.short_code}-01`,
+    J(S('Atlas SME — QMS quick start (customized)', 'Atlas PME — démarrage rapide SMQ (personnalisé)', 'أطلس للمؤسسات الصغيرة — بدء سريع لنظام إدارة الجودة (مخصص)')),
+    J(S('Copy of the library SME template: supplier focus, one process left out, a custom step, a supplier KPI and risk.', 'Copie du modèle PME de la bibliothèque : accent fournisseurs, un processus exclu, une étape personnalisée, un KPI et un risque fournisseurs.', 'نسخة من نموذج المكتبة للمؤسسات الصغيرة: تركيز على الموردين، استبعاد عملية، خطوة مخصصة، مؤشر وخطر للموردين.')),
+    'universal', null, 'SME', null, 'QMS', src.fields, src.phases, src.roles, src.milestones, ts('2026-09-20'), J(bp), ts('2026-09-28'), admin?.id || null, src.id);
+  }
+  // Document template: scope statement with the organization's formatting and a site picture.
+  const base = templateByCode['TPL-SCOPE'];
+  if (base) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" viewBox="0 0 640 300"><rect width="640" height="300" fill="#F5F8FB"/>
+      <text x="20" y="32" font-family="Montserrat" font-size="18" font-weight="800" fill="#123A5F">Head office — site layout</text>
+      ${[['Reception', 20, 60, 130, 70, '#E8F1FB'], ['Offices', 160, 60, 160, 70, '#E8F1FB'], ['Quality lab', 330, 60, 130, 70, '#E6F6F8'], ['Production', 20, 145, 300, 120, '#E7F9F0'], ['Warehouse', 330, 145, 130, 120, '#FDF6E3'], ['Shipping', 470, 145, 150, 120, '#E8F1FB'], ['Parking', 470, 60, 150, 70, '#FFFFFF']].map(([n, x, y, w, h, f]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="${f}" stroke="#123A5F" stroke-width="1.5"/><text x="${x + w / 2}" y="${y + h / 2 + 5}" text-anchor="middle" font-family="Open Sans" font-size="14" font-weight="700" fill="#123A5F">${n}</text>`).join('')}
+      <text x="20" y="290" font-family="Open Sans" font-size="11" fill="#5A6B7B">Example picture inserted in a document template</text></svg>`;
+    const dir = path.join(config.storageDir, org.id, 'doc-images');
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'site-layout.png'), await svgToPng(svg, 2));
+    const pic = { key: 'site-picture', type: 'image', title: S('Site layout', 'Plan du site', 'مخطط الموقع'), image: `${org.id}/doc-images/site-layout.png`, caption: S('Head office: the processes in scope are carried out in these areas.', 'Siège : les processus du périmètre sont réalisés dans ces zones.', 'المقر الرئيسي: تُنفَّذ العمليات المشمولة في هذه المناطق.'), widthPct: 80, align: 'center' };
+    const sections = base.sections.map(x => ({ ...x }));
+    const at = Math.max(1, sections.findIndex(x => x.source === 'scope_statement') + 1);
+    sections.splice(at, 0, pic);
+    sections[0] = { ...sections[0], style: { background: '#E8F1FB', align: 'justify' } };
+    const format = { bodyFont: 'Open Sans', headingFont: 'Montserrat', bodySize: 10.5, headingColor: '#123A5F', tableHeaderColor: '#1876C6', align: 'justify', marginCm: 2, logo: 'organization', logoPosition: 'left', headerLogo: true, cover: true, toc: true };
+    run(`INSERT INTO doc_templates(id,org_id,code,name,description,category,doc_type,formats,toc,ms,mp_id,review,owner_role,mandatory,clauses,sections,base_code,version,status,created_by,created_at,updated_at,format)
+         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,2,'Published',?,?,?,?)`, uid(), org.id, base.code, J(base.name), J(base.description), base.category, base.docType, J(base.formats), base.toc ? 1 : 0, J(base.ms), base.mp || null, base.review, base.owner,
+    J(base.mandatory || {}), J(base.clauses || {}), J(sections), base.code, admin?.id || null, ts('2026-09-25'), ts('2026-09-29'), J(format));
+  }
 }
 function getDbCheckpoint() { try { run('PRAGMA wal_checkpoint(TRUNCATE)'); } catch { /* ignore */ } }
 

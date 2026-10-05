@@ -20,8 +20,20 @@ export function alertEnabled(orgId, type) {
 
 // Raises an alert once per (organization, type, entity, period) and dispatches it to
 // the users holding the escalation roles.
+// A project created from a template follows the template's alert list: a type the template
+// switched off is not raised for the project, and its severity and escalation role apply.
+function projectAlert(projectId, type) {
+  if (!projectId) return null;
+  const p = get('SELECT blueprint FROM projects WHERE id=?', projectId);
+  if (!p?.blueprint) return null;
+  try { return (JSON.parse(p.blueprint).alerts || []).find(a => a.id === type) || null; } catch { return null; }
+}
 export function raise({ orgId, projectId, type, severity, title, entityType, entityId, escalation = [], stepRef = null, period }) {
   if (!alertEnabled(orgId, type)) return null;
+  const pa = projectAlert(projectId, type);
+  if (pa && pa.enabled === false) return null;
+  if (pa?.severity) severity = pa.severity;
+  if (pa?.escalation && !escalation.includes(pa.escalation)) escalation = [...escalation, pa.escalation];
   const p = period || now().slice(0, 7);
   const id = uid();
   const res = run(`INSERT OR IGNORE INTO alerts(id,org_id,project_id,type,severity,title,entity_type,entity_id,period,escalation,step_ref,created_at,dismissed)

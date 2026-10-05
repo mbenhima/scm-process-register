@@ -17,6 +17,8 @@ import { formFor, stepRule } from '../catalog/stepforms.js';
 import { needsLibrary, suggestNeeds } from '../services/needs.js';
 
 const r = Router();
+// Names given by the project's template to reference phases, macro processes and steps.
+const namesOf = (p) => (p?.blueprint ? (P(p.blueprint)?.names || {}) : {});
 const roleName = (c) => ROLES.find(x => x.code === c)?.name || (c === 'system' ? { en: 'DynamicMS Engine', fr: 'Moteur DynamicMS', ar: 'محرك DynamicMS' } : c);
 
 r.get('/projects/:id/lifecycle', requirePerm('execution.view'), h((req, res) => {
@@ -27,13 +29,14 @@ r.get('/projects/:id/lifecycle', requirePerm('execution.view'), h((req, res) => 
   const counts = all(`SELECT e2e_id, COUNT(*) n, SUM(status='Done') d, SUM(status='InProgress') ip, SUM(status<>'Done' AND due_date < date('now')) od FROM step_exec WHERE project_id=? GROUP BY e2e_id`, p.id);
   const gates = Object.fromEntries(all('SELECT id, code, name, exit_criteria FROM gate_defs').map(g => [g.code, row(g)]));
   const withGate = new Set(all('SELECT DISTINCT phase_id FROM checklists WHERE project_id=?', p.id).map(x => x.phase_id));
+  const nm = namesOf(p);
   send(req, res, phases.map(ph => {
     const e = c.e2eById[ph.e2e_id];
     const cnt = counts.find(x => x.e2e_id === ph.e2e_id) || { n: 0, d: 0, ip: 0, od: 0 };
     const order = e.mpIds;
-    return { ...ph, name: e.name, goals: e.goals, type: e.typeName, trigger: e.trigger, terminal: e.terminal, steps: cnt.n, done: cnt.d, inProgress: cnt.ip, overdue: cnt.od,
+    return { ...ph, name: nm.e2e?.[ph.e2e_id] || e.name, goals: e.goals, type: e.typeName, trigger: e.trigger, terminal: e.terminal, steps: cnt.n, done: cnt.d, inProgress: cnt.ip, overdue: cnt.od,
       progress: cnt.n ? Math.round(100 * cnt.d / cnt.n) : 0, gate: withGate.has(ph.id) ? gates[`GATE-${ph.e2e_id}`] : null,
-      mps: mps.filter(m => m.e2e_id === ph.e2e_id).sort((a, b) => order.indexOf(a.mp_id) - order.indexOf(b.mp_id)).map(m => { const cm = c.mpById[m.mp_id]; return { id: m.mp_id, code: cm.code, name: cm.name, tier: cm.tier, status: m.status, progress: m.progress, owner: cm.ownerRoleName, ownerCode: cm.ownerRoleCode, steps: cm.stepCount, activation: m.activation }; }) };
+      mps: mps.filter(m => m.e2e_id === ph.e2e_id).sort((a, b) => order.indexOf(a.mp_id) - order.indexOf(b.mp_id)).map(m => { const cm = c.mpById[m.mp_id]; return { id: m.mp_id, code: cm.code, name: nm.mp?.[m.mp_id] || cm.name, tier: cm.tier, status: m.status, progress: m.progress, owner: m.owner_role ? roleName(m.owner_role) : cm.ownerRoleName, ownerCode: m.owner_role || cm.ownerRoleCode, steps: cm.stepCount, activation: m.activation }; }) };
   }));
 }));
 
@@ -45,11 +48,16 @@ r.get('/projects/:id/mps/:mpId', requirePerm('execution.view'), h((req, res) => 
   if (!m || !pm) throw notFound('Macro process');
   const execs = rows(all('SELECT e.*, u.name AS assignee_name, cu.name AS completed_by_name FROM step_exec e LEFT JOIN users u ON u.id=e.assignee_user LEFT JOIN users cu ON cu.id=e.completed_by WHERE e.project_id=? AND e.mp_id=? ORDER BY e.seq', p.id, m.id));
   const byStep = Object.fromEntries(execs.map(e => [e.step_id, e]));
+  const nm = namesOf(p);
+  // Steps of the project: the reference steps it runs (a template may leave some out) and the
+  // custom steps its template added, under the task they belong to.
+  const stepDefs = execs.length ? execs.map(e => c.stepById[e.step_id]).filter(Boolean) : (c.stepsByMp[m.id] || []);
+  const taskOf = (s) => ((c.tasksByMp[m.id] || []).some(t => t.id === s.task) ? s.task : (c.tasksByMp[m.id] || [])[0]?.id);
   const acts = all('SELECT a.id, a.name, a.linked_type, a.step_ref FROM racsi_activities a WHERE a.project_id=? AND a.mp_id=?', p.id, m.id);
   const racsi = acts.map(a => ({ id: a.id, level: a.linked_type, stepId: a.step_ref, name: P(a.name), assignments: all('SELECT letter, assignee FROM racsi_assignments WHERE activity_id=?', a.id).map(x => ({ ...x, roleName: roleName(x.assignee) })) }));
   send(req, res, {
-    mp: { ...m, e2eName: c.e2eById[m.e2e].name }, status: pm.status, progress: pm.progress, started_at: pm.started_at, completed_at: pm.completed_at,
-    tasks: (c.tasksByMp[m.id] || []).map(t => ({ id: t.id, name: t.name, seq: t.seq, steps: (c.stepsByMp[m.id] || []).filter(s => s.task === t.id).map(s => ({ id: s.id, seq: s.seq, name: s.name, brief: s.brief, type: s.typeName, role: s.roleName, formKind: s.formKind, exec: byStep[s.id] ? { id: byStep[s.id].id, status: byStep[s.id].status, due_date: byStep[s.id].due_date, completed_at: byStep[s.id].completed_at, value: byStep[s.id].value, assignee: byStep[s.id].assignee_name, completedBy: byStep[s.id].completed_by_name } : null })) })),
+    mp: { ...m, name: nm.mp?.[m.id] || m.name, e2eName: nm.e2e?.[m.e2e] || c.e2eById[m.e2e].name, ownerRoleCode: pm.owner_role || m.ownerRoleCode, ownerRoleName: pm.owner_role ? roleName(pm.owner_role) : m.ownerRoleName }, status: pm.status, progress: pm.progress, started_at: pm.started_at, completed_at: pm.completed_at,
+    tasks: (c.tasksByMp[m.id] || []).map(t => ({ id: t.id, name: t.name, seq: t.seq, steps: stepDefs.filter(s => taskOf(s) === t.id).map(s => ({ id: s.id, seq: s.seq, name: nm.step?.[s.id] || s.name, brief: s.brief, type: s.typeName, role: byStep[s.id]?.assignee_role ? roleName(byStep[s.id].assignee_role) : s.roleName, formKind: s.formKind, exec: byStep[s.id] ? { id: byStep[s.id].id, status: byStep[s.id].status, due_date: byStep[s.id].due_date, completed_at: byStep[s.id].completed_at, value: byStep[s.id].value, assignee: byStep[s.id].assignee_name, completedBy: byStep[s.id].completed_by_name } : null })) })),
     racsi, canEditRacsi: can(req, 'governance.manage') || can(req, 'project.manage'), kpis: rows(all('SELECT id, code, name, target_text, direction FROM kpis WHERE project_id=? AND mp_id=?', p.id, m.id)),
     rules: c.rules.filter(x => x.mp === m.id), controls: c.controls.filter(x => x.steps.some(s => s.startsWith(m.id + '.'))), aiUseCases: c.aiUseCases.filter(a => a.mp === m.id),
   });
@@ -69,7 +77,8 @@ r.get('/projects/:id/steps', requirePerm('execution.view'), h((req, res) => {
   const sql = `FROM step_exec e LEFT JOIN users u ON u.id=e.assignee_user WHERE ${where.join(' AND ')}`;
   const total = get(`SELECT COUNT(*) n ${sql}`, ...args).n;
   const list = rows(all(`SELECT e.id, e.step_id, e.mp_id, e.e2e_id, e.status, e.due_date, e.completed_at, e.assignee_role, e.form_kind, e.value, u.name AS assignee_name ${sql} ORDER BY ${req.query.open === '1' || req.query.mine === '1' ? 'e.due_date' : 'e.seq'} LIMIT ? OFFSET ?`, ...args, limit, offset));
-  send(req, res, { total, items: list.map(e => ({ ...e, name: c.stepById[e.step_id]?.name, mpCode: c.mpById[e.mp_id]?.code, mpName: c.mpById[e.mp_id]?.name, roleName: roleName(e.assignee_role) })) });
+  const nm = namesOf(p);
+  send(req, res, { total, items: list.map(e => ({ ...e, name: nm.step?.[e.step_id] || c.stepById[e.step_id]?.name, mpCode: c.mpById[e.mp_id]?.code, mpName: nm.mp?.[e.mp_id] || c.mpById[e.mp_id]?.name, roleName: roleName(e.assignee_role) })) });
 }));
 
 function stepRacsiOf(projectId, stepId) {
@@ -83,10 +92,13 @@ function stepDetail(req, e) {
   const c = catalog();
   // The step as designed when the project started (FR-DA-PDM-06): an organization's later
   // edits of the process design apply to projects started after them.
-  const pr = get('SELECT org_id, created_at FROM projects WHERE id=?', e.project_id);
+  const pr = get('SELECT org_id, created_at, blueprint FROM projects WHERE id=?', e.project_id);
+  const nm = namesOf(pr);
   const ov = designAt(pr.org_id, 'step', e.step_id, pr.created_at);
-  const s = ov ? { ...c.stepById[e.step_id], ...Object.fromEntries(Object.entries(ov).filter(([k]) => ['name', 'brief', 'description'].includes(k))), designVersion: true } : c.stepById[e.step_id];
-  const m = c.mpById[e.mp_id];
+  let s = ov ? { ...c.stepById[e.step_id], ...Object.fromEntries(Object.entries(ov).filter(([k]) => ['name', 'brief', 'description'].includes(k))), designVersion: true } : c.stepById[e.step_id];
+  const m0 = c.mpById[e.mp_id];
+  const m = nm.mp?.[m0.id] ? { ...m0, name: nm.mp[m0.id] } : m0;
+  if (nm.step?.[e.step_id]) s = { ...s, name: nm.step[e.step_id] };
   const siblings = all('SELECT id, step_id, status FROM step_exec WHERE project_id=? AND mp_id=? ORDER BY seq', e.project_id, e.mp_id);
   const i = siblings.findIndex(x => x.id === e.id);
   const phase = get('SELECT gate_decision FROM phases WHERE project_id=? AND e2e_id=?', e.project_id, e.e2e_id);

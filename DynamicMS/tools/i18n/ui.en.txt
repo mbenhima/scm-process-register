@@ -1173,3 +1173,163 @@
 1173	Open AI models
 1174	built-in engine (rules and retrieval)
 1175	A solution by
+1176	No menu item matches “{q}”.
+1177	Clear the filter
+1178	Resize navigation panel
+1179	Pagination
+1180	{from}–{to} of {total}
+1181	Rows per page
+1182	Density
+1183	Comfortable
+1184	Compact
+1185	Previous page
+1186	Page {n} of {total}
+1187	Next page
+1188	Template default
+1189	Body font
+1190	Heading font
+1191	Body size (pt)
+1192	Heading size (pt)
+1193	Text alignment
+1194	Left
+1195	Justified
+1196	Centered
+1197	Right
+1198	Page
+1199	Orientation
+1200	Automatic (registers in landscape)
+1201	Portrait
+1202	Landscape
+1203	Margins (cm)
+1204	Cover page
+1205	Table of contents
+1206	Numbered sections
+1207	Page numbers
+1208	Colours
+1209	Heading colour
+1210	Table header colour
+1211	Accent colour
+1212	Empty fields use the organization layout (Documents › Layout).
+1213	Logo, header and footer
+1214	Logo
+1215	Organization logo
+1216	A logo for this template
+1217	No logo
+1218	Logo position on the cover
+1219	Logo in the page header
+1220	Template logo
+1221	Replace the logo
+1222	Organization layout
+1223	Purpose and scope
+1224	This document defines the commitments of the organization and how they are met, reviewed and improved.
+1225	Organization · code · version
+1226	Page 1 / 2
+1227	Preview of the formatting; Word, PDF and Excel files apply it when downloaded.
+1228	Section formatting
+1229	Alignment
+1230	Document default
+1231	Text size (pt)
+1232	Text colour
+1233	Background (callout)
+1234	Bold
+1235	Italic
+1236	Start on a new page
+1237	Hide the section title
+1238	Picture
+1239	Picture uploaded.
+1240	Picture or logo
+1241	Step value
+1242	Duplicate section
+1243	No picture yet.
+1244	Replace the picture
+1245	Upload a picture (PNG or JPEG)
+1246	Width (% of the page)
+1247	Caption
+1248	Not saved yet
+1249	Saving…
+1250	Saved
+1251	Error
+1252	Row deleted.
+1253	Undo
+1254	{n} rows
+1255	Save all
+1256	Duplicate previous row
+1257	Duplicate row
+1258	Delete row
+1259	Add row
+1260	Tab and Enter move between cells · Esc reverts · Ctrl+D duplicates · Ctrl+S saves · paste rows from a spreadsheet
+1261	Row {n} deleted.
+1262	{n} row(s) pasted.
+1263	Duplicate row {n}
+1264	Enter moves down · Enter on the last row adds a row · Esc reverts · Ctrl+D duplicates · paste rows from a spreadsheet · open a row in a large window for long texts
+1265	Library template (read-only). Copy it to adapt the sections, texts, pictures and formatting for your organization; the copy replaces it in your library.
+1266	Structure
+1267	Formatting
+1268	General
+1269	Edit the structure and formatting
+1270	Changes apply to this draft only. Add, rename, reorder, duplicate or delete sections, insert pictures and change the formatting; data tables keep their content.
+1271	Macro processes of {e2e}
+1272	View and customize the template
+1273	All project templates
+1274	A template defines the end-to-end processes, macro processes, steps, business rules, controls, risks, alerts, KPIs and reporting of the project. ★ marks your organization’s templates.
+1275	A template is the blueprint of a project: its end-to-end processes, macro processes, tasks and steps, business rules, controls, risks and opportunities, alerts, KPIs and reporting. Open a template to see and customize it.
+1276	Search templates…
+1277	All origins
+1278	Universal
+1279	Template created as a draft.
+1280	Start from
+1281	The reference catalog (blank template)
+1282	Full lifecycle
+1283	SME quick start
+1284	Template published: it is offered when creating a project.
+1285	Status changed.
+1286	Copy created: you can now customize it.
+1287	Delete this template? A template used by projects is retired instead.
+1288	Template retired: projects use it.
+1289	Template deleted.
+1290	Overview
+1291	Processes and steps
+1292	Reporting
+1293	Project template
+1294	Use this template
+1295	Copy to customize
+1296	Back to draft
+1297	Library templates are read-only. Select Copy to customize to adapt this template for your organization; your copy is offered next to it when creating a project.
+1298	You can view this template; editing requires the permission to manage templates.
+1299	Template parts
+1300	{n} business rules
+1301	Add a rule
+1302	{n} controls
+1303	Add a control
+1304	{n} risks and opportunities
+1305	Add a risk or opportunity
+1306	From 1 to 5
+1307	{n} alerts
+1308	Add an alert
+1309	Alert
+1310	Escalated to
+1311	{n} KPIs
+1312	Add a KPI
+1313	{n} reports
+1314	Add a report
+1315	What a project created from this template contains. Excluded items stay in the template and can be included again.
+1316	Delete this custom element and everything it contains?
+1317	Add a phase
+1318	Include {x}
+1319	Custom
+1320	{n} of {m} macro processes
+1321	Gate at the end of the phase
+1322	Add a macro process
+1323	Delete the phase
+1324	Phase name
+1325	Include
+1326	Macro process name
+1327	Add a step
+1328	Step name
+1329	Start with a verb and name the object, e.g. "Validate supplier list".
+1330	Place after
+1331	End-to-end process
+1332	Reporting plan of the project
+1333	From template {c} v{v}
+1334	The reports defined by the project template (Project templates › Reporting); the reference catalog applies to projects created without a template.
+1335	Resize the context panel

@@ -5,6 +5,7 @@ import { useApp, useData } from '../lib/state.jsx';
 import { api, download } from '../lib/api.js';
 import { PageHead, Card, Loading, ErrorBox, Status, Table, tx, Modal, Field, Search, Tabs, IconBadge } from '../components/ui.jsx';
 import Attachments from '../components/Attachments.jsx';
+import { SectionsEditor, FormatEditor, AuthImage } from '../components/DocEditors.jsx';
 import { NoProject } from './Home.jsx';
 
 const TYPES = ['Policy', 'Scope', 'Manual', 'Procedure', 'Instruction', 'Sheet', 'Map', 'Plan', 'Register', 'Report', 'Matrix'];
@@ -105,22 +106,20 @@ function Mandatory({ projectId }) {
   );
 }
 
-const SECTION_TYPES = ['text', 'data', 'signature'];
 function TemplateEditor({ orgId, code, onClose }) {
   const { t, lang, toast } = useApp();
+  // Every hook runs before any early return (a hook after a return crashed the page).
   const { data: tpl, reload } = useData(`/orgs/${orgId}/doc-templates/${code}?raw=1`);
-  const { data: lib } = useData(`/orgs/${orgId}/doc-templates`);
-  const [ed, setEd] = useState(null);
-  useEffect(() => { if (tpl) setEd({ ...tpl, sections: tpl.sections.map(s => ({ ...s })) }); }, [tpl]);
-  if (!tpl || !ed) return <Modal title={t('Template')} onClose={onClose}><Loading /></Modal>;
-  const editable = tpl.custom && tpl.canEdit;
   const { data: srcList } = useData('/doc-sources');
-  const sources = srcList || [];
-  const setSec = (i, k, v) => setEd({ ...ed, sections: ed.sections.map((s, j) => (j === i ? { ...s, [k]: v } : s)) });
-  const move = (i, d) => { const a = [...ed.sections]; const [x] = a.splice(i, 1); a.splice(i + d, 0, x); setEd({ ...ed, sections: a }); };
+  const { data: layout } = useData(`/orgs/${orgId}/doc-layout`);
+  const [ed, setEd] = useState(null);
+  const [tab, setTab] = useState('structure');
+  useEffect(() => { if (tpl) setEd({ ...tpl, format: tpl.format || {}, sections: tpl.sections.map(s => ({ ...s })) }); }, [tpl]);
+  if (!tpl || !ed) return <Modal full title={t('Template')} onClose={() => onClose(false)}><Loading /></Modal>;
+  const editable = tpl.custom && tpl.canEdit;
   const save = async () => {
     try {
-      await api(`/doc-templates/${tpl.id}`, { method: 'PUT', body: { name: ed.name, description: ed.description, toc: ed.toc, formats: ed.formats, review: ed.review, sections: ed.sections } });
+      await api(`/doc-templates/${tpl.id}`, { method: 'PUT', body: { name: ed.name, description: ed.description, toc: ed.toc, formats: ed.formats, review: ed.review, sections: ed.sections, format: ed.format } });
       toast(t('Template saved as version {v}.', { v: tpl.version + 1 })); reload(); onClose(true);
     } catch (e) { toast(e.message, 'error'); }
   };
@@ -128,34 +127,23 @@ function TemplateEditor({ orgId, code, onClose }) {
   const txt = (v) => (typeof v === 'object' && v ? v[lang] ?? v.en ?? '' : v || '');
   const setTxt = (obj, v) => ({ ...(typeof obj === 'object' && obj ? obj : {}), [lang]: v });
   return (
-    <Modal wide title={`${tpl.code} — ${txt(tpl.name)}`} onClose={() => onClose(false)} footer={<>{!tpl.custom && tpl.canEdit && <button className="btn" onClick={copy}><Copy size={16} />{t('Copy to edit')}</button>}<button className="btn" onClick={() => onClose(false)}>{t('Close')}</button>{editable && <button className="btn btn-primary" onClick={save}>{t('Save template')}</button>}</>}>
+    <Modal full title={`${tpl.code} — ${txt(tpl.name)}`} onClose={() => onClose(false)} footer={<>{!tpl.custom && tpl.canEdit && <button className="btn btn-primary" onClick={copy}><Copy size={16} />{t('Copy to edit')}</button>}<button className="btn" onClick={() => onClose(false)}>{t('Close')}</button>{editable && <button className="btn btn-primary" onClick={save}>{t('Save template')}</button>}</>}>
       <div className="stack">
-        {!tpl.custom && <p className="small muted">{t('Library template (read-only). Copy it to adapt the sections, texts or layout for your organization; the copy replaces it in your library.')}</p>}
-        <div className="form-grid">
-          <Field label={t('Name')}>{(id) => <input id={id} className="input" disabled={!editable} value={txt(ed.name)} onChange={e => setEd({ ...ed, name: setTxt(ed.name, e.target.value) })} />}</Field>
-          <Field label={t('Review frequency')}>{(id) => <select id={id} className="select" disabled={!editable} value={ed.review} onChange={e => setEd({ ...ed, review: e.target.value })}>{FREQS.map(x => <option key={x} value={x}>{x}</option>)}</select>}</Field>
-        </div>
-        <Field label={t('Description')}>{(id) => <textarea id={id} className="textarea" disabled={!editable} value={txt(ed.description)} onChange={e => setEd({ ...ed, description: setTxt(ed.description, e.target.value) })} />}</Field>
-        <div className="row">
-          <label className="checkbox"><input type="checkbox" disabled={!editable} checked={!!ed.toc} onChange={e => setEd({ ...ed, toc: e.target.checked })} /><span>{t('Table of contents (Word and PDF)')}</span></label>
-          {['DOCX', 'PDF', 'XLSX'].map(f => <label key={f} className="checkbox"><input type="checkbox" disabled={!editable} checked={ed.formats.includes(f)} onChange={e => setEd({ ...ed, formats: e.target.checked ? [...ed.formats, f] : ed.formats.filter(x => x !== f) })} /><span>{f}</span></label>)}
-        </div>
-        <h4 className="serif" style={{ margin: 0 }}>{t('Structure: sections ({n})', { n: ed.sections.length })}</h4>
-        {ed.sections.map((s, i) => (
-          <div key={i} className="doc-section stack-8">
-            <div className="row-between"><span className="strong small">{i + 1}. {txt(s.title) || t('Untitled section')}</span>
-              {editable && <span className="row" style={{ gap: 4 }}><button className="btn btn-sm btn-ghost" disabled={i === 0} onClick={() => move(i, -1)} aria-label={t('Move up')}><ArrowUp size={16} /></button><button className="btn btn-sm btn-ghost" disabled={i === ed.sections.length - 1} onClick={() => move(i, 1)} aria-label={t('Move down')}><ArrowDown size={16} /></button><button className="btn btn-sm btn-ghost" onClick={() => setEd({ ...ed, sections: ed.sections.filter((_, j) => j !== i) })} aria-label={t('Delete section')}><Trash2 size={16} /></button></span>}
-            </div>
-            <div className="form-grid">
-              <Field label={t('Title')}>{(id) => <input id={id} className="input" disabled={!editable} value={txt(s.title)} onChange={e => setSec(i, 'title', setTxt(s.title, e.target.value))} />}</Field>
-              <Field label={t('Type')}>{(id) => <select id={id} className="select" disabled={!editable} value={s.type} onChange={e => setSec(i, 'type', e.target.value)}>{SECTION_TYPES.map(x => <option key={x} value={x}>{{ text: t('Free text'), data: t('Project data'), signature: t('Approval block') }[x]}</option>)}</select>}</Field>
-            </div>
-            {s.type === 'data' && <Field label={t('Data from the project')} hint={t('The table or text is filled from this project data when the document is generated.')}>{(id) => <select id={id} className="select" disabled={!editable} value={s.source || ''} onChange={e => setSec(i, 'source', e.target.value)}>{sources.map(x => <option key={x} value={x}>{x}</option>)}</select>}</Field>}
-            {(s.type === 'text' || s.type === 'data') && <Field label={s.type === 'text' ? t('Text') : t('Introduction (optional)')} hint={t('Placeholders: {org} {product} {line} {city} {customer} {supplier} {standards} {date}')}>{(id) => <textarea id={id} className="textarea" disabled={!editable} value={txt(s.text)} onChange={e => setSec(i, 'text', setTxt(s.text, e.target.value))} />}</Field>}
+        {!tpl.custom && <div className="callout neutral small"><span>{t('Library template (read-only). Copy it to adapt the sections, texts, pictures and formatting for your organization; the copy replaces it in your library.')}</span></div>}
+        <Tabs label={t('Template')} value={tab} onChange={setTab} tabs={[{ id: 'structure', label: t('Structure'), count: ed.sections.length }, { id: 'format', label: t('Formatting') }, { id: 'general', label: t('General') }]} />
+        {tab === 'general' && <>
+          <div className="form-grid">
+            <Field label={t('Name')}>{(id) => <input id={id} className="input" disabled={!editable} value={txt(ed.name)} onChange={e => setEd({ ...ed, name: setTxt(ed.name, e.target.value) })} />}</Field>
+            <Field label={t('Review frequency')}>{(id) => <select id={id} className="select" disabled={!editable} value={ed.review} onChange={e => setEd({ ...ed, review: e.target.value })}>{FREQS.map(x => <option key={x} value={x}>{x}</option>)}</select>}</Field>
           </div>
-        ))}
-        {editable && <button className="btn btn-sm" onClick={() => setEd({ ...ed, sections: [...ed.sections, { key: `s${Date.now().toString(36)}`, type: 'text', title: { [lang]: t('New section') }, text: { [lang]: '' } }] })}><Plus size={14} />{t('Add a section')}</button>}
-        {lib && <p className="caption">{t('{n} templates in the library.', { n: lib.items.length })}</p>}
+          <Field label={t('Description')}>{(id) => <textarea id={id} className="textarea" disabled={!editable} value={txt(ed.description)} onChange={e => setEd({ ...ed, description: setTxt(ed.description, e.target.value) })} />}</Field>
+          <div className="row">
+            <label className="checkbox"><input type="checkbox" disabled={!editable} checked={!!ed.toc} onChange={e => setEd({ ...ed, toc: e.target.checked })} /><span>{t('Table of contents (Word and PDF)')}</span></label>
+            {['DOCX', 'PDF', 'XLSX'].map(f => <label key={f} className="checkbox"><input type="checkbox" disabled={!editable} checked={ed.formats.includes(f)} onChange={e => setEd({ ...ed, formats: e.target.checked ? [...ed.formats, f] : ed.formats.filter(x => x !== f) })} /><span>{f}</span></label>)}
+          </div>
+        </>}
+        {tab === 'structure' && <SectionsEditor sections={ed.sections} onChange={(sections) => setEd({ ...ed, sections })} disabled={!editable} sources={srcList || []} orgId={orgId} />}
+        {tab === 'format' && <FormatEditor value={ed.format} onChange={(format) => setEd({ ...ed, format })} disabled={!editable} orgId={orgId} layout={layout} />}
       </div>
     </Modal>
   );
@@ -269,6 +257,7 @@ function Block({ block, lang, t }) {
   const cell = (v) => (Array.isArray(v) ? v.map(x => tx(x, lang)).join(', ') : tx(v, lang));
   if (block.kind === 'kv') return <dl className="kv">{block.rows.map(([k, v], i) => <div key={i}><dt>{tx(k, lang)}</dt><dd style={{ whiteSpace: 'pre-wrap' }}>{cell(v)}</dd></div>)}</dl>;
   if (block.kind === 'table') return <><Table maxRows={12} rows={block.rows.map((r, i) => ({ ...r, __i: i }))} rowKey="__i" columns={block.columns.map(c => ({ key: c.key, label: tx(c.label, lang), sortable: false, render: r => <span style={{ whiteSpace: 'pre-wrap' }}>{cell(r[c.key])}</span> }))} />{block.caption && <p className="caption">{tx(block.caption, lang)}</p>}</>;
+  if (block.kind === 'image') return <figure style={{ margin: 0, textAlign: block.align || 'center' }}>{block.file ? <AuthImage file={block.file} alt={tx(block.caption, lang)} style={{ width: `${block.widthPct || 60}%`, maxHeight: 360, objectFit: 'contain' }} /> : <span className="small muted">{t('No picture yet.')}</span>}{block.caption && <figcaption className="caption">{tx(block.caption, lang)}</figcaption>}</figure>;
   // Diagrams are SVG generated by the server from the process design (no user HTML).
   if (block.kind === 'diagram') return <figure style={{ margin: 0 }}><div className="doc-diagram" dangerouslySetInnerHTML={{ __html: block.svg }} />{block.caption && <figcaption className="caption">{tx(block.caption, lang)}</figcaption>}</figure>;
   return null;
@@ -297,7 +286,7 @@ export function DocumentDetail() {
     if (!j) return;
     try { const r = await api(`/documents/${d.id}${published ? `?justification=${encodeURIComponent(j)}` : ''}`, { method: 'DELETE' }); toast(r.retired ? t('Document retired.') : t('Document deleted.')); if (r.deleted) navigate('/documents'); else reload(); } catch (e) { toast(e.message, 'error'); }
   };
-  const saveSections = async () => { try { await api(`/document-versions/${v.id}/sections`, { method: 'PUT', body: { sections: secEd } }); toast(t('Structure saved in the draft.')); setSecEd(null); reloadSt(); } catch (e) { toast(e.message, 'error'); } };
+  const saveSections = async () => { try { await api(`/document-versions/${v.id}/sections`, { method: 'PUT', body: { sections: secEd.sections.map(s => ({ ...s, title: typeof s.title === 'object' ? tx(s.title, lang) : s.title, text: typeof s.text === 'object' ? tx(s.text, lang) : s.text, caption: typeof s.caption === 'object' ? tx(s.caption, lang) : s.caption })), style: secEd.style } }); toast(t('Structure saved in the draft.')); setSecEd(null); reloadSt(); } catch (e) { toast(e.message, 'error'); } };
   const txt = (x) => tx(x, lang);
   return (
     <>
@@ -317,7 +306,7 @@ export function DocumentDetail() {
                 {v.status === 'Draft' && <button className="btn" onClick={() => act('submit')}>{t('Submit for review')}</button>}
                 {v.status === 'In review' && <button className="btn btn-primary" disabled={v.author === me.user.id} title={v.author === me.user.id ? t('The author cannot approve their own version.') : undefined} onClick={() => act('approve')}>{t('Approve and publish')}</button>}
                 {v.status === 'In review' && <button className="btn" onClick={() => act('reject')}>{t('Send back to draft')}</button>}
-                {v.status === 'Draft' && st?.structured && <button className="btn" onClick={() => setSecEd(st.sections.map(s => ({ key: s.key, title: txt(s.title), text: txt(s.text), type: s.type })))}><Pencil size={16} />{t('Edit the structure')}</button>}
+                {v.status === 'Draft' && st?.structured && <button className="btn" onClick={() => setSecEd({ tab: 'structure', style: st.style || {}, sections: st.sections.map(s => { const img = (s.blocks || []).find(b => b.kind === 'image'); return { key: s.key, title: txt(s.title), text: txt(s.text), type: s.type, style: s.style || undefined, ...(img ? { image: img.file, caption: txt(img.caption), widthPct: img.widthPct, align: img.align } : {}) }; }) })}><Pencil size={16} />{t('Edit the structure and formatting')}</button>}
               </div>}
             </Card>
             <Card title={t('Structure and content')}>
@@ -356,17 +345,12 @@ export function DocumentDetail() {
         </Modal>
       )}
       {secEd && (
-        <Modal wide title={t('Edit the structure')} onClose={() => setSecEd(null)} footer={<><button className="btn" onClick={() => setSecEd(null)}>{t('Cancel')}</button><button className="btn btn-primary" onClick={saveSections}>{t('Save')}</button></>}>
+        <Modal full title={t('Edit the structure and formatting')} onClose={() => setSecEd(null)} footer={<><button className="btn" onClick={() => setSecEd(null)}>{t('Cancel')}</button><button className="btn btn-primary" onClick={saveSections}>{t('Save')}</button></>}>
           <div className="stack">
-            <p className="small muted">{t('Add, rename, reorder or delete sections of this draft. Data tables keep their content; free-text sections can be edited.')}</p>
-            {secEd.map((s, i) => (
-              <div key={s.key || i} className="doc-section stack-8">
-                <div className="row-between"><span className="strong small">{i + 1}.</span><span className="row" style={{ gap: 4 }}><button className="btn btn-sm btn-ghost" disabled={i === 0} aria-label={t('Move up')} onClick={() => { const a = [...secEd]; const [x] = a.splice(i, 1); a.splice(i - 1, 0, x); setSecEd(a); }}><ArrowUp size={16} /></button><button className="btn btn-sm btn-ghost" disabled={i === secEd.length - 1} aria-label={t('Move down')} onClick={() => { const a = [...secEd]; const [x] = a.splice(i, 1); a.splice(i + 1, 0, x); setSecEd(a); }}><ArrowDown size={16} /></button><button className="btn btn-sm btn-ghost" aria-label={t('Delete section')} onClick={() => setSecEd(secEd.filter((_, j) => j !== i))}><Trash2 size={16} /></button></span></div>
-                <Field label={t('Title')}>{(fid) => <input id={fid} className="input" value={s.title} onChange={e => setSecEd(secEd.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)))} />}</Field>
-                {s.type !== 'data' && s.type !== 'signature' && <Field label={t('Text')}>{(fid) => <textarea id={fid} className="textarea" value={s.text || ''} onChange={e => setSecEd(secEd.map((x, j) => (j === i ? { ...x, text: e.target.value } : x)))} />}</Field>}
-              </div>
-            ))}
-            <button className="btn btn-sm" onClick={() => setSecEd([...secEd, { key: undefined, title: t('New section'), text: '', type: 'text' }])}><Plus size={14} />{t('Add a section')}</button>
+            <p className="small muted">{t('Changes apply to this draft only. Add, rename, reorder, duplicate or delete sections, insert pictures and change the formatting; data tables keep their content.')}</p>
+            <Tabs label={t('Edit the structure and formatting')} value={secEd.tab} onChange={(tab) => setSecEd({ ...secEd, tab })} tabs={[{ id: 'structure', label: t('Structure'), count: secEd.sections.length }, { id: 'format', label: t('Formatting') }]} />
+            {secEd.tab === 'structure' && <SectionsEditor sections={secEd.sections} onChange={(sections) => setSecEd({ ...secEd, sections })} orgId={d.org_id} kinds={['text', 'image']} />}
+            {secEd.tab === 'format' && <FormatEditor value={secEd.style} onChange={(style) => setSecEd({ ...secEd, style })} orgId={d.org_id} />}
           </div>
         </Modal>
       )}

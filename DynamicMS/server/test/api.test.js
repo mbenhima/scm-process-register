@@ -356,3 +356,72 @@ test('round 3: qualified step forms, needs mapped to parties, registers and docu
   const body = JSON.stringify((await call('GET', `/documents/${doc.body.id}`, t)).body);
   assert.ok(body.includes('Municipality') && body.includes('Quote within 48 hours'));
 });
+
+test('project templates: copy, customize (exclude, rename, custom step, lists) and create a project from it', async () => {
+  const t = await login('ims@atlas-sme.example');
+  const list = (await call('GET', '/project-templates', t)).body;
+  const lib = list.find(x => x.library && x.msType === 'QMS' && x.mode === 'SME') || list.find(x => x.library && x.msType === 'QMS');
+  assert.ok(lib, 'a library template');
+  assert.equal(lib.canEdit, false, 'library templates are read-only for tenants');
+  assert.equal((await call('PUT', `/project-templates/${lib.id}`, t, { name: 'x' })).status, 403);
+  const copy = (await call('POST', '/project-templates', t, { copyOf: lib.id, name: 'Atlas SME template' })).body;
+  assert.ok(copy.id);
+  let d = (await call('GET', `/project-templates/${copy.id}`, t)).body;
+  assert.equal(d.canEdit, true);
+  const e1 = d.structure.find(e => e.include && e.mps.some(m => m.include));
+  const [m1, m2] = e1.mps.filter(m => m.include);
+  const s1 = m1.steps[0];
+  assert.equal((await call('PUT', `/project-templates/${copy.id}`, t, {
+    mp: m2 ? { [m2.id]: { include: false } } : {}, step: { [s1.id]: { name: 'Renamed step', role: 'quality_manager' } },
+    custom: { step: { add: [{ name: 'Check the supplier list', mp: m1.id, role: 'quality_manager' }] } },
+    lists: { kpis: [{ id: 'KPI-T1', name: 'On-time audits', formula: 'Audits on time / audits planned x 100', target: '≥ 95%', unit: '%', frequency: 'Monthly', owner: 'ims_manager', mp: m1.id }], risks: [{ id: 'R-T1', kind: 'Risk', title: 'Key auditor unavailable', likelihood: 3, impact: 4, owner: 'risk_manager' }] },
+  })).status, 200);
+  d = (await call('GET', `/project-templates/${copy.id}`, t)).body;
+  assert.equal(d.counts.kpis, 1);
+  assert.equal(d.counts.risks, 1);
+  const mm = d.structure.flatMap(e => e.mps).find(m => m.id === m1.id);
+  assert.ok(mm.steps.some(s => s.custom && s.name === 'Check the supplier list'));
+  assert.equal(mm.steps.find(s => s.id === s1.id).name, 'Renamed step');
+  assert.equal((await call('POST', `/project-templates/${copy.id}/status`, t, { status: 'Published' })).body.status, 'Published');
+  const me = (await call('GET', '/auth/me', t)).body;
+  const p = await call('POST', `/orgs/${me.org.id}/projects`, t, { name: 'From my template', msType: 'QMS', creationMode: 'catalog', templateId: copy.id });
+  assert.equal(p.status, 201, JSON.stringify(p.body));
+  const life = (await call('GET', `/projects/${p.body.id}/lifecycle`, t)).body;
+  const mps = life.flatMap(x => x.mps).map(x => x.id);
+  assert.ok(mps.includes(m1.id));
+  if (m2) assert.ok(!mps.includes(m2.id), 'excluded macro process is not in the project');
+  const det = (await call('GET', `/projects/${p.body.id}/mps/${m1.id}`, t)).body;
+  const steps = det.tasks.flatMap(x => x.steps);
+  assert.ok(steps.some(s => s.name === 'Renamed step'));
+  assert.ok(steps.some(s => s.name === 'Check the supplier list'));
+  const kpis = (await call('GET', `/projects/${p.body.id}/kpis`, t)).body;
+  const kl = Array.isArray(kpis) ? kpis : kpis.items || [];
+  assert.ok(kl.some(k => k.code === 'KPI-T1'));
+  assert.equal((await call('DELETE', `/project-templates/${copy.id}`, t)).body.status, 'Retired', 'a template used by a project is retired');
+});
+
+test('document templates: formatting, picture sections and rendering', async () => {
+  const t = await login('ims@atlas-sme.example');
+  const me = (await call('GET', '/auth/me', t)).body;
+  const org = me.org.id;
+  // A 1x1 PNG picture.
+  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64');
+  const fd = new FormData(); fd.append('file', new Blob([png], { type: 'image/png' }), 'pic.png');
+  const up = await (await fetch(`${base}/orgs/${org}/doc-images?lang=en`, { method: 'POST', headers: { Authorization: `Bearer ${t}` }, body: fd })).json();
+  assert.match(up.file, /doc-images\/.+\.png$/);
+  const c = await call('POST', `/orgs/${org}/doc-templates`, t, { code: 'TPL-FMT-T', name: 'Formatted', sections: [{ key: 'a', type: 'text', title: 'Intro', text: 'Hello {org}', style: { align: 'justify', bold: true, background: '#E8F1FB', bad: 1 } }, { key: 'pic', type: 'image', title: 'Site', image: up.file, caption: 'Our site', widthPct: 50 }], format: { bodyFont: 'Times New Roman', bodySize: 11, headingColor: '#1876C6', orientation: 'landscape', logo: 'none', marginCm: 9 } });
+  assert.equal(c.status, 201, JSON.stringify(c.body));
+  const tpl = (await call('GET', `/orgs/${org}/doc-templates/TPL-FMT-T?raw=1`, t)).body;
+  assert.equal(tpl.format.bodyFont, 'Times New Roman');
+  assert.equal(tpl.format.marginCm, 3.5, 'margins are clamped');
+  assert.deepEqual(tpl.sections[0].style, { align: 'justify', bold: true, background: '#E8F1FB' }, 'unknown style keys are dropped');
+  assert.equal((await call('POST', `/orgs/${org}/doc-templates`, t, { code: 'TPL-FMT-X', name: 'Bad', sections: [{ key: 'p', type: 'image', title: 'x', image: '../../etc/passwd' }] })).status, 400);
+  const tree = (await call('GET', '/tenancy/tree', t)).body;
+  const proj = tree.independent[0].projects.find(p => p.ms_type === 'QMS');
+  const doc = (await call('POST', `/projects/${proj.id}/documents`, t, { templateCode: 'TPL-FMT-T' })).body;
+  for (const f of ['pdf', 'docx', 'xlsx']) {
+    const r = await call('GET', `/documents/${doc.id}/download?format=${f}`, t);
+    assert.equal(r.status, 200, f);
+    assert.ok(r.body.byteLength > 2000, f);
+  }
+});

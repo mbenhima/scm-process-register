@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LibraryBig, PencilRuler, Sparkles } from 'lucide-react';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { LibraryBig, PencilRuler, Sparkles, Eye, LayoutTemplate } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { PageHead, Card, Loading, Field, tx, IconBadge, Status } from '../components/ui.jsx';
@@ -16,8 +16,10 @@ export default function NewProject() {
   const org = useData(orgId ? `/orgs/${orgId}` : null);
   const { data: templates } = useData(orgId ? `/orgs/${orgId}/templates` : null);
   const { data: criteria } = useData('/admin/libraries/criteria');
-  const [mode, setMode] = useState(null);
-  const [f, setF] = useState({ name: '', msType: 'QMS', startDate: new Date().toISOString().slice(0, 10), templateId: '', track: '', gates: E2E.filter((_, i) => i % 3 === 0), justification: '' });
+  const [sp] = useSearchParams();
+  const preset = sp.get('template') || '';
+  const [mode, setMode] = useState(preset ? 'catalog' : null);
+  const [f, setF] = useState({ name: '', msType: 'QMS', startDate: new Date().toISOString().slice(0, 10), templateId: preset, track: '', gates: E2E.filter((_, i) => i % 3 === 0), justification: '' });
   const [levels, setLevels] = useState({});
   const [score, setScore] = useState(null);
   const [desc, setDesc] = useState('');
@@ -25,6 +27,8 @@ export default function NewProject() {
   const [accepted, setAccepted] = useState({});
   const [busy, setBusy] = useState(false);
   const isSme = org.data?.size === 'SME';
+  // A template opened from the template catalog: align the management system on it.
+  useEffect(() => { if (preset && templates) { const x = templates.find(y => y.id === preset); if (x) setF(v => ({ ...v, msType: x.ms_type, templateId: x.id })); } }, [preset, templates]);
   useEffect(() => { if (criteria) setLevels(l => (Object.keys(l).length ? l : Object.fromEntries(criteria.filter(c => !c.vertical || c.vertical === org.data?.sector).map(c => [c.code, 3])))); }, [criteria, org.data]);
   useEffect(() => { if (!orgId || !Object.keys(levels).length) return; api(`/orgs/${orgId}/projects/score`, { method: 'POST', body: { levels } }).then(setScore).catch(() => {}); }, [levels, orgId]);
   if (!orgId || !org.data) return <Loading />;
@@ -90,7 +94,14 @@ export default function NewProject() {
                   <Field label={t('Mode')}>{(id) => <input id={id} className="input" value={isSme ? L('SME') : L('FULL')} disabled />}</Field>
                 </div>
                 {mode === 'catalog' && (
-                  <Field label={t('Template')} required>{(id) => <select id={id} className="select" value={f.templateId} onChange={e => setF({ ...f, templateId: e.target.value })}><option value="">{t('Choose…')}</option>{tpls.map(x => <option key={x.id} value={x.id}>{x.code} — {tx(x.name, lang)} (v{x.version})</option>)}</select>}</Field>
+                  <div className="stack-8">
+                    <Field label={t('Template')} required>{(id) => <select id={id} className="select" value={f.templateId} onChange={e => setF({ ...f, templateId: e.target.value })}><option value="">{t('Choose…')}</option>{tpls.map(x => <option key={x.id} value={x.id}>{x.library ? '' : `★ `}{x.code} — {tx(x.name, lang)} (v{x.version})</option>)}</select>}</Field>
+                    <div className="row">
+                      {f.templateId && <Link className="btn btn-sm" to={`/project-templates/${f.templateId}`}><Eye size={16} />{t('View and customize the template')}</Link>}
+                      <Link className="btn btn-sm btn-ghost" to="/project-templates"><LayoutTemplate size={16} />{t('All project templates')}</Link>
+                    </div>
+                    <p className="xsmall muted">{t('A template defines the end-to-end processes, macro processes, steps, business rules, controls, risks, alerts, KPIs and reporting of the project. ★ marks your organization’s templates.')}</p>
+                  </div>
                 )}
                 {mode === 'manual' && (
                   <fieldset style={{ border: 0, padding: 0, margin: 0 }}><legend className="strong small" style={{ marginBottom: 8 }}>{t('Phases with a gate (from the Gate Library)')}</legend>

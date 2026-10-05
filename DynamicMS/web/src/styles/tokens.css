@@ -1,30 +1,101 @@
-/* Design tokens — AI Value graphical chart v1.0 (September 2026). The only colours, fonts,
-   sizes, spacings, radii and shadows used by the UI. Never use raw hex in components.
+/* Design tokens — AI Value graphical chart v1.2 (5 October 2026), §17 copied verbatim, followed
+   by the short aliases used by the stylesheets. Never use raw hex in components.
    Type scale: 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 48 px.
-   Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 px.
+   Spacing: 0 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 px.
    Radii: buttons and inputs 8, cards 12, modals 16, badges 6. */
 :root {
-  /* Core */
-  --aiv-navy: #123A5F;
-  --aiv-navy-dark: #0D2A47;
-  --aiv-azure: #1876C6;
-  --aiv-green: #28C87C;
-  --aiv-teal: #17A2B8;
-  --aiv-white: #FFFFFF;
-  --aiv-bg: #F5F8FB;
-  --aiv-ink: #2C3E50;
-  --aiv-muted: #5A6B7B;
-  --aiv-line: #E1E8F0;
-  /* Tints */
-  --aiv-azure-tint: #E8F1FB;
-  --aiv-green-tint: #E7F9F0;
-  --aiv-teal-tint: #E6F6F8;
+  /* ---------- Core palette ---------- */
+  --aiv-navy:        #123A5F;
+  --aiv-navy-dark:   #0D2A47;
+  --aiv-azure:       #1876C6;
+  --aiv-green:       #28C87C;
+  --aiv-teal:        #17A2B8;
+  --aiv-white:       #FFFFFF;
+  --aiv-bg:          #F5F8FB;
+  --aiv-ink:         #2C3E50;
+  --aiv-muted:       #5A6B7B;
+  --aiv-line:        #E1E8F0;
+  /* ---------- Tints ---------- */
+  --aiv-azure-tint:  #E8F1FB;
+  --aiv-green-tint:  #E7F9F0;
+  --aiv-teal-tint:   #E6F6F8;
+  /* ---------- Status scale ---------- */
+  --aiv-status-1:    #F4C7C3;
+  --aiv-status-2:    #FBE0B5;
+  --aiv-status-3:    #FFF3B0;
+  --aiv-status-4:    #D9EAD3;
+  --aiv-status-5:    #B6D7A8;
+  /* ---------- Elevation ---------- */
+  --aiv-shadow-card:  0 2px 8px rgb(18,58,95,0.06);
+  --aiv-shadow-hover: 0 8px 28px rgb(18,58,95,0.12);
+  --aiv-shadow-modal: 0 20px 60px rgb(18,58,95,0.18);
+  /* ---------- Shape ---------- */
+  --aiv-radius-btn:   8px;
+  --aiv-radius-input: 8px;
+  --aiv-radius-card:  12px;
+  --aiv-radius-modal: 16px;
+  /* ---------- Focus ---------- */
+  --aiv-focus-ring:   0 0 0 3px rgba(24,118,198,0.35);
+  --aiv-focus-offset: 2px;
+  /* ---------- Spacing ---------- */
+  --aiv-space-0:  0px;
+  --aiv-space-1:  4px;
+  --aiv-space-2:  8px;
+  --aiv-space-3:  12px;
+  --aiv-space-4:  16px;
+  --aiv-space-5:  24px;
+  --aiv-space-6:  32px;
+  --aiv-space-7:  48px;
+  --aiv-space-8:  64px;
+  --aiv-space-9:  96px;
+  /* ---------- Type ---------- */
+  --aiv-font-heading: 'Montserrat', sans-serif;
+  --aiv-font-body:    'Open Sans', sans-serif;
+  --aiv-font-mono:    'JetBrains Mono', monospace;
+  /* ---------- Motion ---------- */
+  --aiv-duration-fast:    150ms;
+  --aiv-duration-base:    200ms;
+  --aiv-duration-slow:    300ms;
+  --aiv-easing-standard:  cubic-bezier(0.2, 0, 0, 1);
+  --aiv-easing-emphasis:  cubic-bezier(0.3, 0, 0, 1.2);
+  /* ---------- Panel layout ---------- */
+  --aiv-panel-left-default:   260px;
+  --aiv-panel-left-min:       180px;
+  --aiv-panel-left-max:       480px;
+  --aiv-panel-right-default:  320px;
+  --aiv-panel-right-min:      220px;
+  --aiv-panel-right-max:      560px;
+  --aiv-panel-center-min:     400px;
+  /* ---------- Row status ---------- */
+  --aiv-row-hover:  var(--aiv-azure-tint);
+  --aiv-row-dirty:  var(--aiv-azure);
+  --aiv-row-saved:  var(--aiv-green);
+  --aiv-row-error:  var(--aiv-status-1);
+  /* ---------- Breakpoints (for reference) ---------- */
+  --aiv-bp-sm:  480px;
+  --aiv-bp-md:  768px;
+  --aiv-bp-lg:  1024px;
+  --aiv-bp-xl:  1280px;
+  --aiv-bp-2xl: 1536px;
+  /* ---------- Z-index scale ---------- */
+  --aiv-z-base:     0;
+  --aiv-z-sticky:   10;
+  --aiv-z-dropdown: 100;
+  --aiv-z-drawer:   200;
+  --aiv-z-modal:    300;
+  --aiv-z-toast:    400;
+  --aiv-z-tooltip:  500;
+}
+
+/* Aliases used by the stylesheets (all resolve to the tokens above). */
+:root {
+
   /* Status scale (semantic only, always red to green) */
-  --st-1: #F4C7C3;
-  --st-2: #FBE0B5;
-  --st-3: #FFF3B0;
-  --st-4: #D9EAD3;
-  --st-5: #B6D7A8;
+  --st-1: var(--aiv-status-1);
+  --st-2: var(--aiv-status-2);
+  --st-3: var(--aiv-status-3);
+  --st-4: var(--aiv-status-4);
+  --st-5: var(--aiv-status-5);
   /* Gradient: logo swoosh and one hero element per page only */
   --aiv-gradient: linear-gradient(90deg, #1876C6 0%, #17A2B8 50%, #28C87C 100%);
 
@@ -52,7 +123,7 @@
   --sp-32: 32px;
   --sp-48: 48px;
   --sp-64: 64px;
-  --sp-80: 80px;
+  --sp-96: 96px;
 
   --r-button: 8px;
   --r-input: 8px;
@@ -60,11 +131,12 @@
   --r-modal: 16px;
   --r-badge: 6px;
 
-  --shadow: 0 2px 8px rgba(18, 58, 95, 0.06);
-  --shadow-hover: 0 8px 28px rgba(18, 58, 95, 0.12);
-  --shadow-modal: 0 20px 60px rgba(18, 58, 95, 0.18);
+  --shadow: var(--aiv-shadow-card);
+  --shadow-hover: var(--aiv-shadow-hover);
+  --shadow-modal: var(--aiv-shadow-modal);
   --focus: 3px solid rgba(24, 118, 198, 0.35);
 
-  --nav-w: 264px;
+  --nav-w: var(--aiv-panel-left-default);   /* overridden by the resizable left panel */
+  --aside-w: var(--aiv-panel-right-default); /* overridden by the resizable right panel */
   --header-h: 64px;
 }

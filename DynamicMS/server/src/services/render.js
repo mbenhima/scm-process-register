@@ -17,6 +17,35 @@ const FONTS = {
   ar: fontFile('noto-naskh-arabic', 'noto-naskh-arabic-arabic-400-normal.woff'),
   arBold: fontFile('noto-naskh-arabic', 'noto-naskh-arabic-arabic-700-normal.woff'),
 };
+// Fonts a document template may choose (graphical chart default: Open Sans body, Montserrat
+// headings). PDF embeds the web fonts; other families map to the PDF standard fonts, Word
+// documents keep the chosen family name.
+const BODY_SETS = {
+  'Open Sans': { sans: FONTS.sans, sansBold: FONTS.sansBold, sansItalic: FONTS.sansItalic },
+  Montserrat: { sans: fontFile('montserrat', 'montserrat-latin-400-normal.woff'), sansBold: fontFile('montserrat', 'montserrat-latin-700-normal.woff'), sansItalic: fontFile('montserrat', 'montserrat-latin-400-italic.woff') },
+  Arial: { sans: 'Helvetica', sansBold: 'Helvetica-Bold', sansItalic: 'Helvetica-Oblique' },
+  Calibri: { sans: 'Helvetica', sansBold: 'Helvetica-Bold', sansItalic: 'Helvetica-Oblique' },
+  'Times New Roman': { sans: 'Times-Roman', sansBold: 'Times-Bold', sansItalic: 'Times-Italic' },
+  Georgia: { sans: 'Times-Roman', sansBold: 'Times-Bold', sansItalic: 'Times-Italic' },
+};
+const HEAD_SETS = { Montserrat: FONTS.serif, 'Open Sans': FONTS.sansBold, Arial: 'Helvetica-Bold', Calibri: 'Helvetica-Bold', 'Times New Roman': 'Times-Bold', Georgia: 'Times-Bold' };
+export const DOC_FONTS = Object.keys(BODY_SETS);
+const clampN = (v, lo, hi, d) => { const n = Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : d; };
+// Formatting of a document (template "format"): fonts, sizes, margins, alignment, logo.
+export function styleOf(model) {
+  const s = model.style || {};
+  return {
+    bodyFont: BODY_SETS[s.bodyFont] ? s.bodyFont : 'Open Sans',
+    headFont: HEAD_SETS[s.headingFont] ? s.headingFont : 'Montserrat',
+    bodySize: clampN(s.bodySize, 8, 14, 10),
+    headSize: clampN(s.headingSize, 10, 24, 14),
+    marginCm: clampN(s.marginCm, 1, 3.5, 1.7),
+    align: ['left', 'center', 'right', 'justify'].includes(s.align) ? s.align : 'left',
+    logoPosition: ['left', 'center', 'right'].includes(s.logoPosition) ? s.logoPosition : 'left',
+    headerLogo: !!s.headerLogo,
+    pageNumbers: s.pageNumbers !== false,
+  };
+}
 // AI Value palette. Historic keys kept for the callers: orange = table header fill (navy),
 // deep = accent (azure), tint = azure tint, dark = titles (navy), ink = body, medium = muted.
 export const C = { orange: '#123A5F', deep: '#1876C6', tint: '#E8F1FB', dark: '#123A5F', ink: '#2C3E50', medium: '#5A6B7B', light: '#F5F8FB', line: '#E1E8F0', bg: '#F5F8FB', white: '#FFFFFF',
@@ -79,10 +108,19 @@ function pdfWriter(doc, lang) {
     const o = { bold, serif, italic };
     const lines = wrap(s, w, size, o);
     const lh = size * 1.25 + lineGap;
+    // Index of the last line of each paragraph (justified text leaves it ragged).
+    const lastOfPara = new Set();
+    { let k = -1; for (const para of clean(s).split('\n')) { k += Math.max(1, wrap(para, w, size, o).length); lastOfPara.add(k); } }
     lines.forEach((ln, i) => {
       const ly = y + i * lh;
       if (!rtl && !AR.test(ln)) {
-        doc.font(latin(bold, serif, italic)).fontSize(size).fillColor(color).text(ln, x, ly, { width: w, align: align || 'left', lineBreak: false });
+        doc.font(latin(bold, serif, italic)).fontSize(size).fillColor(color);
+        // Justified text: spread the words of every line but the last of its paragraph.
+        if (align === 'justify' && !lastOfPara.has(i) && ln.includes(' ')) {
+          const gaps = ln.split(' ').length - 1;
+          const extra = (w - doc.widthOfString(ln)) / gaps;
+          doc.text(ln, x, ly, { lineBreak: false, wordSpacing: Math.max(0, extra) });
+        } else doc.text(ln, x, ly, { width: w, align: align === 'justify' ? 'left' : align || 'left', lineBreak: false });
         return;
       }
       // Group consecutive non-Arabic words (kept left-to-right), place groups right to left.
@@ -129,23 +167,28 @@ export function palette(layout = {}) {
 }
 
 export function toPdf(model, lang, res) {
-  const doc = new PDFDocument({ size: 'A4', layout: model.landscape ? 'landscape' : 'portrait', margins: { top: 54, bottom: 54, left: 48, right: 48 }, bufferPages: true, info: { Title: clean(model.title), Author: 'DynamicMS', Creator: 'DynamicMS' } });
-  for (const [k, f] of Object.entries(FONTS)) doc.registerFont(k, f);
+  const st = styleOf(model);
+  const M = Math.round(st.marginCm * 28.35);
+  const TOP = Math.max(48, M + 6);
+  const doc = new PDFDocument({ size: 'A4', layout: model.landscape ? 'landscape' : 'portrait', margins: { top: TOP, bottom: TOP, left: M, right: M }, bufferPages: true, info: { Title: clean(model.title), Author: 'DynamicMS', Creator: 'DynamicMS' } });
+  for (const [k, f] of Object.entries({ ...FONTS, ...BODY_SETS[st.bodyFont], serif: HEAD_SETS[st.headFont] })) doc.registerFont(k, f);
   doc.pipe(res);
   const pal = palette(model.layout);
-  const W = doc.page.width - 96; const X = 48;
+  const W = doc.page.width - 2 * M; const X = M;
+  const BS = st.bodySize; const HS = st.headSize;
   const w = pdfWriter(doc, lang);
   const rtl = w.rtl;
-  let y = 54;
-  const bottom = () => doc.page.height - 64;
-  const newPage = () => { doc.addPage(); doc.rect(0, 0, doc.page.width, doc.page.height).fill(C.bg); y = 54; };
+  let y = TOP;
+  const bottom = () => doc.page.height - TOP - 10;
+  const newPage = () => { doc.addPage(); doc.rect(0, 0, doc.page.width, doc.page.height).fill(C.bg); y = TOP; };
   doc.rect(0, 0, doc.page.width, doc.page.height).fill(C.bg);
   const ensure = (hgt) => { if (y + hgt > bottom()) newPage(); };
   const lay = model.layout || {};
   if (model.cover) {
     // Cover page: logo (image or text), eyebrow, title, subtitle and the document identity block.
     y = 110;
-    if (lay.logoFile) { try { doc.image(lay.logoFile, rtl ? X + W - 160 : X, 60, { fit: [160, 60] }); } catch { /* unreadable logo */ } }
+    const lx = st.logoPosition === 'center' ? X + (W - 160) / 2 : (st.logoPosition === 'right') !== rtl ? X + W - 160 : X;
+    if (lay.logoFile || lay.logoBuffer) { try { doc.image(lay.logoBuffer || lay.logoFile, lx, 60, { fit: [160, 60], align: st.logoPosition === 'center' ? 'center' : (st.logoPosition === 'right') !== rtl ? 'right' : 'left' }); } catch { /* unreadable logo */ } }
     else if (lay.logoText) w.text(lay.logoText, X, 64, W, { size: 18, serif: true, bold: true, color: pal.accent });
     y = 250;
     y += w.text((model.eyebrow || '').toUpperCase(), X, y, W, { size: 10, bold: true, color: pal.accent });
@@ -194,7 +237,7 @@ export function toPdf(model, lang, res) {
     const r0 = t.rows[0] ? Math.max(...cols.map((c, i) => w.height(clean(t.rows[0][c.key] ?? ''), cws[i] - 6, fs))) + 6 : 0;
     return { cols, cws, fs, hh, r0 };
   };
-  const diagramSize = (it) => { let dw = Math.min(W, it.width * 0.8); let dh = (it.height / it.width) * dw; const maxH = doc.page.height - 54 - 64 - 30; if (dh > maxH) { dh = maxH; dw = (it.width / it.height) * dh; } return { dw, dh }; };
+  const diagramSize = (it) => { let dw = Math.min(W, it.width * 0.8); let dh = (it.height / it.width) * dw; const maxH = doc.page.height - 2 * TOP - 40; if (dh > maxH) { dh = maxH; dw = (it.width / it.height) * dh; } return { dw, dh }; };
   const startHeight = (it) => {
     if (!it) return 20;
     if (it.type === 'table') { const g = tableGeom(it.table); return g.hh + Math.min(g.r0, 160); }
@@ -245,17 +288,48 @@ export function toPdf(model, lang, res) {
     });
     y += 10;
   };
+  const imageSize = (it) => {
+    let img; try { img = doc.openImage(it.data); } catch { return null; }
+    let dw = (W * clampN(it.widthPct, 10, 100, 60)) / 100; let dh = (img.height / img.width) * dw;
+    const maxH = doc.page.height - 2 * TOP - 40; if (dh > maxH) { dh = maxH; dw = (img.width / img.height) * dh; }
+    return { img, dw, dh };
+  };
   for (const sec of model.sections || []) {
-    ensure(34 + Math.min(startHeight(itemsOf(sec)[0]), doc.page.height - 200));
-    tocEntries.push({ heading: sec.heading, page: doc.bufferedPageRange().count });
-    y += 4 + w.text(sec.heading, X, y, W, { size: 14, serif: true, color: pal.title });
-    y += 4;
+    const ss = sec.style || {};
+    if (ss.pageBreakBefore && y > TOP + 4) newPage();
+    const tsize = clampN(ss.size, 8, 18, BS);
+    const tcolor = hexOk(ss.color) || C.ink;
+    const talign = ['left', 'center', 'right', 'justify'].includes(ss.align) ? ss.align : st.align;
+    if (!ss.hideTitle) {
+      ensure(34 + Math.min(startHeight(itemsOf(sec)[0]), doc.page.height - 200));
+      tocEntries.push({ heading: sec.heading, page: doc.bufferedPageRange().count });
+      y += 4 + w.text(sec.heading, X, y, W, { size: HS, serif: true, color: pal.title });
+      y += 4;
+    }
     for (const it of itemsOf(sec)) {
-      if (it.type === 'sub') { ensure(24 + Math.min(startHeight(itemsOf(sec)[itemsOf(sec).indexOf(it) + 1]), doc.page.height - 200)); y += 4 + w.text(it.text, X, y, W, { size: 11.5, serif: true, color: pal.title }); y += 4; }
-      else if (it.type === 'text') { for (const chunk of String(it.text || '').split('\n')) { const hh = w.height(chunk || ' ', W, 10); ensure(hh); y += w.text(chunk || ' ', X, y, W, { size: 10 }) + 2; } y += 6; }
+      if (it.type === 'sub') { ensure(24 + Math.min(startHeight(itemsOf(sec)[itemsOf(sec).indexOf(it) + 1]), doc.page.height - 200)); y += 4 + w.text(it.text, X, y, W, { size: Math.max(BS + 1, HS * 0.82), serif: true, color: pal.title }); y += 4; }
+      else if (it.type === 'text') {
+        // A section with a background colour is drawn as a callout box.
+        const bg = hexOk(ss.background);
+        const pad = bg ? 10 : 0;
+        if (bg) { const th = String(it.text || '').split('\n').reduce((a, c) => a + w.height(c || ' ', W - 2 * pad, tsize, !!ss.bold) + 2, 0) + 2 * pad; ensure(Math.min(th, 200)); doc.roundedRect(X, y, W, th, 8).fill(bg); y += pad; }
+        for (const chunk of String(it.text || '').split('\n')) { const hh = w.height(chunk || ' ', W - 2 * pad, tsize, !!ss.bold); ensure(hh); y += w.text(chunk || ' ', X + pad, y, W - 2 * pad, { size: tsize, bold: !!ss.bold, italic: !!ss.italic && !ss.bold, color: tcolor, align: talign }) + 2; }
+        y += 6 + pad;
+      }
+      else if (it.type === 'image') {
+        const g = imageSize(it);
+        if (g) {
+          ensure(g.dh + 20);
+          const ix = it.align === 'left' ? (rtl ? X + W - g.dw : X) : it.align === 'right' ? (rtl ? X : X + W - g.dw) : X + (W - g.dw) / 2;
+          doc.image(g.img, ix, y, { width: g.dw, height: g.dh });
+          y += g.dh + 4;
+          if (it.caption) y += w.text(it.caption, X, y, W, { size: 8.5, italic: true, color: C.ink, align: it.align === 'left' ? 'left' : it.align === 'right' ? 'right' : 'center' });
+          y += 12;
+        }
+      }
       else if (it.type === 'bullets') {
-        if (it.intro) { const hh = w.height(it.intro, W, 10); ensure(hh); y += w.text(it.intro, X, y, W, { size: 10, bold: true, color: C.dark }) + 3; }
-        for (const b of it.items) { const hh = w.height(b, W - 14, 10); ensure(hh); w.text('•', rtl ? X + W - 8 : X + 2, y, 8, { size: 10, color: pal.primary }); y += w.text(b, rtl ? X : X + 14, y, W - 14, { size: 10 }) + 3; }
+        if (it.intro) { const hh = w.height(it.intro, W, BS); ensure(hh); y += w.text(it.intro, X, y, W, { size: BS, bold: true, color: C.dark }) + 3; }
+        for (const b of it.items) { const hh = w.height(b, W - 14, BS); ensure(hh); w.text('•', rtl ? X + W - 8 : X + 2, y, 8, { size: BS, color: pal.primary }); y += w.text(b, rtl ? X : X + 14, y, W - 14, { size: BS }) + 3; }
         y += 6;
       } else if (it.type === 'kv') drawKv(it.rows);
       else if (it.type === 'table') drawTable(it.table);
@@ -287,11 +361,12 @@ export function toPdf(model, lang, res) {
   for (let i = 0; i < range.count; i++) {
     doc.switchToPage(range.start + i);
     doc.page.margins.bottom = 0;
-    if (lay.headerText && i > 0) w.text(lay.headerText, X, 28, W, { size: 8, color: C.medium });
-    const fy = doc.page.height - 38;
+    if (i > 0 && st.headerLogo && (lay.logoBuffer || lay.logoFile)) { try { doc.image(lay.logoBuffer || lay.logoFile, rtl ? X : X + W - 70, 14, { fit: [70, 24] }); } catch { /* unreadable logo */ } }
+    if (lay.headerText && i > 0) w.text(lay.headerText, X, 22, W - (st.headerLogo ? 80 : 0), { size: 8, color: C.medium });
+    const fy = doc.page.height - 30;
     doc.moveTo(X, fy - 6).lineTo(X + W, fy - 6).lineWidth(0.5).strokeColor(C.line).stroke();
     const left = `${model.footer || 'DynamicMS'} · ${model.generatedAt || ''}`;
-    const right = `${model.pageLabel || 'Page'} ${i + 1} / ${range.count}`;
+    const right = st.pageNumbers ? `${model.pageLabel || 'Page'} ${i + 1} / ${range.count}` : '';
     w.text(rtl ? right : left, X, fy, W / 2, { size: 8, color: C.medium });
     w.text(rtl ? left : right, X + W / 2, fy, W / 2, { size: 8, color: C.medium, align: 'right' });
   }
@@ -328,6 +403,14 @@ export async function toXlsx(model, lang) {
         else if (it.type === 'text') { const r = summary.addRow([it.text]); summary.mergeCells(r.number, 1, r.number, 2); r.getCell(1).alignment = { wrapText: true, vertical: 'top' }; r.height = Math.min(400, 15 * (1 + Math.ceil(String(it.text).length / 110) + (String(it.text).match(/\n/g) || []).length)); }
         else if (it.type === 'bullets') { if (it.intro) addText(it.intro, null, false); for (const b of it.items) { const r = summary.addRow([`• ${b}`]); summary.mergeCells(r.number, 1, r.number, 2); r.getCell(1).alignment = { wrapText: true, vertical: 'top' }; } }
         else if (it.type === 'kv') for (const [k, v] of it.rows) addText(k, v);
+        else if (it.type === 'image' && it.data) {
+          const id = wb.addImage({ buffer: it.data, extension: it.imgType === 'jpg' ? 'jpeg' : 'png' });
+          const wpx = Math.round((700 * clampN(it.widthPct, 10, 100, 60)) / 100); const hpx = it.w && it.h ? Math.round((it.h / it.w) * wpx) : Math.round(wpx * 0.6);
+          const r0 = summary.rowCount + 1; summary.addRow([]);
+          summary.addImage(id, { tl: { col: 0, row: r0 - 1 }, ext: { width: wpx, height: hpx } });
+          for (let k = 0; k < Math.ceil(hpx / 20); k++) summary.addRow([]);
+          if (it.caption) addText(it.caption, null, false);
+        }
       }
     }
     items.filter(it => it.type === 'table').forEach((it, k, arr) => tables.push({ heading: arr.length > 1 ? `${sec.heading} ${k + 1}` : sec.heading, table: it.table }));
@@ -361,31 +444,37 @@ export async function toXlsx(model, lang) {
 // ---------------------------------------------------------------- DOCX
 export async function toDocx(model, lang) {
   const rtl = lang === 'ar';
+  const st = styleOf(model);
+  const BODY = st.bodyFont; const HEAD = st.headFont;
+  const BSZ = Math.round(st.bodySize * 2); const HSZ = Math.round(st.headSize * 2);
+  const MT = Math.round(st.marginCm * 567);
   const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType, Header, Footer, PageNumber, BorderStyle, HeadingLevel, TableOfContents } = docx;
-  const run = (t, o = {}) => new TextRun({ text: String(t ?? ''), font: o.font || BODY_FONT, size: o.size || 20, bold: o.bold, italics: o.italics, color: (o.color || C.ink).slice(1), rightToLeft: rtl });
+  const run = (t, o = {}) => new TextRun({ text: String(t ?? ''), font: o.font || BODY, size: o.size || BSZ, bold: o.bold, italics: o.italics, color: (o.color || C.ink).slice(1), rightToLeft: rtl });
   const para = (children, o = {}) => new Paragraph({ children: Array.isArray(children) ? children : [children], bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : o.align, spacing: { after: o.after ?? 120 }, heading: o.heading });
   const border = { style: BorderStyle.SINGLE, size: 4, color: C.line.slice(1) };
   const pal = palette(model.layout);
   const lay = model.layout || {};
   const children = [];
+  const ALIGN = { left: rtl ? AlignmentType.RIGHT : AlignmentType.LEFT, right: rtl ? AlignmentType.LEFT : AlignmentType.RIGHT, center: AlignmentType.CENTER, justify: AlignmentType.JUSTIFIED };
+  const logoRun = (maxW, maxH) => { const r = lay.logoW && lay.logoH ? Math.min(maxW / lay.logoW, maxH / lay.logoH) : null; return new docx.ImageRun({ data: lay.logoBuffer, transformation: r ? { width: Math.round(lay.logoW * r), height: Math.round(lay.logoH * r) } : { width: maxW, height: maxH }, type: lay.logoType || 'png' }); };
   if (model.cover) {
-    if (lay.logoBuffer) children.push(new Paragraph({ alignment: rtl ? AlignmentType.RIGHT : AlignmentType.LEFT, children: [new docx.ImageRun({ data: lay.logoBuffer, transformation: { width: 160, height: 60 }, type: lay.logoType || 'png' })] }));
-    else if (lay.logoText) children.push(para(run(lay.logoText, { font: HEAD_FONT, size: 32, bold: true, color: pal.accent })));
+    if (lay.logoBuffer) children.push(new Paragraph({ alignment: ALIGN[st.logoPosition], children: [logoRun(160, 60)] }));
+    else if (lay.logoText) children.push(para(run(lay.logoText, { font: HEAD, size: 32, bold: true, color: pal.accent })));
     children.push(new Paragraph({ spacing: { before: 2400 }, children: [] }));
   }
   children.push(para(run((model.eyebrow || '').toUpperCase(), { bold: true, color: pal.accent, size: 18 })));
-  children.push(para(run(model.title, { font: HEAD_FONT, size: model.cover ? 52 : 40, bold: true, color: pal.title })));
+  children.push(para(run(model.title, { font: HEAD, size: model.cover ? 52 : 40, bold: true, color: pal.title })));
   if (model.subtitle) children.push(para(run(model.subtitle, { size: 22 })));
   if (model.docLine) children.push(para(run(model.docLine, { size: 16, color: C.medium })));
   for (const [k, v] of model.meta || []) children.push(para([run(`${k}: `, { bold: true, color: C.dark }), run(v)], { after: 40 }));
   if (model.cover) children.push(new Paragraph({ spacing: { before: 1600 }, children: [] }), para(run(MADE_WITH[lang] || MADE_WITH.en, { size: 16, color: C.medium })), new Paragraph({ children: [new docx.PageBreak()] }));
-  if (model.kpis?.length) children.push(para(model.kpis.flatMap((k, i) => [run(`${i ? '   ' : ''}${k.value} `, { font: HEAD_FONT, bold: true, color: C.navy, size: 24 }), run(k.label, { size: 18 })])));
+  if (model.kpis?.length) children.push(para(model.kpis.flatMap((k, i) => [run(`${i ? '   ' : ''}${k.value} `, { font: HEAD, bold: true, color: C.navy, size: 24 }), run(k.label, { size: 18 })])));
   if (model.toc) {
-    if (model.tocLabel) children.push(para(run(model.tocLabel, { font: HEAD_FONT, size: 32, bold: true, color: pal.title })));
+    if (model.tocLabel) children.push(para(run(model.tocLabel, { font: HEAD, size: 32, bold: true, color: pal.title })));
     children.push(new TableOfContents(model.tocLabel || 'TOC', { hyperlink: true, headingStyleRange: '1-2' }));
     children.push(new Paragraph({ children: [new docx.PageBreak()] }));
   }
-  const TW = model.landscape ? 14600 : 9600;
+  const TW = (model.landscape ? 16838 : 11906) - 2 * MT;
   const tableOf = (t) => {
     const cols = t.columns; const tw = cols.reduce((a, c) => a + (c.width || 1), 0);
     const fsz = cols.length > 11 ? 13 : cols.length > 8 ? 15 : 18;
@@ -400,11 +489,23 @@ export async function toDocx(model, lang) {
     const c2 = (tx2, width, o) => new TableCell({ width: { size: width, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, color: 'auto', fill: o.fill.slice(1) }, borders: { top: border, bottom: border, left: border, right: border }, children: String(clean(tx2)).split('\n').map(line => new Paragraph({ bidirectional: rtl, children: [run(line, { size: 19, bold: o.bold, color: C.dark })] })) });
     return new Table({ width: { size: TW, type: WidthType.DXA }, columnWidths: [kw, vw], visuallyRightToLeft: rtl, rows: rows.map(([k, v], i) => new TableRow({ cantSplit: true, children: [c2(k, kw, { fill: C.tint, bold: true }), c2(v, vw, { fill: i % 2 ? C.light : C.white })] })) });
   };
+  const pxW = Math.round(TW / 15);
   for (const sec of model.sections || []) {
-    children.push(para(run(sec.heading, { font: HEAD_FONT, size: 28, bold: true, color: pal.title }), { heading: HeadingLevel.HEADING_1 }));
+    const ss = sec.style || {};
+    const tsz = ss.size ? Math.round(clampN(ss.size, 8, 18, st.bodySize) * 2) : BSZ;
+    const tal = ALIGN[ss.align] || ALIGN[st.align];
+    const bg = hexOk(ss.background);
+    if (ss.pageBreakBefore) children.push(new Paragraph({ children: [new docx.PageBreak()] }));
+    if (!ss.hideTitle) children.push(para(run(sec.heading, { font: HEAD, size: HSZ, bold: true, color: pal.title }), { heading: HeadingLevel.HEADING_1 }));
     for (const it of itemsOf(sec)) {
-      if (it.type === 'sub') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : undefined, spacing: { before: 200, after: 100 }, children: [run(it.text, { font: HEAD_FONT, size: 23, bold: true, color: pal.title })] }));
-      else if (it.type === 'text') for (const chunk of String(it.text || '').split('\n')) children.push(para(run(chunk), { after: 80 }));
+      if (it.type === 'sub') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : undefined, spacing: { before: 200, after: 100 }, children: [run(it.text, { font: HEAD, size: Math.max(BSZ + 2, Math.round(HSZ * 0.82)), bold: true, color: pal.title })] }));
+      else if (it.type === 'text') for (const chunk of String(it.text || '').split('\n')) children.push(new Paragraph({ bidirectional: rtl, alignment: tal, spacing: { after: 80 }, shading: bg ? { type: ShadingType.CLEAR, color: 'auto', fill: bg.slice(1) } : undefined, children: [run(chunk, { size: tsz, bold: !!ss.bold, italics: !!ss.italic, color: hexOk(ss.color) || C.ink })] }));
+      else if (it.type === 'image' && it.data) {
+        let dw = Math.round((pxW * clampN(it.widthPct, 10, 100, 60)) / 100); let dh = it.w && it.h ? Math.round((it.h / it.w) * dw) : Math.round(dw * 0.6);
+        const maxH = model.landscape ? 520 : 820; if (dh > maxH) { dw = Math.round(dw * (maxH / dh)); dh = maxH; }
+        children.push(new Paragraph({ alignment: ALIGN[it.align] || AlignmentType.CENTER, children: [new docx.ImageRun({ data: it.data, type: it.imgType || 'png', transformation: { width: dw, height: dh } })] }));
+        if (it.caption) children.push(para(run(it.caption, { italics: true, size: 17 }), { align: ALIGN[it.align] || AlignmentType.CENTER }));
+      }
       else if (it.type === 'bullets') {
         if (it.intro) children.push(para(run(it.intro, { bold: true, color: C.dark }), { after: 60 }));
         for (const b of it.items) children.push(new Paragraph({ bullet: { level: 0 }, bidirectional: rtl, alignment: rtl ? AlignmentType.RIGHT : undefined, spacing: { after: 60 }, children: [run(b)] }));
@@ -420,11 +521,11 @@ export async function toDocx(model, lang) {
   }
   const d = new Document({
     creator: 'DynamicMS', title: clean(model.title), features: { updateFields: !!model.toc },
-    styles: { default: { document: { run: { font: BODY_FONT, size: 20, color: C.ink.slice(1) } } } },
+    styles: { default: { document: { run: { font: BODY, size: BSZ, color: C.ink.slice(1) } } } },
     sections: [{
-      properties: { page: { size: model.landscape ? { width: 11906, height: 16838, orientation: docx.PageOrientation.LANDSCAPE } : { width: 11906, height: 16838 }, margin: { top: 1080, bottom: 1080, left: 1080, right: 1080 } } },
-      headers: { default: new Header({ children: [para(run(lay.headerText || model.title, { size: 16, color: C.medium }))] }) },
-      footers: { default: new Footer({ children: [new Paragraph({ bidirectional: rtl, alignment: AlignmentType.RIGHT, children: [run(`${model.footer || 'DynamicMS'} · ${model.pageLabel || 'Page'} `, { size: 16, color: C.medium }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: C.medium.slice(1) }), run(' / ', { size: 16, color: C.medium }), new TextRun({ children: [PageNumber.TOTAL_PAGES], size: 16, color: C.medium.slice(1) })] })] }) },
+      properties: { page: { size: model.landscape ? { width: 11906, height: 16838, orientation: docx.PageOrientation.LANDSCAPE } : { width: 11906, height: 16838 }, margin: { top: MT, bottom: MT, left: MT, right: MT } } },
+      headers: { default: new Header({ children: [new Paragraph({ bidirectional: rtl, children: [...(st.headerLogo && lay.logoBuffer ? [logoRun(70, 24), run('   ')] : []), run(lay.headerText || model.title, { size: 16, color: C.medium })] })] }) },
+      footers: { default: new Footer({ children: [new Paragraph({ bidirectional: rtl, alignment: AlignmentType.RIGHT, children: st.pageNumbers ? [run(`${model.footer || 'DynamicMS'} · ${model.pageLabel || 'Page'} `, { size: 16, color: C.medium }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: C.medium.slice(1) }), run(' / ', { size: 16, color: C.medium }), new TextRun({ children: [PageNumber.TOTAL_PAGES], size: 16, color: C.medium.slice(1) })] : [run(model.footer || 'DynamicMS', { size: 16, color: C.medium })] })] }) },
       children,
     }],
   });

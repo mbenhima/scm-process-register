@@ -4699,5 +4699,645 @@ export const DICT = {
 "A solution by": {
 "fr": "Une solution de",
 "ar": "حل من"
+},
+"No menu item matches “{q}”.": {
+"fr": "Aucun élément du menu ne correspond à « {q} ».",
+"ar": "لا يوجد عنصر في القائمة يطابق «{q}»."
+},
+"Clear the filter": {
+"fr": "Effacer le filtre",
+"ar": "مسح عامل التصفية"
+},
+"Resize navigation panel": {
+"fr": "Redimensionner le panneau de navigation",
+"ar": "تغيير حجم لوحة التنقل"
+},
+"Pagination": {
+"fr": "Pagination",
+"ar": "ترقيم الصفحات"
+},
+"{from}–{to} of {total}": {
+"fr": "{from}–{to} sur {total}",
+"ar": "{from}–{to} من {total}"
+},
+"Rows per page": {
+"fr": "Lignes par page",
+"ar": "عدد الأسطر في الصفحة"
+},
+"Density": {
+"fr": "Densité",
+"ar": "الكثافة"
+},
+"Comfortable": {
+"fr": "Confortable",
+"ar": "مريحة"
+},
+"Compact": {
+"fr": "Compacte",
+"ar": "مضغوطة"
+},
+"Previous page": {
+"fr": "Page précédente",
+"ar": "الصفحة السابقة"
+},
+"Page {n} of {total}": {
+"fr": "Page {n} sur {total}",
+"ar": "الصفحة {n} من {total}"
+},
+"Next page": {
+"fr": "Page suivante",
+"ar": "الصفحة التالية"
+},
+"Template default": {
+"fr": "Par défaut du modèle",
+"ar": "الإعداد الافتراضي للنموذج"
+},
+"Body font": {
+"fr": "Police du texte",
+"ar": "خط النص"
+},
+"Heading font": {
+"fr": "Police des titres",
+"ar": "خط العناوين"
+},
+"Body size (pt)": {
+"fr": "Taille du texte (pt)",
+"ar": "حجم النص (نقطة)"
+},
+"Heading size (pt)": {
+"fr": "Taille des titres (pt)",
+"ar": "حجم العناوين (نقطة)"
+},
+"Text alignment": {
+"fr": "Alignement du texte",
+"ar": "محاذاة النص"
+},
+"Left": {
+"fr": "À gauche",
+"ar": "يسار"
+},
+"Justified": {
+"fr": "Justifié",
+"ar": "ضبط"
+},
+"Centered": {
+"fr": "Centré",
+"ar": "وسط"
+},
+"Right": {
+"fr": "À droite",
+"ar": "يمين"
+},
+"Page": {
+"fr": "Page",
+"ar": "الصفحة"
+},
+"Orientation": {
+"fr": "Orientation",
+"ar": "الاتجاه"
+},
+"Automatic (registers in landscape)": {
+"fr": "Automatique (registres en paysage)",
+"ar": "تلقائي (السجلات بالعرض)"
+},
+"Portrait": {
+"fr": "Portrait",
+"ar": "طولي"
+},
+"Landscape": {
+"fr": "Paysage",
+"ar": "عرضي"
+},
+"Margins (cm)": {
+"fr": "Marges (cm)",
+"ar": "الهوامش (سم)"
+},
+"Cover page": {
+"fr": "Page de garde",
+"ar": "صفحة الغلاف"
+},
+"Table of contents": {
+"fr": "Table des matières",
+"ar": "جدول المحتويات"
+},
+"Numbered sections": {
+"fr": "Sections numérotées",
+"ar": "أقسام مرقمة"
+},
+"Page numbers": {
+"fr": "Numéros de page",
+"ar": "أرقام الصفحات"
+},
+"Colours": {
+"fr": "Couleurs",
+"ar": "الألوان"
+},
+"Heading colour": {
+"fr": "Couleur des titres",
+"ar": "لون العناوين"
+},
+"Table header colour": {
+"fr": "Couleur de l'en-tête des tableaux",
+"ar": "لون رأس الجداول"
+},
+"Accent colour": {
+"fr": "Couleur d'accent",
+"ar": "لون التمييز"
+},
+"Empty fields use the organization layout (Documents › Layout).": {
+"fr": "Les champs vides reprennent la mise en page de l'organisme (Documents › Mise en page).",
+"ar": "الحقول الفارغة تستخدم تخطيط المؤسسة (الوثائق › التخطيط)."
+},
+"Logo, header and footer": {
+"fr": "Logo, en-tête et pied de page",
+"ar": "الشعار والرأس والتذييل"
+},
+"Logo": {
+"fr": "Logo",
+"ar": "الشعار"
+},
+"Organization logo": {
+"fr": "Logo de l'organisme",
+"ar": "شعار المؤسسة"
+},
+"A logo for this template": {
+"fr": "Un logo propre à ce modèle",
+"ar": "شعار خاص بهذا النموذج"
+},
+"No logo": {
+"fr": "Pas de logo",
+"ar": "بدون شعار"
+},
+"Logo position on the cover": {
+"fr": "Position du logo sur la page de garde",
+"ar": "موضع الشعار على الغلاف"
+},
+"Logo in the page header": {
+"fr": "Logo dans l'en-tête des pages",
+"ar": "الشعار في رأس الصفحات"
+},
+"Template logo": {
+"fr": "Logo du modèle",
+"ar": "شعار النموذج"
+},
+"Replace the logo": {
+"fr": "Remplacer le logo",
+"ar": "استبدال الشعار"
+},
+"Organization layout": {
+"fr": "Mise en page de l'organisme",
+"ar": "تخطيط المؤسسة"
+},
+"Purpose and scope": {
+"fr": "Objet et domaine d'application",
+"ar": "الغرض والنطاق"
+},
+"This document defines the commitments of the organization and how they are met, reviewed and improved.": {
+"fr": "Ce document définit les engagements de l'organisme et la manière dont ils sont tenus, revus et améliorés.",
+"ar": "تحدد هذه الوثيقة التزامات المؤسسة وكيفية الوفاء بها ومراجعتها وتحسينها."
+},
+"Organization · code · version": {
+"fr": "Organisme · code · version",
+"ar": "المؤسسة · الرمز · الإصدار"
+},
+"Page 1 / 2": {
+"fr": "Page 1 / 2",
+"ar": "الصفحة 1 / 2"
+},
+"Preview of the formatting; Word, PDF and Excel files apply it when downloaded.": {
+"fr": "Aperçu de la mise en forme ; les fichiers Word, PDF et Excel l'appliquent au téléchargement.",
+"ar": "معاينة التنسيق؛ تطبقه ملفات Word وPDF وExcel عند التنزيل."
+},
+"Section formatting": {
+"fr": "Mise en forme de la section",
+"ar": "تنسيق القسم"
+},
+"Alignment": {
+"fr": "Alignement",
+"ar": "المحاذاة"
+},
+"Document default": {
+"fr": "Par défaut du document",
+"ar": "الإعداد الافتراضي للوثيقة"
+},
+"Text size (pt)": {
+"fr": "Taille du texte (pt)",
+"ar": "حجم النص (نقطة)"
+},
+"Text colour": {
+"fr": "Couleur du texte",
+"ar": "لون النص"
+},
+"Background (callout)": {
+"fr": "Fond (encadré)",
+"ar": "الخلفية (إطار)"
+},
+"Bold": {
+"fr": "Gras",
+"ar": "غامق"
+},
+"Italic": {
+"fr": "Italique",
+"ar": "مائل"
+},
+"Start on a new page": {
+"fr": "Commencer sur une nouvelle page",
+"ar": "البدء في صفحة جديدة"
+},
+"Hide the section title": {
+"fr": "Masquer le titre de la section",
+"ar": "إخفاء عنوان القسم"
+},
+"Picture": {
+"fr": "Image",
+"ar": "صورة"
+},
+"Picture uploaded.": {
+"fr": "Image téléversée.",
+"ar": "تم رفع الصورة."
+},
+"Picture or logo": {
+"fr": "Image ou logo",
+"ar": "صورة أو شعار"
+},
+"Step value": {
+"fr": "Valeur d'étape",
+"ar": "قيمة خطوة"
+},
+"Duplicate section": {
+"fr": "Dupliquer la section",
+"ar": "تكرار القسم"
+},
+"No picture yet.": {
+"fr": "Pas encore d'image.",
+"ar": "لا توجد صورة بعد."
+},
+"Replace the picture": {
+"fr": "Remplacer l'image",
+"ar": "استبدال الصورة"
+},
+"Upload a picture (PNG or JPEG)": {
+"fr": "Téléverser une image (PNG ou JPEG)",
+"ar": "رفع صورة (PNG أو JPEG)"
+},
+"Width (% of the page)": {
+"fr": "Largeur (% de la page)",
+"ar": "العرض (% من الصفحة)"
+},
+"Caption": {
+"fr": "Légende",
+"ar": "التعليق"
+},
+"Not saved yet": {
+"fr": "Pas encore enregistré",
+"ar": "لم يُحفظ بعد"
+},
+"Saving…": {
+"fr": "Enregistrement…",
+"ar": "جارٍ الحفظ…"
+},
+"Saved": {
+"fr": "Enregistré",
+"ar": "تم الحفظ"
+},
+"Error": {
+"fr": "Erreur",
+"ar": "خطأ"
+},
+"Row deleted.": {
+"fr": "Ligne supprimée.",
+"ar": "تم حذف السطر."
+},
+"Undo": {
+"fr": "Annuler",
+"ar": "تراجع"
+},
+"{n} rows": {
+"fr": "{n} lignes",
+"ar": "{n} أسطر"
+},
+"Save all": {
+"fr": "Tout enregistrer",
+"ar": "حفظ الكل"
+},
+"Duplicate previous row": {
+"fr": "Dupliquer la ligne précédente",
+"ar": "تكرار السطر السابق"
+},
+"Duplicate row": {
+"fr": "Dupliquer la ligne",
+"ar": "تكرار السطر"
+},
+"Delete row": {
+"fr": "Supprimer la ligne",
+"ar": "حذف السطر"
+},
+"Add row": {
+"fr": "Ajouter une ligne",
+"ar": "إضافة سطر"
+},
+"Tab and Enter move between cells · Esc reverts · Ctrl+D duplicates · Ctrl+S saves · paste rows from a spreadsheet": {
+"fr": "Tab et Entrée passent d'une cellule à l'autre · Échap annule · Ctrl+D duplique · Ctrl+S enregistre · collez des lignes depuis un tableur",
+"ar": "Tab وEnter للتنقل بين الخلايا · Esc للتراجع · Ctrl+D للتكرار · Ctrl+S للحفظ · الصق أسطرًا من جدول بيانات"
+},
+"Row {n} deleted.": {
+"fr": "Ligne {n} supprimée.",
+"ar": "تم حذف السطر {n}."
+},
+"{n} row(s) pasted.": {
+"fr": "{n} ligne(s) collée(s).",
+"ar": "تم لصق {n} سطر."
+},
+"Duplicate row {n}": {
+"fr": "Dupliquer la ligne {n}",
+"ar": "تكرار السطر {n}"
+},
+"Enter moves down · Enter on the last row adds a row · Esc reverts · Ctrl+D duplicates · paste rows from a spreadsheet · open a row in a large window for long texts": {
+"fr": "Entrée descend · Entrée sur la dernière ligne ajoute une ligne · Échap annule · Ctrl+D duplique · collez des lignes depuis un tableur · ouvrez une ligne en grand pour les textes longs",
+"ar": "Enter للنزول · Enter في السطر الأخير يضيف سطرًا · Esc للتراجع · Ctrl+D للتكرار · الصق أسطرًا من جدول بيانات · افتح السطر في نافذة كبيرة للنصوص الطويلة"
+},
+"Library template (read-only). Copy it to adapt the sections, texts, pictures and formatting for your organization; the copy replaces it in your library.": {
+"fr": "Modèle de la bibliothèque (lecture seule). Copiez-le pour adapter les sections, les textes, les images et la mise en forme à votre organisme ; la copie le remplace dans votre bibliothèque.",
+"ar": "نموذج من المكتبة (للقراءة فقط). انسخه لتكييف الأقسام والنصوص والصور والتنسيق مع مؤسستك؛ تحل النسخة محله في مكتبتك."
+},
+"Structure": {
+"fr": "Structure",
+"ar": "البنية"
+},
+"Formatting": {
+"fr": "Mise en forme",
+"ar": "التنسيق"
+},
+"General": {
+"fr": "Général",
+"ar": "عام"
+},
+"Edit the structure and formatting": {
+"fr": "Modifier la structure et la mise en forme",
+"ar": "تعديل البنية والتنسيق"
+},
+"Changes apply to this draft only. Add, rename, reorder, duplicate or delete sections, insert pictures and change the formatting; data tables keep their content.": {
+"fr": "Les modifications s'appliquent à ce brouillon uniquement. Ajoutez, renommez, réordonnez, dupliquez ou supprimez des sections, insérez des images et changez la mise en forme ; les tableaux de données gardent leur contenu.",
+"ar": "تنطبق التغييرات على هذه المسودة فقط. أضف الأقسام أو أعد تسميتها أو ترتيبها أو كررها أو احذفها، وأدرج صورًا وغيّر التنسيق؛ تحتفظ جداول البيانات بمحتواها."
+},
+"Macro processes of {e2e}": {
+"fr": "Macro-processus de {e2e}",
+"ar": "العمليات الكلية لـ {e2e}"
+},
+"View and customize the template": {
+"fr": "Voir et personnaliser le modèle",
+"ar": "عرض النموذج وتخصيصه"
+},
+"All project templates": {
+"fr": "Tous les modèles de projet",
+"ar": "جميع نماذج المشاريع"
+},
+"A template defines the end-to-end processes, macro processes, steps, business rules, controls, risks, alerts, KPIs and reporting of the project. ★ marks your organization’s templates.": {
+"fr": "Un modèle définit les processus de bout en bout, les macro-processus, les étapes, les règles de gestion, les contrôles, les risques, les alertes, les KPI et le reporting du projet. ★ signale les modèles de votre organisme.",
+"ar": "يحدد النموذج العمليات الشاملة والعمليات الكلية والخطوات وقواعد العمل والضوابط والمخاطر والتنبيهات ومؤشرات الأداء وتقارير المشروع. تشير ★ إلى نماذج مؤسستك."
+},
+"A template is the blueprint of a project: its end-to-end processes, macro processes, tasks and steps, business rules, controls, risks and opportunities, alerts, KPIs and reporting. Open a template to see and customize it.": {
+"fr": "Un modèle est le plan type d'un projet : ses processus de bout en bout, macro-processus, tâches et étapes, règles de gestion, contrôles, risques et opportunités, alertes, KPI et reporting. Ouvrez un modèle pour le consulter et le personnaliser.",
+"ar": "النموذج هو المخطط الأساسي للمشروع: عملياته الشاملة وعملياته الكلية ومهامه وخطواته وقواعد العمل والضوابط والمخاطر والفرص والتنبيهات ومؤشرات الأداء والتقارير. افتح نموذجًا لعرضه وتخصيصه."
+},
+"Search templates…": {
+"fr": "Rechercher un modèle…",
+"ar": "البحث في النماذج…"
+},
+"All origins": {
+"fr": "Toutes les origines",
+"ar": "جميع المصادر"
+},
+"Universal": {
+"fr": "Universel",
+"ar": "عام"
+},
+"Template created as a draft.": {
+"fr": "Modèle créé en brouillon.",
+"ar": "تم إنشاء النموذج كمسودة."
+},
+"Start from": {
+"fr": "Partir de",
+"ar": "البدء من"
+},
+"The reference catalog (blank template)": {
+"fr": "Le catalogue de référence (modèle vierge)",
+"ar": "الكتالوج المرجعي (نموذج فارغ)"
+},
+"Full lifecycle": {
+"fr": "Cycle de vie complet",
+"ar": "دورة حياة كاملة"
+},
+"SME quick start": {
+"fr": "Démarrage rapide PME",
+"ar": "بدء سريع للمؤسسات الصغيرة"
+},
+"Template published: it is offered when creating a project.": {
+"fr": "Modèle publié : il est proposé à la création d'un projet.",
+"ar": "تم نشر النموذج: يُقترح عند إنشاء مشروع."
+},
+"Status changed.": {
+"fr": "Statut modifié.",
+"ar": "تم تغيير الحالة."
+},
+"Copy created: you can now customize it.": {
+"fr": "Copie créée : vous pouvez maintenant la personnaliser.",
+"ar": "تم إنشاء نسخة: يمكنك الآن تخصيصها."
+},
+"Delete this template? A template used by projects is retired instead.": {
+"fr": "Supprimer ce modèle ? Un modèle utilisé par des projets est retiré à la place.",
+"ar": "حذف هذا النموذج؟ يُسحب النموذج المستخدم في مشاريع بدلًا من حذفه."
+},
+"Template retired: projects use it.": {
+"fr": "Modèle retiré : des projets l'utilisent.",
+"ar": "تم سحب النموذج: تستخدمه مشاريع."
+},
+"Template deleted.": {
+"fr": "Modèle supprimé.",
+"ar": "تم حذف النموذج."
+},
+"Overview": {
+"fr": "Vue d'ensemble",
+"ar": "نظرة عامة"
+},
+"Processes and steps": {
+"fr": "Processus et étapes",
+"ar": "العمليات والخطوات"
+},
+"Reporting": {
+"fr": "Reporting",
+"ar": "التقارير"
+},
+"Project template": {
+"fr": "Modèle de projet",
+"ar": "نموذج مشروع"
+},
+"Use this template": {
+"fr": "Utiliser ce modèle",
+"ar": "استخدام هذا النموذج"
+},
+"Copy to customize": {
+"fr": "Copier pour personnaliser",
+"ar": "نسخ للتخصيص"
+},
+"Back to draft": {
+"fr": "Repasser en brouillon",
+"ar": "إعادة إلى مسودة"
+},
+"Library templates are read-only. Select Copy to customize to adapt this template for your organization; your copy is offered next to it when creating a project.": {
+"fr": "Les modèles de la bibliothèque sont en lecture seule. Sélectionnez Copier pour personnaliser afin d'adapter ce modèle à votre organisme ; votre copie est proposée à côté de lui à la création d'un projet.",
+"ar": "نماذج المكتبة للقراءة فقط. اختر «نسخ للتخصيص» لتكييف هذا النموذج مع مؤسستك؛ تُقترح نسختك بجانبه عند إنشاء مشروع."
+},
+"You can view this template; editing requires the permission to manage templates.": {
+"fr": "Vous pouvez consulter ce modèle ; le modifier nécessite la permission de gérer les modèles.",
+"ar": "يمكنك عرض هذا النموذج؛ يتطلب تعديله صلاحية إدارة النماذج."
+},
+"Template parts": {
+"fr": "Parties du modèle",
+"ar": "أجزاء النموذج"
+},
+"{n} business rules": {
+"fr": "{n} règles de gestion",
+"ar": "{n} قاعدة عمل"
+},
+"Add a rule": {
+"fr": "Ajouter une règle",
+"ar": "إضافة قاعدة"
+},
+"{n} controls": {
+"fr": "{n} contrôles",
+"ar": "{n} ضابط"
+},
+"Add a control": {
+"fr": "Ajouter un contrôle",
+"ar": "إضافة ضابط"
+},
+"{n} risks and opportunities": {
+"fr": "{n} risques et opportunités",
+"ar": "{n} من المخاطر والفرص"
+},
+"Add a risk or opportunity": {
+"fr": "Ajouter un risque ou une opportunité",
+"ar": "إضافة خطر أو فرصة"
+},
+"From 1 to 5": {
+"fr": "De 1 à 5",
+"ar": "من 1 إلى 5"
+},
+"{n} alerts": {
+"fr": "{n} alertes",
+"ar": "{n} تنبيه"
+},
+"Add an alert": {
+"fr": "Ajouter une alerte",
+"ar": "إضافة تنبيه"
+},
+"Alert": {
+"fr": "Alerte",
+"ar": "تنبيه"
+},
+"Escalated to": {
+"fr": "Escaladée à",
+"ar": "التصعيد إلى"
+},
+"{n} KPIs": {
+"fr": "{n} KPI",
+"ar": "{n} مؤشر أداء"
+},
+"Add a KPI": {
+"fr": "Ajouter un KPI",
+"ar": "إضافة مؤشر أداء"
+},
+"{n} reports": {
+"fr": "{n} rapports",
+"ar": "{n} تقرير"
+},
+"Add a report": {
+"fr": "Ajouter un rapport",
+"ar": "إضافة تقرير"
+},
+"What a project created from this template contains. Excluded items stay in the template and can be included again.": {
+"fr": "Ce que contient un projet créé à partir de ce modèle. Les éléments exclus restent dans le modèle et peuvent être réintégrés.",
+"ar": "ما يحتويه المشروع المنشأ من هذا النموذج. تبقى العناصر المستبعدة في النموذج ويمكن إدراجها مجددًا."
+},
+"Delete this custom element and everything it contains?": {
+"fr": "Supprimer cet élément personnalisé et tout ce qu'il contient ?",
+"ar": "حذف هذا العنصر المخصص وكل ما يحتويه؟"
+},
+"Add a phase": {
+"fr": "Ajouter une phase",
+"ar": "إضافة مرحلة"
+},
+"Include {x}": {
+"fr": "Inclure {x}",
+"ar": "إدراج {x}"
+},
+"Custom": {
+"fr": "Personnalisé",
+"ar": "مخصص"
+},
+"{n} of {m} macro processes": {
+"fr": "{n} macro-processus sur {m}",
+"ar": "{n} من {m} عملية كلية"
+},
+"Gate at the end of the phase": {
+"fr": "Jalon à la fin de la phase",
+"ar": "بوابة في نهاية المرحلة"
+},
+"Add a macro process": {
+"fr": "Ajouter un macro-processus",
+"ar": "إضافة عملية كلية"
+},
+"Delete the phase": {
+"fr": "Supprimer la phase",
+"ar": "حذف المرحلة"
+},
+"Phase name": {
+"fr": "Nom de la phase",
+"ar": "اسم المرحلة"
+},
+"Include": {
+"fr": "Inclure",
+"ar": "إدراج"
+},
+"Macro process name": {
+"fr": "Nom du macro-processus",
+"ar": "اسم العملية الكلية"
+},
+"Add a step": {
+"fr": "Ajouter une étape",
+"ar": "إضافة خطوة"
+},
+"Step name": {
+"fr": "Nom de l'étape",
+"ar": "اسم الخطوة"
+},
+"Start with a verb and name the object, e.g. \"Validate supplier list\".": {
+"fr": "Commencez par un verbe et nommez l'objet, par exemple « Valider la liste des fournisseurs ».",
+"ar": "ابدأ بفعل واذكر الموضوع، مثل «التحقق من قائمة الموردين»."
+},
+"Place after": {
+"fr": "Placer après",
+"ar": "الوضع بعد"
+},
+"End-to-end process": {
+"fr": "Processus de bout en bout",
+"ar": "عملية شاملة"
+},
+"Reporting plan of the project": {
+"fr": "Plan de reporting du projet",
+"ar": "خطة تقارير المشروع"
+},
+"From template {c} v{v}": {
+"fr": "Du modèle {c} v{v}",
+"ar": "من النموذج {c} الإصدار {v}"
+},
+"The reports defined by the project template (Project templates › Reporting); the reference catalog applies to projects created without a template.": {
+"fr": "Les rapports définis par le modèle du projet (Modèles de projet › Reporting) ; le catalogue de référence s'applique aux projets créés sans modèle.",
+"ar": "التقارير التي يحددها نموذج المشروع (نماذج المشاريع › التقارير)؛ ينطبق الكتالوج المرجعي على المشاريع المنشأة بدون نموذج."
+},
+"Resize the context panel": {
+"fr": "Redimensionner le panneau de contexte",
+"ar": "تغيير حجم لوحة السياق"
 }
 };

@@ -1,0 +1,160 @@
+1176	Aucun élément du menu ne correspond à « {q} ».
+1177	Effacer le filtre
+1178	Redimensionner le panneau de navigation
+1179	Pagination
+1180	{from}–{to} sur {total}
+1181	Lignes par page
+1182	Densité
+1183	Confortable
+1184	Compacte
+1185	Page précédente
+1186	Page {n} sur {total}
+1187	Page suivante
+1188	Par défaut du modèle
+1189	Police du texte
+1190	Police des titres
+1191	Taille du texte (pt)
+1192	Taille des titres (pt)
+1193	Alignement du texte
+1194	À gauche
+1195	Justifié
+1196	Centré
+1197	À droite
+1198	Page
+1199	Orientation
+1200	Automatique (registres en paysage)
+1201	Portrait
+1202	Paysage
+1203	Marges (cm)
+1204	Page de garde
+1205	Table des matières
+1206	Sections numérotées
+1207	Numéros de page
+1208	Couleurs
+1209	Couleur des titres
+1210	Couleur de l'en-tête des tableaux
+1211	Couleur d'accent
+1212	Les champs vides reprennent la mise en page de l'organisme (Documents › Mise en page).
+1213	Logo, en-tête et pied de page
+1214	Logo
+1215	Logo de l'organisme
+1216	Un logo propre à ce modèle
+1217	Pas de logo
+1218	Position du logo sur la page de garde
+1219	Logo dans l'en-tête des pages
+1220	Logo du modèle
+1221	Remplacer le logo
+1222	Mise en page de l'organisme
+1223	Objet et domaine d'application
+1224	Ce document définit les engagements de l'organisme et la manière dont ils sont tenus, revus et améliorés.
+1225	Organisme · code · version
+1226	Page 1 / 2
+1227	Aperçu de la mise en forme ; les fichiers Word, PDF et Excel l'appliquent au téléchargement.
+1228	Mise en forme de la section
+1229	Alignement
+1230	Par défaut du document
+1231	Taille du texte (pt)
+1232	Couleur du texte
+1233	Fond (encadré)
+1234	Gras
+1235	Italique
+1236	Commencer sur une nouvelle page
+1237	Masquer le titre de la section
+1238	Image
+1239	Image téléversée.
+1240	Image ou logo
+1241	Valeur d'étape
+1242	Dupliquer la section
+1243	Pas encore d'image.
+1244	Remplacer l'image
+1245	Téléverser une image (PNG ou JPEG)
+1246	Largeur (% de la page)
+1247	Légende
+1248	Pas encore enregistré
+1249	Enregistrement…
+1250	Enregistré
+1251	Erreur
+1252	Ligne supprimée.
+1253	Annuler
+1254	{n} lignes
+1255	Tout enregistrer
+1256	Dupliquer la ligne précédente
+1257	Dupliquer la ligne
+1258	Supprimer la ligne
+1259	Ajouter une ligne
+1260	Tab et Entrée passent d'une cellule à l'autre · Échap annule · Ctrl+D duplique · Ctrl+S enregistre · collez des lignes depuis un tableur
+1261	Ligne {n} supprimée.
+1262	{n} ligne(s) collée(s).
+1263	Dupliquer la ligne {n}
+1264	Entrée descend · Entrée sur la dernière ligne ajoute une ligne · Échap annule · Ctrl+D duplique · collez des lignes depuis un tableur · ouvrez une ligne en grand pour les textes longs
+1265	Modèle de la bibliothèque (lecture seule). Copiez-le pour adapter les sections, les textes, les images et la mise en forme à votre organisme ; la copie le remplace dans votre bibliothèque.
+1266	Structure
+1267	Mise en forme
+1268	Général
+1269	Modifier la structure et la mise en forme
+1270	Les modifications s'appliquent à ce brouillon uniquement. Ajoutez, renommez, réordonnez, dupliquez ou supprimez des sections, insérez des images et changez la mise en forme ; les tableaux de données gardent leur contenu.
+1271	Macro-processus de {e2e}
+1272	Voir et personnaliser le modèle
+1273	Tous les modèles de projet
+1274	Un modèle définit les processus de bout en bout, les macro-processus, les étapes, les règles de gestion, les contrôles, les risques, les alertes, les KPI et le reporting du projet. ★ signale les modèles de votre organisme.
+1275	Un modèle est le plan type d'un projet : ses processus de bout en bout, macro-processus, tâches et étapes, règles de gestion, contrôles, risques et opportunités, alertes, KPI et reporting. Ouvrez un modèle pour le consulter et le personnaliser.
+1276	Rechercher un modèle…
+1277	Toutes les origines
+1278	Universel
+1279	Modèle créé en brouillon.
+1280	Partir de
+1281	Le catalogue de référence (modèle vierge)
+1282	Cycle de vie complet
+1283	Démarrage rapide PME
+1284	Modèle publié : il est proposé à la création d'un projet.
+1285	Statut modifié.
+1286	Copie créée : vous pouvez maintenant la personnaliser.
+1287	Supprimer ce modèle ? Un modèle utilisé par des projets est retiré à la place.
+1288	Modèle retiré : des projets l'utilisent.
+1289	Modèle supprimé.
+1290	Vue d'ensemble
+1291	Processus et étapes
+1292	Reporting
+1293	Modèle de projet
+1294	Utiliser ce modèle
+1295	Copier pour personnaliser
+1296	Repasser en brouillon
+1297	Les modèles de la bibliothèque sont en lecture seule. Sélectionnez Copier pour personnaliser afin d'adapter ce modèle à votre organisme ; votre copie est proposée à côté de lui à la création d'un projet.
+1298	Vous pouvez consulter ce modèle ; le modifier nécessite la permission de gérer les modèles.
+1299	Parties du modèle
+1300	{n} règles de gestion
+1301	Ajouter une règle
+1302	{n} contrôles
+1303	Ajouter un contrôle
+1304	{n} risques et opportunités
+1305	Ajouter un risque ou une opportunité
+1306	De 1 à 5
+1307	{n} alertes
+1308	Ajouter une alerte
+1309	Alerte
+1310	Escaladée à
+1311	{n} KPI
+1312	Ajouter un KPI
+1313	{n} rapports
+1314	Ajouter un rapport
+1315	Ce que contient un projet créé à partir de ce modèle. Les éléments exclus restent dans le modèle et peuvent être réintégrés.
+1316	Supprimer cet élément personnalisé et tout ce qu'il contient ?
+1317	Ajouter une phase
+1318	Inclure {x}
+1319	Personnalisé
+1320	{n} macro-processus sur {m}
+1321	Jalon à la fin de la phase
+1322	Ajouter un macro-processus
+1323	Supprimer la phase
+1324	Nom de la phase
+1325	Inclure
+1326	Nom du macro-processus
+1327	Ajouter une étape
+1328	Nom de l'étape
+1329	Commencez par un verbe et nommez l'objet, par exemple « Valider la liste des fournisseurs ».
+1330	Placer après
+1331	Processus de bout en bout
+1332	Plan de reporting du projet
+1333	Du modèle {c} v{v}
+1334	Les rapports définis par le modèle du projet (Modèles de projet › Reporting) ; le catalogue de référence s'applique aux projets créés sans modèle.
+1335	Redimensionner le panneau de contexte

@@ -55,11 +55,11 @@ export default function Login() {
           <h2 className="serif">{t('One lifecycle, every step traced')}</h2>
           <p>{t('Each project runs the end-to-end processes of its management system. Every step records who did what, when, and with which evidence.')}</p>
           <div className="stack">
-            {[[Workflow, '12', t('end-to-end processes, from strategy to improvement')], [Layers, '162', t('macro processes across seven tiers and 29 verticals')], [ListChecks, '1,572', t('workflow steps, each with its own input form')]].map(([I, n, l]) => (
+            {[[Workflow, '12', t('end-to-end processes, from strategy to improvement')], [Layers, '162', t('macro processes across seven tiers and 29 verticals')], [ListChecks, (1572).toLocaleString({ fr: 'fr-FR', ar: 'ar-MA' }[lang] || 'en-GB'), t('workflow steps, each with its own input form')]].map(([I, n, l]) => (
               <div key={n} className="row" style={{ alignItems: 'center' }}><IconBadge icon={I} accent /><span className="serif" style={{ fontSize: 30, fontWeight: 900, color: 'var(--aiv-navy)' }}>{n}</span><span className="small" style={{ color: 'var(--aiv-navy)', maxWidth: 260 }}>{l}</span></div>
             ))}
           </div>
-          <div className="login-by"><span className="xsmall muted">{t('A solution by')}</span><img src="/aivalue-logo.png" alt="AI Value — Digital & AI Transformation" width="180" /></div>
+          <div className="login-by"><span className="xsmall muted">{t('A solution by')}</span><div className="login-by-logos"><img src="/aivalue-logo.png" alt="AI Value — Digital & AI Transformation" width="170" /><span className="login-by-sep" aria-hidden="true" /><img src="/flexiglob-logo.png" alt="FlexiGlob" width="170" /></div></div>
         </div>
       </aside>
     </div>

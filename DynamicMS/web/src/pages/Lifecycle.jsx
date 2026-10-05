@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Flag, CheckCircle2 } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
@@ -57,6 +57,16 @@ export default function Lifecycle() {
   const { e2e } = useParams();
   const navigate = useNavigate();
   const { data, loading, error, reload } = useData(projectId ? `/projects/${projectId}/lifecycle` : null);
+  // Opening a phase brings its macro processes into view (no scrolling needed).
+  const mpsRef = useRef(null);
+  const ready = !!data;
+  useEffect(() => {
+    if (!e2e || !ready) return;
+    const el = mpsRef.current;
+    if (!el) return;
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  }, [e2e, ready]);
   if (!projectId) return <NoProject />;
   if (loading && !data) return <Loading />;
   if (error) return <ErrorBox error={error} onRetry={reload} />;
@@ -87,6 +97,7 @@ export default function Lifecycle() {
             <div className="card flat tight"><div className="xsmall muted">{t('Trigger')}</div><div className="small strong">{tx(current.trigger, lang)}</div></div>
             <div className="card flat tight"><div className="xsmall muted">{t('Terminal event')}</div><div className="small strong">{tx(current.terminal, lang)}</div></div>
           </div>
+          <h4 id="phase-mps" ref={mpsRef} tabIndex={-1} className="scroll-target" style={{ margin: '0 0 var(--sp-12)' }}>{t('Macro processes of {e2e}', { e2e: current.e2e_id })} <span className="muted small">· {current.mps.length}</span></h4>
           <Table rows={current.mps} onRowClick={(m) => navigate(`/mp/${m.id}`)} columns={[
             { key: 'code', label: t('Code'), width: 90 },
             { key: 'name', label: t('Macro process'), render: m => <span className="strong">{tx(m.name, lang)}</span>, sortValue: m => tx(m.name, lang) },

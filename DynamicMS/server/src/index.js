@@ -23,6 +23,7 @@ import design from './routes/design.js';
 import reports from './routes/reports.js';
 import analytics from './routes/analytics.js';
 import admin from './routes/admin.js';
+import ptemplates from './routes/ptemplates.js';
 
 // ---- Startup guards
 if (process.env.NODE_ENV === 'production' && config.jwtSecret === 'dynamicms-local-dev-secret-change-me') {
@@ -68,6 +69,7 @@ app.use('/api', records);
 app.use('/api', ai);
 app.use('/api', design);
 app.use('/api', reports);
+app.use('/api', ptemplates);
 app.use('/api', analytics);
 app.use('/api/admin', admin);
 app.use('/api', (req, _res, next) => next(new HttpError(404, 'NOT_FOUND', 'Unknown endpoint.')));

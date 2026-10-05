@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Save, CheckCircle2, RotateCcw, Sparkles, Lock, History, ChevronDown, ChevronUp, FilePlus2, Download, Eye } from 'lucide-react';
+import { Split } from '../lib/layout.jsx';
 import { useApp, useData } from '../lib/state.jsx';
 import { api, download } from '../lib/api.js';
 import { PageHead, Card, Loading, ErrorBox, Status, Field, Modal, tx, IconBadge } from '../components/ui.jsx';
@@ -110,7 +111,7 @@ export default function Step() {
         </>}>
         <div className="row small" style={{ marginTop: 12 }}><Status value={overdue ? 'Overdue' : s.status} /><span className="tag outline">{tx(s.step.form.label, lang)}</span><span className="muted">{tx(s.roleName, lang)}{s.assignee ? ` · ${s.assignee.name}` : ''} · {t('Due')} {fmtDate(s.due_date)}</span></div>
       </PageHead>
-      <div className="grid-main">
+      <Split label={t('Resize the context panel')}>
         <div className="stack">
           <Card title={t('What to record')}>
             <div className="step-desc">
@@ -172,7 +173,7 @@ export default function Step() {
             {s.versions.length > 0 && <p className="xsmall muted" style={{ margin: '8px 0 0' }}>{t('{n} versions kept.', { n: s.versions.length })}</p>}
           </Card>
         </div>
-      </div>
+      </Split>
       {reopen && (
         <Modal title={t('Reopen step')} onClose={() => setReopen(false)} footer={<><button className="btn" onClick={() => setReopen(false)}>{t('Cancel')}</button><button className="btn btn-primary" disabled={just.trim().length < 5} onClick={doReopen}>{t('Reopen')}</button></>}>
           <p className="small">{t('Reopening keeps the previous value as a version and writes your justification to the audit trail.')}</p>

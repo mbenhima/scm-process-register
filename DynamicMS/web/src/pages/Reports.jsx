@@ -10,6 +10,7 @@ const FMT = [['pdf', 'PDF', FileText], ['xlsx', 'Excel', FileSpreadsheet], ['doc
 export default function Reports() {
   const { t, lang, projectId, project, toast, can } = useApp();
   const { data, loading, error } = useData('/reports');
+  const plan = useData(projectId ? `/projects/${projectId}/reporting-plan` : null);
   const [fmt, setFmt] = useState('pdf');
   const [rl, setRl] = useState(lang);
   const [busy, setBusy] = useState(null);
@@ -44,8 +45,9 @@ export default function Reports() {
               </div>
             ))}
           </div>
-          <Card title={t('Report catalog of the process design')}>
-            <Table rows={data.catalog} columns={[{ key: 'id', label: t('Code'), width: 90 }, { key: 'name', label: t('Report'), render: r => tx(r.name, lang) }, { key: 'audience', label: t('Audience'), render: r => (r.audience || []).map(x => tx(x, lang)).join(', ') }, { key: 'cadence', label: t('Refresh'), render: r => tx(r.cadence, lang) }]} />
+          <Card title={t('Reporting plan of the project')} action={plan.data?.template && <span className="small muted">{t('From template {c} v{v}', { c: plan.data.template.code, v: plan.data.template.version })}</span>}>
+            {plan.data ? <Table rows={plan.data.items} columns={[{ key: 'id', label: t('Code'), width: 90 }, { key: 'name', label: t('Report'), render: r => tx(r.name, lang) }, { key: 'audience', label: t('Audience'), render: r => tx(r.audience, lang) }, { key: 'frequency', label: t('Frequency'), render: r => tx(r.frequency, lang) }, { key: 'format', label: t('Format'), width: 90 }, { key: 'owner', label: t('Owner'), render: r => tx(r.ownerName, lang) }]} /> : <Loading />}
+            <p className="caption">{t('The reports defined by the project template (Project templates › Reporting); the reference catalog applies to projects created without a template.')}</p>
           </Card>
         </div>
       </div>

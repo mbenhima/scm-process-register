@@ -17,13 +17,16 @@ import '@fontsource/noto-naskh-arabic/700.css';
 import './styles/app.css';
 import { AppProvider } from './lib/state.jsx';
 import App from './App.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AppProvider>
-        <App />
-      </AppProvider>
+      <ErrorBoundary>
+        <AppProvider>
+          <App />
+        </AppProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   </React.StrictMode>,
 );

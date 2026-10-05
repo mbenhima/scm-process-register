@@ -150,8 +150,9 @@ r.get('/orgs/:id/templates', requirePerm('project.create', 'templates.manage'), 
   requireOrg(req, req.params.id);
   const o = get('SELECT * FROM organizations WHERE id=?', req.params.id);
   const mode = o.size === 'SME' ? 'SME' : req.query.mode || null;
-  const list = rows(all(`SELECT * FROM project_templates WHERE status='Published' AND (vertical IS NULL OR vertical=?) ${mode ? 'AND mode=?' : ''} ORDER BY vertical IS NULL, code`, o.sector, ...(mode ? [mode] : [])));
-  send(req, res, list);
+  // Library templates and the organization's own published templates (its own first).
+  const list = rows(all(`SELECT * FROM project_templates WHERE status='Published' AND (org_id IS NULL OR org_id=?) AND (vertical IS NULL OR vertical=?) ${mode ? 'AND mode=?' : ''} ORDER BY org_id IS NULL, vertical IS NULL, code`, o.id, o.sector, ...(mode ? [mode] : [])));
+  send(req, res, list.map(({ content, ...t }) => ({ ...t, library: !t.org_id })));
 }));
 r.post('/orgs/:id/projects', requirePerm('project.create'), h((req, res) => {
   requireOrg(req, req.params.id, true);

@@ -10,6 +10,22 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Self-heal a first load that stayed blank (e.g. the development server re-optimizing its
+      // dependencies while the page was loading): reload once, then show a message with a link.
+      window.addEventListener('vite:preloadError', function () { location.reload(); });
+      setTimeout(function () {
+        var root = document.getElementById('root');
+        if (root && root.childElementCount) return;
+        var k = 'dms.autoreload';
+        try {
+          if (!sessionStorage.getItem(k)) { sessionStorage.setItem(k, '1'); location.reload(); return; }
+          sessionStorage.removeItem(k);
+        } catch (e) { /* storage blocked */ }
+        root.innerHTML = '<p style="font:16px Open Sans,sans-serif;color:#2C3E50;padding:32px">DynamicMS did not finish loading. <a href="" style="color:#123A5F;font-weight:600">Reload the page</a>.</p>';
+      }, 8000);
+      window.addEventListener('load', function () { setTimeout(function () { try { if (document.getElementById('root').childElementCount) sessionStorage.removeItem('dms.autoreload'); } catch (e) { /* ignore */ } }, 9000); });
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

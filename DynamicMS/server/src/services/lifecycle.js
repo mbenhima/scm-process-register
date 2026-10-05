@@ -12,6 +12,7 @@ import { audit, snapshot } from './audit.js';
 import { raise } from './alerts.js';
 import { bad, conflict, HttpError } from '../http.js';
 import { addDays } from '../seed/rng.js';
+import { structureOf, listsOf, blueprintOf } from './blueprint.js';
 
 const E2E_ORDER = ['E2E-01', 'E2E-02', 'E2E-03', 'E2E-04', 'E2E-05', 'E2E-06', 'E2E-07', 'E2E-08', 'E2E-09', 'E2E-10', 'E2E-11', 'E2E-12'];
 const S = (en, fr, ar) => ({ en, fr, ar });
@@ -49,6 +50,44 @@ export function draftFromDescription(org, description) {
     confidence: 0.72, rationale: S(`Detected scope ${ms}; complexity ${sc.score}/100.`, `Périmètre détecté ${ms} ; complexité ${sc.score}/100.`, `النطاق المكتشف ${ms}؛ درجة التعقيد ${sc.score}/100.`) };
 }
 
+// The plan of a project created from a template: included phases, macro processes (the
+// organization's packs still apply to reference processes) and steps with their roles.
+// Codes stored as translated text in a template (frequency, target, unit) as plain values.
+const plain = (v) => (v && typeof v === 'object' ? v.en ?? Object.values(v).find(Boolean) ?? '' : v ?? '');
+function planFromTemplate(cat, template, entitled) {
+  const st = structureOf(template);
+  const lists = listsOf(template);
+  const phases = []; const mps = []; const steps = []; const gates = []; const owners = {};
+  const names = { e2e: {}, mp: {}, step: {} };
+  const tb = blueprintOf(template);
+  for (const e of st) {
+    if (!e.include) continue;
+    const inMps = e.mps.filter(m => m.include && (m.custom || entitled.has(m.id)) && cat.mpById[m.id]);
+    if (!inMps.length) continue;
+    phases.push(e.id);
+    if (e.gate) gates.push(e.id);
+    if (tb.e2e[e.id]?.name && !e.custom) names.e2e[e.id] = tb.e2e[e.id].name;
+    for (const m of inMps) {
+      const mp = cat.mpById[m.id];
+      mps.push(mp); owners[m.id] = m.owner;
+      if (tb.mp[m.id]?.name && !m.custom) names.mp[m.id] = tb.mp[m.id].name;
+      for (const s of m.steps) {
+        if (!s.include || !cat.stepById[s.id]) continue;
+        steps.push({ s: cat.stepById[s.id], mp, role: s.role });
+        if (tb.step[s.id]?.name && !s.custom) names.step[s.id] = tb.step[s.id].name;
+      }
+    }
+  }
+  const inMp = new Set(mps.map(m => m.id));
+  const keep = (x) => !x.mp || inMp.has(x.mp);
+  return {
+    phases, mps, steps, gates, owners, names,
+    kpis: lists.kpis.filter(keep).map(k => ({ code: k.id, name: k.name, formula: k.formula, target: plain(k.target), unit: plain(k.unit), frequency: plain(k.frequency) || 'Monthly', mp: k.mp || null, owner: k.owner, custom: !cat.kpis.some(x => x.id === k.id) })),
+    risks: lists.risks.filter(keep), rules: lists.rules.filter(keep), controls: lists.controls,
+    alerts: lists.alerts, reports: lists.reports,
+  };
+}
+
 export function createProject(req, org, body) {
   const cat = catalog();
   const cfg = orgConfig(org);
@@ -63,7 +102,7 @@ export function createProject(req, org, body) {
   if (track && body.track && body.track !== sc.recommendedTrack && !body.justification) throw bad('JUSTIFICATION_REQUIRED', 'A justification is required to override the recommended track.');
   let template = null;
   if (mode === 'catalog') {
-    template = get('SELECT * FROM project_templates WHERE id=? AND status=?', body.templateId, 'Published');
+    template = get('SELECT * FROM project_templates WHERE id=? AND status=? AND (org_id IS NULL OR org_id=?)', body.templateId, 'Published', org.id);
     if (!template) throw bad('TEMPLATE_REQUIRED', 'Choose a published template.');
   }
   const lang = req.lang || 'en';
@@ -81,24 +120,28 @@ export function createProject(req, org, body) {
       id, org.id, J(sc.detail.map(d => ({ code: d.code, level: d.level, weight: d.weight }))), sc.score, sc.recommendedMode, sc.recommendedTrack, track, body.justification ? J({ [lang]: body.justification }) : null, req.user.id, now());
     if (template) run('UPDATE project_templates SET use_count = use_count + 1 WHERE id=?', template.id);
 
-    // Macro processes, steps and phases
+    // Macro processes, steps and phases. A template's blueprint decides which phases, macro
+    // processes and steps the project contains, who owns them, which phases have a gate and
+    // which KPIs, risks, rules, controls, alerts and reports come with it.
     const entitled = entitledMps(org);
-    const mps = activatedMps(cat, { ...org, size: pmode === 'SME' ? 'SME' : org.size }, msType, entitled);
+    const bp = template ? planFromTemplate(cat, template, entitled) : null;
+    const mps = bp ? bp.mps : activatedMps(cat, { ...org, size: pmode === 'SME' ? 'SME' : org.size }, msType, entitled);
     const set = new Set(mps.map(m => m.id));
-    const phases = E2E_ORDER.filter(e => cat.e2eById[e].mpIds.some(m => set.has(m)));
+    const phases = bp ? bp.phases : E2E_ORDER.filter(e => cat.e2eById[e].mpIds.some(m => set.has(m)));
     const steps = [];
-    for (const e of phases) for (const m of cat.e2eById[e].mpIds) if (set.has(m)) for (const s of cat.stepsByMp[m] || []) steps.push({ s, mp: cat.mpById[m] });
+    if (bp) steps.push(...bp.steps);
+    else for (const e of phases) for (const m of cat.e2eById[e].mpIds) if (set.has(m)) for (const s of cat.stepsByMp[m] || []) steps.push({ s, mp: cat.mpById[m] });
     const span = Math.max(30, Math.round((new Date(end) - new Date(start)) / 86400000));
     const users = all('SELECT id, roles FROM users WHERE org_id=? AND status=?', org.id, 'Active').map(u => ({ id: u.id, roles: JSON.parse(u.roles) }));
     const userFor = (role) => users.find(u => u.roles.includes(role))?.id || null;
-    steps.forEach(({ s, mp }, i) => {
-      const role = s.type === 'Service Task' || s.role === 'DynamicMS Engine' ? null : (s.roleCode || mp.ownerRoleCode || 'ims_manager');
+    steps.forEach(({ s, mp, role: tRole }, i) => {
+      const role = s.type === 'Service Task' || s.role === 'DynamicMS Engine' ? null : (tRole || s.roleCode || mp.ownerRoleCode || 'ims_manager');
       const task = (cat.tasksByMp[mp.id] || []).find(t => t.id === s.task);
       run(`INSERT INTO step_exec(id,org_id,project_id,mp_id,step_id,e2e_id,task_name,seq,status,assignee_role,assignee_user,due_date,form_kind,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-        uid(), org.id, id, mp.id, s.id, mp.e2e, task ? J(task.name) : null, i + 1, 'Todo', role || 'system', role ? userFor(role) : null, addDays(start, Math.round(((i + 1) / steps.length) * span)), s.formKind, now());
+        uid(), org.id, id, mp.id, s.id, mp.e2e, task ? J(task.name) : null, i + 1, 'Todo', role || 'system', role ? userFor(role) : null, addDays(start, Math.round(((i + 1) / steps.length) * span)), s.formKind || 'execute', now());
     });
-    for (const mp of mps) run('INSERT INTO project_mps(project_id,org_id,mp_id,e2e_id,activation,status,owner_role,progress) VALUES(?,?,?,?,?,?,?,0)', id, org.id, mp.id, mp.e2e, mp.activation[org.sector] || mp.activation.SME || '✓', 'NotStarted', mp.ownerRoleCode);
-    const gatePhases = pmode === 'SME' ? TRACK_GATES[track] || [] : phases;
+    for (const mp of mps) run('INSERT INTO project_mps(project_id,org_id,mp_id,e2e_id,activation,status,owner_role,progress) VALUES(?,?,?,?,?,?,?,0)', id, org.id, mp.id, mp.e2e, mp.activation?.[org.sector] || mp.activation?.SME || '✓', 'NotStarted', bp?.owners[mp.id] || mp.ownerRoleCode);
+    const gatePhases = bp ? bp.gates : pmode === 'SME' ? TRACK_GATES[track] || [] : phases;
     const selectedGates = body.gates && mode === 'manual' ? body.gates : null;
     phases.forEach((e, j) => {
       const pid = uid();
@@ -115,13 +158,27 @@ export function createProject(req, org, body) {
         JSON.parse(t.items).forEach((it, k) => run('INSERT INTO checklist_items(id,checklist_id,org_id,seq,text,mandatory,evidence_required,done) VALUES(?,?,?,?,?,?,?,0)', uid(), cid, org.id, k + 1, J(it.text), it.mandatory ? 1 : 0, it.evidence ? 1 : 0));
       }
     });
-    // KPIs of the activated processes + core KPIs
-    const kdefs = [...cat.kpis.filter(k => set.has(k.mp)).map(k => ({ code: k.id, name: k.name, formula: k.formula, target: k.target, mp: k.mp, owner: cat.mpById[k.mp].ownerRoleCode })), ...QMS_KPIS, ...(msType === 'QHSE' ? HSE_KPIS : [])];
+    // KPIs: the template's list, or those of the activated processes + core KPIs
+    const kdefs = bp ? bp.kpis : [...cat.kpis.filter(k => set.has(k.mp)).map(k => ({ code: k.id, name: k.name, formula: k.formula, target: k.target, mp: k.mp, owner: cat.mpById[k.mp].ownerRoleCode })), ...QMS_KPIS, ...(msType === 'QHSE' ? HSE_KPIS : [])];
     for (const k of kdefs) {
       const m = String(k.target).replace(',', '.').match(/(<=|>=|≤|≥|<|>)?\s*(-?\d+(?:\.\d+)?)/);
-      run(`INSERT INTO kpis(id,org_id,project_id,code,name,formula,unit,target,target_text,direction,frequency,analysis_frequency,mp_id,owner_role,custom,racsi,source,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,?,?,?)`,
-        uid(), org.id, id, k.code, J(k.name), J(k.formula), k.unit ?? (/%/.test(k.target) ? '%' : ''), m ? +m[2] : null, k.target, m && /<|≤/.test(m[1] || '') ? 'down' : 'up', 'Monthly', 'Quarterly', k.mp, k.owner || 'performance_manager',
-        J({ R: [k.owner || 'performance_manager'], A: ['ims_manager'], I: ['top_management'] }), 'catalog', now());
+      run(`INSERT INTO kpis(id,org_id,project_id,code,name,formula,unit,target,target_text,direction,frequency,analysis_frequency,mp_id,owner_role,custom,racsi,source,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        uid(), org.id, id, k.code, J(k.name), J(k.formula), k.unit ?? (/%/.test(k.target) ? '%' : ''), m ? +m[2] : null, typeof k.target === 'object' ? (k.target?.en ?? '') : k.target, m && /<|≤/.test(m[1] || '') ? 'down' : 'up', k.frequency || 'Monthly', 'Quarterly', k.mp || null, k.owner || 'performance_manager', k.custom ? 1 : 0,
+        J({ R: [k.owner || 'performance_manager'], A: ['ims_manager'], I: ['top_management'] }), bp ? 'template' : 'catalog', now());
+    }
+    if (bp) {
+      // Risks and opportunities of the template, scored likelihood x impact.
+      bp.risks.forEach((rk, i) => {
+        const l = Math.max(1, Math.min(5, +rk.likelihood || 3)); const im = Math.max(1, Math.min(5, +rk.impact || 3));
+        run('INSERT INTO risks(id,org_id,project_id,code,kind,title,category,likelihood,impact,score,residual,owner_role,status,controls,mp_id,treatment,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+          uid(), org.id, id, rk.id || `R-${String(i + 1).padStart(3, '0')}`, rk.kind === 'Opportunity' ? 'Opportunity' : 'Risk', J(rk.title), rk.category || null, l, im, l * im, null, rk.owner || 'risk_manager', 'Open', J([]), rk.mp || null, rk.treatment ? J(rk.treatment) : null, now());
+      });
+      // Business rules and controls are organization-wide: the template adds those the organization lacks.
+      for (const ru of bp.rules) if (!get('SELECT 1 FROM business_rules WHERE org_id=? AND code=?', org.id, ru.id))
+        run('INSERT INTO business_rules(id,org_id,code,step_ref,mp_id,condition,action_code,action,rule_type,severity,owner_role,active,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,1,?)', uid(), org.id, ru.id, ru.step || null, ru.mp || null, J(ru.condition), null, J(ru.action), ru.type || 'Validation', ru.severity || 'Medium', ru.owner || 'ims_manager', now());
+      for (const ct of bp.controls) if (!get('SELECT 1 FROM controls WHERE org_id=? AND code=?', org.id, ct.id))
+        run('INSERT INTO controls(id,org_id,code,name,description,type,coso,frequency,owner_role,effectiveness,standard,step_refs,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', uid(), org.id, ct.id, J(ct.name), ct.description ? J(ct.description) : null, ct.type || 'Preventive', null, typeof ct.frequency === 'object' ? ct.frequency?.en : (ct.frequency || 'Quarterly'), ct.owner || 'ims_manager', 'Not assessed', null, J([]), ct.mp || null, now());
+      run('UPDATE projects SET blueprint=? WHERE id=?', J({ names: bp.names, alerts: bp.alerts, reports: bp.reports, template: { id: template.id, code: template.code, version: template.version } }), id);
     }
     // RACSI per macro process (one Accountable)
     for (const mp of mps) {

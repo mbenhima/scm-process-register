@@ -1,6 +1,6 @@
 // Component library built on the design tokens (no third-party UI styling).
 import { useEffect, useMemo, useRef, useState, useId } from 'react';
-import { X, Loader2, AlertTriangle, Inbox, ChevronUp, ChevronDown } from 'lucide-react';
+import { X, Loader2, AlertTriangle, Inbox, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, CheckCircle2, Info, AlertCircle } from 'lucide-react';
 import { useApp } from '../lib/state.jsx';
 
 export function IconBadge({ icon: Icon, accent = false, size = '', label }) {
@@ -100,35 +100,101 @@ export function Tabs({ tabs, value, onChange, label }) {
   );
 }
 
-// Sortable data table: orange header, alternating rows, thin grey borders.
-export function Table({ columns, rows, onRowClick, empty, caption, initialSort, rowKey = 'id', maxRows }) {
+// Page sizes offered on long lists (graphical chart §8.9 and §18.1): 20 by default, then 50,
+// 100 or all records. The choice persists per user in this browser.
+export const PAGE_SIZES = [20, 50, 100, 0];
+const readPref = (k, d) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+const writePref = (k, v) => { try { localStorage.setItem(k, v); } catch { /* storage blocked */ } };
+export function usePageSize() {
+  const [size, setSize] = useState(() => Number(readPref('layout.pageSize', '20')));
+  return [size, (v) => { setSize(v); writePref('layout.pageSize', String(v)); }];
+}
+export function useDensity() {
+  const [d, setD] = useState(() => readPref('layout.density', 'comfortable'));
+  return [d, (v) => { setD(v); writePref('layout.density', v); }];
+}
+
+/** Pager: "1–20 of 345", rows per page (20, 50, 100, All), previous / next and "Page X of Y". */
+export function Pager({ total, page, size, onPage, onSize, density, onDensity }) {
+  const { t, fmtNum } = useApp();
+  const pages = size ? Math.max(1, Math.ceil(total / size)) : 1;
+  const from = total ? (size ? (page - 1) * size + 1 : 1) : 0;
+  const to = size ? Math.min(total, page * size) : total;
+  return (
+    <div className="pager" role="navigation" aria-label={t('Pagination')}>
+      <span className="small muted">{t('{from}–{to} of {total}', { from: fmtNum(from, 0), to: fmtNum(to, 0), total: fmtNum(total, 0) })}</span>
+      <label className="small muted pager-size">{t('Rows per page')}
+        <select className="select select-sm" value={size} onChange={e => onSize(Number(e.target.value))}>
+          {PAGE_SIZES.map(n => <option key={n} value={n}>{n || t('All')}</option>)}
+        </select>
+      </label>
+      {onDensity && (
+        <div className="segmented" role="group" aria-label={t('Density')}>
+          <button type="button" aria-pressed={density === 'comfortable'} onClick={() => onDensity('comfortable')}>{t('Comfortable')}</button>
+          <button type="button" aria-pressed={density === 'compact'} onClick={() => onDensity('compact')}>{t('Compact')}</button>
+        </div>
+      )}
+      {pages > 1 && (
+        <div className="pager-pages">
+          <button type="button" className="btn btn-icon btn-sm" disabled={page <= 1} onClick={() => onPage(page - 1)} aria-label={t('Previous page')}><ChevronLeft size={16} className="flip-rtl" /></button>
+          <span className="small muted">{t('Page {n} of {total}', { n: page, total: pages })}</span>
+          <button type="button" className="btn btn-icon btn-sm" disabled={page >= pages} onClick={() => onPage(page + 1)} aria-label={t('Next page')}><ChevronRight size={16} className="flip-rtl" /></button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Paginates any list: returns the visible slice and the pager props. */
+export function usePaged(list, resetKey) {
+  const [size, setSize] = usePageSize();
+  const [page, setPage] = useState(1);
+  const total = list?.length || 0;
+  const pages = size ? Math.max(1, Math.ceil(total / size)) : 1;
+  useEffect(() => { setPage(1); }, [resetKey, size]);
+  const p = Math.min(page, pages);
+  const shown = size ? (list || []).slice((p - 1) * size, p * size) : (list || []);
+  return { shown, pager: { total, page: p, size, onPage: setPage, onSize: setSize }, needed: total > PAGE_SIZES[0] };
+}
+
+// Sortable data table: navy header, alternating rows, thin line borders, sticky header,
+// three-state sort (none, ascending, descending) and pagination on long lists.
+export function Table({ columns, rows, onRowClick, empty, caption, initialSort, rowKey = 'id', maxRows, paginate = true }) {
   const { t } = useApp();
   const [sort, setSort] = useState(initialSort || null);
+  const [density, setDensity] = useDensity();
   const sorted = useMemo(() => {
     if (!sort) return rows || [];
     const col = columns.find(c => c.key === sort.key);
     const val = col?.sortValue || ((r) => r[sort.key]);
     return [...(rows || [])].sort((a, b) => { const x = val(a); const y = val(b); if (x === y) return 0; if (x === null || x === undefined) return 1; if (y === null || y === undefined) return -1; return (x > y ? 1 : -1) * (sort.dir === 'asc' ? 1 : -1); });
   }, [rows, sort, columns]);
-  const shown = maxRows ? sorted.slice(0, maxRows) : sorted;
+  // A small maxRows is a preview (e.g. a top 10); larger lists are paginated instead.
+  const preview = maxRows && maxRows <= 12;
+  const { shown: paged, pager, needed } = usePaged(sorted, rows);
+  const shown = preview ? sorted.slice(0, maxRows) : paginate ? paged : sorted;
+  const cycle = (key) => setSort(s => (s?.key !== key ? { key, dir: 'asc' } : s.dir === 'asc' ? { key, dir: 'desc' } : null));
   if (!rows?.length) return <Empty title={empty || t('No records yet.')} />;
   return (
-    <div className="table-wrap">
-      <table className="data">
-        {caption && <caption className="sr-only">{caption}</caption>}
-        <thead><tr>{columns.map(c => (
-          <th key={c.key} scope="col" style={{ width: c.width }} aria-sort={sort?.key === c.key ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}>
-            {c.sortable === false ? c.label : <button className="th-btn" onClick={() => setSort(s => ({ key: c.key, dir: s?.key === c.key && s.dir === 'asc' ? 'desc' : 'asc' }))}>{c.label}{sort?.key === c.key && (sort.dir === 'asc' ? <ChevronUp size={14} /> : <ChevronDown size={14} />)}</button>}
-          </th>))}</tr></thead>
-        <tbody>
-          {shown.map((r, i) => (
-            <tr key={r[rowKey] ?? i} className={onRowClick ? 'clickable' : ''} tabIndex={onRowClick ? 0 : undefined} onClick={onRowClick ? () => onRowClick(r) : undefined} onKeyDown={onRowClick ? (e) => { if (e.key === 'Enter') onRowClick(r); } : undefined}>
-              {columns.map(c => <td key={c.key} className={c.cellClass ? c.cellClass(r) : ''}>{c.render ? c.render(r) : r[c.key] ?? '—'}</td>)}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {maxRows && sorted.length > maxRows && <p className="small muted" style={{ padding: 'var(--sp-8) var(--sp-12)', margin: 0 }}>{t('Showing {n} of {total}', { n: maxRows, total: sorted.length })}</p>}
+    <div className="table-block">
+      <div className={`table-wrap ${density === 'compact' ? 'compact' : ''}`}>
+        <table className="data">
+          {caption && <caption className="sr-only">{caption}</caption>}
+          <thead><tr>{columns.map(c => (
+            <th key={c.key} scope="col" style={{ width: c.width }} aria-sort={sort?.key === c.key ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}>
+              {c.sortable === false ? c.label : <button className="th-btn" onClick={() => cycle(c.key)}>{c.label}{sort?.key === c.key && (sort.dir === 'asc' ? <ArrowUp size={14} /> : <ArrowDown size={14} />)}</button>}
+            </th>))}</tr></thead>
+          <tbody>
+            {shown.map((r, i) => (
+              <tr key={r[rowKey] ?? i} className={onRowClick ? 'clickable' : ''} tabIndex={onRowClick ? 0 : undefined} onClick={onRowClick ? () => onRowClick(r) : undefined} onKeyDown={onRowClick ? (e) => { if (e.key === 'Enter') onRowClick(r); } : undefined}>
+                {columns.map(c => <td key={c.key} className={c.cellClass ? c.cellClass(r) : ''}>{c.render ? c.render(r) : r[c.key] ?? '—'}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {preview && sorted.length > maxRows && <p className="small muted" style={{ padding: 'var(--sp-8) var(--sp-12)', margin: 0 }}>{t('Showing {n} of {total}', { n: maxRows, total: sorted.length })}</p>}
+      {!preview && paginate && needed && <Pager {...pager} density={density} onDensity={setDensity} />}
     </div>
   );
 }
@@ -139,7 +205,7 @@ export function Field({ label, hint, error, required, children, id }) {
   const child = typeof children === 'function' ? children(fid) : children;
   return (
     <div className="field">
-      <label htmlFor={fid}>{label}{required && <span className="req" aria-hidden="true">*</span>}</label>
+      <label htmlFor={fid}>{required && <span className="req" aria-hidden="true">*</span>}{label}</label>
       {child}
       {hint && <span className="hint">{hint}</span>}
       {error && <span className="error" role="alert">{error}</span>}
@@ -179,7 +245,23 @@ export function Modal({ title, onClose, children, footer, wide, full }) {
 
 export function Toasts() {
   const { toasts } = useApp();
-  return <div className="toasts" role="status" aria-live="polite">{toasts.map(x => <div key={x.id} className={`toast ${x.kind === 'error' ? 'error' : ''}`}>{x.message}</div>)}</div>;
+  const { dismissToast } = useApp();
+  const Icon = { ok: CheckCircle2, error: AlertCircle, warn: AlertTriangle, info: Info };
+  return (
+    <div className="toasts" role="status" aria-live="polite">
+      {toasts.map(x => {
+        const I = Icon[x.kind] || CheckCircle2;
+        return (
+          <div key={x.id} className={`toast ${x.kind || 'ok'}`}>
+            <I size={18} aria-hidden="true" />
+            <span>{x.message}</span>
+            {x.action && <button type="button" className="toast-action" onClick={() => { x.action.run(); dismissToast(x.id); }}>{x.action.label}</button>}
+            <button type="button" className="toast-close" aria-label="×" onClick={() => dismissToast(x.id)}><X size={14} /></button>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 export function Search({ value, onChange, placeholder }) {

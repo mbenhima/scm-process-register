@@ -36,10 +36,14 @@ export function AppProvider({ children }) {
   const fmtDate = useCallback((d) => (d ? new Date(d.length === 10 ? d + 'T12:00:00Z' : d).toLocaleDateString(LOCALES[lang], { year: 'numeric', month: 'short', day: 'numeric' }) : '—'), [lang]);
   const fmtNum = useCallback((n, digits = 1) => (n === null || n === undefined || n === '' ? '—' : Number(n).toLocaleString(LOCALES[lang], { maximumFractionDigits: digits })), [lang]);
 
-  const toast = useCallback((message, kind = 'ok') => {
+  // Toasts (graphical chart §8.11): 5 s by default, errors stay until dismissed; an optional
+  // action (e.g. Undo) runs before the toast closes.
+  const dismissToast = useCallback((id) => setToasts(ts => ts.filter(x => x.id !== id)), []);
+  const toast = useCallback((message, kind = 'ok', action = null) => {
     const id = ++tid.current;
-    setToasts(ts => [...ts, { id, message, kind }]);
-    setTimeout(() => setToasts(ts => ts.filter(x => x.id !== id)), 5000);
+    setToasts(ts => [...ts, { id, message, kind, action }]);
+    if (kind !== 'error') setTimeout(() => setToasts(ts => ts.filter(x => x.id !== id)), 5000);
+    return id;
   }, []);
 
   const logout = useCallback(() => { setToken(null); setMe(null); setTree(null); setProjectIdState(null); }, []);
@@ -89,7 +93,10 @@ export function AppProvider({ children }) {
   const hasFeature = useCallback((f) => !!me?.features?.includes(f), [me]);
   const readOnly = project && project.org.access === 'read';
 
-  const value = { lang, setLang, t, L, fmtDate, fmtNum, me, booting, login, logout, tree, orgs, reloadTree: loadSession, project, projectId, setProjectId, can, hasFeature, readOnly, prefs: me?.prefs || {}, savePrefs, toast, toasts, alertCount, setAlertCount };
+  // Memoized so consumers do not re-render (and lose focus) on unrelated parent renders.
+  const prefs = useMemo(() => me?.prefs || {}, [me]);
+  const value = useMemo(() => ({ lang, setLang, t, L, fmtDate, fmtNum, me, booting, login, logout, tree, orgs, reloadTree: loadSession, project, projectId, setProjectId, can, hasFeature, readOnly, prefs, savePrefs, toast, dismissToast, toasts, alertCount, setAlertCount }),
+    [lang, setLang, t, L, fmtDate, fmtNum, me, booting, login, logout, tree, orgs, loadSession, project, projectId, setProjectId, can, hasFeature, readOnly, prefs, savePrefs, toast, dismissToast, toasts, alertCount]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
@@ -106,5 +113,7 @@ export function useData(path, deps = []) {
     return () => ctl.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path, n, lang, ...deps]);
-  return { ...state, reload: () => setN(x => x + 1) };
+  const reload = useCallback(() => setN(x => x + 1), []);
+  const setData = useCallback((fn) => setState(s => ({ ...s, data: typeof fn === 'function' ? fn(s.data) : fn })), []);
+  return { ...state, reload, setData };
 }

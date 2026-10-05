@@ -80,6 +80,14 @@ r.get('/reports', requirePerm('reports.view'), h((req, res) => {
   const lang = langOf(req);
   send(req, res, { project: REPORTS.map(id => ({ id, name: W[lang][id] })), formats: ['pdf', 'xlsx', 'docx', 'csv'], catalog: catalog().reports });
 }));
+// Reporting plan of a project: the reports its template defines (name, audience, frequency,
+// format, owner), or the reference reports for a project without a template.
+r.get('/projects/:id/reporting-plan', requirePerm('reports.view'), h((req, res) => {
+  const p = loadProject(req, req.params.id);
+  const bp = p.blueprint ? P(p.blueprint) : null;
+  const list = bp?.reports || catalog().reports.map(x => ({ id: x.id, name: x.name, audience: (x.audience || []).map(a => a.en).join(', '), frequency: x.cadence, format: 'PDF', owner: 'ims_manager' }));
+  send(req, res, { template: bp?.template || null, items: list.map(x => ({ ...x, ownerName: ROLES.find(r2 => r2.code === x.owner)?.name || x.owner })) });
+}));
 r.get('/projects/:id/reports/:type', requirePerm('reports.export'), h(async (req, res) => {
   const p = loadProject(req, req.params.id);
   const lang = langOf(req);

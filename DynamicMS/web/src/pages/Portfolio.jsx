@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Download } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { download } from '../lib/api.js';
-import { PageHead, Loading, ErrorBox, tx } from '../components/ui.jsx';
+import { PageHead, Loading, ErrorBox, tx, usePaged, Pager } from '../components/ui.jsx';
 
 const CELL = { Completed: 'var(--st-5)', 'In progress': 'var(--st-3)', 'At gate': 'var(--st-2)', 'On hold': 'var(--st-1)', 'Not started': 'var(--aiv-white)', 'Not applicable': 'var(--aiv-bg)' };
 
@@ -16,6 +16,7 @@ export default function Portfolio() {
   const path = scope.startsWith('g:') ? `/portfolio?groupId=${scope.slice(2)}` : scope === 'own' ? '/portfolio' : `/portfolio?orgIds=${scope.slice(2)}`;
   const { data, loading, error } = useData(path);
   const rows = (data?.rows || []).filter(r => !ms || r.ms === ms);
+  const { shown, pager, needed } = usePaged(rows, `${scope}|${ms}`);
   return (
     <>
       <PageHead eyebrow={t('Insight')} title={t('Portfolio')} subtitle={t('One row per project and one column per lifecycle stage. Projects of other organizations of your group are read-only.')}
@@ -33,11 +34,11 @@ export default function Portfolio() {
       {error && <ErrorBox error={error} />}
       {loading && !data ? <Loading /> : data && (
         <>
-          <div className="table-wrap" style={{ maxHeight: '70vh', overflow: 'auto' }}>
+          <div className="table-wrap">
             <table className="data">
               <thead><tr><th scope="col" style={{ minWidth: 280 }}>{t('Project')}</th><th scope="col">%</th>{data.stages.map(s => <th key={s.id} scope="col" title={tx(s.name, lang)} style={{ textAlign: 'center' }}>{s.id.slice(4)}</th>)}</tr></thead>
               <tbody>
-                {rows.map(r => (
+                {shown.map(r => (
                   <tr key={r.id} className="clickable" tabIndex={0} onClick={() => { setProjectId(r.id); navigate('/lifecycle'); }} onKeyDown={e => { if (e.key === 'Enter') { setProjectId(r.id); navigate('/lifecycle'); } }}>
                     <td><span className="strong">{r.code}</span>{r.access === 'read' && <span className="tag outline" style={{ marginInlineStart: 8 }}>{t('Read-only')}</span>}<br /><span className="xsmall muted">{tx(r.org, lang)}</span></td>
                     <td className="num">{r.progress}%</td>
@@ -48,6 +49,7 @@ export default function Portfolio() {
               <tfoot><tr><td className="strong">{t('Completed per stage')}</td><td />{data.stages.map(s => <td key={s.id} className="num small" style={{ textAlign: 'center' }}>{data.totals[s.id]?.Completed || 0}</td>)}</tr></tfoot>
             </table>
           </div>
+          {needed && <Pager {...pager} />}
           <div className="legend">{data.legend.map(l => <span key={l}><i style={{ background: CELL[l], border: '1px solid var(--aiv-line)' }} />{L(l)}</span>)}</div>
           <p className="caption">{t('Status of every lifecycle stage per project; ×2 marks a stage that ran twice (recurring phases).')}</p>
         </>

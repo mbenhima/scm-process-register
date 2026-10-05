@@ -1,5 +1,6 @@
 // In-memory reference catalog, loaded from catalog_items and localized per request.
 import { all, run, now, J } from '../db.js';
+import { overlayCustoms } from '../services/blueprint.js';
 
 let cache = null;
 
@@ -13,6 +14,7 @@ export function load() {
   const c = {};
   for (const r of rows) c[r.id] = JSON.parse(r.data);
   indexCatalog(c);
+  overlayCustoms(c);
   cache = c;
   return c;
 }

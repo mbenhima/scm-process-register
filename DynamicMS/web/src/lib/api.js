@@ -41,3 +41,10 @@ export async function download(path, filename) {
   a.href = href; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(href), 2000);
 }
+
+// Fetches a protected file (e.g. a document picture) as an object URL for <img>.
+export async function blobUrl(path) {
+  const res = await fetch(`/api${path}`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) throw new ApiError(res.status, 'HTTP_' + res.status, res.statusText);
+  return URL.createObjectURL(await res.blob());
+}

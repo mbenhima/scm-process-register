@@ -8,6 +8,7 @@ import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 import { useApp } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { Loading, ErrorBox } from './ui.jsx';
+import extraPalette from './bpmnPalette.js';
 
 const RENDER = { defaultFillColor: '#FFFFFF', defaultStrokeColor: '#2C3E50', defaultLabelColor: '#123A5F' };
 
@@ -37,7 +38,7 @@ export default function Bpmn({ projectId, mpId, code }) {
         const edit = m.canEdit && !readOnly;
         const Mod = edit ? (await import('bpmn-js/lib/Modeler')).default : (await import('bpmn-js/lib/NavigatedViewer')).default;
         if (cancelled) return;
-        const viewer = new Mod({ container: canvasRef.current, bpmnRenderer: RENDER, textRenderer: { defaultStyle: { fontFamily: 'Source Sans 3, Calibri, sans-serif', fontSize: 12 } } });
+        const viewer = new Mod({ container: canvasRef.current, bpmnRenderer: RENDER, textRenderer: { defaultStyle: { fontFamily: 'Open Sans, sans-serif', fontSize: 12 } }, ...(edit ? { additionalModules: [extraPalette] } : {}) });
         inst.current = viewer;
         await viewer.importXML(m.xml);
         const canvas = viewer.get('canvas');

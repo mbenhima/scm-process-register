@@ -27,7 +27,7 @@ const manageTemplates = (req) => can(req, 'templates.manage') || can(req, 'recor
 function tplFromRow(x) {
   const t = row(x);
   return { id: t.id, orgId: t.org_id, code: t.code, name: t.name, description: t.description, category: t.category, docType: t.doc_type, formats: P(t.formats) || [], toc: !!t.toc, ms: P(t.ms) || ['QMS', 'QHSE'],
-    mp: t.mp_id, review: t.review, owner: t.owner_role, mandatory: P(t.mandatory) || {}, clauses: P(t.clauses) || {}, sections: P(t.sections) || [], baseCode: t.base_code, version: t.version, status: t.status, custom: true };
+    mp: t.mp_id, review: t.review, owner: t.owner_role, mandatory: P(t.mandatory) || {}, clauses: P(t.clauses) || {}, sections: P(t.sections) || [], format: P(t.format) || null, baseCode: t.base_code, version: t.version, status: t.status, custom: true };
 }
 // Library = platform templates, overridden by the tenant's copy of the same code, plus tenant-only templates.
 export function templateLibrary(orgId) {
@@ -66,9 +66,40 @@ function validateSections(sections) {
     if (!s.key || !/^[a-z0-9_-]{1,40}$/i.test(s.key)) throw bad('BAD_SECTION', 'Each section needs a short key (letters, digits, - or _).');
     if (keys.has(s.key)) throw bad('DUPLICATE_SECTION', `Section key "${s.key}" is used twice.`);
     keys.add(s.key);
-    if (!['text', 'data', 'signature', 'step'].includes(s.type)) throw bad('BAD_SECTION_TYPE', 'Section type must be text, data, step or signature.');
+    if (!['text', 'data', 'signature', 'step', 'image'].includes(s.type)) throw bad('BAD_SECTION_TYPE', 'Section type must be text, data, step, image or signature.');
+    if (s.style) s.style = cleanStyle(s.style);
+    if (s.type === 'image' && s.image && !/^[\w-]+\/doc-images\/[\w.-]+$/.test(s.image)) throw bad('BAD_IMAGE', 'Unknown picture.');
+    if (s.type === 'image') s.widthPct = Math.min(100, Math.max(10, +s.widthPct || 60));
     if (!s.title || (typeof s.title === 'object' && !Object.values(s.title).some(Boolean))) throw bad('SECTION_TITLE', 'Each section needs a title.');
   }
+}
+// Formatting of a template (document level) and of a section: only known keys and safe values.
+const HEX = /^#[0-9a-fA-F]{6}$/;
+const FONT_NAMES = ['Open Sans', 'Montserrat', 'Arial', 'Calibri', 'Times New Roman', 'Georgia'];
+function cleanStyle(st) {
+  const o = {};
+  if (['left', 'center', 'right', 'justify'].includes(st.align)) o.align = st.align;
+  if (st.size !== undefined && st.size !== '' && Number.isFinite(+st.size)) o.size = Math.min(18, Math.max(8, +st.size));
+  for (const k of ['bold', 'italic', 'pageBreakBefore', 'hideTitle']) if (st[k]) o[k] = true;
+  for (const k of ['color', 'background']) if (HEX.test(st[k] || '')) o[k] = st[k];
+  return o;
+}
+function cleanFormat(req, f, prev = {}) {
+  if (!f) return prev;
+  const o = {};
+  if (FONT_NAMES.includes(f.bodyFont)) o.bodyFont = f.bodyFont;
+  if (FONT_NAMES.includes(f.headingFont)) o.headingFont = f.headingFont;
+  const num = (v, lo, hi) => (v === undefined || v === '' || !Number.isFinite(+v) ? undefined : Math.min(hi, Math.max(lo, +v)));
+  o.bodySize = num(f.bodySize, 8, 14); o.headingSize = num(f.headingSize, 10, 24); o.marginCm = num(f.marginCm, 1, 3.5);
+  if (['portrait', 'landscape', 'auto'].includes(f.orientation)) o.orientation = f.orientation;
+  if (['left', 'center', 'right', 'justify'].includes(f.align)) o.align = f.align;
+  for (const k of ['headingColor', 'tableHeaderColor', 'accentColor']) if (HEX.test(f[k] || '')) o[k] = f[k];
+  for (const k of ['cover', 'toc', 'numbered', 'headerLogo', 'pageNumbers']) if (typeof f[k] === 'boolean') o[k] = f[k];
+  if (['organization', 'template', 'none'].includes(f.logo)) o.logo = f.logo;
+  if (['left', 'center', 'right'].includes(f.logoPosition)) o.logoPosition = f.logoPosition;
+  if (typeof f.logoFile === 'string' && /^[\w-]+\/doc-images\/[\w.-]+$/.test(f.logoFile)) o.logoFile = f.logoFile; else if (prev.logoFile && f.logoFile === undefined) o.logoFile = prev.logoFile;
+  for (const k of ['headerText', 'footerText']) if (f[k] !== undefined) o[k] = f[k] ? (typeof f[k] === 'object' ? f[k] : { ...(prev[k] || {}), [req.lang]: String(f[k]).slice(0, 160) }) : undefined;
+  return Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined));
 }
 const i18nMerge = (req, prev, v) => (v === undefined ? prev : typeof v === 'object' ? v : { ...(prev || {}), [req.lang]: String(v) });
 // Create a tenant template: from scratch, or as an editable copy of a library template (baseCode).
@@ -86,10 +117,10 @@ r.post('/orgs/:id/doc-templates', requirePerm('records.view'), h((req, res) => {
   const name = b.name ? tr(req, b.name) : base?.name;
   if (!name) throw bad('NAME_REQUIRED', 'Template name is required.');
   const id = uid();
-  run(`INSERT INTO doc_templates(id,org_id,code,name,description,category,doc_type,formats,toc,ms,mp_id,review,owner_role,mandatory,clauses,sections,base_code,version,status,created_by,created_at,updated_at)
-       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,'Published',?,?,?)`, id, req.params.id, code, J(name), J(b.description ? tr(req, b.description) : base?.description || null), b.category || base?.category || 'process',
+  run(`INSERT INTO doc_templates(id,org_id,code,name,description,category,doc_type,formats,toc,ms,mp_id,review,owner_role,mandatory,clauses,sections,base_code,version,status,created_by,created_at,updated_at,format)
+       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,'Published',?,?,?,?)`, id, req.params.id, code, J(name), J(b.description ? tr(req, b.description) : base?.description || null), b.category || base?.category || 'process',
   b.docType || base?.docType || 'Procedure', J(b.formats || base?.formats || ['DOCX', 'PDF']), (b.toc ?? base?.toc ?? true) ? 1 : 0, J(b.ms || base?.ms || ['QMS', 'QHSE']), b.mp || base?.mp || null,
-  b.review || base?.review || 'Annual', b.owner || base?.owner || 'document_controller', J(b.mandatory || base?.mandatory || {}), J(b.clauses || base?.clauses || {}), J(sections), base?.code || null, req.user.id, now(), now());
+  b.review || base?.review || 'Annual', b.owner || base?.owner || 'document_controller', J(b.mandatory || base?.mandatory || {}), J(b.clauses || base?.clauses || {}), J(sections), base?.code || null, req.user.id, now(), now(), J(cleanFormat(req, b.format, base?.format || {}) || null));
   audit(req, req.params.id, 'doc_template', id, 'create', null, { code, base: base?.code || null }, null);
   res.status(201).json({ id, code });
 }));
@@ -99,9 +130,9 @@ r.put('/doc-templates/:id', requirePerm('records.view'), h((req, res) => {
   const b = req.body || {};
   if (b.sections) validateSections(b.sections);
   const before = tplFromRow(t);
-  run(`UPDATE doc_templates SET name=?, description=?, category=?, doc_type=?, formats=?, toc=?, ms=?, mp_id=?, review=?, owner_role=?, mandatory=?, clauses=?, sections=?, version=version+1, updated_at=? WHERE id=?`,
+  run(`UPDATE doc_templates SET name=?, description=?, category=?, doc_type=?, formats=?, toc=?, ms=?, mp_id=?, review=?, owner_role=?, mandatory=?, clauses=?, sections=?, format=?, version=version+1, updated_at=? WHERE id=?`,
     J(i18nMerge(req, before.name, b.name)), J(i18nMerge(req, before.description, b.description)), b.category ?? before.category, b.docType ?? before.docType, J(b.formats ?? before.formats), (b.toc ?? before.toc) ? 1 : 0,
-    J(b.ms ?? before.ms), b.mp ?? before.mp, b.review ?? before.review, b.owner ?? before.owner, J(b.mandatory ?? before.mandatory), J(b.clauses ?? before.clauses), J(b.sections ?? before.sections), now(), t.id);
+    J(b.ms ?? before.ms), b.mp ?? before.mp, b.review ?? before.review, b.owner ?? before.owner, J(b.mandatory ?? before.mandatory), J(b.clauses ?? before.clauses), J(b.sections ?? before.sections), J(b.format !== undefined ? cleanFormat(req, b.format, before.format || {}) : before.format), now(), t.id);
   snapshot(req, t.org_id, 'doc_template', t.id, before, b.justification || null);
   audit(req, t.org_id, 'doc_template', t.id, 'update', { version: before.version }, { version: before.version + 1 }, b.justification || null);
   res.json({ ok: true });
@@ -233,10 +264,21 @@ r.put('/document-versions/:id/sections', requirePerm('records.manage'), h((req, 
   const clean = secs.map((s, i) => {
     if (!s.title) throw bad('SECTION_TITLE', 'Each section needs a title.');
     const prev = (c?.sections || []).find(x => x.key === s.key);
-    return { key: s.key || `s${i + 1}-${uid().slice(0, 6)}`, type: prev?.type || 'text', title: typeof s.title === 'object' ? s.title : { ...(prev?.title || {}), [req.lang]: String(s.title) },
-      text: s.text === undefined ? prev?.text : (typeof s.text === 'object' ? s.text : { ...(prev?.text || {}), [req.lang]: String(s.text) }), block: prev?.block, source: prev?.source };
+    const type = prev?.type || (s.type === 'image' ? 'image' : 'text');
+    const out = { key: s.key || `s${i + 1}-${uid().slice(0, 6)}`, type, title: typeof s.title === 'object' ? s.title : { ...(prev?.title || {}), [req.lang]: String(s.title) },
+      text: s.text === undefined ? prev?.text : (typeof s.text === 'object' ? s.text : { ...(prev?.text || {}), [req.lang]: String(s.text) }), block: prev?.block, blocks: prev?.blocks, source: prev?.source };
+    // A picture section: the image (uploaded with /doc-images), caption, width and alignment.
+    if (type === 'image') {
+      const img = s.image ?? prev?.blocks?.[0]?.file ?? null;
+      if (img && !/^[\w-]+\/doc-images\/[\w.-]+$/.test(img)) throw bad('BAD_IMAGE', 'Unknown picture.');
+      out.blocks = [{ kind: 'image', file: img, caption: s.caption ?? prev?.blocks?.[0]?.caption ?? null, widthPct: Math.min(100, Math.max(10, +(s.widthPct ?? prev?.blocks?.[0]?.widthPct ?? 60))), align: ['left', 'center', 'right'].includes(s.align) ? s.align : prev?.blocks?.[0]?.align || 'center' }];
+    }
+    const style = s.style !== undefined ? cleanStyle(s.style || {}) : prev?.style;
+    if (style && Object.keys(style).length) out.style = style;
+    return out;
   });
-  const content = { ...(c && c.format === 'structured' ? c : { format: 'structured', toc: true }), sections: clean, editedAt: now() };
+  const base = c && c.format === 'structured' ? c : { format: 'structured', toc: true };
+  const content = { ...base, sections: clean, ...(req.body?.style !== undefined ? { style: cleanFormat(req, req.body.style, base.style || {}) } : {}), editedAt: now() };
   run('UPDATE document_versions SET content=? WHERE id=?', J(content), v.id);
   audit(req, v.org_id, 'document', v.document_id, 'edit_structure', { sections: (c?.sections || []).length }, { sections: clean.length }, null);
   res.json({ ok: true });
@@ -308,7 +350,29 @@ r.get('/document-versions/:id/structure', requirePerm('records.view'), h((req, r
   const d = get('SELECT * FROM documents WHERE id=?', v.document_id);
   let c = P(v.content);
   if (c && c.format === 'structured' && c.live && d.template_id) { const target = P(d.target) || {}; c = buildContent(d.project_id, d.template_id, { template: resolveTemplate(d.org_id, d.template_id), docId: d.id, mpId: target.mp, e2e: target.e2e, target, ownerRole: d.owner_role }); }
-  send(req, res, c && c.format === 'structured' ? { structured: true, toc: c.toc, sections: c.sections.map(s => ({ key: s.key, type: s.type, title: s.title, text: s.text, source: s.source, blocks: (s.blocks || (s.block ? [s.block] : [])).map(b => (b.kind === 'diagram' ? { kind: 'diagram', svg: diagramSvg(b, req.lang), caption: b.caption } : b)) })) } : { structured: false, text: c });
+  send(req, res, c && c.format === 'structured' ? { structured: true, toc: c.toc, style: c.style || null, orgId: v.org_id, sections: c.sections.map(s => ({ key: s.key, type: s.type, title: s.title, text: s.text, source: s.source, style: s.style || null, blocks: (s.blocks || (s.block ? [s.block] : [])).map(b => (b.kind === 'diagram' ? { kind: 'diagram', svg: diagramSvg(b, req.lang), caption: b.caption } : b)) })) } : { structured: false, text: c });
+}));
+
+// ---------------------------------------------------------------- pictures (templates and documents)
+const imageUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1048576, files: 1 }, fileFilter: (_req, f, cb) => cb(null, /^image\/(png|jpe?g)$/.test(f.mimetype)) });
+r.post('/orgs/:id/doc-images', requirePerm('records.manage', 'templates.manage'), imageUpload.single('file'), h((req, res) => {
+  requireOrg(req, req.params.id, true);
+  if (!req.file) throw bad('NO_FILE', 'Choose a PNG or JPEG picture up to 5 MB.');
+  const dir = path.join(config.storageDir, req.params.id, 'doc-images');
+  fs.mkdirSync(dir, { recursive: true });
+  const file = `${uid()}${req.file.mimetype === 'image/png' ? '.png' : '.jpg'}`;
+  fs.writeFileSync(path.join(dir, file), req.file.buffer);
+  audit(req, req.params.id, 'doc_image', file, 'upload', null, { name: req.file.originalname, size: req.file.size }, null);
+  res.status(201).json({ file: `${req.params.id}/doc-images/${file}`, name: req.file.originalname });
+}));
+r.get('/orgs/:id/doc-images/:file', requirePerm('records.view'), h((req, res) => {
+  requireOrg(req, req.params.id);
+  if (!/^[\w-]+\.(png|jpe?g)$/.test(req.params.file)) throw notFound('Picture');
+  const f = path.join(config.storageDir, req.params.id, 'doc-images', req.params.file);
+  if (!fs.existsSync(f)) throw notFound('Picture');
+  res.setHeader('Content-Type', /\.png$/.test(f) ? 'image/png' : 'image/jpeg');
+  res.setHeader('Cache-Control', 'private, max-age=3600');
+  fs.createReadStream(f).pipe(res);
 }));
 
 // ---------------------------------------------------------------- layout

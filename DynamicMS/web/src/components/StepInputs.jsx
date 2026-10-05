@@ -1,9 +1,10 @@
 // Inputs of the step forms: plain fields, record tables with add / edit / delete (rows),
 // decision matrix, KPI picker with "new KPI", organization units and people from the OBS,
 // RACSI in five columns, document templates, standards and links to produced records.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Trash2, X, FileText, Table2, ListChecks, Gauge, Grid3x3, Maximize2, ChevronLeft, ChevronRight, Library, Sparkles } from 'lucide-react';
+import { Plus, Trash2, X, FileText, Table2, ListChecks, Gauge, Grid3x3, Maximize2, ChevronLeft, ChevronRight, Library, Sparkles, Copy } from 'lucide-react';
+import { useApp } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { Field, Modal, tx } from './ui.jsx';
 
@@ -242,39 +243,127 @@ function LibraryModal({ ctx, onAdd, onClose }) {
   );
 }
 
+// Stable row keys (graphical chart §15): kept beside the rows, never keyed by position, so
+// typing keeps the focus in the cell after a row is added, duplicated or deleted.
+let rowSeq = 0;
+const newRowKey = () => `k${Date.now().toString(36)}${(rowSeq++).toString(36)}`;
+const isEmpty = (v) => v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length);
+
+// Inline editable table of records (chart §14): Add row below the table, duplicate (Ctrl+D) and
+// delete (with Undo) per row, Duplicate previous row, carry-over of the category from the row
+// above, keyboard map (Enter moves down, Enter on the last row adds a row, Esc reverts the cell),
+// paste of rows from a spreadsheet, validation of required cells on blur and a running count.
 export function RowsEditor({ field, value, onChange, disabled, ctx }) {
   const { t, lang } = ctx;
-  const rows = Array.isArray(value) ? value : [];
+  const { toast } = useApp();
+  const raw = Array.isArray(value) ? value : [];
+  // Stable keys kept beside the data (never stored): aligned with the rows by index and
+  // spliced on insert / delete, so an edited row keeps its key and its focus.
+  const keyList = useRef([]);
+  while (keyList.current.length < raw.length) keyList.current.push(newRowKey());
+  if (keyList.current.length > raw.length) keyList.current.length = raw.length;
+  const rows = raw.map((r, i) => ({ ...r, _k: keyList.current[i] }));
+  const strip = (list) => list.map(({ _k, ...r }) => r);
   const [open, setOpen] = useState(null);
   const [lib, setLib] = useState(false);
   const [aiBusy, setAiBusy] = useState(false);
   const [aiNote, setAiNote] = useState(null);
-  const blank = () => Object.fromEntries(field.columns.map(c => [c.key, c.type === 'obs' || c.type === 'parties' ? [] : '']));
+  const [errors, setErrors] = useState({});
+  const wrap = useRef(null);
+  const before = useRef({});
+  const pendingFocus = useRef(null);
+  const latest = useRef(rows); latest.current = rows;
+  const carry = field.columns.filter(c => ['category', 'type', 'kind', 'factor', 'pestle'].includes(c.key) || c.carry).map(c => c.key);
+  const blank = (above) => Object.fromEntries(field.columns.map(c => [c.key, c.type === 'obs' || c.type === 'parties' ? [] : (carry.includes(c.key) && above && !isEmpty(above[c.key]) ? above[c.key] : '')]));
   const suggestNeeds = async () => {
     setAiBusy(true); setAiNote(null);
     try {
       const r = await api(`/steps/${ctx.stepId}/needs-suggest`, { method: 'POST', body: {} });
-      onChange([...rows, ...r.rows.map(x => ({ ...blank(), ...x }))]);
+      onChange([...strip(rows), ...r.rows.map(x => ({ ...blank(), ...x }))]);
       setAiNote({ engine: r.engine, error: r.llmError, n: r.rows.length });
     } catch (e) { setAiNote({ error: e.message, n: 0 }); } finally { setAiBusy(false); }
   };
-  const set = (i, key, v) => onChange(rows.map((r, j) => (j === i ? { ...r, [key]: v } : r)));
-  const add = () => { onChange([...rows, blank()]); setOpen(rows.length); };
-  const del = (i) => onChange(rows.filter((_, j) => j !== i));
+  const set = (i, key, v) => { onChange(strip(latest.current.map((r, j) => (j === i ? { ...r, [key]: v } : r)))); const ek = `${latest.current[i]?._k}:${key}`; if (errors[ek]) setErrors(e => { const n = { ...e }; delete n[ek]; return n; }); };
+  const focusCell = (k, col) => { const el = wrap.current?.querySelector(`[data-row="${k}"][data-col="${col}"] :is(input, select, textarea, button)`); el?.focus(); if (el && (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && !['checkbox', 'radio', 'date'].includes(el.type)))) el.select?.(); };
+  useEffect(() => { if (pendingFocus.current) { const [k, c] = pendingFocus.current; pendingFocus.current = null; focusCell(k, c); } });
+  const firstCol = field.columns[0]?.key;
+  const insert = (at, row) => { const k = newRowKey(); keyList.current.splice(at, 0, k); const n = strip(rows); n.splice(at, 0, row); onChange(n); return k; };
+  const add = (afterIndex = rows.length - 1) => { pendingFocus.current = [insert(afterIndex + 1, blank(rows[afterIndex])), firstCol]; };
+  const duplicate = (i) => { const { _k, _actionId, _registerId, ...copy } = rows[i]; pendingFocus.current = [insert(i + 1, copy), firstCol]; };
+  const del = (i) => {
+    const { _k, ...row } = rows[i];
+    keyList.current.splice(i, 1);
+    onChange(strip(rows.filter((_, j) => j !== i)));
+    toast(t('Row {n} deleted.', { n: i + 1 }), 'info', { label: t('Undo'), run: () => { const at = Math.min(i, latest.current.length); keyList.current.splice(at, 0, _k); const n = strip(latest.current); n.splice(at, 0, row); onChange(n); } });
+  };
+  // Required cells are checked when the user leaves them (never on each keystroke).
+  const onBlurCell = (r, c) => {
+    delete before.current[`${r._k}:${c.key}`];
+    const cur = latest.current.find(x => x._k === r._k);
+    if (c.required && cur && isEmpty(cur[c.key]) && field.columns.some(x => !isEmpty(cur[x.key]))) setErrors(e => ({ ...e, [`${r._k}:${c.key}`]: t('Required') }));
+  };
+  const onKeyDownCell = (e, i, c) => {
+    const k = rows[i]._k;
+    const mod = e.ctrlKey || e.metaKey;
+    if (mod && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicate(i); return; }
+    if (e.key === 'Escape' && `${k}:${c.key}` in before.current) { e.preventDefault(); e.stopPropagation(); set(i, c.key, before.current[`${k}:${c.key}`]); return; }
+    if (e.key === 'Enter' && !e.shiftKey && e.target.tagName === 'INPUT' && !e.target.closest('.combo-menu')) {
+      e.preventDefault();
+      if (i === rows.length - 1) add(i); else focusCell(rows[i + 1]._k, c.key);
+    }
+  };
+  const onFocusCell = (r, c) => { const key = `${r._k}:${c.key}`; if (!(key in before.current)) before.current[key] = r[c.key]; };
+  // Paste of tab-separated rows (Excel, Google Sheets) from the focused cell.
+  const onPaste = (e, i, c) => {
+    const text = e.clipboardData?.getData('text/plain');
+    if (!text || (!text.includes('\t') && !text.includes('\n'))) return;
+    const simple = field.columns.filter(x => ['text', 'textarea', 'number', 'date', 'select', 'combo', undefined].includes(x.type));
+    const c0 = simple.findIndex(x => x.key === c.key);
+    if (c0 < 0) return;
+    e.preventDefault();
+    const lines = text.replace(/\r/g, '').split('\n').filter((l, j, a) => l.length || j < a.length - 1);
+    const n = strip(rows);
+    lines.forEach((line, j) => {
+      const ri = i + j;
+      if (ri >= n.length) n.push(blank(n[n.length - 1]));
+      const r = { ...n[ri] };
+      line.split('\t').forEach((v, q) => { const col = simple[c0 + q]; if (col) r[col.key] = col.type === 'select' ? ((col.options || []).find(o => o === v.trim() || String(o).toLowerCase() === v.trim().toLowerCase()) ?? r[col.key]) : v; });
+      n[ri] = r;
+    });
+    onChange(n);
+    toast(t('{n} row(s) pasted.', { n: lines.length }));
+  };
   const wide = field.columns.length > 4;
   const linked = rows.some(r => r._actionId || r._registerId);
   return (
     <div className="rows-editor">
-      <div className="table-wrap">
+      <div className="row-between">
+        <span className="small muted" aria-live="polite">{t('{n} rows', { n: rows.length })}</span>
+        {!disabled && rows.length > 0 && <button type="button" className="btn btn-sm btn-ghost" onClick={() => duplicate(rows.length - 1)}><Copy size={14} />{t('Duplicate previous row')}</button>}
+      </div>
+      <div className="table-wrap" ref={wrap}>
         <table className={`data rows ${wide ? 'wide' : ''}`}>
-          <thead><tr><th scope="col" style={{ width: 36 }}>#</th>{field.columns.map(c => <th key={c.key} scope="col">{tx(c.label, lang)}{c.required && <span className="req" aria-hidden="true">*</span>}</th>)}{linked && <th scope="col">{t('Record created')}</th>}<th scope="col" style={{ width: disabled ? 44 : 84 }}><span className="sr-only">{t('Actions')}</span></th></tr></thead>
+          <thead><tr><th scope="col" style={{ width: 36 }}>#</th>{field.columns.map(c => <th key={c.key} scope="col">{c.required && <span className="req" aria-hidden="true">*</span>}{tx(c.label, lang)}</th>)}{linked && <th scope="col">{t('Record created')}</th>}<th scope="col" style={{ width: disabled ? 44 : 120 }}><span className="sr-only">{t('Actions')}</span></th></tr></thead>
           <tbody>
             {rows.map((r, i) => (
-              <tr key={i}>
+              <tr key={r._k}>
                 <td className="muted">{i + 1}</td>
-                {field.columns.map(c => <td key={c.key} style={disabled ? undefined : { minWidth: c.wide ? 280 : c.type === 'textarea' ? 220 : ['person', 'kpi', 'obs', 'parties', 'mp', 'combo'].includes(c.type) ? 210 : c.type === 'date' ? 140 : 120 }}><Cell col={c} value={r[c.key]} disabled={disabled} ctx={ctx} rows={rows} onChange={(v) => set(i, c.key, v)} /></td>)}
+                {field.columns.map(c => {
+                  const err = errors[`${r._k}:${c.key}`];
+                  return (
+                    <td key={c.key} data-row={r._k} data-col={c.key} className={err ? 'cell-error' : ''} style={disabled ? undefined : { minWidth: c.wide ? 280 : c.type === 'textarea' ? 220 : ['person', 'kpi', 'obs', 'parties', 'mp', 'combo'].includes(c.type) ? 210 : c.type === 'date' ? 140 : 120 }}
+                      onFocusCapture={() => onFocusCell(r, c)} onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) onBlurCell(r, c); }} onKeyDownCapture={(e) => onKeyDownCell(e, i, c)} onPasteCapture={disabled ? undefined : (e) => onPaste(e, i, c)}>
+                      <Cell col={c} value={r[c.key]} disabled={disabled} ctx={ctx} rows={rows} onChange={(v) => set(i, c.key, v)} />
+                      {err && <span className="cell-msg" role="alert">{err}</span>}
+                    </td>
+                  );
+                })}
                 {linked && <td>{r._actionId ? <Link to="/actions" className="tag s4">{t('Action')}</Link> : r._registerId ? <Link to="/registers?reg=objectives" className="tag s4">{t('Objective')}</Link> : '—'}</td>}
-                <td className="row-actions"><button type="button" className="btn btn-ghost btn-icon btn-sm" title={t('Open the row in a large window')} aria-label={t('Open row {n}', { n: i + 1 })} onClick={() => setOpen(i)}><Maximize2 size={16} /></button>{!disabled && <button type="button" className="btn btn-ghost btn-icon btn-sm" aria-label={t('Delete row {n}', { n: i + 1 })} onClick={() => del(i)}><Trash2 size={16} /></button>}</td>
+                <td className="row-actions">
+                  <button type="button" className="btn btn-ghost btn-icon btn-sm" title={t('Open the row in a large window')} aria-label={t('Open row {n}', { n: i + 1 })} onClick={() => setOpen(i)}><Maximize2 size={16} /></button>
+                  {!disabled && <button type="button" className="btn btn-ghost btn-icon btn-sm" title={`${t('Duplicate row')} (Ctrl+D)`} aria-label={t('Duplicate row {n}', { n: i + 1 })} onClick={() => duplicate(i)}><Copy size={16} /></button>}
+                  {!disabled && <button type="button" className="btn btn-ghost btn-icon btn-sm" aria-label={t('Delete row {n}', { n: i + 1 })} onClick={() => del(i)}><Trash2 size={16} /></button>}
+                </td>
               </tr>
             ))}
             {!rows.length && <tr><td colSpan={field.columns.length + 3} className="muted small">{t('No row yet.')}</td></tr>}
@@ -282,14 +371,14 @@ export function RowsEditor({ field, value, onChange, disabled, ctx }) {
         </table>
       </div>
       {!disabled && <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
-        <button type="button" className="btn btn-sm" onClick={add}><Plus size={14} />{field.needs ? t('Type a need') : t('Add a row')}</button>
+        <button type="button" className="btn btn-sm" onClick={() => add()}><Plus size={14} />{field.needs ? t('Type a need') : t('Add a row')}</button>
         {field.needs && <button type="button" className="btn btn-sm" onClick={() => setLib(true)}><Library size={14} />{t('Add from the library')}</button>}
         {field.needs && <button type="button" className="btn btn-sm" disabled={aiBusy} onClick={suggestNeeds}><Sparkles size={14} />{aiBusy ? t('Preparing…') : t('Suggest with AI')}</button>}
-        <span className="xsmall muted">{t('Tip: open a row in a large window to type long texts.')}</span>
+        <span className="xsmall muted">{t('Enter moves down · Enter on the last row adds a row · Esc reverts · Ctrl+D duplicates · paste rows from a spreadsheet · open a row in a large window for long texts')}</span>
       </div>}
       {aiNote && <div className={`callout ${aiNote.error ? 'warn' : 'good'} small`} role="status"><span>{aiNote.n ? t('{n} need(s) suggested by {engine}: review them, link the parties and delete what does not apply.', { n: aiNote.n, engine: String(aiNote.engine || '').startsWith('rules') ? t('the built-in engine') : aiNote.engine }) : ''} {aiNote.error ? t('Language model: {e}', { e: aiNote.error }) : ''}</span></div>}
       {open !== null && rows[open] && <RowModal field={field} rows={rows} index={open} setIndex={setOpen} set={set} disabled={disabled} ctx={ctx} onClose={() => setOpen(null)} />}
-      {lib && <LibraryModal ctx={ctx} onClose={() => setLib(false)} onAdd={(list) => { onChange([...rows, ...list.map(x => ({ ...blank(), need: x.need, origin: 'Library' }))]); setLib(false); }} />}
+      {lib && <LibraryModal ctx={ctx} onClose={() => setLib(false)} onAdd={(list) => { onChange([...strip(rows), ...list.map(x => ({ ...blank(), need: x.need, origin: 'Library' }))]); setLib(false); }} />}
       {field.createsActions && <p className="hint">{t('On completion, each row becomes an action in the Action plan, with its owner and due date.')}</p>}
       {field.createsObjectives && <p className="hint">{t('On completion, each row becomes an entry of the objectives register.')}</p>}
     </div>

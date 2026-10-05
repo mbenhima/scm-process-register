@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { useApp } from './lib/state.jsx';
 import Shell from './components/Shell.jsx';
 import { Loading, Toasts } from './components/ui.jsx';
@@ -31,16 +32,19 @@ import ProcessDesign from './pages/ProcessDesign.jsx';
 import Traceability from './pages/Traceability.jsx';
 import Organization from './pages/Organization.jsx';
 import NewProject from './pages/NewProject.jsx';
+import ProjectTemplates, { ProjectTemplate } from './pages/ProjectTemplates.jsx';
 import Admin from './pages/Admin.jsx';
 import Help from './pages/Help.jsx';
 import Settings from './pages/Settings.jsx';
 
 export default function App() {
   const { me, booting } = useApp();
+  const loc = useLocation();
   if (booting) return <Loading />;
   if (!me) return <><Login /><Toasts /></>;
   return (
     <Shell>
+      <ErrorBoundary resetKey={loc.pathname + loc.search}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/tasks" element={<Tasks />} />
@@ -76,11 +80,14 @@ export default function App() {
         <Route path="/traceability" element={<Traceability />} />
         <Route path="/organization" element={<Organization />} />
         <Route path="/projects/new" element={<NewProject />} />
+        <Route path="/project-templates" element={<ProjectTemplates />} />
+        <Route path="/project-templates/:id" element={<ProjectTemplate />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/help" element={<Help />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      </ErrorBoundary>
       <Toasts />
     </Shell>
   );

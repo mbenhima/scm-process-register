@@ -119,6 +119,32 @@ await sme.page.locator('table tbody tr').first().click(); await sme.page.waitFor
 await shoot(sme, 'AT-UNI-QMS', `/steps/${smeSteps.items.find(x => x.step_id === 'MP-001.5').id}`, 'f-needs', { scroll: 420 });
 await shoot(sme, 'AT-UNI-QMS', `/steps/${smeSteps.items.find(x => x.step_id === 'MP-001.2').id}`, 'f-row-editor', { scroll: 380 });
 await sme.page.locator('.row-actions button').first().click(); await sme.page.waitForTimeout(700); await sme.page.screenshot({ path: path.join(outDir, 'f-row-editor.png') }); process.stdout.write('.');
+// Round 4: project templates, document template formatting and pictures, pagination,
+// BPMN palette, sign-in page with the partner logos.
+const L4 = { en: { proc: 'Processes and steps', risks: 'Risks and opportunities', tpl: 'Templates', fmt: 'Formatting', struct: 'Structure', bpmn: 'BPMN diagram' }, fr: { proc: 'Processus et étapes', risks: 'Risques et opportunités', tpl: 'Modèles', fmt: 'Mise en forme', struct: 'Structure', bpmn: 'Diagramme BPMN' } }[lang] || {};
+const ptList = await (await fetch(`${BASE}/api/project-templates`, { headers: H(sme.tk) })).json();
+const own = ptList.find(x => !x.library) || ptList[0];
+await shoot(sme, 'AT-UNI-QMS', '/project-templates', 'f-ptemplates');
+await shoot(sme, 'AT-UNI-QMS', `/project-templates/${own.id}`, 'f-ptemplate');
+await shoot(sme, 'AT-UNI-QMS', `/project-templates/${own.id}?tab=processes`, 'f-ptemplate-proc');
+await sme.page.locator('.tpl-phase-btn').first().click(); await sme.page.waitForTimeout(300);
+await sme.page.locator('table.data tbody tr td button[aria-expanded]').first().click(); await sme.page.waitForTimeout(500);
+await sme.page.locator('.tpl-steps').first().scrollIntoViewIfNeeded(); await sme.page.evaluate(() => window.scrollBy(0, 160)); await sme.page.waitForTimeout(300);
+await sme.page.screenshot({ path: path.join(outDir, 'f-ptemplate-steps.png') }); process.stdout.write('.');
+await shoot(sme, 'AT-UNI-QMS', `/project-templates/${own.id}?tab=risks`, 'f-ptemplate-risks');
+await shoot(sme, 'AT-UNI-QMS', '/documents', 'f-doctpl', { tab: L4.tpl });
+await sme.page.getByText('TPL-SCOPE', { exact: true }).first().click(); await sme.page.waitForTimeout(1200);
+await sme.page.locator('.pic-editor').first().scrollIntoViewIfNeeded(); await sme.page.waitForTimeout(1000);
+await sme.page.screenshot({ path: path.join(outDir, 'f-doctpl-picture.png') }); process.stdout.write('.');
+await sme.page.getByRole('tab', { name: L4.fmt }).click(); await sme.page.waitForTimeout(1000);
+await sme.page.screenshot({ path: path.join(outDir, 'f-doctpl-format.png') }); process.stdout.write('.');
+await shoot(sme, 'AT-UNI-QMS', '/actions', 'f-pager');
+await sme.page.locator('.pager').first().scrollIntoViewIfNeeded(); await sme.page.waitForTimeout(400); await sme.page.screenshot({ path: path.join(outDir, 'f-pager.png') }); process.stdout.write('.');
+await shoot(adminS, 'HZ-AEC-QMS', '/mp/MP-017', 'f-bpmn-palette', { tab: L4.bpmn, wait: 2500 });
+const anon = await browser.newContext({ viewport: { width: 1440, height: 860 }, deviceScaleFactor: 1.5, locale: lang === 'fr' ? 'fr-FR' : 'en-GB' });
+await anon.addInitScript((l) => { localStorage.setItem('dms.lang', l); localStorage.setItem('dms.lang.chosen', '1'); }, lang);
+const ap = await anon.newPage(); await ap.goto(`${BASE}/`, { waitUntil: 'networkidle' }); await ap.waitForTimeout(600);
+await ap.screenshot({ path: path.join(outDir, 'f-login.png') }); process.stdout.write('.'); await anon.close();
 const asst = await session('quality@nova-aec.example');
 await asst.page.goto(`${BASE}/assistant`, { waitUntil: 'networkidle' });
 process.stdout.write('\n');

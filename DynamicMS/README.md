@@ -32,13 +32,16 @@ Each organization has 19 accounts named `role@domain`: ims, quality, hse, risk, 
 ## Structure
 
 - `server/`: Express REST API, SQLite schema and migrations, catalog builder, full-run seed generator, reports (PDF, Excel, Word, CSV), IMS document templates (37, in `src/content/templates.js`) and the generator that fills them from the project data (`src/services/docdata.js`), AI engine (rules plus retrieval, with optional language models: Claude, OpenAI, Azure OpenAI, Gemini, Mistral or a custom OpenAI-compatible endpoint, set under Administration › AI models), global search, process design editor with versions and restore (`src/routes/design.js`), OBS roles linked to functions, AI prompt specifications with versioned fields, BPMN and process-map diagrams for documents (`src/services/diagram.js`, rendered with @resvg/resvg-wasm), backups, licence tools and tests (`npm test`).
-- `web/`: React + Vite client. It uses design tokens in `src/styles/tokens.css`, a navigation shell that can be docked on any edge, and bundled fonts.
+- `server/src/routes/ptemplates.js` and `src/services/blueprint.js`: project templates as editable blueprints (end-to-end processes, macro processes, steps, rules, controls, risks, alerts, KPIs, reporting) applied at project creation.
+- `web/`: React + Vite client. It uses the design tokens of the AI Value graphical chart 1.2 in `src/styles/tokens.css`, a navigation shell that can be docked on any edge with resizable panels (`src/lib/layout.jsx`), paginated tables, inline editable tables (`src/components/InlineGrid.jsx`), document formatting and picture editors (`src/components/DocEditors.jsx`) and bundled fonts.
 - `tools/`: extraction of the source documents, translation tables, screenshot and document generators.
 - `docs/sources/`: the five source documents.
 - `deliverables/`: installation guide, user guides (EN, FR), IMS document templates (EN, FR), sample generated IMS documents (EN, FR), feedback responses, application standard SRS, presentations (EN, FR), coverage checklist, the application zip and the source code zip.
-- Visual identity: AI Value graphical chart (navy, azure, green and teal palette; Montserrat, Open Sans and JetBrains Mono), with the DynamicMS logo in the app and the AI Value logo on every document.
+- Visual identity: AI Value graphical chart 1.2 (navy, azure, green and teal palette; Montserrat, Open Sans and JetBrains Mono), with the DynamicMS logo in the app, "A solution by" AI Value and FlexiGlob on the sign-in page and the AI Value logo on every deliverable.
 
-The seed generates 5,564 documents (Word, PDF or Excel) from the templates, filled with each project's data and ready to download from Records › Documents.
+The development server pre-bundles its dependencies at start-up; if a first load is interrupted, the page reloads itself once. For daily use, build the client and open the application on port 4000.
+
+The seed generates 6,392 documents (Word, PDF or Excel) from the templates, filled with each project's data and ready to download from Records › Documents.
 
 ## Production
 

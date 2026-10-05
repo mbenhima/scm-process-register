@@ -285,7 +285,9 @@ CREATE INDEX IF NOT EXISTS ix_roleassign_org ON role_assignments(org_id);
 // Columns added after the first release are declared here so existing databases upgrade in place.
 export const ADDITIVE_COLUMNS = {
   organizations: { logo_text: 'TEXT' },
-  projects: { progress_cache: 'INTEGER' },
+  projects: { progress_cache: 'INTEGER', blueprint: 'TEXT' },
+  doc_templates: { format: 'TEXT' },
+  project_templates: { content: 'TEXT', updated_at: 'TEXT', updated_by: 'TEXT', source_id: 'TEXT' },
   documents: { target: 'TEXT', source_step: 'TEXT', updated_at: 'TEXT' },
   attachments: { version: 'INTEGER DEFAULT 1', group_id: 'TEXT', note: 'TEXT' },
   ai_usecases: { model: 'TEXT', prompt_spec: 'TEXT' },

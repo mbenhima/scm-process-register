@@ -6,12 +6,13 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, ListChecks, Workflow, Bell, ShieldAlert, Gauge, Grid3x3, Scale, AlertOctagon, CheckSquare, ClipboardCheck, FileText, BookOpen,
   GanttChart, FileBarChart, LayoutGrid, BarChart3, MessageSquare, Sparkles, Library, Network, Layers, ListTree, Building2, FolderPlus, Settings2,
-  LifeBuoy, UserCog, Star, Search, Boxes, FileCog, PenTool, Pin, PinOff, Menu, LogOut, ChevronDown, ChevronRight, PanelLeft, PanelRight, PanelTop, PanelBottom,
+  LifeBuoy, UserCog, LayoutTemplate, Star, Search, Boxes, FileCog, PenTool, Pin, PinOff, Menu, LogOut, ChevronDown, ChevronRight, PanelLeft, PanelRight, PanelTop, PanelBottom,
 } from 'lucide-react';
 import { useApp } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { tx } from './ui.jsx';
 import SearchModal from './SearchModal.jsx';
+import { ResizeHandle, usePanelWidth } from '../lib/layout.jsx';
 
 export const NAV = [
   { id: 'home', group: 'Work', label: 'Home', icon: LayoutDashboard, to: '/', perm: 'dashboard.view' },
@@ -42,6 +43,7 @@ export const NAV = [
   { id: 'traceability', group: 'Design', label: 'Traceability', icon: ListTree, to: '/traceability', perm: 'process.view' },
   { id: 'organization', group: 'Organization', label: 'Organization', icon: Building2, to: '/organization', perm: 'tenancy.view' },
   { id: 'newproject', group: 'Organization', label: 'New project', icon: FolderPlus, to: '/projects/new', perm: 'project.create' },
+  { id: 'ptemplates', group: 'Design', label: 'Project templates', icon: LayoutTemplate, to: '/project-templates', perm: ['project.create', 'templates.manage', 'process.view'] },
   { id: 'admin', group: 'Organization', label: 'Administration', icon: Settings2, to: '/admin', perm: ['users.manage', 'config.manage', 'permissions.manage', 'audit.view'] },
   { id: 'help', group: 'Organization', label: 'Help', icon: LifeBuoy, to: '/help' },
   { id: 'settings', group: 'Organization', label: 'Settings', icon: UserCog, to: '/settings' },
@@ -79,6 +81,7 @@ export default function Shell({ children }) {
   const horizontal = dock === 'top' || dock === 'bottom';
   const collapsed = prefs.collapsed || [];
   const favs = prefs.favorites || [];
+  const [navW, setNavW] = usePanelWidth('left');
 
   useEffect(() => { setDrawer(false); setOpenGroup(null); setHoverOpen(false); }, [loc.pathname]);
   useEffect(() => {
@@ -120,7 +123,7 @@ export default function Shell({ children }) {
   const projectsByOrg = orgs.filter(o => o.access);
 
   return (
-    <div className={`app dock-${dock} ${unpinned ? 'unpinned-layout' : ''}`}>
+    <div className={`app dock-${dock} ${unpinned ? 'unpinned-layout' : ''}`} style={{ '--nav-w': `${navW}px` }}>
       <a href="#main" className="skip-link">{t('Skip to content')}</a>
       <header className="header">
         <button ref={menuBtn} className="btn btn-ghost btn-icon menu-btn" aria-label={t('Open menu')} aria-expanded={drawer} onClick={() => setDrawer(true)}><Menu size={20} /></button>
@@ -157,8 +160,14 @@ export default function Shell({ children }) {
       <nav className={navClass} aria-label={t('Main menu')} onMouseLeave={() => unpinned && setHoverOpen(false)}>
         <div className="nav-search" role="search">
           <button className="btn btn-primary btn-sm nav-search-btn" onClick={() => setSearch(filter)} title="Ctrl+K"><Search size={16} aria-hidden="true" /><span>{t('Search')}</span></button>
-          {!horizontal && <input className="input nav-filter" value={filter} onChange={e => setFilter(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && filter.trim()) setSearch(filter); if (e.key === 'Escape') setFilter(''); }} placeholder={t('Filter the menu…')} aria-label={t('Filter the menu')} />}
+          {!horizontal && <input type="search" name="dms-menu-filter" autoComplete="off" spellCheck={false} data-lpignore="true" data-1p-ignore="true" className="input nav-filter" value={filter} onChange={e => setFilter(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && filter.trim()) setSearch(filter); if (e.key === 'Escape') setFilter(''); }} placeholder={t('Filter the menu…')} aria-label={t('Filter the menu')} />}
         </div>
+        {f && !groups.length && (
+          <div className="nav-empty small">
+            <p className="muted">{t('No menu item matches “{q}”.', { q: filter })}</p>
+            <button className="btn btn-sm" onClick={() => setFilter('')}>{t('Clear the filter')}</button>
+          </div>
+        )}
         {groups.map(([g, list]) => {
           const isCollapsed = horizontal ? openGroup !== g : collapsed.includes(g) && !f;
           const active = list.some(n => (n.to === '/' ? loc.pathname === '/' : loc.pathname.startsWith(n.to)));
@@ -176,6 +185,7 @@ export default function Shell({ children }) {
           {DOCKS.map(([d, Icon, label]) => <button key={d} className="btn btn-ghost btn-icon btn-sm" aria-pressed={dock === d} aria-label={t(label)} title={t(label)} onClick={() => savePrefs({ dock: d })} style={dock === d ? { background: 'var(--aiv-azure-tint)' } : undefined}><Icon size={16} /></button>)}
         </div>
       </nav>
+      {!horizontal && pinned && <ResizeHandle side="left" atStart={dock === 'end'} width={navW} onChange={setNavW} label={t('Resize navigation panel')} className={`nav-resize dock-${dock}`} />}
       <main id="main" className="main" tabIndex={-1}>{children}</main>
       {search !== null && <SearchModal initial={search} onClose={() => setSearch(null)} />}
     </div>
