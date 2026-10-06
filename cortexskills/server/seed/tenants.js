@@ -62,6 +62,18 @@ export function seedTenants(pwHash) {
     provisionOrg(id, { packId: 'BND-05', seats: 600, lang: 'en', compliance: ['GDPR', 'LAW0908', 'ISO9001'], addons: ['AD-08', 'AD-11'] }, U);
     run(`UPDATE org_config SET sme_mode=0 WHERE org_id=?`, id);
     orgs.push({ id, v, vi: verticals.length, seg: 'LARGE', domain, lang: 'en', name: o.name, universal: true }); }
+  // Healthcare showcase organizations (fictional names): a private clinic group and a generic public hospital,
+  // each with its whole lifecycle completed, for the healthcare sample documents.
+  for (const sc of [
+    { key: 'HCPR-PRIV', name: { en: 'Santéora Private Clinics Group', fr: 'Groupe Santéora Cliniques Privées', ar: 'مجموعة مصحات سانتيورا الخاصة' }, city: 'Casablanca', employees: 2600, domain: 'santeora.ma', lang: 'fr' },
+    { key: 'HCPR-PUB', name: { en: 'Regional Hospital Centre', fr: 'Centre Hospitalier Régional', ar: 'المركز الاستشفائي الجهوي' }, city: 'Région', employees: 3400, domain: 'chr-sante.ma', lang: 'fr' }]) {
+    const v = cat.get('verticalSeed', 'HCPR'); const id = U('org:' + sc.key);
+    run(`INSERT INTO organizations(id,group_id,name,sector,segment,employees,sme_segment,country,city,default_language,email_domain,benchmark_sharing,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,1,?)`, id, null, S(sc.name), 'HCPR', 'LARGE', sc.employees, null, 'Morocco', sc.city, sc.lang, sc.domain, daysAgo(395));
+    provisionOrg(id, { packId: 'BND-05', seats: 600, lang: sc.lang, compliance: ['GDPR', 'LAW0908', 'ISO9001'], addons: ['AD-08', 'AD-11'] }, U);
+    run(`INSERT OR IGNORE INTO vertical_activation(org_id,vertical_id,version,sort,validated,activated_at) VALUES(?,?,1,1,1,?)`, id, 'HCPR', daysAgo(370));
+    run(`UPDATE org_config SET sme_mode=0 WHERE org_id=?`, id);
+    orgs.push({ id, v, vi: verticals.length + 1, seg: 'LARGE', domain: sc.domain, lang: sc.lang, name: sc.name, showcase: true });
+  }
   // Users: one account per standard role (Large) or the core SME roles, all with the demonstration password.
   for (const o of orgs) {
     const r = rng('users:' + o.id); o.users = [];
@@ -128,7 +140,7 @@ function seedOrg(o) {
 }
 
 function levelFor(o, focus) {
-  if (o.universal) return 7; // the universal scenario has run its whole lifecycle
+  if (o.universal || o.showcase) return 7; // the universal scenario has run its whole lifecycle
   const base = o.seg === 'LARGE' ? (focus === 'Digital' ? 4 : 3) : (focus === 'Digital' ? 3 : 2);
   return Math.min(6, base + (o.vi % 3 === 0 ? 1 : o.vi % 3 === 1 ? 0 : -1) + (o.v.id === 'AEC' || o.v.id === 'HCPR' ? 1 : 0));
 }

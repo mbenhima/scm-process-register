@@ -171,7 +171,7 @@ export async function toPdf(model, meta) {
     doc.addPage();
   }
   // Table of contents: pages reserved now, written at the end once page numbers are known.
-  let tocPage = null; const tocPages = fmt.toc ? Math.max(1, Math.ceil((sections.length + sections.reduce((s, x) => s + (x.subsections?.length || 0), 0) + 6) / 34)) : 0;
+  let tocPage = null; const tocPages = fmt.toc ? Math.max(1, Math.ceil((sections.length + sections.reduce((s, x) => s + (x.subsections?.length || 0), 0) + 6) / 48)) : 0;
   if (fmt.toc) { tocPage = doc.bufferedPageRange().count - 1; for (let i = 1; i < tocPages; i++) doc.addPage(); doc.addPage(); }
   if (meta.profile?.identification !== false) { H1(tx('identification', lang)); table([tx('field', lang), tx('value', lang)], meta.identification); }
   for (const s of sections) {
@@ -193,8 +193,8 @@ export async function toPdf(model, meta) {
   if (meta.profile?.sources !== false && meta.sources?.length) { H1(tx('sources', lang)); table([tx('sources', lang), tx('records', lang), tx('step', lang)], meta.sources); }
   if (meta.profile?.approval !== false) { H1(tx('approval', lang)); table([tx('role', lang), tx('name', lang), tx('date', lang), tx('signature', lang)], meta.approvalRows); }
   const range = doc.bufferedPageRange();
-  if (fmt.toc && tocPage != null) { doc.switchToPage(tocPage + 1); doc.y = m; text(tx('contents', lang), { bold: true, size: fmt.h1Size, color: hex(fmt.headingColor), align: rtl ? 'right' : 'left' }); doc.moveDown(0.6);
-    for (const e of toc) { if (doc.y > bottom()) break; const label = (e.level === 2 ? '    ' : '') + e.title; const y = doc.y; doc.fillColor(hex(e.level === 1 ? C.dark : C.ink)).font(F(label, e.level === 1)).fontSize(e.level === 1 ? 10.5 : 9.5).text(label, m, y, { width: W() - 40, align: rtl ? 'right' : 'left' }); doc.text(String(e.page), m + W() - 36, y, { width: 36, align: 'right' }); } }
+  if (fmt.toc && tocPage != null) { let tp = tocPage; doc.switchToPage(tp); doc.y = m; text(tx('contents', lang), { bold: true, size: fmt.h1Size, color: hex(fmt.headingColor), align: rtl ? 'right' : 'left' }); doc.moveDown(0.6);
+    for (const e of toc) { if (doc.y > bottom()) { if (tp < tocPage + tocPages - 1) { doc.switchToPage(++tp); doc.y = m; } else break; } const label = (e.level === 2 ? '    ' : '') + e.title; const y = doc.y; doc.fillColor(hex(e.level === 1 ? C.dark : C.ink)).font(F(label, e.level === 1)).fontSize(e.level === 1 ? 10.5 : 9.5).text(label, m, y, { width: W() - 40, align: rtl ? 'right' : 'left' }); doc.text(String(e.page), m + W() - 36, y, { width: 36, align: 'right' }); } }
   for (let i = 0; i < range.count; i++) {
     doc.switchToPage(i); if (i === 0 && fmt.cover) continue; const pw = doc.page.width - 2 * m;
     doc.fillColor(hex(C.medium)).font(F(model.title)).fontSize(8).text([fmt.header || model.title, meta.classification].filter(Boolean).join(' · '), m, m / 2, { width: pw, align: rtl ? 'left' : 'right', lineBreak: false });

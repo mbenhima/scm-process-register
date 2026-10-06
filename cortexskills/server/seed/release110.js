@@ -180,11 +180,11 @@ function seedRun(o, p, { roles, head, hrd, r, req }) {
   }
   // ---- Generated documents: the report, the plan, the audit report, the master list and the deliverables of completed processes.
   const doneE2e = new Set(all(`SELECT e2e_id FROM e2e_instances WHERE project_id=? AND status='Completed'`, p.id).map(x => x.e2e_id));
-  const codes = o.universal ? E.templates(o.id).map(x => x.code) : ['DT-TER', 'DT-PLAN', ...(performed ? ['DT-AUDIT'] : []), ...[...doneE2e].slice(0, 3).map(e => 'DT-' + e).filter(c => E.template(o.id, c)), 'DT-MASTER'];
-  const langs = o.universal ? ['en', 'fr', 'ar'] : [lang];
+  const codes = (o.universal || o.showcase) ? E.templates(o.id).map(x => x.code) : ['DT-TER', 'DT-PLAN', ...(performed ? ['DT-AUDIT'] : []), ...[...doneE2e].slice(0, 3).map(e => 'DT-' + e).filter(c => E.template(o.id, c)), 'DT-MASTER'];
+  const langs = (o.universal || o.showcase) ? ['en', 'fr', 'ar'] : [lang];
   const ordered = [...codes.filter(c => c !== 'DT-MASTER'), 'DT-MASTER']; // the master list last, so it lists every document
   for (const code of ordered) for (const l of langs) {
-    try { genDoc(o, p, code, l, { head, hrd, req, publish: code !== 'DT-PLAN' || o.universal }); } catch (e) { console.warn('  doc', code, e.message); }
+    try { genDoc(o, p, code, l, { head, hrd, req, publish: code !== 'DT-PLAN' || o.universal || o.showcase }); } catch (e) { console.warn('  doc', code, e.message); }
   }
 }
 
