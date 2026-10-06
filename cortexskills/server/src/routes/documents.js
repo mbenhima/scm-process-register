@@ -249,6 +249,7 @@ export function exportMeta(req, d, model) {
   const sections = (model.sections || []).map(s => (s.type === 'picture' && s.picture?.assetId ? { ...s, picture: { ...s.picture, buffer: assetBuffer(d.org_id, s.picture.assetId) } } : s));
   return { model: { ...model, sections, lang }, meta: { formatting: fmt, profile: tpl?.profile || model.profile || {}, orgName: pick(J(org?.name, org?.name), lang), projectName: pick(J(p?.name, p?.name), lang), reference: `${codeOf(d.doc_type)}-${String(d.id).slice(0, 4).toUpperCase()}`, versionLabel: verLabel(d), statusLabel: t('status.' + d.status, lang),
     dataAsOf: new Date(d.data_as_of || now()).toLocaleString(lang === 'fr' ? 'fr-FR' : lang === 'ar' ? 'ar-MA' : 'en-GB'), classification: d.classification || t('ter.confidential', lang), categoryLabel: pick(E.CATEGORIES[tpl?.category || model.category] || { en: '' }, lang),
+    owner: userName(d.owner_id || d.author_id) || '', approver: userName(d.approver_id) || '',
     logo: fmt.logo === 'none' ? null : assetBuffer(d.org_id, fmt.logoAsset), identification: identification(d, model, lang, org, pick(J(p?.name, p?.name), lang)),
     revisions: versions.map(v => [`${v.version}${v.minor ? '.' + v.minor : ''}`, t('status.' + v.status, lang), (v.published_at || v.created_at || '').slice(0, 10), userName(v.author_id) || '', v.change_note || '']),
     sources: (model.sources || []).map(s => [String(s.name), String(s.records ?? ''), s.step || '—']),

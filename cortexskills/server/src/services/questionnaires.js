@@ -150,9 +150,9 @@ function compose(inv, q, kind, base) {
   const k = kind === 'remind' ? 'reminder' : kind === 'interview' ? 'interview' : 'invite';
   const subject = t(`qmsg.${k}.subject`, lang, vars); const text = t(`qmsg.${k}.body`, lang, vars) + '\n\n' + t('qmsg.footer', lang, vars);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const html = `<div style="font-family:Calibri,Arial,sans-serif;color:#3A3A3C;max-width:560px;${lang === 'ar' ? 'direction:rtl;text-align:right;' : ''}">` +
-    esc(t(`qmsg.${k}.body`, lang, vars)).split('\n').map(l => l.includes(vars.link) ? `<p><a href="${esc(vars.link)}" style="display:inline-block;background:#F8931D;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:bold">${esc(t('qmsg.button', lang))}</a></p>` : `<p style="margin:0 0 10px">${l}</p>`).join('') +
-    `<p style="font-size:12px;color:#808184;margin-top:18px">${esc(t('qmsg.footer', lang, vars))}</p></div>`;
+  const html = `<div style="font-family:'Open Sans',Arial,sans-serif;color:#2C3E50;max-width:560px;${lang === 'ar' ? 'direction:rtl;text-align:right;' : ''}">` +
+    esc(t(`qmsg.${k}.body`, lang, vars)).split('\n').map(l => l.includes(vars.link) ? `<p><a href="${esc(vars.link)}" style="display:inline-block;background:#1876C6;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:bold">${esc(t('qmsg.button', lang))}</a></p>` : `<p style="margin:0 0 10px">${l}</p>`).join('') +
+    `<p style="font-size:12px;color:#5A6B7B;margin-top:18px">${esc(t('qmsg.footer', lang, vars))}</p></div>`;
   return { lang, subject, text, html, params: [vars.name, vars.org, vars.title, vars.link, vars.due] };
 }
 

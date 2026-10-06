@@ -169,10 +169,10 @@ export function sanitizeFormatting(f) {
   const out = { ...f };
   if (!ALLOWED.fonts.includes(out.bodyFont)) out.bodyFont = DEFAULT_FORMATTING.bodyFont; if (!ALLOWED.fonts.includes(out.headingFont)) out.headingFont = DEFAULT_FORMATTING.headingFont;
   for (const k of ['bodySize', 'h1Size', 'h2Size', 'h3Size']) if (!ALLOWED.sizes.includes(Number(out[k]))) out[k] = DEFAULT_FORMATTING[k];
-  if (!ALLOWED.align.includes(out.align)) out.align = 'justify'; if (!ALLOWED.orientation.includes(out.orientation)) out.orientation = 'portrait';
+  if (!ALLOWED.align.includes(out.align)) out.align = DEFAULT_FORMATTING.align; if (!ALLOWED.orientation.includes(out.orientation)) out.orientation = 'portrait'; if (!ALLOWED.paper.includes(out.paper)) out.paper = 'A4';
   for (const k of ['headingColor', 'h2Color', 'tableHeader']) if (!ALLOWED.colors.includes(String(out[k]).replace('#', '').toUpperCase())) out[k] = DEFAULT_FORMATTING[k];
   if (!ALLOWED.logo.includes(out.logo)) out.logo = 'organization'; if (!ALLOWED.logoPosition.includes(out.logoPosition)) out.logoPosition = 'top-left';
-  if (!ALLOWED.margins.includes(Number(out.margins))) out.margins = 19; out.header = String(out.header || '').slice(0, 200); out.footer = String(out.footer || '').slice(0, 200);
+  if (!ALLOWED.margins.includes(Number(out.margins))) out.margins = DEFAULT_FORMATTING.margins; out.header = String(out.header || '').slice(0, 200); out.footer = String(out.footer || '').slice(0, 200);
   return out;
 }
 const sectionPerms = { ter: 'reports.view', audit: 'audits.view' };

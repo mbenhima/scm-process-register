@@ -3,33 +3,29 @@
  * breakpoint, panel width or layer is written as a raw value (NFR-DA-VDS-01). Components reference token names only;
  * `npm run check:tokens` (also run in CI) rejects a raw colour anywhere else in web/src.
  *
- * Token names follow the Dynamic Apps standard (SRS v1.10, Appendix J). Their values come from the organization's
- * Graphical Chart (Brand guide v1.0), which governs colour:
- *   --aiv-azure  (primary action, active state, primary series)  = Orange       #F8931D
- *   --aiv-navy   (headings, dark fills, tooltips, overlay)       = Grey Dark    #3A3A3C
- *   --aiv-ink    (body text)                                     = Grey Ink     #58595B
- *   --aiv-muted  (captions, axis labels — AA on white)           = Grey Ink     #58595B
- *   --aiv-teal / --aiv-green (overlay and growth series, fills)  = muted blue / muted green
- * Orange is never used for text smaller than 24 px (NFR-DA-VDS-03, NFR-DA-UX-19).
+ * Values: AI Value Graphical Chart 1.2 as restated in SRS v1.10 Appendix J (Tables J-1 to J-6), unchanged.
+ * Azure, Teal and Green are used for fills, borders, buttons, badges, icons, charts and large bold text only;
+ * text below 18.66 px bold is Navy, Ink or Muted (NFR-DA-VDS-03, Appendix A divergence on eyebrows).
  */
 :root {
-  /* J-1 core palette */
-  --aiv-navy: #3A3A3C;
-  --aiv-navy-dark: #3A3A3C;
-  --aiv-azure: #F8931D;
-  --aiv-azure-deep: #E07B00;
-  --aiv-green: #5AA469;
-  --aiv-teal: #3A6EA5;
-  --aiv-ink: #58595B;
-  --aiv-muted: #58595B;
-  --aiv-muted-2: #808184;
+  /* J-1 core palette and tints */
+  --aiv-navy: #123A5F;
+  --aiv-navy-dark: #0D2A47;
+  --aiv-azure: #1876C6;
+  --aiv-azure-deep: #123A5F; /* large figures and emphasised text: Navy (VDS-03) */
+  --aiv-green: #28C87C;
+  --aiv-teal: #17A2B8;
+  --aiv-ink: #2C3E50;
+  --aiv-muted: #5A6B7B;
+  --aiv-muted-2: #5A6B7B;
   --aiv-white: #FFFFFF;
-  --aiv-bg: #FDFDFC;
-  --aiv-bg-alt: #F2F2F3;
-  --aiv-line: #E3E3E4;
-  --aiv-azure-tint: #FDEEDA;
-  --aiv-green-tint: #D9EAD3;
-  --aiv-teal-tint: #F2F2F3;
+  --aiv-bg: #F5F8FB;
+  --aiv-bg-alt: #F5F8FB;
+  --aiv-line: #E1E8F0;
+  --aiv-azure-tint: #E8F1FB;
+  --aiv-green-tint: #E7F9F0;
+  --aiv-teal-tint: #E6F6F8;
+  --aiv-gradient: linear-gradient(90deg, #1876C6 0%, #17A2B8 50%, #28C87C 100%); /* logo swoosh and one hero element only */
 
   /* J-2 status scale — always in this order, always with a label */
   --aiv-status-1: #F4C7C3;
@@ -39,13 +35,13 @@
   --aiv-status-5: #B6D7A8;
 
   /* Translucent tints built from the palette */
-  --aiv-overlay: rgba(58, 58, 60, 0.45);
-  --aiv-scrim: rgba(58, 58, 60, 0.32);
-  --aiv-azure-a35: rgba(248, 147, 29, 0.35);
-  --aiv-azure-a18: rgba(248, 147, 29, 0.18);
+  --aiv-overlay: rgba(18, 58, 95, 0.45);
+  --aiv-scrim: rgba(18, 58, 95, 0.32);
+  --aiv-azure-a35: rgba(24, 118, 198, 0.35);
+  --aiv-azure-a18: rgba(24, 118, 198, 0.18);
   --aiv-white-a80: rgba(255, 255, 255, 0.8);
-  --aiv-skeleton-a: #F2F2F3;
-  --aiv-skeleton-b: #E3E3E4;
+  --aiv-skeleton-a: #F5F8FB;
+  --aiv-skeleton-b: #E1E8F0;
 
   /* J-2 typography */
   --aiv-font-heading: 'Montserrat', 'Noto Kufi Arabic', sans-serif;
@@ -65,13 +61,13 @@
   --aiv-border: 1px;
 
   /* Elevation (tinted with the navy token) */
-  --aiv-shadow-card: 0 2px 8px rgba(58, 58, 60, 0.06);
-  --aiv-shadow-hover: 0 8px 28px rgba(58, 58, 60, 0.12);
-  --aiv-shadow-modal: 0 20px 60px rgba(58, 58, 60, 0.18);
-  --aiv-shadow-primary: 0 4px 12px rgba(248, 147, 29, 0.28);
+  --aiv-shadow-card: 0 2px 8px rgba(18, 58, 95, 0.06);
+  --aiv-shadow-hover: 0 8px 28px rgba(18, 58, 95, 0.12);
+  --aiv-shadow-modal: 0 20px 60px rgba(18, 58, 95, 0.18);
+  --aiv-shadow-primary: 0 4px 12px rgba(24, 118, 198, 0.28);
 
   /* Focus */
-  --aiv-focus-ring: 0 0 0 3px rgba(248, 147, 29, 0.35);
+  --aiv-focus-ring: 0 0 0 3px rgba(24, 118, 198, 0.35);
   --aiv-focus-offset: 2px;
 
   /* Motion */

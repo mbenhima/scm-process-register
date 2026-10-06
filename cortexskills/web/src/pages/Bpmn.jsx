@@ -29,7 +29,7 @@ function Editor({ rec, canEdit, onSaved }) {
   const { t, L } = useI18n(); const act = useAction(); const host = useRef(null); const palette = useRef(null); const inst = useRef(null); const fileRef = useRef(null);
   const [full, setFull] = useState(false); const [zoom, setZoom] = useState(1); const [dirty, setDirty] = useState(false); const [paletteOpen, setPaletteOpen] = useState(true);
   useEffect(() => {
-    const M = canEdit ? Modeler : NavigatedViewer; const bpmn = new M({ container: host.current, textRenderer: { defaultStyle: { fontFamily: "'Source Sans 3', 'Noto Naskh Arabic', sans-serif", fontSize: 12 }, externalStyle: { fontFamily: "'Source Sans 3', 'Noto Naskh Arabic', sans-serif", fontSize: 12 } } }); inst.current = bpmn;
+    const M = canEdit ? Modeler : NavigatedViewer; const bpmn = new M({ container: host.current, textRenderer: { defaultStyle: { fontFamily: "'Open Sans', 'Noto Sans Arabic', sans-serif", fontSize: 12 }, externalStyle: { fontFamily: "'Open Sans', 'Noto Sans Arabic', sans-serif", fontSize: 12 } } }); inst.current = bpmn;
     const xml = rec.xml || emptyXml(rec.e2e_id || 'P1');
     bpmn.importXML(xml).then(() => { bpmn.get('canvas').zoom('fit-viewport'); setZoom(bpmn.get('canvas').zoom());
       if (canEdit) { const p = host.current.querySelector('.djs-palette'); if (p && palette.current) palette.current.appendChild(p); bpmn.on('commandStack.changed', () => setDirty(true)); }

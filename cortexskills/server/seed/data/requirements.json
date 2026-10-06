@@ -5104,9 +5104,9 @@
   "v16": {
    "status": "Met",
    "evidence": {
-    "en": "Design tokens (--aiv-*) for color, type, spacing, radius, elevation and motion; bundled fonts; CI check rejecting raw colors; brand divergences recorded (tokens.css, tools/check-tokens.mjs).",
-    "fr": "Jetons de conception (--aiv-*), polices embarquées, contrôle CI des couleurs brutes, divergences de marque documentées.",
-    "ar": "رموز التصميم والخطوط المضمنة وفحص التكامل المستمر للألوان الخام وتوثيق اختلافات الهوية البصرية."
+    "en": "CortexSkills horizontal lockup in the 64 px top bar (at least 150 px wide), on the sign-in and response pages and in the header of every generated document (35 mm); icon alone for the favicon and the narrow top bar; AI Value company lockup on the sign-in page, in the navigation and on document covers. Logos are never recolored or stretched (web/public/brand, server/assets/brand).",
+    "fr": "Logo horizontal CortexSkills dans la barre supérieure de 64 px (au moins 150 px de large), sur les pages de connexion et de réponse et dans l’en-tête de chaque document généré (35 mm) ; icône seule pour le favicon et la barre étroite ; logo AI Value sur la page de connexion, dans la navigation et en couverture des documents. Les logos ne sont jamais recolorés ni déformés.",
+    "ar": "شعار CortexSkills الأفقي في الشريط العلوي بارتفاع 64 بكسل (بعرض 150 بكسل على الأقل) وفي صفحتي الدخول والرد وفي ترويسة كل وثيقة منشأة (35 مم)؛ الأيقونة وحدها للأيقونة المفضلة والشريط الضيق؛ شعار AI Value في صفحة الدخول وفي التنقل وعلى أغلفة الوثائق. لا يعاد تلوين الشعارات ولا تشويهها."
    }
   }
  },
@@ -5116,11 +5116,11 @@
   "text": "Generated documents and exports shall follow the Graphical Chart: Open Sans 11-point Ink body, Montserrat Navy headings, tables with a Navy header row and alternating White and Background rows, 2-centimeter margins, A4 by default and Letter where the region requires it, fonts embedded, hyperlinks and color profile preserved (Navy CMYK 100, 80, 30, 20) and the vector logo never flattened to a bitmap. Spreadsheet exports shall use the Status Scale alone for conditional formatting and the chart series colors of FR-DA-VIZ-02; slide exports shall use a Navy title slide and white content slides.",
   "since": "1.7–1.10",
   "v16": {
-   "status": "Met",
+   "status": "Partial",
    "evidence": {
-    "en": "Design tokens (--aiv-*) for color, type, spacing, radius, elevation and motion; bundled fonts; CI check rejecting raw colors; brand divergences recorded (tokens.css, tools/check-tokens.mjs).",
-    "fr": "Jetons de conception (--aiv-*), polices embarquées, contrôle CI des couleurs brutes, divergences de marque documentées.",
-    "ar": "رموز التصميم والخطوط المضمنة وفحص التكامل المستمر للألوان الخام وتوثيق اختلافات الهوية البصرية."
+    "en": "Word, PDF and Excel exports use Open Sans 11 pt Ink body, Montserrat Navy headings, Navy table header rows, alternating White and Background rows, 2 cm margins, A4 by default and Letter as an option; fonts are embedded in Word and PDF; spreadsheets use the Status Scale only (server/src/services/brand.js, docexport.js). The logo files supplied are raster images, so the logo is placed as a high-resolution bitmap until vector artwork is provided.",
+    "fr": "Les exports Word, PDF et Excel utilisent Open Sans 11 pt couleur Ink, des titres Montserrat Navy, des en-têtes de tableau Navy, des lignes alternées Blanc et Fond, des marges de 2 cm, le format A4 par défaut et Letter en option ; les polices sont embarquées dans Word et PDF ; les classeurs n’utilisent que l’échelle de statut. Les logos fournis sont des images matricielles : le logo est placé en haute résolution jusqu’à la fourniture d’un fichier vectoriel.",
+    "ar": "تستعمل صادرات Word وPDF وExcel خط Open Sans بحجم 11 بلون Ink وعناوين Montserrat بلون Navy ورؤوس جداول Navy وصفوفاً متناوبة بيضاء وخلفية وهوامش 2 سم ومقاس A4 افتراضياً وLetter اختيارياً؛ الخطوط مضمنة في Word وPDF؛ وتستعمل الجداول سلم الحالة فقط. ملفات الشعار المقدمة صور نقطية، لذا يوضع الشعار بدقة عالية إلى حين توفير ملف متجهي."
    }
   }
  },

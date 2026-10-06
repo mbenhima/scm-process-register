@@ -92,7 +92,6 @@ function traceability(reqs) {
     'NFR-DA-MAINT-06': 'Guides are generated from source in Word and PDF with an automatic TOC; walkthrough replay is scripted in tools, run at release.',
     'NFR-DA-PORT-03': 'A CI workflow for Linux, Windows and macOS is provided in .github/workflows; it runs when the repository is hosted on GitHub.',
     'FR-DA-ONB-02': 'Spreadsheet/CSV import with validation and rejected-line reasons; legacy-system and cloud-storage import go through the integration registry.',
-    'NFR-DA-UX-06': 'Brand-mandated white text on the primary orange and orange key figures are kept as the visual identity requires; body text uses grey tones that pass AA.',
   };
   const DEPLOY = ['NFR-DA-REL-02', 'NFR-DA-REL-04', 'NFR-DA-REL-06', 'NFR-DA-SEC-16', 'NFR-DA-PERF-08', 'NFR-DA-SCALE-01', 'NFR-DA-SCALE-03', 'NFR-DA-SCALE-04', 'NFR-DA-DATA-02', 'NFR-DA-UX-10', 'NFR-DA-PERF-06', 'NFR-DA-PERF-07'];
   const EVID = { TEN: 'Tenancy tree, groups, organizations, OBS routes (server/src/routes/tenancy.js)', RBAC: 'Permission matrix and requirePerm middleware (server/src/rbac.js)', CFG: 'Entitlements module and configuration screen (server/src/entitlements.js)',

@@ -28,7 +28,7 @@ export default function Respond() {
   if (!d) return <div className="public-page"><p className="muted">{t('common.loading')}</p></div>;
   const pct = completeness(d.form?.sections, answers, flags);
   return (<div className="public-page">
-    <header className="public-head"><div className="brand"><img src="/cortexskills-mark.png" alt="" />CortexSkills</div>
+    <header className="public-head"><div className="brand"><img src="/brand/cortexskills-lockup-compact.png" alt="CortexSkills" /></div>
       <div className="seg" role="group" aria-label={t('header.language')}>{languages.map(l => <button key={l.code} aria-pressed={lang === l.code} onClick={() => setLang(l.code)} lang={l.code}>{l.code.toUpperCase()}</button>)}</div></header>
     <div className="page-head"><div><div className="eyebrow">{L(d.organization)}</div><h1>{L(d.questionnaire.label)}</h1>
       <p className="subtitle">{t('respond.hello', { name: d.respondent.name })} · {L(d.form?.name)}{d.questionnaire.due_date ? ' · ' + t('respond.due', { date: new Date(d.questionnaire.due_date).toLocaleDateString(lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-GB') }) : ''}</p></div></div>

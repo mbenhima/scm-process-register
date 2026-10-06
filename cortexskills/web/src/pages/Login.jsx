@@ -8,8 +8,9 @@ export default function Login() {
   const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [err, setErr] = useState(''); const [busy, setBusy] = useState(false);
   const submit = async e => { e.preventDefault(); setErr(''); setBusy(true); try { await login(email.trim(), password); } catch (x) { setErr(x.message); } finally { setBusy(false); } };
   return (<div className="login">
-    <div className="login-art"><img src="/cortexskills-logo.png" alt="CortexSkills" />
-      <div><div className="eyebrow">{t('login.eyebrow')}</div><h1>{t('login.headline')}</h1><p className="subtitle">{t('login.lead')}</p></div></div>
+    <div className="login-art"><img className="login-logo" src="/brand/cortexskills-logo.png" alt="CortexSkills" />
+      <div><div className="eyebrow">{t('login.eyebrow')}</div><h1>{t('login.headline')}</h1><p className="subtitle">{t('login.lead')}</p></div>
+      <div className="company-mark"><span className="xs muted">{t('login.by')}</span><img src="/brand/aivalue-lockup-compact.png" alt="AI Value" /></div></div>
     <div className="login-form"><form className="card stack" onSubmit={submit} noValidate>
       <div className="row" style={{ justifyContent: 'space-between' }}><h2>{t('login.title')}</h2>
         <div className="seg" role="group" aria-label={t('header.language')}>{languages.map(l => <button key={l.code} type="button" aria-pressed={lang === l.code} onClick={() => setLang(l.code)}>{l.code.toUpperCase()}</button>)}</div></div>

@@ -32,9 +32,9 @@ r.get('/design/export', requirePerm('catalog.view'), ah(async (req, res) => {
   const sheets = { phase: 'Phases', e2e: 'End-to-end processes', uft: 'User tasks', mp: 'Macro processes', task: 'Tasks', step: 'Steps' };
   for (const [k, title] of Object.entries(sheets)) {
     const ws = wb.addWorksheet(title); const head = ws.addRow(['ID', 'Name (EN)', 'Name (FR)', 'Name (AR)', 'Parent', 'Status', 'Custom', 'Modified', 'Version']);
-    head.eachCell(c => { c.font = { bold: true, color: { argb: 'FFFFFFFF' }, name: 'Calibri' }; c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8931D' } }; });
+    head.eachCell(c => { c.font = { bold: true, color: { argb: 'FFFFFFFF' }, name: 'Open Sans' }; c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF123A5F' } }; });
     data.elements.filter(e => e.kind === k).forEach((e, i) => { const p = D.parentOf(org(req), k, e.data); const row = ws.addRow([e.id, e.data.name?.en, e.data.name?.fr, e.data.name?.ar, p ? p[1] : '', e.status, e.custom ? 'Yes' : '', e.modified ? 'Yes' : '', e.version]);
-      row.eachCell(c => { c.font = { name: 'Calibri', size: 9.5 }; c.alignment = { wrapText: true, vertical: 'top' }; if (i % 2) c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2F2F3' } }; }); });
+      row.eachCell(c => { c.font = { name: 'Open Sans', size: 9.5, color: { argb: 'FF2C3E50' } }; c.alignment = { wrapText: true, vertical: 'top' }; if (i % 2) c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F8FB' } }; }); });
     ws.columns.forEach((c, i) => { c.width = [14, 48, 48, 48, 14, 10, 8, 9, 8][i]; }); ws.views = [{ state: 'frozen', ySplit: 1 }];
   }
   void lang;

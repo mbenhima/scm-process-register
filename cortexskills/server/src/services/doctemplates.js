@@ -42,11 +42,12 @@ const DELIVERABLES = [
   ['E2E-33', L('Questionnaire campaign report', 'Rapport de campagne de questionnaires', 'تقرير حملة الاستبيانات'), 'Report', ['Questionnaire']],
 ];
 
-/** Default Document Formatting from the Graphical Chart: Times New Roman body 12 pt justified, headings in the brand colours. */
-export const DEFAULT_FORMATTING = { bodyFont: 'Times New Roman', bodySize: 12, headingFont: 'Times New Roman', h1Size: 17, h2Size: 13.5, h3Size: 12, align: 'justify', orientation: 'portrait', margins: 19, // mm (1080 twips)
-  cover: true, toc: true, numbering: true, pageNumbers: true, headingColor: 'E07B00', h2Color: '3A3A3C', tableHeader: 'F8931D', logo: 'organization', logoPosition: 'top-left', logoInHeader: false, header: '', footer: '' };
-export const ALLOWED = { fonts: ['Times New Roman', 'Cambria', 'Calibri', 'Georgia', 'Garamond', 'Open Sans', 'Montserrat'], sizes: [9, 9.5, 10, 10.5, 11, 12, 13.5, 14, 16, 17, 18, 20, 24], align: ['left', 'center', 'right', 'justify'],
-  orientation: ['portrait', 'landscape'], colors: ['F8931D', 'E07B00', 'FDEEDA', '3A3A3C', '58595B', '808184', 'F2F2F3', 'E3E3E4', 'FFFFFF', '3A6EA5', '5AA469'], logo: ['organization', 'uploaded', 'none'], logoPosition: ['top-left', 'top-center', 'top-right'], margins: [12, 15, 19, 20, 25, 30] };
+/** Default Document Formatting from the AI Value Graphical Chart (NFR-DA-VDS-20): Open Sans 11 pt Ink body, Montserrat Navy headings, Navy table headers, 2 cm margins, A4. */
+export const DEFAULT_FORMATTING = { bodyFont: 'Open Sans', bodySize: 11, headingFont: 'Montserrat', h1Size: 16, h2Size: 13, h3Size: 11.5, align: 'left', orientation: 'portrait', paper: 'A4', margins: 20, // mm (2 cm, NFR-DA-VDS-20)
+  cover: true, toc: true, numbering: true, pageNumbers: true, headingColor: '123A5F', h2Color: '123A5F', tableHeader: '123A5F', logo: 'organization', logoPosition: 'top-left', logoInHeader: false, header: '', footer: '' };
+/** Values an Organization may choose for its layout (FR-DA-DOC-07): AI Value Graphical Chart colours and fonts only. */
+export const ALLOWED = { fonts: ['Open Sans', 'Montserrat', 'Times New Roman', 'Cambria', 'Calibri', 'Georgia', 'Garamond'], sizes: [9, 9.5, 10, 10.5, 11, 11.5, 12, 13, 13.5, 14, 16, 17, 18, 20, 24], align: ['left', 'center', 'right', 'justify'],
+  orientation: ['portrait', 'landscape'], paper: ['A4', 'Letter'], colors: ['123A5F', '0D2A47', '1876C6', '17A2B8', '28C87C', '2C3E50', '5A6B7B', 'F5F8FB', 'E1E8F0', 'E8F1FB', 'FFFFFF'], logo: ['organization', 'uploaded', 'none'], logoPosition: ['top-left', 'top-center', 'top-right'], margins: [12, 15, 19, 20, 25, 30] };
 
 const sec = (id, type, title, extra = {}) => ({ id, type, title, ...extra });
 const purpose = (e2eName, goal) => L(

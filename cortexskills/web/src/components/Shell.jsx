@@ -119,7 +119,7 @@ function TopBar({ onMenu, showMenu, onAssistant, ctxOpen }) {
   useEffect(() => { const id = setInterval(() => unread.reload(), 60000); return () => clearInterval(id); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (!menu) return undefined; const out = e => { if (!menuRef.current?.contains(e.target)) setMenu(false); }; const k = e => e.key === 'Escape' && setMenu(false); document.addEventListener('mousedown', out); document.addEventListener('keydown', k); return () => { document.removeEventListener('mousedown', out); document.removeEventListener('keydown', k); }; }, [menu]);
   return (<header className="topbar">
-    <div className="topbar-start">{showMenu && <Btn icon="Menu" kind="ghost" aria-label={t('nav.open')} onClick={onMenu} />}<Link to="/" className="logo" aria-label="CortexSkills"><img src="/cortexskills-mark.png" alt="" /><span className="wordmark">CortexSkills</span></Link></div>
+    <div className="topbar-start">{showMenu && <Btn icon="Menu" kind="ghost" aria-label={t('nav.open')} onClick={onMenu} />}<Link to="/" className="logo" aria-label="CortexSkills"><img className="logo-full" src="/brand/cortexskills-lockup-compact.png" alt="CortexSkills" /><img className="logo-icon" src="/brand/cortexskills-icon.png" alt="" /></Link></div>
     <div><HeaderSearch /></div>
     <div className="topbar-end">
       <span className="hide-mobile"><Seg size="sm" label={t('header.language')} value={lang} onChange={changeLang} options={languages.map(l => ({ id: l.code, label: l.code.toUpperCase() }))} /></span>
@@ -169,7 +169,8 @@ function SideNav({ nav, rail, mobile, open, setOpen, pinned, onPin, handle }) {
           return (<div className="nav-group" key={g.id}>
             <button type="button" className="nav-group-btn" aria-expanded={!isCollapsed} onClick={() => toggleGroup(g.id)}>{t('navGroup.' + g.id)}<Icon name={isCollapsed ? 'ChevronRight' : 'ChevronDown'} size={14} className="sep" /></button>
             {!isCollapsed && <div className="nav-group-items">{g.items.map(i => <NavItem key={g.id + i.id} i={i} fav={favRoutes.includes(i.route)} onFav={toggleFav} rail={rail && !open} />)}</div>}</div>); })}
-    </div>{handle}</nav>);
+    </div>
+    {expanded && <div className="nav-company"><img src="/brand/aivalue-lockup-compact.png" alt={t('nav.company')} /></div>}{handle}</nav>);
 }
 function NavItem({ i, fav, onFav, hint, rail }) {
   const { t } = useI18n();
