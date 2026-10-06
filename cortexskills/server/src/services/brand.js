@@ -14,7 +14,7 @@ export const RAG = { Green: 'D9EAD3', Vert: 'D9EAD3', Amber: 'FBE0B5', Ambre: 'F
 export const SERIES = ['1876C6', '28C87C', '17A2B8', '123A5F', '5A6B7B'];
 
 export const FONT = n => path.join(ROOT, 'assets', 'fonts', n);
-const FILES = { 'Open Sans': ['OpenSans-400.ttf', 'OpenSans-700.ttf', 'OpenSans-400i.ttf'], Montserrat: ['Montserrat-700.ttf', 'Montserrat-800.ttf', 'Montserrat-700.ttf'],
+const FILES = { 'Open Sans': ['OpenSans-400.ttf', 'OpenSans-700.ttf', 'OpenSans-400i.ttf'], Montserrat: ['Montserrat-700.ttf', 'Montserrat-700.ttf', 'Montserrat-700.ttf'],
   serif: ['LiberationSerif-Regular.ttf', 'LiberationSerif-Bold.ttf', 'LiberationSerif-Italic.ttf'] };
 const SERIF = ['Times New Roman', 'Cambria', 'Georgia', 'Garamond'];
 /** TTF files (regular, bold, italic) used to embed a chosen font family in PDF exports. */

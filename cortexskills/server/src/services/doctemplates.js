@@ -63,13 +63,18 @@ export function libraryTemplates(e2e) {
     out.push({ code: 'DT-' + id, name, category, formats: ['docx', 'pdf', 'xlsx'], e2e: [id], status: 'Published', profile: { identification: true, revisions: true, sources: true, approval: true }, formatting: { ...DEFAULT_FORMATTING },
       sections: [
         sec('purpose', 'text', L('Purpose and scope', 'Objet et périmètre', 'الغرض والنطاق'), { text: purpose(e.name, e.goal) }),
+        sec('refs', 'table', L('References and definitions', 'Références et définitions', 'المراجع والتعاريف'), { source: 'refs:' + id }),
+        sec('method', 'table', L('Method and rating scales', 'Méthode et échelles de notation', 'المنهجية وسلالم التقييم'), { source: 'method:' + id }),
         sec('flow', 'diagram', L('Process flow', 'Logigramme du processus', 'مخطط سير العملية'), { source: 'bpmn:' + id, text: L('Lanes per role, from trigger to end event (BPMN 2.0).', 'Couloirs par rôle, du déclencheur à l’événement de fin (BPMN 2.0).', 'ممرات حسب الدور، من الحدث المطلق إلى حدث النهاية (BPMN 2.0).') }),
         sec('sipoc', 'table', L('Activities, inputs and outputs (SIPOC)', 'Activités, entrées et sorties (SIPOC)', 'الأنشطة والمدخلات والمخرجات (SIPOC)'), { source: 'sipoc:' + id }),
+        sec('tasks', 'table', L('Task sheets', 'Fiches des tâches', 'بطاقات المهام'), { source: 'tasks:' + id }),
         sec('results', 'steps', L('Results by step', 'Résultats par étape', 'النتائج حسب الخطوة'), { source: 'steps:' + id }),
         ...entities.map((ent, i) => sec('rec' + i, 'table', null, { source: 'records:' + ent })),
         sec('kpis', 'table', L('Indicators', 'Indicateurs', 'المؤشرات'), { source: 'kpis:' + id }),
         sec('risks', 'table', L('Risks and controls', 'Risques et contrôles', 'المخاطر والضوابط'), { source: 'risks:' + id }),
         sec('racsi', 'table', L('Roles and responsibilities (RACSI)', 'Rôles et responsabilités (RACSI)', 'الأدوار والمسؤوليات (RACSI)'), { source: 'racsi:' + id }),
+        sec('analysis', 'table', L('Analysis and conclusions', 'Analyse et conclusions', 'التحليل والخلاصات'), { source: 'analysis:' + id }),
+        sec('actions', 'table', L('Actions', 'Actions', 'الإجراءات'), { source: 'actions:' + id }),
       ] });
   }
   out.push({ code: 'DT-TER', name: L('Training Engineering Report and Training Plan', 'Rapport d’ingénierie de formation et plan de formation', 'تقرير هندسة التكوين ومخطط التكوين'), category: 'Report', formats: ['docx', 'pdf', 'xlsx'], e2e: ['E2E-03', 'E2E-30'], status: 'Published',

@@ -72,6 +72,14 @@ function numbered(model, fmt) {
     return { ...s, heading: label, subsections: (s.subsections || []).map((x, k) => ({ ...x, heading: fmt.numbering ? `${n}.${k + 1} ${x.heading}` : x.heading })) }; });
 }
 const wide = table => (table?.columns?.length || 0) > 6;
+/** Column shares proportional to content (average cell length, longest word, header), each at least 7 % of the width. */
+export function colShares(cols, rows) {
+  const n = (cols || rows[0] || []).length || 1; const sample = rows.slice(0, 80);
+  const w = [...Array(n).keys()].map(i => { const cells = sample.map(r => String(r[i] ?? '')); const avg = cells.reduce((a, c) => a + Math.min(c.length, 140), 0) / Math.max(1, cells.length);
+    const word = Math.max(3, ...[cols?.[i], ...cells].map(c => Math.max(0, ...String(c ?? '').split(/\s+/).map(x => x.length)))); return Math.max(avg, word * 1.15, String(cols?.[i] || '').length * 0.6, 5); });
+  let sum = w.reduce((a, b) => a + b, 0); let sh = w.map(v => v / sum); const min = Math.min(0.07, 1 / n);
+  sh = sh.map(v => Math.max(v, min)); sum = sh.reduce((a, b) => a + b, 0); return sh.map(v => v / sum);
+}
 
 /* ---------------------------------------------------------------------------------------------- WORD */
 export async function toDocx(model, meta) {
@@ -82,10 +90,11 @@ export async function toDocx(model, meta) {
   const para = (text, o = {}) => new Paragraph({ bidirectional: rtl, alignment: o.align ?? align, spacing: { after: o.after ?? 120, line: 276, lineRule: LineRuleType.AUTO }, keepNext: o.keepNext, pageBreakBefore: o.pageBreak, heading: o.heading, border: o.border, shading: o.shading,
     children: String(text ?? '').split('\n').flatMap((ln, i) => (i ? [new TextRun({ break: 1 }), run(ln, o)] : [run(ln, o)])) });
   const b = { style: BorderStyle.SINGLE, size: 4, color: C.line }; const borders = { top: b, bottom: b, left: b, right: b };
-  const cell = (text, o = {}) => new TableCell({ borders, shading: { type: ShadingType.CLEAR, color: 'auto', fill: o.fill || C.white }, margins: { top: 60, bottom: 60, left: 90, right: 90 }, children: [para(text, { size: o.size || 19, bold: o.bold, color: o.color || C.ink, align: rtl ? AlignmentType.RIGHT : AlignmentType.LEFT, after: 0 })] });
-  const table = (cols, rows, o = {}) => new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, visuallyRightToLeft: rtl, rows: [
-    ...(cols ? [new TableRow({ tableHeader: true, cantSplit: true, children: cols.map(c => cell(c, { fill: fmt.tableHeader || C.navy, color: C.white, bold: true })) })] : []),
-    ...rows.map((r, k) => new TableRow({ cantSplit: true, children: r.map((c, j) => cell(c, { fill: o.kv && j === 0 ? C.bg : k % 2 ? C.bg : C.white, bold: o.kv && j === 0, color: o.kv && j === 0 ? C.navy : C.ink })) }))] });
+  const cell = (text, o = {}) => new TableCell({ borders, width: o.pct ? { size: `${o.pct}%`, type: WidthType.PERCENTAGE } : undefined, shading: { type: ShadingType.CLEAR, color: 'auto', fill: o.fill || C.white }, margins: { top: 60, bottom: 60, left: 90, right: 90 }, children: [para(text, { size: o.size || 19, bold: o.bold, color: o.color || C.ink, align: rtl ? AlignmentType.RIGHT : AlignmentType.LEFT, after: 0 })] });
+  const table = (cols, rows, o = {}) => { const pct = colShares(cols, rows).map(v => Math.round(v * 1000) / 10);
+    return new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, columnWidths: pct.map(v => Math.round(v * 90)), visuallyRightToLeft: rtl, rows: [
+    ...(cols ? [new TableRow({ tableHeader: true, cantSplit: true, children: cols.map((c, j) => cell(c, { fill: fmt.tableHeader || C.navy, color: C.white, bold: true, pct: pct[j] })) })] : []),
+    ...rows.map((r, k) => new TableRow({ cantSplit: true, children: r.map((c, j) => cell(c, { fill: o.kv && j === 0 ? C.bg : k % 2 ? C.bg : C.white, bold: o.kv && j === 0, color: o.kv && j === 0 ? C.navy : C.ink, pct: pct[j] })) }))] }); };
   const H1 = (text, o = {}) => para(text, { font: hfont, size: Math.round(fmt.h1Size * 2), bold: true, color: fmt.headingColor, heading: HeadingLevel.HEADING_1, keepNext: true, after: 160, pageBreak: o.pageBreak, align: rtl ? AlignmentType.RIGHT : AlignmentType.LEFT, border: { bottom: { style: BorderStyle.SINGLE, size: 8, color: fmt.headingColor, space: 4 } } });
   const H2 = text => para(text, { font: hfont, size: Math.round(fmt.h2Size * 2), bold: true, color: fmt.h2Color, heading: HeadingLevel.HEADING_2, keepNext: true, after: 100, align: rtl ? AlignmentType.RIGHT : AlignmentType.LEFT });
   const paper = PAPER[fmt.paper] || PAPER.A4; const contentW = (fmt.orientation === 'landscape' ? paper.mm[1] : paper.mm[0]) - 2 * fmt.margins; // mm
@@ -153,6 +162,9 @@ export async function toPdf(model, meta) {
   doc.registerFont('ar', FONT('NotoNaskhArabic-400.ttf')); doc.registerFont('arB', FONT('NotoNaskhArabic-700.ttf'));
   const F = (s, bold, italic, head) => (isAr(s) ? (bold || head ? 'arB' : 'ar') : head ? 'head' : bold ? 'bodyB' : italic ? 'bodyI' : 'body');
   const chunks = []; doc.on('data', c => chunks.push(c)); const done = new Promise(r => doc.on('end', () => r(Buffer.concat(chunks))));
+  // The PDF library drops the space before the last word of an Arabic run; a trailing space on each paragraph keeps it.
+  const _text = doc.text.bind(doc); const _height = doc.heightOfString.bind(doc); const arFix = v => (isAr(v) ? String(v).split('\n').map(p => p + ' ').join('\n') : v);
+  doc.text = (v, ...a) => _text(arFix(v), ...a); doc.heightOfString = (v, ...a) => _height(arFix(v), ...a);
   const W = () => doc.page.width - 2 * m; const bottom = () => doc.page.height - m - 24; const al = rtl ? 'right' : fmt.align === 'justify' ? 'justify' : fmt.align;
   const toc = []; const hex = c => '#' + String(c).replace('#', '');
   const text = (s, o = {}) => { doc.fillColor(o.color || hex(C.ink)).font(F(s, o.bold, o.italic, o.head)).fontSize(o.size || fmt.bodySize).text(String(s ?? ''), m, doc.y, { width: W(), align: o.align || al, lineGap: 2 }); };
@@ -160,10 +172,16 @@ export async function toPdf(model, meta) {
   const H1 = s => { ensure(60); toc.push({ title: s, page: doc.bufferedPageRange().count, level: 1 }); doc.moveDown(0.6); text(s, { head: true, size: fmt.h1Size, color: hex(fmt.headingColor), align: rtl ? 'right' : 'left' }); doc.moveTo(m, doc.y + 2).lineTo(m + W(), doc.y + 2).lineWidth(1).strokeColor(hex(fmt.headingColor)).stroke(); doc.moveDown(0.5); };
   const H2 = s => { ensure(50); toc.push({ title: s, page: doc.bufferedPageRange().count, level: 2 }); doc.moveDown(0.4); text(s, { head: true, size: fmt.h2Size, color: hex(fmt.h2Color), align: rtl ? 'right' : 'left' }); doc.moveDown(0.25); };
   const table = (cols, rows, o = {}) => {
-    const n = (cols || rows[0] || []).length || 1; const colW = W() / n; const pad = 4; const order = [...Array(n).keys()]; if (rtl) order.reverse();
-    const hgt = (row, size, bold) => Math.max(14, ...row.map(c => doc.font(F(c, bold)).fontSize(size).heightOfString(String(c ?? ''), { width: colW - pad * 2 }))) + pad * 2;
+    const n = (cols || rows[0] || []).length || 1; const pad = 4; const order = [...Array(n).keys()]; if (rtl) order.reverse();
+    // Each column is at least as wide as its longest word (header in bold), the rest shared in proportion to content.
+    const longest = (c, bold, size) => Math.max(0, ...String(c ?? '').split(/\s+/).filter(Boolean).slice(0, 400).map(w => doc.font(F(w, bold)).fontSize(size).widthOfString(w)));
+    const mins = [...Array(n).keys()].map(i => Math.min(W() * 0.3, Math.max(longest(cols?.[i], true, 9.5), ...rows.slice(0, 80).map(r => longest(r[i], o.kv && i === 0, 9.5))) + pad * 2 + 1));
+    const minSum = mins.reduce((a, b) => a + b, 0); const share = colShares(cols, rows);
+    const cw = minSum >= W() ? mins.map(v => v * W() / minSum) : (() => { const extra = W() - minSum; return mins.map((v, i) => v + extra * share[i]); })();
+    const xs = []; let acc = m; for (const ci of order) { xs[ci] = acc; acc += cw[ci]; }
+    const hgt = (row, size, bold) => Math.max(14, ...row.map((c, ci) => doc.font(F(c, bold)).fontSize(size).heightOfString(String(c ?? ''), { width: cw[ci] - pad * 2 }))) + pad * 2;
     const draw = (row, y, fill, color, size, bold, kvRow) => { const h = hgt(row, size, bold); doc.rect(m, y, W(), h).fill(fill);
-      order.forEach((ci, k) => { const x = m + k * colW; const isKey = kvRow && ci === 0; if (isKey) doc.rect(x, y, colW, h).fill(hex(C.bg)); doc.fillColor(isKey ? hex(C.navy) : color).font(F(row[ci], bold || isKey)).fontSize(size).text(String(row[ci] ?? ''), x + pad, y + pad, { width: colW - pad * 2, align: rtl ? 'right' : 'left' }); doc.rect(x, y, colW, h).lineWidth(0.5).strokeColor(hex(C.line)).stroke(); });
+      order.forEach(ci => { const x = xs[ci]; const isKey = kvRow && ci === 0; if (isKey) doc.rect(x, y, cw[ci], h).fill(hex(C.bg)); doc.fillColor(isKey ? hex(C.navy) : color).font(F(row[ci], bold || isKey)).fontSize(size).text(String(row[ci] ?? ''), x + pad, y + pad, { width: cw[ci] - pad * 2, align: rtl ? 'right' : 'left' }); doc.rect(x, y, cw[ci], h).lineWidth(0.5).strokeColor(hex(C.line)).stroke(); });
       return h; };
     let y = doc.y; const head = () => { if (cols) y += draw(cols, y, hex(fmt.tableHeader), '#FFFFFF', 9.5, true); };
     if (y + 40 > bottom()) { doc.addPage({ layout: doc.page.layout }); y = m; } head();
@@ -213,10 +231,11 @@ export async function toPdf(model, meta) {
   let productImg = null; // embedded once, referenced on every page
   for (let i = 0; i < range.count; i++) {
     doc.switchToPage(i); if (i === 0 && fmt.cover) continue; const pw = doc.page.width - 2 * m;
+    doc.page.margins.bottom = 0; // header and footer sit in the margins: never let them open a new page
     // Page header: product lockup (35 mm) at the start, title and classification at the end, thin rule below.
     const lw = 35 * 2.835; const psz = imageSize(LOGO.product()); const pl = productImg ||= doc.openImage(LOGO.product()); const lh = lw * psz.h / psz.w; const top = Math.max(8, m / 2 - lh / 2 - 4);
     doc.image(pl, rtl ? doc.page.width - m - lw : m, top, { width: lw });
-    doc.fillColor(hex(C.muted)).font(F(model.title)).fontSize(8).text([fmt.header || model.title, meta.classification].filter(Boolean).join(' · '), rtl ? m : m + lw + 12, top + lh / 2 - 4, { width: pw - lw - 12, align: rtl ? 'left' : 'right', lineBreak: false });
+    doc.fillColor(hex(C.muted)).font(F(model.title)).fontSize(8).text([fmt.header || model.title, meta.classification].filter(Boolean).join(' · '), rtl ? m : m + lw + 12, top + lh / 2 - 4, { width: pw - lw - 12, height: 10, ellipsis: true, align: rtl ? 'left' : 'right', lineBreak: false });
     doc.moveTo(m, top + lh + 4).lineTo(m + pw, top + lh + 4).lineWidth(0.5).strokeColor(hex(C.line)).stroke();
     if (fmt.pageNumbers) doc.fillColor(hex(C.muted)).font('body').fontSize(8).text(`${fmt.footer ? fmt.footer + ' · ' : ''}${meta.reference} · ${tx('page', lang)} ${i + 1} ${tx('of', lang)} ${range.count}`, m, doc.page.height - m / 2 - 10, { width: pw, align: 'center', lineBreak: false });
   }

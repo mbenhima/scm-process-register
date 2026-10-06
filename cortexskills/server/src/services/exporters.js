@@ -42,7 +42,7 @@ export async function toPdf(model) {
   const range = doc.bufferedPageRange();
   for (let i = 0; i < range.count; i++) {
     doc.switchToPage(i);
-    doc.fillColor('#' + C.medium).font('sans').fontSize(8).text(`CortexSkills · ${model.id} · ${model.generated.slice(0, 10)} · ${i + 1} / ${range.count}`, 54, doc.page.height - 36, { width: W, align: 'center', lineBreak: false });
+    doc.page.margins.bottom = 0; doc.fillColor('#' + C.medium).font('sans').fontSize(8).text(`CortexSkills · ${model.id} · ${model.generated.slice(0, 10)} · ${i + 1} / ${range.count}`, 54, doc.page.height - 36, { width: W, align: 'center', lineBreak: false });
   }
   doc.end();
   return done;

@@ -14,6 +14,7 @@ import { config } from '../config.js';
 import * as E from '../services/docengine.js';
 import { exportDocument, MIME, assetBuffer, imageSize } from '../services/docexport.js';
 import { STANDARD_REQUIREMENTS } from '../services/doctemplates.js';
+import * as D from '../services/design.js';
 import { updateRecord, entityRegistry, permFor } from '../entities.js';
 
 const r = Router();
@@ -117,7 +118,16 @@ r.get('/projects/:id/documents/by-process/:e2e', requirePerm('reports.view'), ah
 }));
 const identification = (d, model, lang, org, project) => [[t('ter.reference', lang), `${codeOf(d.doc_type)}-${String(d.id).slice(0, 4).toUpperCase()}`], [t('ter.docTitle', lang), model.title], [t('ter.version', lang), verLabel(d)], [t('ter.status', lang), t('status.' + d.status, lang)],
   [t('ter.author', lang), userName(d.author_id) || '—'], [t('ter.approver', lang), userName(d.approver_id) || '—'], [t('ter.dataAsOf', lang), new Date(d.data_as_of || now()).toLocaleString(lang === 'fr' ? 'fr-FR' : lang === 'ar' ? 'ar-MA' : 'en-GB')],
-  [t('ter.classification', lang), d.classification || t('ter.confidential', lang)], [t('ter.project', lang), project]];
+  [t('ter.classification', lang), d.classification || t('ter.confidential', lang)], [t('ter.project', lang), project], ...lifecycle(d, lang)];
+const LC = { owner: { en: 'Owner', fr: 'Propriétaire', ar: 'المالك' }, created: { en: 'Created on', fr: 'Créé le', ar: 'أنشئ بتاريخ' }, published: { en: 'Approved on', fr: 'Approuvé le', ar: 'صودق عليه بتاريخ' },
+  review: { en: 'Review frequency / next review', fr: 'Fréquence de revue / prochaine revue', ar: 'وتيرة المراجعة / المراجعة المقبلة' }, retention: { en: 'Retention', fr: 'Conservation', ar: 'مدة الحفظ' }, distribution: { en: 'Distribution', fr: 'Diffusion', ar: 'التوزيع' }, process: { en: 'Process', fr: 'Processus', ar: 'العملية' } };
+/** Lifecycle and distribution lines of the identification block (FR-DA-DGC-04): distribution = the roles accountable, consulted and informed in the process. */
+function lifecycle(d, lang) {
+  const l = k => LC[k][lang] || LC[k].en; const e2e = d.e2e_id ? D.get(d.org_id, 'e2e', d.e2e_id) : null; const roles = new Set();
+  for (const id of e2e?.ufts || []) { const u = D.get(d.org_id, 'uft', id); for (const k of ['A', 'C', 'I']) { const v = pick(u?.racsiT?.[k], lang) || u?.racsi?.[k]; if (v) String(v).split(/[,;]\s*/).forEach(r => roles.add(r)); } }
+  return [[l('owner'), userName(d.owner_id || d.author_id) || '—'], [l('created'), (d.created_at || '').slice(0, 10)], [l('published'), (d.published_at || '').slice(0, 10) || '—'],
+    [l('review'), `${d.review_frequency || '—'} / ${d.next_review || '—'}`], [l('retention'), d.retention || '—'], ...(e2e ? [[l('process'), `${e2e.id} — ${pick(e2e.name, lang)}`]] : []), [l('distribution'), [...roles].join(', ') || '—']];
+}
 function insertDoc(req, p, tpl, model, { lang, version, minor = 0, note, sections = null, overrides = {}, formatting = {}, meta = {} }) {
   const id = uuid(); const tm = now();
   run(`INSERT INTO documents(id,org_id,project_id,doc_type,version,minor,status,lang,title,data_as_of,model,sources,findings,author_id,owner_id,change_note,template_id,template_version,overrides,formatting,e2e_id,review_frequency,next_review,retention,classification,created_at,updated_at) VALUES(?,?,?,?,?,?,'Draft',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
