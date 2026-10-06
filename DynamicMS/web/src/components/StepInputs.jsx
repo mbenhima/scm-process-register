@@ -136,7 +136,8 @@ export function Combo({ items, value, onChange, disabled, t, aria, id, lang }) {
         {items.map(x => <option key={x.key} value={x.key}>{x.label}</option>)}
         <option value="__custom">{t('Custom…')}</option>
       </select>
-      {custom && <input className="input" aria-label={`${aria} — ${t('Custom value')}`} placeholder={t('Type your own value')} value={text} onChange={e => onChange(e.target.value)} autoFocus />}
+      {/* Typing keeps the custom box (even when emptied); it takes the focus only when the user chose Custom…. */}
+      {custom && <input className="input" aria-label={`${aria} — ${t('Custom value')}`} placeholder={t('Type your own value')} value={text} onChange={e => { setCustom(true); onChange(e.target.value); }} autoFocus={chosen} />}
     </div>
   );
 }

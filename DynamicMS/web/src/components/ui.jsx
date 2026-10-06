@@ -215,12 +215,16 @@ export function Field({ label, hint, error, required, children, id }) {
 
 export function Modal({ title, onClose, children, footer, wide, full }) {
   const ref = useRef(null);
+  // Callers pass a new onClose on every render: read it through a ref so the focus effect runs
+  // once per opening (initial focus and focus return), not on every keystroke in the dialog.
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
   useEffect(() => {
     const prev = document.activeElement;
     const el = ref.current;
     el?.querySelector('input, select, textarea, button:not([data-close])')?.focus();
     const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') closeRef.current();
       if (e.key === 'Tab' && el) {
         const f = [...el.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(x => !x.disabled);
         if (!f.length) return;
@@ -230,7 +234,7 @@ export function Modal({ title, onClose, children, footer, wide, full }) {
     };
     document.addEventListener('keydown', onKey);
     return () => { document.removeEventListener('keydown', onKey); prev?.focus?.(); };
-  }, [onClose]);
+  }, []);
   const { t } = useApp();
   return (
     <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>

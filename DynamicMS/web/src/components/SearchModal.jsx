@@ -23,10 +23,12 @@ export default function SearchModal({ initial = '', onClose }) {
   useEffect(() => {
     if (q.trim().length < 2) { setRes(null); return undefined; }
     setBusy(true);
+    // Only the answer to the current text is shown: a slower answer to an earlier text is ignored.
+    let current = true;
     const h = setTimeout(() => {
-      api(`/search?q=${encodeURIComponent(q.trim())}${projectId ? `&projectId=${projectId}` : ''}&limit=10`).then(r => { setRes(r); setCursor(0); }).catch(() => setRes({ groups: [], total: 0 })).finally(() => setBusy(false));
+      api(`/search?q=${encodeURIComponent(q.trim())}${projectId ? `&projectId=${projectId}` : ''}&limit=10`).then(r => { if (current) { setRes(r); setCursor(0); } }).catch(() => { if (current) setRes({ groups: [], total: 0 }); }).finally(() => { if (current) setBusy(false); });
     }, 200);
-    return () => clearTimeout(h);
+    return () => { current = false; clearTimeout(h); };
   }, [q, projectId]);
   const groups = (res?.groups || []).filter(g => !type || g.type === type);
   const flat = groups.flatMap(g => g.items);

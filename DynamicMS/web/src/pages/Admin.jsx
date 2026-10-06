@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ShieldCheck, Database, Upload, Plus, Building2, Users, Sparkles, KeyRound } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
@@ -32,12 +32,14 @@ function Config({ orgId }) {
   const { t, lang, toast, can } = useApp();
   const { data, reload } = useData(`/admin/orgs/${orgId}/config`);
   const [f, setF] = useState(null); const [ack, setAck] = useState(false); const [quote, setQuote] = useState(null);
-  useEffect(() => { if (data) setF({ pack: data.config.pack, industryPacks: data.config.industryPacks, capabilityPacks: data.config.capabilityPacks, addons: data.config.addons, complianceStandards: data.config.complianceStandards, deploymentMode: data.config.deploymentMode }); }, [data]);
+  // The refetch after this form's own save keeps the choices made meanwhile.
+  const keepDraft = useRef(false);
+  useEffect(() => { if (!data) return; if (keepDraft.current) { keepDraft.current = false; return; } setF({ pack: data.config.pack, industryPacks: data.config.industryPacks, capabilityPacks: data.config.capabilityPacks, addons: data.config.addons, complianceStandards: data.config.complianceStandards, deploymentMode: data.config.deploymentMode }); }, [data]);
   useEffect(() => { if (f && can('config.manage')) api('/admin/pricing/quote', { method: 'POST', body: f }).then(setQuote).catch(() => {}); }, [f, can]);
   if (!data || !f) return <Loading />;
   const tog = (k, id) => setF({ ...f, [k]: f[k].includes(id) ? f[k].filter(x => x !== id) : [...f[k], id] });
   const added = f.complianceStandards.filter(s => !data.config.complianceStandards.includes(s));
-  const save = async () => { try { await api(`/admin/orgs/${orgId}/config`, { method: 'PUT', body: { ...f, acknowledgeDisclosure: ack } }); toast(t('Configuration saved.')); setAck(false); reload(); } catch (e) { toast(e.message, 'error'); } };
+  const save = async () => { try { await api(`/admin/orgs/${orgId}/config`, { method: 'PUT', body: { ...f, acknowledgeDisclosure: ack } }); toast(t('Configuration saved.')); setAck(false); keepDraft.current = true; reload(); } catch (e) { toast(e.message, 'error'); } };
   const edit = can('config.manage');
   return (
     <div className="grid-main">
@@ -188,12 +190,14 @@ function Llm({ orgId }) {
   const { data, reload } = useData(`/orgs/${orgId}/ai/llm`);
   const [f, setF] = useState(null); const [test, setTest] = useState(null);
   const ucs = useData(`/orgs/${orgId}/ai/usecases`);
-  useEffect(() => { if (data) setF({ ...data.config, apiKey: '' }); }, [data]);
+  // The refetch after this form's own save keeps the text typed meanwhile; only the sent key is cleared.
+  const keepDraft = useRef(false);
+  useEffect(() => { if (!data) return; if (keepDraft.current) { keepDraft.current = false; return; } setF({ ...data.config, apiKey: '' }); }, [data]);
   if (!data || !f) return <Loading />;
   const prov = data.providers.find(p => p.id === f.provider) || data.providers[0];
   const edit = data.canEdit;
   const noTemp = prov.models.find(m => m.id === f.model)?.temperature === false || /^claude-(opus-5|sonnet-5|fable|mythos|opus-4-[78])|^(gpt-5|o\d)/i.test(f.model || '');
-  const save = async () => { try { await api(`/orgs/${orgId}/ai/llm`, { method: 'PUT', body: f }); toast(t('AI model settings saved.')); reload(); } catch (e) { toast(e.message, 'error'); } };
+  const save = async () => { try { await api(`/orgs/${orgId}/ai/llm`, { method: 'PUT', body: f }); toast(t('AI model settings saved.')); const sent = f.apiKey; setF(cur => cur.apiKey === sent ? { ...cur, apiKey: '' } : cur); keepDraft.current = true; reload(); } catch (e) { toast(e.message, 'error'); } };
   const run = async () => { setTest(null); try { setTest(await api(`/orgs/${orgId}/ai/llm/test`, { method: 'POST' })); } catch (e) { setTest({ ok: false, message: e.message }); } };
   const setModel = async (uc, model) => { try { await api(`/ai/usecases/${uc.id}/model`, { method: 'PUT', body: { model } }); toast(t('Model of {c} updated.', { c: uc.code })); ucs.reload(); } catch (e) { toast(e.message, 'error'); } };
   return (

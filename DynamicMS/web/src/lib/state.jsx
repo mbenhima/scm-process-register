@@ -106,14 +106,16 @@ export function useData(path, deps = []) {
   const [state, setState] = useState({ data: null, loading: true, error: null });
   const [n, setN] = useState(0);
   useEffect(() => {
-    if (!path) { setState({ data: null, loading: false, error: null }); return undefined; }
+    if (!path) { setState({ data: null, loading: false, error: null, path }); return undefined; }
     const ctl = new AbortController();
     setState(s => ({ ...s, loading: true, error: null }));
-    api(path, { signal: ctl.signal }).then(data => setState({ data, loading: false, error: null })).catch(error => { if (error.name !== 'AbortError') setState({ data: null, loading: false, error }); });
+    api(path, { signal: ctl.signal }).then(data => setState({ data, loading: false, error: null, path })).catch(error => { if (error.name !== 'AbortError') setState({ data: null, loading: false, error, path }); });
     return () => ctl.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path, n, lang, ...deps]);
   const reload = useCallback(() => setN(x => x + 1), []);
   const setData = useCallback((fn) => setState(s => ({ ...s, data: typeof fn === 'function' ? fn(s.data) : fn })), []);
-  return { ...state, reload, setData };
+  // Until the effect has started the request of a new path, report it as loading (not 'no data').
+  const { path: loadedPath, ...rest } = state;
+  return { ...rest, loading: rest.loading || (!!path && loadedPath !== undefined && loadedPath !== path && !rest.data), reload, setData };
 }

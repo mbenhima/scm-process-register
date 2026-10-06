@@ -2,7 +2,7 @@
 // template editor. A template defines everything a new project contains — end-to-end
 // processes, macro processes, tasks and steps, business rules, controls, risks and
 // opportunities, alerts, KPIs and reporting — and every part is editable (full CRUD).
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Plus, Copy, Trash2, CheckCircle2, Undo2, Archive, FolderPlus, ChevronRight, ChevronDown, Workflow, Layers, ListChecks, Scale, ShieldCheck, ShieldAlert, Bell, Gauge, FileBarChart, Flag } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
@@ -76,10 +76,20 @@ function NewTemplateModal({ templates, onClose, onCreated }) {
 }
 
 // ------------------------------------------------------------------ Template editor
+// A tab panel mounted on first visit and then only hidden, so its drafts survive tab switches.
+function TabPanel({ id, tab, seen, children }) {
+  if (!seen.current.tabs.has(id)) return null;
+  return <div hidden={tab !== id}>{children}</div>;
+}
+
 export function ProjectTemplate() {
   const { id } = useParams();
   const [sp, setSp] = useSearchParams();
   const tab = sp.get('tab') || 'overview';
+  // Tabs already opened stay mounted (hidden): switching tab keeps unsaved input of the others.
+  const seen = useRef({ id: null, tabs: new Set() });
+  if (seen.current.id !== id) seen.current = { id, tabs: new Set() };
+  seen.current.tabs.add(tab);
   const { t, L, lang, toast } = useApp();
   const navigate = useNavigate();
   const { data, loading, error, reload, setData } = useData(`/project-templates/${id}`);
@@ -127,9 +137,10 @@ export function ProjectTemplate() {
         </>} />
       {ro && <div className="callout" style={{ marginBottom: 16 }}><span className="small">{d.library ? t('Library templates are read-only. Select Copy to customize to adapt this template for your organization; your copy is offered next to it when creating a project.') : t('You can view this template; editing requires the permission to manage templates.')}</span></div>}
       <Tabs tabs={tabs} value={tab} onChange={(v) => setSp(v === 'overview' ? {} : { tab: v }, { replace: true })} label={t('Template parts')} />
-      {tab === 'overview' && <Overview d={d} ro={ro} put={put} reload={reload} />}
-      {tab === 'processes' && <Processes d={d} ro={ro} put={put} reload={reload} />}
-      {tab === 'rules' && <InlineGrid id={`tpl-rules`} readOnly={ro} rows={d.lists.rules} onSave={saveList('rules')} countLabel={n => t('{n} business rules', { n })} addLabel={t('Add a rule')} newRow={() => ({ type: 'Validation', severity: 'Medium', owner: 'ims_manager' })}
+      <div key={id}>
+      <TabPanel id="overview" tab={tab} seen={seen}><Overview d={d} ro={ro} put={put} reload={reload} /></TabPanel>
+      <TabPanel id="processes" tab={tab} seen={seen}><Processes d={d} ro={ro} put={put} reload={reload} /></TabPanel>
+      <TabPanel id="rules" tab={tab} seen={seen}><InlineGrid id={`tpl-rules`} readOnly={ro} rows={d.lists.rules} onSave={saveList('rules')} countLabel={n => t('{n} business rules', { n })} addLabel={t('Add a rule')} newRow={() => ({ type: 'Validation', severity: 'Medium', owner: 'ims_manager' })}
         columns={[
           { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'BR-…' },
           { key: 'mp', label: t('Macro process'), type: 'select', options: d.mpOptions.map(m => ({ value: m.id, label: `${m.code} ${m.name}` })), width: 220, carry: true },
@@ -138,8 +149,8 @@ export function ProjectTemplate() {
           { key: 'type', label: t('Type'), type: 'select', required: true, options: ['Validation', 'Calculation', 'Routing', 'Notification', 'Constraint'].map(v => ({ value: v, label: L(v) })), width: 140 },
           { key: 'severity', label: t('Severity'), type: 'select', required: true, options: SEVERITIES.map(v => ({ value: v, label: L(v) })), width: 120 },
           { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
-        ]} />}
-      {tab === 'controls' && <InlineGrid id="tpl-controls" readOnly={ro} rows={d.lists.controls} onSave={saveList('controls')} countLabel={n => t('{n} controls', { n })} addLabel={t('Add a control')} newRow={() => ({ type: 'Preventive', frequency: 'Quarterly', owner: 'ims_manager' })}
+        ]} /></TabPanel>
+      <TabPanel id="controls" tab={tab} seen={seen}><InlineGrid id="tpl-controls" readOnly={ro} rows={d.lists.controls} onSave={saveList('controls')} countLabel={n => t('{n} controls', { n })} addLabel={t('Add a control')} newRow={() => ({ type: 'Preventive', frequency: 'Quarterly', owner: 'ims_manager' })}
         columns={[
           { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'CTL-…' },
           { key: 'name', label: t('Control'), required: true, width: 280 },
@@ -148,8 +159,8 @@ export function ProjectTemplate() {
           { key: 'frequency', label: t('Frequency'), type: 'select', required: true, options: ['Continuous', 'Daily', 'Weekly', 'Monthly', 'Quarterly', 'Semi-annual', 'Annual', 'Per event'].map(v => ({ value: v, label: L(v) })), width: 140 },
           { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
           { key: 'mp', label: t('Macro process'), type: 'select', options: d.mpOptions.map(m => ({ value: m.id, label: `${m.code} ${m.name}` })), width: 220, carry: true },
-        ]} />}
-      {tab === 'risks' && <InlineGrid id="tpl-risks" readOnly={ro} rows={d.lists.risks} onSave={saveList('risks')} countLabel={n => t('{n} risks and opportunities', { n })} addLabel={t('Add a risk or opportunity')} newRow={() => ({ kind: 'Risk', likelihood: 3, impact: 3, owner: 'risk_manager' })}
+        ]} /></TabPanel>
+      <TabPanel id="risks" tab={tab} seen={seen}><InlineGrid id="tpl-risks" readOnly={ro} rows={d.lists.risks} onSave={saveList('risks')} countLabel={n => t('{n} risks and opportunities', { n })} addLabel={t('Add a risk or opportunity')} newRow={() => ({ kind: 'Risk', likelihood: 3, impact: 3, owner: 'risk_manager' })}
         columns={[
           { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'RSK-…' },
           { key: 'kind', label: t('Kind'), type: 'select', required: true, options: ['Risk', 'Opportunity'].map(v => ({ value: v, label: L(v) })), width: 130, carry: true },
@@ -161,16 +172,16 @@ export function ProjectTemplate() {
           { key: 'treatment', label: t('Treatment'), width: 160 },
           { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
           { key: 'mp', label: t('Macro process'), type: 'select', options: d.mpOptions.map(m => ({ value: m.id, label: `${m.code} ${m.name}` })), width: 220 },
-        ]} />}
-      {tab === 'alerts' && <InlineGrid id="tpl-alerts" readOnly={ro} rows={d.lists.alerts} onSave={saveList('alerts')} countLabel={n => t('{n} alerts', { n })} addLabel={t('Add an alert')} newRow={() => ({ severity: 'Medium', enabled: true, escalation: 'ims_manager' })}
+        ]} /></TabPanel>
+      <TabPanel id="alerts" tab={tab} seen={seen}><InlineGrid id="tpl-alerts" readOnly={ro} rows={d.lists.alerts} onSave={saveList('alerts')} countLabel={n => t('{n} alerts', { n })} addLabel={t('Add an alert')} newRow={() => ({ severity: 'Medium', enabled: true, escalation: 'ims_manager' })}
         columns={[
           { key: 'id', label: t('Code'), width: 150, required: true, placeholder: 'ALR-…' },
           { key: 'name', label: t('Alert'), required: true, width: 340 },
           { key: 'severity', label: t('Severity'), type: 'select', required: true, options: SEVERITIES.map(v => ({ value: v, label: L(v) })), width: 120 },
           { key: 'escalation', label: t('Escalated to'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 220 },
           { key: 'enabled', label: t('Active'), type: 'checkbox', width: 90 },
-        ]} />}
-      {tab === 'kpis' && <InlineGrid id="tpl-kpis" readOnly={ro} rows={d.lists.kpis} onSave={saveList('kpis')} countLabel={n => t('{n} KPIs', { n })} addLabel={t('Add a KPI')} newRow={() => ({ frequency: 'Monthly', owner: 'performance_manager' })}
+        ]} /></TabPanel>
+      <TabPanel id="kpis" tab={tab} seen={seen}><InlineGrid id="tpl-kpis" readOnly={ro} rows={d.lists.kpis} onSave={saveList('kpis')} countLabel={n => t('{n} KPIs', { n })} addLabel={t('Add a KPI')} newRow={() => ({ frequency: 'Monthly', owner: 'performance_manager' })}
         columns={[
           { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'KPI-…' },
           { key: 'name', label: t('KPI'), required: true, width: 260 },
@@ -180,8 +191,8 @@ export function ProjectTemplate() {
           { key: 'frequency', label: t('Frequency'), type: 'select', required: true, options: ['Weekly', 'Monthly', 'Quarterly', 'Semi-annual', 'Annual'].map(v => ({ value: v, label: L(v) })), width: 140 },
           { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
           { key: 'mp', label: t('Macro process'), type: 'select', options: d.mpOptions.map(m => ({ value: m.id, label: `${m.code} ${m.name}` })), width: 220, carry: true },
-        ]} />}
-      {tab === 'reports' && <InlineGrid id="tpl-reports" readOnly={ro} rows={d.lists.reports} onSave={saveList('reports')} countLabel={n => t('{n} reports', { n })} addLabel={t('Add a report')} newRow={() => ({ format: 'PDF', owner: 'ims_manager' })}
+        ]} /></TabPanel>
+      <TabPanel id="reports" tab={tab} seen={seen}><InlineGrid id="tpl-reports" readOnly={ro} rows={d.lists.reports} onSave={saveList('reports')} countLabel={n => t('{n} reports', { n })} addLabel={t('Add a report')} newRow={() => ({ format: 'PDF', owner: 'ims_manager' })}
         columns={[
           { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'RPT-…' },
           { key: 'name', label: t('Report'), required: true, width: 300 },
@@ -189,7 +200,8 @@ export function ProjectTemplate() {
           { key: 'frequency', label: t('Frequency'), required: true, width: 160 },
           { key: 'format', label: t('Format'), type: 'select', required: true, options: ['PDF', 'DOCX', 'XLSX', 'CSV', 'Dashboard'].map(v => ({ value: v, label: v })), width: 120 },
           { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
-        ]} />}
+        ]} /></TabPanel>
+      </div>
     </>
   );
 }

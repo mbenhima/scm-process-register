@@ -67,9 +67,14 @@ export default function InlineGrid({ id, columns, rows, onSave, readOnly, countL
   const edited = useRef({}); // value before editing a cell, for Esc
   const pendingFocus = useRef(null);
 
-  // Reload when the source changes (another tab, a save that renamed ids).
+  // Reload when the source changes from elsewhere. The echo of this grid's own save is ignored:
+  // reloading it would overwrite what was typed while the save was in flight and re-key the rows.
+  const ownSig = useRef(null);
   const srcSig = useMemo(() => JSON.stringify(rows || []), [rows]);
-  useEffect(() => { setData((rows || []).map(r => ({ ...r, _key: r._key || r.id || newKey() }))); setState({}); setErrors({}); }, [srcSig]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (srcSig === ownSig.current) return;
+    setData((rows || []).map(r => ({ ...r, _key: r._key || r.id || newKey() }))); setState({}); setErrors({});
+  }, [srcSig]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const dirty = Object.values(state).some(s => s === 'dirty' || s === 'error');
   useEffect(() => {
@@ -97,7 +102,9 @@ export default function InlineGrid({ id, columns, rows, onSave, readOnly, countL
     const keysToMark = (keys || list.map(r => r._key)).filter(k => !bad.has(k));
     setState(s => ({ ...s, ...Object.fromEntries(keysToMark.map(k => [k, 'saving'])) }));
     try {
-      await onSave(list.filter(r => !bad.has(r._key) || r.id).map(({ _key, ...r }) => ({ ...r, _key })));
+      const payload = list.filter(r => !bad.has(r._key) || r.id).map(({ _key, ...r }) => ({ ...r, _key }));
+      ownSig.current = JSON.stringify(payload.map(({ _key, ...r }) => r));
+      await onSave(payload);
       setState(s => ({ ...s, ...Object.fromEntries(keysToMark.map(k => [k, 'saved'])) }));
       setTimeout(() => setState(s => Object.fromEntries(Object.entries(s).filter(([k, v]) => !(keysToMark.includes(k) && v === 'saved')))), 1600);
     } catch (e) {

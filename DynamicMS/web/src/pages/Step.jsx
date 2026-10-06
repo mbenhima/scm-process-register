@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Save, CheckCircle2, RotateCcw, Sparkles, Lock, History, ChevronDown, ChevronUp, FilePlus2, Download, Eye } from 'lucide-react';
 import { Split } from '../lib/layout.jsx';
@@ -28,8 +28,16 @@ export default function Step() {
   const fields = s?.step?.form?.fields || [];
   const loadPickers = useCallback(async () => { if (s?.project_id) setPickers(await api(`/projects/${s.project_id}/pickers`)); }, [s?.project_id]);
   useEffect(() => { loadPickers().catch(() => {}); }, [loadPickers]);
+  // A refresh after Save draft or Generate document keeps the draft being typed; the server
+  // values replace it only when another step is opened or the step is completed / reopened.
+  const keepDraft = useRef(false);
+  const loadedId = useRef(null);
   useEffect(() => {
     if (!s) return;
+    const same = loadedId.current === s.id;
+    loadedId.current = s.id;
+    if (keepDraft.current && same) { keepDraft.current = false; return; }
+    keepDraft.current = false;
     const f = s.fields || {};
     setVals(Object.fromEntries(fields.map(fd => [fd.key, f[fd.key] ?? (['rows', 'kpis', 'matrix', 'obs', 'roles', 'standards'].includes(fd.type) ? [] : '')])));
     setErrs({}); setAi(null); setPrompt(null);
@@ -47,7 +55,7 @@ export default function Step() {
       const out = await api(`/steps/${id}${complete ? '/complete' : ''}`, { method: complete ? 'POST' : 'PUT', body: { fields: vals } });
       toast(complete ? t('Step completed.') : t('Draft saved.'));
       if (out.rulesApplied?.length) toast(t('{n} business rule(s) checked on this step.', { n: out.rulesApplied.length }));
-      if (complete && s.next) navigate(`/steps/${s.next}`); else reload();
+      if (complete && s.next) navigate(`/steps/${s.next}`); else { keepDraft.current = !complete; reload(); }
     } catch (e) {
       if (e.details?.fields) setErrs(Object.fromEntries(e.details.fields.map(k => [k, t('Required')])));
       toast(e.message, 'error');
@@ -93,7 +101,7 @@ export default function Step() {
       toast(t('Document {code} generated from the project data.', { code: r.code }));
       if (editable && fields.some(f => f.key === 'records')) setVals(v => ({ ...v, records: [...(Array.isArray(v.records) ? v.records : []), { type: 'document', id: r.id, code: r.code, title: gen.templateName }] }));
       if (editable && fields.some(f => f.key === 'docRef') && !vals.docRef) setVals(v => ({ ...v, docRef: r.code, version: '0.1', template: gen.template }));
-      setGen(null); reload();
+      setGen(null); keepDraft.current = true; reload();
     } catch (e) { toast(e.message, 'error'); }
   };
 

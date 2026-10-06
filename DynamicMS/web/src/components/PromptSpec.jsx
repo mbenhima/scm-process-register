@@ -1,7 +1,7 @@
 // Prompt specification of an AI use case (FR-DA-AIP): one field per aspect (role, context,
 // task, inputs, knowledge, constraints, examples, format, tone, quality, checkpoint, model
 // parameters), each with its own version history; the whole specification is versioned too.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { Modal, Loading, Field, tx, Progress } from './ui.jsx';
@@ -14,13 +14,16 @@ export default function PromptSpecModal({ usecase, onClose, onSaved }) {
   const [note, setNote] = useState('');
   const [hist, setHist] = useState(null);
   const [preview, setPreview] = useState(null);
-  useEffect(() => { if (data) setEd(Object.fromEntries(data.fields.map(f => [f.key, f.key === 'params' ? { ...(data.spec.params || {}) } : tx(data.spec[f.key], lang) || '']))); }, [data, lang]);
+  // The refetch that follows this dialog's own save must not replace text typed meanwhile.
+  const keepDraft = useRef(false);
+  const draftLang = useRef(lang);
+  useEffect(() => { if (!data) return; const same = draftLang.current === lang; draftLang.current = lang; if (keepDraft.current && same) { keepDraft.current = false; return; } keepDraft.current = false; setEd(Object.fromEntries(data.fields.map(f => [f.key, f.key === 'params' ? { ...(data.spec.params || {}) } : tx(data.spec[f.key], lang) || '']))); }, [data, lang]);
   if (!data || !ed) return <Modal wide title={t('Prompt specification')} onClose={onClose}><Loading /></Modal>;
   const manage = can('ai.manage') && !readOnly;
   const changed = data.fields.filter(f => (f.key === 'params' ? JSON.stringify(ed.params) !== JSON.stringify(data.spec.params || {}) : ed[f.key] !== (tx(data.spec[f.key], lang) || ''))).map(f => f.key);
   const missing = data.fields.filter(f => f.required && !String(ed[f.key] || '').trim()).map(f => f.key);
   const save = async () => {
-    try { const r = await api(`/ai/usecases/${usecase.id}/spec`, { method: 'PUT', body: { fields: Object.fromEntries(changed.map(k => [k, ed[k]])), note } }); toast(r.completeness?.complete ? t('Saved: {n} field(s) with a new version.', { n: r.changed.length }) : t('Saved. The specification is incomplete, so the use case was deactivated.')); setNote(''); reload(); onSaved?.(); } catch (e) { toast(e.message, 'error'); }
+    try { const r = await api(`/ai/usecases/${usecase.id}/spec`, { method: 'PUT', body: { fields: Object.fromEntries(changed.map(k => [k, ed[k]])), note } }); toast(r.completeness?.complete ? t('Saved: {n} field(s) with a new version.', { n: r.changed.length }) : t('Saved. The specification is incomplete, so the use case was deactivated.')); setNote(''); keepDraft.current = true; reload(); onSaved?.(); } catch (e) { toast(e.message, 'error'); }
   };
   const showPrompt = async () => { try { setPreview(await api(`/ai/usecases/${usecase.id}/prompt?projectId=${projectId}`)); } catch (e) { toast(e.message, 'error'); } };
   const pct = Math.round((100 * (data.fields.length - missing.length)) / data.fields.length);

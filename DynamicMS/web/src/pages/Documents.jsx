@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Plus, Download, FilePlus2, RefreshCw, Trash2, Pencil, ArrowUp, ArrowDown, Copy, Upload, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
@@ -193,10 +193,17 @@ function Layout({ orgId }) {
   const { t, toast } = useApp();
   const { data, reload } = useData(`/orgs/${orgId}/doc-layout`);
   const [f, setF] = useState(null);
-  useEffect(() => { if (data) setF(data); }, [data]);
+  // A refetch after this form's own save or logo change keeps the texts and colors being edited.
+  const sync = useRef(null);
+  useEffect(() => {
+    if (!data) return;
+    const mode = sync.current; sync.current = null;
+    if (mode === 'logo') setF(cur => (cur ? { ...cur, hasLogo: data.hasLogo, logoName: data.logoName } : data));
+    else if (mode !== 'keep') setF(data);
+  }, [data]);
   if (!f) return <Loading />;
-  const save = async () => { try { await api(`/orgs/${orgId}/doc-layout`, { method: 'PUT', body: f }); toast(t('Layout saved; it applies to every document you download.')); reload(); } catch (e) { toast(e.message, 'error'); } };
-  const upload = async (file) => { const fd = new FormData(); fd.append('file', file); try { await api(`/orgs/${orgId}/doc-layout/logo`, { method: 'POST', body: fd }); toast(t('Logo uploaded.')); reload(); } catch (e) { toast(e.message, 'error'); } };
+  const save = async () => { try { await api(`/orgs/${orgId}/doc-layout`, { method: 'PUT', body: f }); toast(t('Layout saved; it applies to every document you download.')); sync.current = 'keep'; reload(); } catch (e) { toast(e.message, 'error'); } };
+  const upload = async (file) => { const fd = new FormData(); fd.append('file', file); try { await api(`/orgs/${orgId}/doc-layout/logo`, { method: 'POST', body: fd }); toast(t('Logo uploaded.')); sync.current = 'logo'; reload(); } catch (e) { toast(e.message, 'error'); } };
   const color = (k, label) => <Field label={label}>{(id) => <div className="row" style={{ gap: 8 }}><input id={id} type="color" className="swatch" disabled={!f.canEdit} value={f[k]} onChange={e => setF({ ...f, [k]: e.target.value.toUpperCase() })} /><input className="input" style={{ maxWidth: 120 }} aria-label={label} disabled={!f.canEdit} value={f[k]} onChange={e => setF({ ...f, [k]: e.target.value })} /></div>}</Field>;
   return (
     <div className="grid-main">
@@ -209,7 +216,7 @@ function Layout({ orgId }) {
           <Field label={t('Footer text')}>{(id) => <input id={id} className="input" disabled={!f.canEdit} value={f.footerText} onChange={e => setF({ ...f, footerText: e.target.value })} placeholder={t('By default: organization, code and version')} />}</Field>
           <div className="row">
             {f.canEdit && <label className="btn"><Upload size={16} />{t('Upload a logo (PNG or JPEG)')}<input type="file" accept="image/png,image/jpeg" hidden onChange={e => e.target.files[0] && upload(e.target.files[0])} /></label>}
-            {f.hasLogo && <span className="small">{t('Logo: {n}', { n: f.logoName || 'logo' })} {f.canEdit && <button className="btn btn-sm btn-ghost" onClick={async () => { await api(`/orgs/${orgId}/doc-layout`, { method: 'PUT', body: { ...f, removeLogo: true } }); reload(); }}>{t('Remove')}</button>}</span>}
+            {f.hasLogo && <span className="small">{t('Logo: {n}', { n: f.logoName || 'logo' })} {f.canEdit && <button className="btn btn-sm btn-ghost" onClick={async () => { await api(`/orgs/${orgId}/doc-layout`, { method: 'PUT', body: { ...f, removeLogo: true } }); sync.current = 'logo'; reload(); }}>{t('Remove')}</button>}</span>}
             {f.canEdit && <button className="btn btn-primary" onClick={save}>{t('Save layout')}</button>}
           </div>
         </div>

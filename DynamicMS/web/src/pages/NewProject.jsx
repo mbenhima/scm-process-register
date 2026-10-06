@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { LibraryBig, PencilRuler, Sparkles, Eye, LayoutTemplate } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
@@ -28,7 +28,9 @@ export default function NewProject() {
   const [busy, setBusy] = useState(false);
   const isSme = org.data?.size === 'SME';
   // A template opened from the template catalog: align the management system on it.
-  useEffect(() => { if (preset && templates) { const x = templates.find(y => y.id === preset); if (x) setF(v => ({ ...v, msType: x.ms_type, templateId: x.id })); } }, [preset, templates]);
+  // Applied once per preset: a refetch of the catalog (language change) must not undo the user's choice.
+  const presetDone = useRef(null);
+  useEffect(() => { if (preset && templates && presetDone.current !== preset) { const x = templates.find(y => y.id === preset); if (x) { presetDone.current = preset; setF(v => ({ ...v, msType: x.ms_type, templateId: x.id })); } } }, [preset, templates]);
   useEffect(() => { if (criteria) setLevels(l => (Object.keys(l).length ? l : Object.fromEntries(criteria.filter(c => !c.vertical || c.vertical === org.data?.sector).map(c => [c.code, 3])))); }, [criteria, org.data]);
   useEffect(() => { if (!orgId || !Object.keys(levels).length) return; api(`/orgs/${orgId}/projects/score`, { method: 'POST', body: { levels } }).then(setScore).catch(() => {}); }, [levels, orgId]);
   if (!orgId || !org.data) return <Loading />;
