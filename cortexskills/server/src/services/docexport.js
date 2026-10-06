@@ -138,7 +138,7 @@ export async function toPdf(model, meta) {
   const lang = model.lang; const rtl = lang === 'ar'; const fmt = meta.formatting; const sections = numbered(model, fmt);
   const m = fmt.margins * 2.835; const land = fmt.orientation === 'landscape';
   const doc = new PDFDocument({ size: 'A4', layout: land ? 'landscape' : 'portrait', margin: m, bufferPages: true, info: { Title: model.title, Subject: meta.classification, Author: meta.orgName || '' } });
-  doc.registerFont('body', FONT('tinos-latin-400-normal.woff2')); doc.registerFont('bodyB', FONT('tinos-latin-700-normal.woff2')); doc.registerFont('bodyI', FONT('tinos-latin-400-italic.woff2'));
+  doc.registerFont('body', FONT('LiberationSerif-Regular.ttf')); doc.registerFont('bodyB', FONT('LiberationSerif-Bold.ttf')); doc.registerFont('bodyI', FONT('LiberationSerif-Italic.ttf'));
   doc.registerFont('ar', FONT('NotoNaskhArabic-400.ttf')); doc.registerFont('arB', FONT('NotoNaskhArabic-700.ttf'));
   const F = (s, bold, italic) => (isAr(s) ? (bold ? 'arB' : 'ar') : bold ? 'bodyB' : italic ? 'bodyI' : 'body');
   const chunks = []; doc.on('data', c => chunks.push(c)); const done = new Promise(r => doc.on('end', () => r(Buffer.concat(chunks))));

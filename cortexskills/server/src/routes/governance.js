@@ -132,6 +132,8 @@ const upload = multer({ storage: multer.diskStorage({ destination: (req, f, cb) 
 r.get('/attachments/accepted', ah(() => ({ formats: ACCEPTED, limits: LIMITS })));
 r.post('/attachments/:ownerType/:ownerId', requirePerm('attachments.manage'), upload.array('files', LIMITS.count), ah(req => {
   const { ownerType, ownerId } = req.params;
+  if (!OWNER_TYPES.has(ownerType)) throw new HttpError(422, 'err.invalidFields', { fields: 'ownerType' });
+  if (ownerType === 'document' && !one(`SELECT id FROM documents WHERE id=? AND org_id=?`, ownerId, req.orgId)) throw new HttpError(404, 'err.notFound');
   if (ownerType === 'task') {
     const t = one(`SELECT project_id, e2e_instance_id FROM task_instances WHERE id=? AND org_id=?`, ownerId, req.orgId); if (!t) throw new HttpError(404, 'err.notFound');
   }
@@ -142,6 +144,24 @@ r.post('/attachments/:ownerType/:ownerId', requirePerm('attachments.manage'), up
     audit(req, 'Attachment', id, 'create', null, { filename: name, owner: ownerId }); out.push({ id, filename: name, size: f.size });
   }
   return out;
+}));
+// Attachments may belong to tasks, steps, documents, registers, actions, checklist items and records (FR-DA-ATT-06).
+const OWNER_TYPES = new Set(['task', 'step', 'document', 'register', 'action', 'checklist', 'checklistItem', 'record', 'project', 'e2e']);
+r.get('/attachments-of/:ownerType/:ownerId', ah(req => all(`SELECT a.id, a.filename, a.mime, a.size, a.created_at, a.note, coalesce(a.version,1) version, coalesce(a.chain_id,a.id) chain_id, u.name author,
+  (SELECT COUNT(*) FROM attachments b WHERE coalesce(b.chain_id,b.id)=coalesce(a.chain_id,a.id)) versions
+  FROM attachments a LEFT JOIN users u ON u.id=a.author_id WHERE a.org_id=? AND a.owner_type=? AND a.owner_id=? AND coalesce(a.is_latest,1)=1 ORDER BY a.created_at DESC`, req.orgId, req.params.ownerType, req.params.ownerId)));
+/** New version of an attachment with a note; earlier versions stay downloadable (FR-DA-ATT-05). */
+r.post('/attachments/:id/versions', requirePerm('attachments.manage'), upload.single('file'), ah(req => {
+  const a = one(`SELECT * FROM attachments WHERE id=? AND org_id=?`, req.params.id, req.orgId); if (!a || !req.file) throw new HttpError(404, 'err.notFound');
+  const chain = a.chain_id || a.id; const v = (one(`SELECT MAX(coalesce(version,1)) v FROM attachments WHERE coalesce(chain_id,id)=?`, chain).v || 1) + 1;
+  const id = uuid(); const name = Buffer.from(req.file.originalname, 'latin1').toString('utf8');
+  run(`UPDATE attachments SET is_latest=0, chain_id=? WHERE coalesce(chain_id,id)=?`, chain, chain);
+  run(`INSERT INTO attachments(id,org_id,owner_type,owner_id,filename,mime,size,path,author_id,created_at,chain_id,version,note,is_latest) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,1)`, id, req.orgId, a.owner_type, a.owner_id, name, req.file.mimetype, req.file.size, req.file.filename, req.user.id, now(), chain, v, String(req.body?.note || '').slice(0, 500) || null);
+  audit(req, 'Attachment', id, 'version', null, { chain, version: v, note: req.body?.note || null }); return { id, version: v, filename: name };
+}));
+r.get('/attachments/:id/versions', ah(req => {
+  const a = one(`SELECT * FROM attachments WHERE id=? AND org_id=?`, req.params.id, req.orgId); if (!a) throw new HttpError(404, 'err.notFound');
+  return all(`SELECT a.id, a.filename, a.size, coalesce(a.version,1) version, a.note, a.created_at, coalesce(a.is_latest,1) latest, u.name author FROM attachments a LEFT JOIN users u ON u.id=a.author_id WHERE coalesce(a.chain_id,a.id)=? AND a.org_id=? ORDER BY version DESC`, a.chain_id || a.id, req.orgId);
 }));
 r.get('/attachments/:id/download', ah((req, res) => {
   const a = one(`SELECT * FROM attachments WHERE id=? AND org_id=?`, req.params.id, req.orgId); if (!a) throw new HttpError(404, 'err.notFound');

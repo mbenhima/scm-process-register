@@ -1,0 +1,507 @@
+{
+ "err.namingWarnings": [
+  "The name does not follow the naming rules. Review the warnings or confirm to keep it.",
+  "Le nom ne respecte pas les règles de nommage. Revoyez les avertissements ou confirmez pour le garder.",
+  "الاسم لا يحترم قواعد التسمية. راجع التنبيهات أو أكّد للإبقاء عليه."
+ ],
+ "err.retired": [
+  "This element is retired. Reactivate it before changing it.",
+  "Cet élément est retiré. Réactivez-le avant de le modifier.",
+  "هذا العنصر متقاعد. أعد تفعيله قبل تعديله."
+ ],
+ "err.noParent": [
+  "Choose a parent element.",
+  "Choisissez un élément parent.",
+  "اختر عنصرًا أصليًا."
+ ],
+ "err.mustRetire": [
+  "This element is used. Retire it instead of deleting it.",
+  "Cet élément est utilisé. Retirez-le au lieu de le supprimer.",
+  "هذا العنصر مستعمل. قم بإحالته على التقاعد بدل حذفه."
+ ],
+ "err.releaseFrozen": [
+  "This release is submitted or published and can no longer change.",
+  "Cette version de conception est soumise ou publiée et ne peut plus changer.",
+  "هذا الإصدار مقدَّم أو منشور ولا يمكن تغييره."
+ ],
+ "err.releaseInUse": [
+  "Projects use this release. Migrate them first.",
+  "Des projets utilisent cette version. Migrez-les d’abord.",
+  "مشاريع تستعمل هذا الإصدار. قم بترحيلها أولًا."
+ ],
+ "err.releaseNotPublished": [
+  "Only a published release can be used.",
+  "Seule une version publiée peut être utilisée.",
+  "لا يمكن استعمال إلا إصدار منشور."
+ ],
+ "err.importFormat": [
+  "The file is not a process design export. Use a file exported from Process design.",
+  "Le fichier n’est pas un export de conception de processus. Utilisez un fichier exporté depuis Conception des processus.",
+  "الملف ليس تصديرًا لتصميم المسارات. استعمل ملفًا مصدَّرًا من تصميم المسارات."
+ ],
+ "err.stepLocked": [
+  "The gate of this phase is passed (Go). Reopen the gate to change this step.",
+  "Le jalon de cette phase est franchi (Go). Rouvrez le jalon pour modifier cette étape.",
+  "تم اجتياز بوابة هذه المرحلة. أعد فتح البوابة لتعديل هذه الخطوة."
+ ],
+ "err.wrongPattern": [
+  "This step does not record rows.",
+  "Cette étape n’enregistre pas de lignes.",
+  "هذه الخطوة لا تسجّل صفوفًا."
+ ],
+ "err.invalidFields": [
+  "Some fields are not valid: {{fields}}.",
+  "Certains champs ne sont pas valides : {{fields}}.",
+  "بعض الحقول غير صالحة: {{fields}}."
+ ],
+ "err.missingFields": [
+  "Fill in the required fields: {{fields}}.",
+  "Renseignez les champs obligatoires : {{fields}}.",
+  "املأ الحقول الإلزامية: {{fields}}."
+ ],
+ "err.noRows": [
+  "Add at least one row before completing the step.",
+  "Ajoutez au moins une ligne avant de terminer l’étape.",
+  "أضف صفًا واحدًا على الأقل قبل إنهاء الخطوة."
+ ],
+ "err.invalidLink": [
+  "These two records cannot be linked.",
+  "Ces deux enregistrements ne peuvent pas être liés.",
+  "لا يمكن ربط هذين السجلين."
+ ],
+ "err.roleNeedsFunction": [
+  "A role needs at least one function.",
+  "Un rôle doit avoir au moins une fonction.",
+  "يحتاج الدور إلى وظيفة واحدة على الأقل."
+ ],
+ "err.functionInUse": [
+  "Roles use this function. Remove it from them first.",
+  "Des rôles utilisent cette fonction. Retirez-la d’abord.",
+  "أدوار تستعمل هذه الوظيفة. أزلها منها أولًا."
+ ],
+ "err.roleInUse": [
+  "People hold this role. End their assignments first.",
+  "Des personnes occupent ce rôle. Terminez d’abord leurs affectations.",
+  "أشخاص يشغلون هذا الدور. أنهِ تعييناتهم أولًا."
+ ],
+ "err.dateOrder": [
+  "The end date must be after the start date.",
+  "La date de fin doit suivre la date de début.",
+  "يجب أن يكون تاريخ النهاية بعد تاريخ البداية."
+ ],
+ "err.range": [
+  "{{field}} must be between {{min}} and {{max}}.",
+  "{{field}} doit être compris entre {{min}} et {{max}}.",
+  "يجب أن يكون {{field}} بين {{min}} و{{max}}."
+ ],
+ "err.promptVariable": [
+  "The prompt uses data that is missing: {{variables}}.",
+  "Le prompt utilise des données manquantes : {{variables}}.",
+  "يستعمل الموجِّه بيانات ناقصة: {{variables}}."
+ ],
+ "err.specIncomplete": [
+  "Complete the prompt specification before activating: {{fields}}.",
+  "Complétez la spécification du prompt avant d’activer : {{fields}}.",
+  "أكمل مواصفات الموجِّه قبل التفعيل: {{fields}}."
+ ],
+ "err.useCaseExists": [
+  "This use case already exists.",
+  "Ce cas d’usage existe déjà.",
+  "حالة الاستعمال هذه موجودة."
+ ],
+ "err.httpsOnly": [
+  "The model address must start with https://.",
+  "L’adresse du modèle doit commencer par https://.",
+  "يجب أن يبدأ عنوان النموذج بـ https://."
+ ],
+ "err.copyFirst": [
+  "Copy the library template to your organization before changing it.",
+  "Copiez le modèle de la bibliothèque dans votre organisation avant de le modifier.",
+  "انسخ نموذج المكتبة إلى مؤسستك قبل تعديله."
+ ],
+ "err.alreadyCopied": [
+  "Your organization already has its own copy of this template.",
+  "Votre organisation possède déjà sa copie de ce modèle.",
+  "لمؤسستك نسختها الخاصة من هذا النموذج."
+ ],
+ "err.imageType": [
+  "Use a PNG or JPEG image of 5 MB or less.",
+  "Utilisez une image PNG ou JPEG de 5 Mo maximum.",
+  "استعمل صورة PNG أو JPEG لا تتجاوز 5 ميغابايت."
+ ],
+ "err.invalidPath": [
+  "The file path is not valid.",
+  "Le chemin du fichier n’est pas valide.",
+  "مسار الملف غير صالح."
+ ],
+ "err.draftOnly": [
+  "Only a draft can be changed. Create a new version first.",
+  "Seul un brouillon peut être modifié. Créez d’abord une nouvelle version.",
+  "لا يمكن تعديل إلا المسودة. أنشئ نسخة جديدة أولًا."
+ ],
+ "err.blockingFindings": [
+  "Fix the blocking findings before submitting: {{findings}}.",
+  "Corrigez les constats bloquants avant de soumettre : {{findings}}.",
+  "صحّح الملاحظات المانعة قبل التقديم: {{findings}}."
+ ],
+ "err.selfApprove": [
+  "You cannot approve a document you submitted. Ask another approver.",
+  "Vous ne pouvez pas approuver un document que vous avez soumis. Demandez à un autre approbateur.",
+  "لا يمكنك اعتماد وثيقة قدمتها. اطلب ذلك من معتمِد آخر."
+ ],
+ "audit.view": [
+  "Audits",
+  "Audits",
+  "عمليات التدقيق"
+ ],
+ "doc.previewHeading": [
+  "Section heading",
+  "Titre de section",
+  "عنوان القسم"
+ ],
+ "doc.previewTable": [
+  "Table preview",
+  "Aperçu du tableau",
+  "معاينة الجدول"
+ ],
+ "doc.previewText": [
+  "The body text of the document appears in this font, size and alignment.",
+  "Le corps du document apparaît dans cette police, cette taille et cet alignement.",
+  "يظهر نص الوثيقة بهذا الخط والحجم والمحاذاة."
+ ],
+ "docf.refMissing": [
+  "A referenced record no longer exists: {{ref}}.",
+  "Un enregistrement référencé n’existe plus : {{ref}}.",
+  "سجل مرجعي لم يعد موجودًا: {{ref}}."
+ ],
+ "docf.duplicateId": [
+  "The same identifier appears twice: {{ref}}.",
+  "Le même identifiant apparaît deux fois : {{ref}}.",
+  "المعرف نفسه يظهر مرتين: {{ref}}."
+ ],
+ "naming.missing": [
+  "Give a name.",
+  "Donnez un nom.",
+  "أعطِ اسمًا."
+ ],
+ "naming.verb": [
+  "Start with an action verb (e.g. Define, Validate).",
+  "Commencez par un verbe d’action (ex. : Définir, Valider).",
+  "ابدأ بفعل (مثال: حدّد، صادِق)."
+ ],
+ "naming.generic": [
+  "The name is too generic. Say what is produced.",
+  "Le nom est trop générique. Dites ce qui est produit.",
+  "الاسم عام جدًا. اذكر ما يُنتَج."
+ ],
+ "naming.abbreviation": [
+  "Avoid unexplained abbreviations.",
+  "Évitez les abréviations non expliquées.",
+  "تجنب الاختصارات غير المشروحة."
+ ],
+ "naming.short": [
+  "The name is too short to be clear.",
+  "Le nom est trop court pour être clair.",
+  "الاسم قصير جدًا ليكون واضحًا."
+ ],
+ "naming.duplicate": [
+  "Another element already has this name.",
+  "Un autre élément porte déjà ce nom.",
+  "عنصر آخر يحمل هذا الاسم."
+ ],
+ "readiness.inputs": [
+  "Inputs available",
+  "Entrées disponibles",
+  "المدخلات متوفرة"
+ ],
+ "readiness.owner": [
+  "Owner assigned",
+  "Responsable désigné",
+  "المسؤول معيَّن"
+ ],
+ "readiness.racsi": [
+  "RACSI complete",
+  "RACSI complet",
+  "RACSI مكتمل"
+ ],
+ "readiness.templates": [
+  "Document template available",
+  "Modèle de document disponible",
+  "نموذج الوثيقة متوفر"
+ ],
+ "readiness.kpis": [
+  "Indicators defined",
+  "Indicateurs définis",
+  "المؤشرات محددة"
+ ],
+ "audit.auditee": [
+  "Auditee",
+  "Audité",
+  "الجهة المدققة"
+ ],
+ "audit.byGrade": [
+  "Findings by grade",
+  "Constats par niveau",
+  "الملاحظات حسب الدرجة"
+ ],
+ "audit.conclusion": [
+  "Conclusion",
+  "Conclusion",
+  "الخلاصة"
+ ],
+ "audit.correction": [
+  "Correction",
+  "Correction",
+  "التصحيح"
+ ],
+ "audit.corrective": [
+  "Corrective action",
+  "Action corrective",
+  "الإجراء التصحيحي"
+ ],
+ "audit.count": [
+  "Count",
+  "Nombre",
+  "العدد"
+ ],
+ "audit.criteria": [
+  "Audit criteria",
+  "Critères d’audit",
+  "معايير التدقيق"
+ ],
+ "audit.dates": [
+  "Dates",
+  "Dates",
+  "التواريخ"
+ ],
+ "audit.due": [
+  "Due date",
+  "Échéance",
+  "تاريخ الاستحقاق"
+ ],
+ "audit.effectiveness": [
+  "Effectiveness check",
+  "Vérification de l’efficacité",
+  "التحقق من الفعالية"
+ ],
+ "audit.evidence": [
+  "Evidence",
+  "Preuves",
+  "الأدلة"
+ ],
+ "audit.findings": [
+  "Findings",
+  "Constats",
+  "الملاحظات"
+ ],
+ "audit.followUp": [
+  "Follow-up",
+  "Suivi",
+  "المتابعة"
+ ],
+ "audit.frequency": [
+  "Frequency",
+  "Fréquence",
+  "التواتر"
+ ],
+ "audit.grade": [
+  "Grade",
+  "Niveau",
+  "الدرجة"
+ ],
+ "audit.justification": [
+  "Justification",
+  "Justification",
+  "التبرير"
+ ],
+ "audit.lead": [
+  "Lead auditor",
+  "Auditeur responsable",
+  "المدقق الرئيسي"
+ ],
+ "audit.ncOwner": [
+  "Action owner",
+  "Responsable de l’action",
+  "مسؤول الإجراء"
+ ],
+ "audit.ncSheet": [
+  "Nonconformity sheet",
+  "Fiche de non-conformité",
+  "بطاقة عدم المطابقة"
+ ],
+ "audit.objectives": [
+  "Objectives",
+  "Objectifs",
+  "الأهداف"
+ ],
+ "audit.process": [
+  "Process",
+  "Processus",
+  "المسار"
+ ],
+ "audit.processes": [
+  "Audited processes",
+  "Processus audités",
+  "المسارات المدققة"
+ ],
+ "audit.requirement": [
+  "Requirement",
+  "Exigence",
+  "المتطلب"
+ ],
+ "audit.rootCause": [
+  "Root cause",
+  "Cause racine",
+  "السبب الجذري"
+ ],
+ "audit.scope": [
+  "Scope",
+  "Périmètre",
+  "النطاق"
+ ],
+ "audit.statement": [
+  "Statement",
+  "Énoncé",
+  "البيان"
+ ],
+ "audit.strengths": [
+  "Strengths",
+  "Points forts",
+  "نقاط القوة"
+ ],
+ "audit.summary": [
+  "Summary",
+  "Synthèse",
+  "الملخص"
+ ],
+ "audit.team": [
+  "Audit team",
+  "Équipe d’audit",
+  "فريق التدقيق"
+ ],
+ "grade.Major": [
+  "Major nonconformity",
+  "Non-conformité majeure",
+  "عدم مطابقة كبرى"
+ ],
+ "grade.Minor": [
+  "Minor nonconformity",
+  "Non-conformité mineure",
+  "عدم مطابقة صغرى"
+ ],
+ "grade.Observation": [
+  "Observation",
+  "Observation",
+  "ملاحظة"
+ ],
+ "grade.Improvement": [
+  "Opportunity for improvement",
+  "Piste d’amélioration",
+  "فرصة للتحسين"
+ ],
+ "grade.Strength": [
+  "Strength",
+  "Point fort",
+  "نقطة قوة"
+ ],
+ "grade.rules": [
+  "Major: a requirement is not met at all, or a systemic failure puts conformity at risk. Minor: an isolated lapse that does not put the system at risk. Observation: a weakness that could become a nonconformity. Opportunity for improvement: a way to do better, without a requirement breached.",
+  "Majeure : une exigence n’est pas satisfaite du tout, ou une défaillance systémique met la conformité en risque. Mineure : un écart isolé qui ne met pas le système en risque. Observation : une faiblesse qui pourrait devenir une non-conformité. Piste d’amélioration : une façon de mieux faire, sans exigence enfreinte.",
+  "كبرى: متطلب غير مستوفى كليًا أو خلل نظامي يهدد المطابقة. صغرى: إخفاق معزول لا يهدد النظام. ملاحظة: ضعف قد يصبح عدم مطابقة. فرصة للتحسين: طريقة للأداء الأفضل دون خرق متطلب."
+ ],
+ "freq.Monthly": [
+  "Monthly",
+  "Mensuelle",
+  "شهري"
+ ],
+ "freq.Quarterly": [
+  "Quarterly",
+  "Trimestrielle",
+  "فصلي"
+ ],
+ "freq.Semi-annual": [
+  "Semi-annual",
+  "Semestrielle",
+  "نصف سنوي"
+ ],
+ "freq.Annual": [
+  "Annual",
+  "Annuelle",
+  "سنوي"
+ ],
+ "freq.Every two years": [
+  "Every two years",
+  "Tous les deux ans",
+  "كل سنتين"
+ ],
+ "freq.Every three years": [
+  "Every three years",
+  "Tous les trois ans",
+  "كل ثلاث سنوات"
+ ],
+ "freq.Custom": [
+  "Custom",
+  "Personnalisée",
+  "مخصص"
+ ],
+ "freq.undefined": [
+  "—",
+  "—",
+  "—"
+ ],
+ "err.noIncludedStep": [
+  "Include at least one step before publishing the template.",
+  "Incluez au moins une étape avant de publier le modèle.",
+  "أدرج خطوة واحدة على الأقل قبل نشر النموذج."
+ ],
+ "err.aiNotValidated": [
+  "Validate the AI proposal before adding it.",
+  "Validez la proposition de l’IA avant de l’ajouter.",
+  "صادق على مقترح الذكاء الاصطناعي قبل إضافته."
+ ],
+ "err.alreadyLinked": [
+  "A corrective action is already linked to this finding.",
+  "Une action corrective est déjà liée à ce constat.",
+  "إجراء تصحيحي مرتبط بالفعل بهذه الملاحظة."
+ ],
+ "nav.processDesign": [
+  "Process design",
+  "Conception des processus",
+  "تصميم المسارات"
+ ],
+ "nav.obs": [
+  "Organization (OBS)",
+  "Organisation (OBS)",
+  "الهيكل التنظيمي (OBS)"
+ ],
+ "nav.registers": [
+  "Registers",
+  "Registres",
+  "السجلات"
+ ],
+ "nav.audits": [
+  "Audits",
+  "Audits",
+  "عمليات التدقيق"
+ ],
+ "nav.docTemplates": [
+  "Document templates",
+  "Modèles de documents",
+  "نماذج الوثائق"
+ ],
+ "nav.docLayout": [
+  "Document layout",
+  "Mise en page des documents",
+  "تنسيق الوثائق"
+ ],
+ "nav.masterList": [
+  "Master list",
+  "Liste maîtresse",
+  "القائمة الرئيسية"
+ ],
+ "nav.aiSettings": [
+  "AI settings",
+  "Paramètres IA",
+  "إعدادات الذكاء الاصطناعي"
+ ]
+}

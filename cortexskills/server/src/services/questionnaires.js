@@ -247,11 +247,14 @@ export function storeResponse(orgId, q, inv, { answers = {}, flags = {}, consent
     respondent: inv.name, population: inv.population, template_code: form?.code, function_name: inv.function_name, decision_level: inv.decision_level,
     channel_used: channel, channels_touched: touched, hybrid: touched.length > 1, submitted_at: capturedAt || tm, synced_at: capturedAt ? tm : null, consent_given: true,
     completeness_pct: pct, flags, answers_json: answers, included: !below, flagged: below ? 'Below threshold' : null, captured_by: source === 'respondent' ? null : userId, language: inv.lang };
-  let rid = inv.response_id;
+  // Anonymized questionnaire: the respondent's identity is stripped before storage and no link back is kept (NFR-DA-QLT-03).
+  const anon = !!(q.anonymized ?? q.data?.anonymized);
+  if (anon) { for (const k of ['invitation_id', 'stakeholder_id', 'stakeholder_ref', 'function_name', 'captured_by']) data[k] = null; data.respondent = null; data.label = { en: 'Anonymous respondent', fr: 'Répondant anonyme', ar: 'مجيب مجهول' }; data.anonymized = true; }
+  let rid = anon ? null : inv.response_id;
   if (rid && one(`SELECT id FROM records WHERE id=?`, rid)) run(`UPDATE records SET data=?, version=version+1, updated_at=?, updated_by=? WHERE id=?`, S(data), tm, userId, rid);
   else { rid = uuid(); insertRecord(rid, 'QuestionnaireResponse', orgId, q.project_id, null, data, userId, true); }
-  run(`UPDATE q_invitations SET status='Responded', response_id=?, responded_at=?, consent=?, draft=NULL, updated_at=? WHERE id=?`, rid, capturedAt || tm, S(consentRec), tm, inv.id);
-  event(orgId, q.id, inv.id, clientId ? 'response.synced' : 'response', { channel, recipient: inv.name, status: below ? 'below-threshold' : 'stored', detail: { completeness: pct, clientId, capturedAt }, userId , at: capturedAt || null });
+  run(`UPDATE q_invitations SET status='Responded', response_id=?, responded_at=?, consent=?, draft=NULL, updated_at=? WHERE id=?`, anon ? null : rid, capturedAt || tm, S(consentRec), tm, inv.id);
+  event(orgId, q.id, inv.id, clientId ? 'response.synced' : 'response', { channel, recipient: anon ? null : inv.name, status: below ? 'below-threshold' : 'stored', detail: { completeness: pct, clientId, capturedAt }, userId , at: capturedAt || null });
   refreshCount(q.id);
   return { responseId: rid, completeness: pct, below };
 }
@@ -327,3 +330,27 @@ export function stats(orgId, qid) {
     byStatus: inv.reduce((m, i) => ((m[i.status] = (m[i.status] || 0) + 1), m), {}) };
 }
 export { hashToken };
+
+/**
+ * Retention of response data (NFR-DA-QLT-02): responses older than the Organization's retention period (5 years by
+ * default) are anonymized — identity and free-text answers removed, scores kept for statistics — or deleted.
+ */
+export function purgeResponses(orgId = null, { mode = 'anonymize', at = now() } = {}) {
+  const orgs = orgId ? [{ id: orgId }] : all(`SELECT id FROM organizations`);
+  let n = 0;
+  for (const o of orgs) {
+    const years = Number(J(one(`SELECT data FROM records WHERE entity='RetentionPolicy' AND org_id=? ORDER BY updated_at DESC LIMIT 1`, o.id)?.data, {}).questionnaire_years || 5);
+    const cut = new Date(at); cut.setFullYear(cut.getFullYear() - years); const limit = cut.toISOString();
+    for (const r of all(`SELECT id, data FROM records WHERE entity='QuestionnaireResponse' AND org_id=? AND coalesce(json_extract(data,'$.submitted_at'), created_at) < ? AND coalesce(json_extract(data,'$.retained'),0)=0`, o.id, limit)) {
+      if (mode === 'delete') { run(`DELETE FROM records WHERE id=?`, r.id); run(`DELETE FROM entity_versions WHERE record_id=?`, r.id); }
+      else {
+        const d = J(r.data, {}); const answers = Object.fromEntries(Object.entries(d.answers_json || {}).map(([k, v]) => [k, typeof v === 'number' ? v : null]));
+        const x = { ...d, invitation_id: null, stakeholder_id: null, stakeholder_ref: null, respondent: null, function_name: null, captured_by: null, label: { en: 'Anonymized after retention', fr: 'Anonymisé après conservation', ar: 'مجهول بعد مدة الاحتفاظ' }, answers_json: answers, anonymized: true, retained: 1 };
+        run(`UPDATE records SET data=? WHERE id=?`, S(x), r.id); run(`DELETE FROM entity_versions WHERE record_id=? AND is_current=0`, r.id); run(`UPDATE entity_versions SET data=? WHERE record_id=?`, S(x), r.id);
+        run(`UPDATE q_invitations SET name=NULL, email=NULL, phone=NULL, response_id=NULL WHERE response_id=?`, r.id);
+      }
+      n++;
+    }
+  }
+  return { processed: n, mode };
+}

@@ -34,6 +34,8 @@ r.get('/search', requirePerm('dashboard.view'), ah(req => {
   if (raw.length < 2) return { q: raw, total: 0, groups: [] };
   const q = norm(raw); const types = req.query.types ? String(req.query.types).split(',') : null; const projectId = req.query.project || null;
   const want = ty => !types || types.includes(ty);
+  // Filters (FR-DA-SRCH-05): status, process and date (results updated since).
+  const fStatus = req.query.status ? String(req.query.status).toLowerCase() : null; const fSince = req.query.since ? String(req.query.since) : null; const fProcess = req.query.process ? String(req.query.process) : null;
   const out = [];
   const add = (type, o, s) => { if (s > 0) out.push({ type, score: s, ...o }); };
   const projects = new Map(all(`SELECT id, name, status, focus FROM projects WHERE org_id=?`, req.orgId).map(p => [p.id, { ...p, name: J(p.name, p.name) }]));
@@ -44,9 +46,11 @@ r.get('/search', requirePerm('dashboard.view'), ah(req => {
   const reg = entityRegistry(); const allowed = Object.values(reg).filter(d => has(req, permFor(d, false))).map(d => d.name);
   if (allowed.length && (want('record') || want('governance') || want('questionnaire') || want('training'))) {
     const ph = allowed.map(() => '?').join(',');
-    const rows = all(`SELECT id, entity, project_id, ref, data FROM records WHERE (org_id=? OR (org_id IS NULL AND entity IN ('QuestionnaireTemplate','ChecklistTemplate','ProjectTemplate','GateDefinition','Vertical'))) AND entity IN (${ph}) ${projectId ? 'AND (project_id=? OR project_id IS NULL)' : ''} LIMIT 60000`, req.orgId, ...allowed, ...(projectId ? [projectId] : []));
+    const rows = all(`SELECT id, entity, project_id, ref, data, updated_at FROM records WHERE (org_id=? OR (org_id IS NULL AND entity IN ('QuestionnaireTemplate','ChecklistTemplate','ProjectTemplate','GateDefinition','Vertical'))) AND entity IN (${ph}) ${projectId ? 'AND (project_id=? OR project_id IS NULL)' : ''} LIMIT 60000`, req.orgId, ...allowed, ...(projectId ? [projectId] : []));
     for (const x of rows) {
       if (!norm(x.data).includes(q.split(/\s+/)[0])) continue;
+      if (fSince && String(x.updated_at || '') < fSince) continue;
+      if (fProcess && !String(x.data).includes(fProcess)) continue;
       const d = J(x.data, {}); const code = d.code || d.training_code || (/[-_]/.test(x.ref || '') ? x.ref : '');
       const labelField = LABELS.find(f => d[f] != null && typeof d[f] !== 'boolean');
       const s = score(q, code, LABELS.flatMap(f => textsOf(d[f])));
@@ -72,9 +76,18 @@ r.get('/search', requirePerm('dashboard.view'), ah(req => {
   }
   if (want('help') && has(req, 'help.view')) for (const h of cat.list('help')) add('help', { id: h.id, code: h.id, title: pick(h.title || h.name, lang), route: `/help?topic=${h.id}` }, score(q, h.id, [...textsOf(h.title || h.name), ...textsOf(h.body)]));
 
+  // Documented information (documents and templates).
+  if (want('document') && has(req, 'reports.view')) {
+    for (const d of all(`SELECT id, project_id, doc_type, title, status, version, updated_at, e2e_id FROM documents WHERE org_id=? ${projectId ? 'AND project_id=?' : ''} ORDER BY updated_at DESC LIMIT 5000`, req.orgId, ...(projectId ? [projectId] : []))) {
+      if (fSince && String(d.updated_at || '') < fSince) continue; if (fProcess && d.e2e_id !== fProcess && !String(d.doc_type).includes(fProcess)) continue;
+      add('document', { id: d.id, entity: 'Document', code: d.doc_type, title: pick(J(d.title, d.title), lang), location: pick(projects.get(d.project_id)?.name, lang), status: d.status, route: `/documents/${d.id}` }, score(q, d.doc_type, textsOf(J(d.title, d.title))));
+    }
+  }
+  if (fStatus) for (let k = out.length - 1; k >= 0; k--) if (String(out[k].status || '').toLowerCase() !== fStatus) out.splice(k, 1);
+  if (fProcess) for (let k = out.length - 1; k >= 0; k--) if (out[k].type === 'process' && out[k].id !== fProcess && out[k].location !== fProcess) out.splice(k, 1);
   out.sort((a, b) => b.score - a.score || String(a.title).localeCompare(String(b.title)));
   const limit = Math.min(200, Number(req.query.limit) || 60); const top = out.slice(0, limit);
-  const order = ['project', 'questionnaire', 'training', 'record', 'governance', 'process', 'ai', 'report', 'people', 'help'];
+  const order = ['project', 'document', 'questionnaire', 'training', 'record', 'governance', 'process', 'ai', 'report', 'people', 'help'];
   const groups = order.map(type => ({ type, items: top.filter(x => x.type === type) })).filter(g => g.items.length);
   return { q: raw, total: out.length, counts: Object.fromEntries(order.map(ty => [ty, out.filter(x => x.type === ty).length])), groups };
 }));

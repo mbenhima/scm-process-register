@@ -17,7 +17,7 @@ const EXTRA = {
   CustomKpi: { module: 'M10', perm: 'governance', fields: [f('name', 'text', { required: true, ml: true }), f('formula', 'text', { ml: true }), f('target', 'number'), f('unit', 'string'), f('owner', 'string'), f('process_tag', 'string')] },
   BpmnDiagram: { module: 'M00', perm: 'bpmn', fields: [f('title', 'text', { required: true, ml: true }), f('description', 'text', { ml: true }), f('e2e_id', 'string'), f('obs_node', 'string'), f('xml', 'longtext')] },
   WbsNode: { module: 'M36', perm: 'projects', fields: [f('name', 'text', { required: true, ml: true }), f('parent_id', 'ref', { ref: 'WbsNode' }), f('start', 'date'), f('end', 'date'), f('percent', 'number'), f('predecessors', 'json'), f('task_refs', 'json'), f('sort', 'number')] },
-  ProjectTemplate: { module: 'M00', perm: 'templates', versioned: true, fields: [f('name', 'text', { required: true, ml: true }), f('description', 'text', { ml: true }), f('scope', 'enum', { options: ['Universal', 'Vertical'] }), f('vertical_id', 'string'), f('mode', 'enum', { options: ['Full', 'SME'] }), f('track', 'string'), f('focus', 'enum', { options: ['All', 'Digital', 'AI', 'Custom'] }), f('status', 'enum', { options: ['Draft', 'Published', 'Retired'] }), f('phases', 'json'), f('roles', 'json'), f('milestones', 'json'), f('use_count', 'number'), f('platform', 'boolean')] },
+  ProjectTemplate: { module: 'M00', perm: 'templates', versioned: true, fields: [f('code', 'string'), f('name', 'text', { required: true, ml: true }), f('description', 'text', { ml: true }), f('scope', 'enum', { options: ['Universal', 'Vertical'] }), f('vertical_id', 'string'), f('mode', 'enum', { options: ['Full', 'SME'] }), f('track', 'string'), f('focus', 'enum', { options: ['All', 'Digital', 'AI', 'Custom'] }), f('status', 'enum', { options: ['Draft', 'Published', 'Retired'] }), f('phases', 'json'), f('roles', 'json'), f('milestones', 'json'), f('use_count', 'number'), f('platform', 'boolean'), f('blueprint', 'json')] },
   GateDefinition: { module: 'M00', perm: 'templates', versioned: true, fields: [f('name', 'text', { required: true, ml: true }), f('purpose', 'text', { ml: true }), f('entry_criteria', 'text', { ml: true }), f('exit_criteria', 'text', { ml: true }), f('approvers', 'json'), f('decisions', 'json'), f('verticals', 'json'), f('modes', 'json'), f('tracks', 'json'), f('checklists', 'json'), f('enforce', 'boolean'), f('status', 'enum', { options: ['Draft', 'Published', 'Retired'] })] },
   ChecklistTemplate: { module: 'M00', perm: 'templates', versioned: true, fields: [f('name', 'text', { required: true, ml: true }), f('scope', 'enum', { options: ['Universal', 'Vertical'] }), f('vertical_id', 'string'), f('mode', 'string'), f('track', 'string'), f('items', 'json'), f('status', 'enum', { options: ['Draft', 'Published', 'Retired'] })] },
   PhaseChecklist: { module: 'M00', perm: 'projects', fields: [f('phase', 'number'), f('gate_id', 'string'), f('checklist_id', 'string'), f('version', 'number'), f('items', 'json'), f('state', 'enum', { options: ['Open', 'Submitted', 'Signed off'] }), f('decision', 'enum', { options: ['Go', 'No-Go', 'Hold', 'Recycle'] }), f('decision_comment', 'text'), f('waiver', 'text'), f('mandatory', 'boolean')] },
@@ -37,7 +37,31 @@ const EXTRA = {
     f('objectives', 'json'), f('duration_days', 'number', { required: true }), f('prerequisites', 'longtext', { ml: true }), f('agenda', 'json'), f('personas', 'json'), f('theme_id', 'ref', { ref: 'TrainingTheme' }), f('groups', 'number'), f('modality', 'string'),
     f('status', 'enum', { options: ['Draft', 'In Review', 'Approved'] }), f('sort', 'number')] },
   KbArticle: { module: 'M12', perm: 'kb', fields: [f('title', 'text', { required: true, ml: true }), f('body', 'longtext', { ml: true }), f('standard', 'string'), f('process_tag', 'string'), f('language', 'string')] },
+  // Release 1.10: documented information, audits, controlled choice lists and project blueprints.
+  DocumentTemplate: { module: 'M24', perm: 'documents', versioned: true, global: true, fields: [f('code', 'string', { required: true }), f('name', 'text', { required: true, ml: true }), f('category', 'string'), f('description', 'text', { ml: true }), f('e2e_id', 'string'), f('standards', 'json'), f('sections', 'json'), f('formatting', 'json'), f('status', 'enum', { options: ['Draft', 'Published', 'Retired'] })] },
+  DocumentLayout: { module: 'M24', perm: 'documents', versioned: true, fields: [f('header', 'text', { ml: true }), f('footer', 'text', { ml: true }), f('logo', 'string'), f('formatting', 'json'), f('variants', 'json')] },
+  AuditProgram: { module: 'M18', perm: 'audits', versioned: true, fields: [f('code', 'string', { required: true }), f('name', 'text', { required: true, ml: true }), f('kind', 'enum', { options: ['Internal audit', 'External audit', 'Inspection', 'Certification audit'] }), f('standard', 'string'),
+    f('objectives', 'longtext', { ml: true }), f('criteria', 'text', { ml: true }), f('scope', 'longtext', { ml: true }), f('processes', 'json'), f('duration_days', 'number'), f('lead_auditor', 'string'), f('team', 'json'), f('auditees', 'json'),
+    f('frequency', 'enum', { options: ['Monthly', 'Quarterly', 'Semi-annual', 'Annual', 'Every two years', 'Every three years', 'Custom'] }), f('frequency_custom', 'text', { ml: true }), f('frequency_days', 'number'), f('frequency_justification', 'longtext', { ml: true }),
+    f('planned_date', 'date'), f('performed_date', 'date'), f('next_date', 'date'), f('status', 'enum', { options: ['Planned', 'In progress', 'Reported', 'Closed'] }), f('summary', 'longtext', { ml: true }), f('strengths', 'longtext', { ml: true }), f('conclusion', 'longtext', { ml: true }), f('follow_up', 'longtext', { ml: true })] },
+  AuditFinding: { module: 'M18', perm: 'audits', versioned: true, fields: [f('audit_id', 'ref', { ref: 'AuditProgram', required: true }), f('code', 'string'), f('grade', 'enum', { options: ['Major', 'Minor', 'Observation', 'Improvement', 'Strength'], required: true }), f('requirement', 'string'), f('clause', 'string'),
+    f('statement', 'longtext', { ml: true, required: true }), f('evidence', 'longtext', { ml: true }), f('process', 'string'), f('auditee', 'string'), f('root_cause', 'longtext', { ml: true }), f('correction', 'longtext', { ml: true }), f('corrective_action', 'longtext', { ml: true }),
+    f('action_owner', 'string'), f('due', 'date'), f('action_id', 'string'), f('effectiveness', 'longtext', { ml: true }), f('status', 'enum', { options: ['Open', 'Action planned', 'Verified', 'Closed'] })] },
+  ChoiceList: { module: 'M00', perm: 'config', global: true, fields: [f('field', 'string', { required: true }), f('name', 'text', { ml: true }), f('values', 'json')] },
+  ProjectBlueprint: { module: 'M00', perm: 'blueprints', versioned: true, fields: [f('code', 'string', { required: true }), f('name', 'text', { required: true, ml: true }), f('description', 'text', { ml: true }), f('source_project', 'string'), f('vertical_id', 'string'), f('mode', 'enum', { options: ['Full', 'SME'] }), f('track', 'string'), f('content', 'json'), f('options', 'json'), f('status', 'enum', { options: ['Draft', 'Published', 'Retired'] }), f('use_count', 'number')] },
+  ProjectCustomElement: { module: 'M00', perm: 'projects', fields: [f('kind', 'enum', { options: ['phase', 'mp', 'step'] }), f('parent', 'string'), f('name', 'text', { required: true, ml: true }), f('description', 'text', { ml: true }), f('owner', 'string'), f('roles', 'json'), f('status', 'enum', { options: ['Not started', 'In progress', 'Completed'] }), f('blueprint_ref', 'string')] },
+  ReportingPlanItem: { module: 'M10', perm: 'projects', fields: [f('name', 'text', { required: true, ml: true }), f('audience', 'text', { ml: true }), f('frequency', 'enum', { options: ['Weekly', 'Monthly', 'Quarterly', 'Semi-annual', 'Annual', 'On demand'] }), f('format', 'enum', { options: ['PDF', 'Excel', 'Word', 'Dashboard'] }), f('owner', 'string'), f('next_due', 'date'), f('origin', 'string'), f('blueprint_ref', 'string')] },
 };
+// Derived fields computed on save: the next planned date of an audit from its frequency (FR-DA-AFP-01).
+export const AUDIT_FREQ_DAYS = { Monthly: 30, Quarterly: 91, 'Semi-annual': 182, Annual: 365, 'Every two years': 730, 'Every three years': 1095 };
+function derive(entity, d) {
+  if (entity === 'AuditProgram') {
+    const days = d.frequency === 'Custom' ? Number(d.frequency_days || 0) : AUDIT_FREQ_DAYS[d.frequency];
+    const base = d.performed_date || d.planned_date;
+    if (days && base) { const x = new Date(base); x.setDate(x.getDate() + days); d.next_date = x.toISOString().slice(0, 10); }
+  }
+  return d;
+}
 const GOVERNED = /(^|_)(status|score|rating|level|rank|priority|effectiveness|decision|approval_status|lifecycle|rag|verdict)($|_)/;
 
 function parseType(dt, rule) {
@@ -79,6 +103,8 @@ export function entityRegistry() {
   if (registry.QuestionnaireTemplate) registry.QuestionnaireTemplate.global = true;
   const addOptions = (entity, field, extra) => { const f = registry[entity]?.fields.find(x => x.name === field); if (f?.options) f.options = [...new Set([...f.options, ...extra])]; };
   addOptions('QuestionnaireResponse', 'channel_used', ['Application', 'WhatsApp']);
+  // Release 1.10: anonymized questionnaires and retention (NFR-DA-QLT-02/03).
+  if (registry.Questionnaire && !registry.Questionnaire.fields.some(x => x.name === 'anonymized')) registry.Questionnaire.fields.push(f('anonymized', 'boolean'));
   addOptions('Stakeholder', 'preferred_channel', ['Application', 'WhatsApp', 'Combination']);
   addOptions('Questionnaire', 'elaboration_mode', ['Load + AI', 'Load + Manual', 'Load + AI + Manual', 'AI + Manual']);
   return registry;
@@ -106,6 +132,9 @@ export function permFor(def, write) {
     case 'integrations': return write ? 'integrations.manage' : 'config.view';
     case 'kb': return write ? 'kb.manage' : 'ai.view';
     case 'training': return write ? 'm49.edit' : 'm49.view';
+    case 'documents': return write ? 'documents.manage' : 'reports.view';
+    case 'audits': return write ? 'audits.manage' : 'audits.view';
+    case 'blueprints': return write ? 'blueprints.manage' : 'catalog.view';
     default: return `${def.module.toLowerCase()}.${write ? 'edit' : 'view'}`;
   }
 }
@@ -167,7 +196,7 @@ export function getRecord(req, entity, id) {
 
 export function createRecord(req, entity, body, { projectId = null, ref = null, skipAudit = false } = {}) {
   const def = entityDef(entity);
-  const data = validate(def, body || {}, req.lang);
+  const data = derive(entity, validate(def, body || {}, req.lang));
   const id = uuid(); const t = now();
   const orgId = def.global && req.user?.is_platform && body?._global ? null : req.orgId;
   run(`INSERT INTO records(id,entity,org_id,project_id,ref,data,version,created_by,created_at,updated_by,updated_at) VALUES(?,?,?,?,?,?,1,?,?,?,?)`,
@@ -182,7 +211,7 @@ export function updateRecord(req, entity, id, body) {
   const cur = getRecord(req, entity, id);
   if (!cur.org_id && !req.user.is_platform) throw new HttpError(403, 'err.platformOnly');
   const { id: _i, entity: _e, org_id, project_id, ref, version, created_at, updated_at, created_by, updated_by, ...prev } = cur;
-  const next = validate(def, body || {}, req.lang, prev);
+  const next = derive(entity, validate(def, body || {}, req.lang, prev));
   const governedChange = Object.keys(next).some(k => GOVERNED.test(k) && JSON.stringify(next[k]) !== JSON.stringify(prev[k]));
   const cfg = orgConfig(req.orgId);
   if (governedChange && cfg?.justification_required && !String(body?._justification || '').trim()) throw new HttpError(422, 'err.justificationRequired');

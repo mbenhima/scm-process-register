@@ -8,6 +8,8 @@ import { checkQuota } from '../entitlements.js';
 import { hashPassword } from '../auth.js';
 import { getLicenceProvider } from '../licensing/LicenceProvider.js';
 import { provisionOrg, instantiateProject, processPlan, insertRecord } from '../services/projects.js';
+import { applyPlan, applyAfter } from '../services/blueprints.js';
+import { latestPublished } from '../services/design.js';
 import { draftProject, scoreComplexity } from '../services/creation.js';
 import * as cat from '../catalog.js';
 
@@ -109,9 +111,14 @@ r.post('/projects', requirePerm('projects.create'), ah(req => {
     const project = one(`SELECT * FROM projects WHERE id=?`, id);
     let phases = processPlan({ mode: pMode, track, vertical });
     if (Array.isArray(b.e2e) && b.e2e.length) phases = phases.map(p => ({ ...p, e2e: p.e2e.filter(x => b.e2e.includes(x)) }));
+    // The template's blueprint is applied exactly (FR-DA-PTB-06): included phases, processes, tasks and steps only.
+    const plan = tpl ? applyPlan(tpl, phases) : null; if (plan) phases = plan.phases;
     const users = all(`SELECT u.id, (SELECT group_concat(r.name,'|') FROM user_roles ur JOIN roles r ON r.id=ur.role_id WHERE ur.user_id=u.id) rn FROM users u WHERE u.org_id=?`, req.orgId)
       .map(u => ({ id: u.id, roleNames: String(u.rn || '') }));
-    instantiateProject(project, { phases, users, level: 0 });
+    instantiateProject(project, { phases, users, level: 0, excludedTasks: plan?.excludedTasks || null });
+    if (plan) applyAfter(req, project, tplRec, tpl, plan.bp);
+    // The project is bound to the latest published process design release (FR-DA-PDM).
+    run(`UPDATE projects SET design_release_id=? WHERE id=?`, latestPublished(req.orgId), id);
     insertRecord(uuid(), 'ComplexityScore', req.orgId, id, null, { values: score.values, score: score.score, recommended_track: score.recommendedTrack, chosen_track: track, override_justification: b.track_justification || null });
     if (tplRec) run(`UPDATE records SET data=json_set(data,'$.use_count',coalesce(json_extract(data,'$.use_count'),0)+1) WHERE id=?`, tplRec.id);
   });

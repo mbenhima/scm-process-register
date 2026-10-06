@@ -122,6 +122,7 @@ const COLUMNS = [
   ['projects', 'template_code', 'TEXT'],
   ['projects', 'template_version', 'INTEGER'],
   ['projects', 'blueprint', 'TEXT'],
+  ['task_instances', 'title', 'TEXT'],
   ['attachments', 'chain_id', 'TEXT'],
   ['attachments', 'version', 'INTEGER DEFAULT 1'],
   ['attachments', 'note', 'TEXT'],

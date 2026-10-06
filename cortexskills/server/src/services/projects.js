@@ -65,7 +65,7 @@ export function processPlan({ mode = 'Full', track = null, vertical = null }) {
 }
 
 /** Creates the E2E process instances and their user-facing task instances (with guidance) for a project. */
-export function instantiateProject(project, { phases, users = [], seedRng = null, ids = uuid, level = null, startDate = now() }) {
+export function instantiateProject(project, { phases, users = [], seedRng = null, ids = uuid, level = null, startDate = now(), excludedTasks = null }) {
   const r = seedRng || rng(project.id); const ufts = cat.byId('uft');
   const pick1 = arr => arr[Math.floor(r() * arr.length)];
   let sort = 0; const ctx = guidanceContext(project);
@@ -75,14 +75,15 @@ export function instantiateProject(project, { phases, users = [], seedRng = null
       const e = cat.get('e2e', e2eId); if (!e) continue;
       const iid = ids(`e2e:${project.id}:${e2eId}`); sort++;
       const phaseState = ph.no === 0 ? (lvl >= 3 ? 'mid' : lvl > 0 ? 'early' : 'none') : ph.no < lvl ? 'done' : ph.no === lvl ? 'mid' : 'none';
-      const n = e.ufts.length;
+      const taskIds = excludedTasks ? e.ufts.filter(u => !excludedTasks.has(u)) : e.ufts; if (!taskIds.length) continue;
+      const n = taskIds.length;
       const doneCount = phaseState === 'done' ? n : phaseState === 'mid' ? Math.floor(n * (0.3 + r() * 0.55)) : phaseState === 'early' ? Math.floor(n * 0.25) : 0;
       const base = new Date(startDate).getTime() + (Math.max(ph.no, 1) - 1) * 28 * 86400000;
       const due0 = new Date(base).toISOString();
       let completed = 0;
       const ownerE2e = users.find(x => x.roleNames.includes(pick(cat.get('mp', e.mps[0])?.owner, 'en')))?.id ?? users[0]?.id ?? null;
       run(`INSERT OR IGNORE INTO e2e_instances(id,org_id,project_id,e2e_id,phase,status,progress,owner_id,due_date,sort) VALUES(?,?,?,?,?,'Not started',0,?,?,?)`, iid, project.org_id, project.id, e2eId, ph.no, ownerE2e, addDays(due0, 3 * n + 3), sort);
-      e.ufts.forEach((uid, k) => {
+      taskIds.forEach((uid, k) => {
         const u = ufts.get(uid); const tid = ids(`task:${project.id}:${uid}`);
         const status = k < doneCount ? 'Completed' : k === doneCount && phaseState !== 'none' ? (r() < 0.12 ? 'Blocked' : 'In progress') : 'Not started';
         if (status === 'Completed') completed++;
