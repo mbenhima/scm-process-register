@@ -50,14 +50,14 @@
   "هذه الخطوة لا تسجّل صفوفًا."
  ],
  "err.invalidFields": [
-  "Some fields are not valid: {{fields}}.",
-  "Certains champs ne sont pas valides : {{fields}}.",
-  "بعض الحقول غير صالحة: {{fields}}."
+  "Some fields are not valid: {fields}.",
+  "Certains champs ne sont pas valides : {fields}.",
+  "بعض الحقول غير صالحة: {fields}."
  ],
  "err.missingFields": [
-  "Fill in the required fields: {{fields}}.",
-  "Renseignez les champs obligatoires : {{fields}}.",
-  "املأ الحقول الإلزامية: {{fields}}."
+  "Fill in the required fields: {fields}.",
+  "Renseignez les champs obligatoires : {fields}.",
+  "املأ الحقول الإلزامية: {fields}."
  ],
  "err.noRows": [
   "Add at least one row before completing the step.",
@@ -90,19 +90,19 @@
   "يجب أن يكون تاريخ النهاية بعد تاريخ البداية."
  ],
  "err.range": [
-  "{{field}} must be between {{min}} and {{max}}.",
-  "{{field}} doit être compris entre {{min}} et {{max}}.",
-  "يجب أن يكون {{field}} بين {{min}} و{{max}}."
+  "{field} must be between {min} and {max}.",
+  "{field} doit être compris entre {min} et {max}.",
+  "يجب أن يكون {field} بين {min} و{max}."
  ],
  "err.promptVariable": [
-  "The prompt uses data that is missing: {{variables}}.",
-  "Le prompt utilise des données manquantes : {{variables}}.",
-  "يستعمل الموجِّه بيانات ناقصة: {{variables}}."
+  "The prompt uses data that is missing: {variables}.",
+  "Le prompt utilise des données manquantes : {variables}.",
+  "يستعمل الموجِّه بيانات ناقصة: {variables}."
  ],
  "err.specIncomplete": [
-  "Complete the prompt specification before activating: {{fields}}.",
-  "Complétez la spécification du prompt avant d’activer : {{fields}}.",
-  "أكمل مواصفات الموجِّه قبل التفعيل: {{fields}}."
+  "Complete the prompt specification before activating: {fields}.",
+  "Complétez la spécification du prompt avant d’activer : {fields}.",
+  "أكمل مواصفات الموجِّه قبل التفعيل: {fields}."
  ],
  "err.useCaseExists": [
   "This use case already exists.",
@@ -140,9 +140,9 @@
   "لا يمكن تعديل إلا المسودة. أنشئ نسخة جديدة أولًا."
  ],
  "err.blockingFindings": [
-  "Fix the blocking findings before submitting: {{findings}}.",
-  "Corrigez les constats bloquants avant de soumettre : {{findings}}.",
-  "صحّح الملاحظات المانعة قبل التقديم: {{findings}}."
+  "Fix the blocking findings before submitting: {findings}.",
+  "Corrigez les constats bloquants avant de soumettre : {findings}.",
+  "صحّح الملاحظات المانعة قبل التقديم: {findings}."
  ],
  "err.selfApprove": [
   "You cannot approve a document you submitted. Ask another approver.",
@@ -170,14 +170,14 @@
   "يظهر نص الوثيقة بهذا الخط والحجم والمحاذاة."
  ],
  "docf.refMissing": [
-  "A referenced record no longer exists: {{ref}}.",
-  "Un enregistrement référencé n’existe plus : {{ref}}.",
-  "سجل مرجعي لم يعد موجودًا: {{ref}}."
+  "A referenced record no longer exists: {ref}.",
+  "Un enregistrement référencé n’existe plus : {ref}.",
+  "سجل مرجعي لم يعد موجودًا: {ref}."
  ],
  "docf.duplicateId": [
-  "The same identifier appears twice: {{ref}}.",
-  "Le même identifiant apparaît deux fois : {{ref}}.",
-  "المعرف نفسه يظهر مرتين: {{ref}}."
+  "The same identifier appears twice: {ref}.",
+  "Le même identifiant apparaît deux fois : {ref}.",
+  "المعرف نفسه يظهر مرتين: {ref}."
  ],
  "naming.missing": [
   "Give a name.",
@@ -503,5 +503,150 @@
   "AI settings",
   "Paramètres IA",
   "إعدادات الذكاء الاصطناعي"
+ ],
+ "mre.openRow": [
+  "Open in the Row Editor",
+  "Ouvrir dans l’éditeur de ligne",
+  "فتح في محرر الصف"
+ ],
+ "mre.rowN": [
+  "Row {n} of {total}",
+  "Ligne {n} sur {total}",
+  "الصف {n} من {total}"
+ ],
+ "mre.backToTable": [
+  "Back to the table",
+  "Retour au tableau",
+  "العودة إلى الجدول"
+ ],
+ "mre.prevRow": [
+  "Previous row",
+  "Ligne précédente",
+  "الصف السابق"
+ ],
+ "mre.nextRow": [
+  "Next row",
+  "Ligne suivante",
+  "الصف التالي"
+ ],
+ "mre.customPlaceholder": [
+  "Type the custom value",
+  "Saisissez la valeur personnalisée",
+  "اكتب القيمة المخصصة"
+ ],
+ "mre.backToList": [
+  "Choose from the list",
+  "Choisir dans la liste",
+  "الاختيار من القائمة"
+ ],
+ "att.versions": [
+  "Versions",
+  "Versions",
+  "النسخ"
+ ],
+ "att.chooseFile": [
+  "Choose the new file",
+  "Choisir le nouveau fichier",
+  "اختر الملف الجديد"
+ ],
+ "att.addVersion": [
+  "Add as new version",
+  "Ajouter comme nouvelle version",
+  "إضافة كنسخة جديدة"
+ ],
+ "att.note": [
+  "Version note",
+  "Note de version",
+  "ملاحظة النسخة"
+ ],
+ "att.noteHint": [
+  "What changed in this version.",
+  "Ce qui change dans cette version.",
+  "ما الذي تغير في هذه النسخة."
+ ],
+ "att.file": [
+  "File",
+  "Fichier",
+  "الملف"
+ ],
+ "att.versionAdded": [
+  "New version added. Earlier versions stay downloadable.",
+  "Nouvelle version ajoutée. Les versions précédentes restent téléchargeables.",
+  "أضيفت نسخة جديدة. تبقى النسخ السابقة قابلة للتنزيل."
+ ],
+ "readiness.title": [
+  "Readiness to start",
+  "Prêt à démarrer",
+  "الجاهزية للانطلاق"
+ ],
+ "sfm.locked": [
+  "The gate of this phase is passed. The steps are read-only; reopen the gate to change them.",
+  "Le jalon de cette phase est franchi. Les étapes sont en lecture seule ; rouvrez le jalon pour les modifier.",
+  "تم اجتياز بوابة هذه المرحلة. الخطوات للقراءة فقط؛ أعد فتح البوابة لتعديلها."
+ ],
+ "sfm.rows": [
+  "{n} rows",
+  "{n} lignes",
+  "{n} صفوف"
+ ],
+ "sfm.noSteps": [
+  "This task has no steps.",
+  "Cette tâche n’a pas d’étape.",
+  "لا توجد خطوات لهذه المهمة."
+ ],
+ "sfm.feeds": [
+  "Completing this step feeds the register: {r}.",
+  "Terminer cette étape alimente le registre : {r}.",
+  "إنهاء هذه الخطوة يغذي السجل: {r}."
+ ],
+ "sfm.system": [
+  "The platform performs this step automatically when the previous steps are complete.",
+  "La plateforme réalise cette étape automatiquement quand les étapes précédentes sont terminées.",
+  "تنجز المنصة هذه الخطوة تلقائيًا عند اكتمال الخطوات السابقة."
+ ],
+ "sfm.count": [
+  "{n} {o} recorded",
+  "{n} {o} enregistré(s)",
+  "{n} من {o} مسجلة"
+ ],
+ "sfm.emptyRows": [
+  "No {o} yet. Add the first row.",
+  "Aucun élément ({o}) pour l’instant. Ajoutez la première ligne.",
+  "لا يوجد {o} بعد. أضف الصف الأول."
+ ],
+ "sfm.aiProposal": [
+  "AI proposal — validate each row",
+  "Proposition de l’IA — validez chaque ligne",
+  "مقترح الذكاء الاصطناعي — صادق على كل صف"
+ ],
+ "sfm.aiNothing": [
+  "Not enough project data yet to propose rows.",
+  "Pas encore assez de données projet pour proposer des lignes.",
+  "لا توجد بعد بيانات كافية لاقتراح صفوف."
+ ],
+ "sfm.aiCheckpoint": [
+  "Accepted rows are marked as AI-proposed and validated by you.",
+  "Les lignes acceptées sont marquées « proposées par l’IA » et validées par vous.",
+  "الصفوف المقبولة توسم بأنها مقترحة من الذكاء الاصطناعي ومصادق عليها من طرفك."
+ ],
+ "sfm.suggest": [
+  "Propose rows with AI",
+  "Proposer des lignes avec l’IA",
+  "اقتراح صفوف بالذكاء الاصطناعي"
+ ],
+ "sfm.complete": [
+  "Complete the step",
+  "Terminer l’étape",
+  "إنهاء الخطوة"
+ ],
+ "sfm.reopen": [
+  "Reopen the step",
+  "Rouvrir l’étape",
+  "إعادة فتح الخطوة"
+ ],
+ "sfm.completed": [
+  "Step completed. Its entries are in the register.",
+  "Étape terminée. Ses éléments sont dans le registre.",
+  "اكتملت الخطوة. عناصرها في السجل."
  ]
 }

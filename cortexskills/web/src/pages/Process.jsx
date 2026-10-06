@@ -122,9 +122,9 @@ export function Sme() {
 }
 
 export function Templates() {
-  const { t, L } = useI18n();
+  const { t, L } = useI18n(); const nav = useNavigate();
   return (<><PageHead eyebrow={t('navGroup.process')} title={t('nav.templates')} subtitle={t('tpl.subtitle')} />
-    <RecordsView entity="ProjectTemplate" columns={[{ key: 'name', label: t('col.name'), text: r => L(r.name) }, { key: 'scope', label: t('col.scope'), text: r => t('scope.' + r.scope) + (r.vertical_id ? ' · ' + r.vertical_id : '') }, { key: 'mode', label: t('col.mode'), text: r => t('mode.' + r.mode) + (r.track ? ' · ' + r.track : '') },
+    <RecordsView entity="ProjectTemplate" onOpen={r => nav('/process/templates/' + r.id)} columns={[{ key: 'name', label: t('col.name'), text: r => L(r.name) }, { key: 'scope', label: t('col.scope'), text: r => t('scope.' + r.scope) + (r.vertical_id ? ' · ' + r.vertical_id : '') }, { key: 'mode', label: t('col.mode'), text: r => t('mode.' + r.mode) + (r.track ? ' · ' + r.track : '') },
       { key: 'focus', label: t('col.focus'), text: r => t('focus.' + r.focus) }, { key: 'phases', label: t('col.phases'), text: r => (r.phases || []).map(p => `${p.no}:${p.e2e.length}`).join(' ') }, { key: 'status', label: t('col.status'), render: r => <StatusPill value={r.status} />, text: r => r.status }, { key: 'use_count', label: t('col.uses'), num: true }, { key: 'version', label: 'v', num: true }]} /></>);
 }
 export function Gates() {

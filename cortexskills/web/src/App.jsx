@@ -17,7 +17,12 @@ import { Settings, Help } from './pages/Settings.jsx';
 import { Questionnaires, QuestionnaireDetail, QuestionnaireTemplates, CaptureResponse } from './pages/Questionnaires.jsx';
 import { TrainingPlan } from './pages/TrainingPlan.jsx';
 import { ChannelSettings } from './pages/Channels.jsx';
-import { Documents } from './pages/Documents.jsx';
+import { Documents, DocumentEditor, DocTemplates, DocLayout, MasterList } from './pages/Documents.jsx';
+import { ProcessDesign } from './pages/Design.jsx';
+import { Obs } from './pages/Obs.jsx';
+import { PromptSpec, AiSettings } from './pages/AiSpec.jsx';
+import { Blueprint } from './pages/Blueprint.jsx';
+import { Audits, AuditDetail, Registers } from './pages/Audits.jsx';
 import Respond from './pages/Respond.jsx';
 
 export default function App() {
@@ -32,7 +37,9 @@ export default function App() {
     <Route path="/projects/:id/gantt" element={<Gantt />} /><Route path="/runs/:id" element={<E2EInstance />} /><Route path="/portfolio" element={<Portfolio />} />
     <Route path="/modules" element={<Modules />} /><Route path="/modules/:id" element={<ModuleWorkspace />} /><Route path="/records" element={<Records />} /><Route path="/records/:entity" element={<Records />} />
     <Route path="/questionnaires" element={<Questionnaires />} /><Route path="/questionnaires/templates" element={<QuestionnaireTemplates />} /><Route path="/questionnaires/capture/:id" element={<CaptureResponse />} /><Route path="/questionnaires/:id" element={<QuestionnaireDetail />} />
-    <Route path="/training-plan" element={<TrainingPlan />} /><Route path="/documents" element={<Documents />} /><Route path="/admin/channels" element={<ChannelSettings />} />
+    <Route path="/training-plan" element={<TrainingPlan />} /><Route path="/documents" element={<Documents />} /><Route path="/documents/templates" element={<DocTemplates />} /><Route path="/documents/layout" element={<DocLayout />} /><Route path="/documents/master-list" element={<MasterList />} /><Route path="/documents/:id" element={<DocumentEditor />} />
+    <Route path="/process/design" element={<ProcessDesign />} /><Route path="/process/templates/:id" element={<Blueprint />} /><Route path="/gov/obs" element={<Obs />} /><Route path="/gov/audits" element={<Audits />} /><Route path="/gov/audits/:id" element={<AuditDetail />} /><Route path="/registers" element={<Registers />} />
+    <Route path="/ai/use-cases/:id/spec" element={<PromptSpec />} /><Route path="/ai/settings" element={<AiSettings />} /><Route path="/admin/channels" element={<ChannelSettings />} />
     <Route path="/process/mp" element={<MacroProcesses />} /><Route path="/process/mp/:id" element={<MacroProcess />} /><Route path="/process/e2e" element={<E2EList />} /><Route path="/process/e2e/:id" element={<E2EDetail />} />
     <Route path="/process/chain" element={<Chain />} /><Route path="/process/coverage" element={<Coverage />} /><Route path="/process/bpmn" element={<BpmnPage />} /><Route path="/process/model" element={<InfoModel />} />
     <Route path="/process/verticals" element={<Verticals />} /><Route path="/process/sme" element={<Sme />} /><Route path="/process/templates" element={<Templates />} /><Route path="/process/gates" element={<Gates />} /><Route path="/process/checklists" element={<Checklists />} />

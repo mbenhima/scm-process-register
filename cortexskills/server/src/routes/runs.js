@@ -39,7 +39,7 @@ r.get('/tasks/:id', requirePerm('projects.view'), ah(req => {
   const t = one(`SELECT t.*, o.name owner_name, v.name evaluator_name FROM task_instances t LEFT JOIN users o ON o.id=t.owner_id LEFT JOIN users v ON v.id=t.evaluator_id WHERE t.id=? AND t.org_id=?`, req.params.id, req.orgId);
   if (!t) throw new HttpError(404, 'err.notFound');
   const u = cat.get('uft', t.uft_id);
-  const attachments = all(`SELECT a.id, a.filename, a.mime, a.size, a.created_at, u.name author FROM attachments a LEFT JOIN users u ON u.id=a.author_id WHERE a.owner_type='task' AND a.owner_id=? AND a.org_id=?`, t.id, req.orgId);
+  const attachments = all(`SELECT a.id, a.filename, a.mime, a.size, a.created_at, coalesce(a.version,1) version, a.note, u.name author, (SELECT COUNT(*) FROM attachments b WHERE coalesce(b.chain_id,b.id)=coalesce(a.chain_id,a.id)) versions FROM attachments a LEFT JOIN users u ON u.id=a.author_id WHERE a.owner_type='task' AND a.owner_id=? AND a.org_id=? AND coalesce(a.is_latest,1)=1`, t.id, req.orgId);
   const history = all(`SELECT a.action, a.after_val, a.justification, a.created_at, u.name user_name FROM audit_log a LEFT JOIN users u ON u.id=a.user_id WHERE a.entity='Task' AND a.entity_id=? ORDER BY a.created_at DESC LIMIT 30`, t.id).map(h => ({ ...h, after_val: J(h.after_val) }));
   const racsi = one(`SELECT id FROM racsi_activities WHERE org_id=? AND ref_type='uft' AND ref_id=? AND (project_id IS NULL OR project_id=?)`, req.orgId, t.uft_id, t.project_id);
   return { task: taskOut(t), uft: u, steps: u.steps.map(s => cat.get('step', s)), attachments, history,

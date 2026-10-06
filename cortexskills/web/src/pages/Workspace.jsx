@@ -5,6 +5,8 @@ import { useSession, useData } from '../lib/session.jsx';
 import { get, post, put, patch, del, api, download } from '../lib/api.js';
 import { PageHead, Card, Guard, DataTable, StatusPill, Progress, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, AiBadge, KV, Field, IconBadge, Tabs, Legend, Select } from '../components/ui.jsx';
 import { RecordEditor, useMeta } from '../components/Records.jsx';
+import { StepForms, Readiness } from '../components/StepForms.jsx';
+import { AttachmentVersions } from '../components/Attachments.jsx';
 
 export function ProjectWorkspace() {
   const { id } = useParams(); const { t, L, fmtNum } = useI18n(); const { can, setProject } = useSession(); const d = useData(`/projects/${id}/workspace`); const act = useAction(); const nav = useNavigate();
@@ -79,7 +81,8 @@ export function E2EInstance() {
         { key: 'sort', label: '#', num: true }, { key: 'uft_id', label: t('col.task'), render: r => <span><span className="strong">{r.uft_id}</span><br /><UftName id={r.uft_id} /></span> },
         { key: 'status', label: t('col.status'), render: r => <StatusPill value={r.status} /> }, { key: 'owner_name', label: t('col.owner') }, { key: 'due', label: t('col.due'), render: r => <span className={r.status !== 'Completed' && new Date(r.due_date) < new Date() ? 'strong' : ''}>{fmtDate(r.due_date)}</span> }]} /></Card>
       <Card title={t('run.card')}><KV items={[[t('run.trigger'), L(x.e2e.trigger)], [t('run.terminal'), L(x.e2e.terminal)], [t('run.feeds'), x.e2e.feedsInto || '—'], [t('run.consumes'), x.e2e.consumes || '—'], [t('run.supported'), x.e2e.supportedBy || '—'], [t('run.mps'), x.e2e.mps.join(', ')], [t('run.modules'), L(x.e2e.modules)],
-        [t('col.progress'), <span className="row"><Progress value={x.instance.progress} /><span>{x.instance.progress}%</span></span>], [t('col.status'), <StatusPill value={x.instance.status} />]]} /></Card></div>
+        [t('col.progress'), <span className="row"><Progress value={x.instance.progress} /><span>{x.instance.progress}%</span></span>], [t('col.status'), <StatusPill value={x.instance.status} />]]} />
+        <div className="label" style={{ marginTop: 'var(--aiv-space-4)' }}>{t('readiness.title')}</div><Readiness instanceId={id} /></Card></div>
     {taskId && <TaskPanel id={taskId} project={x.project} onClose={() => setSp({})} onChanged={d.reload} />}
   </>}</Guard>);
 }
@@ -97,7 +100,7 @@ function TaskPanel({ id, project, onClose, onChanged }) {
   const upload = async files => { const fd = new FormData(); for (const f of files) fd.append('files', f); await act(() => api(`/attachments/task/${id}`, { method: 'POST', body: fd }), 'run.uploaded'); d.reload(); };
   const runAi = async u => { const r = await act(() => post('/ai/generate', { code: u.code, project_id: project.id }, { llm: true }), null); setAi(r); };
   const aiOutcome = async (outcome, text) => { await post('/ai/usage', { use_case: ai.useCase.code, outcome, project_id: project.id, record_ref: id, source: ai.source, confidence: ai.confidence }); if (outcome !== 'Rejected') { setOut(o => (o ? o + '\n' : '') + text); await patch(`/tasks/${id}`, { ai_used: true }).catch(() => {}); } setAi(null); };
-  return (<div className="drawer" role="dialog" aria-modal="false" aria-label={t('run.task')}>
+  return (<div className="drawer task-drawer" role="dialog" aria-modal="false" aria-label={t('run.task')}>
     <Guard state={d}>{x => { const tk = x.task; const u = x.uft; const linkedUc = (uc.data || []).filter(c => u.steps.includes(c.step) && c.effective);
       return (<><div className="card-head" style={{ padding: 'var(--aiv-space-4) var(--aiv-space-5)', margin: 0, borderBottom: '1px solid var(--aiv-line)' }}>
         <div><div className="eyebrow">{u.id} · {u.stepId} · {u.bpmn}</div><h3>{L(u.name)}</h3></div><Btn icon="X" kind="ghost" aria-label={t('common.close')} onClick={onClose} /></div>
@@ -108,8 +111,7 @@ function TaskPanel({ id, project, onClose, onChanged }) {
           {tab === 'work' && <>
             <div className="guidance"><span className="label">{t('run.whatToType')}</span>{L(tk.guidance)}</div>
             <KV items={[[t('run.input'), `${L(u.input)} — ${L(u.supplier)}`], [t('run.output'), `${L(u.output)} → ${L(u.beneficiary)}`]]} />
-            <div><div className="label">{t('run.steps')}</div><ul className="steps-list">{x.steps.map(s => <li key={s.id}><input type="checkbox" disabled={readOnly || tk.status === 'Completed'} checked={steps?.includes(s.id) || false} onChange={e => setSteps(v => e.target.checked ? [...v, s.id] : v.filter(y => y !== s.id))} aria-label={L(s.name)} />
-              <span style={{ flex: 1 }}><span className="strong small">{s.id}</span> {L(s.name)}<br /><span className="xs muted">{L(s.description)} · {L(s.role)} · {t('stepType.' + s.type)}</span></span></li>)}</ul></div>
+            <div><div className="label">{t('run.steps')}</div><StepForms taskId={id} readOnly={readOnly || tk.status === 'Completed'} onChanged={() => { d.reload(); onChanged(); }} /></div>
             <Field label={t('run.outputLabel')} id="out"><textarea id="out" className="input" rows={5} disabled={readOnly || tk.status === 'Completed'} value={out ?? ''} onChange={e => setOut(e.target.value)} placeholder={L(tk.guidance)} /></Field>
             {linkedUc.length > 0 && !readOnly && <div className="card flat"><div className="label" style={{ marginBottom: 8 }}>{t('run.aiHelp')}</div><div className="row">{linkedUc.map(c => <Btn key={c.id} size="sm" icon="Sparkles" onClick={() => runAi(c)}>{L(c.name)} <AiBadge tier={c.tier} /></Btn>)}</div></div>}
             {ai && <div className="card tint stack"><div className="row"><Icon name="Sparkles" /><span className="strong small">{ai.label}</span><AiBadge tier={ai.useCase.tier} /><span className="pill xs">{ai.source}</span><span className="xs muted">{t('ai.confidence')} {Math.round(ai.confidence * 100)}%</span></div>
@@ -124,7 +126,7 @@ function TaskPanel({ id, project, onClose, onChanged }) {
           {tab === 'files' && <div className="stack"><div className="card flat" style={{ borderStyle: 'dashed', textAlign: 'center' }} onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); if (!readOnly) upload(e.dataTransfer.files); }}>
             <p className="small">{t('run.drop')}</p><input ref={fileRef} type="file" multiple hidden onChange={e => upload(e.target.files)} /><Btn icon="Upload" disabled={readOnly || tk.status === 'Completed'} onClick={() => fileRef.current.click()}>{t('run.upload')}</Btn></div>
             {x.attachments.map(a => <div key={a.id} className="row" style={{ justifyContent: 'space-between' }}><span className="small"><Icon name="Paperclip" size={14} /> {a.filename} <span className="muted">· {fmtNum(Math.round(a.size / 1024))} KB · {a.author} · {fmtDate(a.created_at)}</span></span>
-              <span className="row"><Btn size="sm" icon="Download" aria-label={t('common.download')} onClick={() => download(`/attachments/${a.id}/download`, a.filename)} />{tk.status !== 'Completed' && !readOnly && <Btn size="sm" icon="Trash2" kind="ghost" aria-label={t('common.delete')} onClick={async () => { await act(() => del(`/attachments/${a.id}`), 'common.deleted'); d.reload(); }} />}</span></div>)}</div>}
+              <span className="row"><AttachmentVersions att={a} readOnly={readOnly || tk.status === 'Completed'} onChanged={d.reload} /><Btn size="sm" icon="Download" aria-label={t('common.download')} onClick={() => download(`/attachments/${a.id}/download`, a.filename)} />{tk.status !== 'Completed' && !readOnly && <Btn size="sm" icon="Trash2" kind="ghost" aria-label={t('common.delete')} onClick={async () => { await act(() => del(`/attachments/${a.id}`), 'common.deleted'); d.reload(); }} />}</span></div>)}</div>}
           {tab === 'history' && <ul className="small">{x.history.map((h, k) => <li key={k}>{fmtDate(h.created_at)} · {h.user_name} · {h.action} {h.after_val?.status ? '→ ' + t('status.' + h.after_val.status) : ''}{h.justification ? ` — ${h.justification}` : ''}</li>)}</ul>}
         </div>
         {!readOnly && <div className="dialog-foot">{tk.status === 'Completed' ? <Btn icon="RotateCcw" onClick={() => setReopen(true)}>{t('run.reopen')}</Btn> : <>

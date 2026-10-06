@@ -1,0 +1,2387 @@
+{
+ "nav.process": [
+  "Process",
+  "Processus",
+  "المسارات"
+ ],
+ "nav.governance": [
+  "Governance",
+  "Gouvernance",
+  "الحكامة"
+ ],
+ "col.code": [
+  "Code",
+  "Code",
+  "الرمز"
+ ],
+ "col.description": [
+  "Description",
+  "Description",
+  "الوصف"
+ ],
+ "col.title": [
+  "Job title",
+  "Fonction",
+  "المنصب"
+ ],
+ "common.collapse": [
+  "Collapse",
+  "Replier",
+  "طي"
+ ],
+ "common.expand": [
+  "Expand",
+  "Déplier",
+  "توسيع"
+ ],
+ "common.remove": [
+  "Remove",
+  "Retirer",
+  "إزالة"
+ ],
+ "sev.Low": [
+  "Low",
+  "Faible",
+  "منخفض"
+ ],
+ "sev.Medium": [
+  "Medium",
+  "Moyenne",
+  "متوسط"
+ ],
+ "sev.High": [
+  "High",
+  "Élevée",
+  "مرتفع"
+ ],
+ "sev.Critical": [
+  "Critical",
+  "Critique",
+  "حرج"
+ ],
+ "doc.reject": [
+  "Return to draft",
+  "Renvoyer en brouillon",
+  "إرجاع إلى المسودة"
+ ],
+ "status.Vacant": [
+  "Vacant",
+  "Vacant",
+  "شاغر"
+ ],
+ "status.Complete": [
+  "Complete",
+  "Complet",
+  "مكتمل"
+ ],
+ "status.Incomplete": [
+  "Incomplete",
+  "Incomplet",
+  "غير مكتمل"
+ ],
+ "status.Fits": [
+  "Fits the step",
+  "Adapté à l’étape",
+  "ملائم للخطوة"
+ ],
+ "status.Check": [
+  "To check",
+  "À vérifier",
+  "للتحقق"
+ ],
+ "status.added": [
+  "Added",
+  "Ajouté",
+  "مضاف"
+ ],
+ "status.removed": [
+  "Removed",
+  "Retiré",
+  "محذوف"
+ ],
+ "status.changed": [
+  "Changed",
+  "Modifié",
+  "معدل"
+ ],
+ "status.In review": [
+  "In review",
+  "En revue",
+  "قيد المراجعة"
+ ],
+ "status.Reported": [
+  "Reported",
+  "Rapport émis",
+  "تم التقرير"
+ ],
+ "status.Action planned": [
+  "Action planned",
+  "Action planifiée",
+  "إجراء مخطط"
+ ],
+ "status.Verified": [
+  "Verified",
+  "Vérifié",
+  "تم التحقق"
+ ],
+ "status.Answered": [
+  "Answered",
+  "Répondu",
+  "تمت الإجابة"
+ ],
+ "pdm.subtitle": [
+  "Your organization’s copy of the reference process design: edit names and content, keep every version, publish releases for projects.",
+  "La copie de votre organisation de la conception de référence : modifiez noms et contenus, gardez chaque version, publiez des versions pour les projets.",
+  "نسخة مؤسستك من التصميم المرجعي: عدّل الأسماء والمحتوى، احتفظ بكل نسخة، وانشر إصدارات للمشاريع."
+ ],
+ "pdm.exportJson": [
+  "Export JSON",
+  "Exporter JSON",
+  "تصدير JSON"
+ ],
+ "pdm.exportXlsx": [
+  "Export Excel",
+  "Exporter Excel",
+  "تصدير Excel"
+ ],
+ "pdm.import": [
+  "Import",
+  "Importer",
+  "استيراد"
+ ],
+ "pdm.imported": [
+  "Design imported.",
+  "Conception importée.",
+  "تم استيراد التصميم."
+ ],
+ "pdm.elements": [
+  "Elements",
+  "Éléments",
+  "العناصر"
+ ],
+ "pdm.releases": [
+  "Releases",
+  "Versions de conception",
+  "الإصدارات"
+ ],
+ "pdm.refChanges": [
+  "Reference changes",
+  "Évolutions de la référence",
+  "تغييرات المرجع"
+ ],
+ "pdm.tree": [
+  "Process tree",
+  "Arborescence des processus",
+  "شجرة المسارات"
+ ],
+ "pdm.pick": [
+  "Choose an element",
+  "Choisissez un élément",
+  "اختر عنصرًا"
+ ],
+ "pdm.pickText": [
+  "Select a phase, process, task or step in the tree to see and edit it.",
+  "Sélectionnez une phase, un processus, une tâche ou une étape dans l’arborescence pour la consulter et la modifier.",
+  "اختر مرحلة أو مسارًا أو مهمة أو خطوة في الشجرة لعرضها وتعديلها."
+ ],
+ "pdm.custom": [
+  "Custom",
+  "Personnalisé",
+  "مخصص"
+ ],
+ "pdm.modified": [
+  "Modified",
+  "Modifié",
+  "معدل"
+ ],
+ "pdm.view": [
+  "Tree view",
+  "Vue de l’arborescence",
+  "عرض الشجرة"
+ ],
+ "pdm.byPhase": [
+  "By phase",
+  "Par phase",
+  "حسب المرحلة"
+ ],
+ "pdm.byMp": [
+  "By macro process",
+  "Par macro-processus",
+  "حسب المسار الكلي"
+ ],
+ "pdm.filter": [
+  "Filter by ID or name",
+  "Filtrer par ID ou nom",
+  "تصفية حسب المعرف أو الاسم"
+ ],
+ "pdm.kind.phase": [
+  "Phase",
+  "Phase",
+  "مرحلة"
+ ],
+ "pdm.kind.e2e": [
+  "End-to-end process",
+  "Processus de bout en bout",
+  "مسار شامل"
+ ],
+ "pdm.kind.uft": [
+  "User task",
+  "Tâche utilisateur",
+  "مهمة المستخدم"
+ ],
+ "pdm.kind.mp": [
+  "Macro process",
+  "Macro-processus",
+  "مسار كلي"
+ ],
+ "pdm.kind.task": [
+  "Task",
+  "Tâche",
+  "مهمة"
+ ],
+ "pdm.kind.step": [
+  "Step",
+  "Étape",
+  "خطوة"
+ ],
+ "pdm.version": [
+  "Version {v}",
+  "Version {v}",
+  "النسخة {v}"
+ ],
+ "pdm.addChild": [
+  "Add {k}",
+  "Ajouter : {k}",
+  "إضافة {k}"
+ ],
+ "pdm.reactivate": [
+  "Reactivate",
+  "Réactiver",
+  "إعادة التفعيل"
+ ],
+ "pdm.retire": [
+  "Retire",
+  "Retirer",
+  "إحالة على التقاعد"
+ ],
+ "pdm.deleteTitle": [
+  "Delete this custom element",
+  "Supprimer cet élément personnalisé",
+  "حذف هذا العنصر المخصص"
+ ],
+ "pdm.duplicated": [
+  "Copy created.",
+  "Copie créée.",
+  "تم إنشاء النسخة."
+ ],
+ "pdm.created": [
+  "Element created.",
+  "Élément créé.",
+  "تم إنشاء العنصر."
+ ],
+ "pdm.restored": [
+  "Version restored as a new version.",
+  "Version restaurée comme nouvelle version.",
+  "تمت استعادة النسخة كنسخة جديدة."
+ ],
+ "pdm.details": [
+  "Details",
+  "Détails",
+  "التفاصيل"
+ ],
+ "pdm.form": [
+  "Step form",
+  "Formulaire de l’étape",
+  "نموذج الخطوة"
+ ],
+ "pdm.usage": [
+  "Usage",
+  "Utilisation",
+  "الاستعمال"
+ ],
+ "pdm.versions": [
+  "Versions",
+  "Versions",
+  "النسخ"
+ ],
+ "pdm.context": [
+  "Context",
+  "Contexte",
+  "السياق"
+ ],
+ "pdm.namingTitle": [
+  "Naming rules",
+  "Règles de nommage",
+  "قواعد التسمية"
+ ],
+ "pdm.f.name": [
+  "Name",
+  "Nom",
+  "الاسم"
+ ],
+ "pdm.f.description": [
+  "Description",
+  "Description",
+  "الوصف"
+ ],
+ "pdm.f.objective": [
+  "Objective",
+  "Objectif",
+  "الهدف"
+ ],
+ "pdm.f.goal": [
+  "Goal",
+  "But",
+  "الغاية"
+ ],
+ "pdm.f.trigger": [
+  "Trigger",
+  "Déclencheur",
+  "المُطلِق"
+ ],
+ "pdm.f.terminal": [
+  "End result",
+  "Résultat final",
+  "النتيجة النهائية"
+ ],
+ "pdm.f.input": [
+  "Input",
+  "Entrée",
+  "المدخل"
+ ],
+ "pdm.f.output": [
+  "Output",
+  "Sortie",
+  "المخرج"
+ ],
+ "pdm.f.supplier": [
+  "Supplier",
+  "Fournisseur",
+  "المورد"
+ ],
+ "pdm.f.beneficiary": [
+  "Beneficiary",
+  "Bénéficiaire",
+  "المستفيد"
+ ],
+ "pdm.f.role": [
+  "Role",
+  "Rôle",
+  "الدور"
+ ],
+ "pdm.f.brief": [
+  "Brief",
+  "Résumé",
+  "ملخص"
+ ],
+ "pdm.f.details": [
+  "Details",
+  "Détails",
+  "التفاصيل"
+ ],
+ "pdm.note": [
+  "Change note",
+  "Note de modification",
+  "ملاحظة التعديل"
+ ],
+ "pdm.noteHint": [
+  "Why you change it; kept with the version.",
+  "Pourquoi vous la modifiez ; conservée avec la version.",
+  "سبب التعديل؛ تحفظ مع النسخة."
+ ],
+ "pdm.keepAnyway": [
+  "Keep the name anyway",
+  "Garder le nom quand même",
+  "الإبقاء على الاسم رغم ذلك"
+ ],
+ "pdm.formKind": [
+  "Form kind",
+  "Type de formulaire",
+  "نوع النموذج"
+ ],
+ "pdm.object": [
+  "Object recorded",
+  "Objet enregistré",
+  "العنصر المسجل"
+ ],
+ "pdm.pattern": [
+  "Entry pattern",
+  "Mode de saisie",
+  "نمط الإدخال"
+ ],
+ "pdm.pattern.inline": [
+  "Several rows in a table",
+  "Plusieurs lignes dans un tableau",
+  "عدة صفوف في جدول"
+ ],
+ "pdm.pattern.form": [
+  "One form",
+  "Un formulaire",
+  "نموذج واحد"
+ ],
+ "pdm.pattern.system": [
+  "Performed by the platform",
+  "Réalisé par la plateforme",
+  "تنجزه المنصة"
+ ],
+ "pdm.register": [
+  "Feeds the register",
+  "Alimente le registre",
+  "يغذي السجل"
+ ],
+ "pdm.field": [
+  "Field",
+  "Champ",
+  "الحقل"
+ ],
+ "pdm.fieldType": [
+  "Type",
+  "Type",
+  "النوع"
+ ],
+ "pdm.required": [
+  "Required",
+  "Obligatoire",
+  "إلزامي"
+ ],
+ "pdm.help": [
+  "Help",
+  "Aide",
+  "مساعدة"
+ ],
+ "pdm.type.text": [
+  "Text",
+  "Texte",
+  "نص"
+ ],
+ "pdm.type.textarea": [
+  "Long text",
+  "Texte long",
+  "نص طويل"
+ ],
+ "pdm.type.number": [
+  "Number",
+  "Nombre",
+  "رقم"
+ ],
+ "pdm.type.date": [
+  "Date",
+  "Date",
+  "تاريخ"
+ ],
+ "pdm.type.select": [
+  "Choice list",
+  "Liste de choix",
+  "قائمة اختيار"
+ ],
+ "pdm.type.person": [
+  "Person",
+  "Personne",
+  "شخص"
+ ],
+ "pdm.type.role": [
+  "Role",
+  "Rôle",
+  "دور"
+ ],
+ "pdm.type.kpi": [
+  "Indicator",
+  "Indicateur",
+  "مؤشر"
+ ],
+ "pdm.children": [
+  "Child elements",
+  "Éléments enfants",
+  "العناصر الفرعية"
+ ],
+ "pdm.releasesUsing": [
+  "In releases",
+  "Dans les versions",
+  "ضمن الإصدارات"
+ ],
+ "pdm.templatesUsing": [
+  "Project templates using it",
+  "Modèles de projet qui l’utilisent",
+  "نماذج المشاريع المستعملة له"
+ ],
+ "pdm.running": [
+  "Running instances",
+  "Instances en cours",
+  "نسخ قيد التنفيذ"
+ ],
+ "pdm.projectsUsing": [
+  "Projects",
+  "Projets",
+  "المشاريع"
+ ],
+ "pdm.canDelete": [
+  "Nothing uses this custom element: it can be deleted.",
+  "Rien n’utilise cet élément personnalisé : il peut être supprimé.",
+  "لا شيء يستعمل هذا العنصر المخصص: يمكن حذفه."
+ ],
+ "pdm.mustRetire": [
+  "This element is used or comes from the reference: retire it instead of deleting it. Its history stays.",
+  "Cet élément est utilisé ou provient de la référence : retirez-le au lieu de le supprimer. Son historique est conservé.",
+  "هذا العنصر مستعمل أو من المرجع: أحِله على التقاعد بدل حذفه. يبقى تاريخه محفوظًا."
+ ],
+ "pdm.selectVersion": [
+  "Select version {v} to compare",
+  "Sélectionner la version {v} pour comparer",
+  "اختيار النسخة {v} للمقارنة"
+ ],
+ "pdm.reference": [
+  "Reference",
+  "Référence",
+  "المرجع"
+ ],
+ "pdm.restore": [
+  "Restore",
+  "Restaurer",
+  "استعادة"
+ ],
+ "pdm.compare": [
+  "Compare",
+  "Comparer",
+  "مقارنة"
+ ],
+ "pdm.compareHint": [
+  "Tick two versions, then compare.",
+  "Cochez deux versions, puis comparez.",
+  "حدد نسختين ثم قارن."
+ ],
+ "pdm.noDiff": [
+  "No difference.",
+  "Aucune différence.",
+  "لا يوجد فرق."
+ ],
+ "pdm.restoreTitle": [
+  "Restore version {v}",
+  "Restaurer la version {v}",
+  "استعادة النسخة {v}"
+ ],
+ "pdm.standards": [
+  "Standards and clauses",
+  "Normes et clauses",
+  "المعايير والبنود"
+ ],
+ "pdm.newTitle": [
+  "New {k}",
+  "Nouveau : {k}",
+  "جديد: {k}"
+ ],
+ "pdm.newHint": [
+  "Start the name with an action verb and name what is produced, in each language.",
+  "Commencez le nom par un verbe d’action et nommez ce qui est produit, dans chaque langue.",
+  "ابدأ الاسم بفعل واذكر ما يُنتَج، بكل لغة."
+ ],
+ "pdm.newRelease": [
+  "New release",
+  "Nouvelle version",
+  "إصدار جديد"
+ ],
+ "pdm.releasesHint": [
+  "A release freezes the current design. A second person publishes it; new projects then run on it.",
+  "Une version fige la conception actuelle. Une seconde personne la publie ; les nouveaux projets s’exécutent alors dessus.",
+  "يجمّد الإصدار التصميم الحالي. ينشره شخص ثانٍ؛ ثم تعمل عليه المشاريع الجديدة."
+ ],
+ "pdm.elementsCount": [
+  "Elements",
+  "Éléments",
+  "العناصر"
+ ],
+ "pdm.publishedAt": [
+  "Published",
+  "Publiée",
+  "نُشر"
+ ],
+ "pdm.compareCurrent": [
+  "Compare with the current version",
+  "Comparer avec la version actuelle",
+  "مقارنة بالنسخة الحالية"
+ ],
+ "pdm.noRelease": [
+  "No release yet.",
+  "Aucune version pour l’instant.",
+  "لا يوجد إصدار بعد."
+ ],
+ "pdm.releaseNameHint": [
+  "For example: 2027 design, after the audit.",
+  "Par exemple : conception 2027, après l’audit.",
+  "مثال: تصميم 2027 بعد التدقيق."
+ ],
+ "pdm.releaseCreated": [
+  "Release created as a draft.",
+  "Version créée en brouillon.",
+  "أنشئ الإصدار كمسودة."
+ ],
+ "pdm.current": [
+  "Current",
+  "Actuelle",
+  "الحالية"
+ ],
+ "pdm.change": [
+  "Change",
+  "Changement",
+  "التغيير"
+ ],
+ "pdm.kindCol": [
+  "Level",
+  "Niveau",
+  "المستوى"
+ ],
+ "pdm.rel.refresh": [
+  "Refresh",
+  "Actualiser",
+  "تحديث"
+ ],
+ "pdm.rel.submit": [
+  "Submit",
+  "Soumettre",
+  "تقديم"
+ ],
+ "pdm.rel.publish": [
+  "Publish",
+  "Publier",
+  "نشر"
+ ],
+ "pdm.rel.reject": [
+  "Return",
+  "Renvoyer",
+  "إرجاع"
+ ],
+ "pdm.rel.retire": [
+  "Retire",
+  "Retirer",
+  "سحب"
+ ],
+ "pdm.refChangesHint": [
+  "Elements you copied whose reference changed since. Open one to compare and decide.",
+  "Éléments copiés dont la référence a changé depuis. Ouvrez-en un pour comparer et décider.",
+  "عناصر نسختها وتغير مرجعها منذ ذلك. افتح أحدها للمقارنة واتخاذ القرار."
+ ],
+ "pdm.copiedFrom": [
+  "Copied from",
+  "Copié depuis",
+  "منسوخ من"
+ ],
+ "pdm.referenceNow": [
+  "Reference now",
+  "Référence actuelle",
+  "المرجع الآن"
+ ],
+ "pdm.noRefChanges": [
+  "Your copies are up to date with the reference.",
+  "Vos copies sont à jour avec la référence.",
+  "نسخك محدثة مع المرجع."
+ ],
+ "obs.subtitle": [
+  "Functions, roles and the people who hold them, on any date, and who does what in each process.",
+  "Fonctions, rôles et personnes qui les tiennent, à toute date, et qui fait quoi dans chaque processus.",
+  "الوظائف والأدوار ومن يشغلها في أي تاريخ، ومن يفعل ماذا في كل مسار."
+ ],
+ "obs.noPermission": [
+  "An OBS role says who does the work. It grants no access right: access rights are set in Users and Permissions.",
+  "Un rôle OBS indique qui fait le travail. Il ne donne aucun droit d’accès : les droits se règlent dans Utilisateurs et Permissions.",
+  "يحدد دور الهيكل من يقوم بالعمل ولا يمنح أي صلاحية ولوج: تُضبط الصلاحيات في المستخدمين والصلاحيات."
+ ],
+ "obs.roles": [
+  "Roles",
+  "Rôles",
+  "الأدوار"
+ ],
+ "obs.functions": [
+  "Functions",
+  "Fonctions",
+  "الوظائف"
+ ],
+ "obs.views": [
+  "Views",
+  "Vues",
+  "العروض"
+ ],
+ "obs.chart": [
+  "Organization chart",
+  "Organigramme",
+  "الهيكل التنظيمي"
+ ],
+ "obs.racsi": [
+  "RACSI by process",
+  "RACSI par processus",
+  "RACSI حسب المسار"
+ ],
+ "obs.newFunction": [
+  "New function",
+  "Nouvelle fonction",
+  "وظيفة جديدة"
+ ],
+ "obs.noFunction": [
+  "No function yet.",
+  "Aucune fonction.",
+  "لا توجد وظيفة بعد."
+ ],
+ "obs.asOf": [
+  "As of",
+  "À la date du",
+  "بتاريخ"
+ ],
+ "obs.newRole": [
+  "New role",
+  "Nouveau rôle",
+  "دور جديد"
+ ],
+ "obs.role": [
+  "Role",
+  "Rôle",
+  "الدور"
+ ],
+ "obs.holders": [
+  "Held by",
+  "Tenu par",
+  "يشغله"
+ ],
+ "obs.ht.Holder": [
+  "Holder",
+  "Titulaire",
+  "الشاغل"
+ ],
+ "obs.ht.Deputy": [
+  "Deputy",
+  "Adjoint",
+  "النائب"
+ ],
+ "obs.ht.Acting": [
+  "Acting",
+  "Intérim",
+  "بالنيابة"
+ ],
+ "obs.assign": [
+  "Assign",
+  "Affecter",
+  "تعيين"
+ ],
+ "obs.noRole": [
+  "No role yet. Create the first role and link it to a function.",
+  "Aucun rôle. Créez le premier rôle et liez-le à une fonction.",
+  "لا يوجد دور بعد. أنشئ أول دور واربطه بوظيفة."
+ ],
+ "obs.functionsHint": [
+  "A role belongs to at least one function.",
+  "Un rôle appartient à au moins une fonction.",
+  "ينتمي الدور إلى وظيفة واحدة على الأقل."
+ ],
+ "obs.reportsTo": [
+  "Reports to",
+  "Rattaché à",
+  "يتبع"
+ ],
+ "obs.mission": [
+  "Mission",
+  "Mission",
+  "المهمة"
+ ],
+ "obs.person": [
+  "Person",
+  "Personne",
+  "الشخص"
+ ],
+ "obs.holderType": [
+  "Type",
+  "Type",
+  "النوع"
+ ],
+ "obs.allocation": [
+  "Allocation (%)",
+  "Affectation (%)",
+  "نسبة التخصيص (%)"
+ ],
+ "obs.allocationHint": [
+  "Share of the person’s time, 1 to 100.",
+  "Part du temps de la personne, de 1 à 100.",
+  "حصة وقت الشخص، من 1 إلى 100."
+ ],
+ "obs.start": [
+  "Start",
+  "Début",
+  "البداية"
+ ],
+ "obs.end": [
+  "End",
+  "Fin",
+  "النهاية"
+ ],
+ "obs.currentHolders": [
+  "Current holders",
+  "Titulaires actuels",
+  "الشاغلون الحاليون"
+ ],
+ "obs.endAssignment": [
+  "End the assignment",
+  "Mettre fin à l’affectation",
+  "إنهاء التعيين"
+ ],
+ "obs.assigned": [
+  "Assignment saved.",
+  "Affectation enregistrée.",
+  "تم حفظ التعيين."
+ ],
+ "obs.ended": [
+  "Assignment ended. Open work moved to the remaining holder.",
+  "Affectation terminée. Le travail en cours est passé au titulaire restant.",
+  "انتهى التعيين. انتقل العمل الجاري إلى الشاغل المتبقي."
+ ],
+ "obs.byFunction": [
+  "By function",
+  "Par fonction",
+  "حسب الوظيفة"
+ ],
+ "obs.byUnit": [
+  "By unit",
+  "Par unité",
+  "حسب الوحدة"
+ ],
+ "obs.byPerson": [
+  "By person",
+  "Par personne",
+  "حسب الشخص"
+ ],
+ "obs.vacantRoles": [
+  "{n} vacant roles",
+  "{n} rôles vacants",
+  "{n} أدوار شاغرة"
+ ],
+ "obs.vacant": [
+  "Vacant",
+  "Vacant",
+  "شاغر"
+ ],
+ "obs.noRoleHere": [
+  "No role in this function.",
+  "Aucun rôle dans cette fonction.",
+  "لا يوجد دور في هذه الوظيفة."
+ ],
+ "obs.noAssignment": [
+  "Nobody holds a role on this date.",
+  "Personne ne tient de rôle à cette date.",
+  "لا أحد يشغل دورًا في هذا التاريخ."
+ ],
+ "obs.people": [
+  "People",
+  "Personnes",
+  "الأشخاص"
+ ],
+ "obs.racsiHint": [
+  "Assign roles rather than names: the work follows the role when people change.",
+  "Affectez des rôles plutôt que des noms : le travail suit le rôle quand les personnes changent.",
+  "عيّن أدوارًا بدل الأسماء: يتبع العمل الدور عند تغير الأشخاص."
+ ],
+ "obs.racsiRule": [
+  "Exactly one Accountable (A) per step.",
+  "Exactement un Responsable final (A) par étape.",
+  "مساءل واحد فقط (A) لكل خطوة."
+ ],
+ "obs.addAssignee": [
+  "Add",
+  "Ajouter",
+  "إضافة"
+ ],
+ "aip.spec": [
+  "Specification",
+  "Spécification",
+  "المواصفات"
+ ],
+ "aip.subtitle": [
+  "Twelve fields assembled in a fixed order with the project’s data. Required fields must be complete before activation.",
+  "Douze champs assemblés dans un ordre fixe avec les données du projet. Les champs obligatoires doivent être complets avant l’activation.",
+  "اثنا عشر حقلًا تُجمع بترتيب ثابت مع بيانات المشروع. يجب إكمال الحقول الإلزامية قبل التفعيل."
+ ],
+ "aip.preview": [
+  "Assembled prompt",
+  "Prompt assemblé",
+  "الموجِّه المجمَّع"
+ ],
+ "aip.test": [
+  "Test on this project",
+  "Tester sur ce projet",
+  "اختبار على هذا المشروع"
+ ],
+ "aip.history": [
+  "Specification history",
+  "Historique de la spécification",
+  "تاريخ المواصفات"
+ ],
+ "aip.completeness": [
+  "Completeness",
+  "Complétude",
+  "الاكتمال"
+ ],
+ "aip.missing": [
+  "Missing: {f}",
+  "Manquant : {f}",
+  "ناقص: {f}"
+ ],
+ "aip.complete": [
+  "All required fields are complete.",
+  "Tous les champs obligatoires sont complets.",
+  "جميع الحقول الإلزامية مكتملة."
+ ],
+ "aip.version": [
+  "Specification version",
+  "Version de la spécification",
+  "نسخة المواصفات"
+ ],
+ "aip.tier": [
+  "Tier",
+  "Niveau",
+  "المستوى"
+ ],
+ "aip.risk": [
+  "Risk",
+  "Risque",
+  "المخاطر"
+ ],
+ "aip.fit": [
+  "Fit with its step",
+  "Adéquation avec son étape",
+  "الملاءمة مع خطوتها"
+ ],
+ "aip.fitIssue.outputMismatch": [
+  "The output does not match a field of the step.",
+  "La sortie ne correspond à aucun champ de l’étape.",
+  "المخرج لا يطابق حقلًا في الخطوة."
+ ],
+ "aip.fitIssue.systemStep": [
+  "The step is performed by the platform.",
+  "L’étape est réalisée par la plateforme.",
+  "تنجز المنصة هذه الخطوة."
+ ],
+ "aip.fitIssue.noInput": [
+  "The step has no input at this point.",
+  "L’étape n’a pas d’entrée à ce stade.",
+  "لا مدخل للخطوة في هذه المرحلة."
+ ],
+ "aip.fitIssue.noStep": [
+  "The step no longer exists.",
+  "L’étape n’existe plus.",
+  "الخطوة لم تعد موجودة."
+ ],
+ "aip.fields": [
+  "Specification fields",
+  "Champs de la spécification",
+  "حقول المواصفات"
+ ],
+ "aip.model": [
+  "Model",
+  "Modèle",
+  "النموذج"
+ ],
+ "aip.checkpoint": [
+  "Human checkpoint",
+  "Point de contrôle humain",
+  "نقطة المراقبة البشرية"
+ ],
+ "aip.checkpointHint": [
+  "Nothing the AI proposes is saved before this validation.",
+  "Rien de ce que propose l’IA n’est enregistré avant cette validation.",
+  "لا يُحفظ أي مقترح للذكاء الاصطناعي قبل هذه المصادقة."
+ ],
+ "aip.writesTo": [
+  "Where the result goes",
+  "Où va le résultat",
+  "أين تذهب النتيجة"
+ ],
+ "aip.outputField": [
+  "Output field",
+  "Champ de sortie",
+  "حقل المخرج"
+ ],
+ "aip.rows": [
+  "Rows of the step table",
+  "Lignes du tableau de l’étape",
+  "صفوف جدول الخطوة"
+ ],
+ "aip.testResult": [
+  "Test result (nothing saved)",
+  "Résultat du test (rien n’est enregistré)",
+  "نتيجة الاختبار (لم يُحفظ شيء)"
+ ],
+ "aip.reason.noModel": [
+  "No model configured: built-in engine used.",
+  "Aucun modèle configuré : moteur intégré utilisé.",
+  "لا يوجد نموذج مهيأ: استُعمل المحرك المدمج."
+ ],
+ "aip.reason.modelError": [
+  "The model returned an error: built-in engine used.",
+  "Le modèle a renvoyé une erreur : moteur intégré utilisé.",
+  "أعاد النموذج خطأ: استُعمل المحرك المدمج."
+ ],
+ "aip.dryRun": [
+  "Dry run: the result is not written to any record.",
+  "Essai à blanc : le résultat n’est écrit dans aucun enregistrement.",
+  "تجربة: لا تُكتب النتيجة في أي سجل."
+ ],
+ "aip.fieldHistory": [
+  "Field history",
+  "Historique du champ",
+  "تاريخ الحقل"
+ ],
+ "aip.modelForUc": [
+  "Model for this use case",
+  "Modèle pour ce cas d’usage",
+  "النموذج لحالة الاستعمال هذه"
+ ],
+ "aip.modelHint": [
+  "Leave the organization default unless this use case needs another model.",
+  "Laissez le modèle par défaut de l’organisation sauf si ce cas d’usage en demande un autre.",
+  "اترك النموذج الافتراضي للمؤسسة ما لم تتطلب الحالة نموذجًا آخر."
+ ],
+ "aip.orgDefault": [
+  "Organization default ({m})",
+  "Par défaut de l’organisation ({m})",
+  "الافتراضي للمؤسسة ({m})"
+ ],
+ "aip.params": [
+  "Parameters accepted",
+  "Paramètres acceptés",
+  "المعلمات المقبولة"
+ ],
+ "aip.reasoning": [
+  "Reasons before answering",
+  "Raisonne avant de répondre",
+  "يفكر قبل الإجابة"
+ ],
+ "aip.maxOutput": [
+  "Maximum output (tokens)",
+  "Sortie maximale (jetons)",
+  "الحد الأقصى للمخرج (رموز)"
+ ],
+ "aip.f.role": [
+  "Role",
+  "Rôle",
+  "الدور"
+ ],
+ "aip.h.role": [
+  "Who the assistant is for this step.",
+  "Qui est l’assistant pour cette étape.",
+  "من هو المساعد في هذه الخطوة."
+ ],
+ "aip.f.context": [
+  "Context",
+  "Contexte",
+  "السياق"
+ ],
+ "aip.h.context": [
+  "Process, step, inputs, output and clauses. Variables in double braces are filled from the project.",
+  "Processus, étape, entrées, sortie et clauses. Les variables entre doubles accolades sont remplies depuis le projet.",
+  "المسار والخطوة والمدخلات والمخرج والبنود. تُملأ المتغيرات بين القوسين المزدوجين من المشروع."
+ ],
+ "aip.f.task": [
+  "Task",
+  "Tâche",
+  "المهمة"
+ ],
+ "aip.h.task": [
+  "What to produce, in one sentence starting with a verb.",
+  "Ce qu’il faut produire, en une phrase commençant par un verbe.",
+  "ما يجب إنتاجه في جملة تبدأ بفعل."
+ ],
+ "aip.f.inputs": [
+  "Inputs",
+  "Entrées",
+  "المدخلات"
+ ],
+ "aip.h.inputs": [
+  "The data given to the model.",
+  "Les données fournies au modèle.",
+  "البيانات المقدمة للنموذج."
+ ],
+ "aip.f.knowledge": [
+  "Knowledge",
+  "Connaissances",
+  "المعارف"
+ ],
+ "aip.h.knowledge": [
+  "Reference documents and knowledge-base sources.",
+  "Documents de référence et sources de la base de connaissances.",
+  "الوثائق المرجعية ومصادر قاعدة المعرفة."
+ ],
+ "aip.f.constraints": [
+  "Constraints",
+  "Contraintes",
+  "القيود"
+ ],
+ "aip.h.constraints": [
+  "What the answer must never do, and the rules to respect.",
+  "Ce que la réponse ne doit jamais faire, et les règles à respecter.",
+  "ما يجب ألا تفعله الإجابة والقواعد الواجب احترامها."
+ ],
+ "aip.f.examples": [
+  "Examples",
+  "Exemples",
+  "الأمثلة"
+ ],
+ "aip.h.examples": [
+  "One or two good answers.",
+  "Une ou deux bonnes réponses.",
+  "إجابة أو إجابتان جيدتان."
+ ],
+ "aip.f.outputFormat": [
+  "Output format",
+  "Format de sortie",
+  "صيغة المخرج"
+ ],
+ "aip.h.outputFormat": [
+  "The exact structure expected, matching the step’s fields.",
+  "La structure exacte attendue, alignée sur les champs de l’étape.",
+  "البنية المتوقعة بالضبط، مطابقة لحقول الخطوة."
+ ],
+ "aip.f.tone": [
+  "Tone",
+  "Ton",
+  "الأسلوب"
+ ],
+ "aip.h.tone": [
+  "Register and length.",
+  "Registre et longueur.",
+  "الأسلوب والطول."
+ ],
+ "aip.f.qualityCriteria": [
+  "Quality criteria",
+  "Critères de qualité",
+  "معايير الجودة"
+ ],
+ "aip.h.qualityCriteria": [
+  "How the reviewer judges the answer.",
+  "Comment le relecteur juge la réponse.",
+  "كيف يقيم المراجع الإجابة."
+ ],
+ "aip.f.humanCheckpoint": [
+  "Human checkpoint",
+  "Point de contrôle humain",
+  "نقطة المراقبة البشرية"
+ ],
+ "aip.h.humanCheckpoint": [
+  "Who validates, and what.",
+  "Qui valide, et quoi.",
+  "من يصادق وعلى ماذا."
+ ],
+ "aip.f.modelParameters": [
+  "Model parameters",
+  "Paramètres du modèle",
+  "معلمات النموذج"
+ ],
+ "aip.h.modelParameters": [
+  "Temperature and length, only those the model accepts.",
+  "Température et longueur, seulement celles que le modèle accepte.",
+  "الحرارة والطول، فقط ما يقبله النموذج."
+ ],
+ "aiset.subtitle": [
+  "The organization’s model, used by every AI Use Case unless one names another.",
+  "Le modèle de l’organisation, utilisé par chaque cas d’usage IA sauf s’il en désigne un autre.",
+  "نموذج المؤسسة، تستعمله كل حالات الاستعمال ما لم تحدد غيره."
+ ],
+ "aiset.card": [
+  "Model connection",
+  "Connexion au modèle",
+  "الاتصال بالنموذج"
+ ],
+ "aiset.modelHint": [
+  "Only models whose parameters are known are listed.",
+  "Seuls les modèles dont les paramètres sont connus sont listés.",
+  "تُعرض فقط النماذج المعروفة معلماتها."
+ ],
+ "aiset.httpsOnly": [
+  "The address must start with https://.",
+  "L’adresse doit commencer par https://.",
+  "يجب أن يبدأ العنوان بـ https://."
+ ],
+ "aiset.keyKept": [
+  "A key is stored ({h}). Leave empty to keep it; type a new key to replace it.",
+  "Une clé est enregistrée ({h}). Laissez vide pour la garder ; saisissez-en une nouvelle pour la remplacer.",
+  "مفتاح محفوظ ({h}). اتركه فارغًا للإبقاء عليه أو اكتب مفتاحًا جديدًا لاستبداله."
+ ],
+ "aiset.keyHint": [
+  "Stored encrypted on the server and never shown again.",
+  "Enregistrée chiffrée sur le serveur et jamais réaffichée.",
+  "يُحفظ مشفرًا على الخادم ولا يُعرض مجددًا."
+ ],
+ "aiset.temperature": [
+  "Temperature",
+  "Température",
+  "الحرارة"
+ ],
+ "aiset.temperatureHint": [
+  "0 to 2. Lower is more precise.",
+  "De 0 à 2. Plus bas est plus précis.",
+  "من 0 إلى 2. الأدنى أدق."
+ ],
+ "aiset.maxTokens": [
+  "Maximum answer length (tokens)",
+  "Longueur maximale de réponse (jetons)",
+  "الطول الأقصى للإجابة (رموز)"
+ ],
+ "aiset.maxTokensHint": [
+  "64 to {n}.",
+  "De 64 à {n}.",
+  "من 64 إلى {n}."
+ ],
+ "aiset.enabled": [
+  "Use this model for the organization",
+  "Utiliser ce modèle pour l’organisation",
+  "استعمال هذا النموذج للمؤسسة"
+ ],
+ "aiset.profile": [
+  "Accepted parameters: {p} · reasons first: {r}",
+  "Paramètres acceptés : {p} · raisonne d’abord : {r}",
+  "المعلمات المقبولة: {p} · يفكر أولًا: {r}"
+ ],
+ "aiset.outcome.answered": [
+  "The model answered. The connection works.",
+  "Le modèle a répondu. La connexion fonctionne.",
+  "أجاب النموذج. الاتصال يعمل."
+ ],
+ "aiset.outcome.keyRefused": [
+  "The key was refused. Check it with the provider.",
+  "La clé a été refusée. Vérifiez-la auprès du fournisseur.",
+  "رُفض المفتاح. تحقق منه لدى المزود."
+ ],
+ "aiset.outcome.modelDeclined": [
+  "The model declined the test request.",
+  "Le modèle a décliné la requête de test.",
+  "رفض النموذج طلب الاختبار."
+ ],
+ "aiset.outcome.parameterRejected": [
+  "A parameter was rejected by this model.",
+  "Un paramètre a été rejeté par ce modèle.",
+  "رفض هذا النموذج إحدى المعلمات."
+ ],
+ "aiset.outcome.modelNotFound": [
+  "This model name is unknown to the provider.",
+  "Ce nom de modèle est inconnu du fournisseur.",
+  "اسم النموذج غير معروف لدى المزود."
+ ],
+ "aiset.outcome.rateLimited": [
+  "Too many requests: try again in a minute.",
+  "Trop de requêtes : réessayez dans une minute.",
+  "طلبات كثيرة: أعد المحاولة بعد دقيقة."
+ ],
+ "aiset.outcome.modelError": [
+  "The provider returned an error.",
+  "Le fournisseur a renvoyé une erreur.",
+  "أعاد المزود خطأ."
+ ],
+ "aiset.outcome.unreachable": [
+  "The provider cannot be reached from the server.",
+  "Le fournisseur est injoignable depuis le serveur.",
+  "لا يمكن الوصول إلى المزود من الخادم."
+ ],
+ "aiset.outcome.noKey": [
+  "No key stored yet.",
+  "Aucune clé enregistrée.",
+  "لا يوجد مفتاح محفوظ."
+ ],
+ "aiset.privacy": [
+  "When a model is enabled, the assembled prompt of a use case is sent to the provider. Personal data of respondents is never sent. Without a model, the built-in engine answers.",
+  "Quand un modèle est activé, le prompt assemblé d’un cas d’usage est envoyé au fournisseur. Les données personnelles des répondants ne sont jamais envoyées. Sans modèle, le moteur intégré répond.",
+  "عند تفعيل نموذج، يُرسل الموجِّه المجمع إلى المزود. لا تُرسل أبدًا البيانات الشخصية للمجيبين. بدون نموذج يجيب المحرك المدمج."
+ ],
+ "doc.subtitle2": [
+  "Documented information generated from the project’s records, reviewed by a second person, versioned and downloadable in Word, PDF and Excel.",
+  "Informations documentées générées à partir des enregistrements du projet, revues par une seconde personne, versionnées et téléchargeables en Word, PDF et Excel.",
+  "معلومات موثقة تُنشأ من سجلات المشروع، يراجعها شخص ثانٍ، مرقمة النسخ وقابلة للتنزيل بصيغ Word وPDF وExcel."
+ ],
+ "doc.new": [
+  "New document",
+  "Nouveau document",
+  "وثيقة جديدة"
+ ],
+ "doc.latestOnly": [
+  "Latest version only",
+  "Dernière version seulement",
+  "آخر نسخة فقط"
+ ],
+ "doc.owner": [
+  "Owner",
+  "Propriétaire",
+  "المالك"
+ ],
+ "doc.nextReview": [
+  "Next review",
+  "Prochaine revue",
+  "المراجعة القادمة"
+ ],
+ "doc.fromTemplate": [
+  "From a template",
+  "À partir d’un modèle",
+  "من نموذج"
+ ],
+ "doc.blank": [
+  "Blank document",
+  "Document vierge",
+  "وثيقة فارغة"
+ ],
+ "doc.template": [
+  "Template",
+  "Modèle",
+  "النموذج"
+ ],
+ "doc.templateHint": [
+  "The organization’s own copies replace the library templates with the same code.",
+  "Les copies propres à l’organisation remplacent les modèles de la bibliothèque de même code.",
+  "تحل نسخ المؤسسة محل نماذج المكتبة ذات الرمز نفسه."
+ ],
+ "doc.orgCopy": [
+  "Organization copy",
+  "Copie de l’organisation",
+  "نسخة المؤسسة"
+ ],
+ "doc.staleSince": [
+  "Data changed since generation ({n} sources)",
+  "Données modifiées depuis la génération ({n} sources)",
+  "تغيرت البيانات منذ الإنشاء ({n} مصادر)"
+ ],
+ "doc.templateNewer": [
+  "Template v{v} available",
+  "Modèle v{v} disponible",
+  "النموذج v{v} متاح"
+ ],
+ "doc.regenerate": [
+  "Regenerate",
+  "Régénérer",
+  "إعادة الإنشاء"
+ ],
+ "doc.newVersion": [
+  "New version",
+  "Nouvelle version",
+  "نسخة جديدة"
+ ],
+ "doc.blocking": [
+  "Blocking",
+  "Bloquant",
+  "مانع"
+ ],
+ "doc.content": [
+  "Content",
+  "Contenu",
+  "المحتوى"
+ ],
+ "doc.sections": [
+  "Sections",
+  "Sections",
+  "الأقسام"
+ ],
+ "doc.metadata": [
+  "Metadata",
+  "Métadonnées",
+  "البيانات الوصفية"
+ ],
+ "doc.versions": [
+  "Versions",
+  "Versions",
+  "النسخ"
+ ],
+ "doc.sources": [
+  "Sources",
+  "Sources",
+  "المصادر"
+ ],
+ "doc.changeNote": [
+  "Change note",
+  "Note de modification",
+  "ملاحظة التعديل"
+ ],
+ "doc.sourcesHint": [
+  "Every table names the records it was built from, with their count at generation.",
+  "Chaque tableau indique les enregistrements dont il est issu, avec leur nombre à la génération.",
+  "يذكر كل جدول السجلات التي بُني منها وعددها عند الإنشاء."
+ ],
+ "doc.source": [
+  "Source",
+  "Source",
+  "المصدر"
+ ],
+ "doc.records": [
+  "Records",
+  "Enregistrements",
+  "السجلات"
+ ],
+ "doc.applyTemplate": [
+  "Apply the newer template",
+  "Appliquer le modèle plus récent",
+  "تطبيق النموذج الأحدث"
+ ],
+ "doc.regenMinor": [
+  "Regenerate this draft",
+  "Régénérer ce brouillon",
+  "إعادة إنشاء هذه المسودة"
+ ],
+ "doc.regenMajor": [
+  "Create a new version",
+  "Créer une nouvelle version",
+  "إنشاء نسخة جديدة"
+ ],
+ "doc.regenHint": [
+  "What changes with today’s data. Your overrides and manual text are kept.",
+  "Ce qui change avec les données d’aujourd’hui. Vos remplacements et textes manuels sont conservés.",
+  "ما يتغير مع بيانات اليوم. تبقى نصوصك اليدوية واستبدالاتك."
+ ],
+ "doc.change.added": [
+  "section added",
+  "section ajoutée",
+  "قسم مضاف"
+ ],
+ "doc.change.removed": [
+  "section removed",
+  "section retirée",
+  "قسم محذوف"
+ ],
+ "doc.change.changed": [
+  "{a} rows added, {r} removed",
+  "{a} lignes ajoutées, {r} retirées",
+  "{a} صفوف مضافة و{r} محذوفة"
+ ],
+ "doc.noChange": [
+  "No change.",
+  "Aucun changement.",
+  "لا تغيير."
+ ],
+ "doc.deleteDraft": [
+  "Delete this draft",
+  "Supprimer ce brouillon",
+  "حذف هذه المسودة"
+ ],
+ "doc.overrideText": [
+  "Override the text of this section",
+  "Remplacer le texte de cette section",
+  "استبدال نص هذا القسم"
+ ],
+ "doc.clearOverride": [
+  "Return to generated text",
+  "Revenir au texte généré",
+  "العودة إلى النص المنشأ"
+ ],
+ "doc.diagramNote": [
+  "Process diagram with {n} activities (shown in Word and PDF).",
+  "Logigramme de {n} activités (affiché en Word et PDF).",
+  "مخطط المسار بـ {n} نشاطًا (يظهر في Word وPDF)."
+ ],
+ "doc.cellHint": [
+  "Double-click to override this value in this document only.",
+  "Double-cliquez pour remplacer cette valeur dans ce document uniquement.",
+  "انقر مرتين لاستبدال هذه القيمة في هذه الوثيقة فقط."
+ ],
+ "doc.moreRows": [
+  "{n} more rows in the downloaded document.",
+  "{n} lignes de plus dans le document téléchargé.",
+  "{n} صفوف إضافية في الوثيقة المنزلة."
+ ],
+ "doc.emptyDoc": [
+  "This document has no section.",
+  "Ce document n’a aucune section.",
+  "لا قسم في هذه الوثيقة."
+ ],
+ "doc.overrideCell": [
+  "Override a value",
+  "Remplacer une valeur",
+  "استبدال قيمة"
+ ],
+ "doc.overrideHint": [
+  "An override belongs to this document only, stays through regeneration and is listed in the document.",
+  "Un remplacement appartient à ce document uniquement, persiste à la régénération et est listé dans le document.",
+  "الاستبدال خاص بهذه الوثيقة، يبقى عند إعادة الإنشاء ويُدرج فيها."
+ ],
+ "doc.overrideSaved": [
+  "Override saved.",
+  "Remplacement enregistré.",
+  "تم حفظ الاستبدال."
+ ],
+ "doc.value": [
+  "Value",
+  "Valeur",
+  "القيمة"
+ ],
+ "doc.sectionTitle": [
+  "Section title",
+  "Titre de section",
+  "عنوان القسم"
+ ],
+ "doc.sectionText": [
+  "Section text",
+  "Texte de la section",
+  "نص القسم"
+ ],
+ "doc.newSection": [
+  "New section",
+  "Nouvelle section",
+  "قسم جديد"
+ ],
+ "doc.addText": [
+  "Text",
+  "Texte",
+  "نص"
+ ],
+ "doc.addPicture": [
+  "Picture",
+  "Image",
+  "صورة"
+ ],
+ "doc.addApproval": [
+  "Approval block",
+  "Bloc d’approbation",
+  "كتلة الاعتماد"
+ ],
+ "doc.readOnlyDraft": [
+  "Sections can change only in a draft.",
+  "Les sections ne changent que dans un brouillon.",
+  "لا تتغير الأقسام إلا في المسودة."
+ ],
+ "doc.type.text": [
+  "Text",
+  "Texte",
+  "نص"
+ ],
+ "doc.type.table": [
+  "Table",
+  "Tableau",
+  "جدول"
+ ],
+ "doc.type.diagram": [
+  "Diagram",
+  "Logigramme",
+  "مخطط"
+ ],
+ "doc.type.kv": [
+  "Key facts",
+  "Informations clés",
+  "معلومات أساسية"
+ ],
+ "doc.type.approval": [
+  "Approval",
+  "Approbation",
+  "اعتماد"
+ ],
+ "doc.type.picture": [
+  "Picture",
+  "Image",
+  "صورة"
+ ],
+ "doc.type.steps": [
+  "Results by step",
+  "Résultats par étape",
+  "النتائج حسب الخطوة"
+ ],
+ "doc.type.builtin": [
+  "Built-in report",
+  "Rapport intégré",
+  "تقرير مدمج"
+ ],
+ "doc.moveUp": [
+  "Move up",
+  "Monter",
+  "تحريك لأعلى"
+ ],
+ "doc.moveDown": [
+  "Move down",
+  "Descendre",
+  "تحريك لأسفل"
+ ],
+ "doc.show": [
+  "Show in the document",
+  "Afficher dans le document",
+  "إظهار في الوثيقة"
+ ],
+ "doc.hide": [
+  "Hide from the document",
+  "Masquer du document",
+  "إخفاء من الوثيقة"
+ ],
+ "doc.noPicture": [
+  "No picture yet.",
+  "Pas encore d’image.",
+  "لا صورة بعد."
+ ],
+ "doc.uploadPicture": [
+  "Upload",
+  "Téléverser",
+  "رفع"
+ ],
+ "doc.caption": [
+  "Caption",
+  "Légende",
+  "التعليق"
+ ],
+ "doc.width": [
+  "Width",
+  "Largeur",
+  "العرض"
+ ],
+ "doc.reviewFrequency": [
+  "Review frequency",
+  "Fréquence de revue",
+  "تواتر المراجعة"
+ ],
+ "doc.retention": [
+  "Retention",
+  "Conservation",
+  "مدة الاحتفاظ"
+ ],
+ "doc.retentionHint": [
+  "For example: 5 years after closure.",
+  "Par exemple : 5 ans après clôture.",
+  "مثال: 5 سنوات بعد الإغلاق."
+ ],
+ "doc.submitted": [
+  "Submitted for review.",
+  "Soumis à revue.",
+  "قُدمت للمراجعة."
+ ],
+ "doc.published": [
+  "Published. The previous version is superseded.",
+  "Publié. La version précédente est remplacée.",
+  "نُشرت. حلت محل النسخة السابقة."
+ ],
+ "doc.copied": [
+  "New version created.",
+  "Nouvelle version créée.",
+  "أنشئت نسخة جديدة."
+ ],
+ "doc.regenerated": [
+  "Document regenerated.",
+  "Document régénéré.",
+  "أعيد إنشاء الوثيقة."
+ ],
+ "dtpl.subtitle": [
+  "The library of document templates. Copy one into your organization to adapt it; your copy replaces the library template.",
+  "La bibliothèque de modèles de documents. Copiez-en un dans votre organisation pour l’adapter ; votre copie remplace celui de la bibliothèque.",
+  "مكتبة نماذج الوثائق. انسخ نموذجًا إلى مؤسستك لتكييفه؛ تحل نسختك محل نموذج المكتبة."
+ ],
+ "dtpl.category": [
+  "Category",
+  "Catégorie",
+  "الفئة"
+ ],
+ "dtpl.origin": [
+  "Origin",
+  "Origine",
+  "الأصل"
+ ],
+ "dtpl.library": [
+  "Library",
+  "Bibliothèque",
+  "المكتبة"
+ ],
+ "dtpl.template": [
+  "Document template",
+  "Modèle de document",
+  "نموذج الوثيقة"
+ ],
+ "dtpl.formats": [
+  "Formats",
+  "Formats",
+  "الصيغ"
+ ],
+ "dtpl.kind": [
+  "Kind",
+  "Nature",
+  "النوع"
+ ],
+ "dtpl.draftsOlder": [
+  "{n} drafts use an older version of this template.",
+  "{n} brouillons utilisent une version plus ancienne de ce modèle.",
+  "{n} مسودات تستعمل نسخة أقدم من هذا النموذج."
+ ],
+ "dtpl.copyToOrg": [
+  "Copy to my organization",
+  "Copier dans mon organisation",
+  "نسخ إلى مؤسستي"
+ ],
+ "dtpl.copied": [
+  "Template copied to your organization.",
+  "Modèle copié dans votre organisation.",
+  "نُسخ النموذج إلى مؤسستك."
+ ],
+ "dlay.subtitle": [
+  "Fonts, sizes, colors, header, footer and logo of every generated document, for the whole organization.",
+  "Polices, tailles, couleurs, en-tête, pied de page et logo de chaque document généré, pour toute l’organisation.",
+  "الخطوط والأحجام والألوان والرأس والتذييل والشعار لكل وثيقة منشأة على مستوى المؤسسة."
+ ],
+ "dlay.card": [
+  "Organization layout",
+  "Mise en page de l’organisation",
+  "تنسيق المؤسسة"
+ ],
+ "dlay.bodyFont": [
+  "Body font",
+  "Police du texte",
+  "خط النص"
+ ],
+ "dlay.bodySize": [
+  "Body size",
+  "Taille du texte",
+  "حجم النص"
+ ],
+ "dlay.headingFont": [
+  "Heading font",
+  "Police des titres",
+  "خط العناوين"
+ ],
+ "dlay.h1Size": [
+  "Heading size",
+  "Taille des titres",
+  "حجم العناوين"
+ ],
+ "dlay.align": [
+  "Alignment",
+  "Alignement",
+  "المحاذاة"
+ ],
+ "dlay.orientation": [
+  "Orientation",
+  "Orientation",
+  "الاتجاه"
+ ],
+ "dlay.margins": [
+  "Margins",
+  "Marges",
+  "الهوامش"
+ ],
+ "dlay.logo": [
+  "Logo",
+  "Logo",
+  "الشعار"
+ ],
+ "dlay.headingColor": [
+  "Heading color",
+  "Couleur des titres",
+  "لون العناوين"
+ ],
+ "dlay.tableHeader": [
+  "Table header color",
+  "Couleur d’en-tête de tableau",
+  "لون رأس الجدول"
+ ],
+ "dlay.al.left": [
+  "Left",
+  "Gauche",
+  "يسار"
+ ],
+ "dlay.al.center": [
+  "Center",
+  "Centré",
+  "وسط"
+ ],
+ "dlay.al.right": [
+  "Right",
+  "Droite",
+  "يمين"
+ ],
+ "dlay.al.justify": [
+  "Justified",
+  "Justifié",
+  "مضبوط"
+ ],
+ "dlay.or.portrait": [
+  "Portrait",
+  "Portrait",
+  "عمودي"
+ ],
+ "dlay.or.landscape": [
+  "Landscape",
+  "Paysage",
+  "أفقي"
+ ],
+ "dlay.lg.organization": [
+  "Organization logo",
+  "Logo de l’organisation",
+  "شعار المؤسسة"
+ ],
+ "dlay.lg.uploaded": [
+  "Uploaded image",
+  "Image téléversée",
+  "صورة مرفوعة"
+ ],
+ "dlay.lg.none": [
+  "No logo",
+  "Sans logo",
+  "بدون شعار"
+ ],
+ "dlay.header": [
+  "Header text",
+  "Texte d’en-tête",
+  "نص الرأس"
+ ],
+ "dlay.footer": [
+  "Footer text",
+  "Texte de pied de page",
+  "نص التذييل"
+ ],
+ "dlay.toc": [
+  "Table of contents",
+  "Table des matières",
+  "جدول المحتويات"
+ ],
+ "dlay.cover": [
+  "Cover page",
+  "Page de garde",
+  "صفحة الغلاف"
+ ],
+ "dlay.numbering": [
+  "Numbered headings",
+  "Titres numérotés",
+  "عناوين مرقمة"
+ ],
+ "dlay.pageNumbers": [
+  "Page numbers",
+  "Numéros de page",
+  "أرقام الصفحات"
+ ],
+ "dlay.uploadLogo": [
+  "Upload the logo",
+  "Téléverser le logo",
+  "رفع الشعار"
+ ],
+ "dlay.preview": [
+  "Preview as PDF",
+  "Aperçu en PDF",
+  "معاينة PDF"
+ ],
+ "dlay.versionsHint": [
+  "Each save creates a version.",
+  "Chaque enregistrement crée une version.",
+  "كل حفظ ينشئ نسخة."
+ ],
+ "dlay.default": [
+  "Default layout in use.",
+  "Mise en page par défaut utilisée.",
+  "التنسيق الافتراضي مستعمل."
+ ],
+ "ml.subtitle": [
+  "Every document of the project with its version, status, owner and review dates, and what each standard requires.",
+  "Chaque document du projet avec sa version, son statut, son propriétaire et ses dates de revue, et ce que chaque norme exige.",
+  "كل وثائق المشروع بنسخها وحالتها ومالكها وتواريخ مراجعتها، وما يتطلبه كل معيار."
+ ],
+ "ml.standards": [
+  "Required by standards",
+  "Exigé par les normes",
+  "مطلوب بالمعايير"
+ ],
+ "ml.clause": [
+  "Clause",
+  "Clause",
+  "البند"
+ ],
+ "ml.kind": [
+  "Kind",
+  "Nature",
+  "النوع"
+ ],
+ "ml.kind.maintain": [
+  "Document to maintain",
+  "Document à tenir à jour",
+  "وثيقة يجب تحيينها"
+ ],
+ "ml.kind.retain": [
+  "Record to retain",
+  "Enregistrement à conserver",
+  "سجل يجب الاحتفاظ به"
+ ],
+ "ml.requirement": [
+  "Requirement",
+  "Exigence",
+  "المتطلب"
+ ],
+ "ptb.subtitle": [
+  "What a project created from this template receives: processes and steps, rules, controls, risks, alerts, KPIs and reports.",
+  "Ce que reçoit un projet créé à partir de ce modèle : processus et étapes, règles, contrôles, risques, alertes, KPI et rapports.",
+  "ما يتلقاه مشروع منشأ من هذا النموذج: المسارات والخطوات والقواعد والضوابط والمخاطر والتنبيهات والمؤشرات والتقارير."
+ ],
+ "ptb.customize": [
+  "Customize (copy)",
+  "Personnaliser (copie)",
+  "تخصيص (نسخة)"
+ ],
+ "ptb.duplicated": [
+  "Template copied. You can now change its blueprint.",
+  "Modèle copié. Vous pouvez maintenant modifier son plan type.",
+  "نُسخ النموذج. يمكنك الآن تعديل مخططه."
+ ],
+ "ptb.publish": [
+  "Publish",
+  "Publier",
+  "نشر"
+ ],
+ "ptb.published": [
+  "Template published.",
+  "Modèle publié.",
+  "نُشر النموذج."
+ ],
+ "ptb.libraryReadOnly": [
+  "Library template: read-only. Customize it to change its blueprint in your organization.",
+  "Modèle de bibliothèque : lecture seule. Personnalisez-le pour modifier son plan type dans votre organisation.",
+  "نموذج المكتبة للقراءة فقط. خصصه لتعديل مخططه في مؤسستك."
+ ],
+ "ptb.overview": [
+  "Overview",
+  "Vue d’ensemble",
+  "نظرة عامة"
+ ],
+ "ptb.processes": [
+  "Processes and steps",
+  "Processus et étapes",
+  "المسارات والخطوات"
+ ],
+ "ptb.part": [
+  "Part",
+  "Partie",
+  "الجزء"
+ ],
+ "ptb.part.rules": [
+  "Rules",
+  "Règles",
+  "القواعد"
+ ],
+ "ptb.part.controls": [
+  "Controls",
+  "Contrôles",
+  "الضوابط"
+ ],
+ "ptb.part.risks": [
+  "Risks",
+  "Risques",
+  "المخاطر"
+ ],
+ "ptb.part.alerts": [
+  "Alerts",
+  "Alertes",
+  "التنبيهات"
+ ],
+ "ptb.part.kpis": [
+  "KPIs",
+  "KPI",
+  "المؤشرات"
+ ],
+ "ptb.part.reporting": [
+  "Reporting plan",
+  "Plan de reporting",
+  "خطة التقارير"
+ ],
+ "ptb.part.elements": [
+  "Elements",
+  "Éléments",
+  "العناصر"
+ ],
+ "ptb.part.custom": [
+  "Custom elements",
+  "Éléments personnalisés",
+  "عناصر مخصصة"
+ ],
+ "ptb.phases": [
+  "Phases",
+  "Phases",
+  "المراحل"
+ ],
+ "ptb.e2e": [
+  "End-to-end processes",
+  "Processus de bout en bout",
+  "المسارات الشاملة"
+ ],
+ "ptb.tasks": [
+  "Tasks",
+  "Tâches",
+  "المهام"
+ ],
+ "ptb.steps": [
+  "Steps",
+  "Étapes",
+  "الخطوات"
+ ],
+ "ptb.include": [
+  "Include {n}",
+  "Inclure {n}",
+  "إدراج {n}"
+ ],
+ "ptb.renamed": [
+  "Renamed",
+  "Renommé",
+  "أعيدت تسميته"
+ ],
+ "ptb.custom": [
+  "Custom",
+  "Personnalisé",
+  "مخصص"
+ ],
+ "ptb.addCustom": [
+  "Add a custom element",
+  "Ajouter un élément personnalisé",
+  "إضافة عنصر مخصص"
+ ],
+ "ptb.customPhase": [
+  "Custom phase",
+  "Phase personnalisée",
+  "مرحلة مخصصة"
+ ],
+ "ptb.treeHint": [
+  "Untick what projects should not receive. Renaming here changes the name in projects only, never the reference design.",
+  "Décochez ce que les projets ne doivent pas recevoir. Renommer ici change le nom dans les projets uniquement, jamais la conception de référence.",
+  "ألغِ تحديد ما لا يجب أن تتلقاه المشاريع. التسمية هنا تغير الاسم في المشاريع فقط وليس في التصميم المرجعي."
+ ],
+ "ptb.nameInTemplate": [
+  "Name in projects",
+  "Nom dans les projets",
+  "الاسم في المشاريع"
+ ],
+ "ptb.nameHint": [
+  "Leave empty to keep the reference name.",
+  "Laissez vide pour garder le nom de référence.",
+  "اتركه فارغًا للإبقاء على الاسم المرجعي."
+ ],
+ "ptb.owner": [
+  "Owner",
+  "Responsable",
+  "المسؤول"
+ ],
+ "ptb.customHint": [
+  "A custom element exists only in projects created from this template.",
+  "Un élément personnalisé n’existe que dans les projets créés à partir de ce modèle.",
+  "العنصر المخصص موجود فقط في المشاريع المنشأة من هذا النموذج."
+ ],
+ "ptb.customAdded": [
+  "Custom element added.",
+  "Élément personnalisé ajouté.",
+  "أضيف العنصر المخصص."
+ ],
+ "ptb.kind": [
+  "Level",
+  "Niveau",
+  "المستوى"
+ ],
+ "ptb.condition": [
+  "Condition",
+  "Condition",
+  "الشرط"
+ ],
+ "ptb.severity": [
+  "Severity",
+  "Gravité",
+  "الخطورة"
+ ],
+ "ptb.type": [
+  "Type",
+  "Type",
+  "النوع"
+ ],
+ "ptb.frequency": [
+  "Frequency",
+  "Fréquence",
+  "التواتر"
+ ],
+ "ptb.category": [
+  "Category",
+  "Catégorie",
+  "الفئة"
+ ],
+ "ptb.enabled": [
+  "Enabled",
+  "Active",
+  "مفعل"
+ ],
+ "ptb.target": [
+  "Target",
+  "Cible",
+  "الهدف"
+ ],
+ "ptb.report": [
+  "Report",
+  "Rapport",
+  "التقرير"
+ ],
+ "ptb.audience": [
+  "Audience",
+  "Destinataires",
+  "الجمهور"
+ ],
+ "ptb.format": [
+  "Format",
+  "Format",
+  "الصيغة"
+ ],
+ "ptb.origin.library": [
+  "Library",
+  "Bibliothèque",
+  "المكتبة"
+ ],
+ "ptb.origin.manual": [
+  "Manual",
+  "Manuel",
+  "يدوي"
+ ],
+ "ptb.origin.ai": [
+  "AI, validated",
+  "IA, validée",
+  "ذكاء اصطناعي، مصادق"
+ ],
+ "ptb.fromLibrary": [
+  "Add from the library",
+  "Ajouter depuis la bibliothèque",
+  "إضافة من المكتبة"
+ ],
+ "ptb.manual": [
+  "Add manually",
+  "Ajouter manuellement",
+  "إضافة يدويًا"
+ ],
+ "ptb.originCol": [
+  "Origin",
+  "Origine",
+  "الأصل"
+ ],
+ "ptb.emptyPart": [
+  "Nothing in this part yet.",
+  "Rien dans cette partie pour l’instant.",
+  "لا شيء في هذا الجزء بعد."
+ ],
+ "ptb.add": [
+  "Add",
+  "Ajouter",
+  "إضافة"
+ ],
+ "ptb.likelihood": [
+  "Likelihood (1–5)",
+  "Probabilité (1–5)",
+  "الاحتمال (1–5)"
+ ],
+ "ptb.impact": [
+  "Impact (1–5)",
+  "Impact (1–5)",
+  "الأثر (1–5)"
+ ],
+ "afp.subtitle": [
+  "Audit and inspection plans, findings graded on a shown scale, nonconformities with their corrective actions, and the audit report.",
+  "Plans d’audit et d’inspection, constats notés sur une échelle affichée, non-conformités avec leurs actions correctives, et rapport d’audit.",
+  "برامج التدقيق والتفتيش، ملاحظات مصنفة على سلم معروض، حالات عدم المطابقة بإجراءاتها التصحيحية، وتقرير التدقيق."
+ ],
+ "afp.report": [
+  "Audit report",
+  "Rapport d’audit",
+  "تقرير التدقيق"
+ ],
+ "afp.scale": [
+  "Grading scale",
+  "Échelle de notation",
+  "سلم التصنيف"
+ ],
+ "afp.standard": [
+  "Standard",
+  "Norme",
+  "المعيار"
+ ],
+ "afp.frequency": [
+  "Frequency",
+  "Fréquence",
+  "التواتر"
+ ],
+ "afp.planned": [
+  "Planned",
+  "Planifié",
+  "مخطط"
+ ],
+ "afp.next": [
+  "Next audit",
+  "Prochain audit",
+  "التدقيق القادم"
+ ],
+ "afp.plan": [
+  "Audit plan",
+  "Plan d’audit",
+  "خطة التدقيق"
+ ],
+ "afp.objectives": [
+  "Objectives",
+  "Objectifs",
+  "الأهداف"
+ ],
+ "afp.criteria": [
+  "Criteria",
+  "Critères",
+  "المعايير"
+ ],
+ "afp.processes": [
+  "Processes",
+  "Processus",
+  "المسارات"
+ ],
+ "afp.lead": [
+  "Lead auditor",
+  "Auditeur responsable",
+  "المدقق الرئيسي"
+ ],
+ "afp.team": [
+  "Team and qualification",
+  "Équipe et qualification",
+  "الفريق والتأهيل"
+ ],
+ "afp.duration": [
+  "Duration",
+  "Durée",
+  "المدة"
+ ],
+ "afp.days": [
+  "{n} days",
+  "{n} jours",
+  "{n} أيام"
+ ],
+ "afp.schedule": [
+  "Schedule",
+  "Calendrier",
+  "الجدولة"
+ ],
+ "afp.justification": [
+  "Why this frequency",
+  "Justification de la fréquence",
+  "تبرير التواتر"
+ ],
+ "afp.performed": [
+  "Performed",
+  "Réalisé",
+  "أنجز"
+ ],
+ "afp.nextHint": [
+  "The next date is computed from the frequency and the last audit date.",
+  "La prochaine date est calculée depuis la fréquence et la date du dernier audit.",
+  "يُحسب التاريخ القادم من التواتر وتاريخ آخر تدقيق."
+ ],
+ "afp.findings": [
+  "Findings",
+  "Constats",
+  "الملاحظات"
+ ],
+ "afp.ncWithoutAction": [
+  "{n} nonconformities have no corrective action yet.",
+  "{n} non-conformités n’ont pas encore d’action corrective.",
+  "{n} حالات عدم مطابقة بلا إجراء تصحيحي بعد."
+ ],
+ "afp.grade": [
+  "Grade",
+  "Niveau",
+  "الدرجة"
+ ],
+ "afp.requirement": [
+  "Requirement",
+  "Exigence",
+  "المتطلب"
+ ],
+ "afp.statement": [
+  "Statement",
+  "Énoncé",
+  "البيان"
+ ],
+ "afp.action": [
+  "Corrective action",
+  "Action corrective",
+  "الإجراء التصحيحي"
+ ],
+ "afp.actionRaised": [
+  "Raised",
+  "Créée",
+  "أُنشئ"
+ ],
+ "afp.raiseAction": [
+  "Raise the action",
+  "Créer l’action",
+  "إنشاء الإجراء"
+ ],
+ "afp.actionCreated": [
+  "Corrective action created in the action process.",
+  "Action corrective créée dans le processus des actions.",
+  "أنشئ الإجراء التصحيحي في مسار الإجراءات."
+ ],
+ "reg.subtitle": [
+  "Registers filled by completed steps: one entry per row, with its source step and project.",
+  "Registres alimentés par les étapes terminées : une entrée par ligne, avec son étape et son projet d’origine.",
+  "سجلات تملؤها الخطوات المكتملة: مدخل لكل صف مع خطوته ومشروعه المصدر."
+ ],
+ "reg.none": [
+  "No register entries yet",
+  "Aucune entrée de registre",
+  "لا مدخلات في السجلات بعد"
+ ],
+ "reg.noneText": [
+  "Complete a step that feeds a register; its rows appear here.",
+  "Terminez une étape qui alimente un registre ; ses lignes apparaissent ici.",
+  "أكمل خطوة تغذي سجلًا؛ تظهر صفوفها هنا."
+ ],
+ "reg.links": [
+  "Links",
+  "Liens",
+  "الروابط"
+ ],
+ "reg.pick": [
+  "Choose a register",
+  "Choisissez un registre",
+  "اختر سجلًا"
+ ],
+ "reg.f.item": [
+  "Item",
+  "Élément",
+  "العنصر"
+ ],
+ "reg.f.category": [
+  "Category",
+  "Catégorie",
+  "الفئة"
+ ],
+ "reg.f.owner": [
+  "Owner",
+  "Responsable",
+  "المسؤول"
+ ],
+ "reg.f.status": [
+  "Status",
+  "Statut",
+  "الحالة"
+ ],
+ "reg.f.due": [
+  "Due",
+  "Échéance",
+  "الاستحقاق"
+ ],
+ "reg.f.weight": [
+  "Weight",
+  "Poids",
+  "الوزن"
+ ],
+ "reg.f.score": [
+  "Score",
+  "Note",
+  "النقطة"
+ ],
+ "reg.f.criterion": [
+  "Criterion",
+  "Critère",
+  "المعيار"
+ ],
+ "reg.f.indicator": [
+  "Indicator",
+  "Indicateur",
+  "المؤشر"
+ ],
+ "reg.f.target": [
+  "Target",
+  "Cible",
+  "الهدف"
+ ],
+ "reg.f.baseline": [
+  "Baseline",
+  "Valeur de départ",
+  "القيمة الأساسية"
+ ],
+ "reg.f.decision": [
+  "Decision",
+  "Décision",
+  "القرار"
+ ],
+ "reg.f.comment": [
+  "Comment",
+  "Commentaire",
+  "تعليق"
+ ]
+}

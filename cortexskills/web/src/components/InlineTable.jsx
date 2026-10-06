@@ -6,7 +6,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession } from '../lib/session.jsx';
-import { Btn, Icon, Select, Spinner, Search } from './ui.jsx';
+import { Btn, Icon, Select, Spinner, Search, Drawer, Field } from './ui.jsx';
 
 let seqKey = 0;
 const newKey = () => (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `k${Date.now()}${++seqKey}`);
@@ -24,12 +24,13 @@ function validateCell(col, value, data, t) {
   return col.validate ? col.validate(value, data) || null : null;
 }
 
-export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow, newRow, countLabel, readOnly, carry, caption, emptyText, bulkSet = true, search }) {
+export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow, newRow, countLabel, readOnly, carry, caption, emptyText, bulkSet = true, search, newInEditor = false, rowTitle }) {
   const { t } = useI18n(); const { toast, prefs, queuePrefs } = useSession();
   const [rows, setRows] = useState(() => (initial || []).map(r => toRow(r)));
   const rowsRef = useRef(rows); rowsRef.current = rows;
   const timers = useRef({}); const pendingDeletes = useRef({}); const tableRef = useRef(null); const editStart = useRef({});
   const [touched, setTouched] = useState({}); // cells validated once: re-validated on change after a first error (FR-DA-MRE-08)
+  const [editorKey, setEditorKey] = useState(null); // Row Editor (FR-DA-DEU-03)
   const [sel, setSel] = useState(() => new Set()); const [q, setQ] = useState(''); const [bulk, setBulk] = useState(null); const [flash, setFlash] = useState(null);
   const density = prefs?.density || 'comfortable';
   const tp = prefs?.tables?.[id] || {}; const [widths, setWidths] = useState(tp.widths || {});
@@ -161,13 +162,45 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
         <th className="status-col" scope="col"><span className="sr-only">{t('mre.status')}</span>#</th>
         {visible.map(c => <th key={c.key} scope="col" style={widths[c.key] || c.width ? { width: widths[c.key] || c.width, minWidth: widths[c.key] || c.width } : undefined}><div className="th"><span className="th-label">{c.required && '* '}{c.label}</span></div>
           <span className="col-resize" role="separator" aria-orientation="vertical" aria-label={t('dt.resizeCol', { c: c.label })} tabIndex={-1} onPointerDown={e => resize(e, c.key)} /></th>)}
-        {!readOnly && <th scope="col" className="row-actions"><span className="sr-only">{t('mre.actions')}</span></th>}</tr></thead>
+        <th scope="col" className="row-actions"><span className="sr-only">{t('mre.actions')}</span></th></tr></thead>
       <tbody>{shown.map((r, i) => <EditRow key={r._key} row={r} index={i} columns={visible} readOnly={readOnly} selected={sel.has(r._key)} flash={flash === r._key} typedValues={typedValues}
-        onSelect={() => setSel(s => { const n = new Set(s); n.has(r._key) ? n.delete(r._key) : n.add(r._key); return n; })} onChange={change} onBlurCell={blurCell} onLeave={leaveRow} onKey={onKey} onPaste={onPaste} onDuplicate={duplicate} onDelete={remove} editStart={editStart} t={t} />)}
+        onSelect={() => setSel(s => { const n = new Set(s); n.has(r._key) ? n.delete(r._key) : n.add(r._key); return n; })} onChange={change} onBlurCell={blurCell} onLeave={leaveRow} onKey={onKey} onPaste={onPaste} onDuplicate={duplicate} onDelete={remove} onOpen={setEditorKey} editStart={editStart} t={t} />)}
         {!rows.length && <tr><td colSpan={visible.length + 3}><div className="empty" style={{ padding: 'var(--aiv-space-5)' }}><p>{emptyText || t('mre.empty')}</p></div></td></tr>}</tbody></table></div>
-    <div className="itable-foot">{!readOnly ? <Btn icon="Plus" onClick={() => addRow(null)}>{t('mre.addRow')}</Btn> : <span />}
+    <div className="itable-foot">{!readOnly ? <Btn icon="Plus" onClick={() => { const r = addRow(null, !newInEditor); if (newInEditor) setEditorKey(r._key); }}>{t('mre.addRow')}</Btn> : <span />}
       <span className="itable-count" aria-live="polite">{countLabel ? countLabel(rows.filter(r => r.id || r.status !== 'clean').length) : t('mre.count', { n: rows.length })}{pendingCount ? ' · ' + t('mre.pending', { n: pendingCount }) : ''}</span></div>
+    {editorKey && (() => { const i = rows.findIndex(r => r._key === editorKey); const r = rows[i]; if (!r) return null;
+      const close = () => { if (r.status === 'dirty') schedule(r._key); setEditorKey(null); };
+      const go = d => { if (r.status === 'dirty') schedule(r._key); const n = rows[i + d]; if (n) setEditorKey(n._key); };
+      return <RowEditor row={r} index={i} total={rows.length} columns={columns} readOnly={readOnly} title={rowTitle ? rowTitle(r.data) : null} typedValues={typedValues} onChange={change} onBlurCell={blurCell} onPrev={() => go(-1)} onNext={() => go(1)} onClose={close} t={t} />; })()}
   </div>);
+}
+
+/**
+ * Row Editor (FR-DA-DEU-03, -06): one large field per column, previous and next row, and Back to the table. The
+ * editor edits the table's own draft of the row, so closing it never loses the input; the row is saved like any
+ * other edit once the user leaves it.
+ */
+function RowEditor({ row, index, total, columns, readOnly, title, typedValues, onChange, onBlurCell, onPrev, onNext, onClose, t }) {
+  const errs = row.errors || {};
+  return (<Drawer size="lg" title={title || t('mre.rowN', { n: index + 1, total })} subtitle={t('mre.rowN', { n: index + 1, total }) + (row.status === 'dirty' ? ' · ' + t('mre.st.dirty') : row.status === 'saved' ? ' · ' + t('mre.st.saved') : '')} onClose={onClose}
+    footer={<><Btn icon="ArrowLeft" onClick={onClose}>{t('mre.backToTable')}</Btn><span className="spacer" /><Btn icon="ChevronLeft" disabled={index === 0} onClick={onPrev}>{t('mre.prevRow')}</Btn><Btn icon="ChevronRight" disabled={index >= total - 1} onClick={onNext}>{t('mre.nextRow')}</Btn></>}>
+    <div className="stack">{columns.map(c => { const v = row.data[c.key]; const fid = `re-${row._key}-${c.key}`;
+      return <Field key={c.key} id={fid} label={c.label} required={c.required} error={errs[c.key]} hint={c.help}>
+        {readOnly || c.readOnly ? <div className="ro-value">{c.type === 'select' ? ((c.options || []).find(o => String(o.value ?? o) === String(v))?.label ?? v ?? '—') : (v == null || v === '' ? '—' : String(v))}</div>
+          : c.type === 'select' ? <ChoiceField id={fid} col={c} value={v} typed={typedValues[c.key]} onChange={x => onChange(row._key, c, x)} onCommit={() => onBlurCell(row._key, c)} t={t} />
+          : c.type === 'textarea' || c.wide ? <textarea id={fid} className="input" rows={6} value={v ?? ''} onChange={e => onChange(row._key, c, e.target.value)} onBlur={() => onBlurCell(row._key, c)} />
+          : <input id={fid} className="input" type={c.type === 'number' ? 'text' : c.type === 'date' ? 'date' : 'text'} inputMode={c.type === 'number' ? 'decimal' : undefined} value={v ?? ''} onChange={e => onChange(row._key, c, e.target.value)} onBlur={() => onBlurCell(row._key, c)} />}
+      </Field>; })}</div>
+  </Drawer>);
+}
+
+/** Controlled List with a Custom value that opens a free text field; values typed before are offered again (FR-DA-DEU-02). */
+export function ChoiceField({ id, col, value, typed, onChange, onCommit, t, invalid }) {
+  const known = v => (col.options || []).some(o => String(o.value ?? o) === String(v)) || (typed || []).includes(v);
+  const [custom, setCustom] = useState(() => col.custom && value != null && value !== '' && !known(value));
+  if (custom) return <div className="row"><input id={id} className="input" value={value ?? ''} aria-invalid={invalid || undefined} placeholder={t('mre.customPlaceholder')} onChange={e => onChange(e.target.value)} onBlur={onCommit} style={{ flex: 1 }} /><Btn size="sm" kind="ghost" icon="List" aria-label={t('mre.backToList')} data-tip={t('mre.backToList')} onClick={() => { setCustom(false); onChange(''); }} /></div>;
+  const opts = [...(col.options || []).map(o => (typeof o === 'object' ? { value: String(o.value), label: o.label } : { value: String(o), label: String(o) })), ...(typed || []).map(x => ({ value: String(x), label: String(x), group: t('mre.typedBefore') })), ...(col.custom ? [{ value: CUSTOM, label: t('mre.custom') }] : [])];
+  return <Select id={id} value={value ?? ''} options={opts} invalid={invalid} placeholder={col.placeholder || t('select.placeholder')} onChange={e => { if (e.target.value === CUSTOM) { setCustom(true); onChange(''); requestAnimationFrame(() => document.getElementById(id)?.focus()); } else { onChange(e.target.value); onCommit?.(); } }} />;
 }
 
 function BulkValue({ col, value, onChange }) {
@@ -177,14 +210,14 @@ function BulkValue({ col, value, onChange }) {
 }
 
 // Row component at module scope with a stable key: typing never remounts the row or its cells (C1, C2, C4).
-const EditRow = memo(function EditRow({ row, columns, readOnly, selected, flash, typedValues, onSelect, onChange, onBlurCell, onLeave, onKey, onPaste, onDuplicate, onDelete, editStart, t, index }) {
+const EditRow = memo(function EditRow({ row, columns, readOnly, selected, flash, typedValues, onSelect, onChange, onBlurCell, onLeave, onKey, onPaste, onDuplicate, onDelete, onOpen, editStart, t, index }) {
   const st = row.status; const hasErr = Object.keys(row.errors).length > 0;
   return (<tr aria-selected={selected || undefined} className={flash ? 'saved-flash' : ''} onBlur={e => onLeave(row._key, e)}>
     {!readOnly && <td className="sel-col sticky-col"><input type="checkbox" aria-label={t('dt.selectRow')} checked={selected} onChange={onSelect} /></td>}
     <td className="status-col"><span className="row-status" aria-label={t('mre.st.' + (hasErr ? 'error' : st))}>
       {hasErr || st === 'error' ? <Icon name="CircleAlert" size={16} className="err-ico" /> : st === 'dirty' ? <span className="dirty-dot" /> : st === 'saving' ? <Spinner /> : st === 'saved' ? <Icon name="CircleCheck" size={16} className="saved-ico" /> : <span>{index + 1}</span>}</span></td>
     {columns.map(c => <Cell key={c.key} rowKey={row._key} col={c} value={row.data[c.key]} data={row.data} error={row.errors[c.key]} readOnly={readOnly || c.readOnly} typed={typedValues[c.key]} onChange={onChange} onBlurCell={onBlurCell} onKey={onKey} onPaste={onPaste} editStart={editStart} t={t} />)}
-    {!readOnly && <td className="row-actions"><div className="acts"><Btn icon="Copy" kind="ghost" size="sm" aria-label={t('mre.duplicate')} onClick={() => onDuplicate(row._key)} /><Btn icon="Trash2" kind="ghost" size="sm" aria-label={t('mre.delete')} onClick={() => onDelete(row._key)} /></div></td>}
+    <td className="row-actions"><div className="acts"><Btn icon="Maximize2" kind="ghost" size="sm" aria-label={t('mre.openRow')} data-tip={t('mre.openRow')} onClick={() => onOpen(row._key)} />{!readOnly && <><Btn icon="Copy" kind="ghost" size="sm" aria-label={t('mre.duplicate')} onClick={() => onDuplicate(row._key)} /><Btn icon="Trash2" kind="ghost" size="sm" aria-label={t('mre.delete')} onClick={() => onDelete(row._key)} /></>}</div></td>
   </tr>);
 });
 
