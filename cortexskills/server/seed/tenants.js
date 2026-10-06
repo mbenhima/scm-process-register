@@ -13,6 +13,8 @@ import { config } from '../src/config.js';
 import { t as tx } from '../src/i18n.js';
 import { T, tr, fillT } from './lib.js';
 import { seedQuestionnaires, seedPersonas, seedTraining, seedDocuments } from './release11.js';
+import { UNIVERSAL } from '../src/services/guidance.js';
+import { seedOrg110 } from './release110.js';
 
 const U = detUuid;
 const NOW = new Date();
@@ -54,6 +56,12 @@ export function seedTenants(pwHash) {
       orgs.push({ id, v, vi, seg, domain, lang, name: o.name });
     }
   });
+  // Universal, sector-agnostic scenario organization: every end-to-end process completed (sample documents).
+  { const v = UNIVERSAL; const id = U('org:UNI:LARGE'); const o = v.large; const domain = 'horizonservices.ma';
+    run(`INSERT INTO organizations(id,group_id,name,sector,segment,employees,sme_segment,country,city,default_language,email_domain,benchmark_sharing,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,1,?)`, id, null, S(o.name), 'UNI', 'LARGE', o.employees, null, 'Morocco', o.city, 'en', domain, daysAgo(390));
+    provisionOrg(id, { packId: 'BND-05', seats: 600, lang: 'en', compliance: ['GDPR', 'LAW0908', 'ISO9001'], addons: ['AD-08', 'AD-11'] }, U);
+    run(`UPDATE org_config SET sme_mode=0 WHERE org_id=?`, id);
+    orgs.push({ id, v, vi: verticals.length, seg: 'LARGE', domain, lang: 'en', name: o.name, universal: true }); }
   // Users: one account per standard role (Large) or the core SME roles, all with the demonstration password.
   for (const o of orgs) {
     const r = rng('users:' + o.id); o.users = [];
@@ -114,11 +122,13 @@ function seedOrg(o) {
     for (const L of ['R', 'A', 'C', 'S', 'I']) run(`INSERT INTO racsi_assignments(id,activity_id,letter,assignee,user_id) VALUES(?,?,?,?,?)`, U(`ra:${aid}:${L}`), aid, L, u.racsi[L], o.users.find(x => x.roleNames.includes(u.racsi[L]))?.id ?? null);
   }
   computeAlerts(o.id);
+  seedOrg110(o);
   const head = o.users.find(u => u.role === 'R-03');
   for (const a of all(`SELECT id FROM alerts WHERE org_id=? ORDER BY created_at LIMIT 12`, o.id)) run(`INSERT OR IGNORE INTO alert_reads(alert_id,user_id,read_at,dismissed) VALUES(?,?,?,0)`, a.id, head.id, daysAgo(2));
 }
 
 function levelFor(o, focus) {
+  if (o.universal) return 7; // the universal scenario has run its whole lifecycle
   const base = o.seg === 'LARGE' ? (focus === 'Digital' ? 4 : 3) : (focus === 'Digital' ? 3 : 2);
   return Math.min(6, base + (o.vi % 3 === 0 ? 1 : o.vi % 3 === 1 ? 0 : -1) + (o.v.id === 'AEC' || o.v.id === 'HCPR' ? 1 : 0));
 }
@@ -134,7 +144,7 @@ function seedProject(o, focus, ctx) {
   const track = mode === 'SME' ? (cat.get('verticalSeed', o.v.id).sme.employees <= 10 ? 'SME-T1' : cat.get('verticalSeed', o.v.id).sme.employees <= 50 ? 'SME-T2' : 'SME-T3') : null;
   const complexity = mode === 'SME' ? { 'SME-T1': 28, 'SME-T2': 47, 'SME-T3': 66 }[track] : 72 + (o.vi % 5) * 4;
   run(`INSERT INTO projects(id,org_id,name,description,focus,segment,mode,track,vertical_id,plan_year,status,template_id,creation_mode,complexity,progress,start_date,obs_function,created_by,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,?,?,?,?,?)`,
-    pid, o.id, S(nm), S(desc), focus, o.seg, mode, track, o.v.id, 2026, 'Active', U(`tpl:${o.v.id}:${mode}:${focus}`), 'catalog', complexity, start, ctx.fns[0].id, o.users[0].id, start, start);
+    pid, o.id, S(nm), S(desc), focus, o.seg, mode, track, o.v.id, 2026, 'Active', U(o.universal ? `tpl:universal:${mode}:${focus}` : `tpl:${o.v.id}:${mode}:${focus}`), 'catalog', complexity, start, ctx.fns[0].id, o.users[0].id, start, start);
   const project = one(`SELECT * FROM projects WHERE id=?`, pid);
   const phases = processPlan({ mode, track, vertical: o.v.id });
   instantiateProject(project, { phases, users: o.users, seedRng: r, ids: U, level: lvl, startDate: start });
@@ -147,7 +157,7 @@ function seedProject(o, focus, ctx) {
       state: decided ? 'Signed off' : 'Open', decision: decided ? 'Go' : null, decision_comment: decided ? tr('All mandatory items met; evidence attached.') : null, decided_by: decided ? o.users.find(u => u.role === 'R-02').id : null, decided_at: decided ? addDays(start, ph.no * 28) : null }, null, false);
   }
   const vcl = cat.get('checklistSeed', 'CL-' + o.v.id);
-  insertRecord(U(`vchk:${pid}`), 'PhaseChecklist', o.id, pid, vcl.id, { phase: 5, gate_id: null, checklist_id: vcl.id, items: vcl.data.items.map((i, k) => ({ ...i, done: lvl > 5 || k === 0 })), mandatory: false, enforce: false, state: 'Open' }, null, false);
+  if (vcl) insertRecord(U(`vchk:${pid}`), 'PhaseChecklist', o.id, pid, vcl.id, { phase: 5, gate_id: null, checklist_id: vcl.id, items: vcl.data.items.map((i, k) => ({ ...i, done: lvl > 5 || k === 0 })), mandatory: false, enforce: false, state: 'Open' }, null, false);
   if (mode === 'SME') { const c = cat.get('checklistSeedUniversal', 'CL-SME'); insertRecord(U(`smechk:${pid}`), 'PhaseChecklist', o.id, pid, 'CL-SME', { phase: 1, gate_id: null, checklist_id: 'CL-SME', items: c.items.map(i => ({ ...i, done: true })), mandatory: false, enforce: false, state: 'Signed off' }, null, false); }
   insertRecord(U(`cs:${pid}`), 'ComplexityScore', o.id, pid, null, { values: { impact: 4, novelty: focus === 'AI' ? 5 : 3, regulatory: 4, investment: mode === 'SME' ? 2 : 4, scope: mode === 'SME' ? 2 : 5, uncertainty: 3, ttm: 3 }, score: complexity, recommended_track: track, chosen_track: track }, null, false);
   refreshProgress(pid);

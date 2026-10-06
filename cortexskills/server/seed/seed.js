@@ -24,6 +24,7 @@ cat.clearCatalogCache();
 const { syncPermissions } = await import('../src/rbac.js');
 const { insertRecord } = await import('../src/services/projects.js');
 const { seedTemplateLibrary } = await import('./release11.js');
+const { seedDocLibrary } = await import('./release110.js');
 tx(() => {
   cat.list('role').forEach((r, i) => run(`INSERT INTO roles(id,name,baseline,sort) VALUES(?,?,?,?)`, r.id, S(r.name), null, i));
   syncPermissions();
@@ -50,6 +51,7 @@ tx(() => {
   }
   P('ProjectTemplate', 'tpl:draft:example', { code: 'PT-UNI-DRAFT-LEAD', name: T(['Draft — Leadership academy', 'Brouillon — Académie du leadership', 'مسودة — أكاديمية القيادة']), scope: 'Universal', mode: 'Full', focus: 'All', status: 'Draft', phases: phasesOf('Full', null), use_count: 0, platform: true });
   seedTemplateLibrary();
+  console.log(`• Document template library: ${seedDocLibrary()} templates`);
   for (const sp of cat.list('solutionPack')) P('Pack', 'pack:' + sp.id, { code: sp.id, name: sp.name, kind: sp.kind, price: sp.price, segment: sp.segment || '', contents: sp.packs, rules: { includedUsers: sp.includedUsers, overage: sp.overage, discount: sp.discount || 0, minUsers: sp.kind === 'sme' ? 5 : 1 } });
 });
 
@@ -106,7 +108,7 @@ function traceability(reqs) {
   return reqs.map(r => {
     const fam = r.id.split('-')[2];
     // Requirements added by SRS revisions 1.4 to 1.6 carry their own assessed status and evidence.
-    if (r.v16) return { id: r.id, section: r.section, text: tr(r.text), status: r.v16.status, evidence: tr(r.v16.evidence) };
+    if (r.v16) return { id: r.id, section: r.section, text: tr(r.text), status: r.v16.status, evidence: typeof r.v16.evidence === "object" ? r.v16.evidence : tr(r.v16.evidence) };
     const status = PARTIAL[r.id] ? 'Partial' : DEPLOY.includes(r.id) ? 'Deployment responsibility' : 'Met';
     return { id: r.id, section: r.section, text: tr(r.text), status, evidence: tr(PARTIAL[r.id] || (DEPLOY.includes(r.id) ? 'Target for the production hosting (sizing, uptime, encryption at rest, residency).' : EVID[fam] || 'Implemented')) };
   });

@@ -40,7 +40,7 @@ export function StepForms({ taskId, readOnly, onChanged }) {
         <button type="button" className="step-head" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? '' : s.id)}>
           <Icon name={s.done ? 'CircleCheck' : 'Circle'} className={s.done ? 'saved-ico' : 'muted-ico'} />
           <span className="step-title"><span className="mono xs">{s.id}</span> <span className="strong">{L(s.name)}</span><span className="xs muted"> · {L(s.form.kindLabel)} · {L(s.role)}</span></span>
-          {s.form.pattern === 'inline' && <span className="pill xs">{t('sfm.rows', { n: s.count })}</span>}
+          {(s.form.pattern === 'inline' || s.form.pattern === 'master-detail') && <span className="pill xs">{t('sfm.rows', { n: s.count })}</span>}
           <Icon name={isOpen ? 'ChevronUp' : 'ChevronDown'} /></button>
         {isOpen && <StepBody taskId={taskId} step={s} locked={x.locked} readOnly={readOnly || x.locked} pickers={pickers} onChanged={() => { d.reload(); onChanged?.(); }} />}
       </section>; })}
@@ -51,7 +51,7 @@ export function StepForms({ taskId, readOnly, onChanged }) {
 function StepBody({ taskId, step, readOnly, pickers, onChanged }) {
   const { t, L } = useI18n(); const act = useAction(); const { can } = useSession();
   const [reopen, setReopen] = useState(false); const [proposal, setProposal] = useState(null);
-  const f = step.form; const cols = useMemo(() => columnsOf(f.fields, L, pickers), [f.fields, L, pickers]);
+  const f = step.form; const inline = f.pattern === 'inline' || f.pattern === 'master-detail'; const single = f.pattern === 'form' || f.pattern === 'sectioned'; const cols = useMemo(() => columnsOf(f.fields, L, pickers), [f.fields, L, pickers]);
   const ro = readOnly || step.done;
   const base = `/tasks/${taskId}/steps/${step.id}`;
   const complete = async () => { await act(() => post(`${base}/complete`, {}), 'sfm.completed'); onChanged(); };
@@ -61,16 +61,16 @@ function StepBody({ taskId, step, readOnly, pickers, onChanged }) {
     <Brief brief={L(f.brief)} details={L(f.details)} />
     {f.register && <p className="xs muted"><Icon name="BookMarked" size={12} /> {t('sfm.feeds', { r: L(f.register.name) })}</p>}
     {f.pattern === 'system' && <div className="notice grey"><Icon name="Cpu" /><div className="small">{t('sfm.system')}</div></div>}
-    {f.pattern === 'inline' && <InlineTable id={'step-' + f.kind} columns={cols} rows={step.rows} readOnly={ro} caption={L(f.object)} rowTitle={r => r.item || r.criterion || r.session || L(f.object)}
+    {inline && <InlineTable id={'step-' + f.kind} newInEditor={f.pattern === 'master-detail'} columns={cols} rows={step.rows} readOnly={ro} caption={L(f.object)} rowTitle={r => r.item || r.criterion || r.session || L(f.object)}
       countLabel={n => t('sfm.count', { n, o: L(f.object).toLowerCase() })} emptyText={t('sfm.emptyRows', { o: L(f.object).toLowerCase() })}
       onSaveRow={(data, id) => (id ? put(`${base}/rows/${id}`, { data }) : post(`${base}/rows`, { data }))} onDeleteRow={id => del(`${base}/rows/${id}`)} />}
-    {f.pattern === 'form' && <StepFormFields base={base} fields={cols} values={step.record?.fields || {}} readOnly={ro} />}
+    {single && <StepFormFields base={base} fields={cols} values={step.record?.fields || {}} readOnly={ro} />}
     {proposal && <div className="card tint stack"><div className="row"><Icon name="Sparkles" /><span className="strong small">{t('sfm.aiProposal')}</span><AiBadge tier="Assistive" /><span className="pill xs">{proposal.engine}</span></div>
       {!proposal.rows.length ? <p className="small">{t('sfm.aiNothing')}</p> : <ul className="plain">{proposal.rows.map((r, i) => <li key={i} className="row" style={{ justifyContent: 'space-between' }}>
         <span className="small">{cols.slice(0, 3).map(c => r[c.key]).filter(Boolean).join(' · ')}</span><span className="row"><Btn size="sm" kind="primary" onClick={() => accept(r)}>{t('ai.accept')}</Btn><Btn size="sm" kind="ghost" onClick={() => setProposal(p => ({ ...p, rows: p.rows.filter(x => x !== r) }))}>{t('ai.reject')}</Btn></span></li>)}</ul>}
       <p className="xs muted">{t('sfm.aiCheckpoint')}</p></div>}
     {!readOnly && <div className="row">
-      {!step.done && f.pattern === 'inline' && can('ai.run') && <Btn size="sm" icon="Sparkles" onClick={suggest}>{t('sfm.suggest')}</Btn>}
+      {!step.done && inline && can('ai.run') && <Btn size="sm" icon="Sparkles" onClick={suggest}>{t('sfm.suggest')}</Btn>}
       <span className="spacer" />
       {step.done ? <Btn size="sm" icon="RotateCcw" onClick={() => setReopen(true)}>{t('sfm.reopen')}</Btn> : <Btn size="sm" kind="primary" icon="CircleCheck" onClick={complete}>{t('sfm.complete')}</Btn>}</div>}
     {step.done && <p className="xs muted"><StatusPill value="Completed" /> {step.record?.completed_at ? step.record.completed_at.slice(0, 10) : ''}</p>}

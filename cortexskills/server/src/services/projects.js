@@ -3,7 +3,7 @@ import { all, one, run } from '../db.js';
 import { uuid, now, S, J, pick, addDays, HttpError, rng } from '../lib/util.js';
 import * as cat from '../catalog.js';
 import { hashPassword } from '../auth.js';
-import { guidanceFor } from './guidance.js';
+import { guidanceFor, sectorOf } from './guidance.js';
 
 export const PHASES = () => cat.list('phase');
 
@@ -14,7 +14,7 @@ export function provisionOrg(orgId, { packId = 'PK-01', starterTeam = false, dom
   issueSaasLicence(orgId, packId, seats, expiryDays);
   // OBS skeleton: functions of the organization.
   const org = one(`SELECT * FROM organizations WHERE id=?`, orgId);
-  const vertical = cat.get('verticalSeed', org.sector);
+  const vertical = sectorOf(org.sector);
   const root = ids(`obs:${orgId}:root`);
   run(`INSERT OR IGNORE INTO obs_nodes(id,org_id,name,type,created_at) VALUES(?,?,?,?,?)`, root, orgId, org.name, 'Organization', t);
   for (const fn of cat.list('function').concat(vertical ? [vertical.coreFunction] : [])) {
@@ -74,7 +74,7 @@ export function instantiateProject(project, { phases, users = [], seedRng = null
     for (const e2eId of ph.e2e) {
       const e = cat.get('e2e', e2eId); if (!e) continue;
       const iid = ids(`e2e:${project.id}:${e2eId}`); sort++;
-      const phaseState = ph.no === 0 ? (lvl >= 3 ? 'mid' : lvl > 0 ? 'early' : 'none') : ph.no < lvl ? 'done' : ph.no === lvl ? 'mid' : 'none';
+      const phaseState = ph.no === 0 ? (lvl >= 7 ? 'done' : lvl >= 3 ? 'mid' : lvl > 0 ? 'early' : 'none') : ph.no < lvl ? 'done' : ph.no === lvl ? 'mid' : 'none';
       const taskIds = excludedTasks ? e.ufts.filter(u => !excludedTasks.has(u)) : e.ufts; if (!taskIds.length) continue;
       const n = taskIds.length;
       const doneCount = phaseState === 'done' ? n : phaseState === 'mid' ? Math.floor(n * (0.3 + r() * 0.55)) : phaseState === 'early' ? Math.floor(n * 0.25) : 0;

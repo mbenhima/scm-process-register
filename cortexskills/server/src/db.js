@@ -14,9 +14,13 @@ function prep(sql) {
 export const all = (sql, ...p) => prep(sql).all(...p);
 export const one = (sql, ...p) => prep(sql).get(...p);
 export const run = (sql, ...p) => prep(sql).run(...p);
+// Re-entrant transactions: an inner call runs in a savepoint of the outer transaction.
+let depth = 0;
 export function tx(fn) {
-  db.exec('BEGIN');
-  try { const r = fn(); db.exec('COMMIT'); return r; } catch (e) { db.exec('ROLLBACK'); throw e; }
+  const sp = depth ? `sp${depth}` : null;
+  db.exec(sp ? `SAVEPOINT ${sp}` : 'BEGIN'); depth++;
+  try { const r = fn(); depth--; db.exec(sp ? `RELEASE ${sp}` : 'COMMIT'); return r; }
+  catch (e) { depth--; db.exec(sp ? `ROLLBACK TO ${sp}; RELEASE ${sp}` : 'ROLLBACK'); throw e; }
 }
 
 // Additive schema (FR-DA-OPS-04): tables and columns are only ever added, never dropped.
