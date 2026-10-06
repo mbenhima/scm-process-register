@@ -5,6 +5,7 @@ import { J, pick, uuid, now, HttpError } from '../lib/util.js';
 import { t } from '../i18n.js';
 import { retrieve } from './retrieval.js';
 import { aiTier } from '../entitlements.js';
+import { getSpec, assemble, variables, liveConfig, profileOf } from './prompts.js';
 
 export const PROVIDERS = [
   { id: 'anthropic', name: 'Anthropic', endpoint: 'https://api.anthropic.com/v1/messages', models: ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-4-5-20251001'] },
@@ -23,7 +24,8 @@ export function effectiveActive(orgId, projectId, ucId) {
   return a ? !!a.active : true;
 }
 export function useCases(orgId) {
-  return all(`SELECT id, data FROM records WHERE entity='AIUseCase' AND org_id=? ORDER BY json_extract(data,'$.code')`, orgId).map(r => ({ id: r.id, ...J(r.data) }));
+  // The record identifier is the use case's id; its code (AIUC-xx) is kept separately and used by the usage log.
+  return all(`SELECT id, ref, data FROM records WHERE entity='AIUseCase' AND org_id=? ORDER BY coalesce(json_extract(data,'$.code'), ref)`, orgId).map(r => { const d = J(r.data, {}); return { ...d, id: r.id, code: d.code || d.id || r.ref }; });
 }
 export function useCaseByCode(orgId, code) { return useCases(orgId).find(u => u.code === code || u.id === code); }
 
@@ -92,66 +94,81 @@ function builtIn(uc, facts, lang, input) {
   return { text: T('draftIntro'), items: sections, confidence: 0.69 };
 }
 
+/** One live call. Only the parameters the model's capability profile accepts are sent (FR-DA-AI-19). */
 async function liveCall(llm, prompt) {
-  const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 20000);
+  const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 30000);
   try {
     const endpoint = llm.endpoint || PROVIDERS.find(p => p.id === llm.provider)?.endpoint;
     if (!endpoint) throw new Error('no-endpoint');
-    let res, text;
+    const prof = profileOf(llm.model, llm.profiles); const params = {};
+    if (prof.params.includes('max_tokens')) params.max_tokens = Math.min(Number(llm.max_tokens) || 900, prof.maxOutput);
+    if (prof.params.includes('temperature') && llm.temperature != null) params.temperature = Number(llm.temperature);
+    let res, text, body;
     if (llm.provider === 'anthropic') {
       res = await fetch(endpoint, { method: 'POST', signal: ctrl.signal, headers: { 'content-type': 'application/json', 'x-api-key': llm.apiKey, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model: llm.model, max_tokens: 900, messages: [{ role: 'user', content: prompt }] }) });
-      if (!res.ok) throw Object.assign(new Error('http'), { status: res.status });
-      text = (await res.json()).content?.map(c => c.text).join('\n');
+        body: JSON.stringify({ model: llm.model, max_tokens: params.max_tokens || 900, ...(params.temperature != null ? { temperature: params.temperature } : {}), messages: [{ role: 'user', content: prompt }] }) });
+      body = await res.json().catch(() => ({}));
+      if (!res.ok) throw Object.assign(new Error(body?.error?.message || 'http'), { status: res.status, providerMessage: body?.error?.message });
+      if (body.stop_reason === 'refusal') throw Object.assign(new Error('declined'), { declined: true });
+      text = body.content?.filter(c => c.type === 'text').map(c => c.text).join('\n');
     } else {
       res = await fetch(endpoint, { method: 'POST', signal: ctrl.signal, headers: { 'content-type': 'application/json', authorization: `Bearer ${llm.apiKey}` },
-        body: JSON.stringify({ model: llm.model, messages: [{ role: 'user', content: prompt }], max_tokens: 900 }) });
-      if (!res.ok) throw Object.assign(new Error('http'), { status: res.status });
-      text = (await res.json()).choices?.[0]?.message?.content;
+        body: JSON.stringify({ model: llm.model, messages: [{ role: 'user', content: prompt }], ...params }) });
+      body = await res.json().catch(() => ({}));
+      if (!res.ok) throw Object.assign(new Error(body?.error?.message || 'http'), { status: res.status, providerMessage: body?.error?.message });
+      if (body.choices?.[0]?.finish_reason === 'content_filter') throw Object.assign(new Error('declined'), { declined: true });
+      text = body.choices?.[0]?.message?.content;
     }
     if (!text) throw new Error('empty');
     return text;
   } finally { clearTimeout(timer); }
 }
-/** Connection test reporting only the outcome category (FR-DA-AI-15). */
+/** Connection test reporting, in plain language, whether the key was refused, a parameter rejected, the model declined or answered (FR-DA-AI-20). */
 export async function testConnection(llm) {
-  try { await liveCall(llm, 'Reply with OK.'); return 'works'; }
+  try { await liveCall(llm, 'Reply with the single word OK.'); return { outcome: 'answered' }; }
   catch (e) {
-    if (e.status === 401 || e.status === 403) return 'authFailure';
-    if (e.status === 404) return 'modelNotFound';
-    if (e.status === 429) return 'rateLimited';
-    return 'unreachable';
+    const msg = e.providerMessage || e.message;
+    if (e.status === 401 || e.status === 403) return { outcome: 'keyRefused', detail: msg };
+    if (e.declined) return { outcome: 'modelDeclined', detail: msg };
+    if (e.status === 400 && /param|temperature|top_p|max_tokens|unsupported|not supported/i.test(msg || '')) return { outcome: 'parameterRejected', detail: msg };
+    if (e.status === 404) return { outcome: 'modelNotFound', detail: msg };
+    if (e.status === 429) return { outcome: 'rateLimited', detail: msg };
+    if (e.status) return { outcome: 'modelError', detail: msg };
+    return { outcome: 'unreachable', detail: msg };
   }
 }
 
-/** Generate a suggestion. `llm` comes from the request header only; it is never stored, logged or returned. */
-export async function generate({ orgId, projectId, user, lang, code, input = {}, llm }) {
+/**
+ * Generate a suggestion: the prompt is assembled from the use case's Prompt Specification and shown with the engine
+ * that answered (FR-DA-AI-18, FR-DA-AIP-08, -12). The Organization's live model is used when it is enabled; a key sent
+ * in the request header (personal setting) is used otherwise; the built-in engine answers when neither is available.
+ */
+export async function generate({ orgId, projectId, user, lang, code, input = {}, llm, dryRun = false, taskId, stepId }) {
   const uc = useCaseByCode(orgId, code);
   if (!uc) throw new HttpError(404, 'err.notFound');
-  if (!effectiveActive(orgId, projectId, uc.id)) throw new HttpError(403, 'err.aiInactive', { useCase: uc.code });
+  if (!dryRun && !effectiveActive(orgId, projectId, uc.id)) throw new HttpError(403, 'err.aiInactive', { useCase: uc.code });
   if (uc.tier === 'Augmented' && aiTier(orgId) !== 'Assistive+Augmented') throw new HttpError(403, 'err.notEntitled', { feature: 'Augmented AI' });
+  const spec = getSpec(orgId, uc.id);
+  const vars = variables(orgId, { projectId, lang, taskId, stepId, values: input.values || {} });
+  const { prompt, missing } = assemble(spec, vars, lang);
+  if (missing.length) throw new HttpError(422, 'err.promptVariable', { name: missing.join(', ') }); // refuse, naming the variable
   const facts = projectFacts(orgId, projectId, lang);
   const query = [pick(uc.name, lang), input.query || '', facts.sector, facts.focus].join(' ');
   const refs = retrieve(orgId, query, { lang, k: 4 }).map(r => ({ source: r.source, title: r.title, score: r.score, route: r.route }));
   const base = builtIn(uc, facts, lang, input);
-  let result = { ...base, source: 'built-in' };
-  if (llm?.apiKey && llm?.model) {
-    const prompt = [
-      `You assist a Training Engineering application. Task: ${pick(uc.name, 'en')}. Answer in language "${lang}".`,
-      'Use only the facts and references below. Do not state any number, score or name that is not present in them.',
-      'Stay within the vocabulary of training engineering (needs analysis, themes, roadmap, RACSI, KPIs).',
-      `Facts: ${JSON.stringify({ org: facts.org, sector: facts.sector, focus: facts.focus, themes: (facts.themes || []).map(x => pick(x.name, lang)).slice(0, 8) })}`,
-      `References: ${refs.map(r => r.title).join(' | ')}`,
-      `Draft to improve: ${base.text} ${base.items.map(i => i.label + ': ' + (i.detail || '')).join('; ')}`,
-    ].join('\n');
-    try { const text = await liveCall(llm, prompt); result = { text, items: [], confidence: 0.8, source: 'live:' + llm.model }; }
-    catch { result.fallback = true; }
+  let result = { ...base, source: 'built-in', engine: 'built-in', model: null };
+  const live = liveConfig(orgId, spec.model) || (llm?.apiKey && llm?.model ? llm : null);
+  if (!live) result.reason = 'noModel';
+  else {
+    try { const text = await liveCall(live, prompt + `\n\n## References\n${refs.map(r => r.title).join(' | ')}\n\n## Draft to improve\n${base.text} ${base.items.map(i => i.label + ': ' + (i.detail || '')).join('; ')}`);
+      result = { text, items: [], confidence: 0.8, source: 'live:' + live.model, engine: 'live', model: live.model }; }
+    catch (e) { result.fallback = true; result.reason = 'modelError'; result.reasonDetail = e.providerMessage || e.message; }
   }
-  return { useCase: { id: uc.id, code: uc.code, name: uc.name, tier: uc.tier, checkpoint: uc.checkpoint }, ...result, references: refs, generatedAt: now(), label: t('ai.label', lang) };
+  return { useCase: { id: uc.id, code: uc.code, name: uc.name, tier: uc.tier, checkpoint: uc.checkpoint }, ...result, prompt, specVersion: spec.version, references: refs, generatedAt: now(), label: t('ai.label', lang) };
 }
 
 /** Append-only AI Usage Log (FR-DA-AI-07): no edit or delete route exists. */
-export function logUsage({ orgId, projectId, useCaseId, recordRef, userId, outcome, source, confidence, question }) {
-  run(`INSERT INTO ai_usage_log(id,org_id,project_id,use_case_id,record_ref,user_id,outcome,source,confidence,question,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)`,
-    uuid(), orgId, projectId || null, useCaseId, recordRef || null, userId, outcome, source || 'built-in', confidence ?? null, question || null, now());
+export function logUsage({ orgId, projectId, useCaseId, recordRef, userId, outcome, source, confidence, question, specVersion, engine, model }) {
+  run(`INSERT INTO ai_usage_log(id,org_id,project_id,use_case_id,record_ref,user_id,outcome,source,confidence,question,created_at,spec_version,engine,model) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    uuid(), orgId, projectId || null, useCaseId, recordRef || null, userId, outcome, source || 'built-in', confidence ?? null, question || null, now(), specVersion ?? null, engine || (String(source || '').startsWith('live') ? 'live' : 'built-in'), model || null);
 }

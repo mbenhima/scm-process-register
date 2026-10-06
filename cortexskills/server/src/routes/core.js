@@ -9,7 +9,7 @@ import { NAV, NAV_GROUPS } from '../nav.js';
 import { getLanguages } from '../i18n.js';
 
 const r = Router();
-const DEFAULT_PREFS = { dock: 'left', pinned: true, favorites: ['/', '/my-tasks', '/projects'], collapsed: [], channels: { alerts: ['inapp', 'email'], tasks: ['inapp'], approvals: ['inapp', 'email'], questionnaires: ['inapp'], system: ['inapp'] } };
+const DEFAULT_PREFS = { dock: 'left', pinned: true, density: 'comfortable', pageSize: 20, panels: { nav: 260, context: 320, contextOpen: false, contextView: 'assistant' }, tables: {}, favorites: ['/', '/my-tasks', '/projects'], collapsed: [], channels: { alerts: ['inapp', 'email'], tasks: ['inapp'], approvals: ['inapp', 'email'], questionnaires: ['inapp'], system: ['inapp'] } };
 const prefsOf = id => ({ ...DEFAULT_PREFS, ...J(one(`SELECT data FROM user_prefs WHERE user_id=?`, id)?.data, {}) });
 
 r.get('/me', ah(req => {
@@ -38,6 +38,24 @@ r.put('/me/prefs', ah(req => {
   // Recent global searches, kept as a personal preference (FR-DA-SRCH-05).
   if (Array.isArray(b.recentSearches)) next.recentSearches = b.recentSearches.filter(x => typeof x === 'string').map(x => x.slice(0, 80)).slice(0, 10);
   if (b.channels && typeof b.channels === 'object') next.channels = b.channels;
+  // Layout panels (FR-DA-PNL-06): widths clamped to their limits (Table 4.50-1).
+  if (b.panels && typeof b.panels === 'object') {
+    const clamp = (v, lo, hi, d) => (Number.isFinite(Number(v)) ? Math.min(hi, Math.max(lo, Math.round(Number(v)))) : d);
+    next.panels = { nav: clamp(b.panels.nav, 180, 480, 260), context: clamp(b.panels.context, 220, 560, 320), contextOpen: !!b.panels.contextOpen, contextView: typeof b.panels.contextView === 'string' ? b.panels.contextView.slice(0, 24) : 'assistant' };
+  }
+  // Table density and page size (FR-DA-TBL-01, -04) and per-table view preferences (FR-DA-MRE-11, TableViewPreference).
+  if (['comfortable', 'compact'].includes(b.density)) next.density = b.density;
+  if ([20, 50, 100, 0].includes(Number(b.pageSize))) next.pageSize = Number(b.pageSize);
+  if (b.tables && typeof b.tables === 'object') {
+    const tables = { ...(cur.tables || {}) };
+    for (const [id, v] of Object.entries(b.tables).slice(0, 200)) {
+      if (!/^[\w:.-]{1,80}$/.test(id) || !v || typeof v !== 'object') continue;
+      const keys = a => (Array.isArray(a) ? a.filter(x => typeof x === 'string' && x.length <= 60).slice(0, 60) : undefined);
+      const widths = {}; if (v.widths && typeof v.widths === 'object') for (const [k, w] of Object.entries(v.widths).slice(0, 60)) if (Number(w) >= 80 && Number(w) <= 1200) widths[k] = Math.round(Number(w));
+      tables[id] = { order: keys(v.order), hidden: keys(v.hidden), widths, sort: v.sort && typeof v.sort.key === 'string' && [1, -1].includes(v.sort.dir) ? { key: v.sort.key.slice(0, 60), dir: v.sort.dir } : null, pin: v.pin !== false };
+    }
+    next.tables = tables;
+  }
   run(`INSERT INTO user_prefs(user_id,data) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data`, req.user.id, S(next));
   return next;
 }));

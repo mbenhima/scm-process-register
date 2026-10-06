@@ -1,0 +1,607 @@
+{
+ "dt.filter": [
+  "Filter",
+  "Filtrer",
+  "تصفية"
+ ],
+ "dt.density": [
+  "Row density",
+  "Densité des lignes",
+  "كثافة الصفوف"
+ ],
+ "dt.comfortable": [
+  "Comfortable",
+  "Confortable",
+  "مريحة"
+ ],
+ "dt.compact": [
+  "Compact",
+  "Compacte",
+  "مضغوطة"
+ ],
+ "dt.columns": [
+  "Columns",
+  "Colonnes",
+  "الأعمدة"
+ ],
+ "dt.removeFilter": [
+  "Remove this filter",
+  "Retirer ce filtre",
+  "إزالة هذا الفلتر"
+ ],
+ "dt.clearAll": [
+  "Clear all",
+  "Tout effacer",
+  "مسح الكل"
+ ],
+ "dt.bulk": [
+  "Actions on selected rows",
+  "Actions sur les lignes sélectionnées",
+  "إجراءات على الصفوف المحددة"
+ ],
+ "dt.selected": [
+  "{n} selected",
+  "{n} sélectionné(s)",
+  "{n} محدد"
+ ],
+ "dt.clearSelection": [
+  "Clear selection",
+  "Désélectionner",
+  "إلغاء التحديد"
+ ],
+ "dt.errorTitle": [
+  "The list could not be loaded.",
+  "La liste n’a pas pu être chargée.",
+  "تعذر تحميل القائمة."
+ ],
+ "common.retry": [
+  "Retry",
+  "Réessayer",
+  "إعادة المحاولة"
+ ],
+ "dt.emptyText": [
+  "Records appear here as soon as they are created.",
+  "Les enregistrements apparaissent ici dès leur création.",
+  "تظهر السجلات هنا فور إنشائها."
+ ],
+ "dt.noMatch": [
+  "No record matches these filters.",
+  "Aucun enregistrement ne correspond à ces filtres.",
+  "لا يوجد سجل يطابق هذه الفلاتر."
+ ],
+ "dt.noMatchText": [
+  "Change the search or the filters, or clear them.",
+  "Modifiez la recherche ou les filtres, ou effacez-les.",
+  "غيّر البحث أو الفلاتر أو امسحها."
+ ],
+ "dt.clearFilters": [
+  "Clear filters",
+  "Effacer les filtres",
+  "مسح الفلاتر"
+ ],
+ "dt.selectAll": [
+  "Select every filtered row",
+  "Sélectionner toutes les lignes filtrées",
+  "تحديد كل الصفوف المصفاة"
+ ],
+ "dt.sortBy": [
+  "Sort by {c}",
+  "Trier par {c}",
+  "ترتيب حسب {c}"
+ ],
+ "dt.resizeCol": [
+  "Resize column {c}",
+  "Redimensionner la colonne {c}",
+  "تغيير حجم العمود {c}"
+ ],
+ "dt.selectRow": [
+  "Select this row",
+  "Sélectionner cette ligne",
+  "تحديد هذا الصف"
+ ],
+ "dt.range": [
+  "{from}–{to} of {n}",
+  "{from}–{to} sur {n}",
+  "{from}–{to} من {n}"
+ ],
+ "dt.pageSize": [
+  "Rows per page",
+  "Lignes par page",
+  "صفوف في الصفحة"
+ ],
+ "dt.all": [
+  "All",
+  "Toutes",
+  "الكل"
+ ],
+ "dt.prev": [
+  "Previous page",
+  "Page précédente",
+  "الصفحة السابقة"
+ ],
+ "dt.page": [
+  "Page {p} of {n}",
+  "Page {p} sur {n}",
+  "الصفحة {p} من {n}"
+ ],
+ "dt.next": [
+  "Next page",
+  "Page suivante",
+  "الصفحة التالية"
+ ],
+ "dt.addFilter": [
+  "Add filter",
+  "Ajouter le filtre",
+  "إضافة فلتر"
+ ],
+ "dt.field": [
+  "Field",
+  "Champ",
+  "الحقل"
+ ],
+ "dt.operator": [
+  "Operator",
+  "Opérateur",
+  "العامل"
+ ],
+ "dt.value": [
+  "Value",
+  "Valeur",
+  "القيمة"
+ ],
+ "dt.pinFirst": [
+  "Pin the first column",
+  "Épingler la première colonne",
+  "تثبيت العمود الأول"
+ ],
+ "dt.resetView": [
+  "Reset this view",
+  "Réinitialiser cette vue",
+  "إعادة ضبط هذا العرض"
+ ],
+ "dt.op.contains": [
+  "contains",
+  "contient",
+  "يحتوي"
+ ],
+ "dt.op.eq": [
+  "equals",
+  "est égal à",
+  "يساوي"
+ ],
+ "dt.op.neq": [
+  "is not",
+  "est différent de",
+  "لا يساوي"
+ ],
+ "dt.op.gt": [
+  "greater than",
+  "supérieur à",
+  "أكبر من"
+ ],
+ "dt.op.lt": [
+  "less than",
+  "inférieur à",
+  "أصغر من"
+ ],
+ "dt.op.empty": [
+  "is empty",
+  "est vide",
+  "فارغ"
+ ],
+ "dt.op.notEmpty": [
+  "is not empty",
+  "n’est pas vide",
+  "غير فارغ"
+ ],
+ "search.status": [
+  "Status",
+  "Statut",
+  "الحالة"
+ ],
+ "search.anyStatus": [
+  "Any status",
+  "Tout statut",
+  "كل الحالات"
+ ],
+ "search.since": [
+  "Updated",
+  "Mis à jour",
+  "محدث"
+ ],
+ "search.anyDate": [
+  "Any date",
+  "Toute date",
+  "كل التواريخ"
+ ],
+ "search.days": [
+  "Last {n} days",
+  "{n} derniers jours",
+  "آخر {n} يوماً"
+ ],
+ "search.results": [
+  "Search results",
+  "Résultats de la recherche",
+  "نتائج البحث"
+ ],
+ "search.commands": [
+  "Go to",
+  "Aller à",
+  "الانتقال إلى"
+ ],
+ "search.kbMove": [
+  "move",
+  "se déplacer",
+  "التنقل"
+ ],
+ "search.kbOpen": [
+  "open",
+  "ouvrir",
+  "فتح"
+ ],
+ "search.kbClose": [
+  "close",
+  "fermer",
+  "إغلاق"
+ ],
+ "search.kbGo": [
+  "go to a screen",
+  "aller à un écran",
+  "الانتقال إلى شاشة"
+ ],
+ "search.type.command": [
+  "Screen",
+  "Écran",
+  "شاشة"
+ ],
+ "search.type.document": [
+  "Documents",
+  "Documents",
+  "الوثائق"
+ ],
+ "mre.required": [
+  "{field} is required.",
+  "{field} est obligatoire.",
+  "{field} إلزامي."
+ ],
+ "mre.number": [
+  "Type a number.",
+  "Saisissez un nombre.",
+  "أدخل رقماً."
+ ],
+ "mre.min": [
+  "The minimum is {min}.",
+  "Le minimum est {min}.",
+  "الحد الأدنى {min}."
+ ],
+ "mre.max": [
+  "The maximum is {max}.",
+  "Le maximum est {max}.",
+  "الحد الأقصى {max}."
+ ],
+ "mre.date": [
+  "Type a date (YYYY-MM-DD).",
+  "Saisissez une date (AAAA-MM-JJ).",
+  "أدخل تاريخاً (YYYY-MM-DD)."
+ ],
+ "mre.notInList": [
+  "Choose a value of the list.",
+  "Choisissez une valeur de la liste.",
+  "اختر قيمة من القائمة."
+ ],
+ "mre.deleted": [
+  "Row deleted.",
+  "Ligne supprimée.",
+  "تم حذف الصف."
+ ],
+ "common.undo": [
+  "Undo",
+  "Annuler",
+  "تراجع"
+ ],
+ "mre.pasted": [
+  "{n} row(s) pasted, {bad} cell(s) to correct.",
+  "{n} ligne(s) collée(s), {bad} cellule(s) à corriger.",
+  "تم لصق {n} صف، {bad} خلية للتصحيح."
+ ],
+ "mre.confirmDelete": [
+  "Delete {n} row(s)?",
+  "Supprimer {n} ligne(s) ?",
+  "حذف {n} صف؟"
+ ],
+ "mre.duplicatePrevious": [
+  "Duplicate previous row",
+  "Dupliquer la ligne précédente",
+  "تكرار الصف السابق"
+ ],
+ "mre.saveAll": [
+  "Save all ({n})",
+  "Tout enregistrer ({n})",
+  "حفظ الكل ({n})"
+ ],
+ "mre.setField": [
+  "Set a field",
+  "Définir un champ",
+  "تعيين حقل"
+ ],
+ "mre.apply": [
+  "Apply to selection",
+  "Appliquer à la sélection",
+  "تطبيق على التحديد"
+ ],
+ "mre.status": [
+  "Row status",
+  "État de la ligne",
+  "حالة الصف"
+ ],
+ "mre.actions": [
+  "Row actions",
+  "Actions de ligne",
+  "إجراءات الصف"
+ ],
+ "mre.empty": [
+  "No row yet. Add the first row or paste rows from a spreadsheet.",
+  "Aucune ligne. Ajoutez la première ligne ou collez des lignes depuis un tableur.",
+  "لا توجد صفوف. أضف الصف الأول أو الصق صفوفاً من جدول بيانات."
+ ],
+ "mre.addRow": [
+  "Add row",
+  "Ajouter une ligne",
+  "إضافة صف"
+ ],
+ "mre.count": [
+  "{n} row(s).",
+  "{n} ligne(s).",
+  "{n} صف."
+ ],
+ "mre.pending": [
+  "{n} not saved",
+  "{n} non enregistrée(s)",
+  "{n} غير محفوظ"
+ ],
+ "mre.value": [
+  "Value",
+  "Valeur",
+  "القيمة"
+ ],
+ "mre.duplicate": [
+  "Duplicate row",
+  "Dupliquer la ligne",
+  "تكرار الصف"
+ ],
+ "mre.delete": [
+  "Delete row",
+  "Supprimer la ligne",
+  "حذف الصف"
+ ],
+ "mre.typedBefore": [
+  "Typed before in this table",
+  "Déjà saisi dans ce tableau",
+  "أدخل سابقاً في هذا الجدول"
+ ],
+ "mre.custom": [
+  "Custom value…",
+  "Valeur personnalisée…",
+  "قيمة مخصصة…"
+ ],
+ "mre.st.clean": [
+  "Saved",
+  "Enregistrée",
+  "محفوظ"
+ ],
+ "mre.st.dirty": [
+  "Changed, not saved",
+  "Modifiée, non enregistrée",
+  "معدل، غير محفوظ"
+ ],
+ "mre.st.saving": [
+  "Saving",
+  "Enregistrement",
+  "جارٍ الحفظ"
+ ],
+ "mre.st.saved": [
+  "Saved",
+  "Enregistrée",
+  "محفوظ"
+ ],
+ "mre.st.error": [
+  "A cell is invalid",
+  "Une cellule est invalide",
+  "خلية غير صالحة"
+ ],
+ "select.placeholder": [
+  "Choose…",
+  "Choisir…",
+  "اختر…"
+ ],
+ "select.filter": [
+  "Filter the options",
+  "Filtrer les options",
+  "تصفية الخيارات"
+ ],
+ "select.none": [
+  "No option matches.",
+  "Aucune option ne correspond.",
+  "لا يوجد خيار مطابق."
+ ],
+ "nav.breadcrumbs": [
+  "Breadcrumbs",
+  "Fil d’Ariane",
+  "مسار التنقل"
+ ],
+ "nav.detail": [
+  "Detail",
+  "Détail",
+  "التفاصيل"
+ ],
+ "nav.filter": [
+  "Filter the menu",
+  "Filtrer le menu",
+  "تصفية القائمة"
+ ],
+ "nav.noMatch": [
+  "No menu item matches.",
+  "Aucun élément du menu ne correspond.",
+  "لا يوجد عنصر مطابق في القائمة."
+ ],
+ "state.offline": [
+  "You’re offline. Changes will sync when you’re back.",
+  "Vous êtes hors ligne. Les modifications seront synchronisées à votre retour.",
+  "أنت غير متصل. ستتم مزامنة التغييرات عند عودتك."
+ ],
+ "panel.resizeNav": [
+  "Resize navigation panel",
+  "Redimensionner le panneau de navigation",
+  "تغيير حجم لوحة التنقل"
+ ],
+ "panel.context": [
+  "Context panel",
+  "Panneau de contexte",
+  "لوحة السياق"
+ ],
+ "panel.resizeContext": [
+  "Resize context panel",
+  "Redimensionner le panneau de contexte",
+  "تغيير حجم لوحة السياق"
+ ],
+ "panel.collapse": [
+  "Close the context panel",
+  "Fermer le panneau de contexte",
+  "إغلاق لوحة السياق"
+ ],
+ "state.expired.title": [
+  "Session expired",
+  "Session expirée",
+  "انتهت الجلسة"
+ ],
+ "state.expired.signIn": [
+  "Sign in again",
+  "Se reconnecter",
+  "تسجيل الدخول مجدداً"
+ ],
+ "state.expired.text": [
+  "Your session ended after a period of inactivity. Sign in again to keep working on this screen.",
+  "Votre session a expiré après une période d’inactivité. Reconnectez-vous pour continuer sur cet écran.",
+  "انتهت جلستك بعد فترة من عدم النشاط. سجل الدخول مجدداً لمواصلة العمل على هذه الشاشة."
+ ],
+ "chart.tools": [
+  "Chart tools",
+  "Outils du graphique",
+  "أدوات الرسم"
+ ],
+ "chart.copy": [
+  "Copy as image",
+  "Copier comme image",
+  "نسخ كصورة"
+ ],
+ "chart.png": [
+  "Download PNG",
+  "Télécharger en PNG",
+  "تنزيل PNG"
+ ],
+ "chart.svg": [
+  "Download SVG",
+  "Télécharger en SVG",
+  "تنزيل SVG"
+ ],
+ "chart.csv": [
+  "Download the data (CSV)",
+  "Télécharger les données (CSV)",
+  "تنزيل البيانات (CSV)"
+ ],
+ "chart.print": [
+  "Print",
+  "Imprimer",
+  "طباعة"
+ ],
+ "chart.showChart": [
+  "Show the chart",
+  "Afficher le graphique",
+  "عرض الرسم"
+ ],
+ "chart.showTable": [
+  "Show the data table",
+  "Afficher le tableau de données",
+  "عرض جدول البيانات"
+ ],
+ "chart.noData": [
+  "No data for this period.",
+  "Aucune donnée pour cette période.",
+  "لا توجد بيانات لهذه الفترة."
+ ],
+ "common.confirm": [
+  "Confirm",
+  "Confirmer",
+  "تأكيد"
+ ],
+ "common.optional": [
+  "optional",
+  "facultatif",
+  "اختياري"
+ ],
+ "state.error.title": [
+  "This page could not be displayed.",
+  "Cette page n’a pas pu être affichée.",
+  "تعذر عرض هذه الصفحة."
+ ],
+ "state.error.text": [
+  "The server did not answer or an error occurred. Retry, or return to the dashboard.",
+  "Le serveur n’a pas répondu ou une erreur est survenue. Réessayez ou revenez au tableau de bord.",
+  "لم يستجب الخادم أو حدث خطأ. أعد المحاولة أو عد إلى لوحة القيادة."
+ ],
+ "state.goHome": [
+  "Go to the dashboard",
+  "Aller au tableau de bord",
+  "الانتقال إلى لوحة القيادة"
+ ],
+ "state.notFound.title": [
+  "This page does not exist.",
+  "Cette page n’existe pas.",
+  "هذه الصفحة غير موجودة."
+ ],
+ "access.requested": [
+  "Request sent to your administrator.",
+  "Demande envoyée à votre administrateur.",
+  "تم إرسال الطلب إلى المسؤول."
+ ],
+ "access.request": [
+  "Request access",
+  "Demander l’accès",
+  "طلب الوصول"
+ ],
+ "toast.dismiss": [
+  "Dismiss",
+  "Fermer",
+  "إغلاق"
+ ],
+ "common.hideDetails": [
+  "Hide details",
+  "Masquer le détail",
+  "إخفاء التفاصيل"
+ ],
+ "common.showDetails": [
+  "Show details",
+  "Afficher le détail",
+  "عرض التفاصيل"
+ ],
+ "origin.template": [
+  "Template",
+  "Modèle",
+  "قالب"
+ ],
+ "origin.ai": [
+  "AI",
+  "IA",
+  "ذكاء اصطناعي"
+ ],
+ "origin.manual": [
+  "Manual",
+  "Manuel",
+  "يدوي"
+ ],
+ "origin.library": [
+  "Library",
+  "Bibliothèque",
+  "مكتبة"
+ ]
+}

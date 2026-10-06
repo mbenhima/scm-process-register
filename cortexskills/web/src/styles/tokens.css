@@ -1,36 +1,108 @@
-/* Design tokens — the only place colours, spacing, type and shape are defined. Components use these variables. */
+/*
+ * Design tokens — the only file where a colour, font, size, spacing, radius, shadow, focus ring, duration, easing,
+ * breakpoint, panel width or layer is written as a raw value (NFR-DA-VDS-01). Components reference token names only;
+ * `npm run check:tokens` (also run in CI) rejects a raw colour anywhere else in web/src.
+ *
+ * Token names follow the Dynamic Apps standard (SRS v1.10, Appendix J). Their values come from the organization's
+ * Graphical Chart (Brand guide v1.0), which governs colour:
+ *   --aiv-azure  (primary action, active state, primary series)  = Orange       #F8931D
+ *   --aiv-navy   (headings, dark fills, tooltips, overlay)       = Grey Dark    #3A3A3C
+ *   --aiv-ink    (body text)                                     = Grey Ink     #58595B
+ *   --aiv-muted  (captions, axis labels — AA on white)           = Grey Ink     #58595B
+ *   --aiv-teal / --aiv-green (overlay and growth series, fills)  = muted blue / muted green
+ * Orange is never used for text smaller than 24 px (NFR-DA-VDS-03, NFR-DA-UX-19).
+ */
 :root {
-  --pa-orange: #F8931D;
-  --pa-orange-deep: #E07B00;
-  --pa-orange-tint: #FDEEDA;
-  --pa-grey-dark: #3A3A3C;
-  --pa-grey-ink: #58595B;
-  --pa-grey-medium: #808184;
-  --pa-grey-light: #F2F2F3;
-  --pa-grey-line: #E3E3E4;
-  --pa-bg: #FDFDFC;
-  --pa-white: #FFFFFF;
+  /* J-1 core palette */
+  --aiv-navy: #3A3A3C;
+  --aiv-navy-dark: #3A3A3C;
+  --aiv-azure: #F8931D;
+  --aiv-azure-deep: #E07B00;
+  --aiv-green: #5AA469;
+  --aiv-teal: #3A6EA5;
+  --aiv-ink: #58595B;
+  --aiv-muted: #58595B;
+  --aiv-muted-2: #808184;
+  --aiv-white: #FFFFFF;
+  --aiv-bg: #FDFDFC;
+  --aiv-bg-alt: #F2F2F3;
+  --aiv-line: #E3E3E4;
+  --aiv-azure-tint: #FDEEDA;
+  --aiv-green-tint: #D9EAD3;
+  --aiv-teal-tint: #F2F2F3;
 
-  /* Semantic status scale (scores, health, heatmaps) — always red → green */
-  --pa-status-1: #F4C7C3;
-  --pa-status-2: #FBE0B5;
-  --pa-status-3: #FFF3B0;
-  --pa-status-4: #D9EAD3;
-  --pa-status-5: #B6D7A8;
-  /* Chart overlay series only */
-  --pa-blue: #3A6EA5;
-  --pa-green: #5AA469;
+  /* J-2 status scale — always in this order, always with a label */
+  --aiv-status-1: #F4C7C3;
+  --aiv-status-2: #FBE0B5;
+  --aiv-status-3: #FFF3B0;
+  --aiv-status-4: #D9EAD3;
+  --aiv-status-5: #B6D7A8;
 
-  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
-  --fs-12: 12px; --fs-14: 14px; --fs-16: 16px; --fs-18: 18px; --fs-20: 20px; --fs-24: 24px; --fs-30: 30px; --fs-36: 36px;
+  /* Translucent tints built from the palette */
+  --aiv-overlay: rgba(58, 58, 60, 0.45);
+  --aiv-scrim: rgba(58, 58, 60, 0.32);
+  --aiv-azure-a35: rgba(248, 147, 29, 0.35);
+  --aiv-azure-a18: rgba(248, 147, 29, 0.18);
+  --aiv-white-a80: rgba(255, 255, 255, 0.8);
+  --aiv-skeleton-a: #F2F2F3;
+  --aiv-skeleton-b: #E3E3E4;
 
-  --font-serif: 'Source Serif 4', 'Noto Naskh Arabic', serif;
-  --font-sans: 'Source Sans 3', 'Noto Naskh Arabic', sans-serif;
+  /* J-2 typography */
+  --aiv-font-heading: 'Montserrat', 'Noto Kufi Arabic', sans-serif;
+  --aiv-font-body: 'Open Sans', 'Noto Sans Arabic', sans-serif;
+  --aiv-font-mono: 'JetBrains Mono', monospace;
+  --aiv-fs-12: 12px; --aiv-fs-13: 13px; --aiv-fs-14: 14px; --aiv-fs-16: 16px; --aiv-fs-18: 18px;
+  --aiv-fs-20: 20px; --aiv-fs-24: 24px; --aiv-fs-30: 30px; --aiv-fs-36: 36px; --aiv-fs-48: 48px;
+  --aiv-lh-tight: 1.2; --aiv-lh-body: 1.5;
+  --aiv-tracking-eyebrow: 0.08em;
 
-  --r-btn: 8px; --r-input: 8px; --r-card: 12px;
-  --shadow-card: 0 1px 2px rgba(58, 58, 60, 0.06), 0 2px 8px rgba(58, 58, 60, 0.06);
-  --focus-ring: 0 0 0 2px var(--pa-white), 0 0 0 4px var(--pa-orange);
-  --nav-w: 264px; --nav-rail: 16px; --header-h: 64px;
-  --t-fast: 120ms ease;
+  /* J-6 spacing 0 · 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 */
+  --aiv-space-0: 0; --aiv-space-1: 4px; --aiv-space-2: 8px; --aiv-space-3: 12px; --aiv-space-4: 16px;
+  --aiv-space-5: 24px; --aiv-space-6: 32px; --aiv-space-7: 48px; --aiv-space-8: 64px; --aiv-space-9: 96px;
+
+  /* Shape */
+  --aiv-radius-btn: 8px; --aiv-radius-input: 8px; --aiv-radius-card: 12px; --aiv-radius-modal: 16px; --aiv-radius-badge: 6px;
+  --aiv-border: 1px;
+
+  /* Elevation (tinted with the navy token) */
+  --aiv-shadow-card: 0 2px 8px rgba(58, 58, 60, 0.06);
+  --aiv-shadow-hover: 0 8px 28px rgba(58, 58, 60, 0.12);
+  --aiv-shadow-modal: 0 20px 60px rgba(58, 58, 60, 0.18);
+  --aiv-shadow-primary: 0 4px 12px rgba(248, 147, 29, 0.28);
+
+  /* Focus */
+  --aiv-focus-ring: 0 0 0 3px rgba(248, 147, 29, 0.35);
+  --aiv-focus-offset: 2px;
+
+  /* Motion */
+  --aiv-duration-fast: 150ms; --aiv-duration-base: 200ms; --aiv-duration-slow: 300ms;
+  --aiv-easing-standard: cubic-bezier(0.2, 0, 0, 1); --aiv-easing-emphasis: cubic-bezier(0.3, 0, 0, 1.2);
+
+  /* Panels (FR-DA-PNL-02) */
+  --aiv-panel-left-default: 260px; --aiv-panel-left-min: 180px; --aiv-panel-left-max: 480px;
+  --aiv-panel-right-default: 320px; --aiv-panel-right-min: 220px; --aiv-panel-right-max: 560px;
+  --aiv-panel-center-min: 400px; --aiv-panel-rail: 64px;
+
+  /* Component sizes */
+  --aiv-topbar-h: 64px; --aiv-menu-item-h: 40px; --aiv-field-h: 48px;
+  --aiv-btn-sm: 32px; --aiv-btn-md: 40px; --aiv-btn-lg: 48px;
+  --aiv-row-comfortable: 56px; --aiv-row-compact: 40px;
+  --aiv-container: 1200px; --aiv-gutter: 24px;
+  --aiv-dialog-sm: 560px; --aiv-dialog-md: 720px; --aiv-dialog-lg: 960px;
+  --aiv-drawer-sm: 320px; --aiv-drawer-md: 400px; --aiv-drawer-lg: 480px;
+  --aiv-palette-w: 640px; --aiv-menu-max-h: 320px; --aiv-option-h: 40px; --aiv-tooltip-max: 240px;
+  --aiv-empty-max: 400px; --aiv-chart-min-h: 240px;
+  --aiv-icon-16: 16px; --aiv-icon-20: 20px; --aiv-icon-24: 24px; --aiv-icon-32: 32px; --aiv-icon-48: 48px;
+
+  /* Row status (FR-DA-MRE-03) */
+  --aiv-row-hover: var(--aiv-azure-tint); --aiv-row-dirty: var(--aiv-azure); --aiv-row-saved: var(--aiv-green); --aiv-row-error: var(--aiv-status-1);
+
+  /* Breakpoints (documented; media queries repeat these numbers) */
+  --aiv-bp-sm: 480px; --aiv-bp-md: 768px; --aiv-bp-lg: 1024px; --aiv-bp-xl: 1280px; --aiv-bp-2xl: 1536px;
+
+  /* Layers */
+  --aiv-z-base: 0; --aiv-z-sticky: 10; --aiv-z-dropdown: 100; --aiv-z-drawer: 200; --aiv-z-modal: 300; --aiv-z-toast: 400; --aiv-z-tooltip: 500;
 }
-[dir='rtl'] { --font-serif: 'Noto Naskh Arabic', 'Source Serif 4', serif; --font-sans: 'Noto Naskh Arabic', 'Source Sans 3', sans-serif; }
+@media (prefers-reduced-motion: reduce) {
+  :root { --aiv-duration-fast: 0ms; --aiv-duration-base: 0ms; --aiv-duration-slow: 0ms; }
+}

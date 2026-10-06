@@ -23,6 +23,9 @@ import questionnaireRoutes from './routes/questionnaires.js';
 import trainingRoutes from './routes/training.js';
 import searchRoutes from './routes/search.js';
 import documentRoutes from './routes/documents.js';
+import designRoutes from './routes/design.js';
+import stepRoutes from './routes/steps.js';
+import obsRoutes from './routes/obs.js';
 import { retryMessages } from './services/channels.js';
 import { tickAll } from './services/questionnaires.js';
 
@@ -39,7 +42,7 @@ export async function createApp({ background = true } = {}) {
   app.use(express.json({ limit: '5mb', verify: (req, res, buf) => { if (req.url.startsWith('/api/public/')) req.rawBody = buf; } }));
   app.use('/api', publicRoutes);          // login, health, dictionary (no token)
   app.use('/api', authenticate);
-  for (const r of [coreRoutes, tenancyRoutes, processRoutes, runRoutes, governanceRoutes, aiRoutes, reportRoutes, adminRoutes, questionnaireRoutes, trainingRoutes, searchRoutes, documentRoutes]) app.use('/api', r);
+  for (const r of [coreRoutes, tenancyRoutes, processRoutes, runRoutes, governanceRoutes, aiRoutes, reportRoutes, adminRoutes, questionnaireRoutes, trainingRoutes, searchRoutes, documentRoutes, designRoutes, stepRoutes, obsRoutes]) app.use('/api', r);
   app.use('/api', (req, res, next) => next(Object.assign(new Error('nf'), { status: 404 })));
   // Optional production mode: serve the built web client from ../web/dist when present.
   const dist = path.resolve(ROOT, '..', 'web', 'dist');

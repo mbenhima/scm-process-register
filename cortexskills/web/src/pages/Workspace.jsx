@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post, put, patch, del, api, download } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, StatusPill, Progress, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, AiBadge, KV, Field, IconBadge, Tabs, Legend } from '../components/ui.jsx';
+import { PageHead, Card, Guard, DataTable, StatusPill, Progress, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, AiBadge, KV, Field, IconBadge, Tabs, Legend, Select } from '../components/ui.jsx';
 import { RecordEditor, useMeta } from '../components/Records.jsx';
 
 export function ProjectWorkspace() {
@@ -24,14 +24,14 @@ export function ProjectWorkspace() {
       <Kpi icon="Scale" value={x.complexity ? x.complexity.score : p.complexity} label={t('ws.complexity')} note={x.complexity?.chosen_track || t('mode.' + p.mode)} emph={false} />
     </div>
     {x.phases.filter(ph => ph.items.length).map(ph => { const state = ph.progress === 100 ? 'done' : ph.progress > 0 ? 'active' : ''; const gateRec = ph.checklists.find(c => c.gate_id);
-      return (<section key={ph.no} className={`card phase ${state}`} style={{ marginTop: 'var(--sp-4)' }}>
+      return (<section key={ph.no} className={`card phase ${state}`} style={{ marginTop: 'var(--aiv-space-4)' }}>
         <div className="card-head"><div><div className="eyebrow">{ph.no ? t('ws.phase', { n: ph.no }) : t('ws.enablers')}</div><h3>{L(ph.name)}</h3></div>
           <div className="row"><span className="mono small">{ph.progress}%</span><div style={{ width: 160 }}><Progress value={ph.progress} lg label={L(ph.name)} /></div>
             {gateRec && <Btn size="sm" icon="DoorOpen" onClick={() => setGate(gateRec)}>{L(gateRec.gate_name)} · <StatusPill value={gateRec.decision || gateRec.state} /></Btn>}</div></div>
         {ph.items.map(e => <Link key={e.id} to={`/runs/${e.id}`} className="e2e-row"><span className="strong small">{e.e2e_id}</span>
           <span><E2EName id={e.e2e_id} /><br /><span className="xs muted">{e.owner_name} · {t('ws.tasksShort', { d: e.done, n: e.tasks })}{e.overdue ? ' · ' + t('ws.overdueN', { n: e.overdue }) : ''}</span></span>
           <Progress value={e.progress} label={e.e2e_id} /><StatusPill value={e.status} /></Link>)}
-        {ph.checklists.filter(c => !c.gate_id).map(c => <div key={c.id} className="row small" style={{ marginTop: 'var(--sp-3)' }}><Icon name="ClipboardCheck" />{t('ws.standalone')}: <Btn size="sm" kind="ghost" onClick={() => setGate(c)}>{c.checklist_id} · {c.items.filter(i => i.done).length}/{c.items.length}</Btn></div>)}
+        {ph.checklists.filter(c => !c.gate_id).map(c => <div key={c.id} className="row small" style={{ marginTop: 'var(--aiv-space-3)' }}><Icon name="ClipboardCheck" />{t('ws.standalone')}: <Btn size="sm" kind="ghost" onClick={() => setGate(c)}>{c.checklist_id} · {c.items.filter(i => i.done).length}/{c.items.length}</Btn></div>)}
       </section>); })}
     {gate && <GateDialog rec={gate} onClose={() => setGate(null)} onSaved={() => { setGate(null); d.reload(); }} />}
     {rex && <RexPrompt project={id} onClose={() => setRex(false)} />}
@@ -51,12 +51,12 @@ function GateDialog({ rec, onClose, onSaved }) {
   const decision = async (dec, note) => { await act(() => patch(`/phase-checklists/${rec.id}`, { done, decision: dec, waiver: waiver || undefined, _justification: note })); onSaved(); };
   return (<Modal wide title={L(rec.gate_name) || rec.checklist_id} onClose={onClose} footer={!frozen ? <><Btn onClick={saveItems}>{t('common.save')}</Btn>{rec.gate_id && <Btn onClick={async () => { await act(() => patch(`/phase-checklists/${rec.id}`, { done, state: 'Submitted' })); onSaved(); }}>{t('gate.submit')}</Btn>}
     {rec.gate_id && ['Go', 'Hold', 'Recycle', 'No-Go'].map(dd => <Btn key={dd} kind={dd === 'Go' ? 'primary' : ''} onClick={() => setDecide(dd)}>{t('gate.decision.' + dd)}</Btn>)}</> : <Btn onClick={onClose}>{t('common.close')}</Btn>}>
-    <div className="row" style={{ marginBottom: 'var(--sp-3)' }}><StatusPill value={rec.state} />{rec.decision && <StatusPill value={rec.decision} />}{rec.enforce && <span className="pill tint">{t('gate.enforced')}</span>}</div>
+    <div className="row" style={{ marginBottom: 'var(--aiv-space-3)' }}><StatusPill value={rec.state} />{rec.decision && <StatusPill value={rec.decision} />}{rec.enforce && <span className="pill tint">{t('gate.enforced')}</span>}</div>
     <ul className="steps-list">{rec.items.map((i, k) => <li key={k}><input type="checkbox" disabled={frozen} checked={done.includes(i.text.en)} onChange={e => setDone(d => e.target.checked ? [...d, i.text.en] : d.filter(x => x !== i.text.en))} aria-label={L(i.text)} />
       <span style={{ flex: 1 }}>{L(i.text)}</span>{i.mandatory && <span className="pill s2 xs">{t('gate.mandatory')}</span>}{i.evidence && <span className="pill xs"><Icon name="Paperclip" size={12} />{t('gate.evidence')}</span>}</li>)}</ul>
-    {!frozen && <div className="row" style={{ marginTop: 'var(--sp-3)', flexWrap: 'nowrap' }}><input className="input" placeholder={t('gate.addItem')} value={newItem} onChange={e => setNewItem(e.target.value)} aria-label={t('gate.addItem')} /></div>}
-    {rec.decision_comment && <p className="small" style={{ marginTop: 'var(--sp-3)' }}><span className="strong">{t('col.justification')}:</span> {L(rec.decision_comment)}</p>}
-    {missing.length > 0 && !frozen && rec.gate_id && <div className="notice" style={{ marginTop: 'var(--sp-3)' }}><Icon name="TriangleAlert" /><div>{t('gate.missing', { n: missing.length })}<Field label={t('gate.waiver')} id="wv"><input id="wv" className="input" value={waiver} onChange={e => setWaiver(e.target.value)} /></Field></div></div>}
+    {!frozen && <div className="row" style={{ marginTop: 'var(--aiv-space-3)', flexWrap: 'nowrap' }}><input className="input" placeholder={t('gate.addItem')} value={newItem} onChange={e => setNewItem(e.target.value)} aria-label={t('gate.addItem')} /></div>}
+    {rec.decision_comment && <p className="small" style={{ marginTop: 'var(--aiv-space-3)' }}><span className="strong">{t('col.justification')}:</span> {L(rec.decision_comment)}</p>}
+    {missing.length > 0 && !frozen && rec.gate_id && <div className="notice" style={{ marginTop: 'var(--aiv-space-3)' }}><Icon name="TriangleAlert" /><div>{t('gate.missing', { n: missing.length })}<Field label={t('gate.waiver')} id="wv"><input id="wv" className="input" value={waiver} onChange={e => setWaiver(e.target.value)} /></Field></div></div>}
     {decide && <JustifyDialog title={t('gate.decision.' + decide)} onCancel={() => setDecide(null)} onConfirm={n => { setDecide(null); decision(decide, n); }} />}
   </Modal>);
 }
@@ -99,7 +99,7 @@ function TaskPanel({ id, project, onClose, onChanged }) {
   const aiOutcome = async (outcome, text) => { await post('/ai/usage', { use_case: ai.useCase.code, outcome, project_id: project.id, record_ref: id, source: ai.source, confidence: ai.confidence }); if (outcome !== 'Rejected') { setOut(o => (o ? o + '\n' : '') + text); await patch(`/tasks/${id}`, { ai_used: true }).catch(() => {}); } setAi(null); };
   return (<div className="drawer" role="dialog" aria-modal="false" aria-label={t('run.task')}>
     <Guard state={d}>{x => { const tk = x.task; const u = x.uft; const linkedUc = (uc.data || []).filter(c => u.steps.includes(c.step) && c.effective);
-      return (<><div className="card-head" style={{ padding: 'var(--sp-4) var(--sp-5)', margin: 0, borderBottom: '1px solid var(--pa-grey-line)' }}>
+      return (<><div className="card-head" style={{ padding: 'var(--aiv-space-4) var(--aiv-space-5)', margin: 0, borderBottom: '1px solid var(--aiv-line)' }}>
         <div><div className="eyebrow">{u.id} · {u.stepId} · {u.bpmn}</div><h3>{L(u.name)}</h3></div><Btn icon="X" kind="ghost" aria-label={t('common.close')} onClick={onClose} /></div>
         <div className="drawer-body stack">
           <div className="row"><StatusPill value={tk.status} /><span className="small muted">{t('col.due')}: {fmtDate(tk.due_date)}</span>{u.ai && <AiBadge tier="Assistive" />}</div>
@@ -117,8 +117,8 @@ function TaskPanel({ id, project, onClose, onChanged }) {
               {ai.references?.length > 0 && <p className="xs muted">{t('ai.references')}: {ai.references.map(r => r.title).join(' · ')}</p>}<p className="xs">{L(ai.useCase.checkpoint)}</p>
               <div className="row"><Btn size="sm" kind="primary" onClick={() => aiOutcome('Accepted', [ai.text.startsWith('ai.') ? t(ai.text) : ai.text, ...ai.items.map(i => '• ' + i.label)].join('\n'))}>{t('ai.accept')}</Btn><Btn size="sm" onClick={() => aiOutcome('Edited', ai.items.map(i => '• ' + i.label).join('\n'))}>{t('ai.edit')}</Btn><Btn size="sm" onClick={() => aiOutcome('Rejected')}>{t('ai.reject')}</Btn></div></div>}
             <div className="form-grid">
-              <Field label={t('col.owner')} id="own"><select id="own" className="input" disabled={readOnly || !can('projects.manage')} value={tk.owner_id || ''} onChange={e => save({ owner_id: e.target.value })}>{(dir.data || []).map(p => <option key={p.id} value={p.id}>{p.name} — {p.title}</option>)}</select></Field>
-              <Field label={t('col.evaluator')} id="evl" hint={t('run.segregation')}><select id="evl" className="input" disabled={readOnly || !can('projects.manage')} value={tk.evaluator_id || ''} onChange={e => save({ evaluator_id: e.target.value })}>{(dir.data || []).map(p => <option key={p.id} value={p.id}>{p.name} — {p.title}</option>)}</select></Field></div>
+              <Field label={t('col.owner')} id="own"><Select id="own" className="input" disabled={readOnly || !can('projects.manage')} value={tk.owner_id || ''} onChange={e => save({ owner_id: e.target.value })}>{(dir.data || []).map(p => <option key={p.id} value={p.id}>{p.name} — {p.title}</option>)}</Select></Field>
+              <Field label={t('col.evaluator')} id="evl" hint={t('run.segregation')}><Select id="evl" className="input" disabled={readOnly || !can('projects.manage')} value={tk.evaluator_id || ''} onChange={e => save({ evaluator_id: e.target.value })}>{(dir.data || []).map(p => <option key={p.id} value={p.id}>{p.name} — {p.title}</option>)}</Select></Field></div>
           </>}
           {tab === 'racsi' && <DataTable search={false} rows={x.racsi} columns={[{ key: 'letter', label: t('col.role'), render: r => <span className="pill dark">{r.letter}</span> }, { key: 'assignee', label: t('col.assignee'), text: r => r.assignee }]} />}
           {tab === 'files' && <div className="stack"><div className="card flat" style={{ borderStyle: 'dashed', textAlign: 'center' }} onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); if (!readOnly) upload(e.dataTransfer.files); }}>
@@ -147,7 +147,7 @@ export function Gantt() {
       const row = (i, depth) => <div key={i.id} className="gantt-row"><div style={{ paddingInlineStart: depth * 16 }} className={`gantt-label ${depth < 2 ? 'strong' : ''}`}>{i.children?.length ? <button className="btn ghost sm icon" aria-expanded={!!open[i.id]} aria-label={t('gantt.toggle')} onClick={() => setOpen(o => ({ ...o, [i.id]: !o[i.id] }))}><Icon name={open[i.id] ? 'ChevronDown' : 'ChevronRight'} size={12} /></button> : null}<span className="gantt-name" title={typeof i.name === 'object' ? L(i.name) : i.name}>{typeof i.name === 'object' ? L(i.name) : i.name}</span>{i.percent != null && <span className="muted">{i.percent}%</span>}</div>
         <div className="gantt-track"><span className={`gantt-bar ${i.kind === 'task' ? i.status : 'summary'}`} style={pos(i)} title={`${fmtDate(i.start)} → ${fmtDate(i.end)}`} /></div></div>;
       return (<Card title={L(x.project.name)}><div className="gantt">{x.items.map(p => <div key={p.id}>{row(p, 0)}{open[p.id] && p.children.map(c => <div key={c.id}>{row(c, 1)}{open[c.id] && c.children.map(tk => row(tk, 2))}</div>)}</div>)}</div>
-        <Legend items={[{ label: t('gantt.planned'), color: 'var(--pa-grey-line)' }, { label: t('status.In progress'), color: 'var(--pa-orange)' }, { label: t('status.Completed'), color: 'var(--pa-status-5)' }, { label: t('status.overdue'), color: 'var(--pa-status-1)' }, { label: t('gantt.summary'), color: 'var(--pa-grey-dark)' }]} />
+        <Legend items={[{ label: t('gantt.planned'), color: 'var(--aiv-line)' }, { label: t('status.In progress'), color: 'var(--aiv-azure)' }, { label: t('status.Completed'), color: 'var(--aiv-status-5)' }, { label: t('status.overdue'), color: 'var(--aiv-status-1)' }, { label: t('gantt.summary'), color: 'var(--aiv-navy)' }]} />
         <p className="caption">{t('gantt.caption', { from: fmtDate(min), to: fmtDate(max) })}</p></Card>);
     }}</Guard>}</>);
 }

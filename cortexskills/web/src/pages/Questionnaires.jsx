@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post, patch, put, del, download } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, Field, Tabs, Seg, Empty, Progress, KV } from '../components/ui.jsx';
+import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, Field, Tabs, Seg, Empty, Progress, KV, Select } from '../components/ui.jsx';
 import { BarChart } from '../components/charts.jsx';
 import { QForm, completeness } from '../components/QForm.jsx';
 
@@ -25,7 +25,7 @@ export function Questionnaires() {
     <PageHead eyebrow={t('q.eyebrow')} title={t('nav.questionnaires')} subtitle={t('q.subtitle')}>
       <Link className="btn" to="/questionnaires/templates"><Icon name="LibraryBig" />{t('q.templates')}</Link>
       {can('m54.edit') && project && <Btn kind="primary" icon="Plus" onClick={() => setCreate(true)}>{t('q.new')}</Btn>}</PageHead>
-    {!project && <div className="notice grey" style={{ marginBottom: 'var(--sp-4)' }}><Icon name="Info" /><div>{t('q.pickProject')} <select className="input" style={{ maxWidth: 420, marginTop: 8 }} value="" onChange={e => setProject(e.target.value)}><option value="">—</option>{projects.map(p => <option key={p.id} value={p.id}>{L(p.name)}</option>)}</select></div></div>}
+    {!project && <div className="notice grey" style={{ marginBottom: 'var(--aiv-space-4)' }}><Icon name="Info" /><div>{t('q.pickProject')} <Select className="input" style={{ maxWidth: 420, marginTop: 8 }} value="" onChange={e => setProject(e.target.value)}><option value="">—</option>{projects.map(p => <option key={p.id} value={p.id}>{L(p.name)}</option>)}</Select></div></div>}
     <Guard state={d}>{rows => <Card><DataTable rows={rows} csvName="questionnaires" onRow={r => nav(`/questionnaires/${r.id}`)} columns={[
       { key: 'label', label: t('col.name'), text: r => L(r.label) }, { key: 'status', label: t('col.status'), render: r => <StatusPill value={r.status} /> },
       { key: 'forms', label: t('q.forms'), text: r => r.forms.map(f => t('pop.' + f.population)).join(' · ') }, { key: 'mode', label: t('q.channelMode'), render: r => <ChannelChip ch={r.channel_mode || 'Combination'} />, text: r => r.channel_mode },
@@ -47,7 +47,7 @@ function NewQuestionnaire({ project, onClose, onDone }) {
       <span><span className="strong">{L(x.name)}</span> · {t('pop.' + x.population)} · {t('q.sectionsN', { n: x.sections_count })}{x.library ? '' : ' · ' + t('q.orgTemplate')}</span></label>)}</div></Field>
     <div className="grid g-3"><Field label={t('col.name')} id="ql"><input id="ql" className="input" value={label} onChange={e => setLabel(e.target.value)} placeholder={t('q.labelPh')} /></Field>
       <Field label={t('col.due')} id="qd"><input id="qd" type="date" className="input" value={due} onChange={e => setDue(e.target.value)} /></Field>
-      <Field label={t('q.channelMode')} id="qm" hint={t('q.modeHint')}><select id="qm" className="input" value={mode} onChange={e => setMode(e.target.value)}>{MODES.map(m => <option key={m} value={m}>{t('qch.' + m)}</option>)}</select></Field></div>
+      <Field label={t('q.channelMode')} id="qm" hint={t('q.modeHint')}><Select id="qm" className="input" value={mode} onChange={e => setMode(e.target.value)}>{MODES.map(m => <option key={m} value={m}>{t('qch.' + m)}</option>)}</Select></Field></div>
     <label className="row small"><input type="checkbox" checked={ai} onChange={e => setAi(e.target.checked)} /><Icon name="Sparkles" />{t('q.aiTailor')}</label>
   </Modal>);
 }
@@ -72,9 +72,9 @@ export function QuestionnaireDetail() {
         <Kpi icon="MousePointerClick" value={`${st.engagementRate}%`} label={t('q.engagementRate')} emph={false} />
         <Kpi icon="Gauge" value={`${st.completeness ?? 0}%`} label={t('q.completeness')} note={t('q.threshold', { n: q.threshold ?? 70 })} emph={false} />
       </div>
-      {q.issues.length > 0 && q.status !== 'Closed' && <div className="notice" style={{ marginTop: 'var(--sp-4)' }}><Icon name="TriangleAlert" /><div><div className="strong">{t('q.issues')}</div>
+      {q.issues.length > 0 && q.status !== 'Closed' && <div className="notice" style={{ marginTop: 'var(--aiv-space-4)' }}><Icon name="TriangleAlert" /><div><div className="strong">{t('q.issues')}</div>
         <ul style={{ margin: '4px 0 0', paddingInlineStart: 18 }}>{q.issues.map((i, k) => <li key={k} className="small">{t('qissue.' + i.code, { ...i, form: i.form || '', section: i.section || '' })}</li>)}</ul></div></div>}
-      <div style={{ marginTop: 'var(--sp-5)' }}><Tabs value={tab} onChange={v => setSp({ tab: v })} tabs={[{ id: 'respondents', label: t('q.tabRespondents'), count: st.invited }, { id: 'design', label: t('q.tabDesign') }, { id: 'channels', label: t('q.tabChannels') },
+      <div style={{ marginTop: 'var(--aiv-space-5)' }}><Tabs value={tab} onChange={v => setSp({ tab: v })} tabs={[{ id: 'respondents', label: t('q.tabRespondents'), count: st.invited }, { id: 'design', label: t('q.tabDesign') }, { id: 'channels', label: t('q.tabChannels') },
         { id: 'responses', label: t('q.tabResponses'), count: st.responded }, { id: 'dataset', label: t('q.tabDataset') }, { id: 'log', label: t('q.tabLog') }]} /></div>
       {tab === 'respondents' && <Respondents q={q} edit={can('m54.edit') && q.status !== 'Closed'} reload={d.reload} />}
       {tab === 'design' && <Design q={q} edit={edit} reload={d.reload} />}
@@ -95,7 +95,7 @@ function Respondents({ q, edit, reload }) {
   const bulk = async mode => { await act(() => patch('/invitations', { ids: sel, channel_mode: mode })); setSel([]); refresh(); };
   return (<Guard state={d}>{rows => { const shown = pop === 'all' ? rows : rows.filter(r => r.population === pop); return (<Card title={t('q.whoResponds')} actions={<>
       <Seg value={pop} onChange={setPop} label={t('q.population')} options={[{ id: 'all', label: t('common.all') }, ...['DG', 'Management', 'Member'].map(p => ({ id: p, label: t('pop.' + p) }))]} />
-      {edit && sel.length > 0 && <select className="input" style={{ width: 'auto' }} value="" onChange={e => e.target.value && bulk(e.target.value)} aria-label={t('q.setMode')}><option value="">{t('q.setModeN', { n: sel.length })}</option>{MODES.map(m => <option key={m} value={m}>{t('qch.' + m)}</option>)}</select>}
+      {edit && sel.length > 0 && <Select className="input" style={{ width: 'auto' }} value="" onChange={e => e.target.value && bulk(e.target.value)} aria-label={t('q.setMode')}><option value="">{t('q.setModeN', { n: sel.length })}</option>{MODES.map(m => <option key={m} value={m}>{t('qch.' + m)}</option>)}</Select>}
       {edit && <Btn kind="primary" icon="UserPlus" onClick={() => setAdd(true)}>{t('q.addRespondents')}</Btn>}</>}>
     <p className="small muted">{t('q.whoHint')}</p>
     <DataTable rows={shown} csvName="respondents" columns={[
@@ -121,8 +121,8 @@ function AddRespondents({ q, onClose, onDone }) {
   const [sel, setSel] = useState([]); const [mode, setMode] = useState(q.channel_mode || 'Combination'); const [pop, setPop] = useState('all');
   return (<Modal wide title={t('q.addRespondents')} onClose={onClose} footer={<><Btn onClick={onClose}>{t('common.cancel')}</Btn><Btn kind="primary" disabled={!sel.length} onClick={async () => { await act(() => post(`/questionnaires/${q.id}/invitations`, { stakeholder_ids: sel, channel_mode: mode })); onDone(); }}>{t('q.addN', { n: sel.length })}</Btn></>}>
     <p className="small muted">{t('q.addHint')}</p>
-    <div className="row" style={{ marginBottom: 'var(--sp-3)' }}><Seg value={pop} onChange={setPop} label={t('q.population')} options={[{ id: 'all', label: t('common.all') }, ...['DG', 'Management', 'Member'].map(p => ({ id: p, label: t('pop.' + p) }))]} />
-      <Field label={t('q.channelMode')} id="am"><select id="am" className="input" value={mode} onChange={e => setMode(e.target.value)}>{MODES.map(m => <option key={m} value={m}>{t('qch.' + m)}</option>)}</select></Field></div>
+    <div className="row" style={{ marginBottom: 'var(--aiv-space-3)' }}><Seg value={pop} onChange={setPop} label={t('q.population')} options={[{ id: 'all', label: t('common.all') }, ...['DG', 'Management', 'Member'].map(p => ({ id: p, label: t('pop.' + p) }))]} />
+      <Field label={t('q.channelMode')} id="am"><Select id="am" className="input" value={mode} onChange={e => setMode(e.target.value)}>{MODES.map(m => <option key={m} value={m}>{t('qch.' + m)}</option>)}</Select></Field></div>
     <Guard state={c}>{rows => { const free = rows.filter(r => !r.invited && (pop === 'all' || r.population === pop)); return (<>
       <label className="row small"><input type="checkbox" checked={free.length > 0 && free.every(r => sel.includes(r.id))} onChange={e => setSel(e.target.checked ? free.map(r => r.id) : [])} />{t('q.selectAll', { n: free.length })}</label>
       <DataTable rows={free} search pageSize={30} columns={[{ key: 'sel', label: '', noSort: true, render: r => <input type="checkbox" aria-label={L(r.name)} checked={sel.includes(r.id)} onChange={e => setSel(s => e.target.checked ? [...s, r.id] : s.filter(x => x !== r.id))} /> },
@@ -139,21 +139,21 @@ function EditInvitation({ q, inv, onClose, onDone }) {
   const save = async () => { await act(() => patch(`/invitations/${inv.id}`, { ...f, interview_at: f.interview_at ? new Date(f.interview_at).toISOString() : null, interviewer_id: f.interviewer_id || null, lang: f.lang || null, channel_plan: plan })); onDone(); };
   return (<Modal wide title={inv.name} onClose={onClose} footer={<><Btn onClick={onClose}>{t('common.cancel')}</Btn><Btn kind="primary" onClick={save}>{t('common.save')}</Btn></>}>
     <div className="grid g-3">
-      <Field label={t('q.population')} id="ep"><select id="ep" className="input" value={f.population} onChange={e => setF({ ...f, population: e.target.value })}>{['DG', 'Management', 'Member'].map(p => <option key={p} value={p}>{t('pop.' + p)}</option>)}</select></Field>
-      <Field label={t('q.form')} id="ef"><select id="ef" className="input" value={f.template_code || ''} disabled={inv.status === 'Responded'} onChange={e => setF({ ...f, template_code: e.target.value })}>{q.forms.map(x => <option key={x.code} value={x.code}>{L(x.name)}</option>)}</select></Field>
-      <Field label={t('q.language')} id="el"><select id="el" className="input" value={f.lang} onChange={e => setF({ ...f, lang: e.target.value })}><option value="">{t('q.orgLanguage')}</option><option value="en">English</option><option value="fr">Français</option><option value="ar">العربية</option></select></Field>
+      <Field label={t('q.population')} id="ep"><Select id="ep" className="input" value={f.population} onChange={e => setF({ ...f, population: e.target.value })}>{['DG', 'Management', 'Member'].map(p => <option key={p} value={p}>{t('pop.' + p)}</option>)}</Select></Field>
+      <Field label={t('q.form')} id="ef"><Select id="ef" className="input" value={f.template_code || ''} disabled={inv.status === 'Responded'} onChange={e => setF({ ...f, template_code: e.target.value })}>{q.forms.map(x => <option key={x.code} value={x.code}>{L(x.name)}</option>)}</Select></Field>
+      <Field label={t('q.language')} id="el"><Select id="el" className="input" value={f.lang} onChange={e => setF({ ...f, lang: e.target.value })}><option value="">{t('q.orgLanguage')}</option><option value="en">English</option><option value="fr">Français</option><option value="ar">العربية</option></Select></Field>
       <Field label={t('q.email')} id="ee"><input id="ee" className="input" type="email" value={f.email} onChange={e => setF({ ...f, email: e.target.value })} /></Field>
       <Field label={t('q.mobile')} id="em" hint={t('q.mobileHint')}><input id="em" className="input" value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} /></Field>
       <div />
       <Field label={t('q.interviewAt')} id="ei"><input id="ei" className="input" type="datetime-local" value={f.interview_at} onChange={e => setF({ ...f, interview_at: e.target.value })} /></Field>
-      <Field label={t('q.interviewer')} id="eu"><select id="eu" className="input" value={f.interviewer_id} onChange={e => setF({ ...f, interviewer_id: e.target.value })}><option value="">—</option>{(users.data || []).map(u => <option key={u.id} value={u.id}>{u.name} — {u.title}</option>)}</select></Field>
+      <Field label={t('q.interviewer')} id="eu"><Select id="eu" className="input" value={f.interviewer_id} onChange={e => setF({ ...f, interviewer_id: e.target.value })}><option value="">—</option>{(users.data || []).map(u => <option key={u.id} value={u.id}>{u.name} — {u.title}</option>)}</Select></Field>
     </div>
-    <h4 style={{ marginTop: 'var(--sp-4)' }}>{t('q.channelPlan')}</h4>
+    <h4 style={{ marginTop: 'var(--aiv-space-4)' }}>{t('q.channelPlan')}</h4>
     <p className="small muted">{t('q.planHint')}</p>
     <div className="row" style={{ marginBottom: 8 }}>{MODES.map(m => <Btn key={m} size="sm" onClick={() => setPlan(presetPlan(m, f.population, !!f.phone))}><Icon name={CH_ICON[m]} />{t('qch.' + m)}</Btn>)}</div>
     <div className="table-wrap"><table className="tbl"><thead><tr><th>#</th><th>{t('q.channel')}</th><th>{t('q.action')}</th><th>{t('q.afterDays')}</th><th /></tr></thead><tbody>
-      {plan.map((s, i) => <tr key={i}><td>{i + 1}</td><td><select className="input" value={s.channel} onChange={e => step(i, 'channel', e.target.value)} aria-label={t('q.channel')}>{CHANNELS.map(c => <option key={c} value={c}>{t('qch.' + c)}</option>)}</select></td>
-        <td>{s.channel === 'Face-to-Face' ? t('qact.interview') : <select className="input" value={s.action} onChange={e => step(i, 'action', e.target.value)} aria-label={t('q.action')}><option value="invite">{t('qact.invite')}</option><option value="remind">{t('qact.remind')}</option></select>}</td>
+      {plan.map((s, i) => <tr key={i}><td>{i + 1}</td><td><Select className="input" value={s.channel} onChange={e => step(i, 'channel', e.target.value)} aria-label={t('q.channel')}>{CHANNELS.map(c => <option key={c} value={c}>{t('qch.' + c)}</option>)}</Select></td>
+        <td>{s.channel === 'Face-to-Face' ? t('qact.interview') : <Select className="input" value={s.action} onChange={e => step(i, 'action', e.target.value)} aria-label={t('q.action')}><option value="invite">{t('qact.invite')}</option><option value="remind">{t('qact.remind')}</option></Select>}</td>
         <td><input className="input" type="number" min="0" style={{ width: 90 }} value={s.after_days} onChange={e => step(i, 'after_days', Number(e.target.value))} aria-label={t('q.afterDays')} /></td>
         <td><Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => setPlan(p => p.filter((_, j) => j !== i))} /></td></tr>)}</tbody></table></div>
     <Btn size="sm" icon="Plus" onClick={() => setPlan(p => [...p, { channel: 'Email', action: p.length ? 'remind' : 'invite', after_days: (p.at(-1)?.after_days || 0) + 3 }])}>{t('q.addStep')}</Btn>
@@ -181,10 +181,10 @@ function Design({ q, edit, reload }) {
   return (<div className="grid split-r">
     <Card title={t('q.forms')}>
       <div className="stack">{forms.map(f => <button key={f.code} type="button" className={`list-btn ${f.code === form?.code ? 'active' : ''}`} onClick={() => setCode(f.code)}><span className="strong">{L(f.name)}</span><span className="xs muted">{t('pop.' + f.population)} · {t('q.sectionsN', { n: f.sections.length })}</span></button>)}</div>
-      {edit && can('ai.run') && <Btn icon="Sparkles" style={{ marginTop: 'var(--sp-4)' }} onClick={async () => { const r = await act(() => post(`/questionnaires/${q.id}/ai-tailor`), null); window.alert(t('q.aiAdded', { n: r.added })); reload(); }}>{t('q.aiTailorNow')}</Btn>}
-      {pendingAi.length > 0 && <div className="notice" style={{ marginTop: 'var(--sp-4)' }}><Icon name="Sparkles" /><div><div className="strong">{t('q.aiPending', { n: pendingAi.length })}</div><p className="xs">{t('q.aiPendingHint')}</p>
+      {edit && can('ai.run') && <Btn icon="Sparkles" style={{ marginTop: 'var(--aiv-space-4)' }} onClick={async () => { const r = await act(() => post(`/questionnaires/${q.id}/ai-tailor`), null); window.alert(t('q.aiAdded', { n: r.added })); reload(); }}>{t('q.aiTailorNow')}</Btn>}
+      {pendingAi.length > 0 && <div className="notice" style={{ marginTop: 'var(--aiv-space-4)' }}><Icon name="Sparkles" /><div><div className="strong">{t('q.aiPending', { n: pendingAi.length })}</div><p className="xs">{t('q.aiPendingHint')}</p>
         {edit && <Btn size="sm" kind="primary" onClick={async () => { await act(() => post(`/questionnaires/${q.id}/validate`, { all: true })); reload(); }}>{t('q.validateAll')}</Btn>}</div></div>}
-      <div className="row" style={{ marginTop: 'var(--sp-4)' }}><Btn size="sm" icon="Eye" onClick={() => setPreview(true)}>{t('q.preview')}</Btn><Btn size="sm" icon="Printer" onClick={() => download(`/questionnaires/${q.id}/forms/${form.code}/pack?format=docx`, form.code + '.docx')}>{t('q.blankForm')}</Btn></div>
+      <div className="row" style={{ marginTop: 'var(--aiv-space-4)' }}><Btn size="sm" icon="Eye" onClick={() => setPreview(true)}>{t('q.preview')}</Btn><Btn size="sm" icon="Printer" onClick={() => download(`/questionnaires/${q.id}/forms/${form.code}/pack?format=docx`, form.code + '.docx')}>{t('q.blankForm')}</Btn></div>
     </Card>
     <Card title={L(form?.name)} actions={edit && <><Btn size="sm" icon="Plus" onClick={addSection}>{t('q.addSection')}</Btn><Btn size="sm" kind="primary" disabled={!dirty} onClick={() => (q.status === 'Distributed' ? setJust(true) : save())}>{t('common.save')}</Btn></>}>
       <p className="small muted">{t('q.designHint')}</p>
@@ -216,10 +216,10 @@ function Channels({ q, edit, reload }) {
     <Card title={t('q.channelMode')} actions={edit && <Btn kind="primary" onClick={save}>{t('common.save')}</Btn>}>
       <p className="small muted">{t('q.modeExplain')}</p>
       <div className="grid g-3">{MODES.map(m => <label key={m} className={`choice-card ${mode === m ? 'active' : ''}`}><input type="radio" name="mode" disabled={!edit} checked={mode === m} onChange={() => setMode(m)} /><Icon name={CH_ICON[m]} /><span className="strong">{t('qch.' + m)}</span><span className="xs muted">{t('qmodeHint.' + m)}</span></label>)}</div>
-      <h4 style={{ marginTop: 'var(--sp-5)' }}>{t('q.defaultPlans')}</h4>
+      <h4 style={{ marginTop: 'var(--aiv-space-5)' }}>{t('q.defaultPlans')}</h4>
       <div className="stack">{['DG', 'Management', 'Member'].map(p => <div key={p} className="row small"><span className="strong" style={{ minWidth: 160 }}>{t('pop.' + p)}</span><PlanSteps plan={presetPlan(mode, p, true)} /></div>)}</div>
       <p className="xs muted">{t('q.defaultPlansHint')}</p>
-      <h4 style={{ marginTop: 'var(--sp-5)' }}>{t('q.reminders')}</h4>
+      <h4 style={{ marginTop: 'var(--aiv-space-5)' }}>{t('q.reminders')}</h4>
       <div className="table-wrap"><table className="tbl"><thead><tr><th>{t('q.channel')}</th><th>{t('q.everyDays')}</th><th>{t('q.maxReminders')}</th></tr></thead><tbody>
         {['Email', 'WhatsApp', 'Application'].map(c => <tr key={c}><td><ChannelChip ch={c} /></td>
           <td><input className="input" type="number" min="0" disabled={!edit} style={{ width: 90 }} value={rem[c]?.every_days ?? 0} onChange={e => setRem({ ...rem, [c]: { ...(rem[c] || {}), every_days: Number(e.target.value) } })} aria-label={t('q.everyDays')} /></td>
@@ -228,10 +228,10 @@ function Channels({ q, edit, reload }) {
       <Field label={t('q.thresholdLabel')} id="th" hint={t('q.thresholdHint')}><input id="th" className="input" type="number" min="0" max="100" disabled={!edit} style={{ width: 100 }} value={th} onChange={e => setTh(Number(e.target.value))} /></Field>
     </Card>
     <Card title={t('q.providers')}>
-      {q.channelSettings.map(c => <div key={c.channel} className="row" style={{ justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--pa-grey-line)' }}><span className="row"><Icon name={c.channel === 'email' ? 'Mail' : 'MessageCircle'} />{t('channel.' + c.channel)}</span><span className={`pill ${c.effective === 'sandbox' ? 's2' : 's4'}`}>{t('channelMode.' + c.effective)}</span></div>)}
-      <p className="small muted" style={{ marginTop: 'var(--sp-3)' }}>{t('q.sandboxHint')}</p>
+      {q.channelSettings.map(c => <div key={c.channel} className="row" style={{ justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--aiv-line)' }}><span className="row"><Icon name={c.channel === 'email' ? 'Mail' : 'MessageCircle'} />{t('channel.' + c.channel)}</span><span className={`pill ${c.effective === 'sandbox' ? 's2' : 's4'}`}>{t('channelMode.' + c.effective)}</span></div>)}
+      <p className="small muted" style={{ marginTop: 'var(--aiv-space-3)' }}>{t('q.sandboxHint')}</p>
       {can('config.view') && <Link className="btn" to="/admin/channels"><Icon name="Settings" />{t('q.channelSettings')}</Link>}
-      <h4 style={{ marginTop: 'var(--sp-5)' }}>{t('q.respondVia')}</h4><p className="small">{t('q.respondViaText')}</p>
+      <h4 style={{ marginTop: 'var(--aiv-space-5)' }}>{t('q.respondVia')}</h4><p className="small">{t('q.respondViaText')}</p>
     </Card>
   </div>);
 }
@@ -254,7 +254,7 @@ function Responses({ q, edit }) {
 function Dataset({ q, edit }) {
   const { t } = useI18n(); const act = useAction(); const d = useData(`/questionnaires/${q.id}/dataset`);
   return (<Guard state={d}>{ds => <>
-    <div className="notice grey" style={{ marginBottom: 'var(--sp-4)' }}><Icon name="Database" /><div>{t('q.datasetIntro', { n: ds.responses })} {edit && <Btn size="sm" kind="primary" icon="ArrowRightLeft" onClick={async () => { const r = await act(() => post(`/questionnaires/${q.id}/feed`, {}), null); window.alert(t('q.fed', { n: r.created })); }}>{t('q.feed')}</Btn>}</div></div>
+    <div className="notice grey" style={{ marginBottom: 'var(--aiv-space-4)' }}><Icon name="Database" /><div>{t('q.datasetIntro', { n: ds.responses })} {edit && <Btn size="sm" kind="primary" icon="ArrowRightLeft" onClick={async () => { const r = await act(() => post(`/questionnaires/${q.id}/feed`, {}), null); window.alert(t('q.fed', { n: r.created })); }}>{t('q.feed')}</Btn>}</div></div>
     <div className="grid g-2">
       <Card title={t('q.softSkills')}><BarChart data={ds.softSkills.slice(0, 12).map(x => ({ label: x.label, value: x.average }))} max={5} caption={t('q.softCaption')} /></Card>
       <Card title={t('q.competences')}><DataTable rows={ds.competences} search={false} pageSize={12} columns={[{ key: 'competence', label: t('pack.competence') }, { key: 'count', label: t('q.mentions'), num: true }, { key: 'populations', label: t('q.populations'), text: r => r.populations.map(p => t('pop.' + p)).join(', ') }]} /></Card>
@@ -288,7 +288,7 @@ export function QuestionnaireTemplates() {
     <Guard state={d}>{rows => <div className="grid g-3">{rows.map(x => <Card key={x.id} title={L(x.name)} actions={<span className="pill xs">{x.library ? t('q.library') : t('q.orgTemplate')}</span>}>
       <p className="small muted">{L(x.description)}</p>
       <KV items={[[t('q.code'), x.code], [t('q.population'), t('pop.' + x.population)], [t('q.sections'), x.sections_count], [t('q.language'), (x.language || '').toUpperCase()], [t('q.version'), x.version_no]]} />
-      <div className="row" style={{ marginTop: 'var(--sp-3)' }}><Btn size="sm" icon="Eye" onClick={async () => setView(await get('/questionnaire-templates/' + x.id))}>{t('q.preview')}</Btn>
+      <div className="row" style={{ marginTop: 'var(--aiv-space-3)' }}><Btn size="sm" icon="Eye" onClick={async () => setView(await get('/questionnaire-templates/' + x.id))}>{t('q.preview')}</Btn>
         {can('m54.manage') && <Btn size="sm" icon="Copy" onClick={async () => { await act(() => post('/questionnaire-templates', { copy_of: x.id })); d.reload(); }}>{t('q.copyAdapt')}</Btn>}
         <Btn size="sm" icon="Download" onClick={() => download(`/questionnaire-templates/${x.id}/export`, x.code + '.json')}>JSON</Btn>
         {can('m54.manage') && !x.library && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={async () => { if (window.confirm(t('common.confirmDelete'))) { await act(() => del('/questionnaire-templates/' + x.id)); d.reload(); } }} />}</div>
@@ -321,9 +321,9 @@ export function CaptureResponse() {
       <span className={`pill ${online ? 's4' : 's2'}`}><Icon name={online ? 'Wifi' : 'WifiOff'} size={12} />{online ? t('q.online') : t('q.offline')}</span>
       {pending > 0 && <Btn icon="RefreshCw" onClick={async () => { const r = await syncOffline(); setPending(r.left); window.alert(t('q.synced', { n: r.sent })); }}>{t('q.syncN', { n: pending })}</Btn>}
       <Btn icon="Printer" onClick={() => download(`/invitations/${id}/pack?format=docx`, 'interview.docx')}>{t('q.pack')}</Btn></PageHead>
-    <div className="card" style={{ marginBottom: 'var(--sp-4)' }}><div className="grid g-2">
+    <div className="card" style={{ marginBottom: 'var(--aiv-space-4)' }}><div className="grid g-2">
       <label className="row" style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} style={{ marginTop: 4 }} /><span><span className="strong">{t('q.consentObtained')}</span><br /><span className="xs muted">{t('q.consentObtainedHint')}</span></span></label>
-      <Field label={t('q.capturedVia')} id="cv"><select id="cv" className="input" value={channel} onChange={e => setChannel(e.target.value)}>{CHANNELS.map(c => <option key={c} value={c}>{t('qch.' + c)}</option>)}</select></Field></div></div>
+      <Field label={t('q.capturedVia')} id="cv"><Select id="cv" className="input" value={channel} onChange={e => setChannel(e.target.value)}>{CHANNELS.map(c => <option key={c} value={c}>{t('qch.' + c)}</option>)}</Select></Field></div></div>
     {answers && <QForm form={x.form} answers={answers} flags={flags} onChange={setAnswers} onFlags={setFlags} functions={(fns.data || []).map(f => L(f.name))} />}
     <div className="card sticky-actions"><div className="row" style={{ justifyContent: 'space-between' }}><div style={{ minWidth: 220 }}><div className="small">{t('respond.completeness', { pct: completeness(x.form?.sections, answers || {}, flags) })}</div><Progress value={completeness(x.form?.sections, answers || {}, flags)} label={t('q.completeness')} /></div>
       <div className="row"><Btn icon="Save" disabled={!consent} onClick={() => submit(false)}>{t('respond.saveDraft')}</Btn><Btn kind="primary" icon="Check" disabled={!consent} onClick={() => submit(true)}>{t('q.recordResponse')}</Btn></div></div>

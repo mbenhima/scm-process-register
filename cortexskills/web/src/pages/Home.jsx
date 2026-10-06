@@ -22,17 +22,17 @@ export function Dashboard() {
         <Kpi icon="Bell" value={fmtNum(x.alerts)} label={t('dash.unreadAlerts')} emph={false} />
         <Kpi icon="MessagesSquare" value={x.stakeholders ? Math.round((x.responses * 100) / x.stakeholders) + '%' : '—'} label={t('dash.responseRate')} note={t('dash.responses', { n: x.responses, s: x.stakeholders })} emph={false} />
       </div>
-      <div className="grid split" style={{ marginTop: 'var(--sp-4)' }}>
+      <div className="grid split" style={{ marginTop: 'var(--aiv-space-4)' }}>
         <Card title={t('dash.phaseProgress')}><BarChart unit="%" max={100} data={x.phases.map(p => ({ label: t('phase.short.' + p.phase), value: p.progress }))} caption={t('dash.phaseCaption')} /></Card>
         <Card title={t('dash.kpiHealth')}><StackBar parts={['Green', 'Amber', 'Red'].map(s => ({ label: t('status.' + s), value: rag[s] || 0, color: STATUS_COLORS[s] }))} caption={t('dash.kpiCaption')} />
           <hr className="divider" /><StackBar parts={[{ label: t('status.Completed'), value: c.done, color: STATUS_COLORS.Completed }, { label: t('status.In progress'), value: c.wip, color: STATUS_COLORS['In progress'] }, { label: t('status.Blocked'), value: c.blocked, color: STATUS_COLORS.Blocked }, { label: t('status.Not started'), value: c.n - c.done - c.wip - c.blocked, color: STATUS_COLORS['Not started'] }]} caption={t('dash.taskCaption')} /></Card>
       </div>
-      <div className="grid split-r" style={{ marginTop: 'var(--sp-4)' }}>
+      <div className="grid split-r" style={{ marginTop: 'var(--aiv-space-4)' }}>
         <Card title={t('nav.projects')}>{x.projects.map(p => <Link key={p.id} to={`/projects/${p.id}`} className="e2e-row" style={{ gridTemplateColumns: 'minmax(0,1fr) 100px 48px' }}>
           <span><span className="strong">{L(p.name)}</span><br /><span className="xs muted">{t('focus.' + p.focus)} · {t('mode.' + p.mode)}{p.track ? ' · ' + p.track : ''}</span></span><Progress value={p.progress} label={L(p.name)} /><span className="mono small">{Math.round(p.progress)}%</span></Link>)}</Card>
         <Card title={t('dash.throughput')}><LineChart labels={months.map(m => m.slice(2))} lines={[{ label: t('dash.completed'), values: months.map(m => x.trend.find(y => y.month === m)?.n || 0) }, { label: t('dash.planned'), values: months.map(m => x.planned.find(y => y.month === m)?.n || 0), dashed: true }]} caption={t('dash.throughputCaption')} /></Card>
       </div>
-      <Card title={t('dash.e2eProgress')} className="" ><div style={{ marginTop: 'var(--sp-2)' }}><BarChart unit="%" max={100} height={200} data={x.topE2e.slice(0, 36).map(e => ({ label: e.e2e_id.replace('E2E-', ''), value: e.progress }))} caption={t('dash.e2eCaption')} /></div></Card>
+      <Card title={t('dash.e2eProgress')} className="" ><div style={{ marginTop: 'var(--aiv-space-2)' }}><BarChart unit="%" max={100} height={200} data={x.topE2e.slice(0, 36).map(e => ({ label: e.e2e_id.replace('E2E-', ''), value: e.progress }))} caption={t('dash.e2eCaption')} /></div></Card>
     </>);
   }}</Guard>);
 }

@@ -6,7 +6,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post, put, del, download } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, Field, Tabs, Empty } from '../components/ui.jsx';
+import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, Field, Tabs, Empty, Select } from '../components/ui.jsx';
 
 const LEVELS = ['Foundation', 'Intermediate', 'Advanced', 'Expert'];
 const TYPES = ['Lecture', 'Quiz', 'Workshop'];
@@ -33,7 +33,7 @@ export function TrainingPlan() {
   useEffect(() => { const p = sp.get('project'); if (p && p !== project) setProject(p); }, [sp]); // eslint-disable-line
   const d = useData(project ? `/projects/${project}/training-plan` : null); const [open, setOpen] = useState(null); const [personas, setPersonas] = useState(false); const [submit, setSubmit] = useState(null); const [newPrg, setNewPrg] = useState(false);
   if (!project) return (<><PageHead eyebrow={t('tp.eyebrow')} title={t('nav.trainingPlan')} subtitle={t('tp.subtitle')} />
-    <div className="notice grey"><Icon name="Info" /><div>{t('q.pickProject')} <select className="input" style={{ maxWidth: 420, marginTop: 8 }} value="" onChange={e => setProject(e.target.value)}><option value="">—</option>{projects.map(p => <option key={p.id} value={p.id}>{L(p.name)}</option>)}</select></div></div></>);
+    <div className="notice grey"><Icon name="Info" /><div>{t('q.pickProject')} <Select className="input" style={{ maxWidth: 420, marginTop: 8 }} value="" onChange={e => setProject(e.target.value)}><option value="">—</option>{projects.map(p => <option key={p.id} value={p.id}>{L(p.name)}</option>)}</Select></div></div></>);
   return (<Guard state={d}>{x => { const edit = can('m49.edit'); const s = x.summary; return (<>
     <PageHead eyebrow={`${t('tp.eyebrow')} · ${L(x.project.name)}`} title={t('tp.title', { year: x.project.plan_year })} subtitle={t('tp.subtitle')}>
       {x.plan && <StatusPill value={x.plan.status} />}
@@ -46,7 +46,7 @@ export function TrainingPlan() {
       <Kpi icon="CalendarRange" value={fmtNum(s.halfDays)} label={t('tp.halfDaysTotal')} emph={false} />
       <Kpi icon="Users" value={fmtNum(s.trainingDays)} label={t('tp.trainingDays')} note={t('tp.trainingDaysHint')} emph={false} />
     </div>
-    <div className="notice" style={{ margin: 'var(--sp-4) 0' }}><Icon name="Scale" /><div><span className="strong">{t('tp.goldenTitle')}</span> {t('tp.goldenText')}</div></div>
+    <div className="notice" style={{ margin: 'var(--aiv-space-4) 0' }}><Icon name="Scale" /><div><span className="strong">{t('tp.goldenTitle')}</span> {t('tp.goldenText')}</div></div>
     {x.programs.map(p => { const rows = x.courses.filter(c => c.program_id === p.id); return (<Card key={p.id} title={`${p.code} — ${L(p.name)}`} actions={edit && <Btn size="sm" icon="Plus" onClick={async () => { const c = await act(() => post(`/projects/${project}/trainings`, { program_id: p.id, name: { en: t('tp.newTraining'), fr: t('tp.newTraining'), ar: t('tp.newTraining') }, duration_days: 1 })); d.reload(); setOpen(c.id); }}>{t('tp.addTraining')}</Btn>}>
       {(p.axis || p.description) && <p className="small muted">{[L(p.axis), L(p.description)].filter(Boolean).join(' · ')}</p>}
       <DataTable rows={rows} search={false} onRow={r => setOpen(r.id)} csvName={p.code} columns={[
@@ -56,7 +56,7 @@ export function TrainingPlan() {
         { key: 'rules', label: t('tp.rules'), render: r => (r.rules.ok ? <span className="pill s4 xs"><Icon name="Check" size={12} />{t('tp.rulesOk')}</span> : <span className="pill s1 xs" title={r.rules.issues.map(i => t('rule.' + i.code, i)).join('\n')}>{t('tp.rulesKo', { n: r.rules.issues.length })}</span>), text: r => (r.rules.ok ? 'OK' : r.rules.issues.length) },
         { key: 'status', label: t('col.status'), render: r => <StatusPill value={r.status} /> }]} empty={t('tp.noTrainings')} />
     </Card>); })}
-    {edit && <Btn icon="FolderPlus" style={{ marginTop: 'var(--sp-4)' }} onClick={() => setNewPrg(true)}>{t('tp.addProgram')}</Btn>}
+    {edit && <Btn icon="FolderPlus" style={{ marginTop: 'var(--aiv-space-4)' }} onClick={() => setNewPrg(true)}>{t('tp.addProgram')}</Btn>}
     {!x.programs.length && <Empty icon="GraduationCap" title={t('tp.empty')} text={t('tp.emptyText')} />}
     {open && <TrainingEditor id={open} plan={x} edit={edit} onClose={() => setOpen(null)} onSaved={() => d.reload()} />}
     {personas && <Personas edit={edit} onClose={() => { setPersonas(false); d.reload(); }} />}
@@ -94,7 +94,7 @@ function TrainingEditor({ id, plan, edit, onClose, onSaved }) {
     {edit && c.status !== 'Approved' && <Btn disabled={!rules.ok || dirty} title={!rules.ok ? t('tp.fixRules') : dirty ? t('tp.saveFirst') : ''} onClick={() => setApprove(true)}>{t('tp.approveTraining')}</Btn>}
     {edit && <Btn kind="primary" disabled={!dirty} onClick={() => save()}>{t('common.save')}</Btn>}</>}>
     <div className="grid g-3">
-      <Field label={t('tp.program')} id="tp1"><select id="tp1" className="input" disabled={!edit} value={c.program_id} onChange={e => set({ program_id: e.target.value })}>{plan.programs.map(p => <option key={p.id} value={p.id}>{p.code} — {L(p.name)}</option>)}</select></Field>
+      <Field label={t('tp.program')} id="tp1"><Select id="tp1" className="input" disabled={!edit} value={c.program_id} onChange={e => set({ program_id: e.target.value })}>{plan.programs.map(p => <option key={p.id} value={p.id}>{p.code} — {L(p.name)}</option>)}</Select></Field>
       <Field label={t('tp.trainingId')} id="tp2"><input id="tp2" className="input" disabled={!edit} value={c.training_code} onChange={e => set({ training_code: e.target.value })} /></Field>
       <Field label={t('tp.trainingName')} id="tp3"><input id="tp3" className="input" disabled={!edit} value={L(c.name)} onChange={e => set({ name: mlSet(c.name, lang, e.target.value) })} /></Field>
       <Field label={t('tp.level')} id="tp4" hint={t('tp.levelHint')}><input id="tp4" className="input" list="levels" disabled={!edit} value={LEVELS.includes(c.level) ? t('level.' + c.level) : c.level} onChange={e => { const v = e.target.value; const k = LEVELS.find(l => t('level.' + l) === v); set({ level: k || v }); }} /><datalist id="levels">{LEVELS.map(l => <option key={l} value={t('level.' + l)} />)}</datalist></Field>
@@ -104,19 +104,19 @@ function TrainingEditor({ id, plan, edit, onClose, onSaved }) {
     <Field label={t('tp.prerequisites')} id="tp7"><input id="tp7" className="input" disabled={!edit} value={L(c.prerequisites)} onChange={e => set({ prerequisites: mlSet(c.prerequisites, lang, e.target.value) })} /></Field>
     <Field label={t('tp.objectives')}><div className="stack">{(c.objectives || []).map((o, i) => <div key={i} className="row" style={{ flexWrap: 'nowrap' }}><input className="input" disabled={!edit} value={L(o)} onChange={e => set({ objectives: c.objectives.map((x, j) => (j === i ? mlSet(x, lang, e.target.value) : x)) })} aria-label={t('tp.objective') + ' ' + (i + 1)} />{edit && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => set({ objectives: c.objectives.filter((_, j) => j !== i) })} />}</div>)}
       {edit && <div><Btn size="sm" icon="Plus" onClick={() => set({ objectives: [...(c.objectives || []), { en: '', fr: '', ar: '' }] })}>{t('tp.addObjective')}</Btn></div>}</div></Field>
-    {!rules.ok && <div className="notice" style={{ margin: 'var(--sp-3) 0' }}><Icon name="TriangleAlert" /><ul style={{ margin: 0, paddingInlineStart: 18 }}>{rules.issues.map((i, k) => <li key={k} className="small">{t('rule.' + i.code, i)}</li>)}</ul></div>}
+    {!rules.ok && <div className="notice" style={{ margin: 'var(--aiv-space-3) 0' }}><Icon name="TriangleAlert" /><ul style={{ margin: 0, paddingInlineStart: 18 }}>{rules.issues.map((i, k) => <li key={k} className="small">{t('rule.' + i.code, i)}</li>)}</ul></div>}
     <Tabs value={tab} onChange={setTab} tabs={[{ id: 'agenda', label: t('tp.agenda'), count: (c.agenda || []).length }, { id: 'personas', label: t('tp.valuePropositionTab'), count: (c.personas || []).length }]} />
     {tab === 'agenda' && <div className="stack">{(c.agenda || []).map((h, hi) => { const n = ty => h.items.filter(x => x.type === ty).length; const ok = n('Quiz') === 1 && n('Workshop') === 1 && n('Lecture') >= 1; const mins = h.items.reduce((s, x) => s + (Number(x.minutes) || 0), 0);
       return (<section key={hi} className={`card halfday ${ok ? '' : 'bad'}`}><div className="card-head"><h4>{halfLabel(hi, t)}</h4><div className="row xs"><span className={`pill xs ${n('Quiz') === 1 ? 's4' : 's1'}`}>{t('item.Quiz')} {n('Quiz')}/1</span><span className={`pill xs ${n('Workshop') === 1 ? 's4' : 's1'}`}>{t('item.Workshop')} {n('Workshop')}/1</span><span className="muted">{mins} min</span></div></div>
         <div className="table-wrap"><table className="tbl"><tbody>{h.items.map((it, ii) => <tr key={ii}>
-          <td style={{ width: 150 }}><select className="input" disabled={!edit} value={it.type} onChange={e => item(hi, ii, { type: e.target.value })} aria-label={t('tp.itemType')}>{TYPES.map(ty => <option key={ty} value={ty}>{t('item.' + ty)}</option>)}</select></td>
+          <td style={{ width: 150 }}><Select className="input" disabled={!edit} value={it.type} onChange={e => item(hi, ii, { type: e.target.value })} aria-label={t('tp.itemType')}>{TYPES.map(ty => <option key={ty} value={ty}>{t('item.' + ty)}</option>)}</Select></td>
           <td><input className="input" disabled={!edit} value={L(it.title)} onChange={e => item(hi, ii, { title: mlSet(it.title, lang, e.target.value) })} aria-label={t('tp.itemTitle')} placeholder={t('tp.itemTitle')} /></td>
           <td style={{ width: 100 }}><input className="input" type="number" min="0" disabled={!edit} value={it.minutes || ''} onChange={e => item(hi, ii, { minutes: Number(e.target.value) })} aria-label={t('tp.minutes')} /></td>
           {edit && <td style={{ width: 90 }}><div className="row" style={{ flexWrap: 'nowrap' }}><Btn size="sm" kind="ghost" icon="ArrowUp" aria-label={t('common.up')} disabled={!ii} onClick={() => setAgenda(c.agenda.map((x, i) => (i !== hi ? x : { ...x, items: x.items.map((y, j) => (j === ii - 1 ? x.items[ii] : j === ii ? x.items[ii - 1] : y)) })))} /><Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => setAgenda(c.agenda.map((x, i) => (i !== hi ? x : { ...x, items: x.items.filter((_, j) => j !== ii) })))} /></div></td>}</tr>)}</tbody></table></div>
         {edit && <div className="row">{TYPES.map(ty => <Btn key={ty} size="sm" kind="ghost" icon={TYPE_ICON[ty]} onClick={() => setAgenda(c.agenda.map((x, i) => (i !== hi ? x : { ...x, items: [...x.items, { type: ty, title: { en: '', fr: '', ar: '' }, minutes: ty === 'Quiz' ? 20 : 60 }] })))}>{t('tp.add', { type: t('item.' + ty) })}</Btn>)}</div>}
       </section>); })}</div>}
     {tab === 'personas' && <div className="stack"><p className="small muted">{t('tp.personaHint')}</p>{personas.map(p => { const v = pf(p.id); return (<section key={p.id} className="card"><label className="row"><input type="checkbox" disabled={!edit} checked={!!v} onChange={e => set({ personas: e.target.checked ? [...(c.personas || []), { persona_id: p.id, behaviour: p.behaviour, pain_points: p.pain_points, hopes: p.hopes, fit: { en: '', fr: '', ar: '' } }] : c.personas.filter(x => x.persona_id !== p.id) })} /><span className="strong">{L(p.name)}</span><span className="xs muted">{t('pop.' + p.population)}</span></label>
-      {v && <div className="grid g-2" style={{ marginTop: 'var(--sp-3)' }}>{['behaviour', 'pain_points', 'hopes', 'fit'].map(k => <Field key={k} label={t('tp.' + { behaviour: 'behaviour', pain_points: 'painPoints', hopes: 'hopes', fit: 'fit' }[k])} id={p.id + k}><textarea id={p.id + k} className="input" rows={3} disabled={!edit} value={L(v[k])} onChange={e => setPf(p.id, { [k]: mlSet(v[k], lang, e.target.value) })} /></Field>)}</div>}</section>); })}</div>}
+      {v && <div className="grid g-2" style={{ marginTop: 'var(--aiv-space-3)' }}>{['behaviour', 'pain_points', 'hopes', 'fit'].map(k => <Field key={k} label={t('tp.' + { behaviour: 'behaviour', pain_points: 'painPoints', hopes: 'hopes', fit: 'fit' }[k])} id={p.id + k}><textarea id={p.id + k} className="input" rows={3} disabled={!edit} value={L(v[k])} onChange={e => setPf(p.id, { [k]: mlSet(v[k], lang, e.target.value) })} /></Field>)}</div>}</section>); })}</div>}
     {draft && <Modal wide title={t('tp.aiDraftTitle')} onClose={() => { post(`/trainings/${id}/ai-outcome`, { outcome: 'Rejected' }); setDraft(null); }} footer={<><Btn onClick={() => { post(`/trainings/${id}/ai-outcome`, { outcome: 'Rejected' }); setDraft(null); }}>{t('ai.reject')}</Btn><Btn kind="primary" onClick={() => { set({ agenda: draft.agenda, objectives: draft.objectives, personas: draft.personas }); post(`/trainings/${id}/ai-outcome`, { outcome: 'Accepted' }); setDraft(null); }}>{t('tp.acceptDraft')}</Btn></>}>
       <p className="small"><span className="pill tint xs"><Icon name="Sparkles" size={12} />{draft.useCase} · {t('tp.engine', { e: draft.engine })}</span> {L(draft.checkpoint)}</p>
       <p className="small strong">{t('tp.objectives')}</p><ul>{draft.objectives.map((o, i) => <li key={i} className="small">{L(o)}</li>)}</ul>
@@ -135,7 +135,7 @@ function Personas({ edit, onClose }) {
     {edit && <Btn icon="Plus" onClick={() => setSel({ code: '', name: { en: '', fr: '', ar: '' }, population: 'Custom', behaviour: { en: '', fr: '', ar: '' }, pain_points: { en: '', fr: '', ar: '' }, hopes: { en: '', fr: '', ar: '' } })}>{t('tp.addPersona')}</Btn>}
     {sel && <Modal title={L(sel.name) || t('tp.addPersona')} onClose={() => setSel(null)} footer={edit && <><Btn onClick={() => setSel(null)}>{t('common.cancel')}</Btn><Btn kind="primary" onClick={save}>{t('common.save')}</Btn></>}>
       <div className="grid g-2"><Field label={t('col.name')} id="pz1"><input id="pz1" className="input" disabled={!edit} value={L(sel.name)} onChange={e => setSel({ ...sel, name: mlSet(sel.name, lang, e.target.value) })} /></Field>
-        <Field label={t('q.population')} id="pz2"><select id="pz2" className="input" disabled={!edit} value={sel.population} onChange={e => setSel({ ...sel, population: e.target.value })}>{['DG', 'Management', 'Member', 'Custom'].map(p => <option key={p} value={p}>{t('pop.' + p)}</option>)}</select></Field></div>
+        <Field label={t('q.population')} id="pz2"><Select id="pz2" className="input" disabled={!edit} value={sel.population} onChange={e => setSel({ ...sel, population: e.target.value })}>{['DG', 'Management', 'Member', 'Custom'].map(p => <option key={p} value={p}>{t('pop.' + p)}</option>)}</Select></Field></div>
       {['behaviour', 'pain_points', 'hopes'].map(k => <Field key={k} label={t('tp.' + { behaviour: 'behaviour', pain_points: 'painPoints', hopes: 'hopes' }[k])} id={'pz' + k}><textarea id={'pz' + k} className="input" rows={3} disabled={!edit} value={L(sel[k])} onChange={e => setSel({ ...sel, [k]: mlSet(sel[k], lang, e.target.value) })} /></Field>)}
     </Modal>}
   </Modal>);

@@ -26,9 +26,9 @@ function Cell({ col, value, onChange, readOnly, label, functions }) {
     return <span>{v ?? ''}</span>;
   }
   if (col.kind === 'check') return <input type="checkbox" checked={!!value} onChange={e => onChange(e.target.checked)} aria-label={label} />;
-  if (col.kind === 'yesno') return <select className="input" value={value || ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option><option value="Yes">{t('common.yes')}</option><option value="No">{t('common.no')}</option></select>;
-  if (col.kind === 'scale') return <select className="input" value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option>{col.allowNew && <option value="Nv">Nv</option>}{[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}</option>)}</select>;
-  if (col.kind === 'choice') return <select className="input" value={value || ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option>{(col.options || []).map(o => <option key={o.en} value={o.en}>{L(o)}</option>)}</select>;
+  if (col.kind === 'yesno') return <Select className="input" value={value || ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option><option value="Yes">{t('common.yes')}</option><option value="No">{t('common.no')}</option></Select>;
+  if (col.kind === 'scale') return <Select className="input" value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option>{col.allowNew && <option value="Nv">Nv</option>}{[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}</option>)}</Select>;
+  if (col.kind === 'choice') return <Select className="input" value={value || ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option>{(col.options || []).map(o => <option key={o.en} value={o.en}>{L(o)}</option>)}</Select>;
   if (col.kind === 'number') return <input className="input" type="number" min="0" value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label} />;
   if (col.kind === 'date') return <input className="input" type="date" value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label} />;
   if (col.kind === 'function') return <><input className="input" list={id} value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label} placeholder={t('qf.functionOrCustom')} /><datalist id={id}>{(functions || []).map(f => <option key={f} value={f} />)}</datalist></>;

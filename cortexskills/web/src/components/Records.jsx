@@ -32,7 +32,7 @@ export function RecordsView({ entity, project, columns, canCreate = true, filter
   if (meta && !def) return <AccessNotice error={{ message: t('err.unknownEntity', { entity }) }} />;
   const cols = columns || autoColumns(def, L, t);
   return (<Guard state={d}>{data => <>
-    <div className="row" style={{ justifyContent: 'flex-end', marginBottom: 'var(--sp-3)' }}>{extraActions}
+    <div className="row" style={{ justifyContent: 'flex-end', marginBottom: 'var(--aiv-space-3)' }}>{extraActions}
       {canCreate && def?.canWrite && <Btn kind="primary" icon="Plus" onClick={() => setOpen({ _new: true, ...(defaults || {}) })}>{t('common.new')}</Btn>}</div>
     <DataTable csvName={entity} rows={rowFilter ? data.items.filter(rowFilter) : data.items} columns={cols} onRow={r => (onOpen ? onOpen(r) : setOpen(r))} />
     {open && def && <RecordEditor def={def} record={open} project={project} onClose={() => setOpen(null)} onSaved={() => { setOpen(null); d.reload(); }} />}
@@ -86,14 +86,14 @@ function FieldInput({ f, value, onChange, readOnly }) {
   const common = { id, className: 'input', disabled: readOnly };
   const wide = ['json', 'longtext'].includes(f.type) || (f.type === 'text' && f.ml);
   switch (f.type) {
-    case 'enum': input = <select {...common} value={value ?? ''} onChange={e => onChange(e.target.value)}><option value="">—</option>{f.options.map(o => <option key={o} value={o}>{t('status.' + o)}</option>)}</select>; break;
+    case 'enum': input = <Select {...common} value={value ?? ''} onChange={e => onChange(e.target.value)}><option value="">—</option>{f.options.map(o => <option key={o} value={o}>{t('status.' + o)}</option>)}</Select>; break;
     case 'boolean': input = <label className="check"><input id={id} type="checkbox" disabled={readOnly} checked={!!value} onChange={e => onChange(e.target.checked)} />{value ? t('common.yes') : t('common.no')}</label>; break;
     case 'number': input = <input {...common} type="number" step="any" value={value ?? ''} onChange={e => onChange(e.target.value === '' ? '' : Number(e.target.value))} />; break;
     case 'date': input = <input {...common} type="date" value={value ? String(value).slice(0, 10) : ''} onChange={e => onChange(e.target.value)} />; break;
     case 'datetime': input = <input {...common} type="datetime-local" value={value ? String(value).slice(0, 16) : ''} onChange={e => onChange(e.target.value ? new Date(e.target.value).toISOString() : '')} />; break;
     case 'ref': {
       const opts = f.ref === 'User' ? (dir.data || []).map(u => [u.id, u.name]) : f.ref === 'ObsNode' ? (obs.data || []).map(n => [n.id, L(n.name)]) : (refs.data?.items || []).map(r => [r.id, recordLabel(r, L)]);
-      input = <select {...common} value={value ?? ''} onChange={e => onChange(e.target.value)}><option value="">—</option>{opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}{value && !opts.find(o => o[0] === value) && <option value={value}>{String(value).slice(0, 8)}…</option>}</select>; break; }
+      input = <Select {...common} value={value ?? ''} onChange={e => onChange(e.target.value)}><option value="">—</option>{opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}{value && !opts.find(o => o[0] === value) && <option value={value}>{String(value).slice(0, 8)}…</option>}</Select>; break; }
     case 'json': input = <textarea {...common} value={typeof value === 'string' ? value : JSON.stringify(value ?? null, null, 1)} onChange={e => onChange(e.target.value)} style={{ fontFamily: 'monospace', fontSize: 12 }} />; break;
     case 'longtext': input = <textarea {...common} value={L(value) || ''} onChange={e => onChange(e.target.value)} />; break;
     default: input = <input {...common} value={f.ml ? L(value) || '' : typeof value === 'object' && value ? L(value) : value ?? ''} onChange={e => onChange(e.target.value)} />;
@@ -108,8 +108,8 @@ function Versions({ entity, id, canWrite, onReverted }) {
   return (<Guard state={d}>{vs => <div className="stack">
     <DataTable search={false} rows={vs} columns={[{ key: 'version', label: 'v', num: true }, { key: 'created_at', label: t('col.date'), text: v => fmtDate(v.created_at) }, { key: 'user_name', label: t('col.user'), text: v => v.user_name || '—' },
       { key: 'justification', label: t('col.justification'), text: v => v.justification || '—' }, { key: 'cur', label: '', noSort: true, render: v => v.is_current ? <span className="pill s4">{t('records.current')}</span> : canWrite && <Btn size="sm" onClick={async () => { await act(() => post(`/records/${entity}/${id}/revert`, { version: v.version, _justification: t('records.revertNote', { v: v.version }) }), 'records.reverted'); onReverted(); }}>{t('records.revert')}</Btn> }]} />
-    {vs.length > 1 && <div className="row"><select className="input" style={{ width: 120 }} value={a || ''} onChange={e => setA(e.target.value)} aria-label="A"><option value="">A</option>{vs.map(v => <option key={v.version} value={v.version}>v{v.version}</option>)}</select>
-      <select className="input" style={{ width: 120 }} value={b || ''} onChange={e => setB(e.target.value)} aria-label="B"><option value="">B</option>{vs.map(v => <option key={v.version} value={v.version}>v{v.version}</option>)}</select><Btn disabled={!a || !b} onClick={compareNow}>{t('records.compare')}</Btn></div>}
-    {cmp && <DataTable search={false} rows={cmp} columns={[{ key: 'field', label: t('col.field'), render: r => <span className={r.changed ? 'strong' : ''}>{r.changed && <Icon name="Dot" />} {t('field.' + r.field)}</span> }, { key: 'a', label: `v${a}`, text: r => displayValue(r.a, L, t) }, { key: 'b', label: `v${b}`, render: r => <span style={r.changed ? { background: 'var(--pa-orange-tint)', padding: '0 4px', borderRadius: 4 } : undefined}>{displayValue(r.b, L, t)}</span> }]} />}
+    {vs.length > 1 && <div className="row"><Select className="input" style={{ width: 120 }} value={a || ''} onChange={e => setA(e.target.value)} aria-label="A"><option value="">A</option>{vs.map(v => <option key={v.version} value={v.version}>v{v.version}</option>)}</Select>
+      <Select className="input" style={{ width: 120 }} value={b || ''} onChange={e => setB(e.target.value)} aria-label="B"><option value="">B</option>{vs.map(v => <option key={v.version} value={v.version}>v{v.version}</option>)}</Select><Btn disabled={!a || !b} onClick={compareNow}>{t('records.compare')}</Btn></div>}
+    {cmp && <DataTable search={false} rows={cmp} columns={[{ key: 'field', label: t('col.field'), render: r => <span className={r.changed ? 'strong' : ''}>{r.changed && <Icon name="Dot" />} {t('field.' + r.field)}</span> }, { key: 'a', label: `v${a}`, text: r => displayValue(r.a, L, t) }, { key: 'b', label: `v${b}`, render: r => <span style={r.changed ? { background: 'var(--aiv-azure-tint)', padding: '0 4px', borderRadius: 4 } : undefined}>{displayValue(r.b, L, t)}</span> }]} />}
   </div>}</Guard>);
 }

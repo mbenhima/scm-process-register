@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { post, put } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, useAction, Modal, Field, KV } from '../components/ui.jsx';
+import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, useAction, Modal, Field, KV, Select } from '../components/ui.jsx';
 
 const FIELDS = {
   email: [['host', 'text'], ['port', 'number'], ['secure', 'bool'], ['user', 'text'], ['from', 'text'], ['replyTo', 'text']],
@@ -32,16 +32,16 @@ function ChannelCard({ c, edit, onSaved }) {
   return (<Card title={<span className="row"><Icon name={c.channel === 'email' ? 'Mail' : 'MessageCircle'} />{t('channel.' + c.channel)}</span>} actions={<span className={`pill ${c.effective === 'sandbox' ? 's2' : 's4'}`}>{t('channelMode.' + c.effective)}</span>}>
     <p className="small muted">{t('ch.hint.' + c.channel)}</p>
     <div className="row"><label className="row small"><input type="checkbox" disabled={!edit} checked={enabled} onChange={e => setEnabled(e.target.checked)} />{t('ch.enabled')}</label>
-      <select className="input" style={{ width: 'auto' }} disabled={!edit} value={mode} onChange={e => setMode(e.target.value)} aria-label={t('ch.mode')}><option value="sandbox">{t('channelMode.sandbox')}</option><option value="live">{t('channelMode.live')}</option></select></div>
-    <div className="grid g-2" style={{ marginTop: 'var(--sp-3)' }}>{FIELDS[c.channel].map(([k, type]) => type === 'bool'
+      <Select className="input" style={{ width: 'auto' }} disabled={!edit} value={mode} onChange={e => setMode(e.target.value)} aria-label={t('ch.mode')}><option value="sandbox">{t('channelMode.sandbox')}</option><option value="live">{t('channelMode.live')}</option></Select></div>
+    <div className="grid g-2" style={{ marginTop: 'var(--aiv-space-3)' }}>{FIELDS[c.channel].map(([k, type]) => type === 'bool'
       ? <label key={k} className="row small"><input type="checkbox" disabled={!edit} checked={!!cfg[k]} onChange={e => setCfg({ ...cfg, [k]: e.target.checked })} />{t(`ch.${c.channel}.${k}`)}</label>
       : <Field key={k} label={t(`ch.${c.channel}.${k}`)} id={c.channel + k}><input id={c.channel + k} className="input" type={type === 'number' ? 'number' : 'text'} disabled={!edit} value={cfg[k] ?? ''} onChange={e => setCfg({ ...cfg, [k]: e.target.value })} /></Field>)}
       <Field label={t(`ch.${c.channel}.secret`)} id={c.channel + 's'} hint={c.secretSet ? t('ch.secretSet', { hint: c.secretHint }) : t('ch.secretNone')}><input id={c.channel + 's'} className="input" type="password" autoComplete="new-password" disabled={!edit} value={secret} onChange={e => setSecret(e.target.value)} /></Field>
       {c.channel === 'whatsapp' && <Field label={t('ch.whatsapp.appSecret')} id="was2" hint={c.secret2Set ? t('ch.secretSetPlain') : t('ch.secretNone')}><input id="was2" className="input" type="password" autoComplete="new-password" disabled={!edit} value={secret2} onChange={e => setSecret2(e.target.value)} /></Field>}</div>
     {c.webhookUrl && <p className="xs muted">{t('ch.webhook')}: <span className="mono">{window.location.origin}{c.webhookUrl}</span></p>}
     {c.platformDefault && <p className="xs muted">{t('ch.platformDefault')}</p>}
-    {edit && <div className="row" style={{ marginTop: 'var(--sp-3)', justifyContent: 'space-between' }}><Btn kind="primary" onClick={save}>{t('common.save')}</Btn>
+    {edit && <div className="row" style={{ marginTop: 'var(--aiv-space-3)', justifyContent: 'space-between' }}><Btn kind="primary" onClick={save}>{t('common.save')}</Btn>
       <div className="row" style={{ flexWrap: 'nowrap' }}><input className="input" placeholder={c.channel === 'email' ? 'name@example.com' : '+212 6…'} value={to} onChange={e => setTo(e.target.value)} aria-label={t('ch.testTo')} /><Btn icon="Send" disabled={!to} onClick={run}>{t('ch.test')}</Btn></div></div>}
-    {test && <div className={`notice ${test.status === 'failed' ? '' : 'grey'}`} style={{ marginTop: 'var(--sp-3)' }}><Icon name={test.status === 'failed' ? 'CircleAlert' : 'CircleCheck'} /><div>{t('ch.testResult.' + test.status, { error: test.error || '' })}</div></div>}
+    {test && <div className={`notice ${test.status === 'failed' ? '' : 'grey'}`} style={{ marginTop: 'var(--aiv-space-3)' }}><Icon name={test.status === 'failed' ? 'CircleAlert' : 'CircleCheck'} /><div>{t('ch.testResult.' + test.status, { error: test.error || '' })}</div></div>}
   </Card>);
 }

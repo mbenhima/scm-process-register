@@ -3,14 +3,14 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { post, put, get } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Tabs, KV, AiBadge, useAction, JustifyDialog, Seg, Legend, Progress, Field } from '../components/ui.jsx';
+import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Tabs, KV, AiBadge, useAction, JustifyDialog, Seg, Legend, Progress, Field, Select } from '../components/ui.jsx';
 import { RecordsView, displayValue } from '../components/Records.jsx';
 
 const FAMILIES = ['Core Training Engineering', 'Innovation & Differentiation', 'Consulting & Diagnostic Excellence', 'Strategic & Organizational Excellence', 'Scope & Questionnaire Excellence', 'Platform Administration'];
 export function MacroProcesses() {
   const { t, L } = useI18n(); const d = useData('/catalog/mp'); const nav = useNavigate(); const [fam, setFam] = useState('all');
   return (<><PageHead eyebrow={t('navGroup.process')} title={t('nav.macroProcesses')} subtitle={t('mp.subtitle')} />
-    <Guard state={d}>{rows => <><div className="row" style={{ marginBottom: 'var(--sp-3)' }}><select className="input" style={{ maxWidth: 360 }} value={fam} onChange={e => setFam(e.target.value)} aria-label={t('mp.family')}><option value="all">{t('mp.allFamilies')} ({rows.length})</option>{FAMILIES.map(f => <option key={f} value={f}>{L(rows.find(r => r.familyKey === f)?.family) || f} ({rows.filter(r => r.familyKey === f).length})</option>)}</select></div>
+    <Guard state={d}>{rows => <><div className="row" style={{ marginBottom: 'var(--aiv-space-3)' }}><Select className="input" style={{ maxWidth: 360 }} value={fam} onChange={e => setFam(e.target.value)} aria-label={t('mp.family')}><option value="all">{t('mp.allFamilies')} ({rows.length})</option>{FAMILIES.map(f => <option key={f} value={f}>{L(rows.find(r => r.familyKey === f)?.family) || f} ({rows.filter(r => r.familyKey === f).length})</option>)}</Select></div>
       <DataTable csvName="macro_processes" rows={rows.filter(r => fam === 'all' || r.familyKey === fam)} onRow={r => nav('/process/mp/' + r.id)} columns={[{ key: 'id', label: 'ID' }, { key: 'name', label: t('col.name'), render: r => <span className="strong">{L(r.name)}</span>, text: r => L(r.name) },
         { key: 'category', label: t('col.category'), text: r => L(r.category) }, { key: 'owner', label: t('col.owner'), text: r => L(r.owner) }, { key: 'module', label: t('col.module') }, { key: 'coveredBy', label: t('col.coveredBy'), text: r => (r.coveredBy || []).join(', ') }]} /></>}</Guard></>);
 }
@@ -32,7 +32,7 @@ export function MacroProcess() {
       <Card title={t('nav.alerts')}><DataTable search={false} rows={x.alerts} columns={[{ key: 'id', label: 'ID' }, { key: 'rule', label: t('field.rule') }, { key: 'severity', label: t('col.severity'), text: r => t('severity.' + r.severity) }, { key: 'step', label: 'Step' }, { key: 'escalation', label: t('col.escalation'), text: r => L(r.escalation) }]} /></Card>
       <Card title={t('nav.reports')}>{x.reports.map(r => <p key={r.id} className="small">{r.id} · {L(r.name)}</p>)}</Card></div>}
     {tab === 'ai' && <DataTable search={false} rows={x.aiUseCases} columns={[{ key: 'code', label: 'ID' }, { key: 'name', label: t('col.name'), text: r => L(r.name) }, { key: 'tier', label: t('col.tier'), render: r => <AiBadge tier={r.tier} /> }, { key: 'step', label: 'Step' }, { key: 'checkpoint', label: t('ai.checkpoint'), text: r => L(r.checkpoint) }]} />}
-    {tab === 'data' && <div className="grid g-3">{x.classes.map(c => <Link key={c.id} to={'/records/' + c.name} className="card" style={{ textDecoration: 'none' }}><span className="xs muted">{c.id}</span><h3 style={{ fontSize: 'var(--fs-16)' }}>{L(c.label)}</h3><p className="small">{L(c.description)}</p></Link>)}</div>}
+    {tab === 'data' && <div className="grid g-3">{x.classes.map(c => <Link key={c.id} to={'/records/' + c.name} className="card" style={{ textDecoration: 'none' }}><span className="xs muted">{c.id}</span><h3 style={{ fontSize: 'var(--aiv-fs-16)' }}>{L(c.label)}</h3><p className="small">{L(c.description)}</p></Link>)}</div>}
   </>); }}</Guard>);
 }
 
@@ -60,7 +60,7 @@ export function E2EDetail() {
   </>); }}</Guard>);
 }
 
-const LAYERS = [['scope', 'var(--pa-orange)'], ['strategic', 'var(--pa-orange-tint)'], ['consulting', 'var(--pa-grey-light)'], ['core', 'var(--pa-white)'], ['parallel', 'var(--pa-white)'], ['enabler', 'var(--pa-grey-light)']];
+const LAYERS = [['scope', 'var(--aiv-azure)'], ['strategic', 'var(--aiv-azure-tint)'], ['consulting', 'var(--aiv-bg-alt)'], ['core', 'var(--aiv-white)'], ['parallel', 'var(--aiv-white)'], ['enabler', 'var(--aiv-bg-alt)']];
 export function Chain() {
   const { t, L } = useI18n(); const d = useData('/process/chain'); const nav = useNavigate();
   return (<><PageHead eyebrow={t('navGroup.process')} title={t('nav.chain')} subtitle={t('chain.subtitle')} />
@@ -68,12 +68,12 @@ export function Chain() {
       const pos = {}; LAYERS.forEach(([ly], i) => nodes.filter(n => n.layer === ly).forEach((n, k) => { pos[n.id] = { x: i * colW + 12, y: 40 + k * (boxH + 12) }; }));
       const H = Math.max(...Object.values(pos).map(p => p.y)) + 60;
       return (<Card><div style={{ overflowX: 'auto' }}><svg className="chart" viewBox={`0 0 ${W} ${H}`} style={{ minWidth: 960 }} role="img" aria-label={t('chain.subtitle')}>
-        <defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--pa-grey-medium)" /></marker></defs>
-        {LAYERS.map(([ly], i) => <text key={ly} x={i * colW + 12} y={20} style={{ fontWeight: 700, fill: 'var(--pa-grey-dark)' }}>{t('chain.layer.' + ly)}</text>)}
+        <defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--aiv-muted-2)" /></marker></defs>
+        {LAYERS.map(([ly], i) => <text key={ly} x={i * colW + 12} y={20} style={{ fontWeight: 700, fill: 'var(--aiv-navy)' }}>{t('chain.layer.' + ly)}</text>)}
         {x.edges.filter(e => pos[e.from] && pos[e.to]).map((e, i) => { const a = pos[e.from], b = pos[e.to]; const x1 = a.x + boxW, y1 = a.y + boxH / 2, x2 = b.x, y2 = b.y + boxH / 2; const back = x2 <= a.x;
-          return <path key={i} d={back ? `M${a.x},${y1} C${a.x - 40},${y1} ${b.x + boxW + 40},${y2} ${b.x + boxW},${y2}` : `M${x1},${y1} C${x1 + 30},${y1} ${x2 - 30},${y2} ${x2},${y2}`} fill="none" stroke="var(--pa-grey-line)" strokeWidth="1.2" strokeDasharray={e.kind === 'dashed' ? '5 4' : ''} markerEnd="url(#arr)" />; })}
+          return <path key={i} d={back ? `M${a.x},${y1} C${a.x - 40},${y1} ${b.x + boxW + 40},${y2} ${b.x + boxW},${y2}` : `M${x1},${y1} C${x1 + 30},${y1} ${x2 - 30},${y2} ${x2},${y2}`} fill="none" stroke="var(--aiv-line)" strokeWidth="1.2" strokeDasharray={e.kind === 'dashed' ? '5 4' : ''} markerEnd="url(#arr)" />; })}
         {nodes.map(n => { const p = pos[n.id]; const fill = LAYERS.find(l => l[0] === n.layer)[1]; return <g key={n.id} className="chain-node" tabIndex={0} role="link" aria-label={`${n.id} ${L(n.name)}`} onClick={() => nav('/process/e2e/' + n.id)} onKeyDown={e => e.key === 'Enter' && nav('/process/e2e/' + n.id)}>
-          <rect x={p.x} y={p.y} width={boxW} height={boxH} rx="8" fill={fill} stroke="var(--pa-grey-line)" /><text x={p.x + 8} y={p.y + 14} style={{ fontWeight: 700, fill: 'var(--pa-grey-dark)' }}>{n.id}</text><text x={p.x + 8} y={p.y + 28} style={{ fontSize: 10, fill: 'var(--pa-grey-dark)' }}>{L(n.name).slice(0, 30)}</text><title>{L(n.name)}</title></g>; })}
+          <rect x={p.x} y={p.y} width={boxW} height={boxH} rx="8" fill={fill} stroke="var(--aiv-line)" /><text x={p.x + 8} y={p.y + 14} style={{ fontWeight: 700, fill: 'var(--aiv-navy)' }}>{n.id}</text><text x={p.x + 8} y={p.y + 28} style={{ fontSize: 10, fill: 'var(--aiv-navy)' }}>{L(n.name).slice(0, 30)}</text><title>{L(n.name)}</title></g>; })}
       </svg></div><Legend items={LAYERS.slice(0, 4).map(([ly, c]) => ({ label: t('chain.layer.' + ly), color: c }))} /><p className="caption">{t('chain.caption')}</p></Card>); }}</Guard></>);
 }
 
@@ -83,14 +83,14 @@ export function Coverage() {
     <Guard state={d}>{x => <><div className="grid g-3"><div className="card kpi"><div><div className="kpi-value">{x.fullyCovered}/{x.businessMps}</div><div className="kpi-label">{t('coverage.mps')}</div></div></div>
       <div className="card kpi"><div><div className="kpi-value">{x.stepsCovered}/{x.steps}</div><div className="kpi-label">{t('coverage.steps')}</div><div className="kpi-note">{t('coverage.admin')}</div></div></div>
       <div className="card kpi"><div><div className="kpi-value">{Math.round((x.fullyCovered * 100) / x.businessMps)}%</div><div className="kpi-label">{t('coverage.rate')}</div></div></div></div>
-      <div style={{ marginTop: 'var(--sp-4)' }}><DataTable csvName="coverage" rows={x.rows} columns={[{ key: 'id', label: 'MP' }, { key: 'name', label: t('col.name'), text: r => L(r.name) }, { key: 'e2e', label: t('col.coveredBy'), text: r => r.e2e.join(', ') }, { key: 'steps', label: t('coverage.stepsCol'), text: r => `${r.stepsCovered}/${r.steps}` }, { key: 'status', label: t('col.status'), render: r => <span className={`pill ${r.status === 'Full' ? 's5' : r.status === 'Admin' ? 'tint' : 's2'}`}>{t('coverage.' + r.status)}</span>, text: r => r.status }]} /></div></>}</Guard></>);
+      <div style={{ marginTop: 'var(--aiv-space-4)' }}><DataTable csvName="coverage" rows={x.rows} columns={[{ key: 'id', label: 'MP' }, { key: 'name', label: t('col.name'), text: r => L(r.name) }, { key: 'e2e', label: t('col.coveredBy'), text: r => r.e2e.join(', ') }, { key: 'steps', label: t('coverage.stepsCol'), text: r => `${r.stepsCovered}/${r.steps}` }, { key: 'status', label: t('col.status'), render: r => <span className={`pill ${r.status === 'Full' ? 's5' : r.status === 'Admin' ? 'tint' : 's2'}`}>{t('coverage.' + r.status)}</span>, text: r => r.status }]} /></div></>}</Guard></>);
 }
 
 export function InfoModel() {
   const { t, L } = useI18n(); const cls = useData('/catalog/class'); const attrs = useData('/catalog/attribute'); const [sel, setSel] = useState(null);
   return (<><PageHead eyebrow={t('navGroup.process')} title={t('nav.infoModel')} subtitle={t('model.subtitle')} />
     <Guard state={cls}>{rows => <div className="grid split"><DataTable csvName="classes" rows={rows} onRow={setSel} columns={[{ key: 'id', label: 'ID' }, { key: 'name', label: t('col.name'), text: r => L(r.label) }, { key: 'parent', label: t('model.parent') }, { key: 'mps', label: t('run.mps'), text: r => r.mps.join(', ') }]} />
-      <Card title={sel ? `${sel.id} · ${L(sel.label)}` : t('model.pick')}>{sel && <><p className="small">{L(sel.description)}</p><DataTable search={false} rows={(attrs.data || []).filter(a => a.classId === sel.id)} columns={[{ key: 'id', label: 'ID' }, { key: 'name', label: t('col.name') }, { key: 'type', label: t('col.type') }, { key: 'required', label: t('model.required') }, { key: 'rule', label: t('model.rule') }]} /><Link className="btn" to={'/records/' + sel.name} style={{ marginTop: 'var(--sp-3)' }}>{t('model.openRecords')}</Link></>}</Card></div>}</Guard></>);
+      <Card title={sel ? `${sel.id} · ${L(sel.label)}` : t('model.pick')}>{sel && <><p className="small">{L(sel.description)}</p><DataTable search={false} rows={(attrs.data || []).filter(a => a.classId === sel.id)} columns={[{ key: 'id', label: 'ID' }, { key: 'name', label: t('col.name') }, { key: 'type', label: t('col.type') }, { key: 'required', label: t('model.required') }, { key: 'rule', label: t('model.rule') }]} /><Link className="btn" to={'/records/' + sel.name} style={{ marginTop: 'var(--aiv-space-3)' }}>{t('model.openRecords')}</Link></>}</Card></div>}</Guard></>);
 }
 
 export function Verticals() {
@@ -112,7 +112,7 @@ export function Sme() {
   const uni = (crit.data?.items || []).filter(c => !c.vertical_id); const total = uni.reduce((s, c) => s + Number(w[c.code] ?? c.weight), 0);
   return (<><PageHead eyebrow={t('navGroup.process')} title={t('nav.sme')} subtitle={t('sme.subtitle')} />
     <Guard state={tracks}>{x => <div className="grid g-3">{x.items.map(tk => <Card key={tk.id} title={`${tk.code} · ${L(tk.name)}`}><p className="small">{L(tk.description)}</p><KV items={[[t('sme.segment'), tk.segment], [t('sme.gates'), tk.gates], [t('sme.items'), tk.items_per_gate], [t('sme.duration'), tk.duration_days + ' ' + t('common.days')], [t('sme.score'), `${tk.score_min}–${tk.score_max}`]]} /></Card>)}</div>}</Guard>
-    <div className="grid split" style={{ marginTop: 'var(--sp-4)' }}><Card title={t('sme.criteria')} actions={<span className={`pill ${Math.round(total) === 100 ? 's4' : 's1'}`}>{t('sme.total', { n: total })}</span>}>
+    <div className="grid split" style={{ marginTop: 'var(--aiv-space-4)' }}><Card title={t('sme.criteria')} actions={<span className={`pill ${Math.round(total) === 100 ? 's4' : 's1'}`}>{t('sme.total', { n: total })}</span>}>
       {uni.map(c => <div key={c.id} className="row" style={{ justifyContent: 'space-between', flexWrap: 'nowrap', marginBottom: 8 }}><span className="small">{L(c.name)}</span><input className="input" style={{ width: 90 }} type="number" min="0" max="100" disabled={!can('sme.manage')} value={w[c.code] ?? c.weight} onChange={e => setW(v => ({ ...v, [c.code]: Number(e.target.value) }))} aria-label={L(c.name)} /></div>)}
       {can('sme.manage') && <Btn kind="primary" disabled={Math.round(total) !== 100 || !Object.keys(w).length} onClick={() => setJ(true)}>{t('common.save')}</Btn>}
       <p className="caption">{t('sme.weightsNote')}</p></Card>

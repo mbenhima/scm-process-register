@@ -35,7 +35,7 @@ export default function Respond() {
     {d.responded ? <div className="card tint"><div className="kpi"><span className="badge-ico emph"><Icon name="CircleCheck" size={20} /></span><div><h3>{t('respond.thanks')}</h3><p className="muted">{t('respond.thanksText')}</p></div></div></div>
       : !d.questionnaire.open ? <div className="card"><p>{t('respond.closed')}</p></div>
       : <>
-        <div className="card" style={{ marginBottom: 'var(--sp-4)' }}>
+        <div className="card" style={{ marginBottom: 'var(--aiv-space-4)' }}>
           <label className="row" style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} style={{ marginTop: 4 }} />
             <span><span className="strong">{t('respond.consent')}</span><br /><span className="small muted">{t('respond.consentText', { org: L(d.organization) })}</span></span></label>
         </div>

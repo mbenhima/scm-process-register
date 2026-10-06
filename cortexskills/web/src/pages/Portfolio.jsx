@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { post, downloadCsv } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, StatusPill, Progress, Btn, Icon, Tabs, Field, Kpi, useAction, Seg, Legend, AiBadge, IconBadge, Empty } from '../components/ui.jsx';
+import { PageHead, Card, Guard, DataTable, StatusPill, Progress, Btn, Icon, Tabs, Field, Kpi, useAction, Seg, Legend, AiBadge, IconBadge, Empty, Select } from '../components/ui.jsx';
 import { RecordsView, useMeta } from '../components/Records.jsx';
 
 export function Tenancy() {
@@ -48,7 +48,7 @@ export function NewProject() {
   };
   const crit = dm.data?.[0];
   return (<><PageHead eyebrow={t('navGroup.portfolio')} title={t('nav.newProject')} subtitle={t('newp.subtitle', { org: L(me.org?.name) })} />
-    <div className="notice grey" style={{ marginBottom: 'var(--sp-4)' }}><Icon name="Building2" /><span>{t('newp.org', { org: L(me.org?.name) })} · {me.group ? t('tenancy.groupYes') + ' — ' + L(me.group.name) : t('tenancy.independent')}</span></div>
+    <div className="notice grey" style={{ marginBottom: 'var(--aiv-space-4)' }}><Icon name="Building2" /><span>{t('newp.org', { org: L(me.org?.name) })} · {me.group ? t('tenancy.groupYes') + ' — ' + L(me.group.name) : t('tenancy.independent')}</span></div>
     <Tabs value={mode} onChange={setMode} tabs={[{ id: 'catalog', label: t('newp.fromCatalog') }, { id: 'manual', label: t('newp.manual') }, { id: 'ai', label: t('newp.withAi') }]} />
     <div className="grid split"><div className="stack">
       {mode === 'catalog' && <Card title={t('newp.pickTemplate')}><DataTable rows={published} onRow={r => set('template_id', r.id)} columns={[
@@ -56,20 +56,20 @@ export function NewProject() {
         { key: 'name', label: t('col.name'), text: r => L(r.name) }, { key: 'scope', label: t('col.scope'), text: r => t('scope.' + r.scope) + (r.vertical_id ? ' · ' + r.vertical_id : '') }, { key: 'focus', label: t('col.focus'), text: r => t('focus.' + r.focus) },
         { key: 'phases', label: t('col.phases'), text: r => (r.phases || []).length }, { key: 'use_count', label: t('col.uses'), num: true }]} /></Card>}
       {mode === 'ai' && <Card title={t('newp.aiTitle')} actions={<AiBadge tier="Assistive" />}><Field label={t('newp.aiDescribe')} id="aid"><textarea id="aid" className="input" value={aiText} onChange={e => setAiText(e.target.value)} placeholder={t('newp.aiPlaceholder')} /></Field>
-        <div className="row" style={{ marginTop: 'var(--sp-3)' }}><Btn kind="primary" icon="Sparkles" disabled={!aiText.trim()} onClick={runAi}>{t('newp.aiDraft')}</Btn></div>
-        {draft && <div className="stack" style={{ marginTop: 'var(--sp-4)' }}><div className="notice"><Icon name="Sparkles" />{t('ai.label')}</div>{draft.items.map(it => <label key={it.key} className="check" style={{ alignItems: 'flex-start' }}><input type="checkbox" checked={!!keep[it.key]} onChange={e => setKeep(k => ({ ...k, [it.key]: e.target.checked }))} />
+        <div className="row" style={{ marginTop: 'var(--aiv-space-3)' }}><Btn kind="primary" icon="Sparkles" disabled={!aiText.trim()} onClick={runAi}>{t('newp.aiDraft')}</Btn></div>
+        {draft && <div className="stack" style={{ marginTop: 'var(--aiv-space-4)' }}><div className="notice"><Icon name="Sparkles" />{t('ai.label')}</div>{draft.items.map(it => <label key={it.key} className="check" style={{ alignItems: 'flex-start' }}><input type="checkbox" checked={!!keep[it.key]} onChange={e => setKeep(k => ({ ...k, [it.key]: e.target.checked }))} />
           <span><span className="strong">{t('field.' + it.key)}</span>: <span className="small">{it.key === 'phases' ? it.value.map(p => `${L(p.name)} (${p.e2e.length})`).join(' · ') : it.key === 'gates' ? it.value.map(g => L(g.name)).join(' · ') : it.key === 'complexity' ? `${it.score}/100` : it.key === 'template_id' ? L(it.label) || '—' : typeof it.value === 'object' ? L(it.value) : String(it.value ?? '—')}</span></span></label>)}</div>}</Card>}
       <Card title={t('newp.details')}><div className="form-grid">
         <Field label={t('field.name')} id="pn"><input id="pn" className="input" value={f.name} onChange={e => set('name', e.target.value)} placeholder={t('newp.namePh')} /></Field>
-        <Field label={t('col.focus')} id="pf"><select id="pf" className="input" value={f.focus} onChange={e => set('focus', e.target.value)}>{['All', 'Digital', 'AI', 'Custom'].map(x => <option key={x} value={x}>{t('focus.' + x)}</option>)}</select></Field>
-        {mode === 'manual' && <><Field label={t('col.vertical')} id="pv"><select id="pv" className="input" value={f.vertical_id} onChange={e => set('vertical_id', e.target.value)}><option value="">{t('newp.noVertical')}</option>{(verticals.data || []).map(v => <option key={v.id} value={v.id}>{L(v.name)}</option>)}</select></Field>
-          <Field label={t('col.mode')} id="pm"><select id="pm" className="input" value={f.mode} onChange={e => set('mode', e.target.value)}><option value="Full">{t('mode.Full')}</option><option value="SME">{t('mode.SME')}</option></select></Field></>}
-        {f.mode === 'SME' && <Field label={t('col.track')} id="pt" hint={score ? t('newp.recommended', { track: score.recommendedTrack }) : ''}><select id="pt" className="input" value={f.track} onChange={e => set('track', e.target.value)}><option value="">{t('newp.useRecommended')}</option>{(tracks.data || []).map(x => <option key={x.id} value={x.id}>{x.id} — {L(x.name)}</option>)}</select></Field>}
+        <Field label={t('col.focus')} id="pf"><Select id="pf" className="input" value={f.focus} onChange={e => set('focus', e.target.value)}>{['All', 'Digital', 'AI', 'Custom'].map(x => <option key={x} value={x}>{t('focus.' + x)}</option>)}</Select></Field>
+        {mode === 'manual' && <><Field label={t('col.vertical')} id="pv"><Select id="pv" className="input" value={f.vertical_id} onChange={e => set('vertical_id', e.target.value)}><option value="">{t('newp.noVertical')}</option>{(verticals.data || []).map(v => <option key={v.id} value={v.id}>{L(v.name)}</option>)}</Select></Field>
+          <Field label={t('col.mode')} id="pm"><Select id="pm" className="input" value={f.mode} onChange={e => set('mode', e.target.value)}><option value="Full">{t('mode.Full')}</option><option value="SME">{t('mode.SME')}</option></Select></Field></>}
+        {f.mode === 'SME' && <Field label={t('col.track')} id="pt" hint={score ? t('newp.recommended', { track: score.recommendedTrack }) : ''}><Select id="pt" className="input" value={f.track} onChange={e => set('track', e.target.value)}><option value="">{t('newp.useRecommended')}</option>{(tracks.data || []).map(x => <option key={x.id} value={x.id}>{x.id} — {L(x.name)}</option>)}</Select></Field>}
         {f.mode === 'SME' && f.track && score && f.track !== score.recommendedTrack && <Field label={t('newp.overrideJust')} id="pj"><textarea id="pj" className="input" value={f.track_justification} onChange={e => set('track_justification', e.target.value)} /></Field>}
         <div className="field" style={{ gridColumn: '1 / -1' }}><label htmlFor="pd">{t('field.description')}</label><textarea id="pd" className="input" value={f.description} onChange={e => set('description', e.target.value)} /></div></div>
-        <div className="row" style={{ marginTop: 'var(--sp-4)' }}><Btn kind="primary" icon="FolderPlus" disabled={(mode === 'catalog' && !f.template_id) || (mode === 'ai' && !draft) || (mode !== 'ai' && !f.name)} onClick={create}>{t('newp.create')}</Btn></div></Card>
+        <div className="row" style={{ marginTop: 'var(--aiv-space-4)' }}><Btn kind="primary" icon="FolderPlus" disabled={(mode === 'catalog' && !f.template_id) || (mode === 'ai' && !draft) || (mode !== 'ai' && !f.name)} onClick={create}>{t('newp.create')}</Btn></div></Card>
     </div>
-    <Card title={t('newp.complexity')}>{crit && <div className="stack">{crit.criteria.map(c => <Field key={c.code} label={`${L(c.name)} · ${c.weight}%`} id={'cx' + c.code}><select id={'cx' + c.code} className="input" value={cx[c.code] ?? 3} onChange={e => calc({ ...cx, [c.code]: Number(e.target.value) })}>{crit.levels.map((l, i) => <option key={i} value={i + 1}>{L(l)}</option>)}</select></Field>)}
+    <Card title={t('newp.complexity')}>{crit && <div className="stack">{crit.criteria.map(c => <Field key={c.code} label={`${L(c.name)} · ${c.weight}%`} id={'cx' + c.code}><Select id={'cx' + c.code} className="input" value={cx[c.code] ?? 3} onChange={e => calc({ ...cx, [c.code]: Number(e.target.value) })}>{crit.levels.map((l, i) => <option key={i} value={i + 1}>{L(l)}</option>)}</Select></Field>)}
       {score && <div className="card tint"><div className="kpi-value">{score.score}</div><div className="kpi-label">{t('newp.score')} · {t('newp.recommended', { track: score.recommendedTrack })} · {t('mode.' + score.recommendedMode)}</div></div>}
       <details><summary className="small strong">{t('newp.decisionMatrix')}</summary><table className="tbl" style={{ marginTop: 8 }}><thead><tr><th>{t('col.score')}</th><th>{t('col.track')}</th></tr></thead><tbody>{(tracks.data || []).map(x => <tr key={x.id}><td>{x.min}–{x.max}</td><td>{x.id} — {L(x.name)}: {L(x.description)}</td></tr>)}</tbody></table></details></div>}</Card></div></>);
 }
@@ -80,9 +80,9 @@ export function Portfolio() {
   return (<><PageHead eyebrow={t('navGroup.portfolio')} title={t('nav.portfolio')} subtitle={t('portfolio.subtitle')}><Seg value={scope} onChange={setScope} options={[{ id: 'org', label: t('portfolio.org') }, { id: 'group', label: t('portfolio.group') }, { id: 'all', label: t('portfolio.all') }]} label={t('portfolio.scope')} />
     {d.data && <Btn icon="Download" onClick={() => downloadCsv('portfolio', [t('col.project'), ...d.data.columns.map(c => c.id)], d.data.rows.map(r => [L(r.name), ...r.cells.map(c => t('pf.' + c))]))}>CSV</Btn>}</PageHead>
     <Legend items={Object.values(colors).map(i => ({ label: L(i.label), color: i.color }))} />
-    <Guard state={d}>{x => <div className="table-wrap" style={{ marginTop: 'var(--sp-3)', maxHeight: '70vh' }}><table className="tbl matrix"><thead><tr><th className="sticky-col">{t('col.project')}</th>{x.columns.map(c => <th key={c.id} title={L(c.name)} style={{ padding: '8px 4px', fontSize: 11, writingMode: 'vertical-rl', transform: 'rotate(180deg)', height: 110 }}>{c.id.replace('E2E-', '')}</th>)}</tr></thead>
+    <Guard state={d}>{x => <div className="table-wrap" style={{ marginTop: 'var(--aiv-space-3)', maxHeight: '70vh' }}><table className="tbl matrix"><thead><tr><th className="sticky-col">{t('col.project')}</th>{x.columns.map(c => <th key={c.id} title={L(c.name)} style={{ padding: '8px 4px', fontSize: 11, writingMode: 'vertical-rl', transform: 'rotate(180deg)', height: 110 }}>{c.id.replace('E2E-', '')}</th>)}</tr></thead>
       <tbody>{x.rows.map(r => <tr key={r.id}><td className="sticky-col" style={{ minWidth: 260 }}><Link to={'/projects/' + r.id} onClick={e => r.readOnly && e.preventDefault()}>{L(r.name)}</Link>{r.readOnly && <span className="pill xs" style={{ marginInlineStart: 6 }}>{t('header.readOnly')}</span>}<div className="xs muted">{L(r.org_name)} · {Math.round(r.progress)}%</div></td>
-        {r.cells.map((c, i) => <td key={i} className="cell" title={`${L(r.name)} · ${x.columns[i].id} ${L(x.columns[i].name)} · ${t('pf.' + c)}`}><span style={{ background: colors[c]?.color, border: c === 'na' ? '1px dashed var(--pa-grey-line)' : 0 }} /></td>)}</tr>)}
+        {r.cells.map((c, i) => <td key={i} className="cell" title={`${L(r.name)} · ${x.columns[i].id} ${L(x.columns[i].name)} · ${t('pf.' + c)}`}><span style={{ background: colors[c]?.color, border: c === 'na' ? '1px dashed var(--aiv-line)' : 0 }} /></td>)}</tr>)}
         <tr><td className="sticky-col strong">{t('portfolio.totals')}</td>{x.totals.map((tt, i) => <td key={i} className="xs mono" title={Object.entries(tt).map(([k, v]) => `${t('pf.' + k)} ${v}`).join(', ')}>{tt.completed || 0}</td>)}</tr></tbody></table></div>}</Guard>
     <p className="caption">{t('portfolio.caption')}</p></>);
 }
@@ -91,13 +91,13 @@ export function Modules() {
   const { t, L } = useI18n(); const d = useData('/modules'); const nav = useNavigate();
   return (<><PageHead eyebrow={t('navGroup.portfolio')} title={t('nav.modules')} subtitle={t('modules.subtitle')} />
     <Guard state={d}>{mods => <div className="grid g-3">{mods.map(m => <Link key={m.id} to={'/modules/' + m.id} className="card" style={{ textDecoration: 'none', opacity: m.entitled ? 1 : 0.7 }}>
-      <div className="kpi"><IconBadge name={m.entitled ? 'Blocks' : 'Lock'} emph={m.entitled} /><div><div className="xs muted">{m.id}</div><h3 style={{ fontSize: 'var(--fs-16)' }}>{L(m.name)}</h3><div className="xs muted">{m.mps.join(' · ')}</div>{!m.entitled && <span className="pill s2 xs">{t('modules.notEntitled')}</span>}</div></div></Link>)}</div>}</Guard></>);
+      <div className="kpi"><IconBadge name={m.entitled ? 'Blocks' : 'Lock'} emph={m.entitled} /><div><div className="xs muted">{m.id}</div><h3 style={{ fontSize: 'var(--aiv-fs-16)' }}>{L(m.name)}</h3><div className="xs muted">{m.mps.join(' · ')}</div>{!m.entitled && <span className="pill s2 xs">{t('modules.notEntitled')}</span>}</div></div></Link>)}</div>}</Guard></>);
 }
 export function ModuleWorkspace() {
   const { id } = useParams(); const { t, L, fmtDate } = useI18n(); const d = useData('/modules/' + id); const nav = useNavigate();
   return (<Guard state={d}>{x => <>
     <PageHead eyebrow={`${x.module.id} · ${L(x.module.tier)}`} title={L(x.module.name)} subtitle={L(x.module.licensing)} />
-    {!x.entitled && <div className="notice" style={{ marginBottom: 'var(--sp-4)' }}><Icon name="Lock" />{t('modules.lockedText')}</div>}
+    {!x.entitled && <div className="notice" style={{ marginBottom: 'var(--aiv-space-4)' }}><Icon name="Lock" />{t('modules.lockedText')}</div>}
     <div className="grid split"><Card title={t('modules.openTasks', { n: x.tasks.length })}><DataTable rows={x.tasks} onRow={r => nav(`/projects/${r.project_id}`)} columns={[{ key: 'uft_id', label: t('col.task') }, { key: 'project', label: t('col.project'), text: r => L(r.project_name) }, { key: 'status', label: t('col.status'), render: r => <StatusPill value={r.status} />, text: r => r.status }, { key: 'owner_name', label: t('col.owner') }, { key: 'due_date', label: t('col.due'), text: r => fmtDate(r.due_date) }]} /></Card>
       <div className="stack"><Card title={t('nav.macroProcesses')}>{x.mps.map(m => <p key={m.id}><Link to={'/process/mp/' + m.id}>{m.id} {L(m.name)}</Link><br /><span className="small muted">{L(m.objective)}</span></p>)}</Card>
         <Card title={t('modules.records')}>{x.classes.map(c => <div key={c.id} className="row" style={{ justifyContent: 'space-between' }}><Link to={'/records/' + c.name}>{L(c.label)}</Link><span className="pill">{x.counts[c.name]}</span></div>)}</Card>
@@ -111,7 +111,7 @@ export function Records() {
   const cur = meta?.find(m => m.name === entity);
   return (<><PageHead eyebrow={t('navGroup.portfolio')} title={cur ? t('entity.' + cur.name) : t('nav.records')} subtitle={cur ? (L(cur.description) || cur.classId) : t('records.subtitle')}>
     {cur && <Btn icon="ArrowLeft" onClick={() => nav('/records')}>{t('nav.records')}</Btn>}</PageHead>
-    {!cur ? <><div style={{ maxWidth: 420, marginBottom: 'var(--sp-4)' }}><input className="input" type="search" placeholder={t('common.search')} value={q} onChange={e => setQ(e.target.value)} aria-label={t('common.search')} /></div>
-      <div className="grid g-4">{list.map(m => <Link key={m.name} to={'/records/' + m.name} className="card" style={{ textDecoration: 'none', padding: 'var(--sp-4)' }}><div className="row" style={{ justifyContent: 'space-between', flexWrap: 'nowrap' }}><span className="strong">{t('entity.' + m.name)}</span><span className="pill">{m.count}</span></div><div className="xs muted">{m.classId || m.module}{!m.entitled && ' · ' + t('modules.notEntitled')}</div></Link>)}</div></>
+    {!cur ? <><div style={{ maxWidth: 420, marginBottom: 'var(--aiv-space-4)' }}><input className="input" type="search" placeholder={t('common.search')} value={q} onChange={e => setQ(e.target.value)} aria-label={t('common.search')} /></div>
+      <div className="grid g-4">{list.map(m => <Link key={m.name} to={'/records/' + m.name} className="card" style={{ textDecoration: 'none', padding: 'var(--aiv-space-4)' }}><div className="row" style={{ justifyContent: 'space-between', flexWrap: 'nowrap' }}><span className="strong">{t('entity.' + m.name)}</span><span className="pill">{m.count}</span></div><div className="xs muted">{m.classId || m.module}{!m.entitled && ' · ' + t('modules.notEntitled')}</div></Link>)}</div></>
       : <RecordsView entity={cur.name} project={project || undefined} />}</>);
 }

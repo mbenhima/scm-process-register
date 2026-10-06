@@ -12,16 +12,22 @@ export const PLATFORM_PERMISSIONS = [
   ['reports.export', 'Reports'], ['benchmark.view', 'Reports'], ['benchmark.group', 'Reports'], ['benchmark.manage', 'Reports'],
   ['hierarchy.manage', 'Administration'], ['users.manage', 'Administration'], ['permissions.manage', 'Administration'], ['config.view', 'Administration'], ['config.manage', 'Administration'],
   ['audit.view', 'Administration'], ['backup.manage', 'Administration'], ['integrations.manage', 'Administration'], ['onboarding.manage', 'Administration'], ['traceability.view', 'Administration'],
+  // Release 2: process design management, OBS roles, documents, blueprints, audits, prompt specifications, registers
+  ['design.manage', 'Process design'], ['design.release', 'Process design'], ['blueprints.manage', 'Process design'],
+  ['obs.view', 'Administration'], ['obs.manage', 'Administration'],
+  ['documents.manage', 'Reports'], ['documents.approve', 'Reports'], ['layout.manage', 'Reports'],
+  ['audits.view', 'Governance'], ['audits.manage', 'Governance'], ['registers.view', 'Governance'],
+  ['prompts.manage', 'AI & knowledge'], ['aisettings.manage', 'AI & knowledge'],
 ];
 
-const BASE_ALL = ['dashboard.view', 'alerts.view', 'assistant.view', 'reports.view', 'help.view', 'profile.edit', 'projects.view', 'portfolio.view', 'catalog.view', 'bpmn.view', 'governance.view', 'ai.view', 'config.view', 'benchmark.view', 'm00.view'];
+const BASE_ALL = ['dashboard.view', 'alerts.view', 'assistant.view', 'reports.view', 'help.view', 'profile.edit', 'projects.view', 'portfolio.view', 'catalog.view', 'bpmn.view', 'governance.view', 'ai.view', 'config.view', 'benchmark.view', 'm00.view', 'obs.view', 'audits.view', 'registers.view'];
 const BASELINE = {
   admin: null, // every permission
-  owner: [...BASE_ALL, 'tasks.execute', 'projects.create', 'projects.manage', 'governance.manage', 'reports.export', 'templates.manage', 'rex.manage', 'ai.run', 'bpmn.edit', 'audit.view', 'benchmark.group', 'evaluation.view', 'attachments.manage', 'kb.manage', 'group.view', 'traceability.view', 'onboarding.manage', 'sme.manage'],
-  contributor: [...BASE_ALL, 'tasks.execute', 'ai.run', 'reports.export', 'rex.manage', 'attachments.manage'],
+  owner: [...BASE_ALL, 'design.manage', 'design.release', 'blueprints.manage', 'obs.manage', 'documents.manage', 'documents.approve', 'layout.manage', 'audits.manage', 'prompts.manage', 'tasks.execute', 'projects.create', 'projects.manage', 'governance.manage', 'reports.export', 'templates.manage', 'rex.manage', 'ai.run', 'bpmn.edit', 'audit.view', 'benchmark.group', 'evaluation.view', 'attachments.manage', 'kb.manage', 'group.view', 'traceability.view', 'onboarding.manage', 'sme.manage'],
+  contributor: [...BASE_ALL, 'documents.manage', 'tasks.execute', 'ai.run', 'reports.export', 'rex.manage', 'attachments.manage'],
   viewer: [...BASE_ALL, 'tasks.execute', 'reports.export', 'evaluation.view'],
   reporter: ['dashboard.view', 'alerts.view', 'assistant.view', 'help.view', 'profile.edit', 'projects.view', 'tasks.execute', 'reports.view', 'config.view', 'm00.view'],
-  auditor: [...BASE_ALL, 'audit.view', 'reports.export', 'evaluation.view', 'traceability.view', 'group.view', 'benchmark.group'],
+  auditor: [...BASE_ALL, 'audits.manage', 'audit.view', 'reports.export', 'evaluation.view', 'traceability.view', 'group.view', 'benchmark.group'],
 };
 export const ROLE_BASELINE = {
   'R-01': 'admin', 'R-02': 'owner', 'R-03': 'owner', 'R-20': 'owner', 'R-21': 'owner', 'R-23': 'owner',

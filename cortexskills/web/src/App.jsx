@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSession } from './lib/session.jsx';
 import { useI18n } from './lib/i18n.jsx';
 import Shell from './components/Shell.jsx';
-import { Loading, Toasts } from './components/ui.jsx';
+import { Loading, Toasts, TooltipLayer } from './components/ui.jsx';
 import Login from './pages/Login.jsx';
 import { Dashboard, MyTasks, Alerts, AssistantPage } from './pages/Home.jsx';
 import { Tenancy, Projects, NewProject, Portfolio, Modules, ModuleWorkspace, Records } from './pages/Portfolio.jsx';
@@ -25,7 +25,7 @@ export default function App() {
   // The respondent's page is public: it opens from the link sent by e-mail or WhatsApp, without signing in.
   if (loc.pathname.startsWith('/respond/')) return ready ? <Routes><Route path="/respond/:token" element={<Respond />} /></Routes> : <Loading />;
   if (!ready || loading) return <Loading />;
-  if (!me) return <><Login /><Toasts /></>;
+  if (!me) return <><Login /><Toasts /><TooltipLayer /></>;
   return (<Shell><Routes>
     <Route path="/" element={<Dashboard />} /><Route path="/my-tasks" element={<MyTasks />} /><Route path="/alerts" element={<Alerts />} /><Route path="/assistant" element={<AssistantPage />} />
     <Route path="/tenancy" element={<Tenancy />} /><Route path="/projects" element={<Projects />} /><Route path="/projects/new" element={<NewProject />} /><Route path="/projects/:id" element={<ProjectWorkspace />} />
@@ -43,5 +43,5 @@ export default function App() {
     <Route path="/admin/users" element={<Users />} /><Route path="/admin/permissions" element={<Permissions />} /><Route path="/admin/config" element={<Configuration />} /><Route path="/admin/pricing" element={<Pricing />} />
     <Route path="/admin/integrations" element={<Integrations />} /><Route path="/admin/onboarding" element={<Onboarding />} /><Route path="/admin/audit" element={<Audit />} /><Route path="/admin/backups" element={<Backups />} /><Route path="/admin/traceability" element={<Traceability />} />
     <Route path="/settings" element={<Settings />} /><Route path="/help" element={<Help />} /><Route path="*" element={<Navigate to="/" replace />} />
-  </Routes><Toasts /></Shell>);
+  </Routes></Shell>);
 }
