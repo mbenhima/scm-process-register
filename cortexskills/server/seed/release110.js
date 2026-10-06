@@ -48,14 +48,14 @@ const DEC = [L('Approved after review of the evidence and budget.', 'Approuvé a
 const FINDINGS = [L('Records complete and traceable; two minor corrections on dates.', 'Enregistrements complets et traçables ; deux corrections mineures de dates.', 'سجلات كاملة وقابلة للتتبع؛ تصحيحان طفيفان في التواريخ.'), L('Evidence matches the plan; owners confirmed.', 'Les preuves correspondent au plan ; responsables confirmés.', 'الأدلة مطابقة للخطة؛ تم تأكيد المسؤولين.')];
 
 /** Values of one row for a step form, drawn from the organization's own context (themes, positions, people). */
-function rowFor(kind, i, ctx, r, base) {
+export function rowFor(kind, i, ctx, r, base) {
   const th = ctx.themes[i % ctx.themes.length]; const pos = ctx.positions[i % ctx.positions.length]; const user = ctx.users[(i + base) % ctx.users.length];
   const d = k => iso(ctx.start + (base * 2 + i * 7 + k) * DAY).slice(0, 10);
   switch (kind) {
     case 'record': return { item: i % 3 === 2 ? pos : th, category: ['Primary', 'Secondary', 'Supporting'][i % 3], description: FACTS[(i + base) % FACTS.length], owner: user, source: SOURCES[(i + base) % SOURCES.length] };
     case 'matrix': return { item: th, criterion: ['Business impact', 'Urgency', 'Feasibility', 'Cost', 'Risk'][(i + base) % 5], weight: String([40, 30, 20, 10][i % 4]), score: String(2 + Math.floor(r() * 4)), facts: FACTS[i % FACTS.length] };
     case 'objectives': return { item: fillL(OBJ[i % OBJ.length], { t: th, p: pos }), indicator: ctx.kpis[(i + base) % ctx.kpis.length], baseline: `${30 + Math.round(r() * 20)} %`, target: `${70 + Math.round(r() * 20)} %`, deadline: d(180), owner: user };
-    case 'plan': return { item: fillL(L('Deliver the module: {t}', 'Déployer le module : {t}', 'تنفيذ الوحدة: {t}'), { t: th }), owner: user, start: d(10), end: d(40), budget: String(20000 + Math.round(r() * 60) * 1000), deliverable: L('Attendance sheets, evaluations and certificates', 'Feuilles de présence, évaluations et attestations', 'أوراق الحضور والتقييمات والشهادات') };
+    case 'plan': return { item: ctx.object ? fillL(L('{o} — {t}', '{o} — {t}', '{o} — {t}'), { o: ctx.object, t: th }) : th, owner: user, start: d(10), end: d(40), budget: String(20000 + Math.round(r() * 60) * 1000), deliverable: L('Attendance sheets, evaluations and certificates', 'Feuilles de présence, évaluations et attestations', 'أوراق الحضور والتقييمات والشهادات') };
     case 'communication': return { item: fillL(L('Announce the program: {t}', 'Annoncer le programme : {t}', 'الإعلان عن البرنامج: {t}'), { t: th }), audience: fillL(L('{p} teams and their managers', 'Équipes {p} et leurs managers', 'فرق {p} ومسؤولوها'), { p: pos }), channel: ['E-mail', 'WhatsApp', 'Meeting', 'Intranet'][i % 4], message: MSGS[i % MSGS.length], date: d(5) };
     case 'training': return { session: fillL(L('{t} — half-day workshop', '{t} — atelier d’une demi-journée', '{t} — ورشة نصف يوم'), { t: th }), date: d(20), trainer: ctx.trainers[i % ctx.trainers.length], participants: String(10 + Math.round(r() * 10)), hours: i % 2 ? '7' : '3.5', modality: ['On site', 'Remote', 'Blended'][i % 3] };
     case 'monitoring': { const v = 55 + Math.round(r() * 40); const tg = 80; return { indicator: ctx.kpis[(i + base) % ctx.kpis.length], period: `2026-Q${1 + ((i + base) % 3)}`, value: String(v), target: String(tg), status: v >= tg ? 'Green' : v >= tg - 15 ? 'Amber' : 'Red', reason: v >= tg ? L('On track', 'Dans la cible', 'ضمن الهدف') : L('Sessions postponed by the peak season', 'Sessions reportées par la haute saison', 'تأجيل الدورات بسبب ذروة النشاط') }; }
@@ -182,8 +182,8 @@ function seedRun(o, p, { roles, head, hrd, r, req }) {
   const doneE2e = new Set(all(`SELECT e2e_id FROM e2e_instances WHERE project_id=? AND status='Completed'`, p.id).map(x => x.e2e_id));
   const codes = o.universal ? E.templates(o.id).map(x => x.code) : ['DT-TER', 'DT-PLAN', ...(performed ? ['DT-AUDIT'] : []), ...[...doneE2e].slice(0, 3).map(e => 'DT-' + e).filter(c => E.template(o.id, c)), 'DT-MASTER'];
   const langs = o.universal ? ['en', 'fr', 'ar'] : [lang];
-  for (const code of codes) for (const l of langs) {
-    if (code === 'DT-MASTER' && codes.indexOf(code) !== codes.length - 1) continue;
+  const ordered = [...codes.filter(c => c !== 'DT-MASTER'), 'DT-MASTER']; // the master list last, so it lists every document
+  for (const code of ordered) for (const l of langs) {
     try { genDoc(o, p, code, l, { head, hrd, req, publish: code !== 'DT-PLAN' || o.universal }); } catch (e) { console.warn('  doc', code, e.message); }
   }
 }

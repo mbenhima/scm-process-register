@@ -30,6 +30,10 @@ const T = {
       ['Step 6 · Governance', 'One Accountable per activity', ['RACSI roles are allocated per activity, with exactly one Accountable.', 'Risks, controls and business rules are tagged to the processes.', 'Every change to a governed field is justified and recorded.'], 'racsi'],
       ['Step 7 · Planning', 'The run on a timeline', ['Phases, processes and tasks on one Gantt, with dependencies.', 'Summary bars are computed from the tasks below them.', 'Print or save as PDF.'], 'gantt'],
       ['Step 8 · Results', 'Reports and questions in plain language', ['Standard reports exported to PDF, Excel and Word.', 'The AI Assistant answers from the organization’s own data, within the user’s permissions.', 'Alerts flag overdue steps and off-target KPIs.'], 'reports'],
+      ['Step 9 · Process design', 'Your organization’s own process design', ['Rename, add, retire or move elements of the reference design; every change is a version.', 'Naming rules are checked before saving, in three languages.', 'A release is published by a second person; projects run on it.'], 'design'],
+      ['Step 10 · Typed steps', 'Each step asks for what it produces', ['Tables of records, matrices, objectives and plans; forms for decisions and reviews.', 'Rows save as you go; Undo, paste from a spreadsheet, Row Editor.', 'Completed steps feed the registers of the project.'], 'steptask'],
+      ['Step 11 · Documents', 'Documents written from the run’s data', ['37 templates: one per process deliverable, the report, the plan, the audit and the master list.', 'Overrides stay through regeneration; versions are compared and restored.', 'Published by a second person; Word, PDF and Excel.'], 'docedit'],
+      ['Step 12 · Organization', 'Roles, holders and RACSI', ['Functions group roles; each role has its holders, deputies and allocation.', 'The organization chart and vacant roles, on any date.', 'RACSI per step, by role, with exactly one Accountable.'], 'obs'],
     ],
     smeE: 'SMEs', smeT: 'Three SME tracks, sized by complexity', smeS: 'The complexity score recommends the track; a different choice needs a justification.',
     smeTracks: [['T1 · Essential', 'Score 0–29', 'Fewer gates, short checklists, about 6 weeks'], ['T2 · Standard', 'Score 30–49', 'Core processes with three gates'], ['T3 · Extended', 'Score 50–69', 'Close to Full mode, lighter documentation']],
@@ -57,6 +61,10 @@ const T = {
       ['Étape 6 · Gouvernance', 'Un seul Approbateur par activité', ['Les rôles RACSI sont affectés par activité, avec un seul Approbateur.', 'Risques, contrôles et règles métier sont rattachés aux processus.', 'Chaque modification d’un champ gouverné est justifiée et tracée.'], 'racsi'],
       ['Étape 7 · Planification', 'Le déroulé sur une frise', ['Phases, processus et tâches sur un même Gantt, avec dépendances.', 'Les barres de synthèse sont calculées à partir des tâches.', 'Imprimer ou enregistrer en PDF.'], 'gantt'],
       ['Étape 8 · Résultats', 'Rapports et questions en langage courant', ['Rapports standard exportés en PDF, Excel et Word.', 'L’assistant IA répond à partir des données de l’organisation, dans les limites des permissions.', 'Les alertes signalent les étapes en retard et les indicateurs hors cible.'], 'reports'],
+      ['Étape 9 · Conception des processus', 'La conception propre à votre organisation', ['Renommer, ajouter, retirer ou déplacer les éléments de la référence ; chaque changement est une version.', 'Les règles de nommage sont vérifiées avant l’enregistrement, en trois langues.', 'Une version est publiée par une seconde personne ; les projets s’exécutent dessus.'], 'design'],
+      ['Étape 10 · Étapes typées', 'Chaque étape demande ce qu’elle produit', ['Tableaux d’enregistrements, matrices, objectifs et plans ; formulaires pour décisions et revues.', 'Les lignes s’enregistrent au fil de la saisie ; annulation, collage depuis un tableur, éditeur de ligne.', 'Les étapes terminées alimentent les registres du projet.'], 'steptask'],
+      ['Étape 11 · Documents', 'Des documents rédigés à partir des données du déroulé', ['37 modèles : un par livrable de processus, le rapport, le plan, l’audit et la liste maîtresse.', 'Les remplacements survivent à la régénération ; versions comparées et restaurées.', 'Publiés par une seconde personne ; Word, PDF et Excel.'], 'docedit'],
+      ['Étape 12 · Organisation', 'Rôles, titulaires et RACSI', ['Les fonctions regroupent les rôles ; chaque rôle a ses titulaires, adjoints et affectations.', 'L’organigramme et les rôles vacants, à toute date.', 'RACSI par étape, par rôle, avec un seul responsable final.'], 'obs'],
     ],
     smeE: 'PME', smeT: 'Trois parcours PME, dimensionnés par la complexité', smeS: 'Le score de complexité recommande le parcours ; un autre choix exige une justification.',
     smeTracks: [['T1 · Essentiel', 'Score 0–29', 'Moins de jalons, listes courtes, environ 6 semaines'], ['T2 · Standard', 'Score 30–49', 'Processus clés avec trois jalons'], ['T3 · Étendu', 'Score 50–69', 'Proche du mode complet, documentation allégée']],
@@ -192,6 +200,9 @@ const themeList = txt => String(txt || '').split(/\.\s+/).map(x => x.replace(/:\
       await badge(s, ic, x, y, 0.34, i ? C.ink : C.orange);
       s.addText(head, { x: x + 0.45, y: y + 0.02, w: w - 0.45, h: 0.3, fontFace: BODY, fontSize: 12, bold: true, color: C.dark, margin: 0, isTextBox: true });
       s.addText(items.map((t, j) => ({ text: t, options: { bullet: { indent: 12 }, breakLine: j < items.length - 1 } })), { x: x + 0.45, y: y + 0.32, w: w - 0.45, h: 0.66, fontFace: BODY, fontSize: 10.5, color: C.ink, margin: 0, isTextBox: true, valign: 'top', fit: 'shrink' }); }
+    { const t = content(`${T.secE} · ${r.code}`, `${L(r.name)} — ${LANG === 'fr' ? 'un processus en cours' : 'a process in progress'}`, LANG === 'fr' ? `${L(lg.name)} · déroulé IA : la tâche ouverte, ses étapes typées et ce qu’il faut saisir` : `${L(lg.name)} · AI run: the open task, its typed steps and what to type`);
+      screenshot(t, path.join(__dirname, 'shots', 'sectors_' + LANG, r.code + '_task.png'), M, 1.95, W - 2 * M - 0.2); }
+
   }
   // Summary chart
   { section = T.sumE; const s = content(T.sumE, T.sumT, T.sumS); const rows = SEC.map(r => [r.code, r.orgs.LARGE.runs.AI.progress]).sort((a, b) => b[1] - a[1]);

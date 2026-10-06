@@ -73,7 +73,7 @@ function tocPage(title = 'Table of Contents') {
 function document({ title, credit, sections, lang = 'en-GB' }) {
   const header = new Header({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: C.line, space: 4 } }, children: [run(credit, { size: 17, color: C.medium })] })] });
   const footer = new Footer({ children: [new Paragraph({ style: 'PAFooter', tabStops: [{ type: TabStopType.RIGHT, position: CONTENT }], children: [run('POWERACT Consulting · ' + title, { size: 17, color: C.medium }), new TextRun({ text: '\t', font: FONT }),
-    run('Page ', { size: 17, color: C.medium }), new TextRun({ children: [PageNumber.CURRENT], font: FONT, size: 17, color: C.medium }), run(' of ', { size: 17, color: C.medium }), new TextRun({ children: [PageNumber.TOTAL_PAGES], font: FONT, size: 17, color: C.medium })] })] });
+    run(lang.startsWith('fr') ? 'Page ' : 'Page ', { size: 17, color: C.medium }), new TextRun({ children: [PageNumber.CURRENT], font: FONT, size: 17, color: C.medium }), run(lang.startsWith('fr') ? ' sur ' : ' of ', { size: 17, color: C.medium }), new TextRun({ children: [PageNumber.TOTAL_PAGES], font: FONT, size: 17, color: C.medium })] })] });
   return new Document({
     creator: 'POWERACT Consulting', title, description: title, features: { updateFields: false },
     styles: {

@@ -17,10 +17,10 @@ const body = [
     ['Node.js 22.13 or newer', 'The free engine that runs CortexSkills. You install it once.'],
     ['server folder', 'Keeps the data (a file named cortexskills.db in server/data), the backups and the attached files.'],
     ['web folder', 'The screens. You open them at http://localhost:5173 in Chrome, Edge, Firefox or Safari.'],
-    ['Demonstration data', '58 organizations in 29 sectors, each with two full runs (Digital skills and AI skills), in English, French and Arabic.'],
+    ['Demonstration data', '59 organizations: a large company and an SME in each of 29 sectors, plus a multi-sector services group; each has two full runs (Digital skills and AI skills) with every process, task and step, in English, French and Arabic.'],
   ], [2600, 7146]),
   spacer(),
-  callout('Time needed', ['About 15 minutes the first time: 5 minutes to install Node.js, 5 minutes for the two installs, 1 minute for the demonstration data.']),
+  callout('Time needed', ['About 15 minutes the first time: 5 minutes to install Node.js, 5 minutes for the two installs, 2 minutes for the demonstration data. Keep 2 GB of free disk space: the demonstration database takes about 450 MB.']),
 
   H1('2. Install Node.js (once)'),
   H2('2.1 Windows and macOS'),
@@ -42,7 +42,7 @@ const body = [
   code('npm install'), code('npm run seed'), code('npm run dev'),
   table(['Command', 'What it does', 'How long'], [
     ['npm install', 'Downloads the components the server needs. You do this only once.', '1–3 minutes'],
-    ['npm run seed', 'Creates the demonstration data. It erases any existing data, so run it only the first time or when you want a fresh start.', 'About 1 minute'],
+    ['npm run seed', 'Creates the demonstration data. It erases any existing data, so run it only the first time or when you want a fresh start.', 'About 2 minutes'],
     ['npm run dev', 'Starts the server. You do this every time you want to use CortexSkills.', 'A few seconds'],
   ], [2000, 5746, 2000]),
   spacer(),

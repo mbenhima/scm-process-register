@@ -2,7 +2,18 @@
 
 Training engineering platform: 33 end-to-end processes in seven phases, from the scope of work to the evaluation of results, for large companies and SMEs in 29 sectors, in English, French and Arabic.
 
-## What is new in 1.1
+## What is new in 1.10
+
+- **Process design management**: your organization's copy of the reference design, with naming rules in three languages, versions, compare and restore, usage, retire, releases published by a second person, export/import (JSON, Excel, BPMN).
+- **Typed step forms**: every step asks for what it produces (records, matrices, objectives, plans, decisions, reviews…), in inline tables with autosave, Undo, spreadsheet paste and a Row Editor; completed steps feed the project registers.
+- **Organization (OBS)**: functions, roles, dated assignments, views on any date, organization chart and role-based RACSI with one Accountable per step.
+- **Documented information**: 37 templates, organization layout, sections and overrides, versions, two-person publication, master list and the documents each standard requires; Word, PDF and Excel.
+- **AI**: twelve-field prompt specifications per use case, organization model settings with a sealed key and an exact connection test.
+- **Project template blueprints, audits with graded findings, attachment versions, search filters, retention and anonymized questionnaires.**
+- **Design system**: SRS v1.10 tokens with the POWERACT Graphical Chart values, bundled fonts, data tables, charts and system states; tested at 390–1280 px and in English, French and Arabic.
+- **Demonstration data**: 59 organizations (a large company and an SME in each of 29 sectors, plus the multi-sector Horizon Services Group), each with two complete runs.
+
+## What was new in 1.1
 
 - **Questionnaires (IF-PAC)**: General Manager, Management and Team member forms; choose who responds and the channel to respond (Face-to-Face, E-mail, WhatsApp, Application or a Combination in sequence); consent, offline capture, completeness and consolidation into the needs analysis.
 - **E-mail and WhatsApp channels**: SMTP and WhatsApp Business Cloud API per organization, encrypted secrets, test, outbox, retries and delivery webhooks; sandbox when no provider is set.

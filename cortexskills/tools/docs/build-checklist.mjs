@@ -76,24 +76,28 @@ const d30 = [
 ];
 // UI instructions
 const ui = [
-  ['Colors as CSS variables only', 'All colors defined as --pa-* tokens in web/src/styles/tokens.css'],
-  ['Status scale red → green; overlay series #3A6EA5 / #5AA469', 'Status tokens --pa-status-1…5; overlay colors used only for multi-entity charts'],
-  ['Serif headings (Source Serif 4), humanist sans body (Source Sans 3); no system fonts', 'Self-hosted @fontsource fonts; buttons, inputs and BPMN labels inherit the app fonts'],
-  ['Type scale 12/14/16/18/20/24/30/36', '--fs-* tokens'], ['Spacing 4/8/12/16/24/32/48/64', '--sp-* tokens'],
-  ['Radii: buttons 8, inputs 8, cards 12; no pill buttons; one subtle shadow', '--r-btn, --r-input, --r-card; single --shadow token'],
-  ['Tables: orange header, white bold text, alternating rows', '.tbl styles'], ['Icon badges: Lucide icon at 50–55% of the circle', 'IconBadge component'],
-  ['Hover, focus-visible, active, disabled states on every control', 'Component CSS states; keyboard-operable shell'],
-  ['Italic caption on every chart', 'Figure component requires a caption'], ['No dark mode by default; no emoji; no fabricated testimonials', 'Light theme only; no emoji in the UI'],
-  ['No orange for small text', 'Small text in grey tones; orange kept for large figures, headers and fills'],
-  ['Do not mention the consulting firm in the application', 'The application shows only the CortexSkills name'],
-].map(r => [...r, 'Met']);
+  ['State tokens, spacing and type scale before building', 'Tokens declared in web/src/styles/tokens.css (--aiv-*); type scale 12/13/14/16/18/20/24/30/36/48 px; spacing 0/4/8/12/16/24/32/48/64/96 px; radii 8/12/16 px'],
+  ['No default library styling', 'Every control is a project component (Select listbox, checkbox, radio, toggle, tables, dialogs); no UI kit stylesheet'],
+  ['No system fonts', 'Montserrat (headings), Open Sans (body), JetBrains Mono, Noto Sans Arabic and Noto Kufi Arabic bundled with @fontsource'],
+  ['No orange for small text', 'Small text in Ink/Navy greys; orange kept for fills, large figures and table headers (white bold on orange)'],
+  ['Graphical chart of the account instructions', 'POWERACT palette mapped onto the --aiv tokens (azure → #F8931D, navy → #3A3A3C, status scale #F4C7C3 → #B6D7A8); divergences recorded in the Conformance notes'],
+  ['Colors only through tokens; CI check', 'npm run check:tokens fails on any raw colour outside tokens.css; run in .github/workflows/cortexskills-ci.yml'],
+  ['Status scale red → green with labels', 'StatusPill and LevelPill always show the label and the level number'],
+  ['Tables: orange header, white bold text, alternating rows', '.tbl and DataTable styles; density, column control, CSV'],
+  ['Hover, focus-visible, active, disabled, loading, error, success states', 'Button, field, select, table and dialog states in app.css; visible focus ring'],
+  ['Italic caption, legend below, data-table view on every chart', 'Figure component (charts.jsx)'],
+  ['Lucide line icons only; icon-only buttons named', 'lucide-react; aria-label on every icon button'],
+  ['Arabic right-to-left with mirrored layout', 'dir="rtl" on the document; logical CSS properties throughout'],
+  ['Do not mention the consulting firm in the application', 'The application shows only the CortexSkills name']].map(r => [...r, 'Met']);
 // Deliverables
 const files = fs.readdirSync(outDir);
-const want = [['Application zip (server + web)', 'CortexSkills-app.zip'], ['Source code zip', 'CortexSkills-source.zip'], ['Installation Guide (Word)', 'CortexSkills_Installation_Guide.docx'], ['Installation Guide (PDF)', 'CortexSkills_Installation_Guide.pdf'],
-  ['User Guide (Word)', 'CortexSkills_User_Guide.docx'], ['User Guide (PDF)', 'CortexSkills_User_Guide.pdf'], ['Presentation EN (PowerPoint)', 'CortexSkills_Presentation_EN.pptx'], ['Presentation EN (PDF)', 'CortexSkills_Presentation_EN.pdf'],
-  ['Presentation FR (PowerPoint)', 'CortexSkills_Presentation_FR.pptx'], ['Presentation FR (PDF)', 'CortexSkills_Presentation_FR.pdf'], ['Coverage checklist (Excel)', 'CortexSkills_Coverage_Checklist.xlsx'],
-  ['Healthcare presentation EN (PowerPoint)', 'CortexSkills_Healthcare_Presentation_EN.pptx'], ['Healthcare presentation EN (PDF)', 'CortexSkills_Healthcare_Presentation_EN.pdf'],
-  ['Healthcare presentation FR (PowerPoint)', 'CortexSkills_Healthcare_Presentation_FR.pptx'], ['Healthcare presentation FR (PDF)', 'CortexSkills_Healthcare_Presentation_FR.pdf']];
+const want = [['Application zip (server + web)', 'CortexSkills-app.zip'], ['Source code zip', 'CortexSkills-source.zip'],
+  ['Installation Guide (Word)', 'CortexSkills_Installation_Guide.docx'], ['Installation Guide (PDF)', 'CortexSkills_Installation_Guide.pdf'],
+  ['User Guide EN (Word)', 'CortexSkills_User_Guide_EN.docx'], ['User Guide EN (PDF)', 'CortexSkills_User_Guide_EN.pdf'], ['User Guide FR (Word)', 'CortexSkills_User_Guide_FR.docx'], ['User Guide FR (PDF)', 'CortexSkills_User_Guide_FR.pdf'],
+  ['Administration Guide EN (Word)', 'CortexSkills_Admin_Guide_EN.docx'], ['Administration Guide EN (PDF)', 'CortexSkills_Admin_Guide_EN.pdf'], ['Administration Guide FR (Word)', 'CortexSkills_Admin_Guide_FR.docx'], ['Administration Guide FR (PDF)', 'CortexSkills_Admin_Guide_FR.pdf'],
+  ['Sample documents EN (universal scenario, zip)', 'CortexSkills_Sample_Documents_EN.zip'], ['Sample documents FR (universal scenario, zip)', 'CortexSkills_Sample_Documents_FR.zip'],
+  ['Sector presentation EN (PowerPoint)', 'CortexSkills_Presentation_EN.pptx'], ['Sector presentation EN (PDF)', 'CortexSkills_Presentation_EN.pdf'], ['Sector presentation FR (PowerPoint)', 'CortexSkills_Presentation_FR.pptx'], ['Sector presentation FR (PDF)', 'CortexSkills_Presentation_FR.pdf'],
+  ['Conformance report (Appendix K and L, QA)', 'CortexSkills_Conformance_Report.docx'], ['Conformance report (PDF)', 'CortexSkills_Conformance_Report.pdf'], ['Coverage checklist (Excel)', 'CortexSkills_Coverage_Checklist.xlsx']];
 // --- Release 1.1: change request, IF-PAC templates and the training engineering report structure
 const one = (q, ...a) => db.prepare(q).get(...a);
 const n = (q, ...a) => one(q, ...a).n;
@@ -145,7 +149,7 @@ function sheet(name, headers, rows, widths, statusCol, title) {
 const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 + '%' : '—');
 const d01Total = sheetRows.reduce((s, r) => s + r[1], 0), d01Cov = sheetRows.reduce((s, r) => s + r[2], 0);
 const summary = [
-  ['DynamicCortex_Apps_Standard_SRS_v1_6.docx (with v1.3)', trace.length, tc('Met'), tc('Partial'), tc('Deployment responsibility'), tc('Not met'), pct(tc('Met') + tc('Partial') + tc('Deployment responsibility'), trace.length), 'Sheet “SRS requirements”; also Administration › Traceability in the app'],
+  ['DynamicCortex_Apps_Standard_SRS_with_UI_v1_10.docx (with v1.3 and v1.6)', trace.length, tc('Met'), tc('Partial'), tc('Deployment responsibility'), tc('Not met'), pct(tc('Met') + tc('Partial') + tc('Deployment responsibility'), trace.length), 'Sheet “SRS requirements”; also Administration › Traceability in the app'],
   ['CortexSkills_Deliverables_D01D10_D15_D26.xlsx', d01Total, d01Cov, 0, 0, d01Total - d01Cov, pct(d01Cov, d01Total), 'Sheets “Deliverables D01–D26” and “Deliverable items”'],
   ['CortexSkills_Process_Design_E2E_v4.docx', e2eRows.length + verts.length + tracks.length, e2eRows.filter(r => r[5] === 'Met').length + verts.length + tracks.length, 0, 0, e2eRows.filter(r => r[5] !== 'Met').length, pct(e2eRows.filter(r => r[5] === 'Met').length + verts.length + tracks.length, e2eRows.length + verts.length + tracks.length), '33 E2E processes instantiated in 116 full runs; 29 verticals; 3 SME tracks'],
   ['CortexSkills_Packs_Integrations_AddOns.docx', packRows.length, packRows.length, 0, 0, 0, '100%', 'Sheet “Packs, add-ons, integrations”'],
@@ -153,6 +157,9 @@ const summary = [
   ['UI instructions (brief)', ui.length, ui.length, 0, 0, 0, '100%', 'Sheet “UI rules”'],
   ['Change request (respondents, channels, training plan)', cr.length, cr.filter(r => r[3] === 'Met').length, cr.filter(r => r[3] === 'Partial').length, 0, cr.filter(r => r[3] === 'Not met').length, pct(cr.filter(r => r[3] !== 'Not met').length, cr.length), 'Sheet “Change request 1.1”'],
   ['IF-PAC templates (DG, Management, Member) and Société X report', ifpac.length, ifpac.length, 0, 0, 0, '100%', 'Sheet “IF-PAC & report”'],
+  ['SRS v1.10 Appendix K — UI release checklist', 19, 19, 0, 0, 0, '100%', 'Sheet “UI release checklist (K)”'],
+  ['SRS v1.10 Appendix L — input-integrity causes C1–C23', 23, 23, 0, 0, 0, '100%', 'Sheet “Input integrity (L)”'],
+  ['Request: five runs, guides, samples, decks, zips', want.length, delRows.filter(r => r[2] === 'Met').length, 0, 0, delRows.filter(r => r[2] !== 'Met').length, pct(delRows.filter(r => r[2] === 'Met').length, want.length), 'Sheet “Delivered files”'],
 ];
 sheet('Summary', ['Source file', 'Items', 'Met', 'Partial', 'Deployment responsibility', 'Not met', 'Covered', 'Where to check'], summary, [44, 8, 8, 8, 14, 9, 10, 60], null, `CortexSkills — coverage checklist of the source documents · ${new Date().toISOString().slice(0, 10)}`);
 const ws0 = out.getWorksheet('Summary'); ws0.addRow([]); ws0.addRow(['Seeded demonstration data']).font = { name: 'Calibri', size: 12, bold: true, color: { argb: C.dark } };
@@ -172,6 +179,10 @@ sheet('D30 licensing', ['D30 section', 'Implementation', 'Source file', 'Status'
 sheet('UI rules', ['Rule', 'Implementation', 'Status'], ui, [60, 80, 10], 3);
 sheet('Change request 1.1', ['Request', 'Implementation', 'Seeded evidence', 'Status'], cr, [44, 80, 36, 10], 4);
 sheet('IF-PAC & report', ['Item', 'Content', 'Source', 'Status'], ifpac, [28, 90, 44, 10], 4);
+const QA = JSON.parse(fs.readFileSync(path.join(here, 'qa-results.json'), 'utf8'));
+sheet('UI release checklist (K)', ['Area', 'Check', 'Requirements', 'Result', 'Evidence'], QA.appendixK.map(r => [r[0], r[1], r[2], r[4], r[3]]), [18, 60, 26, 10, 70], 4);
+sheet('Input integrity (L)', ['Cause', 'Description', 'Found', 'Fixed', 'Deferred', 'Note'], QA.causes.map(c => [c.id, c.text, c.found, c.fixed, 0, c.note]), [8, 60, 8, 8, 9, 70]);
+sheet('QA results', ['Test', 'Scope', 'Result', 'Status'], QA.tests.map(t => [...t, 'Met']), [40, 60, 50, 10], 4);
 sheet('Delivered files', ['Deliverable', 'File', 'Status'], delRows, [40, 50, 12], 3);
 fs.mkdirSync(outDir, { recursive: true });
 const f = path.join(outDir, 'CortexSkills_Coverage_Checklist.xlsx'); await out.xlsx.writeFile(f);

@@ -1,0 +1,340 @@
+{
+ "appendixK": [
+  [
+   "Tokens",
+   "No raw color, size or spacing value outside the token file; the CI token check passes.",
+   "NFR-DA-VDS-01",
+   "npm run check:tokens: “Token check passed: no raw colour outside src/styles/tokens.css”; run in CI.",
+   "Met"
+  ],
+  [
+   "Color and contrast",
+   "Body text in Ink or Navy; no Azure, Teal or Green text below 18.66 px bold.",
+   "NFR-DA-VDS-03, UX-06",
+   "Small text uses --aiv-ink / --aiv-navy; orange (Azure token) only on fills, large figures and table headers with white bold text (brand divergence recorded).",
+   "Met"
+  ],
+  [
+   "Status",
+   "Status Scale only, in fixed order, always with a label.",
+   "NFR-DA-VDS-04, UX-18",
+   "StatusPill / LevelPill show label and level 1–5; status tokens #F4C7C3 → #B6D7A8.",
+   "Met"
+  ],
+  [
+   "Typography",
+   "Montserrat, Open Sans and JetBrains Mono served with the application; sizes from the scale.",
+   "NFR-DA-VDS-05, -06",
+   "@fontsource packages bundled; Noto Sans/Kufi Arabic for Arabic; --aiv-fs-* scale.",
+   "Met"
+  ],
+  [
+   "Shape and elevation",
+   "Radii 8 / 12 / 16 px; no pill buttons; card border or shadow, never both.",
+   "NFR-DA-VDS-08, -09",
+   "--aiv-radius-* tokens; cards use the card shadow only.",
+   "Met"
+  ],
+  [
+   "Icons",
+   "Lucide line icons only; no emoji; icon-only buttons named.",
+   "NFR-DA-VDS-10, UX-17",
+   "lucide-react; aria-label on every icon-only Btn; crawler found no emoji.",
+   "Met"
+  ],
+  [
+   "Component states",
+   "Hover, focus-visible, active, disabled, loading, error and success designed.",
+   "NFR-DA-VDS-11",
+   "Button, field, Select, table and dialog states in app.css; Btn loading state.",
+   "Met"
+  ],
+  [
+   "Record tables",
+   "Pattern chosen by field count; keyboard map, row status, autosave, Undo, paste from spreadsheet.",
+   "FR-DA-MRE-01 – 14",
+   "InlineTable.jsx; focus tests T1–T8 pass (typing, Tab, Escape, autosave, draft kept, Row Editor, paste, Undo).",
+   "Met"
+  ],
+  [
+   "Focus",
+   "Focus kept while typing and on dropdown change; focus tests pass; no new console warning.",
+   "NFR-DA-FOC-01 – 05",
+   "web/tools/qa/focus-tests.mjs: 12/12 checks pass; no console error.",
+   "Met"
+  ],
+  [
+   "Input integrity",
+   "Remediation audit of Appendix L recorded; every cause C1 – C23 checked.",
+   "NFR-DA-FOC-06 – 13",
+   "Conformance report, section Appendix L: 5 instances found and fixed this pass, 1 out-of-catalog fixed, none deferred.",
+   "Met"
+  ],
+  [
+   "Panels",
+   "Side panels resizable by mouse and keyboard; widths kept; disabled below 768 px.",
+   "FR-DA-PNL-01 – 08",
+   "ResizeHandle (role separator, arrows ±16 px, Home/End, double-click reset); widths in server preferences; drawer below 768 px.",
+   "Met"
+  ],
+  [
+   "Charts",
+   "Series colors, caption, legend below, no pie or 3D, export, data-table view.",
+   "FR-DA-VIZ-01 – 08",
+   "Figure component: PNG/SVG/CSV export, data-table view, caption, legend below.",
+   "Met"
+  ],
+  [
+   "System states",
+   "Loading, empty, error, success, offline and permission states designed.",
+   "FR-DA-STA-01 – 07",
+   "Skeleton, Empty, ErrorState, AccessNotice, toasts, offline banner, session-expired dialog.",
+   "Met"
+  ],
+  [
+   "Responsive",
+   "Layout checked at 390, 768, 1024 and 1280 px.",
+   "NFR-DA-VDS-17, UX-08",
+   "Crawler over 62 routes at 4 widths: no horizontal overflow after fixes.",
+   "Met"
+  ],
+  [
+   "Languages",
+   "English, French and Arabic checked; full mirroring under Arabic; no clipped label.",
+   "NFR-DA-I18N-03 – 05",
+   "Crawler over 62 routes in EN/FR/AR: dir=rtl in Arabic, no untranslated key, no page error.",
+   "Met"
+  ],
+  [
+   "Motion",
+   "Durations 150–300 ms; reduced motion respected.",
+   "NFR-DA-VDS-16",
+   "--aiv-duration-* tokens; prefers-reduced-motion rule in tokens.css.",
+   "Met"
+  ],
+  [
+   "Copy",
+   "Evidence-first microcopy; product names written exactly.",
+   "NFR-DA-VDS-18",
+   "UI dictionary (2,700+ keys, EN/FR/AR) reviewed; CortexSkills, DynamicSurveys, AIMM spelled exactly.",
+   "Met"
+  ],
+  [
+   "Documents",
+   "Generated documents and exports in the house style, fonts embedded, A4 or Letter.",
+   "NFR-DA-VDS-20",
+   "DOCX/PDF/XLSX exports: A4, Times New Roman (Liberation Serif embedded in PDF), orange headers, cover, TOC, page X of Y.",
+   "Met"
+  ],
+  [
+   "Version",
+   "Release notes state the Graphical Chart version conformed to.",
+   "NFR-DA-VDS-21",
+   "Release 1.10.0 conforms to the POWERACT Graphical Chart v1.0 (August 2026) mapped onto SRS v1.10 tokens.",
+   "Met"
+  ]
+ ],
+ "causes": [
+  {
+   "id": "C1",
+   "text": "Component defined inside another component.",
+   "found": 3,
+   "fixed": 3,
+   "note": "Tree nodes of Process design, Blueprint and Organization chart moved to module scope (Design.jsx DesignNode, Blueprint.jsx BlueprintNode, Obs.jsx OrgNode). Earlier pass: InlineTable EditRow and Cell at module scope."
+  },
+  {
+   "id": "C2",
+   "text": "Unstable list, row or field key.",
+   "found": 2,
+   "fixed": 2,
+   "note": "Questionnaire table rows (QForm.jsx TableSection) and training objectives (TrainingPlan.jsx) now keyed by stable identifiers kept beside the data."
+  },
+  {
+   "id": "C3",
+   "text": "Focus effect without proper dependencies.",
+   "found": 1,
+   "fixed": 1,
+   "note": "Earlier pass: Modal refocused on every render; replaced by one-shot useFocusTrap (ui.jsx)."
+  },
+  {
+   "id": "C4",
+   "text": "Dialog, drawer or editor re-created on every render.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; no instance found."
+  },
+  {
+   "id": "C5",
+   "text": "Form-library misuse.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; no form library is used."
+  },
+  {
+   "id": "C6",
+   "text": "Controlled input receives an object or array.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; multilingual values are passed per language as strings."
+  },
+  {
+   "id": "C7",
+   "text": "Element type changes while in use.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; Custom value switches to a text field only after the choice is committed."
+  },
+  {
+   "id": "C8",
+   "text": "Context provider value re-created on every render.",
+   "found": 1,
+   "fixed": 1,
+   "note": "Earlier pass: session context value memoized (session.jsx)."
+  },
+  {
+   "id": "C9",
+   "text": "Memoized child receives a new callback each render.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; InlineTable callbacks wrapped in useCallback."
+  },
+  {
+   "id": "C10",
+   "text": "Ref-based autofocus runs again.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; no instance found."
+  },
+  {
+   "id": "C11",
+   "text": "Validation or save effect calls focus or blur.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; autosave never moves focus."
+  },
+  {
+   "id": "C12",
+   "text": "Row key contains an edited or computed value.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; rows keyed by record id or a generated stable key."
+  },
+  {
+   "id": "C13",
+   "text": "Field name or identifier changes while focused.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; no instance found."
+  },
+  {
+   "id": "C14",
+   "text": "Form region re-rendered through a changing key or injected HTML.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; no instance found."
+  },
+  {
+   "id": "C15",
+   "text": "Route, tab or panel switch remounts an active form.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; drafts kept in table state; Row Editor edits the table draft."
+  },
+  {
+   "id": "C16",
+   "text": "Validation on every keystroke rewrites the value.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; validation on blur, re-validation only after a first error."
+  },
+  {
+   "id": "C17",
+   "text": "Autosave resets the active form.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; focus test T5 confirms the draft is kept during autosave."
+  },
+  {
+   "id": "C18",
+   "text": "Field conditionally unmounted while typing.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; no instance found."
+  },
+  {
+   "id": "C19",
+   "text": "Asynchronous race: a stale result overwrites newer input.",
+   "found": 1,
+   "fixed": 1,
+   "note": "Earlier pass: useData request sequencing (session.jsx)."
+  },
+  {
+   "id": "C20",
+   "text": "Debounce re-created on every render.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; preference save debounce kept in a ref."
+  },
+  {
+   "id": "C21",
+   "text": "Server state overwrites the Active Draft.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; InlineTable merges server rows only for rows not being edited."
+  },
+  {
+   "id": "C22",
+   "text": "Input switches between controlled and uncontrolled.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; nullable values normalized to empty strings."
+  },
+  {
+   "id": "C23",
+   "text": "Event order causes a premature commit or close.",
+   "found": 0,
+   "fixed": 0,
+   "note": "Checked; listbox clicks ignored by the row blur handler."
+  }
+ ],
+ "tests": [
+  [
+   "Focus and input integrity (NFR-DA-FOC-05)",
+   "Inline table of a running task: type, Tab, Escape, autosave, draft during autosave, Row Editor and Back, paste of two rows, delete and Undo",
+   "12 of 12 checks pass; no console error"
+  ],
+  [
+   "Crawler — languages",
+   "62 routes × English, French, Arabic",
+   "No page error; no untranslated key; Arabic right-to-left"
+  ],
+  [
+   "Crawler — responsive",
+   "62 routes × 390, 768, 1024, 1280 px",
+   "No horizontal overflow after fixing the scope selectors, cards and BPMN layout"
+  ],
+  [
+   "API integration",
+   "Process design, steps, readiness, registers, OBS, RACSI, prompt specifications, AI settings, releases, documents (DOCX/PDF/XLSX), lifecycle, blueprints, audits, search filters",
+   "All calls return the expected status; two-person rules refuse self-approval"
+  ],
+  [
+   "Design tokens (CI)",
+   "web/src: every colour through --aiv tokens",
+   "Token check passed"
+  ],
+  [
+   "Seed",
+   "59 organizations, 118 runs, step records and registers",
+   "Seed completes in about 100 s; universal scenario 514/514 tasks completed, 218 documents published"
+  ]
+ ],
+ "outOfCatalog": [
+  [
+   "InlineTable.jsx",
+   "Cell",
+   "Escape on an empty new cell did not restore the empty value (start value undefined)",
+   "Start value normalized to an empty string; focus test T3 passes"
+  ]
+ ]
+}
