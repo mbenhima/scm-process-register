@@ -201,7 +201,7 @@ const themeList = txt => String(txt || '').split(/\.\s+/).map(x => x.replace(/:\
       s.addText(head, { x: x + 0.45, y: y + 0.02, w: w - 0.45, h: 0.3, fontFace: BODY, fontSize: 12, bold: true, color: C.dark, margin: 0, isTextBox: true });
       s.addText(items.map((t, j) => ({ text: t, options: { bullet: { indent: 12 }, breakLine: j < items.length - 1 } })), { x: x + 0.45, y: y + 0.32, w: w - 0.45, h: 0.66, fontFace: BODY, fontSize: 10.5, color: C.ink, margin: 0, isTextBox: true, valign: 'top', fit: 'shrink' }); }
     { const t = content(`${T.secE} · ${r.code}`, `${L(r.name)} — ${LANG === 'fr' ? 'un processus en cours' : 'a process in progress'}`, LANG === 'fr' ? `${L(lg.name)} · déroulé IA : la tâche ouverte, ses étapes typées et ce qu’il faut saisir` : `${L(lg.name)} · AI run: the open task, its typed steps and what to type`);
-      screenshot(t, path.join(__dirname, 'shots', 'sectors_' + LANG, r.code + '_task.png'), M, 1.95, W - 2 * M - 0.2); }
+      screenshot(t, path.join(__dirname, 'shots', 'sectors_' + LANG, r.code + '_task.png'), (W - 8.6) / 2, 1.95, 8.6); }
 
   }
   // Summary chart
