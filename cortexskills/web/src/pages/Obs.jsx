@@ -91,9 +91,15 @@ function Views() {
 function Chart() {
   const { t, L } = useI18n(); const d = useData('/obs-views');
   return (<Card title={t('obs.chart')}><Guard state={d}>{x => { const kids = id => x.chart.filter(r => (r.reports_to || null) === id);
-    const Node = ({ r }) => <li><div className={`org-node ${r.vacant ? 'vacant' : ''}`}><span className="strong small">{L(r.name)}</span><span className="xs muted">{r.holders.join(', ') || t('obs.vacant')}</span></div>{kids(r.id).length > 0 && <ul>{kids(r.id).map(k => <Node key={k.id} r={k} />)}</ul>}</li>;
+
     const roots = x.chart.filter(r => !r.reports_to || !x.chart.some(y => y.id === r.reports_to));
-    return roots.length ? <ul className="tree org-tree">{roots.map(r => <Node key={r.id} r={r} />)}</ul> : <Empty icon="Network" title={t('obs.noRole')} />; }}</Guard></Card>);
+    return roots.length ? <ul className="tree org-tree">{roots.map(r => <OrgNode key={r.id} r={r} ctx={{ t, L, kids }} />)}</ul> : <Empty icon="Network" title={t('obs.noRole')} />; }}</Guard></Card>);
+}
+
+/** Organization chart node at module scope (C1). */
+function OrgNode({ r, ctx }) {
+  const { t, L, kids } = ctx;
+  return <li><div className={`org-node ${r.vacant ? 'vacant' : ''}`}><span className="strong small">{L(r.name)}</span><span className="xs muted">{r.holders.join(', ') || t('obs.vacant')}</span></div>{kids(r.id).length > 0 && <ul>{kids(r.id).map(k => <OrgNode key={k.id} r={k} ctx={ctx} />)}</ul>}</li>;
 }
 
 /** RACSI per macro process: one row per step, five letters, exactly one Accountable per row (FR-DA-GOV-10). */

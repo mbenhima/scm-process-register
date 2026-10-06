@@ -1,7 +1,7 @@
 // Training plan: Program → Training (level, training ID, name, objectives, duration, prerequisites), a detailed
 // agenda half-day by half-day (lectures, quizzes, workshops) and the value proposition per persona (behaviour,
 // pain points, hopes → fit). Golden rules: one quiz and one workshop per half-day, checked live and before approval.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
@@ -74,6 +74,7 @@ function NewProgram({ project, onClose, onDone }) {
 
 function TrainingEditor({ id, plan, edit, onClose, onSaved }) {
   const { t, L, lang } = useI18n(); const act = useAction(); const { can } = useSession();
+  const objKeys = useRef([]); const objKey = i => { while (objKeys.current.length <= i) objKeys.current.push('o' + Math.random().toString(36).slice(2, 9)); return objKeys.current[i]; }; // stable keys (C2)
   const [c, setC] = useState(null); const [tab, setTab] = useState('agenda'); const [draft, setDraft] = useState(null); const [dirty, setDirty] = useState(false); const [approve, setApprove] = useState(false);
   useEffect(() => { get('/trainings/' + id).then(setC); }, [id]);
   if (!c) return null;
@@ -102,7 +103,7 @@ function TrainingEditor({ id, plan, edit, onClose, onSaved }) {
       <Field label={t('tp.groups')} id="tp6"><input id="tp6" className="input" type="number" min="1" disabled={!edit} value={c.groups ?? 1} onChange={e => set({ groups: Number(e.target.value) })} /></Field>
     </div>
     <Field label={t('tp.prerequisites')} id="tp7"><input id="tp7" className="input" disabled={!edit} value={L(c.prerequisites)} onChange={e => set({ prerequisites: mlSet(c.prerequisites, lang, e.target.value) })} /></Field>
-    <Field label={t('tp.objectives')}><div className="stack">{(c.objectives || []).map((o, i) => <div key={i} className="row" style={{ flexWrap: 'nowrap' }}><input className="input" disabled={!edit} value={L(o)} onChange={e => set({ objectives: c.objectives.map((x, j) => (j === i ? mlSet(x, lang, e.target.value) : x)) })} aria-label={t('tp.objective') + ' ' + (i + 1)} />{edit && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => set({ objectives: c.objectives.filter((_, j) => j !== i) })} />}</div>)}
+    <Field label={t('tp.objectives')}><div className="stack">{(c.objectives || []).map((o, i) => <div key={objKey(i)} className="row" style={{ flexWrap: 'nowrap' }}><input className="input" disabled={!edit} value={L(o)} onChange={e => set({ objectives: c.objectives.map((x, j) => (j === i ? mlSet(x, lang, e.target.value) : x)) })} aria-label={t('tp.objective') + ' ' + (i + 1)} />{edit && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => { objKeys.current.splice(i, 1); set({ objectives: c.objectives.filter((_, j) => j !== i) }); }} />}</div>)}
       {edit && <div><Btn size="sm" icon="Plus" onClick={() => set({ objectives: [...(c.objectives || []), { en: '', fr: '', ar: '' }] })}>{t('tp.addObjective')}</Btn></div>}</div></Field>
     {!rules.ok && <div className="notice" style={{ margin: 'var(--aiv-space-3) 0' }}><Icon name="TriangleAlert" /><ul style={{ margin: 0, paddingInlineStart: 18 }}>{rules.issues.map((i, k) => <li key={k} className="small">{t('rule.' + i.code, i)}</li>)}</ul></div>}
     <Tabs value={tab} onChange={setTab} tabs={[{ id: 'agenda', label: t('tp.agenda'), count: (c.agenda || []).length }, { id: 'personas', label: t('tp.valuePropositionTab'), count: (c.personas || []).length }]} />

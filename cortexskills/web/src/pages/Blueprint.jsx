@@ -42,17 +42,10 @@ function BlueprintTree({ x, id, editable, onChanged }) {
   const toggle = k => setOpen(s => { const n = new Set(s); n.has(k) ? n.delete(k) : n.add(k); return n; });
   const include = async (n, v) => { await act(() => put(`/project-templates/${id}/blueprint/elements`, { ref: n.ref, included: v })); onChanged(); };
   const match = n => !q || `${n.code || ''} ${n.name}`.toLowerCase().includes(q.toLowerCase()) || (n.children || []).some(match);
-  const Node = ({ n }) => { const kids = (n.children || []).filter(match); const isOpen = open.has(n.ref) || (q && kids.length);
-    return <li><div className="row" style={{ gap: 0 }}>{kids.length ? <button type="button" className="tree-toggle" aria-expanded={!!isOpen} aria-label={isOpen ? t('common.collapse') : t('common.expand')} onClick={() => toggle(n.ref)}><Icon name={isOpen ? 'ChevronDown' : 'ChevronRight'} size={14} /></button> : <span className="tree-toggle" />}
-      {editable && !n.custom ? <input type="checkbox" aria-label={t('ptb.include', { n: n.name })} checked={n.included} onChange={e => include(n, e.target.checked)} /> : <Icon name={n.custom ? 'Sparkle' : 'Check'} size={14} />}
-      <span className={`tree-row ${n.included ? '' : 'excluded'}`} style={{ cursor: 'default' }}><span className="mono xs">{n.code || n.id || ''}</span><span style={{ flex: 1 }}>{n.name}</span>{n.renamed && <span className="pill xs">{t('ptb.renamed')}</span>}{n.custom && <span className="pill xs tint">{t('ptb.custom')}</span>}{n.owner && <span className="xs muted">{n.owner}</span>}</span>
-      {editable && <><Btn size="sm" kind="ghost" icon="Pencil" aria-label={t('common.edit')} onClick={() => setEdit({ ref: n.ref, name: { en: '', fr: '', ar: '' }, owner: n.owner || '', current: n.name })} />
-        {['phase', 'e2e', 'task'].includes(n.kind) && !n.custom && <Btn size="sm" kind="ghost" icon="Plus" aria-label={t('ptb.addCustom')} data-tip={t('ptb.addCustom')} onClick={() => setCustom({ parent: n.ref, kind: n.kind === 'task' ? 'step' : n.kind === 'e2e' ? 'mp' : 'mp', name: { en: '', fr: '', ar: '' } })} />}
-        {n.custom && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={async () => { await act(() => del(`/project-templates/${id}/blueprint/custom/${n.id}`), 'common.deleted'); onChanged(); }} />}</>}</div>
-      {isOpen && kids.length > 0 && <ul>{kids.map(c => <Node key={c.ref} n={c} />)}</ul>}</li>; };
+
   return (<Card title={t('ptb.processes')} actions={editable && <Btn size="sm" icon="Plus" onClick={() => setCustom({ parent: null, kind: 'phase', name: { en: '', fr: '', ar: '' } })}>{t('ptb.customPhase')}</Btn>}>
     <p className="small muted">{t('ptb.treeHint')}</p><Search value={q} onChange={setQ} placeholder={t('pdm.filter')} />
-    <ul className="tree" style={{ marginTop: 'var(--aiv-space-3)' }}>{x.tree.filter(match).map(n => <Node key={n.ref} n={n} />)}</ul>
+    <ul className="tree" style={{ marginTop: 'var(--aiv-space-3)' }}>{x.tree.filter(match).map(n => <BlueprintNode key={n.ref} n={n} ctx={{ t, open, q, toggle, match, editable, include, setEdit, setCustom, act, id, onChanged }} />)}</ul>
     {edit && <Modal title={edit.current} onClose={() => setEdit(null)} footer={<><Btn onClick={() => setEdit(null)}>{t('common.cancel')}</Btn><Btn kind="primary" onClick={async () => { const b = { ref: edit.ref, owner: edit.owner }; if (edit.name.en || edit.name.fr) b.name = edit.name; await act(() => put(`/project-templates/${id}/blueprint/elements`, b), 'common.saved'); setEdit(null); onChanged(); }}>{t('common.save')}</Btn></>}>
       {['en', 'fr', 'ar'].map(l => <Field key={l} id={`bp-n-${l}`} label={`${t('ptb.nameInTemplate')} — ${l.toUpperCase()}`} hint={l === 'en' ? t('ptb.nameHint') : null}><input id={`bp-n-${l}`} className="input" dir={l === 'ar' ? 'rtl' : 'ltr'} value={edit.name[l]} onChange={e => setEdit(s => ({ ...s, name: { ...s.name, [l]: e.target.value } }))} /></Field>)}
       <Field id="bp-owner" label={t('ptb.owner')}><input id="bp-owner" className="input" value={edit.owner} onChange={e => setEdit(s => ({ ...s, owner: e.target.value }))} /></Field></Modal>}
@@ -62,6 +55,18 @@ function BlueprintTree({ x, id, editable, onChanged }) {
       {['en', 'fr', 'ar'].map(l => <Field key={l} id={`ce-n-${l}`} label={`${t('col.name')} — ${l.toUpperCase()}`} required={l === 'en'}><input id={`ce-n-${l}`} className="input" dir={l === 'ar' ? 'rtl' : 'ltr'} value={custom.name[l]} onChange={e => setCustom(s => ({ ...s, name: { ...s.name, [l]: e.target.value } }))} /></Field>)}
       <Field id="ce-owner" label={t('ptb.owner')} optional><input id="ce-owner" className="input" value={custom.owner || ''} onChange={e => setCustom(s => ({ ...s, owner: e.target.value }))} /></Field></Modal>}
   </Card>);
+}
+
+/** Tree node at module scope (C1): ticking a box re-renders the tree without remounting it. */
+function BlueprintNode({ n, ctx }) {
+  const { t, open, q, toggle, match, editable, include, setEdit, setCustom, act, id, onChanged } = ctx; const kids = (n.children || []).filter(match); const isOpen = open.has(n.ref) || (q && kids.length);
+    return <li><div className="row" style={{ gap: 0 }}>{kids.length ? <button type="button" className="tree-toggle" aria-expanded={!!isOpen} aria-label={isOpen ? t('common.collapse') : t('common.expand')} onClick={() => toggle(n.ref)}><Icon name={isOpen ? 'ChevronDown' : 'ChevronRight'} size={14} /></button> : <span className="tree-toggle" />}
+      {editable && !n.custom ? <input type="checkbox" aria-label={t('ptb.include', { n: n.name })} checked={n.included} onChange={e => include(n, e.target.checked)} /> : <Icon name={n.custom ? 'Sparkle' : 'Check'} size={14} />}
+      <span className={`tree-row ${n.included ? '' : 'excluded'}`} style={{ cursor: 'default' }}><span className="mono xs">{n.code || n.id || ''}</span><span style={{ flex: 1 }}>{n.name}</span>{n.renamed && <span className="pill xs">{t('ptb.renamed')}</span>}{n.custom && <span className="pill xs tint">{t('ptb.custom')}</span>}{n.owner && <span className="xs muted">{n.owner}</span>}</span>
+      {editable && <><Btn size="sm" kind="ghost" icon="Pencil" aria-label={t('common.edit')} onClick={() => setEdit({ ref: n.ref, name: { en: '', fr: '', ar: '' }, owner: n.owner || '', current: n.name })} />
+        {['phase', 'e2e', 'task'].includes(n.kind) && !n.custom && <Btn size="sm" kind="ghost" icon="Plus" aria-label={t('ptb.addCustom')} data-tip={t('ptb.addCustom')} onClick={() => setCustom({ parent: n.ref, kind: n.kind === 'task' ? 'step' : n.kind === 'e2e' ? 'mp' : 'mp', name: { en: '', fr: '', ar: '' } })} />}
+        {n.custom && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={async () => { await act(() => del(`/project-templates/${id}/blueprint/custom/${n.id}`), 'common.deleted'); onChanged(); }} />}</>}</div>
+      {isOpen && kids.length > 0 && <ul>{kids.map(c => <BlueprintNode key={c.ref} n={c} ctx={ctx} />)}</ul>}</li>;
 }
 
 const COLS = {

@@ -227,7 +227,7 @@ const Cell = memo(function Cell({ rowKey, col, value, data, error, readOnly, typ
   const [customMode, setCustomMode] = useState(() => col.type === 'select' && col.custom && value != null && value !== '' && !(col.options || []).some(o => String(o.value ?? o) === String(value)) && !(typed || []).includes(value));
   const v = value == null ? '' : String(value); // controlled with a primitive, never undefined (C6, C22)
   const common = { 'data-cell': cellId, 'aria-label': col.label, 'aria-invalid': error ? true : undefined, 'aria-describedby': error ? cellId + '-e' : undefined,
-    onFocus: () => { editStart.current[cellId] = value; }, onBlur: () => onBlurCell(rowKey, col), onKeyDown: e => onKey(e, rowKey, col), onPaste: e => onPaste(e, rowKey, col) };
+    onFocus: () => { editStart.current[cellId] = value ?? ''; }, onBlur: () => onBlurCell(rowKey, col), onKeyDown: e => onKey(e, rowKey, col), onPaste: e => onPaste(e, rowKey, col) };
   if (readOnly) return <td className="cell"><span className="small">{col.render ? col.render(value, data) : v || '—'}</span></td>;
   let control;
   if (col.type === 'select' && !customMode) {

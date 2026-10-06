@@ -1,7 +1,7 @@
 // Renders a questionnaire form (identity, tables, grids, questions, ratings, SWOT, yes/no) for a respondent or an
 // interviewer. Tables are rows the user adds and edits; choices are controlled lists; nothing is free text unless the
 // question asks for it. Used by the public response page, the face-to-face capture and the read-only response view.
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { useI18n } from '../lib/i18n.jsx';
 import { Icon, Btn } from './ui.jsx';
 
@@ -63,13 +63,16 @@ export function QForm({ form, answers, flags = {}, onChange, onFlags, readOnly =
   })}</div>);
 }
 
+let rowSeq = 0;
 function TableSection({ s, rows, readOnly, onChange, functions }) {
   const { t, L } = useI18n();
   const shown = rows.length ? rows : readOnly ? [] : Array.from({ length: s.minRows || 1 }, () => ({}));
   const upd = (i, k, v) => { const next = [...shown]; next[i] = { ...next[i], [k]: v }; onChange(next); };
+  // Stable row identity kept beside the data (C2): keys follow inserts and deletions, never the index.
+  const keys = useRef([]); while (keys.current.length < shown.length) keys.current.push(`r${++rowSeq}`);
   return (<div className="stack"><div className="table-wrap"><table className="tbl"><thead><tr>{s.columns.map(c => <th key={c.key}>{L(c.label)}</th>)}{!readOnly && <th aria-label={t('common.delete')} />}</tr></thead>
-    <tbody>{shown.map((r, i) => <tr key={i}>{s.columns.map(c => <td key={c.key} style={{ minWidth: c.kind === 'check' ? 60 : 140 }}><Cell col={c} value={r[c.key]} readOnly={readOnly} functions={functions} label={`${L(c.label)} ${i + 1}`} onChange={v => upd(i, c.key, v)} /></td>)}
-      {!readOnly && <td><Btn icon="Trash2" kind="ghost" size="sm" aria-label={t('common.delete')} onClick={() => onChange(shown.filter((_, k) => k !== i))} /></td>}</tr>)}
+    <tbody>{shown.map((r, i) => <tr key={keys.current[i]}>{s.columns.map(c => <td key={c.key} style={{ minWidth: c.kind === 'check' ? 60 : 140 }}><Cell col={c} value={r[c.key]} readOnly={readOnly} functions={functions} label={`${L(c.label)} ${i + 1}`} onChange={v => upd(i, c.key, v)} /></td>)}
+      {!readOnly && <td><Btn icon="Trash2" kind="ghost" size="sm" aria-label={t('common.delete')} onClick={() => { keys.current.splice(i, 1); onChange(shown.filter((_, k) => k !== i)); }} /></td>}</tr>)}
       {!shown.length && <tr><td colSpan={s.columns.length}><span className="muted small">{t('qf.noRows')}</span></td></tr>}</tbody></table></div>
     {!readOnly && <div><Btn icon="Plus" size="sm" onClick={() => onChange([...shown, {}])}>{t('qf.addRow')}</Btn></div>}</div>);
 }

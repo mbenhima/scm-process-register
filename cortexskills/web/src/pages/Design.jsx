@@ -40,16 +40,21 @@ function DesignTree({ data, selected, onSelect }) {
   const roots = view === 'phase' ? data.phases : data.mps;
   const match = n => !q || `${n.id} ${L(n.name)}`.toLowerCase().includes(q.toLowerCase()) || (n.children || []).some(match);
   const toggle = k => setOpen(s => { const n = new Set(s); n.has(k) ? n.delete(k) : n.add(k); return n; });
-  const Node = ({ n, depth }) => { const k = n.kind + n.id; const kids = (n.children || []).filter(match); const isOpen = open.has(k) || (q && kids.length > 0); const cur = selected && selected.kind === n.kind && selected.id === n.id;
+
+  return (<div className="stack">
+    <Seg value={view} onChange={setView} label={t('pdm.view')} options={[{ id: 'phase', label: t('pdm.byPhase') }, { id: 'mp', label: t('pdm.byMp') }]} />
+    <Search value={q} onChange={setQ} placeholder={t('pdm.filter')} />
+    <ul className="tree" role="tree" aria-label={t('pdm.tree')}>{roots.filter(match).map(n => <DesignNode key={n.kind + n.id} n={n} ctx={{ t, L, q, open, toggle, match, selected, onSelect }} />)}</ul></div>);
+}
+
+/** Tree node at module scope: identity is stable across renders, so focus stays on the row (C1). */
+function DesignNode({ n, ctx }) {
+  const { t, L, q, open, toggle, match, selected, onSelect } = ctx; const k = n.kind + n.id; const kids = (n.children || []).filter(match); const isOpen = open.has(k) || (q && kids.length > 0); const cur = selected && selected.kind === n.kind && selected.id === n.id;
     return <li><div className="row" style={{ gap: 0 }}>{kids.length ? <button type="button" className="tree-toggle" aria-label={isOpen ? t('common.collapse') : t('common.expand')} aria-expanded={isOpen} onClick={() => toggle(k)}><Icon name={isOpen ? 'ChevronDown' : 'ChevronRight'} size={14} /></button> : <span className="tree-toggle" />}
       <button type="button" className={`tree-row ${n.status === 'Retired' ? 'excluded' : ''}`} aria-current={cur || undefined} onClick={() => onSelect(n.kind, n.id)}>
         <span className="mono xs">{n.no != null ? t('ws.phase', { n: n.no }) : n.id}</span><span style={{ flex: 1, minWidth: 0 }}>{L(n.name)}</span>
         {n.custom && <span className="pill xs tint">{t('pdm.custom')}</span>}{n.modified && <span className="pill xs">{t('pdm.modified')}</span>}</button></div>
-      {isOpen && kids.length > 0 && <ul>{kids.map(c => <Node key={c.kind + c.id} n={c} depth={depth + 1} />)}</ul>}</li>; };
-  return (<div className="stack">
-    <Seg value={view} onChange={setView} label={t('pdm.view')} options={[{ id: 'phase', label: t('pdm.byPhase') }, { id: 'mp', label: t('pdm.byMp') }]} />
-    <Search value={q} onChange={setQ} placeholder={t('pdm.filter')} />
-    <ul className="tree" role="tree" aria-label={t('pdm.tree')}>{roots.filter(match).map(n => <Node key={n.kind + n.id} n={n} depth={0} />)}</ul></div>);
+      {isOpen && kids.length > 0 && <ul>{kids.map(c => <DesignNode key={c.kind + c.id} n={c} ctx={ctx} />)}</ul>}</li>;
 }
 
 function ElementPanel({ kind, id, onChanged, onSelect }) {

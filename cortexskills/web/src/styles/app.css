@@ -140,7 +140,14 @@ kbd { font: 600 var(--aiv-fs-12)/1 var(--aiv-font-mono); color: var(--aiv-muted)
   .content-panel { min-width: 0; }
   .content { padding: var(--aiv-space-4) var(--aiv-space-5) var(--aiv-space-7); }
   .scopebar { padding: var(--aiv-space-3) var(--aiv-space-5) 0; }
-  .scope-select .select { min-width: 0; max-width: none; flex: 1; }
+  .content > *, .grid > *, .stack > * { min-width: 0; max-width: 100%; }
+  .bpmn-host { grid-template-columns: minmax(0,1fr) !important; } .bpmn-palette { display: none !important; }
+  .card { min-width: 0; max-width: 100%; overflow-x: auto; }
+  .card-head > *, .card-head .row { min-width: 0; max-width: 100%; flex-wrap: wrap; }
+  .scope-select { width: 100%; min-width: 0; flex-wrap: nowrap; }
+  .scope-select .select { min-width: 0; max-width: none; flex: 1 1 0; }
+  .scope-select .select-btn { min-width: 0; overflow: hidden; }
+  .scope-select .select-btn > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
   .hide-mobile { display: none !important; }
   .hnav { display: none; }
 }
@@ -689,3 +696,4 @@ ul.plain { list-style: none; margin: 0; padding: 0; display: flex; flex-directio
 .org-tree li { margin-block: var(--aiv-space-2); }
 ul.plain > li > .tree-row { width: 100%; }
 .drawer.task-drawer { width: min(760px, 100%); }
+@media (max-width: 1023px) { .bpmn-layout { grid-template-columns: minmax(0, 1fr); } }
