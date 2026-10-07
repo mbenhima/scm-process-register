@@ -60,7 +60,8 @@ export function buildTer(orgId, projectId, lang = 'en', meta = {}) {
   const inv = all(`SELECT population, function_name, status FROM q_invitations WHERE project_id=?`, projectId);
   const pops = ['DG', 'Management', 'Member'];
   if (inv.length) {
-    const byFn = {}; for (const i of inv) { const k = i.function_name || '—'; (byFn[k] ||= { DG: 0, Management: 0, Member: 0, responded: 0 }); byFn[k][i.population] = (byFn[k][i.population] || 0) + 1; if (i.status === 'Responded') byFn[k].responded++; }
+    const fnL = n => { const f = fns.find(z => (typeof z.name === 'object' ? Object.values(z.name) : [z.name]).includes(n)); return f ? P(f.name) : n; };
+    const byFn = {}; for (const i of inv) { const k = fnL(i.function_name) || '—'; (byFn[k] ||= { DG: 0, Management: 0, Member: 0, responded: 0 }); byFn[k][i.population] = (byFn[k][i.population] || 0) + 1; if (i.status === 'Responded') byFn[k].responded++; }
     sec('1.6 ' + T('sample'), { text: T('sampleIntro', { n: inv.length, r: inv.filter(i => i.status === 'Responded').length }), table: { columns: [T('function'), ...pops.map(x => t('pop.' + x, lang)), T('responded')], rows: Object.entries(byFn).map(([k, v]) => [k, ...pops.map(x => String(v[x] || 0)), String(v.responded)]) } });
   } else sec('1.6 ' + T('sample'), notice(T('whatSample'), 'MP-54'));
   put(1, 7, det.c1);

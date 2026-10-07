@@ -226,7 +226,7 @@ export async function tickAll() {
  * dropped and the refusal is logged. Offline captures keep their original capture time and a client id so a
  * replayed sync never creates a duplicate (FR-DA-QLT-08).
  */
-export function storeResponse(orgId, q, inv, { answers = {}, flags = {}, consent, final = false, channel = 'Application', capturedAt = null, clientId = null, userId = null, source = 'respondent' }) {
+export function storeResponse(orgId, q, inv, { answers = {}, translations = null, flags = {}, consent, final = false, channel = 'Application', capturedAt = null, clientId = null, userId = null, source = 'respondent' }) {
   if (consent !== true) {
     event(orgId, q.id, inv.id, 'consent.refused', { channel, recipient: inv.name, status: 'rejected', detail: 'Response not stored: no consent', userId });
     throw new HttpError(422, 'err.consentRequired');
@@ -246,7 +246,7 @@ export function storeResponse(orgId, q, inv, { answers = {}, flags = {}, consent
   const data = { questionnaire_id: q.id, invitation_id: inv.id, stakeholder_id: inv.stakeholder_id, stakeholder_ref: inv.stakeholder_id, label: { en: inv.name, fr: inv.name, ar: inv.name },
     respondent: inv.name, population: inv.population, template_code: form?.code, function_name: inv.function_name, decision_level: inv.decision_level,
     channel_used: channel, channels_touched: touched, hybrid: touched.length > 1, submitted_at: capturedAt || tm, synced_at: capturedAt ? tm : null, consent_given: true,
-    completeness_pct: pct, flags, answers_json: answers, included: !below, flagged: below ? 'Below threshold' : null, captured_by: source === 'respondent' ? null : userId, language: inv.lang };
+    completeness_pct: pct, flags, answers_json: answers, ...(translations ? { answers_i18n: translations } : {}), included: !below, flagged: below ? 'Below threshold' : null, captured_by: source === 'respondent' ? null : userId, language: inv.lang };
   // Anonymized questionnaire: the respondent's identity is stripped before storage and no link back is kept (NFR-DA-QLT-03).
   const anon = !!(q.anonymized ?? q.data?.anonymized);
   if (anon) { for (const k of ['invitation_id', 'stakeholder_id', 'stakeholder_ref', 'function_name', 'captured_by']) data[k] = null; data.respondent = null; data.label = { en: 'Anonymous respondent', fr: 'Répondant anonyme', ar: 'مجيب مجهول' }; data.anonymized = true; }
@@ -281,7 +281,7 @@ export function consolidate(orgId, q, lang = 'en') {
     ds.byPopulation[r.population || '—'] = (ds.byPopulation[r.population || '—'] || 0) + 1;
     ds.byChannel[r.channel_used || '—'] = (ds.byChannel[r.channel_used || '—'] || 0) + 1;
     const form = formOf(q, r.template_code); if (!form) continue;
-    const A = r.answers_json || {};
+    const A = r.answers_i18n?.[lang] || r.answers_json || {}; // answers in the document language when a translation is kept
     for (const s of form.sections) {
       const a = A[s.id]; if (a == null) continue;
       const src = pick(s.title, lang) || s.id;

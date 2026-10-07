@@ -89,10 +89,14 @@ export function seedQuestionnaires(o, p, focus, lvl, ctx, { sow, done, started, 
     const channel = last.channel === 'Face-to-Face' ? 'Face-to-Face' : r() < 0.15 && last.channel === 'Email' ? 'Email' : 'Application';
     const st = stakeholders.find(s => s.id === inv.stakeholder_id) || {};
     const form = Q.formOf(q, inv.template_code);
-    const { answers, flags } = answersFor(form, { lang: o.lang, name: inv.name, position: pick(st.role_t, o.lang) || st.role, reportsTo: inv.population === 'DG' ? (o.lang === 'fr' ? 'Conseil d’administration' : o.lang === 'ar' ? 'مجلس الإدارة' : 'Board of directors') : pick(users.find(u => u.role === 'R-02')?.name, 'en'),
-      theme: vth[i % vth.length], core: o.v.coreFunction.name, standard: o.v.standards[0], sector: o.v.name, org: o.name, functions, functionName: inv.function_name || '' }, r, { skip: i % 13 === 7 ? 0.45 : 0.06 });
+    // The respondent answers in the organization's working language; the same answers are also kept in the two other
+    // languages (same random choices, one sequence per response), so documents in every language quote them consistently.
+    const gen = l => answersFor(form, { lang: l, name: inv.name, position: pick(st.role_t, l) || st.role, reportsTo: inv.population === 'DG' ? (l === 'fr' ? 'Conseil d’administration' : l === 'ar' ? 'مجلس الإدارة' : 'Board of directors') : pick(users.find(u => u.role === 'R-02')?.name, 'en'),
+      theme: vth[i % vth.length], core: o.v.coreFunction.name, standard: o.v.standards[0], sector: o.v.name, org: o.name, functions, functionName: inv.function_name || '' }, rng('answers:' + inv.id), { skip: i % 13 === 7 ? 0.45 : 0.06 });
+    const byLang = Object.fromEntries(['en', 'fr', 'ar'].map(l => [l, gen(l)])); const { answers, flags } = byLang[o.lang];
+    const translations = Object.fromEntries(Object.entries(byLang).map(([l, x]) => [l, x.answers]));
     const capturedAt = new Date(Math.min(nowT - 3600000, t0 + (last.after_days + 1) * DAY + 3600000 * (10 + (i % 5)))).toISOString();
-    Q.storeResponse(o.id, q, one(`SELECT * FROM q_invitations WHERE id=?`, inv.id), { answers, flags, consent: true, final: true, channel, capturedAt, userId: channel === 'Application' ? null : analyst.id, source: channel === 'Application' ? 'respondent' : 'staff' });
+    Q.storeResponse(o.id, q, one(`SELECT * FROM q_invitations WHERE id=?`, inv.id), { answers, translations, flags, consent: true, final: true, channel, capturedAt, userId: channel === 'Application' ? null : analyst.id, source: channel === 'Application' ? 'respondent' : 'staff' });
   });
   if (status === 'Closed') Q.event(o.id, qid, null, 'questionnaire.closed', { userId: head.id, at: data.closed_on });
 }

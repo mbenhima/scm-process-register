@@ -10,8 +10,9 @@ Training engineering platform: 33 end-to-end processes in seven phases, from the
 - **Documented information**: 37 templates, organization layout, sections and overrides, versions, two-person publication, master list and the documents each standard requires; Word, PDF and Excel.
 - **AI**: twelve-field prompt specifications per use case, organization model settings with a sealed key and an exact connection test.
 - **Project template blueprints, audits with graded findings, attachment versions, search filters, retention and anonymized questionnaires.**
-- **Design system**: SRS v1.10 tokens with the POWERACT Graphical Chart values, bundled fonts, data tables, charts and system states; tested at 390–1280 px and in English, French and Arabic.
-- **Demonstration data**: 59 organizations (a large company and an SME in each of 29 sectors, plus the multi-sector Horizon Services Group), each with two complete runs.
+- **Design system**: SRS v1.10 tokens with the AI Value Graphical Chart values (Appendix J), CortexSkills and AI Value logos, bundled fonts, data tables, charts and system states; tested at 390–1280 px and in English, French and Arabic.
+- **Demonstration data**: 61 organizations — a large company and an SME in each of 29 sectors, the multi-sector Horizon Services Group and two healthcare showcases — each with two runs (Digital and AI), all data and documents in English, French and Arabic.
+- **Complete examples** (every task and every step done, every document published): Atlas Motors Kénitra (automotive, `headld@atlasmotorskenitra.ma`), Oasis Telecom (telecommunications, `headld@oasistelecom.ma`), Horizon Logistics Tanger Med (logistics, `headld@horizonlogisticsta.ma`) and the SME Coopérative Laitière Al Baraka (food and dairy, `headld@cooperativelaitier.ma`), plus Santéora Private Clinics (`headld@santeora.ma`), the Regional Hospital Centre (`headld@chr-sante.ma`) and Horizon Services Group (`headld@horizonservices.ma`). Password: `CortexSkills#2026`.
 
 ## What was new in 1.1
 

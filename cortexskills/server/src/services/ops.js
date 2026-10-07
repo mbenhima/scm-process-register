@@ -21,6 +21,12 @@ export function purgeBackups() {
     try { fs.unlinkSync(path.join(config.backupDir, b.file)); } catch { /* already gone */ }
     run(`DELETE FROM backups WHERE id=?`, b.id);
   }
+  // Files left by an earlier database (for example before a reseed) are not listed any more: remove them past retention.
+  const known = new Set(all(`SELECT file FROM backups`).map(b => b.file)); const limit = Date.now() - config.backupRetentionDays * 86400000;
+  if (fs.existsSync(config.backupDir)) for (const f of fs.readdirSync(config.backupDir)) {
+    if (!/^cortexskills-[\w-]+\.db$/.test(f) || known.has(f)) continue;
+    try { const full = path.join(config.backupDir, f); if (fs.statSync(full).mtimeMs < limit) fs.unlinkSync(full); } catch { /* in use or gone */ }
+  }
 }
 export function listBackups() {
   return all(`SELECT * FROM backups ORDER BY created_at DESC`).filter(b => fs.existsSync(path.join(config.backupDir, b.file)));

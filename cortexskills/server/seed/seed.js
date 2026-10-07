@@ -12,6 +12,9 @@ const path = await import('node:path');
 const { config } = await import('../src/config.js');
 for (const f of [config.dbFile, config.dbFile + '-wal', config.dbFile + '-shm']) if (fs.existsSync(f)) fs.rmSync(f);
 fs.rmSync(config.attachmentDir, { recursive: true, force: true }); fs.mkdirSync(config.attachmentDir, { recursive: true });
+// Backups of the previous demonstration data are listed in the database being reset: remove their files too, so repeated
+// seeds never fill the disk.
+if (fs.existsSync(config.backupDir)) for (const f of fs.readdirSync(config.backupDir)) if (/^cortexskills-[\w-]+\.db$/.test(f)) fs.rmSync(path.join(config.backupDir, f), { force: true });
 const t0 = Date.now();
 const { db, migrate, run, all, one, tx } = await import('../src/db.js');
 const { S, detUuid: U, now } = await import('../src/lib/util.js');

@@ -20,7 +20,7 @@ const body = [
     ['Demonstration data', '59 organizations: a large company and an SME in each of 29 sectors, plus a multi-sector services group; each has two full runs (Digital skills and AI skills) with every process, task and step, in English, French and Arabic.'],
   ], [2600, 7146]),
   spacer(),
-  callout('Time needed', ['About 15 minutes the first time: 5 minutes to install Node.js, 5 minutes for the two installs, 2 minutes for the demonstration data. Keep 2 GB of free disk space: the demonstration database takes about 450 MB.']),
+  callout('Time needed', ['About 15 minutes the first time: 5 minutes to install Node.js, 5 minutes for the two installs, 4 minutes for the demonstration data. Keep 3 GB of free disk space: the demonstration database takes about 850 MB and the seed keeps one backup copy of it.']),
 
   H1('2. Install Node.js (once)'),
   H2('2.1 Windows and macOS'),
@@ -42,7 +42,7 @@ const body = [
   code('npm install'), code('npm run seed'), code('npm run dev'),
   table(['Command', 'What it does', 'How long'], [
     ['npm install', 'Downloads the components the server needs. You do this only once.', '1–3 minutes'],
-    ['npm run seed', 'Creates the demonstration data. It erases any existing data, so run it only the first time or when you want a fresh start.', 'About 2 minutes'],
+    ['npm run seed', 'Creates the demonstration data. It erases any existing data and its old backups, so run it only the first time or when you want a fresh start.', 'About 4 minutes'],
     ['npm run dev', 'Starts the server. You do this every time you want to use CortexSkills.', 'A few seconds'],
   ], [2000, 5746, 2000]),
   spacer(),
@@ -116,6 +116,7 @@ const body = [
     ['“CortexSkills needs Node.js 22.13 or newer”', 'Install the LTS version from nodejs.org (section 2), close the window, open a new one and try again.'],
     ['“Port 4000 is already in use”', 'CortexSkills is probably already running in another window. Close it, or start on another port (set PORT=4001 on Windows, export PORT=4001 on macOS/Linux).'],
     ['“The database is empty”', 'Run npm run seed in the server folder, then npm run dev.'],
+    ['“The seed stopped” (npm run seed)', 'Stop the server first (close the window that runs npm run dev), check that 3 GB of disk space is free, and exclude the server\\data folder from antivirus scanning and from OneDrive synchronization; then run npm run seed again. The message names the cause.'],
     ['“npm is not recognized” / “command not found”', 'Node.js is not installed or the window was opened before the installation. Install Node.js, then open a new window.'],
     ['The browser shows “This site can’t be reached”', 'Check that both windows are still open and show no error. The address is http://localhost:5173.'],
     ['Sign-in says “Email or password is incorrect”', 'Check the password (it is case-sensitive). If you changed the data, run npm run seed to restore the demonstration accounts.'],

@@ -50,7 +50,7 @@ const X = {
   risks: L('Risks, controls and indicators', 'Risques, contrôles et indicateurs', 'المخاطر والضوابط والمؤشرات'), risk: L('Risk or opportunity', 'Risque ou opportunité', 'الخطر أو الفرصة'), category: L('Category', 'Catégorie', 'الفئة'),
   inherent: L('Inherent', 'Inhérent', 'المتأصل'), residual: L('Residual', 'Résiduel', 'المتبقي'), controls: L('Controls', 'Contrôles', 'الضوابط'), owner: L('Owner', 'Propriétaire', 'المالك'),
   kpis: L('Indicators of the project', 'Indicateurs du projet', 'مؤشرات المشروع'), indicator: L('Indicator', 'Indicateur', 'المؤشر'), last: L('Latest periods', 'Dernières périodes', 'الفترات الأخيرة'),
-  answers: L('Answers of each respondent', 'Réponses de chaque répondant', 'إجابات كل مجيب'), answersIntro: L('Answers are quoted as given by the respondents, in the language of the interview or of the form.', 'Les réponses sont citées telles que données par les répondants, dans la langue de l’entretien ou du formulaire.', 'تُنقل الإجابات كما قدّمها المجيبون، بلغة المقابلة أو الاستمارة.'),
+  answers: L('Answers of each respondent', 'Réponses de chaque répondant', 'إجابات كل مجيب'), answersIntro: L('Answers are shown in the language of this document; the original wording, in the language of the interview or of the form, is kept in the application.', 'Les réponses sont présentées dans la langue de ce document ; la formulation d’origine, dans la langue de l’entretien ou du formulaire, est conservée dans l’application.', 'تُعرض الإجابات بلغة هذه الوثيقة؛ ويُحتفظ في التطبيق بالصياغة الأصلية بلغة المقابلة أو الاستمارة.'),
   submitted: L('Submitted', 'Soumise le', 'تاريخ الإرسال'), item: L('Item', 'Élément', 'العنصر'),
 };
 const x = (k, lang, p = {}) => { const v = X[k]; const s = (v?.[lang] || v?.en || k); return Object.entries(p).reduce((a, [kk, vv]) => a.split(`{${kk}}`).join(String(vv)), s); };
@@ -65,6 +65,7 @@ export function terDetails(orgId, projectId, lang, { qs, sets, src }) {
   const userName = id => (id ? one(`SELECT name FROM users WHERE id=?`, id)?.name : null) || '—';
   const fnNodes = all(`SELECT id, name FROM obs_nodes WHERE org_id=? AND type='Function'`, orgId).map(f => { const n = J(f.name, f.name); return { id: f.id, name: P(n), names: typeof n === 'object' ? Object.values(n) : [n] }; });
   const fnName = id => fnNodes.find(f => f.id === id)?.name || '—';
+  const fnLabel = name => fnNodes.find(f => f.names.includes(name))?.name || name; // function names are stored in the language of the form
   const out = { c1: [], c3: [], c4: [], c5: [], c6: [], annex: [] };
 
   // ---------------------------------------------------------------- chapter 1 additions
@@ -87,7 +88,7 @@ export function terDetails(orgId, projectId, lang, { qs, sets, src }) {
     const rows = g => g.map(([k, v]) => [k, String(v.inv), String(v.resp), v.inv ? Math.round(v.resp / v.inv * 100) + ' %' : '—', v.comp.length ? Math.round(v.comp.reduce((a, b) => a + b, 0) / v.comp.length) + ' %' : '—']);
     const cols = k => [k, x('invited', lang), x('responded', lang), x('rate', lang), x('completeness', lang)];
     out.c1.push({ heading: `${x('stats', lang)} — ${x('byPop', lang)}`, table: { columns: cols(x('population', lang)), rows: rows(group(i => t('pop.' + i.population, lang), r => t('pop.' + r.population, lang))) } });
-    out.c1.push({ heading: `${x('stats', lang)} — ${x('byFn', lang)}`, table: { columns: cols(x('fn', lang)), rows: rows(group(i => i.function_name, r => r.function_name)) } });
+    out.c1.push({ heading: `${x('stats', lang)} — ${x('byFn', lang)}`, table: { columns: cols(x('fn', lang)), rows: rows(group(i => fnLabel(i.function_name), r => fnLabel(r.function_name))) } });
     out.c1.push({ heading: `${x('stats', lang)} — ${x('byCh', lang)}`, table: { columns: cols(x('channel', lang)), rows: rows(group(() => null, r => st(r.channel_used)).filter(([k]) => k !== '—').map(([k, v]) => [k, { ...v, inv: v.resp }])) } });
   }
 
@@ -109,7 +110,7 @@ export function terDetails(orgId, projectId, lang, { qs, sets, src }) {
     const rows = [];
     for (const e of fe) { const pos = positions.get(e.position_id); for (const tg of targets.filter(tt => tt.position_id === e.position_id)) { const a = sa.find(s => s.employee_id === e.id && s.competency_id === tg.competency_id); rows.push([e.label, P(pos?.title) || '—', P(comps.get(tg.competency_id)?.name) || '—', String(tg.target_level), a ? `${a.validated_level} (${x('selfL', lang).toLowerCase()} ${a.self_level})` : '—', a ? String(Math.max(0, tg.target_level - a.validated_level)) : '—']); } }
     if (rows.length) out.c3.push({ heading: `${f.name} — ${x('assessment', lang)}`, table: { columns: [x('employee', lang), x('position', lang), x('competency', lang), x('target', lang), x('validated', lang), x('gap', lang)], rows } });
-    const quotes = fr.flatMap(r => { const A = r.answers_json || {}; return [...(A.swot_function || []), ...(A.swot_light || [])].filter(Boolean).map(s => [r.respondent, t('pop.' + r.population, lang), [s.scope, s.strengths, s.weaknesses].filter(Boolean).join(' — '), s.competences || '—']); });
+    const quotes = fr.flatMap(r => { const A = r.answers_i18n?.[lang] || r.answers_json || {}; return [...(A.swot_function || []), ...(A.swot_light || [])].filter(Boolean).map(s => [r.respondent, t('pop.' + r.population, lang), [s.scope, s.strengths, s.weaknesses].filter(Boolean).join(' — '), s.competences || '—']); });
     if (quotes.length) out.c3.push({ heading: `${f.name} — ${x('competences', lang)}`, table: { columns: [x('respondent', lang), x('population', lang), `${t('ter.strengths', lang)} / ${t('ter.weaknesses', lang)}`, x('competences', lang)], rows: quotes } });
     if (fd.length) out.c3.push({ heading: `${f.name} — ${t('ter.demands', lang)}`, table: { columns: [x('employee', lang), x('theme', lang), x('type', lang), t('ter.priority', lang), x('status', lang)], rows: fd.map(d => [empById.get(d.requester_employee_id)?.label || '—', P(d.theme), st(d.demand_type), st(d.priority), st(d.status)]) } });
   }
@@ -127,7 +128,7 @@ export function terDetails(orgId, projectId, lang, { qs, sets, src }) {
   if (prj.length) out.c3.push({ heading: x('projects', lang), table: { columns: [x('project', lang), x('reading', lang), x('period', lang), x('state', lang), x('competences', lang)],
     rows: prj.map(p => [p.project || '', [p.details, p.remarks].filter(Boolean).join(' — '), [p.start, p.end].filter(Boolean).join(' → '), p.state || '—', p.competences || '—']) } });
   const ai = sets.flatMap(s => (s.ambitions || []).filter(a => /^ai_q/.test(a.key)));
-  const aiRows = resp.flatMap(r => Object.entries(r.answers_json?.ai_sector || {}).filter(([k, v]) => /^ai_q/.test(k) && v).map(([k, v]) => [k.replace('ai_q', 'Q'), String(v), `${r.respondent} (${t('pop.' + r.population, lang)})`]));
+  const aiRows = resp.flatMap(r => Object.entries((r.answers_i18n?.[lang] || r.answers_json)?.ai_sector || {}).filter(([k, v]) => /^ai_q/.test(k) && v).map(([k, v]) => [k.replace('ai_q', 'Q'), String(v), `${r.respondent} (${t('pop.' + r.population, lang)})`]));
   if (aiRows.length || ai.length) out.c3.push({ heading: x('aiUse', lang), table: { columns: [x('question', lang), x('answer', lang), x('respondent', lang)], rows: aiRows } });
   const sp = Object.values(sets.reduce((m, s) => { for (const [k, v] of Object.entries(s.strategicPlanning || {})) { (m[k] ||= { question: v.question, yes: 0, no: 0 }); m[k].yes += v.yes; m[k].no += v.no; } return m; }, {}));
   if (sp.length) out.c3.push({ heading: x('planning', lang), table: { columns: [x('question', lang), x('yes', lang), x('no', lang)], rows: sp.map(s => [s.question, String(s.yes), String(s.no)]) } });
@@ -175,8 +176,8 @@ export function terDetails(orgId, projectId, lang, { qs, sets, src }) {
   const fmtA = v => (v == null ? '' : typeof v === 'object' ? (Array.isArray(v) ? v.join(', ') : Object.values(v).filter(z => z !== '' && z != null).join(' — ')) : String(v));
   resp.sort((a, b) => ['DG', 'Management', 'Member'].indexOf(a.population) - ['DG', 'Management', 'Member'].indexOf(b.population) || String(a.respondent).localeCompare(String(b.respondent)));
   for (const [i, r] of resp.entries()) {
-    const q = qById.get(r.questionnaire_id); const form = (q?.forms || []).find(f => f.code === r.template_code) || q?.forms?.[0]; const A = r.answers_json || {}; if (!form) continue;
-    const rows = [[x('population', lang), t('pop.' + r.population, lang)], [x('fn', lang), r.function_name || '—'], [x('level', lang), r.decision_level || '—'], [x('channel', lang), st(r.channel_used)], [x('submitted', lang), String(r.submitted_at || '').slice(0, 10)], [x('completeness', lang), `${r.completeness_pct ?? '—'} %`]];
+    const q = qById.get(r.questionnaire_id); const form = (q?.forms || []).find(f => f.code === r.template_code) || q?.forms?.[0]; const A = r.answers_i18n?.[lang] || r.answers_json || {}; if (!form) continue;
+    const rows = [[x('population', lang), t('pop.' + r.population, lang)], [x('fn', lang), fnLabel(r.function_name) || '—'], [x('level', lang), r.decision_level || '—'], [x('channel', lang), st(r.channel_used)], [x('submitted', lang), String(r.submitted_at || '').slice(0, 10)], [x('completeness', lang), `${r.completeness_pct ?? '—'} %`]];
     // One row per section: the answers of the section joined in reading order.
     for (const s of form.sections) {
       const a = A[s.id]; if (a == null || a === '' || s.type === 'note') continue; const title = P(s.title) || s.id; const parts = [];
@@ -188,7 +189,7 @@ export function terDetails(orgId, projectId, lang, { qs, sets, src }) {
       else if (typeof a !== 'object') parts.push(String(a));
       if (parts.length) rows.push([title, parts.join(s.type === 'rating' || (s.rows && s.columns) ? ' ; ' : '\n')]);
     }
-    out.annex.push({ heading: `${x('answers', lang)} — ${i + 1}. ${r.respondent} (${t('pop.' + r.population, lang)}, ${r.function_name || '—'})`, text: i === 0 ? x('answersIntro', lang) : null, table: { columns: [x('question', lang), x('answer', lang)], rows } });
+    out.annex.push({ heading: `${x('answers', lang)} — ${i + 1}. ${r.respondent} (${t('pop.' + r.population, lang)}, ${fnLabel(r.function_name) || '—'})`, text: i === 0 ? x('answersIntro', lang) : null, table: { columns: [x('question', lang), x('answer', lang)], rows } });
   }
   return out;
 }
