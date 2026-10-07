@@ -6,7 +6,7 @@ import { Component, createContext, useCallback, useContext, useEffect, useMemo, 
 import { NavLink, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData, useOnline } from '../lib/session.jsx';
-import { post } from '../lib/api.js';
+import { post, put } from '../lib/api.js';
 import { Icon, Btn, Select, Seg, Modal, Field, ErrorState, TooltipLayer, Toasts } from './ui.jsx';
 import { HeaderSearch, SearchDialog, openSearch } from './GlobalSearch.jsx';
 
@@ -115,7 +115,7 @@ function defaultTrail(nav, path, t) {
 
 function TopBar({ onMenu, showMenu, onAssistant, ctxOpen }) {
   const { me, can, changeLang, logout } = useSession(); const { t, lang, languages } = useI18n(); const navigate = useNavigate();
-  const [menu, setMenu] = useState(false); const unread = useData('/alerts/unread-count'); const menuRef = useRef(null);
+  const [menu, setMenu] = useState(false); const [pwOpen, setPwOpen] = useState(false); const unread = useData('/alerts/unread-count'); const menuRef = useRef(null);
   useEffect(() => { const id = setInterval(() => unread.reload(), 60000); return () => clearInterval(id); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (!menu) return undefined; const out = e => { if (!menuRef.current?.contains(e.target)) setMenu(false); }; const k = e => e.key === 'Escape' && setMenu(false); document.addEventListener('mousedown', out); document.addEventListener('keydown', k); return () => { document.removeEventListener('mousedown', out); document.removeEventListener('keydown', k); }; }, [menu]);
   return (<header className="topbar">
@@ -131,9 +131,10 @@ function TopBar({ onMenu, showMenu, onAssistant, ctxOpen }) {
           <div className="menu-head"><div className="strong">{me.user.name}</div><div className="xs muted">{me.user.email}</div><div className="xs muted">{me.user.title}</div></div>
           <hr className="divider" style={{ margin: 'var(--aiv-space-1) 0' }} />
           <Link role="menuitem" to="/settings" onClick={() => setMenu(false)}><Icon name="Settings" />{t('nav.settings')}</Link>
+          <button role="menuitem" type="button" onClick={() => { setMenu(false); setPwOpen(true); }}><Icon name="KeyRound" />{t('pw.change')}</button>
           <Link role="menuitem" to="/help" onClick={() => setMenu(false)}><Icon name="LifeBuoy" />{t('nav.help')}</Link>
           <button role="menuitem" type="button" onClick={logout}><Icon name="LogOut" />{t('header.logout')}</button></div>}</div>
-    </div></header>);
+    </div>{pwOpen && <ChangePassword onClose={() => setPwOpen(false)} />}</header>);
 }
 
 /** Organization and project scope of every screen. */
@@ -213,6 +214,20 @@ function HelpView() {
   const path = loc.pathname.split('/')[1] || 'dashboard'; const first = topics.find(h => (h.route && path && h.route.includes(path)) || (h.module && path.includes(h.module))) || null;
   return <div className="context-body"><input className="input sm" type="search" value={q} onChange={e => setQ(e.target.value)} placeholder={t('help.search')} aria-label={t('help.search')} />
     {[first, ...topics.filter(h => h !== first)].filter(Boolean).slice(0, 12).map(h => <details key={h.id} className="design-section" open={h === first}><summary className="strong small" style={{ cursor: 'pointer' }}>{L(h.title)}</summary><p className="small" style={{ whiteSpace: 'pre-line', marginTop: 'var(--aiv-space-2)' }}>{L(h.body || h.text || h.content)}</p></details>)}</div>;
+}
+
+/** Self-service password change (current password, then a strong new one typed twice). */
+function ChangePassword({ onClose }) {
+  const { t } = useI18n(); const { toast } = useSession(); const [f, setF] = useState({ current: '', password: '', confirm: '' }); const [err, setErr] = useState(''); const [busy, setBusy] = useState(false);
+  const set = k => e => setF(x => ({ ...x, [k]: e.target.value }));
+  const go = async e => { e?.preventDefault(); setErr(''); if (f.password !== f.confirm) { setErr(t('pw.mismatch')); return; } setBusy(true);
+    try { await put('/me/password', { current: f.current, password: f.password }); toast(t('pw.changed')); onClose(); } catch (x) { setErr(x.message); } finally { setBusy(false); } };
+  return <Modal title={t('pw.change')} onClose={onClose} footer={<><Btn onClick={onClose}>{t('common.cancel')}</Btn><Btn kind="primary" loading={busy} disabled={!f.current || !f.password || !f.confirm} onClick={go}>{t('common.save')}</Btn></>}>
+    <form onSubmit={go} className="stack">
+      <Field label={t('pw.current')} id="pw-cur" required><input id="pw-cur" className="input" type="password" autoComplete="current-password" value={f.current} onChange={set('current')} /></Field>
+      <Field label={t('pw.new')} id="pw-new" hint={t('pw.rule')} required><input id="pw-new" className="input" type="password" autoComplete="new-password" value={f.password} onChange={set('password')} /></Field>
+      <Field label={t('pw.confirm')} id="pw-conf" required error={err}><input id="pw-conf" className="input" type="password" autoComplete="new-password" value={f.confirm} onChange={set('confirm')} /></Field>
+      <button type="submit" hidden /></form></Modal>;
 }
 
 /** Session expired: "Sign in again" without losing the screen (FR-DA-STA-03). */

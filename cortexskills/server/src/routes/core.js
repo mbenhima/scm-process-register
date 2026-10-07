@@ -2,11 +2,14 @@ import { Router } from 'express';
 import { ah, parseMl } from '../lib/http.js';
 import { all, one, run } from '../db.js';
 import { J, S, HttpError, now } from '../lib/util.js';
+import { audit } from '../audit.js';
 import { userPermissions, userRoles } from '../rbac.js';
 import { effectiveConfig, entitledModules } from '../entitlements.js';
 import { getLicenceProvider } from '../licensing/LicenceProvider.js';
 import { NAV, NAV_GROUPS } from '../nav.js';
 import { getLanguages } from '../i18n.js';
+import bcrypt from 'bcryptjs';
+import { hashPassword } from '../auth.js';
 
 const r = Router();
 const DEFAULT_PREFS = { dock: 'left', pinned: true, density: 'comfortable', pageSize: 20, panels: { nav: 260, context: 320, contextOpen: false, contextView: 'assistant' }, tables: {}, favorites: ['/', '/my-tasks', '/projects'], collapsed: [], channels: { alerts: ['inapp', 'email'], tasks: ['inapp'], approvals: ['inapp', 'email'], questionnaires: ['inapp'], system: ['inapp'] } };
@@ -26,6 +29,15 @@ r.put('/me/language', ah(req => {
   const code = String(req.body?.language || '');
   if (!getLanguages().some(l => l.code === code)) throw new HttpError(422, 'err.invalidOption', { field: 'language', value: code });
   run(`UPDATE users SET language=? WHERE id=?`, code, req.user.id); return { ok: true, language: code };
+}));
+r.put('/me/password', ah(req => {
+  const { current, password } = req.body || {}; const pw = String(password || '');
+  const u = one(`SELECT password_hash FROM users WHERE id=?`, req.user.id);
+  if (!u || !bcrypt.compareSync(String(current || ''), u.password_hash)) throw new HttpError(422, 'err.wrongPassword');
+  if (pw.length < 12 || !/[a-z]/.test(pw) || !/[A-Z]/.test(pw) || !/\d/.test(pw) || !/[^\w]/.test(pw)) throw new HttpError(422, 'err.weakPassword');
+  run(`UPDATE users SET password_hash=? WHERE id=?`, hashPassword(pw), req.user.id);
+  audit(req, 'User', req.user.id, 'password.change');
+  return { ok: true };
 }));
 r.get('/me/prefs', ah(req => prefsOf(req.user.id)));
 r.put('/me/prefs', ah(req => {

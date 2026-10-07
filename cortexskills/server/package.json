@@ -9,6 +9,9 @@
   },
   "scripts": {
     "seed": "node i18n/build.js && node --no-warnings seed/seed.js",
+    "init": "node i18n/build.js && node --no-warnings seed/seed.js --production",
+    "admin": "node --no-warnings tools/admin.js",
+    "secrets": "node --no-warnings tools/secrets.js",
     "dev": "node --no-warnings --watch-path=src --watch-path=i18n/dictionary.json src/index.js",
     "start": "node --no-warnings src/index.js",
     "backup": "node --no-warnings tools/backup.js",

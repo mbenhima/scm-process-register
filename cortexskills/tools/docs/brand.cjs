@@ -87,7 +87,7 @@ function document({ title, credit, sections, lang = 'en-GB' }) {
     },
     numbering: { config: [
       { reference: 'bullets', levels: [0, 1].map(l => ({ level: l, format: LevelFormat.BULLET, text: l ? '–' : '•', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 360 + l * 360, hanging: 260 } }, run: { color: C.orange } } })) },
-      ...Array.from({ length: 40 }, (_, i) => ({ reference: 'steps' + (i || ''), levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 400, hanging: 300 } }, run: { bold: true, color: C.deep } } }] })),
+      ...Array.from({ length: 200 }, (_, i) => ({ reference: 'steps' + (i || ''), levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 400, hanging: 300 } }, run: { bold: true, color: C.deep } } }] })),
     ] },
     sections: sections.map((children, i) => ({ properties: { page: { size: { width: PAGE_W, height: PAGE_H }, margin: { top: MARGIN, bottom: MARGIN, left: MARGIN, right: MARGIN, header: 500, footer: 500 } }, titlePage: i === 0 },
       headers: { default: header, first: new Header({ children: [] }) }, footers: { default: footer, first: new Footer({ children: [] }) }, children })),

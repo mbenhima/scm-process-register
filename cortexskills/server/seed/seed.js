@@ -10,6 +10,24 @@ process.on('uncaughtException', e => {
 const fs = await import('node:fs');
 const path = await import('node:path');
 const { config } = await import('../src/config.js');
+// Two modes: "npm run seed" loads the demonstration data (development only); "npm run init" (--production) creates an
+// empty production database: reference catalog, templates and packs, and one platform administrator, no organization.
+const argv = process.argv.slice(2); const arg = k => { const i = argv.indexOf('--' + k); return i >= 0 ? argv[i + 1] : undefined; };
+const PROD = argv.includes('--production');
+const stop = msg => { console.error('\n  ' + msg.split('\n').join('\n  ') + '\n'); process.exit(1); };
+if (!PROD && String(process.env.NODE_ENV || '').toLowerCase() === 'production') stop('npm run seed loads the demonstration data and erases the database: it is disabled in production mode.\nTo create the production database, run: npm run init');
+let admin = null;
+if (PROD) {
+  admin = { email: String(arg('admin-email') || process.env.ADMIN_EMAIL || '').trim().toLowerCase(), name: arg('admin-name') || process.env.ADMIN_NAME || 'Platform Administrator', password: arg('admin-password') || process.env.ADMIN_PASSWORD || '' };
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(admin.email)) stop('Give the platform administrator e-mail: ADMIN_EMAIL=admin@yourcompany.com in server/.env (or --admin-email).');
+  const pw = admin.password; if (pw.length < 12 || !/[a-z]/.test(pw) || !/[A-Z]/.test(pw) || !/\d/.test(pw) || !/[^\w]/.test(pw)) stop('ADMIN_PASSWORD must have at least 12 characters with an upper-case letter, a lower-case letter, a digit and a symbol.');
+  // Never erase a database that already holds organizations, unless explicitly asked.
+  if (fs.existsSync(config.dbFile) && !argv.includes('--wipe-all-data')) {
+    const { DatabaseSync } = await import('node:sqlite'); let n = 0;
+    try { const d0 = new DatabaseSync(config.dbFile, { readOnly: true }); n = d0.prepare('SELECT COUNT(*) n FROM organizations').get().n; d0.close(); } catch { n = 0; }
+    if (n > 0) stop(`The database already holds ${n} organization(s): npm run init would erase them.\nKeep it and just start the server (npm start), or, to erase everything, run: npm run init -- --wipe-all-data`);
+  }
+}
 for (const f of [config.dbFile, config.dbFile + '-wal', config.dbFile + '-shm']) if (fs.existsSync(f)) fs.rmSync(f);
 fs.rmSync(config.attachmentDir, { recursive: true, force: true }); fs.mkdirSync(config.attachmentDir, { recursive: true });
 // Backups of the previous demonstration data are listed in the database being reset: remove their files too, so repeated
@@ -63,6 +81,17 @@ tx(() => {
   for (const sp of cat.list('solutionPack')) P('Pack', 'pack:' + sp.id, { code: sp.id, name: sp.name, kind: sp.kind, price: sp.price, segment: sp.segment || '', contents: sp.packs, rules: { includedUsers: sp.includedUsers, overage: sp.overage, discount: sp.discount || 0, minUsers: sp.kind === 'sme' ? 5 : 1 } });
 });
 
+if (PROD) {
+  // Production: the platform administrator only; organizations are created with "npm run admin -- org-create".
+  const { hashPassword } = await import('../src/auth.js');
+  run(`INSERT INTO users(id,org_id,email,name,password_hash,language,title,is_platform,created_at) VALUES(?,?,?,?,?,?,?,1,?)`, U('user:platform'), null, admin.email, admin.name, hashPassword(admin.password), 'en', 'Platform Administrator', now());
+  for (const [k, v] of [['seeded_at', now()], ['data_mode', 'production'], ['version', JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version]]) run(`INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)`, k, v);
+  const { backupNow } = await import('../src/services/ops.js'); backupNow('init');
+  console.log(`\n  Production database ready in ${Math.round((Date.now() - t0) / 1000)} s: reference catalog, ${one('SELECT COUNT(*) n FROM records WHERE org_id IS NULL').n} library records, no organization.`);
+  console.log(`  Platform administrator: ${admin.email}. Remove ADMIN_PASSWORD from server/.env now.`);
+  console.log('  Next: npm start, then create each customer organization with  npm run admin -- org-create  (see the installation guide).\n');
+  db.close(); process.exit(0);
+}
 console.log('• Organizations, users, full runs (Digital and AI) for every vertical, Large and SME…');
 const { seedPlatform, seedTenants, DEMO_PASSWORD } = await import('./tenants.js');
 let orgs;
@@ -74,6 +103,7 @@ const lic = orgs.map(o => { const l = JSON.parse(one(`SELECT data FROM licences 
 fs.writeFileSync(config.licenceFile, JSON.stringify(lic, null, 2));
 
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('seeded_at',?)`, now());
+run(`INSERT OR REPLACE INTO meta(key,value) VALUES('data_mode','demo')`);
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('version',?)`, JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version);
 const { backupNow } = await import('../src/services/ops.js');
 backupNow('seed');

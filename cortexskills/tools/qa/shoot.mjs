@@ -14,6 +14,7 @@ await page.click('button[type=submit]'); await page.waitForURL(u => !u.pathname.
 const token = await page.evaluate(() => Object.entries(localStorage).find(([k]) => /token/i.test(k))?.[1]);
 const api = (p, opt = {}) => page.evaluate(async ([p, t, o]) => (await fetch('/api' + p, { ...o, headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json', ...(o.headers || {}) } })).json(), [p, token, opt]);
 await api('/me/language', { method: 'PUT', body: JSON.stringify({ language: lang }) });
+{ const b = page.getByRole('button', { name: lang.toUpperCase(), exact: true }); if (await b.count()) { await b.first().click(); await page.waitForTimeout(500); } } // the locally chosen language wins over the profile
 const projects = await api('/projects');
 const pick = f => (f ? projects.find(p => String(p.focus).toLowerCase() === f) : projects[0]) || projects[0];
 fs.mkdirSync(out, { recursive: true });

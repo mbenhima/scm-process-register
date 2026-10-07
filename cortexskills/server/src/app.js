@@ -38,6 +38,12 @@ export async function createApp({ background = true } = {}) {
   const app = express();
   app.disable('x-powered-by');
   app.set('trust proxy', 'loopback');
+  // Behind a reverse proxy (HTTPS termination), trust its address so client IPs and HTTPS are seen correctly.
+  if (process.env.TRUST_PROXY) app.set('trust proxy', /^\d+$/.test(process.env.TRUST_PROXY) ? Number(process.env.TRUST_PROXY) : process.env.TRUST_PROXY);
+  const prod = String(process.env.NODE_ENV || '').toLowerCase() === 'production';
+  if (prod) app.use((req, res, next) => { res.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains'); next(); });
+  // Request log, one JSON line per API call (no query string, no body, no token): LOG_REQUESTS=true or production mode.
+  if (prod || process.env.LOG_REQUESTS === 'true') app.use('/api', (req, res, next) => { const t0 = Date.now(); res.on('finish', () => console.log(JSON.stringify({ t: new Date().toISOString(), m: req.method, p: req.baseUrl + req.path, s: res.statusCode, ms: Date.now() - t0, ip: req.ip, u: req.user?.id || null }))); next(); });
   app.use(securityHeaders);
   app.use(compression({ filter: (req, res) => !String(res.getHeader('Content-Type') || '').match(/pdf|zip|officedocument|image\//) && compression.filter(req, res) }));
   app.use(cors({ origin: config.corsOrigin === '*' ? true : config.corsOrigin.split(','), exposedHeaders: ['Content-Disposition'] }));

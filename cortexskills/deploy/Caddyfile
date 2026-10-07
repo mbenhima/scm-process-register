@@ -1,0 +1,7 @@
+# Caddy reverse proxy: obtains and renews the HTTPS certificate automatically. Replace the address.
+skills.example.com {
+    reverse_proxy 127.0.0.1:4000
+    request_body {
+        max_size 30MB
+    }
+}

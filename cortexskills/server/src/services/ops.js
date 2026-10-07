@@ -12,6 +12,13 @@ export function backupNow(kind = 'on-demand') {
   const file = path.join(config.backupDir, `cortexskills-${stamp}.db`);
   db.exec(`VACUUM INTO '${file.replace(/'/g, "''")}'`); // consistent copy while the service stays online
   const size = fs.statSync(file).size;
+  // Off-site copy (BACKUP_COPY_DIR: a network share or a mounted cloud-storage folder), pruned with the same retention.
+  if (process.env.BACKUP_COPY_DIR) {
+    try { fs.mkdirSync(process.env.BACKUP_COPY_DIR, { recursive: true }); fs.copyFileSync(file, path.join(process.env.BACKUP_COPY_DIR, path.basename(file)));
+      const limit = Date.now() - config.backupRetentionDays * 86400000;
+      for (const f of fs.readdirSync(process.env.BACKUP_COPY_DIR)) if (/^cortexskills-[\w-]+\.db$/.test(f) && fs.statSync(path.join(process.env.BACKUP_COPY_DIR, f)).mtimeMs < limit) fs.unlinkSync(path.join(process.env.BACKUP_COPY_DIR, f));
+    } catch (e) { console.error('  Backup copy to BACKUP_COPY_DIR failed:', e.message); }
+  }
   run(`INSERT INTO backups(id,file,size,created_at,expires_at,kind) VALUES(?,?,?,?,?,?)`, uuid(), path.basename(file), size, now(), addDays(now(), config.backupRetentionDays), kind);
   purgeBackups();
   return { file: path.basename(file), size };

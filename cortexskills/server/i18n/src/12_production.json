@@ -1,0 +1,11 @@
+{
+  "pw.change": ["Change password", "Changer le mot de passe", "تغيير كلمة المرور"],
+  "pw.current": ["Current password", "Mot de passe actuel", "كلمة المرور الحالية"],
+  "pw.new": ["New password", "Nouveau mot de passe", "كلمة المرور الجديدة"],
+  "pw.confirm": ["Confirm the new password", "Confirmez le nouveau mot de passe", "أكد كلمة المرور الجديدة"],
+  "pw.rule": ["At least 12 characters, with upper and lower case letters, a digit and a symbol.", "Au moins 12 caractères, avec majuscules, minuscules, un chiffre et un symbole.", "12 حرفًا على الأقل، مع أحرف كبيرة وصغيرة ورقم ورمز."],
+  "pw.mismatch": ["The two new passwords are different.", "Les deux nouveaux mots de passe sont différents.", "كلمتا المرور الجديدتان مختلفتان."],
+  "pw.changed": ["Your password has been changed.", "Votre mot de passe a été changé.", "تم تغيير كلمة المرور."],
+  "err.weakPassword": ["The password is too weak: use at least 12 characters, with upper and lower case letters, a digit and a symbol.", "Le mot de passe est trop faible : utilisez au moins 12 caractères, avec majuscules, minuscules, un chiffre et un symbole.", "كلمة المرور ضعيفة: استعمل 12 حرفًا على الأقل مع أحرف كبيرة وصغيرة ورقم ورمز."],
+  "err.wrongPassword": ["The current password is not correct.", "Le mot de passe actuel n'est pas correct.", "كلمة المرور الحالية غير صحيحة."]
+}

@@ -1,0 +1,19 @@
+# Linux service (systemd). Copy to /etc/systemd/system/cortexskills.service, adapt the paths, then:
+#   sudo systemctl daemon-reload && sudo systemctl enable --now cortexskills
+[Unit]
+Description=CortexSkills
+After=network.target
+
+[Service]
+Type=simple
+User=cortexskills
+WorkingDirectory=/opt/cortexskills/server
+ExecStart=/usr/bin/node --no-warnings src/index.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+StandardOutput=append:/var/log/cortexskills/cortexskills.log
+StandardError=append:/var/log/cortexskills/cortexskills-error.log
+
+[Install]
+WantedBy=multi-user.target

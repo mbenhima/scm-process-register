@@ -56,13 +56,14 @@ r.get('/pricing/quote', requirePerm('config.view'), ah(req => priceOf(req.query.
 r.get('/licence', requirePerm('config.view'), ah(req => { const p = getLicenceProvider(req.orgId); const c = p.check(); return { mode: p.getMode(), ...c, canCreateUser: p.canCreateUser(), activeAddOns: p.getActiveAddOns() }; }));
 r.post('/licence/upload', requirePerm('config.manage'), ah(req => {
   const lic = req.body?.licence; if (!lic || typeof lic !== 'object') throw new HttpError(422, 'err.required', { field: 'licence' });
+  if (lic.companyId !== req.orgId) throw new HttpError(422, 'err.licenceOrg');   // a licence is issued for one organization
+  if (!OnPremLicenceProvider.verify(lic)) throw new HttpError(422, 'err.licenceSignature');     // CTRL-016: only vendor-signed files, in both modes
   if (config.deploymentMode === 'onprem') {
-    if (!OnPremLicenceProvider.verify(lic)) throw new HttpError(422, 'err.licenceSignature');   // CTRL-016
     const existing = fs.existsSync(config.licenceFile) ? J(fs.readFileSync(config.licenceFile, 'utf8'), []) : [];
     const list = (Array.isArray(existing) ? existing : [existing]).filter(l => l.companyId !== lic.companyId); list.push(lic);
     fs.writeFileSync(config.licenceFile, JSON.stringify(list, null, 2));
+    if (lic.plan && cat.get('solutionPack', lic.plan)) run(`UPDATE org_config SET pack_id=?, seats=?, updated_at=? WHERE org_id=?`, lic.plan, Number(lic.maxUsers) || 100, now(), req.orgId);
   } else {
-    if (lic.companyId !== req.orgId) throw new HttpError(422, 'err.licenceOrg');
     issueSaasLicence(req.orgId, lic.plan || orgConfig(req.orgId).pack_id, Number(lic.maxUsers || 100), Math.max(1, Math.round((new Date(lic.expiryDate) - Date.now()) / 86400000)));
   }
   audit(req, 'License', req.orgId, 'upload', null, { plan: lic.plan, maxUsers: lic.maxUsers, expiryDate: lic.expiryDate });
