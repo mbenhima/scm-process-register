@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post, put, del } from '../lib/api.js';
-import { Btn, DataTable, StatusPill, Modal, JustifyDialog, Tabs, useAction, Guard, Icon, AccessNotice } from './ui.jsx';
+import { Btn, DataTable, StatusPill, Modal, JustifyDialog, Tabs, useAction, Guard, Icon, AccessNotice, Select } from './ui.jsx';
 
 let metaPromise = null;
 export function useMeta() {

@@ -3,7 +3,7 @@
 // question asks for it. Used by the public response page, the face-to-face capture and the read-only response view.
 import { useMemo, useRef } from 'react';
 import { useI18n } from '../lib/i18n.jsx';
-import { Icon, Btn } from './ui.jsx';
+import { Icon, Btn, Select } from './ui.jsx';
 
 const nonEmpty = v => v != null && (typeof v === 'object' ? Object.values(v).some(nonEmpty) : String(v).trim() !== '' && v !== false);
 export function completeness(sections, answers = {}, flags = {}) {

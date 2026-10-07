@@ -15,7 +15,7 @@ const fill = s => (s === 'Met' ? C.s5 : s === 'Partial' ? C.s2 : s === 'Not met'
 const today = new Date().toISOString().slice(0, 10);
 
 const body = [];
-body.push(...cover({ eyebrow: 'Conformance Report', title: 'CortexSkills', subtitle: `Release ${version} against the Dynamic Apps Standard SRS v1.10`, meta: [`Version ${version} · ${today}`, 'Prepared by POWERACT Consulting'] }));
+body.push(...cover({ eyebrow: 'Conformance Report', title: 'CortexSkills', subtitle: `Release ${version} against the Dynamic Apps Standard SRS v1.10`, meta: [`Version ${version} · ${today}`, 'Prepared by POWERACT Consulting for AI Value'] }));
 body.push(...tocPage());
 
 body.push(H1('1. Summary'),
@@ -70,18 +70,19 @@ body.push(H1('3. Input-integrity remediation report (Appendix L)'),
   P('No behavior changed other than what corrects typing, focus and input-integrity defects: the tree nodes render the same markup, the stable keys do not change the stored data, and Escape now restores an empty cell as it already did for a filled one.'));
 
 body.push(H1('4. Graphical chart and conformance notes'),
-  P('The application follows the SRS v1.10 design tokens with the values of the POWERACT Graphical Chart (account instructions). Where the two differ, the chart wins and the divergence is recorded here.'),
-  table(['SRS token or rule', 'Value used', 'Reason'], [
-    ['--aiv-azure (accent)', '#F8931D (Orange)', 'Primary accent of the Graphical Chart'],
-    ['--aiv-azure-deep', '#E07B00 (Orange Deep)', 'Headings accents and key numbers'],
-    ['--aiv-navy / ink', '#3A3A3C / #58595B', 'Titles and body text in charcoal grey, never black'],
-    ['--aiv-teal / green (chart series)', '#3A6EA5 / #5AA469', 'Muted overlay series of the chart'],
-    ['Status scale', '#F4C7C3 → #B6D7A8', 'Semantic red-to-green scale of the chart'],
-    ['Table header', 'Orange fill, bold white text', 'Chart rule for tables (white on orange accepted for bold headers)'],
-    ['Primary button', 'White text on orange', 'Chart rule for primary buttons'],
-    ['KPI values', 'Orange Deep, large and bold', 'Chart rule for key numbers (large text only)'],
-    ['Small text', 'Ink or Navy only', 'No orange for small text (request)'],
-    ['Logo', 'Application wordmark only', 'The application does not mention the consulting firm (request)']], [3000, 2900, 3846]));
+  P('The application and every document it generates follow the AI Value Graphical Chart 1.2 as restated in SRS v1.10 Appendix J. The design tokens (web/src/styles/tokens.css) carry the Appendix J values unchanged, and the server exporters read the same palette from server/src/services/brand.js.'),
+  table(['SRS token or rule', 'Value used', 'Where'], [
+    ['--aiv-navy / navy-dark', '#123A5F / #0D2A47', 'Titles, headings, eyebrow labels, table headers, hover state of primary buttons'],
+    ['--aiv-azure', '#1876C6', 'Primary buttons, links underline, selected tabs, check boxes, focus ring (35 %)'],
+    ['--aiv-green / teal', '#28C87C / #17A2B8', 'Toggles when on, success, chart series; never small text'],
+    ['--aiv-ink / muted', '#2C3E50 / #5A6B7B', 'Body text and secondary text'],
+    ['--aiv-bg / line', '#F5F8FB / #E1E8F0', 'Page background, alternate table rows, borders and grid lines'],
+    ['Gradient Azure → Teal → Green', 'Logo swoosh; one cover band per generated document', 'Never on data or text'],
+    ['Status scale', '#F4C7C3 → #B6D7A8', 'Scores, RAG health and heatmaps only'],
+    ['Typography', 'Montserrat headings, Open Sans body (bundled, embedded in PDF and Word)', 'Application and generated documents'],
+    ['Logos (NFR-DA-VDS-19)', 'CortexSkills lockup in the 64 px top bar (≥ 150 px), sign-in and response pages, document headers (35 mm); icon for favicon; AI Value lockup on sign-in, navigation and document covers', 'Never recolored, stretched or shadowed'],
+    ['Generated documents (NFR-DA-VDS-20)', 'Open Sans 11 pt Ink, Montserrat Navy headings, Navy table header rows, alternating White and Background rows, 2 cm margins, A4 default and Letter option', 'Word, PDF, Excel'],
+    ['Known gap', 'Logo artwork supplied as raster images', 'The logo is placed at 300 dpi until vector artwork (SVG or EPS) is provided (NFR-DA-VDS-20 partial)']], [2700, 3600, 3446]));
 
 body.push(H1('5. Requirement traceability'),
   P(`The traceability screen (Administration › Traceability) and the Coverage Checklist list all ${trace.length} requirements with their evidence. The table below lists those not fully met by the application itself.`),
