@@ -179,12 +179,13 @@ function seedRun(o, p, { roles, head, hrd, r, req }) {
       root_cause: root || null, correction: correction || null, corrective_action: corrective || null, action_owner: grade === 'Minor' ? head.name : null, due: grade === 'Minor' ? addDays(performed, 60).slice(0, 10) : null, status: grade === 'Minor' ? 'Action planned' : 'Closed' }, head.id, true));
   }
   // ---- Generated documents: the report, the plan, the audit report, the master list and the deliverables of completed processes.
+  const full = !!(o.universal || o.showcase || o.complete);
   const doneE2e = new Set(all(`SELECT e2e_id FROM e2e_instances WHERE project_id=? AND status='Completed'`, p.id).map(x => x.e2e_id));
-  const codes = (o.universal || o.showcase) ? E.templates(o.id).map(x => x.code) : ['DT-TER', 'DT-PLAN', ...(performed ? ['DT-AUDIT'] : []), ...[...doneE2e].slice(0, 3).map(e => 'DT-' + e).filter(c => E.template(o.id, c)), 'DT-MASTER'];
-  const langs = (o.universal || o.showcase) ? ['en', 'fr', 'ar'] : [lang];
+  const codes = full ? E.templates(o.id).map(x => x.code) : ['DT-TER', 'DT-PLAN', ...(performed ? ['DT-AUDIT'] : []), ...[...doneE2e].slice(0, 3).map(e => 'DT-' + e).filter(c => E.template(o.id, c)), 'DT-MASTER'];
+  const langs = ['en', 'fr', 'ar']; // every organization's documents exist in the three languages
   const ordered = [...codes.filter(c => c !== 'DT-MASTER'), 'DT-MASTER']; // the master list last, so it lists every document
   for (const code of ordered) for (const l of langs) {
-    try { genDoc(o, p, code, l, { head, hrd, req, publish: code !== 'DT-PLAN' || o.universal || o.showcase }); } catch (e) { console.warn('  doc', code, e.message); }
+    try { genDoc(o, p, code, l, { head, hrd, req, publish: code !== 'DT-PLAN' || full }); } catch (e) { console.warn('  doc', code, e.message); }
   }
 }
 

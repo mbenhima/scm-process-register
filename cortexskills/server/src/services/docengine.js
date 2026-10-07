@@ -14,6 +14,7 @@ import { describeStep } from './stepforms.js';
 import { buildTer } from './documents.js';
 import { checkRules } from './training.js';
 import { richSource } from './docrich.js';
+import { planSource } from './planmore.js';
 import { libraryTemplates, DEFAULT_FORMATTING, ALLOWED, CATEGORIES } from './doctemplates.js';
 
 const LBL = {
@@ -148,7 +149,7 @@ export function resolveSource(source, ctx) {
       const cols = Object.keys(rows[0]).filter(k => !k.startsWith('_')).slice(0, 6);
       return { body: { table: { columns: [...cols.map(c => fieldLabel(c, lang)), lb('version', lang)], rows: rows.map(r => [...cols.map(c => fmtVal(r[c], lang)), String(r._v)]), trace: rows.map(r => ({ type: 'register', id: r._id, version: r._v })) } }, fingerprint: fp(rows) };
     }
-    default: return richSource(kind, arg, ctx) || { body: null, empty: true };
+    default: return richSource(kind, arg, ctx) || planSource(kind, ctx) || { body: null, empty: true };
   }
 }
 

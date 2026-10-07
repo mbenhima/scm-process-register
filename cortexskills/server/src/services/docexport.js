@@ -163,14 +163,14 @@ export async function toPdf(model, meta) {
   const F = (s, bold, italic, head) => (isAr(s) ? (bold || head ? 'arB' : 'ar') : head ? 'head' : bold ? 'bodyB' : italic ? 'bodyI' : 'body');
   const chunks = []; doc.on('data', c => chunks.push(c)); const done = new Promise(r => doc.on('end', () => r(Buffer.concat(chunks))));
   // The PDF library drops the space before the last word of an Arabic run; a trailing space on each paragraph keeps it.
-  const _text = doc.text.bind(doc); const _height = doc.heightOfString.bind(doc); const arFix = v => (isAr(v) ? String(v).split('\n').map(p => p + ' ').join('\n') : v);
+  const _text = doc.text.bind(doc); const _height = doc.heightOfString.bind(doc); const arFix = v => { if (v == null) return v; const s0 = String(v).replace(/\u202f/g, '\u00a0'); return isAr(s0) ? s0.split('\n').map(p => p + ' ').join('\n') : s0; }; // narrow no-break space is not in the embedded fonts
   doc.text = (v, ...a) => _text(arFix(v), ...a); doc.heightOfString = (v, ...a) => _height(arFix(v), ...a);
   const W = () => doc.page.width - 2 * m; const bottom = () => doc.page.height - m - 24; const al = rtl ? 'right' : fmt.align === 'justify' ? 'justify' : fmt.align;
   const toc = []; const hex = c => '#' + String(c).replace('#', '');
   const text = (s, o = {}) => { doc.fillColor(o.color || hex(C.ink)).font(F(s, o.bold, o.italic, o.head)).fontSize(o.size || fmt.bodySize).text(String(s ?? ''), m, doc.y, { width: W(), align: o.align || al, lineGap: 2 }); };
   const ensure = h => { if (doc.y + h > bottom()) doc.addPage({ layout: doc.page.layout }); };
   const H1 = s => { ensure(60); toc.push({ title: s, page: doc.bufferedPageRange().count, level: 1 }); doc.moveDown(0.6); text(s, { head: true, size: fmt.h1Size, color: hex(fmt.headingColor), align: rtl ? 'right' : 'left' }); doc.moveTo(m, doc.y + 2).lineTo(m + W(), doc.y + 2).lineWidth(1).strokeColor(hex(fmt.headingColor)).stroke(); doc.moveDown(0.5); };
-  const H2 = s => { ensure(50); toc.push({ title: s, page: doc.bufferedPageRange().count, level: 2 }); doc.moveDown(0.4); text(s, { head: true, size: fmt.h2Size, color: hex(fmt.h2Color), align: rtl ? 'right' : 'left' }); doc.moveDown(0.25); };
+  const H2 = s => { ensure(110); toc.push({ title: s, page: doc.bufferedPageRange().count, level: 2 }); doc.moveDown(0.4); text(s, { head: true, size: fmt.h2Size, color: hex(fmt.h2Color), align: rtl ? 'right' : 'left' }); doc.moveDown(0.25); };
   const table = (cols, rows, o = {}) => {
     const n = (cols || rows[0] || []).length || 1; const pad = 4; const order = [...Array(n).keys()]; if (rtl) order.reverse();
     // Each column is at least as wide as its longest word (header in bold), the rest shared in proportion to content.

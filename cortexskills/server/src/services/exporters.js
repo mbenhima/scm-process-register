@@ -18,6 +18,7 @@ export async function toPdf(model) {
   doc.registerFont('serif', F('Montserrat-700.ttf')); doc.registerFont('sans', F('OpenSans-400.ttf'));
   doc.registerFont('sansB', F('OpenSans-700.ttf')); doc.registerFont('italic', F('OpenSans-400i.ttf'));
   doc.registerFont('ar', F('NotoNaskhArabic-400.ttf')); doc.registerFont('arB', F('NotoNaskhArabic-700.ttf'));
+  { const _t = doc.text.bind(doc); doc.text = (v, ...a) => _t(typeof v === 'string' ? v.replace(/\u202f/g, '\u00a0') : v, ...a); } // narrow no-break space is not in the embedded fonts
   const font = (s, bold, serif) => (isAr(s) ? (bold || serif ? 'arB' : 'ar') : serif ? 'serif' : bold ? 'sansB' : 'sans');
   const align = rtl ? 'right' : 'left';
   const W = doc.page.width - 108;

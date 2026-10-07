@@ -39,6 +39,9 @@ export function seedPlatform() {
 
 /** Organizations are committed one at a time: a single transaction for the whole seed grows to several hundred
  *  megabytes and fails on some Windows set-ups (antivirus or file locks on the journal). */
+/** Complete examples: every task and every step of both runs done (three verticals, three default languages, one SME). */
+const COMPLETE = new Set(['AUTO:LARGE', 'TELC:LARGE', 'LOGI:LARGE', 'FNB:SME']);
+export const isComplete = o => !!(o.universal || o.showcase || o.complete);
 export function seedTenants(pwHash) {
   const orgs = transaction(() => createTenants(pwHash));
   for (const o of orgs) transaction(() => seedOrg(o));
@@ -60,7 +63,7 @@ function createTenants(pwHash) {
       provisionOrg(id, { packId: seg === 'LARGE' ? 'BND-05' : 'SME-CMP', seats: seg === 'LARGE' ? 600 : 100, lang, compliance: seg === 'LARGE' ? ['GDPR', 'LAW0908', 'ISO9001'] : ['LAW0908'], addons: seg === 'LARGE' ? ['AD-08', 'AD-11'] : ['AD-11'] }, U);
       run(`INSERT OR IGNORE INTO vertical_activation(org_id,vertical_id,version,sort,validated,activated_at) VALUES(?,?,1,1,1,?)`, id, v.id, daysAgo(370));
       run(`UPDATE org_config SET sme_mode=? WHERE org_id=?`, seg === 'SME' ? 1 : 0, id);
-      orgs.push({ id, v, vi, seg, domain, lang, name: o.name });
+      orgs.push({ id, v, vi, seg, domain, lang, name: o.name, complete: COMPLETE.has(`${v.id}:${seg}`) });
     }
   });
   // Universal, sector-agnostic scenario organization: every end-to-end process completed (sample documents).
@@ -146,7 +149,7 @@ function seedOrg(o) {
 }
 
 function levelFor(o, focus) {
-  if (o.universal || o.showcase) return 7; // the universal scenario has run its whole lifecycle
+  if (isComplete(o)) return 7; // complete examples have run their whole lifecycle
   const base = o.seg === 'LARGE' ? (focus === 'Digital' ? 4 : 3) : (focus === 'Digital' ? 3 : 2);
   return Math.min(6, base + (o.vi % 3 === 0 ? 1 : o.vi % 3 === 1 ? 0 : -1) + (o.v.id === 'AEC' || o.v.id === 'HCPR' ? 1 : 0));
 }

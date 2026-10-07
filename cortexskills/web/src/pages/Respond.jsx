@@ -15,7 +15,7 @@ export default function Respond() {
   const { token } = useParams(); const { t, L, lang, setLang, languages } = useI18n();
   const [d, setD] = useState(null); const [err, setErr] = useState(null); const [answers, setAnswers] = useState({}); const [flags, setFlags] = useState({});
   const [consent, setConsent] = useState(false); const [state, setState] = useState(null); const [saving, setSaving] = useState(false); const dirty = useRef(false);
-  useEffect(() => { call(token).then(x => { setD(x); setAnswers(x.answers || {}); setFlags(x.flags || {}); setConsent(!!x.consent?.given); if (x.language && x.language !== lang) setLang(x.language); }).catch(setErr); }, [token]); // eslint-disable-line
+  useEffect(() => { call(token).then(x => { setD(x); setAnswers(x.answers || {}); setFlags(x.flags || {}); setConsent(!!x.consent?.given); if (x.language && x.language !== lang) setLang(x.language, false); }).catch(setErr); }, [token]); // eslint-disable-line
   const save = async final => {
     setSaving(true);
     try { const r = await call(token, { answers, flags, consent, final }); dirty.current = false; setState(final ? 'done' : 'saved'); if (final) setD(x => ({ ...x, responded: true })); return r; }
@@ -29,7 +29,7 @@ export default function Respond() {
   const pct = completeness(d.form?.sections, answers, flags);
   return (<div className="public-page">
     <header className="public-head"><div className="brand"><img src="/brand/cortexskills-lockup-compact.png" alt="CortexSkills" /></div>
-      <div className="seg" role="group" aria-label={t('header.language')}>{languages.map(l => <button key={l.code} aria-pressed={lang === l.code} onClick={() => setLang(l.code)} lang={l.code}>{l.code.toUpperCase()}</button>)}</div></header>
+      <div className="seg" role="group" aria-label={t('header.language')}>{languages.map(l => <button key={l.code} aria-pressed={lang === l.code} onClick={() => setLang(l.code, false)} lang={l.code}>{l.code.toUpperCase()}</button>)}</div></header>
     <div className="page-head"><div><div className="eyebrow">{L(d.organization)}</div><h1>{L(d.questionnaire.label)}</h1>
       <p className="subtitle">{t('respond.hello', { name: d.respondent.name })} · {L(d.form?.name)}{d.questionnaire.due_date ? ' · ' + t('respond.due', { date: new Date(d.questionnaire.due_date).toLocaleDateString(lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-GB') }) : ''}</p></div></div>
     {d.responded ? <div className="card tint"><div className="kpi"><span className="badge-ico emph"><Icon name="CircleCheck" size={20} /></span><div><h3>{t('respond.thanks')}</h3><p className="muted">{t('respond.thanksText')}</p></div></div></div>

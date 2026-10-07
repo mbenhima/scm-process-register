@@ -1,5 +1,8 @@
 {
  "login.by": ["A solution by", "Une solution de", "حل من"],
  "dlay.paper": ["Paper size", "Format du papier", "مقاس الورق"],
+ "status.Internal": ["Internal", "Interne", "داخلي"],
+ "status.External": ["External", "Externe", "خارجي"],
+ "status.Mixed": ["Mixed", "Mixte", "مختلط"],
  "nav.company": ["Published by AI Value", "Édité par AI Value", "من إصدار AI Value"]
 }

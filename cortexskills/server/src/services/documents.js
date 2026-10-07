@@ -10,6 +10,7 @@ import { t } from '../i18n.js';
 import * as cat from '../catalog.js';
 import { consolidate, getQuestionnaire, formOf } from './questionnaires.js';
 import { checkRules } from './training.js';
+import { terDetails } from './termore.js';
 
 export const DOC_TYPES = ['TER'];
 const recs = (entity, projectId) => all(`SELECT id, data, version, updated_at FROM records WHERE entity=? AND project_id=?`, entity, projectId).map(x => ({ id: x.id, version: x.version, updated_at: x.updated_at, ...J(x.data, {}) }));
@@ -34,6 +35,8 @@ export function buildTer(orgId, projectId, lang = 'en', meta = {}) {
   const strategy = {}; for (const s of sets) for (const [k, v] of Object.entries(s.strategy)) (strategy[k] ||= { label: v.label, values: [] }).values.push(...v.values);
   const swot = { strengths: [], weaknesses: [], opportunities: [], threats: [] }; for (const s of sets) for (const k of Object.keys(swot)) swot[k].push(...(s.swot[k] || []));
   const uniq = a => [...new Set(a.map(x => String(x).trim()).filter(Boolean))];
+  const det = terDetails(orgId, projectId, lang, { qs, sets, src });
+  const put = (chapter, start, list) => list.forEach((x, i) => sec(`${chapter}.${start + i} ${x.heading}`, { text: x.text, table: x.table }));
 
   // ---------------------------------------------------------------- identification block (FR-DA-DGC-04)
   const plan = src('TrainingPlan', recs('TrainingPlan', projectId), 'MP-49')[0];
@@ -51,7 +54,7 @@ export function buildTer(orgId, projectId, lang = 'en', meta = {}) {
   sec('1.2 ' + T('orgChart'), fns.length ? { table: { columns: [T('function'), T('headcountSample')], rows: fns.map(f => [P(f.name), String(emps.filter(e => e.obs_node_id === f.id).length)]) } } : notice(T('whatFunctions'), 'OBS'));
   const hist = merge('history');
   sec('1.3 ' + T('history'), hist.length ? { table: { columns: [T('date'), T('event')], rows: hist.map(h => [h.date || '', h.event || '']) } } : notice(T('whatHistory'), T('stepDg')));
-  sec('1.4 ' + T('swot'), (swot.strengths.length || swot.weaknesses.length) ? { table: { columns: [T('strengths'), T('weaknesses'), T('opportunities'), T('threats')], rows: [[uniq(swot.strengths).slice(0, 12).join('\n'), uniq(swot.weaknesses).slice(0, 12).join('\n'), uniq(swot.opportunities).slice(0, 12).join('\n'), uniq(swot.threats).slice(0, 12).join('\n')]] } } : notice('SWOT', T('stepQuestionnaires')));
+  sec('1.4 ' + T('swot'), (swot.strengths.length || swot.weaknesses.length) ? { table: { columns: [T('strengths'), T('weaknesses'), T('opportunities'), T('threats')], rows: [[uniq(swot.strengths).join('\n'), uniq(swot.weaknesses).join('\n'), uniq(swot.opportunities).join('\n'), uniq(swot.threats).join('\n')]] } } : notice('SWOT', T('stepQuestionnaires')));
   const e2e = all(`SELECT e2e_id, phase, status, progress FROM e2e_instances WHERE project_id=? ORDER BY phase, sort`, projectId);
   sec('1.5 ' + T('mission'), { text: T('missionIntro'), table: { columns: [T('phase'), T('processes'), T('progress')], rows: cat.list('phase').filter(ph => ph.no > 0).map(ph => { const it = e2e.filter(x => x.phase === ph.no); return [`${ph.no}. ${P(ph.name)}`, it.map(x => `${x.e2e_id} ${P(cat.get('e2e', x.e2e_id)?.name)}`).join('\n'), it.length ? Math.round(it.reduce((s, x) => s + x.progress, 0) / it.length) + '%' : '—']; }) } });
   const inv = all(`SELECT population, function_name, status FROM q_invitations WHERE project_id=?`, projectId);
@@ -60,12 +63,13 @@ export function buildTer(orgId, projectId, lang = 'en', meta = {}) {
     const byFn = {}; for (const i of inv) { const k = i.function_name || '—'; (byFn[k] ||= { DG: 0, Management: 0, Member: 0, responded: 0 }); byFn[k][i.population] = (byFn[k][i.population] || 0) + 1; if (i.status === 'Responded') byFn[k].responded++; }
     sec('1.6 ' + T('sample'), { text: T('sampleIntro', { n: inv.length, r: inv.filter(i => i.status === 'Responded').length }), table: { columns: [T('function'), ...pops.map(x => t('pop.' + x, lang)), T('responded')], rows: Object.entries(byFn).map(([k, v]) => [k, ...pops.map(x => String(v[x] || 0)), String(v.responded)]) } });
   } else sec('1.6 ' + T('sample'), notice(T('whatSample'), 'MP-54'));
+  put(1, 7, det.c1);
 
   // ---------------------------------------------------------------- 2. Previous training plan
   const prev = {}; for (const s of sets) for (const [k, v] of Object.entries(s.previousPlan)) (prev[k] ||= { question: v.question, answers: [] }).answers.push(...v.answers);
   const th = merge('trainingHistory');
-  sec('2. ' + T('previousPlan'), Object.keys(prev).length ? { table: { columns: [T('question'), T('answers')], rows: Object.values(prev).map(x => [x.question, uniq(x.answers).slice(0, 6).join('\n')]) } } : notice(T('whatPrevious'), T('stepQuestionnaires')));
-  if (th.length) sec('2.1 ' + T('trainingHistory'), { table: { columns: [T('training'), T('monthYear'), T('days'), T('learnings')], rows: th.slice(0, 40).map(x => [x.title || '', x.month_year || '', x.days || '', x.learnings || '']) } });
+  sec('2. ' + T('previousPlan'), Object.keys(prev).length ? { table: { columns: [T('question'), T('answers')], rows: Object.values(prev).map(x => [x.question, uniq(x.answers).join('\n')]) } } : notice(T('whatPrevious'), T('stepQuestionnaires')));
+  if (th.length) sec('2.1 ' + T('trainingHistory'), { table: { columns: [T('training'), T('monthYear'), T('days'), T('learnings')], rows: th.map(x => [x.title || '', x.month_year || '', x.days || '', x.learnings || '']) } });
 
   // ---------------------------------------------------------------- 3. Competence needs
   sec('3. ' + T('needs'));
@@ -80,7 +84,7 @@ export function buildTer(orgId, projectId, lang = 'en', meta = {}) {
     for (const sw of swf) sec(`3.2 ${T('functionSwot')} — ${P(sw.function_name)}`, { table: { columns: [T('strengths'), T('weaknesses'), T('opportunities'), T('threats')], rows: [[P(sw.strengths), P(sw.weaknesses), P(sw.opportunities), P(sw.threats)]] } });
   } else sec('3.2 ' + T('needsFunctions'), notice(T('whatPerformance'), 'MP-02'));
   const comps = []; for (const s of sets) comps.push(...s.competences);
-  if (comps.length) sec('3.3 ' + T('competencesMentioned'), { text: T('competencesIntro', { n: respCount }), table: { columns: [T('competence'), T('mentions'), T('populations')], rows: comps.sort((a, b) => b.count - a.count).slice(0, 25).map(c => [c.competence, String(c.count), c.populations.map(x => t('pop.' + x, lang)).join(', ')]) } });
+  if (comps.length) sec('3.3 ' + T('competencesMentioned'), { text: T('competencesIntro', { n: respCount }), table: { columns: [T('competence'), T('mentions'), T('populations')], rows: comps.sort((a, b) => b.count - a.count).map(c => [c.competence, String(c.count), c.populations.map(x => t('pop.' + x, lang)).join(', ')]) } });
   const dem = src('TrainingDemand', recs('TrainingDemand', projectId), 'MP-27');
   sec('3.4 ' + T('demands'), dem.length ? { table: { columns: [T('theme'), T('type'), T('priority'), T('status')], rows: dem.map(d => [P(d.theme), t('status.' + d.demand_type, lang) === 'status.' + d.demand_type ? d.demand_type : t('status.' + d.demand_type, lang), t('status.' + d.priority, lang), t('status.' + d.status, lang)]) } } : notice(T('whatDemands'), 'MP-27'));
   const hr = merge('hr');
@@ -92,12 +96,15 @@ export function buildTer(orgId, projectId, lang = 'en', meta = {}) {
   const tp = []; for (const s of sets) tp.push(...s.transverse);
   sec('3.8 ' + T('transverse'), tp.length ? { table: { columns: [T('process'), T('documented'), T('owner'), T('score')], rows: tp.map(x => [`${x.group} — ${x.label}`, x.documented + '%', x.owner + '%', x.score == null ? '—' : String(x.score)]) } } : notice(T('whatTransverse'), T('stepMgmt')));
   const impact = merge('ambitions').filter(a => a.key === 'impact');
-  sec('3.9 ' + T('impact'), impact.length ? { table: { columns: [T('expected'), T('population')], rows: impact.slice(0, 15).map(a => [a.answer, t('pop.' + a.population, lang)]) } } : notice(T('whatImpact'), T('stepQuestionnaires')));
+  sec('3.9 ' + T('impact'), impact.length ? { table: { columns: [T('expected'), T('population')], rows: impact.map(a => [a.answer, t('pop.' + a.population, lang)]) } } : notice(T('whatImpact'), T('stepQuestionnaires')));
+  put(3, 10, det.c3);
 
   // ---------------------------------------------------------------- 4. Perspectives
   const ax = src('ImprovementAxis', recs('ImprovementAxis', projectId), 'MP-29').sort((a, b) => (a.priority_rank || 9) - (b.priority_rank || 9));
   const ri = recs('RoadmapInitiative', projectId);
   sec('4. ' + T('perspectives'), ax.length ? { text: T('perspectivesIntro'), table: { columns: ['#', T('axis'), T('implementation'), T('wave')], rows: ax.map(a => [String(a.priority_rank), P(a.label), (a.implementation_pct ?? 0) + '%', String(ri.find(x => P(x.label) === P(a.label))?.phase ?? '—')]) } } : notice(T('whatAxes'), 'MP-29'));
+
+  put(4, 1, det.c4);
 
   // ---------------------------------------------------------------- 5. Prioritized training plan
   const themes = src('TrainingTheme', recs('TrainingTheme', projectId), 'MP-03').sort((a, b) => (a.priority_rank || 99) - (b.priority_rank || 99));
@@ -119,8 +126,12 @@ export function buildTer(orgId, projectId, lang = 'en', meta = {}) {
     }
   } else sec('5.1 ' + T('trainings'), notice(T('whatTrainings'), 'MP-05'));
 
-  // ---------------------------------------------------------------- 6. Annexes, sources, revision history
-  sec('6. ' + T('annexes'), { table: { columns: [T('form'), T('population'), T('sections')], rows: qs.flatMap(q => (q.forms || []).map(f => [`${f.form || f.code} — ${P(f.name)}`, t('pop.' + f.population, lang), String((f.sections || []).length)])) } });
+  put(5, 3, det.c5);
+  if (det.c6.length) { sec('6. ' + det.c6[0].heading, { table: det.c6[0].table }); put(6, 1, det.c6.slice(1)); }
+
+  // ---------------------------------------------------------------- 7. Annexes, sources, revision history
+  sec('7. ' + T('annexes'), { table: { columns: [T('form'), T('population'), T('sections')], rows: qs.flatMap(q => (q.forms || []).map(f => [`${f.form || f.code} — ${P(f.name)}`, t('pop.' + f.population, lang), String((f.sections || []).length)])) } });
+  put(7, 1, det.annex);
   // Consistency checks (FR-DA-DGC-07): totals agree with their rows, mandatory sections filled.
   if (plan && budget.length) { const sum = budget.reduce((s, b) => s + (Number(b.planned_amount) || 0), 0); if (Math.abs(sum - Number(plan.total_budget || 0)) > 1) findings.push({ code: 'budgetTotal', blocking: false, location: '5', planned: sum, total: plan.total_budget }); }
   if (!themes.length) findings.push({ code: 'noThemes', blocking: true, location: '5' });

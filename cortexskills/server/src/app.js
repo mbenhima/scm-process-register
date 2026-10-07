@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import express from 'express';
+import compression from 'compression';
 import cors from 'cors';
 import { config, ROOT } from './config.js';
 import { loadDictionary } from './i18n.js';
@@ -38,6 +39,7 @@ export async function createApp({ background = true } = {}) {
   app.disable('x-powered-by');
   app.set('trust proxy', 'loopback');
   app.use(securityHeaders);
+  app.use(compression({ filter: (req, res) => !String(res.getHeader('Content-Type') || '').match(/pdf|zip|officedocument|image\//) && compression.filter(req, res) }));
   app.use(cors({ origin: config.corsOrigin === '*' ? true : config.corsOrigin.split(','), exposedHeaders: ['Content-Disposition'] }));
   // The raw body is kept for webhook signature checks (WhatsApp X-Hub-Signature-256).
   app.use(express.json({ limit: '5mb', verify: (req, res, buf) => { if (req.url.startsWith('/api/public/')) req.rawBody = buf; } }));

@@ -82,8 +82,16 @@ export function libraryTemplates(e2e) {
   out.push({ code: 'DT-PLAN', name: L('Training plan with detailed agendas', 'Plan de formation avec programmes détaillés', 'مخطط التكوين مع البرامج المفصلة'), category: 'Plan', formats: ['docx', 'pdf', 'xlsx'], e2e: ['E2E-30', 'E2E-04'], status: 'Published',
     profile: { identification: true, revisions: true, sources: true, approval: true }, formatting: { ...DEFAULT_FORMATTING },
     sections: [sec('purpose', 'text', L('Purpose', 'Objet', 'الغرض'), { text: L('Training plan of {{org}} for {{year}}: programs, trainings, half-day agendas and the value of each training for each persona.', 'Plan de formation de {{org}} pour {{year}} : programmes, formations, programmes par demi-journée et valeur de chaque formation pour chaque persona.', 'مخطط تكوين {{org}} لسنة {{year}}: البرامج والتكوينات والبرامج حسب نصف اليوم وقيمة كل تكوين لكل شخصية.') }),
-      sec('plan', 'table', L('Trainings', 'Formations', 'التكوينات'), { source: 'trainingPlan' }), sec('agenda', 'table', L('Detailed agendas by half-day', 'Programmes détaillés par demi-journée', 'البرامج المفصلة حسب نصف اليوم'), { source: 'trainingAgenda' }),
-      sec('personas', 'table', L('Value proposition per persona', 'Proposition de valeur par persona', 'القيمة المقترحة لكل شخصية'), { source: 'trainingPersonas' })] });
+      sec('overview', 'table', L('Plan overview', 'Vue d’ensemble du plan', 'نظرة عامة على المخطط'), { source: 'planOverview' }),
+      sec('programs', 'table', L('Programs', 'Programmes', 'البرامج'), { source: 'planPrograms' }),
+      sec('plan', 'table', L('Trainings', 'Formations', 'التكوينات'), { source: 'trainingPlan' }),
+      sec('sheets', 'table', L('Training sheets', 'Fiches des formations', 'بطاقات التكوينات'), { source: 'planSheets' }),
+      sec('agenda', 'table', L('Detailed agendas by half-day', 'Programmes détaillés par demi-journée', 'البرامج المفصلة حسب نصف اليوم'), { source: 'trainingAgenda' }),
+      sec('personas', 'table', L('Value proposition per persona', 'Proposition de valeur par persona', 'القيمة المقترحة لكل شخصية'), { source: 'trainingPersonas' }),
+      sec('calendar', 'table', L('Calendar', 'Calendrier', 'الجدول الزمني'), { source: 'planCalendar' }),
+      sec('budget', 'table', L('Budget by training', 'Budget par formation', 'الميزانية حسب التكوين'), { source: 'planBudget' }),
+      sec('vendors', 'table', L('Training providers', 'Prestataires de formation', 'مقدمو خدمات التكوين'), { source: 'planVendors' }),
+      sec('evaluation', 'table', L('Evaluation plan', 'Plan d’évaluation', 'خطة التقييم'), { source: 'planEvaluation' })] });
   out.push({ code: 'DT-AUDIT', name: L('Audit report', 'Rapport d’audit', 'تقرير التدقيق'), category: 'Report', formats: ['docx', 'pdf', 'xlsx'], e2e: ['E2E-18'], status: 'Published', profile: { identification: true, revisions: true, sources: true, approval: true }, formatting: { ...DEFAULT_FORMATTING },
     sections: [sec('audit', 'builtin', null, { source: 'audit' })] });
   out.push({ code: 'DT-MASTER', name: L('Master list of documented information', 'Liste maîtresse des informations documentées', 'القائمة الرئيسية للمعلومات الموثقة'), category: 'Register', formats: ['docx', 'pdf', 'xlsx'], e2e: [], status: 'Published', profile: { identification: true, revisions: false, sources: true, approval: true }, formatting: { ...DEFAULT_FORMATTING, orientation: 'landscape' },

@@ -24,7 +24,10 @@ export function SessionProvider({ children }) {
   const load = useCallback(async () => {
     if (!session.token) { setLoading(false); return; }
     try {
-      const m = await get('/me'); setMe(m); setPrefs(m.prefs || {}); writeCache(m.prefs || {}); if (!session.lang || session.lang !== m.lang) { setLang(m.lang); }
+      const m = await get('/me'); setMe(m); setPrefs(m.prefs || {}); writeCache(m.prefs || {});
+      // The language the user last chose (sign-in screen or header) wins over the one stored with the profile, and
+      // is saved to the profile; the stored one applies only when no choice was made in this browser.
+      const chosen = session.lang || m.lang; setLang(chosen); if (chosen !== m.lang) put('/me/language', { language: chosen }).catch(() => { /* kept locally */ });
       if (!session.org && m.org) session.org = m.org.id;
       const [n, ps] = await Promise.all([get('/nav'), get('/context/projects')]); setNav(n); setProjects(ps);
       if (session.project && !ps.some(p => p.id === session.project)) { session.project = null; setProjectState(null); }
@@ -36,7 +39,7 @@ export function SessionProvider({ children }) {
   const login = useCallback(async (email, password) => {
     const r = await api('/auth/login', { method: 'POST', body: { email, password } });
     const keepOrg = expired ? session.org : null; const keepProject = expired ? session.project : null;
-    session.token = r.token; session.org = keepOrg; session.project = keepProject; setProjectState(keepProject); if (!expired) session.lang = null;
+    session.token = r.token; session.org = keepOrg; session.project = keepProject; setProjectState(keepProject);
     setExpired(false); setLoading(!me); await load();
   }, [expired, load, me]);
   const logout = useCallback(() => { session.token = null; session.org = null; session.project = null; setExpired(false); setMe(null); setNav(null); }, []);

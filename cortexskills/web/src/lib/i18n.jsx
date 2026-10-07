@@ -9,7 +9,8 @@ export function I18nProvider({ children }) {
   useEffect(() => { fetch('/api/i18n').then(r => r.json()).then(d => { setDict(d.dictionary); setLanguages(d.languages); }).catch(() => setDict({})); }, []);
   const dir = languages.find(l => l.code === lang)?.dir || (lang === 'ar' ? 'rtl' : 'ltr');
   useEffect(() => { document.documentElement.lang = lang; document.documentElement.dir = dir; }, [lang, dir]);
-  const setLang = useCallback(l => { session.lang = l; setLangState(l); }, []);
+  // persist=false changes the language of the current screen only (public response page), not the user's choice.
+  const setLang = useCallback((l, persist = true) => { if (persist) session.lang = l; setLangState(l); }, []);
   const t = useCallback((key, params) => {
     const e = dict?.[key]; let s = (e && (e[lang] || e.en)) || humanize(key);
     if (params) for (const [k, v] of Object.entries(params)) s = s.replaceAll(`{${k}}`, v);
