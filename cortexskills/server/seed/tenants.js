@@ -2,7 +2,7 @@
 // Digital Skills run and an AI Skills run instantiating every end-to-end process, task and step.
 import fs from 'node:fs';
 import path from 'node:path';
-import { all, one, run } from '../src/db.js';
+import { all, one, run, tx as transaction } from '../src/db.js';
 import { detUuid, S, rng, addDays, pick } from '../src/lib/util.js';
 import * as cat from '../src/catalog.js';
 import { hashPassword } from '../src/auth.js';
@@ -37,7 +37,14 @@ export function seedPlatform() {
   return pwHash;
 }
 
+/** Organizations are committed one at a time: a single transaction for the whole seed grows to several hundred
+ *  megabytes and fails on some Windows set-ups (antivirus or file locks on the journal). */
 export function seedTenants(pwHash) {
+  const orgs = transaction(() => createTenants(pwHash));
+  for (const o of orgs) transaction(() => seedOrg(o));
+  return orgs;
+}
+function createTenants(pwHash) {
   const verticals = cat.list('verticalSeed'); const groups = cat.list('groupSeed');
   for (const g of groups) run(`INSERT INTO groups_(id,name,description,benchmark_sharing,created_at) VALUES(?,?,?,1,?)`, U('group:' + g.id), S(g.name), S(g.description), daysAgo(400));
   const smeNet = cat.list('smeNetwork')[0].verticals;
@@ -89,7 +96,6 @@ export function seedTenants(pwHash) {
     for (const u of o.users) u.roleNames = all(`SELECT r.name FROM user_roles ur JOIN roles r ON r.id=ur.role_id WHERE ur.user_id=?`, u.id).map(x => pick(x.name, 'en')).join('|');
     run(`INSERT OR IGNORE INTO user_prefs(user_id,data) VALUES(?,?)`, o.users.find(u => u.role === 'R-03').id, S({ dock: 'left', pinned: true, favorites: ['/', '/my-tasks', '/projects', '/reports'], collapsed: [], channels: { alerts: ['inapp', 'email'], tasks: ['inapp'], approvals: ['inapp', 'email'], questionnaires: ['inapp'], system: ['inapp'] } }));
   }
-  for (const o of orgs) seedOrg(o);
   return orgs;
 }
 

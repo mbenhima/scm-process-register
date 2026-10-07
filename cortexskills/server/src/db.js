@@ -20,7 +20,12 @@ export function tx(fn) {
   const sp = depth ? `sp${depth}` : null;
   db.exec(sp ? `SAVEPOINT ${sp}` : 'BEGIN'); depth++;
   try { const r = fn(); depth--; db.exec(sp ? `RELEASE ${sp}` : 'COMMIT'); return r; }
-  catch (e) { depth--; db.exec(sp ? `ROLLBACK TO ${sp}; RELEASE ${sp}` : 'ROLLBACK'); throw e; }
+  catch (e) {
+    depth--;
+    // SQLite may already have ended the transaction (some errors roll back on their own); never hide the original error.
+    try { if (db.isTransaction !== false) db.exec(sp ? `ROLLBACK TO ${sp}; RELEASE ${sp}` : 'ROLLBACK'); } catch { /* already rolled back */ }
+    throw e;
+  }
 }
 
 // Additive schema (FR-DA-OPS-04): tables and columns are only ever added, never dropped.

@@ -2,6 +2,11 @@
 // Deterministic demonstration seed, reset by one command: npm run seed (FR-DA-OPS-07/09).
 const [maj, min] = process.versions.node.split('.').map(Number);
 if (maj < 22 || (maj === 22 && min < 13)) { console.error(`CortexSkills needs Node.js 22.13 or newer (found ${process.versions.node}). Install the LTS version from https://nodejs.org and run "npm run seed" again.`); process.exit(1); }
+process.on('uncaughtException', e => {
+  console.error('\n  The seed stopped:', e?.message || e);
+  if (/SQLITE|database|disk|locked|busy|I\/O/i.test(String(e?.message) + String(e?.code))) console.error('  Check that the server is stopped (npm run dev / npm start), that the disk has at least 2 GB free, and that the\n  server\\data folder is not scanned by an antivirus or synchronized by OneDrive, then run "npm run seed" again.');
+  console.error(e?.stack || ''); process.exit(1);
+});
 const fs = await import('node:fs');
 const path = await import('node:path');
 const { config } = await import('../src/config.js');
@@ -58,7 +63,7 @@ tx(() => {
 console.log('• Organizations, users, full runs (Digital and AI) for every vertical, Large and SME…');
 const { seedPlatform, seedTenants, DEMO_PASSWORD } = await import('./tenants.js');
 let orgs;
-tx(() => { const h = seedPlatform(); orgs = seedTenants(h); });
+{ const h = tx(() => seedPlatform()); orgs = seedTenants(h); }
 
 // OnPrem mode: one signed licence file for every organization of this installation (D30 §7-8).
 const { signLicence } = await import('../tools/sign-licence.js');
