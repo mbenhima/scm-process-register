@@ -209,6 +209,8 @@ export function generate(ctx, { tpl, sections, overrides = {}, meta = {} }) {
     const table = r.body.table ? applyCellOverrides(r.body.table, ov.cells) : null;
     out.push({ ...base, heading, text: ov.text ?? (s.text ? fill(P(s.text, lang), vars) : r.body.text), notice: r.body.notice, table, diagram: r.body.diagram, subsections: r.body.subsections, kv: r.body.kv, overridden: ov.text != null || !!(ov.cells && Object.keys(ov.cells).length) });
   }
+  // A multilingual value left in a table cell is shown in the document language, never as an object.
+  for (const sec of out) if (sec.table?.rows) sec.table.rows = sec.table.rows.map(r => r.map(c => (c && typeof c === 'object' && !Array.isArray(c) ? pick(c, lang) : c)));
   findings.push(...consistency(orgId, projectId, out, lang));
   const fpAll = crypto.createHash('sha1').update(sources.map(s => s.name + ':' + (s.fingerprint || s.records)).join('|')).digest('hex').slice(0, 16);
   return { title: fill(P(tpl.name, lang), vars) + (vars.org ? ` — ${vars.org}` : ''), lang, code: tpl.code, category: tpl.category, sections: out, sources, findings, fingerprint: fpAll, dataAsOf: now(), vars, profile: tpl.profile || {} };

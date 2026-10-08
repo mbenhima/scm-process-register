@@ -64,7 +64,12 @@ body.push(...tocPage(T.toc));
 body.push(H1(T.about), ...T.aboutText.map(x => P(x)), H2(T.scenarios),
   B.table(T.scenarioCols, data.runs.map((r, i) => [T.scenario(i + 1), `${L(r.org.name)} — ${L(r.org.sectorName)} (${T.segment[r.org.segment]})`, `${T.focus[r.project.focus]} · ${T.mode[r.project.mode]}`, r.login]), [1300, 4000, 2400, 2600]),
   spacer(), H2(T.howTitle), ...T.how.map(x => bullet(x)), spacer(), callout(T.signIn.split('.')[0], [T.signIn]));
-body.push(H1(T.start), ...T.open.map((x, i) => B.numbered(x, 'steps')), spacer(), ...T.entry.map(x => bullet(x)), ...shot(SHOT('task'), T.figTask), ...shot(SHOT('roweditor'), T.figRow));
+body.push(H1(T.start), ...T.open.map((x, i) => B.numbered(x, 'steps')), spacer(), ...T.entry.map(x => bullet(x)), ...shot(SHOT('task'), T.figTask), ...shot(SHOT('roweditor'), T.figRow),
+  H2(lang === 'fr' ? 'Votre mot de passe' : 'Your password'),
+  ...(lang === 'fr'
+    ? ['Cliquez sur l’icône de profil en haut à droite, puis sur Changer le mot de passe.', 'Saisissez le mot de passe actuel, puis le nouveau deux fois : au moins 12 caractères avec majuscules, minuscules, un chiffre et un symbole (par exemple Rabat#Skills2026).', 'Cliquez sur Enregistrer. En cas d’oubli, demandez un mot de passe temporaire à l’administrateur de votre organisation.']
+    : ['Click the profile icon at the top right, then Change password.', 'Type the current password, then the new one twice: at least 12 characters with upper and lower case letters, a digit and a symbol (for example Rabat#Skills2026).', 'Click Save. If you forget it, ask the administrator of your organization for a temporary password.']).map(x => B.numbered(x, 'steps199')),
+  ...shot(SHOT('a_password'), lang === 'fr' ? 'Figure 3 — Changer le mot de passe (menu du profil)' : 'Figure 3 — Change password (profile menu)', 420));
 
 let listN = 1;
 data.runs.forEach((r, ri) => {

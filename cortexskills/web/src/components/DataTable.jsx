@@ -44,7 +44,7 @@ export function DataTable({ columns, rows, onRow, csvName, search = true, empty,
     const order = tp.order?.length ? tp.order : columns.map(c => c.key);
     const byKey = Object.fromEntries(columns.map(c => [c.key, c]));
     const list = [...order.map(k => byKey[k]).filter(Boolean), ...columns.filter(c => !order.includes(c.key))];
-    const first = columns[0]; return [first, ...list.filter(c => c.key !== first.key)];
+    const first = columns[0]; if (!first) return []; return [first, ...list.filter(c => c.key !== first.key)];
   }, [columns, tp.order]);
   const hidden = useMemo(() => new Set(tp.hidden || []), [tp.hidden]);
   const visible = ordered.filter((c, i) => i === 0 || !hidden.has(c.key));

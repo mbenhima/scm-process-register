@@ -31,7 +31,7 @@ export function RecordsView({ entity, project, columns, canCreate = true, filter
   const d = useData(`/records/${entity}?${qs}`, [entity]); const [open, setOpen] = useState(null);
   if (meta && !def) return <AccessNotice error={{ message: t('err.unknownEntity', { entity }) }} />;
   const cols = columns || autoColumns(def, L, t);
-  return (<Guard state={d}>{data => <>
+  return (<Guard state={!columns && !meta ? { loading: true } : d}>{data => <>
     <div className="row" style={{ justifyContent: 'flex-end', marginBottom: 'var(--aiv-space-3)' }}>{extraActions}
       {canCreate && def?.canWrite && <Btn kind="primary" icon="Plus" onClick={() => setOpen({ _new: true, ...(defaults || {}) })}>{t('common.new')}</Btn>}</div>
     <DataTable csvName={entity} rows={rowFilter ? data.items.filter(rowFilter) : data.items} columns={cols} onRow={r => (onOpen ? onOpen(r) : setOpen(r))} />
