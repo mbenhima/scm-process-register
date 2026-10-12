@@ -1,6 +1,7 @@
 // Organization Breakdown Structure (FR-DA-OBS-01..10) and role-based RACSI (FR-DA-GOV-09, -10). Functions group
 // roles; a role has a mission and is held by people (holder, deputy, acting) with dates and an allocation; the OBS
 // is shown by unit, by function, by person and as a chart, on any date. Holding an OBS role grants no permission.
+import { WorkspaceTable } from '../components/EntryWorkspace.jsx';
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
@@ -111,10 +112,10 @@ function RacsiMatrix() {
   return (<Card title={t('obs.racsi')} actions={<Field id="racsi-mp" label={t('pdm.kind.mp')}><Select id="racsi-mp" value={mp} onChange={e => setMp(e.target.value)} options={(mps.data || []).map(m => ({ value: m.id, label: `${m.id} (${L(m.name)})` }))} /></Field>}>
     <p className="small muted">{t('obs.racsiHint')}</p>
     <Guard state={d}>{x => <><div className="row" style={{ marginBottom: 'var(--aiv-space-3)' }}>{x.complete ? <StatusPill value="Complete" level={5} /> : <StatusPill value="Incomplete" level={2} />}<span className="xs muted">{t('obs.racsiRule')}</span></div>
-      <div className="table-wrap"><table className="tbl"><caption className="sr-only">{t('obs.racsi')} {mp}</caption><thead><tr><th>{t('pdm.kind.step')}</th>{['R', 'A', 'C', 'S', 'I'].map(l => <th key={l} className="racsi-cell" data-tip={t('racsi.' + l)}>{l}</th>)}<th /></tr></thead>
+      <WorkspaceTable id="racsi-editor" title={t('obs.racsi')} context={mp}><table className="tbl"><caption className="sr-only">{t('obs.racsi')} {mp}</caption><thead><tr><th>{t('pdm.kind.step')}</th>{['R', 'A', 'C', 'S', 'I'].map(l => <th key={l} className="racsi-cell" data-tip={t('racsi.' + l)}>{l}</th>)}<th /></tr></thead>
         <tbody>{x.rows.map(r => <tr key={r.step.id}><td><span className="mono xs">{r.step.id}</span> {L(r.step.name)}{!r.ok && <div className="field-error"><Icon name="CircleAlert" size={12} />{t('err.oneAccountable')}</div>}</td>
           {['R', 'A', 'C', 'S', 'I'].map(l => <td key={l} className="small">{r.cells[l].map(label).join(', ') || '—'}</td>)}
-          <td>{can('governance.manage') && <Btn size="sm" kind="ghost" icon="Pencil" aria-label={t('common.edit')} onClick={() => setEdit({ step: r.step, cells: { ...r.cells } })} />}</td></tr>)}</tbody></table></div></>}</Guard>
+          <td>{can('governance.manage') && <Btn size="sm" kind="ghost" icon="Pencil" aria-label={t('common.edit')} onClick={() => setEdit({ step: r.step, cells: { ...r.cells } })} />}</td></tr>)}</tbody></table></WorkspaceTable></>}</Guard>
     {edit && <Modal title={`${edit.step.id} — ${L(edit.step.name)}`} onClose={() => setEdit(null)} footer={<><Btn onClick={() => setEdit(null)}>{t('common.cancel')}</Btn><Btn kind="primary" disabled={edit.cells.A.filter(Boolean).length !== 1} onClick={async () => { await act(() => put(`/racsi/mp/${mp}/${edit.step.id}`, { cells: edit.cells }), 'common.saved'); setEdit(null); d.reload(); }}>{t('common.save')}</Btn></>}>
       <div className="stack">{['R', 'A', 'C', 'S', 'I'].map(l => <Field key={l} id={`rc-${l}`} label={`${l} — ${t('racsi.' + l)}`} required={l === 'A'} hint={l === 'A' ? t('obs.racsiRule') : null}>
         <div className="stack">{edit.cells[l].map((v, i) => <div key={i} className="row"><Select id={i === 0 ? `rc-${l}` : undefined} value={v} options={options} onChange={e => setEdit(s => { const c = [...s.cells[l]]; c[i] = e.target.value; return { ...s, cells: { ...s.cells, [l]: c } }; })} /><Btn size="sm" kind="ghost" icon="X" aria-label={t('common.remove')} onClick={() => setEdit(s => ({ ...s, cells: { ...s.cells, [l]: s.cells[l].filter((_, k) => k !== i) } }))} /></div>)}

@@ -393,5 +393,10 @@
   "Currency of the amounts of this record (default {c}).",
   "Devise des montants de cet enregistrement (par défaut {c}).",
   "عملة مبالغ هذا السجل (افتراضياً {c})."
+ ],
+ "paste.appliedBadList": [
+  "{n} row(s) pasted; {bad} row(s) could not be saved and are listed for correction.",
+  "{n} ligne(s) collée(s) ; {bad} ligne(s) n’ont pas pu être enregistrée(s) et sont listées pour correction.",
+  "تم لصق {n} صف(وف)؛ تعذر حفظ {bad} صف(وف) وهي مدرجة للتصحيح."
  ]
 }

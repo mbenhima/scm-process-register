@@ -39,7 +39,7 @@ export function RecordsView({ entity, project, columns, canCreate = true, filter
   const applyPaste = async ({ rows, format, mapping }) => {
     const res = await post('/bulk-entry/apply', { target: { kind: 'entity', entity, project: project || undefined }, format, mapping, rows: rows.map(r => ({ data: { ...(defaults || {}), ...r.data } })) });
     d.reload(); const n = res.created.length; const bad = res.rejected.length;
-    toast(bad ? t('paste.appliedBad', { n, bad }) : t('paste.applied', { n }), bad ? 'warning' : 'ok', { duration: 10000, action: { label: t('common.undo'), onClick: async () => { try { await post(`/bulk-entry/${res.id}/undo`, {}); toast(t('paste.undone'), 'info'); d.reload(); } catch (e) { toast(e.message, 'error'); } } } });
+    toast(bad ? t('paste.appliedBadList', { n, bad }) : t('paste.applied', { n }), bad ? 'warning' : 'ok', { duration: 10000, action: { label: t('common.undo'), onClick: async () => { try { await post(`/bulk-entry/${res.id}/undo`, {}); toast(t('paste.undone'), 'info'); d.reload(); } catch (e) { toast(e.message, 'error'); } } } });
     if (bad) setRejected(res.rejected.map(x => ({ ...x, data: rows[x.index]?.data || {} })));
   };
   const pasteCfg = def && !onOpen ? { columns: pasteCols, readOnly: !def.canWrite || me?.foreignReadOnly ? t('paste.readOnly') : null, apply: applyPaste } : null;

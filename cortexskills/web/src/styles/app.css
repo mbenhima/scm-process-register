@@ -160,6 +160,8 @@ kbd { font: 600 var(--aiv-fs-12)/1 var(--aiv-font-mono); color: var(--aiv-muted)
    ===================================================================================================== */
 .page-head { display: flex; gap: var(--aiv-space-4); align-items: flex-end; justify-content: space-between; flex-wrap: wrap; margin-bottom: var(--aiv-space-5); }
 .page-head > div:first-child { min-width: 0; max-width: 100%; }
+.page-head > .actions { display: flex; flex-wrap: wrap; gap: var(--aiv-space-2); min-width: 0; max-width: 100%; }
+@media (max-width: 767px) { .page-head > .actions .btn { max-width: 100%; white-space: normal; height: auto; min-height: 40px; text-align: start; } }
 .eyebrow { display: inline-flex; align-items: center; gap: var(--aiv-space-2); font: 700 var(--aiv-fs-12)/1.4 var(--aiv-font-body); letter-spacing: var(--aiv-tracking-eyebrow); text-transform: uppercase; color: var(--aiv-navy); margin-bottom: var(--aiv-space-2); }
 .eyebrow::before { content: ''; width: var(--aiv-space-4); height: 3px; background: var(--aiv-azure); border-radius: 2px; flex-shrink: 0; }
 .subtitle { color: var(--aiv-muted); font-size: var(--aiv-fs-16); margin: var(--aiv-space-2) 0 0; max-width: 72ch; }

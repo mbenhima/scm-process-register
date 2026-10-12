@@ -2,6 +2,7 @@
 // validated by a person, or written manually; respondents ("who will respond") with their population and form;
 // the channel plan of each respondent (Face-to-Face, Email, WhatsApp, Application, or a combination in sequence);
 // reminders; responses with consent and completeness; consolidation feeding the needs analysis; the immutable log.
+import { WorkspaceTable } from '../components/EntryWorkspace.jsx';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
@@ -151,11 +152,11 @@ function EditInvitation({ q, inv, onClose, onDone }) {
     <h4 style={{ marginTop: 'var(--aiv-space-4)' }}>{t('q.channelPlan')}</h4>
     <p className="small muted">{t('q.planHint')}</p>
     <div className="row" style={{ marginBottom: 8 }}>{MODES.map(m => <Btn key={m} size="sm" onClick={() => setPlan(presetPlan(m, f.population, !!f.phone))}><Icon name={CH_ICON[m]} />{t('qch.' + m)}</Btn>)}</div>
-    <div className="table-wrap"><table className="tbl"><thead><tr><th>#</th><th>{t('q.channel')}</th><th>{t('q.action')}</th><th>{t('q.afterDays')}</th><th /></tr></thead><tbody>
+    <WorkspaceTable id="q-channel-plan" title={t('q.channelPlan')}><table className="tbl"><thead><tr><th>#</th><th>{t('q.channel')}</th><th>{t('q.action')}</th><th>{t('q.afterDays')}</th><th /></tr></thead><tbody>
       {plan.map((s, i) => <tr key={i}><td>{i + 1}</td><td><Select className="input" value={s.channel} onChange={e => step(i, 'channel', e.target.value)} aria-label={t('q.channel')}>{CHANNELS.map(c => <option key={c} value={c}>{t('qch.' + c)}</option>)}</Select></td>
         <td>{s.channel === 'Face-to-Face' ? t('qact.interview') : <Select className="input" value={s.action} onChange={e => step(i, 'action', e.target.value)} aria-label={t('q.action')}><option value="invite">{t('qact.invite')}</option><option value="remind">{t('qact.remind')}</option></Select>}</td>
         <td><input className="input" type="number" min="0" style={{ width: 90 }} value={s.after_days} onChange={e => step(i, 'after_days', Number(e.target.value))} aria-label={t('q.afterDays')} /></td>
-        <td><Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => setPlan(p => p.filter((_, j) => j !== i))} /></td></tr>)}</tbody></table></div>
+        <td><Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => setPlan(p => p.filter((_, j) => j !== i))} /></td></tr>)}</tbody></table></WorkspaceTable>
     <Btn size="sm" icon="Plus" onClick={() => setPlan(p => [...p, { channel: 'Email', action: p.length ? 'remind' : 'invite', after_days: (p.at(-1)?.after_days || 0) + 3 }])}>{t('q.addStep')}</Btn>
   </Modal>);
 }
@@ -220,10 +221,10 @@ function Channels({ q, edit, reload }) {
       <div className="stack">{['DG', 'Management', 'Member'].map(p => <div key={p} className="row small"><span className="strong" style={{ minWidth: 160 }}>{t('pop.' + p)}</span><PlanSteps plan={presetPlan(mode, p, true)} /></div>)}</div>
       <p className="xs muted">{t('q.defaultPlansHint')}</p>
       <h4 style={{ marginTop: 'var(--aiv-space-5)' }}>{t('q.reminders')}</h4>
-      <div className="table-wrap"><table className="tbl"><thead><tr><th>{t('q.channel')}</th><th>{t('q.everyDays')}</th><th>{t('q.maxReminders')}</th></tr></thead><tbody>
+      <WorkspaceTable id="q-reminders" title={t('q.reminders')}><table className="tbl"><thead><tr><th>{t('q.channel')}</th><th>{t('q.everyDays')}</th><th>{t('q.maxReminders')}</th></tr></thead><tbody>
         {['Email', 'WhatsApp', 'Application'].map(c => <tr key={c}><td><ChannelChip ch={c} /></td>
           <td><input className="input" type="number" min="0" disabled={!edit} style={{ width: 90 }} value={rem[c]?.every_days ?? 0} onChange={e => setRem({ ...rem, [c]: { ...(rem[c] || {}), every_days: Number(e.target.value) } })} aria-label={t('q.everyDays')} /></td>
-          <td><input className="input" type="number" min="0" disabled={!edit} style={{ width: 90 }} value={rem[c]?.max ?? 0} onChange={e => setRem({ ...rem, [c]: { ...(rem[c] || {}), max: Number(e.target.value) } })} aria-label={t('q.maxReminders')} /></td></tr>)}</tbody></table></div>
+          <td><input className="input" type="number" min="0" disabled={!edit} style={{ width: 90 }} value={rem[c]?.max ?? 0} onChange={e => setRem({ ...rem, [c]: { ...(rem[c] || {}), max: Number(e.target.value) } })} aria-label={t('q.maxReminders')} /></td></tr>)}</tbody></table></WorkspaceTable>
       <p className="xs muted">{t('q.remindersHint')}</p>
       <Field label={t('q.thresholdLabel')} id="th" hint={t('q.thresholdHint')}><input id="th" className="input" type="number" min="0" max="100" disabled={!edit} style={{ width: 100 }} value={th} onChange={e => setTh(Number(e.target.value))} /></Field>
     </Card>

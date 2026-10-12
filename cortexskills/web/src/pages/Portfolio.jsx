@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { WorkspaceTable } from '../components/EntryWorkspace.jsx';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
@@ -80,10 +81,10 @@ export function Portfolio() {
   return (<><PageHead eyebrow={t('navGroup.portfolio')} title={t('nav.portfolio')} subtitle={t('portfolio.subtitle')}><Seg value={scope} onChange={setScope} options={[{ id: 'org', label: t('portfolio.org') }, { id: 'group', label: t('portfolio.group') }, { id: 'all', label: t('portfolio.all') }]} label={t('portfolio.scope')} />
     {d.data && <Btn icon="Download" onClick={() => downloadCsv('portfolio', [t('col.project'), ...d.data.columns.map(c => c.id)], d.data.rows.map(r => [L(r.name), ...r.cells.map(c => t('pf.' + c))]))}>CSV</Btn>}</PageHead>
     <Legend items={Object.values(colors).map(i => ({ label: L(i.label), color: i.color }))} />
-    <Guard state={d}>{x => <div className="table-wrap" style={{ marginTop: 'var(--aiv-space-3)', maxHeight: '70vh' }}><table className="tbl matrix"><thead><tr><th className="sticky-col">{t('col.project')}</th>{x.columns.map(c => <th key={c.id} title={L(c.name)} style={{ padding: '8px 4px', fontSize: 11, writingMode: 'vertical-rl', transform: 'rotate(180deg)', height: 110 }}>{c.id.replace('E2E-', '')}</th>)}</tr></thead>
+    <Guard state={d}>{x => <WorkspaceTable id="portfolio-matrix" title={t('nav.portfolio')} style={{ marginTop: 'var(--aiv-space-3)', maxHeight: '70vh' }}><table className="tbl matrix"><thead><tr><th className="sticky-col">{t('col.project')}</th>{x.columns.map(c => <th key={c.id} title={L(c.name)} style={{ padding: '8px 4px', fontSize: 11, writingMode: 'vertical-rl', transform: 'rotate(180deg)', height: 110 }}>{c.id.replace('E2E-', '')}</th>)}</tr></thead>
       <tbody>{x.rows.map(r => <tr key={r.id}><td className="sticky-col" style={{ minWidth: 260 }}><Link to={'/projects/' + r.id} onClick={e => r.readOnly && e.preventDefault()}>{L(r.name)}</Link>{r.readOnly && <span className="pill xs" style={{ marginInlineStart: 6 }}>{t('header.readOnly')}</span>}<div className="xs muted">{L(r.org_name)} · {Math.round(r.progress)}%</div></td>
         {r.cells.map((c, i) => <td key={i} className="cell" title={`${L(r.name)} · ${x.columns[i].id} ${L(x.columns[i].name)} · ${t('pf.' + c)}`}><span style={{ background: colors[c]?.color, border: c === 'na' ? '1px dashed var(--aiv-line)' : 0 }} /></td>)}</tr>)}
-        <tr><td className="sticky-col strong">{t('portfolio.totals')}</td>{x.totals.map((tt, i) => <td key={i} className="xs mono" title={Object.entries(tt).map(([k, v]) => `${t('pf.' + k)} ${v}`).join(', ')}>{tt.completed || 0}</td>)}</tr></tbody></table></div>}</Guard>
+        <tr><td className="sticky-col strong">{t('portfolio.totals')}</td>{x.totals.map((tt, i) => <td key={i} className="xs mono" title={Object.entries(tt).map(([k, v]) => `${t('pf.' + k)} ${v}`).join(', ')}>{tt.completed || 0}</td>)}</tr></tbody></table></WorkspaceTable>}</Guard>
     <p className="caption">{t('portfolio.caption')}</p></>);
 }
 

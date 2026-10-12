@@ -105,3 +105,21 @@ export function EntryWorkspace({ id, title, context, meta, actions, onBeforeClos
     {children({ full, expand, records: recordsProps, zoomStyle, zoom })}
   </div>);
 }
+
+/** A custom editor table (matrix, RACSI, field list…) in the workspace: Expand, zoom, return, and Copy of the table. */
+export function WorkspaceTable({ id, title, context, className = '', style, children }) {
+  const { t } = useI18n(); const { toast } = useSession();
+  return (<EntryWorkspace id={id} title={title} context={context}>{({ full, expand, records, zoomStyle }) => {
+    const copy = async () => {
+      const table = records.ref.current?.querySelector('table'); if (!table) return;
+      const val = c => { const f = c.querySelector('input:not([type=checkbox]), textarea, select'); const b = c.querySelector('input[type=checkbox]'); return (f ? f.value : b ? (b.checked ? '✓' : '') : c.innerText).replace(/\s+\n/g, '\n').trim(); };
+      const rows = [...table.querySelectorAll('tr')].map(tr => [...tr.children].map(val));
+      const head = rows.shift() || []; const cols = head.map((h, i) => ({ key: i, label: h }));
+      const { toClipboard, writeClipboard } = await import('../lib/paste.js');
+      if (await writeClipboard(toClipboard(cols, rows.map(r => Object.fromEntries(r.map((v, i) => [i, v])))))) toast(t('copy.done', { n: rows.length }), 'ok');
+    };
+    return <>
+      <div className="dt-toolbar ws-mini"><span className="spacer" /><Btn size="sm" kind="ghost" icon="Copy" aria-label={t('copy.action')} data-tip={t('copy.hint')} onClick={copy} />{expand}</div>
+      <div {...records} className={`table-wrap ${full ? 'ws-records' : ''} ${className}`} style={full ? undefined : style}><div style={zoomStyle}>{children}</div></div></>;
+  }}</EntryWorkspace>);
+}

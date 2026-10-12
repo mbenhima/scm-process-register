@@ -6,7 +6,7 @@
 import { Router } from 'express';
 import { ah, projectOf } from '../lib/http.js';
 import { all, one, run, tx } from '../db.js';
-import { J, S, HttpError, now, uuid } from '../lib/util.js';
+import { J, S, HttpError, now, uuid, pick } from '../lib/util.js';
 import { has } from '../rbac.js';
 import { audit } from '../audit.js';
 import { config } from '../config.js';
@@ -54,12 +54,12 @@ function cellErrors(req, tg, data) {
   const out = {};
   if (tg.kind === 'step') {
     const errs = St.validateValues(tg.fields, data);
-    for (const [k, code] of Object.entries(errs)) { const f = tg.fields.find(x => x.key === k); out[k] = t('mre.' + (code === 'notInList' ? 'notInList' : code === 'tooLong' ? 'tooLong' : code), req.lang, { field: k, min: f?.min, max: f?.max }); }
+    for (const [k, code] of Object.entries(errs)) { const f = tg.fields.find(x => x.key === k); out[k] = t('mre.' + code, req.lang, { field: pick(f?.label, req.lang) || k, min: f?.min, max: f?.max }); }
     return out;
   }
   for (const fld of tg.def.fields) {
     if (!(fld.name in data)) continue;
-    try { validate({ ...tg.def, fields: [{ ...fld, required: false }] }, { [fld.name]: data[fld.name] }, req.lang); } catch (e) { out[fld.name] = t(e.code || 'err.server', req.lang, { ...(e.params || {}), field: fld.name }); }
+    try { validate({ ...tg.def, fields: [{ ...fld, required: false }] }, { [fld.name]: data[fld.name] }, req.lang); } catch (e) { const lbl = t('field.' + fld.name, req.lang); out[fld.name] = t(e.code || 'err.server', req.lang, { ...(e.params || {}), field: lbl === 'field.' + fld.name ? fld.name : lbl }); }
   }
   return out;
 }

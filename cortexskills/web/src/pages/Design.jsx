@@ -2,6 +2,7 @@
 // read-only; an Organization edits its own copy element by element (copy-on-write), sees the naming warnings
 // before saving, keeps every version with compare and restore, and freezes the design into releases that a second
 // person publishes. Projects run on a published release.
+import { WorkspaceTable } from '../components/EntryWorkspace.jsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
@@ -114,8 +115,8 @@ function StepFormPreview({ form }) {
   const { t, L } = useI18n();
   return (<div className="stack"><KV items={[[t('pdm.formKind'), L(form.kindLabel)], [t('pdm.object'), L(form.object)], [t('pdm.pattern'), t('pdm.pattern.' + form.pattern)], [t('pdm.register'), form.register ? L(form.register.name) : '—']]} />
     <Brief brief={L(form.brief)} details={L(form.details)} />
-    <div className="table-wrap"><table className="tbl"><thead><tr><th>{t('pdm.field')}</th><th>{t('pdm.fieldType')}</th><th>{t('pdm.required')}</th><th>{t('pdm.help')}</th></tr></thead>
-      <tbody>{form.fields.map(f => <tr key={f.key}><td className="strong">{L(f.label)}</td><td>{t('pdm.type.' + f.type)}</td><td>{f.required ? '✓' : ''}</td><td className="small">{L(f.help)}</td></tr>)}</tbody></table></div></div>);
+    <WorkspaceTable id="pdm-fields" title={L(form.object)} context={t('pdm.field')}><table className="tbl"><thead><tr><th>{t('pdm.field')}</th><th>{t('pdm.fieldType')}</th><th>{t('pdm.required')}</th><th>{t('pdm.help')}</th></tr></thead>
+      <tbody>{form.fields.map(f => <tr key={f.key}><td className="strong">{L(f.label)}</td><td>{t('pdm.type.' + f.type)}</td><td>{f.required ? '✓' : ''}</td><td className="small">{L(f.help)}</td></tr>)}</tbody></table></WorkspaceTable></div>);
 }
 
 function Usage({ kind, id }) {
