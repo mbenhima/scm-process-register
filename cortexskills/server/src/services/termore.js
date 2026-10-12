@@ -3,6 +3,7 @@
 // gaps, needs, objectives, jobs and projects quoted by respondents, roadmap and schedule, learning design, sessions,
 // budget, vendors, evaluation, risks and indicators, and every respondent's answers in annex. Every row comes from a
 // record of the project or the Organization.
+import { moneyTotal, fmtMoney, orgCurrencies } from './money.js';
 import { all, one } from '../db.js';
 import { J, pick } from '../lib/util.js';
 import { t } from '../i18n.js';
@@ -149,9 +150,10 @@ export function terDetails(orgId, projectId, lang, { qs, sets, src }) {
   if (ses.length) out.c5.push({ heading: x('sessions', lang), table: { columns: [x('session', lang), x('date', lang), x('capacity', lang), x('trainer', lang), x('enrolled', lang)], rows: ses.map(s => [P(s.label), String(s.start_at || '').slice(0, 10), String(s.capacity ?? ''), userName(s.trainer_user_id), String(enr.filter(e => e.session_id === s.id).length)]) } });
   if (enr.length) out.c5.push({ heading: x('enrolments', lang), table: { columns: [x('employee', lang), x('session', lang), x('attendance', lang), x('completion', lang), x('date', lang)], rows: enr.map(e => [P(empById.get(e.employee_id)?.label) || '—', P(ses.find(s => s.id === e.session_id)?.label) || '—', st(e.attendance_status), st(e.completion_status), String(e.completed_at || '').slice(0, 10)]) } });
   const bl = recs('BudgetLine');
-  if (bl.length) { const s = k => bl.reduce((a, b) => a + (Number(b[k]) || 0), 0); const pc = (a, b) => (b ? Math.round(a / b * 100) : 0);
-    out.c5.push({ heading: x('budget', lang), text: x('budgetText', lang, { a: fmtN(s('allocated_amount')), c: fmtN(s('committed_amount')), cp: pc(s('committed_amount'), s('allocated_amount')), s: fmtN(s('actual_amount')), sp: pc(s('actual_amount'), s('planned_amount')), r: fmtN(s('refund_forecast')) }),
-      table: { columns: [x('line', lang), x('allocated', lang), x('planned', lang), x('committed', lang), x('actual', lang), x('refund', lang)], rows: [...bl.map(b => [P(b.label), fmtN(b.allocated_amount), fmtN(b.planned_amount), fmtN(b.committed_amount), fmtN(b.actual_amount), fmtN(b.refund_forecast)]), [x('total', lang), fmtN(s('allocated_amount')), fmtN(s('planned_amount')), fmtN(s('committed_amount')), fmtN(s('actual_amount')), fmtN(s('refund_forecast'))]] } }); }
+  if (bl.length) { const M = k => moneyTotal(orgId, bl, k, lang); const s = k => M(k).amount ?? 0; const pc = (a, b) => (b ? Math.round(a / b * 100) : 0); const cm = (n, b) => fmtMoney(n, b.currency || orgCurrencies(orgId).default, lang);
+    const note = M('allocated_amount').note;
+    out.c5.push({ heading: x('budget', lang), text: x('budgetText', lang, { a: M('allocated_amount').text, c: M('committed_amount').text, cp: pc(s('committed_amount'), s('allocated_amount')), s: M('actual_amount').text, sp: pc(s('actual_amount'), s('planned_amount')), r: M('refund_forecast').text }) + (note ? ' ' + note : ''),
+      table: { columns: [x('line', lang), x('allocated', lang), x('planned', lang), x('committed', lang), x('actual', lang), x('refund', lang)], rows: [...bl.map(b => [P(b.label), cm(b.allocated_amount, b), cm(b.planned_amount, b), cm(b.committed_amount, b), cm(b.actual_amount, b), cm(b.refund_forecast, b)]), [x('total', lang), M('allocated_amount').text, M('planned_amount').text, M('committed_amount').text, M('actual_amount').text, M('refund_forecast').text]] } }); }
   const ven = orgRecs('Vendor');
   if (ven.length) out.c5.push({ heading: x('vendors', lang), table: { columns: [x('vendor', lang), x('accreditation', lang), x('performance', lang)], rows: ven.map(v => [v.legal_name || P(v.label), v.accreditation_valid_until || '—', String(v.performance_score ?? '—')]) } });
   const ev = recs('Evaluation');

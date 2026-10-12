@@ -1,6 +1,7 @@
 // Generic entity engine. Business object classes come from the Information Class Model (D09) and their
 // fields from the Data Dictionary (D10); platform governance entities are declared below. Every entity gets
 // tenant-scoped CRUD, validation, version history, audit, and stage-then-justify on governed fields.
+import { orgCurrencies } from './services/money.js';
 import { all, one, run } from './db.js';
 import { uuid, now, S, J, HttpError, ml } from './lib/util.js';
 import * as cat from './catalog.js';
@@ -80,6 +81,7 @@ function parseType(dt, rule) {
 }
 
 let registry = null;
+const MONEY = /(^|_)(budget|amount|cost|price|fee|salary)(_|$)/;
 export function entityRegistry() {
   if (registry) return registry;
   registry = {};
@@ -107,6 +109,8 @@ export function entityRegistry() {
   if (registry.Questionnaire && !registry.Questionnaire.fields.some(x => x.name === 'anonymized')) registry.Questionnaire.fields.push(f('anonymized', 'boolean'));
   addOptions('Stakeholder', 'preferred_channel', ['Application', 'WhatsApp', 'Combination']);
   addOptions('Questionnaire', 'elaboration_mode', ['Load + AI', 'Load + Manual', 'Load + AI + Manual', 'AI + Manual']);
+  // SRS 1.8 FR-DA-I18N-09: every amount carries its currency (default: the Organization's currency).
+  for (const d of Object.values(registry)) if (d.fields.some(x => x.type === 'number' && MONEY.test(x.name)) && !d.fields.some(x => x.name === 'currency')) d.fields.push(f('currency', 'string', { currency: true }));
   return registry;
 }
 const toSnake = s => s.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
@@ -194,8 +198,18 @@ export function getRecord(req, entity, id) {
   return rowOut(r);
 }
 
+/** The currency of an amount: the Organization's default on creation, and only a currency it enables (FR-DA-I18N-09). */
+function withCurrency(req, def, body, creating) {
+  if (!def.fields.some(x => x.currency) || !req.orgId) return body;
+  const c = orgCurrencies(req.orgId);
+  if (body.currency == null || body.currency === '') return creating ? { ...body, currency: c.default } : body;
+  const cur = String(body.currency).trim().toUpperCase();
+  if (!c.enabled.includes(cur)) throw new HttpError(422, 'err.currencyNotEnabled', { currency: cur, enabled: c.enabled.join(', ') });
+  return { ...body, currency: cur };
+}
 export function createRecord(req, entity, body, { projectId = null, ref = null, skipAudit = false } = {}) {
   const def = entityDef(entity);
+  body = withCurrency(req, def, body || {}, true);
   const data = derive(entity, validate(def, body || {}, req.lang));
   const id = uuid(); const t = now();
   const orgId = def.global && req.user?.is_platform && body?._global ? null : req.orgId;
@@ -211,6 +225,7 @@ export function updateRecord(req, entity, id, body) {
   const cur = getRecord(req, entity, id);
   if (!cur.org_id && !req.user.is_platform) throw new HttpError(403, 'err.platformOnly');
   const { id: _i, entity: _e, org_id, project_id, ref, version, created_at, updated_at, created_by, updated_by, ...prev } = cur;
+  body = withCurrency(req, def, body || {}, false);
   const next = derive(entity, validate(def, body || {}, req.lang, prev));
   const governedChange = Object.keys(next).some(k => GOVERNED.test(k) && JSON.stringify(next[k]) !== JSON.stringify(prev[k]));
   const cfg = orgConfig(req.orgId);

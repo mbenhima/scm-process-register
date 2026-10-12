@@ -11,6 +11,7 @@ import { issueSaasLicence, insertRecord } from '../services/projects.js';
 import { backupNow, listBackups } from '../services/ops.js';
 import { config } from '../config.js';
 import * as cat from '../catalog.js';
+import { orgCurrencies, listRates, ISO_CURRENCIES } from '../services/money.js';
 
 const r = Router();
 r.get('/config', requirePerm('config.view'), ah(req => ({ ...effectiveConfig(req.orgId), catalog: { packs: solutionPacks(), addOns: cat.list('addOn'), compliance: cat.list('complianceStandard'), integrations: cat.list('integration'), bundles: cat.list('bundle'), rules: cat.list('packagingRule') }, deploymentMode: config.deploymentMode })));
@@ -26,6 +27,27 @@ function prorate(from, to) {
   const d = new Date(); const days = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); const left = days - d.getDate() + 1;
   return { daysLeft: left, credit: +((a * left) / days).toFixed(2), charge: +((b * left) / days).toFixed(2), net: +(((b - a) * left) / days).toFixed(2) };
 }
+/** Default currency and enabled currencies of the Organization; exchange rates with their date (FR-DA-I18N-09). */
+r.get('/config/currencies', requirePerm('config.view'), ah(req => ({ ...orgCurrencies(req.orgId), available: ISO_CURRENCIES, rates: listRates(req.orgId) })));
+r.put('/config/currencies', requirePerm('config.manage'), ah(req => {
+  const def = String(req.body?.default || '').toUpperCase(); const en = [...new Set([def, ...(req.body?.enabled || []).map(x => String(x).toUpperCase())])];
+  if (!ISO_CURRENCIES.includes(def) || en.some(x => !ISO_CURRENCIES.includes(x))) throw new HttpError(422, 'err.invalidOption', { field: 'currency', value: en.find(x => !ISO_CURRENCIES.includes(x)) || def });
+  const cur = orgCurrencies(req.orgId);
+  run(`UPDATE org_config SET currency=?, currencies=?, updated_at=? WHERE org_id=?`, def, S(en), now(), req.orgId);
+  audit(req, 'Configuration', req.orgId, 'currencies', cur, { default: def, enabled: en }, req.body?._justification); return orgCurrencies(req.orgId);
+}));
+r.post('/config/exchange-rates', requirePerm('config.manage'), ah(req => {
+  const { from, to, rate, as_of } = req.body || {}; const F = String(from || '').toUpperCase(), T = String(to || '').toUpperCase(); const R = Number(rate);
+  if (!ISO_CURRENCIES.includes(F) || !ISO_CURRENCIES.includes(T) || F === T) throw new HttpError(422, 'err.invalidOption', { field: 'currency', value: F + '/' + T });
+  if (!(R > 0)) throw new HttpError(422, 'err.invalidOption', { field: 'rate', value: rate });
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(as_of || ''))) throw new HttpError(422, 'err.required', { field: 'as_of' });
+  const id = uuid(); run(`INSERT INTO exchange_rates(id,org_id,from_cur,to_cur,rate,as_of,source,updated_by,updated_at) VALUES(?,?,?,?,?,?,?,?,?)`, id, req.orgId, F, T, R, as_of, String(req.body?.source || '').slice(0, 120) || null, req.user.id, now());
+  audit(req, 'ExchangeRate', id, 'create', null, { from: F, to: T, rate: R, as_of }); return one(`SELECT * FROM exchange_rates WHERE id=?`, id);
+}));
+r.delete('/config/exchange-rates/:id', requirePerm('config.manage'), ah(req => {
+  const x = one(`SELECT * FROM exchange_rates WHERE id=? AND org_id=?`, req.params.id, req.orgId); if (!x) throw new HttpError(404, 'err.notFound');
+  run(`DELETE FROM exchange_rates WHERE id=?`, x.id); audit(req, 'ExchangeRate', x.id, 'delete', x, null); return { ok: true };
+}));
 r.put('/config/addon', requirePerm('config.manage'), ah(req => {
   const { id, active } = req.body || {}; if (!cat.get('addOn', id)) throw new HttpError(404, 'err.notFound');
   const cfg = orgConfig(req.orgId); const set = new Set(cfg.addons); active ? set.add(id) : set.delete(id);

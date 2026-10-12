@@ -2,6 +2,7 @@
 // A document is generated from a template and the current data of a project. Every data-bound row carries the
 // identifier and version of its source record; the sources, their fingerprints and the data date are kept with the
 // version (NFR-DA-REL-08), so the document can be checked for staleness and re-generated identically.
+import { moneyTotal } from './money.js';
 import crypto from 'node:crypto';
 import { all, one } from '../db.js';
 import { J, pick, now } from '../lib/util.js';
@@ -231,7 +232,7 @@ export function consistency(orgId, projectId, sections, lang) {
   // Totals agree with their rows: budget lines versus the plan's total budget.
   if (projectId) {
     const plan = one(`SELECT data FROM records WHERE entity='TrainingPlan' AND project_id=?`, projectId); const total = Number(J(plan?.data, {}).total_budget || 0);
-    const lines = all(`SELECT data FROM records WHERE entity='BudgetLine' AND project_id=?`, projectId).reduce((s, r) => s + Number(J(r.data, {}).allocated_amount || J(r.data, {}).amount || 0), 0);
+    const lines = moneyTotal(orgId, all(`SELECT data FROM records WHERE entity='BudgetLine' AND project_id=?`, projectId).map(r => { const d = J(r.data, {}); return { v: d.allocated_amount || d.amount || 0, currency: d.currency }; }), 'v', lang).amount;
     if (total && lines && Math.abs(total - lines) / total > 0.01 && sections.some(s => /BudgetLine|ter/.test(s.source || '') || s.builtin)) out.push({ code: 'budgetTotal', location: 'BudgetLine', blocking: false, total, lines });
     const bad = all(`SELECT data FROM records WHERE entity='TrainingCourse' AND project_id=?`, projectId).map(r => J(r.data, {})).filter(c => !checkRules(c).ok);
     if (bad.length && sections.some(s => /training|ter/i.test(s.source || '') || s.builtin)) out.push({ code: 'goldenRules', location: bad.map(c => c.training_code).join(', '), blocking: true, n: bad.length });

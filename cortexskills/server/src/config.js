@@ -37,6 +37,8 @@ export const config = {
   smtp: { host: process.env.SMTP_HOST || '', port: Number(process.env.SMTP_PORT || 587), secure: process.env.SMTP_SECURE === 'true', user: process.env.SMTP_USER || '', pass: process.env.SMTP_PASS || '', from: process.env.SMTP_FROM || '' },
   whatsapp: { apiBase: (process.env.WHATSAPP_API_BASE || 'https://graph.facebook.com/v21.0').replace(/\/$/, ''), token: process.env.WHATSAPP_TOKEN || '', phoneNumberId: process.env.WHATSAPP_PHONE_NUMBER_ID || '',
     verifyToken: process.env.WHATSAPP_VERIFY_TOKEN || '', appSecret: process.env.WHATSAPP_APP_SECRET || '', template: process.env.WHATSAPP_TEMPLATE || '', templateLang: process.env.WHATSAPP_TEMPLATE_LANG || '' },
+  // Most rows a user may paste into a Multi-Entry at once (SRS 1.8 FR-DA-MRE-22).
+  pasteMaxRows: Math.max(1, Number(process.env.PASTE_MAX_ROWS || 1000)),
   minNode: '22.13.0',
   cacheTtlMs: 30000,
 };

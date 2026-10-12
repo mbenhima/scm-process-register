@@ -52,7 +52,8 @@ export async function download(path, fallbackName) {
 
 /** CSV of exactly the rows and columns on screen, UTF-8 with BOM so accents and Arabic open correctly (FR-DA-REP-04). */
 export function downloadCsv(name, columns, rows) {
-  const esc = v => { const s = v == null ? '' : String(v); return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  // Text that a spreadsheet would run as a formula is stored as typed and neutralized here (NFR-DA-SEC-21).
+  const esc = v => { let s = v == null ? '' : String(v); if (typeof v === 'string' && /^[=+\-@\t\r]/.test(s) && !/^[-+]?\d[\d\s.,]*$/.test(s)) s = "'" + s; return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const text = '﻿' + [columns.map(esc).join(','), ...rows.map(r => r.map(esc).join(','))].join('\r\n');
   const url = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
   const a = document.createElement('a'); a.href = url; a.download = `${name}_${new Date().toISOString().slice(0, 10)}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(url), 2000);

@@ -11,7 +11,7 @@ export function solutionPack(id) { return cat.get('solutionPack', id); }
 export function orgConfig(orgId) {
   const c = one(`SELECT * FROM org_config WHERE org_id=?`, orgId);
   if (!c) return null;
-  return { ...c, addons: J(c.addons, []), compliance: J(c.compliance, []), justification_required: !!c.justification_required, sme_mode: !!c.sme_mode };
+  return { ...c, addons: J(c.addons, []), compliance: J(c.compliance, []), currencies: [...new Set([c.currency || 'USD', ...J(c.currencies, [])])], justification_required: !!c.justification_required, sme_mode: !!c.sme_mode };
 }
 
 /** Modules the organization is entitled to, given its pack, add-ons and compliance standards. */

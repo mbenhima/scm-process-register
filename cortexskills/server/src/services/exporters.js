@@ -71,6 +71,8 @@ function drawTable(doc, table, W, font, rtl) {
   doc.y = y + 4; doc.x = 54;
 }
 
+/** Text a spreadsheet would run as a formula (=, +, -, @, tab, carriage return) is exported as text (NFR-DA-SEC-21). */
+export const neutralize = v => (typeof v === 'string' && /^[=+\-@\t\r]/.test(v) && !/^[-+]?\d[\d\s.,]*$/.test(v) ? "'" + v : v);
 export async function toXlsx(model) {
   const wb = new ExcelJS.Workbook(); wb.creator = 'CortexSkills'; wb.created = new Date();
   const ws = wb.addWorksheet(model.id, { views: [{ rightToLeft: model.lang === 'ar', state: 'frozen', ySplit: 3 }] });
@@ -90,7 +92,7 @@ export async function toXlsx(model) {
     s.table.rows.forEach((row, k) => {
       row.forEach((v, i) => {
         const x = ws.getCell(r, i + 1); const num = Number(String(v).replace('%', ''));
-        x.value = v !== '' && !Number.isNaN(num) && /^[\d.\-]+%?$/.test(String(v)) ? num : v;
+        x.value = v !== '' && !Number.isNaN(num) && /^[\d.\-]+%?$/.test(String(v)) ? num : neutralize(v);
         x.font = { name: 'Open Sans', size: 9.5, color: { argb: 'FF' + C.ink } }; x.alignment = { wrapText: true, vertical: 'top' }; x.border = border();
         if (k % 2) x.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + C.light } };
         const rag = RAG[v]; if (rag) x.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + rag } };

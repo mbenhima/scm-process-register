@@ -2,6 +2,7 @@
 import { all, one, run, tx } from '../db.js';
 import { J, S, HttpError, now, uuid, pick } from '../lib/util.js';
 import * as D from './design.js';
+import { orgCurrencies } from './money.js';
 import * as cat from '../catalog.js';
 import { describeStep, SINGLE } from './stepforms.js';
 
@@ -24,7 +25,14 @@ export function isLocked(projectId, phase) {
 function stepDef(orgId, stepId, rel) {
   const s = D.get(orgId, 'step', stepId, { releaseId: rel }) || cat.get('step', stepId); if (!s) return null;
   const mp = D.get(orgId, 'mp', s.mp, { releaseId: rel }); const u = D.list(orgId, 'uft', { releaseId: rel }).find(x => (x.steps || []).includes(s.id));
-  return { step: s, form: describeStep(s, { mpName: mp?.name, inputs: u?.input }) };
+  const form = describeStep(s, { mpName: mp?.name, inputs: u?.input });
+  // Every amount carries its currency (SRS 1.8 FR-DA-I18N-09): a Currency column follows the first amount column.
+  const mi = (form.fields || []).findIndex(f => f.type === 'number' && /(^|_)(budget|amount|cost|price|fee)(_|$)/.test(f.key));
+  if (mi >= 0 && !form.fields.some(f => f.key === 'currency')) {
+    const c = orgCurrencies(orgId);
+    form.fields = [...form.fields.slice(0, mi + 1), { key: 'currency', type: 'select', label: { en: 'Currency', fr: 'Devise', ar: 'العملة' }, help: { en: 'Currency of the amount; the organization’s default when left empty.', fr: 'Devise du montant ; celle de l’organisation si elle est laissée vide.', ar: 'عملة المبلغ؛ عملة المؤسسة إذا تُركت فارغة.' }, options: c.enabled.map(x => ({ value: x, label: x })), default: c.default, width: 90 }, ...form.fields.slice(mi + 1)];
+  }
+  return { step: s, form };
 }
 function recordOf(t, stepId, kind, create = false, userId = null) {
   let rec = one(`SELECT * FROM step_records WHERE task_instance_id=? AND step_id=?`, t.id, stepId);
@@ -49,7 +57,7 @@ function guard(req, taskId, stepId) {
   if (isLocked(ctx.t.project_id, ctx.phase)) throw new HttpError(409, 'err.stepLocked');
   const d = stepDef(req.orgId, stepId, ctx.rel); return { ...ctx, d };
 }
-function validateValues(fields, data, { partial = true } = {}) {
+export function validateValues(fields, data, { partial = true } = {}) {
   const errors = {};
   for (const f of fields) {
     const v = data[f.key]; const empty = v == null || String(v).trim() === '';
@@ -213,4 +221,19 @@ export function suggestRows(req, taskId, stepId) {
   } return r; });
   run(`INSERT INTO ai_usage_log(id,org_id,project_id,use_case_id,record_ref,user_id,outcome,source,confidence,question,created_at,engine) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, uuid(), req.orgId, t.project_id, null, 'Step:' + stepId, req.user.id, 'Proposed', 'built-in', 0.6, stepId, now(), 'built-in');
   return { rows, engine: 'built-in', reason: rows.length ? null : 'noContext' };
+}
+
+/** The fields of a multi-record step, after the rights and lock checks (structured paste, FR-DA-MRE-22). */
+export function stepTableFields(req, taskId, stepId) {
+  const { d } = guard(req, taskId, stepId); if (SINGLE.has(d.form.kind) || d.form.kind === 'system') throw new HttpError(422, 'err.wrongPattern');
+  return d.form.fields;
+}
+/** Current data of the rows of a step (to keep what a paste overwrites, so it can be undone). */
+export function stepRowData(req, taskId, stepId, ids) {
+  const { t } = guard(req, taskId, stepId); const rec = recordOf(t, stepId); if (!rec || !ids.length) return {};
+  return Object.fromEntries(all(`SELECT id, data FROM step_rows WHERE step_record_id=? AND id IN (${ids.map(() => '?').join(',')})`, rec.id, ...ids).map(r => [r.id, J(r.data, {})]));
+}
+export function restoreRow(req, taskId, stepId, rowId, data) {
+  const { t } = guard(req, taskId, stepId); const rec = recordOf(t, stepId); if (!rec) return false;
+  return run(`UPDATE step_rows SET data=?, updated_by=?, updated_at=? WHERE id=? AND step_record_id=?`, S(data), req.user.id, now(), rowId, rec.id).changes > 0;
 }

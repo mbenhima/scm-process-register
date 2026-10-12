@@ -23,7 +23,7 @@ r.get('/meta/entities', ah(req => {
     count: one(`SELECT COUNT(*) n FROM records WHERE entity=? AND (org_id=? OR (org_id IS NULL AND ?=1))`, d.name, req.orgId, d.global ? 1 : 0).n }));
 }));
 
-function guard(req, entity, write) {
+export function guard(req, entity, write) {
   const def = entityDef(entity);
   if (!has(req, permFor(def, write))) throw new HttpError(403, 'err.forbidden', { permission: permFor(def, write) });
   if (def.perm === 'module' && !entitledModules(req.orgId).has(def.module)) throw new HttpError(403, 'err.notEntitled', { feature: def.module });

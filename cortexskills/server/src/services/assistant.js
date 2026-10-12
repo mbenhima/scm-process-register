@@ -1,5 +1,6 @@
 // AI Assistant: data-query mode (fixed intents, each tied to one permission checked after matching and
 // before querying — FR-DA-AST-02) and application-help mode (retrieval over the FAQ/help corpus — FR-DA-AST-04).
+import { moneyTotal } from './money.js';
 import { one, all } from '../db.js';
 import { J, pick } from '../lib/util.js';
 import { t } from '../i18n.js';
@@ -26,8 +27,8 @@ const INTENTS = [
       return { pct: reg ? Math.round(Math.min(100, resp * 100 / reg)) : 0, n: resp }; } },
   { id: 'budget', perm: 'm18.view', kw: 'budget spend cost dépenses coût الميزانية التكلفة', run: r => {
       const rows = all(`SELECT data FROM records WHERE entity='BudgetLine' AND org_id=?`, r.orgId).map(d => J(d.data));
-      const planned = rows.reduce((s, x) => s + (x.planned_amount || 0), 0), actual = rows.reduce((s, x) => s + (x.actual_amount || 0), 0);
-      return { planned: Math.round(planned).toLocaleString('en-US'), actual: Math.round(actual).toLocaleString('en-US'), pct: planned ? Math.round(actual * 100 / planned) : 0 }; } },
+      const P = moneyTotal(r.orgId, rows, 'planned_amount', r.lang), A = moneyTotal(r.orgId, rows, 'actual_amount', r.lang);
+      return { planned: P.text, actual: A.text + (A.note ? ' — ' + A.note : ''), pct: P.amount && A.amount != null ? Math.round(A.amount * 100 / P.amount) : 0 }; } },
   { id: 'themes', perm: 'm49.view', kw: 'priority themes training plan top thèmes prioritaires plan de formation المحاور ذات الأولوية خطة التكوين', run: r => {
       const x = all(`SELECT data FROM records WHERE entity='TrainingTheme' AND org_id=?${r.projectId ? ' AND project_id=?' : ''} ORDER BY json_extract(data,'$.priority_rank') LIMIT 3`, r.orgId, ...(r.projectId ? [r.projectId] : [])).map(d => pick(J(d.data).name, r.lang));
       return { list: x.join(' · ') || '—' }; } },

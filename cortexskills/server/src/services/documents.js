@@ -4,6 +4,7 @@
 // processes), expected impact, perspectives and the prioritized plan with its detailed trainings. Every section is
 // bound to a data source; a section without data prints a notice naming the step that provides it (FR-DA-DGC-03),
 // and the document lists its sources and the date of its data (FR-DA-DGC-02).
+import { moneyTotal } from './money.js';
 import { all, one } from '../db.js';
 import { J, pick, now } from '../lib/util.js';
 import { t } from '../i18n.js';
@@ -134,7 +135,7 @@ export function buildTer(orgId, projectId, lang = 'en', meta = {}) {
   sec('7. ' + T('annexes'), { table: { columns: [T('form'), T('population'), T('sections')], rows: qs.flatMap(q => (q.forms || []).map(f => [`${f.form || f.code} — ${P(f.name)}`, t('pop.' + f.population, lang), String((f.sections || []).length)])) } });
   put(7, 1, det.annex);
   // Consistency checks (FR-DA-DGC-07): totals agree with their rows, mandatory sections filled.
-  if (plan && budget.length) { const sum = budget.reduce((s, b) => s + (Number(b.planned_amount) || 0), 0); if (Math.abs(sum - Number(plan.total_budget || 0)) > 1) findings.push({ code: 'budgetTotal', blocking: false, location: '5', planned: sum, total: plan.total_budget }); }
+  if (plan && budget.length) { const sum = moneyTotal(orgId, budget, 'planned_amount', lang).amount; if (sum != null && Math.abs(sum - Number(plan.total_budget || 0)) > 1) findings.push({ code: 'budgetTotal', blocking: false, location: '5', planned: sum, total: plan.total_budget }); }
   if (!themes.length) findings.push({ code: 'noThemes', blocking: true, location: '5' });
   for (const s of S) if (s.notice) findings.push({ code: 'missingData', blocking: false, location: s.heading });
   sec(T('sources'), { text: T('sourcesIntro', { date: new Date(meta.dataAsOf || now()).toLocaleString(lang === 'fr' ? 'fr-FR' : lang === 'ar' ? 'ar-MA' : 'en-GB') }), table: { columns: [T('source'), T('records'), T('step'), T('latest')], rows: sources.map(x => [x.source, String(x.records), x.step, x.latest ? x.latest.slice(0, 10) : '—']) } });

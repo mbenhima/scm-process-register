@@ -10,6 +10,7 @@ import { NAV, NAV_GROUPS } from '../nav.js';
 import { getLanguages } from '../i18n.js';
 import bcrypt from 'bcryptjs';
 import { hashPassword } from '../auth.js';
+import { config } from '../config.js';
 
 const r = Router();
 const DEFAULT_PREFS = { dock: 'left', pinned: true, density: 'comfortable', pageSize: 20, panels: { nav: 260, context: 320, contextOpen: false, contextView: 'assistant' }, tables: {}, favorites: ['/', '/my-tasks', '/projects'], collapsed: [], channels: { alerts: ['inapp', 'email'], tasks: ['inapp'], approvals: ['inapp', 'email'], questionnaires: ['inapp'], system: ['inapp'] } };
@@ -22,7 +23,7 @@ r.get('/me', ah(req => {
   const eff = req.orgId ? effectiveConfig(req.orgId) : null;
   return {
     user: req.user, lang: req.lang, roles: userRoles(req.user.id), permissions: perms, org, group, foreignReadOnly: req.foreignReadOnly,
-    homeOrgId: req.user.org_id, config: eff, licence: req.orgId ? getLicenceProvider(req.orgId).check() : null, prefs: prefsOf(req.user.id),
+    homeOrgId: req.user.org_id, config: eff, licence: req.orgId ? getLicenceProvider(req.orgId).check() : null, prefs: prefsOf(req.user.id), limits: { pasteMaxRows: config.pasteMaxRows },
   };
 }));
 r.put('/me/language', ah(req => {

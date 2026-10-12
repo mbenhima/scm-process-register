@@ -84,6 +84,12 @@ function createTenants(pwHash) {
     run(`UPDATE org_config SET sme_mode=0 WHERE org_id=?`, id);
     orgs.push({ id, v, vi: verticals.length + 1, seg: 'LARGE', domain: sc.domain, lang: sc.lang, name: sc.name, showcase: true });
   }
+  // Currencies (FR-DA-I18N-09): the Moroccan demonstration organizations keep their amounts in dirhams and enable
+  // the euro and the dollar, with dated exchange rates for converted totals.
+  for (const o of orgs) {
+    run(`UPDATE org_config SET currency='MAD', currencies=? WHERE org_id=?`, S(['MAD', 'EUR', 'USD']), o.id);
+    for (const [f, rate] of [['EUR', 10.85], ['USD', 9.98]]) run(`INSERT INTO exchange_rates(id,org_id,from_cur,to_cur,rate,as_of,source,updated_at) VALUES(?,?,?,?,?,?,?,?)`, U(`fx:${o.id}:${f}`), o.id, f, 'MAD', rate, daysAgo(12).slice(0, 10), 'Demonstration rate', daysAgo(12));
+  }
   // Users: one account per standard role (Large) or the core SME roles, all with the demonstration password.
   for (const o of orgs) {
     const r = rng('users:' + o.id); o.users = [];

@@ -1,6 +1,7 @@
 // Detailed sections of the Training Plan document (DT-PLAN, SRS 4.45): plan overview, programs, one sheet per training
 // (identity, objectives, half-day agenda, value per persona, sessions, competences targeted, golden rules), calendar,
 // budget, providers and evaluation plan. Every row is read from the project's records.
+import { moneyTotal, fmtMoney, orgCurrencies } from './money.js';
 import crypto from 'node:crypto';
 import { all, one } from '../db.js';
 import { J, pick } from '../lib/util.js';
@@ -48,8 +49,8 @@ export function planSource(kind, ctx) {
   switch (kind) {
     case 'planOverview': {
       const gd = courses.reduce((s, c) => s + (Number(c.duration_days) || 0) * (Number(c.groups) || 1), 0);
-      return { body: { text: x('overviewText', lang, { year: plan?.plan_year || '', p: programs.length, c: courses.length, d: courses.reduce((s, c) => s + (Number(c.duration_days) || 0), 0), gd, b: fmtN(plan?.total_budget) }),
-        kv: [[x('year', lang), String(plan?.plan_year || '')], [x('status', lang), st(plan?.status)], [x('budget', lang), fmtN(plan?.total_budget)], [x('totalDays', lang), String(plan?.total_days ?? '')], [x('realization', lang), `${plan?.realization_rate ?? '—'} %`],
+      return { body: { text: x('overviewText', lang, { year: plan?.plan_year || '', p: programs.length, c: courses.length, d: courses.reduce((s, c) => s + (Number(c.duration_days) || 0), 0), gd, b: fmtMoney(plan?.total_budget, plan?.currency || orgCurrencies(orgId).default, lang) }),
+        kv: [[x('year', lang), String(plan?.plan_year || '')], [x('status', lang), st(plan?.status)], [x('budget', lang), fmtMoney(plan?.total_budget, plan?.currency || orgCurrencies(orgId).default, lang)], [x('totalDays', lang), String(plan?.total_days ?? '')], [x('realization', lang), `${plan?.realization_rate ?? '—'} %`],
           [x('programs', lang), String(programs.length)], [x('trainings', lang), String(courses.length)], [x('traineeDays', lang), String(gd)]] }, fingerprint: fp([plan, ...courses].filter(Boolean)) };
     }
     case 'planPrograms':
@@ -83,8 +84,8 @@ export function planSource(kind, ctx) {
       return { body: { table: { columns: [x('month', lang), x('item', lang), x('date', lang), x('status', lang)], rows } }, fingerprint: fp([...wbs, ...ses]) };
     }
     case 'planBudget': {
-      const bl = recs('BudgetLine'); if (!bl.length) return notice(); const s = k => bl.reduce((a, b) => a + (Number(b[k]) || 0), 0);
-      return { body: { table: { columns: [x('trainings', lang), x('allocated', lang), x('committed', lang), x('actual', lang), x('refund', lang)], rows: [...bl.map(b => [P(b.label), fmtN(b.allocated_amount), fmtN(b.committed_amount), fmtN(b.actual_amount), fmtN(b.refund_forecast)]), [x('total', lang), fmtN(s('allocated_amount')), fmtN(s('committed_amount')), fmtN(s('actual_amount')), fmtN(s('refund_forecast'))]], trace: bl.map(b => ({ type: 'record', entity: 'BudgetLine', id: b._id, version: b._v })) } }, fingerprint: fp(bl) };
+      const bl = recs('BudgetLine'); if (!bl.length) return notice(); const s = k => moneyTotal(orgId, bl, k, lang).text; const cm = (n, b) => fmtMoney(n, b.currency || orgCurrencies(orgId).default, lang); const note = moneyTotal(orgId, bl, 'allocated_amount', lang).note;
+      return { body: { ...(note ? { text: note } : {}), table: { columns: [x('trainings', lang), x('allocated', lang), x('committed', lang), x('actual', lang), x('refund', lang)], rows: [...bl.map(b => [P(b.label), cm(b.allocated_amount, b), cm(b.committed_amount, b), cm(b.actual_amount, b), cm(b.refund_forecast, b)]), [x('total', lang), s('allocated_amount'), s('committed_amount'), s('actual_amount'), s('refund_forecast')]], trace: bl.map(b => ({ type: 'record', entity: 'BudgetLine', id: b._id, version: b._v })) } }, fingerprint: fp(bl) };
     }
     case 'planVendors': {
       const v = orgRecs('Vendor'); if (!v.length) return notice();

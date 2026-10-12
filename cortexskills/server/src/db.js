@@ -84,6 +84,9 @@ const TABLES = {
   obs_roles: `id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE, node_id TEXT REFERENCES obs_nodes(id) ON DELETE SET NULL, code TEXT, name TEXT NOT NULL, mission TEXT, responsibilities TEXT, competences TEXT, reports_to TEXT, access_roles TEXT DEFAULT '[]', functions TEXT DEFAULT '[]', status TEXT DEFAULT 'Active', version INTEGER DEFAULT 1, updated_by TEXT, updated_at TEXT`,
   obs_assignments: `id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE, role_id TEXT NOT NULL REFERENCES obs_roles(id) ON DELETE CASCADE, user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, start_date TEXT, end_date TEXT, allocation INTEGER DEFAULT 100, holder_type TEXT DEFAULT 'Holder', version INTEGER DEFAULT 1, updated_by TEXT, updated_at TEXT`,
   prompt_specs: `org_id TEXT NOT NULL, use_case_id TEXT NOT NULL, fields TEXT NOT NULL, field_versions TEXT DEFAULT '{}', version INTEGER DEFAULT 1, status TEXT DEFAULT 'Draft', model TEXT, updated_by TEXT, updated_at TEXT, PRIMARY KEY (org_id, use_case_id)`,
+  // Structured paste of records into a Multi-Entry: one audited, undoable operation (SRS 1.8 FR-DA-MRE-21, PasteOperation).
+  paste_operations: `id TEXT PRIMARY KEY, org_id TEXT NOT NULL, user_id TEXT, target TEXT NOT NULL, target_kind TEXT DEFAULT 'entity', project_id TEXT, format TEXT, mapping TEXT DEFAULT '[]', created TEXT DEFAULT '[]', changed TEXT DEFAULT '[]', rejected TEXT DEFAULT '[]', before_val TEXT DEFAULT '{}', undo_state TEXT DEFAULT 'Applied', created_at TEXT, undone_at TEXT`,
+  exchange_rates: `id TEXT PRIMARY KEY, org_id TEXT NOT NULL, from_cur TEXT NOT NULL, to_cur TEXT NOT NULL, rate REAL NOT NULL, as_of TEXT NOT NULL, source TEXT, updated_by TEXT, updated_at TEXT`,
   ai_settings: `org_id TEXT PRIMARY KEY REFERENCES organizations(id) ON DELETE CASCADE, provider TEXT, endpoint TEXT, model TEXT, temperature REAL, max_tokens INTEGER, secret TEXT, enabled INTEGER DEFAULT 0, last_test TEXT, updated_by TEXT, updated_at TEXT`,
 };
 const INDEXES = [
@@ -126,12 +129,15 @@ const INDEXES = [
   `CREATE INDEX IF NOT EXISTS ix_obs_assign_user ON obs_assignments(user_id)`,
   `CREATE INDEX IF NOT EXISTS ix_attach_owner ON attachments(org_id, owner_type, owner_id)`,
   `CREATE INDEX IF NOT EXISTS ix_versions_rec ON entity_versions(record_id)`,
+  `CREATE INDEX IF NOT EXISTS ix_paste_ops ON paste_operations(org_id, user_id, created_at)`,
+  `CREATE INDEX IF NOT EXISTS ix_fx ON exchange_rates(org_id, from_cur, to_cur, as_of)`,
   // The questionnaire event log is immutable (FR-DA-COMM-08): updates and deletes are refused by the data layer.
   `CREATE TRIGGER IF NOT EXISTS q_events_no_update BEFORE UPDATE ON q_events BEGIN SELECT RAISE(ABORT, 'q_events is append-only'); END`,
   `CREATE TRIGGER IF NOT EXISTS q_events_no_delete BEFORE DELETE ON q_events WHEN (SELECT COUNT(*) FROM organizations WHERE id=OLD.org_id) > 0 BEGIN SELECT RAISE(ABORT, 'q_events is append-only'); END`,
 ];
 // Columns added by later releases are appended here: [table, column, definition].
 const COLUMNS = [
+  ['org_config', 'currencies', "TEXT DEFAULT '[]'"],
   ['projects', 'phase', 'INTEGER'],
   ['users', 'phone', 'TEXT'],
   ['projects', 'design_release_id', 'TEXT'],
