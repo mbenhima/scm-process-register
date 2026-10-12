@@ -25,7 +25,7 @@ const logo = (s, file, x, y, w) => { const f = path.join(BRAND, file); const b =
 let pageNo = 0, section = '';
 function footer(s) {
   s.addShape(pres.shapes.LINE, { x: M, y: H - 0.62, w: W - 2 * M, h: 0, line: { color: C.line, width: 0.75 } });
-  logo(s, 'aivalue-lockup.png', M, H - 0.5, 1.6);
+  logo(s, 'aivalue-lockup-slide.png', M, H - 0.5, 1.6);
   txt(s, `${section} · ${orgName} · ${t('Demonstration data — fictional organization', 'Données de démonstration — organisation fictive')}`, 2.6, H - 0.46, 8.1, 0.3, { fontSize: 10, color: C.muted, align: 'center' });
   txt(s, String(pageNo), W - M - 1, H - 0.46, 1, 0.3, { fontSize: 10, color: C.muted, align: 'right' });
 }
@@ -33,7 +33,7 @@ const navy = () => { const s = pres.addSlide(); pageNo++; s.background = { color
   s.addShape(pres.shapes.OVAL, { x: 9.2, y: -1.8, w: 6.6, h: 6.6, fill: { color: C.azure, transparency: 80 }, line: { color: C.azure, transparency: 100 } }); return s; };
 
 // Title
-{ const s = navy(); logo(s, 'aivalue-lockup-white.png', M, 0.55, 3.0);
+{ const s = navy(); logo(s, 'aivalue-lockup-white-slide.png', M, 0.55, 3.0);
   txt(s, t('APPLICATION SCREENSHOTS', 'CAPTURES D’ÉCRAN DE L’APPLICATION'), M, 2.3, 8, 0.4, { fontSize: 14, bold: true, color: C.green, charSpacing: 3 });
   txt(s, 'CortexSkills', M, 2.75, 8, 1.0, { fontFace: TITLE, fontSize: 44, bold: true, color: C.white });
   txt(s, orgName, M, 3.8, 8, 0.6, { fontSize: 22, color: C.white });
@@ -57,13 +57,13 @@ grouped.forEach(([name, items], gi) => {
   { const s = navy(); txt(s, String(gi + 1).padStart(2, '0'), M, 2.1, 3, 1.1, { fontFace: TITLE, fontSize: 66, bold: true, color: C.green });
     txt(s, name, M, 3.3, 9, 0.9, { fontFace: TITLE, fontSize: 36, bold: true, color: C.white, fit: 'shrink' });
     txt(s, items.map(m => m.title).slice(0, 12).join(' · '), M, 4.3, 8.4, 1.6, { fontSize: 14, color: C.white, fit: 'shrink' });
-    logo(s, 'aivalue-lockup-white.png', M, H - 0.85, 2.2); }
+    logo(s, 'aivalue-lockup-white-slide.png', M, H - 0.85, 2.2); }
   for (const m of items) {
     const s = pres.addSlide(); pageNo++; s.background = { color: C.white }; fig++;
     txt(s, name.toUpperCase(), M, 0.38, 11, 0.32, { fontSize: 14, bold: true, color: C.azure, charSpacing: 2 });
     txt(s, m.title, M, 0.7, W - 2 * M - 3.2, 0.6, { fontFace: TITLE, fontSize: 24, bold: true, color: C.navy, fit: 'shrink', valign: 'middle' });
     txt(s, `${t('Address', 'Adresse')} : ${m.path}`.replace(' :', fr ? ' :' : ':'), W - M - 3.2, 0.85, 3.2, 0.35, { fontSize: 11, color: C.muted, align: 'right' });
-    const f = path.join(dir, m.file); const b = fs.readFileSync(f); const r = b.readUInt32BE(20) / b.readUInt32BE(16);
+    const f = path.join(dir, m.file); const b = fs.readFileSync(f); const r = /\.png$/i.test(m.file) ? b.readUInt32BE(20) / b.readUInt32BE(16) : 900 / 1440; // shoot-pack viewport
     let h = 5.15, w = h / r; if (w > W - 2 * M) { w = W - 2 * M; h = w * r; } const x = (W - w) / 2, y = 1.45;
     s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x - 0.05, y: y - 0.05, w: w + 0.1, h: h + 0.1, fill: { color: C.white }, line: { color: C.line, width: 0.75 }, rectRadius: 0.05 });
     s.addImage({ path: f, x, y, w, h, altText: m.title });

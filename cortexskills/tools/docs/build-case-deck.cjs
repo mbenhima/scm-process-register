@@ -56,7 +56,7 @@ function content(eyebrow, title, subtitle) {
   txt(s, title, M, 0.72, W - 2 * M, 0.72, { fontFace: TITLE, fontSize: 26, bold: true, color: C.navy, fit: 'shrink', valign: 'middle' });
   if (subtitle) txt(s, subtitle, M, 1.44, W - 2 * M, 0.42, { fontSize: 14, color: C.ink, fit: 'shrink' });
   s.addShape(pres.shapes.LINE, { x: M, y: H - 0.62, w: W - 2 * M, h: 0, line: { color: C.line, width: 0.75 } });
-  logo(s, 'aivalue-lockup.png', M, H - 0.5, 1.6);
+  logo(s, 'aivalue-lockup-slide.png', M, H - 0.5, 1.6);
   txt(s, section + '  ·  ' + t('Demonstration data — fictional organization', 'Données de démonstration — organisation fictive'), 2.6, H - 0.46, 8.1, 0.3, { fontSize: 10, color: C.muted, align: 'center' });
   txt(s, String(pageNo), W - M - 1, H - 0.46, 1, 0.3, { fontSize: 10, color: C.muted, align: 'right' });
   return s;
@@ -69,7 +69,7 @@ function divider(no, title, sub) {
   txt(s, no, M, 2.0, 3, 1.2, { fontFace: TITLE, fontSize: 72, bold: true, color: C.green });
   txt(s, title, M, 3.3, 9, 0.9, { fontFace: TITLE, fontSize: 38, bold: true, color: C.white, fit: 'shrink' });
   txt(s, sub, M, 4.25, 9, 0.9, { fontSize: 18, color: C.white });
-  logo(s, 'aivalue-lockup-white.png', M, H - 0.85, 2.2);
+  logo(s, 'aivalue-lockup-white-slide.png', M, H - 0.85, 2.2);
 }
 function screenshot(s, name, x, y, w, maxH = 5) {
   const file = path.join(SHOTS, name + '.png');
@@ -114,7 +114,7 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
   // 1 — Title (§13.3: Navy background, white Montserrat H1, Green tagline)
   { const s = pres.addSlide(); pageNo++; s.background = { color: C.navy };
     s.addShape(pres.shapes.OVAL, { x: 8.9, y: -2.2, w: 7.5, h: 7.5, fill: { color: C.azure, transparency: 82 }, line: { color: C.azure, transparency: 100 } });
-    logo(s, 'aivalue-lockup-white.png', M, 0.55, 3.0);
+    logo(s, 'aivalue-lockup-white-slide.png', M, 0.55, 3.0);
     txt(s, t('FULL CASE · HEALTHCARE · 2026', 'CAS COMPLET · SANTÉ · 2026'), M, 2.0, 7, 0.4, { fontSize: 14, bold: true, color: C.green, charSpacing: 3 });
     txt(s, t('AI skills training engineering ' + K.sub[0], 'Ingénierie de formation aux compétences IA ' + K.sub[1]), M, 2.45, 6.3, 1.9, { fontFace: TITLE, fontSize: 36, bold: true, color: C.white, fit: 'shrink' });
     txt(s, t(`${org}: the project, the Training Engineering Report, the Training Plan and every document produced with CortexSkills`, `${org} : le projet, le Rapport d’ingénierie de formation, le Plan de formation et chaque document produit avec CortexSkills`), M, 4.45, 6.0, 1.2, { fontSize: 17, color: C.white });
@@ -404,7 +404,7 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
       t('Next: waves 2 and 3 of the roadmap and the level-4 (results) evaluation six to twelve months after the trainings.', 'Ensuite : vagues 2 et 3 de la feuille de route et évaluation de niveau 4 (résultats) six à douze mois après les formations.')], M, 2.1, W - 2 * M, 0.85, 15); }
   // Closing (Navy, white logo)
   { const s = pres.addSlide(); pageNo++; s.background = { color: C.navy };
-    logo(s, 'aivalue-logo-white.png', (W - 3.6) / 2, 1.5, 3.6);
+    logo(s, 'aivalue-logo-white-slide.png', (W - 3.6) / 2, 1.5, 3.6);
     txt(s, t('Thank you', 'Merci'), 0, 4.45, W, 0.8, { fontFace: TITLE, fontSize: 36, bold: true, color: C.white, align: 'center' });
     txt(s, 'MEASURABLE · GOVERNED · SUSTAINABLE', 0, 5.35, W, 0.4, { fontSize: 14, bold: true, color: C.green, align: 'center', charSpacing: 3 }); }
 
