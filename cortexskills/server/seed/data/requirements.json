@@ -5319,5 +5319,187 @@
     "ar": "سلامة التركيز والإدخال: مفاتيح ثابتة وحقول مضبوطة وتسلسل الطلبات؛ تقرير المعالجة للملحق L مسلم."
    }
   }
+ },
+ {
+  "id": "FR-DA-I18N-09",
+  "section": "4.14 Internationalization",
+  "text": "The system shall support several currencies: every amount shall carry its currency, an Organization shall set its default currency and the currencies it enables, a user may enter an amount in any enabled currency, and amounts shall be shown and exported with the formats of NFR-DA-I18N-05; a total shall never add amounts of different currencies without a stated conversion rate and date.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "Every amount carries its currency (Currency field added to money entities and step tables, default the Organization’s); Configuration › Currencies sets the default, the enabled currencies and dated exchange rates; documents and the assistant total by currency and convert only with a stated rate and date (services/money.js).",
+    "fr": "Chaque montant porte sa devise (champ Devise ajouté aux entités et tableaux d’étapes avec montants, par défaut celle de l’organisation) ; Configuration › Devises fixe la devise par défaut, les devises activées et des taux datés ; documents et assistant totalisent par devise et ne convertissent qu’avec un taux et une date indiqués.",
+    "ar": "لكل مبلغ عملته؛ الإعداد › العملات يحدد العملة الافتراضية والعملات المفعّلة وأسعار صرف مؤرخة؛ لا يُجمع إلا بسعر وتاريخ محددين."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-15",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall let the user open every Multi-Entry in a Full-Screen Entry Workspace, from an Expand action (a 24-pixel line icon with the accessible name “Open full screen”) always visible in the toolbar of the Multi-Entry and from the keyboard shortcut of Table 4.49-1. The workspace shall fill the whole viewport above the navigation shell and the side panels; keep in a fixed header the title of the Multi-Entry, its context (for example the project and the step), the record count, the save status, the Zoom Controls and the return action; and show the same records, columns, filters, sort and selection as the page.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "Expand action (24-px icon, “Open full screen”) in the toolbar of every inline table, record list and editor table, and Ctrl/Cmd+Shift+F; the workspace covers the viewport above the shell with a fixed header: title, context, record count, save status, Zoom Controls and Return (EntryWorkspace.jsx).",
+    "fr": "Action Agrandir (icône 24 px, « Ouvrir en plein écran ») dans la barre d’outils de chaque tableau, liste et éditeur, et Ctrl/Cmd+Maj+F ; en-tête fixe : titre, contexte, nombre d’enregistrements, état d’enregistrement, zoom et retour.",
+    "ar": "إجراء التوسيع وCtrl/Cmd+Shift+F؛ رأس ثابت بالعنوان والسياق وعدد السجلات وحالة الحفظ والتكبير والعودة."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-16",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall offer Zoom Controls in the workspace: zoom with Ctrl/Cmd and the scroll wheel, or with a pinch on a touch screen or trackpad; a zoom slider; Zoom in and Zoom out buttons; a Fit action that scales the table so that all its visible columns fit the width of the workspace; and Reset to 100 %. The zoom shall range from 50 % to 200 % in steps of 10 %, show its current level as a percentage, keep the active cell in view when the level changes, scale the records area only (never the header, the controls or the dialogs), and be kept per user and per Multi-Entry (TableViewPreference). Without Ctrl/Cmd, the scroll wheel shall scroll the table as it does on the page.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "Ctrl/Cmd + wheel, pinch, slider, Zoom in/out, Fit and 100 %; 50–200 % by 10 %; level shown and announced; active cell kept in view; only the records scale; level kept per user and table in the table preferences.",
+    "fr": "Ctrl/Cmd + molette, pincement, curseur, zoom avant/arrière, Ajuster et 100 % ; 50–200 % par pas de 10 % ; niveau affiché et annoncé ; cellule active visible ; seuls les enregistrements changent d’échelle ; niveau conservé par utilisateur et par tableau.",
+    "ar": "تكبير بـCtrl والعجلة أو القرص، شريط، ملاءمة و100%؛ 50–200% بخطوات 10%؛ يُحفظ المستوى لكل مستخدم وجدول."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-17",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall let the user do in the workspace everything the page allows on the Multi-Entry, so that several entries can be typed, saved, changed and deleted without leaving it: add a row; edit any cell in place; open the Row Editor; duplicate and delete rows with Undo; select rows and apply bulk actions; Save and Save all; filter, sort, resize, reorder and choose columns; and use the keyboard map of Table 4.49-1. Row status, validation, autosave, permissions, quotas and the audit trail shall be those of the page (FR-DA-MRE-03 to 13); the workspace edits the same records as the page, never a copy.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "The workspace shows the same component (never a copy): add, edit in place, Row Editor, duplicate, delete with Undo, select and bulk, Save and Save all, search, filter, sort, resize, reorder and choose columns, keyboard map; autosave, validation and audit unchanged.",
+    "fr": "L’espace affiche le même composant (jamais une copie) : ajout, édition en place, éditeur de ligne, duplication, suppression avec annulation, sélection et actions groupées, enregistrer et tout enregistrer, filtres, tri, colonnes, raccourcis.",
+    "ar": "نفس المكوّن دون نسخة: إضافة وتحرير وحذف مع تراجع وحفظ وتصفية وأعمدة واختصارات."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-18",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall return the user from the workspace to the page with a single action — a “Return to page” button always visible at the end of the workspace header — or with the Escape key. When a cell is being edited, Escape shall first cancel that edit (Table 4.49-1) and a second Escape shall return to the page; when a menu or dialog is open, Escape shall first close it (NFR-DA-FOC-03). On return, the page shall show every change made in the workspace, with pending rows saved or kept with their pending status (FR-DA-MRE-09), the same row scrolled into view, and keyboard focus restored to the active cell or, when none, to the Expand action; no input shall be lost, and a confirmation shall be asked only when a change would otherwise be discarded. The browser Back action shall also return to the page.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "“Return to page” at the end of the header, Escape (cell edit first, then menu or dialog through the overlay stack, then return) and the browser Back button; pending rows saved or kept pending, focus back on the active cell or the Expand action.",
+    "fr": "« Revenir à la page » en fin d’en-tête, Échap (édition de cellule d’abord, puis menu ou dialogue, puis retour) et bouton Précédent du navigateur ; lignes en attente enregistrées ou conservées, focus rendu à la cellule active.",
+    "ar": "زر العودة وEscape بالترتيب وزر الرجوع في المتصفح؛ تُحفظ الصفوف ويعود التركيز إلى الخلية."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-19",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall let the user copy one or several complete records from a word-processing document (for example a Word table, or lines of tab-separated values), a spreadsheet (for example Excel), a CSV or text file, a web page or another application, and paste them into any Multi-Entry, on the page or in the workspace, with Ctrl/Cmd + V or a Paste action: each copied row shall become one record and each copied column one field, starting at the active cell, in the order copied. The system shall read the clipboard as an HTML table, as tab-separated text, or as comma- or semicolon-separated text, and shall add rows below the last one when the pasted rows outnumber the rows below the active cell.",
+  "since": "1.8",
+  "v16": {
+   "status": "Partial",
+   "evidence": {
+    "en": "Ctrl/Cmd+V or Paste in step tables and business-record lists, on the page and in the workspace; clipboard read as HTML table, TSV, CSV or semicolon text; one record per row from the active cell, rows added as needed (lib/paste.js). Matrix editors (RACSI, permissions) offer the workspace and Copy; their letters are set cell by cell.",
+    "fr": "Ctrl/Cmd+V ou Coller dans les tableaux d’étapes et les listes d’enregistrements, sur la page et dans l’espace ; presse-papiers lu comme tableau HTML, TSV, CSV ou texte à points-virgules. Les matrices (RACSI, permissions) offrent l’espace et la copie ; leurs lettres se saisissent cellule par cellule.",
+    "ar": "اللصق في جداول الخطوات وقوائم السجلات؛ المصفوفات (RACSI والصلاحيات) توفر مساحة العمل والنسخ فقط."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-20",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall apply a pasted block directly, with an Undo notification, when its columns match the fields from the active cell and it overwrites no value; otherwise — when it holds a header row, more or fewer columns than the target, columns in a different order, or would overwrite existing values — it shall first show a Paste Preview: the mapping of each pasted column to a field, proposed by header name and then by position and changeable by the user; the columns that will be ignored; the rows that will be added and those that will be overwritten; and the invalid cells, marked. The user shall Apply, adjust the mapping or Cancel. A mapping confirmed by the user shall be proposed again for the next paste into the same Multi-Entry.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "Direct apply with an Undo notice when columns match and nothing is overwritten; otherwise the Paste Preview: mapping by header then position (changeable), ignored columns, rows added and overwritten, invalid cells; the confirmed mapping is proposed again for the same table.",
+    "fr": "Application directe avec annulation si les colonnes correspondent et rien n’est remplacé ; sinon Aperçu du collage : correspondance par titre puis position, colonnes ignorées, lignes ajoutées et remplacées, cellules invalides ; correspondance confirmée reproposée.",
+    "ar": "تطبيق مباشر مع تراجع أو معاينة بالمطابقة والأعمدة المتجاهلة والصفوف والخلايا غير الصالحة."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-21",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall convert each pasted value to its field: dates and numbers read in the user's locale (NFR-DA-I18N-05); a value of a Controlled List matched to its label ignoring case and accents, and otherwise kept as a Custom value (FR-DA-DEU-02); a reference given as an identifier or as “ID (name)” resolved to its record (FR-DA-DEU-04); line breaks inside a cell kept and character formatting removed. Each cell shall be validated like a typed cell (FR-DA-MRE-08): valid cells are kept, invalid cells are flagged with their message and the row status, and no row is ever discarded silently. A paste shall be undone in one action, recorded with the Entry Origin Manual, and written to the audit trail as one operation listing the records created and changed.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "Locale numbers and dates, Controlled-List labels ignoring case and accents else Custom value, “ID (name)” references, line breaks kept and formatting removed; each cell validated; invalid rows kept and flagged; one undo; Entry Origin Manual; one PasteOperation audit entry listing records created and changed (routes/bulkentry.js).",
+    "fr": "Nombres et dates selon la langue, listes contrôlées sans casse ni accents sinon valeur personnalisée, références « ID (nom) », sauts de ligne conservés ; chaque cellule validée ; lignes invalides conservées et signalées ; annulation en une action ; une entrée d’audit PasteOperation.",
+    "ar": "تحويل الأرقام والتواريخ والقوائم والمراجع؛ تحقق من كل خلية؛ تراجع واحد؛ سجل تدقيق واحد."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-22",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall accept up to a configurable number of rows per paste (default 1,000) and apply to every pasted row the user's rights, the Solution Pack quotas (NFR-DA-SEC-08) and the state of the Multi-Entry; it shall refuse a paste into a read-only Multi-Entry or a locked step with a message naming the reason, and skip computed columns, which are recomputed.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "PASTE_MAX_ROWS (default 1,000) checked in the client and the server; rights, quotas, tenant and step lock checked for every row; read-only tables and locked or completed steps refused with the reason; computed and read-only columns skipped.",
+    "fr": "PASTE_MAX_ROWS (1 000 par défaut) vérifié côté client et serveur ; droits, quotas, locataire et verrouillage vérifiés ; tableaux en lecture seule et étapes verrouillées refusés avec la raison ; colonnes calculées ignorées.",
+    "ar": "حد 1000 صف قابل للضبط؛ التحقق من الصلاحيات والحصص والقفل؛ رفض مع ذكر السبب."
+   }
+  }
+ },
+ {
+  "id": "FR-DA-MRE-23",
+  "section": "4.49 Multi-Record Data Entry",
+  "text": "The system shall let the user copy selected cells, or whole rows with their column titles, from any Multi-Entry, as tab-separated text and as an HTML table, so that they paste with their columns into Word, Excel or another application, and back into another Multi-Entry under FR-DA-MRE-19.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "Copy (button and Ctrl/Cmd+C on a selection) writes the rows with their column titles as TSV and as an HTML table; editor tables copy the whole table.",
+    "fr": "Copier (bouton et Ctrl/Cmd+C sur une sélection) écrit les lignes avec les titres des colonnes en TSV et en tableau HTML.",
+    "ar": "النسخ بعناوين الأعمدة بصيغة TSV وجدول HTML."
+   }
+  }
+ },
+ {
+  "id": "NFR-DA-PERF-13",
+  "section": "5.1 Performance",
+  "text": "The Full-Screen Entry Workspace shall open within 1 second for a Multi-Entry of up to 1,000 records; a zoom change shall be rendered within 100 milliseconds; the Paste Preview of 1,000 rows shall appear within 2 seconds and applying it shall complete within 5 seconds, at the 95th percentile.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "Measured in the release QA: workspace opens in about 50 ms, zoom change under 100 ms, 1,000-row Paste Preview and apply within the targets.",
+    "fr": "Mesuré à la recette : ouverture en 50 ms environ, changement de zoom < 100 ms, aperçu et application de 1 000 lignes dans les cibles.",
+    "ar": "تم القياس: فتح ~50 مللي ثانية، تكبير < 100 مللي ثانية، معاينة وتطبيق 1000 صف ضمن الأهداف."
+   }
+  }
+ },
+ {
+  "id": "NFR-DA-SEC-21",
+  "section": "5.2 Security",
+  "text": "Pasted content shall be treated as untrusted input: markup, scripts, styles, embedded objects and images on the clipboard shall be discarded, never rendered or stored; a text value beginning with =, +, -, @, a tab or a carriage return shall be stored as text, never evaluated, and neutralized when exported to a spreadsheet or CSV (formula injection); and every pasted row shall pass the same server-side validation, authorization and tenant checks as a typed row.",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "HTML parsed in an inert DOMParser document, text of cells only (scripts, styles, images dropped); tags and control characters stripped again on the server; text starting with = + - @ tab or CR stored as text and neutralized in CSV and Excel exports; rows validated, authorized and tenant-checked on the server.",
+    "fr": "HTML analysé dans un document inerte, texte des cellules seulement ; balises retirées à nouveau côté serveur ; texte commençant par = + - @ tabulation ou retour chariot neutralisé dans les exports CSV et Excel ; validation, autorisation et contrôle du locataire côté serveur.",
+    "ar": "تجاهل الترميز والنصوص البرمجية؛ تحييد الصيغ عند التصدير؛ تحقق على الخادم."
+   }
+  }
+ },
+ {
+  "id": "NFR-DA-UX-20",
+  "section": "5.5 Usability & Accessibility",
+  "text": "The Full-Screen Entry Workspace shall be accessible: announced to assistive technologies as a labelled dialog, it shall move focus to the active cell on opening, keep focus within it and return focus on leaving (NFR-DA-UX-17); every Zoom Control shall be a labelled button or slider operable by keyboard, with the zoom level announced; the workspace zoom shall complement, never replace or block, the zoom of the browser (WCAG 2.1 SC 1.4.4 and 1.4.10); its opening and closing transitions shall last 200 to 300 milliseconds and be removed when the user prefers reduced motion (NFR-DA-VDS-16); below 768 pixels it shall show the records as the mobile page does, with pinch zoom; and under a right-to-left language the workspace, its controls and its return action shall be mirrored (FR-DA-PNL-08).",
+  "since": "1.8",
+  "v16": {
+   "status": "Met",
+   "evidence": {
+    "en": "Labelled modal dialog, focus to the active cell, Tab kept inside, focus returned; labelled, keyboard-operable zoom buttons and slider with the level announced; browser zoom never blocked; 240 ms transition removed under reduced motion; full width below 768 px with pinch; mirrored in Arabic.",
+    "fr": "Dialogue modal étiqueté, focus sur la cellule active, tabulation contenue, focus rendu ; boutons et curseur de zoom étiquetés et au clavier, niveau annoncé ; zoom du navigateur jamais bloqué ; transition de 240 ms supprimée en mouvement réduit ; plein écran mobile avec pincement ; miroir en arabe.",
+    "ar": "حوار معنون وتركيز محفوظ وأزرار تكبير مُعنونة؛ لا يُمنع تكبير المتصفح؛ حركة 240 مللي ثانية تُزال عند تقليل الحركة؛ معكوس بالعربية."
+   }
+  }
  }
 ]

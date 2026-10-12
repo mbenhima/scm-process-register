@@ -107,3 +107,52 @@ test('error messages come back in the caller\'s language', async () => {
   const r = await call('GET', '/api/projects/00000000-0000-4000-8000-000000000000', tokA, null, { 'Accept-Language': 'fr' });
   assert.equal(r.status, 404); assert.equal(typeof r.data.message, 'string'); assert.ok(r.data.message.length > 0);
 });
+
+// SRS 1.8 — structured paste (FR-DA-MRE-19 – 22, NFR-DA-SEC-21) and currencies (FR-DA-I18N-09).
+const fillRequired = (def, extra = {}) => Object.fromEntries(def.fields.filter(f => f.required).map(f => [f.name, f.type === 'number' ? 1 : f.type === 'date' ? '2026-11-02' : f.type === 'enum' ? f.options[0] : f.type === 'boolean' ? true : 'QA paste ' + f.name]).concat(Object.entries(extra)));
+test('paste: markup removed, formula kept as text, one audited operation, undone once', async () => {
+  const tok = await login(userWithRole(A.id, 'R-01'));
+  const meta = (await call('GET', '/api/meta/entities', tok)).data; const def = meta.find(d => d.name === 'RiskOpportunity');
+  const text = def.fields.find(f => !f.required && ['text', 'string', 'longtext'].includes(f.type) && !f.ml) || def.fields.find(f => ['text', 'string'].includes(f.type));
+  const rows = [{ data: fillRequired(def, { [text.name]: '<b>Bold</b><script>alert(1)</script>=SUM(A1)' }) }, { data: fillRequired(def) }];
+  const ap = await call('POST', '/api/bulk-entry/apply', tok, { target: { kind: 'entity', entity: 'RiskOpportunity' }, format: 'html', rows });
+  assert.equal(ap.status, 200, JSON.stringify(ap.data)); assert.equal(ap.data.created.length, 2);
+  try {
+    const rec = (await call('GET', `/api/records/RiskOpportunity/${ap.data.created[0]}`, tok)).data;
+    const v = typeof rec[text.name] === 'object' ? rec[text.name].en : rec[text.name];
+    assert.equal(v, 'Bold=SUM(A1)'); assert.equal(rec.entry_origin, 'Manual');
+    assert.equal(all(`SELECT id FROM audit_log WHERE entity='PasteOperation' AND entity_id=?`, ap.data.id).length, 1);
+  } finally {
+    const u = await call('POST', `/api/bulk-entry/${ap.data.id}/undo`, tok); assert.equal(u.status, 200); assert.equal(u.data.removed, 2);
+    assert.equal((await call('GET', `/api/records/RiskOpportunity/${ap.data.created[0]}`, tok)).status, 404);
+    assert.equal((await call('POST', `/api/bulk-entry/${ap.data.id}/undo`, tok)).status, 409);
+  }
+});
+test('paste: row limit, other tenant and other users are refused', async () => {
+  const tok = await login(userWithRole(A.id, 'R-01'));
+  const many = Array.from({ length: 1001 }, () => ({ data: { name: 'x' } }));
+  assert.equal((await call('POST', '/api/bulk-entry/preview', tok, { target: { kind: 'entity', entity: 'RiskOpportunity' }, rows: many })).status, 413);
+  const taskB = one(`SELECT id FROM task_instances WHERE org_id=? LIMIT 1`, B.id);
+  if (taskB) assert.equal((await call('POST', '/api/bulk-entry/apply', tok, { target: { kind: 'step', task: taskB.id, step: 'MP-29.4' }, rows: [{ data: { item: 'x' } }] })).status, 404);
+  const projB = one(`SELECT id FROM projects WHERE org_id=? LIMIT 1`, B.id);
+  if (projB) assert.equal((await call('POST', '/api/bulk-entry/apply', tok, { target: { kind: 'entity', entity: 'RiskOpportunity', project: projB.id }, rows: [{ data: { name: 'x' } }] })).status, 404);
+  const opB = one(`SELECT id FROM paste_operations WHERE org_id<>? LIMIT 1`, A.id);
+  if (opB) assert.equal((await call('POST', `/api/bulk-entry/${opB.id}/undo`, tok)).status, 404);
+});
+test('currencies: totals never add different currencies without a stated rate', async () => {
+  const { moneyTotal } = await import('../src/services/money.js');
+  const { run } = await import('../src/db.js'); const prev = one(`SELECT currency, currencies FROM org_config WHERE org_id=?`, A.id);
+  run(`UPDATE org_config SET currency='MAD', currencies='["MAD","EUR","GBP"]' WHERE org_id=?`, A.id);
+  run(`DELETE FROM exchange_rates WHERE org_id=? AND id='test-fx'`, A.id);
+  run(`INSERT INTO exchange_rates(id,org_id,from_cur,to_cur,rate,as_of) VALUES('test-fx',?,'EUR','MAD',10,'2026-01-01')`, A.id);
+  try {
+    const one1 = moneyTotal(A.id, [{ v: 100 }, { v: 50, currency: 'MAD' }], 'v', 'en'); assert.equal(one1.amount, 150); assert.equal(one1.currency, 'MAD');
+    const conv = moneyTotal(A.id, [{ v: 100, currency: 'MAD' }, { v: 10, currency: 'EUR' }], 'v', 'en', { asOf: '2026-06-01' }); assert.equal(conv.amount, 200); assert.ok(conv.converted); assert.match(conv.note, /1 EUR = .*2026-01-01/);
+    const none = moneyTotal(A.id, [{ v: 100, currency: 'MAD' }, { v: 10, currency: 'GBP' }], 'v', 'en'); assert.equal(none.amount, null); assert.match(none.text, /MAD \+ .*GBP/);
+  } finally { run(`DELETE FROM exchange_rates WHERE id='test-fx'`); run(`UPDATE org_config SET currency=?, currencies=? WHERE org_id=?`, prev.currency, prev.currencies, A.id); }
+});
+test('exports neutralize spreadsheet formulas', async () => {
+  const { neutralize } = await import('../src/services/exporters.js');
+  for (const v of ['=SUM(A1)', '+1+1', '@cmd', '-2+3', '\tx']) assert.equal(neutralize(v), "'" + v);
+  for (const v of ['-12', '+3.5', 'Plain', 12]) assert.equal(neutralize(v), v);
+});
