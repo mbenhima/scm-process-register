@@ -11,7 +11,7 @@ const t = (en, fr) => (LANG === 'fr' ? fr : en);
 // CASE=clinic builds the private clinic group scenario (case-clinic.json); default: the regional hospital (case-data.json).
 const CLINIC = process.env.CASE === 'clinic';
 const K = CLINIC ? { the: ['the clinic group', 'le groupe de cliniques'], The: ['The clinic group', 'Le groupe de cliniques'], of: ['of the clinic group', 'du groupe de cliniques'], sub: ['at a private clinic group', 'dans un groupe de cliniques privées'], file: 'PrivateClinics_Case' }
-  : { the: ['the hospital', 'l’hôpital'], The: ['The hospital', 'L’hôpital'], of: ['of the hospital', 'de l’hôpital'], sub: ['at a regional hospital', 'dans un centre hospitalier régional'], file: 'Hospital_Case' };
+  : { the: ['the hospital', 'l’hôpital'], The: ['The hospital', 'L’hôpital'], of: ['of the hospital', 'de l’hôpital'], sub: ['at a public hospital', 'dans un hôpital public'], file: 'PublicHospital_Case' };
 const D = JSON.parse(fs.readFileSync(path.join(__dirname, CLINIC ? 'case-clinic.json' : 'case-data.json'), 'utf8'));
 const PAGES = fs.existsSync(path.join(__dirname, CLINIC ? 'case-pages-clinic.json' : 'case-pages.json')) ? JSON.parse(fs.readFileSync(path.join(__dirname, CLINIC ? 'case-pages-clinic.json' : 'case-pages.json'), 'utf8'))[LANG] || {} : {};
 const L = x => (x && typeof x === 'object' && !Array.isArray(x) ? x[LANG] ?? x.en ?? '' : x ?? '');
@@ -98,6 +98,10 @@ async function bullets(s, items, x, y, w, gap = 0.8, f = 14) {
 // Charts (§9): Azure primary, Muted comparison, Line gridlines, Muted axis text, legend below, no 3D, no gradients.
 const axis = { catAxisLabelColor: C.muted, catAxisLabelFontFace: BODY, catAxisLabelFontSize: 10, valAxisLabelColor: C.muted, valAxisLabelFontFace: BODY, valAxisLabelFontSize: 10, valGridLine: { color: C.line, size: 0.75 }, catGridLine: { style: 'none' }, valAxisLineShow: false, catAxisLineColor: C.line, legendFontFace: BODY, legendFontSize: 10, legendColor: C.muted, legendPos: 'b', dataLabelColor: C.navy, dataLabelFontSize: 10, dataLabelFontBold: true };
 const short = (s, n = 60) => { s = String(s ?? ''); return s.length > n ? s.slice(0, n - 1) + '…' : s; };
+// Values stored as codes in the records, shown in the language of the deck.
+const CODE = { Low: 'Faible', Medium: 'Moyenne', High: 'Élevée', Planned: 'Planifiée', Approved: 'Approuvé', Open: 'Ouverte', Done: 'Terminée', Completed: 'Terminé', Valid: 'Valide', Expiring: 'Expire bientôt', Expired: 'Expirée', Validated: 'Validé', Individual: 'Individuelle', Collective: 'Collective', Virtual: 'Distanciel', 'In-person': 'Présentiel', Blended: 'Mixte', Red: 'Rouge', Amber: 'Ambre', Green: 'Vert', 'In progress': 'En cours', Draft: 'Brouillon', Rejected: 'Rejetée' };
+const code = v => (LANG === 'fr' && CODE[v]) || v || '—';
+const avg = a => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
 const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ? ST[1] : /Red|Rouge/i.test(v) ? ST[0] : C.white;
 
 (async () => {
@@ -160,6 +164,16 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     const org2 = rowsOf(TER, '1.2 ');
     card(s, 8.3, 2.0, 4.43, 4.6); txt(s, t('Organization and headcount', 'Organigramme et effectif'), 8.55, 2.15, 4, 0.4, { fontFace: TITLE, fontSize: 15, bold: true, color: C.navy });
     table(s, [t('Function', 'Fonction'), t('People', 'Effectif')], org2.slice(0, 8).map(r => [r[0], r[r.length - 1]]), 8.55, 2.65, 3.95, [2.85, 1.1], { fontSize: 10.5 }); }
+  { const swot = D.records.FunctionalSwot || []; const so = D.records.StrategicObjective || []; const osw = rowsOf(TER, '1.4 ')[0] || []; const items = (i, k) => [...new Set([...String(osw[i] || '').split(/\n|; /), ...swot.map(x => L(x[k]))].map(z => z.trim()).filter(Boolean))].slice(0, 5).join('\n');
+    const s = content(t('Why this project', 'Pourquoi ce projet'), t(CLINIC ? 'The pressures that made training a strategic lever' : 'A public hospital under pressure: why skills come first', CLINIC ? 'Les pressions qui font de la formation un levier stratégique' : 'Un hôpital public sous pression : pourquoi les compétences d’abord'), t('What the functional SWOTs and the strategic objectives say', 'Ce que disent les SWOT fonctionnels et les objectifs stratégiques'));
+    const cards = [[t('External pressure', 'Pression externe'), items(3, 'threats'), 'TriangleAlert', ST[1]],
+      [t('Opportunities to seize', 'Opportunités à saisir'), items(2, 'opportunities'), 'Sparkles', ST[3]],
+      [t('Weak points today', 'Points faibles aujourd’hui'), items(1, 'weaknesses'), 'Activity', ST[0]],
+      [t('What the direction commits to', 'Ce à quoi la direction s’engage'), so.map(o => `${o.code}: ${L(o.statement)}`).join('\n'), 'Target', C.azureTint]];
+    for (const [i, c] of cards.entries()) { const x = M + (i % 2) * 6.17, y = 2.0 + Math.floor(i / 2) * 2.3; card(s, x, y, 5.97, 2.12, c[3]); await badge(s, c[2], x + 0.25, y + 0.25, 0.55, i === 3 ? C.azure : C.navy);
+      txt(s, c[0], x + 1.0, y + 0.28, 4.7, 0.45, { fontFace: TITLE, fontSize: 15, bold: true, color: C.navy });
+      txt(s, c[1].split('\n').filter(Boolean).map(z => '• ' + z).join('\n') || '—', x + 1.0, y + 0.78, 4.75, 1.28, { fontSize: 12, fit: 'shrink' }); }
+    cap(s, t('Source: SWOT of TER 1.4, functional SWOT records (E2E-25) and strategic objectives of the Scope of Work.', 'Source : SWOT du RIF 1.4, SWOT fonctionnels (E2E-25) et objectifs stratégiques du périmètre.'), M, 6.68, 9); }
   { const s = content(t(CLINIC ? 'Group profile' : 'Hospital profile', 'Profil ' + K.of[1]), t('Key dates and SWOT ' + K.of[0], 'Dates clés et SWOT ' + K.of[1]));
     const dates = rowsOf(TER, '1.3 '); const swot = rowsOf(TER, '1.4 ')[0] || [];
     dates.forEach((d, i) => { const x = M + i * 3.07; card(s, x, 2.0, 2.9, 1.3); txt(s, d[0], x + 0.25, 2.12, 2.4, 0.5, { fontFace: TITLE, fontSize: 22, bold: true, color: C.navy }); txt(s, d[1], x + 0.25, 2.65, 2.5, 0.6, { fontSize: 12 }); });
@@ -186,6 +200,23 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     const mission = rowsOf(TER, '1.5 ');
     table(s, [t('Phase', 'Phase'), t('End-to-end processes', 'Processus de bout en bout'), t('Progress', 'Avancement')], mission.map(r => [{ text: r[0], bold: true }, String(r[1]).split('\n').map(x => x.split(' ')[0]).join(' · '), { text: r[2], fill: ST[4], align: 'center' }]), M, 2.0, W - 2 * M, [3.6, 7.1, 1.43], { fontSize: 11, rowH: 0.62 });
     cap(s, t('Source: Training Engineering Report, section 1.5 “The current mission”.', 'Source : Rapport d’ingénierie de formation, section 1.5 « La mission en cours ».'), M, 6.55, 8); }
+  { const ph = D.workspace.phases || []; const cnt = D.workspace.counts || {};
+    const s = content(t('The run in figures', 'Le déroulé en chiffres'), t(`${tasks.length} end-to-end processes, ${cnt.n || '—'} tasks, all completed`, `${tasks.length} processus de bout en bout, ${cnt.n || '—'} tâches, toutes réalisées`), t('Each process has an owner, its tasks, its dates and the document it produces', 'Chaque processus a un responsable, ses tâches, ses dates et le document qu’il produit'));
+    const rows = ph.map(p => { const it = p.items || []; const st = it.map(x => (x.started_at || '').slice(0, 10)).filter(Boolean).sort()[0] || '—'; const en = it.map(x => (x.completed_at || '').slice(0, 10)).filter(Boolean).sort().pop() || '—';
+      return [{ text: L(p.name), bold: true }, { text: String(it.length), align: 'center' }, { text: `${it.reduce((a, x) => a + (x.done || 0), 0)} / ${it.reduce((a, x) => a + (x.tasks || 0), 0)}`, align: 'center' }, st, en, { text: String([...new Set(it.map(x => x.owner_name))].length), align: 'center' }]; });
+    table(s, [t('Phase', 'Phase'), t('Processes', 'Processus'), t('Tasks done', 'Tâches faites'), t('Start', 'Début'), t('End', 'Fin'), t('Owners', 'Resp.')], rows, M, 2.0, 8.3, [3.1, 1.0, 1.3, 1.05, 1.05, 0.8], { fontSize: 10, rowH: 0.48 });
+    await kpi(s, 9.15, 2.0, 3.58, `${cnt.done || 0} / ${cnt.n || 0}`, t('tasks completed, none overdue or blocked', 'tâches réalisées, aucune en retard ni bloquée'), 'ListChecks', C.green);
+    await kpi(s, 9.15, 3.5, 3.58, String([...new Set(tasks.map(x => x.owner_name))].length), t('process owners from the project team', 'responsables de processus de l’équipe projet'), 'Users', C.navy);
+    await kpi(s, 9.15, 5.0, 3.58, String(docCodes.length), t('published documents, one per process and more', 'documents publiés, un par processus et plus'), 'FileStack', C.navy);
+    cap(s, t('Source: project workspace (phases, processes, tasks).', 'Source : espace projet (phases, processus, tâches).'), M, 6.68, 8); }
+  { const ph = D.workspace.phases || []; const all = ph.flatMap((p, pi) => (p.items || []).map(x => ({ ...x, phase: L(p.name), pi })));
+    const name = e => { const d = DOCS['DT-' + e]; return d ? d.title.replace(/ — [^—]*$/, '') : t('Healthcare-specific process (feeds the TER and the audit)', 'Processus propre au secteur santé (alimente le RIF et l’audit)'); };
+    for (let part = 0; part < 2; part++) {
+      const chunk = part ? all.slice(Math.ceil(all.length / 2)) : all.slice(0, Math.ceil(all.length / 2));
+      const s = content(t('Processes and owners', 'Processus et responsables'), part ? t('The processes of the run (continued)', 'Les processus du déroulé (suite)') : t('Who carried each process of the run', 'Qui a porté chaque processus du déroulé'));
+      const r = chunk.map(x => [x.e2e_id, short(name(x.e2e_id), 58), short(x.phase, 30), x.owner_name || '—', { text: `${x.done}/${x.tasks}`, align: 'center', fill: ST[4] }]);
+      table(s, ['E2E', t('Process — document produced', 'Processus — document produit'), t('Phase', 'Phase'), t('Owner', 'Responsable'), t('Tasks', 'Tâches')], r, M, 2.0, W - 2 * M, [0.9, 5.3, 2.9, 2.13, 0.9], { fontSize: 9.5, rowH: 0.25 });
+    } }
   { const s = content(t('Schedule', 'Calendrier'), t('Work packages and the Gantt chart', 'Lots de travaux et diagramme de Gantt'));
     const sch = rowsOf(TER, '4.2 ');
     table(s, [t('Work package', 'Lot'), t('Start', 'Début'), t('End', 'Fin'), t('Progress', 'Avancement')], sch, M, 2.0, 4.6, [1.9, 1.0, 1.0, 0.7], { fontSize: 10.5 });
@@ -225,6 +256,20 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     const pf = rowsOf(TER, '3.2 ');
     table(s, [t('Function', 'Fonction'), 'MS', 'MO', 'OP', t('Main gaps', 'Écarts principaux')], pf.map(r => [{ text: r[0], bold: true }, { text: r[1], fill: rag(r[1]), align: 'center' }, { text: r[2], fill: rag(r[2]), align: 'center' }, { text: r[3], fill: rag(r[3]), align: 'center' }, short(r[4], 95)]), M, 2.05, W - 2 * M, [2.3, 1.3, 1.3, 1.3, 5.93], { fontSize: 10.5, rowH: 0.5 });
     cap(s, t('Maturity heatmap on the fixed red → green status scale (TER 3.2).', 'Carte de chaleur sur l’échelle de statut fixe rouge → vert (RIF 3.2).'), M, 6.4, 8); }
+  { const pa = (D.records.PerformanceAssessment || []).map(r => ({ ...r, fn: L(r.function_name) })); const fns = [...new Set(pa.map(r => r.fn))]; const lv = ['MS', 'MO', 'OP'];
+    const s = content(t('Performance assessment', 'Évaluation de la performance'), t(`${pa.length} cells scored: function × decision level`, `${pa.length} cases évaluées : fonction × niveau de décision`), t('Score in % of the expected performance, from the assessment records (E2E-26)', 'Score en % de la performance attendue, d’après les enregistrements d’évaluation (E2E-26)'));
+    s.addChart(pres.charts.BAR, lv.map(l => ({ name: l, labels: fns, values: fns.map(f => (pa.find(r => r.fn === f && r.level === l) || {}).score_pct || 0) })), { x: M, y: 1.95, w: 7.6, h: 4.4, barDir: 'col', barGrouping: 'clustered', chartColors: [C.navy, C.azure, C.teal], showLegend: true, ...axis, valAxisMaxVal: 100, valAxisMinVal: 0, catAxisLabelFontSize: 9 });
+    cap(s, t('Performance score by function and decision level (%).', 'Score de performance par fonction et niveau de décision (%).'), M, 6.4, 7);
+    const low = [...pa].sort((a, b) => a.score_pct - b.score_pct).slice(0, 6);
+    table(s, [t('Cell', 'Case'), '%', t('Gap noted', 'Écart relevé')], low.map(r => [L(r.label), { text: String(r.score_pct), fill: rag(r.rag), align: 'center' }, short(L(r.gap_comment), 40)]), 8.45, 2.0, 4.28, [1.6, 0.6, 2.08], { fontSize: 9.5 });
+    cap(s, t('The six weakest cells, with the gap noted.', 'Les six cases les plus faibles, avec l’écart relevé.'), 8.45, 6.4, 4.28); }
+  { const sw = D.records.FunctionalSwot || [];
+    const s = content(t('Functional SWOT', 'SWOT fonctionnels'), t('Strengths and weaknesses, function by function', 'Forces et faiblesses, fonction par fonction'), t(`${sw.length} SWOTs validated with the function heads`, `${sw.length} SWOT validés avec les responsables de fonction`));
+    for (const [i, w] of sw.slice(0, 2).entries()) { const x = M + i * 6.17; card(s, x, 2.0, 5.97, 4.45); await badge(s, i ? 'Building2' : 'Stethoscope', x + 0.25, 2.2, 0.55, C.azure);
+      txt(s, `${L(w.function_name)} — ${code(w.status)}`, x + 1.0, 2.25, 4.7, 0.45, { fontFace: TITLE, fontSize: 15, bold: true, color: C.navy });
+      const q = [[t('Strengths', 'Forces'), w.strengths, ST[4]], [t('Weaknesses', 'Faiblesses'), w.weaknesses, ST[0]], [t('Opportunities', 'Opportunités'), w.opportunities, ST[3]], [t('Threats', 'Menaces'), w.threats, ST[1]]];
+      q.forEach((c, k) => { const xx = x + 0.25 + (k % 2) * 2.78, yy = 2.95 + Math.floor(k / 2) * 1.7; card(s, xx, yy, 2.65, 1.55, c[2]); txt(s, c[0], xx + 0.15, yy + 0.1, 2.35, 0.35, { fontSize: 12, bold: true, color: C.navy }); txt(s, String(L(c[1]) || '—').split(/; /).map(z => '• ' + z).join('\n'), xx + 0.15, yy + 0.48, 2.35, 1.0, { fontSize: 11, fit: 'shrink' }); }); }
+    cap(s, t('Source: FunctionalSwot records (E2E-25), feeding the improvement axes.', 'Source : enregistrements SWOT fonctionnels (E2E-25), à l’origine des axes d’amélioration.'), M, 6.68, 9); }
   { const s = content(t('Competences named in the interviews', 'Compétences citées lors des entretiens'), t('The competences people asked for, by number of mentions', 'Les compétences demandées, par nombre de mentions'), textOf(TER, '3.3 '));
     const cm = rowsOf(TER, '3.3 ').slice(0, 9);
     s.addChart(pres.charts.BAR, [{ name: t('Mentions', 'Mentions'), labels: cm.map(r => short(r[0], 40)), values: cm.map(r => N(r[1])) }], { x: M, y: 1.95, w: 7.6, h: 4.4, barDir: 'bar', chartColors: [C.azure], showValue: true, ...axis, showLegend: false, catAxisOrientation: 'maxMin' });
@@ -243,6 +288,21 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     table(s, ['#', t('Theme', 'Thème'), t('Source', 'Source'), t('Impact', 'Impact'), t('Status', 'Statut')], needs.map(r => [r[0], r[1], r[2], { text: r[3], fill: ST[Math.min(4, Math.max(0, N(r[3]) - 1))], align: 'center' }, r[4]]), 6.45, 2.0, 6.28, [0.35, 3.0, 1.15, 0.75, 1.03], { fontSize: 10 });
     cap(s, t('Training needs register (TER 3.41): every need traced to its source.', 'Registre des besoins (RIF 3.41) : chaque besoin tracé jusqu’à sa source.'), 6.45, 5.45, 6);
     screenshot(s, 'questionnaire', M, 3.8, 5.6, 2.6); }
+  { const sa = D.records.SkillAssessment || []; const lv = [1, 2, 3, 4, 5];
+    const s = content(t('Skills campaign', 'Campagne de compétences'), t('Self-assessed and validated levels side by side', 'Niveaux auto-évalués et validés côte à côte'), t(`${sa.length} assessments of the campaign “${L(sa[0]?.label) || ''}”, closed on ${sa[0]?.campaign_close_date || '—'}`, `${sa.length} évaluations de la campagne « ${L(sa[0]?.label) || ''} », close le ${sa[0]?.campaign_close_date || '—'}`));
+    s.addChart(pres.charts.BAR, [{ name: t('Self-assessed', 'Auto-évalué'), labels: lv.map(String), values: lv.map(l => sa.filter(r => r.self_level === l).length) }, { name: t('Validated by the manager', 'Validé par le manager'), labels: lv.map(String), values: lv.map(l => sa.filter(r => r.validated_level === l).length) }], { x: M, y: 1.95, w: 7.0, h: 4.3, barDir: 'col', barGrouping: 'clustered', chartColors: [C.muted, C.azure], showLegend: true, showValue: true, ...axis, catAxisTitle: t('Level (1–5)', 'Niveau (1–5)') });
+    cap(s, t('Number of assessments at each level.', 'Nombre d’évaluations à chaque niveau.'), M, 6.3, 6);
+    const up = sa.filter(r => r.validated_level > r.self_level).length, down = sa.filter(r => r.validated_level < r.self_level).length, same = sa.length - up - down;
+    await kpi(s, 7.95, 2.0, 4.78, `${avg(sa.map(r => r.self_level)).toFixed(1)} → ${avg(sa.map(r => r.validated_level)).toFixed(1)}`, t('average level, self-assessed → validated', 'niveau moyen, auto-évalué → validé'), 'Scale', C.azure);
+    await kpi(s, 7.95, 3.5, 4.78, `${same} · ${down} · ${up}`, t('confirmed · lowered · raised by the manager', 'confirmés · abaissés · relevés par le manager'), 'UserCheck', C.navy);
+    txt(s, t('Validation by the manager is what turns a self-assessment into a measured gap: only validated levels feed the skill gaps and the needs register.', 'La validation par le manager transforme une auto-évaluation en écart mesuré : seuls les niveaux validés alimentent les écarts et le registre des besoins.'), 7.95, 5.05, 4.78, 1.2, { fontSize: 12.5 }); }
+  { const dm = D.records.TrainingDemand || []; const th = [...new Set(dm.map(r => L(r.theme)))];
+    const s = content(t('Training requests', 'Demandes de formation'), t(`${dm.length} requests received, all traced to a theme`, `${dm.length} demandes reçues, toutes rattachées à un thème`), t('Individual and collective requests from managers and employees (E2E-27)', 'Demandes individuelles et collectives des managers et des agents (E2E-27)'));
+    s.addChart(pres.charts.BAR, ['High', 'Medium', 'Low'].map(pr => ({ name: code(pr), labels: th.map(x => short(x, 34)), values: th.map(x => dm.filter(r => L(r.theme) === x && r.priority === pr).length) })), { x: M, y: 1.95, w: 7.6, h: 4.4, barDir: 'bar', barGrouping: 'stacked', chartColors: [C.navy, C.azure, C.teal], showLegend: true, ...axis, catAxisOrientation: 'maxMin', catAxisLabelFontSize: 9 });
+    cap(s, t('Requests by theme and priority.', 'Demandes par thème et priorité.'), M, 6.4, 7);
+    const by = (k) => Object.entries(dm.reduce((m, r) => ((m[code(r[k])] = (m[code(r[k])] || 0) + 1), m), {}));
+    table(s, [t('Status', 'Statut'), t('Requests', 'Demandes')], by('status').map(([a, b]) => [a, { text: String(b), align: 'center' }]), 8.45, 2.0, 4.28, [3.0, 1.28], { fontSize: 11 });
+    table(s, [t('Type', 'Type'), t('Requests', 'Demandes')], by('demand_type').map(([a, b]) => [a, { text: String(b), align: 'center' }]), 8.45, 3.9, 4.28, [3.0, 1.28], { fontSize: 11 }); }
   { const core = TER.filter(x => /Clinical Care|Soins cliniques/.test(x.heading || '') && /^3\.\d+/.test(x.heading || ''));
     const s = content(t('Focus on the core function', 'Zoom sur la fonction cœur'), t('Clinical Care & Nursing', 'Soins cliniques et infirmiers'), t('Needs, assessment and competences of the function that carries the strategic objective SO-1', 'Besoins, évaluation et compétences de la fonction qui porte l’objectif stratégique SO-1'));
     const needs = core[0]?.table; const comp = core.find(x => (x.table?.columns || []).some(c => /Respondent|Répondant/.test(c)))?.table;
@@ -287,6 +347,12 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
       txt(s, wave.filter(r => N(r[0]) === w).map(r => `• ${r[1]} — ${t('impact', 'impact')} ${r[4]}`).join('\n') || '—', x + 0.3, 2.75, 3.3, 1.8, { fontSize: 13 }); }
     table(s, ['#', t('Improvement axis', 'Axe d’amélioration'), t('Implemented', 'Réalisé'), t('Wave', 'Vague')], per, M, 4.85, W - 2 * M, [0.5, 8.4, 1.6, 1.63], { fontSize: 11 });
     cap(s, t('Source: TER chapter 4 and section 4.1.', 'Source : RIF chapitre 4 et section 4.1.'), M, 6.65, 6); }
+  { const ax = [...(D.records.ImprovementAxis || [])].sort((a, b) => a.priority_rank - b.priority_rank); const ri = D.records.RoadmapInitiative || [];
+    const s = content(t('Improvement axes', 'Axes d’amélioration'), t('Each axis ranked, with its implementation progress', 'Chaque axe classé, avec son avancement'), t('Improvement axes drawn from the SWOTs and followed in the roadmap', 'Axes d’amélioration issus des SWOT et suivis dans la feuille de route'));
+    s.addChart(pres.charts.BAR, [{ name: t('Implemented (%)', 'Réalisé (%)'), labels: ax.map(a => `#${a.priority_rank} ${short(L(a.label), 34)}`), values: ax.map(a => a.implementation_pct) }], { x: M, y: 1.95, w: 7.4, h: 4.2, barDir: 'bar', chartColors: [C.azure], showValue: true, dataLabelFormatCode: '0"%"', valAxisMaxVal: 100, valAxisMinVal: 0, ...axis, showLegend: false, catAxisOrientation: 'maxMin' });
+    cap(s, t('Implementation of each improvement axis, by priority rank.', 'Avancement de chaque axe d’amélioration, par rang de priorité.'), M, 6.25, 7);
+    table(s, [t('Roadmap initiative', 'Initiative de la feuille de route'), t('Wave', 'Vague')], ri.sort((a, b) => a.phase - b.phase).map(r => [L(r.label), { text: String(r.phase), align: 'center' }]), 8.3, 2.0, 4.43, [3.5, 0.93], { fontSize: 11, rowH: 0.42 });
+    txt(s, t(`Average implementation ${Math.round(avg(ax.map(a => a.implementation_pct)))} %: wave 1 axes are deployed, the others are carried by waves 2 and 3.`, `Avancement moyen ${Math.round(avg(ax.map(a => a.implementation_pct)))} % : les axes de la vague 1 sont déployés, les autres sont portés par les vagues 2 et 3.`), 8.3, 4.35, 4.43, 1.3, { fontSize: 12.5 }); }
   { const s = content(t('Risks and controls', 'Risques et contrôles'), t('Each risk reduced by named controls', 'Chaque risque réduit par des contrôles nommés'));
     const risks = rowsOf(TER, '6. ').slice(0, 9);
     table(s, ['ID', t('Risk or opportunity', 'Risque ou opportunité'), t('Category', 'Catégorie'), t('Inherent', 'Inhérent'), t('Residual', 'Résiduel'), t('Controls', 'Contrôles')], risks.map(r => [r[0], r[1], r[2], { text: r[3], fill: N(r[3]) >= 16 ? ST[0] : ST[1], align: 'center' }, { text: r[4], fill: N(r[4]) >= 8 ? ST[1] : ST[3], align: 'center' }, r[5]]), M, 2.0, W - 2 * M, [1.0, 4.6, 1.6, 0.95, 0.95, 3.03], { fontSize: 10.5 });
@@ -326,6 +392,20 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     for (const [i, r] of vp.slice(0, 3).entries()) { const x = M + i * 4.1; card(s, x, 2.0, 3.85, 4.5); await badge(s, ['Briefcase', 'Users', 'Stethoscope'][i], x + 0.25, 2.2, 0.6, i === 0 ? C.azure : C.navy);
       txt(s, r[1], x + 1.0, 2.2, 2.7, 0.7, { fontFace: TITLE, fontSize: 13, bold: true, color: C.navy, fit: 'shrink' });
       txt(s, String(r[2]).split(' · ').join('\n\n'), x + 0.25, 3.0, 3.4, 3.4, { fontSize: 10.5, fit: 'shrink' }); } }
+  { const all = rowsOf(PLAN, 'Trainings', 'Formations'); const ags = rowsOf(PLAN, 'Detailed agendas', 'Programmes détaillés'); const vps = rowsOf(PLAN, 'Value proposition', 'Proposition de valeur');
+    for (const tr of all.slice(1)) {
+      const ag = ags.filter(r => r[0] === tr[1]); const half = [...new Set(ag.map(r => r[1]))]; const mins = ag.reduce((a, r) => a + N(r[4]), 0);
+      const types = Object.entries(ag.reduce((m, r) => ((m[r[2]] = (m[r[2]] || 0) + 1), m), {}));
+      const s = content(t('Training sheet', 'Fiche de formation'), `${tr[1]} — ${tr[2]}`, t(`Level ${tr[3]} · ${tr[4]} day(s) · program ${tr[0]} · ${half.length} half-days, ${ag.length} activities, ${Math.round(mins / 60)} h`, `Niveau ${tr[3]} · ${tr[4]} jour(s) · programme ${tr[0]} · ${half.length} demi-journées, ${ag.length} activités, ${Math.round(mins / 60)} h`));
+      card(s, M, 2.0, 6.0, 2.6); txt(s, t('Learning objectives', 'Objectifs pédagogiques'), M + 0.3, 2.12, 5.5, 0.4, { fontFace: TITLE, fontSize: 14, bold: true, color: C.navy });
+      txt(s, String(tr[5] || '').split('\n').map(x => '• ' + x).join('\n'), M + 0.3, 2.55, 5.45, 1.98, { fontSize: 11.5, fit: 'shrink' });
+      card(s, M, 4.75, 6.0, 1.75, C.azureTint); txt(s, t('Prerequisites and activity mix', 'Prérequis et types d’activités'), M + 0.3, 4.87, 5.5, 0.4, { fontFace: TITLE, fontSize: 14, bold: true, color: C.navy });
+      txt(s, `${tr[6] || '—'}\n${types.map(([a, b]) => `${a}: ${b}`).join(' · ')}`, M + 0.3, 5.3, 5.45, 1.1, { fontSize: 11.5, fit: 'shrink' });
+      txt(s, t('Half-day agenda', 'Déroulé par demi-journée'), 6.85, 2.0, 5.9, 0.4, { fontFace: TITLE, fontSize: 14, bold: true, color: C.navy });
+      table(s, [t('Half-day', 'Demi-journée'), t('Activities', 'Activités'), 'min'], half.slice(0, 6).map(h => { const it = ag.filter(r => r[1] === h); return [{ text: h, bold: true }, short(it.map(r => r[3]).join(' · '), 120), { text: String(it.reduce((a, r) => a + N(r[4]), 0)), align: 'center' }]; }), 6.85, 2.45, 5.88, [1.35, 3.85, 0.68], { fontSize: 9.5, rowH: 0.5 });
+      const vp = vps.filter(r => r[0] === tr[1]).slice(0, 3);
+      if (vp.length) txt(s, t('Personas: ', 'Personas : ') + vp.map(r => r[1]).join(' · '), 6.85, 6.15, 5.88, 0.4, { fontSize: 11, color: C.muted, fit: 'shrink' });
+    } }
   { const s = content(t('Learning design', 'Ingénierie pédagogique'), t('Paths, modules and content assets', 'Parcours, modules et ressources pédagogiques'));
     const lp = rowsOf(TER, '5.3 '); const ca = rowsOf(TER, '5.4 ');
     table(s, [t('Learning path', 'Parcours'), t('Days', 'Jours'), t('Module', 'Module'), t('Modality', 'Modalité'), t('Hours', 'Heures'), t('Design', 'Conception')], lp.map(r => [r[0], r[1], r[2], r[3], r[4], { text: r[5], fill: ST[3] }]), M, 2.0, W - 2 * M, [3.2, 0.8, 3.4, 1.8, 0.9, 2.03], { fontSize: 10.5 });
@@ -344,17 +424,28 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
   divider('05', t('Delivery, evaluation and audit', 'Déploiement, évaluation et audit'), t('Sessions, Kirkpatrick levels, ROI, internal audit and lessons learned', 'Sessions, niveaux de Kirkpatrick, ROI, audit interne et retours d’expérience'));
   { const s = content(t('Sessions and attendance', 'Sessions et présence'), t('Four sessions delivered with their enrolments', 'Quatre sessions réalisées avec leurs inscriptions'));
     const ss = rowsOf(TER, '5.5 '); const en = rowsOf(TER, '5.6 ');
-    table(s, [t('Session', 'Session'), t('Date', 'Date'), t('Capacity', 'Capacité'), t('Trainer', 'Formateur'), t('Enrolled', 'Inscrits')], ss, M, 2.0, 7.6, [3.5, 1.2, 0.9, 1.3, 0.7], { fontSize: 10.5 });
+    table(s, [t('Session', 'Session'), t('Date', 'Date'), t('Capacity', 'Capacité'), t('Trainer', 'Formateur'), t('Enrolled', 'Inscrits')], ss.map(r => [short(r[0], 42), ...r.slice(1)]), M, 2.0, 7.6, [3.2, 1.05, 0.9, 1.65, 0.8], { fontSize: 10 });
     const pres_ = en.filter(r => /Present|Présent/i.test(r[2])).length, done = en.filter(r => /Completed|Terminé|Achevé/i.test(r[3])).length;
     await kpi(s, 8.55, 2.0, 4.18, `${pres_} / ${en.length}`, t('learners present at their session', 'apprenants présents à leur session'), 'UserCheck', C.green);
     await kpi(s, 8.55, 3.55, 4.18, `${done} / ${en.length}`, t('enrolments completed', 'inscriptions achevées'), 'BadgeCheck', C.navy);
-    screenshot(s, 'run_task_steps', M, 4.25, 7.6, 2.25); cap(s, t('A task of the delivery process with its typed steps.', 'Une tâche du processus de déploiement avec ses étapes typées.'), M, 6.55, 7); }
+    screenshot(s, 'run_task_steps', M, 4.6, 7.6, 1.85); cap(s, t('A task of the delivery process with its typed steps.', 'Une tâche du processus de déploiement avec ses étapes typées.'), M, 6.55, 7); }
   { const s = content(t('Evaluation', 'Évaluation'), t('Results measured at three Kirkpatrick levels', 'Résultats mesurés sur trois niveaux de Kirkpatrick'));
     const ep = rowsOf(PLAN, 'Evaluation plan', 'Plan d’évaluation');
     for (const [i, e] of evals.entries()) await kpi(s, M + i * 4.1, 2.0, 3.85, e[2], e[0], ['Smile', 'BookOpenCheck', 'Footprints'][i] || 'ChartColumn', i === 0 ? C.azure : C.navy);
     table(s, [t('Level', 'Niveau'), t('What is measured', 'Ce qui est mesuré'), t('When', 'Quand'), t('Instrument', 'Instrument'), t('Results', 'Résultats')], ep, M, 3.65, W - 2 * M, [1.6, 3.4, 2.3, 3.0, 1.83], { fontSize: 10.5 });
     const cnt = k => certs.filter(r => r[4] === k).length;
     txt(s, t(`Certifications (TER 5.10): ${cnt('Valid')} valid, ${cnt('Expiring')} expiring, ${cnt('Expired')} expired — the expired one triggers an alert and a renewal session.`, `Certifications (RIF 5.10) : ${cnt('Valide') + cnt('Valid')} valides, ${cnt('Expire bientôt') + cnt('Expiring')} à échéance proche, ${cnt('Expiré') + cnt('Expirée') + cnt('Expired')} expirée — l’expirée déclenche une alerte et une session de renouvellement.`), M, 5.7, W - 2 * M, 0.6, { fontSize: 13 }); }
+  { const ev = D.records.Evaluation || []; const lvls = [...new Set(ev.map(e => e.level))].sort();
+    const s = content(t('Evaluation results', 'Résultats d’évaluation'), t('Each evaluation recorded with its score', 'Chaque évaluation enregistrée avec son score'), t(`${ev.length} evaluations linked to the enrolments of the sessions (E2E-07)`, `${ev.length} évaluations reliées aux inscriptions des sessions (E2E-07)`));
+    s.addChart(pres.charts.BAR, [{ name: t('Average score (%)', 'Score moyen (%)'), labels: lvls.map(l => t(`Level ${l}`, `Niveau ${l}`)), values: lvls.map(l => Math.round(avg(ev.filter(e => e.level === l).map(e => e.score_pct)))) }], { x: M, y: 1.95, w: 6.4, h: 4.2, barDir: 'col', chartColors: [C.azure], showValue: true, dataLabelFormatCode: '0"%"', valAxisMaxVal: 100, valAxisMinVal: 0, ...axis, showLegend: false });
+    cap(s, t('Average score by Kirkpatrick level.', 'Score moyen par niveau de Kirkpatrick.'), M, 6.25, 6);
+    table(s, [t('Evaluation', 'Évaluation'), t('Level', 'Niveau'), t('Score', 'Score')], ev.sort((a, b) => a.level - b.level).map(e => [L(e.label), { text: String(e.level), align: 'center' }, { text: e.score_pct + ' %', align: 'center', fill: e.score_pct >= 75 ? ST[3] : e.score_pct >= 60 ? ST[2] : ST[1] }]), 7.3, 2.0, 5.43, [3.2, 1.0, 1.23], { fontSize: 11 }); }
+  { const ce = D.records.Certification || []; const by = k => ce.filter(r => r.status === k).length;
+    const s = content(t('Certifications', 'Certifications'), t('Certifications followed, renewals planned before expiry', 'Certifications suivies, renouvellements planifiés avant échéance'), t('Regulatory and accreditation requirements per employee (E2E-09)', 'Exigences réglementaires et d’accréditation par agent (E2E-09)'));
+    await kpi(s, M, 2.0, 3.9, String(by('Valid')), t('valid certifications', 'certifications valides'), 'BadgeCheck', C.green);
+    await kpi(s, M + 4.08, 2.0, 3.9, String(by('Expiring')), t('expiring within 90 days: renewal session planned', 'à échéance sous 90 jours : session de renouvellement planifiée'), 'CalendarClock', C.navy);
+    await kpi(s, M + 8.16, 2.0, 3.97, String(by('Expired')), t('expired: alert raised to the manager', 'expirée(s) : alerte envoyée au manager'), 'BellRing', C.navy);
+    table(s, [t('Certification', 'Certification'), t('Requirement', 'Exigence'), t('Valid until', 'Valide jusqu’au'), t('Status', 'Statut')], ce.sort((a, b) => String(a.valid_until).localeCompare(String(b.valid_until))).map(r => [L(r.label), r.requirement_code, r.valid_until, { text: code(r.status), fill: r.status === 'Expired' ? ST[0] : r.status === 'Expiring' ? ST[1] : ST[3], align: 'center' }]), M, 3.6, W - 2 * M, [4.6, 2.6, 2.4, 2.53], { fontSize: 11 }); }
   { const s = content(t('ROI and business impact', 'ROI et impact métier'), t('Phillips ROI and the indicators of the ROI study', 'ROI de Phillips et indicateurs de l’étude ROI'), DOCS['DT-E2E-08']?.title);
     const pick = ['KPI-037', 'KPI-012', 'KPI-013', 'KPI-022', 'KPI-023'];
     const rows = pick.map(id => roiKpi.find(r => r[0] === id)).filter(Boolean);
@@ -367,6 +458,11 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     cap(s, t('Findings by grade.', 'Constats par niveau.'), M, 5.2, 5);
     table(s, ['ID', t('Grade', 'Niveau'), t('Requirement', 'Exigence'), t('Statement', 'Constat')], findings.map(r => [r[0], { text: r[1], fill: /Major|majeure/i.test(r[1]) ? ST[0] : /Minor|mineure/i.test(r[1]) ? ST[1] : /Strength|Force|Point fort/i.test(r[1]) ? ST[4] : ST[2] }, r[2], r[3]]), 5.9, 2.0, 6.83, [0.6, 1.7, 1.2, 3.33], { fontSize: 10.5, rowH: 0.55 });
     txt(s, `${t('Strengths', 'Points forts')}: ${AUD[1]?.text || '—'}\n${t('Follow-up', 'Suivi')}: ${AUD[6]?.text || '—'}`, M, 5.6, W - 2 * M, 0.9, { fontSize: 12.5 }); }
+  { const ac = D.records.Action || [];
+    const s = content(t('Action plan', 'Plan d’actions'), t('Corrective actions owned, dated and evaluated', 'Des actions correctives portées, datées et évaluées'), t('Actions raised by the audit and the indicators, each with an owner and an evaluator (governance)', 'Actions issues de l’audit et des indicateurs, chacune avec un porteur et un évaluateur (gouvernance)'));
+    table(s, [t('Action', 'Action'), t('Due date', 'Échéance'), t('Status', 'Statut')], ac.map(a => [L(a.label), a.due_date, { text: code(a.status), fill: a.status === 'Open' ? ST[1] : ST[3], align: 'center' }]), M, 2.0, 7.4, [4.8, 1.3, 1.3], { fontSize: 11.5, rowH: 0.5 });
+    card(s, 8.3, 2.0, 4.43, 4.4, C.azureTint); txt(s, t('How actions are governed', 'Comment les actions sont gouvernées'), 8.55, 2.15, 4, 0.4, { fontFace: TITLE, fontSize: 15, bold: true, color: C.navy });
+    await bullets(s, [t('An owner carries the action, a different person evaluates its effectiveness.', 'Un porteur réalise l’action, une autre personne en évalue l’efficacité.'), t('Overdue actions raise an alert to the owner and the project manager.', 'Une action en retard déclenche une alerte au porteur et au chef de projet.'), t('Closure needs the evaluation: the audit finding is closed only then.', 'La clôture exige l’évaluation : le constat d’audit n’est clos qu’ensuite.')], 8.55, 2.7, 4.0, 1.15, 12); }
   { const rex = (D.records.RexEntry || [])[0] || {}; const s = content(t('Lessons learned', 'Retour d’expérience'), L(rex.title) || t('Lessons learned', 'Retour d’expérience'));
     const cols = [[t('What went well', 'Ce qui a bien fonctionné'), L(rex.what_went_well), C.greenTint, 'ThumbsUp'], [t('What did not', 'Ce qui n’a pas fonctionné'), L(rex.what_did_not), ST[0], 'TriangleAlert'], [t('Root cause', 'Cause racine'), L(rex.root_cause), ST[2], 'Search'], [t('What we will do next time', 'Ce que nous ferons la prochaine fois'), L(rex.recommendation), C.azureTint, 'Lightbulb']];
     for (const [i, c] of cols.entries()) { const x = M + i * 3.07; card(s, x, 2.0, 2.9, 4.4, c[2]); await badge(s, c[3], x + 0.25, 2.25, 0.6, i === 0 ? C.green : C.navy);
@@ -382,6 +478,15 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
       table(s, [t('Code', 'Code'), t('Document', 'Document'), t('Pages', 'Pages')], chunk.slice(0, 10), M, 2.0, 5.95, [1.25, 4.0, 0.7], { fontSize: 9.5, rowH: 0.36 });
       if (chunk.length > 10) table(s, [t('Code', 'Code'), t('Document', 'Document'), t('Pages', 'Pages')], chunk.slice(10), 6.78, 2.0, 5.95, [1.25, 4.0, 0.7], { fontSize: 9.5, rowH: 0.36 });
     } }
+  { const s = content(t('Inside the application', 'Dans l’application'), t('How the teams entered and governed the data', 'Comment les équipes ont saisi et gouverné les données'), t('CortexSkills 1.11 — Standard Application SRS v1.8', 'CortexSkills 1.11 — SRS Standard Application v1.8'));
+    const f = [['ListChecks', t('Typed step forms', 'Formulaires d’étape typés'), t('Each step asks for what it produces: records, matrices, decisions; rows are saved one by one, with Undo.', 'Chaque étape demande ce qu’elle produit : enregistrements, matrices, décisions ; chaque ligne est enregistrée, avec annulation.')],
+      ['Maximize2', t('Full-screen entry', 'Saisie plein écran'), t('Any table opens over the whole screen with zoom (50–200 %), add, save and return to the same row.', 'Tout tableau s’ouvre en plein écran avec zoom (50–200 %), ajout, enregistrement et retour à la même ligne.')],
+      ['ClipboardPaste', t('Paste from Excel or Word', 'Coller depuis Excel ou Word'), t('Lists of staff or trainings are pasted in one step, checked cell by cell, saved and undone as one operation.', 'Les listes d’agents ou de formations se collent en une fois, vérifiées cellule par cellule, enregistrées et annulables en une opération.')],
+      ['Wallet', t('Amounts with their currency', 'Montants avec leur devise'), t('Budgets carry their currency; totals never mix currencies without a stated exchange rate and date.', 'Les budgets portent leur devise ; un total ne mélange jamais des devises sans taux et date indiqués.')],
+      ['UserCheck', t('Two-person publication', 'Publication à deux personnes'), t('A document is published only once a second person approves it; every version is kept.', 'Un document n’est publié qu’après l’approbation d’une seconde personne ; chaque version est conservée.')],
+      ['History', t('Audit trail', 'Piste d’audit'), t('Every change, paste and approval is recorded with its author, date and justification.', 'Chaque modification, collage et approbation est enregistré avec son auteur, sa date et sa justification.')]];
+    for (const [i, c] of f.entries()) { const x = M + (i % 3) * 4.1, y = 2.0 + Math.floor(i / 3) * 2.3; card(s, x, y, 3.85, 2.12); await badge(s, c[0], x + 0.25, y + 0.25, 0.55, i < 3 ? C.azure : C.navy);
+      txt(s, c[1], x + 0.95, y + 0.3, 2.75, 0.5, { fontFace: TITLE, fontSize: 13.5, bold: true, color: C.navy, fit: 'shrink' }); txt(s, c[2], x + 0.25, y + 0.95, 3.4, 1.1, { fontSize: 11.5 }); } }
   { const s = content(t('Traceability', 'Traçabilité'), t('Every number of the report comes from a record', 'Chaque chiffre du rapport provient d’un enregistrement'), textOf(TER, 'Data sources', 'Sources des données'));
     const src = rowsOf(TER, 'Data sources', 'Sources des données');
     table(s, [t('Source', 'Source'), t('Records', 'Enreg.'), t('Process', 'Processus'), t('Last change', 'Dernière modif.')], src.slice(0, 12), M, 2.0, 7.0, [2.9, 1.1, 1.3, 1.7], { fontSize: 10, rowH: 0.3 });
