@@ -1,7 +1,7 @@
 // Shared interface components. Every component takes its colours, sizes and spacing from the design tokens
 // (styles/tokens.css) and follows the focus contract of NFR-DA-FOC-01 – 13: components are defined at module scope,
 // keys are record identifiers, autofocus runs once, validation and saving never move focus or reset a draft.
-import { Children, isValidElement, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Children, isValidElement, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, forwardRef } from 'react';
 import { createPortal } from 'react-dom';
 import * as Icons from 'lucide-react';
 import { useI18n } from '../lib/i18n.jsx';
@@ -88,12 +88,12 @@ export function Card({ title, actions, children, className = '', tint, flat, id 
 
 /* -------------------------------------------------------------------------------------------- buttons */
 /** Button: Primary, Success, Secondary, Ghost or Danger; 32, 40 or 48 px; loading keeps its width (NFR-DA-VDS-11). */
-export function Btn({ icon, children, kind = '', size = '', loading, title, className = '', type = 'button', ...p }) {
+export const Btn = forwardRef(function Btn({ icon, children, kind = '', size = '', loading, title, className = '', type = 'button', ...p }, ref) {
   const iconOnly = !children;
   const tip = title || (iconOnly ? p['aria-label'] : undefined);
-  return <button type={type} className={`btn ${kind} ${size} ${iconOnly ? 'icon' : ''} ${loading ? 'loading' : ''} ${className}`} data-tip={tip} aria-busy={loading || undefined} {...p} disabled={p.disabled || loading}>
+  return <button ref={ref} type={type} className={`btn ${kind} ${size} ${iconOnly ? 'icon' : ''} ${loading ? 'loading' : ''} ${className}`} data-tip={tip} aria-busy={loading || undefined} {...p} disabled={p.disabled || loading}>
     {icon && <Icon name={icon} />}{children}{loading && <Spinner />}</button>;
-}
+});
 /** Runs an async handler with a spinner in the button that started it, never blocking the page (FR-DA-STA-01). */
 export function AsyncBtn({ onClick, ...p }) { const [busy, setBusy] = useState(false); return <Btn {...p} loading={busy} onClick={async e => { setBusy(true); try { await onClick?.(e); } catch { /* reported by the action */ } finally { setBusy(false); } }} />; }
 

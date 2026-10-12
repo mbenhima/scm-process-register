@@ -703,3 +703,15 @@ ul.plain { list-style: none; margin: 0; padding: 0; display: flex; flex-directio
 ul.plain > li > .tree-row { width: 100%; }
 .drawer.task-drawer { width: min(760px, 100%); }
 @media (max-width: 1023px) { .bpmn-layout { grid-template-columns: minmax(0, 1fr); } }
+
+/* Full-screen multi-record entry: the table fills the window and scrolls in both directions; Back, Add row and Save stay in view. */
+.itable-host.itable-full { position: fixed; inset: 0; z-index: var(--aiv-z-modal); background: var(--aiv-white); display: flex; flex-direction: column; margin: 0; padding: 0 var(--aiv-space-6) var(--aiv-space-4); overflow: hidden; }
+.itable-full .itable-fullbar { display: flex; align-items: center; gap: var(--aiv-space-3); padding: var(--aiv-space-4) 0; border-bottom: 1px solid var(--aiv-line); flex-shrink: 0; }
+.itable-full .itable-fulltitle { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.itable-full .itable-fulltitle .strong { font: 700 var(--aiv-fs-18)/1.3 var(--aiv-font-heading); color: var(--aiv-navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.itable-full .dt-toolbar, .itable-full .bulk-bar { flex-shrink: 0; margin-top: var(--aiv-space-3); }
+.itable-full .table-wrap.itable-scroll { flex: 1 1 auto; min-height: 0; overflow: auto; margin-top: var(--aiv-space-3); border: 1px solid var(--aiv-line); border-radius: var(--aiv-radius-card); }
+.itable-full .table-wrap.itable-scroll thead th { position: sticky; top: 0; z-index: var(--aiv-z-sticky); }
+.itable-full .itable-foot { flex-shrink: 0; padding-top: var(--aiv-space-3); }
+@media (max-width: 767px) { .itable-host.itable-full { padding: 0 var(--aiv-space-4) var(--aiv-space-3); } .itable-full .itable-fullbar { flex-wrap: wrap; } }
+.itable-full .itable-fullbar .spacer { flex: 1 1 auto; }

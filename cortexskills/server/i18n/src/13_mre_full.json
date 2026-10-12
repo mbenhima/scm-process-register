@@ -1,0 +1,7 @@
+{
+  "mre.fullScreen": ["Full screen", "Plein écran", "ملء الشاشة"],
+  "mre.backToScreen": ["Back", "Retour", "رجوع"],
+  "mre.allSaved": ["Everything is saved.", "Tout est enregistré.", "تم حفظ كل شيء."],
+  "mre.allSavedShort": ["all saved", "tout est enregistré", "تم حفظ الكل"],
+  "mre.fullErrors": ["{n} row(s) still have errors: they are kept in the table.", "{n} ligne(s) comportent encore des erreurs : elles sont conservées dans le tableau.", "{n} صف(وف) ما زالت بها أخطاء: تم الاحتفاظ بها في الجدول."]
+}

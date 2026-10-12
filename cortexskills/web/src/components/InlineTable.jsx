@@ -59,6 +59,23 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const saveAll = useCallback(() => { for (const r of rowsRef.current) if (r.status === 'dirty' || r.status === 'error') save(r._key); }, [save]);
   const pendingCount = rows.filter(r => r.status === 'dirty' || r.status === 'error' || r.status === 'saving').length;
 
+  // Full-screen entry: the same table (no remount, so focus and typed values stay) fills the window and scrolls;
+  // Add row, Save and Back stay visible. Back, the browser Back button and Esc (outside a cell) return to the screen.
+  const [full, setFull] = useState(false); const fullBtn = useRef(null); const fullRef = useRef(false); fullRef.current = full;
+  const openFull = useCallback(() => { window.history.pushState({ ...(window.history.state || {}), mreFull: id || true }, ''); setFull(true); }, [id]);
+  const closeFull = useCallback(() => {
+    saveAll();
+    const errs = rowsRef.current.filter(r => r.status === 'error').length; if (errs) toast(t('mre.fullErrors', { n: errs }), 'warning');
+    setFull(false); requestAnimationFrame(() => fullBtn.current?.focus());
+  }, [saveAll, toast, t]);
+  const back = useCallback(() => { if (window.history.state?.mreFull) window.history.back(); else closeFull(); }, [closeFull]);
+  useEffect(() => { if (!full) return undefined; const pop = () => { if (fullRef.current) closeFull(); };
+    // Esc anywhere outside a cell or an open list returns to the screen (in a cell, Esc keeps cancelling the edit).
+    const esc = e => { if (e.key === 'Escape' && !e.defaultPrevented && !e.target.closest?.('td, .menu, [role=listbox], [role=dialog]:not(.itable-full)')) { e.preventDefault(); back(); } };
+    const prev = document.body.style.overflow; document.body.style.overflow = 'hidden'; window.addEventListener('popstate', pop); document.addEventListener('keydown', esc);
+    return () => { window.removeEventListener('popstate', pop); document.removeEventListener('keydown', esc); document.body.style.overflow = prev; }; }, [full, closeFull, back]);
+  const saveNow = () => { if (!pendingCount) { toast(t('mre.allSaved'), 'ok'); return; } saveAll(); };
+
   // Warn before leaving a page with unsaved rows; flush pending deletes when the table goes away (FR-DA-MRE-09).
   useEffect(() => { const h = e => { if (rowsRef.current.some(r => r.status === 'dirty' || r.status === 'error')) { e.preventDefault(); e.returnValue = ''; } }; window.addEventListener('beforeunload', h); return () => window.removeEventListener('beforeunload', h); }, []);
   useEffect(() => () => { for (const k of Object.keys(pendingDeletes.current)) { const d = pendingDeletes.current[k]; clearTimeout(d.timer); d.run(); } for (const r of rowsRef.current) if (r.status === 'dirty') onSaveRow?.(r.data, r.id)?.catch?.(() => {}); }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -143,12 +160,21 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const deleteSelected = () => { if (!window.confirm(t('mre.confirmDelete', { n: sel.size }))) return; for (const k of sel) remove(k); setSel(new Set()); };
   const typedValues = useMemo(() => { const m = {}; for (const c of columns) if (c.type === 'select' && c.custom) m[c.key] = [...new Set(rows.map(r => r.data[c.key]).filter(v => !isEmpty(v) && !(c.options || []).some(o => String(o.value ?? o) === String(v))))]; return m; }, [rows, columns]);
 
-  return (<div className="dt">
+  return (<div className={`dt itable-host${full ? ' itable-full' : ''}`} role={full ? 'dialog' : undefined} aria-modal={full || undefined} aria-label={full ? (caption || t('mre.fullScreen')) : undefined}>
+    {full && <div className="itable-fullbar">
+      <Btn icon="ArrowLeft" onClick={back}>{t('mre.backToScreen')}</Btn>
+      <div className="itable-fulltitle"><span className="strong">{caption || t('mre.fullScreen')}</span><span className="xs muted">{t('mre.count', { n: rows.length }).replace(/\.$/, '')} · {pendingCount ? t('mre.pending', { n: pendingCount }) : t('mre.allSavedShort')}</span></div>
+      <span className="spacer" />
+      {!readOnly && <Btn icon="Plus" onClick={() => { const r = addRow(null, !newInEditor); if (newInEditor) setEditorKey(r._key); }}>{t('mre.addRow')}</Btn>}
+      {!readOnly && <Btn kind="primary" icon="Save" onClick={saveNow}>{pendingCount ? t('mre.saveAll', { n: pendingCount }) : t('common.save')}</Btn>}
+    </div>}
+    {readOnly && !full && <div className="dt-toolbar"><span className="spacer" /><Btn ref={fullBtn} size="sm" kind="ghost" icon="Maximize" onClick={openFull}>{t('mre.fullScreen')}</Btn></div>}
     {!readOnly && <div className="dt-toolbar">
       {search !== false && rows.length > 8 && <Search value={q} onChange={setQ} placeholder={t('common.search')} />}
       <Btn size="sm" icon="CopyPlus" disabled={!rows.length} onClick={() => duplicate(rows[rows.length - 1]._key)}>{t('mre.duplicatePrevious')}</Btn>
       <span className="spacer" />
-      {pendingCount > 0 && <Btn size="sm" kind="primary" icon="Save" onClick={saveAll}>{t('mre.saveAll', { n: pendingCount })}</Btn>}
+      {pendingCount > 0 && !full && <Btn size="sm" kind="primary" icon="Save" onClick={saveAll}>{t('mre.saveAll', { n: pendingCount })}</Btn>}
+      {!full && <Btn ref={fullBtn} size="sm" kind="ghost" icon="Maximize" onClick={openFull}>{t('mre.fullScreen')}</Btn>}
       <div className="rel"><Btn icon="Columns3" size="sm" kind="ghost" aria-label={t('dt.columns')} aria-expanded={colMenu} onClick={() => setColMenu(m => !m)} />
         {colMenu && <div className="menu" role="dialog" aria-label={t('dt.columns')} onMouseLeave={() => setColMenu(false)}><div className="col-menu">{columns.map((c, i) => <label key={c.key}><input type="checkbox" disabled={i === 0} checked={i === 0 || !hidden.has(c.key)} onChange={() => toggleCol(c.key)} />{c.label}</label>)}</div></div>}</div>
     </div>}
@@ -156,7 +182,7 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
       {bulkSet && <><Select size="sm" aria-label={t('mre.setField')} value={bulk?.key || ''} placeholder={t('mre.setField')} onChange={e => setBulk({ key: e.target.value, value: '' })} options={columns.filter(c => !c.readOnly).map(c => ({ value: c.key, label: c.label }))} />
         {bulk && <BulkValue col={columns.find(c => c.key === bulk.key)} value={bulk.value} onChange={v => setBulk(b => ({ ...b, value: v }))} />}{bulk && <Btn size="sm" onClick={applyBulk}>{t('mre.apply')}</Btn>}</>}
       <Btn size="sm" kind="danger" icon="Trash2" onClick={deleteSelected}>{t('common.delete')}</Btn><Btn size="sm" kind="ghost" onClick={() => setSel(new Set())}>{t('dt.clearSelection')}</Btn></div>}
-    <div className="table-wrap auto-h"><table className={`tbl itable ${density === 'compact' ? 'compact' : ''}`} ref={tableRef}>{caption && <caption className="sr-only">{caption}</caption>}
+    <div className={`table-wrap ${full ? 'itable-scroll' : 'auto-h'}`}><table className={`tbl itable ${density === 'compact' ? 'compact' : ''}`} ref={tableRef}>{caption && <caption className="sr-only">{caption}</caption>}
       <thead><tr>
         {!readOnly && <th className="sel-col sticky-col" scope="col"><input type="checkbox" aria-label={t('dt.selectAll')} checked={allSel} onChange={() => setSel(allSel ? new Set() : new Set(shown.map(r => r._key)))} /></th>}
         <th className="status-col" scope="col"><span className="sr-only">{t('mre.status')}</span>#</th>
