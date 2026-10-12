@@ -458,6 +458,6 @@ const axis = { catAxisLabelColor: C.ink, catAxisLabelFontFace: BODY, catAxisLabe
     txt(s, 'Figures in this presentation come from the demonstration instance. Organizations and people are fictional.', 9.0, 3.6, 3.4, 1.8, { fontSize: 12.5, color: C.ink, italic: true }); }
 
   fs.mkdirSync(out, { recursive: true });
-  const f = path.join(out, `CortexSkills_Healthcare_Presentation_${LANG.toUpperCase()}.pptx`); await pres.writeFile({ fileName: f }); console.log('written', f, pageNo, 'slides');
+  const f = path.join(out, `CortexSkills_Healthcare_Presentation_${LANG.toUpperCase()}.pptx`); await pres.writeFile({ fileName: f }); require('child_process').execFileSync('python3', [require('path').join(__dirname, 'fix-pptx.py'), f], { stdio: 'inherit' }); console.log('written', f, pageNo, 'slides');
   if (LANG === 'fr') { fs.writeFileSync(path.join(__dirname, 'health-deck-fr.seen.json'), JSON.stringify([...SEEN], null, 1)); if (MISSING.size) console.log('untranslated:', MISSING.size, '(see health-deck-fr.seen.json)'); }
 })();

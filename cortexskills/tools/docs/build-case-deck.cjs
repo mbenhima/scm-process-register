@@ -410,6 +410,6 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
 
   fs.mkdirSync(out, { recursive: true });
   const file = path.join(out, `CortexSkills_Healthcare_${K.file}_${LANG.toUpperCase()}.pptx`);
-  await pres.writeFile({ fileName: file }); fs.writeFileSync(file.replace(/\.pptx$/, '.outline.json'), JSON.stringify({ title: pres.title, org, lang: LANG, slides: OUTLINE }));
+  await pres.writeFile({ fileName: file }); require('child_process').execFileSync('python3', [require('path').join(__dirname, 'fix-pptx.py'), file], { stdio: 'inherit' }); fs.writeFileSync(file.replace(/\.pptx$/, '.outline.json'), JSON.stringify({ title: pres.title, org, lang: LANG, slides: OUTLINE }));
   console.log('written', file, pageNo, 'slides');
 })();

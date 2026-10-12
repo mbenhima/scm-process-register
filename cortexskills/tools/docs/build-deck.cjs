@@ -215,5 +215,5 @@ const themeList = txt => String(txt || '').split(/\.\s+/).map(x => x.replace(/:\
       s.addText(l, { x: M + 1.15, y: y + 0.1, w: 6.2, h: 0.85, fontFace: BODY, fontSize: 16, color: C.dark, margin: 0, isTextBox: true, valign: 'middle' }); }
     screenshot(s, SHOT('assistant'), 8.7, 2.2, 4.0); }
   fs.mkdirSync(out, { recursive: true });
-  const f = path.join(out, `CortexSkills_Presentation_${LANG.toUpperCase()}.pptx`); await pres.writeFile({ fileName: f }); console.log('written', f, pageNo, 'slides');
+  const f = path.join(out, `CortexSkills_Presentation_${LANG.toUpperCase()}.pptx`); await pres.writeFile({ fileName: f }); require('child_process').execFileSync('python3', [require('path').join(__dirname, 'fix-pptx.py'), f], { stdio: 'inherit' }); console.log('written', f, pageNo, 'slides');
 })();

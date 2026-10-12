@@ -70,4 +70,4 @@ grouped.forEach(([name, items], gi) => {
     footer(s);
   }
 });
-pres.writeFile({ fileName: outFile }).then(() => console.log('written', outFile, pageNo, 'slides'));
+pres.writeFile({ fileName: outFile }).then(() => { require('child_process').execFileSync('python3', [path.join(__dirname, 'fix-pptx.py'), outFile], { stdio: 'inherit' }); console.log('written', outFile, pageNo, 'slides'); });
