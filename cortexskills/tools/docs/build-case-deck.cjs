@@ -53,7 +53,7 @@ const logo = (s, file, x, y, w) => { const f = path.join(BRAND, file); const b =
 function content(eyebrow, title, subtitle) {
   const s = pres.addSlide(); pageNo++; s.background = { color: C.white }; OUTLINE.push({ no: pageNo, section, title });
   txt(s, eyebrow.toUpperCase(), M, 0.38, 11, 0.32, { fontSize: 14, bold: true, color: C.azure, charSpacing: 2 });
-  txt(s, title, M, 0.72, W - 2 * M, 0.72, { fontFace: TITLE, fontSize: 26, bold: true, color: C.navy, fit: 'shrink', valign: 'middle' });
+  txt(s, title, M, 0.72, W - 2 * M, 0.72, { fontFace: TITLE, fontSize: String(title).length > 62 ? 19 : String(title).length > 52 ? 21 : String(title).length > 44 ? 23 : 26, bold: true, color: C.navy, fit: 'shrink', valign: 'middle' });
   if (subtitle) txt(s, subtitle, M, 1.44, W - 2 * M, 0.42, { fontSize: 14, color: C.ink, fit: 'shrink' });
   s.addShape(pres.shapes.LINE, { x: M, y: H - 0.62, w: W - 2 * M, h: 0, line: { color: C.line, width: 0.75 } });
   logo(s, 'aivalue-lockup-slide.png', M, H - 0.5, 1.6);
