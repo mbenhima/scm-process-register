@@ -111,7 +111,7 @@ function TaskPanel({ id, project, onClose, onChanged }) {
           {tab === 'work' && <>
             <div className="guidance"><span className="label">{t('run.whatToType')}</span>{L(tk.guidance)}</div>
             <KV items={[[t('run.input'), `${L(u.input)} — ${L(u.supplier)}`], [t('run.output'), `${L(u.output)} → ${L(u.beneficiary)}`]]} />
-            <div><div className="label">{t('run.steps')}</div><StepForms taskId={id} readOnly={readOnly || tk.status === 'Completed'} onChanged={() => { d.reload(); onChanged(); }} /></div>
+            <div><div className="label">{t('run.steps')}</div><StepForms taskId={id} context={[L(project?.name), `${u.id} · ${L(u.name)}`].filter(Boolean).join(' · ')} readOnly={readOnly || tk.status === 'Completed'} onChanged={() => { d.reload(); onChanged(); }} /></div>
             <Field label={t('run.outputLabel')} id="out"><textarea id="out" className="input" rows={5} disabled={readOnly || tk.status === 'Completed'} value={out ?? ''} onChange={e => setOut(e.target.value)} placeholder={L(tk.guidance)} /></Field>
             {linkedUc.length > 0 && !readOnly && <div className="card flat"><div className="label" style={{ marginBottom: 8 }}>{t('run.aiHelp')}</div><div className="row">{linkedUc.map(c => <Btn key={c.id} size="sm" icon="Sparkles" onClick={() => runAi(c)}>{L(c.name)} <AiBadge tier={c.tier} /></Btn>)}</div></div>}
             {ai && <div className="card tint stack"><div className="row"><Icon name="Sparkles" /><span className="strong small">{ai.label}</span><AiBadge tier={ai.useCase.tier} /><span className="pill xs">{ai.source}</span><span className="xs muted">{t('ai.confidence')} {Math.round(ai.confidence * 100)}%</span></div>

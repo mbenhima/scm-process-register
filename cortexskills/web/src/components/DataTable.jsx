@@ -7,7 +7,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession } from '../lib/session.jsx';
 import { downloadCsv } from '../lib/api.js';
-import { Btn, Icon, Search, Select, Empty, Skeleton, Seg } from './ui.jsx';
+import { Btn, Icon, Search, Select, Empty, Skeleton, Seg, useOverlay } from './ui.jsx';
+import { EntryWorkspace } from './EntryWorkspace.jsx';
+import { usePaste } from './PastePreview.jsx';
+import { toClipboard, writeClipboard } from '../lib/paste.js';
 
 const OPS = ['contains', 'eq', 'neq', 'gt', 'lt', 'empty', 'notEmpty'];
 const cellText = (c, x) => { const v = c.text ? c.text(x) : c.value ? c.value(x) : x[c.key]; return v == null ? '' : typeof v === 'object' ? (v.en ?? JSON.stringify(v)) : String(v); };
@@ -26,8 +29,8 @@ function matches(f, c, x) {
 }
 const keyOf = (x, i, rowKey) => (rowKey ? rowKey(x) : x.id ?? x.key ?? x.code ?? x.ref ?? `row-${i}`);
 
-export function DataTable({ columns, rows, onRow, csvName, search = true, empty, id, rowKey, selectable, bulkActions, loading, error, onRetry, toolbar, pageSize: initialSize, dense, autoHeight, caption, pin: pinDefault = true }) {
-  const { t } = useI18n(); const { prefs, queuePrefs } = useSession();
+export function DataTable({ columns, rows, onRow, csvName, search = true, empty, id, rowKey, selectable, bulkActions, loading, error, onRetry, toolbar, pageSize: initialSize, dense, autoHeight, caption, pin: pinDefault = true, title, context, paste: pasteCfg, workspace = true }) {
+  const { t } = useI18n(); const { prefs, queuePrefs, toast } = useSession();
   const tableId = id || csvName || columns.map(c => c.key).join('-').slice(0, 60);
   const tp = prefs?.tables?.[tableId] || {};
   const density = dense ? 'compact' : prefs?.density || 'comfortable';
@@ -84,13 +87,22 @@ export function DataTable({ columns, rows, onRow, csvName, search = true, empty,
   const allSel = keys.length > 0 && keys.every(k => sel.has(k)); const someSel = !allSel && keys.some(k => sel.has(k));
   const selectedRows = filtered.filter((x, i) => sel.has(keys[i]));
 
+  // Copy out (FR-DA-MRE-23): the selected rows (or, without a selection, the rows shown) with their column titles.
+  const copyCols = visible.filter(c => !c.noCsv);
+  const copyRows = async e => { const list = selectable && sel.size ? selectedRows : filtered; if (!list.length) return;
+    if (await writeClipboard(toClipboard(copyCols.map(c => ({ key: c.key, label: typeof c.label === 'string' ? c.label : c.key })), list.map(x => Object.fromEntries(copyCols.map(c => [c.key, cellText(c, x)])))), e)) toast(t('copy.done', { n: list.length }), 'ok'); };
+  const onCopyTable = e => { if (!(selectable && sel.size) || String(window.getSelection?.() || '')) return; copyRows(e); };
+  // Paste of records (FR-DA-MRE-19 – 22) when the table creates records (RecordsView).
+  const paste = usePaste({ id: tableId, columns: pasteCfg?.columns || [], readOnly: pasteCfg?.readOnly || null, apply: pasteCfg?.apply || (async () => {}) });
+  const onPasteTable = e => { if (!pasteCfg || e.target.closest?.('input, textarea, [contenteditable]')) return; paste.onPaste(e, { row: null, col: pasteCfg.columns[0]?.key }); };
   const csv = () => { const cols = visible.filter(c => !c.noCsv); downloadCsv(csvName || 'export', cols.map(c => (typeof c.label === 'string' ? c.label : c.key)), filtered.map(x => cols.map(c => cellText(c, x)))); };
   const filterable = columns.filter(c => c.label && typeof c.label === 'string' && !c.noFilter);
   const from = filtered.length ? cur * (size || filtered.length) + 1 : 0; const to = size ? Math.min(filtered.length, (cur + 1) * size) : filtered.length;
   const isEmpty = !loading && !error && !(rows || []).length; const isFilteredEmpty = !loading && !error && (rows || []).length > 0 && !filtered.length;
 
-  return (<div className="dt">
-    {(search || csvName || toolbar || filterable.length > 0) && <div className="dt-toolbar">
+  const showBar = search || csvName || toolbar || filterable.length > 0 || pasteCfg;
+  return (<EntryWorkspace id={'dt:' + tableId} title={title || caption || csvName} context={context} meta={t('ws.records', { n: filtered.length })} className="dt" disabled={!workspace}>{({ full, expand, records, zoomStyle }) => <>
+    {showBar && <div className="dt-toolbar">
       {search && <Search value={q} onChange={setQ} placeholder={t('common.search')} />}
       {filterable.length > 0 && <div className="rel"><Btn icon="ListFilter" size="sm" aria-expanded={!!adding} onClick={() => setAdding(a => (a ? null : { key: filterable[0].key, op: 'contains', value: '' }))}>{t('dt.filter')}{filters.length > 0 && <span className="count-badge">{filters.length}</span>}</Btn>
         {adding && <FilterPopover columns={filterable} draft={adding} setDraft={setAdding} onAdd={() => { setFilters(f => [...f, adding]); setAdding(null); }} onClose={() => setAdding(null)} />}</div>}
@@ -100,6 +112,9 @@ export function DataTable({ columns, rows, onRow, csvName, search = true, empty,
       <div className="rel"><Btn icon="Columns3" size="sm" kind="ghost" aria-label={t('dt.columns')} aria-expanded={colMenu} onClick={() => setColMenu(m => !m)} />
         {colMenu && <ColumnMenu columns={ordered} hidden={hidden} pin={pin} onToggle={toggleCol} onPin={v => savePref({ pin: v })} onReset={resetView} onClose={() => setColMenu(false)} />}</div>
       {csvName && <Btn icon="Download" size="sm" kind="ghost" onClick={csv}>CSV</Btn>}
+      {pasteCfg && !pasteCfg.readOnly && <Btn icon="ClipboardPaste" size="sm" kind="ghost" data-tip={t('paste.hint')} onClick={() => paste.openPaste({ row: null, col: pasteCfg.columns[0]?.key })}>{t('paste.action')}</Btn>}
+      {(rows || []).length > 0 && <Btn icon="Copy" size="sm" kind="ghost" aria-label={t('copy.action')} data-tip={t('copy.hint')} onClick={() => copyRows()} />}
+      {workspace && expand}
     </div>}
     {filters.length > 0 && <div className="dt-filters">{filters.map((f, i) => { const c = columns.find(x => x.key === f.key); return <span key={f.key + f.op + i} className="filter-chip">{c?.label} · {t('dt.op.' + f.op)}{!['empty', 'notEmpty'].includes(f.op) && <> “{f.value}”</>}<button type="button" aria-label={t('dt.removeFilter')} onClick={() => setFilters(fs => fs.filter((_, j) => j !== i))}><Icon name="X" size={14} /></button></span>; })}
       <Btn size="sm" kind="ghost" onClick={() => setFilters([])}>{t('dt.clearAll')}</Btn></div>}
@@ -107,7 +122,7 @@ export function DataTable({ columns, rows, onRow, csvName, search = true, empty,
     {error ? <div className="table-wrap auto-h"><Empty icon="TriangleAlert" title={t('dt.errorTitle')} text={error.message || t('err.server')} action={onRetry && <Btn kind="primary" icon="RotateCw" onClick={onRetry}>{t('common.retry')}</Btn>} /></div>
       : isEmpty ? <div className="table-wrap auto-h">{typeof empty === 'object' && empty ? <Empty icon={empty.icon || 'Inbox'} title={empty.title} text={empty.text} action={empty.action} /> : <Empty title={empty || t('common.noRows')} text={t('dt.emptyText')} />}</div>
       : isFilteredEmpty ? <div className="table-wrap auto-h"><Empty icon="SearchX" title={t('dt.noMatch')} text={t('dt.noMatchText')} action={<Btn kind="primary" onClick={() => { setQ(''); setFilters([]); }}>{t('dt.clearFilters')}</Btn>} /></div>
-      : <div className={`table-wrap ${autoHeight ? 'auto-h' : ''}`}><table className={`tbl ${density === 'compact' ? 'compact' : ''}`}>{caption && <caption className="sr-only">{caption}</caption>}
+      : <div {...records} className={`table-wrap ${full ? 'ws-records' : autoHeight ? 'auto-h' : ''}`} onCopy={onCopyTable} onPaste={onPasteTable} tabIndex={pasteCfg ? 0 : undefined}><table className={`tbl ${density === 'compact' ? 'compact' : ''}`} style={zoomStyle}>{caption && <caption className="sr-only">{caption}</caption>}
         <thead><tr>
           {selectable && <th className="sel-col sticky-col" scope="col"><input type="checkbox" aria-label={t('dt.selectAll')} checked={allSel} ref={el => { if (el) el.indeterminate = someSel; }} onChange={() => setSel(allSel ? new Set() : new Set(keys))} /></th>}
           {visible.map((c, i) => { const s = sort?.key === c.key ? (sort.dir > 0 ? 'ascending' : 'descending') : 'none'; const w = widths[c.key] || c.width;
@@ -126,11 +141,12 @@ export function DataTable({ columns, rows, onRow, csvName, search = true, empty,
       <div className="pager"><span>{t('dt.pageSize')}</span><Select size="sm" value={String(size)} onChange={e => setPageSize(e.target.value)} aria-label={t('dt.pageSize')} options={[{ value: '20', label: '20' }, { value: '50', label: '50' }, { value: '100', label: '100' }, { value: '0', label: t('dt.all') }]} />
         <Btn icon={document.dir === 'rtl' ? 'ChevronRight' : 'ChevronLeft'} size="sm" kind="ghost" aria-label={t('dt.prev')} disabled={cur === 0} onClick={() => setPage(cur - 1)} /><span>{t('dt.page', { p: cur + 1, n: pages })}</span><Btn icon={document.dir === 'rtl' ? 'ChevronLeft' : 'ChevronRight'} size="sm" kind="ghost" aria-label={t('dt.next')} disabled={cur >= pages - 1} onClick={() => setPage(cur + 1)} /></div></div>}
     {!error && !isEmpty && !isFilteredEmpty && filtered.length <= 20 && size === 20 && <div className="dt-footer"><span>{t('common.rows', { n: filtered.length })}</span></div>}
-  </div>);
+    {paste.ui}
+  </>}</EntryWorkspace>);
 }
 
 function FilterPopover({ columns, draft, setDraft, onAdd, onClose }) {
-  const { t } = useI18n(); const ref = useRef(null);
+  const { t } = useI18n(); const ref = useRef(null); useOverlay(onClose);
   useEffect(() => { const out = e => { if (ref.current && !ref.current.contains(e.target) && !e.target.closest('.listbox')) onClose(); }; document.addEventListener('mousedown', out); return () => document.removeEventListener('mousedown', out); }, [onClose]);
   const needsValue = !['empty', 'notEmpty'].includes(draft.op);
   return <div className="menu start" ref={ref} role="dialog" aria-label={t('dt.addFilter')} style={{ padding: 'var(--aiv-space-4)', width: 320 }} onKeyDown={e => { if (e.key === 'Escape') { e.stopPropagation(); onClose(); } if (e.key === 'Enter' && (!needsValue || draft.value)) { e.preventDefault(); onAdd(); } }}>
@@ -141,7 +157,7 @@ function FilterPopover({ columns, draft, setDraft, onAdd, onClose }) {
       <div className="row between"><Btn size="sm" kind="ghost" onClick={onClose}>{t('common.cancel')}</Btn><Btn size="sm" kind="primary" disabled={needsValue && !draft.value} onClick={onAdd}>{t('dt.addFilter')}</Btn></div></div></div>;
 }
 function ColumnMenu({ columns, hidden, pin, onToggle, onPin, onReset, onClose }) {
-  const { t } = useI18n(); const ref = useRef(null);
+  const { t } = useI18n(); const ref = useRef(null); useOverlay(onClose);
   useEffect(() => { const out = e => { if (ref.current && !ref.current.contains(e.target)) onClose(); }; const k = e => { if (e.key === 'Escape') onClose(); }; document.addEventListener('mousedown', out); ref.current?.addEventListener('keydown', k); return () => document.removeEventListener('mousedown', out); }, [onClose]);
   return <div className="menu" ref={ref} role="dialog" aria-label={t('dt.columns')}><div className="col-menu">
     <div className="eyebrow">{t('dt.columns')}</div>

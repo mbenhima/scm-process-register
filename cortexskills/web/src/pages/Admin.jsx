@@ -49,6 +49,7 @@ export function Configuration() {
           <p className="caption">{t('config.licenceNote')}</p></Card></div>
       <h2 className="section-title">{t('config.packs')}</h2><DataTable rows={x.catalog.packs} columns={[{ key: 'id', label: 'ID' }, { key: 'name', label: t('col.name'), text: p => L(p.name) }, { key: 'kind', label: t('col.type'), text: p => t('config.kind.' + p.kind) }, { key: 'price', label: t('config.price'), num: true, text: p => `$${p.price}` }, { key: 'includedUsers', label: t('config.included'), num: true }, { key: 'aiTier', label: t('config.aiTier'), text: p => t('config.ai.' + p.aiTier) },
         { key: 'sel', label: '', noSort: true, render: p => p.id === x.pack?.id ? <span className="pill s4">{t('config.current')}</span> : canManage && <Btn size="sm" onClick={() => setPack(p)}>{t('config.switch')}</Btn> }]} />
+      <Currencies canManage={canManage} onSaved={reload} />
       <h2 className="section-title">{t('config.addOns')}</h2><div className="grid g-3">{x.catalog.addOns.map(a => { const on = x.config.addons.includes(a.id) || x.pack?.includedAddons?.includes(a.id); return <Card key={a.id} title={`${a.id} · ${L(a.name)}`} actions={<span className="pill">${a.price}</span>}><p className="small">{L(a.goals)}</p>
         <label className="check"><input type="checkbox" disabled={!canManage} checked={on} onChange={async e => { await act(() => put('/config/addon', { id: a.id, active: e.target.checked })); d.reload(); reload(); }} />{on ? t('config.active') : t('config.inactive')}</label></Card>; })}</div>
       <h2 className="section-title">{t('config.compliance')}</h2><p className="notice grey small"><Icon name="Info" />{t('disclosure.nonCertification')}</p>
@@ -57,6 +58,31 @@ export function Configuration() {
       {disc && <Modal title={disc.name} onClose={() => setDisc(null)} footer={<><Btn onClick={() => setDisc(null)}>{t('common.cancel')}</Btn><Btn kind="primary" onClick={async () => { const c = disc; setDisc(null); await act(() => put('/config/compliance', { id: c.id, active: true, disclosureAccepted: true })); d.reload(); reload(); }}>{t('config.understood')}</Btn></>}><div className="notice"><Icon name="TriangleAlert" /><p>{t('disclosure.nonCertification')}</p></div></Modal>}
       {pack && <JustifyDialog title={t('config.switchTo', { p: L(pack.name) })} onCancel={() => setPack(null)} onConfirm={async n => { const p = pack; setPack(null); const r = await act(() => put('/config/pack', { pack_id: p.id, _justification: n })); d.reload(); reload(); }} extra={<p className="small">{t('config.proration')}</p>} />}
     </>}</Guard></>);
+}
+
+/** Currencies (FR-DA-I18N-09): default and enabled currencies; dated exchange rates used for converted totals. */
+function Currencies({ canManage, onSaved }) {
+  const { t, fmtDate } = useI18n(); const d = useData('/config/currencies'); const act = useAction();
+  const [draft, setDraft] = useState(null); const [rate, setRate] = useState({ from: 'EUR', to: '', rate: '', as_of: new Date().toISOString().slice(0, 10), source: '' });
+  return <Guard state={d}>{x => { const cur = draft || { default: x.default, enabled: x.enabled };
+    const save = async () => { await act(() => put('/config/currencies', cur), 'cur.saved'); setDraft(null); d.reload(); onSaved?.(); };
+    return <><h2 className="section-title">{t('cur.title')}</h2><p className="small muted">{t('cur.hint')}</p>
+      <div className="grid split" style={{ marginTop: 'var(--aiv-space-3)' }}>
+        <Card title={t('cur.default')} actions={canManage && draft && <Btn size="sm" kind="primary" icon="Save" onClick={save}>{t('common.save')}</Btn>}>
+          <Field id="cur-default" label={t('cur.default')}><Select id="cur-default" disabled={!canManage} value={cur.default} onChange={e => setDraft({ ...cur, default: e.target.value, enabled: [...new Set([e.target.value, ...cur.enabled])] })} options={x.available.map(c => ({ value: c, label: c }))} /></Field>
+          <div className="label" style={{ marginTop: 'var(--aiv-space-3)' }}>{t('cur.enabled')}</div>
+          <div className="row" style={{ flexWrap: 'wrap' }}>{x.available.map(c => <label key={c} className="check"><input type="checkbox" disabled={!canManage || c === cur.default} checked={cur.enabled.includes(c)} onChange={e => setDraft({ ...cur, enabled: e.target.checked ? [...cur.enabled, c] : cur.enabled.filter(y => y !== c) })} />{c}</label>)}</div></Card>
+        <Card title={t('cur.rates')}>
+          {!x.rates.length ? <p className="small muted">{t('cur.noRates')}</p> : <DataTable search={false} pageSize={0} workspace={false} rows={x.rates} columns={[{ key: 'pair', label: `${t('cur.from')} → ${t('cur.to')}`, text: r => `1 ${r.from_cur} = ${r.rate} ${r.to_cur}` }, { key: 'as_of', label: t('cur.asOf'), text: r => fmtDate(r.as_of) }, { key: 'source', label: t('cur.source'), text: r => r.source || '—' },
+            ...(canManage ? [{ key: 'x', label: '', noSort: true, render: r => <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={async () => { await act(() => del(`/config/exchange-rates/${r.id}`)); d.reload(); }} /> }] : [])]} />}
+          {canManage && <div className="row" style={{ flexWrap: 'wrap', marginTop: 'var(--aiv-space-3)', alignItems: 'flex-end' }}>
+            <Field id="fx-from" label={t('cur.from')}><Select id="fx-from" value={rate.from} onChange={e => setRate(r => ({ ...r, from: e.target.value }))} options={x.enabled.map(c => ({ value: c, label: c }))} /></Field>
+            <Field id="fx-to" label={t('cur.to')}><Select id="fx-to" value={rate.to || x.default} onChange={e => setRate(r => ({ ...r, to: e.target.value }))} options={x.enabled.map(c => ({ value: c, label: c }))} /></Field>
+            <Field id="fx-rate" label={t('cur.rate')}><input id="fx-rate" className="input" inputMode="decimal" value={rate.rate} onChange={e => setRate(r => ({ ...r, rate: e.target.value }))} /></Field>
+            <Field id="fx-date" label={t('cur.asOf')}><input id="fx-date" className="input" type="date" value={rate.as_of} onChange={e => setRate(r => ({ ...r, as_of: e.target.value }))} /></Field>
+            <Field id="fx-src" label={t('cur.source')}><input id="fx-src" className="input" value={rate.source} onChange={e => setRate(r => ({ ...r, source: e.target.value }))} /></Field>
+            <Btn icon="Plus" disabled={!(Number(String(rate.rate).replace(',', '.')) > 0)} onClick={async () => { await act(() => post('/config/exchange-rates', { ...rate, to: rate.to || x.default, rate: Number(String(rate.rate).replace(',', '.')) })); setRate(r => ({ ...r, rate: '' })); d.reload(); }}>{t('cur.addRate')}</Btn></div>}
+        </Card></div></>; }}</Guard>;
 }
 
 export function Pricing() {

@@ -17,12 +17,13 @@ export const Spinner = ({ size = 16 }) => <Icons.LoaderCircle size={size} stroke
 /* ------------------------------------------------------------------------------------------- overlays */
 // Escape closes the topmost overlay only (NFR-DA-FOC-03): every open overlay registers on this stack.
 const overlayStack = [];
-function useOverlay(onEscape, enabled = true) {
+export function useOverlay(onEscape, enabled = true, { yieldToInner = false } = {}) {
   const id = useId(); const cb = useRef(onEscape); cb.current = onEscape;
   useEffect(() => {
     if (!enabled) return undefined;
     overlayStack.push(id);
-    const k = e => { if (e.key === 'Escape' && overlayStack[overlayStack.length - 1] === id && cb.current) { e.preventDefault(); cb.current(e); } };
+    // yieldToInner: an Escape already used inside (a cell edit cancelled, a list closed) is left alone.
+    const k = e => { if (e.key === 'Escape' && overlayStack[overlayStack.length - 1] === id && cb.current && !(yieldToInner && e.defaultPrevented)) { e.preventDefault(); cb.current(e); } };
     document.addEventListener('keydown', k);
     return () => { document.removeEventListener('keydown', k); const i = overlayStack.lastIndexOf(id); if (i >= 0) overlayStack.splice(i, 1); };
   }, [id, enabled]);

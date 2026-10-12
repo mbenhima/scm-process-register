@@ -705,13 +705,34 @@ ul.plain > li > .tree-row { width: 100%; }
 @media (max-width: 1023px) { .bpmn-layout { grid-template-columns: minmax(0, 1fr); } }
 
 /* Full-screen multi-record entry: the table fills the window and scrolls in both directions; Back, Add row and Save stay in view. */
-.itable-host.itable-full { position: fixed; inset: 0; z-index: var(--aiv-z-modal); background: var(--aiv-white); display: flex; flex-direction: column; margin: 0; padding: 0 var(--aiv-space-6) var(--aiv-space-4); overflow: hidden; }
-.itable-full .itable-fullbar { display: flex; align-items: center; gap: var(--aiv-space-3); padding: var(--aiv-space-4) 0; border-bottom: 1px solid var(--aiv-line); flex-shrink: 0; }
-.itable-full .itable-fulltitle { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.itable-full .itable-fulltitle .strong { font: 700 var(--aiv-fs-18)/1.3 var(--aiv-font-heading); color: var(--aiv-navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.itable-full .dt-toolbar, .itable-full .bulk-bar { flex-shrink: 0; margin-top: var(--aiv-space-3); }
-.itable-full .table-wrap.itable-scroll { flex: 1 1 auto; min-height: 0; overflow: auto; margin-top: var(--aiv-space-3); border: 1px solid var(--aiv-line); border-radius: var(--aiv-radius-card); }
-.itable-full .table-wrap.itable-scroll thead th { position: sticky; top: 0; z-index: var(--aiv-z-sticky); }
-.itable-full .itable-foot { flex-shrink: 0; padding-top: var(--aiv-space-3); }
-@media (max-width: 767px) { .itable-host.itable-full { padding: 0 var(--aiv-space-4) var(--aiv-space-3); } .itable-full .itable-fullbar { flex-wrap: wrap; } }
-.itable-full .itable-fullbar .spacer { flex: 1 1 auto; }
+/* Full-Screen Entry Workspace (SRS 1.8 FR-DA-MRE-15 – 18, NFR-DA-UX-20): above the shell and side panels, below
+   the dialogs, drawers, menus and notices it opens (portalled after it, or on higher layers). */
+.ws-host.ws-full { position: fixed; inset: 0; z-index: var(--aiv-z-drawer); background: var(--aiv-white); display: flex; flex-direction: column; margin: 0; padding: 0 var(--aiv-space-6) var(--aiv-space-4); overflow: hidden; animation: ws-in 240ms ease-out; }
+@keyframes ws-in { from { opacity: 0; transform: scale(.985); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ws-host.ws-full { animation: none; } }
+body.aiv-ws-open { overflow: hidden; }
+.ws-bar { display: flex; align-items: center; gap: var(--aiv-space-3); padding: var(--aiv-space-3) 0; border-bottom: 1px solid var(--aiv-line); flex-shrink: 0; flex-wrap: wrap; }
+.ws-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 280px; }
+.ws-name { font: 700 var(--aiv-fs-18)/1.3 var(--aiv-font-heading); color: var(--aiv-navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ws-meta { display: flex; flex-direction: column; font-size: var(--aiv-fs-12); color: var(--aiv-ink); min-width: 0; }
+.ws-meta > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ws-zoom { display: inline-flex; align-items: center; gap: var(--aiv-space-1); padding: 2px var(--aiv-space-2); border: 1px solid var(--aiv-line); border-radius: var(--aiv-radius-badge); }
+.ws-slider { width: 120px; accent-color: var(--aiv-azure); }
+.ws-level { min-width: 48px; text-align: center; font: 600 var(--aiv-fs-12)/1 var(--aiv-font-mono); color: var(--aiv-navy); }
+.ws-full .dt-toolbar, .ws-full .bulk-bar, .ws-full .dt-filters { flex-shrink: 0; margin-top: var(--aiv-space-3); }
+.ws-full .table-wrap.ws-records { flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto; margin-top: var(--aiv-space-3); border: 1px solid var(--aiv-line); border-radius: var(--aiv-radius-card); }
+.ws-full .table-wrap.ws-records thead th { position: sticky; top: 0; z-index: var(--aiv-z-sticky); }
+.ws-full .itable-foot, .ws-full .dt-footer { flex-shrink: 0; padding-top: var(--aiv-space-3); }
+.ws-expand svg { width: 24px; height: 24px; }
+[dir='rtl'] .ws-bar .ws-return svg { transform: scaleX(-1); }
+@media (max-width: 767px) { .ws-host.ws-full { padding: 0 var(--aiv-space-4) var(--aiv-space-3); } .ws-title { max-width: 100%; flex-basis: 100%; } .ws-slider { display: none; } }
+/* Paste of records (FR-DA-MRE-19 – 21) */
+.paste-box { min-height: 120px; display: flex; align-items: center; justify-content: center; gap: var(--aiv-space-2); padding: var(--aiv-space-5); border: 2px dashed var(--aiv-line); border-radius: var(--aiv-radius-card); color: var(--aiv-navy); background: var(--aiv-bg-alt); text-align: center; caret-color: transparent; }
+.paste-box:focus-visible { outline: 3px solid var(--aiv-azure); outline-offset: 2px; }
+.paste-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--aiv-space-2); }
+.paste-map-item { display: flex; flex-direction: column; gap: 2px; padding: var(--aiv-space-2); border: 1px solid var(--aiv-line); border-radius: var(--aiv-radius-badge); min-width: 0; }
+.paste-map-item .ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.table-wrap.paste-preview { max-height: 42vh; overflow: auto; }
+.paste-preview td.cell-invalid { box-shadow: inset 4px 0 0 var(--aiv-status-1); background: var(--aiv-white); }
+[dir='rtl'] .paste-preview td.cell-invalid { box-shadow: inset -4px 0 0 var(--aiv-status-1); }
+.paste-preview tr.row-invalid td:first-child { font-weight: 700; }

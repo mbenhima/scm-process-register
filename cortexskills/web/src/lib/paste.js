@@ -65,10 +65,13 @@ export function readClipboard(dt) {
 
 const colNames = c => [c.key, c.label, ...(c.aliases || [])].map(norm).filter(Boolean);
 /** True when most cells of the first row name a column of the table. */
-export function looksLikeHeader(first, columns) {
+export function looksLikeHeader(first, columns, rest = []) {
   const filled = first.filter(x => x !== ''); if (!filled.length) return false;
   const hit = filled.filter(x => columns.some(c => colNames(c).includes(norm(x)))).length;
-  return hit >= Math.max(1, Math.ceil(filled.length / 2));
+  if (hit >= Math.max(1, Math.ceil(filled.length / 2))) return true;
+  // A title over a column of numbers or dates (e.g. "Budget" over "1 000") also marks a header row.
+  const typed = v => /^[-+]?[\d\s.,]+%?$/.test(String(v).trim()) || /^\d{1,4}[-/.]\d{1,2}[-/.]\d{1,4}$/.test(String(v).trim());
+  return hit >= 1 && first.some((h, i) => { if (!h || typed(h)) return false; const vals = rest.slice(0, 20).map(r => r[i]).filter(Boolean); return vals.length > 0 && vals.filter(typed).length * 2 >= vals.length; });
 }
 /**
  * Mapping source column → target column key (null = ignored): by header, then by position from the start column,
@@ -92,7 +95,7 @@ export function proposeMapping({ rows, header, columns, startKey, saved }) {
 
 /** Number in the user's locale: "1 234,5" (fr, ar), "1,234.5" (en); a lone separator is read as decimal. */
 export function parseNumber(raw, lang) {
-  let s = String(raw ?? '').trim().replace(/[\s  ']/g, '').replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[A-Z]{3}$|[€$£%]/gi, '');
+  let s = String(raw ?? '').trim().replace(/[\s  ']/g, '').replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/(\d)\s*(?:[A-Z]{3}|[€$£%])$/, '$1').replace(/^(?:[A-Z]{3}|[€$£])\s*(?=[-+]?\d)/, '');
   if (s === '') return '';
   const comma = s.lastIndexOf(','), dot = s.lastIndexOf('.');
   if (comma >= 0 && dot >= 0) s = comma > dot ? s.replace(/\./g, '').replace(',', '.') : s.replace(/,/g, '');
@@ -125,7 +128,7 @@ export function convertCell(col, raw, lang) {
     const opts = col.options.map(o => ({ value: String(o.value ?? o), label: String(o.label ?? o) }));
     const n = norm(v); let hit = opts.find(o => norm(o.value) === n || norm(o.label) === n);
     if (!hit) { const ref = v.match(/^\s*([^()]+?)\s*\((.+)\)\s*$/); if (ref) hit = opts.find(o => norm(o.value) === norm(ref[1]) || norm(o.label) === n || norm(o.label).startsWith(norm(ref[1]) + ' (')); }
-    if (!hit) hit = opts.find(o => norm(o.label).split(' (')[0] === n);
+    if (!hit) hit = opts.find(o => norm(o.label).split(' (')[0] === n || (norm(o.label).match(/\((.+)\)$/) || [])[1] === n);
     if (hit) return { value: hit.value };
     return { value: v, custom: !!col.custom };
   }

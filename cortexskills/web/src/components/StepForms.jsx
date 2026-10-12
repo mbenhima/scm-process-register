@@ -22,7 +22,7 @@ function usePickers() {
 /** Converts the step's typed fields into inline-table columns; titles come from the step's object (DEU-01). */
 export function columnsOf(fields, L, pickers) {
   return fields.map(f => {
-    const base = { key: f.key, label: L(f.label), required: !!f.required, help: L(f.help), min: f.min, max: f.max, carry: !!f.carry };
+    const base = { key: f.key, label: L(f.label), required: !!f.required, help: L(f.help), min: f.min, max: f.max, carry: !!f.carry, default: f.default, width: f.width };
     if (f.type === 'select') return { ...base, type: 'select', custom: !!f.custom, options: (f.options || []).map(o => ({ value: String(o.value), label: L(o.label) || String(o.value) })) };
     if (['person', 'role', 'kpi'].includes(f.type)) return { ...base, type: 'select', custom: true, options: pickers[f.type] || [] };
     if (f.type === 'textarea') return { ...base, type: 'textarea', wide: true };
@@ -30,7 +30,7 @@ export function columnsOf(fields, L, pickers) {
   });
 }
 
-export function StepForms({ taskId, readOnly, onChanged }) {
+export function StepForms({ taskId, readOnly, onChanged, context }) {
   const { t, L } = useI18n(); const d = useData(`/tasks/${taskId}/steps`, [taskId]); const pickers = usePickers();
   const [open, setOpen] = useState(null);
   return (<Guard state={d}>{x => <div className="stack">
@@ -42,13 +42,13 @@ export function StepForms({ taskId, readOnly, onChanged }) {
           <span className="step-title"><span className="mono xs">{s.id}</span> <span className="strong">{L(s.name)}</span><span className="xs muted"> · {L(s.form.kindLabel)} · {L(s.role)}</span></span>
           {(s.form.pattern === 'inline' || s.form.pattern === 'master-detail') && <span className="pill xs">{t('sfm.rows', { n: s.count })}</span>}
           <Icon name={isOpen ? 'ChevronUp' : 'ChevronDown'} /></button>
-        {isOpen && <StepBody taskId={taskId} step={s} locked={x.locked} readOnly={readOnly || x.locked} pickers={pickers} onChanged={() => { d.reload(); onChanged?.(); }} />}
+        {isOpen && <StepBody taskId={taskId} step={s} locked={x.locked} readOnly={readOnly || x.locked} pickers={pickers} context={context} onChanged={() => { d.reload(); onChanged?.(); }} />}
       </section>; })}
     {!x.steps.length && <Empty icon="ListChecks" title={t('sfm.noSteps')} />}
   </div>}</Guard>);
 }
 
-function StepBody({ taskId, step, readOnly, pickers, onChanged }) {
+function StepBody({ taskId, step, locked, readOnly, pickers, onChanged, context }) {
   const { t, L } = useI18n(); const act = useAction(); const { can } = useSession();
   const [reopen, setReopen] = useState(false); const [proposal, setProposal] = useState(null);
   const f = step.form; const inline = f.pattern === 'inline' || f.pattern === 'master-detail'; const single = f.pattern === 'form' || f.pattern === 'sectioned'; const cols = useMemo(() => columnsOf(f.fields, L, pickers), [f.fields, L, pickers]);
@@ -61,7 +61,8 @@ function StepBody({ taskId, step, readOnly, pickers, onChanged }) {
     <Brief brief={L(f.brief)} details={L(f.details)} />
     {f.register && <p className="xs muted"><Icon name="BookMarked" size={12} /> {t('sfm.feeds', { r: L(f.register.name) })}</p>}
     {f.pattern === 'system' && <div className="notice grey"><Icon name="Cpu" /><div className="small">{t('sfm.system')}</div></div>}
-    {inline && <InlineTable id={'step-' + f.kind} newInEditor={f.pattern === 'master-detail'} columns={cols} rows={step.rows} readOnly={ro} caption={L(f.object)} rowTitle={r => r.item || r.criterion || r.session || L(f.object)}
+    {inline && <InlineTable id={'step-' + f.kind} context={[context, `${step.id} · ${L(step.name)}`].filter(Boolean).join(' · ')} pasteTarget={{ kind: 'step', task: taskId, step: step.id }} onPasted={onChanged}
+      readOnlyReason={locked ? t('sfm.locked') : step.done ? t('paste.stepDone') : readOnly ? t('paste.readOnly') : null} newInEditor={f.pattern === 'master-detail'} columns={cols} rows={step.rows} readOnly={ro} caption={L(f.object)} rowTitle={r => r.item || r.criterion || r.session || L(f.object)}
       countLabel={n => t('sfm.count', { n, o: L(f.object).toLowerCase() })} emptyText={t('sfm.emptyRows', { o: L(f.object).toLowerCase() })}
       onSaveRow={(data, id) => (id ? put(`${base}/rows/${id}`, { data }) : post(`${base}/rows`, { data }))} onDeleteRow={id => del(`${base}/rows/${id}`)} />}
     {single && <StepFormFields base={base} fields={cols} values={step.record?.fields || {}} readOnly={ro} />}

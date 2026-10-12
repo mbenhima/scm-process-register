@@ -6,7 +6,11 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession } from '../lib/session.jsx';
-import { Btn, Icon, Select, Spinner, Search, Drawer, Field } from './ui.jsx';
+import { Btn, Icon, Select, Spinner, Search, Drawer, Field, useOverlay } from './ui.jsx';
+import { post } from '../lib/api.js';
+import { EntryWorkspace } from './EntryWorkspace.jsx';
+import { usePaste } from './PastePreview.jsx';
+import { toClipboard, writeClipboard } from '../lib/paste.js';
 
 let seqKey = 0;
 const newKey = () => (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `k${Date.now()}${++seqKey}`);
@@ -24,7 +28,7 @@ function validateCell(col, value, data, t) {
   return col.validate ? col.validate(value, data) || null : null;
 }
 
-export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow, newRow, countLabel, readOnly, carry, caption, emptyText, bulkSet = true, search, newInEditor = false, rowTitle }) {
+export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow, newRow, countLabel, readOnly, readOnlyReason, carry, caption, context, emptyText, bulkSet = true, search, newInEditor = false, rowTitle, pasteTarget, onPasted }) {
   const { t } = useI18n(); const { toast, prefs, queuePrefs } = useSession();
   const [rows, setRows] = useState(() => (initial || []).map(r => toRow(r)));
   const rowsRef = useRef(rows); rowsRef.current = rows;
@@ -59,22 +63,9 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const saveAll = useCallback(() => { for (const r of rowsRef.current) if (r.status === 'dirty' || r.status === 'error') save(r._key); }, [save]);
   const pendingCount = rows.filter(r => r.status === 'dirty' || r.status === 'error' || r.status === 'saving').length;
 
-  // Full-screen entry: the same table (no remount, so focus and typed values stay) fills the window and scrolls;
-  // Add row, Save and Back stay visible. Back, the browser Back button and Esc (outside a cell) return to the screen.
-  const [full, setFull] = useState(false); const fullBtn = useRef(null); const fullRef = useRef(false); fullRef.current = full;
-  const openFull = useCallback(() => { window.history.pushState({ ...(window.history.state || {}), mreFull: id || true }, ''); setFull(true); }, [id]);
-  const closeFull = useCallback(() => {
-    saveAll();
-    const errs = rowsRef.current.filter(r => r.status === 'error').length; if (errs) toast(t('mre.fullErrors', { n: errs }), 'warning');
-    setFull(false); requestAnimationFrame(() => fullBtn.current?.focus());
-  }, [saveAll, toast, t]);
-  const back = useCallback(() => { if (window.history.state?.mreFull) window.history.back(); else closeFull(); }, [closeFull]);
-  useEffect(() => { if (!full) return undefined; const pop = () => { if (fullRef.current) closeFull(); };
-    // Esc anywhere outside a cell or an open list returns to the screen (in a cell, Esc keeps cancelling the edit).
-    const esc = e => { if (e.key === 'Escape' && !e.defaultPrevented && !e.target.closest?.('td, .menu, [role=listbox], [role=dialog]:not(.itable-full)')) { e.preventDefault(); back(); } };
-    const prev = document.body.style.overflow; document.body.style.overflow = 'hidden'; window.addEventListener('popstate', pop); document.addEventListener('keydown', esc);
-    return () => { window.removeEventListener('popstate', pop); document.removeEventListener('keydown', esc); document.body.style.overflow = prev; }; }, [full, closeFull, back]);
   const saveNow = () => { if (!pendingCount) { toast(t('mre.allSaved'), 'ok'); return; } saveAll(); };
+  // Leaving the Full-Screen Entry Workspace: pending rows are saved, rows with errors stay pending (FR-DA-MRE-18).
+  const beforeReturn = useCallback(() => { saveAll(); const errs = rowsRef.current.filter(r => r.status === 'error').length; if (errs) toast(t('mre.fullErrors', { n: errs }), 'warning'); }, [saveAll, toast, t]);
 
   // Warn before leaving a page with unsaved rows; flush pending deletes when the table goes away (FR-DA-MRE-09).
   useEffect(() => { const h = e => { if (rowsRef.current.some(r => r.status === 'dirty' || r.status === 'error')) { e.preventDefault(); e.returnValue = ''; } }; window.addEventListener('beforeunload', h); return () => window.removeEventListener('beforeunload', h); }, []);
@@ -93,7 +84,7 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const focusCell = (key, colKey) => requestAnimationFrame(() => tableRef.current?.querySelector(`[data-cell="${key}|${colKey}"]`)?.focus());
   const addRow = useCallback((after, focus = true, values) => {
     const prev = after ? rowsRef.current.find(r => r._key === after) : rowsRef.current[rowsRef.current.length - 1];
-    const base = { ...(newRow ? newRow() : {}) };
+    const base = { ...Object.fromEntries(columns.filter(c => c.default != null).map(c => [c.key, c.default])), ...(newRow ? newRow() : {}) };
     // Carry-over of the categorizing value from the row above when the user leaves it unset (FR-DA-MRE-06).
     for (const c of columns) if ((c.carry || carry === c.key) && prev && isEmpty(base[c.key])) base[c.key] = prev.data[c.key];
     const row = { _key: newKey(), id: null, data: { ...base, ...(values || {}) }, status: values ? 'dirty' : 'clean', errors: {} };
@@ -117,7 +108,8 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
     if (mod && e.key.toLowerCase() === 's') { e.preventDefault(); saveAll(); return; }
     if (mod && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicate(key); return; }
     if (mod && e.key === 'Enter') { e.preventDefault(); blurCell(key, col); save(key); return; }
-    if (e.key === 'Escape' && el.tagName !== 'BUTTON') { const start = editStart.current[key + '|' + col.key]; if (start !== undefined) { e.preventDefault(); e.stopPropagation(); change(key, col, start); } return; }
+    // Esc cancels the cell edit; with nothing to cancel it is left to the workspace, which returns to the page (FR-DA-MRE-18).
+    if (e.key === 'Escape' && el.tagName !== 'BUTTON') { const start = editStart.current[key + '|' + col.key]; const cur = rowsRef.current.find(r => r._key === key)?.data[col.key] ?? ''; if (start !== undefined && String(start) !== String(cur)) { e.preventDefault(); e.stopPropagation(); change(key, col, start); } return; }
     if (e.key === 'Enter' && !e.shiftKey && el.tagName !== 'BUTTON') {
       e.preventDefault(); blurCell(key, col);
       if (ri === rs.length - 1 && ci === visible.length - 1) { save(key); addRow(null); } else if (ri < rs.length - 1) focusCell(rs[ri + 1]._key, col.key); else { save(key); addRow(null); }
@@ -129,23 +121,54 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
     }
   }, [visible, saveAll, duplicate, blurCell, save, change, addRow]);
 
-  // Paste of tab-separated rows from a spreadsheet: tabs as columns, line breaks as rows (FR-DA-MRE-07).
-  const onPaste = useCallback((e, key, col) => {
-    const text = e.clipboardData?.getData('text/plain') || ''; if (!/[\t\n]/.test(text.replace(/\n$/, ''))) return;
-    e.preventDefault(); const lines = text.replace(/\r/g, '').replace(/\n$/, '').split('\n').map(l => l.split('\t'));
-    const editable = visible.filter(c => !c.readOnly); const start = editable.findIndex(c => c.key === col.key);
-    let rs = [...rowsRef.current]; let ri = rs.findIndex(r => r._key === key); let flagged = 0;
-    lines.forEach((cells, li) => {
-      let target = rs[ri + li]; if (!target) { target = { _key: newKey(), id: null, data: { ...(newRow ? newRow() : {}) }, status: 'clean', errors: {} }; rs = [...rs, target]; }
-      const data = { ...target.data }; const errors = { ...target.errors };
-      cells.forEach((v, k) => { const c = editable[start + k]; if (!c) return; let val = v.trim(); if (c.type === 'select' && c.options) { const m = c.options.find(o => String(o.label ?? o).toLowerCase() === val.toLowerCase() || String(o.value ?? o).toLowerCase() === val.toLowerCase()); if (m) val = String(m.value ?? m); }
-        data[c.key] = val; const err = validateCell(c, val, data, t); if (err) { errors[c.key] = err; flagged++; } else delete errors[c.key]; });
-      rs = rs.map(r => (r._key === target._key ? { ...target, data, errors, status: 'dirty' } : r));
-    });
-    setRows(rs); setTouched(tc => { const n = { ...tc }; for (const r of rs) for (const c of Object.keys(r.errors)) n[r._key + '|' + c] = true; return n; });
-    for (const r of rs) if (r.status === 'dirty') schedule(r._key);
-    toast(t('mre.pasted', { n: lines.length, bad: flagged }), flagged ? 'warning' : 'ok');
-  }, [visible, newRow, schedule, t, toast]);
+  // Paste of complete records from Word, Excel, CSV or text, web pages (FR-DA-MRE-19 – 22): each copied row becomes
+  // a record from the active cell; rows are added when the paste outnumbers the rows below. With a server target the
+  // rows are saved as one audited, undoable operation; invalid rows stay in the table, marked, never discarded.
+  const editableCols = useMemo(() => visible.filter(c => !c.readOnly), [visible]);
+  const startIndex = at => { const i = rowsRef.current.findIndex(r => r._key === at?.row); return i < 0 ? rowsRef.current.length : i; };
+  const pasteTargets = useCallback((n, at) => { const rs = rowsRef.current; const i = startIndex(at); let k = 0; for (let j = 0; j < n && i + j < rs.length; j++) { const r = rs[i + j]; if ((r.id || r.status !== 'clean') && columns.some(c => !isEmpty(r.data[c.key]) && r.data[c.key] !== c.default)) k++; } return k; }, [columns]);
+  const applyPaste = useCallback(async ({ rows: built, mapping, format, at }) => {
+    const snapshot = rowsRef.current; const i0 = startIndex(at);
+    const defaults = Object.fromEntries(columns.filter(c => c.default != null).map(c => [c.key, c.default]));
+    const plan = built.map((b, j) => { const tgt = snapshot[i0 + j]; return { tgt, data: { ...(tgt ? tgt.data : { ...defaults, ...(newRow ? newRow() : {}) }), ...b.data } }; });
+    const strip = d => { const { id: _i, _origin, ...x } = d; return x; };
+    if (pasteTarget) {
+      const res = await post('/bulk-entry/apply', { target: pasteTarget, format, mapping, rows: plan.map(p => ({ id: p.tgt?.id || undefined, data: strip(p.data) })) });
+      const rej = Object.fromEntries((res.rejected || []).map(r => [r.index, r.errors])); const ok = Object.fromEntries((res.saved || []).map(r => [r.index, r]));
+      const next = [...snapshot]; const touch = {};
+      plan.forEach((p, j) => {
+        const errors = rej[j]; const sv = ok[j];
+        const row = sv ? { _key: p.tgt?._key || newKey(), id: sv.id, data: { ...strip(p.data), ...strip(sv), id: sv.id }, status: 'saved', errors: {} }
+          : { _key: p.tgt?._key || newKey(), id: p.tgt?.id || null, data: p.data, status: 'error', errors: errors || {} };
+        if (errors) for (const c of Object.keys(errors)) touch[row._key + '|' + c] = true;
+        if (p.tgt) next[next.findIndex(r => r._key === p.tgt._key)] = row; else next.push(row);
+      });
+      setRows(next); setTouched(tc => ({ ...tc, ...touch }));
+      const bad = (res.rejected || []).length; const n = (res.created || []).length + (res.changed || []).length;
+      toast(bad ? t('paste.appliedBad', { n, bad }) : t('paste.applied', { n }), bad ? 'warning' : 'ok', { duration: 10000, action: { label: t('common.undo'), onClick: async () => { try { await post(`/bulk-entry/${res.id}/undo`, {}); setRows(snapshot); toast(t('paste.undone'), 'info'); onPasted?.(); } catch (e) { toast(e.message, 'error'); } } } });
+      onPasted?.();
+      return;
+    }
+    // Local table: rows marked as changed and saved like typed rows; Undo restores the table and removes new rows.
+    const next = [...snapshot]; const created = [];
+    plan.forEach(p => { const errors = {}; for (const c of columns) { const e = validateCell(c, p.data[c.key], p.data, t); if (e && c.key in (built[0]?.data || {})) errors[c.key] = e; }
+      const row = { _key: p.tgt?._key || newKey(), id: p.tgt?.id || null, data: p.data, status: 'dirty', errors };
+      if (p.tgt) next[next.findIndex(r => r._key === p.tgt._key)] = row; else { next.push(row); created.push(row._key); } });
+    setRows(next); for (const p of next) if (p.status === 'dirty') schedule(p._key);
+    toast(t('paste.applied', { n: plan.length }), 'ok', { duration: 10000, action: { label: t('common.undo'), onClick: () => { for (const k of created) { const r = rowsRef.current.find(x => x._key === k); if (r?.id) onDeleteRow?.(r.id, r.data)?.catch?.(() => {}); } setRows(snapshot.map(r => ({ ...r, status: r.id ? 'dirty' : r.status }))); for (const r of snapshot) if (r.id) schedule(r._key); toast(t('paste.undone'), 'info'); } } });
+  }, [columns, newRow, pasteTarget, onPasted, schedule, toast, t, onDeleteRow]);
+  const validatePaste = useCallback((c, v, data) => validateCell(c, v, data, t), [t]);
+  const paste = usePaste({ id, columns: visible, readOnly: readOnly ? (readOnlyReason || t('paste.readOnly')) : null, targets: pasteTargets, apply: applyPaste, validate: validatePaste });
+  const onPaste = useCallback((e, key, col) => { paste.onPaste(e, { row: key, col: col.key }); }, [paste]);
+  // Copy out: the selected rows with their column titles, as TSV and an HTML table (FR-DA-MRE-23).
+  const labelOf = (c, v) => (c.type === 'select' ? (c.options || []).find(o => String(o.value ?? o) === String(v))?.label ?? v : v);
+  const copyRows = useCallback(async (e, keys) => {
+    const list = rowsRef.current.filter(r => (keys || sel).has(r._key)); if (!list.length) return false;
+    const ok = await writeClipboard(toClipboard(visible, list.map(r => Object.fromEntries(visible.map(c => [c.key, labelOf(c, r.data[c.key]) ?? ''])))), e);
+    if (ok) toast(t('copy.done', { n: list.length }), 'ok'); return ok;
+  }, [sel, visible, toast, t]); // eslint-disable-line react-hooks/exhaustive-deps
+  const onCopyTable = e => { const a = document.activeElement; const textSel = a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA') && a.selectionStart !== a.selectionEnd; if (sel.size && !textSel && !String(window.getSelection?.() || '')) copyRows(e); };
+  const onPasteTable = e => { if (e.target.closest?.('td.cell, .cell')) return; paste.onPaste(e, { row: null, col: editableCols[0]?.key }); };
 
   const resize = (e, key) => { e.preventDefault(); const th = e.currentTarget.parentElement; const x0 = e.clientX, w0 = th.getBoundingClientRect().width; const rtl = document.dir === 'rtl';
     const mv = ev => setWidths(ws => ({ ...ws, [key]: Math.max(80, Math.round(w0 + (rtl ? x0 - ev.clientX : ev.clientX - x0))) }));
@@ -153,6 +176,7 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
     document.addEventListener('pointermove', mv); document.addEventListener('pointerup', up); };
   const toggleCol = key => { const h = new Set(hidden); h.has(key) ? h.delete(key) : h.add(key); queuePrefs({ tables: { [id]: { ...tp, hidden: [...h] } } }); };
   const [colMenu, setColMenu] = useState(false);
+  useOverlay(() => setColMenu(false), colMenu); // Esc closes the menu before the workspace (FR-DA-MRE-18)
 
   const shown = useMemo(() => { if (!q) return rows; const s = q.toLowerCase(); return rows.filter(r => columns.some(c => String(r.data[c.key] ?? '').toLowerCase().includes(s))); }, [rows, q, columns]);
   const allSel = shown.length > 0 && shown.every(r => sel.has(r._key));
@@ -160,29 +184,23 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const deleteSelected = () => { if (!window.confirm(t('mre.confirmDelete', { n: sel.size }))) return; for (const k of sel) remove(k); setSel(new Set()); };
   const typedValues = useMemo(() => { const m = {}; for (const c of columns) if (c.type === 'select' && c.custom) m[c.key] = [...new Set(rows.map(r => r.data[c.key]).filter(v => !isEmpty(v) && !(c.options || []).some(o => String(o.value ?? o) === String(v))))]; return m; }, [rows, columns]);
 
-  return (<div className={`dt itable-host${full ? ' itable-full' : ''}`} role={full ? 'dialog' : undefined} aria-modal={full || undefined} aria-label={full ? (caption || t('mre.fullScreen')) : undefined}>
-    {full && <div className="itable-fullbar">
-      <Btn icon="ArrowLeft" onClick={back}>{t('mre.backToScreen')}</Btn>
-      <div className="itable-fulltitle"><span className="strong">{caption || t('mre.fullScreen')}</span><span className="xs muted">{t('mre.count', { n: rows.length }).replace(/\.$/, '')} · {pendingCount ? t('mre.pending', { n: pendingCount }) : t('mre.allSavedShort')}</span></div>
-      <span className="spacer" />
-      {!readOnly && <Btn icon="Plus" onClick={() => { const r = addRow(null, !newInEditor); if (newInEditor) setEditorKey(r._key); }}>{t('mre.addRow')}</Btn>}
-      {!readOnly && <Btn kind="primary" icon="Save" onClick={saveNow}>{pendingCount ? t('mre.saveAll', { n: pendingCount }) : t('common.save')}</Btn>}
-    </div>}
-    {readOnly && !full && <div className="dt-toolbar"><span className="spacer" /><Btn ref={fullBtn} size="sm" kind="ghost" icon="Maximize" onClick={openFull}>{t('mre.fullScreen')}</Btn></div>}
-    {!readOnly && <div className="dt-toolbar">
+  const addRowAction = () => { const r = addRow(null, !newInEditor); if (newInEditor) setEditorKey(r._key); };
+  const status = pendingCount ? t('ws.unsaved', { n: pendingCount }) : rows.some(r => r.status === 'saving') ? t('ws.saving') : t('mre.allSavedShort');
+  return (<EntryWorkspace id={id} title={caption} context={context} meta={<>{t('ws.records', { n: rows.length })}<span aria-live="polite"> · {status}</span></>} onBeforeClose={beforeReturn} className="dt itable-host"
+    actions={!readOnly && <><Btn icon="Plus" onClick={addRowAction}>{t('mre.addRow')}</Btn><Btn kind="primary" icon="Save" onClick={saveNow}>{pendingCount ? t('mre.saveAll', { n: pendingCount }) : t('common.save')}</Btn></>}>
+    {({ full, expand, records, zoomStyle }) => <>
+    <div className="dt-toolbar">
       {search !== false && rows.length > 8 && <Search value={q} onChange={setQ} placeholder={t('common.search')} />}
-      <Btn size="sm" icon="CopyPlus" disabled={!rows.length} onClick={() => duplicate(rows[rows.length - 1]._key)}>{t('mre.duplicatePrevious')}</Btn>
+      {!readOnly && <Btn size="sm" icon="CopyPlus" disabled={!rows.length} onClick={() => duplicate(rows[rows.length - 1]._key)}>{t('mre.duplicatePrevious')}</Btn>}
       <span className="spacer" />
-      {pendingCount > 0 && !full && <Btn size="sm" kind="primary" icon="Save" onClick={saveAll}>{t('mre.saveAll', { n: pendingCount })}</Btn>}
-      {!full && <Btn ref={fullBtn} size="sm" kind="ghost" icon="Maximize" onClick={openFull}>{t('mre.fullScreen')}</Btn>}
-      <div className="rel"><Btn icon="Columns3" size="sm" kind="ghost" aria-label={t('dt.columns')} aria-expanded={colMenu} onClick={() => setColMenu(m => !m)} />
-        {colMenu && <div className="menu" role="dialog" aria-label={t('dt.columns')} onMouseLeave={() => setColMenu(false)}><div className="col-menu">{columns.map((c, i) => <label key={c.key}><input type="checkbox" disabled={i === 0} checked={i === 0 || !hidden.has(c.key)} onChange={() => toggleCol(c.key)} />{c.label}</label>)}</div></div>}</div>
-    </div>}
-    {!readOnly && sel.size > 0 && <div className="bulk-bar"><span>{t('dt.selected', { n: sel.size })}</span>
-      {bulkSet && <><Select size="sm" aria-label={t('mre.setField')} value={bulk?.key || ''} placeholder={t('mre.setField')} onChange={e => setBulk({ key: e.target.value, value: '' })} options={columns.filter(c => !c.readOnly).map(c => ({ value: c.key, label: c.label }))} />
-        {bulk && <BulkValue col={columns.find(c => c.key === bulk.key)} value={bulk.value} onChange={v => setBulk(b => ({ ...b, value: v }))} />}{bulk && <Btn size="sm" onClick={applyBulk}>{t('mre.apply')}</Btn>}</>}
-      <Btn size="sm" kind="danger" icon="Trash2" onClick={deleteSelected}>{t('common.delete')}</Btn><Btn size="sm" kind="ghost" onClick={() => setSel(new Set())}>{t('dt.clearSelection')}</Btn></div>}
-    <div className={`table-wrap ${full ? 'itable-scroll' : 'auto-h'}`}><table className={`tbl itable ${density === 'compact' ? 'compact' : ''}`} ref={tableRef}>{caption && <caption className="sr-only">{caption}</caption>}
+      {!readOnly && pendingCount > 0 && !full && <Btn size="sm" kind="primary" icon="Save" onClick={saveAll}>{t('mre.saveAll', { n: pendingCount })}</Btn>}
+      {!readOnly && <Btn size="sm" kind="ghost" icon="ClipboardPaste" data-tip={t('paste.hint')} onClick={() => paste.openPaste({ row: null, col: editableCols[0]?.key })}>{t('paste.action')}</Btn>}
+      <Btn size="sm" kind="ghost" icon="Copy" disabled={!sel.size} data-tip={t('copy.hint')} onClick={() => copyRows()}>{t('copy.action')}</Btn>
+      {!readOnly && <div className="rel"><Btn icon="Columns3" size="sm" kind="ghost" aria-label={t('dt.columns')} aria-expanded={colMenu} onClick={() => setColMenu(m => !m)} />
+        {colMenu && <div className="menu" role="dialog" aria-label={t('dt.columns')} onMouseLeave={() => setColMenu(false)}><div className="col-menu">{columns.map((c, i) => <label key={c.key}><input type="checkbox" disabled={i === 0} checked={i === 0 || !hidden.has(c.key)} onChange={() => toggleCol(c.key)} />{c.label}</label>)}</div></div>}</div>}
+      {expand}
+    </div>
+    <div {...records} className={`table-wrap ${full ? 'ws-records' : 'auto-h'}`} onCopy={onCopyTable} onPaste={onPasteTable}><table className={`tbl itable ${density === 'compact' ? 'compact' : ''}`} ref={tableRef} style={zoomStyle}>{caption && <caption className="sr-only">{caption}</caption>}
       <thead><tr>
         {!readOnly && <th className="sel-col sticky-col" scope="col"><input type="checkbox" aria-label={t('dt.selectAll')} checked={allSel} onChange={() => setSel(allSel ? new Set() : new Set(shown.map(r => r._key)))} /></th>}
         <th className="status-col" scope="col"><span className="sr-only">{t('mre.status')}</span>#</th>
@@ -198,7 +216,9 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
       const close = () => { if (r.status === 'dirty') schedule(r._key); setEditorKey(null); };
       const go = d => { if (r.status === 'dirty') schedule(r._key); const n = rows[i + d]; if (n) setEditorKey(n._key); };
       return <RowEditor row={r} index={i} total={rows.length} columns={columns} readOnly={readOnly} title={rowTitle ? rowTitle(r.data) : null} typedValues={typedValues} onChange={change} onBlurCell={blurCell} onPrev={() => go(-1)} onNext={() => go(1)} onClose={close} t={t} />; })()}
-  </div>);
+    {paste.ui}
+    </>}
+  </EntryWorkspace>);
 }
 
 /**

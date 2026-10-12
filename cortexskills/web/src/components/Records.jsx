@@ -26,15 +26,32 @@ export const recordLabel = (r, L) => { for (const k of LABEL_KEYS) if (r[k] != n
 
 /** List of an entity with create / edit / delete, versions and justification governance. */
 export function RecordsView({ entity, project, columns, canCreate = true, filter, onOpen, extraActions, defaults, rowFilter }) {
-  const { t, L } = useI18n(); const meta = useMeta(); const def = meta?.find(m => m.name === entity);
+  const { t, L } = useI18n(); const { me, toast } = useSession(); const meta = useMeta(); const def = meta?.find(m => m.name === entity);
   const qs = new URLSearchParams({ limit: '1000', ...(project ? { project } : {}), ...(filter || {}) }).toString();
   const d = useData(`/records/${entity}?${qs}`, [entity]); const [open, setOpen] = useState(null);
   if (meta && !def) return <AccessNotice error={{ message: t('err.unknownEntity', { entity }) }} />;
   const cols = columns || autoColumns(def, L, t);
+  // Paste of complete records (FR-DA-MRE-19 – 22): one record per copied row, saved as one audited, undoable operation.
+  const pasteCols = useMemo(() => (def ? def.fields.filter(f => !['json'].includes(f.type) && !f.computed).map(f => ({ key: f.name, label: t('field.' + f.name), required: !!f.required,
+    type: f.type === 'number' ? 'number' : f.type === 'date' ? 'date' : f.type === 'boolean' ? 'boolean' : f.type === 'enum' || f.currency ? 'select' : 'text',
+    options: f.currency ? (me?.config?.config?.currencies || []).map(c => ({ value: c, label: c })) : f.type === 'enum' ? (f.options || []).map(o => ({ value: o, label: t('status.' + o) === 'status.' + o ? o : t('status.' + o) })) : undefined, aliases: [f.name.replace(/_/g, ' ')] })) : []), [def, t, me]);
+  const [rejected, setRejected] = useState(null);
+  const applyPaste = async ({ rows, format, mapping }) => {
+    const res = await post('/bulk-entry/apply', { target: { kind: 'entity', entity, project: project || undefined }, format, mapping, rows: rows.map(r => ({ data: { ...(defaults || {}), ...r.data } })) });
+    d.reload(); const n = res.created.length; const bad = res.rejected.length;
+    toast(bad ? t('paste.appliedBad', { n, bad }) : t('paste.applied', { n }), bad ? 'warning' : 'ok', { duration: 10000, action: { label: t('common.undo'), onClick: async () => { try { await post(`/bulk-entry/${res.id}/undo`, {}); toast(t('paste.undone'), 'info'); d.reload(); } catch (e) { toast(e.message, 'error'); } } } });
+    if (bad) setRejected(res.rejected.map(x => ({ ...x, data: rows[x.index]?.data || {} })));
+  };
+  const pasteCfg = def && !onOpen ? { columns: pasteCols, readOnly: !def.canWrite || me?.foreignReadOnly ? t('paste.readOnly') : null, apply: applyPaste } : null;
   return (<Guard state={!columns && !meta ? { loading: true } : d}>{data => <>
     <div className="row" style={{ justifyContent: 'flex-end', marginBottom: 'var(--aiv-space-3)' }}>{extraActions}
       {canCreate && def?.canWrite && <Btn kind="primary" icon="Plus" onClick={() => setOpen({ _new: true, ...(defaults || {}) })}>{t('common.new')}</Btn>}</div>
-    <DataTable csvName={entity} rows={rowFilter ? data.items.filter(rowFilter) : data.items} columns={cols} onRow={r => (onOpen ? onOpen(r) : setOpen(r))} />
+    <DataTable csvName={entity} title={def ? t('entity.' + entity) === 'entity.' + entity ? entity : t('entity.' + entity) : entity} rows={rowFilter ? data.items.filter(rowFilter) : data.items} columns={cols} onRow={r => (onOpen ? onOpen(r) : setOpen(r))} paste={pasteCfg} />
+    {rejected && <Modal wide title={t('paste.rejectedTitle', { n: rejected.length })} onClose={() => setRejected(null)} footer={<Btn kind="primary" onClick={() => setRejected(null)}>{t('common.close')}</Btn>}>
+      <p className="small">{t('paste.rejectedText')}</p>
+      <div className="table-wrap auto-h"><table className="tbl compact"><thead><tr><th scope="col">{t('paste.row')}</th><th scope="col">{t('paste.values')}</th><th scope="col">{t('paste.errors')}</th></tr></thead>
+        <tbody>{rejected.map(x => <tr key={x.index}><td className="mono xs">{x.index + 1}</td><td className="wrap-cell small">{Object.entries(x.data).filter(([, v]) => v !== '' && v != null).map(([k, v]) => `${t('field.' + k)}: ${v}`).join(' · ')}</td>
+          <td className="wrap-cell">{Object.entries(x.errors).map(([k, e]) => <div key={k} className="field-error">{k === '_row' ? '' : t('field.' + k) + ' — '}{e}</div>)}</td></tr>)}</tbody></table></div></Modal>}
     {open && def && <RecordEditor def={def} record={open} project={project} onClose={() => setOpen(null)} onSaved={() => { setOpen(null); d.reload(); }} />}
   </>}</Guard>);
 }
@@ -78,13 +95,15 @@ export function RecordEditor({ def, record, project, onClose, onSaved }) {
 }
 
 function FieldInput({ f, value, onChange, readOnly }) {
-  const { t, L } = useI18n(); const id = 'f-' + f.name; const label = t('field.' + f.name) + (f.required ? ' *' : '');
+  const { t, L } = useI18n(); const { me } = useSession(); const id = 'f-' + f.name; const label = t('field.' + f.name) + (f.required ? ' *' : '');
   const refs = useData(f.type === 'ref' && f.ref && !['User', 'ObsNode', 'Organization', 'Project'].includes(f.ref) ? `/records/${f.ref}?limit=300` : null);
   const dir = useData(f.type === 'ref' && f.ref === 'User' ? '/directory' : null);
   const obs = useData(f.type === 'ref' && f.ref === 'ObsNode' ? '/obs' : null);
   let input;
   const common = { id, className: 'input', disabled: readOnly };
   const wide = ['json', 'longtext'].includes(f.type) || (f.type === 'text' && f.ml);
+  // Amounts carry their currency: one of the currencies the Organization enables, its default when empty (FR-DA-I18N-09).
+  if (f.currency) { const cur = me?.config?.config; return <div className="field"><label htmlFor={id}>{label}</label><Select {...common} value={value || cur?.currency || ''} onChange={e => onChange(e.target.value)} options={(cur?.currencies || []).map(c => ({ value: c, label: c }))} /><span className="hint">{t('cur.fieldHint', { c: cur?.currency || '' })}</span></div>; }
   switch (f.type) {
     case 'enum': input = <Select {...common} value={value ?? ''} onChange={e => onChange(e.target.value)}><option value="">—</option>{f.options.map(o => <option key={o} value={o}>{t('status.' + o)}</option>)}</Select>; break;
     case 'boolean': input = <label className="check"><input id={id} type="checkbox" disabled={readOnly} checked={!!value} onChange={e => onChange(e.target.checked)} />{value ? t('common.yes') : t('common.no')}</label>; break;
