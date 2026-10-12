@@ -1,4 +1,4 @@
-// Healthcare full case presentation: the training engineering project of the Regional Hospital Centre (AI skills run,
+// Healthcare full case presentation (regional hospital, or private clinic group with CASE=clinic): the AI skills run,
 // 100 % complete) and the documents it produced — Training Engineering Report, Training Plan, audit, ROI and the
 // 37 published documents. Styled with the AI Value Graphical Chart v1.2 (§13.3 PowerPoint, §9 charts, §8.17 tables).
 // Every figure comes from case-data.json (extract-case.mjs) and case-pages.json (page counts of the exported PDFs).
@@ -8,8 +8,12 @@ const PptxGenJS = require('pptxgenjs'); const sharp = require('sharp'); const lu
 const LANG = process.argv[2] === 'fr' ? 'fr' : 'en';
 const out = process.argv[3] || path.join(__dirname, '../../deliverables');
 const t = (en, fr) => (LANG === 'fr' ? fr : en);
-const D = JSON.parse(fs.readFileSync(path.join(__dirname, 'case-data.json'), 'utf8'));
-const PAGES = fs.existsSync(path.join(__dirname, 'case-pages.json')) ? JSON.parse(fs.readFileSync(path.join(__dirname, 'case-pages.json'), 'utf8'))[LANG] || {} : {};
+// CASE=clinic builds the private clinic group scenario (case-clinic.json); default: the regional hospital (case-data.json).
+const CLINIC = process.env.CASE === 'clinic';
+const K = CLINIC ? { the: ['the clinic group', 'le groupe de cliniques'], The: ['The clinic group', 'Le groupe de cliniques'], of: ['of the clinic group', 'du groupe de cliniques'], sub: ['at a private clinic group', 'dans un groupe de cliniques privées'], file: 'PrivateClinics_Case' }
+  : { the: ['the hospital', 'l’hôpital'], The: ['The hospital', 'L’hôpital'], of: ['of the hospital', 'de l’hôpital'], sub: ['at a regional hospital', 'dans un centre hospitalier régional'], file: 'Hospital_Case' };
+const D = JSON.parse(fs.readFileSync(path.join(__dirname, CLINIC ? 'case-clinic.json' : 'case-data.json'), 'utf8'));
+const PAGES = fs.existsSync(path.join(__dirname, CLINIC ? 'case-pages-clinic.json' : 'case-pages.json')) ? JSON.parse(fs.readFileSync(path.join(__dirname, CLINIC ? 'case-pages-clinic.json' : 'case-pages.json'), 'utf8'))[LANG] || {} : {};
 const L = x => (x && typeof x === 'object' && !Array.isArray(x) ? x[LANG] ?? x.en ?? '' : x ?? '');
 const DOCS = D.documents[LANG]; const TER = DOCS['DT-TER'].sections; const PLAN = DOCS['DT-PLAN'].sections;
 const secN = (list, prefix, n = 0) => list.filter(s => (s.heading || '').startsWith(prefix))[n];
@@ -23,13 +27,13 @@ const C = { navy: '123A5F', navyDark: '0D2A47', azure: '1876C6', green: '28C87C'
 const ST = ['F4C7C3', 'FBE0B5', 'FFF3B0', 'D9EAD3', 'B6D7A8'];
 const TITLE = 'Montserrat', BODY = 'Open Sans';
 const W = 13.333, H = 7.5, M = 0.6;
-const SHOTS = path.join(__dirname, 'shots/case', LANG);
+const SHOTS = path.join(__dirname, CLINIC ? 'shots/case-clinic' : 'shots/case', LANG);
 const BRAND = path.join(__dirname, 'brand');
 const org = L(D.org.name), proj = D.project;
 
 const pres = new PptxGenJS(); pres.layout = 'LAYOUT_WIDE'; pres.author = 'AI Value'; pres.company = 'AI Value'; pres.lang = LANG === 'fr' ? 'fr-FR' : 'en-GB';
 pres.title = t('Healthcare full case — Training engineering project', 'Cas complet santé — Projet d’ingénierie de formation');
-let pageNo = 0, section = '';
+let pageNo = 0, section = ''; const OUTLINE = [];
 const icons = {};
 async function icon(name, color = C.white) {
   const k = name + color; if (icons[k]) return icons[k];
@@ -47,7 +51,7 @@ const txt = (s, tx, x, y, w, h, o = {}) => s.addText(tx, { x, y, w, h, fontFace:
 const cap = (s, tx, x, y, w) => txt(s, tx, x, y, w, 0.3, { fontSize: 10, italic: true, color: C.muted });
 const logo = (s, file, x, y, w) => { const f = path.join(BRAND, file); const b = fs.readFileSync(f); const h = w * b.readUInt32BE(20) / b.readUInt32BE(16); s.addImage({ path: f, x, y, w, h, altText: 'AI Value' }); return h; };
 function content(eyebrow, title, subtitle) {
-  const s = pres.addSlide(); pageNo++; s.background = { color: C.white };
+  const s = pres.addSlide(); pageNo++; s.background = { color: C.white }; OUTLINE.push({ no: pageNo, section, title });
   txt(s, eyebrow.toUpperCase(), M, 0.38, 11, 0.32, { fontSize: 14, bold: true, color: C.azure, charSpacing: 2 });
   txt(s, title, M, 0.72, W - 2 * M, 0.72, { fontFace: TITLE, fontSize: 26, bold: true, color: C.navy, fit: 'shrink', valign: 'middle' });
   if (subtitle) txt(s, subtitle, M, 1.44, W - 2 * M, 0.42, { fontSize: 14, color: C.ink, fit: 'shrink' });
@@ -59,7 +63,7 @@ function content(eyebrow, title, subtitle) {
 }
 /** Section divider: the one approved dark surface (Navy), with the white logo (§2.4, §12). */
 function divider(no, title, sub) {
-  const s = pres.addSlide(); pageNo++; section = title; s.background = { color: C.navy };
+  const s = pres.addSlide(); pageNo++; section = title; s.background = { color: C.navy }; OUTLINE.push({ no: pageNo, section: title, title: `${no}. ${title}`, divider: true });
   s.addShape(pres.shapes.OVAL, { x: 9.4, y: -1.5, w: 6.2, h: 6.2, fill: { color: C.azure, transparency: 80 }, line: { color: C.azure, transparency: 100 } });
   s.addShape(pres.shapes.OVAL, { x: 10.8, y: 4.1, w: 3.4, h: 3.4, fill: { color: C.teal, transparency: 78 }, line: { color: C.teal, transparency: 100 } });
   txt(s, no, M, 2.0, 3, 1.2, { fontFace: TITLE, fontSize: 72, bold: true, color: C.green });
@@ -112,14 +116,14 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     s.addShape(pres.shapes.OVAL, { x: 8.9, y: -2.2, w: 7.5, h: 7.5, fill: { color: C.azure, transparency: 82 }, line: { color: C.azure, transparency: 100 } });
     logo(s, 'aivalue-lockup-white.png', M, 0.55, 3.0);
     txt(s, t('FULL CASE · HEALTHCARE · 2026', 'CAS COMPLET · SANTÉ · 2026'), M, 2.0, 7, 0.4, { fontSize: 14, bold: true, color: C.green, charSpacing: 3 });
-    txt(s, t('AI skills training engineering at a regional hospital', 'Ingénierie de formation aux compétences IA dans un centre hospitalier régional'), M, 2.45, 6.3, 1.9, { fontFace: TITLE, fontSize: 36, bold: true, color: C.white, fit: 'shrink' });
+    txt(s, t('AI skills training engineering ' + K.sub[0], 'Ingénierie de formation aux compétences IA ' + K.sub[1]), M, 2.45, 6.3, 1.9, { fontFace: TITLE, fontSize: 36, bold: true, color: C.white, fit: 'shrink' });
     txt(s, t(`${org}: the project, the Training Engineering Report, the Training Plan and every document produced with CortexSkills`, `${org} : le projet, le Rapport d’ingénierie de formation, le Plan de formation et chaque document produit avec CortexSkills`), M, 4.45, 6.0, 1.2, { fontSize: 17, color: C.white });
     txt(s, 'MEASURABLE · GOVERNED · SUSTAINABLE', M, 6.65, 7, 0.35, { fontSize: 13, bold: true, color: C.green, charSpacing: 3 });
     const f = path.join(SHOTS, 'project_workspace.png'); if (fs.existsSync(f)) { const b = fs.readFileSync(f); const w = 5.6, h = w * b.readUInt32BE(20) / b.readUInt32BE(16); s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 7.15, y: 1.85, w: w + 0.1, h: h + 0.1, fill: { color: C.white }, line: { color: C.white }, rectRadius: 0.06 }); s.addImage({ path: f, x: 7.2, y: 1.9, w, h, altText: 'CortexSkills' }); } }
 
   // 2 — Agenda
   { section = t('Agenda', 'Sommaire'); const s = content(t('Agenda', 'Sommaire'), t('How the case is presented', 'Déroulé de la présentation'));
-    const ag = [['01', t('The hospital and the project', 'L’hôpital et le projet'), t('Context, charter, scope, method, schedule', 'Contexte, charte, périmètre, méthode, calendrier'), 'Hospital'],
+    const ag = [['01', t(K.The[0] + ' and the project', K.The[1] + ' et le projet'), t('Context, charter, scope, method, schedule', 'Contexte, charte, périmètre, méthode, calendrier'), 'Hospital'],
       ['02', t('Diagnosis', 'Diagnostic'), t('Questionnaires, maturity, gaps, needs', 'Questionnaires, maturité, écarts, besoins'), 'Stethoscope'],
       ['03', t('Training Engineering Report', 'Rapport d’ingénierie de formation'), t('Structure, findings, roadmap, risks', 'Structure, constats, feuille de route, risques'), 'FileText'],
       ['04', t('Training Plan', 'Plan de formation'), t('Programs, agendas, design, budget', 'Programmes, déroulés, conception, budget'), 'GraduationCap'],
@@ -149,14 +153,14 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
       t(`${docCodes.length} documents published${totalPages ? `, ${num(totalPages)} pages` : ''}; the Training Engineering Report alone has ${PAGES['DT-TER'] || '—'} pages.`, `${docCodes.length} documents publiés${totalPages ? `, ${num(totalPages)} pages` : ''} ; le Rapport d’ingénierie de formation compte à lui seul ${PAGES['DT-TER'] || '—'} pages.`)], M + 0.35, 4.3, W - 2 * M - 0.7, 0.58, 13.5); }
 
   // ---------------------------------------------------------------- 01 The hospital and the project
-  divider('01', t('The hospital and the project', 'L’hôpital et le projet'), t('Context, charter, scope, method and schedule', 'Contexte, charte, périmètre, méthode et calendrier'));
+  divider('01', t(K.The[0] + ' and the project', K.The[1] + ' et le projet'), t('Context, charter, scope, method and schedule', 'Contexte, charte, périmètre, méthode et calendrier'));
   { const s = content(t('Context', 'Contexte'), org, textOf(TER, '1. '));
     const vis = rowsOf(TER, '1.1 ');
     table(s, [t('Topic', 'Sujet'), t('Content', 'Contenu')], vis.slice(0, 7).map(r => [{ text: r[0], bold: true }, short(r[1], 170)]), M, 2.0, 7.4, [2.0, 5.4], { fontSize: 10.5, rowH: 0.55 });
     const org2 = rowsOf(TER, '1.2 ');
     card(s, 8.3, 2.0, 4.43, 4.6); txt(s, t('Organization and headcount', 'Organigramme et effectif'), 8.55, 2.15, 4, 0.4, { fontFace: TITLE, fontSize: 15, bold: true, color: C.navy });
     table(s, [t('Function', 'Fonction'), t('People', 'Effectif')], org2.slice(0, 8).map(r => [r[0], r[r.length - 1]]), 8.55, 2.65, 3.95, [2.85, 1.1], { fontSize: 10.5 }); }
-  { const s = content(t('Hospital profile', 'Profil de l’hôpital'), t('Key dates and SWOT of the hospital', 'Dates clés et SWOT de l’hôpital'));
+  { const s = content(t(CLINIC ? 'Group profile' : 'Hospital profile', 'Profil ' + K.of[1]), t('Key dates and SWOT ' + K.of[0], 'Dates clés et SWOT ' + K.of[1]));
     const dates = rowsOf(TER, '1.3 '); const swot = rowsOf(TER, '1.4 ')[0] || [];
     dates.forEach((d, i) => { const x = M + i * 3.07; card(s, x, 2.0, 2.9, 1.3); txt(s, d[0], x + 0.25, 2.12, 2.4, 0.5, { fontFace: TITLE, fontSize: 22, bold: true, color: C.navy }); txt(s, d[1], x + 0.25, 2.65, 2.5, 0.6, { fontSize: 12 }); });
     const q = [[t('Strengths', 'Forces'), swot[0], ST[4]], [t('Areas for improvement', 'Axes d’amélioration'), swot[1], ST[0]], [t('Opportunities', 'Opportunités'), swot[2], ST[3]], [t('Threats', 'Menaces'), swot[3], ST[1]]];
@@ -197,7 +201,7 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     txt(s, t(`Consent recorded for ${stake.filter(r => /Given|Donné/i.test(r[6])).length} of ${stake.length} people before any answer was stored.`, `Consentement enregistré pour ${stake.filter(r => /Given|Donné/i.test(r[6])).length} personnes sur ${stake.length} avant tout enregistrement de réponse.`), 8.1, 4.4, 4.63, 0.8, { fontSize: 12.5 }); }
 
   // ---------------------------------------------------------------- 02 Diagnosis
-  divider('02', t('Diagnosis', 'Diagnostic'), t('Who answered, where the hospital stands, which skills are missing', 'Qui a répondu, où en est l’hôpital, quelles compétences manquent'));
+  divider('02', t('Diagnosis', 'Diagnostic'), t('Who answered, where ' + K.the[0] + ' stands, which skills are missing', 'Qui a répondu, où en est l’hôpital, quelles compétences manquent'));
   { const s = content(t('Questionnaire campaign', 'Campagne de questionnaires'), t(`${responded} of ${invited} people answered`, `${responded} personnes sur ${invited} ont répondu`), short(textOf(TER, '1.6 '), 150));
     table(s, [t('Function', 'Fonction'), t('General Manager', 'Direction générale'), t('Management', 'Management'), t('Team member', 'Équipe'), t('Responded', 'Répondants')], sample, M, 2.0, 6.3, [2.3, 1.1, 1.0, 0.9, 1.0], { fontSize: 10.5 });
     s.addChart(pres.charts.BAR, [{ name: t('Response rate (%)', 'Taux de réponse (%)'), labels: byFn.map(r => r[0]), values: byFn.map(r => N(r[3])) }], { x: 7.2, y: 1.95, w: 5.5, h: 3.0, barDir: 'bar', chartColors: [C.azure], showValue: true, dataLabelFormatCode: '0"%"', valAxisMaxVal: 100, valAxisMinVal: 0, ...axis, showLegend: false });
@@ -226,7 +230,7 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     s.addChart(pres.charts.BAR, [{ name: t('Mentions', 'Mentions'), labels: cm.map(r => short(r[0], 40)), values: cm.map(r => N(r[1])) }], { x: M, y: 1.95, w: 7.6, h: 4.4, barDir: 'bar', chartColors: [C.azure], showValue: true, ...axis, showLegend: false, catAxisOrientation: 'maxMin' });
     cap(s, t('Mentions across all answers (TER 3.3).', 'Mentions dans l’ensemble des réponses (RIF 3.3).'), M, 6.4, 7);
     card(s, 8.55, 2.05, 4.18, 4.3, C.azureTint); txt(s, t('Reading', 'Lecture'), 8.8, 2.2, 3.8, 0.4, { fontFace: TITLE, fontSize: 15, bold: true, color: C.navy });
-    txt(s, t(`The two AI clinical themes lead (${cm[0]?.[1]} and ${cm[1]?.[1]} mentions), followed by team communication and problem solving: the plan pairs each AI training with practical workshops on the hospital’s own cases.`, `Les deux thèmes IA cliniques arrivent en tête (${cm[0]?.[1]} et ${cm[1]?.[1]} mentions), suivis de la communication d’équipe et de la résolution de problèmes : le plan associe chaque formation IA à des ateliers pratiques sur les cas propres à l’hôpital.`), 8.8, 2.7, 3.75, 3.5, { fontSize: 12.5 }); }
+    txt(s, t(`The two AI clinical themes lead (${cm[0]?.[1]} and ${cm[1]?.[1]} mentions), followed by team communication and problem solving: the plan pairs each AI training with practical workshops on ${CLINIC ? 'the clinics’' : 'the hospital’s'} own cases.`, `Les deux thèmes IA cliniques arrivent en tête (${cm[0]?.[1]} et ${cm[1]?.[1]} mentions), suivis de la communication d’équipe et de la résolution de problèmes : le plan associe chaque formation IA à des ateliers pratiques sur les cas propres ${CLINIC ? 'aux cliniques' : 'à l’hôpital'}.`), 8.8, 2.7, 3.75, 3.5, { fontSize: 12.5 }); }
   { const s = content(t('Soft skills and leadership', 'Compétences comportementales et leadership'), t('Self-assessment of the respondents, weakest first', 'Auto-évaluation des répondants, du plus faible au plus fort'));
     const ss = secN(TER, '3.7 ', 0)?.table?.rows || []; const ll = secN(TER, '3.7 ', 1)?.table?.rows || [];
     table(s, [t('Competence', 'Compétence'), t('Average (1–5)', 'Moyenne (1–5)'), 'n'], ss.slice(0, 8).map(r => [short(r[0], 70), { text: r[1], align: 'center', fill: N(r[1]) < 3.3 ? ST[1] : ST[2] }, { text: r[2], align: 'center' }]), M, 2.0, 7.0, [5.0, 1.3, 0.7], { fontSize: 10.5 });
@@ -312,7 +316,7 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     txt(s, t('Delivery', 'Modalités'), 8.55, 4.0, 4, 0.4, { fontFace: TITLE, fontSize: 15, bold: true, color: C.navy });
     txt(s, rowsOf(TER, '5.3 ').slice(0, 2).map(r => `${r[2]} · ${r[3]} · ${r[4]} h`).join('\n'), 8.55, 4.45, 3.95, 1.8, { fontSize: 12 }); }
   { const ag = rowsOf(PLAN, 'Detailed agendas', 'Programmes détaillés').filter(r => r[0] === 'TR-AI-01');
-    const s = content(t('Detailed agenda', 'Programme détaillé'), t(`${trainings[0]?.[2] || 'TR-AI-01'} — half-day by half-day`, `${trainings[0]?.[2] || 'TR-AI-01'} — demi-journée par demi-journée`), t(`${ag.length} activities over ${trainings[0]?.[4] || ''}: lectures, quizzes and workshops on the hospital’s own cases.`, `${ag.length} activités sur ${trainings[0]?.[4] || ''} : exposés, quiz et ateliers sur les cas propres à l’hôpital.`));
+    const s = content(t('Detailed agenda', 'Programme détaillé'), t(`${trainings[0]?.[2] || 'TR-AI-01'} — half-day by half-day`, `${trainings[0]?.[2] || 'TR-AI-01'} — demi-journée par demi-journée`), t(`${ag.length} activities over ${trainings[0]?.[4] || ''}: lectures, quizzes and workshops on ${CLINIC ? 'the clinics’' : 'the hospital’s'} own cases.`, `${ag.length} activités sur ${trainings[0]?.[4] || ''} : exposés, quiz et ateliers sur les cas propres ${CLINIC ? 'aux cliniques' : 'à l’hôpital'}.`));
     const half = [...new Set(ag.map(r => r[1]))];
     half.slice(0, 6).forEach((h, i) => { const x = M + (i % 3) * 4.1, y = 2.0 + Math.floor(i / 3) * 2.3; card(s, x, y, 3.85, 2.15, i === 0 ? C.azureTint : C.white);
       txt(s, h, x + 0.25, y + 0.15, 3.4, 0.35, { fontFace: TITLE, fontSize: 13, bold: true, color: C.navy });
@@ -388,10 +392,10 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     screenshot(s, 'training_plan', 6.75, 2.0, 6.0, 4.3); cap(s, t('Training plan screen: programs, trainings and sessions.', 'Écran du plan de formation : programmes, formations et sessions.'), 6.75, 6.4, 6); }
   { const s = content(t('Inside the application', 'Dans l’application'), t('The project workspace and the dashboard', 'L’espace projet et le tableau de bord'));
     screenshot(s, 'project_workspace', M, 2.0, 6.0, 4.3); cap(s, t('Project workspace: phases, processes and progress.', 'Espace projet : phases, processus et avancement.'), M, 6.4, 6);
-    screenshot(s, 'dashboard', 6.75, 2.0, 6.0, 4.3); cap(s, t('Dashboard of the hospital.', 'Tableau de bord de l’hôpital.'), 6.75, 6.4, 6); }
+    screenshot(s, 'dashboard', 6.75, 2.0, 6.0, 4.3); cap(s, t('Dashboard ' + K.of[0] + '.', 'Tableau de bord ' + K.of[1] + '.'), 6.75, 6.4, 6); }
 
   // Conclusion
-  { section = t('Conclusion', 'Conclusion'); const s = content(t('Conclusion', 'Conclusion'), t('What the hospital has at the end of the cycle', 'Ce que l’hôpital obtient en fin de cycle'));
+  { section = t('Conclusion', 'Conclusion'); const s = content(t('Conclusion', 'Conclusion'), t('What ' + K.the[0] + ' has at the end of the cycle', 'Ce que ' + (CLINIC ? 'le groupe' : 'l’hôpital') + ' obtient en fin de cycle'));
     await bullets(s, [
       t(`A Training Engineering Report of ${PAGES['DT-TER'] || '—'} pages, built from ${responded} answers, ${(D.records.Stakeholder || []).length} stakeholders and the diagnosis of every function.`, `Un Rapport d’ingénierie de formation de ${PAGES['DT-TER'] || '—'} pages, construit à partir de ${responded} réponses, ${(D.records.Stakeholder || []).length} parties prenantes et du diagnostic de chaque fonction.`),
       t(`A locked Training Plan: ${prio.length} trainings, half-day agendas, a value proposition per persona and a budget of ${total[1] || '—'}`, `Un Plan de formation verrouillé : ${prio.length} formations, des déroulés par demi-journée, une proposition de valeur par persona et un budget de ${total[1] || '—'}`),
@@ -405,6 +409,7 @@ const rag = v => /Green|Vert/i.test(v) ? ST[3] : /Amber|Ambre|Orange/i.test(v) ?
     txt(s, 'MEASURABLE · GOVERNED · SUSTAINABLE', 0, 5.35, W, 0.4, { fontSize: 14, bold: true, color: C.green, align: 'center', charSpacing: 3 }); }
 
   fs.mkdirSync(out, { recursive: true });
-  const file = path.join(out, `CortexSkills_Healthcare_Case_${LANG.toUpperCase()}.pptx`);
-  await pres.writeFile({ fileName: file }); console.log('written', file, pageNo, 'slides');
+  const file = path.join(out, `CortexSkills_Healthcare_${K.file}_${LANG.toUpperCase()}.pptx`);
+  await pres.writeFile({ fileName: file }); fs.writeFileSync(file.replace(/\.pptx$/, '.outline.json'), JSON.stringify({ title: pres.title, org, lang: LANG, slides: OUTLINE }));
+  console.log('written', file, pageNo, 'slides');
 })();

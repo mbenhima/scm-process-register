@@ -1,5 +1,5 @@
 // Healthcare full case (public regional hospital, AI skills run, 100 % complete) for the case presentation.
-// Reads a running demonstration instance through the API. Usage: node extract-case.mjs [baseUrl] [email]  → case-data.json
+// Reads a running demonstration instance through the API. Usage: node extract-case.mjs [baseUrl] [email] [out.json]  → case-data.json
 import fs from 'node:fs';
 const base = (process.argv[2] || 'http://localhost:4000') + '/api';
 const email = process.argv[3] || 'headld@chr-sante.ma';
@@ -21,5 +21,5 @@ for (const lang of ['en', 'fr']) {
   for (const d of mine) { if (full[lang][d.doc_type]) continue; const x = await g('/documents/' + d.id); full[lang][d.doc_type] = { title: x.title, e2e: x.e2e_id, version: x.versionLabel, author: x.author, approver: x.approver, published: x.published_at, sections: x.model?.sections || [], sources: x.sources || [] }; }
 }
 const out = { generatedAt: new Date().toISOString(), org: me.org, user: me.user, project: p, workspace: ws, records, documents: full };
-fs.writeFileSync(new URL('./case-data.json', import.meta.url), JSON.stringify(out));
+fs.writeFileSync(process.argv[4] ? process.argv[4] : new URL('./case-data.json', import.meta.url), JSON.stringify(out));
 console.log('case-data.json', Object.keys(full.en).length, 'documents EN,', Object.keys(full.fr).length, 'FR;', Object.entries(records).map(([k, v]) => `${k}:${v.length}`).join(' '));

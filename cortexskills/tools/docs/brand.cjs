@@ -80,11 +80,11 @@ function docFonts() {
   const f = n => path.join(FONTS_DIR, n);
   return [['Open Sans', 'OpenSans-400.ttf'], ['Montserrat', 'Montserrat-700.ttf'], ['JetBrains Mono', 'JetBrainsMono-Regular.ttf']].filter(([, n]) => fs.existsSync(f(n))).map(([name, n]) => ({ name, data: fs.readFileSync(f(n)) }));
 }
-function document({ title, credit, sections, lang = 'en-GB' }) {
-  const fr = lang.startsWith('fr');
-  const header = new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: CONTENT }], border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: C.line, space: 6 } },
+function document({ title, credit, sections, lang = 'en-GB', landscape = false }) {
+  const fr = lang.startsWith('fr'); const PW = landscape ? PAGE_H : PAGE_W, PH = landscape ? PAGE_W : PAGE_H, CW = PW - 2 * MARGIN;
+  const header = new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: CW }], border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: C.line, space: 6 } },
     children: [image(LOGO_HOR, 150), new TextRun({ text: '\t', font: FONT }), run(String(credit).replace(/POWERACT Consulting/g, 'AI Value'), { size: 16, color: C.muted })] })] });
-  const footer = new Footer({ children: [new Paragraph({ style: 'AIVFooter', tabStops: [{ type: TabStopType.RIGHT, position: CONTENT }], children: [run('AI Value · ' + title, { size: 16, color: C.muted }), new TextRun({ text: '\t', font: FONT }),
+  const footer = new Footer({ children: [new Paragraph({ style: 'AIVFooter', tabStops: [{ type: TabStopType.RIGHT, position: CW }], children: [run('AI Value · ' + title, { size: 16, color: C.muted }), new TextRun({ text: '\t', font: FONT }),
     run('Page ', { size: 16, color: C.muted }), new TextRun({ children: [PageNumber.CURRENT], font: FONT, size: 16, color: C.muted }), run(fr ? ' sur ' : ' of ', { size: 16, color: C.muted }), new TextRun({ children: [PageNumber.TOTAL_PAGES], font: FONT, size: 16, color: C.muted })] })] });
   return new Document({
     creator: 'AI Value', title, description: title, features: { updateFields: false }, fonts: docFonts(),
@@ -102,7 +102,7 @@ function document({ title, credit, sections, lang = 'en-GB' }) {
       { reference: 'bullets', levels: [0, 1].map(l => ({ level: l, format: LevelFormat.BULLET, text: l ? '–' : '•', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 360 + l * 360, hanging: 260 } }, run: { color: C.azure } } })) },
       ...Array.from({ length: 200 }, (_, i) => ({ reference: 'steps' + (i || ''), levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 400, hanging: 300 } }, run: { bold: true, color: C.navy } } }] })),
     ] },
-    sections: sections.map((children, i) => ({ properties: { page: { size: { width: PAGE_W, height: PAGE_H }, margin: { top: MARGIN, bottom: MARGIN, left: MARGIN, right: MARGIN, header: 560, footer: 560 } }, titlePage: i === 0 },
+    sections: sections.map((children, i) => ({ properties: { page: { size: { width: PW, height: PH, ...(landscape ? { orientation: D.PageOrientation.LANDSCAPE } : {}) }, margin: { top: MARGIN, bottom: MARGIN, left: MARGIN, right: MARGIN, header: 560, footer: 560 } }, titlePage: i === 0 },
       headers: { default: header, first: new Header({ children: [] }) }, footers: { default: footer, first: new Footer({ children: [] }) }, children })),
   });
 }
