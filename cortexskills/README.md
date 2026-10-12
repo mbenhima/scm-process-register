@@ -2,6 +2,13 @@
 
 Training engineering platform: 33 end-to-end processes in seven phases, from the scope of work to the evaluation of results, for large companies and SMEs in 29 sectors, in English, French and Arabic.
 
+## What is new in 1.11 (Standard Application SRS v1.8)
+
+- **Full-Screen Entry Workspace** for every multi-record table — step tables, record lists, registers, the permission and RACSI matrices and the design editors: the Expand icon (or Ctrl/Cmd+Shift+F) opens the same table over the whole screen with its title, context, record count and save status; Zoom from 50 % to 200 % (Ctrl/Cmd + wheel, pinch, slider, Fit, 100 %), kept per user and per table; add, edit, Row Editor, delete with Undo, Save all, filters and columns work as on the page; **Return to page**, Escape (after a cell edit or an open menu) or the browser Back button bring you back to the same row.
+- **Paste of complete records** from Word, Excel, a CSV or text file or a web page (Ctrl/Cmd+V or Paste): one record per copied row; the rows are applied at once, with Undo, when the columns match, otherwise a Paste Preview shows the column mapping (by title, then position), the ignored columns, the rows added and overwritten and the cells to correct. Dates and numbers are read in your language, list values ignore case and accents, “ID (name)” references are resolved; pasted markup and scripts are discarded, and a paste is saved, audited and undone as one operation (at most `PASTE_MAX_ROWS` rows, 1,000 by default).
+- **Copy** of the selected rows with their column titles, as text and as a table, to paste into Word, Excel or another table.
+- **Currencies**: every amount carries its currency; Configuration › Currencies sets the default currency, the enabled currencies and dated exchange rates; documents never add different currencies without a stated rate and date. Spreadsheet formulas in exported text are neutralized.
+
 ## What is new in 1.10
 
 - **Process design management**: your organization's copy of the reference design, with naming rules in three languages, versions, compare and restore, usage, retire, releases published by a second person, export/import (JSON, Excel, BPMN).
@@ -66,4 +73,4 @@ See the Installation Guide and the User Guide (Word and PDF) for details.
 | `npm run backup` | Backup now (automatic backups run daily, kept 14 days) |
 | `npm run sign-licence` | Produce a signed licence file for an on-premises installation |
 
-Settings go in `server/.env` (PORT, DEPLOYMENT_MODE=saas|onprem, DATA_DIR, JWT_SECRET, LICENSE_HMAC_SECRET, BACKUP_RETENTION_DAYS, CORS_ORIGIN).
+Settings go in `server/.env` (PORT, DEPLOYMENT_MODE=saas|onprem, DATA_DIR, JWT_SECRET, LICENSE_HMAC_SECRET, BACKUP_RETENTION_DAYS, CORS_ORIGIN, PASTE_MAX_ROWS).
