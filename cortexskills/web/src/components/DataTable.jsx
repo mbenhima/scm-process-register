@@ -101,7 +101,7 @@ export function DataTable({ columns, rows, onRow, csvName, search = true, empty,
   const isEmpty = !loading && !error && !(rows || []).length; const isFilteredEmpty = !loading && !error && (rows || []).length > 0 && !filtered.length;
 
   const showBar = search || csvName || toolbar || filterable.length > 0 || pasteCfg;
-  return (<EntryWorkspace id={'dt:' + tableId} title={title || caption || csvName} context={context} meta={t('ws.records', { n: filtered.length })} className="dt" disabled={!workspace}>{({ full, expand, records, zoomStyle }) => <>
+  return (<EntryWorkspace id={'dt:' + tableId} title={title || caption || csvName} context={context} meta={t('ws.records', { n: filtered.length })} className="dt" disabled={!workspace}>{({ full, expand, records }) => <>
     {showBar && <div className="dt-toolbar">
       {search && <Search value={q} onChange={setQ} placeholder={t('common.search')} />}
       {filterable.length > 0 && <div className="rel"><Btn icon="ListFilter" size="sm" aria-expanded={!!adding} onClick={() => setAdding(a => (a ? null : { key: filterable[0].key, op: 'contains', value: '' }))}>{t('dt.filter')}{filters.length > 0 && <span className="count-badge">{filters.length}</span>}</Btn>
@@ -122,7 +122,7 @@ export function DataTable({ columns, rows, onRow, csvName, search = true, empty,
     {error ? <div className="table-wrap auto-h"><Empty icon="TriangleAlert" title={t('dt.errorTitle')} text={error.message || t('err.server')} action={onRetry && <Btn kind="primary" icon="RotateCw" onClick={onRetry}>{t('common.retry')}</Btn>} /></div>
       : isEmpty ? <div className="table-wrap auto-h">{typeof empty === 'object' && empty ? <Empty icon={empty.icon || 'Inbox'} title={empty.title} text={empty.text} action={empty.action} /> : <Empty title={empty || t('common.noRows')} text={t('dt.emptyText')} />}</div>
       : isFilteredEmpty ? <div className="table-wrap auto-h"><Empty icon="SearchX" title={t('dt.noMatch')} text={t('dt.noMatchText')} action={<Btn kind="primary" onClick={() => { setQ(''); setFilters([]); }}>{t('dt.clearFilters')}</Btn>} /></div>
-      : <div {...records} className={`table-wrap ${full ? 'ws-records' : autoHeight ? 'auto-h' : ''}`} onCopy={onCopyTable} onPaste={onPasteTable} tabIndex={pasteCfg ? 0 : undefined}><table className={`tbl ${density === 'compact' ? 'compact' : ''}`} style={zoomStyle}>{caption && <caption className="sr-only">{caption}</caption>}
+      : <div {...records} className={`table-wrap ${full ? 'ws-records' : autoHeight ? 'auto-h' : ''}`} onCopy={onCopyTable} onPaste={onPasteTable} tabIndex={pasteCfg ? 0 : undefined}><table className={`tbl ${density === 'compact' ? 'compact' : ''}`}>{caption && <caption className="sr-only">{caption}</caption>}
         <thead><tr>
           {selectable && <th className="sel-col sticky-col" scope="col"><input type="checkbox" aria-label={t('dt.selectAll')} checked={allSel} ref={el => { if (el) el.indeterminate = someSel; }} onChange={() => setSel(allSel ? new Set() : new Set(keys))} /></th>}
           {visible.map((c, i) => { const s = sort?.key === c.key ? (sort.dir > 0 ? 'ascending' : 'descending') : 'none'; const w = widths[c.key] || c.width;

@@ -5466,11 +5466,11 @@
   "text": "The Full-Screen Entry Workspace shall open within 1 second for a Multi-Entry of up to 1,000 records; a zoom change shall be rendered within 100 milliseconds; the Paste Preview of 1,000 rows shall appear within 2 seconds and applying it shall complete within 5 seconds, at the 95th percentile.",
   "since": "1.8",
   "v16": {
-   "status": "Met",
+   "status": "Partial",
    "evidence": {
-    "en": "Measured in the release QA: workspace opens in about 50 ms, zoom change under 100 ms, 1,000-row Paste Preview and apply within the targets.",
-    "fr": "Mesuré à la recette : ouverture en 50 ms environ, changement de zoom < 100 ms, aperçu et application de 1 000 lignes dans les cibles.",
-    "ar": "تم القياس: فتح ~50 مللي ثانية، تكبير < 100 مللي ثانية، معاينة وتطبيق 1000 صف ضمن الأهداف."
+    "en": "Measured on a 1,000-record step table in the headless release-test container (software rendering, no GPU): Paste Preview of 1,000 rows 0.4 s and apply 3.4 s (targets met); workspace opening 1.1–1.2 s and a zoom change 0.16–0.30 s (zoom is a composited transform with no new layout of the rows, 30–90 ms of layout). Opening and zoom are to be confirmed on the target workstations, where rendering is GPU-accelerated.",
+    "fr": "Mesuré sur un tableau d’étape de 1 000 enregistrements dans le conteneur de recette sans interface (rendu logiciel, sans GPU) : aperçu du collage de 1 000 lignes 0,4 s et application 3,4 s (cibles atteintes) ; ouverture de l’espace 1,1–1,2 s et changement de zoom 0,16–0,30 s (zoom par transformation composée, sans nouvelle mise en page des lignes). Ouverture et zoom à confirmer sur les postes cibles, au rendu accéléré par GPU.",
+    "ar": "تم القياس على جدول خطوة من 1000 سجل في حاوية الاختبار دون واجهة (عرض برمجي دون GPU): معاينة لصق 1000 صف 0.4 ث وتطبيقها 3.4 ث (الأهداف محققة)؛ فتح المساحة 1.1–1.2 ث وتغيير التكبير 0.16–0.30 ث. يُؤكد الفتح والتكبير على أجهزة العمل المستهدفة ذات العرض المسرّع."
    }
   }
  },

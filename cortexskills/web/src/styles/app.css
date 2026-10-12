@@ -710,9 +710,8 @@ ul.plain > li > .tree-row { width: 100%; }
 /* Full-Screen Entry Workspace (SRS 1.8 FR-DA-MRE-15 – 18, NFR-DA-UX-20): above the shell and side panels, below
    the dialogs, drawers, menus and notices it opens (portalled after it, or on higher layers). */
 .ws-host.ws-full { position: fixed; inset: 0; z-index: var(--aiv-z-drawer); background: var(--aiv-white); display: flex; flex-direction: column; margin: 0; padding: 0 var(--aiv-space-6) var(--aiv-space-4); overflow: hidden; animation: ws-in 240ms ease-out; }
-@keyframes ws-in { from { opacity: 0; transform: scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes ws-in { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .ws-host.ws-full { animation: none; } }
-body.aiv-ws-open { overflow: hidden; }
 .ws-bar { display: flex; align-items: center; gap: var(--aiv-space-3); padding: var(--aiv-space-3) 0; border-bottom: 1px solid var(--aiv-line); flex-shrink: 0; flex-wrap: wrap; }
 .ws-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 280px; }
 .ws-name { font: 700 var(--aiv-fs-18)/1.3 var(--aiv-font-heading); color: var(--aiv-navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -724,6 +723,7 @@ body.aiv-ws-open { overflow: hidden; }
 .ws-full .dt-toolbar, .ws-full .bulk-bar, .ws-full .dt-filters { flex-shrink: 0; margin-top: var(--aiv-space-3); }
 .ws-full .table-wrap.ws-records { flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto; margin-top: var(--aiv-space-3); border: 1px solid var(--aiv-line); border-radius: var(--aiv-radius-card); }
 .ws-full .table-wrap.ws-records thead th { position: sticky; top: 0; z-index: var(--aiv-z-sticky); }
+.ws-full .ws-records > table, .ws-full .ws-records > .ws-zoomed { will-change: transform; }
 .ws-full .itable-foot, .ws-full .dt-footer { flex-shrink: 0; padding-top: var(--aiv-space-3); }
 .ws-expand svg { width: 24px; height: 24px; }
 [dir='rtl'] .ws-bar .ws-return svg { transform: scaleX(-1); }

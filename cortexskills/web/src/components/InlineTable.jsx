@@ -32,6 +32,8 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const { t } = useI18n(); const { toast, prefs, queuePrefs } = useSession();
   const [rows, setRows] = useState(() => (initial || []).map(r => toRow(r)));
   const rowsRef = useRef(rows); rowsRef.current = rows;
+  // Handlers from the parent are read through refs, so a parent re-render never re-renders every row (NFR-DA-PERF-13).
+  const saveRowRef = useRef(onSaveRow); saveRowRef.current = onSaveRow; const deleteRowRef = useRef(onDeleteRow); deleteRowRef.current = onDeleteRow;
   const timers = useRef({}); const pendingDeletes = useRef({}); const tableRef = useRef(null); const editStart = useRef({});
   const [touched, setTouched] = useState({}); // cells validated once: re-validated on change after a first error (FR-DA-MRE-08)
   const [editorKey, setEditorKey] = useState(null); // Row Editor (FR-DA-DEU-03)
@@ -39,7 +41,7 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const density = prefs?.density || 'comfortable';
   const tp = prefs?.tables?.[id] || {}; const [widths, setWidths] = useState(tp.widths || {});
   const hidden = useMemo(() => new Set(tp.hidden || []), [tp.hidden]);
-  const visible = columns.filter(c => !hidden.has(c.key));
+  const visible = useMemo(() => columns.filter(c => !hidden.has(c.key)), [columns, hidden]);
 
   // Server data is merged only for rows the user is not editing (the Active Draft wins — C21, NFR-DA-FOC-10).
   useEffect(() => { setRows(cur => { const byId = Object.fromEntries(cur.filter(r => r.id).map(r => [r.id, r])); const incoming = (initial || []).map(r => (byId[r.id] && byId[r.id].status !== 'clean' ? byId[r.id] : byId[r.id] ? { ...byId[r.id], data: { ...r } } : toRow(r))); const local = cur.filter(r => !r.id); return [...incoming, ...local]; }); }, [initial]);
@@ -53,12 +55,12 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
     if (Object.keys(errors).length) { setRow(key, x => ({ ...x, errors, status: 'error' })); setTouched(tc => ({ ...tc, ...Object.fromEntries(Object.keys(errors).map(c => [key + '|' + c, true])) })); return; }
     setRow(key, x => ({ ...x, status: 'saving', errors: {} }));
     try {
-      const saved = await onSaveRow(r.data, r.id);
+      const saved = await saveRowRef.current(r.data, r.id);
       // The typed values are kept: only the identifier and server-computed fields are taken from the answer (C17).
       setRow(key, x => ({ ...x, id: saved?.id || x.id, data: { ...x.data, id: saved?.id || x.id }, status: x.status === 'saving' ? 'saved' : x.status }));
       setFlash(key); setTimeout(() => setFlash(f => (f === key ? null : f)), 400);
     } catch (e) { setRow(key, x => ({ ...x, status: 'error', errors: { _row: e.message } })); toast(e.message || t('err.server'), 'error'); }
-  }, [onSaveRow, setRow, toast, t, validateRow]);
+  }, [setRow, toast, t, validateRow]);
   const schedule = useCallback(key => { clearTimeout(timers.current[key]); timers.current[key] = setTimeout(() => save(key), 500); }, [save]);
   const saveAll = useCallback(() => { for (const r of rowsRef.current) if (r.status === 'dirty' || r.status === 'error') save(r._key); }, [save]);
   const pendingCount = rows.filter(r => r.status === 'dirty' || r.status === 'error' || r.status === 'saving').length;
@@ -96,10 +98,10 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const remove = useCallback(key => {
     const i = rowsRef.current.findIndex(x => x._key === key); const r = rowsRef.current[i]; if (!r) return;
     setRows(rs => rs.filter(x => x._key !== key));
-    const run = () => { delete pendingDeletes.current[key]; if (r.id) onDeleteRow?.(r.id, r.data)?.catch?.(e => toast(e.message, 'error')); };
+    const run = () => { delete pendingDeletes.current[key]; if (r.id) deleteRowRef.current?.(r.id, r.data)?.catch?.(e => toast(e.message, 'error')); };
     const timer = setTimeout(run, 5000); pendingDeletes.current[key] = { timer, run };
     toast(t('mre.deleted'), 'info', { duration: 5000, action: { label: t('common.undo'), onClick: () => { clearTimeout(timer); delete pendingDeletes.current[key]; setRows(rs => { const n = [...rs]; n.splice(Math.min(i, n.length), 0, r); return n; }); } } });
-  }, [onDeleteRow, t, toast]);
+  }, [t, toast]);
 
   // Keyboard map of Table 4.49-1
   const onKey = useCallback((e, key, col) => {
@@ -159,7 +161,9 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   }, [columns, newRow, pasteTarget, onPasted, schedule, toast, t, onDeleteRow]);
   const validatePaste = useCallback((c, v, data) => validateCell(c, v, data, t), [t]);
   const paste = usePaste({ id, columns: visible, readOnly: readOnly ? (readOnlyReason || t('paste.readOnly')) : null, targets: pasteTargets, apply: applyPaste, validate: validatePaste });
-  const onPaste = useCallback((e, key, col) => { paste.onPaste(e, { row: key, col: col.key }); }, [paste]);
+  const pasteRef = useRef(paste); pasteRef.current = paste;
+  const onPaste = useCallback((e, key, col) => { pasteRef.current.onPaste(e, { row: key, col: col.key }); }, []);
+  const toggleSel = useCallback(k => setSel(s => { const n = new Set(s); n.has(k) ? n.delete(k) : n.add(k); return n; }), []);
   // Copy out: the selected rows with their column titles, as TSV and an HTML table (FR-DA-MRE-23).
   const labelOf = (c, v) => (c.type === 'select' ? (c.options || []).find(o => String(o.value ?? o) === String(v))?.label ?? v : v);
   const copyRows = useCallback(async (e, keys) => {
@@ -188,7 +192,7 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
   const status = pendingCount ? t('ws.unsaved', { n: pendingCount }) : rows.some(r => r.status === 'saving') ? t('ws.saving') : t('mre.allSavedShort');
   return (<EntryWorkspace id={id} title={caption} context={context} meta={<>{t('ws.records', { n: rows.length })}<span aria-live="polite"> · {status}</span></>} onBeforeClose={beforeReturn} className="dt itable-host"
     actions={!readOnly && <><Btn icon="Plus" onClick={addRowAction}>{t('mre.addRow')}</Btn><Btn kind="primary" icon="Save" onClick={saveNow}>{pendingCount ? t('mre.saveAll', { n: pendingCount }) : t('common.save')}</Btn></>}>
-    {({ full, expand, records, zoomStyle }) => <>
+    {({ full, expand, records }) => <>
     <div className="dt-toolbar">
       {search !== false && rows.length > 8 && <Search value={q} onChange={setQ} placeholder={t('common.search')} />}
       {!readOnly && <Btn size="sm" icon="CopyPlus" disabled={!rows.length} onClick={() => duplicate(rows[rows.length - 1]._key)}>{t('mre.duplicatePrevious')}</Btn>}
@@ -200,7 +204,7 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
         {colMenu && <div className="menu" role="dialog" aria-label={t('dt.columns')} onMouseLeave={() => setColMenu(false)}><div className="col-menu">{columns.map((c, i) => <label key={c.key}><input type="checkbox" disabled={i === 0} checked={i === 0 || !hidden.has(c.key)} onChange={() => toggleCol(c.key)} />{c.label}</label>)}</div></div>}</div>}
       {expand}
     </div>
-    <div {...records} className={`table-wrap ${full ? 'ws-records' : 'auto-h'}`} onCopy={onCopyTable} onPaste={onPasteTable}><table className={`tbl itable ${density === 'compact' ? 'compact' : ''}`} ref={tableRef} style={zoomStyle}>{caption && <caption className="sr-only">{caption}</caption>}
+    <div {...records} className={`table-wrap ${full ? 'ws-records' : 'auto-h'}`} onCopy={onCopyTable} onPaste={onPasteTable}><table className={`tbl itable ${density === 'compact' ? 'compact' : ''}`} ref={tableRef}>{caption && <caption className="sr-only">{caption}</caption>}
       <thead><tr>
         {!readOnly && <th className="sel-col sticky-col" scope="col"><input type="checkbox" aria-label={t('dt.selectAll')} checked={allSel} onChange={() => setSel(allSel ? new Set() : new Set(shown.map(r => r._key)))} /></th>}
         <th className="status-col" scope="col"><span className="sr-only">{t('mre.status')}</span>#</th>
@@ -208,7 +212,7 @@ export function InlineTable({ id, columns, rows: initial, onSaveRow, onDeleteRow
           <span className="col-resize" role="separator" aria-orientation="vertical" aria-label={t('dt.resizeCol', { c: c.label })} tabIndex={-1} onPointerDown={e => resize(e, c.key)} /></th>)}
         <th scope="col" className="row-actions"><span className="sr-only">{t('mre.actions')}</span></th></tr></thead>
       <tbody>{shown.map((r, i) => <EditRow key={r._key} row={r} index={i} columns={visible} readOnly={readOnly} selected={sel.has(r._key)} flash={flash === r._key} typedValues={typedValues}
-        onSelect={() => setSel(s => { const n = new Set(s); n.has(r._key) ? n.delete(r._key) : n.add(r._key); return n; })} onChange={change} onBlurCell={blurCell} onLeave={leaveRow} onKey={onKey} onPaste={onPaste} onDuplicate={duplicate} onDelete={remove} onOpen={setEditorKey} editStart={editStart} t={t} />)}
+        onSelect={toggleSel} onChange={change} onBlurCell={blurCell} onLeave={leaveRow} onKey={onKey} onPaste={onPaste} onDuplicate={duplicate} onDelete={remove} onOpen={setEditorKey} editStart={editStart} t={t} />)}
         {!rows.length && <tr><td colSpan={visible.length + 3}><div className="empty" style={{ padding: 'var(--aiv-space-5)' }}><p>{emptyText || t('mre.empty')}</p></div></td></tr>}</tbody></table></div>
     <div className="itable-foot">{!readOnly ? <Btn icon="Plus" onClick={() => { const r = addRow(null, !newInEditor); if (newInEditor) setEditorKey(r._key); }}>{t('mre.addRow')}</Btn> : <span />}
       <span className="itable-count" aria-live="polite">{countLabel ? countLabel(rows.filter(r => r.id || r.status !== 'clean').length) : t('mre.count', { n: rows.length })}{pendingCount ? ' · ' + t('mre.pending', { n: pendingCount }) : ''}</span></div>
@@ -259,7 +263,7 @@ function BulkValue({ col, value, onChange }) {
 const EditRow = memo(function EditRow({ row, columns, readOnly, selected, flash, typedValues, onSelect, onChange, onBlurCell, onLeave, onKey, onPaste, onDuplicate, onDelete, onOpen, editStart, t, index }) {
   const st = row.status; const hasErr = Object.keys(row.errors).length > 0;
   return (<tr aria-selected={selected || undefined} className={flash ? 'saved-flash' : ''} onBlur={e => onLeave(row._key, e)}>
-    {!readOnly && <td className="sel-col sticky-col"><input type="checkbox" aria-label={t('dt.selectRow')} checked={selected} onChange={onSelect} /></td>}
+    {!readOnly && <td className="sel-col sticky-col"><input type="checkbox" aria-label={t('dt.selectRow')} checked={selected} onChange={() => onSelect(row._key)} /></td>}
     <td className="status-col"><span className="row-status" aria-label={t('mre.st.' + (hasErr ? 'error' : st))}>
       {hasErr || st === 'error' ? <Icon name="CircleAlert" size={16} className="err-ico" /> : st === 'dirty' ? <span className="dirty-dot" /> : st === 'saving' ? <Spinner /> : st === 'saved' ? <Icon name="CircleCheck" size={16} className="saved-ico" /> : <span>{index + 1}</span>}</span></td>
     {columns.map(c => <Cell key={c.key} rowKey={row._key} col={c} value={row.data[c.key]} data={row.data} error={row.errors[c.key]} readOnly={readOnly || c.readOnly} typed={typedValues[c.key]} onChange={onChange} onBlurCell={onBlurCell} onKey={onKey} onPaste={onPaste} editStart={editStart} t={t} />)}
