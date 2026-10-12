@@ -62,10 +62,18 @@ if (process.env.ADMIN_EMAIL) {
   await adminPage.click('button[type=submit]'); await adminPage.waitForURL(u => !u.pathname.startsWith('/login'), { timeout: 20000 });
   const b = adminPage.getByRole('button', { name: lang.toUpperCase(), exact: true }); if (await b.count()) { await b.first().click(); await adminPage.waitForTimeout(600); }
 }
+// Backups & health is a platform-administrator screen: taken with PLATFORM_EMAIL / PLATFORM_PASSWORD when given.
+let platformPage = null;
+if (process.env.PLATFORM_EMAIL) {
+  platformPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.5 });
+  await platformPage.goto(base + '/login'); await platformPage.fill('input[type=email]', process.env.PLATFORM_EMAIL); await platformPage.fill('input[type=password]', process.env.PLATFORM_PASSWORD || password);
+  await platformPage.click('button[type=submit]'); await platformPage.waitForURL(u => !u.pathname.startsWith('/login'), { timeout: 20000 });
+  const b = platformPage.getByRole('button', { name: lang.toUpperCase(), exact: true }); if (await b.count()) { await b.first().click(); await platformPage.waitForTimeout(600); }
+}
 const manifest = [{ file: '000_login.png', title: lang === 'fr' ? 'Connexion' : 'Sign in', path: '/login' }];
 let n = 0;
 for (const [name, p] of list) {
-  const page = adminPage && p.startsWith('/admin') ? adminPage : page0;
+  const page = platformPage && p === '/admin/backups' ? platformPage : adminPage && p.startsWith('/admin') ? adminPage : page0;
   try {
     await page.goto(base + p); await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {}); await page.waitForTimeout(900);
     if (!(await page.locator('main h1, h1').count())) continue; // screen not available to this role or pack

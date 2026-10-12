@@ -259,7 +259,7 @@ function build(kind, lang) {
 
   // ------------------------------------------------------------------ SaaS guide
   const saasBody = () => [
-    ...cover({ eyebrow: t('Installation Guide · Production', 'Guide d’installation · Production'), title: t('CortexSkills — SaaS Mode', 'CortexSkills — Mode SaaS'), subtitle: t('Host one CortexSkills platform for many customer organizations, onboard each customer and activate its packs', 'Héberger une plateforme CortexSkills pour plusieurs organisations clientes, intégrer chaque client et activer ses offres'), meta: [`Version ${version} · ${today}`, t('Prepared by POWERACT Consulting', 'Préparé par POWERACT Consulting')], appLogo: LOGO }),
+    ...cover({ eyebrow: t('Installation Guide · Production', 'Guide d’installation · Production'), title: t('CortexSkills — SaaS Mode', 'CortexSkills — Mode SaaS'), subtitle: t('Host one CortexSkills platform for many customer organizations, onboard each customer and activate its packs', 'Héberger une plateforme CortexSkills pour plusieurs organisations clientes, intégrer chaque client et activer ses offres'), meta: [`Version ${version} · ${today}`, t('Prepared by AI Value', 'Préparé par AI Value')], appLogo: LOGO }),
     ...tocPage(t('Table of Contents', 'Table des matières')),
 
     H1(t('1. About this guide', '1. À propos de ce guide')),
@@ -354,7 +354,7 @@ function build(kind, lang) {
 
   // ------------------------------------------------------------------ Dedicated Cloud & On-Prem guide
   const dedBody = () => [
-    ...cover({ eyebrow: t('Installation Guide · Production', 'Guide d’installation · Production'), title: t('CortexSkills — Dedicated Cloud & On-Premises', 'CortexSkills — Cloud dédié et sur site (On-Prem)'), subtitle: t('Install CortexSkills for one customer in its public cloud, its private cloud or its own datacenter, activate the licence and the packs', 'Installer CortexSkills pour un client dans son cloud public, son cloud privé ou son propre centre de données, activer la licence et les offres'), meta: [`Version ${version} · ${today}`, t('Prepared by POWERACT Consulting', 'Préparé par POWERACT Consulting')], appLogo: LOGO }),
+    ...cover({ eyebrow: t('Installation Guide · Production', 'Guide d’installation · Production'), title: t('CortexSkills — Dedicated Cloud & On-Premises', 'CortexSkills — Cloud dédié et sur site (On-Prem)'), subtitle: t('Install CortexSkills for one customer in its public cloud, its private cloud or its own datacenter, activate the licence and the packs', 'Installer CortexSkills pour un client dans son cloud public, son cloud privé ou son propre centre de données, activer la licence et les offres'), meta: [`Version ${version} · ${today}`, t('Prepared by AI Value', 'Préparé par AI Value')], appLogo: LOGO }),
     ...tocPage(t('Table of Contents', 'Table des matières')),
 
     H1(t('1. About this guide', '1. À propos de ce guide')),

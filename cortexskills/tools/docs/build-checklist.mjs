@@ -133,7 +133,7 @@ const facts = [['Organizations', db.prepare('SELECT COUNT(*) n FROM organization
 // --- Workbook
 const C = { orange: 'FFF8931D', white: 'FFFFFFFF', light: 'FFF2F2F3', line: 'FFE3E3E4', dark: 'FF3A3A3C', ink: 'FF58595B', s1: 'FFF4C7C3', s2: 'FFFBE0B5', s4: 'FFD9EAD3', s5: 'FFB6D7A8', s3: 'FFFFF3B0' };
 const STATUS = { Met: C.s5, Partial: C.s2, 'Not met': C.s1, 'Deployment responsibility': C.s3, Pending: C.s2 };
-const out = new ExcelJS.Workbook(); out.creator = 'POWERACT Consulting'; out.created = new Date();
+const out = new ExcelJS.Workbook(); out.creator = 'AI Value'; out.created = new Date();
 function sheet(name, headers, rows, widths, statusCol, title) {
   const ws = out.addWorksheet(name, { views: [{ state: 'frozen', ySplit: title ? 3 : 1 }], pageSetup: { orientation: 'landscape', fitToPage: true, fitToWidth: 1, fitToHeight: 0, paperSize: 9 } });
   if (title) { ws.addRow([title]).font = { name: 'Calibri', size: 14, bold: true, color: { argb: C.dark } }; ws.addRow([]); }

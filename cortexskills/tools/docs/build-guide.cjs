@@ -12,7 +12,7 @@ const SHOT = f => path.join(__dirname, 'shots/v110', lang, f + '.png');
 const { Paragraph, AlignmentType, TextRun } = D;
 
 const T = {
-  en: { eyebrow: 'User Guide', subtitle: 'Five complete runs, step by step: what to do and what to type', prepared: 'Prepared by POWERACT Consulting', toc: 'Table of Contents',
+  en: { eyebrow: 'User Guide', subtitle: 'Five complete runs, step by step: what to do and what to type', prepared: 'Prepared by AI Value', toc: 'Table of Contents',
     about: '1. About this guide', start: '2. Before you start',
     aboutText: ['This guide follows five complete runs of CortexSkills, from the first strategic objective to the last improvement action. Each run is a real scenario of the demonstration data: a large hospital group, a large car maker, a construction SME, a dairy cooperative and a multi-sector services group.',
       'Every step is written the same way: the step, then, just after it, what to type. Values are the ones recorded in the demonstration data for that organization; type them as shown, or your own values in the same form.',
@@ -31,7 +31,7 @@ const T = {
     closeTask: 'When every step is complete, click Complete in the task panel.', gate: g => `Gate ${g}: close the phase`,
     gateText: ['Open the project workspace and click the gate button of the phase.', 'Tick each checklist item once its evidence is attached, then click Submit for decision.', 'Click Go. Type the justification: All mandatory items met; evidence attached.', 'Confirm. The decision is recorded with your name and the date; the steps of the phase become read-only.'],
     phase0: 'Enablers run across all phases', segment: { LARGE: 'Large company', SME: 'SME' }, focus: { AI: 'AI skills', Digital: 'Digital skills' }, mode: { Full: 'Full run', SME: 'SME track' } },
-  fr: { eyebrow: 'Guide utilisateur', subtitle: 'Cinq déroulés complets, étape par étape : quoi faire et quoi saisir', prepared: 'Préparé par POWERACT Consulting', toc: 'Table des matières',
+  fr: { eyebrow: 'Guide utilisateur', subtitle: 'Cinq déroulés complets, étape par étape : quoi faire et quoi saisir', prepared: 'Préparé par AI Value', toc: 'Table des matières',
     about: '1. À propos de ce guide', start: '2. Avant de commencer',
     aboutText: ['Ce guide suit cinq déroulés complets de CortexSkills, du premier objectif stratégique à la dernière action d’amélioration. Chaque déroulé est un scénario réel des données de démonstration : un grand groupe hospitalier, un grand constructeur automobile, une PME du BTP, une coopérative laitière et un groupe de services multisectoriel.',
       'Chaque étape est écrite de la même façon : l’étape, puis, juste après, ce qu’il faut saisir. Les valeurs sont celles enregistrées dans les données de démonstration de l’organisation ; saisissez-les telles quelles, ou vos propres valeurs sous la même forme.',

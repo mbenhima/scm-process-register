@@ -43,7 +43,7 @@ const DELIVERABLES = [
 ];
 
 /** Default Document Formatting from the AI Value Graphical Chart (NFR-DA-VDS-20): Open Sans 11 pt Ink body, Montserrat Navy headings, Navy table headers, 2 cm margins, A4. */
-export const DEFAULT_FORMATTING = { bodyFont: 'Open Sans', bodySize: 11, headingFont: 'Montserrat', h1Size: 16, h2Size: 13, h3Size: 11.5, align: 'left', orientation: 'portrait', paper: 'A4', margins: 20, // mm (2 cm, NFR-DA-VDS-20)
+export const DEFAULT_FORMATTING = { bodyFont: 'Open Sans', bodySize: 11, headingFont: 'Montserrat', h1Size: 20, h2Size: 16, h3Size: 13, align: 'left', orientation: 'portrait', paper: 'A4', margins: 20, // mm (2 cm, NFR-DA-VDS-20)
   cover: true, toc: true, numbering: true, pageNumbers: true, headingColor: '123A5F', h2Color: '123A5F', tableHeader: '123A5F', logo: 'organization', logoPosition: 'top-left', logoInHeader: false, header: '', footer: '' };
 /** Values an Organization may choose for its layout (FR-DA-DOC-07): AI Value Graphical Chart colours and fonts only. */
 export const ALLOWED = { fonts: ['Open Sans', 'Montserrat', 'Times New Roman', 'Cambria', 'Calibri', 'Georgia', 'Garamond'], sizes: [9, 9.5, 10, 10.5, 11, 11.5, 12, 13, 13.5, 14, 16, 17, 18, 20, 24], align: ['left', 'center', 'right', 'justify'],

@@ -15,7 +15,7 @@ const fill = s => (s === 'Met' ? C.s5 : s === 'Partial' ? C.s2 : s === 'Not met'
 const today = new Date().toISOString().slice(0, 10);
 
 const body = [];
-body.push(...cover({ eyebrow: 'Conformance Report', title: 'CortexSkills', subtitle: `Release ${version} against the Dynamic Apps Standard SRS v1.10`, meta: [`Version ${version} · ${today}`, 'Prepared by POWERACT Consulting for AI Value'] }));
+body.push(...cover({ eyebrow: 'Conformance Report', title: 'CortexSkills', subtitle: `Release ${version} against the Dynamic Apps Standard SRS v1.10`, meta: [`Version ${version} · ${today}`, 'Prepared by AI Value for AI Value'] }));
 body.push(...tocPage());
 
 body.push(H1('1. Summary'),

@@ -196,7 +196,7 @@ export function generate(ctx, { tpl, sections, overrides = {}, meta = {} }) {
     if (s.type === 'approval') { out.push({ ...base, approval: true }); continue; }
     if (s.type === 'kv') { out.push({ ...base, kv: (s.kv || []).map(([k, v]) => [P(k, lang), fill(P(v, lang), vars)]) }); continue; }
     if (s.type === 'builtin' && s.source === 'ter') {
-      const ter = buildTer(orgId, projectId, lang, meta); for (const x of ter.model.sections) out.push({ id: 'ter-' + out.length, type: x.table ? 'table' : 'text', heading: x.heading, text: x.text, table: x.table, builtin: true });
+      const ter = buildTer(orgId, projectId, lang, meta); for (const [i, x] of ter.model.sections.entries()) if (!(i === 0 && (tpl.profile || {}).identification !== false && x.table?.rows?.some(r => /^TER-/.test(String(r[1]))))) out.push({ id: 'ter-' + out.length, type: x.table ? 'table' : 'text', heading: x.heading, text: x.text, table: x.table, builtin: true });
       sources.push(...(ter.sources || []).map(x => ({ name: x.source, records: x.records, latest: x.latest, step: x.step }))); findings.push(...(ter.findings || [])); continue;
     }
     if (s.type === 'builtin' && s.source === 'audit') { const a = auditSections(orgId, projectId, lang); out.push(...a.sections); sources.push(...a.sources); continue; }

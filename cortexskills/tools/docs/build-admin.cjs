@@ -23,7 +23,7 @@ function proc(title, items) {
 const fig = (() => { let k = 0; return (f, cap) => shot(SHOT(f), `${X('Figure', 'Figure')} ${++k} — ${cap}`); })();
 
 const body = [];
-body.push(...cover({ eyebrow: X('Administration Guide', 'Guide d’administration'), title: 'CortexSkills', subtitle: X('Configure, govern and operate the platform', 'Configurer, gouverner et exploiter la plateforme'), meta: [`Version ${version} · ${today}`, X('Prepared by POWERACT Consulting', 'Préparé par POWERACT Consulting')] }));
+body.push(...cover({ eyebrow: X('Administration Guide', 'Guide d’administration'), title: 'CortexSkills', subtitle: X('Configure, govern and operate the platform', 'Configurer, gouverner et exploiter la plateforme'), meta: [`Version ${version} · ${today}`, X('Prepared by AI Value', 'Préparé par AI Value')] }));
 body.push(...tocPage(X('Table of Contents', 'Table des matières')));
 
 body.push(H1(X('1. About this guide', '1. À propos de ce guide')),

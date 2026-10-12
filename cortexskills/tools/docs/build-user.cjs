@@ -12,7 +12,7 @@ const today = new Date().toISOString().slice(0, 10);
 const ROLE_LOCAL = Object.fromEntries([...fs.readFileSync(path.join(__dirname, '../../server/seed/tenants.js'), 'utf8').match(/ROLE_LOCAL = \{([^}]+)\}/)[1].matchAll(/'(R-\d+)': '(\w+)'/g)].map(m => [m[1], m[2]]));
 
 const body = [];
-body.push(...cover({ eyebrow: 'User Guide', title: 'CortexSkills', subtitle: 'What to do and what to type, task by task, for large companies and SMEs', meta: [`Version ${version} · ${today}`, 'Prepared by POWERACT Consulting'], appLogo: path.join(__dirname, '../../web/public/cortexskills-logo.png') }));
+body.push(...cover({ eyebrow: 'User Guide', title: 'CortexSkills', subtitle: 'What to do and what to type, task by task, for large companies and SMEs', meta: [`Version ${version} · ${today}`, 'Prepared by AI Value'], appLogo: path.join(__dirname, '../../web/public/cortexskills-logo.png') }));
 body.push(...tocPage());
 
 // ---------------------------------------------------------------- 1. About this guide

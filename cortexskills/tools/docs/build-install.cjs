@@ -8,7 +8,7 @@ const version = JSON.parse(fs.readFileSync(path.join(__dirname, '../../server/pa
 const today = new Date().toISOString().slice(0, 10);
 
 const body = [
-  ...cover({ eyebrow: 'Installation Guide', title: 'CortexSkills', subtitle: 'Install, start and run the training engineering platform on your computer', meta: [`Version ${version} · ${today}`, 'Prepared by POWERACT Consulting'], appLogo: path.join(__dirname, '../../web/public/cortexskills-logo.png') }),
+  ...cover({ eyebrow: 'Installation Guide', title: 'CortexSkills', subtitle: 'Install, start and run the training engineering platform on your computer', meta: [`Version ${version} · ${today}`, 'Prepared by AI Value'], appLogo: path.join(__dirname, '../../web/public/cortexskills-logo.png') }),
   ...tocPage(),
 
   H1('1. What you need to know first'),
