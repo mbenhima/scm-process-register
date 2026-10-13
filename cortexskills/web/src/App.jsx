@@ -3,6 +3,7 @@ import { useSession } from './lib/session.jsx';
 import { useI18n } from './lib/i18n.jsx';
 import Shell from './components/Shell.jsx';
 import { Loading, Toasts, TooltipLayer } from './components/ui.jsx';
+import { NavGuardHost } from './lib/navguard.jsx';
 import Login from './pages/Login.jsx';
 import { Dashboard, MyTasks, Alerts, AssistantPage } from './pages/Home.jsx';
 import { Tenancy, Projects, NewProject, Portfolio, Modules, ModuleWorkspace, Records } from './pages/Portfolio.jsx';
@@ -31,7 +32,7 @@ export default function App() {
   if (loc.pathname.startsWith('/respond/')) return ready ? <Routes><Route path="/respond/:token" element={<Respond />} /></Routes> : <Loading />;
   if (!ready || loading) return <Loading />;
   if (!me) return <><Login /><Toasts /><TooltipLayer /></>;
-  return (<Shell><Routes>
+  return (<Shell><NavGuardHost /><Routes>
     <Route path="/" element={<Dashboard />} /><Route path="/my-tasks" element={<MyTasks />} /><Route path="/alerts" element={<Alerts />} /><Route path="/assistant" element={<AssistantPage />} />
     <Route path="/tenancy" element={<Tenancy />} /><Route path="/projects" element={<Projects />} /><Route path="/projects/new" element={<NewProject />} /><Route path="/projects/:id" element={<ProjectWorkspace />} />
     <Route path="/projects/:id/gantt" element={<Gantt />} /><Route path="/runs/:id" element={<E2EInstance />} /><Route path="/portfolio" element={<Portfolio />} />

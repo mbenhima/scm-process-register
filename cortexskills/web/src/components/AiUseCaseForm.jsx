@@ -23,7 +23,8 @@ function MlText({ id, label, value, onChange, required, rows = 2, hint, suggesti
       {LANGS.map(l => <button key={l} type="button" className={`chip ${lang === l ? 'on' : ''}`} aria-pressed={lang === l} onClick={() => setLang(l)}>{l.toUpperCase()}{!String(value?.[l] || '').trim() && <span className="ml-missing" aria-label={t('aiuf.missingLang')}>•</span>}</button>)}
       {suggestion && filled(suggestion) && <Btn size="sm" kind="ghost" icon="Wand2" onClick={() => onChange(ml(suggestion))}>{t('aiuf.useSuggested')}</Btn>}
     </div>
-    <textarea id={id} className="input" rows={rows} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang} value={value?.[lang] || ''} placeholder={suggestion?.[lang] || ''} onChange={e => onChange({ ...value, [lang]: e.target.value })} />
+    {rows === 1 ? <input id={id} className="input" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang} value={value?.[lang] || ''} placeholder={suggestion?.[lang] || ''} onChange={e => onChange({ ...value, [lang]: e.target.value })} />
+      : <textarea id={id} className="input" rows={rows} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang} value={value?.[lang] || ''} placeholder={suggestion?.[lang] || ''} onChange={e => onChange({ ...value, [lang]: e.target.value })} />}
   </Field>;
 }
 

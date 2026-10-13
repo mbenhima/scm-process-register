@@ -33,7 +33,7 @@ export function columnsOf(fields, L, pickers) {
   });
 }
 
-export function StepForms({ taskId, readOnly, onChanged, context }) {
+export function StepForms({ taskId, readOnly, onChanged, context, parent }) {
   const { t, L } = useI18n(); const d = useData(`/tasks/${taskId}/steps`, [taskId]); const pickers = usePickers();
   const [open, setOpen] = useState(null);
   return (<Guard state={d}>{x => <div className="stack">
@@ -45,13 +45,13 @@ export function StepForms({ taskId, readOnly, onChanged, context }) {
           <span className="step-title"><span className="mono xs">{s.id}</span> <span className="strong">{L(s.name)}</span><span className="xs muted"> · {L(s.form.kindLabel)} · {L(s.role)}</span></span>
           {(s.form.pattern === 'inline' || s.form.pattern === 'master-detail') && <span className="pill xs">{t('sfm.rows', { n: s.count })}</span>}
           <Icon name={isOpen ? 'ChevronUp' : 'ChevronDown'} /></button>
-        {isOpen && <StepBody taskId={taskId} projectId={x.project?.id} step={s} locked={x.locked} readOnly={readOnly || x.locked} pickers={pickers} context={context} onChanged={() => { d.reload(); onChanged?.(); }} />}
+        {isOpen && <StepBody taskId={taskId} projectId={x.project?.id} parent={parent} step={s} locked={x.locked} readOnly={readOnly || x.locked} pickers={pickers} context={context} onChanged={() => { d.reload(); onChanged?.(); }} />}
       </section>; })}
     {!x.steps.length && <Empty icon="ListChecks" title={t('sfm.noSteps')} />}
   </div>}</Guard>);
 }
 
-function StepBody({ taskId, projectId, step, locked, readOnly, pickers, onChanged, context }) {
+function StepBody({ taskId, projectId, parent, step, locked, readOnly, pickers, onChanged, context }) {
   const { t, L } = useI18n(); const act = useAction(); const { can } = useSession();
   const [reopen, setReopen] = useState(false); const [proposal, setProposal] = useState(null);
   const f = step.form; const inline = f.pattern === 'inline' || f.pattern === 'master-detail'; const single = f.pattern === 'form' || f.pattern === 'sectioned'; const cols = useMemo(() => columnsOf(f.fields, L, pickers), [f.fields, L, pickers]);
@@ -79,7 +79,7 @@ function StepBody({ taskId, projectId, step, locked, readOnly, pickers, onChange
       toolbarExtra={f.kind === 'levels' && !ro && missingFns.length > 0 ? <Btn size="sm" icon="ListPlus" onClick={addAllFunctions}>{t('mre.addAllFunctions', { n: missingFns.length })}</Btn> : null}
       emptyActions={!ro && can('ai.run') && runnable ? <Btn size="sm" icon="Sparkles" onClick={() => suggest()}>{t('sfm.suggest')}</Btn> : null}
       countLabel={n => t('sfm.count', { n, o: L(f.object).toLowerCase() })} emptyText={t('sfm.emptyRows', { o: L(f.object).toLowerCase() })}
-      onSaveRow={(data, id) => (id ? put(`${base}/rows/${id}`, { data }) : post(`${base}/rows`, { data }))} onDeleteRow={id => del(`${base}/rows/${id}`)} />}
+      onSaveRow={(data, id, o) => (id ? put(`${base}/rows/${id}`, { data, expected: o?.expected || undefined }) : post(`${base}/rows`, { data }))} parent={parent} onDeleteRow={id => del(`${base}/rows/${id}`)} />}
     {single && <StepFormFields base={base} fields={cols} values={step.record?.fields || {}} readOnly={ro} />}
     {proposal && <div className="card tint stack ai-proposal" role="region" aria-label={t('sfm.aiProposal')}>
       <div className="row"><Icon name="Sparkles" /><span className="strong small">{t('sfm.aiProposal')}</span><AiBadge tier={proposal.useCase.tier} />

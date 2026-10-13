@@ -12,11 +12,11 @@ import { EntryWorkspace } from './EntryWorkspace.jsx';
 import { usePaste } from './PastePreview.jsx';
 import { toClipboard, writeClipboard } from '../lib/paste.js';
 
-const OPS = ['contains', 'eq', 'neq', 'gt', 'lt', 'empty', 'notEmpty'];
+export const OPS = ['contains', 'eq', 'neq', 'gt', 'lt', 'empty', 'notEmpty'];
 const cellText = (c, x) => { const v = c.text ? c.text(x) : c.value ? c.value(x) : x[c.key]; return v == null ? '' : typeof v === 'object' ? (v.en ?? JSON.stringify(v)) : String(v); };
 const sortVal = (c, x) => (c.sortValue ? c.sortValue(x) : c.text ? c.text(x) : c.value ? c.value(x) : x[c.key]) ?? '';
 const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-function matches(f, c, x) {
+export function matches(f, c, x) {
   const raw = cellText(c, x); const v = norm(raw); const q = norm(f.value ?? '');
   switch (f.op) {
     case 'contains': return v.includes(q);
@@ -145,7 +145,7 @@ export function DataTable({ columns, rows, onRow, csvName, search = true, empty,
   </>}</EntryWorkspace>);
 }
 
-function FilterPopover({ columns, draft, setDraft, onAdd, onClose }) {
+export function FilterPopover({ columns, draft, setDraft, onAdd, onClose }) {
   const { t } = useI18n(); const ref = useRef(null); useOverlay(onClose);
   useEffect(() => { const out = e => { if (ref.current && !ref.current.contains(e.target) && !e.target.closest('.listbox')) onClose(); }; document.addEventListener('mousedown', out); return () => document.removeEventListener('mousedown', out); }, [onClose]);
   const needsValue = !['empty', 'notEmpty'].includes(draft.op);

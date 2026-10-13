@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { confirmLeave } from '../lib/navguard.jsx';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
@@ -77,13 +78,13 @@ export function E2EInstance() {
     <PageHead eyebrow={`${x.e2e.id} · ${L(x.e2e.type)}`} title={L(x.e2e.name)} subtitle={L(x.e2e.goal)}>
       <Link className="btn" to={`/projects/${x.project.id}`}><Icon name="ArrowLeft" />{L(x.project.name)}</Link><Link className="btn" to={`/process/e2e/${x.e2e.id}`}><Icon name="Workflow" />{t('run.spec')}</Link></PageHead>
     <div className="grid split"><Card title={t('run.tasks')}>
-      <DataTable search={false} rows={x.tasks} onRow={r => setSp({ task: r.id })} columns={[
+      <DataTable search={false} rows={x.tasks} onRow={async r => { if (r.id !== taskId && await confirmLeave()) setSp({ task: r.id }); }} columns={[
         { key: 'sort', label: '#', num: true }, { key: 'uft_id', label: t('col.task'), render: r => <span><span className="strong">{r.uft_id}</span><br /><UftName id={r.uft_id} /></span> },
         { key: 'status', label: t('col.status'), render: r => <StatusPill value={r.status} /> }, { key: 'owner_name', label: t('col.owner') }, { key: 'due', label: t('col.due'), render: r => <span className={r.status !== 'Completed' && new Date(r.due_date) < new Date() ? 'strong' : ''}>{fmtDate(r.due_date)}</span> }]} /></Card>
       <Card title={t('run.card')}><KV items={[[t('run.trigger'), L(x.e2e.trigger)], [t('run.terminal'), L(x.e2e.terminal)], [t('run.feeds'), x.e2e.feedsInto || '—'], [t('run.consumes'), x.e2e.consumes || '—'], [t('run.supported'), x.e2e.supportedBy || '—'], [t('run.mps'), x.e2e.mps.join(', ')], [t('run.modules'), L(x.e2e.modules)],
         [t('col.progress'), <span className="row"><Progress value={x.instance.progress} /><span>{x.instance.progress}%</span></span>], [t('col.status'), <StatusPill value={x.instance.status} />]]} />
         <div className="label" style={{ marginTop: 'var(--aiv-space-4)' }}>{t('readiness.title')}</div><Readiness instanceId={id} /></Card></div>
-    {taskId && <TaskPanel id={taskId} project={x.project} onClose={() => setSp({})} onChanged={d.reload} />}
+    {taskId && <TaskPanel id={taskId} project={x.project} onClose={async () => { if (await confirmLeave()) setSp({}); }} onChanged={d.reload} />}
   </>}</Guard>);
 }
 const uftCache = {};
@@ -111,7 +112,7 @@ function TaskPanel({ id, project, onClose, onChanged }) {
           {tab === 'work' && <>
             <div className="guidance"><span className="label">{t('run.whatToType')}</span>{L(tk.guidance)}</div>
             <KV items={[[t('run.input'), `${L(u.input)} — ${L(u.supplier)}`], [t('run.output'), `${L(u.output)} → ${L(u.beneficiary)}`]]} />
-            <div><div className="label">{t('run.steps')}</div><StepForms taskId={id} context={[L(project?.name), `${u.id} · ${L(u.name)}`].filter(Boolean).join(' · ')} readOnly={readOnly || tk.status === 'Completed'} onChanged={() => { d.reload(); onChanged(); }} /></div>
+            <div><div className="label">{t('run.steps')}</div><StepForms taskId={id} parent={{ name: L(u.name), id: u.id, status: t('status.' + tk.status) === 'status.' + tk.status ? tk.status : t('status.' + tk.status) }} context={[L(project?.name), `${u.id} · ${L(u.name)}`].filter(Boolean).join(' · ')} readOnly={readOnly || tk.status === 'Completed'} onChanged={() => { d.reload(); onChanged(); }} /></div>
             <Field label={t('run.outputLabel')} id="out"><textarea id="out" className="input" rows={5} disabled={readOnly || tk.status === 'Completed'} value={out ?? ''} onChange={e => setOut(e.target.value)} placeholder={L(tk.guidance)} /></Field>
             {linkedUc.length > 0 && !readOnly && <div className="card flat"><div className="label" style={{ marginBottom: 8 }}>{t('run.aiHelp')}</div><div className="row">{linkedUc.map(c => <Btn key={c.id} size="sm" icon="Sparkles" onClick={() => runAi(c)}>{L(c.name)} <AiBadge tier={c.tier} /></Btn>)}</div></div>}
             {ai && <div className="card tint stack"><div className="row"><Icon name="Sparkles" /><span className="strong small">{ai.label}</span><AiBadge tier={ai.useCase.tier} /><span className="pill xs">{ai.source}</span><span className="xs muted">{t('ai.confidence')} {Math.round(ai.confidence * 100)}%</span></div>

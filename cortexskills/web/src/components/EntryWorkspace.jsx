@@ -15,7 +15,7 @@ const clamp = z => Math.min(MAX, Math.max(MIN, Math.round(z / STEP) * STEP));
  * children({ full, expand, records }) — `expand` is the Expand action for the Multi-Entry toolbar; `records` are the
  * props of the records area (ref, style, className) that the zoom applies to and that scrolls in the workspace.
  */
-export function EntryWorkspace({ id, title, context, meta, actions, onBeforeClose, className = '', disabled = false, children }) {
+export function EntryWorkspace({ id, title, context, meta, actions, onBeforeClose, className = '', disabled = false, returnLabel, badge, children }) {
   const { t } = useI18n();
   const [full, setFull] = useState(false);
   const host = useRef(null); const records = useRef(null); const expandBtn = useRef(null); const lastCell = useRef(null);
@@ -64,10 +64,10 @@ export function EntryWorkspace({ id, title, context, meta, actions, onBeforeClos
 
   return (<div ref={host} className={`ws-host ${full ? 'ws-full' : ''} ${className}`} role={full ? 'dialog' : undefined} aria-modal={full || undefined} aria-labelledby={full ? labelId : undefined} onKeyDown={onKeyDown}>
     {full && <header className="ws-bar">
-      <div className="ws-title"><span id={labelId} className="ws-name">{title || t('ws.title')}</span>{(context || meta) && <span className="ws-meta">{[context, meta].filter(Boolean).map((x, i) => <span key={i} title={typeof x === 'string' ? x : undefined}>{x}</span>)}</span>}</div>
+      <div className="ws-title"><span id={labelId} className="ws-name">{title || t('ws.title')}{badge}</span>{(context || meta) && <span className="ws-meta">{[context, meta].filter(Boolean).map((x, i) => <span key={i} title={typeof x === 'string' ? x : undefined}>{x}</span>)}</span>}</div>
       <ZoomControls id={id} records={records} />
       {actions}
-      <Btn kind="primary" className="ws-return" icon="ArrowLeft" onClick={back}>{t('ws.return')}</Btn>
+      <Btn kind="primary" className="ws-return" icon="ArrowLeft" aria-label={returnLabel ? `${t('ws.return')} — ${returnLabel}` : undefined} onClick={back}>{returnLabel || t('ws.return')}</Btn>
     </header>}
     {children({ full, expand, records: recordsProps })}
   </div>);

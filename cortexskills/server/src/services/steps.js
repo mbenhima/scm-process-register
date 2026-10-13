@@ -91,7 +91,7 @@ export function saveFields(req, taskId, stepId, data) {
   return { id: rec.id, fields: locObj(fields, req.lang), status: rec.status };
 }
 /** One row of a multi-record step, saved on its own (FR-DA-MRE-09). */
-export function saveRow(req, taskId, stepId, rowId, data, origin = 'manual') {
+export function saveRow(req, taskId, stepId, rowId, data, origin = 'manual', { expected = null } = {}) {
   const { t, d } = guard(req, taskId, stepId); if (SINGLE.has(d.form.kind) || d.form.kind === 'system') throw new HttpError(422, 'err.wrongPattern');
   const errs = validateValues(d.form.fields, data); if (Object.keys(errs).length) throw new HttpError(422, 'err.invalidFields', { fields: Object.keys(errs).join(', '), errors: errs });
   const rec = recordOf(t, stepId, d.form.kind, true, req.user.id); const tm = now(); const clean = sanitize(d.form.fields, data);
@@ -102,16 +102,18 @@ export function saveRow(req, taskId, stepId, rowId, data, origin = 'manual') {
   }
   if (rowId) {
     const row = one(`SELECT * FROM step_rows WHERE id=? AND step_record_id=?`, rowId, rec.id); if (!row) throw new HttpError(404, 'err.notFound');
+    // Optimistic concurrency: the row the user edited must still be the one stored, else a conflict is reported.
+    if (expected && row.updated_at && String(expected) !== String(row.updated_at)) throw new HttpError(409, 'err.rowConflict', { by: one(`SELECT name FROM users WHERE id=?`, row.updated_by)?.name || '—' });
     const prev = J(row.data, {});
     // An unchanged multilingual value comes back in the user's language: the stored translations are kept.
     for (const [k, v] of Object.entries(clean)) if (typeof v === 'string' && prev[k] && typeof prev[k] === 'object' && !Array.isArray(prev[k]) && loc(prev[k], req.lang) === v) clean[k] = prev[k];
     const merged = { ...prev, ...clean };
     run(`UPDATE step_rows SET data=?, updated_by=?, updated_at=? WHERE id=?`, S(merged), req.user.id, tm, rowId);
-    return { id: rowId, ...locObj(merged, req.lang) };
+    return { id: rowId, ...locObj(merged, req.lang), _updated: tm };
   }
   const id = uuid(); const sort = (one(`SELECT MAX(sort) m FROM step_rows WHERE step_record_id=?`, rec.id)?.m ?? -1) + 1;
   run(`INSERT INTO step_rows(id,step_record_id,org_id,project_id,step_id,sort,data,origin,created_by,created_at,updated_by,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, id, rec.id, t.org_id, t.project_id, stepId, sort, S(clean), ['manual', 'library', 'ai'].includes(origin) ? origin : 'manual', req.user.id, tm, req.user.id, tm);
-  return { id, ...locObj(clean, req.lang), _origin: origin };
+  return { id, ...locObj(clean, req.lang), _origin: origin, _updated: tm };
 }
 export function deleteRow(req, taskId, stepId, rowId) {
   const { t } = guard(req, taskId, stepId); const rec = recordOf(t, stepId); if (!rec) throw new HttpError(404, 'err.notFound');

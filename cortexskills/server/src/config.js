@@ -39,6 +39,10 @@ export const config = {
     verifyToken: process.env.WHATSAPP_VERIFY_TOKEN || '', appSecret: process.env.WHATSAPP_APP_SECRET || '', template: process.env.WHATSAPP_TEMPLATE || '', templateLang: process.env.WHATSAPP_TEMPLATE_LANG || '' },
   // Most rows a user may paste into a Multi-Entry at once (SRS 1.8 FR-DA-MRE-22).
   pasteMaxRows: Math.max(1, Number(process.env.PASTE_MAX_ROWS || 1000)),
+  // Bulk import of a file (FR-DA-MRE, import workflow): maximum size and rows; rows are sent in batches of IMPORT_BATCH.
+  importMaxBytes: Math.max(1024, Number(process.env.IMPORT_MAX_BYTES || 5 * 1024 * 1024)),
+  importMaxRows: Math.max(1, Number(process.env.IMPORT_MAX_ROWS || 10000)),
+  importBatch: Math.min(500, Math.max(50, Number(process.env.IMPORT_BATCH || 250))),
   minNode: '22.13.0',
   cacheTtlMs: 30000,
 };

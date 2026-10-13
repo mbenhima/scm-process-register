@@ -33,6 +33,9 @@ jobs:
         run: |
           npm install
           npm run build
+      - name: Bulk-entry unit tests
+        working-directory: cortexskills/web
+        run: npm test
       - name: Design-token check (no raw colour outside tokens.css)
         working-directory: cortexskills/web
         run: npm run check:tokens

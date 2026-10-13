@@ -85,7 +85,7 @@ if (PROD) {
   // Production: the platform administrator only; organizations are created with "npm run admin -- org-create".
   const { hashPassword } = await import('../src/auth.js');
   run(`INSERT INTO users(id,org_id,email,name,password_hash,language,title,is_platform,created_at) VALUES(?,?,?,?,?,?,?,1,?)`, U('user:platform'), null, admin.email, admin.name, hashPassword(admin.password), 'en', 'Platform Administrator', now());
-  for (const [k, v] of [['seeded_at', now()], ['data_mode', 'production'], ['version', JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version]]) run(`INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)`, k, v);
+  for (const [k, v] of [['seeded_at', now()], ['data_mode', 'production'], ['ai_catalog_1_12', 'seed'], ['version', JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version]]) run(`INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)`, k, v);
   const { backupNow } = await import('../src/services/ops.js'); backupNow('init');
   console.log(`\n  Production database ready in ${Math.round((Date.now() - t0) / 1000)} s: reference catalog, ${one('SELECT COUNT(*) n FROM records WHERE org_id IS NULL').n} library records, no organization.`);
   console.log(`  Platform administrator: ${admin.email}. Remove ADMIN_PASSWORD from server/.env now.`);
@@ -104,6 +104,7 @@ fs.writeFileSync(config.licenceFile, JSON.stringify(lic, null, 2));
 
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('seeded_at',?)`, now());
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('data_mode','demo')`);
+run(`INSERT OR REPLACE INTO meta(key,value) VALUES('ai_catalog_1_12','seed')`); // the seed already writes a complete catalog
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('version',?)`, JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version);
 const { backupNow } = await import('../src/services/ops.js');
 backupNow('seed');

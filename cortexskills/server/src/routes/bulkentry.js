@@ -16,6 +16,8 @@ import { validate, createRecord, updateRecord, deleteRecord, getRecord } from '.
 import { checkQuota } from '../entitlements.js';
 import { invalidateTenant } from '../services/retrieval.js';
 import * as St from '../services/steps.js';
+import multer from 'multer';
+import ExcelJS from 'exceljs';
 
 const r = Router();
 
@@ -50,10 +52,11 @@ function capRows(rows) {
   return rows.map(x => ({ id: x?.id ? String(x.id) : null, data: cleanRow(x?.data) }));
 }
 /** Errors of one row, per cell, in the user's language. */
-function cellErrors(req, tg, data) {
+function cellErrors(req, tg, data, isNew = false) {
   const out = {};
   if (tg.kind === 'step') {
-    const errs = St.validateValues(tg.fields, data);
+    // A new row must carry its required values, as when it is typed in the grid; an overwrite may change only some cells.
+    const errs = St.validateValues(tg.fields, data, { partial: !isNew });
     for (const [k, code] of Object.entries(errs)) { const f = tg.fields.find(x => x.key === k); out[k] = t('mre.' + code, req.lang, { field: pick(f?.label, req.lang) || k, min: f?.min, max: f?.max }); }
     return out;
   }
@@ -64,12 +67,57 @@ function cellErrors(req, tg, data) {
   return out;
 }
 
-r.get('/bulk-entry/limits', ah(() => ({ maxRows: config.pasteMaxRows })));
+r.get('/bulk-entry/limits', ah(() => ({ maxRows: config.pasteMaxRows, importMaxBytes: config.importMaxBytes, importMaxRows: config.importMaxRows, batch: config.importBatch })));
+
+// ---- Import of a file: an Excel workbook is read here (exceljs), CSV and text are read in the browser. Only cell
+// text is kept; formulas give their last value; the first sheet is read unless another is named.
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: config.importMaxBytes, files: 1 } });
+r.post('/bulk-entry/parse', (req, res, next) => upload.single('file')(req, res, e => (e ? next(new HttpError(413, 'err.fileTooLarge', { max: Math.round(config.importMaxBytes / 1048576) + ' MB' })) : next())), ah(async req => {
+  const f = req.file; if (!f) throw new HttpError(422, 'err.required', { field: 'file' });
+  if (!/\.xlsx$/i.test(f.originalname || '') || f.buffer.subarray(0, 2).toString('latin1') !== 'PK') throw new HttpError(415, 'err.importType', { types: '.xlsx' });
+  const wb = new ExcelJS.Workbook();
+  try { await wb.xlsx.load(f.buffer); } catch { throw new HttpError(422, 'err.fileUnreadable'); }
+  const sheets = wb.worksheets.map(w => w.name); const ws = (req.body?.sheet && wb.getWorksheet(String(req.body.sheet))) || wb.worksheets[0];
+  if (!ws) throw new HttpError(422, 'err.fileUnreadable');
+  const text = v => { if (v == null) return ''; if (v instanceof Date) return v.toISOString().slice(0, 10); if (typeof v === 'object') { if ('result' in v) return text(v.result); if (v.richText) return v.richText.map(x => x.text).join(''); if ('text' in v) return String(v.text); return ''; } return String(v); };
+  const rows = []; let truncated = false;
+  ws.eachRow({ includeEmpty: false }, row => { if (rows.length > config.importMaxRows) { truncated = true; return; } const vals = row.values.slice(1).map(v => cleanCell(text(v))); if (vals.some(x => x !== '')) rows.push(vals); });
+  return { sheets, sheet: ws.name, rows: rows.slice(0, config.importMaxRows + 1), truncated, maxRows: config.importMaxRows };
+}));
+
+/** Excel export of the current view of a Multi-Entry: the column titles and display values given by the client. */
+r.post('/bulk-entry/export', ah(async (req, res) => {
+  const b = req.body || {}; const header = Array.isArray(b.header) ? b.header.slice(0, 200).map(x => String(x ?? '')) : [];
+  const rows = Array.isArray(b.rows) ? b.rows.slice(0, 50000) : [];
+  const wb = new ExcelJS.Workbook(); wb.creator = 'CortexSkills'; wb.created = new Date();
+  const ws = wb.addWorksheet(String(b.sheet || 'Export').replace(/[\\/?*[\]:]/g, ' ').slice(0, 31) || 'Export');
+  const neutral = v => (typeof v === 'string' && /^[=+\-@\t\r]/.test(v) && !/^[-+]?\d[\d\s.,]*$/.test(v) ? "'" + v : v); // NFR-DA-SEC-21
+  ws.addRow(header); ws.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } }; ws.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0B2A4A' } };
+  for (const r of rows) ws.addRow((Array.isArray(r) ? r : []).slice(0, header.length).map(v => { const x = neutral(v == null ? '' : typeof v === 'object' ? JSON.stringify(v) : v); return typeof x === 'string' && /^-?\d+(\.\d+)?$/.test(x) && x.length < 15 ? Number(x) : x; }));
+  ws.columns.forEach((c, i) => { c.width = Math.min(60, Math.max(10, ...[header[i], ...rows.slice(0, 200).map(r => r?.[i])].map(v => String(v ?? '').length + 2))); });
+  ws.views = [{ state: 'frozen', ySplit: 1 }];
+  const name = String(b.name || 'export.xlsx').replace(/[^\p{L}\p{N}._-]+/gu, '-').slice(0, 120);
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  const fname = name.endsWith('.xlsx') ? name : name + '.xlsx'; // non-Latin names travel encoded (RFC 6266)
+  res.setHeader('Content-Disposition', `attachment; filename="${fname.replace(/[^\x20-\x7e]/g, '_')}"; filename*=UTF-8''${encodeURIComponent(fname)}`);
+  await wb.xlsx.write(res); res.end();
+}));
+
+/** Batched delete (bulk delete of a Multi-Entry): each record is deleted on its own; a refusal does not stop the others. */
+r.post('/bulk-entry/delete', ah(req => {
+  const tg = target(req, req.body); const ids = Array.isArray(req.body?.ids) ? [...new Set(req.body.ids.map(String))].slice(0, 500) : [];
+  if (!ids.length) throw new HttpError(422, 'err.required', { field: 'ids' });
+  const deleted = [], failed = [];
+  tx(() => { for (const id of ids) { try { if (tg.kind === 'step') St.deleteRow(req, tg.task, tg.step, id); else deleteRecord(req, tg.entity, id); deleted.push(id); } catch (e) { if (e.status === 403 || (e.status === 409 && e.code === 'err.stepLocked')) throw e; failed.push({ id, error: t(e.code || 'err.server', req.lang, e.params || {}) }); } } });
+  audit(req, 'BulkDelete', uuid(), 'delete', null, { target: tg.key, deleted: deleted.length, failed: failed.length });
+  if (tg.kind === 'entity') invalidateTenant(req.orgId);
+  return { deleted, failed };
+}));
 
 /** Paste Preview: per-cell results, rows to add and to overwrite; nothing is written (FR-DA-MRE-20). */
 r.post('/bulk-entry/preview', ah(req => {
   const tg = target(req, req.body); const rows = capRows(req.body.rows);
-  const results = rows.map((x, i) => { const errors = cellErrors(req, tg, x.data); return { index: i, id: x.id, action: x.id ? 'overwrite' : 'add', errors, valid: !Object.keys(errors).length }; });
+  const results = rows.map((x, i) => { const errors = cellErrors(req, tg, x.data, !x.id); return { index: i, id: x.id, action: x.id ? 'overwrite' : 'add', errors, valid: !Object.keys(errors).length }; });
   return { target: tg.key, maxRows: config.pasteMaxRows, add: results.filter(x => x.action === 'add').length, overwrite: results.filter(x => x.action === 'overwrite').length, invalid: results.filter(x => !x.valid).length, results };
 }));
 
@@ -83,7 +131,7 @@ r.post('/bulk-entry/apply', ah(req => {
   tx(() => {
     if (tg.kind === 'step') Object.assign(before, St.stepRowData(req, tg.task, tg.step, rows.filter(x => x.id).map(x => x.id)));
     rows.forEach((x, i) => {
-      const errors = cellErrors(req, tg, x.data);
+      const errors = cellErrors(req, tg, x.data, !(x.id && before[x.id]));
       if (Object.keys(errors).length) { rejected.push({ index: i, id: x.id, errors }); return; }
       try {
         if (tg.kind === 'step') {
