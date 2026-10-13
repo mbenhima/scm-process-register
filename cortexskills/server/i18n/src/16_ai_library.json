@@ -1,0 +1,532 @@
+{
+ "ai.acceptAll": [
+  "Accept all ({n})",
+  "Tout accepter ({n})",
+  "قبول الكل ({n})"
+ ],
+ "ai.addEdited": [
+  "Add as edited",
+  "Ajouter modifié",
+  "إضافة بعد التعديل"
+ ],
+ "ai.edited": [
+  "edited",
+  "modifié",
+  "معدّل"
+ ],
+ "ai.engine.builtIn": [
+  "Built-in engine",
+  "Moteur intégré",
+  "المحرك المدمج"
+ ],
+ "ai.engine.live": [
+  "Live model · {m}",
+  "Modèle connecté · {m}",
+  "النموذج المتصل · {m}"
+ ],
+ "ai.engineTip": [
+  "The engine that produced this answer",
+  "Le moteur qui a produit cette réponse",
+  "المحرك الذي أنتج هذا الجواب"
+ ],
+ "ai.modelSettings": [
+  "Model settings",
+  "Paramètres du modèle",
+  "إعدادات النموذج"
+ ],
+ "ai.rejectAll": [
+  "Reject all",
+  "Tout rejeter",
+  "رفض الكل"
+ ],
+ "ai.reviewLabel": [
+  "AI-generated — to be reviewed by a person before use.",
+  "Généré par l’IA — à vérifier par une personne avant usage.",
+  "مولّد بالذكاء الاصطناعي — يجب أن يراجعه شخص قبل الاستعمال."
+ ],
+ "ai.viewPrompt": [
+  "View the prompt",
+  "Voir le prompt",
+  "عرض الموجّه"
+ ],
+ "ai.reason.noModel": [
+  "The Organization’s live model is not enabled: this answer comes from the built-in engine.",
+  "Le modèle connecté de l’organisation n’est pas activé : cette réponse vient du moteur intégré.",
+  "النموذج المتصل للمؤسسة غير مفعّل: هذا الجواب صادر عن المحرك المدمج."
+ ],
+ "ai.reason.modelError": [
+  "The live model returned an error ({d}): this answer comes from the built-in engine.",
+  "Le modèle connecté a renvoyé une erreur ({d}) : cette réponse vient du moteur intégré.",
+  "أعاد النموذج المتصل خطأ ({d}): هذا الجواب صادر عن المحرك المدمج."
+ ],
+ "ai.reason.promptVariable": [
+  "The prompt has a variable without a value ({d}): the live model was not called; this answer comes from the built-in engine.",
+  "Le prompt contient une variable sans valeur ({d}) : le modèle connecté n’a pas été appelé ; cette réponse vient du moteur intégré.",
+  "يحتوي الموجّه على متغير بلا قيمة ({d}): لم يُستدعَ النموذج المتصل؛ هذا الجواب صادر عن المحرك المدمج."
+ ],
+ "aiuc.cov.all": [
+  "All tasks",
+  "Toutes les tâches",
+  "كل المهام"
+ ],
+ "aiuc.cov.caption": [
+  "Each task of the process design with the AI use cases linked to its steps, the task itself, its macro process or its end-to-end process.",
+  "Chaque tâche de la conception des processus avec les cas d’usage IA liés à ses étapes, à la tâche, à son macro-processus ou à son processus de bout en bout.",
+  "كل مهمة من تصميم العمليات مع حالات استخدام الذكاء الاصطناعي المرتبطة بخطواتها أو بالمهمة أو بعمليتها الكلية أو بعمليتها من البداية إلى النهاية."
+ ],
+ "aiuc.cov.covered": [
+  "With AI",
+  "Avec IA",
+  "مع الذكاء الاصطناعي"
+ ],
+ "aiuc.cov.none": [
+  "No AI use case",
+  "Aucun cas d’usage IA",
+  "لا توجد حالة استخدام"
+ ],
+ "aiuc.cov.process": [
+  "End-to-end process",
+  "Processus de bout en bout",
+  "العملية من البداية إلى النهاية"
+ ],
+ "aiuc.cov.show": [
+  "Show",
+  "Afficher",
+  "عرض"
+ ],
+ "aiuc.cov.steps": [
+  "Steps",
+  "Étapes",
+  "الخطوات"
+ ],
+ "aiuc.cov.suggest": [
+  "Suggest for {s}",
+  "Suggérer pour {s}",
+  "اقتراح لـ {s}"
+ ],
+ "aiuc.cov.uncovered": [
+  "Without AI",
+  "Sans IA",
+  "بدون ذكاء اصطناعي"
+ ],
+ "aiuc.deleteText": [
+  "The use case is removed from the library; its usage-log entries are kept.",
+  "Le cas d’usage est retiré de la bibliothèque ; ses entrées du journal d’utilisation sont conservées.",
+  "تُزال حالة الاستخدام من المكتبة مع الاحتفاظ بسجل استعمالها."
+ ],
+ "aiuc.deleteTitle": [
+  "Delete {code}?",
+  "Supprimer {code} ?",
+  "حذف {code}؟"
+ ],
+ "aiuc.deleted": [
+  "AI use case deleted",
+  "Cas d’usage IA supprimé",
+  "تم حذف حالة الاستخدام"
+ ],
+ "aiuc.duplicate": [
+  "Duplicate",
+  "Dupliquer",
+  "نسخ"
+ ],
+ "aiuc.duplicated": [
+  "Copy created as a custom draft, deactivated until reviewed",
+  "Copie créée en brouillon personnalisé, désactivée jusqu’à sa revue",
+  "أنشئت نسخة كمسودة مخصصة، معطلة حتى مراجعتها"
+ ],
+ "aiuc.f.active": [
+  "Active",
+  "Actifs",
+  "مفعّلة"
+ ],
+ "aiuc.f.anyOrigin": [
+  "Any origin",
+  "Toute origine",
+  "كل المصادر"
+ ],
+ "aiuc.f.anyState": [
+  "Any state",
+  "Tout état",
+  "كل الحالات"
+ ],
+ "aiuc.f.inactive": [
+  "Inactive",
+  "Inactifs",
+  "غير مفعّلة"
+ ],
+ "aiuc.f.state": [
+  "State",
+  "État",
+  "الحالة"
+ ],
+ "aiuc.k.active": [
+  "Active use cases",
+  "Cas d’usage actifs",
+  "حالات الاستخدام المفعّلة"
+ ],
+ "aiuc.k.completeness": [
+  "Average prompt completeness",
+  "Complétude moyenne des prompts",
+  "متوسط اكتمال الموجّهات"
+ ],
+ "aiuc.k.coverage": [
+  "Tasks supported by AI",
+  "Tâches assistées par l’IA",
+  "المهام المدعومة بالذكاء الاصطناعي"
+ ],
+ "aiuc.k.coverageNote": [
+  "of the process design",
+  "de la conception des processus",
+  "من تصميم العمليات"
+ ],
+ "aiuc.k.custom": [
+  "Custom: {n} of {q}",
+  "Personnalisés : {n} sur {q}",
+  "مخصصة: {n} من {q}"
+ ],
+ "aiuc.k.inOrg": [
+  "in the Organization",
+  "dans l’organisation",
+  "في المؤسسة"
+ ],
+ "aiuc.k.inProject": [
+  "in the current project",
+  "dans le projet courant",
+  "في المشروع الحالي"
+ ],
+ "aiuc.k.tiers": [
+  "{a} Assistive · {g} Augmented",
+  "{a} assistifs · {g} augmentés",
+  "{a} مساعدة · {g} معززة"
+ ],
+ "aiuc.k.total": [
+  "AI use cases",
+  "Cas d’usage IA",
+  "حالات استخدام الذكاء الاصطناعي"
+ ],
+ "aiuc.linkedTo": [
+  "Linked to",
+  "Lié à",
+  "مرتبط بـ"
+ ],
+ "aiuc.quotaFull": [
+  "The Solution Pack allows {n} custom use cases",
+  "Le pack de solution autorise {n} cas d’usage personnalisés",
+  "تسمح الباقة بـ {n} حالات استخدام مخصصة"
+ ],
+ "aiuc.suggested": [
+  "Draft AI use case created, deactivated until reviewed",
+  "Brouillon de cas d’usage IA créé, désactivé jusqu’à sa revue",
+  "أنشئت مسودة حالة استخدام، معطلة حتى مراجعتها"
+ ],
+ "aiuc.v.coverage": [
+  "Coverage of the process design",
+  "Couverture de la conception des processus",
+  "تغطية تصميم العمليات"
+ ],
+ "aiuc.v.library": [
+  "Library",
+  "Bibliothèque",
+  "المكتبة"
+ ],
+ "aiuf.addLink": [
+  "Add a link",
+  "Ajouter un lien",
+  "إضافة رابط"
+ ],
+ "aiuf.behaviour": [
+  "Behaviour",
+  "Comportement",
+  "السلوك"
+ ],
+ "aiuf.checkpointHint": [
+  "Who reviews the proposal and what they check before it is used.",
+  "Qui vérifie la proposition et ce qu’il contrôle avant son usage.",
+  "من يراجع الاقتراح وما الذي يتحقق منه قبل استعماله."
+ ],
+ "aiuf.chooseStep": [
+  "Choose the step",
+  "Choisir l’étape",
+  "اختر الخطوة"
+ ],
+ "aiuf.chooseTarget": [
+  "Choose the element",
+  "Choisir l’élément",
+  "اختر العنصر"
+ ],
+ "aiuf.codeHint": [
+  "Left empty, the next code AIUC-Cnn is given.",
+  "Laissé vide, le code suivant AIUC-Cnn est attribué.",
+  "إذا ترك فارغاً، يُعطى الرمز التالي AIUC-Cnn."
+ ],
+ "aiuf.codeSeeded": [
+  "The code of a standard use case does not change.",
+  "Le code d’un cas d’usage standard ne change pas.",
+  "رمز حالة الاستخدام القياسية لا يتغير."
+ ],
+ "aiuf.create": [
+  "Create the use case",
+  "Créer le cas d’usage",
+  "إنشاء حالة الاستخدام"
+ ],
+ "aiuf.created": [
+  "AI use case created as a deactivated draft",
+  "Cas d’usage IA créé en brouillon désactivé",
+  "أنشئت حالة الاستخدام كمسودة معطلة"
+ ],
+ "aiuf.customIntro": [
+  "A custom use case of your Organization. Each save creates a new version.",
+  "Un cas d’usage personnalisé de votre organisation. Chaque enregistrement crée une nouvelle version.",
+  "حالة استخدام مخصصة لمؤسستك. كل حفظ ينشئ نسخة جديدة."
+ ],
+ "aiuf.editTitle": [
+  "Edit {code}",
+  "Modifier {code}",
+  "تعديل {code}"
+ ],
+ "aiuf.governance": [
+  "Governance",
+  "Gouvernance",
+  "الحوكمة"
+ ],
+ "aiuf.language": [
+  "Language of the text",
+  "Langue du texte",
+  "لغة النص"
+ ],
+ "aiuf.linkIncomplete": [
+  "Choose an element for each link, or remove it.",
+  "Choisissez un élément pour chaque lien, ou supprimez-le.",
+  "اختر عنصراً لكل رابط أو احذفه."
+ ],
+ "aiuf.linkTarget": [
+  "Linked element",
+  "Élément lié",
+  "العنصر المرتبط"
+ ],
+ "aiuf.linkType": [
+  "Type of element",
+  "Type d’élément",
+  "نوع العنصر"
+ ],
+ "aiuf.missingLang": [
+  "translation missing",
+  "traduction manquante",
+  "الترجمة ناقصة"
+ ],
+ "aiuf.moreLinks": [
+  "Other links",
+  "Autres liens",
+  "روابط أخرى"
+ ],
+ "aiuf.moreLinksHint": [
+  "The use case is also shown and runnable on these steps, tasks, macro processes or end-to-end processes.",
+  "Le cas d’usage est aussi affiché et exécutable sur ces étapes, tâches, macro-processus ou processus de bout en bout.",
+  "تُعرض حالة الاستخدام وتُشغَّل أيضاً على هذه الخطوات أو المهام أو العمليات."
+ ],
+ "aiuf.new": [
+  "New AI use case",
+  "Nouveau cas d’usage IA",
+  "حالة استخدام جديدة"
+ ],
+ "aiuf.newIntro": [
+  "A custom use case of your Organization, counted in the Solution Pack quota. It is created deactivated, with a complete prompt specification, and is activated once a person has reviewed it.",
+  "Un cas d’usage personnalisé de votre organisation, compté dans le quota du pack. Il est créé désactivé, avec une spécification de prompt complète, et activé après revue par une personne.",
+  "حالة استخدام مخصصة لمؤسستك تُحتسب في حصة الباقة. تُنشأ معطلة مع مواصفات موجّه كاملة وتُفعَّل بعد مراجعتها."
+ ],
+ "aiuf.newTitle": [
+  "New AI use case",
+  "Nouveau cas d’usage IA",
+  "حالة استخدام جديدة"
+ ],
+ "aiuf.outputHint": [
+  "What the use case proposes, in the terms of the step’s form.",
+  "Ce que le cas d’usage propose, dans les termes du formulaire de l’étape.",
+  "ما تقترحه حالة الاستخدام بمصطلحات نموذج الخطوة."
+ ],
+ "aiuf.primary": [
+  "primary step",
+  "étape principale",
+  "الخطوة الرئيسية"
+ ],
+ "aiuf.primaryHint": [
+  "The step whose form the use case fills; its module and its prompt come from it.",
+  "L’étape dont le cas d’usage remplit le formulaire ; son module et son prompt en découlent.",
+  "الخطوة التي تملأ حالة الاستخدام نموذجها؛ ومنها الوحدة والموجّه."
+ ],
+ "aiuf.primaryStep": [
+  "Primary step",
+  "Étape principale",
+  "الخطوة الرئيسية"
+ ],
+ "aiuf.promptElsewhere": [
+  "The prompt itself is edited field by field in the Prompt specification tab.",
+  "Le prompt lui-même se modifie champ par champ dans l’onglet Spécification du prompt.",
+  "يُعدَّل الموجّه نفسه حقلاً بحقل في تبويب مواصفات الموجّه."
+ ],
+ "aiuf.removeLink": [
+  "Remove the link {x}",
+  "Supprimer le lien {x}",
+  "حذف الرابط {x}"
+ ],
+ "aiuf.seededIntro": [
+  "A use case of the standard library. It can be changed and versioned; it is deactivated, never deleted.",
+  "Un cas d’usage de la bibliothèque standard. Il peut être modifié et versionné ; il est désactivé, jamais supprimé.",
+  "حالة استخدام من المكتبة القياسية. يمكن تعديلها وإصدار نسخ منها؛ تُعطَّل ولا تُحذف."
+ ],
+ "aiuf.startsInactive": [
+  "The new use case starts deactivated, as a Draft.",
+  "Le nouveau cas d’usage démarre désactivé, en brouillon.",
+  "تبدأ حالة الاستخدام الجديدة معطلة كمسودة."
+ ],
+ "aiuf.tierHint": [
+  "Autonomous AI is not allowed: a person always decides.",
+  "L’IA autonome n’est pas autorisée : une personne décide toujours.",
+  "الذكاء الاصطناعي المستقل غير مسموح: يقرر شخص دائماً."
+ ],
+ "aiuf.triggerHint": [
+  "When and where the use case runs.",
+  "Quand et où le cas d’usage s’exécute.",
+  "متى وأين تعمل حالة الاستخدام."
+ ],
+ "aiuf.useSuggested": [
+  "Use the suggested text",
+  "Utiliser le texte proposé",
+  "استعمال النص المقترح"
+ ],
+ "aiuf.versionHint": [
+  "Why it changes: kept with the new version.",
+  "Pourquoi il change : conservé avec la nouvelle version.",
+  "سبب التغيير: يُحفظ مع النسخة الجديدة."
+ ],
+ "aiuf.lt.step": [
+  "Step",
+  "Étape",
+  "خطوة"
+ ],
+ "aiuf.lt.task": [
+  "Task",
+  "Tâche",
+  "مهمة"
+ ],
+ "aiuf.lt.mp": [
+  "Macro process",
+  "Macro-processus",
+  "عملية كلية"
+ ],
+ "aiuf.lt.e2e": [
+  "End-to-end process",
+  "Processus de bout en bout",
+  "عملية من البداية إلى النهاية"
+ ],
+ "aiuf.type.Classification": [
+  "Classification",
+  "Classification",
+  "تصنيف"
+ ],
+ "aiuf.type.Extraction": [
+  "Extraction",
+  "Extraction",
+  "استخراج"
+ ],
+ "aiuf.type.Summarization": [
+  "Summarization",
+  "Synthèse",
+  "تلخيص"
+ ],
+ "aiuf.type.Text generation": [
+  "Text generation",
+  "Rédaction de texte",
+  "توليد نص"
+ ],
+ "aiuf.type.Recommendation": [
+  "Recommendation",
+  "Recommandation",
+  "توصية"
+ ],
+ "aiuf.type.Matching": [
+  "Matching",
+  "Rapprochement",
+  "مطابقة"
+ ],
+ "aiuf.type.Scoring / ranking": [
+  "Scoring / ranking",
+  "Notation / classement",
+  "تنقيط / ترتيب"
+ ],
+ "aiuf.type.Forecasting": [
+  "Forecasting",
+  "Prévision",
+  "تنبؤ"
+ ],
+ "aiuf.type.Clustering": [
+  "Clustering",
+  "Regroupement",
+  "تجميع"
+ ],
+ "aiuf.type.Translation": [
+  "Translation",
+  "Traduction",
+  "ترجمة"
+ ],
+ "aiuf.appr.Draft": [
+  "Draft",
+  "Brouillon",
+  "مسودة"
+ ],
+ "aiuf.appr.In review": [
+  "In review",
+  "En revue",
+  "قيد المراجعة"
+ ],
+ "aiuf.appr.Approved": [
+  "Approved",
+  "Approuvé",
+  "معتمد"
+ ],
+ "aiuf.appr.Retired": [
+  "Retired",
+  "Retiré",
+  "متقاعد"
+ ],
+ "aiuf.appr.N/A (seeded catalog)": [
+  "Standard library",
+  "Bibliothèque standard",
+  "المكتبة القياسية"
+ ],
+ "aiuf.scope.Global": [
+  "Global (standard library)",
+  "Global (bibliothèque standard)",
+  "عام (المكتبة القياسية)"
+ ],
+ "aiuf.scope.Organization": [
+  "Organization",
+  "Organisation",
+  "المؤسسة"
+ ],
+ "sfm.noUseCase": [
+  "No AI use case serves this step.",
+  "Aucun cas d’usage IA ne sert cette étape.",
+  "لا توجد حالة استخدام تخدم هذه الخطوة."
+ ],
+ "sfm.suggestUseCase": [
+  "Suggest an AI use case",
+  "Suggérer un cas d’usage IA",
+  "اقتراح حالة استخدام"
+ ],
+ "status.Inactive": [
+  "Inactive",
+  "Inactif",
+  "غير مفعّل"
+ ],
+ "err.noUseCase": [
+  "No active AI use case serves the step {step}.",
+  "Aucun cas d’usage IA actif ne sert l’étape {step}.",
+  "لا توجد حالة استخدام مفعّلة تخدم الخطوة {step}."
+ ],
+ "aiuc.f.custom": [
+  "Custom",
+  "Personnalisés",
+  "مخصصة"
+ ]
+}

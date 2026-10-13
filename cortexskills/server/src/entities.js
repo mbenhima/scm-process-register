@@ -104,7 +104,8 @@ export function entityRegistry() {
     registry.AIUseCase.fields = [f('code', 'string', { required: true }), f('name', 'text', { required: true, ml: true }), f('tier', 'enum', { required: true, options: ['Assistive', 'Augmented'] }),
       f('module', 'string'), f('step', 'string', { required: true }), f('trigger', 'text', { ml: true }), f('expected_output', 'text', { ml: true }), f('checkpoint', 'longtext', { required: true, ml: true }),
       f('model_task_type', 'enum', { options: ['Classification', 'Extraction', 'Summarization', 'Text generation', 'Recommendation', 'Matching', 'Scoring / ranking', 'Forecasting', 'Clustering', 'Translation'] }),
-      f('risk', 'enum', { options: ['Low', 'Medium', 'High'] }), f('approval', 'enum', { options: ['Draft', 'In review', 'Approved', 'Retired', 'N/A (seeded catalog)'] }), f('scope', 'enum', { options: ['Global', 'Organization'] })]; }
+      f('risk', 'enum', { options: ['Low', 'Medium', 'High'] }), f('approval', 'enum', { options: ['Draft', 'In review', 'Approved', 'Retired', 'N/A (seeded catalog)'] }), f('scope', 'enum', { options: ['Global', 'Organization'] }),
+      f('links', 'json'), f('based_on', 'string'), f('origin', 'string')]; }
   if (registry.ExternalIntegration) registry.ExternalIntegration.perm = 'integrations';
   // Release 1.1: the template library is shared by the platform (org_id NULL) and extended by each Organization;
   // WhatsApp and Application join the response channels; Combination names a plan played over several channels.

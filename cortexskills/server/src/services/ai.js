@@ -6,6 +6,7 @@ import { t } from '../i18n.js';
 import { retrieve } from './retrieval.js';
 import { aiTier } from '../entitlements.js';
 import { getSpec, assemble, variables, liveConfig, profileOf } from './prompts.js';
+import { linksOf, stepsOf } from './aicatalog.js';
 
 export const PROVIDERS = [
   { id: 'anthropic', name: 'Anthropic', endpoint: 'https://api.anthropic.com/v1/messages', models: ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-4-5-20251001'] },
@@ -25,7 +26,20 @@ export function effectiveActive(orgId, projectId, ucId) {
 }
 export function useCases(orgId) {
   // The record identifier is the use case's id; its code (AIUC-xx) is kept separately and used by the usage log.
-  return all(`SELECT id, ref, data FROM records WHERE entity='AIUseCase' AND org_id=? ORDER BY coalesce(json_extract(data,'$.code'), ref)`, orgId).map(r => { const d = J(r.data, {}); return { ...d, id: r.id, code: d.code || d.id || r.ref }; });
+  // `allLinks` lists the primary step and the other links; `steps` every step the use case serves (FR-DA-AI-13).
+  const cache = {};
+  return all(`SELECT id, ref, data FROM records WHERE entity='AIUseCase' AND org_id=? ORDER BY coalesce(json_extract(data,'$.code'), ref)`, orgId).map(r => { const d = J(r.data, {}); const u = { ...d, id: r.id, code: d.code || d.id || r.ref }; return { ...u, allLinks: linksOf(u), steps: stepsOf(orgId, u, cache) }; });
+}
+/** The use cases that serve a step, the effective ones first (FR-DA-AIP-01: shown only on the steps they are linked to). */
+export function useCasesForStep(orgId, projectId, stepId) {
+  return useCases(orgId).filter(u => u.steps.includes(stepId)).map(u => ({ ...u, effective: effectiveActive(orgId, projectId, u.id) })).sort((a, b) => Number(b.effective) - Number(a.effective));
+}
+/** Server-side block of a deactivated use case, by its effective state (FR-DA-AI-05), and of an Augmented one without entitlement. */
+export function assertActive(orgId, projectId, code) {
+  const uc = useCaseByCode(orgId, code); if (!uc) throw new HttpError(404, 'err.notFound');
+  if (!effectiveActive(orgId, projectId, uc.id)) throw new HttpError(403, 'err.aiInactive', { useCase: uc.code });
+  if (uc.tier === 'Augmented' && aiTier(orgId) !== 'Assistive+Augmented') throw new HttpError(403, 'err.notEntitled', { feature: 'Augmented AI' });
+  return uc;
 }
 export function useCaseByCode(orgId, code) { return useCases(orgId).find(u => u.code === code || u.id === code); }
 
@@ -95,7 +109,7 @@ function builtIn(uc, facts, lang, input) {
 }
 
 /** One live call. Only the parameters the model's capability profile accepts are sent (FR-DA-AI-19). */
-async function liveCall(llm, prompt) {
+export async function liveCall(llm, prompt) {
   const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 30000);
   try {
     const endpoint = llm.endpoint || PROVIDERS.find(p => p.id === llm.provider)?.endpoint;

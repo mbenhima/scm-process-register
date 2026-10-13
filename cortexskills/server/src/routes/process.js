@@ -27,7 +27,7 @@ r.get('/process/mp/:id', requirePerm('catalog.view'), ah(req => {
     rules: recs('BusinessRule').filter(x => stepIds.has(x.process_tag)),
     controls: recs('Control').filter(x => String(x.process_tag || '').split(/;\s*/).some(s => stepIds.has(s))),
     alerts: cat.list('alertType').filter(a => stepIds.has(a.step)),
-    aiUseCases: useCases(org).filter(u => stepIds.has(u.step)),
+    aiUseCases: useCases(org).filter(u => u.steps.some(x => stepIds.has(x))),
     reports: cat.list('report').filter(x => (x.fields.match(/KPI-\d+/g) || []).some(k => cat.get('kpi', k)?.mp === mp.id)),
     classes: cat.list('class').filter(c => (c.mps || []).includes(mp.id)),
     module: cat.get('module', mp.module), entitled: entitledModules(org).has(mp.module),
@@ -36,7 +36,7 @@ r.get('/process/mp/:id', requirePerm('catalog.view'), ah(req => {
 r.get('/process/e2e/:id', requirePerm('catalog.view'), ah(req => {
   const e = cat.get('e2e', req.params.id); if (!e) throw new HttpError(404, 'err.notFound');
   const uc = useCases(req.orgId);
-  const ufts = e.ufts.map(id => { const u = cat.get('uft', id); return { ...u, stepsDetail: u.steps.map(s => cat.get('step', s)).filter(Boolean), ai: uc.filter(x => u.steps.includes(x.step)).map(x => ({ id: x.id, code: x.code, name: x.name, tier: x.tier })), guidance: cat.get('guidance', id)?.text || null }; });
+  const ufts = e.ufts.map(id => { const u = cat.get('uft', id); return { ...u, stepsDetail: u.steps.map(s => cat.get('step', s)).filter(Boolean), ai: uc.filter(x => x.steps.some(st => u.steps.includes(st))).map(x => ({ id: x.id, code: x.code, name: x.name, tier: x.tier })), guidance: cat.get('guidance', id)?.text || null }; });
   return { e2e: e, ufts, chainIn: cat.list('e2e').filter(x => (x.feedsInto || '').includes(e.id)).map(x => ({ id: x.id, name: x.name })), chainOut: (e.feedsInto || '').match(/E2E-\d\d/g) || [] };
 }));
 /** Chain dependency graph (Section 5 of the process design). */
@@ -58,7 +58,7 @@ r.get('/process/coverage', requirePerm('catalog.view'), ah(() => {
 /** Tasks of the process design with the AI Use Cases that support them, filterable by tier (FR-DA-AI-13). */
 r.get('/process/ai-map', requirePerm('catalog.view'), ah(req => {
   const uc = useCases(req.orgId).filter(u => !req.query.tier || u.tier === req.query.tier);
-  return cat.list('step').filter(s => uc.some(u => u.step === s.id)).map(s => ({ step: s, useCases: uc.filter(u => u.step === s.id) }));
+  return cat.list('step').filter(s => uc.some(u => u.steps.includes(s.id))).map(s => ({ step: s, useCases: uc.filter(u => u.steps.includes(s.id)) }));
 }));
 r.get('/modules', requirePerm('projects.view'), ah(req => { const ent = entitledModules(req.orgId); return cat.list('module').map(m => ({ ...m, entitled: ent.has(m.id) })); }));
 r.get('/modules/:id', requirePerm('projects.view'), ah(req => {

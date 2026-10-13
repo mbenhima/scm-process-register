@@ -1,5 +1,6 @@
 // AI Use Case mapping and Prompt Specifications (FR-DA-AIP-01 – 16) and the Organization live model (FR-DA-AI-16 – 20).
 import { all, one, run, tx } from '../db.js';
+import { exampleFor } from './aicatalog.js';
 import { J, S, HttpError, now, uuid, pick } from '../lib/util.js';
 import { seal, open, mask } from './secrets.js';
 import * as D from './design.js';
@@ -38,7 +39,7 @@ export function seedSpec(orgId, uc) {
     inputs: L3(`Typed values of the step (${fields.join(', ') || '—'}) and the named project records: {{records}}.`, `Valeurs saisies de l’étape (${fields.join(', ') || '—'}) et enregistrements nommés du projet : {{records}}.`, `القيم المدخلة في الخطوة (${fields.join(', ') || '—'}) وسجلات المشروع المسماة: {{records}}.`),
     knowledge: L3('Organization knowledge base, sector standards and lessons learned (REX), retrieved for this step.', 'Base de connaissances de l’organisation, normes du secteur et retours d’expérience (REX), récupérés pour cette étape.', 'قاعدة معارف المؤسسة ومعايير القطاع والدروس المستفادة، المسترجعة لهذه الخطوة.'),
     constraints: L3('Use only the facts given. Never state a number, score or name absent from them. Write in {{lang}}. Respect the RACSI: the human in charge decides.', 'N’utilisez que les faits fournis. N’énoncez aucun chiffre, note ou nom qui n’y figure pas. Rédigez en {{lang}}. Respectez le RACSI : l’humain responsable décide.', 'استعمل الوقائع المقدمة فقط. لا تذكر رقماً أو نقطة أو اسماً غير وارد فيها. اكتب بلغة {{lang}}. احترم RACSI: الإنسان المسؤول يقرر.'),
-    examples: L3('', '', ''),
+    examples: exampleFor(orgId, uc) || L3('', '', ''),
     outputFormat: L3(`${outField === 'rows' ? 'Rows of the step table, one per item, with the columns' : 'The step fields'}: ${fields.join(', ') || 'text'}. Inserted into the output field “${outField}”.`, `${outField === 'rows' ? 'Lignes du tableau de l’étape, une par élément, avec les colonnes' : 'Les champs de l’étape'} : ${fields.join(', ') || 'texte'}. Insérées dans le champ de sortie « ${outField} ».`, `${outField === 'rows' ? 'صفوف جدول الخطوة، صف لكل عنصر، بالأعمدة' : 'حقول الخطوة'}: ${fields.join(', ') || 'نص'}. تدرج في حقل المخرج «${outField}».`),
     tone: L3('Professional, factual, evidence first, short sentences.', 'Professionnel, factuel, les preuves d’abord, phrases courtes.', 'مهني وواقعي، الأدلة أولاً، جمل قصيرة.'),
     qualityCriteria: L3('Every item traceable to a source record; no duplicate; names start with a verb where they describe an action.', 'Chaque élément est rattaché à un enregistrement source ; aucun doublon ; les noms d’action commencent par un verbe.', 'كل عنصر مرتبط بسجل مصدر؛ لا تكرار؛ أسماء الإجراءات تبدأ بفعل.'),

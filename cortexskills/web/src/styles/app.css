@@ -752,3 +752,18 @@ ul.plain > li > .tree-row { width: 100%; }
 .cell.center { justify-content: center; text-align: center; }
 .cell-check { width: 18px; height: 18px; accent-color: var(--aiv-azure); cursor: pointer; }
 .tbl th.th-bool .th-label { white-space: normal; text-align: center; line-height: 1.2; display: block; }
+
+/* AI Use Case form and proposals (SRS 4.4, 4.40) */
+.aiuf-sec { border-top: var(--aiv-border) solid var(--aiv-line); padding-top: var(--aiv-space-3); }
+.aiuf-sec:first-of-type { border-top: 0; padding-top: 0; }
+.aiuf-sec > .eyebrow { margin: 0 0 var(--aiv-space-3); }
+.ml-tabs { gap: var(--aiv-space-1); margin-bottom: var(--aiv-space-1); }
+.ml-tabs .chip { height: 26px; padding: 0 var(--aiv-space-2); font-size: var(--aiv-fs-12); }
+.ml-missing { color: var(--aiv-muted); margin-inline-start: 2px; }
+.aiuf-link { flex-wrap: nowrap; gap: var(--aiv-space-2); }
+.filters-row { gap: var(--aiv-space-3); flex-wrap: wrap; }
+.ai-label { display: flex; align-items: center; gap: var(--aiv-space-1); color: var(--aiv-navy); background: var(--aiv-status-2); border-radius: var(--aiv-radius-badge); padding: 2px var(--aiv-space-2); align-self: flex-start; margin: 0; }
+.ai-rows { gap: var(--aiv-space-2); }
+.ai-row { flex-wrap: wrap; gap: var(--aiv-space-2); background: var(--aiv-white); border-radius: var(--aiv-radius-badge); padding: var(--aiv-space-2); }
+.ai-row .input.sm { flex: 1 1 140px; min-width: 120px; }
+.aiuf-sec > h3.eyebrow { font-size: var(--aiv-fs-12); line-height: 1.3; }

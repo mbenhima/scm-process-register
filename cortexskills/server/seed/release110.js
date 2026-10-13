@@ -10,6 +10,8 @@ import * as E from '../src/services/docengine.js';
 import { describeStep, registerOf } from '../src/services/stepforms.js';
 import * as D from '../src/services/design.js';
 import * as P from '../src/services/prompts.js';
+import { completeCatalog } from '../src/services/aicatalog.js';
+import { quotas, usage } from '../src/entitlements.js';
 import * as B from '../src/services/blueprints.js';
 import { recordVersion } from '../src/audit.js';
 
@@ -97,6 +99,12 @@ export function seedOrg110(o) {
     D.transitionRelease(req(), rel.id, 'submit'); D.transitionRelease(req(hrd), rel.id, 'publish', 'Reviewed with the process owners');
     run(`UPDATE projects SET design_release_id=? WHERE org_id=?`, rel.id, o.id);
   } catch (e) { console.warn('  design seed', o.id, e.message); }
+  // ---- A custom AI Use Case for the functions × decision-level matrix, within the Pack quota (FR-DA-AI-02, FR-DA-OPS-09).
+  { const q = quotas(o.id).aiCustom; if (q == null || usage(o.id).aiCustom < q) { const id = U(`AIUseCase:${o.id}:AIUC-C01`);
+    insertRecord(id, 'AIUseCase', o.id, null, 'AIUC-C01', { code: 'AIUC-C01', name: L('Functions × decision-level proposal', 'Proposition fonctions × niveaux de décision', 'اقتراح الوظائف × مستويات القرار'), tier: 'Assistive', step: 'MP-53.5', links: [],
+      model_task_type: 'Recommendation', risk: 'Low', scope: 'Organization', approval: 'Approved', isCustom: true, origin: 'manual',
+      checkpoint: L('The L&D Analyst ticks or clears each proposed level before the matrix is completed.', 'L’analyste formation coche ou décoche chaque niveau proposé avant de terminer la matrice.', 'يحدد محلل التكوين كل مستوى مقترح أو يلغيه قبل إتمام المصفوفة.') }, head?.id || null, true); } }
+  completeCatalog(o.id); // stored module, trigger, expected output and links of every use case (FR-DA-AI-01)
   // ---- Prompt specifications for every AI Use Case of the organization (seeded from each step).
   for (const uc of all(`SELECT id FROM records WHERE entity='AIUseCase' AND org_id=?`, o.id)) { try { P.getSpec(o.id, uc.id); } catch { /* use case without a step */ } }
   // ---- Runs: step records, rows, registers, audits, documents.

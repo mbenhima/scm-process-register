@@ -3,12 +3,13 @@
 // use case is activated only when the required fields are complete. The model key is stored sealed on the server
 // and never shown again; the connection test reports exactly why a call failed.
 import { useEffect, useState } from 'react';
-import { useParams, Link, useSearchParams } from 'react-router-dom';
+import { useParams, Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
-import { get, post, put } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, Btn, Icon, useAction, Field, Seg, Select, Progress, Modal, KV, AiBadge, StatusPill, Toggle, Tabs, Kpi, JustifyDialog } from '../components/ui.jsx';
-import { useMeta, RecordEditor, Versions } from '../components/Records.jsx';
+import { get, post, put, del as del_ } from '../lib/api.js';
+import { PageHead, Card, Guard, DataTable, Btn, Icon, useAction, Field, Seg, Select, Progress, Modal, KV, AiBadge, StatusPill, Toggle, Tabs, Kpi, JustifyDialog, ConfirmDialog } from '../components/ui.jsx';
+import { Versions } from '../components/Records.jsx';
+import { AiUseCaseForm } from '../components/AiUseCaseForm.jsx';
 
 const LANGS = [{ id: 'en', label: 'EN' }, { id: 'fr', label: 'FR' }, { id: 'ar', label: 'ع' }];
 
@@ -21,7 +22,7 @@ export function PromptSpec({ defaultTab = 'overview' }) {
   const { id } = useParams(); const { t, L, lang: uiLang, fmtDate } = useI18n(); const { can, project } = useSession(); const act = useAction();
   const [sp, setSp] = useSearchParams(); const tab = sp.get('tab') || defaultTab; const setTab = v => setSp(p => { const n = new URLSearchParams(p); n.set('tab', v); return n; }, { replace: true });
   const d = useData(`/ai/use-cases/${id}/spec`, [id]); const det = useData(`/ai/use-cases/${id}/detail`, [id, project]); const settings = useData('/ai/settings'); const fit = useData(`/ai/use-cases/${id}/fit`, [id]);
-  const meta = useMeta(); const def = meta?.find(m => m.name === 'AIUseCase');
+  const nav = useNavigate(); const [del, setDel] = useState(false);
   const [lang, setLang] = useState(uiLang); const [hist, setHist] = useState(null); const [preview, setPreview] = useState(null); const [test, setTest] = useState(null); const [edit, setEdit] = useState(false); const [deact, setDeact] = useState(false);
   const ro = !can('prompts.manage');
   const loadPreview = async () => setPreview(await get(`/ai/use-cases/${id}/prompt${project ? '?project=' + project : ''}`));
@@ -32,7 +33,9 @@ export function PromptSpec({ defaultTab = 'overview' }) {
     return (<>
     <PageHead eyebrow={`${t('navGroup.ai')} · ${t('nav.aiUseCases')}`} title={`${uc.code} — ${L(uc.name)}`} subtitle={t('aiuc.pageSubtitle')}>
       <Link className="btn" to="/ai/use-cases"><Icon name="ArrowLeft" />{t('nav.aiUseCases')}</Link>
-      {can('ai.manage') && def && <Btn icon="Pencil" onClick={() => setEdit(true)}>{t('aiuc.editDetails')}</Btn>}
+      {can('ai.manage') && <Btn icon="Pencil" onClick={() => setEdit(true)}>{t('aiuc.editDetails')}</Btn>}
+      {can('ai.manage') && <Btn icon="CopyPlus" onClick={async () => { const r = await act(() => post(`/ai/use-cases/${uc.id}/duplicate`, {}), 'aiuc.duplicated'); if (r?.id) nav(`/ai/use-cases/${r.id}`); }}>{t('aiuc.duplicate')}</Btn>}
+      {can('ai.manage') && uc.isCustom && <Btn kind="danger" icon="Trash2" onClick={() => setDel(true)}>{t('common.delete')}</Btn>}
       {!ro && <Btn icon="FlaskConical" onClick={async () => { setTab('prompt'); await runTest(); }}>{t('aip.test')}</Btn>}</PageHead>
     <div className="grid g-4">
       <Card><div className="label">{t('aip.completeness')}</div><div className="row"><Progress value={x.completeness} lg label={t('aip.completeness')} /><span className="mono">{x.completeness}%</span></div>
@@ -52,7 +55,10 @@ export function PromptSpec({ defaultTab = 'overview' }) {
           <label className="check"><input type="checkbox" disabled={!can('ai.manage') || !D_} checked={!!D_?.activation.orgActive} onChange={async e => { if (e.target.checked) { await act(() => put(`/ai/use-cases/${uc.id}/activation`, { active: true })); det.reload(); } else setDeact(true); }} />{t('aiuc.orgActive')}</label>
           {project && D_ && <Field id="uc-ovr" label={t('aiuc.projectOverride')}><Select id="uc-ovr" disabled={!can('projects.manage')} value={D_.activation.projectState || 'Inherit'} onChange={async e => { await act(() => put(`/ai/use-cases/${uc.id}/override`, { project_id: project, state: e.target.value })); det.reload(); }} options={['Inherit', 'On', 'Off'].map(v => ({ value: v, label: t('aiuc.ovr.' + v) }))} /></Field>}
           <p className="xs muted">{t('aiuc.activationHint')}</p></Card>
-        <Card title={t('aiuc.link')}><KV items={[[t('run.input'), L(D_?.inputs) || '—'], [t('aip.outputField'), fit.data?.outputField === 'rows' ? t('aip.rows') : fit.data?.outputField || '—']]} />
+        <Card title={t('aiuc.link')}>
+          {D_?.links?.length > 0 && <ul className="plain stack aiuc-links" style={{ gap: 'var(--aiv-space-1)', marginBottom: 'var(--aiv-space-3)' }}>{D_.links.map(l => <li key={l.type + l.id} className="row" style={{ flexWrap: 'nowrap', alignItems: 'flex-start' }}>
+            <span className="pill xs">{t('aiuf.lt.' + l.type)}</span><span className="small"><span className="mono">{l.id}</span> {L(l.name)}</span>{l.primary && <span className="xs muted">· {t('aiuf.primary')}</span>}</li>)}</ul>}
+          <KV items={[[t('run.input'), L(D_?.inputs) || '—'], [t('aip.outputField'), fit.data?.outputField === 'rows' ? t('aip.rows') : fit.data?.outputField || '—']]} />
           {D_?.outputs?.length > 0 && <table className="tbl compact" style={{ marginTop: 'var(--aiv-space-2)' }}><thead><tr><th scope="col">{t('aiuc.outputFields')}</th><th scope="col">{t('pdm.fieldType')}</th><th scope="col">{t('pdm.required')}</th></tr></thead>
             <tbody>{D_.outputs.map(o => <tr key={o.key}><td>{L(o.label)}</td><td className="mono xs">{o.type}</td><td>{o.required ? t('common.yes') : '—'}</td></tr>)}</tbody></table>}</Card>
         <Card title={t('aiuc.promptGlance')} actions={<Btn size="sm" icon="FileCode2" onClick={() => setTab('spec')}>{ro ? t('aiuc.openSpec') : t('aiuc.editSpec')}</Btn>}>
@@ -85,7 +91,8 @@ export function PromptSpec({ defaultTab = 'overview' }) {
       <div className="grid g-4">{['Accepted', 'Edited', 'Rejected'].map(o => <Kpi key={o} icon={o === 'Accepted' ? 'CircleCheck' : o === 'Edited' ? 'Pencil' : 'CircleX'} value={String((D_?.outcomes || []).find(r => r.outcome === o)?.n || 0)} label={t('status.' + o)} emph={o === 'Accepted'} />)}
         <Kpi icon="History" emph={false} value={String(D_?.usage?.length || 0)} label={t('aiuc.runs')} /></div>
       <DataTable id="aiuc-usage" rows={D_?.usage || []} rowKey={(r, i) => r.created_at + i} empty={t('aiuc.noUsage')} columns={[{ key: 'created_at', label: t('col.date'), text: r => fmtDate(r.created_at) }, { key: 'user_name', label: t('col.user'), text: r => r.user_name || '—' }, { key: 'outcome', label: t('col.status'), render: r => <StatusPill value={r.outcome} />, text: r => r.outcome }, { key: 'confidence', label: t('aiuc.confidence'), text: r => (r.confidence == null ? '—' : String(r.confidence)) }, { key: 'source', label: t('aiuc.engine'), text: r => r.source || '—' }, { key: 'record_ref', label: t('aiuc.record'), text: r => r.record_ref || '—' }]} /></div>}
-    {edit && def && <RecordEditor def={def} record={{ ...x.useCase, ...(det.data?.useCase || {}), id: uc.id }} onClose={() => setEdit(false)} onSaved={() => { setEdit(false); d.reload(); det.reload(); }} />}
+    {edit && <AiUseCaseForm useCase={{ ...x.useCase, ...(det.data?.useCase || {}), id: uc.id }} onClose={() => setEdit(false)} onSaved={() => { setEdit(false); d.reload(); det.reload(); fit.reload(); }} />}
+    {del && <ConfirmDialog danger title={t('aiuc.deleteTitle', { code: uc.code })} text={t('aiuc.deleteText')} confirmLabel={t('common.delete')} onCancel={() => setDel(false)} onConfirm={async () => { setDel(false); await act(() => del_(`/ai/use-cases/${uc.id}`), 'aiuc.deleted'); nav('/ai/use-cases'); }} />}
     {deact && <JustifyDialog title={t('aiuc.deactivate')} onCancel={() => setDeact(false)} onConfirm={async n => { setDeact(false); await act(() => put(`/ai/use-cases/${uc.id}/activation`, { active: false, _justification: n })); det.reload(); }} />}
     {hist && <Modal size="lg" title={hist.field ? `${t('aip.history')} — ${t('aip.f.' + hist.field)}` : t('aip.history')} onClose={() => setHist(null)}>
       <SpecHistoryTable id={id} rows={hist.rows} field={hist.field} ro={ro} onRestored={() => { setHist(null); d.reload(); }} /></Modal>}

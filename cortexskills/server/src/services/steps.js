@@ -5,6 +5,9 @@ import * as D from './design.js';
 import { orgCurrencies } from './money.js';
 import * as cat from '../catalog.js';
 import { describeStep, SINGLE } from './stepforms.js';
+import * as AI from './ai.js';
+import { getSpec, liveConfig, assemble, variables } from './prompts.js';
+import { retrieve } from './retrieval.js';
 
 const loc = (v, lang) => (v && typeof v === 'object' && !Array.isArray(v) && ('en' in v || 'fr' in v || 'ar' in v) ? pick(v, lang) : v);
 const locObj = (o, lang) => Object.fromEntries(Object.entries(o || {}).map(([k, v]) => [k, loc(v, lang)]));
@@ -44,11 +47,14 @@ const rowsOf = recId => all(`SELECT r.*, u.name author FROM step_rows r LEFT JOI
 /** Steps of a task with their typed form, values, rows, status and lock (FR-DA-SFM-01 – 03). */
 export function taskSteps(req, taskId) {
   const { t, p, rel, uft, phase } = taskContext(req.orgId, taskId); const locked = isLocked(t.project_id, phase); const done = new Map(J(t.steps, []).map(s => [s.id, s]));
+  const ucs = AI.useCases(req.orgId); const ucOut = u => ({ id: u.id, code: u.code, name: u.name, tier: u.tier, checkpoint: u.checkpoint || null, effective: AI.effectiveActive(req.orgId, t.project_id, u.id) });
   return { task: { id: t.id, uft_id: t.uft_id, status: t.status, release: rel }, locked, steps: (uft?.steps || []).map(sid => {
     const d = stepDef(req.orgId, sid, rel); if (!d) return null; const rec = recordOf(t, sid, d.form.kind);
     const rows = rec ? rowsOf(rec.id).map(r => ({ id: r.id, ...locObj(J(r.data, {}), req.lang), _origin: r.origin, _author: r.author, _updated: r.updated_at })) : [];
     return { id: sid, name: d.step.name, type: d.step.type, role: d.step.role, form: d.form, record: rec ? { id: rec.id, status: rec.status, fields: locObj(J(rec.fields, {}), req.lang), completed_at: rec.completed_at } : null, rows,
-      done: rec?.status === 'Completed' || !!done.get(sid)?.done, count: rows.length };
+      done: rec?.status === 'Completed' || !!done.get(sid)?.done, count: rows.length,
+      // The AI Use Cases linked to the step, with their tier and effective state (FR-DA-AI-12, FR-DA-AIP-01).
+      aiUseCases: ucs.filter(u => u.steps.includes(sid)).map(ucOut) };
   }).filter(Boolean), project: { id: p.id } };
 }
 function guard(req, taskId, stepId) {
@@ -214,15 +220,14 @@ export function choices(orgId, field, lang, q = '') {
   return uniq.map(v => ({ value: v, source: ref.includes(v) ? 'library' : 'prior' }));
 }
 /** AI-proposed rows for a record step, built from the records already captured (FR-DA-AIP-13, -16): never an echo of the input. */
-export function suggestRows(req, taskId, stepId) {
-  const { t, d } = guard(req, taskId, stepId); const lang = req.lang; const f = d.form;
+function builtInRows(req, t, stepId, d) {
+  const lang = req.lang; const f = d.form;
   if (f.kind === 'levels') { // One row per OBS function not yet in the matrix; levels proposed from the function's place in the OBS.
     const rec = one(`SELECT id FROM step_records WHERE task_instance_id=? AND step_id=?`, t.id, stepId);
     const have = new Set((rec ? rowsOf(rec.id) : []).map(r => loc(J(r.data, {}).function, lang)));
     const fns = all(`SELECT name, parent_id FROM obs_nodes WHERE org_id=? AND type='Function' ORDER BY name LIMIT 60`, req.orgId).map(x => ({ name: loc(J(x.name, x.name), lang), top: !x.parent_id })).filter(x => x.name && !have.has(x.name));
     const rows = fns.slice(0, 8).map(x => ({ function: x.name, ms: x.top, mo: true, op: !x.top, note: lang === 'fr' ? 'Proposé à partir de l’OBS' : lang === 'ar' ? 'مقترح انطلاقاً من الهيكل التنظيمي' : 'Proposed from the OBS' }));
-    run(`INSERT INTO ai_usage_log(id,org_id,project_id,use_case_id,record_ref,user_id,outcome,source,confidence,question,created_at,engine) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, uuid(), req.orgId, t.project_id, null, 'Step:' + stepId, req.user.id, 'Proposed', 'built-in', 0.6, stepId, now(), 'built-in');
-    return { rows, engine: 'built-in', reason: rows.length ? null : 'allCovered' };
+    return { rows, reason: rows.length ? null : 'allCovered' };
   }
   const themes = all(`SELECT data FROM records WHERE entity IN ('TrainingTheme','TrainingNeed','SkillGap','StrategicObjective') AND project_id=? LIMIT 40`, t.project_id).map(x => J(x.data, {}));
   const regs = all(`SELECT data FROM register_entries WHERE project_id=? ORDER BY updated_at DESC LIMIT 40`, t.project_id).map(x => J(x.data, {}));
@@ -237,8 +242,41 @@ export function suggestRows(req, taskId, stepId) {
     else if (fd.key === 'source') r[fd.key] = lang === 'fr' ? 'Registre du projet' : lang === 'ar' ? 'سجل المشروع' : 'Project register';
     else if (fd.key === 'description' || fd.key === 'facts' || fd.key === 'reason') r[fd.key] = lang === 'fr' ? `Proposé à partir de « ${n} » déjà saisi dans le projet.` : lang === 'ar' ? `مقترح انطلاقاً من «${n}» المسجل في المشروع.` : `Proposed from “${n}”, already recorded in this project.`;
   } return r; });
-  run(`INSERT INTO ai_usage_log(id,org_id,project_id,use_case_id,record_ref,user_id,outcome,source,confidence,question,created_at,engine) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, uuid(), req.orgId, t.project_id, null, 'Step:' + stepId, req.user.id, 'Proposed', 'built-in', 0.6, stepId, now(), 'built-in');
-  return { rows, engine: 'built-in', reason: rows.length ? null : 'noContext' };
+  return { rows, reason: rows.length ? null : 'noContext' };
+}
+
+/**
+ * AI-proposed rows for a step, through the AI Use Case linked to it — the single governed path (NFR-DA-MAINT-04):
+ * refused when no use case serves the step or when it is deactivated (FR-DA-AI-05, FR-DA-AIP-01); grounded in
+ * retrieved references disclosed with the answer (FR-DA-AI-11); the live model is used when the Organization has one,
+ * with a fallback to the built-in engine and the reason shown (FR-DA-AI-09, FR-DA-AIP-12); every run is logged with the
+ * use case, specification version, engine and model (FR-DA-AIP-10). The rows are proposals: nothing is written.
+ */
+export async function suggestRows(req, taskId, stepId, code) {
+  const { t, d } = guard(req, taskId, stepId); const lang = req.lang;
+  const ucs = AI.useCasesForStep(req.orgId, t.project_id, stepId);
+  const uc = code ? ucs.find(u => u.code === code || u.id === code) : ucs.find(u => u.effective) || ucs[0];
+  if (!uc) throw new HttpError(409, 'err.noUseCase', { step: stepId });
+  AI.assertActive(req.orgId, t.project_id, uc.code);
+  const spec = getSpec(req.orgId, uc.id); const live = liveConfig(req.orgId, spec.model);
+  const refs = retrieve(req.orgId, [pick(uc.name, lang), pick(d.step.name, lang)].join(' '), { lang, k: 4 }).map(r => ({ source: r.source, title: r.title, score: r.score, route: r.route }));
+  const base = builtInRows(req, t, stepId, d);
+  let out = { rows: base.rows, engine: 'built-in', model: null, reason: live ? null : 'noModel', emptyReason: base.reason };
+  if (live) {
+    const { prompt, missing } = assemble(spec, variables(req.orgId, { projectId: t.project_id, lang, taskId: t.id, stepId }), lang);
+    if (missing.length) out = { ...out, reason: 'promptVariable', reasonDetail: missing.join(', ') };
+    else {
+      const keys = d.form.fields.map(f => f.key);
+      try {
+        const text = await AI.liveCall(live, `${prompt}\n\n## References\n${refs.map(r => r.title).join(' | ')}\n\n## Answer\nReturn only a JSON array of at most 8 objects with the keys: ${keys.join(', ')}.`);
+        const m = String(text).match(/\[[\s\S]*\]/); const arr = m ? JSON.parse(m[0]) : null;
+        if (!Array.isArray(arr)) throw new Error('No rows in the answer');
+        out = { rows: arr.slice(0, 8).map(x => Object.fromEntries(keys.filter(k => x?.[k] != null).map(k => [k, typeof x[k] === 'object' ? JSON.stringify(x[k]) : x[k]]))), engine: 'live', model: live.model, reason: null };
+      } catch (e) { out = { ...out, fallback: true, reason: 'modelError', reasonDetail: String(e.providerMessage || e.message).slice(0, 200) }; }
+    }
+  }
+  AI.logUsage({ orgId: req.orgId, projectId: t.project_id, useCaseId: uc.code, recordRef: `Step:${t.id}:${stepId}`, userId: req.user.id, outcome: 'Proposed', source: out.engine === 'live' ? 'live:' + out.model : 'built-in', confidence: out.engine === 'live' ? 0.8 : 0.6, question: stepId, specVersion: spec.version, engine: out.engine, model: out.model });
+  return { ...out, useCase: { id: uc.id, code: uc.code, name: uc.name, tier: uc.tier, checkpoint: uc.checkpoint || null }, specVersion: spec.version, references: refs, recordRef: `Step:${t.id}:${stepId}`, generatedAt: now() };
 }
 
 /** The fields of a multi-record step, after the rights and lock checks (structured paste, FR-DA-MRE-22). */

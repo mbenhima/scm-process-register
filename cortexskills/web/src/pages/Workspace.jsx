@@ -101,7 +101,7 @@ function TaskPanel({ id, project, onClose, onChanged }) {
   const runAi = async u => { const r = await act(() => post('/ai/generate', { code: u.code, project_id: project.id }, { llm: true }), null); setAi(r); };
   const aiOutcome = async (outcome, text) => { await post('/ai/usage', { use_case: ai.useCase.code, outcome, project_id: project.id, record_ref: id, source: ai.source, confidence: ai.confidence }); if (outcome !== 'Rejected') { setOut(o => (o ? o + '\n' : '') + text); await patch(`/tasks/${id}`, { ai_used: true }).catch(() => {}); } setAi(null); };
   return (<div className="drawer task-drawer" role="dialog" aria-modal="false" aria-label={t('run.task')}>
-    <Guard state={d}>{x => { const tk = x.task; const u = x.uft; const linkedUc = (uc.data || []).filter(c => u.steps.includes(c.step) && c.effective);
+    <Guard state={d}>{x => { const tk = x.task; const u = x.uft; const linkedUc = (uc.data || []).filter(c => (c.steps || [c.step]).some(st => u.steps.includes(st)) && c.effective);
       return (<><div className="card-head" style={{ padding: 'var(--aiv-space-4) var(--aiv-space-5)', margin: 0, borderBottom: '1px solid var(--aiv-line)' }}>
         <div><div className="eyebrow">{u.id} · {u.stepId} · {u.bpmn}</div><h3>{L(u.name)}</h3></div><Btn icon="X" kind="ghost" aria-label={t('common.close')} onClick={onClose} /></div>
         <div className="drawer-body stack">

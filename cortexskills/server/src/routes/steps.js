@@ -13,7 +13,7 @@ r.put('/tasks/:id/steps/:stepId/rows/:rowId', requirePerm('tasks.execute'), ah(r
 r.delete('/tasks/:id/steps/:stepId/rows/:rowId', requirePerm('tasks.execute'), ah(req => St.deleteRow(req, req.params.id, req.params.stepId, req.params.rowId)));
 r.post('/tasks/:id/steps/:stepId/complete', requirePerm('tasks.execute'), ah(req => St.completeStep(req, req.params.id, req.params.stepId)));
 r.post('/tasks/:id/steps/:stepId/reopen', requirePerm('tasks.execute'), ah(req => St.reopenStep(req, req.params.id, req.params.stepId, req.body?._justification)));
-r.post('/tasks/:id/steps/:stepId/suggest', requirePerm('tasks.execute', 'ai.run'), ah(req => St.suggestRows(req, req.params.id, req.params.stepId)));
+r.post('/tasks/:id/steps/:stepId/suggest', requirePerm('tasks.execute', 'ai.run'), ah(req => St.suggestRows(req, req.params.id, req.params.stepId, req.body?.use_case)));
 r.get('/e2e-instances/:id/readiness', requirePerm('projects.view'), ah(req => St.readiness(req.orgId, req.params.id, req.lang)));
 r.get('/registers', requirePerm('registers.view'), ah(req => St.registers(req.orgId, req.query.project || req.projectId || null)));
 r.get('/registers/:key', requirePerm('registers.view'), ah(req => St.registerEntries(req.orgId, req.params.key, req.query.project || req.projectId || null, req.lang)));

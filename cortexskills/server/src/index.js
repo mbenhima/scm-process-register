@@ -18,6 +18,16 @@ if (!isSeeded()) {
   console.error(`\n  The database is empty.\n  Fix: run "npm run seed" in the server folder, then "npm run dev".\n`);
   process.exit(1);
 }
+// Data migration of release 1.12: complete the AI Use Case catalog of existing Organizations (stored module, trigger,
+// expected output, links; Examples in the Prompt Specifications) — once, each change versioned (FR-DA-AI-01, AIP-07).
+{
+  const { one, all, run } = await import('./db.js');
+  if (!one(`SELECT value FROM meta WHERE key='ai_catalog_1_12'`)) {
+    const { completeCatalog } = await import('./services/aicatalog.js'); let n = 0;
+    for (const o of all(`SELECT id FROM organizations`)) { try { n += completeCatalog(o.id); } catch (e) { console.error('  AI catalog migration skipped for an organization:', e.message); } }
+    run(`INSERT OR REPLACE INTO meta(key,value) VALUES('ai_catalog_1_12', ?)`, String(n));
+  }
+}
 // Production mode: refuse to start on an unsafe configuration, naming each problem (NODE_ENV=production).
 const { isProduction, productionProblems } = await import('./production.js');
 if (isProduction()) {

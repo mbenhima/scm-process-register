@@ -1,5 +1,6 @@
 // Organization provisioning (FR-DA-TEN-14) and project instantiation shared by the API and the seed.
 import { all, one, run } from '../db.js';
+import { completeCatalog } from './aicatalog.js';
 import { uuid, now, S, J, pick, addDays, HttpError, rng } from '../lib/util.js';
 import * as cat from '../catalog.js';
 import { hashPassword } from '../auth.js';
@@ -27,6 +28,7 @@ export function provisionOrg(orgId, { packId = 'PK-01', starterTeam = false, dom
   copy('RiskOpportunity', cat.list('risk'), x => ({ code: x.id, title: x.name, kind: 'Risk', category: x.category, likelihood: x.likelihood, impact: x.impact, score: x.likelihood * x.impact, inherent_score: x.inherent, residual_score: x.residual, controls: x.controls, kri: x.kri, owner: x.owner, status: 'Open' }));
   copy('KpiDefinition', cat.list('kpi'), x => ({ code: x.id, name: x.name, kpi_type: x.type, formula: x.formula, target: x.target, macro_process: x.mp, direction: x.direction }));
   copy('AIUseCase', cat.list('aiUseCase').filter(u => !u.isCustom), x => ({ ...x, code: x.id }));
+  try { completeCatalog(orgId); } catch { /* the design is provisioned later: completed at the next start */ }
   for (const a of cat.list('alertType')) run(`INSERT OR IGNORE INTO alert_settings(org_id,type,enabled) VALUES(?,?,1)`, orgId, a.id);
   // Sector checklists for new Organizations of that sector (FR-DA-CHK-04).
   if (vertical) for (const c of cat.list('checklistSeed').filter(c => c.vertical === org.sector)) insertRecord(ids(`chk:${orgId}:${c.id}`), 'ChecklistTemplate', orgId, null, c.id, c.data);
