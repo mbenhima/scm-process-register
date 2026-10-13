@@ -16,6 +16,7 @@ function usePickers() {
     person: (p.data?.people || []).map(x => ({ value: x.name, label: `${x.name}${x.title ? ' (' + x.title + ')' : ''}` })),
     role: (p.data?.roles || []).map(x => ({ value: L(x.name), label: `${L(x.name)}${x.vacant ? ' · ∅' : ''}` })),
     kpi: (k.data?.items || []).map(x => ({ value: x.code || x.ref, label: `${x.code || x.ref} (${L(x.name)})` })),
+    function: (p.data?.functions || []).map(x => ({ value: L(x.name), label: x.code ? `${x.code} (${L(x.name)})` : L(x.name) })),
   }), [p.data, k.data, L]);
 }
 
@@ -24,7 +25,8 @@ export function columnsOf(fields, L, pickers) {
   return fields.map(f => {
     const base = { key: f.key, label: L(f.label), required: !!f.required, help: L(f.help), min: f.min, max: f.max, carry: !!f.carry, default: f.default, width: f.width };
     if (f.type === 'select') return { ...base, type: 'select', custom: !!f.custom, options: (f.options || []).map(o => ({ value: String(o.value), label: L(o.label) || String(o.value) })) };
-    if (['person', 'role', 'kpi'].includes(f.type)) return { ...base, type: 'select', custom: true, options: pickers[f.type] || [] };
+    if (['person', 'role', 'kpi', 'function'].includes(f.type)) return { ...base, type: 'select', custom: true, options: pickers[f.type] || [], ...(f.type === 'function' && !f.width ? { width: 190 } : {}) };
+    if (f.type === 'boolean') return { ...base, type: 'boolean', width: 88 };
     if (f.type === 'textarea') return { ...base, type: 'textarea', wide: true };
     return { ...base, type: ['number', 'date'].includes(f.type) ? f.type : 'text' };
   });
@@ -56,19 +58,23 @@ function StepBody({ taskId, step, locked, readOnly, pickers, onChanged, context 
   const base = `/tasks/${taskId}/steps/${step.id}`;
   const complete = async () => { await act(() => post(`${base}/complete`, {}), 'sfm.completed'); onChanged(); };
   const suggest = async () => { const r = await act(() => post(`${base}/suggest`, {})); setProposal(r); };
+  const missingFns = f.kind === 'levels' ? (pickers.function || []).map(o => o.value).filter(v => !(step.rows || []).some(r => r.function === v)) : [];
+  const addAllFunctions = async () => { await act(async () => { for (const fn of missingFns) await post(`${base}/rows`, { data: { function: fn, ms: false, mo: false, op: false } }); }, 'mre.functionsAdded'); onChanged(); };
   const accept = async row => { await post(`${base}/rows`, { data: row, origin: 'ai' }); setProposal(p => ({ ...p, rows: p.rows.filter(x => x !== row) })); onChanged(); };
   return (<div className="step-body stack">
     <Brief brief={L(f.brief)} details={L(f.details)} />
     {f.register && <p className="xs muted"><Icon name="BookMarked" size={12} /> {t('sfm.feeds', { r: L(f.register.name) })}</p>}
     {f.pattern === 'system' && <div className="notice grey"><Icon name="Cpu" /><div className="small">{t('sfm.system')}</div></div>}
     {inline && <InlineTable id={'step-' + f.kind} context={[context, `${step.id} · ${L(step.name)}`].filter(Boolean).join(' · ')} pasteTarget={{ kind: 'step', task: taskId, step: step.id }} onPasted={onChanged}
-      readOnlyReason={locked ? t('sfm.locked') : step.done ? t('paste.stepDone') : readOnly ? t('paste.readOnly') : null} newInEditor={f.pattern === 'master-detail'} columns={cols} rows={step.rows} readOnly={ro} caption={L(f.object)} rowTitle={r => r.item || r.criterion || r.session || L(f.object)}
+      readOnlyReason={locked ? t('sfm.locked') : step.done ? t('paste.stepDone') : readOnly ? t('paste.readOnly') : null} newInEditor={f.pattern === 'master-detail'} columns={cols} rows={step.rows} readOnly={ro} caption={L(f.object)} rowTitle={r => r.function || r.item || r.criterion || r.session || L(f.object)}
+      toolbarExtra={f.kind === 'levels' && !ro && missingFns.length > 0 ? <Btn size="sm" icon="ListPlus" onClick={addAllFunctions}>{t('mre.addAllFunctions', { n: missingFns.length })}</Btn> : null}
+      emptyActions={!ro && can('ai.run') ? <Btn size="sm" icon="Sparkles" onClick={suggest}>{t('sfm.suggest')}</Btn> : null}
       countLabel={n => t('sfm.count', { n, o: L(f.object).toLowerCase() })} emptyText={t('sfm.emptyRows', { o: L(f.object).toLowerCase() })}
       onSaveRow={(data, id) => (id ? put(`${base}/rows/${id}`, { data }) : post(`${base}/rows`, { data }))} onDeleteRow={id => del(`${base}/rows/${id}`)} />}
     {single && <StepFormFields base={base} fields={cols} values={step.record?.fields || {}} readOnly={ro} />}
     {proposal && <div className="card tint stack"><div className="row"><Icon name="Sparkles" /><span className="strong small">{t('sfm.aiProposal')}</span><AiBadge tier="Assistive" /><span className="pill xs">{proposal.engine}</span></div>
-      {!proposal.rows.length ? <p className="small">{t('sfm.aiNothing')}</p> : <ul className="plain">{proposal.rows.map((r, i) => <li key={i} className="row" style={{ justifyContent: 'space-between' }}>
-        <span className="small">{cols.slice(0, 3).map(c => r[c.key]).filter(Boolean).join(' · ')}</span><span className="row"><Btn size="sm" kind="primary" onClick={() => accept(r)}>{t('ai.accept')}</Btn><Btn size="sm" kind="ghost" onClick={() => setProposal(p => ({ ...p, rows: p.rows.filter(x => x !== r) }))}>{t('ai.reject')}</Btn></span></li>)}</ul>}
+      {!proposal.rows.length ? <p className="small">{t(proposal.reason === 'allCovered' ? 'sfm.aiAllCovered' : 'sfm.aiNothing')}</p> : <ul className="plain">{proposal.rows.map((r, i) => <li key={i} className="row" style={{ justifyContent: 'space-between' }}>
+        <span className="small">{[...cols.slice(0, 3).filter(c => c.type !== 'boolean').map(c => r[c.key]), cols.filter(c => c.type === 'boolean' && r[c.key]).map(c => c.label.split(' ')[0]).join('/')].filter(Boolean).join(' · ')}</span><span className="row"><Btn size="sm" kind="primary" onClick={() => accept(r)}>{t('ai.accept')}</Btn><Btn size="sm" kind="ghost" onClick={() => setProposal(p => ({ ...p, rows: p.rows.filter(x => x !== r) }))}>{t('ai.reject')}</Btn></span></li>)}</ul>}
       <p className="xs muted">{t('sfm.aiCheckpoint')}</p></div>}
     {!readOnly && <div className="row">
       {!step.done && inline && can('ai.run') && <Btn size="sm" icon="Sparkles" onClick={suggest}>{t('sfm.suggest')}</Btn>}

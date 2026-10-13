@@ -73,7 +73,7 @@ export function validateValues(fields, data, { partial = true } = {}) {
   if (data.start && data.end && fields.some(f => f.validate === 'afterStart') && Date.parse(data.end) < Date.parse(data.start)) errors.end = 'afterStart';
   return errors;
 }
-const sanitize = (fields, data) => Object.fromEntries(fields.filter(f => data[f.key] !== undefined).map(f => [f.key, data[f.key] == null ? '' : typeof data[f.key] === 'object' ? data[f.key] : String(data[f.key]).slice(0, 4000)]));
+const sanitize = (fields, data) => Object.fromEntries(fields.filter(f => data[f.key] !== undefined).map(f => { const v = data[f.key]; return [f.key, v == null ? '' : f.type === 'boolean' ? v === true || v === 'true' || v === 1 || v === '1' : typeof v === 'object' ? v : String(v).slice(0, 4000)]; }));
 
 /** Values of a single-record step (decision, review). */
 export function saveFields(req, taskId, stepId, data) {
@@ -89,9 +89,17 @@ export function saveRow(req, taskId, stepId, rowId, data, origin = 'manual') {
   const { t, d } = guard(req, taskId, stepId); if (SINGLE.has(d.form.kind) || d.form.kind === 'system') throw new HttpError(422, 'err.wrongPattern');
   const errs = validateValues(d.form.fields, data); if (Object.keys(errs).length) throw new HttpError(422, 'err.invalidFields', { fields: Object.keys(errs).join(', '), errors: errs });
   const rec = recordOf(t, stepId, d.form.kind, true, req.user.id); const tm = now(); const clean = sanitize(d.form.fields, data);
+  // A function of the Organization is kept with its names in every language, so the row reads the same in EN, FR and AR.
+  for (const f of d.form.fields.filter(x => x.type === 'function' && typeof clean[x.key] === 'string' && clean[x.key].trim())) {
+    const v = clean[f.key].trim(); const hit = all(`SELECT name FROM obs_nodes WHERE org_id=? AND type='Function'`, req.orgId).map(x => J(x.name, x.name)).find(n => (typeof n === 'object' ? Object.values(n) : [n]).some(x => String(x).trim().toLowerCase() === v.toLowerCase()));
+    if (hit) clean[f.key] = hit;
+  }
   if (rowId) {
     const row = one(`SELECT * FROM step_rows WHERE id=? AND step_record_id=?`, rowId, rec.id); if (!row) throw new HttpError(404, 'err.notFound');
-    const merged = { ...J(row.data, {}), ...clean };
+    const prev = J(row.data, {});
+    // An unchanged multilingual value comes back in the user's language: the stored translations are kept.
+    for (const [k, v] of Object.entries(clean)) if (typeof v === 'string' && prev[k] && typeof prev[k] === 'object' && !Array.isArray(prev[k]) && loc(prev[k], req.lang) === v) clean[k] = prev[k];
+    const merged = { ...prev, ...clean };
     run(`UPDATE step_rows SET data=?, updated_by=?, updated_at=? WHERE id=?`, S(merged), req.user.id, tm, rowId);
     return { id: rowId, ...locObj(merged, req.lang) };
   }
@@ -126,6 +134,8 @@ export function completeStep(req, taskId, stepId) {
 export function reopenStep(req, taskId, stepId, justification) {
   const { t } = guard(req, taskId, stepId); if (!String(justification || '').trim()) throw new HttpError(422, 'err.justificationRequired');
   run(`UPDATE step_records SET status='Open', updated_at=? WHERE task_instance_id=? AND step_id=?`, now(), t.id, stepId);
+  // The task's own step checklist is reopened too, else the step would still read as done.
+  const steps = J(t.steps, []); if (steps.some(s => s.id === stepId && s.done)) run(`UPDATE task_instances SET steps=?, updated_at=? WHERE id=?`, S(steps.map(s => (s.id === stepId ? { ...s, done: false } : s))), now(), t.id);
   run(`INSERT INTO audit_log(id,org_id,user_id,entity,entity_id,action,justification,created_at) VALUES(?,?,?,?,?,?,?,?)`, uuid(), req.orgId, req.user.id, 'StepRecord', t.id + '|' + stepId, 'reopen', justification, now());
   return { ok: true };
 }
@@ -206,6 +216,14 @@ export function choices(orgId, field, lang, q = '') {
 /** AI-proposed rows for a record step, built from the records already captured (FR-DA-AIP-13, -16): never an echo of the input. */
 export function suggestRows(req, taskId, stepId) {
   const { t, d } = guard(req, taskId, stepId); const lang = req.lang; const f = d.form;
+  if (f.kind === 'levels') { // One row per OBS function not yet in the matrix; levels proposed from the function's place in the OBS.
+    const rec = one(`SELECT id FROM step_records WHERE task_instance_id=? AND step_id=?`, t.id, stepId);
+    const have = new Set((rec ? rowsOf(rec.id) : []).map(r => loc(J(r.data, {}).function, lang)));
+    const fns = all(`SELECT name, parent_id FROM obs_nodes WHERE org_id=? AND type='Function' ORDER BY name LIMIT 60`, req.orgId).map(x => ({ name: loc(J(x.name, x.name), lang), top: !x.parent_id })).filter(x => x.name && !have.has(x.name));
+    const rows = fns.slice(0, 8).map(x => ({ function: x.name, ms: x.top, mo: true, op: !x.top, note: lang === 'fr' ? 'Proposé à partir de l’OBS' : lang === 'ar' ? 'مقترح انطلاقاً من الهيكل التنظيمي' : 'Proposed from the OBS' }));
+    run(`INSERT INTO ai_usage_log(id,org_id,project_id,use_case_id,record_ref,user_id,outcome,source,confidence,question,created_at,engine) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, uuid(), req.orgId, t.project_id, null, 'Step:' + stepId, req.user.id, 'Proposed', 'built-in', 0.6, stepId, now(), 'built-in');
+    return { rows, engine: 'built-in', reason: rows.length ? null : 'allCovered' };
+  }
   const themes = all(`SELECT data FROM records WHERE entity IN ('TrainingTheme','TrainingNeed','SkillGap','StrategicObjective') AND project_id=? LIMIT 40`, t.project_id).map(x => J(x.data, {}));
   const regs = all(`SELECT data FROM register_entries WHERE project_id=? ORDER BY updated_at DESC LIMIT 40`, t.project_id).map(x => J(x.data, {}));
   const names = [...new Set([...themes.map(x => loc(x.name || x.theme || x.statement || x.title, lang)), ...regs.map(x => loc(x.item, lang))].filter(v => typeof v === 'string' && v.length > 3))].slice(0, 5);

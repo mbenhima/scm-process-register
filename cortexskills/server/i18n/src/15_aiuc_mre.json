@@ -1,0 +1,287 @@
+{
+ "aiuc.derived": [
+  "derived from the step",
+  "déduit de l’étape",
+  "مستنتج من الخطوة"
+ ],
+ "aiuc.pageSubtitle": [
+  "The full structure of the AI use case: identification, link to the step, prompt specification, activation, versions and usage.",
+  "La structure complète du cas d’usage IA : identification, lien avec l’étape, spécification du prompt, activation, versions et utilisation.",
+  "البنية الكاملة لحالة استخدام الذكاء الاصطناعي: التعريف، الربط بالخطوة، مواصفات الموجّه، التفعيل، الإصدارات والاستخدام."
+ ],
+ "aiuc.editDetails": [
+  "Edit details",
+  "Modifier les informations",
+  "تعديل المعلومات"
+ ],
+ "aiuc.activation": [
+  "Activation",
+  "Activation",
+  "التفعيل"
+ ],
+ "aiuc.activationHint": [
+  "Active in the Organization, unless a project overrides it.",
+  "Actif dans l’organisation, sauf si un projet le remplace.",
+  "مفعّل في المؤسسة ما لم يتجاوزه مشروع."
+ ],
+ "aiuc.tab.overview": [
+  "Overview",
+  "Vue d’ensemble",
+  "نظرة عامة"
+ ],
+ "aiuc.tab.spec": [
+  "Prompt specification",
+  "Spécification du prompt",
+  "مواصفات الموجّه"
+ ],
+ "aiuc.tab.prompt": [
+  "Assembled prompt",
+  "Prompt assemblé",
+  "الموجّه المجمّع"
+ ],
+ "aiuc.tab.versions": [
+  "Versions",
+  "Versions",
+  "الإصدارات"
+ ],
+ "aiuc.tab.usage": [
+  "Usage",
+  "Utilisation",
+  "الاستخدام"
+ ],
+ "aiuc.identification": [
+  "Identification",
+  "Identification",
+  "التعريف"
+ ],
+ "aiuc.task": [
+  "Task",
+  "Tâche",
+  "المهمة"
+ ],
+ "aiuc.origin": [
+  "Origin",
+  "Origine",
+  "المصدر"
+ ],
+ "aiuc.seeded": [
+  "Standard catalog",
+  "Catalogue standard",
+  "الكتالوج القياسي"
+ ],
+ "aiuc.link": [
+  "Link to the process",
+  "Lien avec le processus",
+  "الربط بالعملية"
+ ],
+ "aiuc.outputFields": [
+  "Fields it fills",
+  "Champs qu’il remplit",
+  "الحقول التي يملؤها"
+ ],
+ "aiuc.promptGlance": [
+  "Prompt at a glance",
+  "Le prompt en un coup d’œil",
+  "الموجّه بنظرة سريعة"
+ ],
+ "aiuc.openSpec": [
+  "Open the specification",
+  "Ouvrir la spécification",
+  "فتح المواصفات"
+ ],
+ "aiuc.editSpec": [
+  "Edit the specification",
+  "Modifier la spécification",
+  "تعديل المواصفات"
+ ],
+ "aiuc.empty": [
+  "Not specified",
+  "Non renseigné",
+  "غير محدد"
+ ],
+ "aiuc.refresh": [
+  "Refresh",
+  "Actualiser",
+  "تحديث"
+ ],
+ "aiuc.assembledHint": [
+  "The prompt sent to the model, assembled from the specification and the Organization’s settings. Personal data is masked.",
+  "Le prompt envoyé au modèle, assemblé à partir de la spécification et des paramètres de l’organisation. Les données personnelles sont masquées.",
+  "الموجّه المرسل إلى النموذج، مجمّع من المواصفات وإعدادات المؤسسة. البيانات الشخصية مخفية."
+ ],
+ "aiuc.ucVersions": [
+  "Versions of the use case",
+  "Versions du cas d’usage",
+  "إصدارات حالة الاستخدام"
+ ],
+ "aiuc.runs": [
+  "Runs",
+  "Exécutions",
+  "مرات التشغيل"
+ ],
+ "aiuc.noUsage": [
+  "This use case has not been run yet.",
+  "Ce cas d’usage n’a pas encore été exécuté.",
+  "لم يتم تشغيل حالة الاستخدام هذه بعد."
+ ],
+ "aiuc.confidence": [
+  "Confidence",
+  "Confiance",
+  "الثقة"
+ ],
+ "aiuc.engine": [
+  "Engine",
+  "Moteur",
+  "المحرك"
+ ],
+ "aiuc.record": [
+  "Record",
+  "Enregistrement",
+  "السجل"
+ ],
+ "aiuc.promptCol": [
+  "Prompt",
+  "Prompt",
+  "الموجّه"
+ ],
+ "aiuc.open": [
+  "Open",
+  "Ouvrir",
+  "فتح"
+ ],
+ "aiuc.ovr.Inherit": [
+  "Inherit from the Organization",
+  "Hérité de l’organisation",
+  "موروث من المؤسسة"
+ ],
+ "aiuc.ovr.On": [
+  "On for this project",
+  "Activé pour ce projet",
+  "مفعّل لهذا المشروع"
+ ],
+ "aiuc.ovr.Off": [
+  "Off for this project",
+  "Désactivé pour ce projet",
+  "معطّل لهذا المشروع"
+ ],
+ "field.module": [
+  "Module",
+  "Module",
+  "الوحدة"
+ ],
+ "field.step": [
+  "Step",
+  "Étape",
+  "الخطوة"
+ ],
+ "field.trigger": [
+  "Trigger",
+  "Déclencheur",
+  "المُشغِّل"
+ ],
+ "field.expected_output": [
+  "Expected output",
+  "Résultat attendu",
+  "المخرج المتوقع"
+ ],
+ "field.risk": [
+  "Risk",
+  "Risque",
+  "المخاطر"
+ ],
+ "field.approval": [
+  "Approval",
+  "Approbation",
+  "الاعتماد"
+ ],
+ "status.Accepted": [
+  "Accepted",
+  "Accepté",
+  "مقبول"
+ ],
+ "status.Edited": [
+  "Edited",
+  "Modifié",
+  "معدّل"
+ ],
+ "mre.discardConfirm": [
+  "Discard the changes to {n} row(s) not saved yet?",
+  "Abandonner les modifications des {n} ligne(s) non encore enregistrées ?",
+  "تجاهل التعديلات على {n} صف(وف) غير محفوظة؟"
+ ],
+ "mre.discarded": [
+  "Changes discarded",
+  "Modifications abandonnées",
+  "تم تجاهل التعديلات"
+ ],
+ "mre.issues": [
+  "{n} issue(s)",
+  "{n} anomalie(s)",
+  "{n} مشكلة"
+ ],
+ "mre.issuesTitle": [
+  "Issues to fix",
+  "Anomalies à corriger",
+  "مشكلات يجب تصحيحها"
+ ],
+ "mre.row": [
+  "Row",
+  "Ligne",
+  "الصف"
+ ],
+ "mre.insertBelow": [
+  "Insert a row below",
+  "Insérer une ligne en dessous",
+  "إدراج صف أدناه"
+ ],
+ "mre.hiddenInForm": [
+  "Hidden columns stay available in the row form.",
+  "Les colonnes masquées restent disponibles dans le formulaire de la ligne.",
+  "تبقى الأعمدة المخفية متاحة في نموذج الصف."
+ ],
+ "mre.addFirst": [
+  "Add the first row",
+  "Ajouter la première ligne",
+  "إضافة الصف الأول"
+ ],
+ "mre.pasteRows": [
+  "Paste rows",
+  "Coller des lignes",
+  "لصق صفوف"
+ ],
+ "mre.emptyHint": [
+  "Type the rows, paste them from Excel, or let the AI propose them for your review.",
+  "Saisissez les lignes, collez-les depuis Excel, ou laissez l’IA les proposer pour votre validation.",
+  "اكتب الصفوف أو الصقها من Excel أو دع الذكاء الاصطناعي يقترحها لمراجعتك."
+ ],
+ "mre.unsaved": [
+  "{n} unsaved",
+  "{n} non enregistrée(s)",
+  "{n} غير محفوظ"
+ ],
+ "mre.discard": [
+  "Discard",
+  "Abandonner",
+  "تجاهل"
+ ],
+ "mre.saveAndNew": [
+  "Save and new",
+  "Enregistrer et nouveau",
+  "حفظ وجديد"
+ ],
+ "mre.addAllFunctions": [
+  "Add all functions ({n})",
+  "Ajouter toutes les fonctions ({n})",
+  "إضافة كل الوظائف ({n})"
+ ],
+ "mre.functionsAdded": [
+  "Functions added",
+  "Fonctions ajoutées",
+  "تمت إضافة الوظائف"
+ ],
+ "sfm.aiAllCovered": [
+  "Every function of the Organization is already in the matrix.",
+  "Toutes les fonctions de l’organisation figurent déjà dans la matrice.",
+  "كل وظائف المؤسسة موجودة بالفعل في المصفوفة."
+ ]
+}

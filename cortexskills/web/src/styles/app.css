@@ -738,3 +738,17 @@ ul.plain > li > .tree-row { width: 100%; }
 .paste-preview td.cell-invalid { box-shadow: inset 4px 0 0 var(--aiv-status-1); background: var(--aiv-white); }
 [dir='rtl'] .paste-preview td.cell-invalid { box-shadow: inset -4px 0 0 var(--aiv-status-1); }
 .paste-preview tr.row-invalid td:first-child { font-weight: 700; }
+
+/* Multi-Entry, editor-grade (SAP Fiori / Oracle Redwood patterns): toolbar, issues popover, draft save state */
+.itable-toolbar { flex-wrap: wrap; gap: var(--aiv-space-2); }
+.issues-btn { display: inline-flex; align-items: center; gap: var(--aiv-space-1); min-height: 32px; padding: 0 var(--aiv-space-3); border: 1px solid var(--aiv-line); border-radius: var(--aiv-radius-btn); background: var(--aiv-status-1); color: var(--aiv-navy); font: 600 var(--aiv-fs-13)/1 var(--aiv-font-body); cursor: pointer; }
+.issues-btn:hover, .issues-btn:focus-visible { box-shadow: var(--aiv-shadow-card); }
+.issues-menu { min-width: 320px; max-height: 360px; overflow-y: auto; }
+.menu .issue-item { flex-direction: column; align-items: flex-start; gap: 2px; padding: var(--aiv-space-2) var(--aiv-space-3); height: auto; }
+.save-state { display: inline-flex; align-items: center; gap: var(--aiv-space-1); font-size: var(--aiv-fs-12); color: var(--aiv-muted); }
+.save-state.pending { color: var(--aiv-azure-deep); font-weight: 600; }
+.itable-empty { padding: var(--aiv-space-6) var(--aiv-space-4); }
+.itable-empty .row { justify-content: center; flex-wrap: wrap; }
+.cell.center { justify-content: center; text-align: center; }
+.cell-check { width: 18px; height: 18px; accent-color: var(--aiv-azure); cursor: pointer; }
+.tbl th.th-bool .th-label { white-space: normal; text-align: center; line-height: 1.2; display: block; }

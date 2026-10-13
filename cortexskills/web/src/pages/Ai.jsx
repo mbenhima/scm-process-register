@@ -1,23 +1,23 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post, put, session } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, useAction, AiBadge, Seg, Kpi, Field, JustifyDialog, Legend, Select } from '../components/ui.jsx';
+import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, useAction, AiBadge, Seg, Kpi, Field, JustifyDialog, Legend, Select, Progress } from '../components/ui.jsx';
 import { RecordsView, useMeta, RecordEditor } from '../components/Records.jsx';
 import { BarChart } from '../components/charts.jsx';
 
 export function AiUseCases() {
-  const { t, L } = useI18n(); const { can, project } = useSession(); const d = useData('/ai/use-cases'); const act = useAction(); const [tier, setTier] = useState('all'); const [edit, setEdit] = useState(null); const [deact, setDeact] = useState(null); const meta = useMeta();
+  const { t, L } = useI18n(); const nav = useNavigate(); const { can, project } = useSession(); const d = useData('/ai/use-cases'); const act = useAction(); const [tier, setTier] = useState('all'); const [edit, setEdit] = useState(null); const [deact, setDeact] = useState(null); const meta = useMeta();
   const def = meta?.find(m => m.name === 'AIUseCase');
   return (<><PageHead eyebrow={t('navGroup.ai')} title={t('nav.aiUseCases')} subtitle={t('aiuc.subtitle')}><Seg value={tier} onChange={setTier} options={[{ id: 'all', label: t('common.all') }, { id: 'Assistive', label: t('ai.tier.Assistive') }, { id: 'Augmented', label: t('ai.tier.Augmented') }]} label={t('col.tier')} />
     {can('ai.manage') && def && <Btn kind="primary" icon="Plus" onClick={() => setEdit({ _new: true, tier: 'Assistive', model_task_type: 'Text generation' })}>{t('aiuc.custom')}</Btn>}</PageHead>
     <div className="notice grey" style={{ marginBottom: 'var(--aiv-space-4)' }}><Icon name="ShieldCheck" />{t('aiuc.never')}</div>
-    <Guard state={d}>{rows => <DataTable csvName="ai_use_cases" rows={rows.filter(r => tier === 'all' || r.tier === tier)} onRow={r => def && setEdit(r)} columns={[{ key: 'code', label: 'ID' }, { key: 'name', label: t('col.name'), render: r => <span><span className="strong">{L(r.name)}</span>{r.isCustom && <span className="pill xs" style={{ marginInlineStart: 6 }}>{t('aiuc.customTag')}</span>}</span>, text: r => L(r.name) },
-      { key: 'tier', label: t('col.tier'), render: r => <AiBadge tier={r.tier} />, text: r => r.tier }, { key: 'step', label: 'Step' }, { key: 'model_task_type', label: t('aiuc.type') }, { key: 'risk', label: t('aiuc.risk') }, { key: 'usage', label: t('aiuc.usage'), num: true },
+    <Guard state={d}>{rows => <DataTable csvName="ai_use_cases" rows={rows.filter(r => tier === 'all' || r.tier === tier)} onRow={r => nav(`/ai/use-cases/${r.id}`)} columns={[{ key: 'code', label: 'ID' }, { key: 'name', label: t('col.name'), render: r => <span><span className="strong">{L(r.name)}</span>{r.isCustom && <span className="pill xs" style={{ marginInlineStart: 6 }}>{t('aiuc.customTag')}</span>}</span>, text: r => L(r.name) },
+      { key: 'tier', label: t('col.tier'), render: r => <AiBadge tier={r.tier} />, text: r => r.tier }, { key: 'step', label: 'Step' }, { key: 'model_task_type', label: t('aiuc.type') }, { key: 'risk', label: t('aiuc.risk') }, { key: 'completeness', label: t('aiuc.promptCol'), sortValue: r => r.completeness || 0, text: r => `${r.completeness ?? 0} %`, render: r => <div className="row" style={{ flexWrap: 'nowrap', minWidth: 110 }}><Progress value={r.completeness || 0} label={t('aip.completeness')} /><span className="xs mono">{r.completeness ?? 0}%</span></div> }, { key: 'usage', label: t('aiuc.usage'), num: true },
       { key: 'org', label: t('aiuc.orgActive'), noSort: true, render: r => <input type="checkbox" aria-label={t('aiuc.orgActive')} disabled={!can('ai.manage')} checked={r.orgActive} onClick={e => e.stopPropagation()} onChange={e => e.target.checked ? act(() => put(`/ai/use-cases/${r.id}/activation`, { active: true })).then(d.reload) : setDeact(r)} /> },
       ...(project ? [{ key: 'proj', label: t('aiuc.projectOverride'), noSort: true, render: r => <Select className="input" style={{ minWidth: 110 }} disabled={!can('projects.manage')} value={r.projectState || 'Inherit'} onClick={e => e.stopPropagation()} onChange={async e => { await act(() => put(`/ai/use-cases/${r.id}/override`, { project_id: project, state: e.target.value })); d.reload(); }}>{['Inherit', 'On', 'Off'].map(s => <option key={s} value={s}>{t('aiuc.state.' + s)}</option>)}</Select> }] : []),
-      { key: 'eff', label: t('aiuc.effective'), render: r => <StatusPill value={r.effective ? 'Active' : 'Deprecated'} /> }, { key: 'spec', label: t('aip.spec'), noSort: true, render: r => <Link className="btn sm" to={`/ai/use-cases/${r.id}/spec`} onClick={e => e.stopPropagation()}><Icon name="FileCode2" />{t('aip.spec')}</Link> }]} />}</Guard>
+      { key: 'eff', label: t('aiuc.effective'), render: r => <StatusPill value={r.effective ? 'Active' : 'Deprecated'} /> }, { key: 'spec', label: t('aip.spec'), noSort: true, render: r => <Link className="btn sm" to={`/ai/use-cases/${r.id}`} onClick={e => e.stopPropagation()}><Icon name="FileCode2" />{t('aiuc.open')}</Link> }]} />}</Guard>
     {edit && def && <RecordEditor def={def} record={edit} onClose={() => setEdit(null)} onSaved={() => { setEdit(null); d.reload(); }} />}
     {deact && <JustifyDialog title={t('aiuc.deactivate')} onCancel={() => setDeact(null)} onConfirm={async n => { const r = deact; setDeact(null); await act(() => put(`/ai/use-cases/${r.id}/activation`, { active: false, _justification: n })); d.reload(); }} />}</>);
 }

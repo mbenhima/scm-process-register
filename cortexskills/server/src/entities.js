@@ -98,7 +98,13 @@ export function entityRegistry() {
   for (const [name, def] of Object.entries(EXTRA)) registry[name] = { name, classId: null, mps: [], versioned: false, ...def };
   // Governance entities are managed with governance rights rather than module rights.
   for (const g of ['BusinessRule', 'Control', 'RiskOpportunity', 'KpiDefinition', 'Action', 'ActionEvaluation', 'RexEntry']) if (registry[g]) registry[g].perm = g === 'RexEntry' ? 'rex' : 'governance';
-  if (registry.AIUseCase) { registry.AIUseCase.perm = 'ai'; registry.AIUseCase.versioned = true; }
+  if (registry.AIUseCase) { registry.AIUseCase.perm = 'ai'; registry.AIUseCase.versioned = true;
+    // FR-DA-AI-01: id, name, tier, owning module, trigger, expected output, human checkpoint and versioned prompt content
+    // (the prompt itself is the Prompt Specification, §4.40). Activation and project overrides have their own controls.
+    registry.AIUseCase.fields = [f('code', 'string', { required: true }), f('name', 'text', { required: true, ml: true }), f('tier', 'enum', { required: true, options: ['Assistive', 'Augmented'] }),
+      f('module', 'string'), f('step', 'string', { required: true }), f('trigger', 'text', { ml: true }), f('expected_output', 'text', { ml: true }), f('checkpoint', 'longtext', { required: true, ml: true }),
+      f('model_task_type', 'enum', { options: ['Classification', 'Extraction', 'Summarization', 'Text generation', 'Recommendation', 'Matching', 'Scoring / ranking', 'Forecasting', 'Clustering', 'Translation'] }),
+      f('risk', 'enum', { options: ['Low', 'Medium', 'High'] }), f('approval', 'enum', { options: ['Draft', 'In review', 'Approved', 'Retired', 'N/A (seeded catalog)'] }), f('scope', 'enum', { options: ['Global', 'Organization'] })]; }
   if (registry.ExternalIntegration) registry.ExternalIntegration.perm = 'integrations';
   // Release 1.1: the template library is shared by the platform (org_id NULL) and extended by each Organization;
   // WhatsApp and Application join the response channels; Combination names a plan played over several channels.

@@ -3,7 +3,7 @@ import { ah, projectOf } from '../lib/http.js';
 import { all, one, run } from '../db.js';
 import { J, HttpError, pick } from '../lib/util.js';
 import { requirePerm } from '../rbac.js';
-import { audit } from '../audit.js';
+import { audit, versions } from '../audit.js';
 import { useCases, effectiveActive, generate, logUsage, PROVIDERS, testConnection } from '../services/ai.js';
 import { ask, intentCatalog } from '../services/assistant.js';
 import { retrieve } from '../services/retrieval.js';
@@ -16,13 +16,14 @@ import { open } from '../services/secrets.js';
 import { createRecord } from '../entities.js';
 
 const r = Router();
+const specDone = (orgId, ucId) => { const row = one(`SELECT fields FROM prompt_specs WHERE org_id=? AND use_case_id=?`, orgId, ucId); if (!row) return P.getSpec(orgId, ucId).completeness; const f = J(row.fields, {}); return Math.round(P.FIELDS.filter(k => Object.values(f[k] || {}).some(v => String(v).trim())).length / P.FIELDS.length * 100); };
 /** The live model configuration travels in one request header and is used for one outbound call only (FR-DA-AI-08). */
 const llmFrom = req => { const h = req.headers['x-llm-config']; if (!h) return null; try { return JSON.parse(Buffer.from(String(h), 'base64').toString('utf8')); } catch { return null; } };
 
 r.get('/ai/use-cases', requirePerm('ai.view'), ah(req => useCases(req.orgId).map(u => ({ ...u, active: effectiveActive(req.orgId, null, u.id),
   orgActive: !!(one(`SELECT active FROM ai_activation WHERE org_id=? AND use_case_id=?`, req.orgId, u.id)?.active ?? 1),
   projectState: req.projectId ? one(`SELECT state FROM ai_overrides WHERE project_id=? AND use_case_id=?`, req.projectId, u.id)?.state || 'Inherit' : null,
-  effective: effectiveActive(req.orgId, req.projectId, u.id), usage: one(`SELECT COUNT(*) n FROM ai_usage_log WHERE org_id=? AND use_case_id=?`, req.orgId, u.code).n }))));
+  effective: effectiveActive(req.orgId, req.projectId, u.id), completeness: specDone(req.orgId, u.id), usage: one(`SELECT COUNT(*) n FROM ai_usage_log WHERE org_id=? AND use_case_id=?`, req.orgId, u.code).n }))));
 r.put('/ai/use-cases/:id/activation', requirePerm('ai.manage'), ah(req => {
   const u = one(`SELECT id FROM records WHERE id=? AND entity='AIUseCase' AND org_id=?`, req.params.id, req.orgId); if (!u) throw new HttpError(404, 'err.notFound');
   // A use case is activated only when its specification is complete (FR-DA-AIP-06).
@@ -89,6 +90,35 @@ r.get('/ai/use-cases/:id/fit', requirePerm('ai.view'), ah(req => {
   const pos = D.list(req.orgId, 'uft').find(u => (u.steps || []).includes(step.id));
   if (!pos?.input) issues.push('noInput');
   return { ok: !issues.length, issues, step: { id: step.id, name: step.name }, inputs: pos?.input || null, outputs: form.fields.map(f => ({ key: f.key, label: f.label })), outputField: form.pattern === 'form' ? form.fields[0]?.key : 'rows' };
+}));
+/**
+ * The whole AI Use Case on one screen (FR-DA-AI-01, AI-04, AI-07, AIP-01 – 10): identification, the step and task it
+ * serves with the inputs it reads and the outputs it proposes, activation, Prompt Specification summary, usage and versions.
+ */
+r.get('/ai/use-cases/:id/detail', requirePerm('ai.view'), ah(req => {
+  const uc = useCases(req.orgId).find(u => u.id === req.params.id || u.code === req.params.id); if (!uc) throw new HttpError(404, 'err.notFound');
+  const step = D.get(req.orgId, 'step', uc.step); const mp = step ? D.get(req.orgId, 'mp', step.mp) : null;
+  const uft = step ? D.list(req.orgId, 'uft').find(u => (u.steps || []).includes(step.id)) : null;
+  const form = step ? describeStep(step, { mpName: mp?.name, inputs: uft?.input }) : null;
+  const L3 = (en, fr, ar) => ({ en, fr, ar });
+  const stepName = l => (step ? pick(step.name, l) : uc.step);
+  const derived = {
+    module: uc.module || mp?.module || null,
+    trigger: uc.trigger || (step ? L3(`On the step ${step.id} “${stepName('en')}”, when the user runs “Propose with AI”.`, `À l’étape ${step.id} « ${stepName('fr')} », quand l’utilisateur lance « Proposer avec l’IA ».`, `في الخطوة ${step.id} «${stepName('ar')}»، عندما يطلق المستخدم «اقتراح بالذكاء الاصطناعي».`) : null),
+    expected_output: uc.expected_output || (form ? L3(`Draft ${form.pattern === 'form' ? 'values' : 'rows'} of “${pick(form.object, 'en')}”: ${form.fields.map(f => pick(f.label, 'en')).join(', ')}.`, `${form.pattern === 'form' ? 'Valeurs' : 'Lignes'} proposées de « ${pick(form.object, 'fr')} » : ${form.fields.map(f => pick(f.label, 'fr')).join(', ')}.`, `${form.pattern === 'form' ? 'قيم' : 'صفوف'} مقترحة لـ«${pick(form.object, 'ar')}»: ${form.fields.map(f => pick(f.label, 'ar')).join('، ')}.`) : null),
+  };
+  const spec = P.getSpec(req.orgId, uc.id);
+  const usage = all(`SELECT l.outcome, l.created_at, l.confidence, l.source, l.record_ref, u.name user_name FROM ai_usage_log l LEFT JOIN users u ON u.id=l.user_id WHERE l.org_id=? AND l.use_case_id=? ORDER BY l.created_at DESC LIMIT 50`, req.orgId, uc.code);
+  const outcomes = all(`SELECT outcome, COUNT(*) n FROM ai_usage_log WHERE org_id=? AND use_case_id=? GROUP BY outcome`, req.orgId, uc.code);
+  return {
+    useCase: { ...uc, ...Object.fromEntries(Object.entries(derived).filter(([k, v]) => v && !uc[k])) }, derived: Object.keys(derived).filter(k => !uc[k] && derived[k]),
+    step: step ? { id: step.id, name: step.name, mp: step.mp, mpName: mp?.name || null, kind: form?.kind, pattern: form?.pattern, object: form?.object } : null,
+    task: uft ? { id: uft.id, name: uft.name, e2e: uft.e2e || uft.e2eId || null, input: uft.input || null, output: uft.output || null } : null,
+    inputs: uft?.input || null, outputs: (form?.fields || []).map(f => ({ key: f.key, label: f.label, type: f.type, required: !!f.required })),
+    activation: { orgActive: !!(one(`SELECT active FROM ai_activation WHERE org_id=? AND use_case_id=?`, req.orgId, uc.id)?.active ?? 1), projectState: req.projectId ? one(`SELECT state FROM ai_overrides WHERE project_id=? AND use_case_id=?`, req.projectId, uc.id)?.state || 'Inherit' : null, effective: effectiveActive(req.orgId, req.projectId, uc.id) },
+    spec: { version: spec.version, status: spec.status, model: spec.model, completeness: spec.completeness, missing: spec.missing },
+    usage, outcomes, versions: versions('AIUseCase', uc.id).map(v => ({ version: v.version, user_name: v.user_name, justification: v.justification, created_at: v.created_at, is_current: v.is_current })),
+  };
 }));
 /** Suggest an AI Use Case for a step that has none, as a draft with a populated specification, activated only after review (FR-DA-AIP-11). */
 r.post('/ai/use-cases/suggest', requirePerm('prompts.manage'), ah(req => {

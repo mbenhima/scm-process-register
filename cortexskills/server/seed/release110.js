@@ -52,6 +52,7 @@ export function rowFor(kind, i, ctx, r, base) {
   const th = ctx.themes[i % ctx.themes.length]; const pos = ctx.positions[i % ctx.positions.length]; const user = ctx.users[(i + base) % ctx.users.length];
   const d = k => iso(ctx.start + (base * 2 + i * 7 + k) * DAY).slice(0, 10);
   switch (kind) {
+    case 'levels': { const fn = ctx.functions[(i + base) % ctx.functions.length]; return { function: fn, ms: (i + base) % 3 !== 2, mo: true, op: (i + base) % 4 !== 1, note: L('In scope of the mission', 'Dans le périmètre de la mission', 'ضمن نطاق المهمة') }; }
     case 'record': return { item: i % 3 === 2 ? pos : th, category: ['Primary', 'Secondary', 'Supporting'][i % 3], description: FACTS[(i + base) % FACTS.length], owner: user, source: SOURCES[(i + base) % SOURCES.length] };
     case 'matrix': return { item: th, criterion: ['Business impact', 'Urgency', 'Feasibility', 'Cost', 'Risk'][(i + base) % 5], weight: String([40, 30, 20, 10][i % 4]), score: String(2 + Math.floor(r() * 4)), facts: FACTS[i % FACTS.length] };
     case 'objectives': return { item: fillL(OBJ[i % OBJ.length], { t: th, p: pos }), indicator: ctx.kpis[(i + base) % ctx.kpis.length], baseline: `${30 + Math.round(r() * 20)} %`, target: `${70 + Math.round(r() * 20)} %`, deadline: d(180), owner: user };
@@ -123,8 +124,9 @@ function seedRun(o, p, { roles, head, hrd, r, req }) {
   const ctx = { themes: [...(o.v.themes?.[p.focus === 'AI' ? 'ai' : 'digital'] || []), ...(o.v.themes?.[p.focus === 'AI' ? 'digital' : 'ai'] || []).slice(0, 1)],
     positions: all(`SELECT data FROM records WHERE entity='Position' AND org_id=? LIMIT 6`, o.id).map(x => J(x.data, {}).title).filter(Boolean),
     users: o.users.map(u => u.name), trainers: ['Atlas Formation Conseil', 'Maghreb Learning Partners', o.users[0]?.name], kpis: cat.list('kpi').slice(0, 20).map(k => k.id),
-    roles: roles.map(x => x.name), approver: hrd.name, start: new Date(p.start_date).getTime(), object: null };
+    roles: roles.map(x => x.name), functions: all(`SELECT name FROM obs_nodes WHERE org_id=? AND type='Function' ORDER BY name`, o.id).map(x => J(x.name, x.name)).filter(Boolean), approver: hrd.name, start: new Date(p.start_date).getTime(), object: null };
   if (!ctx.positions.length) ctx.positions = [L('Supervisor', 'Encadrant', 'مؤطر')];
+  if (!ctx.functions.length) ctx.functions = [L('Operations', 'Opérations', 'العمليات')];
   const tasks = all(`SELECT * FROM task_instances WHERE project_id=? AND status!='Not started' ORDER BY e2e_id, sort`, p.id);
   let base = 0;
   for (const t of tasks) {
@@ -141,7 +143,7 @@ function seedRun(o, p, { roles, head, hrd, r, req }) {
       run(`INSERT OR IGNORE INTO step_records(id,org_id,project_id,task_instance_id,step_id,kind,fields,status,completed_by,completed_at,updated_by,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`,
         recId, o.id, p.id, t.id, sid, kind, S(fields), isDone ? 'Completed' : 'Open', isDone ? t.owner_id : null, isDone ? at : null, t.owner_id, at);
       if (kind === 'system') continue;
-      const items = single ? [{ id: recId, data: fields }] : Array.from({ length: isDone ? (kind === 'matrix' || kind === 'objectives' ? 3 : 2) : 1 }, (_, i) => {
+      const items = single ? [{ id: recId, data: fields }] : Array.from({ length: kind === 'levels' ? Math.min(ctx.functions.length, isDone ? 7 : 2) : isDone ? (kind === 'matrix' || kind === 'objectives' ? 3 : 2) : 1 }, (_, i) => {
         const id = U(`row:${recId}:${i}`); const data = rowFor(kind, i, ctx, r, base);
         run(`INSERT OR IGNORE INTO step_rows(id,step_record_id,org_id,project_id,step_id,sort,data,origin,created_by,created_at,updated_by,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, id, recId, o.id, p.id, sid, i, S(data), i === 2 && kind === 'matrix' ? 'ai' : 'manual', t.owner_id, at, t.owner_id, at);
         return { id, data }; });

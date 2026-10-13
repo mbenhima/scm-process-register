@@ -113,7 +113,8 @@ export function views(orgId, date = today()) {
 export function pickers(orgId) {
   const v = views(orgId);
   return { people: all(`SELECT id, name, title FROM users WHERE org_id=? AND active=1 ORDER BY name`, orgId).map(p => ({ id: p.id, name: p.name, title: p.title, roles: (v.byPerson.find(x => x.person.id === p.id)?.roles || []).map(r => r.name) })),
-    roles: v.chart.map(r => ({ id: r.id, name: r.name, holders: r.holders, vacant: r.vacant })), units: all(`SELECT id, name, type FROM obs_nodes WHERE org_id=?`, orgId).map(u => ({ ...u, name: J(u.name, u.name) })) };
+    roles: v.chart.map(r => ({ id: r.id, name: r.name, holders: r.holders, vacant: r.vacant })), units: all(`SELECT id, name, type FROM obs_nodes WHERE org_id=?`, orgId).map(u => ({ ...u, name: J(u.name, u.name) })),
+    functions: all(`SELECT id, code, name FROM obs_nodes WHERE org_id=? AND type='Function' ORDER BY name`, orgId).map(u => ({ id: u.id, code: u.code, name: J(u.name, u.name) })) };
 }
 /** Resolves an assignee — `role:<id>`, `user:<id>` or a role name — to the people currently playing it (FR-DA-OBS-06, FR-DA-GOV-09). */
 export function resolve(orgId, assignee) {

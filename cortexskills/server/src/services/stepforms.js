@@ -5,9 +5,9 @@
 import { objectOf } from './naming.js';
 
 const L = (en, fr, ar) => ({ en, fr, ar });
-export const FORM_KINDS = ['record', 'matrix', 'decision', 'objectives', 'plan', 'communication', 'training', 'monitoring', 'review', 'assignment', 'configuration', 'system'];
+export const FORM_KINDS = ['record', 'matrix', 'levels', 'decision', 'objectives', 'plan', 'communication', 'training', 'monitoring', 'review', 'assignment', 'configuration', 'system'];
 export const KIND_LABEL = {
-  record: L('Record table', 'Tableau d’enregistrements', 'جدول سجلات'), matrix: L('Assessment matrix', 'Matrice d’évaluation', 'مصفوفة تقييم'), decision: L('Decision', 'Décision', 'قرار'),
+  record: L('Record table', 'Tableau d’enregistrements', 'جدول سجلات'), matrix: L('Assessment matrix', 'Matrice d’évaluation', 'مصفوفة تقييم'), levels: L('Function × decision-level matrix', 'Matrice fonctions × niveaux de décision', 'مصفوفة الوظائف × مستويات القرار'), decision: L('Decision', 'Décision', 'قرار'),
   objectives: L('Objectives', 'Objectifs', 'أهداف'), plan: L('Plan', 'Plan', 'خطة'), communication: L('Communication', 'Communication', 'تواصل'), training: L('Training', 'Formation', 'تكوين'),
   monitoring: L('Monitoring', 'Suivi', 'تتبع'), review: L('Review', 'Revue', 'مراجعة'), assignment: L('Assignment', 'Affectation', 'تعيين'), configuration: L('Configuration', 'Configuration', 'إعداد'), system: L('System step', 'Étape système', 'خطوة نظام'),
 };
@@ -31,6 +31,8 @@ const PEOPLE_RX = /trainer|owner|person|people|staff|resource|role|coach|mentor|
 export function kindOf(step) {
   if (step.form?.kind && FORM_KINDS.includes(step.form.kind)) return step.form.kind;
   if (step.type === 'Service Task') return 'system';
+  // A “functions × decision levels” step is a true matrix: one row per function, one tick per level.
+  if (/functions?\s*[×x]\s*decision levels?/i.test(step.name?.en || '')) return 'levels';
   const name = step.name?.en || ''; const verb = name.split(/\s+/)[0]?.toLowerCase(); const obj = name.slice(verb.length);
   if (['define', 'set', 'write', 'align'].includes(verb) && OBJECTIVE_RX.test(obj)) return 'objectives';
   if (['record', 'register', 'list'].includes(verb) && /objective|target|goal/i.test(obj)) return 'objectives';
@@ -90,6 +92,9 @@ const SCORE = [1, 2, 3, 4, 5].map(v => ({ value: String(v), label: L(String(v), 
 export function fieldsFor(kind, obj) {
   const it = fill(H.item, obj);
   switch (kind) {
+    case 'levels': return [f('function', L('Function', 'Fonction', 'الوظيفة'), 'function', { required: true, help: L('A function of the Organization (OBS).', 'Une fonction de l’organisation (OBS).', 'وظيفة من وظائف المؤسسة.') }),
+      f('ms', L('MS — strategic', 'MS — stratégique', 'MS — استراتيجي'), 'boolean'), f('mo', L('MO — middle', 'MO — intermédiaire', 'MO — وسيط'), 'boolean'), f('op', L('OP — operational', 'OP — opérationnel', 'OP — تشغيلي'), 'boolean'),
+      f('note', L('Comment', 'Commentaire', 'تعليق'), 'text')];
     case 'record': return [f('item', obj, 'text', { required: true, help: it }), f('category', L('Category', 'Catégorie', 'الفئة'), 'select', { custom: true, options: categoriesFor(obj.en || ''), carry: true }), f('description', L('Description', 'Description', 'الوصف'), 'textarea'), f('owner', L('Owner', 'Responsable', 'المسؤول'), 'person'), f('source', L('Source', 'Source', 'المصدر'), 'text')];
     case 'matrix': return [f('item', obj, 'text', { required: true, help: it, carry: true }), f('criterion', L('Criterion', 'Critère', 'المعيار'), 'select', { required: true, custom: true, options: ['Business impact', 'Urgency', 'Feasibility', 'Cost', 'Risk'].map(v => ({ value: v, label: { 'Business impact': L('Business impact', 'Impact métier', 'الأثر على الأعمال'), Urgency: L('Urgency', 'Urgence', 'الاستعجال'), Feasibility: L('Feasibility', 'Faisabilité', 'قابلية التنفيذ'), Cost: L('Cost', 'Coût', 'الكلفة'), Risk: L('Risk', 'Risque', 'المخاطر') }[v] })) }),
       f('weight', L('Weight (%)', 'Poids (%)', 'الوزن (%)'), 'number', { required: true, min: 0, max: 100 }), f('score', L('Score (1–5)', 'Note (1–5)', 'النقطة (1–5)'), 'select', { required: true, options: SCORE }), f('facts', L('Facts justifying the score', 'Faits justifiant la note', 'الوقائع المبررة للنقطة'), 'textarea')];
@@ -126,6 +131,7 @@ export function registerOf(kind, step, obj) {
 const PURPOSE = {
   record: L('Keep a complete, sourced list of {o} so that later steps, registers and documents use the same items.', 'Tenir une liste complète et sourcée ({o}) pour que les étapes suivantes, les registres et les documents utilisent les mêmes éléments.', 'الاحتفاظ بقائمة كاملة وموثقة المصدر ({o}) لتستعمل الخطوات اللاحقة والسجلات والوثائق نفس العناصر.'),
   matrix: L('Score {o} against weighted criteria and keep the facts behind each score.', 'Noter ({o}) selon des critères pondérés et conserver les faits qui justifient chaque note.', 'تقييم ({o}) وفق معايير مرجحة مع الاحتفاظ بالوقائع المبررة لكل نقطة.'),
+  levels: L('Tick, for each function of the Organization, the decision levels it covers: management system (MS), management (MO) and operations (OP).', 'Cocher, pour chaque fonction de l’organisation, les niveaux de décision qu’elle couvre : système de management (MS), management (MO) et opérations (OP).', 'تحديد مستويات القرار التي تغطيها كل وظيفة من وظائف المؤسسة: نظام الإدارة (MS)، الإدارة (MO) والعمليات (OP).'),
   decision: L('Record the decision on {o}, its rationale and any condition.', 'Enregistrer la décision ({o}), sa justification et ses éventuelles conditions.', 'تسجيل القرار ({o}) وتعليله وشروطه إن وجدت.'),
   objectives: L('Set measurable objectives for {o}, each with an indicator, a target and a deadline.', 'Fixer des objectifs mesurables ({o}), chacun avec un indicateur, une cible et une échéance.', 'تحديد أهداف قابلة للقياس ({o}) لكل منها مؤشر وهدف وأجل.'),
   plan: L('Plan {o}: actions, owners, dates, budget and deliverables.', 'Planifier ({o}) : actions, responsables, dates, budget et livrables.', 'تخطيط ({o}): الإجراءات والمسؤولون والتواريخ والميزانية والمخرجات.'),
@@ -140,6 +146,7 @@ const PURPOSE = {
 const RESULT = {
   record: L('{o} recorded, each with category, owner and source; the register is updated when the step is completed.', '{o} enregistré(e)s, chacun(e) avec catégorie, responsable et source ; le registre est mis à jour à la clôture de l’étape.', 'تسجيل {o} مع الفئة والمسؤول والمصدر؛ يحدث السجل عند إتمام الخطوة.'),
   matrix: L('A weighted score per item, on a 1–5 scale, with the facts behind it.', 'Une note pondérée par élément, sur une échelle de 1 à 5, avec ses justifications.', 'نقطة مرجحة لكل عنصر على سلم 1–5 مع مبرراتها.'),
+  levels: L('One row per function, with the decision levels it covers ticked.', 'Une ligne par fonction, avec les niveaux de décision qu’elle couvre cochés.', 'صف لكل وظيفة مع تحديد مستويات القرار التي تغطيها.'),
   decision: L('A dated decision with its rationale, entered in the decisions log.', 'Une décision datée et justifiée, inscrite au journal des décisions.', 'قرار مؤرخ ومعلل يدرج في سجل القرارات.'),
   objectives: L('Objectives with indicator, baseline, target, deadline and owner, entered in the objectives register.', 'Des objectifs avec indicateur, valeur de départ, cible, échéance et responsable, inscrits au registre des objectifs.', 'أهداف بمؤشر وقيمة أساسية وهدف وأجل ومسؤول، تدرج في سجل الأهداف.'),
   plan: L('Planned actions that become entries of the action plan.', 'Des actions planifiées qui deviennent des entrées du plan d’actions.', 'إجراءات مخططة تصبح مدخلات في خطة العمل.'),

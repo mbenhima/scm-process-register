@@ -120,7 +120,7 @@ function FieldInput({ f, value, onChange, readOnly }) {
   return <div className="field" style={wide ? { gridColumn: '1 / -1' } : undefined}><label htmlFor={id}>{label}</label>{input}{f.rule && <span className="hint">{f.rule}</span>}</div>;
 }
 
-function Versions({ entity, id, canWrite, onReverted }) {
+export function Versions({ entity, id, canWrite, onReverted }) {
   const { t, L, fmtDate } = useI18n(); const d = useData(`/records/${entity}/${id}/versions`); const act = useAction();
   const [a, setA] = useState(null); const [b, setB] = useState(null); const [cmp, setCmp] = useState(null);
   const compareNow = async () => setCmp(await get(`/records/${entity}/${id}/compare?a=${a}&b=${b}`));
