@@ -27,6 +27,7 @@ export function ProjectWorkspace() {
       <Kpi icon="CalendarClock" value={fmtNum(c.overdue)} label={t('dash.overdue')} emph={false} />
       <Kpi icon="Scale" value={x.complexity ? x.complexity.score : p.complexity} label={t('ws.complexity')} note={x.complexity?.chosen_track || t('mode.' + p.mode)} emph={false} />
     </div>
+    <PlanWidgets projectId={id} />
     {x.phases.filter(ph => ph.items.length).map(ph => { const state = ph.progress === 100 ? 'done' : ph.progress > 0 ? 'active' : ''; const gateRec = ph.checklists.find(c => c.gate_id);
       return (<section key={ph.no} className={`card phase ${state}`} style={{ marginTop: 'var(--aiv-space-4)' }}>
         <div className="card-head"><div><div className="eyebrow">{ph.no ? t('ws.phase', { n: ph.no }) : t('ws.enablers')}</div><h3>{L(ph.name)}</h3></div>
@@ -164,4 +165,14 @@ export function Gantt() {
         <Legend items={[{ label: t('gantt.planned'), color: 'var(--aiv-line)' }, { label: t('status.In progress'), color: 'var(--aiv-azure)' }, { label: t('status.Completed'), color: 'var(--aiv-status-5)' }, { label: t('status.overdue'), color: 'var(--aiv-status-1)' }, { label: t('gantt.summary'), color: 'var(--aiv-navy)' }]} />
         <p className="caption">{t('gantt.caption', { from: fmtDate(min), to: fmtDate(max) })}</p></Card>);
     }}</Guard>}</>);
+}
+
+/** Indicator widgets chosen at step MP-10.2 (evaluation of the plan), with their value against the target. */
+function PlanWidgets({ projectId }) {
+  const { t, L, fmtNum } = useI18n(); const d = useData(`/projects/${projectId}/widgets`, [projectId]);
+  const w = d.data || []; if (!w.length) return null;
+  const tone = s => (s === 'Green' ? 'ok' : s === 'Amber' ? 'warn' : s === 'Red' ? 'err' : '');
+  return (<section className="card" style={{ marginTop: 'var(--aiv-space-4)' }}><div className="card-head"><div><div className="eyebrow">MP-10.2</div><h3>{t('flow.widgets')}</h3></div></div>
+    <div className="widget-tiles">{w.map(x => <div key={x.id} className={`kpi-tile ${tone(x.status)}`}><Kpi icon={x.chart === 'Gauge' ? 'Gauge' : 'Activity'} value={x.value == null ? '—' : `${fmtNum(x.value)}${x.unit === '%' ? ' %' : x.unit}`} label={L(x.name)}
+      note={`${t('flow.target')} ${x.direction === 'down' ? '≤' : '≥'} ${fmtNum(x.target)}${x.unit === '%' ? ' %' : x.unit}`} emph={x.status === 'Green'} /></div>)}</div></section>);
 }

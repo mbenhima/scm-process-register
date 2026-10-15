@@ -7,9 +7,11 @@ const { T, L, ml, str, norm, num, avg, round1, today, dplus, fmtN } = C;
 const LEVEL_LABEL = lang => ({ 1: T(lang, 'Notions', 'Notions', 'مبادئ'), 2: T(lang, 'Practice with support', 'Pratique accompagnée', 'ممارسة بمرافقة'), 3: T(lang, 'Autonomous', 'Autonome', 'مستقل'), 4: T(lang, 'Expert', 'Expert', 'خبير') });
 const familyOf = s => { const x = norm(s); return /\b(ia|ai|intelligence|algorithm|predict)/.test(x) ? 'AI' : /(numerique|digital|dossier|logiciel|donnees|data|telemed|informat)/.test(x) ? 'Digital' : /(manag|pilot|encadr|leader)/.test(x) ? 'Managerial' : /(norme|iso|reglement|conformite|ethique|rgpd|protection)/.test(x) ? 'Regulatory' : /(communic|equipe|relation|ecoute|esprit critique)/.test(x) ? 'Behavioural' : 'Technical'; };
 // Which competencies matter to which job: words of the competency found in the role, function or site of the position.
-const RELEVANCE = [[/triage|urgence|decision clinique|aide a la decision/, /urgen|infirm|soins|medic|clinique/], [/imag|radio/, /radio|imag|medic/], [/dossier|dpi|ehr|informatis/, /infirm|soins|qualit|medic|cadre/],
+const RELEVANCE = [[/triage|urgence|decision clinique|aide a la decision/, /urgen|infirm|soins|medic|clinique|cadre de sante/], [/imag|radio/, /radio|imag|medic/], [/dossier|dpi|ehr|informatis/, /infirm|soins|qualit|medic|cadre/],
   [/planif|lits|effectifs|capacit/, /cadre|direct|soins|qualit/], [/telemed|teleconsult/, /medic|direct/], [/rendez|factur/, /accueil|admin|factur/]];
-export const relevant = (compName, roleText) => { const c = norm(compName); const r = norm(roleText); const rule = RELEVANCE.find(([a]) => a.test(c)); return rule ? rule[1].test(r) : true; };
+// The job title decides first; a title specific to another field (radiology for triage) excludes it; then the function.
+export const relevant = (compName, roleText, fnText = '') => { const c = norm(compName); const r = norm(roleText); const rule = RELEVANCE.find(([a]) => a.test(c)); if (!rule) return true;
+  if (rule[1].test(r)) return true; if (RELEVANCE.some(([, b]) => b.test(r))) return false; return rule[1].test(norm(fnText)); };
 const levelOfRole = (projectId, position) => { const st = C.stakeholders(projectId).find(s => norm(s.role) === norm(position)); return st?.decision_level || (/(direct|chef|cadre|responsable|manager|head)/i.test(position) ? 'MO' : 'OP'); };
 
 /* ------------------------------------------------------------------ MP-02.1 competency framework */
@@ -60,7 +62,7 @@ function tplTargets({ req, t, lang }) {
 function aiTargets({ req, t, lang }) {
   const p = C.projectOf(t.project_id); const comps = C.competencies(t.project_id); const fed = C.needs(t.project_id); const out = [];
   for (const pos of positionsInScope(t)) for (const c of comps) {
-    const name = C.compName(c, lang); if (!relevant(name, `${pos.position} ${str(pos.fn)} ${pos.site || ''}`)) continue;
+    const name = C.compName(c, lang); if (!relevant(name, pos.position, `${str(pos.fn)} ${pos.site || ''}`)) continue;
     const cited = fed.find(n => norm(str(n.title, lang)) === norm(name))?.evidence?.mentions || 0;
     const crit = c.family === 'AI' && relevant(name, pos.position) && RELEVANCE.some(([a, b]) => a.test(norm(name)) && b.test(norm(pos.position))) ? 'Critical' : cited >= 3 ? 'Critical' : c.family === 'Regulatory' ? 'Important' : 'Useful';
     out.push({ position: pos.position, competency: c.code, target: pos.level === 'OP' ? (crit === 'Critical' ? '3' : '2') : '3', criticality: crit, headcount: String(pos.n), deadline: C.yearEnd(p), owner: req.user.name });

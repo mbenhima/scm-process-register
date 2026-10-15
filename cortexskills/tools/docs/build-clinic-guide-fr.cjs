@@ -64,8 +64,13 @@ body.push(H1('1. Le cas et ce guide'),
   H2('1.2 Les comptes du cas'),
   table(['Rôle dans le cas', 'Nom', 'E-mail de connexion'], [['Responsable formation (pilote du projet)', d.users.find(u => /headld/.test(u.email))?.name, 'headld@cliniquealamal.ma'], ['Analyste formation', d.users.find(u => /analyst/.test(u.email))?.name, 'analyst@cliniquealamal.ma'], ['DRH, présidente du comité de pilotage (jalons)', d.users.find(u => /hrd@/.test(u.email))?.name, 'hrd@cliniquealamal.ma'], ['Administrateur (canaux, intégrations)', d.users.find(u => /admin@/.test(u.email))?.name, 'admin@cliniquealamal.ma']], [3600, 2400, 3646]),
   P(`Mot de passe de démonstration : ${PASS}. Dans votre installation, utilisez vos propres comptes ; les rôles sont les mêmes.`, { size: 20, before: 60 }),
-  H2('1.3 Les quatre façons de remplir une étape'),
-  table(['Type d’étape', 'Ce que vous faites'], [['Tableau à coller', 'Plusieurs lignes du même type : copiez le tableau du guide (sa première ligne contient les titres exacts des colonnes) et collez-le dans le tableau de l’étape ; l’Aperçu du collage vérifie tout avant « Appliquer ».'], ['Formulaire', 'Une seule fiche (une décision, une revue) : choisissez ou saisissez chaque valeur. Les dates du jour, votre nom et l’objet de l’étape sont proposés d’office.'], ['Panneau de travail', 'L’étape travaille directement sur l’objet réel : le questionnaire (questions, répondants, messages, réponses) ou le document à générer.'], ['Étape automatique', 'La plateforme la réalise ; vous vérifiez son résultat.']], [2600, 7046]),
+  H2('1.3 Les trois façons de remplir une étape'),
+  P('Chaque étape d’un tableau ou d’un formulaire se remplit de trois façons, que vous pouvez combiner : vous partez d’une proposition, vous la corrigez, vous complétez à la main.'),
+  table(['Façon', 'Bouton', 'Ce que fait l’application'], [['Saisie manuelle', 'Ajouter une ligne · Coller (Ctrl+V)', 'Vous tapez les valeurs, ou vous collez un tableau dont la première ligne porte les titres exacts des colonnes ; l’Aperçu du collage vérifie chaque cellule avant « Appliquer ».'],
+    ['Depuis le modèle', '« Depuis le modèle »', 'Propose des lignes tirées de la bibliothèque du secteur et des données déjà saisies dans le projet (référentiel, cibles, écarts, sessions…). Vous acceptez, modifiez ou rejetez chaque ligne.'],
+    ['Proposition de l’IA', '« Proposer des lignes avec l’IA »', 'Passe par le cas d’usage IA relié à l’étape : il raisonne sur les enregistrements du projet (par exemple les écarts critiques) et explique ses choix. Chaque ligne est validée par une personne ; l’usage est journalisé.']], [2000, 2600, 5046], { size: 18 }),
+  table(['Type d’étape', 'Ce que vous faites'], [['Tableau', 'Plusieurs lignes du même type, remplies par l’une des trois façons ; « Terminer l’étape » crée les enregistrements du projet (compétences, cibles, sessions, inscriptions…).'], ['Formulaire', 'Une seule fiche (une décision, une revue) : saisissez, ou pré-remplissez depuis le modèle ou l’IA, puis « Appliquer ces valeurs ».'],
+    ['Panneau de travail', 'L’étape travaille sur l’objet réel : ses boutons envoient les liens (évaluations, convocations, tests), relancent, calculent (écarts, progression, indicateurs). Elle se termine quand son résultat existe.'], ['Étape automatique', 'La plateforme la réalise ; vous vérifiez son résultat.']], [2600, 7046]),
   callout('Avant de coller', ['Mettez l’interface en français (bouton FR) : les dates JJ/MM/AAAA et les nombres « 3,5 » sont lus selon la langue de l’interface.', 'Les tableaux de ce guide peuvent être modifiés avant d’être copiés : remplacez les valeurs par celles de votre clinique.']),
 );
 
@@ -97,9 +102,9 @@ body.push(H1('2. Préparer l’application (administrateur)'),
 const inv = (task('UFT-33-06')?.steps[0] || {}).invitations || [];
 const STK = (task('UFT-32-06')?.steps[0] || {}).rows || [];
 body.push(H1('3. Les répondants du cas'),
-  P('Le questionnaire est envoyé aux huit personnes ci-dessous, saisies à l’étape MP-53.8. Leurs adresses et numéros sont fictifs : pour un essai réel, remplacez-les avant de coller le tableau (chapitre 5, tâche UFT-32-06) par des adresses et des numéros que vous recevez vous-même ou dont les titulaires ont donné leur accord.'),
+  P(`Le questionnaire est envoyé aux ${STK.length} personnes ci-dessous, saisies à l’étape MP-53.8. Leurs adresses et numéros sont fictifs : pour un essai réel, remplacez-les avant de coller le tableau (chapitre 5, tâche UFT-32-06) par des adresses et des numéros que vous recevez vous-même ou dont les titulaires ont donné leur accord.`),
   table(['Nom', 'E-mail du cas', 'Téléphone (WhatsApp)', 'Niveau', 'Canal préféré'], STK.map(r => [r[0], r[1], r[2], r[5], r[7]]), [2300, 3100, 1900, 1200, 1200], { size: 17 }),
-  callout('Recevoir les huit messages vous-même', ['Avec une adresse Gmail, ajoutez « +mot » avant l’arobase : prenom.nom+dg@gmail.com, prenom.nom+infirmiere@gmail.com… Tous ces messages arrivent dans votre boîte, chacun avec son lien personnel.', 'Pour WhatsApp, utilisez des numéros de collègues volontaires, au format international (+212 6…).']),
+  callout('Recevoir tous les messages vous-même', ['Avec une adresse Gmail, ajoutez « +mot » avant l’arobase : prenom.nom+dg@gmail.com, prenom.nom+infirmiere@gmail.com… Tous ces messages arrivent dans votre boîte, chacun avec son lien personnel.', 'Pour WhatsApp, utilisez des numéros de collègues volontaires, au format international (+212 6…).']),
 );
 
 // ---------------------------------------------------------------- 4
@@ -118,7 +123,7 @@ body.push(H1('5. Phase 1 — Le cahier des charges (E2E-32)'), P('Neuf tâches f
 for (const t of T32) {
   const ex = {};
   if (t.uft === 'UFT-32-01') ex.shots = shot(SH('10_scope_group_org'), 'UFT-32-01 : le formulaire avec ses listes, et « Votre résultat » rédigé depuis les étapes', 420);
-  if (t.uft === 'UFT-32-06') ex.shots = [callout('Ce qui se passe quand vous collez ce tableau', ['Chaque ligne crée la fiche de la partie prenante (registre des parties prenantes) avec son e-mail, son téléphone, son niveau et son canal préféré.', 'Ces fiches sont celles que l’étape de diffusion (UFT-33-06) propose comme répondants. Une Directrice générale ou un Directeur général reçoit le formulaire « Direction générale », les niveaux MS et MO le formulaire « Management », le niveau OP le formulaire « Collaborateur ».']), ...shot(SH('15_stakeholders_b'), 'UFT-32-06 : les huit parties prenantes enregistrées', 420)];
+  if (t.uft === 'UFT-32-06') ex.shots = [callout('Ce qui se passe quand vous collez ce tableau', ['Chaque ligne crée la fiche de la partie prenante (registre des parties prenantes) avec son e-mail, son téléphone, son niveau et son canal préféré.', 'Ces fiches sont celles que l’étape de diffusion (UFT-33-06) propose comme répondants. Une Directrice générale ou un Directeur général reçoit le formulaire « Direction générale », les niveaux MS et MO le formulaire « Management », le niveau OP le formulaire « Collaborateur ».']), ...shot(SH('15_stakeholders_b'), 'UFT-32-06 : les ' + STK.length + ' parties prenantes enregistrées', 420)];
   if (t.uft === 'UFT-32-08') ex.shots = [P('L’étape MP-53.10 est un panneau de travail : cliquez sur « Générer une nouvelle version » pour produire le cahier des charges (modèle DT-E2E-32). Chaque génération crée une version datée ; chaque version se télécharge en DOCX, PDF ou XLSX, et le rapport standard RPT-033 se télécharge en PDF, DOCX ou XLSX. L’onglet « Documents » de chaque tâche donne les documents de son processus.', { size: 19 }), ...shot(SH('16_publish_doc_b'), 'MP-53.10 : le document généré, sa version, ses formats', 420)];
   body.push(...taskBlock(t, ex));
 }
@@ -148,7 +153,7 @@ for (const t of T33) {
     ...shot(SH('24_channels_b'), 'UFT-33-05 : canaux préférés à choix multiple', 420)];
   if (t.uft === 'UFT-33-06') { const em = (s0.messages || []).find(m => m.channel === 'email') || (s0.messages || [])[0]; const wa = (s0.messages || []).find(m => m.channel === 'whatsapp');
     ex.shots = [P('Le panneau montre l’état des canaux (production ou bac à sable), puis la liste « Qui répond ». Deux actions :', { size: 19 }),
-      ...steps([[b('« Ajouter des répondants » : '), 'cochez « Tout sélectionner » : les huit parties prenantes de UFT-32-06 sont ajoutées, chacune avec son formulaire et son plan de canaux.'], [b('« Diffuser maintenant à 8 répondant(s) » : '), 'chaque répondant reçoit immédiatement son premier message, avec son lien personnel.']]),
+      ...steps([[b('« Ajouter des répondants » : '), 'cochez « Tout sélectionner » : les parties prenantes de UFT-32-06 sont ajoutées, chacune avec son formulaire et son plan de canaux.'], [b('« Diffuser maintenant à 8 répondant(s) » : '), 'chaque répondant reçoit immédiatement son premier message, avec son lien personnel.']]),
       P('Le message réellement envoyé par e-mail (exemple) :', { size: 19, before: 60, keepNext: true }), code(`Objet : ${em?.subject || ''}`), ...String(em?.text || '').split('\n').filter(Boolean).slice(0, 9).map(l => code(l.replace(/https?:\/\/[^\s]+\/respond\/\S+/, 'https://competences.cliniquealamal.ma/respond/<lien personnel>'))),
       ...(wa ? [P('Et par WhatsApp (avec le modèle approuvé, les mêmes informations remplissent ses variables) :', { size: 19, before: 60, keepNext: true }), ...String(wa.text || '').split('\n').filter(Boolean).slice(0, 4).map(l => code(l.replace(/https?:\/\/[^\s]+\/respond\/\S+/, 'https://competences.cliniquealamal.ma/respond/<lien personnel>')))] : []),
       ...shot(SH('25_distribution_b'), 'UFT-33-06 : les répondants, leurs coordonnées et leur plan de canaux', 420)]; }
@@ -172,9 +177,60 @@ const PH = [[2, 'E2E-02', '7. Phase 2 — Le diagnostic des écarts de compéten
   [3, 'E2E-01', '8. Phase 3 — Le plan de formation (E2E-01)', 'Le plan de formation relie les objectifs de la clinique aux thèmes prioritaires, avec budget, calendrier et indicateurs.'],
   [4, 'E2E-05', '9. Phase 4 — La conception et la réalisation (E2E-05)', 'Les actions du plan deviennent des sessions : prestataires, programmes, convocations, présences et évaluations à chaud.'],
   [5, 'E2E-07', '10. Phase 5 — L’évaluation de l’efficacité (E2E-07)', 'Les acquis, le transfert en situation de travail et l’efficacité sont mesurés et comparés aux objectifs.']];
+// The three ways to fill a step, what the case used, the rows to paste, the live result.
+const MODE = { manual: 'Saisie manuelle (ou collage)', template: 'Depuis le modèle', ai: 'Proposition de l’IA' };
+const SHOT_OF = { 'UFT-02-01': '40_competencies', 'UFT-02-03': '42_population', 'UFT-02-04': '43_assessments', 'UFT-02-07': '46_gaps',
+  'UFT-01-04': '52_needs', 'UFT-01-05': '53_budget', 'UFT-01-08': '54_approve',
+  'UFT-05-01': '60_review', 'UFT-05-03': '61_sessions', 'UFT-05-04': '62_convocations', 'UFT-05-05': '63_capsules', 
+  'UFT-07-02': '70_questionbank', 'UFT-07-04': '72_l2', 'UFT-07-05': '73_l3', 'UFT-07-06': '74_kpis' };
+const nRows = m => (m?.rows ? `${m.rows.length} ligne(s) proposée(s)` : m?.fields ? `${m.fields.length} champ(s) pré-rempli(s)` : null);
+function modesBlock(s) {
+  if (!(s.fill || []).length) return [];
+  const manual = s.pattern === 'form' || s.pattern === 'sectioned' ? 'Saisir chaque champ du formulaire.' : `Saisir les lignes, ou coller un tableau dont la première ligne porte les titres : ${s.fields.map(f => f.label).join(' | ')}.`;
+  const tpl = (s.fill || []).includes('template') ? nRows(s.modes?.template) || 'Rien à proposer à ce stade' : 'Non proposé pour cette étape';
+  const ai = (s.fill || []).includes('ai') ? (s.modes?.ai ? `${nRows(s.modes.ai)}${s.modes.ai.useCase ? ` (cas d’usage ${s.modes.ai.useCase})` : ''}` : s.modes?.aiError ? `Indisponible (${s.modes.aiError})` : '—') : 'Non proposé pour cette étape';
+  const mark = k => (s.mode === k ? ' ✓' : '');
+  return [P([b('Trois façons : '), { text: `Manuel${mark('manual')}`, bold: s.mode === 'manual' }, ' — ', s.pattern === 'form' || s.pattern === 'sectioned' ? 'saisir chaque champ' : 'saisir ou coller les lignes', '  ·  ',
+    { text: `Depuis le modèle${mark('template')}`, bold: s.mode === 'template' }, ` — ${tpl}`, '  ·  ', { text: `IA${mark('ai')}`, bold: s.mode === 'ai' }, ` — ${ai}`], { size: 17, after: 60, keepNext: true })];
+}
+function panelBlock(p) {
+  if (!p) return []; const outB = [];
+  if (p.kpis?.length) outB.push(P(p.kpis.map(k => `${k.label} : ${k.value}`).join('   ·   '), { size: 19, bold: true, color: C.navy, after: 60 }));
+  for (const n of p.notes || []) outB.push(P(n, { size: 17, color: C.muted, after: 60 }));
+  for (const tb of (p.tables || []).slice(0, 1)) { if (!tb.rows.length) continue; const w = tb.columns.map((c, i) => Math.min(3200, Math.max(900, Math.max(c.length, ...tb.rows.map(r => String(r[i] || '').length)) * 75)));
+    outB.push(P(tb.title, { size: 18, bold: true, after: 40, keepNext: true }), table(tb.columns, tb.rows.slice(0, 8), w, { size: tb.columns.length > 6 ? 14 : 16 }), spacer(80)); }
+  return outB;
+}
+function flowStepBlock(t, s) {
+  if (s.skipped) return [];
+  const sx = { ...s, rows: (s.rows || []).slice(0, 8) }; const blk = stepBlock(sx);
+  const extra = [...modesBlock(s)];
+  if (s.mode) extra.push(P([b(`Dans le cas : ${MODE[s.mode]}`), s.edited ? ' (proposition modifiée avant d’être enregistrée)' : '', s.note ? ` — ${s.note}` : ''], { size: 19, after: 60, keepNext: true }));
+  blk.splice(1, 0, ...extra);
+  if ((s.rows || []).length > 8) blk.push(P(`… ${s.rows.length} lignes au total, toutes visibles dans l’application.`, { size: 16, color: C.muted, after: 80 }));
+  for (const a of s.actions || []) { const r = a.result || {}; const txt = r.added != null ? `${r.added} lien(s) envoyé(s)${r.missing?.length ? ` ; adresse manquante : ${r.missing.join(', ')}` : ''}` : r.sent != null ? `${r.sent} message(s) envoyé(s)` : r.created != null ? `${r.created} compte(s) créé(s)` : r.lines != null ? `${r.lines} ligne(s) calculée(s)` : r.needs != null ? `${r.needs} besoin(s) construits` : r.indicators != null ? `${r.indicators} indicateur(s) actualisé(s)` : r.records != null ? `${r.records} preuve(s) enregistrée(s)` : 'fait';
+    blk.push(P([b(`Bouton du panneau (${a.key}) : `), txt], { size: 18, after: 40 })); }
+  if (s.result?.added != null) blk.push(P([b('À la clôture de l’étape : '), `${s.result.added} lien(s) envoyé(s) par e-mail ou WhatsApp.`], { size: 18, after: 40 }));
+  if (s.result?.sent != null) blk.push(P([b('À la clôture de l’étape : '), `${s.result.sent} message(s) envoyé(s).`], { size: 18, after: 40 }));
+  if (s.answers?.length) blk.push(P([b(`${s.answers.length} réponse(s) reçue(s) `), `sur les liens personnels, par exemple : ${s.answers.slice(0, 3).map(x => x.name).join(', ')}.`], { size: 18, after: 60 }));
+  if (s.document) blk.push(P([b('Document généré : '), `${s.document.code} — ${s.document.title} (version ${s.document.version}, ${s.document.status}).`], { size: 18, after: 60 }));
+  if (s.pattern === 'module' || (s.fill || []).length) blk.push(...panelBlock(s.panel));
+  return blk;
+}
+const msgOf = rx => (d.flow?.messages || []).find(m => rx.test(m.subject || ''));
+const msgBlock = (title, m) => (m ? [P(title, { size: 18, bold: true, after: 40, keepNext: true }), code([`Objet : ${m.subject}`, ...String(m.body || '').split('\n')].join('\n'))] : []);
 for (const [ph, e2e, title, intro] of PH) {
   body.push(H1(title), P(intro));
-  for (const t of d.tasks.filter(x => x.e2e === e2e)) body.push(...taskBlock(t));
+  for (const t of d.tasks.filter(x => x.e2e === e2e)) {
+    body.push(H3(`${t.uft} — ${t.name}`), P([b('Qui : '), `${t.owner || '—'} (approbateur : ${t.accountable || '—'}) · compte ${t.actor}  ·  `, b('Entrée → sortie : '), `${t.input || '—'} → ${t.outputName || '—'}`], { size: 18, after: 80 }), ...t.steps.flatMap(s => flowStepBlock(t, s)));
+    if (SHOT_OF[t.uft]) body.push(...shot(SH(SHOT_OF[t.uft]), `${t.uft} dans l’application`, 330));
+    if (t.uft === 'UFT-02-03') body.push(...msgBlock('Le message reçu par une personne évaluée (exemple) :', msgOf(/Auto-évaluation/)), ...shot(SH('80_form_assessment'), 'Le formulaire d’auto-évaluation tel que la personne le reçoit', 380));
+    if (t.uft === 'UFT-05-04') body.push(...msgBlock('La convocation reçue par un apprenant (exemple) :', msgOf(/Convocation/)), ...shot(SH('81_form_convocation'), 'La convocation : détails de la session et confirmation de présence', 380));
+    if (t.uft === 'UFT-05-05') body.push(...shot(SH('84_capsule_respond'), 'Une capsule ouverte depuis le lien reçu sur WhatsApp', 360));
+    if (t.uft === 'UFT-07-04') body.push(...msgBlock('Le message du test (exemple) :', msgOf(/^.*Test —/)), ...shot(SH('82_form_test'), 'Le test de connaissances : une seule bonne réponse par question, jamais montrée à l’apprenant', 380));
+    if (t.uft === 'UFT-07-08') body.push(...shot(SH('85_project_widgets'), 'Les indicateurs choisis en MP-10.2 sur la page du projet', 420));
+    body.push(...closeTask(t));
+  }
   body.push(...gate(ph));
 }
 
@@ -189,6 +245,11 @@ body.push(H1('11. En cas de difficulté'),
     ['« Chaque section doit avoir exactement un A »', 'Aucun ou plusieurs rôles cochés A pour une section.', 'Dans MP-54.4, gardez un seul A (ou précisez les sections de chaque ligne).'],
     ['« Des questions IA ne sont pas encore validées »', 'Une question IA attend sa validation.', 'MP-54.3 : « Tout valider » ou ✓ sur chaque question, puis terminez l’étape.'],
     ['« Ce processus transverse démarre après le jalon G3 »', 'Le processus d’adoption (E2E-17) attend le plan approuvé.', 'Normal : il démarre après le « Go » du jalon G3.'],
+    ['« Il manque une adresse e-mail ou un numéro… »', 'Une personne a le canal WhatsApp sans téléphone, ou e-mail sans adresse.', 'Complétez la ligne (le nom choisi dans la liste remplit l’e-mail et le téléphone connus), ou changez de canal.'],
+    ['« Le budget par thème dépasse l’enveloppe »', 'La somme des lignes de MP-18.1 est supérieure au montant de MP-01.3.', 'Réduisez des groupes ou des jours, ou rouvrez MP-01.3 pour réviser l’enveloppe (avec justification).'],
+    ['« Le planning comporte des conflits »', 'Un formateur ou une salle est réservé deux fois le même jour, ou hors de ses disponibilités.', 'Le panneau MP-07.2 liste chaque conflit ; corrigez la date, la salle ou le formateur en MP-07.1.'],
+    ['« Rien n’a encore été envoyé »', 'Le bouton d’envoi du panneau n’a pas été utilisé.', 'Cliquez « Envoyer… » dans le panneau de l’étape, puis terminez-la.'],
+    ['« Aucune réponse reçue »', 'Personne n’a encore répondu à son lien.', 'Attendez les réponses ou « Relancer » ; l’étape se termine dès la première réponse, les suivantes sont prises en compte au calcul.'],
     ['Le collage met les titres dans une ligne', 'La case « La première ligne contient les titres » est décochée ou un titre a changé.', 'Cochez-la dans l’Aperçu du collage, ou recopiez le tableau sans modifier ses titres.'],
   ], [2900, 3200, 3546], { size: 17 }),
 );

@@ -40,6 +40,15 @@ if (!isSeeded()) {
     run(`INSERT OR REPLACE INTO meta(key,value) VALUES('guidance_1_13', ?)`, String(n));
   }
 }
+// Release 1.14: the guidance of the diagnosis, plan, delivery and evaluation tasks not yet started follows their step forms.
+{ const { one, all, run } = await import('./db.js');
+if (!one(`SELECT value FROM meta WHERE key='guidance_1_14'`)) {
+  const { guidanceFor } = await import('./services/guidance.js'); const { guidanceContext } = await import('./services/projects.js'); let n = 0;
+  for (const t of all(`SELECT t.id, t.uft_id, t.project_id FROM task_instances t WHERE t.status='Not started' AND (t.uft_id LIKE 'UFT-02-%' OR t.uft_id LIKE 'UFT-01-%' OR t.uft_id LIKE 'UFT-05-%' OR t.uft_id LIKE 'UFT-07-%')`)) {
+    const p = one(`SELECT * FROM projects WHERE id=?`, t.project_id); if (!p) continue; run(`UPDATE task_instances SET guidance=? WHERE id=?`, JSON.stringify(guidanceFor(t.uft_id, guidanceContext(p))), t.id); n++;
+  }
+  run(`INSERT OR REPLACE INTO meta(key,value) VALUES('guidance_1_14', ?)`, String(n));
+} }
 // Release 1.14: the AI use cases of the steps of the diagnosis, plan, delivery and evaluation, added to every Organization.
 { const { ensureAllUseCases } = await import('./services/flow.js'); try { const n = ensureAllUseCases(); if (n) console.log(`[1.14] ${n} AI use cases added`); } catch (e) { console.error('[1.14]', e.message); } }
 // Production mode: refuse to start on an unsafe configuration, naming each problem (NODE_ENV=production).

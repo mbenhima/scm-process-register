@@ -1,6 +1,6 @@
 {
  "srs": "srs-1.9-requirements.json",
- "at": "2026-10-15T12:15:50.231Z",
+ "at": "2026-10-15T15:08:07.211Z",
  "total": 636,
  "summary": {
   "Met": 635,
@@ -19,7 +19,7 @@
     "FR-DA-SFM-08"
    ],
    "ok": true,
-   "detail": "18 passed, 0 failed (security, bulk import, questionnaire steps)"
+   "detail": "22 passed, 0 failed (security, bulk import, questionnaire steps)"
   },
   {
    "id": "web-tests",
@@ -50,7 +50,7 @@
     "FR-DA-I18N-01"
    ],
    "ok": true,
-   "detail": "3232 keys; 0 without a language; 1 Arabic entries in Latin script (q.sendResult)"
+   "detail": "3292 keys; 0 without a language; 9 Arabic entries in Latin script (qmsg.assessment.invite.subject, qmsg.convocation.invite.subject, qmsg.simulation.invite.subject, qmsg.review.invite.subject, qmsg.capsule.invite.subject, qmsg.l1.invite.subject)"
   },
   {
    "id": "crawl-en-fr-ar",
@@ -91,7 +91,7 @@
     "FR-DA-MRE-29"
    ],
    "ok": true,
-   "detail": "1,000 rows committed in 394 ms (target < 10,000 ms); 10000 rows in the table"
+   "detail": "1,000 rows committed in 297 ms (target < 10,000 ms); 10000 rows in the table"
   },
   {
    "id": "grid-10000",
@@ -101,7 +101,7 @@
     "NFR-DA-UX-21"
    ],
    "ok": true,
-   "detail": "10000 rows: step opened and first rows shown in 1227 ms (including the page load), 20 rows rendered (virtual rows), a keystroke shown in 63 ms"
+   "detail": "10000 rows: step opened and first rows shown in 1385 ms (including the page load), 20 rows rendered (virtual rows), a keystroke shown in 66 ms"
   }
  ],
  "rows": [
@@ -872,10 +872,10 @@
     "server/seed/i18n/tm.ar.R12.json",
     "server/seed/i18n/tm.fr.R12.json",
     "server/src/services/aicatalog.js",
-    "server/src/services/steps.js",
-    "web/src/components/StepForms.jsx"
+    "server/src/services/flow.js",
+    "server/src/services/steps.js"
    ],
-   "codeCount": 6,
+   "codeCount": 7,
    "checks": [],
    "note": ""
   },

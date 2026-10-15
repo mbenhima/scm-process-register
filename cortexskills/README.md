@@ -2,6 +2,15 @@
 
 Training engineering platform: 33 end-to-end processes in seven phases, from the scope of work to the evaluation of results, for large companies and SMEs in 29 sectors, in English, French and Arabic.
 
+## What is new in 1.14
+
+- **A real flow across the whole cycle.** The steps of the skills diagnosis (E2E-02), the training plan (E2E-01), delivery (E2E-05) and evaluation (E2E-07) now work on the project's own records, each one reading what the previous one created: competency framework → targets per position → self and manager assessments → validated inventory → gap matrix → objectives, priorities and needs → envelope, budget per theme and refunds → change plan → approval, which creates the courses → expert review → catalogue → rooms, trainers and sessions → enrolment of the people with a gap → invitations → attendance → satisfaction, test and observation → progression and indicators.
+- **Three ways to fill every step**: type or paste the rows; load them with **From the template** (sector library and project data); or ask the **AI proposal**, through one of 36 new AI use cases linked to the steps (built-in engine, or the Organization's model). Every proposed row is accepted, edited or rejected; forms are pre-filled the same way.
+- **Real messages and real answers**: self-assessments and manager assessments, invitations to the sessions with a confirmation of attendance, expert reviews of the courses, micro-learning capsules, satisfaction questionnaires, knowledge tests (multiple choice, scored from an answer key never shown to the learner) and observation at work are sent by e-mail or WhatsApp; each person answers from their own link, with automatic reminders.
+- **Live panels** in the steps: campaign answers, consolidated assessments, gap matrix, needs, schedule check (rooms, trainers, availability, capacity), invitations and confirmations, learner accounts, capsule completion, scores, progression and indicators, each table downloadable as CSV; buttons send, remind and compute.
+- **Indicators of the plan** (satisfaction, test pass rate, progression, attendance, fill rate, critical gaps, budget variance, capsule completion) computed from the answers and shown on the project page with the widgets chosen at step MP-10.2.
+- The task guidance of these processes is written from their step forms.
+
 ## What is new in 1.13
 
 - **Steps that work on real data** (E2E-32 scope and E2E-33 questionnaire campaign): each step has a typed form with lists wherever possible (group yes/no, organization, sector, decision levels, orientation all/digital/AI/custom), and every list accepts a custom value. Stakeholders typed at MP-53.8 (name, e-mail, phone, role, function, level, site, preferred channel, category, description, owner, source) become the questionnaire's respondents.

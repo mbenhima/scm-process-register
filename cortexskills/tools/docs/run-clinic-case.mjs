@@ -16,9 +16,12 @@ const { rowFor } = await import(S + 'seed/release110.js');
 const { rng, pick } = await import(S + 'src/lib/util.js');
 const fr = v => (v && typeof v === 'object' && !Array.isArray(v) ? pick(v, 'fr') : v);
 let token = null;
-async function api(method, path, body) {
+async function api(method, path, body, tries = 0) {
+  // The public response page is rate limited (120 calls a minute per address): wait and try again.
+  if (tries) await new Promise(r => setTimeout(r, 62000));
   const res = await fetch(BASE + path, { method, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) }, body: body ? JSON.stringify(body) : undefined });
   const txt = await res.text(); let data; try { data = JSON.parse(txt); } catch { data = txt; }
+  if (res.status === 429 && path.startsWith('/public/') && tries < 3) return api(method, path, body, tries + 1);
   if (!res.ok) { const e = new Error(`${method} ${path} → ${res.status} ${typeof data === 'object' ? JSON.stringify(data) : data}`.slice(0, 600)); e.status = res.status; e.data = data; throw e; }
   return data;
 }
@@ -45,6 +48,9 @@ const STAKEHOLDERS = [
   ['Leila Chraibi', 'qualite@cliniquealamal.ma', '+212 6 61 00 00 06', 'Responsable qualité', 'Qualité et HSE', 'MO', 'Email', 'Expert', 'Référente accréditation et gestion des risques.'],
   ['Samira Ouazzani', 'infirmiere.urgences@cliniquealamal.ma', '+212 6 61 00 00 07', 'Infirmière', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Infirmière d’accueil et d’orientation aux urgences.'],
   ['Rachid Amrani', 'radiologie@cliniquealamal.ma', '+212 6 61 00 00 08', 'Technicien de radiologie', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Utilisateur de l’aide à la lecture d’images.'],
+  ['Mehdi Tahiri', 'infirmier.urgences2@cliniquealamal.ma', '+212 6 61 00 00 09', 'Infirmière', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Infirmier d’accueil aux urgences (équipe de nuit).'],
+  ['Youssra Bennis', 'infirmiere.hospit@cliniquealamal.ma', '+212 6 61 00 00 10', 'Infirmière', 'Soins cliniques et infirmiers', 'OP', 'Email', 'Respondent', 'Infirmière en hospitalisation, renfort aux urgences.'],
+  ['Imane Zerouali', 'radiologie2@cliniquealamal.ma', '+212 6 61 00 00 11', 'Technicien de radiologie', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Manipulatrice en radiologie.'],
 ];
 
 // ------------------------------------------------------------------ helpers on tasks and steps
@@ -211,13 +217,139 @@ async function runAll(pid) {
     sections: f.sections.map(s => ({ id: s.id, type: s.type, title: fr(s.title), origin: s.origin || 'template', instructions: fr(s.instructions) || '', racsi: s.racsi || null,
       items: (s.items || s.fields || s.rows || s.boxes || []).map(x => ({ label: fr(x.label || x.title) || x.key, origin: x.origin || null })), columns: (s.columns || []).map(c => fr(c.label)) })) })) };
   out.answered = answered;
-  await passGate(pid, 1, 'Périmètre approuvé, 7 réponses sur 8 collectées et consolidées.');
+  await passGate(pid, 1, `Périmètre approuvé, ${answered.length} réponses sur ${STAKEHOLDERS.length} collectées et consolidées.`);
 
-  // ---------------- phases 2 to 5 — diagnostic, plan, delivery, evaluation
-  for (const [ph, e2e, note] of [[2, 'E2E-02', 'Écarts de compétences validés par la direction médicale.'], [3, 'E2E-01', 'Plan de formation 2027 approuvé par le comité de pilotage.'], [4, 'E2E-05', 'Sessions réalisées, présences et évaluations à chaud enregistrées.'], [5, 'E2E-07', 'Efficacité évaluée à trois mois.']]) {
-    for (const t of tasksOf(pid, e2e)) { await login(HEAD); const st = await stepsOf(t.id); await runTask(e2e, t, { fill: genericFill(st, ctx, r) }); }
-    await passGate(pid, ph, note);
+  await runFlow(pid);
+}
+
+// ------------------------------------------------------------------ phases 2 to 5 — the real flow, step by step
+// Every step is filled the way the guide shows it: manually (typed or pasted), from the template of the library, or
+// from the AI proposal; the three proposals are recorded for the guide, one is applied (sometimes edited), the people
+// answer their own links on the public page, and the step is completed.
+const shape = (s, p) => { if (!p) return null; const sf = snapStep(s); if (p.fields) return { fields: sf.fields.filter(f => p.fields[f.key] != null && p.fields[f.key] !== '').map(f => ({ label: f.label, value: lbl(f, p.fields[f.key]) })) };
+  return { rows: (p.rows || []).map(r => sf.fields.map(f => lbl(f, r[f.key]))), useCase: p.useCase?.code || null, engine: p.engine || null }; };
+const trimPanel = p => p && ({ notes: p.notes || [], kpis: p.kpis || [], tables: (p.tables || []).map(t => ({ title: t.title, columns: t.columns.map(c => c[1]), rows: t.rows.slice(0, 14).map(r => t.columns.map(c => String(r[c[0]] ?? ''))) })) });
+async function flowStep(t, s, o = {}) {
+  const b = `/tasks/${t.id}/steps/${s.id}`; const snap = { ...snapStep(s), fill: s.form.fill || [], modes: {} };
+  if (o.first) snap.answers = await o.first(); // answers received before the step is filled (expert reviews)
+  const fill = s.form.fill || [];
+  if (fill.includes('template')) try { snap.modes.template = await api('POST', `${b}/template`, {}); } catch (e) { snap.modes.templateError = e.data?.error || e.message; }
+  if (fill.includes('ai')) try { snap.modes.ai = await api('POST', `${b}/suggest`, {}); } catch (e) { snap.modes.aiError = e.data?.error || e.message; }
+  const mode = o.mode || (snap.modes.ai && !snap.modes.ai.fields && !(snap.modes.ai.rows || []).length ? 'template' : o.mode) || (s.form.pattern === 'module' ? null : 'template');
+  let applied = null;
+  if (o.rows) applied = { rows: o.rows };
+  else if (mode && snap.modes[mode]) applied = snap.modes[mode];
+  if (applied && o.edit) applied = applied.fields ? { fields: o.edit(applied.fields) } : { rows: applied.rows.map(o.edit).filter(Boolean) };
+  if (applied && o.add) applied = { rows: [...applied.rows, ...o.add] };
+  if (applied?.fields) await api('PUT', `${b}/fields`, { fields: applied.fields });
+  else if (applied?.rows) for (const r of applied.rows) await api('POST', `${b}/rows`, { data: r, origin: o.rows ? 'manual' : mode === 'ai' ? 'ai' : 'library' });
+  snap.mode = o.rows ? 'manual' : applied ? mode : null; snap.edited = !!(o.edit || o.add); snap.note = o.note || null;
+  const sf = snapStep(s);
+  if (applied?.fields) snap.values = sf.fields.map(f => ({ label: f.label, value: lbl(f, applied.fields[f.key]) || '' }));
+  if (applied?.rows) snap.rows = applied.rows.map(r => sf.fields.map(f => lbl(f, r[f.key])));
+  snap.modes = { template: shape(s, snap.modes.template), ai: shape(s, snap.modes.ai), aiError: snap.modes.aiError || null, templateError: snap.modes.templateError || null };
+  for (const a of o.before || []) { snap.actions = [...(snap.actions || []), { key: a, result: await api('POST', `${b}/actions/${a}`, {}) }]; }
+  if (o.answer) snap.answers = await o.answer();
+  for (const a of o.after || []) { snap.actions = [...(snap.actions || []), { key: a, result: await api('POST', `${b}/actions/${a}`, {}) }]; }
+  try { const r = await api('POST', `${b}/complete`, {}); snap.completed = true; snap.result = r.result || null; } catch (e) { snap.completed = false; snap.completeError = e.data?.error || e.message; console.log('  ✗', s.id, snap.completeError); }
+  try { snap.panel = trimPanel(await api('GET', `${b}/panel`)); } catch { /* no panel */ }
+  if (s.form.module === 'document') { const d = await api('GET', `/projects/${t.project_id}/documents`); const x = d.filter(y => y.doc_type === s.form.doc)[0]; if (x) snap.document = { code: s.form.doc, title: x.title, version: x.versionLabel || x.version, status: x.status }; }
+  return snap;
+}
+async function flowTask(e2e, t, plan, actor = HEAD) {
+  await login(actor);
+  const u = cat.get('uft', t.uft_id); const rec = { uft: t.uft_id, name: fr(u.name), owner: fr(u.racsiT?.R) || u.racsi?.R, accountable: fr(u.racsiT?.A) || u.racsi?.A, input: fr(u.input), outputName: fr(u.output), steps: [], actor };
+  if (taskRec(t.id).status === 'Not started') await api('PATCH', `/tasks/${t.id}`, { status: 'In progress' });
+  const st = await stepsOf(t.id); const order = plan._order || st.steps.map(s => s.id);
+  for (const sid of order) { const s = st.steps.find(x => x.id === sid); if (!s) continue; if (s.done) { rec.steps.push({ ...snapStep(s), skipped: true }); continue; }
+    if (s.form.module === 'document') await api('POST', `/projects/${t.project_id}/documents`, { doc_type: s.form.doc, lang: 'fr' });
+    console.log(' ', t.uft_id, sid); rec.steps.push(await flowStep(t, s, plan[sid] || {})); }
+  rec.steps.sort((a, b) => st.steps.findIndex(x => x.id === a.id) - st.steps.findIndex(x => x.id === b.id));
+  const task = await api('GET', `/tasks/${t.id}`); rec.guidance = fr(task.task.guidance); rec.output = task.summary || rec.outputName;
+  await api('PATCH', `/tasks/${t.id}`, { output: rec.output, status: 'Completed' });
+  out.tasks.push({ e2e, ...rec }); return rec;
+}
+/** Every open link of a campaign answered on the public page: `answer(view, i)` returns the answers or null (not answered). */
+async function answerCampaign(pid, purpose, answer) {
+  const q = one(`SELECT id FROM records WHERE entity='Questionnaire' AND project_id=? AND json_extract(data,'$.purpose')=?`, pid, purpose); if (!q) return [];
+  const saved = token; const done = [];
+  for (const [i, inv] of all(`SELECT id, name, template_code FROM q_invitations WHERE questionnaire_id=? AND status<>'Responded' ORDER BY created_at`, q.id).entries()) {
+    token = saved; const tk = (await api('GET', `/invitations/${inv.id}/link`)).url.split('/respond/')[1]; token = null;
+    const view = await api('GET', `/public/q/${tk}`); const a = answer(view, i); if (!a) continue;
+    await api('POST', `/public/q/${tk}`, { answers: a, consent: true, final: true }); done.push({ name: view.respondent.name, form: fr(view.form.name), answers: a });
   }
+  token = saved; return done;
+}
+// Levels the clinic's staff give themselves (self) and their managers give them (mgr), by competency keyword.
+const LV = { 'Samira Ouazzani': { triage: [2, 1], ethi: [2, 2], esprit: [2, 2] }, 'Mehdi Tahiri': { triage: [2, 2], ethi: [1, 2], esprit: [3, 2] }, 'Youssra Bennis': { triage: [1, 1], ethi: [2, 2], esprit: [2, 2] },
+  'Rachid Amrani': { imag: [2, 1], ethi: [2, 2], esprit: [2, 1] }, 'Imane Zerouali': { imag: [1, 1], ethi: [2, 1], esprit: [2, 2] }, 'Omar El Fassi': { triage: [3, 2], ethi: [2, 2], esprit: [3, 3] },
+  'Nadia Berrada': { triage: [2, 2], ethi: [3, 2], esprit: [3, 3] }, 'Leila Chraibi': { ethi: [3, 3], esprit: [3, 3], triage: [1, 1], imag: [1, 1] } };
+const lvOf = (name, label, mgr) => { const k = Object.keys(LV[name] || {}).find(x => new RegExp(x, 'i').test(label.normalize('NFD').replace(/[̀-ͯ]/g, ''))); return k ? LV[name][k][mgr ? 1 : 0] : 2; };
+async function runFlow(pid) {
+  const T = e2e => tasksOf(pid, e2e);
+  // ---------------- E2E-02 — skills diagnosis
+  const D = T('E2E-02');
+  await flowTask('E2E-02', D[0], { 'MP-02.1': { mode: 'template', edit: r => (/lits|effectifs/i.test(r.item) ? null : r), note: 'Le modèle propose les thèmes IA du secteur ; la ligne « Planification IA des lits et des effectifs » a été supprimée (hors périmètre de ce premier cycle).' } }, ANALYST);
+  await flowTask('E2E-02', D[1], { 'MP-02.2': { mode: 'ai', note: 'L’IA relie chaque compétence aux postes concernés (triage pour les urgences et les soins, imagerie pour la radiologie) et propose la criticité.' } }, ANALYST);
+  await flowTask('E2E-02', D[2], { 'MP-02.3': { mode: 'ai', note: 'L’IA reprend les parties prenantes des niveaux OP et MO dont le poste a des cibles, et désigne le manager de la même fonction.' } }, ANALYST);
+  await flowTask('E2E-02', D[3], { 'MP-02.4': { answer: () => answerCampaign(pid, 'assessment', view => { const mgr = /^MGR-/.test(view.form.code || '') || /Évaluation de/.test(fr(view.form.name)); const subj = mgr ? fr(view.form.name).replace(/^Évaluation de /, '').replace(/ \(.*$/, '') : view.respondent.name;
+    const lv = view.form.sections.find(x => x.id === 'levels'); return { levels: Object.fromEntries(lv.items.map(it => [it.key, String(lvOf(subj, fr(it.label), mgr))])), evidence: { evidence: mgr ? `Observé en service sur les dernières semaines (${subj}).` : 'Utilisation quotidienne du dossier patient ; premiers essais de l’outil.' } }; }) },
+    'MP-02.5': { after: ['consolidate'] } });
+  await flowTask('E2E-02', D[4], { 'MP-02.6': { mode: 'ai', note: 'Règle de l’IA : le niveau du manager compte double ; un écart de deux niveaux entre auto-évaluation et manager est signalé.' } }, ANALYST);
+  await flowTask('E2E-02', D[5], { 'MP-02.7': { mode: 'ai' } });
+  await flowTask('E2E-02', D[6], { 'MP-03.1': { after: ['gaps'] }, 'MP-03.2': { mode: 'ai' }, 'MP-28.3': { mode: 'ai' }, 'MP-28.1': {} }, ANALYST);
+  await passGate(pid, 2, 'Écarts de compétences validés par la direction médicale.');
+  // ---------------- E2E-01 — training plan
+  const P = T('E2E-01');
+  await flowTask('E2E-01', P[0], { 'MP-01.1': { mode: 'ai' } });
+  await flowTask('E2E-01', P[1], { 'MP-01.2': { mode: 'ai' } }, ANALYST);
+  await flowTask('E2E-01', P[2], { 'MP-02.1': { mode: 'ai' }, 'MP-02.2': { mode: 'template' } }, ANALYST);
+  await flowTask('E2E-01', P[3], { 'MP-03.1': { after: ['needs'] }, 'MP-03.2': { mode: 'template' } }, ANALYST);
+  await flowTask('E2E-01', P[4], { 'MP-01.3': { mode: 'ai' }, 'MP-18.1': { mode: 'ai' }, 'MP-18.2': { mode: 'ai' } });
+  await flowTask('E2E-01', P[5], { 'MP-19.1': { mode: 'ai' }, 'MP-19.2': { mode: 'ai' } });
+  await flowTask('E2E-01', P[6], { 'MP-01.4': { mode: 'template' }, 'MP-01.5': {}, 'MP-04.1': {}, _order: ['MP-01.4', 'MP-01.5', 'MP-04.1'] });
+  await flowTask('E2E-01', P[7], { 'MP-01.6': { mode: 'ai' }, 'MP-01.7': { before: ['diffuse'] } }, HRD);
+  await passGate(pid, 3, 'Plan de formation 2027 approuvé par le comité de pilotage.');
+  // ---------------- E2E-05 — delivery
+  const L = T('E2E-05');
+  await flowTask('E2E-05', L[0], { 'MP-06.3': { mode: 'ai' },
+    'MP-06.4': { mode: 'template', first: () => answerCampaign(pid, 'review', (v, i) => ({ approve: { approve: { value: 'Yes', comment: i ? 'Ajouter un cas sur un patient âgé polypathologique.' : 'Conforme aux protocoles du service.' } }, comments: { comments: i ? 'Prévoir 30 minutes de pratique sur poste.' : 'RAS' } })) },
+    'MP-06.6': { mode: 'ai' } });
+  const crs = all(`SELECT data FROM records WHERE entity='TrainingCourse' AND project_id=?`, pid).map(x => JSON.parse(x.data)); const codes = f => (crs.filter(f).map(c => c.training_code).join(', ') || crs.map(c => c.training_code).join(', '));
+  await flowTask('E2E-05', L[1], { 'MP-11.1': { mode: 'ai' }, 'MP-11.2': { rows: [
+    { item: 'Hicham Tazi', organisation: 'Interne', email: 'trainer@cliniquealamal.ma', phone: '+212 6 61 00 00 12', start: '2026-11-01', end: '2027-12-31', courses: codes(c => c.provider !== 'External'), dayRate: '0' },
+    { item: 'Dr Karim Lahlou', organisation: 'Maghreb Learning Partners', email: 'k.lahlou@maghreb-lp.ma', phone: '+212 6 61 00 00 13', start: '2026-11-15', end: '2027-06-30', courses: codes(c => c.provider === 'External'), dayRate: '7000' }], note: 'Saisie manuelle : le formateur interne de la clinique et un formateur externe.' } });
+  await flowTask('E2E-05', L[2], { 'MP-07.1': { mode: 'ai' }, 'MP-07.2': {} });
+  await flowTask('E2E-05', L[3], { 'MP-07.3': { mode: 'ai' }, 'MP-07.4': { before: ['send'], answer: () => answerCampaign(pid, 'convocation', v => (v.respondent.name === 'Youssra Bennis' ? { confirm: { confirm: { value: 'No', comment: 'En congé ce jour-là.' } } } : { confirm: { confirm: { value: 'Yes' } } })) }, 'MP-17.1': { after: ['provision'] } });
+  await flowTask('E2E-05', L[4], { 'MP-25.1': { mode: 'ai' }, 'MP-25.2': { mode: 'template' }, 'MP-25.3': { before: ['push'], answer: () => answerCampaign(pid, 'capsule', (v, i) => (i % 3 === 2 ? null : { useful: { useful: { value: i % 4 ? 'Yes' : 'No', comment: '' } } })) }, 'MP-25.4': { mode: 'template' }, 'MP-25.5': {} });
+  await flowTask('E2E-05', L[5], { 'MP-30.1': { mode: 'ai' }, 'MP-30.2': { mode: 'template' }, 'MP-30.3': { mode: 'ai' },
+    'MP-30.4': { mode: 'template', edit: r => (r.item === 'Youssra Bennis' ? null : { ...r, score: String({ 'Samira Ouazzani': 78, 'Mehdi Tahiri': 85, 'Youssra Bennis': 0, 'Rachid Amrani': 72, 'Imane Zerouali': 64, 'Omar El Fassi': 90, 'Nadia Berrada': 82 }[r.item] ?? 75), observation: r.item === 'Imane Zerouali' ? 'Signalement IA transmis sans vérifier la qualité de l’image.' : 'Données vérifiées, décision justifiée et tracée.' }), note: 'Le modèle liste les apprenants de chaque séance ; le formateur saisit le score et l’observation.' },
+    'MP-30.5': { mode: 'ai' }, 'MP-30.6': { after: ['record'] } });
+  await flowTask('E2E-05', L[6], { 'MP-07.5': { mode: 'template' } });
+  await flowTask('E2E-05', L[7], { 'MP-07.6': { mode: 'ai' } }, HRD);
+  await flowTask('E2E-05', L[8], { 'MP-11.3': { mode: 'template', edit: (() => { let n = 117; return r => ({ ...r, item: `MLP-2026-${++n}` }); })(), note: 'Le modèle calcule le montant attendu (heures × tarif journalier) et le nombre de présents ; le n° de facture est saisi depuis la facture reçue.' },
+    'MP-11.5': { mode: 'ai' }, 'MP-11.4': { mode: 'ai' }, 'MP-11.6': {}, _order: ['MP-11.3', 'MP-11.5', 'MP-11.4', 'MP-11.6'] });
+  await passGate(pid, 4, 'Sessions réalisées, présences et évaluations à chaud enregistrées.');
+  // ---------------- E2E-07 — evaluation
+  const E = T('E2E-07');
+  await flowTask('E2E-07', E[0], { 'MP-09.1': { mode: 'template' } });
+  await flowTask('E2E-07', E[1], { 'MP-09.2': { mode: 'ai' } });
+  await flowTask('E2E-07', E[2], { 'MP-09.3': { before: ['send'], answer: () => answerCampaign(pid, 'l1', (v, i) => ({ rating: Object.fromEntries(v.form.sections.find(x => x.id === 'rating').items.map((it, k) => [it.key, String([[5, 4, 5, 5, 4], [4, 4, 3, 4, 4], [5, 5, 4, 5, 5], [3, 4, 3, 4, 3], [4, 5, 4, 4, 5]][i % 5][k % 5])])), open: { apply: ['Vérifier les constantes avant de lire la proposition de l’outil.', 'Tracer l’écart entre la proposition et ma décision.', 'Transmettre le signalement avec l’image au radiologue.'][i % 3], improve: i % 2 ? 'Plus de cas pratiques.' : 'Une demi-journée de plus.' } })) } }, ANALYST);
+  const key = () => JSON.parse(one(`SELECT data FROM records WHERE entity='Questionnaire' AND project_id=? AND json_extract(data,'$.purpose')='l2'`, pid).data).answer_keys;
+  await flowTask('E2E-07', E[3], { 'MP-09.4': { before: ['send'], answer: () => { const keys = key(); return answerCampaign(pid, 'l2', (v, i) => ({ quiz: Object.fromEntries(Object.entries(keys[v.form.code] || {}).map(([k, x], j) => [k, (i === 2 && j < 2) || (i === 4 && j === 0) ? (x.answer === 'A' ? 'C' : 'A') : x.answer])) })); } } });
+  await flowTask('E2E-07', E[4], { 'MP-09.5': { before: ['send'], answer: () => answerCampaign(pid, 'l3', (v, i) => ({ levels: Object.fromEntries(v.form.sections.find(x => x.id === 'levels').items.map(it => [it.key, String(i === 3 ? 2 : 3)])), facts: { facts: i === 3 ? 'Utilise l’outil mais oublie encore de tracer sa décision.' : 'Vérifie les données, décide et trace la décision en autonomie.' } })) } });
+  await flowTask('E2E-07', E[5], { 'MP-09.6': { after: ['compute'] }, 'MP-10.3': { after: ['compute'] } }, ANALYST);
+  await flowTask('E2E-07', E[6], { 'MP-09.7': { mode: 'ai' }, 'MP-20.5': { mode: 'ai' } }, ANALYST);
+  await flowTask('E2E-07', E[7], { 'MP-10.4': {}, 'MP-10.6': { mode: 'ai' }, 'MP-10.2': { mode: 'ai' } }, ANALYST);
+  await passGate(pid, 5, 'Efficacité évaluée aux niveaux 1 à 3 ; actions d’amélioration engagées.');
+  // What the case produced, for the guide.
+  const R = (e, f) => all(`SELECT data FROM records WHERE entity=? AND project_id=?`, e, pid).map(x => f(JSON.parse(x.data)));
+  out.flow = { kpis: all(`SELECT kpi_id, value, target, status FROM kpi_values WHERE project_id=?`, pid), messages: all(`SELECT kind, channel, recipient, subject, status, body FROM messages WHERE project_id=? ORDER BY created_at`, pid).map(m => ({ ...m, body: (m.body || '').slice(0, 700) })),
+    courses: R('TrainingCourse', d => ({ code: d.training_code, name: d.name_text, hours: d.hours, provider: d.provider, review: d.review_status, status: d.status })), sessions: R('Session', d => ({ code: d.code, course: d.course_code, date: d.start_date, time: d.start_time, room: d.room, trainer: d.trainer })),
+    gaps: R('SkillGap', d => ({ employee: d.employee, code: d.competency_code, gap: d.gap_value, critical: d.is_critical })),
+    campaigns: Object.fromEntries(all(`SELECT id, json_extract(data,'$.purpose') p FROM records WHERE entity='Questionnaire' AND project_id=?`, pid).map(x => [x.p || 'needs', x.id])) };
+  const openCap = one(`SELECT i.id FROM q_invitations i JOIN records q ON q.id=i.questionnaire_id WHERE q.project_id=? AND json_extract(q.data,'$.purpose')='capsule' AND i.status<>'Responded' LIMIT 1`, pid);
+  if (openCap) { await login(HEAD); out.flow.openCapsule = (await api('GET', `/invitations/${openCap.id}/link`)).url; }
 }
 
 // ------------------------------------------------------------------ 1. project from the simple-path template

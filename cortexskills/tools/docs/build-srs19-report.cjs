@@ -24,6 +24,8 @@ const REVIEW = [
   ['Professional French (sector and orientation are two columns)', 'French labels reviewed; sector and orientation are separate fields.'],
   ['MP-54.4 Role + R/A/C/S/I as five columns', 'RACSI table: Role, R, A, C, S, I, sections, comment; exactly one A per section is enforced.'],
   ['MP-54.5 decision level + preferred channels (multi-select)', 'Level (MS/MO/OP/custom), channels (multi-select), population, reminder cadence; respondents’ channel plans follow it.'],
+  ['Real flow for all the end-to-end processes (release 1.14)', 'The steps of E2E-02, E2E-01, E2E-05 and E2E-07 work on the project’s records and read what the previous step created; assessments, invitations, reviews, capsules and evaluations are sent by e-mail or WhatsApp and answered from personal links; gaps, needs, budget, sessions, scores, progression and indicators are computed from the answers.'],
+  ['Manual, template and AI entry on every step (release 1.14)', 'Every table or form of these processes can be typed or pasted, loaded “From the template”, or proposed by the AI through one of 36 AI use cases linked to the steps; each proposal is accepted, edited or rejected.'],
 ];
 
 const sections = [...new Set(R.rows.map(r => r.section))];

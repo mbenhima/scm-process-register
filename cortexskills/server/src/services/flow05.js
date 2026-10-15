@@ -182,8 +182,8 @@ function convocationsPanel({ req, t, lang }) {
     actions: [{ key: 'send', label: cf.size ? T(lang, 'Send the invitations not yet sent', 'Envoyer les convocations restantes', 'إرسال الباقي') : T(lang, 'Send the invitations', 'Envoyer les convocations', 'إرسال الاستدعاءات'), icon: 'Send', primary: !cf.size }, ...(cf.size ? [{ key: 'remind', label: T(lang, 'Remind those who have not confirmed', 'Relancer ceux qui n’ont pas confirmé', 'تذكير'), icon: 'BellRing' }] : [])] };
 }
 function provision(req, t) {
-  let created = 0; const out = [];
-  for (const e of learnersOf(t)) {
+  let created = 0; const out = []; const seen = new Set();
+  for (const e of learnersOf(t)) { if (seen.has(norm(e.email || e.name))) continue; seen.add(norm(e.email || e.name));
     if (!e.email) { out.push({ name: e.name, email: '—', status: 'noEmail' }); continue; }
     const ex = C.one(`SELECT id FROM users WHERE lower(email)=lower(?)`, e.email);
     if (ex) { C.run(`INSERT OR IGNORE INTO user_roles(user_id,role_id) VALUES(?,'R-12')`, ex.id); out.push({ name: e.name, email: e.email, status: 'exists' }); continue; }
@@ -194,7 +194,7 @@ function provision(req, t) {
   return { created, out };
 }
 function provisionPanel({ req, t, lang }) {
-  const en = learnersOf(t); const rows = en.map(e => { const u = e.email && C.one(`SELECT u.id, (SELECT 1 FROM user_roles r WHERE r.user_id=u.id AND r.role_id='R-12') learner FROM users u WHERE lower(email)=lower(?)`, e.email); return { name: e.name, email: e.email || '—', account: u ? (u.learner ? T(lang, 'Learner account', 'Compte apprenant', 'حساب متعلم') : T(lang, 'Account (other role)', 'Compte (autre rôle)', 'حساب')) : '—' }; });
+  const seen = new Set(); const en = learnersOf(t).filter(e => { const k = norm(e.email || e.name); if (seen.has(k)) return false; seen.add(k); return true; }); const rows = en.map(e => { const u = e.email && C.one(`SELECT u.id, (SELECT 1 FROM user_roles r WHERE r.user_id=u.id AND r.role_id='R-12') learner FROM users u WHERE lower(email)=lower(?)`, e.email); return { name: e.name, email: e.email || '—', account: u ? (u.learner ? T(lang, 'Learner account', 'Compte apprenant', 'حساب متعلم') : T(lang, 'Account (other role)', 'Compte (autre rôle)', 'حساب')) : '—' }; });
   return { notes: [T(lang, 'Each learner with an e-mail address gets a learner account (single sign-on of the organization; no password is sent).', 'Chaque apprenant ayant une adresse e-mail reçoit un compte apprenant (authentification unique de l’organisation ; aucun mot de passe n’est envoyé).', 'لكل متعلم حساب.')],
     tables: [{ title: T(lang, 'Learner accounts', 'Comptes des apprenants', 'حسابات المتعلمين'), columns: [['name', T(lang, 'Learner', 'Apprenant', 'المتعلم')], ['email', 'E-mail'], ['account', T(lang, 'Account', 'Compte', 'الحساب')]], rows }],
     actions: [{ key: 'provision', label: T(lang, 'Create the learner accounts', 'Créer les comptes apprenants', 'إنشاء الحسابات'), icon: 'UserPlus', primary: true }] };
