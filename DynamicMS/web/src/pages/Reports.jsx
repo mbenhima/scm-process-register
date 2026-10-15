@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { FileBarChart, FileText, FileSpreadsheet, FileType, Download } from 'lucide-react';
+import { FileBarChart, FileText, FileSpreadsheet, FileType, Download, Presentation } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { download } from '../lib/api.js';
 import { PageHead, Card, Loading, ErrorBox, IconBadge, Table, tx } from '../components/ui.jsx';
 import { NoProject } from './Home.jsx';
 
-const FMT = [['pdf', 'PDF', FileText], ['xlsx', 'Excel', FileSpreadsheet], ['docx', 'Word', FileType], ['csv', 'CSV', FileBarChart]];
+const FMT = [['pdf', 'PDF', FileText], ['xlsx', 'Excel', FileSpreadsheet], ['docx', 'Word', FileType], ['pptx', 'PowerPoint', Presentation], ['csv', 'CSV', FileBarChart]];
 
 export default function Reports() {
   const { t, lang, projectId, project, toast, can } = useApp();

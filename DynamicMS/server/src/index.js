@@ -24,6 +24,7 @@ import reports from './routes/reports.js';
 import analytics from './routes/analytics.js';
 import admin from './routes/admin.js';
 import ptemplates from './routes/ptemplates.js';
+import { applyE2eRenames } from './catalog/renames.js';
 
 // ---- Startup guards
 if (process.env.NODE_ENV === 'production' && config.jwtSecret === 'dynamicms-local-dev-secret-change-me') {
@@ -36,6 +37,7 @@ if (!isInitialized()) {
   console.error('The database is empty. Run "npm run seed" first, then "npm run dev".');
   process.exit(1);
 }
+{ const n = applyE2eRenames(); if (n) console.log(`Renamed end-to-end processes: ${n} catalog entries and documents updated.`); }
 
 export const app = express();
 app.disable('x-powered-by');

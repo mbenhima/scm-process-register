@@ -306,7 +306,7 @@
 306	Identifier la conformité
 307	Exigences de conformité
 308	Rapports de conformité
-309	Des personnes aux capacités
+309	Des ressources à la disponibilité opérationnelle
 310	Fournir les personnes, les compétences, la documentation, les enregistrements, la mesure et la santé
 311	Déploiement du SMI, nouvelle embauche, changement documentaire ou exigence de surveillance médicale
 312	Personnes compétentes, documentation maîtrisée, équipements étalonnés, dossiers de santé
@@ -347,7 +347,7 @@
 347	Parcourir la bibliothèque
 348	Exigences de documents
 349	Documents
-350	De l'infrastructure au bien-être
+350	De l'infrastructure à la sécurité
 351	Fournir l'infrastructure informatique, de sécurité, de données, technologique et environnementale
 352	Changement d'infrastructure informatique, menace de sécurité, exigence de protection des données, exigence environnementale ou changement d'installation
 353	SI sécurisé et conforme ; données protégées ; salles propres surveillées ; installations gérées ; fiabilité des actifs ; efficacité hydrique
@@ -391,7 +391,7 @@
 391	Définir les contrôles
 392	ISO 27001/NIST
 393	RGPD
-394	De la connaissance à la maîtrise
+394	Des données à l'intelligence
 395	Gouverner les données, les formules, les calculs et la connaissance
 396	Exigence de gouvernance des données, changement de formule ou lacune de connaissance
 397	Données, formules, calculs et graphe de connaissances gouvernés

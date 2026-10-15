@@ -115,7 +115,7 @@ test('reports export in all formats and languages', async () => {
   const q = await login('quality@nova-aec.example');
   const tree = (await call('GET', '/tenancy/tree', q)).body;
   const pid = tree.groups[0].orgs.find(o => o.code === 'NV-AEC').projects[0].id;
-  for (const lang of ['en', 'fr', 'ar']) for (const fmt of ['pdf', 'xlsx', 'docx', 'csv']) {
+  for (const lang of ['en', 'fr', 'ar']) for (const fmt of ['pdf', 'xlsx', 'docx', 'pptx', 'csv']) {
     const r = await call('GET', `/projects/${pid}/reports/status?format=${fmt}`, q, null, lang);
     assert.equal(r.status, 200, `${fmt} ${lang}`);
     assert.ok(r.body.byteLength > 500, `${fmt} ${lang} size`);

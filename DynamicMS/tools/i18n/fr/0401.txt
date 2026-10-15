@@ -69,7 +69,7 @@
 469	Listes de contrôle
 470	Enregistrements terrain
 471	Numériser
-472	De la vérification à la préparation
+472	De la non-conformité à la connaissance
 473	Détecter, contenir, résoudre et capitaliser les non-conformités et les problèmes
 474	Non-conformité détectée, incident signalé ou problème identifié
 475	Problème résolu ; REX capitalisé ; base de connaissances mise à jour
@@ -231,7 +231,7 @@
 631	Sélectionner les KPI
 632	Objectifs de l'entreprise
 633	Tableau de bord KPI
-634	De l'audit à l'assurance
+634	De l'intelligence à l'assurance
 635	Apporter de l'assurance grâce à l'IA, la prospective, l'IoT, l'ESG et l'analytique
 636	Alerte d'analyse prédictive, changement réglementaire ou exigence d'assurance
 637	Risques anticipés ; conformité assurée ; ESG et carbone déclarés
@@ -312,7 +312,7 @@
 712	Intégrer les capteurs
 713	Tâches IoT
 714	Données des capteurs
-715	De la correction à l'innovation
+715	De l'amélioration à l'innovation
 716	Piloter l'amélioration continue, l'innovation, l'automatisation et l'écosystème
 717	Opportunité d'amélioration, idée d'innovation ou candidat à l'automatisation
 718	Améliorations mises en œuvre ; innovations déployées ; écosystème élargi

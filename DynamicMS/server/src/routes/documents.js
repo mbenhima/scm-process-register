@@ -13,6 +13,7 @@ import { audit, snapshot } from '../services/audit.js';
 import { DOC_TEMPLATES, TEMPLATE_CATEGORIES, templateByCode } from '../content/templates.js';
 import { buildContent, documentModel, diagramSvg, SOURCE_NAMES } from '../services/docdata.js';
 import { toPdf, toDocx, toXlsx } from '../services/render.js';
+import { toPptx } from '../services/pptx.js';
 import { materialize } from '../services/diagram.js';
 import { addDays } from '../seed/rng.js';
 import { config } from '../config.js';
@@ -323,7 +324,7 @@ r.get('/documents/:id/download', requirePerm('records.view'), h(async (req, res)
   const v = req.query.version ? get('SELECT * FROM document_versions WHERE id=? AND document_id=?', req.query.version, d.id) : (get(`SELECT * FROM document_versions WHERE document_id=? AND status='Published'`, d.id) || get('SELECT * FROM document_versions WHERE document_id=? ORDER BY created_at DESC LIMIT 1', d.id));
   if (!v) throw notFound('Version');
   const fmt = String(req.query.format || 'pdf').toLowerCase();
-  if (!['pdf', 'docx', 'xlsx'].includes(fmt)) throw bad('BAD_FORMAT', 'Format must be pdf, docx or xlsx.');
+  if (!['pdf', 'docx', 'xlsx', 'pptx'].includes(fmt)) throw bad('BAD_FORMAT', 'Format must be pdf, docx, xlsx or pptx.');
   // Seeded versions may hold no snapshot: they are rendered from the live project data.
   let ver = v;
   const c = P(v.content);
@@ -339,6 +340,7 @@ r.get('/documents/:id/download', requirePerm('records.view'), h(async (req, res)
   audit(req, d.org_id, 'document', d.id, 'download', null, { version: v.version, format: fmt }, null);
   if (fmt === 'pdf') { res.setHeader('Content-Type', 'application/pdf'); return toPdf(model, req.lang, res); }
   if (fmt === 'docx') { res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'); return res.send(await toDocx(model, req.lang)); }
+  if (fmt === 'pptx') { res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'); return res.send(await toPptx(model, req.lang)); }
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   return res.send(Buffer.from(await toXlsx(model, req.lang)));
 }));

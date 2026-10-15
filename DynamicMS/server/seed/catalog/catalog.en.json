@@ -763,7 +763,7 @@
   {
    "id": "E2E-05",
    "type": "Root",
-   "name": "People To Capability",
+   "name": "Resources To Readiness",
    "goals": "Provide people, competence, documentation, records, measurement, health",
    "ufCount": "2 + 2 SME",
    "racsi": [
@@ -876,7 +876,7 @@
   {
    "id": "E2E-06",
    "type": "Root",
-   "name": "Infrastructure To Wellbeing",
+   "name": "Infrastructure To Security",
    "goals": "Provide IT, security, data, technology, environmental infrastructure",
    "ufCount": "1",
    "racsi": [
@@ -999,7 +999,7 @@
   {
    "id": "E2E-07",
    "type": "Root",
-   "name": "Knowledge To Control",
+   "name": "Data To Intelligence",
    "goals": "Govern data, formulas, calculations, knowledge",
    "ufCount": "1",
    "racsi": [
@@ -1233,7 +1233,7 @@
   {
    "id": "E2E-09",
    "type": "Root",
-   "name": "Verification To Preparedness",
+   "name": "Nonconformity To Knowledge",
    "goals": "Detect, contain, resolve, capitalize nonconformities and problems",
    "ufCount": "8 + 1 SME",
    "racsi": [
@@ -1710,7 +1710,7 @@
   {
    "id": "E2E-11",
    "type": "Root",
-   "name": "Audit To Assurance",
+   "name": "Intelligence To Assurance",
    "goals": "Provide assurance through AI, foresight, IoT, ESG, analytics",
    "ufCount": "10",
    "racsi": [
@@ -1960,7 +1960,7 @@
   {
    "id": "E2E-12",
    "type": "Root",
-   "name": "Correction To Innovation",
+   "name": "Improvement To Innovation",
    "goals": "Drive continual improvement, innovation, automation, ecosystem",
    "ufCount": "11 + 3 SME",
    "racsi": [
@@ -12109,7 +12109,7 @@
   },
   {
    "E2E_ID": "E2E-05",
-   "Name": "People To Capability",
+   "Name": "Resources To Readiness",
    "E2E_Type": "Root",
    "Goals": "Provide people, competence, documentation, records, measurement, health",
    "Trigger": "IMS deployment, new hire, documentation change, or medical surveillance requirement",
@@ -12123,7 +12123,7 @@
   },
   {
    "E2E_ID": "E2E-06",
-   "Name": "Infrastructure To Wellbeing",
+   "Name": "Infrastructure To Security",
    "E2E_Type": "Root",
    "Goals": "Provide IT, security, data, technology, environmental infrastructure",
    "Trigger": "IT infrastructure change, security threat, data protection requirement, environmental requirement, or facility change",
@@ -12137,7 +12137,7 @@
   },
   {
    "E2E_ID": "E2E-07",
-   "Name": "Knowledge To Control",
+   "Name": "Data To Intelligence",
    "E2E_Type": "Root",
    "Goals": "Govern data, formulas, calculations, knowledge",
    "Trigger": "Data governance requirement, formula change, or knowledge gap",
@@ -12165,7 +12165,7 @@
   },
   {
    "E2E_ID": "E2E-09",
-   "Name": "Verification To Preparedness",
+   "Name": "Nonconformity To Knowledge",
    "E2E_Type": "Root",
    "Goals": "Detect, contain, resolve, capitalize nonconformities and problems",
    "Trigger": "Nonconformity detected, incident reported, or problem identified",
@@ -12193,7 +12193,7 @@
   },
   {
    "E2E_ID": "E2E-11",
-   "Name": "Audit To Assurance",
+   "Name": "Intelligence To Assurance",
    "E2E_Type": "Root",
    "Goals": "Provide assurance through AI, foresight, IoT, ESG, analytics",
    "Trigger": "Predictive analytics alert, regulatory change, or assurance requirement",
@@ -12207,7 +12207,7 @@
   },
   {
    "E2E_ID": "E2E-12",
-   "Name": "Correction To Innovation",
+   "Name": "Improvement To Innovation",
    "E2E_Type": "Root",
    "Goals": "Drive continual improvement, innovation, automation, ecosystem",
    "Trigger": "Improvement opportunity, innovation idea, or automation candidate",

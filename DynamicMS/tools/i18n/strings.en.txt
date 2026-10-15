@@ -306,7 +306,7 @@
 306	Identify compliance
 307	Compliance requirements
 308	Compliance reports
-309	People To Capability
+309	Resources To Readiness
 310	Provide people, competence, documentation, records, measurement, health
 311	IMS deployment, new hire, documentation change, or medical surveillance requirement
 312	Competent people, controlled documentation, calibrated equipment, health records
@@ -347,7 +347,7 @@
 347	Browse library
 348	Document requirements
 349	Documents
-350	Infrastructure To Wellbeing
+350	Infrastructure To Security
 351	Provide IT, security, data, technology, environmental infrastructure
 352	IT infrastructure change, security threat, data protection requirement, environmental requirement, or facility change
 353	Secure compliant IT; data protection; cleanrooms monitored; facilities managed; asset reliability; water efficiency
@@ -391,7 +391,7 @@
 391	Define controls
 392	ISO 27001/NIST
 393	GDPR
-394	Knowledge To Control
+394	Data To Intelligence
 395	Govern data, formulas, calculations, knowledge
 396	Data governance requirement, formula change, or knowledge gap
 397	Governed data, formulas, calculations, knowledge graph
@@ -469,7 +469,7 @@
 469	Checklists
 470	Field records
 471	Digitize
-472	Verification To Preparedness
+472	Nonconformity To Knowledge
 473	Detect, contain, resolve, capitalize nonconformities and problems
 474	Nonconformity detected, incident reported, or problem identified
 475	Problem resolved; REX capitalized; KB updated
@@ -631,7 +631,7 @@
 631	Select KPIs
 632	Business objectives
 633	KPI dashboard
-634	Audit To Assurance
+634	Intelligence To Assurance
 635	Provide assurance through AI, foresight, IoT, ESG, analytics
 636	Predictive analytics alert, regulatory change, or assurance requirement
 637	Risks predicted; compliance assured; ESG and carbon reported
@@ -712,7 +712,7 @@
 712	Integrate sensors
 713	IoT tasks
 714	Sensor data
-715	Correction To Innovation
+715	Improvement To Innovation
 716	Drive continual improvement, innovation, automation, ecosystem
 717	Improvement opportunity, innovation idea, or automation candidate
 718	Improvements implemented; innovations deployed; ecosystem expanded

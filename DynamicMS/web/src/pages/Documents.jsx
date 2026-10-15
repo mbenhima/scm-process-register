@@ -10,11 +10,12 @@ import { NoProject } from './Home.jsx';
 
 const TYPES = ['Policy', 'Scope', 'Manual', 'Procedure', 'Instruction', 'Sheet', 'Map', 'Plan', 'Register', 'Report', 'Matrix'];
 const FREQS = ['Annual', 'Semi-annual', 'Quarterly', 'Monthly', 'Per event'];
-const FMT = { PDF: 'pdf', DOCX: 'docx', XLSX: 'xlsx' };
+const FMT = { PDF: 'pdf', DOCX: 'docx', XLSX: 'xlsx', PPTX: 'pptx' };
 
 export function DownloadButtons({ doc, formats, versionId, small = true }) {
   const { t, toast } = useApp();
-  const list = formats?.length ? formats : ['PDF', 'DOCX'];
+  // Every document can also be presented: PowerPoint is offered with the template's formats.
+  const list = [...(formats?.length ? formats : ['PDF', 'DOCX']).filter(f => f !== 'PPTX'), 'PPTX'];
   const go = async (f) => { try { await download(`/documents/${doc.id}/download?format=${FMT[f]}${versionId ? `&version=${versionId}` : ''}`, `${doc.code}.${FMT[f]}`); } catch (e) { toast(e.message, 'error'); } };
   return <span className="row" style={{ gap: 4 }}>{list.filter(f => FMT[f]).map(f => <button key={f} type="button" className={`btn ${small ? 'btn-sm' : ''}`} onClick={(e) => { e.stopPropagation(); go(f); }} aria-label={t('Download {f}', { f })}><Download size={14} />{f}</button>)}</span>;
 }

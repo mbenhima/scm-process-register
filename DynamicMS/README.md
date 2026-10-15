@@ -31,17 +31,21 @@ Each organization has 19 accounts named `role@domain`: ims, quality, hse, risk, 
 
 ## Structure
 
-- `server/`: Express REST API, SQLite schema and migrations, catalog builder, full-run seed generator, reports (PDF, Excel, Word, CSV), IMS document templates (37, in `src/content/templates.js`) and the generator that fills them from the project data (`src/services/docdata.js`), AI engine (rules plus retrieval, with optional language models: Claude, OpenAI, Azure OpenAI, Gemini, Mistral or a custom OpenAI-compatible endpoint, set under Administration › AI models), global search, process design editor with versions and restore (`src/routes/design.js`), OBS roles linked to functions, AI prompt specifications with versioned fields, BPMN and process-map diagrams for documents (`src/services/diagram.js`, rendered with @resvg/resvg-wasm), backups, licence tools and tests (`npm test`).
+- `server/`: Express REST API, SQLite schema and migrations, catalog builder, full-run seed generator, reports (PDF, Excel, Word, PowerPoint, CSV; PowerPoint in `src/services/pptx.js`), IMS document templates (37, in `src/content/templates.js`) and the generator that fills them from the project data (`src/services/docdata.js`), AI engine (rules plus retrieval, with optional language models: Claude, OpenAI, Azure OpenAI, Gemini, Mistral or a custom OpenAI-compatible endpoint, set under Administration › AI models), global search, process design editor with versions and restore (`src/routes/design.js`), OBS roles linked to functions, AI prompt specifications with versioned fields, BPMN and process-map diagrams for documents (`src/services/diagram.js`, rendered with @resvg/resvg-wasm), backups, licence tools and tests (`npm test`).
 - `server/src/routes/ptemplates.js` and `src/services/blueprint.js`: project templates as editable blueprints (end-to-end processes, macro processes, steps, rules, controls, risks, alerts, KPIs, reporting) applied at project creation.
 - `web/`: React + Vite client. It uses the design tokens of the AI Value graphical chart 1.2 in `src/styles/tokens.css`, a navigation shell that can be docked on any edge with resizable panels (`src/lib/layout.jsx`), paginated tables, inline editable tables (`src/components/InlineGrid.jsx`), document formatting and picture editors (`src/components/DocEditors.jsx`) and bundled fonts.
 - `tools/`: extraction of the source documents, translation tables, screenshot and document generators.
 - `docs/sources/`: the five source documents.
-- `deliverables/`: installation guide, user guides (EN, FR), IMS document templates (EN, FR), sample generated IMS documents (EN, FR), feedback responses, application standard SRS, presentations (EN, FR), coverage checklist, the application zip and the source code zip.
+- `deliverables/`: installation guide, user guide "One full real run" (EN, FR: all 12 end-to-end processes of the universal scenario, each step followed by what to type, PDCA, process review from data sources to reports), earlier user guides (EN, FR), IMS document templates (EN, FR), sample generated IMS documents of the universal scenario, one folder per end-to-end process plus reports (EN, FR), feedback responses, application standard SRS, presentations (EN, FR), coverage checklist, the application zip and the source code zip.
 - Visual identity: AI Value graphical chart 1.2 (navy, azure, green and teal palette; Montserrat, Open Sans and JetBrains Mono), with the DynamicMS logo in the app, "A solution by" AI Value and FlexiGlob on the sign-in page and the AI Value logo on every deliverable.
 
 The development server pre-bundles its dependencies at start-up; if a first load is interrupted, the page reloads itself once. For daily use, build the client and open the application on port 4000.
 
-The seed generates 6,392 documents (Word, PDF or Excel) from the templates, filled with each project's data and ready to download from Records › Documents.
+The seed generates 6,392 documents (Word, PDF, Excel or PowerPoint) from the templates, filled with each project's data and ready to download from Records › Documents.
+
+## End-to-end processes
+
+E2E-01 Context To Strategy, E2E-02 Leadership To Commitment, E2E-03 Risk To Resilience, E2E-04 Compliance To Achievement, E2E-05 Resources To Readiness, E2E-06 Infrastructure To Security, E2E-07 Data To Intelligence, E2E-08 Requirements To Delivery, E2E-09 Nonconformity To Knowledge, E2E-10 Monitoring To Evaluation, E2E-11 Intelligence To Assurance, E2E-12 Improvement To Innovation. Databases seeded with the former names are updated at start-up (`server/src/catalog/renames.js`).
 
 ## Production
 

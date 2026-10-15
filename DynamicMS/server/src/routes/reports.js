@@ -6,6 +6,8 @@ import { requirePerm } from '../auth.js';
 import { h, send, bad, loadProject, langOf, notFound } from '../http.js';
 import { catalog, loc } from '../catalog/store.js';
 import { toPdf, toXlsx, toDocx, toCsv } from '../services/render.js';
+import { toPptx } from '../services/pptx.js';
+import { materialize } from '../services/diagram.js';
 import { ROLES } from '../permissions.js';
 import { audit } from '../services/audit.js';
 import { label } from '../content/labels.js';
@@ -78,7 +80,7 @@ export function buildModel(type, p, lang) {
 
 r.get('/reports', requirePerm('reports.view'), h((req, res) => {
   const lang = langOf(req);
-  send(req, res, { project: REPORTS.map(id => ({ id, name: W[lang][id] })), formats: ['pdf', 'xlsx', 'docx', 'csv'], catalog: catalog().reports });
+  send(req, res, { project: REPORTS.map(id => ({ id, name: W[lang][id] })), formats: ['pdf', 'xlsx', 'docx', 'pptx', 'csv'], catalog: catalog().reports });
 }));
 // Reporting plan of a project: the reports its template defines (name, audience, frequency,
 // format, owner), or the reference reports for a project without a template.
@@ -100,8 +102,9 @@ r.get('/projects/:id/reports/:type', requirePerm('reports.export'), h(async (req
   if (fmt === 'pdf') { res.setHeader('Content-Type', 'application/pdf'); res.setHeader('Content-Disposition', `attachment; filename="${name}.pdf"`); return toPdf(model, lang, res); }
   if (fmt === 'xlsx') { const buf = await toXlsx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); res.setHeader('Content-Disposition', `attachment; filename="${name}.xlsx"`); return res.send(Buffer.from(buf)); }
   if (fmt === 'docx') { const buf = await toDocx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'); res.setHeader('Content-Disposition', `attachment; filename="${name}.docx"`); return res.send(buf); }
+  if (fmt === 'pptx') { await materialize(model); const buf = await toPptx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'); res.setHeader('Content-Disposition', `attachment; filename="${name}.pptx"`); return res.send(buf); }
   if (fmt === 'csv') { res.setHeader('Content-Type', 'text/csv; charset=utf-8'); res.setHeader('Content-Disposition', `attachment; filename="${name}.csv"`); return res.send(toCsv(model)); }
-  throw bad('BAD_FORMAT', 'Format must be pdf, xlsx, docx, csv or json.');
+  throw bad('BAD_FORMAT', 'Format must be pdf, xlsx, docx, pptx, csv or json.');
 }));
 
 export default r;

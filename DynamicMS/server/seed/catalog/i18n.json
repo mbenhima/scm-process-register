@@ -1231,9 +1231,9 @@
 "fr": "Rapports de conformité",
 "ar": "تقارير الامتثال"
 },
-"People To Capability": {
-"fr": "Des personnes aux capacités",
-"ar": "من الأفراد إلى القدرات"
+"Resources To Readiness": {
+"fr": "Des ressources à la disponibilité opérationnelle",
+"ar": "من الموارد إلى الجاهزية"
 },
 "Provide people, competence, documentation, records, measurement, health": {
 "fr": "Fournir les personnes, les compétences, la documentation, les enregistrements, la mesure et la santé",
@@ -1395,9 +1395,9 @@
 "fr": "Documents",
 "ar": "الوثائق"
 },
-"Infrastructure To Wellbeing": {
-"fr": "De l'infrastructure au bien-être",
-"ar": "من البنية التحتية إلى الرفاهية"
+"Infrastructure To Security": {
+"fr": "De l'infrastructure à la sécurité",
+"ar": "من البنية التحتية إلى الأمن"
 },
 "Provide IT, security, data, technology, environmental infrastructure": {
 "fr": "Fournir l'infrastructure informatique, de sécurité, de données, technologique et environnementale",
@@ -1571,9 +1571,9 @@
 "fr": "RGPD",
 "ar": "اللائحة العامة لحماية البيانات"
 },
-"Knowledge To Control": {
-"fr": "De la connaissance à la maîtrise",
-"ar": "من المعرفة إلى السيطرة"
+"Data To Intelligence": {
+"fr": "Des données à l'intelligence",
+"ar": "من البيانات إلى الذكاء"
 },
 "Govern data, formulas, calculations, knowledge": {
 "fr": "Gouverner les données, les formules, les calculs et la connaissance",
@@ -1883,9 +1883,9 @@
 "fr": "Numériser",
 "ar": "الرقمنة"
 },
-"Verification To Preparedness": {
-"fr": "De la vérification à la préparation",
-"ar": "من التحقق إلى الاستعداد"
+"Nonconformity To Knowledge": {
+"fr": "De la non-conformité à la connaissance",
+"ar": "من عدم المطابقة إلى المعرفة"
 },
 "Detect, contain, resolve, capitalize nonconformities and problems": {
 "fr": "Détecter, contenir, résoudre et capitaliser les non-conformités et les problèmes",
@@ -2531,9 +2531,9 @@
 "fr": "Tableau de bord KPI",
 "ar": "لوحة مؤشرات الأداء"
 },
-"Audit To Assurance": {
-"fr": "De l'audit à l'assurance",
-"ar": "من التدقيق إلى الضمان"
+"Intelligence To Assurance": {
+"fr": "De l'intelligence à l'assurance",
+"ar": "من الذكاء إلى الضمان"
 },
 "Provide assurance through AI, foresight, IoT, ESG, analytics": {
 "fr": "Apporter de l'assurance grâce à l'IA, la prospective, l'IoT, l'ESG et l'analytique",
@@ -2855,9 +2855,9 @@
 "fr": "Données des capteurs",
 "ar": "بيانات أجهزة الاستشعار"
 },
-"Correction To Innovation": {
-"fr": "De la correction à l'innovation",
-"ar": "من التصحيح إلى الابتكار"
+"Improvement To Innovation": {
+"fr": "De l'amélioration à l'innovation",
+"ar": "من التحسين إلى الابتكار"
 },
 "Drive continual improvement, innovation, automation, ecosystem": {
 "fr": "Piloter l'amélioration continue, l'innovation, l'automatisation et l'écosystème",
