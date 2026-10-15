@@ -78,3 +78,24 @@ export function ProcessDocs({ projectId, e2eId, readOnly }) {
     return mine.length ? <div className="stack">{mine.map(x => <div key={x.id}><p className="small strong">{x.code} — {L(x.name)}</p><DocPanel projectId={projectId} code={x.code} readOnly={readOnly} /></div>)}</div>
       : <Empty icon="FileText" title={t('stepdoc.noTemplate')} text={t('stepdoc.noTemplateText')} />; }}</Guard>);
 }
+
+/**
+ * Live panel of a step of the diagnosis, plan, delivery or evaluation: the figures, tables and actions computed by the
+ * server from the project's records (campaign answers, gaps, needs, sessions, invitations, scores, indicators). Each
+ * table can be downloaded as CSV; each action (send, remind, compute) reloads the panel.
+ */
+export function FlowPanel({ taskId, stepId, readOnly, onChanged }) {
+  const { t } = useI18n(); const act = useAction(); const { can, toast } = useSession();
+  const d = useData(`/tasks/${taskId}/steps/${stepId}/panel`, [taskId, stepId]);
+  const run = async key => { try { const r = await act(() => post(`/tasks/${taskId}/steps/${stepId}/actions/${key}`, {}), null); const n = r?.sent ?? r?.added; toast(n != null ? t('flow.sent', { n }) : t('flow.done')); } catch { /* shown by useAction */ } d.reload(); onChanged?.(); };
+  return (<Guard state={d}>{p => (!p || (!p.kpis?.length && !p.tables?.length && !p.notes?.length && !p.actions?.length)) ? null : <div className="stack flow-panel">
+    {(p.notes || []).map((n, i) => <p key={i} className="small muted pre-line">{n}</p>)}
+    {p.kpis?.length > 0 && <div className="grid g-3">{p.kpis.map((k, i) => <Kpi key={i} value={String(k.value)} label={k.label} />)}</div>}
+    {(p.tables || []).map((tb, i) => <div key={i} className="stack">
+      <div className="row"><span className="strong small">{tb.title}</span><span className="spacer" />{tb.csv && tb.rows.length > 0 && <Btn size="sm" kind="ghost" icon="Download" onClick={() => download(`/tasks/${taskId}/steps/${stepId}/panel.csv?table=${i}`, `${stepId}.csv`)}>{t('flow.download')}</Btn>}</div>
+      <div className="table-wrap"><table className="tbl"><thead><tr>{tb.columns.map(c => <th key={c[0]}>{c[1]}</th>)}</tr></thead>
+        <tbody>{tb.rows.map((r, j) => <tr key={j}>{tb.columns.map(c => <td key={c[0]} className="small pre-line">{String(r[c[0]] ?? '')}</td>)}</tr>)}{!tb.rows.length && <tr><td colSpan={tb.columns.length} className="small muted">—</td></tr>}</tbody></table></div></div>)}
+    {(p.links || []).map((l, i) => <p key={i} className="small"><Icon name="ExternalLink" size={14} /> <Link to={l.to}>{l.label}</Link></p>)}
+    {!readOnly && can('tasks.execute') && p.actions?.length > 0 && <div className="row">{p.actions.map(a => <Btn key={a.key} size="sm" kind={a.primary ? 'primary' : undefined} icon={a.icon} onClick={() => run(a.key)}>{a.label}</Btn>)}</div>}
+  </div>}</Guard>);
+}

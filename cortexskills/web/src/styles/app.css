@@ -823,3 +823,12 @@ ul.plain > li > .tree-row { width: 100%; }
 .qstep-head { gap: var(--aiv-space-2); flex-wrap: wrap; }
 .design-elements { margin: 4px 0 0; padding-inline-start: 20px; }
 .select.multi .listbox .option { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+/* Release 1.14: live panels of the diagnosis, plan, delivery and evaluation steps; multiple-choice questions. */
+.pre-line { white-space: pre-line; }
+.flow-panel { border-top: 1px solid var(--aiv-line); padding-top: var(--aiv-space-3); }
+.qchoice { padding-inline-start: 1.2em; }
+.qchoice fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 6px; }
+.form-proposal dl { display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 4px 12px; margin: 0; }
+.form-proposal dt { font-weight: 600; font-size: var(--aiv-fs-13, 13px); }
+.form-proposal dd { margin: 0; font-size: var(--aiv-fs-13, 13px); white-space: pre-line; }
+.widget-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--aiv-space-3); }

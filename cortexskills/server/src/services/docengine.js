@@ -85,8 +85,8 @@ export function resolveSource(source, ctx) {
       for (const u of ufts) {
         const ti = one(`SELECT id, status, output FROM task_instances WHERE project_id=? AND uft_id=?`, projectId, u.id);
         for (const sid of u.steps || []) {
-          const s = D.get(orgId, 'step', sid, { releaseId: rel }); if (!s) continue; const form = describeStep(s, {});
-          const head = `${sid} — ${P(s.name, lang)}`;
+          const s = D.get(orgId, 'step', sid, { releaseId: rel }); if (!s) continue; const form = describeStep(s, { uft: u.id });
+          const head = `${sid} — ${P(form.name || s.name, lang)}`;
           if (form.kind === 'system') { subs.push({ heading: head, text: lb('system', lang) }); continue; }
           const rec = ti ? one(`SELECT * FROM step_records WHERE task_instance_id=? AND step_id=?`, ti.id, sid) : null;
           if (form.pattern === 'form') {

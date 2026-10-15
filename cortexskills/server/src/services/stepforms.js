@@ -4,6 +4,7 @@
 // rows feed when the step is completed (FR-DA-SFM-04, FR-DA-LNK-04).
 import { objectOf } from './naming.js';
 import { STEP_DEFS, MODULE_LABEL } from './stepdefs.js';
+import { flowDef, PANEL_LABEL } from './flowdefs.js';
 
 const L = (en, fr, ar) => ({ en, fr, ar });
 export const FORM_KINDS = ['record', 'matrix', 'levels', 'decision', 'objectives', 'plan', 'communication', 'training', 'monitoring', 'review', 'assignment', 'configuration', 'system'];
@@ -165,16 +166,16 @@ const LBL = { purpose: L('Purpose', 'Objet', 'الغرض'), inputs: L('Inputs', 
 
 /** Complete form definition and descriptions for a step (multilingual). `ctx` = { mpName, inputs }. */
 export function describeStep(step, ctx = {}) {
-  const obj = { en: objectOf(step.name?.en, 'en'), fr: objectOf(step.name?.fr, 'fr'), ar: objectOf(step.name?.ar, 'ar') };
-  const def = STEP_DEFS[step.id];
+  const def = flowDef(ctx.uft, step.id) || STEP_DEFS[step.id]; const nm = def?.name || step.name;
+  const obj = { en: objectOf(nm?.en, 'en'), fr: objectOf(nm?.fr, 'fr'), ar: objectOf(nm?.ar, 'ar') };
   const kind = def?.kind || kindOf(step); const fields = step.form?.fields?.length ? step.form.fields : def ? def.fields || [] : fieldsFor(kind, obj);
   const brief = {}; const details = {};
   for (const l of ['en', 'fr', 'ar']) {
     const o = (obj[l] || obj.en || '').toLowerCase(); const role = step.role?.[l] || step.role?.en || ''; const mp = ctx.mpName?.[l] || ctx.mpName?.en || '';
-    brief[l] = step.brief?.[l] || `${step.name?.[l] || step.name?.en} — ${role}${mp ? (l === 'ar' ? `، ${LBL.done.ar} «${mp}»` : l === 'fr' ? `, ${LBL.done.fr} « ${mp} »` : `, ${LBL.done.en} “${mp}”`) : ''}.`;
+    brief[l] = (def?.name ? null : step.brief?.[l]) || `${nm?.[l] || nm?.en} — ${role}${mp ? (l === 'ar' ? `، ${LBL.done.ar} «${mp}»` : l === 'fr' ? `, ${LBL.done.fr} « ${mp} »` : `, ${LBL.done.en} “${mp}”`) : ''}.`;
     const how = fields.map(x => `• ${x.label?.[l] || x.label?.en}${x.required ? ' *' : ''}: ${x.help?.[l] || x.help?.en || ''}`).join('\n');
-    details[l] = step.details?.[l] || [`${LBL.purpose[l]}: ${PURPOSE[kind][l].replace('{o}', o)}`, `${LBL.inputs[l]}: ${ctx.inputs?.[l] || ctx.inputs?.en || '—'}`, how ? `${LBL.how[l]}:\n${how}` : null, `${LBL.result[l]}: ${RESULT[kind][l].replace('{o}', obj[l] || obj.en)}`].filter(Boolean).join('\n');
+    details[l] = (def?.name ? null : step.details?.[l]) || [`${LBL.purpose[l]}: ${PURPOSE[kind][l].replace('{o}', o)}`, `${LBL.inputs[l]}: ${ctx.inputs?.[l] || ctx.inputs?.en || '—'}`, how ? `${LBL.how[l]}:\n${how}` : null, `${LBL.result[l]}: ${RESULT[kind][l].replace('{o}', obj[l] || obj.en)}`].filter(Boolean).join('\n');
   }
-  return { kind, kindLabel: def?.module ? MODULE_LABEL[def.module] : KIND_LABEL[kind], object: obj, fields, pattern: patternOf(kind, fields), register: registerOf(kind, step, obj), brief, details,
-    ...(def ? { module: def.module || null, doc: def.doc || null, report: def.report || null, questionnaire: def.questionnaire || null, stakeholders: !!def.stakeholders } : {}) };
+  return { kind, kindLabel: def?.module === 'flow' ? PANEL_LABEL[def.panel] : def?.module ? MODULE_LABEL[def.module] : KIND_LABEL[kind], object: obj, fields, pattern: patternOf(kind, fields), register: registerOf(kind, step, obj), brief, details,
+    ...(def ? { module: def.module || null, doc: def.doc || null, report: def.report || null, questionnaire: def.questionnaire || null, stakeholders: !!def.stakeholders, fill: def.fill || [], panel: def.panel || null, name: def.name || null } : {}) };
 }

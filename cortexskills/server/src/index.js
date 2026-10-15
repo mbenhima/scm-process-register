@@ -40,6 +40,8 @@ if (!isSeeded()) {
     run(`INSERT OR REPLACE INTO meta(key,value) VALUES('guidance_1_13', ?)`, String(n));
   }
 }
+// Release 1.14: the AI use cases of the steps of the diagnosis, plan, delivery and evaluation, added to every Organization.
+{ const { ensureAllUseCases } = await import('./services/flow.js'); try { const n = ensureAllUseCases(); if (n) console.log(`[1.14] ${n} AI use cases added`); } catch (e) { console.error('[1.14]', e.message); } }
 // Production mode: refuse to start on an unsafe configuration, naming each problem (NODE_ENV=production).
 const { isProduction, productionProblems } = await import('./production.js');
 if (isProduction()) {

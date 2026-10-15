@@ -9,6 +9,7 @@ import * as AI from './ai.js';
 import { getSpec, liveConfig, assemble, variables } from './prompts.js';
 import { retrieve } from './retrieval.js';
 import * as QS from './qsteps.js';
+import * as FLOW from './flow.js';
 
 const loc = (v, lang) => (v && typeof v === 'object' && !Array.isArray(v) && ('en' in v || 'fr' in v || 'ar' in v) ? pick(v, lang) : v);
 const locObj = (o, lang) => Object.fromEntries(Object.entries(o || {}).map(([k, v]) => [k, loc(v, lang)]));
@@ -28,8 +29,9 @@ export function isLocked(projectId, phase) {
 }
 function stepDef(orgId, stepId, rel, ctx = {}) {
   const s = D.get(orgId, 'step', stepId, { releaseId: rel }) || cat.get('step', stepId); if (!s) return null;
-  const mp = D.get(orgId, 'mp', s.mp, { releaseId: rel }); const u = D.list(orgId, 'uft', { releaseId: rel }).find(x => (x.steps || []).includes(s.id));
-  const form = describeStep(s, { mpName: mp?.name, inputs: u?.input });
+  // The task decides the meaning of a step that appears in two tasks (for example MP-02.1 in the diagnosis and in the plan).
+  const mp = D.get(orgId, 'mp', s.mp, { releaseId: rel }); const u = (ctx.uft && D.get(orgId, 'uft', ctx.uft, { releaseId: rel })) || D.list(orgId, 'uft', { releaseId: rel }).find(x => (x.steps || []).includes(s.id));
+  const form = describeStep(s, { mpName: mp?.name, inputs: u?.input, uft: u?.id });
   // Lists named by a field (organizations, sectors, templates, sections, sites) and placeholder defaults are resolved here.
   if (form.fields?.some(f => f.source || typeof f.default === 'string')) form.fields = QS.resolveSources(orgId, form.fields, ctx);
   // Every amount carries its currency (SRS 1.8 FR-DA-I18N-09): a Currency column follows the first amount column.
@@ -52,9 +54,9 @@ export function taskSteps(req, taskId) {
   const { t, p, rel, uft, phase } = taskContext(req.orgId, taskId); const locked = isLocked(t.project_id, phase); const done = new Map(J(t.steps, []).map(s => [s.id, s]));
   const ucs = AI.useCases(req.orgId); const ucOut = u => ({ id: u.id, code: u.code, name: u.name, tier: u.tier, checkpoint: u.checkpoint || null, effective: AI.effectiveActive(req.orgId, t.project_id, u.id) });
   return { task: { id: t.id, uft_id: t.uft_id, status: t.status, release: rel }, locked, steps: (uft?.steps || []).map(sid => {
-    const d = stepDef(req.orgId, sid, rel, { projectId: t.project_id, lang: req.lang, user: req.user }); if (!d) return null; const rec = recordOf(t, sid, d.form.kind);
+    const d = stepDef(req.orgId, sid, rel, { projectId: t.project_id, lang: req.lang, user: req.user, uft: t.uft_id }); if (!d) return null; const rec = recordOf(t, sid, d.form.kind);
     const rows = rec ? rowsOf(rec.id).map(r => ({ id: r.id, ...locObj(J(r.data, {}), req.lang), _origin: r.origin, _author: r.author, _updated: r.updated_at })) : [];
-    return { id: sid, name: d.step.name, type: d.step.type, role: d.step.role, form: d.form, record: rec ? { id: rec.id, status: rec.status, fields: locObj(J(rec.fields, {}), req.lang), completed_at: rec.completed_at } : null, rows,
+    return { id: sid, name: d.form.name || d.step.name, type: d.step.type, role: d.step.role, form: d.form, record: rec ? { id: rec.id, status: rec.status, fields: locObj(J(rec.fields, {}), req.lang), completed_at: rec.completed_at } : null, rows,
       done: rec?.status === 'Completed' || !!done.get(sid)?.done, count: rows.length,
       // The AI Use Cases linked to the step, with their tier and effective state (FR-DA-AI-12, FR-DA-AIP-01).
       aiUseCases: ucs.filter(u => u.steps.includes(sid)).map(ucOut) };
@@ -90,7 +92,7 @@ function guard(req, taskId, stepId) {
   const ctx = taskContext(req.orgId, taskId);
   if (!(ctx.uft?.steps || []).includes(stepId)) throw new HttpError(404, 'err.notFound');
   if (isLocked(ctx.t.project_id, ctx.phase)) throw new HttpError(409, 'err.stepLocked');
-  const d = stepDef(req.orgId, stepId, ctx.rel, { projectId: ctx.t.project_id, lang: req.lang, user: req.user }); return { ...ctx, d };
+  const d = stepDef(req.orgId, stepId, ctx.rel, { projectId: ctx.t.project_id, lang: req.lang, user: req.user, uft: ctx.t.uft_id }); return { ...ctx, d };
 }
 export function validateValues(fields, data, { partial = true } = {}) {
   const errors = {};
@@ -128,6 +130,8 @@ export function saveRow(req, taskId, stepId, rowId, data, origin = 'manual', { e
   return out;
 }
 function saveRowIn(req, t, d, stepId, rowId, data, origin, { expected }) {
+  // The e-mail and phone of a person chosen in the row are filled from what the project already knows about them.
+  data = FLOW.enrich(req.orgId, t.project_id, d.form.fields, data);
   const errs = validateValues(d.form.fields, data); if (Object.keys(errs).length) throw new HttpError(422, 'err.invalidFields', { fields: Object.keys(errs).join(', '), errors: errs });
   const rec = recordOf(t, stepId, d.form.kind, true, req.user.id); const tm = now(); const clean = sanitize(d.form.fields, data);
   // A function of the Organization is kept with its names in every language, so the row reads the same in EN, FR and AR.
@@ -151,17 +155,22 @@ function saveRowIn(req, t, d, stepId, rowId, data, origin, { expected }) {
   return { id, ...locObj(clean, req.lang), _origin: origin, _updated: tm };
 }
 export function deleteRow(req, taskId, stepId, rowId) {
-  const { t } = guard(req, taskId, stepId); const rec = recordOf(t, stepId); if (!rec) throw new HttpError(404, 'err.notFound');
+  const { t, d } = guard(req, taskId, stepId); const rec = recordOf(t, stepId); if (!rec) throw new HttpError(404, 'err.notFound');
   run(`DELETE FROM step_rows WHERE id=? AND step_record_id=?`, rowId, rec.id); run(`DELETE FROM record_links WHERE org_id=? AND ((from_type='row' AND from_id=?) OR (to_type='row' AND to_id=?))`, req.orgId, rowId, rowId);
-  const d = stepDef(req.orgId, stepId, null); if (d?.form.stakeholders) QS.syncStakeholders(req, t, rec.id);
+  if (d?.form.stakeholders) QS.syncStakeholders(req, t, rec.id);
   return { ok: true };
 }
 /** Completion: mandatory fields checked and named, rows propagated to their register (FR-DA-SFM-04, -06, FR-DA-LNK-04). */
-export function completeStep(req, taskId, stepId) {
+export async function completeStep(req, taskId, stepId) {
   const { t, d } = guard(req, taskId, stepId); const kind = d.form.kind; const rec = recordOf(t, stepId, kind, true, req.user.id);
-  const label = f => pick(f.label, req.lang);
-  if (kind === 'module') { const why = QS.moduleBlocker(req, t, d.form.module, d.form); if (why) throw new HttpError(422, why); }
+  const label = f => pick(f.label, req.lang); let result = null;
+  if (kind === 'module' && d.form.module === 'flow') {
+    // A live panel refreshes its result (consolidation, gaps, indicators...) and is complete when the result exists.
+    await FLOW.complete(req, t, stepId, {}); const why = FLOW.blocker(req, t, stepId); if (why) throw new HttpError(422, why);
+  }
+  else if (kind === 'module') { const why = QS.moduleBlocker(req, t, d.form.module, d.form); if (why) throw new HttpError(422, why); }
   else if (kind !== 'system') {
+    const why = FLOW.blocker(req, t, stepId); if (why) throw new HttpError(422, why);
     if (SINGLE.has(kind)) {
       // A default shown in the form (today, the user, the object of the step, the sector...) counts as typed.
       const filled = QS.withDefaults(d.form.fields, J(rec.fields, {}), req.lang, d.form.object);
@@ -176,6 +185,8 @@ export function completeStep(req, taskId, stepId) {
       if (d.form.questionnaire === 'channels') QS.applyChannels(req, t, rows);
       if (d.form.stakeholders) QS.syncStakeholders(req, t, rec.id);
     }
+    // What the step creates in the project (records, campaigns, messages); an error stops the completion.
+    result = await FLOW.complete(req, t, stepId, { rows: SINGLE.has(kind) ? [] : rowsOf(rec.id).map(r => ({ _id: r.id, ...J(r.data, {}) })), fields: J(rec.fields, {}) });
     if (d.form.questionnaire === 'create') { const qid = QS.createQuestionnaire(req, t, J(rec.fields, {})); const fl = { ...J(rec.fields, {}), questionnaire_id: qid }; run(`UPDATE step_records SET fields=? WHERE id=?`, S(fl), rec.id); rec.fields = S(fl); }
   }
   let propagated = 0;
@@ -185,7 +196,7 @@ export function completeStep(req, taskId, stepId) {
     run(`UPDATE task_instances SET steps=?, status=CASE WHEN status='Not started' THEN 'In progress' ELSE status END, started_at=coalesce(started_at, ?), updated_at=? WHERE id=?`, S(steps), now(), now(), t.id);
     propagated = propagate(req, t, stepId, d, rec);
   });
-  return { ok: true, propagated };
+  return { ok: true, propagated, result };
 }
 export function reopenStep(req, taskId, stepId, justification) {
   const { t } = guard(req, taskId, stepId); if (!String(justification || '').trim()) throw new HttpError(422, 'err.justificationRequired');
@@ -310,9 +321,11 @@ export async function suggestRows(req, taskId, stepId, code) {
   AI.assertActive(req.orgId, t.project_id, uc.code);
   const spec = getSpec(req.orgId, uc.id); const live = liveConfig(req.orgId, spec.model);
   const refs = retrieve(req.orgId, [pick(uc.name, lang), pick(d.step.name, lang)].join(' '), { lang, k: 4 }).map(r => ({ source: r.source, title: r.title, score: r.score, route: r.route }));
-  const base = builtInRows(req, t, stepId, d);
-  let out = { rows: base.rows, engine: 'built-in', model: null, reason: live ? null : 'noModel', emptyReason: base.reason };
-  if (live) {
+  // The steps of the diagnosis, plan, delivery and evaluation propose from the project's own records.
+  const fl = FLOW.aiProposal(req, t, stepId); const single = SINGLE.has(d.form.kind);
+  const base = fl ? (Array.isArray(fl) ? { rows: fl, reason: fl.length ? null : 'noContext' } : { rows: [], fields: fl }) : builtInRows(req, t, stepId, d);
+  let out = { rows: base.rows, fields: base.fields || null, engine: 'built-in', model: null, reason: live ? null : 'noModel', emptyReason: base.reason };
+  if (live && !single) {
     const { prompt, missing } = assemble(spec, variables(req.orgId, { projectId: t.project_id, lang, taskId: t.id, stepId }), lang);
     if (missing.length) out = { ...out, reason: 'promptVariable', reasonDetail: missing.join(', ') };
     else {
@@ -343,3 +356,15 @@ export function restoreRow(req, taskId, stepId, rowId, data) {
   const { t } = guard(req, taskId, stepId); const rec = recordOf(t, stepId); if (!rec) return false;
   return run(`UPDATE step_rows SET data=?, updated_by=?, updated_at=? WHERE id=? AND step_record_id=?`, S(data), req.user.id, now(), rowId, rec.id).changes > 0;
 }
+
+/** Rows (or form values) proposed by the template of the library for a step (FR-DA-LNK-03: Entry Origin Library). */
+export function templateRows(req, taskId, stepId) {
+  const { t } = guard(req, taskId, stepId); const p = FLOW.templateProposal(req, t, stepId);
+  return Array.isArray(p) ? { rows: p, engine: 'template' } : { rows: [], fields: p, engine: 'template' };
+}
+/** Live panel of a step (campaign answers, gaps, indicators...) and its actions. */
+export function stepPanel(req, taskId, stepId) {
+  const { t, rel } = taskContext(req.orgId, taskId); if (!stepDef(req.orgId, stepId, rel, { uft: t.uft_id })) throw new HttpError(404, 'err.notFound');
+  return FLOW.panel(req, t, stepId) || {};
+}
+export async function stepAction(req, taskId, stepId, key, body) { const { t } = guard(req, taskId, stepId); return FLOW.action(req, t, stepId, key, body); }

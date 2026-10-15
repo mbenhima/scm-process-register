@@ -11,7 +11,7 @@ export function completeness(sections, answers = {}, flags = {}) {
   for (const s of sections || []) {
     if (s.type === 'note' || (s.condition === 'previous_plan' && flags.previous_plan === false) || (s.condition === 'hr_function' && flags.hr_function !== true)) continue;
     const a = answers[s.id];
-    const keys = s.type === 'identity' ? s.fields : s.type === 'swot' ? s.boxes : s.type === 'grid' ? s.rows : ['questions', 'rating', 'yesno'].includes(s.type) ? s.items : null;
+    const keys = s.type === 'identity' ? s.fields : s.type === 'swot' ? s.boxes : s.type === 'grid' ? s.rows : ['questions', 'rating', 'yesno', 'choice'].includes(s.type) ? s.items : null;
     if (keys) for (const k of keys) { total++; if (nonEmpty(s.type === 'yesno' ? a?.[k.key]?.value : a?.[k.key])) filled++; }
     else if (s.type === 'table') { total++; if (Array.isArray(a) && a.some(nonEmpty)) filled++; }
   }
@@ -27,7 +27,7 @@ function Cell({ col, value, onChange, readOnly, label, functions }) {
   }
   if (col.kind === 'check') return <input type="checkbox" checked={!!value} onChange={e => onChange(e.target.checked)} aria-label={label} />;
   if (col.kind === 'yesno') return <Select className="input" value={value || ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option><option value="Yes">{t('common.yes')}</option><option value="No">{t('common.no')}</option></Select>;
-  if (col.kind === 'scale') return <Select className="input" value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option>{col.allowNew && <option value="Nv">Nv</option>}{[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}</option>)}</Select>;
+  if (col.kind === 'scale') return <Select className="input" value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option>{col.allowNew && <option value="Nv">Nv</option>}{Array.from({ length: col.max || 5 }, (_, i) => i + 1).map(n => <option key={n} value={n}>{col.labels?.[n] ? `${n} — ${L(col.labels[n]) || col.labels[n]}` : n}</option>)}</Select>;
   if (col.kind === 'choice') return <Select className="input" value={value || ''} onChange={e => onChange(e.target.value)} aria-label={label}><option value="">—</option>{(col.options || []).map(o => <option key={o.en} value={o.en}>{L(o)}</option>)}</Select>;
   if (col.kind === 'number') return <input className="input" type="number" min="0" value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label} />;
   if (col.kind === 'date') return <input className="input" type="date" value={value ?? ''} onChange={e => onChange(e.target.value)} aria-label={label} />;
@@ -49,8 +49,11 @@ export function QForm({ form, answers, flags = {}, onChange, onFlags, readOnly =
       {!hidden && s.type === 'identity' && <div className="grid g-3">{s.fields.map(f => <div className="field" key={f.key}><label>{L(f.label)}</label>{readOnly ? <span>{a?.[f.key] ?? '—'}</span> : <input className="input" type={f.kind === 'number' ? 'number' : 'text'} value={a?.[f.key] ?? ''} onChange={e => set(s.id, { ...a, [f.key]: e.target.value })} />}</div>)}</div>}
       {!hidden && (s.type === 'questions') && <div className="stack">{s.items.map(it => <div className="field" key={it.key}><label>{L(it.label)}{it.origin === 'ai' && <span className="pill tint xs" style={{ marginInlineStart: 6 }}>{t('qf.ai')}</span>}</label>
         {readOnly ? <p className="small">{a?.[it.key] || '—'}</p> : <textarea className="input" rows={3} value={a?.[it.key] ?? ''} onChange={e => set(s.id, { ...a, [it.key]: e.target.value })} />}</div>)}</div>}
-      {!hidden && s.type === 'rating' && <div className="table-wrap"><table className="tbl"><thead><tr><th>{t('qf.competence')}</th><th>{t('qf.rating')}{s.scale?.allowNew ? ' (Nv, 1–5)' : ' (1–5)'}</th></tr></thead>
-        <tbody>{s.items.map(it => <tr key={it.key}><td>{L(it.label)}</td><td style={{ width: 140 }}><Cell col={{ kind: 'scale', allowNew: s.scale?.allowNew }} value={a?.[it.key]} readOnly={readOnly} label={L(it.label)} onChange={v => set(s.id, { ...a, [it.key]: v })} /></td></tr>)}</tbody></table></div>}
+      {!hidden && s.type === 'rating' && <div className="table-wrap"><table className="tbl"><thead><tr><th>{t('qf.competence')}</th><th>{t('qf.rating')}{s.scale?.allowNew ? ` (Nv, 1–${s.scale?.max || 5})` : ` (1–${s.scale?.max || 5})`}</th></tr></thead>
+        <tbody>{s.items.map(it => <tr key={it.key}><td>{L(it.label)}{it.hint && <div className="xs muted">{L(it.hint)}</div>}</td><td style={{ width: s.scale?.labels ? 260 : 140 }}><Cell col={{ kind: 'scale', allowNew: s.scale?.allowNew, max: s.scale?.max, labels: s.scale?.labels }} value={a?.[it.key]} readOnly={readOnly} label={L(it.label)} onChange={v => set(s.id, { ...a, [it.key]: v })} /></td></tr>)}</tbody></table></div>}
+      {!hidden && s.type === 'choice' && <ol className="stack qchoice">{s.items.map(it => <li key={it.key} className="field"><fieldset><legend className="strong small">{L(it.label)}</legend>
+        {readOnly ? <p className="small">{L((it.options || []).find(o => o.value === a?.[it.key])?.label) || a?.[it.key] || '—'}</p>
+          : (it.options || []).map(o => <label key={o.value} className="row small" style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}><input type="radio" name={`${s.id}-${it.key}`} value={o.value} checked={a?.[it.key] === o.value} onChange={() => set(s.id, { ...a, [it.key]: o.value })} style={{ marginTop: 3 }} /><span>{L(o.label)}</span></label>)}</fieldset></li>)}</ol>}
       {!hidden && s.type === 'yesno' && <div className="table-wrap"><table className="tbl"><tbody>{s.items.map(it => <tr key={it.key}><td>{L(it.label)}</td>
         <td style={{ width: 120 }}><Cell col={{ kind: 'yesno' }} value={a?.[it.key]?.value} readOnly={readOnly} label={L(it.label)} onChange={v => set(s.id, { ...a, [it.key]: { ...(a?.[it.key] || {}), value: v } })} /></td>
         <td>{readOnly ? <span className="small">{a?.[it.key]?.comment}</span> : <input className="input" placeholder={t('qf.comment')} value={a?.[it.key]?.comment ?? ''} onChange={e => set(s.id, { ...a, [it.key]: { ...(a?.[it.key] || {}), comment: e.target.value } })} aria-label={t('qf.comment')} />}</td></tr>)}</tbody></table></div>}

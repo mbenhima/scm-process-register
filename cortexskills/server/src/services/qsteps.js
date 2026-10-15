@@ -8,6 +8,8 @@ import * as cat from '../catalog.js';
 import * as Q from './questionnaires.js';
 import { insertRecord } from './projects.js';
 import { normalizePhone } from './channels.js';
+import { sourceList } from './flowcore.js';
+import { orgCurrencies } from './money.js';
 
 const today = () => now().slice(0, 10);
 
@@ -15,14 +17,14 @@ const today = () => now().slice(0, 10);
 export function questionnaireFor(orgId, projectId) {
   if (!projectId) return null;
   const linked = one(`SELECT json_extract(sr.fields,'$.questionnaire_id') q FROM step_records sr WHERE sr.project_id=? AND sr.step_id='MP-54.1' AND json_extract(sr.fields,'$.questionnaire_id') IS NOT NULL ORDER BY sr.updated_at DESC LIMIT 1`, projectId)?.q;
-  const id = linked || one(`SELECT id FROM records WHERE entity='Questionnaire' AND org_id=? AND project_id=? ORDER BY created_at DESC LIMIT 1`, orgId, projectId)?.id;
+  const id = linked || one(`SELECT id FROM records WHERE entity='Questionnaire' AND org_id=? AND project_id=? AND coalesce(json_extract(data,'$.purpose'),'needs')='needs' ORDER BY created_at DESC LIMIT 1`, orgId, projectId)?.id;
   if (!id) return null;
   try { return Q.getQuestionnaire(orgId, id); } catch { return null; }
 }
 
 /** Options of the lists a step field names in `source`, from the Organization's own data. */
 export function resolveSources(orgId, fields, { projectId, lang = 'en', user } = {}) {
-  const org = one(`SELECT * FROM organizations WHERE id=?`, orgId) || {}; const p = projectId ? one(`SELECT focus FROM projects WHERE id=?`, projectId) : null;
+  const org = one(`SELECT * FROM organizations WHERE id=?`, orgId) || {}; const p = projectId ? one(`SELECT focus, plan_year FROM projects WHERE id=?`, projectId) : null;
   const group = org.group_id ? one(`SELECT name FROM groups_ WHERE id=?`, org.group_id) : null;
   const cache = {};
   const lists = {
@@ -33,10 +35,12 @@ export function resolveSources(orgId, fields, { projectId, lang = 'en', user } =
       .filter(t => t.status !== 'Retired').map(t => ({ value: t.id, label: Object.fromEntries(['en', 'fr', 'ar'].map(l => [l, `${t.code || ''} — ${pick(t.name, l)}`.replace(/^ — /, '')])) })),
     qsections: () => { const q = questionnaireFor(orgId, projectId); const seen = new Map(); for (const fm of q?.forms || []) for (const s of fm.sections || []) if (!seen.has(s.id)) seen.set(s.id, { value: s.id, label: s.title || { en: s.id, fr: s.id, ar: s.id } }); return [...seen.values()]; },
   };
-  const subst = v => (typeof v !== 'string' ? v : v === '{today}' ? today() : v === '{me}' ? user?.name || '' : v === '{sector}' ? org.sector || '' : v === '{focus}' ? (p?.focus === 'All' || !p?.focus ? 'All' : p.focus) : v === '{groupName}' ? pick(J(group?.name, group?.name), lang) || '' : v);
+  const subst = v => (typeof v !== 'string' ? v : v === '{today}' ? today() : v === '{me}' ? user?.name || '' : v === '{sector}' ? org.sector || '' : v === '{focus}' ? (p?.focus === 'All' || !p?.focus ? 'All' : p.focus) : v === '{groupName}' ? pick(J(group?.name, group?.name), lang) || '' : v === '{currency}' ? orgCurrencies(orgId).default : v === '{planYear}' ? String(p?.plan_year || new Date().getFullYear() + 1) : v);
   return fields.map(f => {
     const out = { ...f };
     if (f.source && lists[f.source]) out.options = cache[f.source] ||= lists[f.source]();
+    // Lists built from the project's records (competencies, positions, sessions, courses, people...).
+    else if (f.source) out.options = cache[f.source] ||= sourceList(f.source, orgId, projectId, lang) || [];
     if (f.default != null) out.default = subst(f.default);
     return out;
   });

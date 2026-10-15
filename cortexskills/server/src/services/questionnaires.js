@@ -76,7 +76,7 @@ export function completeness(sections, answers = {}, flags = {}) {
   for (const s of sections || []) {
     if (!applicable(s, flags)) continue;
     const a = answers[s.id];
-    const keys = s.type === 'identity' ? s.fields : s.type === 'swot' ? s.boxes : s.type === 'grid' ? s.rows : ['questions', 'rating', 'yesno'].includes(s.type) ? s.items : null;
+    const keys = s.type === 'identity' ? s.fields : s.type === 'swot' ? s.boxes : s.type === 'grid' ? s.rows : ['questions', 'rating', 'yesno', 'choice'].includes(s.type) ? s.items : null;
     if (keys) { for (const k of keys) { total++; const v = a?.[k.key]; if (nonEmpty(s.type === 'yesno' ? v?.value : v)) filled++; } }
     else if (s.type === 'table') { total++; if (Array.isArray(a) && a.some(nonEmpty)) filled++; }
   }
@@ -161,14 +161,18 @@ export const linkFor = (inv, base) => `${(base || '').replace(/\/$/, '')}/respon
 function orgInfo(orgId) { const o = one(`SELECT name, default_language FROM organizations WHERE id=?`, orgId); return { name: J(o?.name, o?.name), lang: o?.default_language || 'en' }; }
 function compose(inv, q, kind, base) {
   const org = orgInfo(inv.org_id); const lang = inv.lang || org.lang;
-  const vars = { name: inv.name || '', org: pick(org.name, lang), title: pick(q.label, lang), link: linkFor(inv, base || q.public_base), due: q.due_date ? new Date(q.due_date).toLocaleDateString(lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '—',
+  // A campaign of the diagnosis, delivery or evaluation names the respondent's own form (session, person assessed...).
+  const fm = q.per_form_title ? formOf(q, inv.template_code) : null;
+  const vars = { name: inv.name || '', org: pick(org.name, lang), title: fm ? pick(fm.name, lang) : pick(q.label, lang), link: linkFor(inv, base || q.public_base), due: q.due_date ? new Date(q.due_date).toLocaleDateString(lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '—',
     interview: inv.interview_at ? new Date(inv.interview_at).toLocaleString(lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-GB', { dateStyle: 'long', timeStyle: 'short' }) : '' };
   const k = kind === 'remind' ? 'reminder' : kind === 'interview' ? 'interview' : 'invite';
-  const subject = t(`qmsg.${k}.subject`, lang, vars); const text = t(`qmsg.${k}.body`, lang, vars) + '\n\n' + t('qmsg.footer', lang, vars);
+  // Texts of the campaign's purpose when they exist (qmsg.<purpose>.<kind>), else the questionnaire texts.
+  const key = x => { const pk = q.purpose && q.purpose !== 'needs' ? `qmsg.${q.purpose}.${x}` : null; return pk && t(pk, lang) !== pk ? pk : `qmsg.${x}`; };
+  const subject = t(key(`${k}.subject`), lang, vars); const text = t(key(`${k}.body`), lang, vars) + '\n\n' + t(key('footer'), lang, vars);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const html = `<div style="font-family:'Open Sans',Arial,sans-serif;color:#2C3E50;max-width:560px;${lang === 'ar' ? 'direction:rtl;text-align:right;' : ''}">` +
-    esc(t(`qmsg.${k}.body`, lang, vars)).split('\n').map(l => l.includes(vars.link) ? `<p><a href="${esc(vars.link)}" style="display:inline-block;background:#1876C6;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:bold">${esc(t('qmsg.button', lang))}</a></p>` : `<p style="margin:0 0 10px">${l}</p>`).join('') +
-    `<p style="font-size:12px;color:#5A6B7B;margin-top:18px">${esc(t('qmsg.footer', lang, vars))}</p></div>`;
+    esc(t(key(`${k}.body`), lang, vars)).split('\n').map(l => l.includes(vars.link) ? `<p><a href="${esc(vars.link)}" style="display:inline-block;background:#1876C6;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:bold">${esc(t(key('button'), lang))}</a></p>` : `<p style="margin:0 0 10px">${l}</p>`).join('') +
+    `<p style="font-size:12px;color:#5A6B7B;margin-top:18px">${esc(t(key('footer'), lang, vars))}</p></div>`;
   return { lang, subject, text, html, params: [vars.name, vars.org, vars.title, vars.link, vars.due] };
 }
 
