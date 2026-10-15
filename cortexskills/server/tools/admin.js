@@ -63,7 +63,7 @@ switch (cmd) {
   }
   case 'org-list':
     for (const o of all(`SELECT o.id, o.name, o.email_domain, o.segment, c.pack_id, c.seats, c.addons, l.data FROM organizations o LEFT JOIN org_config c ON c.org_id=o.id LEFT JOIN licences l ON l.org_id=o.id ORDER BY o.created_at`)) {
-      const l = J(o.data, {}); console.log(`${o.id}  ${name(o).padEnd(32)} ${String(o.email_domain || '').padEnd(24)} ${o.segment}  pack ${o.pack_id}  seats ${o.seats}  users ${one(`SELECT COUNT(*) n FROM users WHERE org_id=? AND active=1`, o.id).n}  add-ons ${J(o.addons, []).join(',') || '—'}  licence until ${String(l.expiryDate || '—').slice(0, 10)}`);
+      const l = config.deploymentMode === 'onprem' ? (new OnPremLicenceProvider(o.id).check().licence || { expiryDate: 'not installed' }) : J(o.data, {}); console.log(`${o.id}  ${name(o).padEnd(32)} ${String(o.email_domain || '').padEnd(24)} ${o.segment}  pack ${o.pack_id}  seats ${o.seats}  users ${one(`SELECT COUNT(*) n FROM users WHERE org_id=? AND active=1`, o.id).n}  add-ons ${J(o.addons, []).join(',') || '—'}  licence until ${String(l.expiryDate || '—').slice(0, 10)}`);
     }
     break;
   case 'licence': {

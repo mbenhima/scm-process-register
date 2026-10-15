@@ -1,0 +1,43 @@
+# CortexSkills — editor runtime (Linux): the application and, with the "https" profile, Caddy in front of it.
+# Use the scripts: ./install.sh, ./licence.sh, ./backup.sh, ./update.sh (see README.txt).
+name: cortexskills
+
+services:
+  cortexskills:
+    image: cortexskills:${CORTEXSKILLS_VERSION:?}
+    build: .
+    container_name: cortexskills
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:${HOST_PORT:-4000}:4000"
+    volumes:
+      - cortexskills-data:/data
+      - ./licence:/licence:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+
+  caddy:
+    image: caddy:2
+    container_name: cortexskills-https
+    profiles: ["https"]
+    restart: unless-stopped
+    depends_on: [cortexskills]
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  cortexskills-data:
+  caddy-data:
+  caddy-config:
