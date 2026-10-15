@@ -20,11 +20,11 @@ function generalComps(lang) {
     { item: T(lang, 'Critical thinking about AI results', 'Esprit critique face aux résultats de l’IA', 'التفكير النقدي في نتائج الذكاء الاصطناعي'), family: 'Behavioural' }];
 }
 const compDescription = (name, family, lang) => ({
-  AI: T(lang, `Uses ${name} in daily work, checks each suggestion against clinical judgement and records the decision.`, `Utilise ${name} au quotidien, confronte chaque suggestion à son jugement clinique et trace la décision prise.`, `يستعمل ${name} في العمل اليومي ويقارن كل اقتراح بحكمه المهني ويوثق القرار.`),
-  Digital: T(lang, `Uses ${name} correctly and completely, without double entry.`, `Utilise ${name} correctement et complètement, sans double saisie.`, `يستعمل ${name} بشكل صحيح وكامل دون إدخال مزدوج.`),
-  Regulatory: T(lang, `Applies the rules of ${name} and knows when to alert.`, `Applique les règles de ${name} et sait quand alerter.`, `يطبق قواعد ${name} ويعرف متى ينبه.`),
-  Behavioural: T(lang, `Shows ${name} in practice and explains the reasons of a decision.`, `Fait preuve de ${name} en pratique et explique les raisons d’une décision.`, `يظهر ${name} عملياً ويشرح أسباب القرار.`),
-}[family] || T(lang, `Masters ${name} in the situations of the position.`, `Maîtrise ${name} dans les situations du poste.`, `يتقن ${name} في مواقف المنصب.`));
+  AI: T(lang, `Competency “${name}”: uses the AI tool in daily work, checks each suggestion against clinical judgement and records the decision.`, `Compétence « ${name} » : utilise l’outil d’IA au quotidien, confronte chaque suggestion à son jugement clinique et trace la décision prise.`, `كفاءة «${name}»: يستعمل أداة الذكاء الاصطناعي يومياً ويقارن كل اقتراح بحكمه المهني ويوثق القرار.`),
+  Digital: T(lang, `Competency “${name}”: uses the tool correctly and completely, without double entry.`, `Compétence « ${name} » : utilise l’outil correctement et complètement, sans double saisie.`, `كفاءة «${name}»: يستعمل الأداة بشكل صحيح وكامل.`),
+  Regulatory: T(lang, `Competency “${name}”: knows and applies the rules of the domain and knows when to alert.`, `Compétence « ${name} » : connaît et applique les règles du domaine et sait quand alerter.`, `كفاءة «${name}»: يعرف القواعد ويطبقها ويعرف متى ينبه.`),
+  Behavioural: T(lang, `Competency “${name}”: shows it in practice and explains the reasons of each decision.`, `Compétence « ${name} » : la démontre en pratique et explique les raisons de chaque décision.`, `كفاءة «${name}»: يظهرها عملياً ويشرح أسباب كل قرار.`),
+}[family] || T(lang, `Competency “${name}”: masters it in the situations of the position.`, `Compétence « ${name} » : la maîtrise dans les situations du poste.`, `كفاءة «${name}»: يتقنها في مواقف المنصب.`));
 function tplCompetencies({ req, t, lang }) {
   const org = C.orgOf(req.orgId); const v = C.sectorSeed(org.sector); const focus = C.projectOf(t.project_id).focus || 'All';
   const list = [...(focus !== 'Digital' ? (v?.themes?.ai || []).map(x => ({ item: C.pick(x, lang), family: 'AI' })) : []), ...(focus !== 'AI' ? (v?.themes?.digital || []).map(x => ({ item: C.pick(x, lang), family: 'Digital' })) : []), ...generalComps(lang)];

@@ -241,6 +241,7 @@ async function flowStep(t, s, o = {}) {
   else if (mode && snap.modes[mode]) applied = snap.modes[mode];
   if (applied && o.edit) applied = applied.fields ? { fields: o.edit(applied.fields) } : { rows: applied.rows.map(o.edit).filter(Boolean) };
   if (applied && o.add) applied = { rows: [...applied.rows, ...o.add] };
+  if (applied?.rows && o.renumber) applied = { rows: applied.rows.map((r, i) => ({ ...r, code: `${o.renumber}-${String(i + 1).padStart(2, '0')}` })) };
   if (applied?.fields) await api('PUT', `${b}/fields`, { fields: applied.fields });
   else if (applied?.rows) for (const r of applied.rows) await api('POST', `${b}/rows`, { data: r, origin: o.rows ? 'manual' : mode === 'ai' ? 'ai' : 'library' });
   snap.mode = o.rows ? 'manual' : applied ? mode : null; snap.edited = !!(o.edit || o.add); snap.note = o.note || null;
@@ -289,7 +290,7 @@ async function runFlow(pid) {
   const T = e2e => tasksOf(pid, e2e);
   // ---------------- E2E-02 — skills diagnosis
   const D = T('E2E-02');
-  await flowTask('E2E-02', D[0], { 'MP-02.1': { mode: 'template', edit: r => (/lits|effectifs/i.test(r.item) ? null : r), note: 'Le modèle propose les thèmes IA du secteur ; la ligne « Planification IA des lits et des effectifs » a été supprimée (hors périmètre de ce premier cycle).' } }, ANALYST);
+  await flowTask('E2E-02', D[0], { 'MP-02.1': { mode: 'template', renumber: 'C', edit: r => (/lits|effectifs/i.test(r.item) ? null : r), note: 'Le modèle propose les thèmes IA du secteur ; la ligne « Planification IA des lits et des effectifs » a été supprimée (hors périmètre de ce premier cycle) et les codes renumérotés C-01 à C-04.' } }, ANALYST);
   await flowTask('E2E-02', D[1], { 'MP-02.2': { mode: 'ai', note: 'L’IA relie chaque compétence aux postes concernés (triage pour les urgences et les soins, imagerie pour la radiologie) et propose la criticité.' } }, ANALYST);
   await flowTask('E2E-02', D[2], { 'MP-02.3': { mode: 'ai', note: 'L’IA reprend les parties prenantes des niveaux OP et MO dont le poste a des cibles, et désigne le manager de la même fonction.' } }, ANALYST);
   await flowTask('E2E-02', D[3], { 'MP-02.4': { answer: () => answerCampaign(pid, 'assessment', view => { const mgr = /^MGR-/.test(view.form.code || '') || /Évaluation de/.test(fr(view.form.name)); const subj = mgr ? fr(view.form.name).replace(/^Évaluation de /, '').replace(/ \(.*$/, '') : view.respondent.name;

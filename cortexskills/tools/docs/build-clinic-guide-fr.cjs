@@ -20,7 +20,14 @@ const PASS = 'CortexSkills#2026';
 
 // Value of a cell as typed in the application (KPI by code and name).
 const cellText = (f, v) => (f?.type === 'kpi' && /^KPI-\d+$/.test(String(v)) ? `${v} (${kpi[v] || ''})` : v);
-const colW = (f, i, rows) => { const len = Math.max(String(f.label).length, ...rows.map(r => String(r[i] || '').length)); const base = { boolean: 1000, date: 1200, number: 1100 }[f.type]; return base ? Math.max(base, f.label.length * 120 + 260) : Math.min(3400, Math.max(1100, len * 70)); };
+// Column width: never narrower than its longest word (no word split across lines), wider for long texts.
+const longestWord = (f, i, rows) => Math.max(...String(f.label).split(/\s+/).map(w => w.length), ...rows.map(r => Math.max(0, ...String(r[i] || '').split(/\s+/).map(w => w.length))));
+const minW = (f, i, rows) => longestWord(f, i, rows) * 92 + 260;
+/** Widths that fill the page: every column gets its minimum (longest word), the rest is shared by the preferred widths. */
+const fitW = (fields, rows, total) => { const mins = fields.map((f, i) => minW(f, i, rows) + (f.type === 'date' ? 200 : 0)); const prefs = fields.map((f, i) => { const len = Math.max(...rows.map(r => String(r[i] || '').length), 0); return len > 28 ? Math.max(mins[i], Math.min(5200, len * 75)) : mins[i]; });
+  const sm = mins.reduce((a, b) => a + b, 0); if (sm >= total) return mins; const extra = prefs.map((p, i) => p - mins[i]); const se = extra.reduce((a, b) => a + b, 0) || 1; const room = total - sm;
+  return mins.map((m, i) => Math.round(m + Math.min(extra[i], (extra[i] / se) * room) + (se <= room ? (room - se) / mins.length : 0))); };
+const colW = (f, i, rows) => { const len = Math.max(String(f.label).length, ...rows.map(r => String(r[i] || '').length)); const base = { boolean: 1000, date: 1200, number: 1100 }[f.type]; return Math.max(minW(f, i, rows), base ? Math.max(base, f.label.length * 60 + 260) : Math.min(3400, Math.max(1100, len * 70))); };
 const KIND = { inline: 'Tableau à coller', 'master-detail': 'Tableau à coller', form: 'Formulaire', sectioned: 'Formulaire', system: 'Étape automatique', module: 'Panneau de travail' };
 const stepHead = s => P([{ text: `Étape ${s.id} · `, bold: true, color: C.azure }, { text: s.name, bold: true, color: C.navy }, { text: `   ${KIND[s.pattern] || s.kindLabel} · ${s.role}`, color: C.muted, size: 18 }], { before: 200, after: 80, keepNext: true });
 function stepBlock(s, extra = {}) {
@@ -31,10 +38,10 @@ function stepBlock(s, extra = {}) {
     outB.push(table(['Champ', 'Valeur à saisir ou à choisir'], (s.values || []).map((v, i) => { const f = s.fields[i] || {}; const lbl = f.required ? { text: `${v.label} (obligatoire)`, bold: true } : v.label; const how = f.type === 'select' || f.type === 'person' ? ' — liste' : f.type === 'multi' ? ' — cases à cocher' : f.type === 'date' ? ' — date' : ''; return [lbl, (cellText(f, v.value) || '—') + (v.value ? how : '')]; }), W2, { size: 18 }), spacer(80));
   } else if (s.pattern === 'inline' || s.pattern === 'master-detail') {
     const req = s.fields.filter(f => f.required).map(f => f.label); const rows = (s.rows || []).map(r => r.map((v, i) => String(cellText(s.fields[i], v) ?? '')));
-    const wide = s.fields.length > 9; const block = [];
+    const wide = s.fields.length > 9 || s.fields.reduce((t, f, i) => t + minW(f, i, rows), 0) > 9400; const block = [];
     block.push(P([`Copiez ce tableau (poignée ✥ en haut à gauche, Ctrl+C) et collez-le dans le tableau de l’étape (Ctrl+V), puis « Appliquer ».`, req.length ? { text: ` Colonnes obligatoires : ${req.join(', ')}.`, color: C.muted } : ''], { size: 20, after: 60, keepNext: true }));
     if (wide) block.unshift(P([{ text: `Étape ${s.id} · ${s.name}`, bold: true, color: C.navy }, { text: ' — tableau large, présenté en paysage', color: C.muted }], { size: 20, after: 60 }));
-    block.push(table(s.fields.map(f => f.label), rows, s.fields.map((f, i) => colW(f, i, rows)), { size: wide ? 16 : s.fields.length > 7 ? 15 : s.fields.length > 5 ? 16 : 17, ...(wide ? { width: CONTENT_LAND } : {}) }));
+    block.push(table(s.fields.map(f => f.label), rows, fitW(s.fields, rows, wide ? CONTENT_LAND : 9638), { size: wide ? 16 : s.fields.length > 7 ? 15 : s.fields.length > 5 ? 16 : 17, ...(wide ? { width: CONTENT_LAND } : {}) }));
     const lists = s.fields.filter(f => (f.type === 'select' || f.type === 'multi') && f.options.length && f.options.length <= 6);
     if (lists.length) block.push(P(`Listes : ${lists.map(f => `${f.label} = ${f.options.map(o => o.label).join(' | ')}${f.type === 'multi' ? ' (plusieurs choix, séparés par des virgules)' : ''}`).join(' ; ')}.`, { size: 16, color: C.muted, before: 40, after: 120 }));
     else block.push(spacer(100));
@@ -153,7 +160,7 @@ for (const t of T33) {
     ...shot(SH('24_channels_b'), 'UFT-33-05 : canaux préférés à choix multiple', 420)];
   if (t.uft === 'UFT-33-06') { const em = (s0.messages || []).find(m => m.channel === 'email') || (s0.messages || [])[0]; const wa = (s0.messages || []).find(m => m.channel === 'whatsapp');
     ex.shots = [P('Le panneau montre l’état des canaux (production ou bac à sable), puis la liste « Qui répond ». Deux actions :', { size: 19 }),
-      ...steps([[b('« Ajouter des répondants » : '), 'cochez « Tout sélectionner » : les parties prenantes de UFT-32-06 sont ajoutées, chacune avec son formulaire et son plan de canaux.'], [b('« Diffuser maintenant à 8 répondant(s) » : '), 'chaque répondant reçoit immédiatement son premier message, avec son lien personnel.']]),
+      ...steps([[b('« Ajouter des répondants » : '), 'cochez « Tout sélectionner » : les parties prenantes de UFT-32-06 sont ajoutées, chacune avec son formulaire et son plan de canaux.'], [b(`« Diffuser maintenant à ${inv.length} répondant(s) » : `), 'chaque répondant reçoit immédiatement son premier message, avec son lien personnel.']]),
       P('Le message réellement envoyé par e-mail (exemple) :', { size: 19, before: 60, keepNext: true }), code(`Objet : ${em?.subject || ''}`), ...String(em?.text || '').split('\n').filter(Boolean).slice(0, 9).map(l => code(l.replace(/https?:\/\/[^\s]+\/respond\/\S+/, 'https://competences.cliniquealamal.ma/respond/<lien personnel>'))),
       ...(wa ? [P('Et par WhatsApp (avec le modèle approuvé, les mêmes informations remplissent ses variables) :', { size: 19, before: 60, keepNext: true }), ...String(wa.text || '').split('\n').filter(Boolean).slice(0, 4).map(l => code(l.replace(/https?:\/\/[^\s]+\/respond\/\S+/, 'https://competences.cliniquealamal.ma/respond/<lien personnel>')))] : []),
       ...shot(SH('25_distribution_b'), 'UFT-33-06 : les répondants, leurs coordonnées et leur plan de canaux', 420)]; }
@@ -179,10 +186,10 @@ const PH = [[2, 'E2E-02', '7. Phase 2 — Le diagnostic des écarts de compéten
   [5, 'E2E-07', '10. Phase 5 — L’évaluation de l’efficacité (E2E-07)', 'Les acquis, le transfert en situation de travail et l’efficacité sont mesurés et comparés aux objectifs.']];
 // The three ways to fill a step, what the case used, the rows to paste, the live result.
 const MODE = { manual: 'Saisie manuelle (ou collage)', template: 'Depuis le modèle', ai: 'Proposition de l’IA' };
-const SHOT_OF = { 'UFT-02-01': '40_competencies', 'UFT-02-03': '42_population', 'UFT-02-04': '43_assessments', 'UFT-02-07': '46_gaps',
-  'UFT-01-04': '52_needs', 'UFT-01-05': '53_budget', 'UFT-01-08': '54_approve',
-  'UFT-05-01': '60_review', 'UFT-05-03': '61_sessions', 'UFT-05-04': '62_convocations', 'UFT-05-05': '63_capsules', 
-  'UFT-07-02': '70_questionbank', 'UFT-07-04': '72_l2', 'UFT-07-05': '73_l3', 'UFT-07-06': '74_kpis' };
+const SHOT_OF = { 'UFT-02-03': '42_population', 'UFT-02-07': '46_gaps',
+  
+  'UFT-05-04': '62_convocations', 
+  'UFT-07-04': '72_l2', 'UFT-07-06': '74_kpis' };
 const nRows = m => (m?.rows ? `${m.rows.length} ligne(s) proposée(s)` : m?.fields ? `${m.fields.length} champ(s) pré-rempli(s)` : null);
 function modesBlock(s) {
   if (!(s.fill || []).length) return [];
@@ -198,16 +205,15 @@ function panelBlock(p) {
   if (p.kpis?.length) outB.push(P(p.kpis.map(k => `${k.label} : ${k.value}`).join('   ·   '), { size: 19, bold: true, color: C.navy, after: 60 }));
   for (const n of p.notes || []) outB.push(P(n, { size: 17, color: C.muted, after: 60 }));
   for (const tb of (p.tables || []).slice(0, 1)) { if (!tb.rows.length) continue; const w = tb.columns.map((c, i) => Math.min(3200, Math.max(900, Math.max(c.length, ...tb.rows.map(r => String(r[i] || '').length)) * 75)));
-    outB.push(P(tb.title, { size: 18, bold: true, after: 40, keepNext: true }), table(tb.columns, tb.rows.slice(0, 8), w, { size: tb.columns.length > 6 ? 14 : 16 }), spacer(80)); }
+    outB.push(P(tb.title, { size: 18, bold: true, after: 40, keepNext: true }), table(tb.columns, tb.rows.slice(0, 6), w, { size: tb.columns.length > 6 ? 14 : 16 }), spacer(80)); }
   return outB;
 }
 function flowStepBlock(t, s) {
   if (s.skipped) return [];
-  const sx = { ...s, rows: (s.rows || []).slice(0, 8) }; const blk = stepBlock(sx);
+  const blk = stepBlock(s);
   const extra = [...modesBlock(s)];
   if (s.mode) extra.push(P([b(`Dans le cas : ${MODE[s.mode]}`), s.edited ? ' (proposition modifiée avant d’être enregistrée)' : '', s.note ? ` — ${s.note}` : ''], { size: 19, after: 60, keepNext: true }));
   blk.splice(1, 0, ...extra);
-  if ((s.rows || []).length > 8) blk.push(P(`… ${s.rows.length} lignes au total, toutes visibles dans l’application.`, { size: 16, color: C.muted, after: 80 }));
   for (const a of s.actions || []) { const r = a.result || {}; const txt = r.added != null ? `${r.added} lien(s) envoyé(s)${r.missing?.length ? ` ; adresse manquante : ${r.missing.join(', ')}` : ''}` : r.sent != null ? `${r.sent} message(s) envoyé(s)` : r.created != null ? `${r.created} compte(s) créé(s)` : r.lines != null ? `${r.lines} ligne(s) calculée(s)` : r.needs != null ? `${r.needs} besoin(s) construits` : r.indicators != null ? `${r.indicators} indicateur(s) actualisé(s)` : r.records != null ? `${r.records} preuve(s) enregistrée(s)` : 'fait';
     blk.push(P([b(`Bouton du panneau (${a.key}) : `), txt], { size: 18, after: 40 })); }
   if (s.result?.added != null) blk.push(P([b('À la clôture de l’étape : '), `${s.result.added} lien(s) envoyé(s) par e-mail ou WhatsApp.`], { size: 18, after: 40 }));
@@ -223,13 +229,13 @@ for (const [ph, e2e, title, intro] of PH) {
   body.push(H1(title), P(intro));
   for (const t of d.tasks.filter(x => x.e2e === e2e)) {
     body.push(H3(`${t.uft} — ${t.name}`), P([b('Qui : '), `${t.owner || '—'} (approbateur : ${t.accountable || '—'}) · compte ${t.actor}  ·  `, b('Entrée → sortie : '), `${t.input || '—'} → ${t.outputName || '—'}`], { size: 18, after: 80 }), ...t.steps.flatMap(s => flowStepBlock(t, s)));
-    if (SHOT_OF[t.uft]) body.push(...shot(SH(SHOT_OF[t.uft]), `${t.uft} dans l’application`, 330));
+    if (SHOT_OF[t.uft]) body.push(...shot(SH(SHOT_OF[t.uft]), `${t.uft} dans l’application`, 300));
     if (t.uft === 'UFT-02-03') body.push(...msgBlock('Le message reçu par une personne évaluée (exemple) :', msgOf(/Auto-évaluation/)), ...shot(SH('80_form_assessment'), 'Le formulaire d’auto-évaluation tel que la personne le reçoit', 380));
     if (t.uft === 'UFT-05-04') body.push(...msgBlock('La convocation reçue par un apprenant (exemple) :', msgOf(/Convocation/)), ...shot(SH('81_form_convocation'), 'La convocation : détails de la session et confirmation de présence', 380));
     if (t.uft === 'UFT-05-05') body.push(...shot(SH('84_capsule_respond'), 'Une capsule ouverte depuis le lien reçu sur WhatsApp', 360));
     if (t.uft === 'UFT-07-04') body.push(...msgBlock('Le message du test (exemple) :', msgOf(/^.*Test —/)), ...shot(SH('82_form_test'), 'Le test de connaissances : une seule bonne réponse par question, jamais montrée à l’apprenant', 380));
     if (t.uft === 'UFT-07-08') body.push(...shot(SH('85_project_widgets'), 'Les indicateurs choisis en MP-10.2 sur la page du projet', 420));
-    body.push(...closeTask(t));
+    body.push(P([b('Clôturer la tâche : '), '« Votre résultat » est rédigé à partir des étapes ; relisez-le, puis « Terminer » et « Tâche suivante ».'], { size: 18, before: 40, after: 120 }));
   }
   body.push(...gate(ph));
 }
