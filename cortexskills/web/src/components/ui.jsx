@@ -221,6 +221,38 @@ export function Select({ value, onChange, children, options, id, disabled, place
   </div>);
 }
 
+/** Values of a multiple choice, stored as one text "A, B" so that it pastes, exports and validates like any cell. */
+export const splitMulti = v => (Array.isArray(v) ? v : String(v ?? '').split(/\s*[,;|]\s*/)).map(x => String(x).trim()).filter(Boolean);
+/**
+ * Multiple choice list (checkboxes) with an optional Custom value: the listbox stays open while boxes are ticked;
+ * the value is the chosen option values joined by ", " (FR-DA-DEU-02).
+ */
+export function MultiSelect({ value, onChange, options = [], id, disabled, placeholder, custom, invalid, size, onCommit, ...aria }) {
+  const { t } = useI18n(); const opts = useMemo(() => optionsFrom(null, options), [options]);
+  const [open, setOpen] = useState(false); const [pos, setPos] = useState(null); const [extra, setExtra] = useState('');
+  const btn = useRef(null); const list = useRef(null); const listId = useId();
+  const vals = splitMulti(value); const label = v => opts.find(o => o.value === v)?.label ?? v;
+  const place = useCallback(() => { const r = btn.current?.getBoundingClientRect(); if (!r) return; const below = window.innerHeight - r.bottom; const up = below < 260 && r.top > below; setPos({ left: r.left, width: r.width, top: up ? undefined : r.bottom + 4, bottom: up ? window.innerHeight - r.top + 4 : undefined }); }, []);
+  const close = (refocus = true) => { setOpen(false); setExtra(''); if (refocus) btn.current?.focus({ preventScroll: true }); onCommit?.(); };
+  const set = next => onChange?.({ target: { value: next.join(', ') }, currentTarget: { value: next.join(', ') } });
+  const toggle = v => set(vals.includes(v) ? vals.filter(x => x !== v) : [...vals, v]);
+  const addCustom = () => { const x = extra.trim(); if (x && !vals.includes(x)) set([...vals, x]); setExtra(''); };
+  useOverlay(() => close(), open);
+  useEffect(() => { if (!open) return undefined; const out = e => { if (!btn.current?.contains(e.target) && !list.current?.contains(e.target)) close(false); }; document.addEventListener('mousedown', out); return () => document.removeEventListener('mousedown', out); }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+  const shown = [...opts, ...vals.filter(v => !opts.some(o => o.value === v)).map(v => ({ value: v, label: v }))];
+  return (<div className="select multi">
+    <button ref={btn} type="button" id={id} className={`select-btn ${size || ''}`} role="combobox" aria-haspopup="listbox" aria-expanded={open} aria-controls={open ? listId : undefined} aria-invalid={invalid || undefined} disabled={disabled}
+      onClick={() => { if (open) close(); else { place(); setOpen(true); } }} onKeyDown={e => { if (!open && ['ArrowDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); place(); setOpen(true); } else aria.onKeyDown?.(e); }} {...aria}>
+      <span className={`value ${vals.length ? '' : 'placeholder'}`}>{vals.length ? vals.map(label).join(', ') : placeholder || t('select.placeholder')}</span><Icon name="ChevronDown" className="chev" /></button>
+    {open && pos && createPortal(<div ref={list} className="listbox" id={listId} role="listbox" aria-multiselectable="true" aria-label={aria['aria-label']} style={{ left: pos.left, top: pos.top, bottom: pos.bottom, width: Math.max(pos.width, 220) }}>
+      {shown.map(o => <label key={o.value} role="option" aria-selected={vals.includes(o.value)} className="option" onMouseDown={e => e.preventDefault()}>
+        <input type="checkbox" checked={vals.includes(o.value)} onChange={() => toggle(o.value)} /><span>{o.label}</span></label>)}
+      {custom && <div className="lb-filter row" style={{ flexWrap: 'nowrap' }}><input className="input sm" value={extra} placeholder={t('mre.customPlaceholder')} aria-label={t('mre.customPlaceholder')} onChange={e => setExtra(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } }} /><Btn size="sm" icon="Plus" aria-label={t('common.add')} onClick={addCustom} /></div>}
+      <div className="lb-filter"><Btn size="sm" kind="primary" onClick={() => close()}>{t('common.ok')}</Btn></div>
+    </div>, document.body)}
+  </div>);
+}
+
 /* -------------------------------------------------------------------------------------- system states */
 /** Empty state (FR-DA-STA-02): centred, 400 px, 48 px Muted icon, title, one sentence and the primary action. */
 export function Empty({ icon = 'Inbox', title, text, children, action }) {

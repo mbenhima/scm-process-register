@@ -66,7 +66,11 @@ export function Alerts() {
 }
 
 export function AssistantPage() {
-  const { t } = useI18n(); const [q, setQ] = useState(''); const [items, setItems] = useState([]); const [mode, setMode] = useState('auto'); const intents = useData('/assistant/intents');
+  // A right is shown by its name (area and action), never by its code (FR-DA-I18N-01).
+  const mods = useData('/catalog/module');
+  const permLabel = code => { const [area, action] = String(code).split('.'); const m = /^m\d+$/.test(area) ? (mods.data || []).find(x => x.id.toLowerCase() === area) : null;
+    const name = m ? (m.name?.[lang] || m.name?.en || m.id) : t('permArea.' + area) === 'permArea.' + area ? area : t('permArea.' + area); return `${name} · ${t('permAction.' + action) === 'permAction.' + action ? action : t('permAction.' + action)}`; };
+  const { t, lang } = useI18n(); const [q, setQ] = useState(''); const [items, setItems] = useState([]); const [mode, setMode] = useState('auto'); const intents = useData('/assistant/intents');
   const ask = async e => { e.preventDefault(); if (!q.trim()) return; const question = q; setQ('');
     try { const r = await post('/assistant/ask', { question, mode }); setItems(i => [{ question, ...r }, ...i]); } catch (x) { setItems(i => [{ question, answer: x.message }, ...i]); } };
   const examples = ['assistant.ex1', 'assistant.ex2', 'assistant.ex3', 'assistant.ex4'];
@@ -77,5 +81,5 @@ export function AssistantPage() {
       {items.map((it, i) => <Card key={i}><p className="muted small">{it.question}</p><p className="strong">{it.answer}</p>
         <div className="row">{it.mode && <span className="pill">{t('assistant.mode.' + it.mode)}</span>}{it.intent && <span className="pill tint">{it.intent}</span>}{it.refused && <span className="pill s1">{it.permission}</span>}</div>
         {it.references?.length > 0 && <ul className="small">{it.references.map((r, k) => <li key={k}>{r.route ? <Link to={r.route}>{r.title}</Link> : r.title} <span className="muted">({r.source}, {r.score})</span></li>)}</ul>}</Card>)}</div>
-      <Card title={t('assistant.intents')}><p className="muted small">{t('assistant.intentsText')}</p><ul className="small">{(intents.data || []).map(i => <li key={i.id}><span className="strong">{t('assistant.intentName.' + i.id)}</span> — <code>{i.permission}</code></li>)}</ul></Card></div></>);
+      <Card title={t('assistant.intents')}><p className="muted small">{t('assistant.intentsText')}</p><ul className="small">{(intents.data || []).map(i => <li key={i.id}><span className="strong">{t('assistant.intentName.' + i.id)}</span> — <span className="muted">{t('assistant.needs')} {permLabel(i.permission)}</span></li>)}</ul></Card></div></>);
 }

@@ -31,12 +31,17 @@ export function Projects() {
 
 export function NewProject() {
   const { t, L } = useI18n(); const { me, reload } = useSession(); const nav = useNavigate(); const act = useAction();
-  const [mode, setMode] = useState('catalog'); const tpls = useData('/records/ProjectTemplate?limit=500'); const verticals = useData('/catalog/verticalSeed'); const tracks = useData('/catalog/smeTrackSeed'); const dm = useData('/catalog/decisionMatrix');
+  const [mode, setMode] = useState('catalog'); const tpls = useData('/project-templates/for-creation'); const verticals = useData('/catalog/verticalSeed'); const tracks = useData('/catalog/smeTrackSeed'); const dm = useData('/catalog/decisionMatrix');
   const [f, setF] = useState({ name: '', description: '', focus: 'Digital', vertical_id: me.org?.sector || '', mode: me.org?.segment === 'SME' ? 'SME' : 'Full', track: '', template_id: '', track_justification: '' });
   const [cx, setCx] = useState({}); const [score, setScore] = useState(null); const [aiText, setAiText] = useState(''); const [draft, setDraft] = useState(null); const [keep, setKeep] = useState({});
   const set = (k, v) => setF(x => ({ ...x, [k]: v }));
   const calc = async vals => { setCx(vals); setScore(await post('/projects/score', { values: vals, vertical: f.vertical_id })); };
-  const published = (tpls.data?.items || []).filter(x => x.status === 'Published' && (!x.vertical_id || x.vertical_id === me.org?.sector) && x.mode === f.mode);
+  // The whole published library (FR-DA-PTC): the Organization's own templates, then those of its sector, the universal ones and the other sectors.
+  const rank = x => (x.own ? 0 : x.vertical_id === me.org?.sector ? 1 : !x.vertical_id ? 2 : 3);
+  const published = [...(tpls.data || [])].sort((a, b) => rank(a) - rank(b) || String(a.name).localeCompare(String(b.name)));
+  const vName = id => L((verticals.data || []).find(v => v.id === id)?.name) || id;
+  const groupOf = x => t(['newp.grp.own', 'newp.grp.sector', 'newp.grp.universal', 'newp.grp.other'][rank(x)]);
+  const pickTpl = id => { const x = published.find(p => p.id === id); setF(s => ({ ...s, template_id: id, ...(x ? { mode: x.mode || s.mode, vertical_id: x.vertical_id || s.vertical_id, track: x.track || s.track } : {}) })); };
   const runAi = async () => { const r = await act(() => post('/projects/ai-draft', { description: aiText }), null); setDraft(r); setKeep(Object.fromEntries(r.items.map(i => [i.key, true]))); };
   const create = async () => {
     let body = { ...f, creation_mode: mode, complexity: cx };
@@ -52,10 +57,6 @@ export function NewProject() {
     <div className="notice grey" style={{ marginBottom: 'var(--aiv-space-4)' }}><Icon name="Building2" /><span>{t('newp.org', { org: L(me.org?.name) })} · {me.group ? t('tenancy.groupYes') + ' — ' + L(me.group.name) : t('tenancy.independent')}</span></div>
     <Tabs value={mode} onChange={setMode} tabs={[{ id: 'catalog', label: t('newp.fromCatalog') }, { id: 'manual', label: t('newp.manual') }, { id: 'ai', label: t('newp.withAi') }]} />
     <div className="grid split"><div className="stack">
-      {mode === 'catalog' && <Card title={t('newp.pickTemplate')}><DataTable rows={published} onRow={r => set('template_id', r.id)} columns={[
-        { key: 'sel', label: '', noSort: true, render: r => <input type="radio" name="tpl" checked={f.template_id === r.id} onChange={() => set('template_id', r.id)} aria-label={L(r.name)} /> },
-        { key: 'name', label: t('col.name'), text: r => L(r.name) }, { key: 'scope', label: t('col.scope'), text: r => t('scope.' + r.scope) + (r.vertical_id ? ' · ' + r.vertical_id : '') }, { key: 'focus', label: t('col.focus'), text: r => t('focus.' + r.focus) },
-        { key: 'phases', label: t('col.phases'), text: r => (r.phases || []).length }, { key: 'use_count', label: t('col.uses'), num: true }]} /></Card>}
       {mode === 'ai' && <Card title={t('newp.aiTitle')} actions={<AiBadge tier="Assistive" />}><Field label={t('newp.aiDescribe')} id="aid"><textarea id="aid" className="input" value={aiText} onChange={e => setAiText(e.target.value)} placeholder={t('newp.aiPlaceholder')} /></Field>
         <div className="row" style={{ marginTop: 'var(--aiv-space-3)' }}><Btn kind="primary" icon="Sparkles" disabled={!aiText.trim()} onClick={runAi}>{t('newp.aiDraft')}</Btn></div>
         {draft && <div className="stack" style={{ marginTop: 'var(--aiv-space-4)' }}><div className="notice"><Icon name="Sparkles" />{t('ai.label')}</div>{draft.items.map(it => <label key={it.key} className="check" style={{ alignItems: 'flex-start' }}><input type="checkbox" checked={!!keep[it.key]} onChange={e => setKeep(k => ({ ...k, [it.key]: e.target.checked }))} />
@@ -63,12 +64,19 @@ export function NewProject() {
       <Card title={t('newp.details')}><div className="form-grid">
         <Field label={t('field.name')} id="pn"><input id="pn" className="input" value={f.name} onChange={e => set('name', e.target.value)} placeholder={t('newp.namePh')} /></Field>
         <Field label={t('col.focus')} id="pf"><Select id="pf" className="input" value={f.focus} onChange={e => set('focus', e.target.value)}>{['All', 'Digital', 'AI', 'Custom'].map(x => <option key={x} value={x}>{t('focus.' + x)}</option>)}</Select></Field>
+        <div className="field" style={{ gridColumn: '1 / -1' }}><label htmlFor="pd">{t('field.description')}</label><textarea id="pd" className="input" value={f.description} onChange={e => set('description', e.target.value)} /></div>
+        {mode === 'catalog' && <Field label={t('newp.template')} id="ptpl" className="full" hint={t('newp.templateHint', { n: published.length })}><Select id="ptpl" className="input" value={f.template_id} onChange={e => pickTpl(e.target.value)} filter
+          options={published.map(x => ({ value: x.id, label: `${x.name} · ${t('mode.' + x.mode)}${x.vertical_id ? ' · ' + vName(x.vertical_id) : ''}`, group: groupOf(x) }))} placeholder={t('newp.pickTemplate')} /></Field>}
         {mode === 'manual' && <><Field label={t('col.vertical')} id="pv"><Select id="pv" className="input" value={f.vertical_id} onChange={e => set('vertical_id', e.target.value)}><option value="">{t('newp.noVertical')}</option>{(verticals.data || []).map(v => <option key={v.id} value={v.id}>{L(v.name)}</option>)}</Select></Field>
           <Field label={t('col.mode')} id="pm"><Select id="pm" className="input" value={f.mode} onChange={e => set('mode', e.target.value)}><option value="Full">{t('mode.Full')}</option><option value="SME">{t('mode.SME')}</option></Select></Field></>}
         {f.mode === 'SME' && <Field label={t('col.track')} id="pt" hint={score ? t('newp.recommended', { track: score.recommendedTrack }) : ''}><Select id="pt" className="input" value={f.track} onChange={e => set('track', e.target.value)}><option value="">{t('newp.useRecommended')}</option>{(tracks.data || []).map(x => <option key={x.id} value={x.id}>{x.id} — {L(x.name)}</option>)}</Select></Field>}
         {f.mode === 'SME' && f.track && score && f.track !== score.recommendedTrack && <Field label={t('newp.overrideJust')} id="pj"><textarea id="pj" className="input" value={f.track_justification} onChange={e => set('track_justification', e.target.value)} /></Field>}
-        <div className="field" style={{ gridColumn: '1 / -1' }}><label htmlFor="pd">{t('field.description')}</label><textarea id="pd" className="input" value={f.description} onChange={e => set('description', e.target.value)} /></div></div>
+      </div>
         <div className="row" style={{ marginTop: 'var(--aiv-space-4)' }}><Btn kind="primary" icon="FolderPlus" disabled={(mode === 'catalog' && !f.template_id) || (mode === 'ai' && !draft) || (mode !== 'ai' && !f.name)} onClick={create}>{t('newp.create')}</Btn></div></Card>
+      {mode === 'catalog' && <Card title={t('newp.library')}><DataTable rows={published} onRow={r => pickTpl(r.id)} columns={[
+        { key: 'sel', label: '', noSort: true, render: r => <input type="radio" name="tpl" checked={f.template_id === r.id} onChange={() => pickTpl(r.id)} aria-label={r.name} /> },
+        { key: 'name', label: t('col.name'), text: r => r.name }, { key: 'grp', label: t('col.scope'), text: r => groupOf(r) + (r.vertical_id ? ' · ' + vName(r.vertical_id) : '') }, { key: 'mode', label: t('col.mode'), text: r => t('mode.' + r.mode) },
+        { key: 'focus', label: t('col.focus'), text: r => t('focus.' + r.focus) }, { key: 'version', label: t('col.version'), num: true }, { key: 'use_count', label: t('col.uses'), num: true }]} /></Card>}
     </div>
     <Card title={t('newp.complexity')}>{crit && <div className="stack">{crit.criteria.map(c => <Field key={c.code} label={`${L(c.name)} · ${c.weight}%`} id={'cx' + c.code}><Select id={'cx' + c.code} className="input" value={cx[c.code] ?? 3} onChange={e => calc({ ...cx, [c.code]: Number(e.target.value) })}>{crit.levels.map((l, i) => <option key={i} value={i + 1}>{L(l)}</option>)}</Select></Field>)}
       {score && <div className="card tint"><div className="kpi-value">{score.score}</div><div className="kpi-label">{t('newp.score')} · {t('newp.recommended', { track: score.recommendedTrack })} · {t('mode.' + score.recommendedMode)}</div></div>}

@@ -3,7 +3,7 @@
 // table — so closing it never loses input; on a phone it is the "edit one by one" form of the mobile list.
 import { useState } from 'react';
 import { useI18n } from '../../lib/i18n.jsx';
-import { Btn, Select, Drawer, Field } from '../ui.jsx';
+import { Btn, Select, Drawer, Field, MultiSelect, splitMulti } from '../ui.jsx';
 import { CUSTOM, optionList } from './GridParts.jsx';
 
 export function RowEditor({ row, index, total, columns, readOnly, title, typedValues, h, onPrev, onNext, onNew, onClose, t }) {
@@ -13,8 +13,9 @@ export function RowEditor({ row, index, total, columns, readOnly, title, typedVa
     {errs._row && <p className="field-error" role="alert">{errs._row}</p>}
     <div className="stack">{columns.map(c => { const v = row.data[c.key]; const fid = `re-${row._key}-${c.key}`; const s = v == null ? '' : typeof v === 'object' ? v.en ?? '' : String(v);
       return <Field key={c.key} id={fid} label={c.label} required={c.required} error={errs[c.key]} hint={c.help}>
-        {readOnly || c.readOnly ? <div className="ro-value">{c.type === 'boolean' ? (yes(v) ? t('common.yes') : t('common.no')) : c.type === 'select' ? ((c.options || []).find(o => String(o.value ?? o) === s)?.label ?? (s || '—')) : (s || '—')}</div>
+        {readOnly || c.readOnly ? <div className="ro-value">{c.type === 'boolean' ? (yes(v) ? t('common.yes') : t('common.no')) : c.type === 'select' ? ((c.options || []).find(o => String(o.value ?? o) === s)?.label ?? (s || '—')) : c.type === 'multi' ? (splitMulti(s).map(x => (c.options || []).find(o => String(o.value ?? o) === x)?.label ?? x).join(', ') || '—') : (s || '—')}</div>
           : c.type === 'boolean' ? <label className="check"><input id={fid} type="checkbox" checked={yes(v)} onChange={e => h.change(row._key, c, e.target.checked)} />{yes(v) ? t('common.yes') : t('common.no')}</label>
+          : c.type === 'multi' ? <MultiSelect id={fid} value={s} options={c.options || []} custom={c.custom} invalid={!!errs[c.key]} onChange={e => h.change(row._key, c, e.target.value)} onCommit={() => h.blurCell(row._key, c)} />
           : c.type === 'select' ? <ChoiceField id={fid} col={c} value={s} typed={typedValues[c.key]} onChange={x => h.change(row._key, c, x)} onCommit={() => h.blurCell(row._key, c)} t={t} invalid={!!errs[c.key]} />
           : c.type === 'textarea' || c.wide ? <textarea id={fid} className="input" rows={6} value={s} onFocus={() => h.focusStart(row._key, c, v)} onChange={e => h.change(row._key, c, e.target.value)} onBlur={() => h.blurCell(row._key, c)} />
           : <input id={fid} className="input" type={c.type === 'date' ? 'date' : 'text'} inputMode={c.type === 'number' ? 'decimal' : undefined} value={s} onFocus={() => h.focusStart(row._key, c, v)} onChange={e => h.change(row._key, c, e.target.value)} onBlur={() => h.blurCell(row._key, c)} />}

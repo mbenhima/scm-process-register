@@ -23,6 +23,7 @@ export function validateCell(col, value, data = {}, t = (k, p) => `${k}${p ? ' '
     if (col.notFuture && s.slice(0, 10) > today()) return t('mre.future');
   }
   if (col.type === 'select' && !col.custom && col.options && !col.options.some(o => String(o.value ?? o) === s)) return t('mre.notInList');
+  if (col.type === 'multi' && !col.custom && col.options && s.split(/\s*[,;|]\s*/).filter(Boolean).some(x => !col.options.some(o => String(o.value ?? o) === x))) return t('mre.notInList');
   if (col.type === 'boolean' && ![true, false, 'true', 'false'].includes(value)) return t('mre.notInList');
   if (col.minLength != null && s.length < col.minLength) return t('mre.minLength', { n: col.minLength });
   if (col.maxLength != null && s.length > col.maxLength) return t('mre.maxLength', { n: col.maxLength });

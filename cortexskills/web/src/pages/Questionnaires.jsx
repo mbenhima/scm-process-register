@@ -87,7 +87,7 @@ export function QuestionnaireDetail() {
 }
 
 // ------------------------------------------------------------------ respondents ("who will respond")
-function Respondents({ q, edit, reload }) {
+export function Respondents({ q, edit, reload }) {
   const { t, L, fmtDate } = useI18n(); const act = useAction(); const nav = useNavigate();
   const d = useData(`/questionnaires/${q.id}/invitations`); const [add, setAdd] = useState(false); const [editing, setEditing] = useState(null); const [sel, setSel] = useState([]); const [pop, setPop] = useState('all');
   const refresh = () => { d.reload(); reload(); };
@@ -169,7 +169,7 @@ function presetPlan(mode, pop, hasPhone) {
 }
 
 // ------------------------------------------------------------------ design: forms, sections, AI validation, RACSI per section, manual questions
-function Design({ q, edit, reload }) {
+export function Design({ q, edit, reload }) {
   const { t, L, lang } = useI18n(); const act = useAction(); const { can } = useSession();
   const [code, setCode] = useState(q.forms[0]?.code); const [forms, setForms] = useState(q.forms); const [dirty, setDirty] = useState(false); const [preview, setPreview] = useState(false); const [just, setJust] = useState(false);
   useEffect(() => { setForms(q.forms); setDirty(false); }, [q]);
@@ -192,15 +192,17 @@ function Design({ q, edit, reload }) {
       {form?.sections.map((s, k) => <div key={s.id} className="design-section">
         <div className="row" style={{ justifyContent: 'space-between' }}><div><span className="xs muted">{k + 1} · {t('qtype.' + s.type)} · {t('qorigin.' + (s.origin || 'template'))}</span><div className="strong">{L(s.title)}</div></div>
           {s.origin === 'ai' && (s.validated_by ? <span className="pill s4 xs">{t('q.validated')}</span> : <span className="pill s2 xs">{t('q.toValidate')}</span>)}</div>
+        {s.type === 'note' && s.instructions && <p className="small muted">{L(s.instructions)}</p>}
         {s.type !== 'note' && <div className="racsi-row">{['R', 'A', 'C', 'S', 'I'].map(Lt => <label key={Lt} className="xs"><span className={`racsi-letter ${Lt === 'A' ? 'a' : ''}`}>{Lt}</span>
           <input className="input" disabled={!edit} value={s.racsi?.[Lt] || ''} onChange={e => upd(s.id, x => ({ ...x, racsi: { ...(x.racsi || {}), [Lt]: e.target.value } }))} aria-label={`RACSI ${Lt} — ${L(s.title)}`} /></label>)}</div>}
         {s.type === 'questions' && <ul className="steps-list">{s.items.map(it => <li key={it.key}><span style={{ flex: 1 }}>
-          {edit && it.origin === 'manual' ? <input className="input" value={L(it.label)} onChange={e => upd(s.id, x => ({ ...x, items: x.items.map(y => (y.key === it.key ? { ...y, label: setText(y.label, e.target.value) } : y)) }))} aria-label={t('q.question')} /> : L(it.label)}</span>
+          {edit ? <input className="input" value={L(it.label)} onChange={e => upd(s.id, x => ({ ...x, items: x.items.map(y => (y.key === it.key ? { ...y, label: setText(y.label, e.target.value) } : y)) }))} aria-label={t('q.question')} /> : L(it.label)}</span>
           <span className="pill xs">{t('qorigin.' + (it.origin || 'template'))}</span>
           {it.origin === 'ai' && !it.validated_by && edit && <><Btn size="sm" icon="Check" aria-label={t('q.validate')} title={t('q.validate')} onClick={async () => { await act(() => post(`/questionnaires/${q.id}/validate`, { refs: [`${form.code}|${s.id}|${it.key}`] })); reload(); }} /><Btn size="sm" kind="ghost" icon="X" aria-label={t('q.reject')} title={t('q.reject')} onClick={async () => { await act(() => post(`/questionnaires/${q.id}/validate`, { reject: [`${form.code}|${s.id}|${it.key}`] })); reload(); }} /></>}
-          {edit && it.origin === 'manual' && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => upd(s.id, x => ({ ...x, items: x.items.filter(y => y.key !== it.key) }))} />}</li>)}</ul>}
+          {edit && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => upd(s.id, x => ({ ...x, items: x.items.filter(y => y.key !== it.key) }))} />}</li>)}</ul>}
         {s.type === 'questions' && edit && <Btn size="sm" kind="ghost" icon="Plus" onClick={() => upd(s.id, x => ({ ...x, items: [...x.items, { key: 'm' + Date.now().toString(36), label: { en: '', fr: '', ar: '' } }] }))}>{t('q.addQuestion')}</Btn>}
-        {s.type !== 'questions' && s.type !== 'note' && <p className="xs muted">{t('q.elements', { n: (s.fields || s.items || s.rows || s.boxes || s.columns || []).length })}</p>}
+        {s.type !== 'questions' && s.type !== 'note' && (() => { const els = (s.items || s.fields || s.rows || s.boxes || s.columns || []); const lbl = x => (typeof x === 'string' ? x : L(x.label || x.title || x.name) || x.key || '');
+          return els.length ? <ol className="small design-elements">{els.map((x, i) => <li key={i}>{lbl(x)}{x.type ? <span className="xs muted"> · {t('qtype.' + x.type) === 'qtype.' + x.type ? x.type : t('qtype.' + x.type)}</span> : null}</li>)}</ol> : <p className="xs muted">{t('q.elements', { n: 0 })}</p>; })()}
       </div>)}
     </Card>
     {preview && <Modal wide title={L(form.name)} onClose={() => setPreview(false)}><QForm form={form} answers={{}} onChange={() => {}} /></Modal>}
@@ -209,7 +211,7 @@ function Design({ q, edit, reload }) {
 }
 
 // ------------------------------------------------------------------ channels: mode, reminders, provider status
-function Channels({ q, edit, reload }) {
+export function Channels({ q, edit, reload }) {
   const { t } = useI18n(); const act = useAction(); const { can } = useSession();
   const [mode, setMode] = useState(q.channel_mode || 'Combination'); const [rem, setRem] = useState(q.reminders || {}); const [th, setTh] = useState(q.threshold ?? 70);
   const save = async () => { await act(() => patch(`/questionnaires/${q.id}`, { channel_mode: mode, reminders: rem, threshold: th })); reload(); };
@@ -238,7 +240,7 @@ function Channels({ q, edit, reload }) {
 }
 
 // ------------------------------------------------------------------ responses
-function Responses({ q, edit }) {
+export function Responses({ q, edit }) {
   const { t, L, fmtDate } = useI18n(); const act = useAction(); const d = useData(`/questionnaires/${q.id}/responses`); const [view, setView] = useState(null); const [inc, setInc] = useState(null);
   return (<Guard state={d}>{rows => <Card title={t('q.tabResponses')}>
     <DataTable rows={rows} csvName="responses" onRow={async r => setView(await get(`/responses/${r.id}`))} columns={[
@@ -252,7 +254,7 @@ function Responses({ q, edit }) {
 }
 
 // ------------------------------------------------------------------ consolidation
-function Dataset({ q, edit }) {
+export function Dataset({ q, edit }) {
   const { t } = useI18n(); const act = useAction(); const d = useData(`/questionnaires/${q.id}/dataset`);
   return (<Guard state={d}>{ds => <>
     <div className="notice grey" style={{ marginBottom: 'var(--aiv-space-4)' }}><Icon name="Database" /><div>{t('q.datasetIntro', { n: ds.responses })} {edit && <Btn size="sm" kind="primary" icon="ArrowRightLeft" onClick={async () => { const r = await act(() => post(`/questionnaires/${q.id}/feed`, {}), null); window.alert(t('q.fed', { n: r.created })); }}>{t('q.feed')}</Btn>}</div></div>
@@ -267,7 +269,7 @@ function Dataset({ q, edit }) {
 }
 
 // ------------------------------------------------------------------ immutable log and outbox
-function Log({ q }) {
+export function Log({ q }) {
   const { t, fmtDate, fmtDateTime } = useI18n(); const ev = useData(`/questionnaires/${q.id}/events`); const msg = useData(`/messages?questionnaire=${q.id}`); const [m, setM] = useState(null);
   return (<div className="grid g-2">
     <Card title={t('q.events')}><p className="xs muted">{t('q.eventsHint')}</p><Guard state={ev}>{rows => <DataTable rows={rows} csvName="questionnaire_log" columns={[{ key: 'created_at', label: t('col.date'), value: r => fmtDateTime(r.created_at), sortValue: r => r.created_at },

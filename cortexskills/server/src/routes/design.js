@@ -9,6 +9,7 @@ import * as D from '../services/design.js';
 import { FORM_KINDS, KIND_LABEL, fieldsFor } from '../services/stepforms.js';
 import { objectOf } from '../services/naming.js';
 import * as cat from '../catalog.js';
+import { cleanOffice } from '../lib/office.js';
 
 const r = Router();
 const org = req => (req.user.is_platform && req.query.scope === 'reference' ? null : req.orgId);
@@ -38,7 +39,8 @@ r.get('/design/export', requirePerm('catalog.view'), ah(async (req, res) => {
     ws.columns.forEach((c, i) => { c.width = [14, 48, 48, 48, 14, 10, 8, 9, 8][i]; }); ws.views = [{ state: 'frozen', ySplit: 1 }];
   }
   void lang;
-  res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet').set('Content-Disposition', `attachment; filename="process-design_${new Date().toISOString().slice(0, 10)}.xlsx"`).send(Buffer.from(await wb.xlsx.writeBuffer()));
+  res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet').set('Content-Disposition', `attachment; filename="process-design_${new Date().toISOString().slice(0, 10)}.xlsx"`)
+    .send(await cleanOffice(Buffer.from(await wb.xlsx.writeBuffer())));
 }));
 r.post('/design/import', requirePerm('design.manage'), ah(req => D.importDesign(req, req.body)));
 r.get('/design/e2e/:id/bpmn', requirePerm('catalog.view'), ah((req, res) => { res.set('Content-Type', 'application/xml').set('Content-Disposition', `attachment; filename="${req.params.id}.bpmn"`).send(D.bpmnXml(org(req), req.params.id, req.lang, { releaseId: req.query.release || null })); }));

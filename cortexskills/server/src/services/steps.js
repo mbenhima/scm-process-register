@@ -8,6 +8,7 @@ import { describeStep, SINGLE } from './stepforms.js';
 import * as AI from './ai.js';
 import { getSpec, liveConfig, assemble, variables } from './prompts.js';
 import { retrieve } from './retrieval.js';
+import * as QS from './qsteps.js';
 
 const loc = (v, lang) => (v && typeof v === 'object' && !Array.isArray(v) && ('en' in v || 'fr' in v || 'ar' in v) ? pick(v, lang) : v);
 const locObj = (o, lang) => Object.fromEntries(Object.entries(o || {}).map(([k, v]) => [k, loc(v, lang)]));
@@ -25,10 +26,12 @@ export function taskContext(orgId, taskId) {
 export function isLocked(projectId, phase) {
   return all(`SELECT data FROM records WHERE entity='PhaseChecklist' AND project_id=? AND json_extract(data,'$.phase')=?`, projectId, phase).some(x => J(x.data).decision === 'Go');
 }
-function stepDef(orgId, stepId, rel) {
+function stepDef(orgId, stepId, rel, ctx = {}) {
   const s = D.get(orgId, 'step', stepId, { releaseId: rel }) || cat.get('step', stepId); if (!s) return null;
   const mp = D.get(orgId, 'mp', s.mp, { releaseId: rel }); const u = D.list(orgId, 'uft', { releaseId: rel }).find(x => (x.steps || []).includes(s.id));
   const form = describeStep(s, { mpName: mp?.name, inputs: u?.input });
+  // Lists named by a field (organizations, sectors, templates, sections, sites) and placeholder defaults are resolved here.
+  if (form.fields?.some(f => f.source || typeof f.default === 'string')) form.fields = QS.resolveSources(orgId, form.fields, ctx);
   // Every amount carries its currency (SRS 1.8 FR-DA-I18N-09): a Currency column follows the first amount column.
   const mi = (form.fields || []).findIndex(f => f.type === 'number' && /(^|_)(budget|amount|cost|price|fee)(_|$)/.test(f.key));
   if (mi >= 0 && !form.fields.some(f => f.key === 'currency')) {
@@ -49,19 +52,45 @@ export function taskSteps(req, taskId) {
   const { t, p, rel, uft, phase } = taskContext(req.orgId, taskId); const locked = isLocked(t.project_id, phase); const done = new Map(J(t.steps, []).map(s => [s.id, s]));
   const ucs = AI.useCases(req.orgId); const ucOut = u => ({ id: u.id, code: u.code, name: u.name, tier: u.tier, checkpoint: u.checkpoint || null, effective: AI.effectiveActive(req.orgId, t.project_id, u.id) });
   return { task: { id: t.id, uft_id: t.uft_id, status: t.status, release: rel }, locked, steps: (uft?.steps || []).map(sid => {
-    const d = stepDef(req.orgId, sid, rel); if (!d) return null; const rec = recordOf(t, sid, d.form.kind);
+    const d = stepDef(req.orgId, sid, rel, { projectId: t.project_id, lang: req.lang, user: req.user }); if (!d) return null; const rec = recordOf(t, sid, d.form.kind);
     const rows = rec ? rowsOf(rec.id).map(r => ({ id: r.id, ...locObj(J(r.data, {}), req.lang), _origin: r.origin, _author: r.author, _updated: r.updated_at })) : [];
     return { id: sid, name: d.step.name, type: d.step.type, role: d.step.role, form: d.form, record: rec ? { id: rec.id, status: rec.status, fields: locObj(J(rec.fields, {}), req.lang), completed_at: rec.completed_at } : null, rows,
       done: rec?.status === 'Completed' || !!done.get(sid)?.done, count: rows.length,
       // The AI Use Cases linked to the step, with their tier and effective state (FR-DA-AI-12, FR-DA-AIP-01).
       aiUseCases: ucs.filter(u => u.steps.includes(sid)).map(ucOut) };
-  }).filter(Boolean), project: { id: p.id } };
+  }).filter(Boolean), project: { id: p.id }, questionnaire: (uft?.steps || []).some(s => /^MP-54\./.test(s)) ? QS.questionnaireFor(req.orgId, t.project_id)?.id || null : undefined };
+}
+/**
+ * The task output drafted from what was typed in its steps: one line per single-form value, one line per table row,
+ * with list values shown by their labels. The user edits it before completing the task (FR-DA-SFM-03).
+ */
+export function taskSummary(req, taskId) {
+  const { steps } = taskSteps(req, taskId); const lang = req.lang || 'en'; const lines = [];
+  const show = (f, v) => {
+    if (v == null || v === '' || (typeof v === 'object' && !Array.isArray(v) && !Object.values(v).some(Boolean))) return '';
+    if (f.type === 'boolean') return v === true || v === 'true' ? pick(f.label, lang) : '';
+    const lbl = x => pick((f.options || []).find(o => String(o.value) === String(x))?.label, lang) || String(x);
+    if (f.type === 'multi') return String(v).split(/\s*[,;|]\s*/).filter(Boolean).map(lbl).join(', ');
+    if (f.type === 'date' && /^\d{4}-\d{2}-\d{2}/.test(String(v))) { const [y, m, d] = String(v).slice(0, 10).split('-'); return lang === 'en' ? `${d}/${m}/${y}` : `${d}/${m}/${y}`; }
+    return f.options ? lbl(v) : String(typeof v === 'object' ? pick(v, lang) : v);
+  };
+  for (const s of steps) {
+    const fields = s.form.fields || []; if (s.form.kind === 'system' || s.form.kind === 'module') continue;
+    if (SINGLE.has(s.form.kind)) {
+      const vals = fields.map(f => [pick(f.label, lang), show(f, s.record?.fields?.[f.key])]).filter(([, v]) => v);
+      if (vals.length) lines.push(`${pick(s.name, lang)} — ${vals.map(([k, v]) => `${k} : ${v}`).join(' ; ')}`);
+    } else if (s.rows.length) {
+      lines.push(`${pick(s.name, lang)} (${s.rows.length}) :`);
+      for (const r of s.rows.slice(0, 30)) { const vals = fields.map(f => show(f, r[f.key])).filter(Boolean).slice(0, 5); if (vals.length) lines.push(`• ${vals.join(' · ')}`); }
+    }
+  }
+  return lines.join('\n');
 }
 function guard(req, taskId, stepId) {
   const ctx = taskContext(req.orgId, taskId);
   if (!(ctx.uft?.steps || []).includes(stepId)) throw new HttpError(404, 'err.notFound');
   if (isLocked(ctx.t.project_id, ctx.phase)) throw new HttpError(409, 'err.stepLocked');
-  const d = stepDef(req.orgId, stepId, ctx.rel); return { ...ctx, d };
+  const d = stepDef(req.orgId, stepId, ctx.rel, { projectId: ctx.t.project_id, lang: req.lang, user: req.user }); return { ...ctx, d };
 }
 export function validateValues(fields, data, { partial = true } = {}) {
   const errors = {};
@@ -74,6 +103,7 @@ export function validateValues(fields, data, { partial = true } = {}) {
     if (f.type === 'number' && f.max != null && Number(v) > f.max) errors[f.key] = 'max';
     if (f.type === 'date' && Number.isNaN(Date.parse(v))) errors[f.key] = 'date';
     if (f.type === 'select' && !f.custom && f.options && !f.options.some(o => String(o.value) === String(v))) errors[f.key] = 'notInList';
+    if (f.type === 'multi' && !f.custom && f.options && String(v).split(/\s*[,;|]\s*/).filter(Boolean).some(x => !f.options.some(o => String(o.value) === x))) errors[f.key] = 'notInList';
     if (typeof v === 'string' && v.length > 4000) errors[f.key] = 'tooLong';
   }
   if (data.start && data.end && fields.some(f => f.validate === 'afterStart') && Date.parse(data.end) < Date.parse(data.start)) errors.end = 'afterStart';
@@ -92,7 +122,12 @@ export function saveFields(req, taskId, stepId, data) {
 }
 /** One row of a multi-record step, saved on its own (FR-DA-MRE-09). */
 export function saveRow(req, taskId, stepId, rowId, data, origin = 'manual', { expected = null } = {}) {
-  const { t, d } = guard(req, taskId, stepId); if (SINGLE.has(d.form.kind) || d.form.kind === 'system') throw new HttpError(422, 'err.wrongPattern');
+  const { t, d } = guard(req, taskId, stepId); if (SINGLE.has(d.form.kind) || d.form.kind === 'system' || d.form.kind === 'module') throw new HttpError(422, 'err.wrongPattern');
+  const out = saveRowIn(req, t, d, stepId, rowId, data, origin, { expected });
+  if (d.form.stakeholders) QS.syncStakeholders(req, t, recordOf(t, stepId).id);
+  return out;
+}
+function saveRowIn(req, t, d, stepId, rowId, data, origin, { expected }) {
   const errs = validateValues(d.form.fields, data); if (Object.keys(errs).length) throw new HttpError(422, 'err.invalidFields', { fields: Object.keys(errs).join(', '), errors: errs });
   const rec = recordOf(t, stepId, d.form.kind, true, req.user.id); const tm = now(); const clean = sanitize(d.form.fields, data);
   // A function of the Organization is kept with its names in every language, so the row reads the same in EN, FR and AR.
@@ -117,18 +152,31 @@ export function saveRow(req, taskId, stepId, rowId, data, origin = 'manual', { e
 }
 export function deleteRow(req, taskId, stepId, rowId) {
   const { t } = guard(req, taskId, stepId); const rec = recordOf(t, stepId); if (!rec) throw new HttpError(404, 'err.notFound');
-  run(`DELETE FROM step_rows WHERE id=? AND step_record_id=?`, rowId, rec.id); run(`DELETE FROM record_links WHERE org_id=? AND ((from_type='row' AND from_id=?) OR (to_type='row' AND to_id=?))`, req.orgId, rowId, rowId); return { ok: true };
+  run(`DELETE FROM step_rows WHERE id=? AND step_record_id=?`, rowId, rec.id); run(`DELETE FROM record_links WHERE org_id=? AND ((from_type='row' AND from_id=?) OR (to_type='row' AND to_id=?))`, req.orgId, rowId, rowId);
+  const d = stepDef(req.orgId, stepId, null); if (d?.form.stakeholders) QS.syncStakeholders(req, t, rec.id);
+  return { ok: true };
 }
 /** Completion: mandatory fields checked and named, rows propagated to their register (FR-DA-SFM-04, -06, FR-DA-LNK-04). */
 export function completeStep(req, taskId, stepId) {
   const { t, d } = guard(req, taskId, stepId); const kind = d.form.kind; const rec = recordOf(t, stepId, kind, true, req.user.id);
   const label = f => pick(f.label, req.lang);
-  if (kind !== 'system') {
-    if (SINGLE.has(kind)) { const missing = d.form.fields.filter(f => f.required && !String(J(rec.fields, {})[f.key] ?? '').trim()); if (missing.length) throw new HttpError(422, 'err.missingFields', { fields: missing.map(label).join(', ') }); }
+  if (kind === 'module') { const why = QS.moduleBlocker(req, t, d.form.module, d.form); if (why) throw new HttpError(422, why); }
+  else if (kind !== 'system') {
+    if (SINGLE.has(kind)) {
+      // A default shown in the form (today, the user, the object of the step, the sector...) counts as typed.
+      const filled = QS.withDefaults(d.form.fields, J(rec.fields, {}), req.lang, d.form.object);
+      if (S(filled) !== rec.fields) { run(`UPDATE step_records SET fields=?, updated_at=? WHERE id=?`, S(filled), now(), rec.id); rec.fields = S(filled); }
+      const missing = d.form.fields.filter(f => f.required && !String(filled[f.key] ?? '').trim()); if (missing.length) throw new HttpError(422, 'err.missingFields', { fields: missing.map(label).join(', ') });
+    }
     else {
       const rows = rowsOf(rec.id).map(r => J(r.data, {})); if (!rows.length) throw new HttpError(422, 'err.noRows');
       const missing = new Set(); rows.forEach(r => d.form.fields.forEach(f => { if (f.required && !String(loc(r[f.key], 'en') ?? '').trim()) missing.add(label(f)); })); if (missing.size) throw new HttpError(422, 'err.missingFields', { fields: [...missing].join(', ') });
+      // The RACSI and the channels are written into the project questionnaire (they are checked there first).
+      if (d.form.questionnaire === 'racsi') QS.applyRacsi(req, t, rows);
+      if (d.form.questionnaire === 'channels') QS.applyChannels(req, t, rows);
+      if (d.form.stakeholders) QS.syncStakeholders(req, t, rec.id);
     }
+    if (d.form.questionnaire === 'create') { const qid = QS.createQuestionnaire(req, t, J(rec.fields, {})); const fl = { ...J(rec.fields, {}), questionnaire_id: qid }; run(`UPDATE step_records SET fields=? WHERE id=?`, S(fl), rec.id); rec.fields = S(fl); }
   }
   let propagated = 0;
   tx(() => {
@@ -152,7 +200,7 @@ export function propagate(req, t, stepId, d, rec) {
   const reg = d.form.register; if (!reg) return 0; const tm = now(); let n = 0;
   const items = SINGLE.has(d.form.kind) ? [{ id: rec.id, data: J(rec.fields, {}) }] : rowsOf(rec.id).map(r => ({ id: r.id, data: J(r.data, {}) }));
   for (const it of items) {
-    const name = loc(it.data.item ?? it.data.subject ?? it.data.session ?? it.data.indicator ?? it.data.setting ?? it.data.scope ?? it.data.role, 'en');
+    const name = loc(it.data.item ?? it.data.subject ?? it.data.session ?? it.data.indicator ?? it.data.setting ?? it.data.scope ?? it.data.role ?? (SINGLE.has(d.form.kind) ? d.form.object : null), 'en');
     const key = normKey(it.data.code || name || it.id);
     const ex = one(`SELECT id, version FROM register_entries WHERE org_id=? AND project_id=? AND register=? AND item_key=?`, t.org_id, t.project_id, reg.key, key);
     if (ex) run(`UPDATE register_entries SET data=?, source_row_id=?, source_task_id=?, source_step_id=?, version=version+1, updated_at=? WHERE id=?`, S(it.data), it.id, t.id, stepId, tm, ex.id);

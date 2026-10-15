@@ -76,11 +76,14 @@ export function instantiateProject(project, { phases, users = [], seedRng = null
     for (const e2eId of ph.e2e) {
       const e = cat.get('e2e', e2eId); if (!e) continue;
       const iid = ids(`e2e:${project.id}:${e2eId}`); sort++;
-      const phaseState = ph.no === 0 ? (lvl >= 7 ? 'done' : lvl >= 3 ? 'mid' : lvl > 0 ? 'early' : 'none') : ph.no < lvl ? 'done' : ph.no === lvl ? 'mid' : 'none';
+      // An enabler that starts after a gate (E2E-17 after G3: its input is the approved plan) follows the phase after that gate.
+      const after = e2eId === 'E2E-17' ? 3 : null;
+      const phaseState = after != null ? (lvl >= 7 ? 'done' : lvl > after + 1 ? 'mid' : lvl === after + 1 ? 'early' : 'none')
+        : ph.no === 0 ? (lvl >= 7 ? 'done' : lvl >= 3 ? 'mid' : lvl > 0 ? 'early' : 'none') : ph.no < lvl ? 'done' : ph.no === lvl ? 'mid' : 'none';
       const taskIds = excludedTasks ? e.ufts.filter(u => !excludedTasks.has(u)) : e.ufts; if (!taskIds.length) continue;
       const n = taskIds.length;
       const doneCount = phaseState === 'done' ? n : phaseState === 'mid' ? Math.floor(n * (0.3 + r() * 0.55)) : phaseState === 'early' ? Math.floor(n * 0.25) : 0;
-      const base = new Date(startDate).getTime() + (Math.max(ph.no, 1) - 1) * 28 * 86400000;
+      const base = new Date(startDate).getTime() + (after != null ? after : Math.max(ph.no, 1) - 1) * 28 * 86400000;
       const due0 = new Date(base).toISOString();
       let completed = 0;
       const ownerE2e = users.find(x => x.roleNames.includes(pick(cat.get('mp', e.mps[0])?.owner, 'en')))?.id ?? users[0]?.id ?? null;

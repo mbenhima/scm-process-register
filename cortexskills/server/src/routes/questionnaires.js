@@ -283,6 +283,19 @@ r.post('/questionnaires/:id/distribute', requirePerm('m54.edit'), ah(async req =
 }));
 /** Plays due plan steps and reminders now instead of waiting for the background tick. */
 r.post('/questionnaires/:id/advance', requirePerm('m54.edit'), ah(async req => { const q = Q.getQuestionnaire(req.orgId, req.params.id); return Q.advance(req.orgId, q, { base: base(req), userId: req.user.id }); }));
+/** Reminders sent now to every respondent who has not answered, on the next channel of their plan (FR-DA-COMM-07). */
+r.post('/questionnaires/:id/remind-now', requirePerm('m54.edit'), ah(async req => {
+  const q = Q.getQuestionnaire(req.orgId, req.params.id); if (q.status !== 'Distributed') throw new HttpError(409, 'err.notDistributed');
+  let sent = 0, failed = 0;
+  for (const inv of all(`SELECT * FROM q_invitations WHERE questionnaire_id=? AND status NOT IN ('Responded','Declined','Expired') AND opted_out=0`, q.id)) {
+    const plan = J(inv.channel_plan, []); const next = plan.slice(Math.max(0, inv.step_index + 1)).find(s => s.channel !== 'Face-to-Face') || plan.filter(s => s.channel !== 'Face-to-Face').at(-1);
+    if (!next) continue;
+    const r = await Q.runStep(req.orgId, q, inv, { ...next, action: inv.step_index < 0 ? 'invite' : 'remind' }, { base: base(req), userId: req.user.id });
+    if (r.status === 'failed') failed++; else sent++;
+  }
+  audit(req, 'Questionnaire', q.id, 'remind', null, { sent, failed });
+  return { sent, failed };
+}));
 r.post('/questionnaires/:id/close', requirePerm('m54.edit'), ah(req => {
   const q = Q.getQuestionnaire(req.orgId, req.params.id); if (q.status !== 'Distributed') throw new HttpError(409, 'err.invalidTransition', { from: q.status, to: 'Closed' });
   q.status = 'Closed'; q.closed_on = now(); Q.saveQuestionnaire(q, req.user.id);

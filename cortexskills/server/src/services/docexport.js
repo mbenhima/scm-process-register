@@ -14,6 +14,7 @@ import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, Width
 import { config } from '../config.js';
 import { C, RAG, FONT, fontFiles, LOGO, DOCX_FONTS } from './brand.js';
 import { t } from '../i18n.js';
+import { cleanOffice } from '../lib/office.js';
 
 const PAPER = { A4: { w: 11906, h: 16838, mm: [210, 297] }, Letter: { w: 12240, h: 15840, mm: [215.9, 279.4] } };
 const isAr = s => /[؀-ۿ]/.test(String(s || ''));
@@ -147,7 +148,7 @@ export async function toDocx(model, meta) {
         children: [logoRun(LOGO.product(), 140), new TextRun({ text: '\t' + headerText, size: 16, color: C.muted, font, rightToLeft: rtl })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: fmt.pageNumbers ? footerRuns : [new TextRun({ text: fmt.footer || meta.reference, size: 16, color: C.muted, font })] })] }) },
       children: pg.children })) });
-  return Packer.toBuffer(doc);
+  return cleanOffice(await Packer.toBuffer(doc));
 }
 
 /* ----------------------------------------------------------------------------------------------- PDF */
@@ -276,7 +277,7 @@ export async function toXlsx(model, meta) {
   ws.columns.forEach((c, i) => { c.width = i === 0 ? 30 : 26; });
   const src = wb.addWorksheet(tx('sources', lang).slice(0, 30)); src.addRow([tx('sources', lang), tx('records', lang), tx('step', lang)]).eachCell(c => { c.font = { bold: true, color: { argb: 'FFFFFFFF' } }; c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + fmt.tableHeader } }; });
   for (const s of meta.sources || []) src.addRow(s); src.columns.forEach(c => { c.width = 34; });
-  return Buffer.from(await wb.xlsx.writeBuffer());
+  return cleanOffice(Buffer.from(await wb.xlsx.writeBuffer()));
 }
 export const MIME = { pdf: 'application/pdf', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
 export async function exportDocument(model, meta, format) {

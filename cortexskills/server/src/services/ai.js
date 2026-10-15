@@ -158,6 +158,8 @@ export async function testConnection(llm) {
  * in the request header (personal setting) is used otherwise; the built-in engine answers when neither is available.
  */
 export async function generate({ orgId, projectId, user, lang, code, input = {}, llm, dryRun = false, taskId, stepId }) {
+  // Without a chosen project (the "All projects" view), the Organization's most recent active project gives the context.
+  if (!projectId) projectId = one(`SELECT id FROM projects WHERE org_id=? ORDER BY status='Active' DESC, start_date DESC LIMIT 1`, orgId)?.id || null;
   const uc = useCaseByCode(orgId, code);
   if (!uc) throw new HttpError(404, 'err.notFound');
   if (!dryRun && !effectiveActive(orgId, projectId, uc.id)) throw new HttpError(403, 'err.aiInactive', { useCase: uc.code });
@@ -165,7 +167,7 @@ export async function generate({ orgId, projectId, user, lang, code, input = {},
   const spec = getSpec(orgId, uc.id);
   const vars = variables(orgId, { projectId, lang, taskId, stepId, values: input.values || {} });
   const { prompt, missing } = assemble(spec, vars, lang);
-  if (missing.length) throw new HttpError(422, 'err.promptVariable', { name: missing.join(', ') }); // refuse, naming the variable
+  if (missing.length) throw new HttpError(422, 'err.promptVariable', { variables: missing.join(', '), name: missing.join(', ') }); // refuse, naming the variable
   const facts = projectFacts(orgId, projectId, lang);
   const query = [pick(uc.name, lang), input.query || '', facts.sector, facts.focus].join(' ');
   const refs = retrieve(orgId, query, { lang, k: 4 }).map(r => ({ source: r.source, title: r.title, score: r.score, route: r.route }));

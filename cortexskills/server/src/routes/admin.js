@@ -93,18 +93,59 @@ r.post('/licence/upload', requirePerm('config.manage'), ah(req => {
 }));
 
 // ------------------------------------------------------------------ External Integration Registry (FR-DA-CFG-10..14)
-r.post('/integrations/:id/health', requirePerm('integrations.manage'), ah(req => {
+r.post('/integrations/:id/health', requirePerm('integrations.manage'), ah(async req => {
   const rec = one(`SELECT * FROM records WHERE id=? AND entity='ExternalIntegration' AND org_id=?`, req.params.id, req.orgId); if (!rec) throw new HttpError(404, 'err.notFound');
-  const d = J(rec.data); const outcome = !d.enabled ? 'disabled' : d.credential_ref ? 'success' : 'authFailure'; // provider detail never exposed
+  const d = J(rec.data);
+  // With an endpoint the test really calls the provider (HTTPS, 8 s); without one it checks the configuration only.
+  let outcome = !d.enabled ? 'disabled' : d.credential_ref ? 'success' : 'authFailure'; // provider detail never exposed
+  if (d.enabled && d.endpoint && /^https:\/\//.test(d.endpoint)) {
+    try { const res = await fetch(d.endpoint, { method: 'GET', signal: AbortSignal.timeout(8000), headers: { accept: 'application/json' } }); outcome = res.ok ? 'success' : [401, 403].includes(res.status) ? 'authFailure' : 'providerError'; }
+    catch { outcome = 'unreachable'; }
+  }
   d.last_health = outcome; d.last_health_at = now();
   run(`UPDATE records SET data=?, updated_at=? WHERE id=?`, S(d), now(), rec.id);
   run(`INSERT INTO integration_log(id,org_id,integration_id,direction,record,result,created_at) VALUES(?,?,?,?,?,?,?)`, uuid(), req.orgId, rec.id, 'health', '-', outcome, now());
   audit(req, 'ExternalIntegration', rec.id, 'health', null, { outcome }); return { outcome, at: d.last_health_at };
 }));
+/**
+ * HRIS synchronization (UFT-15-03): the records sent by the HRIS (pushed to the inbound endpoint, or a file exported
+ * from it) are mapped with the integration's field map, then create or update the employees of the directory; a
+ * record without its employee number, name or a known position is rejected with its reason, for review (MP-16.5).
+ */
+export function hrisSync(req, rec, records = []) {
+  const d = J(rec.data, {}); const map = { employee_id: 'matricule', full_name: 'name', name: 'name', email: 'email', phone: 'phone', position: 'poste', job_title: 'poste', department: 'fonction', function: 'fonction', hire_date: 'hire_date', ...(d.field_map || {}) };
+  const positions = all(`SELECT id, data FROM records WHERE entity='Position' AND org_id=?`, req.orgId).map(x => ({ id: x.id, names: Object.values(J(x.data, {}).title || {}).map(v => String(v).toLowerCase()) }));
+  const fns = all(`SELECT id, name FROM obs_nodes WHERE org_id=? AND type='Function'`, req.orgId).map(x => ({ id: x.id, names: Object.values(J(x.name, { en: x.name })).map(v => String(v).toLowerCase()) }));
+  const report = { at: now(), received: records.length, created: 0, updated: 0, rejected: [] };
+  for (const [i, raw] of records.slice(0, 20000).entries()) {
+    const m = {}; for (const [k, v] of Object.entries(raw || {})) { const target = map[k] || map[String(k).toLowerCase()] || k; m[target] = typeof v === 'string' ? v.trim() : v; }
+    const num = String(m.matricule || '').trim(); const name = String(m.name || '').trim();
+    const pos = m.poste ? positions.find(p => p.names.includes(String(m.poste).toLowerCase())) : null; const fn = m.fonction ? fns.find(f => f.names.includes(String(m.fonction).toLowerCase())) : null;
+    const why = !num ? 'noEmployeeNumber' : !name ? 'noName' : !m.poste ? 'noPosition' : !pos ? 'unknownPosition' : null;
+    if (why) { report.rejected.push({ line: i + 1, matricule: num || null, name: name || null, reason: why, value: m.poste || null }); continue; }
+    const ex = one(`SELECT id, data FROM records WHERE entity='Employee' AND org_id=? AND json_extract(data,'$.hris_employee_number')=?`, req.orgId, num);
+    const data = { label: { en: name, fr: name, ar: name }, hris_employee_number: num, position_id: pos.id, ...(fn ? { obs_node_id: fn.id } : {}), ...(m.email ? { email: String(m.email) } : {}), ...(m.phone ? { phone: String(m.phone) } : {}), ...(m.hire_date ? { hire_date: String(m.hire_date).slice(0, 10) } : {}), synced_at: report.at, source: d.integration_code || 'HRIS' };
+    if (ex) { run(`UPDATE records SET data=?, updated_by=?, updated_at=? WHERE id=?`, S({ ...J(ex.data, {}), ...data }), req.user.id, now(), ex.id); report.updated++; }
+    else { insertRecord(uuid(), 'Employee', req.orgId, null, null, data, req.user.id, true); report.created++; }
+  }
+  d.last_sync = report; d.last_sync_at = report.at; run(`UPDATE records SET data=?, updated_at=? WHERE id=?`, S(d), now(), rec.id);
+  run(`INSERT INTO integration_log(id,org_id,integration_id,direction,record,result,created_at) VALUES(?,?,?,?,?,?,?)`, uuid(), req.orgId, rec.id, 'sync', `${report.received} records`, `${report.created} created, ${report.updated} updated, ${report.rejected.length} rejected`, now());
+  audit(req, 'ExternalIntegration', rec.id, 'sync', null, { created: report.created, updated: report.updated, rejected: report.rejected.length });
+  return report;
+}
+r.post('/integrations/:id/sync', requirePerm('integrations.manage'), ah(req => {
+  const rec = one(`SELECT * FROM records WHERE id=? AND entity='ExternalIntegration' AND org_id=?`, req.params.id, req.orgId); if (!rec) throw new HttpError(404, 'err.notFound');
+  if (!J(rec.data, {}).enabled) throw new HttpError(409, 'err.integrationDisabled');
+  const records = Array.isArray(req.body?.records) ? req.body.records : []; if (!records.length) throw new HttpError(422, 'err.required', { field: 'records' });
+  return hrisSync(req, rec, records);
+}));
+r.get('/integrations/:id/last-sync', requirePerm('config.view'), ah(req => { const rec = one(`SELECT data FROM records WHERE id=? AND entity='ExternalIntegration' AND org_id=?`, req.params.id, req.orgId); if (!rec) throw new HttpError(404, 'err.notFound'); return J(rec.data, {}).last_sync || null; }));
 r.get('/integrations/log', requirePerm('config.view'), ah(req => all(`SELECT * FROM integration_log WHERE org_id=? ORDER BY created_at DESC LIMIT 200`, req.orgId)));
 /** Authenticated inbound webhook endpoint, scoped to the organization that registered the integration (FR-DA-CFG-14). */
 r.post('/integrations/:id/inbound', requirePerm('integrations.manage'), ah(req => {
-  const rec = one(`SELECT id FROM records WHERE id=? AND entity='ExternalIntegration' AND org_id=?`, req.params.id, req.orgId); if (!rec) throw new HttpError(404, 'err.notFound');
+  const rec = one(`SELECT * FROM records WHERE id=? AND entity='ExternalIntegration' AND org_id=?`, req.params.id, req.orgId); if (!rec) throw new HttpError(404, 'err.notFound');
+  // A batch of HRIS records is synchronized at once; a single event is only logged.
+  if (Array.isArray(req.body?.records)) return hrisSync(req, rec, req.body.records);
   run(`INSERT INTO integration_log(id,org_id,integration_id,direction,record,result,created_at) VALUES(?,?,?,?,?,?,?)`, uuid(), req.orgId, rec.id, 'inbound', String(req.body?.record || '-').slice(0, 120), 'accepted', now());
   return { ok: true };
 }));

@@ -1,0 +1,100 @@
+{
+ "at": "2026-10-15T11:46:34.128Z",
+ "base": "http://localhost:4000",
+ "checks": [
+  {
+   "id": "server-tests",
+   "requirements": [
+    "NFR-DA-PORT-05",
+    "NFR-DA-REL-11",
+    "NFR-DA-SEC-22",
+    "FR-DA-MRE-29",
+    "FR-DA-MRE-30",
+    "NFR-DA-SEC-21",
+    "FR-DA-SFM-08"
+   ],
+   "ok": true,
+   "detail": "18 passed, 0 failed (security, bulk import, questionnaire steps)"
+  },
+  {
+   "id": "web-tests",
+   "requirements": [
+    "NFR-DA-PORT-05",
+    "FR-DA-MRE-24",
+    "FR-DA-MRE-26",
+    "FR-DA-MRE-27",
+    "FR-DA-MRE-29",
+    "FR-DA-MRE-31",
+    "FR-DA-MRE-35"
+   ],
+   "ok": true,
+   "detail": "9 passed, 0 failed (validation, undo/redo, batches, drafts, import mapping, export, retries)"
+  },
+  {
+   "id": "design-tokens",
+   "requirements": [
+    "NFR-DA-VDS-01",
+    "NFR-DA-VDS-02"
+   ],
+   "ok": true,
+   "detail": "Token check passed: no raw colour outside src/styles/tokens.css."
+  },
+  {
+   "id": "i18n-dictionary",
+   "requirements": [
+    "FR-DA-I18N-01"
+   ],
+   "ok": true,
+   "detail": "3232 keys; 0 without a language; 1 Arabic entries in Latin script (q.sendResult)"
+  },
+  {
+   "id": "crawl-en-fr-ar",
+   "requirements": [
+    "FR-DA-I18N-01",
+    "FR-DA-I18N-02",
+    "NFR-DA-I18N-03",
+    "NFR-DA-I18N-04",
+    "FR-DA-STA-01",
+    "NFR-DA-REL-09"
+   ],
+   "ok": true,
+   "detail": "54 screens × 3 languages; issues: {}"
+  },
+  {
+   "id": "office-files",
+   "requirements": [
+    "FR-DA-DOC-12",
+    "FR-DA-DOC-04",
+    "FR-DA-REP-02"
+   ],
+   "ok": true,
+   "detail": "OK 6 \n/usr/local/lib/python3.11/dist-packages/openpyxl/reader/drawings.py:33: UserWarning: DrawingML support is incomplete and limited to charts and images only. Shapes and drawings will be lost.\n  warn(\"DrawingML support is incomplete and limited to charts and images only. Shapes and drawings will be lost.\") · LibreOffice Writer opened 2 of 2 Word files · files: doc.docx, rep.docx, doc.xlsx, rep.xlsx, doc.pdf, rep.pdf"
+  },
+  {
+   "id": "non-latin-download",
+   "requirements": [
+    "NFR-DA-I18N-07",
+    "FR-DA-MRE-31"
+   ],
+   "ok": true,
+   "detail": "status 200; Content-Disposition: attachment; filename=\"______-_______.xlsx\"; filename*=UTF-8''%D9%85%D8%AC%D9%85%D9%88%D8%B9%D8%A9-%D8%A7%D9%84%D8%A3%D8%; CSV BOM in exporter: true"
+  },
+  {
+   "id": "import-1000",
+   "requirements": [
+    "NFR-DA-PERF-14",
+    "FR-DA-MRE-29"
+   ],
+   "ok": true,
+   "detail": "1,000 rows committed in 190 ms (target < 10,000 ms); 10000 rows in the table"
+  },
+  {
+   "id": "grid-10000",
+   "requirements": [
+    "NFR-DA-PERF-14"
+   ],
+   "ok": false,
+   "detail": "error: page.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=email]')\u001b[22m\n\n    at /home/user/scm-process-register/cortexskills/tools/qa/run-checks.mjs:82:44"
+  }
+ ]
+}

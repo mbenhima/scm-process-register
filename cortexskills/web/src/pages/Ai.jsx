@@ -22,7 +22,7 @@ export function AiUseCases() {
   const S_ = sum.data; const reload = () => { d.reload(); sum.reload(); };
   const keep = r => (tier === 'all' || r.tier === tier) && (state === 'all' || (state === 'active' ? r.effective : !r.effective)) && (origin === 'all' || (origin === 'custom' ? r.isCustom : !r.isCustom));
   const quotaFull = S_ && S_.quota != null && S_.custom >= S_.quota;
-  return (<><PageHead eyebrow={t('navGroup.ai')} title={t('nav.aiUseCases')} subtitle={t('aiuc.subtitle')}>
+  return (<><PageHead eyebrow={t('navGroup.ai')} title={t('nav.aiUseCases')} subtitle={t('aiuc.subtitle', { n: d.data ? d.data.length : '…' })}>
     {can('ai.manage') && <Btn kind="primary" icon="Plus" disabled={quotaFull} data-tip={quotaFull ? t('aiuc.quotaFull', { n: S_.quota }) : undefined} onClick={() => setCreating(true)}>{t('aiuf.new')}</Btn>}</PageHead>
     <div className="grid g-4">
       <Kpi icon="Sparkles" value={S_ ? String(S_.total) : '—'} label={t('aiuc.k.total')} note={S_ ? t('aiuc.k.tiers', { a: S_.assistive, g: S_.augmented }) : ''} />

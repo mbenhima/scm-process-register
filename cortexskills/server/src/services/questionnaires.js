@@ -43,6 +43,21 @@ export function validatePlan(plan) {
     last = d; return { channel: s.channel, action, after_days: d };
   });
 }
+/** The plan of a respondent from the channel rules of the questionnaire, or null when no rule matches. */
+export function planOf(q, level, population, hasPhone) {
+  const rule = (q.channel_rules || []).find(r => r.level === level && (!r.population || r.population === population)) || (q.channel_rules || []).find(r => r.level === level);
+  if (!rule || !rule.channels.length) return null;
+  const chans = rule.channels.filter(ch => ch !== 'WhatsApp' || hasPhone); if (!chans.length) return null;
+  // The first channel invites; reminders go out on the next written channels (WhatsApp, e-mail, application) at the
+  // chosen cadence; a face-to-face interview, when chosen, comes once, after the reminders.
+  const plan = [{ channel: chans[0], action: chans[0] === 'Face-to-Face' ? 'interview' : 'invite', after_days: 0 }];
+  const written = chans.filter(c => c !== 'Face-to-Face'); const rem = written.length > 1 ? written.slice(1) : written;
+  let day = 0;
+  if (chans[0] !== 'Face-to-Face') for (let i = 0; i < rule.max && rem.length; i++) { day += rule.every; plan.push({ channel: rem[i % rem.length], action: 'remind', after_days: day }); }
+  if (chans.includes('Face-to-Face') && chans[0] !== 'Face-to-Face') plan.push({ channel: 'Face-to-Face', action: 'interview', after_days: day + rule.every });
+  return validatePlan(plan);
+}
+
 export const modeOfPlan = plan => { const set = new Set((plan || []).map(s => s.channel)); return set.size === 1 ? [...set][0] : 'Combination'; };
 /** Channels through which the respondent can answer, derived from the plan. */
 export const responseChannels = plan => { const c = new Set((plan || []).map(s => s.channel)); const out = []; if (c.has('Email') || c.has('WhatsApp') || c.has('Application')) out.push('Application'); if (c.has('Email')) out.push('Email'); if (c.has('Face-to-Face')) out.push('Face-to-Face'); return out; };
@@ -129,11 +144,12 @@ export function addInvitations(orgId, q, stakeholders, { population, templateCod
     const pop = population || populationOf(st);
     const form = (q.forms || []).find(f => f.code === templateCode) || (q.forms || []).find(f => f.population === pop) || (q.forms || [])[0];
     const phone = st.phone ? normalizePhone(st.phone) : null;
-    const p = plan ? validatePlan(plan) : planForMode(mode || q.channel_mode || 'Combination', pop, { hasPhone: !!phone, hasUser: !!st.user_id });
+    // The channels chosen for the respondent's decision level (MP-54.5) come first, then the mode of the questionnaire.
+    const p = plan ? validatePlan(plan) : ((!mode || mode === 'Combination') && planOf(q, st.decision_level, pop, !!phone)) || planForMode(mode || q.channel_mode || 'Combination', pop, { hasPhone: !!phone, hasUser: !!st.user_id });
     const { token, hash } = newToken(); const id = uuid(); const tm = at || now();
     run(`INSERT INTO q_invitations(id,org_id,project_id,questionnaire_id,stakeholder_id,user_id,name,email,phone,population,template_code,function_id,function_name,decision_level,lang,channel_plan,step_index,status,token_hash,token_enc,created_at,updated_at)
       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,-1,'Planned',?,?,?,?)`, id, orgId, q.project_id, q.id, st.id, st.user_id || null, pick(st.name, 'en') || pick(st.label, 'en'), st.email || null, phone, pop, form?.code || null,
-      st.function_id || null, st.function_name ? (typeof st.function_name === 'object' ? pick(st.function_name, lang || orgLang) : String(st.function_name)) : null, st.decision_level || null, lang || st.language || null, S(p), hash, seal(token), tm, tm);
+      st.function_id || null, st.function_name ? (typeof st.function_name === 'object' ? pick(st.function_name, lang || st.language || orgLang) : String(st.function_name)) : null, st.decision_level || null, lang || st.language || null, S(p), hash, seal(token), tm, tm);
     event(orgId, q.id, id, 'respondent.added', { detail: { population: pop, form: form?.code, mode: modeOfPlan(p) }, userId, at: tm });
     added.push(id);
   }

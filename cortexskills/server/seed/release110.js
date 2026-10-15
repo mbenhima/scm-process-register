@@ -4,7 +4,7 @@
 import { run, one, all } from '../src/db.js';
 import { S, J, detUuid as U, now, pick, addDays, rng } from '../src/lib/util.js';
 import * as cat from '../src/catalog.js';
-import { insertRecord } from '../src/services/projects.js';
+import { insertRecord, processPlan } from '../src/services/projects.js';
 import { seedLibrary } from '../src/services/docengine.js';
 import * as E from '../src/services/docengine.js';
 import { describeStep, registerOf } from '../src/services/stepforms.js';
@@ -70,6 +70,55 @@ export function rowFor(kind, i, ctx, r, base) {
   }
 }
 
+/**
+ * Values of the steps that have their own form (services/stepdefs.js): the scope of work and the questionnaire
+ * campaign, drawn from the run's own records — its stakeholders (with their e-mail and phone), its questionnaire.
+ * Returns null for a step without its own form, so rowFor applies.
+ */
+export function rowForStep(sid, i, sc) {
+  const { o, p, q, sh, ctx, base } = sc; const d = k => iso(ctx.start + (base * 2 + i * 7 + k) * DAY).slice(0, 10);
+  const fn = x => ctx.functions[x % ctx.functions.length];
+  const LV = ['MS', 'MO', 'OP'];
+  switch (sid) {
+    case 'MP-53.1': return { group: o.group_id ? 'Yes' : 'No', groupName: '', rationale: L('Scope set with the HR Director at the kick-off meeting.', 'Périmètre arrêté avec la DRH lors de la réunion de lancement.', 'تم تحديد النطاق مع مديرة الموارد البشرية في اجتماع الانطلاق.'), date: d(0), decidedBy: ctx.approver };
+    case 'MP-53.2': return { group: o.group_id ? 'Yes' : 'No', organization: o.id, rationale: L('The engagement covers this organization only.', 'La mission couvre cette seule organisation.', 'تشمل المهمة هذه المؤسسة فقط.'), date: d(0), decidedBy: ctx.approver };
+    case 'MP-53.3': return { sector: o.sector, rationale: L('Sector of the organization in its registration.', 'Secteur de l’organisation selon son enregistrement.', 'قطاع المؤسسة حسب تسجيلها.'), date: d(1), decidedBy: ctx.approver };
+    case 'MP-53.4': return { levels: 'MS, MO, OP', rationale: L('All three decision levels take part in the diagnostic.', 'Les trois niveaux de décision participent au diagnostic.', 'تشارك مستويات القرار الثلاثة في التشخيص.'), date: d(1), decidedBy: ctx.approver };
+    case 'MP-53.6': return { orientation: p.focus === 'AI' ? 'AI' : p.focus === 'Digital' ? 'Digital' : 'All', customOrientation: '', rationale: L('Orientation set by the steering committee.', 'Orientation fixée par le comité de pilotage.', 'التوجه حددته لجنة القيادة.'), date: d(2), decidedBy: ctx.approver };
+    case 'MP-53.7': { const th = ctx.themes[i % ctx.themes.length]; return { item: fillL(L('Readiness for {t}', 'Préparation à {t}', 'الجاهزية لـ {t}'), { t: th }), orientation: p.focus === 'AI' ? 'AI' : 'Digital', weight: String([2, 1.5, 1][i % 3]), description: FACTS[i % FACTS.length], owner: ctx.users[i % ctx.users.length], source: 'Function head' }; }
+    case 'MP-53.8': { const s = sh[i]; if (!s) return null;
+      return { item: s.name, email: s.email || '', phone: s.phone || '', role: pick(s.role_t, o.lang || 'en') || s.role || '', function: s.function_id ? (ctx.fnById.get(s.function_id) || fn(i)) : fn(i), level: s.decision_level || LV[i % 3], site: o.city || '', channel: s.preferred_channel === 'Combination' ? 'Combination' : s.preferred_channel || 'Email',
+        category: s.population === 'DG' ? 'Sponsor' : s.decision_level === 'MS' ? 'Decision maker' : 'Respondent', description: '', owner: ctx.users[0], source: 'HRIS', _stakeholder: s.id }; }
+    case 'MP-54.1': return { decision: 'Approved', templates: (q?.template_ids || []).join(', '), rationale: L('One template per population: general management, management and staff.', 'Un modèle par population : direction générale, management et collaborateurs.', 'نموذج لكل فئة: الإدارة العامة والإدارة والمتعاونون.'), date: d(4), decidedBy: ctx.approver, questionnaire_id: q?.id || null };
+    case 'MP-54.4': { const rows = [[ctx.roleOf('Head of L&D'), 'A'], [ctx.roleOf('L&D Analyst'), 'R'], [ctx.roleOf('Consultant'), 'C'], [ctx.roleOf('HR Director'), 'I']]; const r0 = rows[i]; if (!r0) return null;
+      return { role: r0[0], R: r0[1] === 'R', A: r0[1] === 'A', C: r0[1] === 'C', S: false, I: r0[1] === 'I', sections: '', note: '' }; }
+    case 'MP-54.5': { const r0 = [['MS', 'Email, Face-to-Face', 'Management'], ['MO', 'Email, WhatsApp', 'Management'], ['OP', 'WhatsApp, Face-to-Face', 'Member']][i]; if (!r0) return null;
+      return { level: r0[0], channels: r0[1], population: r0[2], every: '3', max: '2', note: '' }; }
+    default: return null;
+  }
+}
+
+/**
+ * A simple path for a private clinic (the Organization's own template): the six processes of one complete cycle —
+ * scope, questionnaire campaign, competence gap diagnostic, training plan, delivery and evaluation — so a first
+ * engagement is run end to end with real questions, respondents, messages and responses.
+ */
+export const SIMPLE_PATH = ['E2E-32', 'E2E-33', 'E2E-02', 'E2E-01', 'E2E-05', 'E2E-07'];
+export function seedSimpleTemplate(o, userId) {
+  const base = all(`SELECT id, data FROM records WHERE entity='ProjectTemplate' AND org_id IS NULL`).map(x => ({ id: x.id, d: J(x.data, {}) })).find(x => x.d.vertical_id === o.sector && x.d.mode === 'SME' && x.d.focus === 'AI');
+  if (!base) return null;
+  const id = U(`tpl-simple:${o.id}`); if (one(`SELECT id FROM records WHERE id=?`, id)) return id;
+  const phases = base.d.phases.map(ph => ({ ...ph, e2e: ph.e2e.filter(e => SIMPLE_PATH.includes(e)) })).filter(ph => ph.e2e.length);
+  // The blueprint excludes every other phase and process (FR-DA-PTB-06): a project created from it has only these six.
+  const plan = processPlan({ mode: base.d.mode, track: base.d.track, vertical: o.sector });
+  const elements = {}; for (const ph of plan) { if (!phases.some(x => x.no === ph.no)) elements['phase:' + ph.no] = { included: false }; for (const e of ph.e2e) if (!SIMPLE_PATH.includes(e)) elements['e2e:' + e] = { included: false }; }
+  const data = { ...base.d, code: `PT-${o.sector}-SIMPLE-AI`, platform: false, use_count: 0, status: 'Published', phases, based_on: base.id, blueprint: { elements, custom: [] },
+    name: L('Private clinic — simple path — AI skills (6 processes)', 'Clinique privée — parcours simple — compétences IA (6 processus)', 'مصحة خاصة — مسار مبسط — كفاءات الذكاء الاصطناعي (6 عمليات)'),
+    description: L('One complete cycle: scope of work, questionnaire campaign, competence gap diagnostic, training plan, delivery and evaluation.', 'Un cycle complet : cahier des charges, campagne de questionnaires, diagnostic des écarts de compétences, plan de formation, réalisation et évaluation.', 'دورة كاملة: دفتر النطاق وحملة الاستبيان وتشخيص فجوات الكفاءات وخطة التكوين والإنجاز والتقييم.') };
+  insertRecord(id, 'ProjectTemplate', o.id, null, data.code, data, userId, true);
+  return id;
+}
+
 /* ------------------------------------------------------------------------------------- per organization */
 export function seedOrg110(o) {
   const r = rng('r110:' + o.id); const t0 = Date.now(); const head = o.users.find(u => u.role === 'R-03') || o.users[0]; const hrd = o.users.find(u => u.role === 'R-02') || o.users[1];
@@ -109,6 +158,7 @@ export function seedOrg110(o) {
   for (const uc of all(`SELECT id FROM records WHERE entity='AIUseCase' AND org_id=?`, o.id)) { try { P.getSpec(o.id, uc.id); } catch { /* use case without a step */ } }
   // ---- Runs: step records, rows, registers, audits, documents.
   for (const p of all(`SELECT * FROM projects WHERE org_id=? ORDER BY focus`, o.id)) seedRun(o, p, { roles, head, hrd, r, req });
+  if (o.sector === 'HCPR' && (o.segment === 'SME' || /santeora/.test(o.email_domain || o.domain || ''))) seedSimpleTemplate(o, head.id);
   // ---- One organization template with a customized blueprint (Large organizations).
   if (o.seg === 'LARGE') {
     try {
@@ -135,6 +185,10 @@ function seedRun(o, p, { roles, head, hrd, r, req }) {
     roles: roles.map(x => x.name), functions: all(`SELECT name FROM obs_nodes WHERE org_id=? AND type='Function' ORDER BY name`, o.id).map(x => J(x.name, x.name)).filter(Boolean), approver: hrd.name, start: new Date(p.start_date).getTime(), object: null };
   if (!ctx.positions.length) ctx.positions = [L('Supervisor', 'Encadrant', 'مؤطر')];
   if (!ctx.functions.length) ctx.functions = [L('Operations', 'Opérations', 'العمليات')];
+  ctx.fnById = new Map(all(`SELECT id, name FROM obs_nodes WHERE org_id=? AND type='Function'`, o.id).map(x => [x.id, J(x.name, x.name)]));
+  ctx.roleOf = en => roles.map(x => x.name).find(n => pick(n, 'en') === en) || L(en, en, en);
+  const stakeholders = all(`SELECT id, data FROM records WHERE entity='Stakeholder' AND project_id=? ORDER BY ref`, p.id).map(x => ({ id: x.id, ...J(x.data, {}) }));
+  const qOf = (() => { const x = one(`SELECT id, data FROM records WHERE entity='Questionnaire' AND project_id=? ORDER BY created_at DESC LIMIT 1`, p.id); return x ? { id: x.id, ...J(x.data, {}) } : null; })();
   const tasks = all(`SELECT * FROM task_instances WHERE project_id=? AND status!='Not started' ORDER BY e2e_id, sort`, p.id);
   let base = 0;
   for (const t of tasks) {
@@ -147,12 +201,16 @@ function seedRun(o, p, { roles, head, hrd, r, req }) {
       const d = describeStep(st, { mpName: cat.get('mp', st.mp)?.name }); ctx.object = d.object;
       const recId = U(`sr:${t.id}:${sid}`); const at = t.completed_at || t.started_at || tm;
       const kind = d.kind; const single = d.pattern === 'form' || d.pattern === 'sectioned';
-      const fields = single ? rowFor(kind, base % 5, ctx, r, base) : {};
+      const sc = { o, p, q: qOf, sh: stakeholders, ctx, base };
+      const fields = single ? (rowForStep(sid, 0, sc) || rowFor(kind, base % 5, ctx, r, base)) : {};
       run(`INSERT OR IGNORE INTO step_records(id,org_id,project_id,task_instance_id,step_id,kind,fields,status,completed_by,completed_at,updated_by,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`,
         recId, o.id, p.id, t.id, sid, kind, S(fields), isDone ? 'Completed' : 'Open', isDone ? t.owner_id : null, isDone ? at : null, t.owner_id, at);
-      if (kind === 'system') continue;
-      const items = single ? [{ id: recId, data: fields }] : Array.from({ length: kind === 'levels' ? Math.min(ctx.functions.length, isDone ? 7 : 2) : isDone ? (kind === 'matrix' || kind === 'objectives' ? 3 : 2) : 1 }, (_, i) => {
-        const id = U(`row:${recId}:${i}`); const data = rowFor(kind, i, ctx, r, base);
+      if (kind === 'system' || kind === 'module') continue;
+      const own = ['MP-53.8', 'MP-54.4', 'MP-54.5'].includes(sid); const n = sid === 'MP-53.8' ? Math.min(stakeholders.length, isDone ? 12 : 3) : own ? (sid === 'MP-54.4' ? 4 : 3) : kind === 'levels' ? Math.min(ctx.functions.length, isDone ? 7 : 2) : isDone ? (kind === 'matrix' || kind === 'objectives' ? 3 : 2) : 1;
+      const items = single ? [{ id: recId, data: fields }] : Array.from({ length: n }, (_, i) => {
+        const id = U(`row:${recId}:${i}`); const data = rowForStep(sid, i, sc) || rowFor(kind, i, ctx, r, base);
+        // A stakeholder row is the source of its Stakeholder record (services/qsteps.js syncStakeholders).
+        if (data._stakeholder) { const rec = one(`SELECT data FROM records WHERE id=?`, data._stakeholder); run(`UPDATE records SET data=? WHERE id=?`, S({ ...J(rec?.data, {}), source_row_id: id, source_task_id: t.id }), data._stakeholder); delete data._stakeholder; }
         run(`INSERT OR IGNORE INTO step_rows(id,step_record_id,org_id,project_id,step_id,sort,data,origin,created_by,created_at,updated_by,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, id, recId, o.id, p.id, sid, i, S(data), i === 2 && kind === 'matrix' ? 'ai' : 'manual', t.owner_id, at, t.owner_id, at);
         return { id, data }; });
       if (!isDone || !d.register) continue;

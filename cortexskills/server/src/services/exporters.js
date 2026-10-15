@@ -7,6 +7,7 @@ import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, Width
 import { C as B, RAG, FONT, LOGO, DOCX_FONTS } from './brand.js';
 import { imageSize } from './docexport.js';
 import { t } from '../i18n.js';
+import { cleanOffice } from '../lib/office.js';
 
 const C = { orange: B.navy, orangeDeep: B.navy, tint: B.azureTint, dark: B.navy, ink: B.ink, medium: B.muted, light: B.bg, line: B.line, white: B.white };
 const F = FONT; void path;
@@ -102,7 +103,7 @@ export async function toXlsx(model) {
     r++;
   }
   ws.columns.forEach((c, i) => { c.width = i === 0 ? 22 : 28; });
-  return Buffer.from(await wb.xlsx.writeBuffer());
+  return cleanOffice(Buffer.from(await wb.xlsx.writeBuffer()));
 }
 const border = () => { const b = { style: 'thin', color: { argb: 'FF' + C.line } }; return { top: b, left: b, bottom: b, right: b }; };
 
@@ -133,7 +134,7 @@ export async function toDocx(model) {
       headers: { default: new Header({ children: [new Paragraph({ alignment: rtl ? AlignmentType.RIGHT : AlignmentType.LEFT, children: [new ImageRun({ data: lg, type: 'png', transformation: { width: 140, height: Math.round(140 * lsz.h / lsz.w) } })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `CortexSkills · ${model.id} · `, size: 16, color: C.medium, font: 'Open Sans' }), new TextRun({ children: [PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], size: 16, color: C.medium, font: 'Open Sans' })] })] }) },
       children }] });
-  return Packer.toBuffer(doc);
+  return cleanOffice(await Packer.toBuffer(doc));
 }
 
 export const MIME = { pdf: 'application/pdf', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };

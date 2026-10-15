@@ -57,8 +57,14 @@ export function checkNames(name, { siblings = [], verb = true, langs = ['en', 'f
 /** The object of a step name: the name without its leading verb (and French article), used to qualify field titles (FR-DA-DEU-01). */
 export function objectOf(name, lang) {
   let v = String(name || '').trim(); if (!v) return '';
-  const parts = v.split(/\s+/); parts.shift(); v = parts.join(' ');
-  if (lang === 'fr') v = v.replace(/^(les |le |la |l['’]|des |du |de la |de l['’]|d['’]|un |une |à |aux |au )/i, '');
+  // Verbs made of several words are removed whole ("Mettre à jour la note…" → "Note…", "Set up the…" → "…").
+  const PHRASES = { fr: /^(mettre (à jour|en place|en œuvre|en oeuvre|en ligne)|rendre compte (de la |du |des |de l['’]|de |d['’])?|faire (valider|approuver)|prendre en (charge|compte)|tenir à jour|passer en revue)\s*/i,
+    en: /^(set up|follow up( on)?|carry out|roll out|sign off|bring up to date|keep up to date|report on|hand over|check in)\s+/i };
+  if (PHRASES[lang]?.test(v)) v = v.replace(PHRASES[lang], '');
+  else { const parts = v.split(/\s+/); parts.shift(); v = parts.join(' '); }
+  // "Validate and approve the scope", "Valider et approuver le périmètre": the second verb goes too.
+  v = v.replace(/^(et|ou|and|or)\s+\S+\s+/i, '');
+  if (lang === 'fr') v = v.replace(/^(les |le |la |l['’]|des |du |de la |de l['’]|d['’]|un |une |à la |à l['’]|à |aux |au )/i, '').replace(/ (et|ou) (à la |à l['’]|aux |au |à |la |le |les |l['’]|des |du |de la |de l['’])/gi, ' $1 ');
   if (lang === 'en') v = v.replace(/^(the |a |an |and |to )/i, '');
   return v.charAt(0).toUpperCase() + v.slice(1);
 }

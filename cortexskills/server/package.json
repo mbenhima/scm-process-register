@@ -1,6 +1,6 @@
 {
   "name": "cortexskills-server",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "CortexSkills \u2014 Training Engineering platform API (REST, JSON, SQLite).",
   "type": "module",
   "private": true,
@@ -16,7 +16,7 @@
     "start": "node --no-warnings src/index.js",
     "backup": "node --no-warnings tools/backup.js",
     "sign-licence": "node --no-warnings tools/sign-licence.js",
-    "test": "node --no-warnings --test --test-concurrency=1 test/security.test.js test/bulkimport.test.js",
+    "test": "node --no-warnings --test --test-concurrency=1 test/security.test.js test/bulkimport.test.js test/qsteps.test.js",
     "i18n": "node i18n/build.js"
   },
   "dependencies": {

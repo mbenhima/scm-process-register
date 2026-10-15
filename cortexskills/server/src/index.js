@@ -27,6 +27,18 @@ if (!isSeeded()) {
     for (const o of all(`SELECT id FROM organizations`)) { try { n += completeCatalog(o.id); } catch (e) { console.error('  AI catalog migration skipped for an organization:', e.message); } }
     run(`INSERT OR REPLACE INTO meta(key,value) VALUES('ai_catalog_1_12', ?)`, String(n));
   }
+  // Release 1.13 (NFR-DA-MAINT-11): the guidance of the scope and questionnaire tasks says what to do (no example
+  // figures); it is updated in the catalog and in the tasks not yet started, once.
+  if (!one(`SELECT value FROM meta WHERE key='guidance_1_13'`)) {
+    const fs = await import('node:fs'); const g = JSON.parse(fs.readFileSync(new URL('../seed/content/guidance_3.json', import.meta.url), 'utf8')); let n = 0;
+    const { clearCatalogCache } = await import('./catalog.js'); const { guidanceFor } = await import('./services/guidance.js'); const { guidanceContext } = await import('./services/projects.js');
+    for (const [id, v] of Object.entries(g).filter(([k]) => /^UFT-3[23]-/.test(k))) run(`UPDATE catalog SET data=json_set(data,'$.text',json(?)) WHERE kind='guidance' AND id=?`, JSON.stringify({ en: v[0], fr: v[1], ar: v[2] }), id);
+    clearCatalogCache();
+    for (const t of all(`SELECT t.id, t.uft_id, t.project_id FROM task_instances t WHERE t.status='Not started' AND (t.uft_id LIKE 'UFT-32-%' OR t.uft_id LIKE 'UFT-33-%')`)) {
+      const p = one(`SELECT * FROM projects WHERE id=?`, t.project_id); if (!p) continue; run(`UPDATE task_instances SET guidance=? WHERE id=?`, JSON.stringify(guidanceFor(t.uft_id, guidanceContext(p))), t.id); n++;
+    }
+    run(`INSERT OR REPLACE INTO meta(key,value) VALUES('guidance_1_13', ?)`, String(n));
+  }
 }
 // Production mode: refuse to start on an unsafe configuration, naming each problem (NODE_ENV=production).
 const { isProduction, productionProblems } = await import('./production.js');

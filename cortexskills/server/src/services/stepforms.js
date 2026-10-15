@@ -3,13 +3,14 @@
 // (FR-DA-DEU-01), the entry pattern (FR-DA-MRE-01), how each field is filled (NFR-DA-UX-12), and the register the
 // rows feed when the step is completed (FR-DA-SFM-04, FR-DA-LNK-04).
 import { objectOf } from './naming.js';
+import { STEP_DEFS, MODULE_LABEL } from './stepdefs.js';
 
 const L = (en, fr, ar) => ({ en, fr, ar });
 export const FORM_KINDS = ['record', 'matrix', 'levels', 'decision', 'objectives', 'plan', 'communication', 'training', 'monitoring', 'review', 'assignment', 'configuration', 'system'];
 export const KIND_LABEL = {
   record: L('Record table', 'Tableau d’enregistrements', 'جدول سجلات'), matrix: L('Assessment matrix', 'Matrice d’évaluation', 'مصفوفة تقييم'), levels: L('Function × decision-level matrix', 'Matrice fonctions × niveaux de décision', 'مصفوفة الوظائف × مستويات القرار'), decision: L('Decision', 'Décision', 'قرار'),
   objectives: L('Objectives', 'Objectifs', 'أهداف'), plan: L('Plan', 'Plan', 'خطة'), communication: L('Communication', 'Communication', 'تواصل'), training: L('Training', 'Formation', 'تكوين'),
-  monitoring: L('Monitoring', 'Suivi', 'تتبع'), review: L('Review', 'Revue', 'مراجعة'), assignment: L('Assignment', 'Affectation', 'تعيين'), configuration: L('Configuration', 'Configuration', 'إعداد'), system: L('System step', 'Étape système', 'خطوة نظام'),
+  monitoring: L('Monitoring', 'Suivi', 'تتبع'), review: L('Review', 'Revue', 'مراجعة'), assignment: L('Assignment', 'Affectation', 'تعيين'), configuration: L('Configuration', 'Configuration', 'إعداد'), system: L('System step', 'Étape système', 'خطوة نظام'), module: L('Live panel', 'Panneau de travail', 'لوحة عمل'),
 };
 const V = verbs => new Set(verbs.split(' '));
 const BY_VERB = [
@@ -99,15 +100,15 @@ export function fieldsFor(kind, obj) {
     case 'matrix': return [f('item', obj, 'text', { required: true, help: it, carry: true }), f('criterion', L('Criterion', 'Critère', 'المعيار'), 'select', { required: true, custom: true, options: ['Business impact', 'Urgency', 'Feasibility', 'Cost', 'Risk'].map(v => ({ value: v, label: { 'Business impact': L('Business impact', 'Impact métier', 'الأثر على الأعمال'), Urgency: L('Urgency', 'Urgence', 'الاستعجال'), Feasibility: L('Feasibility', 'Faisabilité', 'قابلية التنفيذ'), Cost: L('Cost', 'Coût', 'الكلفة'), Risk: L('Risk', 'Risque', 'المخاطر') }[v] })) }),
       f('weight', L('Weight (%)', 'Poids (%)', 'الوزن (%)'), 'number', { required: true, min: 0, max: 100 }), f('score', L('Score (1–5)', 'Note (1–5)', 'النقطة (1–5)'), 'select', { required: true, options: SCORE }), f('facts', L('Facts justifying the score', 'Faits justifiant la note', 'الوقائع المبررة للنقطة'), 'textarea')];
     case 'decision': return [f('decision', L('Decision', 'Décision', 'القرار'), 'select', { required: true, options: ['Approved', 'Approved with conditions', 'Rejected', 'Deferred'].map(v => ({ value: v, label: { Approved: L('Approved', 'Approuvé', 'موافق عليه'), 'Approved with conditions': L('Approved with conditions', 'Approuvé sous conditions', 'موافق عليه بشروط'), Rejected: L('Rejected', 'Rejeté', 'مرفوض'), Deferred: L('Deferred', 'Reporté', 'مؤجل') }[v] })) }),
-      f('subject', obj, 'text', { required: true, help: L('What is decided.', 'Ce qui est décidé.', 'موضوع القرار.') }), f('rationale', L('Rationale', 'Justification', 'التعليل'), 'textarea', { required: true }), f('conditions', L('Conditions', 'Conditions', 'الشروط'), 'textarea'), f('date', L('Decision date', 'Date de décision', 'تاريخ القرار'), 'date', { required: true }), f('decidedBy', L('Decided by', 'Décidé par', 'قرره'), 'person')];
+      f('subject', obj, 'text', { required: true, default: '{object}', help: L('What is decided.', 'Ce qui est décidé.', 'موضوع القرار.') }), f('rationale', L('Rationale', 'Justification', 'التعليل'), 'textarea', { required: true }), f('conditions', L('Conditions', 'Conditions', 'الشروط'), 'textarea'), f('date', L('Decision date', 'Date de décision', 'تاريخ القرار'), 'date', { required: true, default: '{today}' }), f('decidedBy', L('Decided by', 'Décidé par', 'قرره'), 'person', { default: '{me}' })];
     case 'objectives': return [f('item', obj, 'text', { required: true, help: it }), f('indicator', L('Indicator', 'Indicateur', 'المؤشر'), 'kpi', { custom: true }), f('baseline', L('Baseline', 'Valeur de départ', 'القيمة الأساسية'), 'text'), f('target', L('Target', 'Cible', 'الهدف'), 'text', { required: true }), f('deadline', L('Deadline', 'Échéance', 'الأجل'), 'date', { required: true }), f('owner', L('Owner', 'Responsable', 'المسؤول'), 'person')];
     case 'plan': return [f('item', obj, 'text', { required: true, help: fill(H.action, obj) }), f('owner', L('Owner', 'Responsable', 'المسؤول'), 'person'), f('start', L('Start', 'Début', 'البداية'), 'date'), f('end', L('End', 'Fin', 'النهاية'), 'date', { validate: 'afterStart' }), f('budget', L('Budget', 'Budget', 'الميزانية'), 'number', { min: 0 }), f('deliverable', L('Deliverable', 'Livrable', 'المخرج'), 'text')];
     case 'communication': return [f('item', obj, 'text', { required: true, help: L('What the message is about.', 'L’objet du message.', 'موضوع الرسالة.') }), f('audience', L('Audience', 'Destinataires', 'الجمهور'), 'text', { required: true }), f('channel', L('Channel', 'Canal', 'القناة'), 'select', { required: true, options: CHANNELS }), f('message', L('Message', 'Message', 'الرسالة'), 'textarea', { required: true }), f('date', L('Date', 'Date', 'التاريخ'), 'date')];
     case 'training': return [f('session', obj, 'text', { required: true, help: H.session }), f('date', L('Date', 'Date', 'التاريخ'), 'date', { required: true }), f('trainer', L('Trainer', 'Formateur', 'المكون'), 'text'), f('participants', L('Participants', 'Participants', 'المشاركون'), 'number', { min: 0 }), f('hours', L('Hours', 'Heures', 'الساعات'), 'number', { min: 0, max: 200 }),
       f('modality', L('Modality', 'Modalité', 'الصيغة'), 'select', { options: ['On site', 'Remote', 'Blended'].map(v => ({ value: v, label: { 'On site': L('On site', 'Présentiel', 'حضوري'), Remote: L('Remote', 'À distance', 'عن بعد'), Blended: L('Blended', 'Mixte', 'مدمج') }[v] })) })];
     case 'monitoring': return [f('indicator', obj, 'kpi', { required: true, custom: true, help: H.indicator }), f('period', L('Period', 'Période', 'الفترة'), 'text', { required: true, carry: true }), f('value', L('Value', 'Valeur', 'القيمة'), 'number', { required: true }), f('target', L('Target', 'Cible', 'الهدف'), 'number'), f('status', L('Status', 'Statut', 'الحالة'), 'select', { options: RAG }), f('reason', L('Why it is monitored', 'Pourquoi il est suivi', 'سبب التتبع'), 'text')];
-    case 'review': return [f('scope', obj, 'text', { required: true, help: H.scope }), f('findings', L('Findings', 'Constats', 'الملاحظات'), 'textarea', { required: true }), f('conclusion', L('Conclusion', 'Conclusion', 'الخلاصة'), 'select', { required: true, options: ['Conforming', 'Minor corrections', 'Major corrections'].map(v => ({ value: v, label: { Conforming: L('Conforming', 'Conforme', 'مطابق'), 'Minor corrections': L('Minor corrections', 'Corrections mineures', 'تصحيحات طفيفة'), 'Major corrections': L('Major corrections', 'Corrections majeures', 'تصحيحات جوهرية') }[v] })) }),
-      f('followUp', L('Follow-up actions', 'Actions de suivi', 'إجراءات المتابعة'), 'textarea'), f('date', L('Review date', 'Date de revue', 'تاريخ المراجعة'), 'date', { required: true })];
+    case 'review': return [f('scope', obj, 'text', { required: true, default: '{object}', help: H.scope }), f('findings', L('Findings', 'Constats', 'الملاحظات'), 'textarea', { required: true }), f('conclusion', L('Conclusion', 'Conclusion', 'الخلاصة'), 'select', { required: true, options: ['Conforming', 'Minor corrections', 'Major corrections'].map(v => ({ value: v, label: { Conforming: L('Conforming', 'Conforme', 'مطابق'), 'Minor corrections': L('Minor corrections', 'Corrections mineures', 'تصحيحات طفيفة'), 'Major corrections': L('Major corrections', 'Corrections majeures', 'تصحيحات جوهرية') }[v] })) }),
+      f('followUp', L('Follow-up actions', 'Actions de suivi', 'إجراءات المتابعة'), 'textarea'), f('date', L('Review date', 'Date de revue', 'تاريخ المراجعة'), 'date', { required: true, default: '{today}' })];
     case 'assignment': return [f('role', L('Role', 'Rôle', 'الدور'), 'role', { required: true, custom: true, help: H.role }), f('item', obj, 'text', { help: it }), f('person', L('Person', 'Personne', 'الشخص'), 'person', { required: true }), f('allocation', L('Allocation (%)', 'Affectation (%)', 'التخصيص (%)'), 'number', { min: 0, max: 100 }), f('start', L('Start', 'Début', 'البداية'), 'date'),
       f('holderType', L('Holder type', 'Type de titulaire', 'نوع الشغل'), 'select', { options: ['Holder', 'Deputy', 'Acting'].map(v => ({ value: v, label: { Holder: L('Holder', 'Titulaire', 'أصيل'), Deputy: L('Deputy', 'Suppléant', 'نائب'), Acting: L('Acting', 'Intérimaire', 'بالنيابة') }[v] })) })];
     case 'configuration': return [f('setting', obj, 'text', { required: true, help: H.setting }), f('value', L('Value', 'Valeur', 'القيمة'), 'text', { required: true }), f('reference', L('Reference', 'Référence', 'المرجع'), 'text')];
@@ -116,14 +117,14 @@ export function fieldsFor(kind, obj) {
 }
 export const SINGLE = new Set(['decision', 'review']);
 /** Entry pattern from the number of records and fields (FR-DA-MRE-01). */
-export const patternOf = (kind, fields) => (kind === 'system' ? 'system' : SINGLE.has(kind) ? (fields.length > 8 ? 'sectioned' : 'form') : fields.length > 8 ? 'master-detail' : 'inline');
+export const patternOf = (kind, fields) => (kind === 'system' ? 'system' : kind === 'module' ? 'module' : SINGLE.has(kind) ? (fields.length > 8 ? 'sectioned' : 'form') : fields.length > 8 ? 'master-detail' : 'inline');
 /** Register fed by the rows of a step when it is completed (FR-DA-SFM-04, FR-DA-LNK-04). */
 export function registerOf(kind, step, obj) {
   const fixed = { objectives: ['objectives', L('Objectives register', 'Registre des objectifs', 'سجل الأهداف')], plan: ['actions', L('Action plan', 'Plan d’actions', 'خطة العمل')], monitoring: ['kpi-values', L('Indicator values', 'Valeurs des indicateurs', 'قيم المؤشرات')],
     assignment: ['assignments', L('Role assignments', 'Affectations de rôles', 'تعيينات الأدوار')], training: ['sessions', L('Training sessions', 'Sessions de formation', 'جلسات التكوين')], communication: ['communications', L('Communications log', 'Journal des communications', 'سجل التواصل')],
     matrix: ['assessments', L('Assessments', 'Évaluations', 'التقييمات')], configuration: ['settings', L('Settings', 'Paramètres', 'الإعدادات')], decision: ['decisions', L('Decisions log', 'Journal des décisions', 'سجل القرارات')], review: ['reviews', L('Reviews', 'Revues', 'المراجعات')] };
   if (fixed[kind]) return { key: fixed[kind][0], name: fixed[kind][1] };
-  if (kind === 'system') return null;
+  if (kind === 'system' || kind === 'module') return null;
   const key = 'reg-' + String(obj.en || step.id).toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
   return { key, name: L(`${obj.en} register`, `Registre : ${obj.fr || obj.en}`, `سجل ${obj.ar || obj.en}`) };
 }
@@ -141,6 +142,7 @@ const PURPOSE = {
   review: L('Check {o}, record the findings and decide the follow-up.', 'Vérifier ({o}), consigner les constats et décider du suivi.', 'مراجعة ({o}) وتسجيل الملاحظات وتحديد المتابعة.'),
   assignment: L('Name who does what for {o}, with allocation and start date.', 'Désigner qui fait quoi ({o}), avec la part de temps et la date de début.', 'تحديد من يقوم بماذا ({o}) مع نسبة التخصيص وتاريخ البداية.'),
   configuration: L('Set the parameters of {o} so that the platform applies them.', 'Fixer les paramètres ({o}) pour que la plateforme les applique.', 'ضبط معاملات ({o}) لتطبقها المنصة.'),
+  module: L('Work on {o} directly in the panel of the step; the step is complete when its result exists.', 'Travailler ({o}) directement dans le panneau de l’étape ; l’étape est terminée quand son résultat existe.', 'العمل على ({o}) مباشرة في لوحة الخطوة؛ تكتمل الخطوة عند وجود نتيجتها.'),
   system: L('The platform performs this step automatically ({o}); check its result.', 'La plateforme réalise cette étape automatiquement ({o}) ; vérifiez son résultat.', 'تنجز المنصة هذه الخطوة آلياً ({o})؛ تحقق من نتيجتها.'),
 };
 const RESULT = {
@@ -156,6 +158,7 @@ const RESULT = {
   review: L('Findings, a conclusion and follow-up actions.', 'Des constats, une conclusion et des actions de suivi.', 'ملاحظات وخلاصة وإجراءات متابعة.'),
   assignment: L('Role assignments with person, allocation and start date.', 'Des affectations de rôles avec personne, part de temps et date de début.', 'تعيينات أدوار بالشخص والتخصيص وتاريخ البداية.'),
   configuration: L('Parameters applied by the platform, with their reference.', 'Des paramètres appliqués par la plateforme, avec leur référence.', 'معاملات تطبقها المنصة مع مرجعها.'),
+  module: L('The result shown in the panel: questions, messages, responses or document.', 'Le résultat affiché dans le panneau : questions, messages, réponses ou document.', 'النتيجة المعروضة في اللوحة: أسئلة أو رسائل أو إجابات أو وثيقة.'),
   system: L('The system output, shown in the task.', 'Le résultat du système, affiché dans la tâche.', 'مخرج النظام يعرض في المهمة.'),
 };
 const LBL = { purpose: L('Purpose', 'Objet', 'الغرض'), inputs: L('Inputs', 'Entrées', 'المدخلات'), how: L('How to fill it', 'Comment la remplir', 'طريقة الملء'), result: L('Expected result', 'Résultat attendu', 'النتيجة المنتظرة'), done: L('in', 'dans', 'ضمن') };
@@ -163,7 +166,8 @@ const LBL = { purpose: L('Purpose', 'Objet', 'الغرض'), inputs: L('Inputs', 
 /** Complete form definition and descriptions for a step (multilingual). `ctx` = { mpName, inputs }. */
 export function describeStep(step, ctx = {}) {
   const obj = { en: objectOf(step.name?.en, 'en'), fr: objectOf(step.name?.fr, 'fr'), ar: objectOf(step.name?.ar, 'ar') };
-  const kind = kindOf(step); const fields = step.form?.fields?.length ? step.form.fields : fieldsFor(kind, obj);
+  const def = STEP_DEFS[step.id];
+  const kind = def?.kind || kindOf(step); const fields = step.form?.fields?.length ? step.form.fields : def ? def.fields || [] : fieldsFor(kind, obj);
   const brief = {}; const details = {};
   for (const l of ['en', 'fr', 'ar']) {
     const o = (obj[l] || obj.en || '').toLowerCase(); const role = step.role?.[l] || step.role?.en || ''; const mp = ctx.mpName?.[l] || ctx.mpName?.en || '';
@@ -171,5 +175,6 @@ export function describeStep(step, ctx = {}) {
     const how = fields.map(x => `• ${x.label?.[l] || x.label?.en}${x.required ? ' *' : ''}: ${x.help?.[l] || x.help?.en || ''}`).join('\n');
     details[l] = step.details?.[l] || [`${LBL.purpose[l]}: ${PURPOSE[kind][l].replace('{o}', o)}`, `${LBL.inputs[l]}: ${ctx.inputs?.[l] || ctx.inputs?.en || '—'}`, how ? `${LBL.how[l]}:\n${how}` : null, `${LBL.result[l]}: ${RESULT[kind][l].replace('{o}', obj[l] || obj.en)}`].filter(Boolean).join('\n');
   }
-  return { kind, kindLabel: KIND_LABEL[kind], object: obj, fields, pattern: patternOf(kind, fields), register: registerOf(kind, step, obj), brief, details };
+  return { kind, kindLabel: def?.module ? MODULE_LABEL[def.module] : KIND_LABEL[kind], object: obj, fields, pattern: patternOf(kind, fields), register: registerOf(kind, step, obj), brief, details,
+    ...(def ? { module: def.module || null, doc: def.doc || null, report: def.report || null, questionnaire: def.questionnaire || null, stakeholders: !!def.stakeholders } : {}) };
 }

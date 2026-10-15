@@ -5,6 +5,7 @@ import { useSession, useData } from '../lib/session.jsx';
 import { get, post, put, del } from '../lib/api.js';
 import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, useAction, Modal, Field, Kpi, KV, JustifyDialog, Seg, Progress, Select } from '../components/ui.jsx';
 import { RecordsView } from '../components/Records.jsx';
+import { parseDelimited } from '../lib/paste.js';
 
 export function Users() {
   const { t, L, fmtDate } = useI18n(); const d = useData('/users'); const roles = useData('/roles'); const act = useAction(); const [edit, setEdit] = useState(null);
@@ -97,11 +98,26 @@ export function Pricing() {
       <h2 className="section-title">{t('pricing.packs')}</h2><RecordsView entity="Pack" canCreate /></>}</Guard></>);
 }
 
+/** HRIS synchronization from a file exported by the HRIS (CSV, first line = field names): mapped, applied, reported (UFT-15-03). */
+function HrisSync({ rec, onDone }) {
+  const { t } = useI18n(); const act = useAction(); const ref = useRef(null); const [rep, setRep] = useState(null);
+  const run = async file => { const text = await file.text(); const sep = text.split('\n')[0].includes(';') ? ';' : text.split('\n')[0].includes('\t') ? '\t' : ',';
+    const rows = parseDelimited(text.replace(/\r/g, ''), sep); const head = rows[0] || []; const records = rows.slice(1).map(r => Object.fromEntries(head.map((h, i) => [h.trim(), r[i] ?? ''])));
+    const out = await act(() => post(`/integrations/${rec.id}/sync`, { records }), null); if (out) { setRep(out); onDone?.(); } };
+  return (<><input ref={ref} type="file" accept=".csv,.txt,.tsv" hidden onChange={e => { if (e.target.files[0]) run(e.target.files[0]); e.target.value = ''; }} />
+    <Btn size="sm" icon="RefreshCcw" disabled={!rec.enabled} onClick={() => ref.current.click()}>{t('int.sync')}</Btn>
+    {rep && <Modal title={t('int.syncReport')} onClose={() => setRep(null)} footer={<Btn kind="primary" onClick={() => setRep(null)}>{t('common.close')}</Btn>}>
+      <p className="small">{t('int.syncSummary', { n: rep.received, c: rep.created, u: rep.updated, r: rep.rejected.length })}</p>
+      {rep.rejected.length > 0 && <DataTable search={false} rows={rep.rejected} columns={[{ key: 'line', label: t('int.line'), num: true }, { key: 'matricule', label: t('int.employeeNumber') }, { key: 'name', label: t('col.name') }, { key: 'reason', label: t('int.reason'), text: r => t('int.reject.' + r.reason) }, { key: 'value', label: t('int.value') }]} />}
+      <p className="xs muted">{t('int.syncHint')}</p></Modal>}</>);
+}
+
 export function Integrations() {
   const { t, L, fmtDate } = useI18n(); const d = useData('/config'); const log = useData('/integrations/log'); const act = useAction(); const recs = useData('/records/ExternalIntegration');
   return (<><PageHead eyebrow={t('navGroup.admin')} title={t('nav.integrations')} subtitle={t('int.subtitle')} />
     <Guard state={recs}>{x => <DataTable search={false} rows={x.items} columns={[{ key: 'label', label: t('col.name'), text: r => L(r.label) }, { key: 'integration_code', label: 'ID' }, { key: 'enabled', label: t('col.status'), render: r => <StatusPill value={r.enabled ? 'Active' : 'Retired'} /> }, { key: 'last_health_status', label: t('int.health'), render: r => <StatusPill value={r.last_health === 'success' || r.last_health_status === 'Success' ? 'Green' : 'Red'} /> },
-      { key: 'cred', label: t('int.credential'), text: r => r.credential_ref ? t('int.stored') : t('int.missing') }, { key: 'act', label: '', noSort: true, render: r => <Btn size="sm" icon="Activity" onClick={async () => { await act(() => post(`/integrations/${r.id}/health`), 'int.checked'); recs.reload(); log.reload(); }}>{t('int.check')}</Btn> }]} />}</Guard>
+      { key: 'cred', label: t('int.credential'), text: r => r.credential_ref ? t('int.stored') : t('int.missing') }, { key: 'act', label: '', noSort: true, render: r => <span className="row" style={{ flexWrap: 'nowrap', gap: 4 }}><Btn size="sm" icon="Activity" onClick={async () => { await act(() => post(`/integrations/${r.id}/health`), 'int.checked'); recs.reload(); log.reload(); }}>{t('int.check')}</Btn>{/^INT-HR/.test(r.integration_code || '') && <HrisSync rec={r} onDone={() => { recs.reload(); log.reload(); }} />}</span> },
+      { key: 'last_sync_at', label: t('int.lastSync'), text: r => (r.last_sync ? `${fmtDate(r.last_sync.at)} · ${t('int.syncShort', { c: r.last_sync.created, u: r.last_sync.updated, r: r.last_sync.rejected.length })}` : '—') }]} />}</Guard>
     <h2 className="section-title">{t('int.catalog')}</h2><Guard state={d}>{x => <div className="grid g-3">{x.catalog.integrations.map(i => <Card key={i.id} title={`${i.id} · ${L(i.name)}`}><p className="xs muted">{L(i.family)}</p><p className="small">{L(i.goals)}</p><p className="xs"><span className="strong">{t('int.examples')}:</span> {i.examples}</p><p className="xs muted">{i.packs.join(' · ')}</p></Card>)}</div>}</Guard>
     <h2 className="section-title">{t('int.registry')}</h2><RecordsView entity="ExternalIntegration" />
     <h2 className="section-title">{t('int.webhooks')}</h2><RecordsView entity="Webhook" />

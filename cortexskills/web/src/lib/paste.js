@@ -124,6 +124,11 @@ export function convertCell(col, raw, lang) {
   if (col.type === 'number') return { value: parseNumber(v, lang) };
   if (col.type === 'date') return { value: parseDate(v, lang) };
   if (col.type === 'boolean') { const n = norm(v); return { value: ['1', 'true', 'yes', 'oui', 'vrai', 'x', 'نعم'].includes(n) ? true : ['0', 'false', 'no', 'non', 'faux', 'لا', ''].includes(n) ? false : v }; }
+  if (col.type === 'multi' && v !== '') {
+    const parts = v.split(/\s*[,;|\n]\s*/).filter(Boolean); let custom = false;
+    const out = parts.map(x => { const r = convertCell({ ...col, type: 'select' }, x, lang); if (r.custom) custom = true; return r.value; });
+    return { value: [...new Set(out)].join(', '), custom };
+  }
   if (col.type === 'select' && col.options && v !== '') {
     const opts = col.options.map(o => ({ value: String(o.value ?? o), label: String(o.label ?? o) }));
     const n = norm(v); let hit = opts.find(o => norm(o.value) === n || norm(o.label) === n);

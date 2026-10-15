@@ -8,6 +8,8 @@ import * as cat from '../catalog.js';
 import { refreshProgress, insertRecord } from '../services/projects.js';
 import { invalidateTenant } from '../services/retrieval.js';
 import { orgConfig } from '../entitlements.js';
+import { dispatch } from '../services/dispatch.js';
+import * as St from '../services/steps.js';
 
 const r = Router();
 const taskOut = t => t && ({ ...t, guidance: J(t.guidance), output: J(t.output), steps: J(t.steps, []) });
@@ -42,10 +44,18 @@ r.get('/tasks/:id', requirePerm('projects.view'), ah(req => {
   const attachments = all(`SELECT a.id, a.filename, a.mime, a.size, a.created_at, coalesce(a.version,1) version, a.note, u.name author, (SELECT COUNT(*) FROM attachments b WHERE coalesce(b.chain_id,b.id)=coalesce(a.chain_id,a.id)) versions FROM attachments a LEFT JOIN users u ON u.id=a.author_id WHERE a.owner_type='task' AND a.owner_id=? AND a.org_id=? AND coalesce(a.is_latest,1)=1`, t.id, req.orgId);
   const history = all(`SELECT a.action, a.after_val, a.justification, a.created_at, u.name user_name FROM audit_log a LEFT JOIN users u ON u.id=a.user_id WHERE a.entity='Task' AND a.entity_id=? ORDER BY a.created_at DESC LIMIT 30`, t.id).map(h => ({ ...h, after_val: J(h.after_val) }));
   const racsi = one(`SELECT id FROM racsi_activities WHERE org_id=? AND ref_type='uft' AND ref_id=? AND (project_id IS NULL OR project_id=?)`, req.orgId, t.uft_id, t.project_id);
-  return { task: taskOut(t), uft: u, steps: u.steps.map(s => cat.get('step', s)), attachments, history,
+  let summary = ''; try { summary = St.taskSummary(req, t.id); } catch { /* steps without forms */ }
+  return { task: taskOut(t), uft: u, steps: u.steps.map(s => cat.get('step', s)), attachments, history, summary, startsAfter: startCondition(t),
     racsi: racsi ? all(`SELECT letter, assignee, user_id FROM racsi_assignments WHERE activity_id=?`, racsi.id) : Object.entries(u.racsi).map(([letter, assignee]) => ({ letter, assignee })) };
 }));
 
+// Cross-phase (enabler) processes whose input exists only after a gate: E2E-17 starts from the approved plan (G3).
+export const ENABLER_START = { 'E2E-17': 3 };
+const gateGo = (projectId, phaseNo) => all(`SELECT data FROM records WHERE entity='PhaseChecklist' AND project_id=? AND json_extract(data,'$.phase')=?`, projectId, phaseNo).some(x => J(x.data).decision === 'Go');
+function startCondition(t) {
+  const phaseNo = ENABLER_START[t.e2e_id]; if (phaseNo == null) return null;
+  const ph = cat.list('phase').find(p => p.no === phaseNo); return { gate: ph?.gate || 'G' + phaseNo, phase: phaseNo, met: gateGo(t.project_id, phaseNo) };
+}
 /** Task execution: status, owner/evaluator, output, step ticks. Rules: BPMN sequence (VPR-05), gate progression (GTE-05), owner ≠ evaluator (RBAC-04). */
 r.patch('/tasks/:id', requirePerm('tasks.execute'), ah(req => {
   const t = one(`SELECT * FROM task_instances WHERE id=? AND org_id=?`, req.params.id, req.orgId); if (!t) throw new HttpError(404, 'err.notFound');
@@ -66,6 +76,7 @@ r.patch('/tasks/:id', requirePerm('tasks.execute'), ah(req => {
     if (status === 'Completed' && prev && prev.status !== 'Completed') throw new HttpError(409, 'err.dependency');
     const e = one(`SELECT phase FROM e2e_instances WHERE id=?`, t.e2e_instance_id);
     if (e.phase > 1) blockedByGate(t.project_id, e.phase - 1);
+    const sc = startCondition(t); if (sc && !sc.met && t.status === 'Not started') throw new HttpError(409, 'err.enablerWaits', { gate: sc.gate });
   }
   let output = J(t.output) || {};
   if (b.output !== undefined) {
@@ -81,6 +92,11 @@ r.patch('/tasks/:id', requirePerm('tasks.execute'), ah(req => {
     status, owner, evaluator, b.due_date ?? t.due_date, S(output), S(steps), status, tm, status, tm, b.ai_used ? 1 : 0, tm, t.id);
   audit(req, 'Task', t.id, status !== t.status ? 'status' : 'update', { status: t.status }, { status, output: pick(output, lang) }, b._justification || (status === 'Completed' ? pick(output, lang).slice(0, 300) : null));
   const progress = refreshProgress(t.project_id); invalidateTenant(req.orgId);
+  // The owner of the next task of the process is told it can start (in-app, and e-mail when chosen in the preferences).
+  if (status === 'Completed' && t.status !== 'Completed') {
+    const next = one(`SELECT id, uft_id, owner_id FROM task_instances WHERE e2e_instance_id=? AND sort=?`, t.e2e_instance_id, t.sort + 1);
+    if (next?.owner_id) { const u = cat.get('uft', next.uft_id); dispatch({ orgId: req.orgId, userId: next.owner_id, category: 'tasks', subjectKey: 'notify.taskReady', params: { task: next.uft_id, name: pick(u?.name, 'en'), done: t.uft_id } }); }
+  }
   return { task: taskOut(one(`SELECT * FROM task_instances WHERE id=?`, t.id)), projectProgress: progress, rexPrompt: status === 'Completed' && t.status !== 'Completed' };
 }));
 function blockedByGate(projectId, phaseNo) {

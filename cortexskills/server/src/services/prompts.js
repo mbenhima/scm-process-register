@@ -101,12 +101,16 @@ export function variables(orgId, { projectId, lang, stepId, taskId, values = {} 
   return { org: pick(J(org?.name, org?.name), lang), sector: pick(vert?.name, lang) || org?.sector || '', project: pick(J(p?.name, p?.name), lang) || '', focus: p?.focus || '', lang: { en: 'English', fr: 'French', ar: 'Arabic' }[lang] || lang,
     clauses: (vert?.standards || []).join(', ') || '—', records: [...records, ...rows.map(r => Object.values(r).map(v => pick(v, lang)).join(' | '))].join('; ') || '', ...Object.fromEntries(Object.entries(values).map(([k, v]) => ['record.' + k, String(v)])) };
 }
+const OPTIONAL_VAR = /^(records|clauses|record\..+)$/;
+const NONE = { en: '(none recorded yet)', fr: '(rien d’enregistré pour l’instant)', ar: '(لا شيء مسجل بعد)' };
 /** Assembles the prompt from the fields in the fixed order and resolves every variable; refuses when one has no value. */
 export function assemble(spec, vars, lang) {
   const parts = []; const missing = new Set();
   for (const f of FIELDS) {
     const raw = pick(spec.fields[f], lang) || pick(spec.fields[f], 'en'); if (!String(raw || '').trim()) continue;
-    const text = raw.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (m, k) => { const v = vars[k]; if (v == null || v === '') { missing.add(k); return m; } return v; });
+    // Only a required variable without a value refuses the run (FR-DA-AIP-08); context that may still be empty —
+    // the records of the step, the record being edited, the clauses — is stated as not yet recorded.
+    const text = raw.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (m, k) => { const v = vars[k]; if (v == null || v === '') { if (OPTIONAL_VAR.test(k)) return NONE[lang] || NONE.en; missing.add(k); return m; } return v; });
     parts.push(`## ${HEAD[f]}\n${text}`);
   }
   return { prompt: parts.join('\n\n'), missing: [...missing] };

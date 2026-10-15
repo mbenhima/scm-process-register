@@ -2,6 +2,17 @@
 
 Training engineering platform: 33 end-to-end processes in seven phases, from the scope of work to the evaluation of results, for large companies and SMEs in 29 sectors, in English, French and Arabic.
 
+## What is new in 1.13
+
+- **Steps that work on real data** (E2E-32 scope and E2E-33 questionnaire campaign): each step has a typed form with lists wherever possible (group yes/no, organization, sector, decision levels, orientation all/digital/AI/custom), and every list accepts a custom value. Stakeholders typed at MP-53.8 (name, e-mail, phone, role, function, level, site, preferred channel, category, description, owner, source) become the questionnaire's respondents.
+- **Questionnaire campaign inside the tasks**: MP-54.1 creates the questionnaire from the chosen templates; MP-54.2 shows, edits and tailors its questions (AI questions must be validated at MP-54.3); MP-54.4 is a RACSI table (role, R, A, C, S, I, sections) with exactly one A per section; MP-54.5 sets the channels per decision level (MS/MO/OP, several channels) and the reminder cadence; MP-54.6 to 54.11 distribute by e-mail or WhatsApp, send reminders, collect the answers from each respondent's link, consolidate them and feed the needs analysis.
+- **Documents in the steps**: MP-53.10 and MP-54.12 generate the specification (DT-E2E-32 with report RPT-033) and the campaign report (DT-E2E-33 with RPT-034), with versions and DOCX/PDF/XLSX downloads; each task has a Documents tab.
+- **Task flow**: Previous/Next task buttons, "Task N of M", the task result pre-filled from the step entries and editable, the next owner notified, enabler processes that wait for their gate (E2E-17 after G3).
+- **New projects**: fields in the order Name, Focus, Description, Template; the template list covers the whole library (own, sector, universal); the gates' checklists are attached at creation; the simple-path template (six processes) is honoured.
+- **HRIS sync**: CSV upload or inbound records with field mapping, a report of created/updated/rejected rows.
+- **Fixes**: first click on a list now saved; option labels and dates shown in read-only views; "{variables}" error of the prompt test; object names of the steps; Office files cleaned (no directory entries) for strict readers.
+- **Conformity check**: `tools/qa/run-checks.mjs` and `tools/qa/srs-check.mjs` check the 636 requirements of SRS v1.9.
+
 ## What is new in 1.12
 
 - **AI use case library** (SRS 4.4 and 4.40) on one page: figures (use cases, active ones, custom ones against the Solution Pack quota, prompt completeness, tasks supported by AI), the library filtered by tier, state and origin, and the **coverage of the process design** — every task with the use cases that support it, and a draft use case suggested for a step that has none. A dedicated form creates and edits a use case in English, French and Arabic, with its primary step and further links to steps, tasks, macro processes or end-to-end processes; custom use cases are duplicated or deleted, standard ones are deactivated. Each use case opens on its full page: identification, link to the process, Prompt Specification, assembled prompt, versions and usage.

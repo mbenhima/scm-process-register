@@ -104,7 +104,7 @@ fs.writeFileSync(config.licenceFile, JSON.stringify(lic, null, 2));
 
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('seeded_at',?)`, now());
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('data_mode','demo')`);
-run(`INSERT OR REPLACE INTO meta(key,value) VALUES('ai_catalog_1_12','seed')`); // the seed already writes a complete catalog
+run(`INSERT OR REPLACE INTO meta(key,value) VALUES('ai_catalog_1_12','seed')`); run(`INSERT OR REPLACE INTO meta(key,value) VALUES('guidance_1_13','seed')`); // the seed already writes a complete catalog
 run(`INSERT OR REPLACE INTO meta(key,value) VALUES('version',?)`, JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version);
 const { backupNow } = await import('../src/services/ops.js');
 backupNow('seed');

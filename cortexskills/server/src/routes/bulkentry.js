@@ -18,6 +18,7 @@ import { invalidateTenant } from '../services/retrieval.js';
 import * as St from '../services/steps.js';
 import multer from 'multer';
 import ExcelJS from 'exceljs';
+import { cleanOffice } from '../lib/office.js';
 
 const r = Router();
 
@@ -100,7 +101,7 @@ r.post('/bulk-entry/export', ah(async (req, res) => {
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   const fname = name.endsWith('.xlsx') ? name : name + '.xlsx'; // non-Latin names travel encoded (RFC 6266)
   res.setHeader('Content-Disposition', `attachment; filename="${fname.replace(/[^\x20-\x7e]/g, '_')}"; filename*=UTF-8''${encodeURIComponent(fname)}`);
-  await wb.xlsx.write(res); res.end();
+  res.send(await cleanOffice(Buffer.from(await wb.xlsx.writeBuffer())));
 }));
 
 /** Batched delete (bulk delete of a Multi-Entry): each record is deleted on its own; a refusal does not stop the others. */

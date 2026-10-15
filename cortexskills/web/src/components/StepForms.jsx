@@ -2,13 +2,14 @@
 // the form its kind calls for: an inline multi-record table (records, matrices, objectives, plans...), a single
 // form (decisions, reviews) or a notice for system steps. Field titles name the object of the step; reference
 // items are picked from the Organization as "ID (name)" with a Custom value; AI proposals are validated row by row.
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post, put, del } from '../lib/api.js';
-import { Btn, Icon, Field, StatusPill, Guard, JustifyDialog, useAction, AiBadge, Brief, Empty } from './ui.jsx';
+import { Btn, Icon, Field, StatusPill, Guard, JustifyDialog, useAction, AiBadge, Brief, Empty, MultiSelect, splitMulti } from './ui.jsx';
 import { InlineTable, ChoiceField } from './InlineTable.jsx';
+import { QuestionnaireStep, DocPanel } from './StepModules.jsx';
 
 /** Options for reference pickers, shown as "ID (name)" (FR-DA-DEU-04). */
 function usePickers() {
@@ -24,9 +25,13 @@ function usePickers() {
 /** Converts the step's typed fields into inline-table columns; titles come from the step's object (DEU-01). */
 export function columnsOf(fields, L, pickers) {
   return fields.map(f => {
-    const base = { key: f.key, label: L(f.label), required: !!f.required, help: L(f.help), min: f.min, max: f.max, carry: !!f.carry, default: f.default, width: f.width };
-    if (f.type === 'select') return { ...base, type: 'select', custom: !!f.custom, options: (f.options || []).map(o => ({ value: String(o.value), label: L(o.label) || String(o.value) })) };
-    if (['person', 'role', 'kpi', 'function'].includes(f.type)) return { ...base, type: 'select', custom: true, options: pickers[f.type] || [], ...(f.type === 'function' && !f.width ? { width: 190 } : {}) };
+    const base = { key: f.key, label: L(f.label), required: !!f.required, help: L(f.help), min: f.min, max: f.max, carry: !!f.carry, default: f.default, width: f.width, ...(f.total === false ? { total: false } : {}) };
+    const opts = (f.options || []).map(o => ({ value: String(o.value), label: L(o.label) || String(o.value) }));
+    if (f.type === 'select') return { ...base, type: 'select', custom: !!f.custom, options: opts };
+    if (f.type === 'multi') return { ...base, type: 'multi', custom: !!f.custom, options: opts, width: f.width || 220 };
+    if (['person', 'role', 'kpi', 'function'].includes(f.type)) return { ...base, type: f.multi ? 'multi' : 'select', custom: true, options: pickers[f.type] || [], ...(f.type === 'function' && !f.width ? { width: 190 } : {}) };
+    if (f.type === 'email') return { ...base, type: 'text', width: f.width || 220, validate: v => (v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim()) ? L({ en: 'Enter a valid e-mail address.', fr: 'Saisissez une adresse e-mail valide.', ar: 'أدخل بريدًا إلكترونيًا صالحًا.' }) : null) };
+    if (f.type === 'phone') return { ...base, type: 'text', width: f.width || 170, validate: v => (v && String(v).replace(/[^\d]/g, '').length < 9 ? L({ en: 'Enter the number with its country code, e.g. +212 6 12 34 56 78.', fr: 'Saisissez le numéro avec l’indicatif, par exemple +212 6 12 34 56 78.', ar: 'أدخل الرقم مع رمز البلد، مثل ‎+212 6 12 34 56 78.' }) : null) };
     if (f.type === 'boolean') return { ...base, type: 'boolean', width: 88 };
     if (f.type === 'textarea') return { ...base, type: 'textarea', wide: true };
     return { ...base, type: ['number', 'date'].includes(f.type) ? f.type : 'text' };
@@ -45,13 +50,13 @@ export function StepForms({ taskId, readOnly, onChanged, context, parent }) {
           <span className="step-title"><span className="mono xs">{s.id}</span> <span className="strong">{L(s.name)}</span><span className="xs muted"> · {L(s.form.kindLabel)} · {L(s.role)}</span></span>
           {(s.form.pattern === 'inline' || s.form.pattern === 'master-detail') && <span className="pill xs">{t('sfm.rows', { n: s.count })}</span>}
           <Icon name={isOpen ? 'ChevronUp' : 'ChevronDown'} /></button>
-        {isOpen && <StepBody taskId={taskId} projectId={x.project?.id} parent={parent} step={s} locked={x.locked} readOnly={readOnly || x.locked} pickers={pickers} context={context} onChanged={() => { d.reload(); onChanged?.(); }} />}
+        {isOpen && <StepBody taskId={taskId} projectId={x.project?.id} questionnaireId={x.questionnaire} parent={parent} step={s} locked={x.locked} readOnly={readOnly || x.locked} pickers={pickers} context={context} onChanged={() => { d.reload(); onChanged?.(); }} />}
       </section>; })}
     {!x.steps.length && <Empty icon="ListChecks" title={t('sfm.noSteps')} />}
   </div>}</Guard>);
 }
 
-function StepBody({ taskId, projectId, parent, step, locked, readOnly, pickers, onChanged, context }) {
+function StepBody({ taskId, projectId, questionnaireId, parent, step, locked, readOnly, pickers, onChanged, context }) {
   const { t, L } = useI18n(); const act = useAction(); const { can } = useSession();
   const [reopen, setReopen] = useState(false); const [proposal, setProposal] = useState(null);
   const f = step.form; const inline = f.pattern === 'inline' || f.pattern === 'master-detail'; const single = f.pattern === 'form' || f.pattern === 'sectioned'; const cols = useMemo(() => columnsOf(f.fields, L, pickers), [f.fields, L, pickers]);
@@ -74,13 +79,16 @@ function StepBody({ taskId, projectId, parent, step, locked, readOnly, pickers, 
     <Brief brief={L(f.brief)} details={L(f.details)} />
     {f.register && <p className="xs muted"><Icon name="BookMarked" size={12} /> {t('sfm.feeds', { r: L(f.register.name) })}</p>}
     {f.pattern === 'system' && <div className="notice grey"><Icon name="Cpu" /><div className="small">{t('sfm.system')}</div></div>}
+    {f.pattern === 'module' && f.module === 'document' && <DocPanel projectId={projectId} code={f.doc} report={f.report} readOnly={ro} onChanged={onChanged} />}
+    {f.pattern === 'module' && f.module !== 'document' && <QuestionnaireStep module={f.module} questionnaireId={questionnaireId} projectId={projectId} form={f} readOnly={ro} onChanged={onChanged} />}
+    {f.questionnaire === 'create' && questionnaireId && <p className="small"><Icon name="ClipboardList" size={14} /> {t('qstep.created')} <Link to={`/questionnaires/${questionnaireId}`}>{t('qstep.open')}</Link></p>}
     {inline && <InlineTable id={'step-' + f.kind} context={[context, `${step.id} · ${L(step.name)}`].filter(Boolean).join(' · ')} pasteTarget={{ kind: 'step', task: taskId, step: step.id }} onPasted={onChanged}
       readOnlyReason={locked ? t('sfm.locked') : step.done ? t('paste.stepDone') : readOnly ? t('paste.readOnly') : null} newInEditor={f.pattern === 'master-detail'} columns={cols} rows={step.rows} readOnly={ro} caption={L(f.object)} rowTitle={r => r.function || r.item || r.criterion || r.session || L(f.object)}
       toolbarExtra={f.kind === 'levels' && !ro && missingFns.length > 0 ? <Btn size="sm" icon="ListPlus" onClick={addAllFunctions}>{t('mre.addAllFunctions', { n: missingFns.length })}</Btn> : null}
       emptyActions={!ro && can('ai.run') && runnable ? <Btn size="sm" icon="Sparkles" onClick={() => suggest()}>{t('sfm.suggest')}</Btn> : null}
       countLabel={n => t('sfm.count', { n, o: L(f.object).toLowerCase() })} emptyText={t('sfm.emptyRows', { o: L(f.object).toLowerCase() })}
       onSaveRow={(data, id, o) => (id ? put(`${base}/rows/${id}`, { data, expected: o?.expected || undefined }) : post(`${base}/rows`, { data }))} parent={parent} onDeleteRow={id => del(`${base}/rows/${id}`)} />}
-    {single && <StepFormFields base={base} fields={cols} values={step.record?.fields || {}} readOnly={ro} />}
+    {single && <StepFormFields base={base} fields={cols} values={step.record?.fields || {}} readOnly={ro} objectLabel={L(f.object)} />}
     {proposal && <div className="card tint stack ai-proposal" role="region" aria-label={t('sfm.aiProposal')}>
       <div className="row"><Icon name="Sparkles" /><span className="strong small">{t('sfm.aiProposal')}</span><AiBadge tier={proposal.useCase.tier} />
         <Link className="pill xs" to={`/ai/use-cases/${proposal.useCase.id}`}>{proposal.useCase.code}</Link>
@@ -110,21 +118,30 @@ function StepBody({ taskId, projectId, parent, step, locked, readOnly, pickers, 
 }
 
 /** Single form (decision, review): each field saved when the user leaves it; the draft is kept on screen. */
-function StepFormFields({ base, fields, values, readOnly }) {
-  const { t } = useI18n(); const { toast } = useSession();
-  const [v, setV] = useState(() => ({ ...values })); const [errs, setErrs] = useState({}); const [state, setState] = useState('');
+function StepFormFields({ base, fields, values, readOnly, onSaved, objectLabel }) {
+  const { t, fmtDate } = useI18n(); const { toast } = useSession();
+  // Empty fields show their default (today, the user, the object of the step...); it is saved at completion if kept.
+  const [v, setV] = useState(() => ({ ...Object.fromEntries(fields.filter(c => c.default != null && c.default !== '').map(c => [c.key, c.default === '{object}' ? objectLabel : c.default])), ...Object.fromEntries(Object.entries(values).filter(([, x]) => x != null && x !== '')) })); const [errs, setErrs] = useState({}); const [state, setState] = useState('');
+  // The latest typed values, read when a field is committed: a choice is saved by the same click that makes it.
+  const cur = useRef(v); cur.current = v; const saved = useRef({ ...values });
+  const setVal = (key, x) => { cur.current = { ...cur.current, [key]: x }; setV(cur.current); };
   const saveField = async key => {
-    if (String(v[key] ?? '') === String(values[key] ?? '')) return;
+    const val = cur.current[key];
+    if (String(val ?? '') === String(saved.current[key] ?? '')) return;
     setState('saving');
-    try { await put(`${base}/fields`, { fields: { [key]: v[key] } }); values[key] = v[key]; setErrs(e => { const n = { ...e }; delete n[key]; return n; }); setState('saved'); }
+    try { await put(`${base}/fields`, { fields: { [key]: val } }); saved.current[key] = val; values[key] = val; setErrs(e => { const n = { ...e }; delete n[key]; return n; }); setState('saved'); onSaved?.(); }
     catch (e) { setErrs(x => ({ ...x, [key]: e.params?.errors?.[key] ? t('mre.' + e.params.errors[key]) : e.message })); setState(''); toast(e.message, 'error'); }
   };
+  const shown = c => { const x = v[c.key]; if (x == null || x === '') return '—'; const lbl = y => (c.options || []).find(o => String(o.value) === String(y))?.label ?? y;
+    if (c.type === 'multi') return splitMulti(x).map(lbl).join(', '); if (c.type === 'select') return lbl(x); if (c.type === 'boolean') return x === true || x === 'true' ? t('common.yes') : t('common.no'); if (c.type === 'date' && /^\d{4}-\d{2}-\d{2}/.test(String(x))) return fmtDate(x); return String(x); };
   return (<div className="form-grid">{fields.map(c => { const id = `${base}-${c.key}`.replace(/[^\w-]/g, '_');
     return <Field key={c.key} id={id} label={c.label} required={c.required} hint={c.help} error={errs[c.key]} className={c.wide ? 'full' : ''}>
-      {readOnly ? <div className="ro-value">{v[c.key] || '—'}</div>
-        : c.type === 'select' ? <ChoiceField id={id} col={c} value={v[c.key]} onChange={x => setV(s => ({ ...s, [c.key]: x }))} onCommit={() => setTimeout(() => saveField(c.key), 0)} t={t} invalid={!!errs[c.key]} />
-        : c.type === 'textarea' ? <textarea id={id} className="input" rows={4} value={v[c.key] ?? ''} onChange={e => setV(s => ({ ...s, [c.key]: e.target.value }))} onBlur={() => saveField(c.key)} />
-        : <input id={id} className="input" type={c.type === 'date' ? 'date' : 'text'} inputMode={c.type === 'number' ? 'decimal' : undefined} value={v[c.key] ?? ''} onChange={e => setV(s => ({ ...s, [c.key]: e.target.value }))} onBlur={() => saveField(c.key)} />}
+      {readOnly ? <div className="ro-value">{shown(c)}</div>
+        : c.type === 'multi' ? <MultiSelect id={id} value={v[c.key] ?? ''} options={c.options || []} custom={c.custom} invalid={!!errs[c.key]} onChange={e => setVal(c.key, e.target.value)} onCommit={() => saveField(c.key)} />
+        : c.type === 'select' ? <ChoiceField id={id} col={c} value={v[c.key]} onChange={x => setVal(c.key, x)} onCommit={() => saveField(c.key)} t={t} invalid={!!errs[c.key]} />
+        : c.type === 'boolean' ? <label className="check"><input id={id} type="checkbox" checked={v[c.key] === true || v[c.key] === 'true'} onChange={e => { setVal(c.key, e.target.checked); saveField(c.key); }} />{v[c.key] === true || v[c.key] === 'true' ? t('common.yes') : t('common.no')}</label>
+        : c.type === 'textarea' ? <textarea id={id} className="input" rows={4} value={v[c.key] ?? ''} onChange={e => setVal(c.key, e.target.value)} onBlur={() => saveField(c.key)} />
+        : <input id={id} className="input" type={c.type === 'date' ? 'date' : 'text'} inputMode={c.type === 'number' ? 'decimal' : undefined} value={v[c.key] ?? ''} onChange={e => setVal(c.key, e.target.value)} onBlur={() => saveField(c.key)} />}
     </Field>; })}
     <p className="xs muted full" aria-live="polite">{state === 'saving' ? t('mre.st.saving') : state === 'saved' ? t('mre.st.saved') : ''}</p></div>);
 }

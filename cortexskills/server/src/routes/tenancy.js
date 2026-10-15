@@ -117,6 +117,14 @@ r.post('/projects', requirePerm('projects.create'), ah(req => {
       .map(u => ({ id: u.id, roleNames: String(u.rn || '') }));
     instantiateProject(project, { phases, users, level: 0, excludedTasks: plan?.excludedTasks || null });
     if (plan) applyAfter(req, project, tplRec, tpl, plan.bp);
+    // Each phase gets the checklist of its gate from the Gate Library (FR-DA-GTE-01, FR-DA-CHK-01): a new project has
+    // its gates G1… from the start, enforced as the gate definition says.
+    for (const ph of phases.filter(x => x.gate)) {
+      const g = one(`SELECT * FROM records WHERE entity='GateDefinition' AND ref=? AND (org_id IS NULL OR org_id=?) ORDER BY org_id IS NULL LIMIT 1`, ph.gate, req.orgId); if (!g) continue;
+      const gd = J(g.data, {}); const items = [];
+      for (const c of gd.checklists || []) { const cr = one(`SELECT data FROM records WHERE (id=? OR ref=?) AND entity='ChecklistTemplate' AND (org_id IS NULL OR org_id=?)`, c.id, c.id, req.orgId); if (cr) items.push(...(J(cr.data, {}).items || []).map(i => ({ ...i, done: false, from: c.id }))); }
+      insertRecord(uuid(), 'PhaseChecklist', req.orgId, id, null, { phase: ph.no, gate_id: g.id, gate_name: gd.name, checklist_id: null, items, state: 'Open', mandatory: true, enforce: !!gd.enforce }, req.user.id);
+    }
     // The project is bound to the latest published process design release (FR-DA-PDM).
     run(`UPDATE projects SET design_release_id=? WHERE id=?`, latestPublished(req.orgId), id);
     insertRecord(uuid(), 'ComplexityScore', req.orgId, id, null, { values: score.values, score: score.score, recommended_track: score.recommendedTrack, chosen_track: track, override_justification: b.track_justification || null });
