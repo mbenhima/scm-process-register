@@ -1,0 +1,26 @@
+CortexSkills 1.15.0 — Docker installation (Linux) — quick start
+The full procedure is in the Installation Guide delivered with this bundle.
+
+Requirements: Linux x86-64 or arm64, Docker Engine 24+ with the compose plugin, 2 vCPU, 4 GB RAM, 20 GB disk.
+
+1. Unzip the bundle and open its folder:
+     unzip CortexSkills-docker-1.15.0.zip && cd CortexSkills-docker-1.15.0
+2. Check that vendor-public.pem is next to the Dockerfile (delivered by the vendor).
+3. Build the image:
+     docker build -t cortexskills:1.15.0 .
+4. Settings:
+     cp env.example .env && nano .env
+   Fill PUBLIC_URL, CORS_ORIGIN, JWT_SECRET, CHANNEL_SECRET_KEY (openssl rand -base64 48 | tr -d "\n=+/"),
+   ADMIN_EMAIL and ADMIN_PASSWORD (12+ characters, upper and lower case, digit, symbol).
+5. Start:
+     docker compose up -d && docker compose logs -f
+   With HTTPS by Caddy (DNS name pointing to the server, ports 80/443 open):
+     docker compose -f docker-compose.yml -f compose.https.yml up -d
+6. Create your organization and request the licence:
+     docker compose exec cortexskills cortexskills-admin org-create --name "Your Company" --domain yourcompany.com \
+       --admin-email you@yourcompany.com --admin-name "Your Name" --admin-password '<strong password>'
+     docker compose exec cortexskills cortexskills-admin licence-request --org yourcompany.com
+   Send the lines printed to the vendor.
+7. Install the licence file received: copy it into the "licence" folder, then
+     docker compose exec cortexskills cortexskills-admin licence-install --file /licence/<file>.lic
+8. Remove ADMIN_PASSWORD from .env, then: docker compose up -d

@@ -1,0 +1,30 @@
+# CortexSkills — one container, one persistent data volume.
+#   docker compose up -d          start (the first start creates the database)
+#   docker compose logs -f        follow the logs
+#   docker compose exec cortexskills cortexskills-admin help
+name: cortexskills
+
+services:
+  cortexskills:
+    image: cortexskills:1.15.0
+    build: .
+    container_name: cortexskills
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      # Published on the host loopback only: put the HTTPS reverse proxy of your choice in front of it
+      # (or use compose.https.yml). For an evaluation on this machine, open http://localhost:4000.
+      - "127.0.0.1:${HOST_PORT:-4000}:4000"
+    volumes:
+      - cortexskills-data:/data
+      # Folder of the host where you put the licence file received from the vendor (read-only in the container).
+      - ./licence:/licence:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+
+volumes:
+  cortexskills-data:

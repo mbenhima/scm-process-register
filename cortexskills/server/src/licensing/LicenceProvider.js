@@ -1,8 +1,7 @@
 // D30 Licensing Implementation Schema: one abstract interface, two implementations chosen at boot by DEPLOYMENT_MODE.
 import crypto from 'node:crypto';
 import fs from 'node:fs';
-import path from 'node:path';
-import { config, ROOT } from '../config.js';
+import { config } from '../config.js';
 import { one, all } from '../db.js';
 import { J } from '../lib/util.js';
 
@@ -49,8 +48,8 @@ export class SaasLicenceProvider extends BaseProvider {
 export class OnPremLicenceProvider extends BaseProvider {
   getMode() { return 'onprem'; }
   static publicKey() {
-    const p = path.join(ROOT, 'tools', 'keys', 'vendor-public.pem');
-    return fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : null;
+    const p = config.vendorPublicKeyFile();
+    return p ? fs.readFileSync(p, 'utf8') : null;
   }
   static verify(licence) {
     try {

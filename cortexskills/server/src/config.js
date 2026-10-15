@@ -23,6 +23,9 @@ export const config = {
   backupDir: path.join(dataDir, 'backups'),
   attachmentDir: path.join(dataDir, 'attachments'),
   licenceFile: process.env.LICENSE_PATH || path.join(dataDir, 'license.lic'),
+  // OnPrem: the vendor public key that verifies licence files. A fixed place inside the application (read-only in the
+  // container image): it cannot be pointed elsewhere by a setting.
+  vendorPublicKeyFile: () => { const f = path.join(ROOT, 'tools', 'keys', 'vendor-public.pem'); return fs.existsSync(f) ? f : null; },
   jwtSecret: process.env.JWT_SECRET || 'cortexskills-local-development-secret-change-me',
   jwtTtl: process.env.JWT_TTL || '12h',
   hmacSecret: process.env.LICENSE_HMAC_SECRET || 'cortexskills-licence-hmac-local-secret',

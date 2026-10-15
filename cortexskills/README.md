@@ -4,6 +4,9 @@ Training engineering platform: 33 end-to-end processes in seven phases, from the
 
 ## What is new in 1.15
 
+- **Docker on Linux for on-premises customers** (`deploy/docker`, `tools/package-docker.sh`): a runtime-only image (Node.js 22, server, built web client, the vendor public key; no licence, secret, data, signing tool or build tool), non-root and read-only, first-start database creation, `cortexskills-admin` console (organizations, licence request and install, backup, restore), optional HTTPS with Caddy. Guides: *Installation Guide — Customer, Docker on Linux* and *Editor Installation and Licensing Guide*.
+- `npm run restore -- <backup>` restores a backup and keeps the previous database. In production mode, `http://localhost` is accepted for an evaluation on the machine itself.
+
 - **Who answers what.** In a questionnaire, a section, a sub-section or a single question can be given to one or more respondents (step MP-54.6, or the questionnaire's **Who answers what** tab). A question takes the respondents chosen for it, else those of its sub-section, else those of its section; an element left empty goes to every respondent of the form. Each respondent's personal link opens only their questions, and completeness is computed on them.
 - **Three ways to assign**: tick the respondents line by line; paste a table (element, respondents by name, e-mail or job title); or take the **automatic proposal** built from each respondent's role and function. A summary shows what each respondent receives, with a preview of their form; distribution is refused while a respondent receives no question.
 - Questions of a section can be grouped in **sub-sections** in the designer.
