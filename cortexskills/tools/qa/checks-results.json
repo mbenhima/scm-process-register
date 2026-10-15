@@ -1,5 +1,5 @@
 {
- "at": "2026-10-15T11:46:34.128Z",
+ "at": "2026-10-15T12:15:29.975Z",
  "base": "http://localhost:4000",
  "checks": [
   {
@@ -86,15 +86,17 @@
     "FR-DA-MRE-29"
    ],
    "ok": true,
-   "detail": "1,000 rows committed in 190 ms (target < 10,000 ms); 10000 rows in the table"
+   "detail": "1,000 rows committed in 394 ms (target < 10,000 ms); 10000 rows in the table"
   },
   {
    "id": "grid-10000",
    "requirements": [
-    "NFR-DA-PERF-14"
+    "NFR-DA-PERF-14",
+    "FR-DA-MRE-28",
+    "NFR-DA-UX-21"
    ],
-   "ok": false,
-   "detail": "error: page.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=email]')\u001b[22m\n\n    at /home/user/scm-process-register/cortexskills/tools/qa/run-checks.mjs:82:44"
+   "ok": true,
+   "detail": "10000 rows: step opened and first rows shown in 1227 ms (including the page load), 20 rows rendered (virtual rows), a keystroke shown in 63 ms"
   }
  ]
 }

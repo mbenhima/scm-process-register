@@ -40,7 +40,7 @@ body.push(H1('1. Summary'),
     'Measurable requirements (tests, languages, Office files, performance) are confirmed by tools/qa/run-checks.mjs; a failed check turns the requirement to Partial.',
     'Reproduce: node tools/qa/run-checks.mjs, then node tools/qa/srs-check.mjs (server running on port 4000).']));
 body.push(H1('2. Automated checks'), P('Results of the last run of tools/qa/run-checks.mjs.'),
-  table(['Check', 'Result', 'Detail'], (R.checks || []).map(c => [c.id, c.ok ? 'Pass' : 'Fail', c.detail]), [2000, 900, 6738], { size: 16, fills: (R.checks || []).map(c => [null, c.ok ? C.s5 : C.s1, null]) }));
+  table(['Check', 'Result', 'Detail'], (R.checks || []).map(c => [c.id, c.ok ? 'Pass' : 'Fail', c.detail.replace(/\/usr\/\S+ UserWarning:[\s\S]*?lost\."\)/g, '').replace(/\s+/g, ' ')]), [2000, 900, 6738], { size: 16, fills: (R.checks || []).map(c => [null, c.ok ? C.s5 : C.s1, null]) }));
 body.push(H1('3. Review items fixed in this release'), P('Items of the review document “CortexSkills in General” and how release 1.13 answers them.'),
   table(['Review item', 'What was done'], REVIEW, [3800, 5838], { size: 17 }));
 body.push(H1('4. Requirements not fully met'),

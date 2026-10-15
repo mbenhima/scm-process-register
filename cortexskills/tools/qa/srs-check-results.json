@@ -1,13 +1,109 @@
 {
  "srs": "srs-1.9-requirements.json",
- "at": "2026-10-15T11:10:23.824Z",
+ "at": "2026-10-15T12:15:50.231Z",
  "total": 636,
  "summary": {
-  "Met": 630,
-  "Not verified": 5,
+  "Met": 635,
   "Partial": 1
  },
- "checks": [],
+ "checks": [
+  {
+   "id": "server-tests",
+   "requirements": [
+    "NFR-DA-PORT-05",
+    "NFR-DA-REL-11",
+    "NFR-DA-SEC-22",
+    "FR-DA-MRE-29",
+    "FR-DA-MRE-30",
+    "NFR-DA-SEC-21",
+    "FR-DA-SFM-08"
+   ],
+   "ok": true,
+   "detail": "18 passed, 0 failed (security, bulk import, questionnaire steps)"
+  },
+  {
+   "id": "web-tests",
+   "requirements": [
+    "NFR-DA-PORT-05",
+    "FR-DA-MRE-24",
+    "FR-DA-MRE-26",
+    "FR-DA-MRE-27",
+    "FR-DA-MRE-29",
+    "FR-DA-MRE-31",
+    "FR-DA-MRE-35"
+   ],
+   "ok": true,
+   "detail": "9 passed, 0 failed (validation, undo/redo, batches, drafts, import mapping, export, retries)"
+  },
+  {
+   "id": "design-tokens",
+   "requirements": [
+    "NFR-DA-VDS-01",
+    "NFR-DA-VDS-02"
+   ],
+   "ok": true,
+   "detail": "Token check passed: no raw colour outside src/styles/tokens.css."
+  },
+  {
+   "id": "i18n-dictionary",
+   "requirements": [
+    "FR-DA-I18N-01"
+   ],
+   "ok": true,
+   "detail": "3232 keys; 0 without a language; 1 Arabic entries in Latin script (q.sendResult)"
+  },
+  {
+   "id": "crawl-en-fr-ar",
+   "requirements": [
+    "FR-DA-I18N-01",
+    "FR-DA-I18N-02",
+    "NFR-DA-I18N-03",
+    "NFR-DA-I18N-04",
+    "FR-DA-STA-01",
+    "NFR-DA-REL-09"
+   ],
+   "ok": true,
+   "detail": "54 screens × 3 languages; issues: {}"
+  },
+  {
+   "id": "office-files",
+   "requirements": [
+    "FR-DA-DOC-12",
+    "FR-DA-DOC-04",
+    "FR-DA-REP-02"
+   ],
+   "ok": true,
+   "detail": "OK 6 \n/usr/local/lib/python3.11/dist-packages/openpyxl/reader/drawings.py:33: UserWarning: DrawingML support is incomplete and limited to charts and images only. Shapes and drawings will be lost.\n  warn(\"DrawingML support is incomplete and limited to charts and images only. Shapes and drawings will be lost.\") · LibreOffice Writer opened 2 of 2 Word files · files: doc.docx, rep.docx, doc.xlsx, rep.xlsx, doc.pdf, rep.pdf"
+  },
+  {
+   "id": "non-latin-download",
+   "requirements": [
+    "NFR-DA-I18N-07",
+    "FR-DA-MRE-31"
+   ],
+   "ok": true,
+   "detail": "status 200; Content-Disposition: attachment; filename=\"______-_______.xlsx\"; filename*=UTF-8''%D9%85%D8%AC%D9%85%D9%88%D8%B9%D8%A9-%D8%A7%D9%84%D8%A3%D8%; CSV BOM in exporter: true"
+  },
+  {
+   "id": "import-1000",
+   "requirements": [
+    "NFR-DA-PERF-14",
+    "FR-DA-MRE-29"
+   ],
+   "ok": true,
+   "detail": "1,000 rows committed in 394 ms (target < 10,000 ms); 10000 rows in the table"
+  },
+  {
+   "id": "grid-10000",
+   "requirements": [
+    "NFR-DA-PERF-14",
+    "FR-DA-MRE-28",
+    "NFR-DA-UX-21"
+   ],
+   "ok": true,
+   "detail": "10000 rows: step opened and first rows shown in 1227 ms (including the page load), 20 rows rendered (virtual rows), a keystroke shown in 63 ms"
+  }
+ ],
  "rows": [
   {
    "id": "FR-DA-TEN-01",
@@ -1295,10 +1391,16 @@
     "server/seed/data/requirements.json",
     "server/seed/i18n/tm.ar.16.json",
     "server/seed/i18n/tm.fr.16.json",
-    "server/src/services/reports.js"
+    "server/src/services/reports.js",
+    "tools/qa/checks-results.json"
    ],
-   "codeCount": 5,
-   "checks": [],
+   "codeCount": 7,
+   "checks": [
+    {
+     "id": "office-files",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -1763,10 +1865,23 @@
    "id": "FR-DA-I18N-01",
    "section": "4.14 Multi-Language & Localization & Currency",
    "text": "The system shall provide complete UI translation in English, French, and Arabic for all navigation, labels, form fields, statuses, and messages, with no hardcoded UI string outside the shared translation dictionary.",
-   "status": "Not verified",
-   "code": [],
-   "codeCount": 0,
-   "checks": [],
+   "status": "Met",
+   "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
+    "web/src/pages/Home.jsx"
+   ],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "i18n-dictionary",
+     "ok": true
+    },
+    {
+     "id": "crawl-en-fr-ar",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -1775,10 +1890,17 @@
    "text": "The system shall allow a user to change their display language at any time without reloading or losing unsaved work.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "crawl-en-fr-ar",
+     "ok": true
+    }
+   ],
    "note": "EN · FR · AR switch in the header applies at once, no reload (web/src/lib/i18n.jsx); typed rows kept in grid drafts."
   },
   {
@@ -2907,9 +3029,10 @@
    "text": "The system shall keep a Checklist Library with full Create, Read, Update, Delete and Duplicate on checklist templates, each with ordered items marked mandatory and evidence-required, classified by scope (universal or one vertical) and optionally by mode and track, and versioned under the generic Version Management service (Section 3.8). A checklist shall not require a gate.",
    "status": "Met",
    "code": [
-    "server/seed/data/requirements.json"
+    "server/seed/data/requirements.json",
+    "server/src/routes/tenancy.js"
    ],
-   "codeCount": 1,
+   "codeCount": 2,
    "checks": [],
    "note": ""
   },
@@ -3910,11 +4033,11 @@
     "server/seed/data/requirements.json",
     "server/seed/i18n/tm.ar.R12.json",
     "server/seed/i18n/tm.fr.R12.json",
+    "server/seed/release110.js",
     "server/src/routes/blueprints.js",
-    "server/src/routes/tenancy.js",
-    "server/src/services/blueprints.js"
+    "server/src/routes/tenancy.js"
    ],
-   "codeCount": 7,
+   "codeCount": 8,
    "checks": [],
    "note": ""
   },
@@ -4058,9 +4181,10 @@
    "text": "The system shall keep a Gate Library with full Create, Read, Update, Delete and Duplicate on gate definitions, versioned: name, purpose, entry and exit criteria, approvers (roles or people), decision options Go, No-Go, Hold and Recycle, and applicability by vertical, mode and track.",
    "status": "Met",
    "code": [
-    "server/seed/data/requirements.json"
+    "server/seed/data/requirements.json",
+    "server/src/routes/tenancy.js"
    ],
-   "codeCount": 1,
+   "codeCount": 2,
    "checks": [],
    "note": ""
   },
@@ -5137,10 +5261,17 @@
    "text": "The system shall choose the Step Form Kind from the meaning of the step, not only from its object: in particular, a step that maps functions to decision levels shall be a Function × Level Matrix — one row per function of the Organization, one tick column per decision level, an action adding every function not yet listed and an AI proposal derived from the OBS — never a generic list of items with a category and a description.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "web/src/components/StepForms.jsx"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "server-tests",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -5208,10 +5339,17 @@
    "code": [
     "server/seed/data/requirements.json",
     "server/src/routes/documents.js",
-    "server/src/services/docengine.js"
+    "server/src/services/docengine.js",
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs"
    ],
-   "codeCount": 3,
-   "checks": [],
+   "codeCount": 5,
+   "checks": [
+    {
+     "id": "office-files",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -5438,10 +5576,19 @@
    "id": "FR-DA-DOC-12",
    "section": "4.43 Documented Information Templates & Generated Documents",
    "text": "The system shall produce Word, Excel and PowerPoint files that open in their reference applications without a repair prompt: each package shall pass Office Open XML schema validation, every shape and drawing object of a slide shall have a unique identifier, every chart axis referenced by a series shall be declared, and the package shall hold no directory entries; a release shall check every generated file type automatically.",
-   "status": "Not verified",
-   "code": [],
-   "codeCount": 0,
-   "checks": [],
+   "status": "Met",
+   "code": [
+    "server/src/lib/office.js",
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs"
+   ],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "office-files",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -6395,10 +6542,17 @@
    "text": "The system shall make every error findable: an Issues list in the toolbar giving the number of errors and, for each one, its row, its field and its message, each opening its cell (or the Row Editor for a hidden field); a “Rows with errors” filter; an error marker in the status column of every invalid row, so that an error scrolled out of view stays visible; and a Retry action per failed row and “Retry all failed”.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "web-tests",
+     "ok": true
+    }
+   ],
    "note": "Issues list, Rows with errors filter, status marker, Retry: web/src/components/bulk/BulkGrid.jsx, GridParts.jsx; tests web/test/bulk.test.mjs."
   },
   {
@@ -6419,10 +6573,17 @@
    "text": "The system shall keep a Draft Backup of the pending rows of every Multi-Entry in the user’s browser, versioned and timestamped, written on every change and removed once nothing is pending; on return to the Multi-Entry it shall restore the draft with the notice “Draft restored from <date and time>” and a Discard the draft action. Every saved row shall carry its Row Stamp; a save based on an older stamp shall be refused as an Edit Conflict naming the user who changed the row, with the choice to reload the row or overwrite it with the user’s version, and a restored draft row whose record changed or was deleted since shall be listed with, for each one, the choice to keep the user’s version or take the server version.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "web-tests",
+     "ok": true
+    }
+   ],
    "note": "Browser drafts and Row Stamp conflicts: web/src/lib/bulk/draft.js, useBulkRows.js; 409 err.rowConflict in server/src/services/steps.js; tests web/test/bulk.test.mjs, server/test/bulkimport.test.js."
   },
   {
@@ -6431,10 +6592,17 @@
    "text": "The system shall queue, not fail, a save that cannot reach the server: the row shall show “Waiting for the connection”, a banner shall state that the changes will be saved when the connection returns, the save shall be retried with exponential backoff (for example 1, 2, 4 seconds up to 30 seconds) and at once when the device reports the connection again; a save refused by the server (validation, rights, lock, conflict) shall not be retried by itself.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "web-tests",
+     "ok": true
+    }
+   ],
    "note": "Offline queue with exponential backoff: web/src/lib/bulk/net.js, useBulkRows.js."
   },
   {
@@ -6443,10 +6611,17 @@
    "text": "The system shall render, in a Multi-Entry of more than a few dozen rows, only the visible rows and a small buffer (virtual rows), inside a scroll area of fixed height, with uniform row heights while long text is not wrapped and a “Wrap long text” choice; continuous scrolling shall be the default for entry, and pages (“Page X of Y”, FR-DA-MRE-13) shall remain available as a view choice for browsing; the ARIA row and column indexes shall stay consistent with the rows rendered.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "grid-10000",
+     "ok": true
+    }
+   ],
    "note": "Virtual rows, wrap long text, optional pages: web/src/components/bulk/GridParts.jsx useVirtualRows, BulkGrid.jsx View menu."
   },
   {
@@ -6455,10 +6630,25 @@
    "text": "The system shall run a bulk paste, import, update or delete as a Batch Operation: batches of 200 to 500 rows (configurable), each saved before the next, a failed batch not stopping the others, a progress indicator announced to assistive technologies with a Cancel action between batches, and a Resume action continuing from the first batch not done; a bulk change made on screen (for example a field set on every selected row) shall be sent about two seconds after the last change.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "server-tests",
+     "ok": true
+    },
+    {
+     "id": "web-tests",
+     "ok": true
+    },
+    {
+     "id": "import-1000",
+     "ok": true
+    }
+   ],
    "note": "Batches (IMPORT_BATCH 50–500), cancel, resume: web/src/lib/bulk/batch.js; server/src/routes/bulkentry.js; tests."
   },
   {
@@ -6467,10 +6657,17 @@
    "text": "The system shall import rows from a file in an Import Session of five stages shown in a stepper: (1) template — the formats accepted (spreadsheet workbook, delimited text, paste), the limits, and a downloadable template with the column titles, required ones marked, and an example row; (2) upload — drag and drop, file picker or pasted text, with the type, size, row count and text encoding checked and the first ten rows previewed; (3) column mapping — titles recognized, columns matched by position otherwise, every match changeable with sample values shown, and the next stage refused while a required field has no column; (4) error repair — the rows needing attention listed first with their count, each cell corrected in place and checked again at once, duplicates within the file and against the existing rows flagged, guided corrections for the common errors (fill an empty required column, replace a value not in a list, leave the duplicates out) and any row left out on request; (5) summary — the rows ready, with a warning, with errors and left out, the choice to leave rows with errors out or import them as rows to correct, an optional value given to every imported row, the commit as a Batch Operation (FR-DA-MRE-29) and its result with an Undo action for at least 60 seconds. Cancel shall be offered at every stage, confirmed once data was loaded, and moving between stages shall keep everything entered.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "server-tests",
+     "ok": true
+    }
+   ],
    "note": "Five-stage import: web/src/components/bulk/ImportWizard.jsx, lib/bulk/importer.js; server/src/routes/bulkentry.js /parse."
   },
   {
@@ -6479,10 +6676,21 @@
    "text": "The system shall export the current view of a Multi-Entry — its filters, sort and visible columns — or only the selected rows, as delimited text (UTF-8 with byte-order mark) and as a spreadsheet workbook, with the grid’s column titles and display values, the file named after the Multi-Entry’s parent and the date (<parent>-<yyyy-mm-dd>), and spreadsheet formulas neutralized (NFR-DA-SEC-21).",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "web-tests",
+     "ok": true
+    },
+    {
+     "id": "non-latin-download",
+     "ok": true
+    }
+   ],
    "note": "Export view or selection, CSV UTF-8 BOM and XLSX, <parent>-<date>, neutralized formulas: web/src/lib/bulk/exporter.js; /bulk-entry/export."
   },
   {
@@ -6527,10 +6735,17 @@
    "text": "The system shall undo and redo, with Ctrl/Cmd + Z and Ctrl/Cmd + Shift + Z and with toolbar actions, every change of a Multi-Entry as one step each — a cell edit, an added, inserted or duplicated row, a deletion, a value set on the selected rows, a fill down and a paste or an import — the server following the rows (a row brought back by Undo is restored or created again; a paste or an import is undone as its audited operation).",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "web-tests",
+     "ok": true
+    }
+   ],
    "note": "Undo/redo of every change incl. paste and import: web/src/lib/bulk/history.js, useBulkRows.js; tests web/test/bulk.test.mjs."
   },
   {
@@ -6877,11 +7092,17 @@
     "server/seed/data/requirements.json",
     "server/seed/i18n/tm.ar.R12.json",
     "server/seed/i18n/tm.fr.R12.json",
-    "web/src/components/ui.jsx",
-    "web/src/styles/app.css"
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
+    "web/src/components/ui.jsx"
    ],
-   "codeCount": 5,
-   "checks": [],
+   "codeCount": 7,
+   "checks": [
+    {
+     "id": "crawl-en-fr-ar",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -7151,10 +7372,22 @@
    "id": "NFR-DA-PERF-14",
    "section": "5.1 Performance",
    "text": "A Multi-Entry of 10,000 rows shall open within 2 seconds and scroll and accept typing without visible delay (a keystroke shown within 50 milliseconds), and an import of 1,000 rows shall be committed within 10 seconds, at the 95th percentile.",
-   "status": "Not verified",
-   "code": [],
-   "codeCount": 0,
-   "checks": [],
+   "status": "Met",
+   "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs"
+   ],
+   "codeCount": 2,
+   "checks": [
+    {
+     "id": "import-1000",
+     "ok": true
+    },
+    {
+     "id": "grid-10000",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -7474,11 +7707,16 @@
     "server/src/routes/bulkentry.js",
     "server/src/services/exporters.js",
     "server/test/security.test.js",
-    "web/src/lib/api.js",
-    "web/src/lib/bulk/exporter.js"
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs"
    ],
-   "codeCount": 7,
-   "checks": [],
+   "codeCount": 9,
+   "checks": [
+    {
+     "id": "server-tests",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -7487,10 +7725,17 @@
    "text": "An imported file shall be treated as untrusted input: its type checked by extension and by content, its size and row count bounded by configurable limits, its text read as UTF-8 or, when it is not valid UTF-8, in a stated fallback encoding that the user can change; a spreadsheet workbook shall be read on the server keeping only cell text (the last value of a formula); the rights, quotas and checks of a paste (FR-DA-MRE-22) shall apply to every imported row.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "server-tests",
+     "ok": true
+    }
+   ],
    "note": "Import type by extension and content, size and row limits, UTF-8 / Windows-1252, server-side XLSX cell text: server/src/routes/bulkentry.js, config importMaxBytes/importMaxRows; test server/test/bulkimport.test.js (415 on PDF)."
   },
   {
@@ -7618,11 +7863,18 @@
    "status": "Met",
    "code": [
     "server/seed/data/requirements.json",
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "web/src/components/Shell.jsx",
     "web/src/components/ui.jsx"
    ],
-   "codeCount": 3,
-   "checks": [],
+   "codeCount": 5,
+   "checks": [
+    {
+     "id": "crawl-en-fr-ar",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -7647,10 +7899,17 @@
    "text": "A save shall never overwrite a newer version of a record without the user’s explicit choice: every save of a row shall be checked against its Row Stamp (FR-DA-MRE-26).",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "server-tests",
+     "ok": true
+    }
+   ],
    "note": "Row Stamp check on every row save (409 err.rowConflict): server/src/services/steps.js saveRow; test server/test/bulkimport.test.js."
   },
   {
@@ -8003,10 +8262,17 @@
    "text": "Every Multi-Entry shall follow the W3C ARIA grid pattern: grid, row, column header and grid cell roles, row and column indexes kept consistent with virtual rows and pages, the sort state of each column announced, a live region announcing the rows added, deleted, saved and failed, batch progress and a restored draft; errors shown with an icon and text, never by color alone; focus moved to a sensible cell after an addition or a deletion; focus trapped only in dialogs; and animations removed when the user prefers reduced motion.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "grid-10000",
+     "ok": true
+    }
+   ],
    "note": "ARIA grid roles and indexes, aria-sort, live region, icon + text errors: web/src/components/bulk/GridParts.jsx, BulkGrid.jsx."
   },
   {
@@ -8039,10 +8305,18 @@
    "id": "NFR-DA-I18N-03",
    "section": "5.6 Localization",
    "text": "Labels, buttons and headings shall accommodate text 30 % longer in French and 20 % longer in Arabic than in English without clipping, and headlines shall be kept short so that they survive translation.",
-   "status": "Not verified",
-   "code": [],
-   "codeCount": 0,
-   "checks": [],
+   "status": "Met",
+   "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs"
+   ],
+   "codeCount": 2,
+   "checks": [
+    {
+     "id": "crawl-en-fr-ar",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -8051,10 +8325,17 @@
    "text": "Under Arabic the layout shall be mirrored in full: the navigation panel moves to the right, chevrons and arrows and every icon with a direction are reversed, icons without a direction (search, settings) are not, and numbers, code and Latin brand names stay left to right.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "crawl-en-fr-ar",
+     "ok": true
+    }
+   ],
    "note": "dir=rtl on Arabic: navigation on the right, directional icons mirrored, numbers and code LTR (web/src/styles, lib/i18n.jsx)."
   },
   {
@@ -8088,10 +8369,18 @@
    "id": "NFR-DA-I18N-07",
    "section": "5.6 Localization",
    "text": "Files exported or downloaded shall keep non-Latin text intact: delimited text in UTF-8 with a byte-order mark, and a file name with non-Latin characters sent in its encoded form (RFC 6266, filename*=UTF-8''…) with a Latin fallback, so that a download never fails because of the language of its name.",
-   "status": "Not verified",
-   "code": [],
-   "codeCount": 0,
-   "checks": [],
+   "status": "Met",
+   "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs"
+   ],
+   "codeCount": 2,
+   "checks": [
+    {
+     "id": "non-latin-download",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -8161,10 +8450,21 @@
    "text": "The continuous-integration build shall run automated tests of the multi-record entry logic (validation, undo and redo, batching with failure, cancellation and resumption, draft restore and conflicts, column mapping and error repair, export, retries) and an end-to-end import from file upload to commit and undo; test suites that share one database shall run one after another, so that no test fails for a lock.",
    "status": "Met",
    "code": [
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
-   "checks": [],
+   "codeCount": 3,
+   "checks": [
+    {
+     "id": "server-tests",
+     "ok": true
+    },
+    {
+     "id": "web-tests",
+     "ok": true
+    }
+   ],
    "note": "CI .github/workflows/cortexskills-ci.yml runs web tests (bulk logic) and server tests one after another (--test-concurrency=1), including the end-to-end import."
   },
   {
@@ -8319,9 +8619,10 @@
    "text": "An upgrade shall migrate the data of an existing installation in place at its first start — changed entity definitions, completed catalogs, new fields with their derived values — each migration idempotent, versioned, recorded with what it changed, and run once; an upgrade shall never require the data to be reseeded, and its release notes shall state that the server is restarted after the files are replaced.",
    "status": "Met",
    "code": [
+    "server/src/index.js",
     "tools/qa/srs-evidence.json"
    ],
-   "codeCount": 1,
+   "codeCount": 2,
    "checks": [],
    "note": "In-place migrations at start, versioned flags in meta (e.g. ai_catalog_1_12), idempotent: server/src/index.js, db.js migrate()."
   },
@@ -8536,11 +8837,18 @@
    "status": "Met",
    "code": [
     "server/seed/data/requirements.json",
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "web/src/styles/tokens.css",
     "web/tools/check-tokens.mjs"
    ],
-   "codeCount": 3,
-   "checks": [],
+   "codeCount": 5,
+   "checks": [
+    {
+     "id": "design-tokens",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
@@ -8550,10 +8858,17 @@
    "status": "Met",
    "code": [
     "server/seed/data/requirements.json",
+    "tools/qa/checks-results.json",
+    "tools/qa/run-checks.mjs",
     "web/src/styles/app.css"
    ],
-   "codeCount": 2,
-   "checks": [],
+   "codeCount": 4,
+   "checks": [
+    {
+     "id": "design-tokens",
+     "ok": true
+    }
+   ],
    "note": ""
   },
   {
