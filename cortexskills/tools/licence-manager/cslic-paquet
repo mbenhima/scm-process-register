@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Prépare le paquet d'un client : ajoute votre clé publique (vendor-public.pem) au paquet client livré par CortexSkills
+# et écrit le fichier d'empreinte SHA-256 à envoyer avec lui.
+#   cslic-paquet CortexSkills-Client-1.15.0.zip [dossier de sortie]
+set -euo pipefail
+ZIP=${1:?Usage : cslic-paquet <CortexSkills-Client-x.y.z.zip> [dossier de sortie]}; OUT=${2:-.}
+CSLIC_HOME=${CSLIC_HOME:-$HOME/.cortexskills-editeur}; PUB="$CSLIC_HOME/cles/vendor-public.pem"
+[ -f "$PUB" ] || { echo "  ERREUR : clé publique absente ($PUB). Lancez d'abord : cslic init" >&2; exit 1; }
+for c in unzip zip sha256sum; do command -v $c >/dev/null || { echo "  ERREUR : la commande $c manque (sudo apt install zip unzip)." >&2; exit 1; }; done
+T=$(mktemp -d); trap 'rm -rf -- "${T:?}"' EXIT
+unzip -q "$ZIP" -d "$T"; D=$(find "$T" -mindepth 1 -maxdepth 1 -type d | head -1); NAME=$(basename "$D")
+[ -f "$D/Dockerfile" ] || { echo "  ERREUR : $ZIP n'est pas un paquet client CortexSkills." >&2; exit 1; }
+cp "$PUB" "$D/vendor-public.pem"
+mkdir -p "$OUT"; F="$(cd "$OUT" && pwd)/$NAME.zip"; rm -f -- "$F"
+(cd "$T" && zip -qr -X "$F" "$NAME")
+(cd "$(dirname "$F")" && sha256sum "$NAME.zip" > "$NAME.zip.sha256")
+echo; echo "  Paquet client prêt : $F"; echo "  Empreinte          : $F.sha256"
+echo "  Envoyez ces deux fichiers et le Guide d'installation client (PDF)."; echo

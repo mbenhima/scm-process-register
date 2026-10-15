@@ -1,0 +1,2 @@
+Déposez ici le fichier de licence (.lic) envoyé par l'éditeur, puis :
+  docker compose exec cortexskills cortexskills-admin licence-install --file /licence/<fichier>.lic

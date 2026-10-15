@@ -30,6 +30,8 @@ export const config = {
   jwtTtl: process.env.JWT_TTL || '12h',
   hmacSecret: process.env.LICENSE_HMAC_SECRET || 'cortexskills-licence-hmac-local-secret',
   deploymentMode: (process.env.DEPLOYMENT_MODE || 'saas').toLowerCase(),
+  // Customer edition: COMMERCIAL_INFO=hidden removes prices, quotes and the pricing screen (on-premises customers).
+  commercialInfo: String(process.env.COMMERCIAL_INFO || 'shown').toLowerCase() !== 'hidden',
   backupRetentionDays: Number(process.env.BACKUP_RETENTION_DAYS || 14),
   corsOrigin: process.env.CORS_ORIGIN || '*',
   // Base URL of the web client, used in the response links sent by email and WhatsApp (falls back to the request origin).

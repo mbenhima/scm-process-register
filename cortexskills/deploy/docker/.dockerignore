@@ -1,6 +1,0 @@
-**/node_modules
-**/.env
-app/server/data
-**/*.log
-**/vendor-private.pem
-app/server/test

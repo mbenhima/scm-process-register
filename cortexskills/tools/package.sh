@@ -7,7 +7,7 @@ mkdir -p "$TMP/app/CortexSkills" "$TMP/src/CortexSkills-source"
 # The application zip ships the built web client (web/dist) so production needs no build step on the server.
 (cd "$ROOT/web" && npm run build >/dev/null)
 # The vendor signing tool stays in the source code (vendor signing workspace), never in the application.
-tar -C "$ROOT" "${EX[@]}" --exclude=./server/tools/sign-licence.js --exclude=./server/test --exclude=./deploy/README-vendor-licence.txt --exclude=./deploy/docker -cf - ./server ./web ./deploy ./README.md | tar -C "$TMP/app/CortexSkills" -xf -
+tar -C "$ROOT" "${EX[@]}" --exclude=./server/tools/sign-licence.js --exclude=./server/test --exclude=./deploy/README-vendor-licence.txt --exclude=./deploy/client --exclude=./deploy/editeur -cf - ./server ./web ./deploy ./README.md | tar -C "$TMP/app/CortexSkills" -xf -
 mkdir -p "$TMP/app/CortexSkills/web/dist" && cp -r "$ROOT/web/dist/." "$TMP/app/CortexSkills/web/dist/"
 tar -C "$ROOT" "${EX[@]}" --exclude=./deliverables --exclude=./tools/docs/shots --exclude=guide-data.json --exclude=sector-data.json -cf - . | tar -C "$TMP/src/CortexSkills-source" -xf -
 mkdir -p "$TMP/src/CortexSkills-source/.github/workflows" && cp "$ROOT/../.github/workflows/cortexskills-ci.yml" "$TMP/src/CortexSkills-source/.github/workflows/"

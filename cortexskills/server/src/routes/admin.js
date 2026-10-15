@@ -5,7 +5,7 @@ import { all, one, run } from '../db.js';
 import { J, S, HttpError, now, uuid, pick } from '../lib/util.js';
 import { requirePerm } from '../rbac.js';
 import { audit } from '../audit.js';
-import { effectiveConfig, solutionPacks, priceOf, orgConfig } from '../entitlements.js';
+import { effectiveConfig, solutionPacks, priceOf, orgConfig, withoutPrices } from '../entitlements.js';
 import { getLicenceProvider, OnPremLicenceProvider } from '../licensing/LicenceProvider.js';
 import { issueSaasLicence, insertRecord } from '../services/projects.js';
 import { backupNow, listBackups } from '../services/ops.js';
@@ -14,8 +14,12 @@ import * as cat from '../catalog.js';
 import { orgCurrencies, listRates, ISO_CURRENCIES } from '../services/money.js';
 
 const r = Router();
-r.get('/config', requirePerm('config.view'), ah(req => ({ ...effectiveConfig(req.orgId), catalog: { packs: solutionPacks(), addOns: cat.list('addOn'), compliance: cat.list('complianceStandard'), integrations: cat.list('integration'), bundles: cat.list('bundle'), rules: cat.list('packagingRule') }, deploymentMode: config.deploymentMode })));
+r.get('/config', requirePerm('config.view'), ah(req => { const out = { ...effectiveConfig(req.orgId), catalog: { packs: solutionPacks(), addOns: cat.list('addOn'), compliance: cat.list('complianceStandard'), integrations: cat.list('integration'), bundles: cat.list('bundle'), rules: cat.list('packagingRule') }, deploymentMode: config.deploymentMode };
+  // Customer edition: no price anywhere; OnPrem: the plan and add-ons are managed by the licence file.
+  if (!config.commercialInfo) { out.catalog = Object.fromEntries(Object.entries(out.catalog).map(([k, v]) => [k, withoutPrices(v)])); out.pack = withoutPrices(out.pack); }
+  return { ...out, commercial: config.commercialInfo, licenceManaged: config.deploymentMode === 'onprem' }; }));
 r.put('/config/pack', requirePerm('config.manage'), ah(req => {
+  if (config.deploymentMode === 'onprem') throw new HttpError(403, 'err.licenceManaged');
   const sp = solutionPacks().find(p => p.id === req.body.pack_id); if (!sp) throw new HttpError(404, 'err.notFound');
   const cur = orgConfig(req.orgId);
   run(`UPDATE org_config SET pack_id=?, updated_at=? WHERE org_id=?`, sp.id, now(), req.orgId); // upgrade / downgrade keeps all data (FR-DA-PKG-03)
@@ -49,6 +53,7 @@ r.delete('/config/exchange-rates/:id', requirePerm('config.manage'), ah(req => {
   run(`DELETE FROM exchange_rates WHERE id=?`, x.id); audit(req, 'ExchangeRate', x.id, 'delete', x, null); return { ok: true };
 }));
 r.put('/config/addon', requirePerm('config.manage'), ah(req => {
+  if (config.deploymentMode === 'onprem') throw new HttpError(403, 'err.licenceManaged');
   const { id, active } = req.body || {}; if (!cat.get('addOn', id)) throw new HttpError(404, 'err.notFound');
   const cfg = orgConfig(req.orgId); const set = new Set(cfg.addons); active ? set.add(id) : set.delete(id);
   run(`UPDATE org_config SET addons=?, updated_at=? WHERE org_id=?`, S([...set]), now(), req.orgId);
@@ -72,7 +77,7 @@ r.put('/config/compliance', requirePerm('config.manage'), ah(req => {
   run(`UPDATE org_config SET compliance=?, updated_at=? WHERE org_id=?`, S([...set]), now(), req.orgId);
   return { ok: true, compliance: [...set] };
 }));
-r.get('/pricing/quote', requirePerm('config.view'), ah(req => priceOf(req.query.pack, Number(req.query.users || 0))));
+r.get('/pricing/quote', requirePerm('config.view'), ah(req => { if (!config.commercialInfo) throw new HttpError(404, 'err.notFound'); return priceOf(req.query.pack, Number(req.query.users || 0)); }));
 
 // ------------------------------------------------------------------ Licensing (D30)
 r.get('/licence', requirePerm('config.view'), ah(req => { const p = getLicenceProvider(req.orgId); const c = p.check(); return { mode: p.getMode(), ...c, canCreateUser: p.canCreateUser(), activeAddOns: p.getActiveAddOns() }; }));

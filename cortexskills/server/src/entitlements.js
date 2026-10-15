@@ -3,6 +3,8 @@
 import { one, all } from './db.js';
 import { J, HttpError } from './lib/util.js';
 import * as cat from './catalog.js';
+import { config } from './config.js';
+import { licensedTerms } from './licensing/LicenceProvider.js';
 
 /** Solution Pack variants: the 8 packs, the 5 bundles and the SME packs (FR-DA-PKG-01). */
 export function solutionPacks() { return cat.list('solutionPack'); }
@@ -11,6 +13,9 @@ export function solutionPack(id) { return cat.get('solutionPack', id); }
 export function orgConfig(orgId) {
   const c = one(`SELECT * FROM org_config WHERE org_id=?`, orgId);
   if (!c) return null;
+  // OnPrem: the plan, the users and the add-ons are those of the vendor-signed licence, never a local setting.
+  const lt = licensedTerms(orgId);
+  if (lt) return { ...c, pack_id: lt.plan || c.pack_id, seats: lt.maxUsers, addons: lt.addons, compliance: J(c.compliance, []), licence_managed: true, currencies: [...new Set([c.currency || 'USD', ...J(c.currencies, [])])], justification_required: !!c.justification_required, sme_mode: !!c.sme_mode };
   return { ...c, addons: J(c.addons, []), compliance: J(c.compliance, []), currencies: [...new Set([c.currency || 'USD', ...J(c.currencies, [])])], justification_required: !!c.justification_required, sme_mode: !!c.sme_mode };
 }
 
@@ -44,6 +49,7 @@ export function quotas(orgId) {
   return q;
 }
 function licenceMaxUsers(orgId) {
+  if (config.deploymentMode === 'onprem') return licensedTerms(orgId).maxUsers;
   const l = one(`SELECT data FROM licences WHERE org_id=?`, orgId);
   return l ? J(l.data).maxUsers : null;
 }
@@ -87,6 +93,10 @@ export function effectiveConfig(orgId) {
   const cfg = orgConfig(orgId);
   return { config: cfg, pack: cfg && solutionPack(cfg.pack_id), modules: [...entitledModules(orgId)], aiTier: aiTier(orgId), quotas: quotas(orgId), usage: usage(orgId) };
 }
+
+const PRICE_KEYS = ['price', 'priceDetail', 'priceRule', 'overage', 'list', 'discount', 'listPrice', 'priceText'];
+/** Removes prices and price rules from catalog items (customer edition, COMMERCIAL_INFO=hidden). */
+export const withoutPrices = x => (Array.isArray(x) ? x.map(withoutPrices) : x && typeof x === 'object' ? Object.fromEntries(Object.entries(x).filter(([k]) => !PRICE_KEYS.includes(k))) : x);
 
 export function priceOf(packId, users) {
   const sp = solutionPack(packId); if (!sp) return null;

@@ -69,14 +69,14 @@ export function buildCatalog() {
     overage: p.overage, unit: p.unit, behavior: tr(p.behavior), pain: tr(p.pain), hope: tr(p.hope), modules: p.modules, mps: p.mpList });
   const q = (projects, obs, aiCustom) => ({ projects, obs, aiCustom, questionnaires: 100 });
   for (const p of cat.packs) add('solutionPack', { id: p.id, kind: 'pack', name: tr(p.name), packs: [p.id], price: p.price, includedUsers: p.includedUsers, overage: p.overage, unit: p.unit,
-    aiTier: ['PK-03', 'PK-07', 'PK-08'].includes(p.id) ? 'Assistive+Augmented' : 'Assistive', quotas: q(p.id === 'PK-07' ? 50 : 25, 200, 5), priceRule: tr(p.priceDetail) });
+    aiTier: ['PK-03', 'PK-07', 'PK-08'].includes(p.id) ? 'Assistive+Augmented' : 'Assistive', quotas: q(p.id === 'PK-07' ? 50 : 25, 200, 5), priceRule: p.priceDetail ? tr(p.priceDetail) : undefined });
   const bundlePacks = [['PK-01', 'PK-02'], ['PK-01', 'PK-02', 'PK-03'], ['PK-01', 'PK-02', 'PK-03', 'PK-04', 'PK-05'], ['PK-01', 'PK-02', 'PK-03', 'PK-04', 'PK-05', 'PK-06', 'PK-08'], ['PK-01', 'PK-02', 'PK-03', 'PK-04', 'PK-05', 'PK-06', 'PK-07', 'PK-08']];
   cat.bundles.forEach((b, i) => { add('bundle', { id: 'BND-0' + (i + 1), name: tr(b.name), packsText: b.packsText, discount: b.discount, list: b.list, price: b.price, packs: bundlePacks[i] });
     add('solutionPack', { id: 'BND-0' + (i + 1), kind: 'bundle', name: tr(b.name), packs: bundlePacks[i], price: b.price, listPrice: b.list, discount: b.discount, includedUsers: 500, overage: 0.45, unit: 'user',
-      aiTier: i >= 1 ? 'Assistive+Augmented' : 'Assistive', quotas: q(i === 4 ? 200 : 100, 1000, 20), allModules: i === 4, priceRule: tr(`${b.discount}% off the sum of base prices (${b.list} USD)`) }); });
+      aiTier: i >= 1 ? 'Assistive+Augmented' : 'Assistive', quotas: q(i === 4 ? 200 : 100, 1000, 20), allModules: i === 4, priceRule: b.discount != null ? tr(`${b.discount}% off the sum of base prices (${b.list} USD)`) : undefined }); });
   for (const p of fw.smePacks) add('solutionPack', { id: p.id, kind: 'sme', name: T(p.name), packs: p.packs, price: p.price, includedUsers: p.includedUsers, overage: p.overage, unit: 'user', segment: p.segment,
     aiTier: p.id === 'SME-ESS' ? 'Assistive' : 'Assistive+Augmented', quotas: q(p.id === 'SME-ESS' ? 5 : 20, 60, p.id === 'SME-CMP' ? 10 : 3), allModules: !!p.allModules, includedAddons: p.addons || [],
-    priceRule: tr(`Minimum ${p.includedUsers} users; ${p.overage} USD per extra user per month`) });
+    priceRule: p.overage != null ? tr(`Minimum ${p.includedUsers} users; ${p.overage} USD per extra user per month`) : undefined });
   for (const i of cat.integrations) add('integration', { id: i.id, name: tr(i.name), family: tr(i.family), goals: tr(i.goals), examples: i.examples, packs: i.packs, behavior: tr(i.behavior), pain: tr(i.pain), hope: tr(i.hope) });
   for (const a of cat.addOns) add('addOn', { id: a.id, name: tr(a.name), price: a.price, goals: tr(a.goals), packs: a.packs, behavior: tr(a.behavior), pain: tr(a.pain), hope: tr(a.hope) });
   cat.packagingRules.forEach((r, i) => add('packagingRule', { id: 'PR-0' + (i + 1), rule: tr(r.rule), description: tr(r.description) }));

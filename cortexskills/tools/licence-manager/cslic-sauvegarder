@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Archive chiffrée (AES-256) du poste de signature : clés, registre, licences, journal. À copier hors ligne.
+#   cslic-sauvegarder [dossier]     → cortexskills-editeur-AAAA-MM-JJ.tar.gz.enc (mot de passe demandé)
+# Restauration : openssl enc -d -aes-256-cbc -pbkdf2 -in <fichier.enc> | tar -xz -C ~
+set -euo pipefail
+CSLIC_HOME=${CSLIC_HOME:-$HOME/.cortexskills-editeur}; OUT=${1:-.}
+[ -d "$CSLIC_HOME" ] || { echo "  ERREUR : $CSLIC_HOME n'existe pas." >&2; exit 1; }
+F="$OUT/cortexskills-editeur-$(date +%F).tar.gz.enc"
+tar -C "$(dirname "$CSLIC_HOME")" -cz "$(basename "$CSLIC_HOME")" | openssl enc -aes-256-cbc -pbkdf2 -salt ${CSLIC_PASS:+-pass env:CSLIC_PASS} -out "$F"
+chmod 600 "$F"; echo; echo "  Sauvegarde chiffrée : $F"; echo "  Gardez-la hors ligne (clé USB chiffrée, coffre) et retenez le mot de passe."; echo

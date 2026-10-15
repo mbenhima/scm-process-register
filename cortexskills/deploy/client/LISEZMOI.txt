@@ -1,0 +1,24 @@
+CortexSkills @VERSION@ — Paquet d'installation client (Linux, Docker)
+Procédure complète : « CortexSkills — Guide d'installation client » (Word / PDF), livré avec ce paquet.
+
+Contenu
+  Dockerfile            construit l'image d'exécution (code minifié, sans source, sans tarif)
+  docker-compose.yml    l'application, son volume de données et le HTTPS (Caddy, profil « https »)
+  Caddyfile             configuration HTTPS (TLS_MODE : auto, internal ou files)
+  env.example           modèle du fichier de réglages .env
+  vendor-public.pem     clé publique de l'éditeur (vérifie la licence) — ne pas modifier
+  runtime/              l'exécutable CortexSkills (serveur minifié + interface web compilée)
+  docker/               script de démarrage et console d'administration de l'image
+  licence/              déposez ici le fichier de licence (.lic) reçu de l'éditeur
+  certs/                (TLS_MODE=files) votre certificat cert.pem et sa clé key.pem
+
+Démarrage rapide
+  1. sha256sum -c CortexSkills-Client-@VERSION@.zip.sha256      (contrôle du paquet reçu)
+  2. unzip CortexSkills-Client-@VERSION@.zip && cd CortexSkills-Client-@VERSION@
+  3. cp env.example .env && chmod 600 .env && nano .env
+  4. docker compose build && docker compose up -d && docker compose logs -f cortexskills
+  5. docker compose exec cortexskills cortexskills-admin org-create --name "Votre entreprise" --domain votre-entreprise.ma \
+       --admin-email admin@votre-entreprise.ma --admin-name "Prénom Nom" --admin-password '<mot de passe fort>' --lang fr
+  6. docker compose exec cortexskills cortexskills-admin licence-request --org votre-entreprise.ma   → à envoyer à l'éditeur
+  7. Copiez le fichier .lic reçu dans licence/, puis :
+     docker compose exec cortexskills cortexskills-admin licence-install --file /licence/<fichier>.lic

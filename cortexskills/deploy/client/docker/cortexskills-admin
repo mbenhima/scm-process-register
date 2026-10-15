@@ -1,0 +1,6 @@
+#!/bin/sh
+# Console d'administration de CortexSkills dans le conteneur :  docker compose exec cortexskills cortexskills-admin help
+cd /app/server
+if [ "${1:-}" = "backup" ]; then exec node --no-warnings tools/backup.js; fi
+if [ "${1:-}" = "restore" ]; then shift; exec node --no-warnings tools/restore.js "$@"; fi
+exec node --no-warnings tools/admin.js "$@"

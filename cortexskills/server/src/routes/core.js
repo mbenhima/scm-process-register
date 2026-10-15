@@ -75,7 +75,7 @@ r.put('/me/prefs', ah(req => {
 /** Navigation filtered by permission and module entitlement: an item a user cannot open is never shown. */
 r.get('/nav', ah(req => {
   const perms = userPermissions(req.user.id); const mods = req.orgId ? entitledModules(req.orgId) : new Set();
-  return { groups: NAV_GROUPS, items: NAV.filter(i => perms.has(i.perm) && (!i.module || mods.has(i.module))) };
+  return { groups: NAV_GROUPS, items: NAV.filter(i => perms.has(i.perm) && (!i.module || mods.has(i.module)) && (config.commercialInfo || i.id !== 'pricing')) };
 }));
 /** Minimal user directory for assignment (FR-DA-RBAC-05). */
 r.get('/directory', ah(req => all(`SELECT u.id, u.name, u.email, u.title, (SELECT group_concat(role_id) FROM user_roles WHERE user_id=u.id) roles FROM users u WHERE u.org_id=? AND u.active=1 ORDER BY u.name`, req.orgId)));

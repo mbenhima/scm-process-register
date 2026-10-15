@@ -42,5 +42,8 @@
  "qa.checked": ["{l} line(s) read · {m} element(s) found · {u} line(s) not understood", "{l} ligne(s) lue(s) · {m} élément(s) trouvé(s) · {u} ligne(s) non comprise(s)", "{l} سطر مقروء · {m} عنصر · {u} سطر غير مفهوم"],
  "qa.miss.element": ["element not found", "élément introuvable", "العنصر غير موجود"],
  "qa.miss.respondent": ["respondent not found", "répondant introuvable", "المجيب غير موجود"],
- "qa.miss.form": ["none of these respondents receives this form", "aucun de ces répondants ne reçoit ce formulaire", "لا أحد من هؤلاء المجيبين يتلقى هذا النموذج"]
+ "qa.miss.form": ["none of these respondents receives this form", "aucun de ces répondants ne reçoit ce formulaire", "لا أحد من هؤلاء المجيبين يتلقى هذا النموذج"],
+ "err.licenceManaged": ["OnPrem installation: the plan, the number of users and the add-ons are set by the licence file issued by the vendor.", "Installation sur site : le plan, le nombre d’utilisateurs et les add-ons sont fixés par le fichier de licence émis par l’éditeur.", "تثبيت محلي: الخطة وعدد المستخدمين والإضافات يحددها ملف الترخيص الصادر عن المورّد."],
+ "config.licenceManaged": ["The plan, the number of users and the add-ons are set by your licence file. To change them, ask the vendor for a new licence.", "Le plan, le nombre d’utilisateurs et les add-ons sont fixés par votre fichier de licence. Pour les modifier, demandez une nouvelle licence à l’éditeur.", "الخطة وعدد المستخدمين والإضافات يحددها ملف الترخيص. لتغييرها اطلب ترخيصاً جديداً من المورّد."],
+ "pricing.notAvailable": ["Pricing is not available in this installation.", "Les tarifs ne sont pas disponibles dans cette installation.", "الأسعار غير متاحة في هذا التثبيت."]
 }

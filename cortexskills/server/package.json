@@ -17,7 +17,7 @@
     "backup": "node --no-warnings tools/backup.js",
     "restore": "node --no-warnings tools/restore.js",
     "sign-licence": "node --no-warnings tools/sign-licence.js",
-    "test": "node --no-warnings --test --test-concurrency=1 test/security.test.js test/bulkimport.test.js test/qsteps.test.js test/qassign.test.js test/flow.test.js",
+    "test": "node --no-warnings --test --test-concurrency=1 test/security.test.js test/bulkimport.test.js test/qsteps.test.js test/qassign.test.js test/onprem.test.js test/flow.test.js",
     "i18n": "node i18n/build.js"
   },
   "dependencies": {

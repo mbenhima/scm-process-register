@@ -8,7 +8,7 @@ import { hashPassword } from '../src/auth.js';
 import { provisionOrg, issueSaasLicence } from '../src/services/projects.js';
 import * as cat from '../src/catalog.js';
 import fs from 'node:fs';
-import { OnPremLicenceProvider } from '../src/licensing/LicenceProvider.js';
+import { OnPremLicenceProvider, licensedTerms } from '../src/licensing/LicenceProvider.js';
 
 const [cmd, ...rest] = process.argv.slice(2);
 const a = {}; for (let i = 0; i < rest.length; i++) { if (rest[i].startsWith('--')) { const k = rest[i].slice(2); const v = rest[i + 1] && !rest[i + 1].startsWith('--') ? rest[++i] : true; a[k] = v; } }
@@ -36,7 +36,10 @@ const HELP = `
   npm run admin -- password    --email john@acme.com --password "New#Passw0rd2026"
   npm run admin -- platform-admin --email ops@vendor.com --name "Ops" --password "..."
   npm run admin -- licence-request --org acme.com                                        (OnPrem: what to send to the vendor)
-  npm run admin -- licence-install --file /path/to/acme.lic                              (OnPrem: install the vendor-signed licence)
+  npm run admin -- licence-install --file /path/to/acme.lic                              (OnPrem: install or replace the vendor-signed licence)
+  npm run admin -- licence-list                                                          (OnPrem: installed licences and their state)
+  npm run admin -- licence-show --org acme.com                                           (OnPrem: details of one licence)
+  npm run admin -- licence-remove --org acme.com --yes                                   (OnPrem: remove a licence from this installation)
 `;
 
 switch (cmd) {
@@ -63,10 +66,11 @@ switch (cmd) {
   }
   case 'org-list':
     for (const o of all(`SELECT o.id, o.name, o.email_domain, o.segment, c.pack_id, c.seats, c.addons, l.data FROM organizations o LEFT JOIN org_config c ON c.org_id=o.id LEFT JOIN licences l ON l.org_id=o.id ORDER BY o.created_at`)) {
-      const l = config.deploymentMode === 'onprem' ? (new OnPremLicenceProvider(o.id).check().licence || { expiryDate: 'not installed' }) : J(o.data, {}); console.log(`${o.id}  ${name(o).padEnd(32)} ${String(o.email_domain || '').padEnd(24)} ${o.segment}  pack ${o.pack_id}  seats ${o.seats}  users ${one(`SELECT COUNT(*) n FROM users WHERE org_id=? AND active=1`, o.id).n}  add-ons ${J(o.addons, []).join(',') || '—'}  licence until ${String(l.expiryDate || '—').slice(0, 10)}`);
+      const l = config.deploymentMode === 'onprem' ? (new OnPremLicenceProvider(o.id).check().licence || { expiryDate: 'not installed' }) : J(o.data, {}); const lt = licensedTerms(o.id); if (lt) { o.pack_id = lt.plan || '—'; o.seats = lt.maxUsers; o.addons = JSON.stringify(lt.addons); } console.log(`${o.id}  ${name(o).padEnd(32)} ${String(o.email_domain || '').padEnd(24)} ${o.segment}  pack ${o.pack_id}  seats ${o.seats}  users ${one(`SELECT COUNT(*) n FROM users WHERE org_id=? AND active=1`, o.id).n}  add-ons ${J(o.addons, []).join(',') || '—'}  licence until ${String(l.expiryDate || '—').slice(0, 10)}`);
     }
     break;
   case 'licence': {
+    if (config.deploymentMode === 'onprem') fail('OnPrem mode: the plan, users and end date come from the vendor-signed licence file (licence-install).');
     const o = findOrg(a.org); const cfg = one(`SELECT * FROM org_config WHERE org_id=?`, o.id); const cur = J(one(`SELECT data FROM licences WHERE org_id=?`, o.id)?.data, {});
     const packId = a.pack || cfg.pack_id; if (!packs().some(p => p.id === packId)) fail(`Unknown pack ${packId}.`);
     const seats = Number(a.seats || cfg.seats); const days = Number(a.days || 365);
@@ -76,6 +80,7 @@ switch (cmd) {
     break;
   }
   case 'addon': {
+    if (config.deploymentMode === 'onprem') fail('OnPrem mode: add-ons come from the vendor-signed licence file (licence-install).');
     const o = findOrg(a.org); if (!cat.get('addOn', a.id)) fail(`Unknown add-on ${a.id}. List them with: npm run admin -- packs`);
     const set = new Set(J(one(`SELECT addons FROM org_config WHERE org_id=?`, o.id).addons, [])); a.off ? set.delete(a.id) : set.add(a.id);
     run(`UPDATE org_config SET addons=?, updated_at=? WHERE org_id=?`, S([...set]), now(), o.id); audit('Organization', o.id, a.off ? 'addon.off' : 'addon.on', { addon: a.id });
@@ -83,7 +88,7 @@ switch (cmd) {
     break;
   }
   case 'packs':
-    console.log('\n  Packs, bundles and SME packs:'); for (const p of packs()) console.log(`   ${p.id.padEnd(8)} ${String(p.kind).padEnd(7)} ${(p.name?.en || '').padEnd(36)} contains ${(p.packs || []).join(', ')}\n            ${p.priceRule?.en || p.price}`);
+    console.log('\n  Packs, bundles and SME packs:'); for (const p of packs()) console.log(`   ${p.id.padEnd(8)} ${String(p.kind).padEnd(7)} ${(p.name?.en || '').padEnd(36)} contains ${(p.packs || []).join(', ')}${config.commercialInfo ? '\n            ' + (p.priceRule?.en || p.price) : ''}`);
     console.log('\n  Add-ons:'); for (const x of cat.list('addOn')) console.log(`   ${x.id.padEnd(8)} ${x.name?.en || x.name}`);
     console.log('\n  Compliance & security standards (activated by the customer, with the disclosure):'); for (const x of cat.list('complianceStandard')) console.log(`   ${x.id.padEnd(9)} ${x.name?.en || x.name}`);
     console.log('');
@@ -116,7 +121,8 @@ switch (cmd) {
   case 'licence-install': {
     if (config.deploymentMode !== 'onprem') fail('licence-install is for OnPrem mode (DEPLOYMENT_MODE=onprem). In SaaS mode use: npm run admin -- licence --org ...');
     if (!a.file || !fs.existsSync(a.file)) fail('Give the licence file received from the vendor: --file /path/to/file.lic');
-    let lic; try { lic = JSON.parse(fs.readFileSync(a.file, 'utf8')); } catch { fail('The file is not a CortexSkills licence (invalid JSON).'); }
+    let raw; try { raw = fs.readFileSync(a.file, 'utf8'); } catch (e) { fail(`Cannot read ${a.file} (${e.code}). Make it readable by everyone: chmod 644 <file>.`); }
+    let lic; try { lic = JSON.parse(raw); } catch { fail('The file is not a CortexSkills licence (invalid JSON).'); }
     if (!OnPremLicenceProvider.verify(lic)) fail('The licence signature is not valid: the file was modified or was not signed by the vendor. Ask the vendor for a new file.');
     const o = one(`SELECT * FROM organizations WHERE id=?`, lic.companyId); if (!o) fail(`The licence is for Organization ID ${lic.companyId}, which does not exist in this database. Check the ID sent to the vendor (npm run admin -- org-list).`);
     const existing = fs.existsSync(config.licenceFile) ? J(fs.readFileSync(config.licenceFile, 'utf8'), []) : [];
@@ -125,6 +131,36 @@ switch (cmd) {
     if (lic.plan && packs().some(p => p.id === lic.plan)) run(`UPDATE org_config SET pack_id=?, seats=?, updated_at=? WHERE org_id=?`, lic.plan, Number(lic.maxUsers) || 100, now(), o.id);
     audit('Organization', o.id, 'licence.install', { plan: lic.plan, maxUsers: lic.maxUsers, expiryDate: lic.expiryDate });
     console.log(`\n  Licence installed for ${name(o)}: pack ${lic.plan}, ${lic.maxUsers} users, valid until ${String(lic.expiryDate).slice(0, 10)}.\n  File: ${config.licenceFile}. The users of this organization can sign in now (no restart needed).\n`);
+    break;
+  }
+  case 'licence-list': {
+    if (config.deploymentMode !== 'onprem') fail('licence-list is for OnPrem mode.');
+    const rows = OnPremLicenceProvider.all();
+    if (!rows.length) { console.log('\n  No licence installed.\n'); break; }
+    console.log('');
+    for (const { licence: l, valid } of rows) {
+      const o = one(`SELECT * FROM organizations WHERE id=?`, l.companyId); const days = Math.ceil((new Date(l.expiryDate) - Date.now()) / 86400000);
+      const state = !valid ? 'INVALID SIGNATURE' : days < 0 ? 'EXPIRED (read-only)' : days <= 30 ? `ACTIVE — ${days} days left` : 'ACTIVE';
+      console.log(`  ${String(l.licenceId || '—').padEnd(8)} ${String(l.companyName || l.company || '').padEnd(28)} ${l.companyId}  plan ${String(l.plan || '—').padEnd(8)} users ${String(l.maxUsers).padEnd(5)} until ${String(l.expiryDate).slice(0, 10)}  ${state}${o ? '' : '  (organization not in this database)'}`);
+    }
+    console.log('');
+    break;
+  }
+  case 'licence-show': {
+    if (config.deploymentMode !== 'onprem') fail('licence-show is for OnPrem mode.');
+    const o = findOrg(a.org); const x = OnPremLicenceProvider.all().find(r => r.licence.companyId === o.id);
+    if (!x) fail(`No licence installed for ${name(o)}. Request one with: licence-request --org ${o.email_domain}`);
+    const { signature, ...l } = x.licence; const c = new OnPremLicenceProvider(o.id).check();
+    console.log(`\n  Organization: ${name(o)} (${o.id})\n  Licence: ${l.licenceId || '—'} · version ${l.version || 1} · issued ${String(l.issueDate || l.issuedAt || '—').slice(0, 10)}\n  Plan: ${l.plan} · users ${l.maxUsers} (active ${c.activeUsers ?? '—'}) · add-ons ${(l.addons || []).join(', ') || 'none'}\n  End date: ${String(l.expiryDate).slice(0, 10)} · status ${c.status}${c.daysLeft != null ? ` (${c.daysLeft} days)` : ''}\n  Signature: ${x.valid ? 'valid (vendor key)' : 'INVALID'}\n`);
+    void signature; break;
+  }
+  case 'licence-remove': {
+    if (config.deploymentMode !== 'onprem') fail('licence-remove is for OnPrem mode.');
+    const o = findOrg(a.org); const list = OnPremLicenceProvider.all().map(x => x.licence);
+    if (!list.some(l => l.companyId === o.id)) fail(`No licence installed for ${name(o)}.`);
+    if (!a.yes) fail(`This removes the licence of ${name(o)}: its users can no longer sign in. Add --yes to confirm.`);
+    fs.writeFileSync(config.licenceFile, JSON.stringify(list.filter(l => l.companyId !== o.id), null, 2));
+    audit('Organization', o.id, 'licence.remove', {}); console.log(`\n  Licence of ${name(o)} removed from this installation. Its users can no longer sign in.\n`);
     break;
   }
   default: console.log(HELP);

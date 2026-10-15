@@ -1,0 +1,23 @@
+# HTTPS devant CortexSkills. TLS_MODE (fichier .env) : auto = certificat Let's Encrypt (nom public, ports 80/443
+# ouverts) · internal = autorité interne de Caddy (réseau privé) · files = votre certificat dans certs/cert.pem et
+# certs/key.pem.
+(tls_auto) {
+}
+(tls_internal) {
+	tls internal
+}
+(tls_files) {
+	tls /certs/cert.pem /certs/key.pem
+}
+
+{$DOMAIN} {
+	import tls_{$TLS_MODE}
+	encode gzip
+	reverse_proxy cortexskills:4000
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}

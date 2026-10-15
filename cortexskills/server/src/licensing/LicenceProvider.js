@@ -6,6 +6,7 @@ import { one, all } from '../db.js';
 import { J } from '../lib/util.js';
 
 const WARN_DAYS = 30;
+let cache = { key: null, list: [] };
 function evaluate(licence, signatureOk, activeUsers) {
   if (!licence) return { status: 'inactive', daysLeft: 0, licence: null, reason: 'missing' };
   if (!signatureOk) return { status: 'inactive', daysLeft: 0, licence, reason: 'signature' };            // RULE-LIC-001
@@ -58,14 +59,26 @@ export class OnPremLicenceProvider extends BaseProvider {
       return crypto.verify(null, Buffer.from(JSON.stringify(payload)), pk, Buffer.from(signature, 'base64'));
     } catch { return false; }
   }
-  read() {
-    if (!fs.existsSync(config.licenceFile)) return null;
-    const all = J(fs.readFileSync(config.licenceFile, 'utf8'));
-    // A .lic file may hold one licence or a list of licences (one per organization of the installation).
-    const list = Array.isArray(all) ? all : [all];
-    return list.find(l => l && l.companyId === this.orgId) || null;
+  /** Every licence of the installation file (one per organization), read again only when the file changes. */
+  static all() {
+    let st; try { st = fs.statSync(config.licenceFile); } catch { cache = { key: null, list: [] }; return []; }
+    const key = `${st.mtimeMs}:${st.size}`;
+    if (cache.key !== key) { const all = J(fs.readFileSync(config.licenceFile, 'utf8')); cache = { key, list: (Array.isArray(all) ? all : [all]).filter(Boolean).map(l => ({ licence: l, valid: OnPremLicenceProvider.verify(l) })) }; }
+    return cache.list;
   }
+  read() { return OnPremLicenceProvider.all().find(x => x.licence.companyId === this.orgId)?.licence || null; }
   check() { const l = this.read(); return evaluate(l, l ? OnPremLicenceProvider.verify(l) : false, this.activeUsers()); }
+  /** Add-ons of the signed licence and the standards activated by the customer. */
+  getActiveAddOns() { const c = one(`SELECT compliance FROM org_config WHERE org_id=?`, this.orgId); return [...(licensedTerms(this.orgId)?.addons || []), ...J(c?.compliance, [])]; }
+}
+
+/** OnPrem: the terms of the organization's valid licence — plan, users, add-ons — or null in SaaS mode. */
+export function licensedTerms(orgId) {
+  if (config.deploymentMode !== 'onprem') return null;
+  const x = OnPremLicenceProvider.all().find(l => l.licence.companyId === orgId && l.valid);
+  if (!x) return { plan: null, maxUsers: 0, addons: [] };
+  const l = x.licence;
+  return { plan: l.plan || null, maxUsers: Number(l.maxUsers) || 0, addons: Array.isArray(l.addons) ? l.addons : [], expiryDate: l.expiryDate };
 }
 
 export function getLicenceProvider(orgId) {

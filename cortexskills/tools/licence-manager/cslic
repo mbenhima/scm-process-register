@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Lance le gestionnaire de licences : avec Node.js 22 s'il est installé, sinon dans un conteneur Node.js (Docker).
+# Les clés et le registre restent dans CSLIC_HOME (par défaut ~/.cortexskills-editeur) sur ce poste.
+set -euo pipefail
+DIR=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
+export CSLIC_HOME=${CSLIC_HOME:-$HOME/.cortexskills-editeur}
+if [ -z "${CSLIC_DOCKER:-}" ] && command -v node >/dev/null 2>&1 && node -e 'process.exit(+process.versions.node.split(".")[0] >= 22 ? 0 : 1)'; then
+  exec node "$DIR/cslic.mjs" "$@"
+fi
+command -v docker >/dev/null 2>&1 || { echo "  ERREUR : installez Node.js 22 (nodejs.org) ou Docker." >&2; exit 1; }
+mkdir -p "$CSLIC_HOME"
+exec docker run --rm -i -u "$(id -u):$(id -g)" -e CSLIC_HOME=/cslic -e CSLIC_HOME_DISPLAY="$CSLIC_HOME" -e HOME=/tmp \
+  -v "$CSLIC_HOME":/cslic -v "$PWD":/work -w /work -v "$DIR/cslic.mjs":/opt/cslic.mjs:ro \
+  "${CSLIC_IMAGE:-node:22-bookworm-slim}" node /opt/cslic.mjs "$@"
