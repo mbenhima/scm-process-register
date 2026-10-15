@@ -1,11 +1,10 @@
-# CortexSkills — l'application et, avec le profil « https », Caddy devant elle (certificat automatique, interne ou
-# fourni). Réglages dans .env (copie de env.example). Voir LISEZMOI.txt.
+# CortexSkills — l'application (image cortexskills-client, chargée depuis l'archive livrée) et, avec le profil
+# « https », Caddy devant elle (certificat automatique, interne ou fourni). Réglages dans .env. Voir LISEZMOI.txt.
 name: cortexskills
 
 services:
   cortexskills:
-    image: cortexskills:@VERSION@
-    build: .
+    image: cortexskills-client:@VERSION@
     container_name: cortexskills
     restart: unless-stopped
     env_file: .env

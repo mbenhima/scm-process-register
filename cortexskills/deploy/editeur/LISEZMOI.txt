@@ -1,20 +1,20 @@
-CortexSkills @VERSION@ — Paquet éditeur (Linux, Docker)
-Procédure complète : « CortexSkills — Guide d'installation éditeur » (Word / PDF).
+CortexSkills @VERSION@ — Paquet éditeur Docker (Linux)
+Procédure complète : « CortexSkills — Guide d'installation éditeur (Docker) ».
 
-  application/       CortexSkills pour vos propres installations (tarifs visibles), sans code source :
-                       ./installer.sh local                                    scénario 1 — ce poste (http://localhost:4000)
-                       ./installer.sh serveur <nom DNS> [auto|internal|files]  scénario 2 — cloud privé / sur site (HTTPS)
-                       ./licences.sh …      organisations et licences installées
-                       ./sauvegarder.sh     sauvegarde hors du conteneur (et vers une autre machine)
-                       ./mettre-a-jour.sh   passage à une nouvelle version
-  gestion-licences/  poste de signature (à installer sur VOTRE poste uniquement) :
-                       cslic                création, liste, détail, modification, renouvellement, révocation, suppression
-                       cslic-paquet         prépare le paquet d'un client (ajoute votre clé publique + empreinte SHA-256)
-                       cslic-sauvegarder    sauvegarde chiffrée des clés et du registre
-  paquet-client/     CortexSkills-Client-@VERSION@.zip : modèle du paquet client (sans tarif), à préparer avec cslic-paquet
+  application/        CortexSkills pour vos propres installations (tarifs visibles), image déjà construite :
+                        ./installer.sh local                                    scénario a — localhost (http://localhost:4000)
+                        ./installer.sh serveur <nom DNS> [auto|internal|files]  scénario b — cloud privé / sur site (HTTPS)
+                        ./licences.sh …       organisations et licences installées
+                        ./sauvegarder.sh      sauvegarde hors du conteneur (et vers une autre machine)
+                        ./mettre-a-jour.sh    passage à une nouvelle version
+  gestion-licences/   sur VOTRE poste uniquement (s'exécute dans l'image éditeur, aucun code sur le poste) :
+                        cslic                 créer, lister, afficher, modifier, renouveler, révoquer, supprimer, vérifier
+                        cslic-sauvegarder     sauvegarde chiffrée des clés et du registre
+  poste-signature/    votre paire de clés de signature : à importer une fois (cslic importer), puis à supprimer
 
-Premiers pas
-  1. Poste de signature :  cd gestion-licences && ./cslic init && ./cslic-sauvegarder ~/coffre
-  2. Scénario 1 :           cd application && ./installer.sh local
-  3. Scénario 2 :           copier application/ sur le serveur, puis ./installer.sh serveur competences.mondomaine.ma
-  4. Paquet d'un client :   gestion-licences/cslic-paquet paquet-client/CortexSkills-Client-@VERSION@.zip ~/envois
+Premiers pas (sur votre poste, dans ce dossier)
+  1. ./gestion-licences/cslic importer poste-signature && rm -r poste-signature
+  2. ./gestion-licences/cslic-sauvegarder ~/coffre
+  3. Scénario a :  cd application && ./installer.sh local
+  4. Scénario b :  copier application/ sur le serveur, puis ./installer.sh serveur competences.mondomaine.ma auto
+Le paquet client (CortexSkills-Client-Docker-@VERSION@.zip et son .sha256) s'envoie tel quel à chaque client.

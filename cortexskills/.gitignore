@@ -4,3 +4,4 @@ server/tools/keys/
 web/dist/
 *.log
 .env
+deliverables/docker/

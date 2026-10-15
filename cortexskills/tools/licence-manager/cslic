@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
-# Lance le gestionnaire de licences : avec Node.js 22 s'il est installé, sinon dans un conteneur Node.js (Docker).
+# Gestionnaire de licences CortexSkills : s'exécute dans l'image éditeur (aucun code sur ce poste).
 # Les clés et le registre restent dans CSLIC_HOME (par défaut ~/.cortexskills-editeur) sur ce poste.
+# Les fichiers passés en argument doivent se trouver dans le dossier courant (ou ses sous-dossiers).
 set -euo pipefail
 DIR=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
 export CSLIC_HOME=${CSLIC_HOME:-$HOME/.cortexskills-editeur}
-if [ -z "${CSLIC_DOCKER:-}" ] && command -v node >/dev/null 2>&1 && node -e 'process.exit(+process.versions.node.split(".")[0] >= 22 ? 0 : 1)'; then
-  exec node "$DIR/cslic.mjs" "$@"
+VER=$(cat "$DIR/../application/VERSION" 2>/dev/null || true); IMG=${CSLIC_IMAGE:-cortexskills-editeur:$VER}
+command -v docker >/dev/null 2>&1 || { echo "  ERREUR : Docker est nécessaire (curl -fsSL https://get.docker.com | sudo sh)." >&2; exit 1; }
+if ! docker image inspect "$IMG" >/dev/null 2>&1; then
+  A="$DIR/../application/cortexskills-editeur-docker-image-$VER.tar.gz"
+  [ -f "$A" ] || { echo "  ERREUR : image $IMG absente et archive introuvable ($A)." >&2; exit 1; }
+  docker load -i "$A" >/dev/null
 fi
-command -v docker >/dev/null 2>&1 || { echo "  ERREUR : installez Node.js 22 (nodejs.org) ou Docker." >&2; exit 1; }
-mkdir -p "$CSLIC_HOME"
-exec docker run --rm -i -u "$(id -u):$(id -g)" -e CSLIC_HOME=/cslic -e CSLIC_HOME_DISPLAY="$CSLIC_HOME" -e HOME=/tmp \
-  -v "$CSLIC_HOME":/cslic -v "$PWD":/work -w /work -v "$DIR/cslic.mjs":/opt/cslic.mjs:ro \
-  "${CSLIC_IMAGE:-node:22-bookworm-slim}" node /opt/cslic.mjs "$@"
+mkdir -p "$CSLIC_HOME" && chmod 700 "$CSLIC_HOME"
+exec docker run --rm -i -u "$(id -u):$(id -g)" --network none -e CSLIC_HOME=/cslic -e CSLIC_HOME_DISPLAY="$CSLIC_HOME" -e HOME=/tmp \
+  -v "$CSLIC_HOME":/cslic -v "$PWD":/work -w /work --entrypoint node "$IMG" /app/tools/cslic.mjs "$@"

@@ -8,6 +8,6 @@ if ! node --no-warnings --input-type=module -e "const d = await import('./src/db
   fi
   echo "Premier démarrage : création de la base de production dans ${DATA_DIR}..."
   node --no-warnings seed/seed.js --production
-  echo "Base créée. Effacez ADMIN_PASSWORD du fichier .env, puis créez votre organisation (Guide d'installation, chapitre 8)."
+  echo "Base créée. Effacez ADMIN_PASSWORD du fichier .env, puis créez votre organisation (voir le Guide d’installation)."
 fi
 exec node --no-warnings src/index.js

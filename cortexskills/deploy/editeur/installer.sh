@@ -14,12 +14,13 @@ case "$TLS" in auto|internal|files) ;; *) echec "Mode de certificat inconnu : $T
 
 command -v docker >/dev/null || echec "Docker n'est pas installé : curl -fsSL https://get.docker.com | sudo sh"
 docker compose version >/dev/null 2>&1 || echec "Le plugin docker compose manque (paquet docker-compose-plugin)."
-[ ! -e vendor-private.pem ] || echec "vendor-private.pem ne doit jamais être ici. Il reste dans le poste de signature (~/.cortexskills-editeur)."
-CSLIC_HOME=${CSLIC_HOME:-$HOME/.cortexskills-editeur}
-if [ ! -f vendor-public.pem ] && [ -f "$CSLIC_HOME/cles/vendor-public.pem" ]; then cp "$CSLIC_HOME/cles/vendor-public.pem" .; dire "Clé publique reprise du poste de signature."; fi
-[ -f vendor-public.pem ] || echec "Copiez votre vendor-public.pem dans ce dossier (cslic cle-publique <dossier> sur le poste de signature)."
-grep -q "BEGIN PUBLIC KEY" vendor-public.pem || echec "vendor-public.pem n'est pas une clé publique."
+[ ! -e vendor-private.pem ] || echec "vendor-private.pem ne doit jamais être ici. Il reste sur le poste de signature (~/.cortexskills-editeur)."
 [ "$TLS" != "files" ] || { [ -f certs/cert.pem ] && [ -f certs/key.pem ]; } || echec "Mode files : copiez certs/cert.pem et certs/key.pem."
+ARCHIVE="cortexskills-editeur-docker-image-$VER.tar.gz"
+if ! docker image inspect "cortexskills-editeur:$VER" >/dev/null 2>&1; then
+  [ -f "$ARCHIVE" ] || echec "Archive de l'image introuvable : $ARCHIVE"
+  dire "Chargement de l'image (1 à 2 minutes)..."; docker load -i "$ARCHIVE" >/dev/null
+fi
 
 if [ ! -f .env ]; then
   ADMIN_EMAIL=${ADMIN_EMAIL:-}; ADMIN_NAME=${ADMIN_NAME:-Administrateur plateforme}; ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
@@ -35,7 +36,6 @@ if [ ! -f .env ]; then
   chmod 600 .env; dire "Réglages écrits dans .env (secrets générés). Gardez-en une copie dans votre coffre de mots de passe."
 fi
 
-if ! docker image inspect "cortexskills:$VER" >/dev/null 2>&1; then dire "Construction de l'image cortexskills:$VER (2 à 5 minutes)..."; docker compose build ${BUILD_ARGS:-}; fi
 sain() { sleep 2; for i in $(seq 1 60); do [ "$(docker inspect -f '{{.State.Health.Status}}' cortexskills 2>/dev/null || true)" = healthy ] && return 0; sleep 3; done; docker compose logs --tail 40 cortexskills; echec "CortexSkills n'a pas démarré correctement (journal ci-dessus)."; }
 dire "Démarrage..."; docker compose up -d; sain
 if grep -q '^ADMIN_PASSWORD=.\+' .env; then sed -i 's|^ADMIN_PASSWORD=.*|ADMIN_PASSWORD=|' .env; docker compose up -d >/dev/null 2>&1; sain; dire "ADMIN_PASSWORD effacé de .env (l'administrateur existe)."; fi

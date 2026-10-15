@@ -301,5 +301,5 @@ for (const f of q.forms) {
 
 const doc = document({ title: 'CortexSkills — Guide du cas Clinique Al Amal', credit: `CortexSkills ${version} · Guide utilisateur · Cas Clinique Al Amal`, sections: (() => { const secs = [[]]; for (const x of body) { if (x && x.landscapeBlock) { secs.push({ landscape: true, children: x.landscapeBlock }, []); } else secs[secs.length - 1].push(x); } return secs.filter(x => !Array.isArray(x) || x.length); })(), lang: 'fr-FR' });
 fs.mkdirSync(out, { recursive: true });
-const file = path.join(out, 'CortexSkills_Guide_Utilisateur_Clinique_Privee_FR.docx');
+const file = path.join(out, 'CortexSkills_Guide_Utilisateur_FR.docx');
 D.Packer.toBuffer(doc).then(x => { fs.writeFileSync(file, x); console.log(file, (x.length / 1024).toFixed(0) + ' KB'); });

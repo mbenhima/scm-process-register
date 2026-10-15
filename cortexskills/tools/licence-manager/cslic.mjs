@@ -81,6 +81,22 @@ switch (cmd) {
     ok(`Poste de signature prêt : ${disp(HOME)}\n  Clé publique : ${disp(PUB)}\n  Empreinte    : ${fingerprint(fs.readFileSync(PUB, 'utf8'))}\n\n  SAUVEGARDEZ MAINTENANT ${disp(PRIV)} hors ligne et chiffrée (cslic sauvegarder).`);
     break;
   }
+  case 'importer': case 'import': {
+    // Installe la paire de clés livrée avec le paquet éditeur (dossier poste-signature/) sur ce poste.
+    const src = pos[0]; if (!src) fail('Usage : cslic importer <dossier contenant vendor-private.pem et vendor-public.pem>');
+    const pick = f => [path.join(src, f), path.join(src, 'cles', f)].find(x => fs.existsSync(x));
+    const sp = pick('vendor-private.pem'), pp = pick('vendor-public.pem');
+    if (!sp || !pp) fail(`vendor-private.pem et vendor-public.pem introuvables dans ${src}.`);
+    if (fs.existsSync(PRIV)) fail(`Une paire de clés existe déjà dans ${disp(KEYS)}. Elle n'est pas remplacée.`);
+    const probe = Buffer.from('cortexskills'); const sig = crypto.sign(null, probe, fs.readFileSync(sp, 'utf8'));
+    if (!crypto.verify(null, probe, fs.readFileSync(pp, 'utf8'), sig)) fail('La clé privée et la clé publique ne forment pas une paire.');
+    fs.mkdirSync(KEYS, { recursive: true, mode: 0o700 }); fs.mkdirSync(LICS, { recursive: true, mode: 0o700 }); fs.mkdirSync(ARCH, { recursive: true, mode: 0o700 });
+    fs.copyFileSync(sp, PRIV); fs.chmodSync(PRIV, 0o600); fs.copyFileSync(pp, PUB); fs.chmodSync(PUB, 0o644);
+    if (!fs.existsSync(REG)) save({ creeLe: new Date().toISOString(), compteur: 0, licences: [] });
+    log('importer', '-', fingerprint(fs.readFileSync(PUB, 'utf8')));
+    ok(`Clés installées dans ${disp(KEYS)}\n  Empreinte : ${fingerprint(fs.readFileSync(PUB, 'utf8'))}\n\n  Supprimez maintenant le dossier ${src} du paquet et sauvegardez le poste (cslic-sauvegarder).`);
+    break;
+  }
   case 'creer': case 'create': {
     ready(); const r = load();
     const e = { societe: a.societe, orgId: String(a['org-id'] || ''), plan: String(a.plan || '').toUpperCase(), utilisateurs: Number(a.utilisateurs), fin: String(a.fin || ''), addons: list(a.addons), fonctions: String(a.fonctions || '').split(',').map(x => x.trim()).filter(Boolean), ref: a.ref || null, notes: a.notes || null };
@@ -151,7 +167,8 @@ switch (cmd) {
     console.log(`
   cslic — licences CortexSkills (poste de signature : ${disp(HOME)})
 
-  cslic init                                         crée la paire de clés et le registre (une seule fois)
+  cslic importer poste-signature                     installe la paire de clés livrée avec le paquet (une seule fois)
+  cslic init                                         crée une NOUVELLE paire de clés (changement de clés uniquement)
   cslic creer --societe "Clinique Exemple" --org-id <Organization ID> --plan SME-GRO --utilisateurs 50 --fin 2027-12-31
               [--addons AD-02,AD-11] [--fonctions analytics,export] [--ref CONTRAT-2026-014] [--notes "..."]
   cslic lister [--tout] [--csv registre.csv]        licences actives (ou toutes), export CSV
@@ -163,7 +180,6 @@ switch (cmd) {
   cslic verifier fichier.lic                         contrôle la signature d'un fichier
   cslic cle-publique [dossier]                       copie vendor-public.pem (pour les paquets clients)
   cslic empreinte                                    empreinte SHA-256 de la clé publique
-  cslic-paquet <paquet-client.zip> [dossier]         ajoute la clé publique au paquet client et calcule son empreinte
   cslic-sauvegarder [dossier]                        archive chiffrée du poste de signature
 `);
 }
