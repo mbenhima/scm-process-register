@@ -76,12 +76,23 @@ test('stakeholders → questionnaire → RACSI → channels → distribution →
   const inv = await ok('GET', `/questionnaires/${qid}/invitations`);
   const dg = inv.find(i => i.name === 'IT Directrice'), op = inv.find(i => i.name === 'IT Infirmière');
   assert.deepEqual(dg.channel_plan.map(s => s.channel), ['Email', 'Email', 'Face-to-Face']); assert.equal(op.channel_plan[0].channel, 'WhatsApp');
+  // Who answers what: a section, a sub-section or a question goes to chosen respondents only.
+  const av = await ok('GET', `/questionnaires/${qid}/assignments`); const fm = av.forms.find(f => f.code === op.template_code);
+  const sec = fm.elements.find(e => e.level === 'section' && fm.elements.some(x => x.parent === e.ref)); const q1 = fm.elements.find(e => e.parent === sec.ref && e.level === 'question');
+  assert.equal((await call('PUT', `/questionnaires/${qid}/assignments`, { assignments: { [sec.ref]: ['not-a-respondent'] } })).data.error, 'err.assignUnknownRespondent');
+  assert.equal((await call('PUT', `/questionnaires/${qid}/assignments`, { assignments: { 'X|y': [op.stakeholder_id] } })).data.error, 'err.assignUnknownElement');
+  const dgForm = av.forms.find(f => f.code === dg.template_code); const other = dgForm.elements.find(e => e.level === 'section');
+  const sv = await ok('PUT', `/questionnaires/${qid}/assignments`, { assignments: { [other.ref]: [dg.stakeholder_id], [q1.ref]: [op.stakeholder_id] } });
+  assert.equal(Object.keys(sv.assignments).length, 2);
+  const pasted = await ok('POST', `/questionnaires/${qid}/assignments/paste`, { text: `Question\t${q1.label.fr}\tInfirmière\nSection\tInconnue\tIT Infirmière` });
+  assert.equal(pasted.matched >= 1, true); assert.equal(pasted.unmatched[0].reason, 'element');
   // MP-54.6: one message per respondent, then a response from the respondent's link.
   await ok('POST', `/questionnaires/${qid}/distribute`, {});
   const msgs = await ok('GET', `/messages?questionnaire=${qid}`); assert.equal(msgs.length, 2);
   assert.ok(msgs.every(m => /Bonjour|Hello/.test(m.body)));
   const url = (await ok('GET', `/invitations/${op.id}/link`)).url; const tk = url.split('/respond/')[1];
   const pub = await fetch(`${base}/api/public/q/${tk}`).then(r => r.json()); assert.ok(pub.form.sections.length > 3);
+  assert.ok(pub.form.assigned && pub.form.sections.some(s => s.id === sec.section && (s.items || s.rows).some(x => x.key === q1.item)), 'the assigned question is in the respondent form');
   const ident = pub.form.sections.find(s => s.type === 'identity');
   const res = await fetch(`${base}/api/public/q/${tk}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers: ident ? { [ident.id]: { full_name: 'IT Infirmière' } } : {}, consent: true, final: true }) });
   assert.equal(res.status, 200);

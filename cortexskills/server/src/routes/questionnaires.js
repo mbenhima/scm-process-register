@@ -11,6 +11,7 @@ import { insertRecord } from '../services/projects.js';
 import { logUsage, effectiveActive, useCaseByCode } from '../services/ai.js';
 import { exportModel, MIME } from '../services/exporters.js';
 import * as Q from '../services/questionnaires.js';
+import * as QA from '../services/qassign.js';
 import * as CH from '../services/channels.js';
 
 const r = Router();
@@ -221,6 +222,22 @@ r.post('/questionnaires/:id/invitations', requirePerm('m54.edit'), ah(req => {
   audit(req, 'Questionnaire', q.id, 'respondents', null, { added: added.length });
   return { added: added.length, invitations: Q.listInvitations(req.orgId, q.id) };
 }));
+// ------------------------------------------------------------------ who answers what: sections, sub-sections, questions
+r.get('/questionnaires/:id/assignments', requirePerm('m54.view'), ah(req => QA.view(req.orgId, Q.getQuestionnaire(req.orgId, req.params.id))));
+r.put('/questionnaires/:id/assignments', requirePerm('m54.edit'), ah(req => {
+  const q = Q.getQuestionnaire(req.orgId, req.params.id); const before = q.assignments || {};
+  const out = QA.save(req.orgId, q, req.body?.assignments || {}, { merge: req.body?.merge === true, userId: req.user.id });
+  audit(req, 'Questionnaire', q.id, 'assignments', { elements: Object.keys(before).length }, { elements: Object.keys(out).length });
+  return QA.view(req.orgId, Q.getQuestionnaire(req.orgId, q.id));
+}));
+/** Automatic proposal from the respondents' roles and functions; nothing is saved until the user accepts it. */
+r.post('/questionnaires/:id/assignments/propose', requirePerm('m54.edit'), ah(req => QA.propose(req.orgId, Q.getQuestionnaire(req.orgId, req.params.id))));
+/** A pasted table (element ; respondents); with apply, the lines found are merged into the saved assignment. */
+r.post('/questionnaires/:id/assignments/paste', requirePerm('m54.edit'), ah(req => {
+  const q = Q.getQuestionnaire(req.orgId, req.params.id); const p = QA.parsePaste(req.orgId, q, String(req.body?.text || '').slice(0, 200000));
+  if (req.body?.apply && p.matched) { QA.save(req.orgId, q, p.assignments, { merge: true, userId: req.user.id }); audit(req, 'Questionnaire', q.id, 'assignments.paste', null, { lines: p.lines, matched: p.matched }); }
+  return { ...p, view: req.body?.apply ? QA.view(req.orgId, Q.getQuestionnaire(req.orgId, q.id)) : undefined };
+}));
 /** Change the population, form, channel plan (or its mode), contact details, interview slot or interviewer of respondents. */
 r.patch('/invitations', requirePerm('m54.edit'), ah(req => {
   const b = req.body || {}; const ids = Array.isArray(b.ids) ? b.ids : []; let n = 0;
@@ -273,7 +290,7 @@ r.post('/questionnaires/:id/distribute', requirePerm('m54.edit'), ah(async req =
   const q = Q.getQuestionnaire(req.orgId, req.params.id);
   if (!['Draft', 'Validated', 'Pending Validation'].includes(q.status)) throw new HttpError(409, 'err.invalidTransition', { from: q.status, to: 'Distributed' });
   const inv = Q.listInvitations(req.orgId, q.id); const issues = Q.distributionIssues(q, inv);
-  const blocking = issues.filter(i => ['aiUnvalidated', 'noAccountable', 'manyAccountable', 'noRespondents', 'noDueDate'].includes(i.code));
+  const blocking = issues.filter(i => ['aiUnvalidated', 'noAccountable', 'manyAccountable', 'noRespondents', 'noDueDate', 'assignEmpty'].includes(i.code));
   if (blocking.length) throw new HttpError(409, 'err.distributionBlocked', { reasons: blocking.map(i => t('qissue.' + i.code, lang(req), i)).join(' · ') });
   q.status = 'Distributed'; q.distributed_on = now(); q.public_base = base(req); q.distributed_by = req.user.id;
   Q.saveQuestionnaire(q, req.user.id); audit(req, 'Questionnaire', q.id, 'distribute', { status: 'Validated' }, { status: 'Distributed', respondents: inv.length });
@@ -310,7 +327,7 @@ r.get('/invitations/:id/form', requirePerm('m54.view'), ah(req => {
   const inv = Q.getInvitation(req.orgId, req.params.id); const q = Q.getQuestionnaire(req.orgId, inv.questionnaire_id);
   const resp = inv.response_id ? one(`SELECT data FROM records WHERE id=?`, inv.response_id) : null;
   const rd = J(resp?.data, null); const draft = J(inv.draft, null);
-  return { invitation: { ...inv, token_enc: undefined, token_hash: undefined, channel_plan: J(inv.channel_plan, []), consent: J(inv.consent) }, questionnaire: { id: q.id, label: q.label, status: q.status, due_date: q.due_date, threshold: q.threshold }, form: Q.formOf(q, inv.template_code),
+  return { invitation: { ...inv, token_enc: undefined, token_hash: undefined, channel_plan: J(inv.channel_plan, []), consent: J(inv.consent) }, questionnaire: { id: q.id, label: q.label, status: q.status, due_date: q.due_date, threshold: q.threshold }, form: Q.formFor(q, inv),
     answers: rd?.answers_json || draft?.answers || {}, flags: rd?.flags || draft?.flags || {}, completeness: rd?.completeness_pct ?? draft?.pct ?? 0 };
 }));
 r.post('/invitations/:id/capture', requirePerm('m54.edit'), ah(req => {
@@ -336,7 +353,7 @@ r.get('/questionnaires/:id/forms/:code/pack', requirePerm('m54.view'), ah(async 
   res.set('Content-Type', MIME[fmt]).set('Content-Disposition', `attachment; filename="${req.params.code}.${fmt}"`).send(buf);
 }));
 function packModel(req, q, inv, l) {
-  const form = Q.formOf(q, inv.template_code); const org = one(`SELECT name FROM organizations WHERE id=?`, req.orgId);
+  const form = inv.stakeholder_id ? Q.formFor(q, inv) : Q.formOf(q, inv.template_code); const org = one(`SELECT name FROM organizations WHERE id=?`, req.orgId);
   const saved = inv.response_id ? J(one(`SELECT data FROM records WHERE id=?`, inv.response_id)?.data, {}).answers_json : J(inv.draft, {})?.answers;
   const A = saved || {}; const P = x => pick(x, l);
   const sections = (form?.sections || []).map(s => {
@@ -362,7 +379,7 @@ r.get('/questionnaires/:id/responses', requirePerm('m54.view'), ah(req => { Q.ge
 r.get('/responses/:id', requirePerm('m54.view'), ah(req => {
   const x = one(`SELECT id, data FROM records WHERE id=? AND entity='QuestionnaireResponse' AND org_id=?`, req.params.id, req.orgId); if (!x) throw new HttpError(404, 'err.notFound');
   const d = J(x.data, {}); const q = Q.getQuestionnaire(req.orgId, d.questionnaire_id);
-  return { id: x.id, ...d, form: Q.formOf(q, d.template_code) };
+  return { id: x.id, ...d, form: d.stakeholder_id ? Q.formForStakeholder(q, Q.formOf(q, d.template_code), d.stakeholder_id) : Q.formOf(q, d.template_code) };
 }));
 /** A response below the completeness threshold is excluded unless included with a justification (FR-DA-QLT-09). */
 r.post('/responses/:id/include', requirePerm('m54.edit'), ah(req => {

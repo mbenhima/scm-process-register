@@ -53,6 +53,38 @@ const STAKEHOLDERS = [
   ['Imane Zerouali', 'radiologie2@cliniquealamal.ma', '+212 6 61 00 00 11', 'Technicien de radiologie', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Manipulatrice en radiologie.'],
 ];
 
+// ------------------------------------------------------------------ who answers what (sections, sub-sections, questions)
+// The three ways: the automatic proposal (role and function), a manual change, a pasted table; then what each one receives.
+async function assignQuestions(qid) {
+  const lbl = (v, ref) => { for (const f of v.forms) { const e = f.elements.find(x => x.ref === ref); if (e) return { form: f.code, formName: fr(f.name), level: e.level, label: fr(e.label), questions: e.questions }; } return { label: ref }; };
+  const names = (v, ids) => ids.map(id => v.forms.flatMap(f => f.respondents).find(r => r.stakeholder_id === id)?.name || id);
+  let v = await api('GET', `/questionnaires/${qid}/assignments`);
+  const prop = await api('POST', `/questionnaires/${qid}/assignments/propose`, {});
+  const proposal = Object.entries(prop.assignments).map(([ref, ids]) => ({ ref, ...lbl(v, ref), who: names(v, ids), why: prop.reasons.find(r => r.ref === ref)?.why }));
+  v = await api('PUT', `/questionnaires/${qid}/assignments`, { assignments: prop.assignments });
+  // Manual changes: the hospitalisation nurse does not triage at the emergency desk; two sub-sections go to the people who run them.
+  const who = n => v.forms.flatMap(f => f.respondents).find(r => r.name === n).stakeholder_id;
+  const mbr = v.forms.find(f => f.code === 'QT-IFPAC-MBR'); const mgt = v.forms.find(f => f.code === 'QT-IFPAC-MGT');
+  const triage = mbr.elements.find(e => e.item === 'm_triage').ref;
+  const sub = n => mgt.elements.find(e => e.level === 'subsection' && /^(machines|produits)/i.test(fr(e.label)) && fr(e.label).toLowerCase().startsWith(n)).ref;
+  const manual = [
+    { ref: triage, ids: (v.assignments[triage] || []).filter(id => id !== who('Youssra Bennis')), note: 'Youssra Bennis travaille en hospitalisation : elle ne fait pas le tri à l’accueil des urgences.' },
+    { ref: sub('machines'), ids: [who('Dr Youssef Alaoui'), who('Leila Chraibi')], note: 'Équipements et capacité : direction médicale et qualité.' },
+    { ref: sub('produits'), ids: [who('Dr Youssef Alaoui')], note: 'Offre de soins : direction médicale.' }];
+  v = await api('PUT', `/questionnaires/${qid}/assignments`, { assignments: Object.fromEntries(manual.map(m => [m.ref, m.ids])), merge: true });
+  // A table pasted from Excel: level, element, respondents (names or job titles).
+  const paste = [['Section', 'Performance par fonction et niveau (1 – 5 ; 5 : plus haute)', 'Dr Youssef Alaoui, Hajar Tazi'],
+    ['Section', 'Les projets en cours', 'Cadre de santé, Responsable des urgences, Responsable qualité']];
+  const pasted = await api('POST', `/questionnaires/${qid}/assignments/paste`, { text: paste.map(r => r.join('\t')).join('\n'), apply: true });
+  v = pasted.view;
+  const final = Object.entries(v.assignments).map(([ref, ids]) => ({ ref, ...lbl(v, ref), who: names(v, ids) }));
+  // What a respondent receives: the form served on their own link.
+  const inv = await api('GET', `/questionnaires/${qid}/invitations`); const one_ = inv.find(i => i.name === 'Rachid Amrani');
+  const f = (await api('GET', `/invitations/${one_.id}/form`)).form;
+  return { proposal, manual: manual.map(m => ({ ...lbl(v, m.ref), who: names(v, m.ids), note: m.note })), paste, pasted: { lines: pasted.lines, matched: pasted.matched, unmatched: pasted.unmatched },
+    final, summary: v.summary, sample: { name: one_.name, sections: f.sections.filter(s => s.type !== 'note').map(s => ({ title: fr(s.title), n: (s.items || s.rows || []).length, part: !!s.assigned_part })) } };
+}
+
 // ------------------------------------------------------------------ helpers on tasks and steps
 const taskRec = id => one(`SELECT * FROM task_instances WHERE id=?`, id);
 async function stepsOf(tid) { return api('GET', `/tasks/${tid}/steps`); }
@@ -186,6 +218,7 @@ async function runAll(pid) {
   // Distribution: every stakeholder of MP-53.8 becomes a respondent; the messages leave on each channel.
   await runTask('E2E-33', T33[5], { actor: ANALYST, fill: { 'MP-54.6': async () => {
     await api('POST', `/questionnaires/${q0}/invitations`, {});
+    out.assign = await assignQuestions(q0);
     const dist = await api('POST', `/questionnaires/${q0}/distribute`, {});
     const inv = await api('GET', `/questionnaires/${q0}/invitations`);
     const links = []; for (const i of inv) links.push({ id: i.id, name: i.name, email: i.email, phone: i.phone, population: i.population, form: i.template_code, plan: i.channel_plan, status: i.status, url: (await api('GET', `/invitations/${i.id}/link`)).url });
@@ -202,7 +235,7 @@ async function runAll(pid) {
       const view = await api('GET', `/public/q/${tokenStr}`);
       const st = STAKEHOLDERS.find(x => x[0] === i.name) || STAKEHOLDERS[0];
       const ans = answersFor(view.form, { lang: 'fr', name: i.name, position: st[3], reportsTo: 'Dr Salma Benjelloun', theme: ctx.themes[k % ctx.themes.length], core: { fr: 'Soins cliniques et infirmiers', en: 'Clinical care' }, standard: 'ISO 7101', sector: { fr: 'Établissements de santé', en: 'Healthcare' }, org: { fr: out.org.name, en: out.org.name }, functions: ['Soins cliniques et infirmiers', 'Qualité et HSE'], functionName: st[4] }, r, { skip: 0 });
-      if (view.form.sections.some(s => s.id === 'ai_sector')) ans.answers.ai_sector = { ...(ans.answers.ai_sector || {}), m_triage: k % 2 ? 'Le score de gravité proposé à l’accueil ; la décision d’orientation reste à l’infirmière.' : 'La pré-saisie des constantes et l’alerte sur les signes de gravité ; l’annonce au patient reste humaine.' };
+      if (view.form.sections.some(s => s.id === 'ai_sector' && s.items.some(x => x.key === 'm_triage'))) ans.answers.ai_sector = { ...(ans.answers.ai_sector || {}), m_triage: k % 2 ? 'Le score de gravité proposé à l’accueil ; la décision d’orientation reste à l’infirmière.' : 'La pré-saisie des constantes et l’alerte sur les signes de gravité ; l’annonce au patient reste humaine.' };
       await api('POST', `/public/q/${tokenStr}`, { answers: ans.answers || ans, flags: ans.flags || {}, consent: true, final: true });
       answered.push({ name: i.name, form: i.template_code, sample: Object.entries(ans.answers || ans).slice(0, 3).map(([sid, a]) => ({ section: sid, value: JSON.stringify(a).slice(0, 220) })) });
     }

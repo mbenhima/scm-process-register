@@ -7,7 +7,7 @@ import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { post, download } from '../lib/api.js';
 import { Btn, Icon, Card, Guard, Kpi, StatusPill, DataTable, useAction, Empty } from './ui.jsx';
-import { Design, Respondents, Channels, Responses, Dataset, Log } from '../pages/Questionnaires.jsx';
+import { Design, Respondents, Assignments, Channels, Responses, Dataset, Log } from '../pages/Questionnaires.jsx';
 
 /** Documents of the step (a template code), each version with its downloads, and the related standard report. */
 export function DocPanel({ projectId, code, report, readOnly, onChanged }) {
@@ -32,7 +32,7 @@ export function QuestionnaireStep({ module, questionnaireId, projectId, form, re
   const d = useData(questionnaireId ? `/questionnaires/${questionnaireId}` : null, [questionnaireId]);
   if (!questionnaireId) return <Empty icon="ClipboardList" title={t('qstep.none')} text={t('qstep.noneText')} />;
   return (<Guard state={d}>{q => { const st = q.stats.total; const edit = !readOnly && can('m54.edit') && q.status !== 'Closed'; const reload = () => { d.reload(); onChanged?.(); };
-    const blocking = q.issues.filter(i => ['aiUnvalidated', 'noAccountable', 'manyAccountable', 'noRespondents', 'noDueDate'].includes(i.code));
+    const blocking = q.issues.filter(i => ['aiUnvalidated', 'noAccountable', 'manyAccountable', 'noRespondents', 'noDueDate', 'assignEmpty'].includes(i.code));
     const items = (q.forms || []).flatMap(f => (f.sections || []).flatMap(s => s.items || []));
     return (<div className="stack qstep">
       <div className="row qstep-head"><Icon name="ClipboardList" /><span className="strong small">{L(q.label)}</span><StatusPill value={q.status} />
@@ -44,6 +44,7 @@ export function QuestionnaireStep({ module, questionnaireId, projectId, form, re
       {module === 'qdistribute' && <>
         <ChannelState q={q} />
         <Respondents q={q} edit={!readOnly && can('m54.edit') && q.status !== 'Closed'} reload={reload} />
+        <Assignments q={q} edit={!readOnly && can('m54.edit') && q.status !== 'Closed'} reload={reload} />
         {edit && ['Draft', 'Validated', 'Pending Validation'].includes(q.status) && <div className="row">
           {blocking.length > 0 && <span className="small field-error"><Icon name="CircleAlert" size={14} />{blocking.map(i => t('qissue.' + i.code, { ...i, form: i.form || '', section: i.section || '' })).join(' · ')}</span>}<span className="spacer" />
           <Btn kind="primary" icon="Send" disabled={blocking.length > 0} onClick={async () => { await act(() => post(`/questionnaires/${q.id}/distribute`), 'q.distributed'); reload(); }}>{t('qstep.distributeNow', { n: st.invited })}</Btn></div>}</>}

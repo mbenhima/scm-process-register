@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-15T16:48:05.209Z",
+ "generatedAt": "2026-10-15T17:10:17.213Z",
  "org": {
   "id": "f8c6a48a-e0b2-5a51-a687-d3c04f3b0302",
   "name": "Clinique Al Amal",
@@ -1504,7 +1504,7 @@
       "title": "Cahier des charges et registre des parties prenantes — Clinique Al Amal",
       "version": "1",
       "status": "Draft",
-      "id": "eebbd572-7f3e-4a31-8af5-05d3bfbca518"
+      "id": "433d13bc-f29a-4c0d-912a-8dff0e10f327"
      },
      "completed": true
     }
@@ -2112,7 +2112,7 @@
      "fields": [],
      "invitations": [
       {
-       "id": "f09a6f6e-ede7-421b-b6a7-809f6c0cd421",
+       "id": "0d1c4554-9694-4c96-ad2b-4f63b58e1a98",
        "name": "Dr Salma Benjelloun",
        "email": "dg.salma@cliniquealamal.ma",
        "phone": "212661000001",
@@ -2141,10 +2141,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/55IzaQ2KO-MP4qwkRwY7l6r-0OBWl4Nf"
+       "url": "http://localhost:4000/respond/EAJPhYMpe1UBGpzTdhhryC8WJFF447mG"
       },
       {
-       "id": "99aa0cb7-c41b-4a40-94aa-d8d8fa8e7b83",
+       "id": "7e06e5a0-1f8a-4b6d-8594-c0d7b80c249c",
        "name": "Dr Youssef Alaoui",
        "email": "directeur.medical@cliniquealamal.ma",
        "phone": "212661000003",
@@ -2173,10 +2173,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/qyBQJpfHGaw63CROmqerm_vIVS_nI9K1"
+       "url": "http://localhost:4000/respond/6pVlVK3-SdczeFnm4N7C5Ve3w0083ikn"
       },
       {
-       "id": "1f83bf91-0d24-463d-babf-d02b13f415f2",
+       "id": "2b928819-5bc4-4ae4-9fe4-0050a56a22bb",
        "name": "Hajar Tazi",
        "email": "hrd@cliniquealamal.ma",
        "phone": "212661000002",
@@ -2205,10 +2205,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/HhXqGpVDg95GjqGungZnxTlreIQ3-DYq"
+       "url": "http://localhost:4000/respond/iVtScs8O9sN8POdcRegeSe-uEhVG-bRY"
       },
       {
-       "id": "1e8377b3-6f0f-43fd-9455-db9c762fb47a",
+       "id": "d938c273-3ae9-4d5e-9aa1-94f436d8c905",
        "name": "Leila Chraibi",
        "email": "qualite@cliniquealamal.ma",
        "phone": "212661000006",
@@ -2232,10 +2232,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/yaQXd7XY5K2by7wPeepIfoHHe_O9WYH4"
+       "url": "http://localhost:4000/respond/AyD64W9L5N3sgTwVzJXi1D3hzqyeo_M6"
       },
       {
-       "id": "a6c1880f-a673-4165-9adc-b9e735aa7a77",
+       "id": "aaa4a139-b170-46b4-bd5a-00ca9984d1c9",
        "name": "Nadia Berrada",
        "email": "cadre.sante@cliniquealamal.ma",
        "phone": "212661000004",
@@ -2259,10 +2259,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/Yx34soSi3nzpHN6s0TV-JkUqXP3j5jx0"
+       "url": "http://localhost:4000/respond/ECDm8ablb8oW1juPrRutbVrxXmwXxkTK"
       },
       {
-       "id": "7d884d27-c9ef-4f91-8c70-af7a84343c8d",
+       "id": "23892349-bb11-4f89-91c5-42f79196b2b5",
        "name": "Omar El Fassi",
        "email": "urgences@cliniquealamal.ma",
        "phone": "212661000005",
@@ -2286,10 +2286,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/_xmo3i9-Kjbgsk4HnqOO1k8OHe2pUkl0"
+       "url": "http://localhost:4000/respond/LYYAXXm1PF5IuDyiG03uEIEfjNo5v5s6"
       },
       {
-       "id": "7b6d68d8-12f2-4a21-8454-9b37bd356405",
+       "id": "bfd12c6e-a3fa-43bc-b33d-b17ab22c970a",
        "name": "Imane Zerouali",
        "email": "radiologie2@cliniquealamal.ma",
        "phone": "212661000011",
@@ -2313,10 +2313,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/FLTaC0phB3BOmAEK4qCZWzoO3H9ZEFZ4"
+       "url": "http://localhost:4000/respond/i1WSNWezu4uXkQPSPS2XeWPVwF0rqqL2"
       },
       {
-       "id": "4dd985be-a336-419a-ab4f-74a58902e7ec",
+       "id": "b737791c-4fa8-4ffb-8269-0216d349f5c3",
        "name": "Mehdi Tahiri",
        "email": "infirmier.urgences2@cliniquealamal.ma",
        "phone": "212661000009",
@@ -2340,10 +2340,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/B6bPGy4uGJsmyegW8-KCcUU7xh0tvpid"
+       "url": "http://localhost:4000/respond/09UbRN-I5LqiDRy3VIyKAkN5yO9rpysK"
       },
       {
-       "id": "fa32f457-b755-4be2-b15a-5dc7dd77bc82",
+       "id": "bdb7533b-a8c4-438b-888a-ce1bb3873beb",
        "name": "Rachid Amrani",
        "email": "radiologie@cliniquealamal.ma",
        "phone": "212661000008",
@@ -2367,10 +2367,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/4_HEnPvsFNKa4ISmB_k0tOg7yGPittda"
+       "url": "http://localhost:4000/respond/ljm9j0OgeDjnwK-ScfguOD55GLqeGTef"
       },
       {
-       "id": "f3a10a94-3184-45d3-805e-e2e3d1adcd5b",
+       "id": "6c33dda0-407e-4461-882a-c647e8d2d47d",
        "name": "Samira Ouazzani",
        "email": "infirmiere.urgences@cliniquealamal.ma",
        "phone": "212661000007",
@@ -2394,10 +2394,10 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/biA-n7UDGt4o6lYVMqaWajmeWh8WJit5"
+       "url": "http://localhost:4000/respond/JrA2Cd3AxtM5p9IF6J7nWUV25RdD1pnD"
       },
       {
-       "id": "529d3a5a-f63b-40ba-83b6-7879c76b5c32",
+       "id": "8820ab0a-1cc8-4fb0-abb9-7c8b9bbc61ec",
        "name": "Youssra Bennis",
        "email": "infirmiere.hospit@cliniquealamal.ma",
        "phone": "212661000010",
@@ -2421,7 +2421,7 @@
         }
        ],
        "status": "Invited",
-       "url": "http://localhost:4000/respond/41ht62aWdUh37MWgVl7GAMGUYbx5jsWx"
+       "url": "http://localhost:4000/respond/trkII2QX0sa0cv8tsMTC--fk0AysGik9"
       }
      ],
      "messages": [
@@ -2430,77 +2430,77 @@
        "to": "212661000011",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Imane Zerouali,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/FLTaC0phB3BOmAEK4qCZWzoO3H9ZEFZ4\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Imane Zerouali,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/i1WSNWezu4uXkQPSPS2XeWPVwF0rqqL2\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "whatsapp",
        "to": "212661000010",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Youssra Bennis,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/41ht62aWdUh37MWgVl7GAMGUYbx5jsWx\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Youssra Bennis,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/trkII2QX0sa0cv8tsMTC--fk0AysGik9\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "whatsapp",
        "to": "212661000009",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Mehdi Tahiri,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/B6bPGy4uGJsmyegW8-KCcUU7xh0tvpid\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Mehdi Tahiri,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/09UbRN-I5LqiDRy3VIyKAkN5yO9rpysK\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "whatsapp",
        "to": "212661000008",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Rachid Amrani,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/4_HEnPvsFNKa4ISmB_k0tOg7yGPittda\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Rachid Amrani,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/ljm9j0OgeDjnwK-ScfguOD55GLqeGTef\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "whatsapp",
        "to": "212661000007",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Samira Ouazzani,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/biA-n7UDGt4o6lYVMqaWajmeWh8WJit5\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Samira Ouazzani,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/JrA2Cd3AxtM5p9IF6J7nWUV25RdD1pnD\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "email",
        "to": "qualite@cliniquealamal.ma",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Leila Chraibi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/yaQXd7XY5K2by7wPeepIfoHHe_O9WYH4\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Leila Chraibi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/AyD64W9L5N3sgTwVzJXi1D3hzqyeo_M6\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "email",
        "to": "urgences@cliniquealamal.ma",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Omar El Fassi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/_xmo3i9-Kjbgsk4HnqOO1k8OHe2pUkl0\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Omar El Fassi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/LYYAXXm1PF5IuDyiG03uEIEfjNo5v5s6\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "email",
        "to": "cadre.sante@cliniquealamal.ma",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Nadia Berrada,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/Yx34soSi3nzpHN6s0TV-JkUqXP3j5jx0\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Nadia Berrada,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/ECDm8ablb8oW1juPrRutbVrxXmwXxkTK\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "email",
        "to": "directeur.medical@cliniquealamal.ma",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/qyBQJpfHGaw63CROmqerm_vIVS_nI9K1\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/6pVlVK3-SdczeFnm4N7C5Ve3w0083ikn\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "email",
        "to": "hrd@cliniquealamal.ma",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Hajar Tazi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/HhXqGpVDg95GjqGungZnxTlreIQ3-DYq\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Hajar Tazi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/iVtScs8O9sN8POdcRegeSe-uEhVG-bRY\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       },
       {
        "channel": "email",
        "to": "dg.salma@cliniquealamal.ma",
        "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
        "status": "simulated",
-       "text": "Bonjour Dr Salma Benjelloun,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/55IzaQ2KO-MP4qwkRwY7l6r-0OBWl4Nf\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+       "text": "Bonjour Dr Salma Benjelloun,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/EAJPhYMpe1UBGpzTdhhryC8WJFF447mG\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
       }
      ],
      "completed": true
@@ -2600,15 +2600,15 @@
        "sample": [
         {
          "section": "identity",
-         "value": "{\"full_name\":\"Hajar Tazi\",\"position\":\"DRH / président du comité de pilotage\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":6,\"years_in_position\":1,\"age\":45}"
+         "value": "{\"full_name\":\"Hajar Tazi\",\"position\":\"DRH / président du comité de pilotage\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":17,\"years_in_position\":1,\"age\":29}"
         },
         {
          "section": "training_history",
-         "value": "[{\"title\":\"Planification IA des lits et des effectifs\",\"month_year\":\"09/2025\",\"days\":3,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"12/2025\",\"days"
+         "value": "[{\"title\":\"Planification IA des lits et des effectifs\",\"month_year\":\"09/2025\",\"days\":2,\"learnings\":\"Meilleure coordination avec les autres équipes\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"12/2025\",\"days\":3,\""
         },
         {
          "section": "previous_plan",
-         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
+         "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les no"
         }
        ]
       },
@@ -2618,15 +2618,15 @@
        "sample": [
         {
          "section": "identity",
-         "value": "{\"full_name\":\"Leila Chraibi\",\"position\":\"Responsable qualité\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":14,\"years_in_position\":9,\"age\":49}"
+         "value": "{\"full_name\":\"Leila Chraibi\",\"position\":\"Responsable qualité\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":11,\"years_in_position\":1,\"age\":57}"
         },
         {
          "section": "training_history",
-         "value": "[{\"title\":\"Dossier patient informatisé (DPI)\",\"month_year\":\"02/2025\",\"days\":2,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"06/2025\",\"days\":3,\"learnin"
+         "value": "[{\"title\":\"Dossier patient informatisé (DPI)\",\"month_year\":\"04/2025\",\"days\":3,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"11/2025\",\"days\":2,\"lear"
         },
         {
          "section": "previous_plan",
-         "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7"
+         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
         }
        ]
       },
@@ -2636,15 +2636,15 @@
        "sample": [
         {
          "section": "identity",
-         "value": "{\"full_name\":\"Nadia Berrada\",\"position\":\"Cadre de santé\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":12,\"years_in_position\":3,\"age\":53}"
+         "value": "{\"full_name\":\"Nadia Berrada\",\"position\":\"Cadre de santé\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":4,\"years_in_position\":7,\"age\":29}"
         },
         {
          "section": "training_history",
-         "value": "[{\"title\":\"Triage IA et aide à la décision clinique\",\"month_year\":\"03/2025\",\"days\":3,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"05/2025\",\"days\":"
+         "value": "[{\"title\":\"Triage IA et aide à la décision clinique\",\"month_year\":\"01/2025\",\"days\":1,\"learnings\":\"Compréhension des exigences clés et des preuves à conserver\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"11/2025\""
         },
         {
          "section": "previous_plan",
-         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7101.\",\"challenges\":\"Mesurer l"
+         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
         }
        ]
       },
@@ -2654,15 +2654,15 @@
        "sample": [
         {
          "section": "identity",
-         "value": "{\"full_name\":\"Omar El Fassi\",\"position\":\"Responsable des urgences\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":7,\"years_in_position\":7,\"age\":57}"
+         "value": "{\"full_name\":\"Omar El Fassi\",\"position\":\"Responsable des urgences\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":9,\"years_in_position\":8,\"age\":29}"
         },
         {
          "section": "training_history",
-         "value": "[{\"title\":\"Assistance IA en imagerie médicale\",\"month_year\":\"03/2025\",\"days\":1,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"}]"
+         "value": "[{\"title\":\"Assistance IA en imagerie médicale\",\"month_year\":\"11/2025\",\"days\":3,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"03/2025\",\"days\":3,\"lea"
         },
         {
          "section": "previous_plan",
-         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7101.\",\"challeng"
+         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
         }
        ]
       },
@@ -2672,15 +2672,15 @@
        "sample": [
         {
          "section": "identity",
-         "value": "{\"full_name\":\"Imane Zerouali\",\"position\":\"Technicien de radiologie\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":24,\"years_in_position\":6,\"age\":27}"
+         "value": "{\"full_name\":\"Imane Zerouali\",\"position\":\"Technicien de radiologie\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":4,\"years_in_position\":3,\"age\":28}"
         },
         {
          "section": "training_history",
-         "value": "[{\"title\":\"Planification IA des lits et des effectifs\",\"month_year\":\"11/2025\",\"days\":2,\"learnings\":\"Compréhension des exigences clés et des preuves à conserver\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"08/202"
+         "value": "[{\"title\":\"Planification IA des lits et des effectifs\",\"month_year\":\"08/2025\",\"days\":3,\"learnings\":\"Meilleure coordination avec les autres équipes\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"06/2025\",\"days\":2,\""
         },
         {
          "section": "previous_plan",
-         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7101.\",\"challenges\":\"Libérer l"
+         "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7"
         }
        ]
       },
@@ -2690,15 +2690,15 @@
        "sample": [
         {
          "section": "identity",
-         "value": "{\"full_name\":\"Mehdi Tahiri\",\"position\":\"Infirmière\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":26,\"years_in_position\":9,\"age\":43}"
+         "value": "{\"full_name\":\"Mehdi Tahiri\",\"position\":\"Infirmière\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":18,\"years_in_position\":1,\"age\":36}"
         },
         {
          "section": "training_history",
-         "value": "[{\"title\":\"Dossier patient informatisé (DPI)\",\"month_year\":\"12/2025\",\"days\":1,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"02/2025\",\"days\":3,\"learnin"
+         "value": "[{\"title\":\"Dossier patient informatisé (DPI)\",\"month_year\":\"11/2025\",\"days\":3,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"10/2025\",\"days\":2,\"learnin"
         },
         {
          "section": "previous_plan",
-         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
+         "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Les encadrants utilisent les nouvelles procéd"
         }
        ]
       },
@@ -2708,15 +2708,15 @@
        "sample": [
         {
          "section": "identity",
-         "value": "{\"full_name\":\"Rachid Amrani\",\"position\":\"Technicien de radiologie\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":9,\"years_in_position\":8,\"age\":45}"
+         "value": "{\"full_name\":\"Rachid Amrani\",\"position\":\"Technicien de radiologie\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":8,\"years_in_position\":4,\"age\":55}"
         },
         {
          "section": "training_history",
-         "value": "[{\"title\":\"Triage IA et aide à la décision clinique\",\"month_year\":\"04/2025\",\"days\":2,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"}]"
+         "value": "[{\"title\":\"Triage IA et aide à la décision clinique\",\"month_year\":\"07/2025\",\"days\":2,\"learnings\":\"Meilleure coordination avec les autres équipes\"}]"
         },
         {
          "section": "previous_plan",
-         "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Les encadrants utilisent les nouvelles procéd"
+         "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les no"
         }
        ]
       },
@@ -2726,15 +2726,15 @@
        "sample": [
         {
          "section": "identity",
-         "value": "{\"full_name\":\"Samira Ouazzani\",\"position\":\"Infirmière\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":7,\"years_in_position\":6,\"age\":38}"
+         "value": "{\"full_name\":\"Samira Ouazzani\",\"position\":\"Infirmière\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":22,\"years_in_position\":6,\"age\":54}"
         },
         {
          "section": "training_history",
-         "value": "[{\"title\":\"Assistance IA en imagerie médicale\",\"month_year\":\"02/2025\",\"days\":3,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"07/2025\",\"days\":3,\"learni"
+         "value": "[{\"title\":\"Assistance IA en imagerie médicale\",\"month_year\":\"01/2025\",\"days\":2,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"04/2025\",\"days\":1,\"lea"
         },
         {
          "section": "previous_plan",
-         "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7101.\",\"challeng"
+         "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7"
         }
        ]
       }
@@ -2886,15 +2886,16 @@
       "competences": [
        {
         "competence": "Communication avec l’équipe",
-        "count": 27,
+        "count": 28,
         "sources": [
          "Les emplois actuels et futurs (N-1 uniquement : ceux qui reportent au DG) — description et planification pour le développement",
          "Indicateurs de performance — objectifs stratégiques",
          "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
          "Ambitions, impact attendu et recommandations",
+         "SWOT de la fonction",
          "Fiche de poste",
-         "Indicateurs de performance — mes objectifs",
-         "Mon SWOT light"
+         "Mon SWOT light",
+         "Indicateurs de performance — mes objectifs"
         ],
         "populations": [
          "DG",
@@ -2904,15 +2905,16 @@
        },
        {
         "competence": "Résolution de problèmes",
-        "count": 27,
+        "count": 28,
         "sources": [
          "Les emplois actuels et futurs (N-1 uniquement : ceux qui reportent au DG) — description et planification pour le développement",
          "Indicateurs de performance — objectifs stratégiques",
          "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
          "Ambitions, impact attendu et recommandations",
+         "SWOT de la fonction",
          "Fiche de poste",
-         "Indicateurs de performance — mes objectifs",
-         "Mon SWOT light"
+         "Mon SWOT light",
+         "Indicateurs de performance — mes objectifs"
         ],
         "populations": [
          "DG",
@@ -2922,17 +2924,18 @@
        },
        {
         "competence": "Assistance IA en imagerie médicale",
-        "count": 25,
+        "count": 21,
         "sources": [
          "Les emplois actuels et futurs (N-1 uniquement : ceux qui reportent au DG) — description et planification pour le développement",
          "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
          "SWOT de la fonction",
          "Indicateurs de performance — objectifs stratégiques",
-         "Les projets en cours",
          "Questions spécifiques au secteur — Établissements de santé · AI",
+         "Les projets en cours",
          "Fiche de poste",
          "Mon SWOT light",
-         "Indicateurs de performance — mes objectifs"
+         "Indicateurs de performance — mes objectifs",
+         "Ambitions, impact attendu et recommandations"
         ],
         "populations": [
          "Management",
@@ -2941,13 +2944,12 @@
        },
        {
         "competence": "Triage IA et aide à la décision clinique",
-        "count": 23,
+        "count": 19,
         "sources": [
          "Les emplois actuels et futurs (N-1 uniquement : ceux qui reportent au DG) — description et planification pour le développement",
          "Indicateurs de performance — objectifs stratégiques",
          "Les projets en cours",
          "Questions spécifiques au secteur — Établissements de santé · AI",
-         "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
          "SWOT de la fonction",
          "Fiche de poste",
          "Mon SWOT light",
@@ -2968,8 +2970,8 @@
          "SWOT de la fonction",
          "Indicateurs de performance — objectifs stratégiques",
          "Fiche de poste",
-         "Mon SWOT light",
-         "Indicateurs de performance — mes objectifs"
+         "Indicateurs de performance — mes objectifs",
+         "Mon SWOT light"
         ],
         "populations": [
          "DG",
@@ -2986,8 +2988,24 @@
          "SWOT de la fonction",
          "Indicateurs de performance — objectifs stratégiques",
          "Fiche de poste",
-         "Mon SWOT light",
-         "Indicateurs de performance — mes objectifs"
+         "Indicateurs de performance — mes objectifs",
+         "Mon SWOT light"
+        ],
+        "populations": [
+         "DG",
+         "Management",
+         "Member"
+        ]
+       },
+       {
+        "competence": "Gestion du temps et priorités",
+        "count": 16,
+        "sources": [
+         "Les emplois actuels et futurs (N-1 uniquement : ceux qui reportent au DG) — description et planification pour le développement",
+         "SWOT de la fonction",
+         "Ambitions, impact attendu et recommandations",
+         "Fiche de poste",
+         "Mon SWOT light"
         ],
         "populations": [
          "DG",
@@ -2997,14 +3015,12 @@
        },
        {
         "competence": "Dossier patient informatisé (DPI)",
-        "count": 18,
+        "count": 13,
         "sources": [
          "Les emplois actuels et futurs (N-1 uniquement : ceux qui reportent au DG) — description et planification pour le développement",
-         "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
          "SWOT de la fonction",
          "Indicateurs de performance — objectifs stratégiques",
          "Les projets en cours",
-         "Questions spécifiques au secteur — Établissements de santé · AI",
          "Fiche de poste",
          "Mon SWOT light",
          "Indicateurs de performance — mes objectifs",
@@ -3016,35 +3032,18 @@
         ]
        },
        {
-        "competence": "Gestion du temps et priorités",
-        "count": 16,
-        "sources": [
-         "Les emplois actuels et futurs (N-1 uniquement : ceux qui reportent au DG) — description et planification pour le développement",
-         "SWOT de la fonction",
-         "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
-         "Fiche de poste",
-         "Ambitions, impact attendu et recommandations",
-         "Mon SWOT light"
-        ],
-        "populations": [
-         "DG",
-         "Management",
-         "Member"
-        ]
-       },
-       {
         "competence": "Planification IA des lits et des effectifs",
-        "count": 15,
+        "count": 12,
         "sources": [
          "Les emplois actuels et futurs (N-1 uniquement : ceux qui reportent au DG) — description et planification pour le développement",
          "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
          "SWOT de la fonction",
          "Indicateurs de performance — objectifs stratégiques",
-         "Les projets en cours",
-         "Questions spécifiques au secteur — Établissements de santé · AI",
+         "Ambitions, impact attendu et recommandations",
          "Fiche de poste",
          "Mon SWOT light",
-         "Indicateurs de performance — mes objectifs"
+         "Indicateurs de performance — mes objectifs",
+         "Les projets en cours"
         ],
         "populations": [
          "Management",
@@ -3052,13 +3051,12 @@
         ]
        },
        {
-        "competence": "qualité des données",
-        "count": 10,
+        "competence": "Protection des données et validation des résultats",
+        "count": 3,
         "sources": [
          "Questions spécifiques au secteur — Établissements de santé · AI"
         ],
         "populations": [
-         "DG",
          "Management",
          "Member"
         ]
@@ -3066,52 +3064,52 @@
       ],
       "softSkills": [
        {
-        "key": "comm_self",
-        "label": "Communication avec soi-même",
-        "average": 2.6,
-        "n": 10
-       },
-       {
-        "key": "training_effectiveness",
-        "label": "Formations et efficacité",
-        "average": 2.6,
-        "n": 10
-       },
-       {
-        "key": "recruitment",
-        "label": "Recrutement efficace",
-        "average": 3,
-        "n": 9
-       },
-       {
-        "key": "mbo_self",
-        "label": "Management par objectif et vision stratégique appliqué à soi-même",
-        "average": 3.1,
-        "n": 9
-       },
-       {
-        "key": "values_mgmt",
-        "label": "Management par les valeurs",
-        "average": 3.2,
+        "key": "comm_public",
+        "label": "Communication en public",
+        "average": 2.5,
         "n": 10
        },
        {
         "key": "enterprise_mgmt",
         "label": "Management d’entreprise : vue macro des métiers / fonctions de l’entreprise et leur pilotage ; tableau de bord global",
-        "average": 3.3,
+        "average": 2.8,
         "n": 6
        },
        {
-        "key": "innovation",
-        "label": "Amélioration continue de la qualité — innovation et solutions",
-        "average": 3.3,
+        "key": "conflict_resolution",
+        "label": "Amélioration continue de la qualité — résolution de conflits et solutions",
+        "average": 2.9,
+        "n": 8
+       },
+       {
+        "key": "recruitment",
+        "label": "Recrutement efficace",
+        "average": 3.1,
         "n": 10
        },
        {
         "key": "self_control",
         "label": "Auto-contrôle et excellence",
-        "average": 3.4,
+        "average": 3.2,
+        "n": 9
+       },
+       {
+        "key": "mbo_others",
+        "label": "Management par objectif et vision stratégique appliqué aux autres",
+        "average": 3.2,
+        "n": 9
+       },
+       {
+        "key": "comm_self",
+        "label": "Communication avec soi-même",
+        "average": 3.2,
         "n": 10
+       },
+       {
+        "key": "problem_solving",
+        "label": "Amélioration continue de la qualité — résolution de problèmes et solutions",
+        "average": 3.2,
+        "n": 9
        }
       ]
      },
@@ -3141,7 +3139,7 @@
      "module": "qfeed",
      "fields": [],
      "feed": {
-      "created": 10,
+      "created": 12,
       "responses": 10
      },
      "completed": true
@@ -3160,7 +3158,7 @@
       "title": "Rapport de campagne de questionnaires — Clinique Al Amal",
       "version": "1",
       "status": "Draft",
-      "id": "e499bed3-2242-468c-ad8a-f8b0b8c44461"
+      "id": "d597e469-d449-4260-8dc9-1b7a4fd3f3ae"
      },
      "completed": true
     }
@@ -3375,7 +3373,7 @@
          "C-01",
          "Communication avec l’équipe",
          "Comportemental",
-         "Compétence « Communication avec l’équipe » : la démontre en pratique et explique les raisons de chaque décision. Cité 27 fois dans le questionnaire des besoins (DG, Management, Member).",
+         "Compétence « Communication avec l’équipe » : la démontre en pratique et explique les raisons de chaque décision. Cité 28 fois dans le questionnaire des besoins (DG, Management, Member).",
          "1-4",
          "Karim Tazi",
          "Questionnaire des besoins"
@@ -3384,7 +3382,7 @@
          "C-02",
          "Résolution de problèmes",
          "Technique",
-         "Compétence « Résolution de problèmes » : la maîtrise dans les situations du poste. Cité 27 fois dans le questionnaire des besoins (DG, Management, Member).",
+         "Compétence « Résolution de problèmes » : la maîtrise dans les situations du poste. Cité 28 fois dans le questionnaire des besoins (DG, Management, Member).",
          "1-4",
          "Karim Tazi",
          "Questionnaire des besoins"
@@ -3393,7 +3391,7 @@
          "C-03",
          "Assistance IA en imagerie médicale",
          "IA",
-         "Compétence « Assistance IA en imagerie médicale » : utilise l’outil d’IA au quotidien, confronte chaque suggestion à son jugement clinique et trace la décision prise. Cité 25 fois dans le questionnaire des besoins (Management, Member).",
+         "Compétence « Assistance IA en imagerie médicale » : utilise l’outil d’IA au quotidien, confronte chaque suggestion à son jugement clinique et trace la décision prise. Cité 21 fois dans le questionnaire des besoins (Management, Member).",
          "1-4",
          "Karim Tazi",
          "Questionnaire des besoins"
@@ -3402,7 +3400,7 @@
          "C-04",
          "Triage IA et aide à la décision clinique",
          "IA",
-         "Compétence « Triage IA et aide à la décision clinique » : utilise l’outil d’IA au quotidien, confronte chaque suggestion à son jugement clinique et trace la décision prise. Cité 23 fois dans le questionnaire des besoins (DG, Management, Member).",
+         "Compétence « Triage IA et aide à la décision clinique » : utilise l’outil d’IA au quotidien, confronte chaque suggestion à son jugement clinique et trace la décision prise. Cité 19 fois dans le questionnaire des besoins (DG, Management, Member).",
          "1-4",
          "Karim Tazi",
          "Questionnaire des besoins"
@@ -3427,18 +3425,18 @@
         ],
         [
          "C-07",
-         "Dossier patient informatisé (DPI)",
-         "Numérique",
-         "Compétence « Dossier patient informatisé (DPI) » : utilise l’outil correctement et complètement, sans double saisie. Cité 18 fois dans le questionnaire des besoins (Management, Member).",
+         "Gestion du temps et priorités",
+         "Technique",
+         "Compétence « Gestion du temps et priorités » : la maîtrise dans les situations du poste. Cité 16 fois dans le questionnaire des besoins (DG, Management, Member).",
          "1-4",
          "Karim Tazi",
          "Questionnaire des besoins"
         ],
         [
          "C-08",
-         "Gestion du temps et priorités",
-         "Technique",
-         "Compétence « Gestion du temps et priorités » : la maîtrise dans les situations du poste. Cité 16 fois dans le questionnaire des besoins (DG, Management, Member).",
+         "Dossier patient informatisé (DPI)",
+         "Numérique",
+         "Compétence « Dossier patient informatisé (DPI) » : utilise l’outil correctement et complètement, sans double saisie. Cité 13 fois dans le questionnaire des besoins (Management, Member).",
          "1-4",
          "Karim Tazi",
          "Questionnaire des besoins"
@@ -8342,7 +8340,7 @@
        },
        {
         "label": "Besoins issus du questionnaire",
-        "value": 10
+        "value": 12
        }
       ],
       "tables": [
@@ -8811,20 +8809,28 @@
          "label": "Tableaux de bord"
         },
         {
-         "value": "Dossier patient informatisé (DPI)",
-         "label": "Dossier patient informatisé (DPI)"
-        },
-        {
          "value": "Gestion du temps et priorités",
          "label": "Gestion du temps et priorités"
+        },
+        {
+         "value": "Dossier patient informatisé (DPI)",
+         "label": "Dossier patient informatisé (DPI)"
         },
         {
          "value": "Planification IA des lits et des effectifs",
          "label": "Planification IA des lits et des effectifs"
         },
         {
+         "value": "Protection des données et validation des résultats",
+         "label": "Protection des données et validation des résultats"
+        },
+        {
          "value": "qualité des données",
          "label": "qualité des données"
+        },
+        {
+         "value": "Manque de formation et règles peu claires",
+         "label": "Manque de formation et règles peu claires"
         },
         {
          "value": "Éthique et protection des données de santé dans l’usage de l’IA",
@@ -19653,7 +19659,7 @@
   }
  ],
  "questionnaire": {
-  "id": "fc97c6d1-28d3-4d9b-949e-878512f00330",
+  "id": "4a5c4537-9159-487e-a5eb-a0edbe132364",
   "label": "Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
   "status": "Distributed",
   "stats": {
@@ -21437,7 +21443,7 @@
   ]
  },
  "project": {
-  "id": "0fefd433-a273-479a-a645-64e30e6ca96b",
+  "id": "a390baa9-c8ee-40e6-ad7c-3908f049996f",
   "name": "Compétences IA 2027 — Clinique Al Amal",
   "template": {
    "code": "PT-HCPR-SIMPLE-AI",
@@ -21485,6 +21491,518 @@
    "tasks": 8
   }
  ],
+ "assign": {
+  "proposal": [
+   {
+    "ref": "QT-IFPAC-MGT|hr_orientations",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "section",
+    "label": "Orientations RH (seulement pour la fonction RH)",
+    "questions": 1,
+    "who": [
+     "Hajar Tazi"
+    ],
+    "why": "hr"
+   },
+   {
+    "ref": "QT-IFPAC-MGT|ai_sector|ai_q1",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "question",
+    "label": "À quelle fréquence utilisez-vous Triage IA et aide à la décision clinique dans votre travail aujourd’hui, et pour quelles tâches ?",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Nadia Berrada",
+     "Omar El Fassi"
+    ],
+    "why": "role"
+   },
+   {
+    "ref": "QT-IFPAC-MGT|ai_sector|ai_q2",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "question",
+    "label": "Qu’est-ce qui vous empêche aujourd’hui d’utiliser Assistance IA en imagerie médicale dans Soins cliniques et infirmiers ?",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui"
+    ],
+    "why": "role"
+   },
+   {
+    "ref": "QT-IFPAC-MGT|ai_sector|ai_q3",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "question",
+    "label": "Quelles exigences ISO 7101 une formation sur Triage IA et aide à la décision clinique devrait-elle couvrir ?",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Nadia Berrada",
+     "Omar El Fassi"
+    ],
+    "why": "role"
+   },
+   {
+    "ref": "QT-IFPAC-MGT|ai_sector|ai_q4",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "question",
+    "label": "De quelles compétences avez-vous besoin pour appliquer Planification IA des lits et des effectifs en toute sécurité ?",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Leila Chraibi",
+     "Nadia Berrada"
+    ],
+    "why": "role"
+   },
+   {
+    "ref": "QT-IFPAC-MBR|ai_sector|ai_q1",
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Dans votre service, à quelle fréquence utilisez-vous un outil numérique pour orienter un patient à l’accueil des urgences ?",
+    "questions": 1,
+    "who": [
+     "Mehdi Tahiri",
+     "Samira Ouazzani",
+     "Youssra Bennis"
+    ],
+    "why": "role"
+   },
+   {
+    "ref": "QT-IFPAC-MBR|ai_sector|ai_q2",
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Qu’est-ce qui vous empêche aujourd’hui d’utiliser Assistance IA en imagerie médicale dans Soins cliniques et infirmiers ?",
+    "questions": 1,
+    "who": [
+     "Imane Zerouali",
+     "Rachid Amrani"
+    ],
+    "why": "role"
+   },
+   {
+    "ref": "QT-IFPAC-MBR|ai_sector|ai_q3",
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Quelles exigences ISO 7101 une formation sur Triage IA et aide à la décision clinique devrait-elle couvrir ?",
+    "questions": 1,
+    "who": [
+     "Mehdi Tahiri",
+     "Samira Ouazzani",
+     "Youssra Bennis"
+    ],
+    "why": "role"
+   },
+   {
+    "ref": "QT-IFPAC-MBR|ai_sector|m_triage",
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Quels gestes du tri aux urgences aimeriez-vous voir assistés par l’IA, et lesquels doivent rester entièrement humains ?",
+    "questions": 1,
+    "who": [
+     "Mehdi Tahiri",
+     "Samira Ouazzani",
+     "Youssra Bennis"
+    ],
+    "why": "role"
+   }
+  ],
+  "manual": [
+   {
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Quels gestes du tri aux urgences aimeriez-vous voir assistés par l’IA, et lesquels doivent rester entièrement humains ?",
+    "questions": 1,
+    "who": [
+     "Mehdi Tahiri",
+     "Samira Ouazzani"
+    ],
+    "note": "Youssra Bennis travaille en hospitalisation : elle ne fait pas le tri à l’accueil des urgences."
+   },
+   {
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "subsection",
+    "label": "Machines de production / infrastructure réseau",
+    "questions": 6,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Leila Chraibi"
+    ],
+    "note": "Équipements et capacité : direction médicale et qualité."
+   },
+   {
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "subsection",
+    "label": "Produits / services / marketing / PLM",
+    "questions": 3,
+    "who": [
+     "Dr Youssef Alaoui"
+    ],
+    "note": "Offre de soins : direction médicale."
+   }
+  ],
+  "paste": [
+   [
+    "Section",
+    "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
+    "Dr Youssef Alaoui, Hajar Tazi"
+   ],
+   [
+    "Section",
+    "Les projets en cours",
+    "Cadre de santé, Responsable des urgences, Responsable qualité"
+   ]
+  ],
+  "pasted": {
+   "lines": 2,
+   "matched": 2,
+   "unmatched": []
+  },
+  "final": [
+   {
+    "ref": "QT-IFPAC-MGT|hr_orientations",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "section",
+    "label": "Orientations RH (seulement pour la fonction RH)",
+    "questions": 1,
+    "who": [
+     "Hajar Tazi"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MGT|ai_sector|ai_q1",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "question",
+    "label": "À quelle fréquence utilisez-vous Triage IA et aide à la décision clinique dans votre travail aujourd’hui, et pour quelles tâches ?",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Nadia Berrada",
+     "Omar El Fassi"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MGT|ai_sector|ai_q2",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "question",
+    "label": "Qu’est-ce qui vous empêche aujourd’hui d’utiliser Assistance IA en imagerie médicale dans Soins cliniques et infirmiers ?",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MGT|ai_sector|ai_q3",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "question",
+    "label": "Quelles exigences ISO 7101 une formation sur Triage IA et aide à la décision clinique devrait-elle couvrir ?",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Nadia Berrada",
+     "Omar El Fassi"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MGT|ai_sector|ai_q4",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "question",
+    "label": "De quelles compétences avez-vous besoin pour appliquer Planification IA des lits et des effectifs en toute sécurité ?",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Leila Chraibi",
+     "Nadia Berrada"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MBR|ai_sector|ai_q1",
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Dans votre service, à quelle fréquence utilisez-vous un outil numérique pour orienter un patient à l’accueil des urgences ?",
+    "questions": 1,
+    "who": [
+     "Mehdi Tahiri",
+     "Samira Ouazzani",
+     "Youssra Bennis"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MBR|ai_sector|ai_q2",
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Qu’est-ce qui vous empêche aujourd’hui d’utiliser Assistance IA en imagerie médicale dans Soins cliniques et infirmiers ?",
+    "questions": 1,
+    "who": [
+     "Imane Zerouali",
+     "Rachid Amrani"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MBR|ai_sector|ai_q3",
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Quelles exigences ISO 7101 une formation sur Triage IA et aide à la décision clinique devrait-elle couvrir ?",
+    "questions": 1,
+    "who": [
+     "Mehdi Tahiri",
+     "Samira Ouazzani",
+     "Youssra Bennis"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MBR|ai_sector|m_triage",
+    "form": "QT-IFPAC-MBR",
+    "formName": "Formulaire IF-PAC — Membre de l’équipe",
+    "level": "question",
+    "label": "Quels gestes du tri aux urgences aimeriez-vous voir assistés par l’IA, et lesquels doivent rester entièrement humains ?",
+    "questions": 1,
+    "who": [
+     "Mehdi Tahiri",
+     "Samira Ouazzani"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MGT|transverse|g:production_equipment_network_infrastruct",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "subsection",
+    "label": "Machines de production / infrastructure réseau",
+    "questions": 6,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Leila Chraibi"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MGT|transverse|g:products_services_marketing_plm",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "subsection",
+    "label": "Produits / services / marketing / PLM",
+    "questions": 3,
+    "who": [
+     "Dr Youssef Alaoui"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MGT|performance",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "section",
+    "label": "Performance par fonction et niveau (1 – 5 ; 5 : plus haute)",
+    "questions": 1,
+    "who": [
+     "Dr Youssef Alaoui",
+     "Hajar Tazi"
+    ]
+   },
+   {
+    "ref": "QT-IFPAC-MGT|projects",
+    "form": "QT-IFPAC-MGT",
+    "formName": "Formulaire IF-PAC — Management (directeurs / responsables, pilotes de processus)",
+    "level": "section",
+    "label": "Les projets en cours",
+    "questions": 1,
+    "who": [
+     "Leila Chraibi",
+     "Nadia Berrada",
+     "Omar El Fassi"
+    ]
+   }
+  ],
+  "summary": [
+   {
+    "invitation_id": "0d1c4554-9694-4c96-ad2b-4f63b58e1a98",
+    "stakeholder_id": "042f5a28-7c89-4cb7-90eb-6df19feff730",
+    "name": "Dr Salma Benjelloun",
+    "form": "QT-IFPAC-DG",
+    "questions": 96,
+    "total": 96,
+    "sections": 17,
+    "sectionsTotal": 17
+   },
+   {
+    "invitation_id": "7e06e5a0-1f8a-4b6d-8594-c0d7b80c249c",
+    "stakeholder_id": "0d9e1d5c-5ef7-421b-bd4d-43405eaf2314",
+    "name": "Dr Youssef Alaoui",
+    "form": "QT-IFPAC-MGT",
+    "questions": 79,
+    "total": 81,
+    "sections": 14,
+    "sectionsTotal": 16
+   },
+   {
+    "invitation_id": "2b928819-5bc4-4ae4-9fe4-0050a56a22bb",
+    "stakeholder_id": "a6a6a1df-f724-4335-9049-67585b5fcf53",
+    "name": "Hajar Tazi",
+    "form": "QT-IFPAC-MGT",
+    "questions": 67,
+    "total": 81,
+    "sections": 15,
+    "sectionsTotal": 16
+   },
+   {
+    "invitation_id": "d938c273-3ae9-4d5e-9aa1-94f436d8c905",
+    "stakeholder_id": "32bad600-4f73-4902-8fa7-edf34a2112de",
+    "name": "Leila Chraibi",
+    "form": "QT-IFPAC-MGT",
+    "questions": 73,
+    "total": 81,
+    "sections": 14,
+    "sectionsTotal": 16
+   },
+   {
+    "invitation_id": "aaa4a139-b170-46b4-bd5a-00ca9984d1c9",
+    "stakeholder_id": "8e0cae08-2ebb-46ae-94d0-dde344e10158",
+    "name": "Nadia Berrada",
+    "form": "QT-IFPAC-MGT",
+    "questions": 69,
+    "total": 81,
+    "sections": 14,
+    "sectionsTotal": 16
+   },
+   {
+    "invitation_id": "23892349-bb11-4f89-91c5-42f79196b2b5",
+    "stakeholder_id": "753c239a-b23e-4592-95e2-640fdda5186d",
+    "name": "Omar El Fassi",
+    "form": "QT-IFPAC-MGT",
+    "questions": 68,
+    "total": 81,
+    "sections": 14,
+    "sectionsTotal": 16
+   },
+   {
+    "invitation_id": "bfd12c6e-a3fa-43bc-b33d-b17ab22c970a",
+    "stakeholder_id": "44851a2d-4c7a-41f7-8631-43b0a562d575",
+    "name": "Imane Zerouali",
+    "form": "QT-IFPAC-MBR",
+    "questions": 55,
+    "total": 58,
+    "sections": 11,
+    "sectionsTotal": 11
+   },
+   {
+    "invitation_id": "b737791c-4fa8-4ffb-8269-0216d349f5c3",
+    "stakeholder_id": "3e924fad-889c-4391-b78b-e43377245bc0",
+    "name": "Mehdi Tahiri",
+    "form": "QT-IFPAC-MBR",
+    "questions": 57,
+    "total": 58,
+    "sections": 11,
+    "sectionsTotal": 11
+   },
+   {
+    "invitation_id": "bdb7533b-a8c4-438b-888a-ce1bb3873beb",
+    "stakeholder_id": "f3ecbfaa-29d2-4232-9afa-2624d16ab211",
+    "name": "Rachid Amrani",
+    "form": "QT-IFPAC-MBR",
+    "questions": 55,
+    "total": 58,
+    "sections": 11,
+    "sectionsTotal": 11
+   },
+   {
+    "invitation_id": "6c33dda0-407e-4461-882a-c647e8d2d47d",
+    "stakeholder_id": "64a7f305-f23a-4b49-a254-66ce609410a5",
+    "name": "Samira Ouazzani",
+    "form": "QT-IFPAC-MBR",
+    "questions": 57,
+    "total": 58,
+    "sections": 11,
+    "sectionsTotal": 11
+   },
+   {
+    "invitation_id": "8820ab0a-1cc8-4fb0-abb9-7c8b9bbc61ec",
+    "stakeholder_id": "cc310209-e24a-4900-a95d-083408b934fb",
+    "name": "Youssra Bennis",
+    "form": "QT-IFPAC-MBR",
+    "questions": 56,
+    "total": 58,
+    "sections": 11,
+    "sectionsTotal": 11
+   }
+  ],
+  "sample": {
+   "name": "Rachid Amrani",
+   "sections": [
+    {
+     "title": "Participant",
+     "n": 0,
+     "part": false
+    },
+    {
+     "title": "Formations auxquelles vous avez assisté dans votre entreprise / institution",
+     "n": 0,
+     "part": false
+    },
+    {
+     "title": "Impact du plan de formation de l’année n-1",
+     "n": 9,
+     "part": false
+    },
+    {
+     "title": "Fiche de poste",
+     "n": 0,
+     "part": false
+    },
+    {
+     "title": "Les niveaux de leadership et excellence",
+     "n": 3,
+     "part": false
+    },
+    {
+     "title": "Mon SWOT light",
+     "n": 0,
+     "part": false
+    },
+    {
+     "title": "Indicateurs de performance — mes objectifs",
+     "n": 0,
+     "part": false
+    },
+    {
+     "title": "Comment vous évaluez-vous par rapport aux compétences managériales / leadership suivantes",
+     "n": 21,
+     "part": false
+    },
+    {
+     "title": "Les projets en cours",
+     "n": 0,
+     "part": false
+    },
+    {
+     "title": "Questions spécifiques au secteur — Établissements de santé · AI",
+     "n": 3,
+     "part": true
+    },
+    {
+     "title": "Ambitions, impact attendu et recommandations",
+     "n": 8,
+     "part": false
+    }
+   ]
+  }
+ },
  "answered": [
   {
    "name": "Dr Salma Benjelloun",
@@ -21528,15 +22046,15 @@
    "sample": [
     {
      "section": "identity",
-     "value": "{\"full_name\":\"Hajar Tazi\",\"position\":\"DRH / président du comité de pilotage\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":6,\"years_in_position\":1,\"age\":45}"
+     "value": "{\"full_name\":\"Hajar Tazi\",\"position\":\"DRH / président du comité de pilotage\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":17,\"years_in_position\":1,\"age\":29}"
     },
     {
      "section": "training_history",
-     "value": "[{\"title\":\"Planification IA des lits et des effectifs\",\"month_year\":\"09/2025\",\"days\":3,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"12/2025\",\"days"
+     "value": "[{\"title\":\"Planification IA des lits et des effectifs\",\"month_year\":\"09/2025\",\"days\":2,\"learnings\":\"Meilleure coordination avec les autres équipes\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"12/2025\",\"days\":3,\""
     },
     {
      "section": "previous_plan",
-     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
+     "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les no"
     }
    ]
   },
@@ -21546,15 +22064,15 @@
    "sample": [
     {
      "section": "identity",
-     "value": "{\"full_name\":\"Leila Chraibi\",\"position\":\"Responsable qualité\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":14,\"years_in_position\":9,\"age\":49}"
+     "value": "{\"full_name\":\"Leila Chraibi\",\"position\":\"Responsable qualité\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":11,\"years_in_position\":1,\"age\":57}"
     },
     {
      "section": "training_history",
-     "value": "[{\"title\":\"Dossier patient informatisé (DPI)\",\"month_year\":\"02/2025\",\"days\":2,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"06/2025\",\"days\":3,\"learnin"
+     "value": "[{\"title\":\"Dossier patient informatisé (DPI)\",\"month_year\":\"04/2025\",\"days\":3,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"11/2025\",\"days\":2,\"lear"
     },
     {
      "section": "previous_plan",
-     "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7"
+     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
     }
    ]
   },
@@ -21564,15 +22082,15 @@
    "sample": [
     {
      "section": "identity",
-     "value": "{\"full_name\":\"Nadia Berrada\",\"position\":\"Cadre de santé\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":12,\"years_in_position\":3,\"age\":53}"
+     "value": "{\"full_name\":\"Nadia Berrada\",\"position\":\"Cadre de santé\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":4,\"years_in_position\":7,\"age\":29}"
     },
     {
      "section": "training_history",
-     "value": "[{\"title\":\"Triage IA et aide à la décision clinique\",\"month_year\":\"03/2025\",\"days\":3,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"05/2025\",\"days\":"
+     "value": "[{\"title\":\"Triage IA et aide à la décision clinique\",\"month_year\":\"01/2025\",\"days\":1,\"learnings\":\"Compréhension des exigences clés et des preuves à conserver\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"11/2025\""
     },
     {
      "section": "previous_plan",
-     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7101.\",\"challenges\":\"Mesurer l"
+     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
     }
    ]
   },
@@ -21582,15 +22100,15 @@
    "sample": [
     {
      "section": "identity",
-     "value": "{\"full_name\":\"Omar El Fassi\",\"position\":\"Responsable des urgences\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":7,\"years_in_position\":7,\"age\":57}"
+     "value": "{\"full_name\":\"Omar El Fassi\",\"position\":\"Responsable des urgences\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":9,\"years_in_position\":8,\"age\":29}"
     },
     {
      "section": "training_history",
-     "value": "[{\"title\":\"Assistance IA en imagerie médicale\",\"month_year\":\"03/2025\",\"days\":1,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"}]"
+     "value": "[{\"title\":\"Assistance IA en imagerie médicale\",\"month_year\":\"11/2025\",\"days\":3,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"03/2025\",\"days\":3,\"lea"
     },
     {
      "section": "previous_plan",
-     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7101.\",\"challeng"
+     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
     }
    ]
   },
@@ -21600,15 +22118,15 @@
    "sample": [
     {
      "section": "identity",
-     "value": "{\"full_name\":\"Imane Zerouali\",\"position\":\"Technicien de radiologie\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":24,\"years_in_position\":6,\"age\":27}"
+     "value": "{\"full_name\":\"Imane Zerouali\",\"position\":\"Technicien de radiologie\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":4,\"years_in_position\":3,\"age\":28}"
     },
     {
      "section": "training_history",
-     "value": "[{\"title\":\"Planification IA des lits et des effectifs\",\"month_year\":\"11/2025\",\"days\":2,\"learnings\":\"Compréhension des exigences clés et des preuves à conserver\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"08/202"
+     "value": "[{\"title\":\"Planification IA des lits et des effectifs\",\"month_year\":\"08/2025\",\"days\":3,\"learnings\":\"Meilleure coordination avec les autres équipes\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"06/2025\",\"days\":2,\""
     },
     {
      "section": "previous_plan",
-     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7101.\",\"challenges\":\"Libérer l"
+     "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7"
     }
    ]
   },
@@ -21618,15 +22136,15 @@
    "sample": [
     {
      "section": "identity",
-     "value": "{\"full_name\":\"Mehdi Tahiri\",\"position\":\"Infirmière\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":26,\"years_in_position\":9,\"age\":43}"
+     "value": "{\"full_name\":\"Mehdi Tahiri\",\"position\":\"Infirmière\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":18,\"years_in_position\":1,\"age\":36}"
     },
     {
      "section": "training_history",
-     "value": "[{\"title\":\"Dossier patient informatisé (DPI)\",\"month_year\":\"12/2025\",\"days\":1,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"02/2025\",\"days\":3,\"learnin"
+     "value": "[{\"title\":\"Dossier patient informatisé (DPI)\",\"month_year\":\"11/2025\",\"days\":3,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"10/2025\",\"days\":2,\"learnin"
     },
     {
      "section": "previous_plan",
-     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les nouvelles procédures.\",\"challen"
+     "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Les encadrants utilisent les nouvelles procéd"
     }
    ]
   },
@@ -21636,15 +22154,15 @@
    "sample": [
     {
      "section": "identity",
-     "value": "{\"full_name\":\"Rachid Amrani\",\"position\":\"Technicien de radiologie\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":9,\"years_in_position\":8,\"age\":45}"
+     "value": "{\"full_name\":\"Rachid Amrani\",\"position\":\"Technicien de radiologie\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":8,\"years_in_position\":4,\"age\":55}"
     },
     {
      "section": "training_history",
-     "value": "[{\"title\":\"Triage IA et aide à la décision clinique\",\"month_year\":\"04/2025\",\"days\":2,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"}]"
+     "value": "[{\"title\":\"Triage IA et aide à la décision clinique\",\"month_year\":\"07/2025\",\"days\":2,\"learnings\":\"Meilleure coordination avec les autres équipes\"}]"
     },
     {
      "section": "previous_plan",
-     "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Les encadrants utilisent les nouvelles procéd"
+     "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Les encadrants utilisent les no"
     }
    ]
   },
@@ -21654,15 +22172,15 @@
    "sample": [
     {
      "section": "identity",
-     "value": "{\"full_name\":\"Samira Ouazzani\",\"position\":\"Infirmière\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":7,\"years_in_position\":6,\"age\":38}"
+     "value": "{\"full_name\":\"Samira Ouazzani\",\"position\":\"Infirmière\",\"reports_to\":\"Dr Salma Benjelloun\",\"experience_years\":22,\"years_in_position\":6,\"age\":54}"
     },
     {
      "section": "training_history",
-     "value": "[{\"title\":\"Assistance IA en imagerie médicale\",\"month_year\":\"02/2025\",\"days\":3,\"learnings\":\"Je sais appliquer la méthode sur mes propres cas\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"07/2025\",\"days\":3,\"learni"
+     "value": "[{\"title\":\"Assistance IA en imagerie médicale\",\"month_year\":\"01/2025\",\"days\":2,\"learnings\":\"J’ai appris à lire les indicateurs de mon périmètre\"},{\"title\":\"ISO 7101 — sensibilisation\",\"month_year\":\"04/2025\",\"days\":1,\"lea"
     },
     {
      "section": "previous_plan",
-     "value": "{\"noticed\":\"Bonne participation, mais peu de suivi après les sessions.\",\"strengths\":\"Des formateurs pratiques qui connaissaient notre secteur.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7101.\",\"challeng"
+     "value": "{\"noticed\":\"Les formations ont été choisies tard dans l’année, avec peu de lien avec nos objectifs.\",\"strengths\":\"Des sessions sur site, proches des équipes.\",\"improvements\":\"Moins d’erreurs sur les enregistrements ISO 7"
     }
    ]
   }
@@ -21725,7 +22243,7 @@
     "recipient": "dg.salma@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Dr Salma Benjelloun,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/55IzaQ2KO-MP4qwkRwY7l6r-0OBWl4Nf\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Salma Benjelloun,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/EAJPhYMpe1UBGpzTdhhryC8WJFF447mG\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21733,7 +22251,7 @@
     "recipient": "hrd@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Hajar Tazi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/HhXqGpVDg95GjqGungZnxTlreIQ3-DYq\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Hajar Tazi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/iVtScs8O9sN8POdcRegeSe-uEhVG-bRY\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21741,7 +22259,7 @@
     "recipient": "directeur.medical@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/qyBQJpfHGaw63CROmqerm_vIVS_nI9K1\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/6pVlVK3-SdczeFnm4N7C5Ve3w0083ikn\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21749,7 +22267,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/Yx34soSi3nzpHN6s0TV-JkUqXP3j5jx0\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/ECDm8ablb8oW1juPrRutbVrxXmwXxkTK\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21757,7 +22275,7 @@
     "recipient": "urgences@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/_xmo3i9-Kjbgsk4HnqOO1k8OHe2pUkl0\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/LYYAXXm1PF5IuDyiG03uEIEfjNo5v5s6\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21765,7 +22283,7 @@
     "recipient": "qualite@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Leila Chraibi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/yaQXd7XY5K2by7wPeepIfoHHe_O9WYH4\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Leila Chraibi,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/AyD64W9L5N3sgTwVzJXi1D3hzqyeo_M6\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21773,7 +22291,7 @@
     "recipient": "212661000007",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Samira Ouazzani,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/biA-n7UDGt4o6lYVMqaWajmeWh8WJit5\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Samira Ouazzani,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/JrA2Cd3AxtM5p9IF6J7nWUV25RdD1pnD\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21781,7 +22299,7 @@
     "recipient": "212661000008",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/4_HEnPvsFNKa4ISmB_k0tOg7yGPittda\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/ljm9j0OgeDjnwK-ScfguOD55GLqeGTef\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21789,7 +22307,7 @@
     "recipient": "212661000009",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Mehdi Tahiri,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/B6bPGy4uGJsmyegW8-KCcUU7xh0tvpid\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Mehdi Tahiri,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/09UbRN-I5LqiDRy3VIyKAkN5yO9rpysK\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21797,7 +22315,7 @@
     "recipient": "212661000010",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Youssra Bennis,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/41ht62aWdUh37MWgVl7GAMGUYbx5jsWx\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Youssra Bennis,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/trkII2QX0sa0cv8tsMTC--fk0AysGik9\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21805,7 +22323,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal : votre avis est attendu",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/FLTaC0phB3BOmAEK4qCZWzoO3H9ZEFZ4\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nClinique Al Amal prépare son plan de formation et souhaite recueillir votre avis dans le questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal ».\nRépondez en ligne, à votre rythme (votre brouillon est enregistré) : http://localhost:4000/respond/i1WSNWezu4uXkQPSPS2XeWPVwF0rqqL2\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21813,7 +22331,7 @@
     "recipient": "dg.salma@cliniquealamal.ma",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Dr Salma Benjelloun,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/55IzaQ2KO-MP4qwkRwY7l6r-0OBWl4Nf\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Salma Benjelloun,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/EAJPhYMpe1UBGpzTdhhryC8WJFF447mG\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21821,7 +22339,7 @@
     "recipient": "hrd@cliniquealamal.ma",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Hajar Tazi,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/HhXqGpVDg95GjqGungZnxTlreIQ3-DYq\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Hajar Tazi,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/iVtScs8O9sN8POdcRegeSe-uEhVG-bRY\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21829,7 +22347,7 @@
     "recipient": "directeur.medical@cliniquealamal.ma",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/qyBQJpfHGaw63CROmqerm_vIVS_nI9K1\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/6pVlVK3-SdczeFnm4N7C5Ve3w0083ikn\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21837,7 +22355,7 @@
     "recipient": "212661000004",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/Yx34soSi3nzpHN6s0TV-JkUqXP3j5jx0\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/ECDm8ablb8oW1juPrRutbVrxXmwXxkTK\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21845,7 +22363,7 @@
     "recipient": "212661000005",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/_xmo3i9-Kjbgsk4HnqOO1k8OHe2pUkl0\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/LYYAXXm1PF5IuDyiG03uEIEfjNo5v5s6\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21853,7 +22371,7 @@
     "recipient": "212661000006",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Leila Chraibi,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/yaQXd7XY5K2by7wPeepIfoHHe_O9WYH4\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Leila Chraibi,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/AyD64W9L5N3sgTwVzJXi1D3hzqyeo_M6\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21861,7 +22379,7 @@
     "recipient": "infirmiere.urgences@cliniquealamal.ma",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Samira Ouazzani,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/biA-n7UDGt4o6lYVMqaWajmeWh8WJit5\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Samira Ouazzani,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/JrA2Cd3AxtM5p9IF6J7nWUV25RdD1pnD\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21869,7 +22387,7 @@
     "recipient": "radiologie@cliniquealamal.ma",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/4_HEnPvsFNKa4ISmB_k0tOg7yGPittda\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/ljm9j0OgeDjnwK-ScfguOD55GLqeGTef\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21877,7 +22395,7 @@
     "recipient": "infirmier.urgences2@cliniquealamal.ma",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Mehdi Tahiri,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/B6bPGy4uGJsmyegW8-KCcUU7xh0tvpid\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Mehdi Tahiri,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/09UbRN-I5LqiDRy3VIyKAkN5yO9rpysK\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21885,7 +22403,7 @@
     "recipient": "infirmiere.hospit@cliniquealamal.ma",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Youssra Bennis,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/41ht62aWdUh37MWgVl7GAMGUYbx5jsWx\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Youssra Bennis,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/trkII2QX0sa0cv8tsMTC--fk0AysGik9\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "remind",
@@ -21893,7 +22411,7 @@
     "recipient": "radiologie2@cliniquealamal.ma",
     "subject": "Rappel — Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/FLTaC0phB3BOmAEK4qCZWzoO3H9ZEFZ4\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nPetit rappel : vos réponses au questionnaire « Campagne de questionnaires — Compétences IA 2027 — Clinique Al Amal » sont attendues avant le 5 novembre 2026.\nVotre lien : http://localhost:4000/respond/i1WSNWezu4uXkQPSPS2XeWPVwF0rqqL2\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21901,7 +22419,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Auto-évaluation — Cadre de santé",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Cadre de santé » (5 minutes).\nVotre lien : http://localhost:4000/respond/iowVcyY5liApOCikIgnziMhCGlJGCuXO\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Cadre de santé » (5 minutes).\nVotre lien : http://localhost:4000/respond/TGG_09FsKP7fcGmzpKvDtWtMdNDiwKn7\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21909,7 +22427,7 @@
     "recipient": "directeur.medical@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Évaluation de Nadia Berrada (Cadre de santé)",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Nadia Berrada (Cadre de santé) » (5 minutes).\nVotre lien : http://localhost:4000/respond/oFuPigi81XEKHQDxSMfZBb4gvO6TDlvE\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Nadia Berrada (Cadre de santé) » (5 minutes).\nVotre lien : http://localhost:4000/respond/RFM4U-ePvexzmi7V6hpVlGHFUcofyPgw\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21917,7 +22435,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Auto-évaluation — Responsable des urgences",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Responsable des urgences » (5 minutes).\nVotre lien : http://localhost:4000/respond/gipDbiDidaw7CP7rbUS96J9IYAvTNz88\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Responsable des urgences » (5 minutes).\nVotre lien : http://localhost:4000/respond/lYfdENQsh_xzEeIuWs9a1TWUXYZyj0uZ\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21925,7 +22443,7 @@
     "recipient": "212661000003",
     "subject": "Clinique Al Amal — Évaluation de Omar El Fassi (Responsable des urgences)",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Omar El Fassi (Responsable des urgences) » (5 minutes).\nVotre lien : http://localhost:4000/respond/mGp4RxwXzudq5PmrZRvj1e_U44pkVUs5\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Omar El Fassi (Responsable des urgences) » (5 minutes).\nVotre lien : http://localhost:4000/respond/_LaH5026e5Iw6cTNsGbh6xHDalnipUlw\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21933,7 +22451,7 @@
     "recipient": "qualite@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Auto-évaluation — Responsable qualité",
     "status": "simulated",
-    "body": "Bonjour Leila Chraibi,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Responsable qualité » (5 minutes).\nVotre lien : http://localhost:4000/respond/YUmE805GqO0SVwE62d8BzU4HPu-6dK6m\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Leila Chraibi,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Responsable qualité » (5 minutes).\nVotre lien : http://localhost:4000/respond/-QFQj9jvMwFWay6IxoFkc7bFW8FYqk2q\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21941,7 +22459,7 @@
     "recipient": "hrd@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Évaluation de Leila Chraibi (Responsable qualité)",
     "status": "simulated",
-    "body": "Bonjour Hajar Tazi,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Leila Chraibi (Responsable qualité) » (5 minutes).\nVotre lien : http://localhost:4000/respond/jL5crIOHWMXXawsiuabmLGknsoXPRY4H\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Hajar Tazi,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Leila Chraibi (Responsable qualité) » (5 minutes).\nVotre lien : http://localhost:4000/respond/PmvmKx_nNjajaSqKGzR77JEhWtDMJoDo\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21949,7 +22467,7 @@
     "recipient": "212661000007",
     "subject": "Clinique Al Amal — Auto-évaluation — Infirmière",
     "status": "simulated",
-    "body": "Bonjour Samira Ouazzani,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Infirmière » (5 minutes).\nVotre lien : http://localhost:4000/respond/pzgJkBtH5V2zBxPI95FX1jhUt1BEgPkA\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Samira Ouazzani,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Infirmière » (5 minutes).\nVotre lien : http://localhost:4000/respond/l9D0ufrz0EMUVH-FIZOlbkWnhBxKUiKm\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21957,7 +22475,7 @@
     "recipient": "212661000004",
     "subject": "Clinique Al Amal — Évaluation de Samira Ouazzani (Infirmière)",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Samira Ouazzani (Infirmière) » (5 minutes).\nVotre lien : http://localhost:4000/respond/17WqHyxjsjNb3zz7gPg7zYR7uGpVlhrt\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Samira Ouazzani (Infirmière) » (5 minutes).\nVotre lien : http://localhost:4000/respond/oeQ8kF66SaW5ku_gYFb3HY_GcruFLslV\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21965,7 +22483,7 @@
     "recipient": "212661000008",
     "subject": "Clinique Al Amal — Auto-évaluation — Technicien de radiologie",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Technicien de radiologie » (5 minutes).\nVotre lien : http://localhost:4000/respond/0dVm8Fx7CBkyLYSJZUj73QVJ8-GbuM95\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Technicien de radiologie » (5 minutes).\nVotre lien : http://localhost:4000/respond/iTTOQVD2fPItrkiXOiuGE_ut3hfGPhg3\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21973,7 +22491,7 @@
     "recipient": "212661000004",
     "subject": "Clinique Al Amal — Évaluation de Rachid Amrani (Technicien de radiologie)",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Rachid Amrani (Technicien de radiologie) » (5 minutes).\nVotre lien : http://localhost:4000/respond/7B7JQtHpFjEXwQ3f93m3ythPfSH2eh4W\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Rachid Amrani (Technicien de radiologie) » (5 minutes).\nVotre lien : http://localhost:4000/respond/Siu7s1tBhch2bhR2bYdZ809mgUaP5PLE\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21981,7 +22499,7 @@
     "recipient": "212661000009",
     "subject": "Clinique Al Amal — Auto-évaluation — Infirmière",
     "status": "simulated",
-    "body": "Bonjour Mehdi Tahiri,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Infirmière » (5 minutes).\nVotre lien : http://localhost:4000/respond/UV1yo_VETPfiwuA11RgFGrFM4LdQpoXD\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Mehdi Tahiri,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Infirmière » (5 minutes).\nVotre lien : http://localhost:4000/respond/1HSSQUIqcS-safttu7m26VbEcOSgNWfv\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21989,7 +22507,7 @@
     "recipient": "212661000004",
     "subject": "Clinique Al Amal — Évaluation de Mehdi Tahiri (Infirmière)",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Mehdi Tahiri (Infirmière) » (5 minutes).\nVotre lien : http://localhost:4000/respond/9yrwxImhOse88-w3OPG-jAgZdrRwVTDn\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Mehdi Tahiri (Infirmière) » (5 minutes).\nVotre lien : http://localhost:4000/respond/9kMKYSe-EN5FBuErlbEcgvwexptJLFOH\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -21997,7 +22515,7 @@
     "recipient": "infirmiere.hospit@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Auto-évaluation — Infirmière",
     "status": "simulated",
-    "body": "Bonjour Youssra Bennis,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Infirmière » (5 minutes).\nVotre lien : http://localhost:4000/respond/vfGUKUavDR2k9-epz_ZCiOdjCRt_QO6M\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Youssra Bennis,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Infirmière » (5 minutes).\nVotre lien : http://localhost:4000/respond/YFp4r59MbLKYgtpo1YE_mptJQjopCFRB\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22005,7 +22523,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Évaluation de Youssra Bennis (Infirmière)",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Youssra Bennis (Infirmière) » (5 minutes).\nVotre lien : http://localhost:4000/respond/cm28CoFJL9DBgTP920VbNXP6tFZ5YaND\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Youssra Bennis (Infirmière) » (5 minutes).\nVotre lien : http://localhost:4000/respond/427ckFSoxCLM2HLwFXdhO8ovPr6Gb-Oz\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22013,7 +22531,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Auto-évaluation — Technicien de radiologie",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Technicien de radiologie » (5 minutes).\nVotre lien : http://localhost:4000/respond/pE_AACdymWhHal7ha2Fm7lIm42GNkY0h\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Auto-évaluation — Technicien de radiologie » (5 minutes).\nVotre lien : http://localhost:4000/respond/SoSS6fBJYqXBDgDC8ZRxE1HAPNQywU3Z\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22021,7 +22539,7 @@
     "recipient": "212661000004",
     "subject": "Clinique Al Amal — Évaluation de Imane Zerouali (Technicien de radiologie)",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Imane Zerouali (Technicien de radiologie) » (5 minutes).\nVotre lien : http://localhost:4000/respond/UXhTy-X7H5oIcb-hz1tKzDvlYrQThHTP\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nClinique Al Amal évalue les compétences de ses équipes avant de construire le plan de formation. Merci de remplir : « Évaluation de Imane Zerouali (Technicien de radiologie) » (5 minutes).\nVotre lien : http://localhost:4000/respond/oNsxwMCg3t3eHwz4DSIMDFd2djMdk25_\nDate limite : 29 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "plan",
@@ -22077,7 +22595,7 @@
     "recipient": "directeur.medical@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Revue de TR-01 — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal vous sollicite, en tant qu’expert, pour relire le contenu d’une formation avant sa publication : Revue de TR-01 — Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/SJ6X50l3gcJSNDBMGMW-lXCmZTXLUcmH\nMerci de répondre avant le 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nClinique Al Amal vous sollicite, en tant qu’expert, pour relire le contenu d’une formation avant sa publication : Revue de TR-01 — Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/PYG0MHmNgraVuVnsBGQGQLaIUq4ktlTq\nMerci de répondre avant le 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22085,7 +22603,7 @@
     "recipient": "radiologie@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Revue de TR-02 — Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nClinique Al Amal vous sollicite, en tant qu’expert, pour relire le contenu d’une formation avant sa publication : Revue de TR-02 — Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/vFgTCRWxHgvC2GWhGmVcyENfEOHKhbW7\nMerci de répondre avant le 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nClinique Al Amal vous sollicite, en tant qu’expert, pour relire le contenu d’une formation avant sa publication : Revue de TR-02 — Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/0QyqjUQGf5YB9-p42hB5mrYIsUqbN_PR\nMerci de répondre avant le 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22093,7 +22611,7 @@
     "recipient": "qualite@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Revue de TR-03 — Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Leila Chraibi,\nClinique Al Amal vous sollicite, en tant qu’expert, pour relire le contenu d’une formation avant sa publication : Revue de TR-03 — Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/5HvG1Ajvbd_9HsIYfYImmAMMj8Vr6Qzi\nMerci de répondre avant le 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Leila Chraibi,\nClinique Al Amal vous sollicite, en tant qu’expert, pour relire le contenu d’une formation avant sa publication : Revue de TR-03 — Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/FzByoEEmMZsAS4o1HI8Prfbdiabe66ns\nMerci de répondre avant le 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "announcement",
@@ -22189,7 +22707,7 @@
     "recipient": "212661000007",
     "subject": "Clinique Al Amal — Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Samira Ouazzani,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/2fFMmmGPuKi1jWf6kGivJuW_lzl_rWdm\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Samira Ouazzani,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/EoehXTZ4Q46VspT5xbkHI3YInXPV89Fd\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22197,7 +22715,7 @@
     "recipient": "infirmiere.hospit@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Youssra Bennis,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/68-A0zlLVxsY2tkKRQTSY-3sYcIJkgen\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Youssra Bennis,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/3FnbK_EgdxZaSek5CsfK9xZDy0XzpY4h\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22205,7 +22723,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/-Fyvo8H-Et8ygjhWYWTP0NkqqBHla4LU\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/3kDejIW6yEVMcuvtvej7NM1tSUvcgk5f\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22213,7 +22731,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/5hCgU3Hjs8saK4w_8JbiMgI7p6SzKYZt\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/37oqUL7vml9dZokHrCXNRQjlvfTzifGT\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22221,7 +22739,7 @@
     "recipient": "212661000009",
     "subject": "Clinique Al Amal — Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Mehdi Tahiri,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/XwToM6sfQE6B1fqL46s1-Vyg2EzHnaPp\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Mehdi Tahiri,\nVous êtes convoqué(e) à une session de formation : Convocation — Triage IA et aide à la décision clinique — 15/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/c9-Up8AK4uvtcAXOjj9kKTyaKrtS0kG0\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22229,7 +22747,7 @@
     "recipient": "212661000008",
     "subject": "Clinique Al Amal — Convocation — Assistance IA en imagerie médicale — 16/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nVous êtes convoqué(e) à une session de formation : Convocation — Assistance IA en imagerie médicale — 16/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/qAoMfBpKfesrYnBkOoBDC1TvKQK-XBiK\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nVous êtes convoqué(e) à une session de formation : Convocation — Assistance IA en imagerie médicale — 16/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/YPIhYUguL0Z4878FSRw3ZAZNRo3F4VHF\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22237,7 +22755,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Convocation — Assistance IA en imagerie médicale — 16/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nVous êtes convoqué(e) à une session de formation : Convocation — Assistance IA en imagerie médicale — 16/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/fQdwj4GVD3ObUvw1BpxL_8ZM9JzVC-yt\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nVous êtes convoqué(e) à une session de formation : Convocation — Assistance IA en imagerie médicale — 16/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/_NWNwAazZTibf-UcoLiQMM1kbwMP4QII\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22245,7 +22763,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nVous êtes convoqué(e) à une session de formation : Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/uxXKMj2L4sxUVVtUBj6qnzJmOrqRARe0\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nVous êtes convoqué(e) à une session de formation : Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/qtTwLxfcCePSAtZMyK6dZ4O3kxYsY2Ho\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22253,7 +22771,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nVous êtes convoqué(e) à une session de formation : Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/rdVNE_L4I0QREER48t75Rv7H0v7mPqer\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nVous êtes convoqué(e) à une session de formation : Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/ceQXoUREmXRohsp_uzYIHBLkt2RhEGU1\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22261,7 +22779,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nVous êtes convoqué(e) à une session de formation : Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/nC5183QXSSGOJc8xe8KPtzx56-r24vCF\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nVous êtes convoqué(e) à une session de formation : Convocation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026 09:00.\nLes détails (salle, formateur, durée) et la confirmation sont sur votre lien : http://localhost:4000/respond/Nc1g-K_w_KNDqQWMreODF8eDpj41Fp-7\nMerci de confirmer votre présence.\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22269,7 +22787,7 @@
     "recipient": "212661000007",
     "subject": "Clinique Al Amal — L’essentiel — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Samira Ouazzani,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/SCA4Sk7L6Ml9JIUWAr2oV_biGkb9Ndpo\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Samira Ouazzani,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/uWLJZ-I1YRxFMwbMNAwnoYUwO9fF1_8v\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22277,7 +22795,7 @@
     "recipient": "212661000010",
     "subject": "Clinique Al Amal — L’essentiel — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Youssra Bennis,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/xoKs7Phf4pzuTAsune42YbnBNj5YD4LL\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Youssra Bennis,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/NIW43sPtMx_DUxbAQAp-D7oaesEC4x3i\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22285,7 +22803,7 @@
     "recipient": "212661000004",
     "subject": "Clinique Al Amal — L’essentiel — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/iCDIMDZsyyC0MAnLQKmpU4CX8kZMC7Xb\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/7eLuPLt0PuFBqY3_h7U0EzjNBpfXefZS\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22293,7 +22811,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — L’essentiel — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/d9CEa86eHkb2mOr6l-ao0CaEKM7ZED0W\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/SqbZzRYMO98q59sDbQtQJxNZRibSdwmp\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22301,7 +22819,7 @@
     "recipient": "212661000009",
     "subject": "Clinique Al Amal — L’essentiel — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Mehdi Tahiri,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/PXPARuIbm0kD3RAEU15mzIbOIm6G-GSL\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Mehdi Tahiri,\nVotre capsule de 3 minutes : L’essentiel — Triage IA et aide à la décision clinique.\nÀ lire ici : http://localhost:4000/respond/sz8UTpPCZE5hNr6ChCVAKv6u04xlWFSC\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22309,7 +22827,7 @@
     "recipient": "212661000008",
     "subject": "Clinique Al Amal — L’essentiel — Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nVotre capsule de 3 minutes : L’essentiel — Assistance IA en imagerie médicale.\nÀ lire ici : http://localhost:4000/respond/SnvUb8UMTJcaymAYWhwXoUIUh5n_7BVy\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nVotre capsule de 3 minutes : L’essentiel — Assistance IA en imagerie médicale.\nÀ lire ici : http://localhost:4000/respond/lgJK-2x0JXBX6GjFb6R3EhSP8kzEJZ98\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22317,7 +22835,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — L’essentiel — Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nVotre capsule de 3 minutes : L’essentiel — Assistance IA en imagerie médicale.\nÀ lire ici : http://localhost:4000/respond/MFp55WiNg4Mj9mXpAiYPcEUIXjynEmQG\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nVotre capsule de 3 minutes : L’essentiel — Assistance IA en imagerie médicale.\nÀ lire ici : http://localhost:4000/respond/kyzYD_87Vig4CWdpniMEeKvVTw49IKOz\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22325,7 +22843,7 @@
     "recipient": "212661000004",
     "subject": "Clinique Al Amal — L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nVotre capsule de 3 minutes : L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA.\nÀ lire ici : http://localhost:4000/respond/SKCF4uCgiw3EM7fEsjr-Gn2hCA65uqCM\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nVotre capsule de 3 minutes : L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA.\nÀ lire ici : http://localhost:4000/respond/1yRs8g1X5g8BVwhRqrVDuvdZzptBH1Q7\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22333,7 +22851,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nVotre capsule de 3 minutes : L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA.\nÀ lire ici : http://localhost:4000/respond/hB9Oo-2T409HZPfZLkGPPRVBJMRvEiQN\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nVotre capsule de 3 minutes : L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA.\nÀ lire ici : http://localhost:4000/respond/x02pSqCyzHzPo6tewRhiexCfzJRHSxYH\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22341,7 +22859,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nVotre capsule de 3 minutes : L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA.\nÀ lire ici : http://localhost:4000/respond/IrQjiMDXBd9300YQqALJMS5rJIokxzGN\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nVotre capsule de 3 minutes : L’essentiel — Éthique et protection des données de santé dans l’usage de l’IA.\nÀ lire ici : http://localhost:4000/respond/IkPK9qgFlph0HjIvWtoAkkScT0sD3H9m\n\nVous recevez cette capsule car vous suivez une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22349,7 +22867,7 @@
     "recipient": "212661000007",
     "subject": "Clinique Al Amal — Simulation — Triage IA et aide à la décision clinique — 15/11/2026",
     "status": "simulated",
-    "body": "Bonjour Samira Ouazzani,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/LqadtHsxNbgqV3zb86YRp4IA5hZY4qGi\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Samira Ouazzani,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/G1YMiZTFgl_rktBIQTHRbLxgDv8k53c2\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22357,7 +22875,7 @@
     "recipient": "212661000010",
     "subject": "Clinique Al Amal — Simulation — Triage IA et aide à la décision clinique — 15/11/2026",
     "status": "simulated",
-    "body": "Bonjour Youssra Bennis,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/TkA8cyFC9eAQ5n5yIoTXSQ65L68btqj9\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Youssra Bennis,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/RKcHAPKPy9JhVt9Rk4S_URNuTVfXMiBv\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22365,7 +22883,7 @@
     "recipient": "212661000004",
     "subject": "Clinique Al Amal — Simulation — Triage IA et aide à la décision clinique — 15/11/2026",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/noISvh2JGjXS9MUh_yfTRrs4bt0dVjOM\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/u1CvWwhDcWV2d4pZ4Vy2vAnXo6KCsaLs\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22373,7 +22891,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Simulation — Triage IA et aide à la décision clinique — 15/11/2026",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/R5_xbRdeDnQEp9h7iJYECyObOM5rQxcT\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/DMGZnL6_IMxQrMdgZwJELM0okpriH1yS\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22381,7 +22899,7 @@
     "recipient": "212661000009",
     "subject": "Clinique Al Amal — Simulation — Triage IA et aide à la décision clinique — 15/11/2026",
     "status": "simulated",
-    "body": "Bonjour Mehdi Tahiri,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/tfAeJevBFsc4ZmPKKZ-3hGWCsw3qIgzb\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Mehdi Tahiri,\nUne simulation est prévue pendant votre formation : Simulation — Triage IA et aide à la décision clinique — 15/11/2026.\nDétails et confirmation : http://localhost:4000/respond/EwojSUREe-r17SzQlit-XqZh9ghbi7Hh\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22389,7 +22907,7 @@
     "recipient": "212661000008",
     "subject": "Clinique Al Amal — Simulation — Assistance IA en imagerie médicale — 16/11/2026",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nUne simulation est prévue pendant votre formation : Simulation — Assistance IA en imagerie médicale — 16/11/2026.\nDétails et confirmation : http://localhost:4000/respond/fs6xVdn7JTb4fVQh0RqNmYMmQfqvPY2R\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nUne simulation est prévue pendant votre formation : Simulation — Assistance IA en imagerie médicale — 16/11/2026.\nDétails et confirmation : http://localhost:4000/respond/WLpqd4qDBlTZTpESrzWwYc785O2VbzQP\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22397,7 +22915,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Simulation — Assistance IA en imagerie médicale — 16/11/2026",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nUne simulation est prévue pendant votre formation : Simulation — Assistance IA en imagerie médicale — 16/11/2026.\nDétails et confirmation : http://localhost:4000/respond/nPUF26MLew80Yazaq-Z7iwQpwPKyW0H7\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nUne simulation est prévue pendant votre formation : Simulation — Assistance IA en imagerie médicale — 16/11/2026.\nDétails et confirmation : http://localhost:4000/respond/X_atXqFBLtBlDQ2RS3YkeSHYuX0oYSe8\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22405,7 +22923,7 @@
     "recipient": "212661000004",
     "subject": "Clinique Al Amal — Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nUne simulation est prévue pendant votre formation : Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026.\nDétails et confirmation : http://localhost:4000/respond/0AGe2nfArMxG3b8A1hVzmHiqXyv7kKm8\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nUne simulation est prévue pendant votre formation : Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026.\nDétails et confirmation : http://localhost:4000/respond/SKA-5fO6thFlLxxtzRPPw3SHxr-VboKP\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22413,7 +22931,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nUne simulation est prévue pendant votre formation : Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026.\nDétails et confirmation : http://localhost:4000/respond/LsYjLS8eiswFf4v2QQQWiIj0RGfZ63m2\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nUne simulation est prévue pendant votre formation : Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026.\nDétails et confirmation : http://localhost:4000/respond/kDAWIRd2VihCF-Xl50_0l2lLIMSYSzcz\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22421,7 +22939,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nUne simulation est prévue pendant votre formation : Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026.\nDétails et confirmation : http://localhost:4000/respond/XD2XyVAyikyz9JR18hn05YhPBMpqhro4\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nUne simulation est prévue pendant votre formation : Simulation — Éthique et protection des données de santé dans l’usage de l’IA — 17/11/2026.\nDétails et confirmation : http://localhost:4000/respond/FGTI2ztH5zXk_TawOs-gg7NDNYCruFZZ\n\nVous recevez ce message car vous êtes inscrit(e) à une formation de Clinique Al Amal. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22429,7 +22947,7 @@
     "recipient": "212661000007",
     "subject": "Clinique Al Amal — Votre avis sur Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Samira Ouazzani,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/HTop4C7_5d-t4QEfALlXOA2lnZld1bEE\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Samira Ouazzani,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/lPmWaDkqaV4ZdVPtqMS6ZayVVfxTdhue\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22437,7 +22955,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Votre avis sur Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/yWogrh6Hc7opdII4XoyMd1R_ysu059rD\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/O_x9UpxX7tpwqQpV6zP2A-9Uj6_5eR8F\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22445,7 +22963,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Votre avis sur Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/p9JxiIqfzNsk9AtGR9387oks-3XLdmNm\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/CO_wjavbR5Zr873jgQUNTO4X6L97Oo0N\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22453,7 +22971,7 @@
     "recipient": "212661000009",
     "subject": "Clinique Al Amal — Votre avis sur Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Mehdi Tahiri,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/yxXfAbP1n-ZYPtMWkneOPho-ZVQsJMaR\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Mehdi Tahiri,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/kSMlyYP-ZXQcc5Iupps4Vh7yHV5RzMG5\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22461,7 +22979,7 @@
     "recipient": "212661000008",
     "subject": "Clinique Al Amal — Votre avis sur Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/CXZWqAENGDeWVGF1_R5v8zlGkCGvC3oX\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/wnYOwmsB3DiHZydGNDRgf39C4POd6uUT\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22469,7 +22987,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Votre avis sur Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/JA_w1pAH4w2Ib39qHhT-NgHLrgIy6whr\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/uj5pYYKEhE_hbzH6JFahpZDupsYg_mxw\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22477,7 +22995,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/8LHGkIWkZiLi1aNyVDpltX6nfiir6zSO\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/jqkhXegRytxG1d5xu6aOvp1vKEzXKhDg\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22485,7 +23003,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/urMUhlfFQ7E_ae46hEJqvJCYaeXs36OM\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/xTxGhze_L1bmGngdtdLR3YrmNv1jgbJb\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22493,7 +23011,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/s1MTrTH6uQx1U3NNv-FM48-emyhus9Pm\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nMerci pour votre participation. Deux minutes pour donner votre avis : Votre avis sur Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/VVAWjiS5QZb5qCsVfe4KldruG2cx143F\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22501,7 +23019,7 @@
     "recipient": "212661000007",
     "subject": "Clinique Al Amal — Test — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Samira Ouazzani,\nVotre test de connaissances est prêt : Test — Triage IA et aide à la décision clinique (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/kJog2LnZJvfQWVw-ZC6UlmTYE6y90x-m\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Samira Ouazzani,\nVotre test de connaissances est prêt : Test — Triage IA et aide à la décision clinique (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/G28XFDHv2Al_hYztYZ_vm_y81WtadWjN\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22509,7 +23027,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Test — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nVotre test de connaissances est prêt : Test — Triage IA et aide à la décision clinique (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/rS_5wBkz5fc9AioQuPxKkvjeg3kIxcNP\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nVotre test de connaissances est prêt : Test — Triage IA et aide à la décision clinique (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/PZ_YcPOPNsDiXHuiSqGAMVYx1upKYEBE\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22517,7 +23035,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Test — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nVotre test de connaissances est prêt : Test — Triage IA et aide à la décision clinique (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/3XK1pu_C3IUSBPvcJzfrfR9270y5LHIv\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nVotre test de connaissances est prêt : Test — Triage IA et aide à la décision clinique (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/CpUHrNlrdEdB1ihCKLMk50eMUvF1RAVD\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22525,7 +23043,7 @@
     "recipient": "212661000009",
     "subject": "Clinique Al Amal — Test — Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Mehdi Tahiri,\nVotre test de connaissances est prêt : Test — Triage IA et aide à la décision clinique (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/cAmwmft27efkQP8khTrnrld-qnTwmq8y\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Mehdi Tahiri,\nVotre test de connaissances est prêt : Test — Triage IA et aide à la décision clinique (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/ZUDEv3E_hr3nhGgkiJGHq8ERSeE9K_Ux\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22533,7 +23051,7 @@
     "recipient": "212661000008",
     "subject": "Clinique Al Amal — Test — Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Rachid Amrani,\nVotre test de connaissances est prêt : Test — Assistance IA en imagerie médicale (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/xJIhTY-bLTeIDp6k0oypAj_3ctilQdAf\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Rachid Amrani,\nVotre test de connaissances est prêt : Test — Assistance IA en imagerie médicale (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/eoQOvtWiuuL-KKfd999yEBcKYrnmpEOp\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22541,7 +23059,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Test — Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nVotre test de connaissances est prêt : Test — Assistance IA en imagerie médicale (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/l6Ulh3HtM1EtdDJW5ub0ZjTkIQt-WQXZ\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nVotre test de connaissances est prêt : Test — Assistance IA en imagerie médicale (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/cWwBNcV6d5jlyk8NkNGZcjsIn1Fbq860\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22549,7 +23067,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Test — Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nVotre test de connaissances est prêt : Test — Éthique et protection des données de santé dans l’usage de l’IA (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/dAIAvj3PrlZP7HR1CcMzF75V8CMUKk4m\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nVotre test de connaissances est prêt : Test — Éthique et protection des données de santé dans l’usage de l’IA (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/pbXL0bHOe59f_fsvvoX006H0ztjtVdFH\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22557,7 +23075,7 @@
     "recipient": "212661000005",
     "subject": "Clinique Al Amal — Test — Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Omar El Fassi,\nVotre test de connaissances est prêt : Test — Éthique et protection des données de santé dans l’usage de l’IA (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/LYACQmV6TsVqWNuzzuEIRPV3rabi3G23\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Omar El Fassi,\nVotre test de connaissances est prêt : Test — Éthique et protection des données de santé dans l’usage de l’IA (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/sxTtqD6ycjNJEjVeMSUvF8Mcn6AhATAz\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22565,7 +23083,7 @@
     "recipient": "212661000011",
     "subject": "Clinique Al Amal — Test — Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Imane Zerouali,\nVotre test de connaissances est prêt : Test — Éthique et protection des données de santé dans l’usage de l’IA (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/2_y1yzsJZIXN7yB0xjcqYJXTkdZoOJj-\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Imane Zerouali,\nVotre test de connaissances est prêt : Test — Éthique et protection des données de santé dans l’usage de l’IA (environ 5 minutes).\nVotre lien : http://localhost:4000/respond/CPqAMAc_NYCgYYl7ZPW5ufZUrG3Dmt6v\nDate limite : 25 octobre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22573,7 +23091,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Samira Ouazzani après Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Samira Ouazzani après Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/N5lZbrbLTDLTaLZKT705SDlJwu1Rt8G3\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Samira Ouazzani après Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/Kq8LWPYMkxZSy7iseqyMqZ7uY9EcSf88\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22581,7 +23099,7 @@
     "recipient": "directeur.medical@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Nadia Berrada après Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Nadia Berrada après Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/d75sPo6rwAlY0rV4HDedQJ-U0B3Q7wcU\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Nadia Berrada après Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/QSAskH7HEZ8B0T2kID2EcJu3nyuXYiXy\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22589,7 +23107,7 @@
     "recipient": "directeur.medical@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Omar El Fassi après Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Omar El Fassi après Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/mtXslxeTwl41LbETN5NMFkQmjgQSLHK3\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Omar El Fassi après Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/4auG7E_AlANieJdZSQm-n4AVP4KLTQtm\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22597,7 +23115,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Mehdi Tahiri après Triage IA et aide à la décision clinique",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Mehdi Tahiri après Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/SBYp7KpyQ4Um8denH9C8Vg3k7jThTxC5\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Mehdi Tahiri après Triage IA et aide à la décision clinique.\nVotre lien : http://localhost:4000/respond/FfSRsat-XxHw9--dR78NJY4up_FawsoM\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22605,7 +23123,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Rachid Amrani après Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Rachid Amrani après Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/mSXYmFPa9fRnqTwKSnBDQyBg0zkNlYQy\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Rachid Amrani après Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/PjpPgC7q8aV7YKVR3HMEPaRiZESBmO53\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22613,7 +23131,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Imane Zerouali après Assistance IA en imagerie médicale",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Imane Zerouali après Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/-xpcqQwCVOUVj7UkXNh-xWdyz88tpoO-\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Imane Zerouali après Assistance IA en imagerie médicale.\nVotre lien : http://localhost:4000/respond/qacuWboLYDaxFVJwHEE8ER-ASJ1IOoEA\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22621,7 +23139,7 @@
     "recipient": "directeur.medical@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Nadia Berrada après Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Nadia Berrada après Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/twFFQAMgDNCo43VkOIqIfnh-bHlxYbHv\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Nadia Berrada après Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/EcQgBmvTSaZbLafbhh2m4cC-5W6jgALz\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22629,7 +23147,7 @@
     "recipient": "directeur.medical@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Omar El Fassi après Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Dr Youssef Alaoui,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Omar El Fassi après Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/2NyNMXV3VVwfvgNIAAWJ0eA7BMlCDn8g\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Dr Youssef Alaoui,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Omar El Fassi après Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/z3_Tyvpn-xcoz4zkkXxkwEZFzwgiGidH\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "invite",
@@ -22637,7 +23155,7 @@
     "recipient": "cadre.sante@cliniquealamal.ma",
     "subject": "Clinique Al Amal — Observation de Imane Zerouali après Éthique et protection des données de santé dans l’usage de l’IA",
     "status": "simulated",
-    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Imane Zerouali après Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/S2WyViSwFrxvlONjkvq-rN4L_LBjDaRM\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
+    "body": "Bonjour Nadia Berrada,\nUn membre de votre équipe a suivi une formation. D’après ce que vous observez au travail, merci d’indiquer le niveau observé : Observation de Imane Zerouali après Éthique et protection des données de santé dans l’usage de l’IA.\nVotre lien : http://localhost:4000/respond/OaL-XzLNottniVnWitxYfQl1jOuk3CHE\nDate limite : 5 novembre 2026.\n\nVos réponses servent uniquement à l’ingénierie de formation de Clinique Al Amal et ne sont enregistrées qu’après votre consentement. Répondez STOP pour ne plus recevoir ces messages."
    },
    {
     "kind": "lessons",
@@ -22929,16 +23447,16 @@
    }
   ],
   "campaigns": {
-   "needs": "fc97c6d1-28d3-4d9b-949e-878512f00330",
-   "assessment": "c8be05d0-1c4c-4e75-b850-44e98a31db0c",
-   "review": "4b1606b6-dece-40c1-a018-3a0283e1cf58",
-   "convocation": "ad500355-86cb-4ce0-869e-3e97a35d86bb",
-   "capsule": "9e1ac785-f1df-45c6-8d7c-818fb9f606d1",
-   "simulation": "d306335c-39a4-42be-a1a4-de4ce6a1bb8c",
-   "l1": "531a97cd-0d23-4855-a5a2-2c4ec2ff5ebc",
-   "l2": "e3b9b3fb-676a-4097-bc2c-377ca1ff4b06",
-   "l3": "d18f7746-6f52-4cfb-bb1d-cf21dbd8d32a"
+   "needs": "4a5c4537-9159-487e-a5eb-a0edbe132364",
+   "assessment": "b20a8a4a-9b37-4991-9c7a-2baa73677df4",
+   "review": "460ef628-3c8f-4f15-b21b-0017f5d18ab5",
+   "convocation": "334ca585-8de1-4dcf-837a-fce44c6e032b",
+   "capsule": "b2c1ed27-ea4c-47f5-bb3e-d02c6e26929c",
+   "simulation": "f7e64ae6-bb98-4126-96c7-25d69b08c68f",
+   "l1": "11569ae5-07b2-41c0-a9fa-1b44b6e1029e",
+   "l2": "e94faf76-4470-4280-95a7-e9fdcb491875",
+   "l3": "243f37bd-e105-4536-a71e-a05a20551f90"
   },
-  "openCapsule": "http://localhost:4000/respond/iCDIMDZsyyC0MAnLQKmpU4CX8kZMC7Xb"
+  "openCapsule": "http://localhost:4000/respond/7eLuPLt0PuFBqY3_h7U0EzjNBpfXefZS"
  }
 }

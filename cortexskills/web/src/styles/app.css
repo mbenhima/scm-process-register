@@ -444,8 +444,8 @@ table.tbl { border-collapse: separate; border-spacing: 0; width: 100%; font-size
 /* =====================================================================================================
    Dialogs, drawers, menus, tooltips (NFR-DA-VDS-14)
    ===================================================================================================== */
-.overlay { position: fixed; inset: 0; background: var(--aiv-overlay); display: grid; place-items: center; z-index: var(--aiv-z-modal); padding: var(--aiv-space-4); animation: aiv-fade var(--aiv-duration-slow) var(--aiv-easing-standard); }
-.dialog { background: var(--aiv-white); border-radius: var(--aiv-radius-modal); box-shadow: var(--aiv-shadow-modal); width: min(var(--aiv-dialog-sm), 100%); max-height: calc(100vh - 2 * var(--aiv-space-4)); display: flex; flex-direction: column; animation: aiv-rise var(--aiv-duration-slow) var(--aiv-easing-standard); }
+.overlay { position: fixed; inset: 0; background: var(--aiv-overlay); display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; z-index: var(--aiv-z-modal); padding: var(--aiv-space-4); animation: aiv-fade var(--aiv-duration-slow) var(--aiv-easing-standard); }
+.dialog { min-width: 0; background: var(--aiv-white); border-radius: var(--aiv-radius-modal); box-shadow: var(--aiv-shadow-modal); width: min(var(--aiv-dialog-sm), 100%); max-height: calc(100vh - 2 * var(--aiv-space-4)); display: flex; flex-direction: column; animation: aiv-rise var(--aiv-duration-slow) var(--aiv-easing-standard); }
 .dialog.md { width: min(var(--aiv-dialog-md), 100%); }
 .dialog.wide, .dialog.lg { width: min(var(--aiv-dialog-lg), 100%); }
 .dialog-head { padding: var(--aiv-space-6) var(--aiv-space-6) var(--aiv-space-4); display: flex; justify-content: space-between; align-items: flex-start; gap: var(--aiv-space-3); flex-shrink: 0; }
@@ -832,3 +832,12 @@ ul.plain > li > .tree-row { width: 100%; }
 .form-proposal dt { font-weight: 600; font-size: var(--aiv-fs-13, 13px); }
 .form-proposal dd { margin: 0; font-size: var(--aiv-fs-13, 13px); white-space: pre-line; }
 .widget-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--aiv-space-3); }
+/* who answers what (release 1.15) */
+.qassign tr.qa-section td { background: var(--aiv-bg-alt); }
+.qassign tr.qa-subsection td { background: var(--aiv-azure-tint); }
+.qassign { table-layout: fixed; width: 100%; }
+.qassign th:first-child { width: 46%; }
+.qassign td .select.multi, .qassign td .select-btn { min-width: 0; max-width: 100%; width: 100%; }
+.qassign td .select-btn .value { white-space: normal; text-align: start; }
+.qform .qsub { margin: 6px 0 2px; }
+.qform .qassigned { display: flex; gap: 6px; align-items: center; }

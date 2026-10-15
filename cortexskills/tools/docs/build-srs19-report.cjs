@@ -25,6 +25,7 @@ const REVIEW = [
   ['MP-54.4 Role + R/A/C/S/I as five columns', 'RACSI table: Role, R, A, C, S, I, sections, comment; exactly one A per section is enforced.'],
   ['MP-54.5 decision level + preferred channels (multi-select)', 'Level (MS/MO/OP/custom), channels (multi-select), population, reminder cadence; respondents’ channel plans follow it.'],
   ['Real flow for all the end-to-end processes (release 1.14)', 'The steps of E2E-02, E2E-01, E2E-05 and E2E-07 work on the project’s records and read what the previous step created; assessments, invitations, reviews, capsules and evaluations are sent by e-mail or WhatsApp and answered from personal links; gaps, needs, budget, sessions, scores, progression and indicators are computed from the answers.'],
+  ['Assign a question, sub-section or section to one or more respondents (release 1.15)', 'Step MP-54.6 and the questionnaire tab “Who answers what”: each element gets its respondents (the most specific choice wins; empty = everyone of the form), filled by ticking, by a pasted table or by an automatic proposal from roles and functions. Each respondent’s link opens only their questions; completeness counts only them; distribution is refused while a respondent receives nothing.'],
   ['Manual, template and AI entry on every step (release 1.14)', 'Every table or form of these processes can be typed or pasted, loaded “From the template”, or proposed by the AI through one of 36 AI use cases linked to the steps; each proposal is accepted, edited or rejected.'],
 ];
 
@@ -43,7 +44,7 @@ body.push(H1('1. Summary'),
     'Reproduce: node tools/qa/run-checks.mjs, then node tools/qa/srs-check.mjs (server running on port 4000).']));
 body.push(H1('2. Automated checks'), P('Results of the last run of tools/qa/run-checks.mjs.'),
   table(['Check', 'Result', 'Detail'], (R.checks || []).map(c => [c.id, c.ok ? 'Pass' : 'Fail', c.detail.replace(/\/usr\/\S+ UserWarning:[\s\S]*?lost\."\)/g, '').replace(/\s+/g, ' ')]), [2000, 900, 6738], { size: 16, fills: (R.checks || []).map(c => [null, c.ok ? C.s5 : C.s1, null]) }));
-body.push(H1('3. Review items fixed in this release'), P('Items of the review document “CortexSkills in General” and how release 1.13 answers them.'),
+body.push(H1('3. Review items fixed in this release'), P('Items of the review document “CortexSkills in General” and how releases 1.13 to 1.15 answer them.'),
   table(['Review item', 'What was done'], REVIEW, [3800, 5838], { size: 17 }));
 body.push(H1('4. Requirements not fully met'),
   table(['Requirement', 'Status', 'Note'], R.rows.filter(r => r.status !== 'Met').map(r => [r.id, r.status, r.note || r.text]), [2200, 1300, 6138], { size: 17, fills: R.rows.filter(r => r.status !== 'Met').map(r => [null, fill(r.status), null]) }));

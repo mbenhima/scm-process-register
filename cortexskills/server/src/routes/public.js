@@ -31,7 +31,7 @@ r.get('/public/q/:token', ah(req => {
   if (!inv.opened_at) { run(`UPDATE q_invitations SET opened_at=?, status=CASE WHEN status IN ('Planned','Invited') THEN 'Opened' ELSE status END WHERE id=?`, now(), inv.id); Q.event(inv.org_id, q.id, inv.id, 'opened', { channel: 'Application', recipient: inv.name, status: 'opened' }); }
   const draft = J(inv.draft, null);
   return { organization: J(org.name, org.name), language: inv.lang || org.default_language || 'en', respondent: { name: inv.name, population: inv.population },
-    questionnaire: { label: q.label, due_date: q.due_date, status: q.status, open, threshold: q.threshold }, form: Q.formOf(q, inv.template_code),
+    questionnaire: { label: q.label, due_date: q.due_date, status: q.status, open, threshold: q.threshold }, form: Q.formFor(q, inv),
     status: inv.status, responded: inv.status === 'Responded', answers: draft?.answers || {}, flags: draft?.flags || {}, consent: J(inv.consent, null) };
 }));
 r.post('/public/q/:token', ah(req => {

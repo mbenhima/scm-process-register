@@ -46,6 +46,14 @@ if (last) { const ctx2 = await b.newContext({ viewport: { width: 1280, height: 1
   await q.screenshot({ path: `${out}/30_respond_top.png` }); await q.mouse.wheel(0, 2200); await q.waitForTimeout(500); await q.screenshot({ path: `${out}/31_respond_middle.png` }); await ctx2.close(); }
 // 4. Questionnaire page, integrations.
 await p.goto(`${base}/questionnaires/${c.questionnaire.id}?tab=design`); await p.waitForLoadState('networkidle'); await shot('32_questionnaire_design');
+// Who answers what: the assignment of the Management form, then the form one respondent receives.
+await p.goto(`${base}/questionnaires/${c.questionnaire.id}?tab=assign`); await p.waitForLoadState('networkidle'); await p.waitForTimeout(900);
+await p.locator('.seg button', { hasText: /Management/ }).first().click().catch(() => {}); await p.waitForTimeout(500);
+await p.locator('label', { hasText: 'Seulement les éléments affectés' }).locator('input').check().catch(() => {}); await p.waitForTimeout(400);
+await p.locator('.card').filter({ hasText: 'Affecter les sections' }).first().screenshot({ path: `${out}/25c_assign.png` }).catch(() => {});
+await p.locator('.card').filter({ hasText: 'Ce que reçoit chaque répondant' }).first().screenshot({ path: `${out}/25d_assign_summary.png` }).catch(() => {});
+await p.locator('tr', { hasText: 'Rachid Amrani' }).locator('button[aria-label="Aperçu"]').first().click().catch(() => {}); await p.waitForTimeout(1200);
+await p.locator('.dialog .qsection').filter({ hasText: 'Questions spécifiques' }).first().screenshot({ path: `${out}/25e_assign_preview.png` }).catch(() => {}); await p.keyboard.press('Escape').catch(() => {});
 await p.goto(`${base}/questionnaires/${c.questionnaire.id}?tab=log`); await p.waitForLoadState('networkidle'); await shot('33_questionnaire_log');
 // 5. Campaigns of the real flow: the forms as the people see them; a capsule link still open; the project's widgets.
 for (const [purpose, name] of [['assessment', '80_form_assessment'], ['convocation', '81_form_convocation'], ['l2', '82_form_test'], ['l3', '83_form_l3']]) {

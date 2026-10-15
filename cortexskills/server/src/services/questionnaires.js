@@ -84,6 +84,77 @@ export function completeness(sections, answers = {}, flags = {}) {
 }
 export function formOf(q, code) { return (q.forms || []).find(f => f.code === code) || (q.forms || [])[0] || null; }
 
+// ------------------------------------------------------------------ who answers what: sections, sub-sections, questions
+// A form holds sections; the questions (items, or rows of a grid) of a section may carry a sub-section (`group`).
+// q.assignments maps an element reference to the stakeholders who receive it:
+//   section  "<form>|<section>"   sub-section  "<form>|<section>|g:<group>"   question  "<form>|<section>|<key>"
+// The most specific assignment wins (question, then sub-section, then section); an element without one goes to every
+// respondent of the form. A section none of whose questions reaches a respondent is left out of that respondent's form.
+const QLISTS = ['items', 'rows'];
+const listOf = s => QLISTS.find(k => Array.isArray(s[k]) && s[k].length) || null;
+export const groupKey = g => String(pick(g, 'en') || pick(g, 'fr') || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 40);
+/** Every assignable element of a form, in reading order: section, its sub-sections, its questions. */
+export function elementsOf(form) {
+  const out = [];
+  for (const s of form?.sections || []) {
+    if (s.type === 'note') continue;
+    const base = `${form.code}|${s.id}`; const k = listOf(s);
+    out.push({ ref: base, level: 'section', section: s.id, label: s.title, questions: k ? s[k].length : 1 });
+    if (!k) continue;
+    const seen = new Set();
+    for (const it of s[k]) {
+      if (it.group) { const g = groupKey(it.group); if (!seen.has(g)) { seen.add(g); out.push({ ref: `${base}|g:${g}`, level: 'subsection', section: s.id, group: g, label: it.group, parent: base, questions: s[k].filter(x => x.group && groupKey(x.group) === g).length }); } }
+      out.push({ ref: `${base}|${it.key}`, level: 'question', section: s.id, item: it.key, label: it.label, parent: it.group ? `${base}|g:${groupKey(it.group)}` : base, questions: 1 });
+    }
+  }
+  return out;
+}
+/** The stakeholders an element reaches, or null when it goes to every respondent of the form. */
+export function audienceOf(q, refs) {
+  const A = q.assignments || {};
+  for (const r of refs) if (Array.isArray(A[r]) && A[r].length) return A[r];
+  return null;
+}
+const refsOfItem = (form, s, it) => [`${form.code}|${s.id}|${it.key}`, ...(it.group ? [`${form.code}|${s.id}|g:${groupKey(it.group)}`] : []), `${form.code}|${s.id}`];
+/** The form as one respondent receives it: only the sections, sub-sections and questions assigned to them (or to all). */
+export function formForStakeholder(q, form, stakeholderId) {
+  if (!form || !q.assignments || !Object.keys(q.assignments).length) return form;
+  const sees = refs => { const a = audienceOf(q, refs); return !a || a.includes(stakeholderId); };
+  const sections = [];
+  for (const s of form.sections || []) {
+    if (s.type === 'note') { sections.push(s); continue; }
+    const k = listOf(s);
+    if (!k) { if (sees([`${form.code}|${s.id}`])) sections.push(s); continue; }
+    const kept = s[k].filter(it => sees(refsOfItem(form, s, it)));
+    if (kept.length) sections.push(kept.length === s[k].length ? s : { ...s, [k]: kept, assigned_part: true });
+  }
+  return { ...form, sections, assigned: true };
+}
+export function formFor(q, inv) { return formForStakeholder(q, formOf(q, inv.template_code), inv.stakeholder_id); }
+/** Number of answerable elements of a form (a table counts once, like the completeness). */
+export const questionCount = form => (form?.sections || []).reduce((n, s) => n + (s.type === 'note' ? 0 : (s[listOf(s)] || s.fields || s.boxes || [1]).length), 0);
+/** Checks and cleans an assignment map against the forms and the respondents; unknown references are rejected. */
+export function cleanAssignments(q, map, respondentIds) {
+  const refs = new Set((q.forms || []).flatMap(f => elementsOf(f).map(e => e.ref)));
+  const out = {}; const bad = [];
+  for (const [ref, ids] of Object.entries(map || {})) {
+    if (!refs.has(ref)) { bad.push(ref); continue; }
+    const list = [...new Set((Array.isArray(ids) ? ids : String(ids || '').split(/[,;|]/)).map(x => String(x).trim()).filter(Boolean))];
+    const unknown = list.filter(x => !respondentIds.has(x)); if (unknown.length) throw new HttpError(422, 'err.assignUnknownRespondent', { ref });
+    if (list.length) out[ref] = list;
+  }
+  if (bad.length) throw new HttpError(422, 'err.assignUnknownElement', { refs: bad.slice(0, 3).join(', ') });
+  return out;
+}
+/** What each respondent receives: number of questions out of the form's total, and the sections left out. */
+export function assignmentSummary(q, invitations) {
+  return invitations.map(inv => {
+    const full = formOf(q, inv.template_code); const mine = formFor(q, inv);
+    return { invitation_id: inv.id, stakeholder_id: inv.stakeholder_id, name: inv.name, form: full?.code || null, questions: questionCount(mine), total: questionCount(full),
+      sections: (mine?.sections || []).filter(s => s.type !== 'note').length, sectionsTotal: (full?.sections || []).filter(s => s.type !== 'note').length };
+  });
+}
+
 /** Copies library templates into a questionnaire's forms; each question keeps its origin (FR-DA-QLT-02). */
 export function formsFromTemplates(templates) {
   return templates.map(tp => ({ code: tp.code, template_id: tp.id, template_version: tp.version_no || tp.version || 1, name: tp.name, population: tp.population, decision_level: tp.decision_level, form: tp.form,
@@ -121,6 +192,13 @@ export function distributionIssues(q, invitations) {
   const noAddress = invitations.filter(i => (i.channel_plan || []).some(s => (s.channel === 'Email' && !validEmail(i.email)) || (s.channel === 'WhatsApp' && !i.phone)));
   if (noAddress.length) issues.push({ code: 'missingAddress', n: noAddress.length });
   if (!q.due_date) issues.push({ code: 'noDueDate' });
+  // Assignments: a respondent who receives no question, or an assignment to someone who is no longer a respondent.
+  if (q.assignments && Object.keys(q.assignments).length) {
+    const empty = assignmentSummary(q, invitations).filter(x => !x.questions);
+    if (empty.length) issues.push({ code: 'assignEmpty', n: empty.length, names: empty.map(x => x.name).join(', ') });
+    const ids = new Set(invitations.map(i => i.stakeholder_id)); const orphan = Object.values(q.assignments).flat().filter(x => !ids.has(x));
+    if (orphan.length) issues.push({ code: 'assignOrphan', n: new Set(orphan).size });
+  }
   return issues;
 }
 
@@ -255,7 +333,7 @@ export function storeResponse(orgId, q, inv, { answers = {}, translations = null
   }
   if (inv.status === 'Responded' && final && source === 'respondent') throw new HttpError(409, 'err.alreadyResponded');
   if (clientId) { const dup = one(`SELECT id FROM q_events WHERE invitation_id=? AND kind='response.synced' AND detail LIKE ?`, inv.id, `%${clientId}%`); if (dup) return { duplicate: true, responseId: inv.response_id }; }
-  const form = formOf(q, inv.template_code);
+  const form = formFor(q, inv);
   const pct = completeness(form?.sections, answers, flags); const tm = now();
   const consentRec = { given: true, at: capturedAt || tm, channel, by: source };
   if (!final) {

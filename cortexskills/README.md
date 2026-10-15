@@ -2,6 +2,12 @@
 
 Training engineering platform: 33 end-to-end processes in seven phases, from the scope of work to the evaluation of results, for large companies and SMEs in 29 sectors, in English, French and Arabic.
 
+## What is new in 1.15
+
+- **Who answers what.** In a questionnaire, a section, a sub-section or a single question can be given to one or more respondents (step MP-54.6, or the questionnaire's **Who answers what** tab). A question takes the respondents chosen for it, else those of its sub-section, else those of its section; an element left empty goes to every respondent of the form. Each respondent's personal link opens only their questions, and completeness is computed on them.
+- **Three ways to assign**: tick the respondents line by line; paste a table (element, respondents by name, e-mail or job title); or take the **automatic proposal** built from each respondent's role and function. A summary shows what each respondent receives, with a preview of their form; distribution is refused while a respondent receives no question.
+- Questions of a section can be grouped in **sub-sections** in the designer.
+
 ## What is new in 1.14
 
 - **A real flow across the whole cycle.** The steps of the skills diagnosis (E2E-02), the training plan (E2E-01), delivery (E2E-05) and evaluation (E2E-07) now work on the project's own records, each one reading what the previous one created: competency framework → targets per position → self and manager assessments → validated inventory → gap matrix → objectives, priorities and needs → envelope, budget per theme and refunds → change plan → approval, which creates the courses → expert review → catalogue → rooms, trainers and sessions → enrolment of the people with a gap → invitations → attendance → satisfaction, test and observation → progression and indicators.

@@ -8,7 +8,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post, patch, put, del, download } from '../lib/api.js';
-import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, Field, Tabs, Seg, Empty, Progress, KV, Select } from '../components/ui.jsx';
+import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, Field, Tabs, Seg, Empty, Progress, KV, Select, MultiSelect } from '../components/ui.jsx';
 import { BarChart } from '../components/charts.jsx';
 import { QForm, completeness } from '../components/QForm.jsx';
 
@@ -59,7 +59,7 @@ export function QuestionnaireDetail() {
   const d = useData(`/questionnaires/${id}`); const [sp, setSp] = useSearchParams(); const tab = sp.get('tab') || 'respondents';
   useEffect(() => { if (d.data?.project_id) setProject(d.data.project_id); }, [d.data?.project_id]); // eslint-disable-line
   return (<Guard state={d}>{q => { const st = q.stats.total; const edit = can('m54.edit') && q.status !== 'Closed';
-    const blocking = q.issues.filter(i => ['aiUnvalidated', 'noAccountable', 'manyAccountable', 'noRespondents', 'noDueDate'].includes(i.code));
+    const blocking = q.issues.filter(i => ['aiUnvalidated', 'noAccountable', 'manyAccountable', 'noRespondents', 'noDueDate', 'assignEmpty'].includes(i.code));
     return (<>
       <PageHead eyebrow={`${t('nav.questionnaires')} · ${L(q.project?.name)}`} title={L(q.label)} subtitle={`${(q.modes || [q.elaboration_mode]).map(m => t('qmode.' + m)).join(' + ')} · ${t('col.due')} ${fmtDate(q.due_date)} · ${t('q.threshold', { n: q.threshold ?? 70 })}`}>
         <StatusPill value={q.status} />
@@ -75,10 +75,11 @@ export function QuestionnaireDetail() {
       </div>
       {q.issues.length > 0 && q.status !== 'Closed' && <div className="notice" style={{ marginTop: 'var(--aiv-space-4)' }}><Icon name="TriangleAlert" /><div><div className="strong">{t('q.issues')}</div>
         <ul style={{ margin: '4px 0 0', paddingInlineStart: 18 }}>{q.issues.map((i, k) => <li key={k} className="small">{t('qissue.' + i.code, { ...i, form: i.form || '', section: i.section || '' })}</li>)}</ul></div></div>}
-      <div style={{ marginTop: 'var(--aiv-space-5)' }}><Tabs value={tab} onChange={v => setSp({ tab: v })} tabs={[{ id: 'respondents', label: t('q.tabRespondents'), count: st.invited }, { id: 'design', label: t('q.tabDesign') }, { id: 'channels', label: t('q.tabChannels') },
+      <div style={{ marginTop: 'var(--aiv-space-5)' }}><Tabs value={tab} onChange={v => setSp({ tab: v })} tabs={[{ id: 'respondents', label: t('q.tabRespondents'), count: st.invited }, { id: 'design', label: t('q.tabDesign') }, { id: 'assign', label: t('q.tabAssign'), count: Object.keys(q.assignments || {}).length || undefined }, { id: 'channels', label: t('q.tabChannels') },
         { id: 'responses', label: t('q.tabResponses'), count: st.responded }, { id: 'dataset', label: t('q.tabDataset') }, { id: 'log', label: t('q.tabLog') }]} /></div>
       {tab === 'respondents' && <Respondents q={q} edit={can('m54.edit') && q.status !== 'Closed'} reload={d.reload} />}
       {tab === 'design' && <Design q={q} edit={edit} reload={d.reload} />}
+      {tab === 'assign' && <Assignments q={q} edit={can('m54.edit') && q.status !== 'Closed'} reload={d.reload} />}
       {tab === 'channels' && <Channels q={q} edit={edit} reload={d.reload} />}
       {tab === 'responses' && <Responses q={q} edit={can('m54.edit')} />}
       {tab === 'dataset' && <Dataset q={q} edit={can('m54.edit')} />}
@@ -115,6 +116,69 @@ export function Respondents({ q, edit, reload }) {
     {add && <AddRespondents q={q} onClose={() => setAdd(false)} onDone={() => { setAdd(false); refresh(); }} />}
     {editing && <EditInvitation q={q} inv={editing} onClose={() => setEditing(null)} onDone={() => { setEditing(null); refresh(); }} />}
   </Card>); }}</Guard>);
+}
+
+// ------------------------------------------------------------------ who answers what: sections, sub-sections, questions
+/** Gives a section, a sub-section or a question to one or more respondents; the most specific choice wins and an
+ * element left empty goes to every respondent of its form. Filled by ticking, by pasting a table, or by the proposal. */
+export function Assignments({ q, edit, reload }) {
+  const { t, L } = useI18n(); const act = useAction();
+  const d = useData(`/questionnaires/${q.id}/assignments`, [q.id, q.version, q.stats?.total?.invited]);
+  const [map, setMap] = useState(null); const [dirty, setDirty] = useState(false); const [code, setCode] = useState(null);
+  const [paste, setPaste] = useState(false); const [preview, setPreview] = useState(null); const [why, setWhy] = useState({}); const [onlyAssigned, setOnlyAssigned] = useState(false);
+  useEffect(() => { if (d.data) { setMap(d.data.assignments || {}); setDirty(false); } }, [d.data]);
+  const refresh = () => { d.reload(); reload?.(); };
+  const save = async () => { await act(() => put(`/questionnaires/${q.id}/assignments`, { assignments: map }), 'qa.saved'); setWhy({}); refresh(); };
+  const propose = async () => { const r = await act(() => post(`/questionnaires/${q.id}/assignments/propose`, {}), null); setMap(m => ({ ...m, ...r.assignments })); setWhy(Object.fromEntries(r.reasons.map(x => [x.ref, x.why]))); setDirty(true); window.alert(t('qa.proposed', { n: r.reasons.length })); };
+  return (<Guard state={d}>{v => { if (!map) return null; const form = v.forms.find(f => f.code === code) || v.forms.find(f => f.respondents.length) || v.forms[0]; if (!form) return null;
+    const people = form.respondents; const name = id => people.find(p => p.stakeholder_id === id)?.name || '?';
+    const byRef = Object.fromEntries(form.elements.map(e => [e.ref, e]));
+    const effective = e => { for (let x = e; x; x = byRef[x.parent]) if (map[x.ref]?.length) return { ids: map[x.ref], from: x === e ? null : x }; return { ids: null, from: null }; };
+    const rows = form.elements.filter(e => !onlyAssigned || effective(e).ids);
+    const set = (ref, ids) => { setMap(m => { const n = { ...m }; if (ids.length) n[ref] = ids; else delete n[ref]; return n; }); setDirty(true); };
+    const assignedN = Object.keys(map).filter(r => r.startsWith(form.code + '|')).length;
+    return (<div className="stack">
+      <Card title={t('qa.title')} actions={<>
+        {v.forms.length > 1 && <Seg value={form.code} onChange={setCode} label={t('q.forms')} options={v.forms.map(f => ({ id: f.code, label: `${t('pop.' + f.population)} (${f.respondents.length})` }))} />}
+        {edit && <Btn size="sm" icon="Wand2" onClick={propose}>{t('qa.propose')}</Btn>}
+        {edit && <Btn size="sm" icon="ClipboardPaste" onClick={() => setPaste(true)}>{t('qa.paste')}</Btn>}
+        {edit && <Btn size="sm" kind="primary" disabled={!dirty} onClick={save}>{t('common.save')}</Btn>}</>}>
+        <p className="small muted">{t('qa.hint')}</p>
+        <div className="row small" style={{ gap: 12 }}><span className="strong">{L(form.name)}</span><span className="muted">{t('qa.counts', { e: form.elements.filter(e => e.level === 'question').length, r: people.length, a: assignedN })}</span><span className="spacer" />
+          <label className="row xs"><input type="checkbox" checked={onlyAssigned} onChange={e => setOnlyAssigned(e.target.checked)} />{t('qa.onlyAssigned')}</label></div>
+        {!people.length ? <p className="small muted">{t('qa.noRespondents')}</p> : <div className="table-wrap"><table className="tbl qassign">
+          <thead><tr><th>{t('qa.element')}</th><th style={{ width: 120 }}>{t('qa.level')}</th><th>{t('qa.respondents')}</th></tr></thead>
+          <tbody>{rows.map(e => { const eff = effective(e); const own = map[e.ref] || [];
+            return (<tr key={e.ref} className={`qa-${e.level}`}>
+              <td style={{ paddingInlineStart: e.level === 'section' ? 8 : e.level === 'subsection' ? 24 : e.parent?.includes('|g:') ? 44 : 28 }}><span className={e.level === 'section' ? 'strong' : e.level === 'subsection' ? 'strong small' : 'small'}>{L(e.label)}</span>
+                {why[e.ref] && <span className="pill tint xs" style={{ marginInlineStart: 6 }}><Icon name="Wand2" size={12} />{t('qa.why.' + why[e.ref])}</span>}</td>
+              <td><span className={`pill xs ${e.level === 'section' ? 's3' : ''}`}>{t('qa.lvl.' + e.level)}</span>{e.level !== 'question' && <div className="xs muted">{t('qa.nq', { n: e.questions })}</div>}</td>
+              <td>{edit ? <MultiSelect value={own.join(', ')} onChange={ev => set(e.ref, String(ev.target.value).split(/\s*,\s*/).filter(Boolean))} options={people.map(p => ({ value: p.stakeholder_id, label: `${p.name} — ${p.role}` }))} placeholder={eff.ids ? t('qa.inherited', { names: eff.ids.map(name).join(', ') }) : t('qa.everyone', { n: people.length })} aria-label={`${t('qa.respondents')} — ${L(e.label)}`} />
+                : <span className="small">{own.length ? own.map(name).join(', ') : eff.ids ? t('qa.inherited', { names: eff.ids.map(name).join(', ') }) : t('qa.everyone', { n: people.length })}</span>}
+                {own.length > 0 && eff.from === null && <div className="xs muted">{t('qa.ownN', { n: own.length, of: people.length })}</div>}</td></tr>); })}</tbody></table></div>}
+      </Card>
+      <Card title={t('qa.perRespondent')}>
+        <p className="small muted">{t('qa.perHint')}</p>
+        <DataTable search={false} rows={v.summary} csvName="assignments" columns={[
+          { key: 'name', label: t('col.name'), render: r => <span className="strong">{r.name}</span>, text: r => r.name },
+          { key: 'form', label: t('q.form'), text: r => L(v.forms.find(f => f.code === r.form)?.name) || r.form },
+          { key: 'questions', label: t('qa.questions'), render: r => <span className={r.questions ? '' : 'field-error'}>{t('qa.of', { n: r.questions, of: r.total })}</span>, text: r => `${r.questions}/${r.total}` },
+          { key: 'sections', label: t('qa.sections'), text: r => `${r.sections}/${r.sectionsTotal}` },
+          { key: 'see', label: '', noSort: true, noCsv: true, render: r => <Btn size="sm" kind="ghost" icon="Eye" aria-label={t('q.preview')} title={dirty ? t('qa.saveFirst') : t('q.preview')} disabled={dirty} onClick={async () => setPreview({ name: r.name, ...(await act(() => get(`/invitations/${r.invitation_id}/form`), null)) })} /> }]} />
+      </Card>
+      {paste && <PasteAssignments q={q} onClose={() => setPaste(false)} onDone={() => { setPaste(false); refresh(); }} />}
+      {preview && <Modal wide title={t('qa.previewOf', { name: preview.name })} onClose={() => setPreview(null)}><QForm form={preview.form} answers={{}} onChange={() => {}} /></Modal>}
+    </div>); }}</Guard>);
+}
+function PasteAssignments({ q, onClose, onDone }) {
+  const { t } = useI18n(); const act = useAction(); const [text, setText] = useState(''); const [check, setCheck] = useState(null);
+  const run = async apply => { const r = await act(() => post(`/questionnaires/${q.id}/assignments/paste`, { text, apply }), apply ? 'qa.saved' : null); if (apply) onDone(); else setCheck(r); };
+  return (<Modal wide title={t('qa.paste')} onClose={onClose} footer={<><Btn onClick={onClose}>{t('common.cancel')}</Btn><Btn disabled={!text.trim()} onClick={() => run(false)}>{t('qa.check')}</Btn><Btn kind="primary" disabled={!check?.matched} onClick={() => run(true)}>{t('qa.apply', { n: check?.matched || 0 })}</Btn></>}>
+    <p className="small">{t('qa.pasteHint')}</p>
+    <textarea className="input mono" rows={10} value={text} onChange={e => { setText(e.target.value); setCheck(null); }} aria-label={t('qa.paste')} placeholder={t('qa.pastePlaceholder')} />
+    {check && <div className="stack" style={{ marginTop: 8 }}><p className="small">{t('qa.checked', { l: check.lines, m: check.matched, u: check.unmatched.length })}</p>
+      {check.unmatched.length > 0 && <ul className="small field-error">{check.unmatched.map((u, i) => <li key={i}>{u.line} — {t('qa.miss.' + u.reason)}</li>)}</ul>}</div>}
+  </Modal>);
 }
 
 function AddRespondents({ q, onClose, onDone }) {
@@ -197,9 +261,11 @@ export function Design({ q, edit, reload }) {
           <input className="input" disabled={!edit} value={s.racsi?.[Lt] || ''} onChange={e => upd(s.id, x => ({ ...x, racsi: { ...(x.racsi || {}), [Lt]: e.target.value } }))} aria-label={`RACSI ${Lt} — ${L(s.title)}`} /></label>)}</div>}
         {s.type === 'questions' && <ul className="steps-list">{s.items.map(it => <li key={it.key}><span style={{ flex: 1 }}>
           {edit ? <input className="input" value={L(it.label)} onChange={e => upd(s.id, x => ({ ...x, items: x.items.map(y => (y.key === it.key ? { ...y, label: setText(y.label, e.target.value) } : y)) }))} aria-label={t('q.question')} /> : L(it.label)}</span>
+          {edit ? <input className="input sm" style={{ width: 170 }} list={`grp-${s.id}`} value={L(it.group) || ''} placeholder={t('q.subsection')} onChange={e => upd(s.id, x => ({ ...x, items: x.items.map(y => (y.key === it.key ? { ...y, group: e.target.value.trim() ? setText(y.group, e.target.value) : undefined } : y)) }))} aria-label={t('q.subsection')} /> : it.group ? <span className="pill xs">{L(it.group)}</span> : null}
           <span className="pill xs">{t('qorigin.' + (it.origin || 'template'))}</span>
           {it.origin === 'ai' && !it.validated_by && edit && <><Btn size="sm" icon="Check" aria-label={t('q.validate')} title={t('q.validate')} onClick={async () => { await act(() => post(`/questionnaires/${q.id}/validate`, { refs: [`${form.code}|${s.id}|${it.key}`] })); reload(); }} /><Btn size="sm" kind="ghost" icon="X" aria-label={t('q.reject')} title={t('q.reject')} onClick={async () => { await act(() => post(`/questionnaires/${q.id}/validate`, { reject: [`${form.code}|${s.id}|${it.key}`] })); reload(); }} /></>}
           {edit && <Btn size="sm" kind="ghost" icon="Trash2" aria-label={t('common.delete')} onClick={() => upd(s.id, x => ({ ...x, items: x.items.filter(y => y.key !== it.key) }))} />}</li>)}</ul>}
+        {s.type === 'questions' && edit && <datalist id={`grp-${s.id}`}>{[...new Set(s.items.map(y => L(y.group)).filter(Boolean))].map(g => <option key={g} value={g} />)}</datalist>}
         {s.type === 'questions' && edit && <Btn size="sm" kind="ghost" icon="Plus" onClick={() => upd(s.id, x => ({ ...x, items: [...x.items, { key: 'm' + Date.now().toString(36), label: { en: '', fr: '', ar: '' } }] }))}>{t('q.addQuestion')}</Btn>}
         {s.type !== 'questions' && s.type !== 'note' && (() => { const els = (s.items || s.fields || s.rows || s.boxes || s.columns || []); const lbl = x => (typeof x === 'string' ? x : L(x.label || x.title || x.name) || x.key || '');
           return els.length ? <ol className="small design-elements">{els.map((x, i) => <li key={i}>{lbl(x)}{x.type ? <span className="xs muted"> · {t('qtype.' + x.type) === 'qtype.' + x.type ? x.type : t('qtype.' + x.type)}</span> : null}</li>)}</ol> : <p className="xs muted">{t('q.elements', { n: 0 })}</p>; })()}
