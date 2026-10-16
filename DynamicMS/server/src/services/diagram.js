@@ -29,7 +29,7 @@ let resvg = null;
 let fonts = null;
 async function init() {
   if (!ready) ready = (async () => {
-    resvg = await import('@resvg/resvg-wasm');
+    resvg = require('@resvg/resvg-wasm');
     const wasm = require.resolve('@resvg/resvg-wasm/index_bg.wasm');
     await resvg.initWasm(fs.readFileSync(wasm));
     fonts = [

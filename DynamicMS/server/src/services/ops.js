@@ -67,8 +67,15 @@ export function installLicence(text) {
   const lic = JSON.parse(text);
   if (!lic.payload || !lic.signature) throw new Error('Malformed licence file.');
   fs.mkdirSync(path.dirname(config.licenceFile), { recursive: true });
+  // The new file replaces the current licence only when it is valid.
+  const previous = fs.existsSync(config.licenceFile) ? fs.readFileSync(config.licenceFile) : null;
   fs.writeFileSync(config.licenceFile, JSON.stringify(lic, null, 2));
-  return licenceStatus();
+  const st = licenceStatus();
+  if (!st.valid) {
+    if (previous) fs.writeFileSync(config.licenceFile, previous); else fs.rmSync(config.licenceFile, { force: true });
+    return { ...licenceStatus(), valid: false, rejected: true, message: `${st.message} The licence file was not installed.` };
+  }
+  return st;
 }
 
 // ---- Licence content enforced on-premises: packs, add-ons and standards must be licensed, and

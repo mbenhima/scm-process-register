@@ -14,5 +14,10 @@ export default defineConfig({
   },
   server: { port: 5173, proxy: { '/api': { target: 'http://localhost:4000', changeOrigin: true } } },
   preview: { port: 5173, proxy: { '/api': { target: 'http://localhost:4000', changeOrigin: true } } },
-  build: { outDir: 'dist', chunkSizeWarningLimit: 1500 },
+  // A runtime build keeps the code unminified (the application chunks are obfuscated afterwards)
+  // and separates third-party libraries into vendor chunks.
+  build: process.env.RUNTIME_BUILD ? {
+    outDir: process.env.RUNTIME_OUT || 'dist', emptyOutDir: true, minify: false, sourcemap: false, chunkSizeWarningLimit: 6000,
+    rollupOptions: { output: { manualChunks: (id) => (id.includes('node_modules') ? 'vendor' : undefined), entryFileNames: 'assets/app-[hash].js', chunkFileNames: 'assets/[name]-[hash].js' } },
+  } : { outDir: 'dist', chunkSizeWarningLimit: 1500 },
 });

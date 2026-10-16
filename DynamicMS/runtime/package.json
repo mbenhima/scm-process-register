@@ -1,0 +1,14 @@
+{
+  "name": "dynamicms-runtime-build",
+  "private": true,
+  "type": "module",
+  "description": "Builds the protected runtime of DynamicMS: server compiled to V8 bytecode, web client obfuscated.",
+  "scripts": {
+    "build:customer": "node build.mjs customer",
+    "build:editor": "node build.mjs editor"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.2",
+    "javascript-obfuscator": "4.1.1"
+  }
+}
