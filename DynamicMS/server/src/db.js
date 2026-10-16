@@ -21,6 +21,7 @@ export function getDb() {
 }
 
 export function closeDb() {
+  stmtCache.clear();
   if (db) { db.close(); db = null; }
 }
 

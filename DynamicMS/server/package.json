@@ -13,7 +13,7 @@
     "seed": "node --disable-warning=ExperimentalWarning src/seed/run.js",
     "backup": "node --disable-warning=ExperimentalWarning src/ops/backup-cli.js",
     "sign-licence": "node tools/sign-licence.js",
-    "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 test/api.test.js"
+    "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 test/api.test.js test/production.test.js"
   },
   "dependencies": {
     "@fontsource/montserrat": "^5.3.0",

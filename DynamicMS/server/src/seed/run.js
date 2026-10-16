@@ -236,7 +236,12 @@ function seedOrg(cat, o, idx, groupIds, libs, hash) {
   return results;
 }
 
-async function main() {
+/**
+ * Builds a fresh database. demo=true loads the demonstration tenancy (60 organizations, 120 full
+ * runs); demo=false keeps the catalog, permissions, libraries and the platform administrator only.
+ * In production mode every account must change its password at first sign-in.
+ */
+export async function seedDatabase({ demo = true } = {}) {
   log('resetting database', config.dbFile);
   resetDb();
   const cat = seedCatalog();
@@ -245,8 +250,8 @@ async function main() {
   const libs = seedLibraries(cat);
   const hash = bcrypt.hashSync(config.demoPassword, 10);
   run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at) VALUES(?,?,?,?,?,?,?,1,?,?)',
-    uid(), null, config.adminEmail, 'Platform Administrator', bcrypt.hashSync(config.adminPassword, 10), J(['platform_admin']), 'en', 'Active', ts('2025-09-01'));
-  const { groups, orgs } = orgPlan(cat);
+    uid(), null, config.adminEmail, config.adminName, bcrypt.hashSync(config.adminPassword, 10), J(['platform_admin']), 'en', 'Active', ts('2025-09-01'));
+  const { groups, orgs } = demo ? orgPlan(cat) : { groups: [], orgs: [] };
   const groupIds = {};
   for (const g of groups) { const id = uid(); groupIds[g.key] = id; run('INSERT INTO groups_(id,name,description,created_at) VALUES(?,?,?,?)', id, J(g.name), J(g.description), ts('2025-09-01')); }
   let nProj = 0; let nSteps = 0;
@@ -255,8 +260,10 @@ async function main() {
     nProj += res.length; nSteps += res.reduce((a, b) => a + b.steps, 0);
     log(`${o.code.padEnd(8)} ${o.size.padEnd(5)} ` + res.map(x => `${x.mps} MPs/${x.steps} steps (${Math.round(100 * x.done / x.steps)}%)${x.track ? ' ' + x.track : ''}`).join(' | '));
   });
-  await seedDemoTemplates();
+  if (demo) await seedDemoTemplates();
+  if (config.appMode === 'production') run('UPDATE users SET must_change_password=1');
   run("INSERT INTO meta(key,value) VALUES('seeded_at',?)", new Date().toISOString());
+  run("INSERT INTO meta(key,value) VALUES('seed_kind',?)", demo ? 'demo' : 'empty');
   run("INSERT INTO meta(key,value) VALUES('seed_today',?)", TODAY);
   // A fresh database goes through the same data migrations as an upgraded one.
   const { runMigrations } = await import('../services/migrations.js');
@@ -310,4 +317,7 @@ async function seedDemoTemplates() {
 }
 function getDbCheckpoint() { try { run('PRAGMA wal_checkpoint(TRUNCATE)'); } catch { /* ignore */ } }
 
-main().catch(e => { console.error(e); process.exit(1); });
+// Command line: npm run seed (demonstration data) or npm run seed -- --empty.
+if (process.argv[1] && path.resolve(process.argv[1]).endsWith(path.join('seed', 'run.js'))) {
+  seedDatabase({ demo: !process.argv.includes('--empty') }).catch(e => { console.error(e); process.exit(1); });
+}

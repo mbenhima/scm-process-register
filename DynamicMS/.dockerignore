@@ -1,0 +1,14 @@
+**/node_modules
+**/dist
+deliverables
+docs
+tools
+deploy
+server/data
+server/storage
+server/backups
+server/licence
+server/test
+**/*.log
+**/.env
+.git

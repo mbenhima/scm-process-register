@@ -307,6 +307,7 @@ CREATE TABLE IF NOT EXISTS batch_operations (
 // Columns added after the first release are declared here so existing databases upgrade in place.
 
 export const ADDITIVE_COLUMNS = {
+  users: { must_change_password: 'INTEGER DEFAULT 0' },
   organizations: { logo_text: 'TEXT', currencies: 'TEXT' },
   ncs: { cost_currency: 'TEXT' },
   projects: { progress_cache: 'INTEGER', blueprint: 'TEXT' },

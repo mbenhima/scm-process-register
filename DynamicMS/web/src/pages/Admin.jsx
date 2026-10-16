@@ -108,6 +108,16 @@ function Operations() {
   const backups = useData(me.user.isPlatformAdmin ? '/admin/backups' : null);
   const lic = useData('/admin/licence');
   const health = useData('/health');
+  const licFile = useRef(null);
+  // On-premises: the platform administrator installs the licence file issued by the editor.
+  const installLicence = async (file) => {
+    if (!file) return;
+    try {
+      const r = await api('/admin/licence', { method: 'POST', body: { licence: await file.text() } });
+      toast(r.valid ? t('Licence installed: {m}', { m: r.message }) : r.message, r.valid ? 'ok' : 'error');
+      lic.reload();
+    } catch (e) { toast(e.message, 'error'); } finally { if (licFile.current) licFile.current.value = ''; }
+  };
   const now = async () => { try { const b = await api('/admin/backups', { method: 'POST' }); toast(t('Backup {f} written, integrity {i}.', { f: b.file, i: b.integrity })); backups.reload(); } catch (e) { toast(e.message, 'error'); } };
   return (
     <div className="grid-main">
@@ -115,7 +125,19 @@ function Operations() {
         {me.user.isPlatformAdmin ? (backups.data ? <><p className="small">{t('Daily automatic backup; files older than {d} days are removed.', { d: backups.data.retentionDays })}</p><Table rows={backups.data.items.map(b => ({ ...b, id: b.file }))} columns={[{ key: 'file', label: t('File') }, { key: 'size', label: t('Size'), render: b => `${(b.size / 1048576).toFixed(1)} MB` }, { key: 'at', label: t('Date'), render: b => fmtDate(b.at) }]} /></> : <Loading />) : <p className="small muted">{t('Backups are managed by the platform administrator.')}</p>}
       </Card>
       <div className="stack">
-        <Card title={t('Licence')} action={<IconBadge icon={ShieldCheck} accent={lic.data?.valid} size="sm" />}>{lic.data && <><p className="small"><Status value={lic.data.valid ? 'Valid' : 'Failed'} /> {lic.data.mode.toUpperCase()}</p><p className="small">{lic.data.message}</p></>}</Card>
+        <Card title={t('Licence')} action={<IconBadge icon={ShieldCheck} accent={lic.data?.valid} size="sm" />}>{lic.data && <>
+          <p className="small"><Status value={lic.data.valid ? 'Valid' : 'Failed'} /> {lic.data.mode.toUpperCase()}</p><p className="small">{lic.data.message}</p>
+          {lic.data.payload && <dl className="small lic-kv">
+            <dt>{t('Customer')}</dt><dd>{lic.data.payload.customer}</dd>
+            <dt>{t('Seats')}</dt><dd>{lic.data.payload.seats}</dd>
+            <dt>{t('Expires')}</dt><dd>{fmtDate(lic.data.payload.expires)}</dd>
+            <dt>{t('Licensed items')}</dt><dd>{(lic.data.payload.packs || []).join(', ')}</dd>
+          </dl>}
+          {lic.data.mode === 'onprem' && me.user.isPlatformAdmin && <div className="row" style={{ marginTop: 8 }}>
+            <input ref={licFile} type="file" accept=".lic,.json,application/json" hidden onChange={e => installLicence(e.target.files?.[0])} />
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => licFile.current?.click()}><Upload size={16} />{t('Install a licence file')}</button>
+          </div>}
+        </>}</Card>
         <Card title={t('Health')}>{health.data && <dl className="small stack-8" style={{ margin: 0 }}><div>{t('Status')}: <span className="strong">{health.data.status}</span></div><div>{t('Version')}: {health.data.version}</div><div>{t('Seeded')}: {fmtDate(health.data.seededAt)}</div></dl>}</Card>
       </div>
     </div>
@@ -177,7 +199,8 @@ function Tenancy() {
             <Field label={t('E-mail domain')} required hint={t('Users of the organization sign in with name@domain.')}>{(id) => <input id={id} className="input" value={o.emailDomain} onChange={e => setO({ ...o, emailDomain: e.target.value.toLowerCase() })} placeholder="example.org" />}</Field>
             <div className="form-grid">
               <Field label={t('Administrator name')}>{(id) => <input id={id} className="input" value={o.adminName} onChange={e => setO({ ...o, adminName: e.target.value })} />}</Field>
-              <Field label={t('Administrator e-mail')} required hint={t('Initial password: the demonstration password; to change at first sign-in.')}>{(id) => <input id={id} className="input" type="email" value={o.adminEmail} onChange={e => setO({ ...o, adminEmail: e.target.value })} />}</Field>
+              <Field label={t('Administrator e-mail')} required>{(id) => <input id={id} className="input" type="email" value={o.adminEmail} onChange={e => setO({ ...o, adminEmail: e.target.value })} />}</Field>
+              <Field label={t('Initial password')} hint={t('Given to the person, who changes it at first sign-in. Required in production: at least 12 characters with upper case, lower case and a digit.')}>{(id) => <input id={id} className="input" type="password" autoComplete="new-password" value={o.adminPassword || ''} onChange={e => setO({ ...o, adminPassword: e.target.value })} />}</Field>
             </div>
           </div>
         </Modal>

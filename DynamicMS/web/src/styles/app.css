@@ -600,3 +600,8 @@ body.me-full-open { overflow: hidden; }
 .heat .cell { flex-direction: column; line-height: 1.1; }
 .heat .heat-s { font-size: var(--fs-12); font-weight: 400; color: var(--aiv-ink); opacity: .75; }
 .offline-banner { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: var(--sp-8); padding: var(--sp-8) var(--sp-16); background: var(--st-2); color: var(--aiv-navy); font-weight: 600; font-size: var(--fs-14); }
+
+/* Licence details (Administration > Operations) */
+.lic-kv { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4) var(--sp-12); margin: var(--sp-8) 0; }
+.lic-kv dt { color: var(--aiv-muted); font-weight: 600; }
+.lic-kv dd { margin: 0; overflow-wrap: anywhere; }

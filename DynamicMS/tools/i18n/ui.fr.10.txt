@@ -1,0 +1,14 @@
+1697	Mot de passe initial
+1698	Communiqué à la personne, qui le change à sa première connexion. Obligatoire en production : au moins 12 caractères avec majuscule, minuscule et chiffre.
+1699	Choisissez votre mot de passe
+1700	Votre compte a été créé avec un mot de passe initial. Choisissez votre propre mot de passe pour continuer.
+1701	Au moins 12 caractères avec majuscule, minuscule et chiffre.
+1702	Confirmer le nouveau mot de passe
+1703	Les deux mots de passe sont différents.
+1704	Enregistrer le mot de passe
+1705	Licence installée : {m}
+1706	Client
+1707	Postes
+1708	Expire le
+1709	Éléments sous licence
+1710	Installer un fichier de licence

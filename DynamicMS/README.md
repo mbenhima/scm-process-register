@@ -19,6 +19,15 @@ npm run dev       # open http://localhost:5173
 
 Sign in with `quality@horizon-universal.example`, `ims@atlas-sme.example` or `quality@nova-aec.example`. The password for every organization account is `Demo@2026`. The platform administrator is `admin@dynamicms.example` with password `Admin@2026`.
 
+## Production deployment (Docker)
+
+`Dockerfile` builds one production image. Two ready-to-use folders run it:
+
+- `deploy/editor/`: editor side (SaaS). Starts empty, with the platform administrator from `.env` and an optional setup file that creates groups, organizations, users and projects.
+- `deploy/customer/`: customer side (on-premises), with the seeded data and licence enforcement.
+
+In production mode (`APP_MODE=production`) the sign-in page lists no account, the built-in demonstration administrator does not exist, and every account changes its initial password at first sign-in. See the README of each folder.
+
 ## Upgrade
 
 Replace the files, keep `server/data/`, then restart the server: it migrates the data in place at its first start (no reseed). See `RELEASE_NOTES.md`.

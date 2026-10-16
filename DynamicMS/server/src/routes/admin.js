@@ -6,12 +6,12 @@ import path from 'node:path';
 import multer from 'multer';
 import bcrypt from 'bcryptjs';
 import { all, get, run, uid, now, J, P, tx, getDb } from '../db.js';
-import { requirePerm, can, assertFeature, invalidateMatrix, loadMatrix } from '../auth.js';
+import { requirePerm, can, assertFeature, invalidateMatrix, loadMatrix, initialPassword, passwordProblem } from '../auth.js';
 import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadOrgRow, paginate, HttpError, orgAccess, attachment } from '../http.js';
 import { audit, snapshot, versions } from '../services/audit.js';
 import { orgConfig, computePrice, BASE_PACKS, CAPABILITY_FEATURES, ADDON_FEATURES, COMPLIANCE_STANDARDS, NON_CERT_DISCLOSURE, FEATURES } from '../packs.js';
 import { ROLES, PERMISSIONS, BASELINE_CLASSES } from '../permissions.js';
-import { backupNow, listBackups, licenceStatus, installLicence } from '../services/ops.js';
+import { backupNow, listBackups, licenceStatus, installLicence, assertLicensed, assertSeats } from '../services/ops.js';
 import { catalog } from '../catalog/store.js';
 import { TRACE, traceOf } from '../services/traceability.js';
 import { config } from '../config.js';
@@ -45,6 +45,7 @@ r.put('/orgs/:id/config', requirePerm('config.manage'), h((req, res) => {
   const cur = P(o.compliance_standards) || [];
   const next = b.complianceStandards || cur;
   const added = next.filter(s => !cur.includes(s));
+  assertLicensed([b.pack, ...(b.industryPacks || []), ...(b.capabilityPacks || []), ...(b.addons || []), ...added]);
   if (added.length && !b.acknowledgeDisclosure) throw bad('DISCLOSURE_REQUIRED', 'Acknowledge that a Compliance & Security Standard is not a certification.');
   if (next.some(s => !COMPLIANCE_STANDARDS.find(x => x.id === s))) throw bad('BAD_STANDARD', 'Unknown standard.');
   // Quota ceilings of a downgrade must hold the current usage.
@@ -363,9 +364,11 @@ r.post('/orgs/:id/import', requirePerm('users.manage', 'records.manage'), h((req
       else if (seen.has(x.email.toLowerCase()) || get('SELECT 1 FROM users WHERE lower(email)=?', x.email.toLowerCase())) errs.push('duplicate email');
       const roles = (x.roles || '').split('|').map(s => s.trim()).filter(Boolean);
       if (!roles.length || roles.some(r3 => !ROLES.find(y => y.code === r3) || r3 === 'platform_admin')) errs.push('unknown role');
+      if (config.appMode === 'production' && passwordProblem(x.password)) errs.push('initial password missing or weak (column password)');
       if (errs.length) rejected.push({ line: i + 2, errors: errs, record: x }); else { seen.add(x.email.toLowerCase()); accepted.push({ ...x, roles }); }
     });
-    if (commit && !rejected.length) tx(() => { for (const x of accepted) run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at) VALUES(?,?,?,?,?,?,?,0,?,?)', uid(), req.params.id, x.email.toLowerCase(), x.name, bcrypt.hashSync(config.demoPassword, 10), J(x.roles), ['en', 'fr', 'ar'].includes(x.lang) ? x.lang : 'en', 'Active', now()); });
+    if (commit && !rejected.length) assertSeats(accepted.length);
+    if (commit && !rejected.length) tx(() => { for (const x of accepted) run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at,must_change_password) VALUES(?,?,?,?,?,?,?,0,?,?,?)', uid(), req.params.id, x.email.toLowerCase(), x.name, initialPassword(x.password).hash, J(x.roles), ['en', 'fr', 'ar'].includes(x.lang) ? x.lang : 'en', 'Active', now(), config.appMode === 'production' ? 1 : 0); });
   } else if (kind === 'suppliers' || kind === 'risks') {
     const p = get('SELECT * FROM projects WHERE id=? AND org_id=?', req.body?.projectId, req.params.id);
     if (!p) throw bad('PROJECT_REQUIRED', 'Choose a project of this organization.');

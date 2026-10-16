@@ -2,7 +2,8 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { all, get, run, uid, now, J, P, tx } from '../db.js';
-import { requirePerm, assertPerm, can } from '../auth.js';
+import { requirePerm, assertPerm, can, initialPassword } from '../auth.js';
+import { licensedBasePack, assertSeats } from '../services/ops.js';
 import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadProject, orgAccess, HttpError } from '../http.js';
 import { orgConfig, computePrice, entitledMps } from '../packs.js';
 import { createProject, scoreComplexity, draftFromDescription } from '../services/lifecycle.js';
@@ -92,7 +93,7 @@ r.post('/orgs', requirePerm('tenancy.manage'), h((req, res) => {
   tx(() => {
     run(`INSERT INTO organizations(id,group_id,name,short_code,sector,size,sme_class,employees,country,city,default_lang,email_domain,benchmark_sharing,deployment_mode,pack,industry_packs,capability_packs,addons,compliance_standards,support_tier,seats,currency,created_at,logo_text)
          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,1,?,?,?,?,?,?,?,?,?,?,?)`, id, b.groupId || null, J({ [req.lang]: b.name }), code, b.sector, b.size, b.size === 'SME' ? (+b.employees < 10 ? 'Micro' : +b.employees < 50 ? 'Small' : 'Medium') : null,
-    +b.employees || null, b.country || null, J({ [req.lang]: b.city || '' }), b.lang || 'en', b.emailDomain, 'DEP-1', b.size === 'SME' ? 'DMS-SME' : 'DMS-PRO', J([]), J([]), J([]), J([]), 'Standard', 25, 'USD', now(), code.slice(0, 3));
+    +b.employees || null, b.country || null, J({ [req.lang]: b.city || '' }), b.lang || 'en', b.emailDomain, config.deploymentMode === 'onprem' ? 'DEP-5' : 'DEP-1', licensedBasePack(b.size === 'SME' ? 'DMS-SME' : 'DMS-PRO'), J([]), J([]), J([]), J([]), 'Standard', 25, 'USD', now(), code.slice(0, 3));
     // Default structure (OBS): root, head office and the usual departments, so the step forms
     // can pick organization units from day one; the tenant adapts it in Organization > Structure.
     const root = uid();
@@ -105,7 +106,7 @@ r.post('/orgs', requirePerm('tenancy.manage'), h((req, res) => {
     // Tenant provisioning: the organization's first administrator
     if (b.groupId && !get('SELECT 1 FROM groups_ WHERE id=?', b.groupId)) throw bad('BAD_GROUP', 'Unknown group.');
     if (b.adminEmail && get('SELECT 1 FROM users WHERE email=?', b.adminEmail.toLowerCase())) throw new HttpError(409, 'EMAIL_TAKEN', 'This administrator e-mail is already used.');
-    if (b.adminEmail) run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at) VALUES(?,?,?,?,?,?,?,0,?,?)', uid(), id, b.adminEmail.toLowerCase(), b.adminName || 'Administrator', bcrypt.hashSync(b.adminPassword || config.demoPassword, 10), J(['tenant_admin']), b.lang || 'en', 'Active', now());
+    if (b.adminEmail) { assertSeats(1); const ip = initialPassword(b.adminPassword); run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at,must_change_password) VALUES(?,?,?,?,?,?,?,0,?,?,?)', uid(), id, b.adminEmail.toLowerCase(), b.adminName || 'Administrator', ip.hash, J(['tenant_admin']), b.lang || 'en', 'Active', now(), ip.mustChange); }
     const cur = CURRENCIES.includes(b.currency) ? b.currency : (COUNTRY_CURRENCY[b.country] || 'USD');
     run('UPDATE organizations SET currency=?, currencies=? WHERE id=?', cur, J([...new Set([cur, ...(Array.isArray(b.currencies) ? b.currencies.filter(x => CURRENCIES.includes(x)) : ['EUR', 'USD'])])]), id);
     const c = catalog();
@@ -268,7 +269,9 @@ r.post('/orgs/:id/users', requirePerm('users.manage'), h((req, res) => {
   if (b.roles.some(x => !ROLES.find(r2 => r2.code === x) || x === 'platform_admin')) throw bad('BAD_ROLE', 'Unknown role.');
   if (get('SELECT 1 FROM users WHERE lower(email)=?', b.email.toLowerCase())) throw new HttpError(409, 'EMAIL_TAKEN', 'This e-mail is already used.');
   const id = uid();
-  run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at) VALUES(?,?,?,?,?,?,?,0,?,?)', id, o.id, b.email.toLowerCase(), b.name, bcrypt.hashSync(b.password || config.demoPassword, 10), J(b.roles), b.lang || o.default_lang, 'Active', now());
+  assertSeats(1);
+  const ip = initialPassword(b.password);
+  run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at,must_change_password) VALUES(?,?,?,?,?,?,?,0,?,?,?)', id, o.id, b.email.toLowerCase(), b.name, ip.hash, J(b.roles), b.lang || o.default_lang, 'Active', now(), ip.mustChange);
   audit(req, o.id, 'user', id, 'create', null, { email: b.email, roles: b.roles }, null);
   res.status(201).json({ id });
 }));
@@ -280,7 +283,7 @@ r.put('/users/:id', requirePerm('users.manage'), h((req, res) => {
   if (b.roles && (b.roles.some(x => !ROLES.find(r2 => r2.code === x) || x === 'platform_admin') || !b.roles.length)) throw bad('BAD_ROLE', 'Unknown role.');
   if (u.id === req.user.id && b.status === 'Disabled') throw bad('SELF_DISABLE', 'You cannot disable your own account.');
   run('UPDATE users SET name=COALESCE(?,name), roles=COALESCE(?,roles), lang=COALESCE(?,lang), status=COALESCE(?,status) WHERE id=?', b.name || null, b.roles ? J(b.roles) : null, b.lang || null, b.status || null, u.id);
-  if (b.password) run('UPDATE users SET password_hash=? WHERE id=?', bcrypt.hashSync(b.password, 10), u.id);
+  if (b.password) { const ip = initialPassword(b.password); run('UPDATE users SET password_hash=?, must_change_password=? WHERE id=?', ip.hash, ip.mustChange, u.id); }
   audit(req, u.org_id, 'user', u.id, 'update', { roles: JSON.parse(u.roles), status: u.status }, { roles: b.roles, status: b.status }, null);
   res.json({ ok: true });
 }));

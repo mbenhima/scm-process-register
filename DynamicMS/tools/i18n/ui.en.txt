@@ -1694,3 +1694,17 @@
 1694	Suggested
 1695	Draft
 1696	Approved
+1697	Initial password
+1698	Given to the person, who changes it at first sign-in. Required in production: at least 12 characters with upper case, lower case and a digit.
+1699	Choose your password
+1700	Your account was created with an initial password. Choose your own password to continue.
+1701	At least 12 characters with upper case, lower case and a digit.
+1702	Confirm the new password
+1703	The two passwords differ.
+1704	Save the password
+1705	Licence installed: {m}
+1706	Customer
+1707	Seats
+1708	Expires
+1709	Licensed items
+1710	Install a licence file

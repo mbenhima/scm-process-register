@@ -2,7 +2,7 @@ import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import rateLimit from 'express-rate-limit';
 import { get, all, run, now, J, P } from '../db.js';
-import { sign, authenticate } from '../auth.js';
+import { sign, authenticate, passwordProblem } from '../auth.js';
 import { h, HttpError, send, langOf, row, bad } from '../http.js';
 import { orgConfig } from '../packs.js';
 import { ROLES } from '../permissions.js';
@@ -16,7 +16,7 @@ r.post('/login', limiter, h((req, res) => {
   const u = get('SELECT * FROM users WHERE lower(email)=?', email);
   if (!u || u.status !== 'Active' || !bcrypt.compareSync(password, u.password_hash)) throw new HttpError(401, 'BAD_CREDENTIALS', 'Email or password is incorrect.');
   run('UPDATE users SET last_login=? WHERE id=?', now(), u.id);
-  res.json({ token: sign(u) });
+  res.json({ token: sign(u), mustChangePassword: !!u.must_change_password });
 }));
 
 export const DEFAULT_PREFS = { dock: 'start', pinned: true, collapsed: [], favorites: ['home', 'lifecycle', 'alerts'], density: 'comfortable', projectId: null };
@@ -28,7 +28,7 @@ r.get('/me', authenticate, h((req, res) => {
   const prefs = { ...DEFAULT_PREFS, ...(P(get('SELECT data FROM user_prefs WHERE user_id=?', u.id)?.data) || {}) };
   const cfg = org ? orgConfig(org) : null;
   send(req, res, {
-    user: { id: u.id, name: u.name, email: u.email, roles: u.roles, roleNames: u.roles.map(c => ROLES.find(x => x.code === c)?.name), lang: langOf(req), isPlatformAdmin: u.is_platform_admin },
+    user: { id: u.id, name: u.name, email: u.email, roles: u.roles, roleNames: u.roles.map(c => ROLES.find(x => x.code === c)?.name), lang: langOf(req), isPlatformAdmin: u.is_platform_admin, mustChangePassword: !!u.must_change_password },
     org: org && { id: org.id, name: org.name, code: org.short_code, sector: org.sector, size: org.size, lang: org.default_lang, groupId: org.group_id },
     group: group && { id: group.id, name: group.name },
     permissions: [...u.perms].sort(),
@@ -55,8 +55,10 @@ r.put('/password', authenticate, h((req, res) => {
   const u = get('SELECT * FROM users WHERE id=?', req.user.id);
   if (!bcrypt.compareSync(String(req.body?.current || ''), u.password_hash)) throw new HttpError(400, 'BAD_CREDENTIALS', 'Current password is incorrect.');
   const pw = String(req.body?.next || '');
-  if (pw.length < 8 || !/[A-Z]/.test(pw) || !/\d/.test(pw)) throw new HttpError(400, 'WEAK_PASSWORD', 'Use at least 8 characters with a capital letter and a digit.');
-  run('UPDATE users SET password_hash=? WHERE id=?', bcrypt.hashSync(pw, 10), u.id);
+  const problem = passwordProblem(pw);
+  if (problem) throw new HttpError(400, 'WEAK_PASSWORD', problem);
+  if (bcrypt.compareSync(pw, u.password_hash)) throw new HttpError(400, 'SAME_PASSWORD', 'Choose a password different from the current one.');
+  run('UPDATE users SET password_hash=?, must_change_password=0 WHERE id=?', bcrypt.hashSync(pw, 10), u.id);
   res.json({ ok: true });
 }));
 

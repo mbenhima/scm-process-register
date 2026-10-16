@@ -1,0 +1,36 @@
+{
+  "groups": [
+    { "key": "atlas", "name": "Atlas Health Group", "description": "Hospitals and laboratories of the group" }
+  ],
+  "organizations": [
+    {
+      "group": "atlas",
+      "name": "Atlas University Hospital",
+      "code": "ATUH",
+      "sector": "HCA",
+      "size": "Large",
+      "employees": 2400,
+      "country": "MA",
+      "city": "Rabat",
+      "lang": "fr",
+      "emailDomain": "atlas-hospital.example",
+      "currency": "MAD",
+      "currencies": ["MAD", "EUR", "USD"],
+      "config": {
+        "pack": "DMS-PRO",
+        "industryPacks": ["DMS-LSCI"],
+        "capabilityPacks": ["DMS-CERT", "DMS-AI"],
+        "addons": [],
+        "deploymentMode": "DEP-1"
+      },
+      "admin": { "email": "admin@atlas-hospital.example", "name": "Nadia Alaoui", "password": "Change-Me-2026a" },
+      "users": [
+        { "email": "quality@atlas-hospital.example", "name": "Youssef Bennani", "roles": ["quality_manager", "ims_manager"], "password": "Change-Me-2026b", "lang": "fr" },
+        { "email": "ceo@atlas-hospital.example", "name": "Leila Tazi", "roles": ["top_management"], "password": "Change-Me-2026c", "lang": "fr" }
+      ],
+      "projects": [
+        { "name": "QMS deployment 2027 — Atlas University Hospital", "code": "ATUH-QMS-01", "msType": "QMS", "template": "TPL-HCA-FULL-QMS", "startDate": "2027-01-04" }
+      ]
+    }
+  ]
+}

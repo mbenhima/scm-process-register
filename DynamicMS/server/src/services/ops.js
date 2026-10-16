@@ -1,3 +1,4 @@
+import { HttpError } from '../http.js';
 // Platform operations: consistent backups with retention, integrity check and the
 // licence provider (SaaS vs on-premises signed licence) (FR-DA-OPS, CD D30).
 import fs from 'node:fs';
@@ -39,7 +40,7 @@ export function scheduleBackups() {
 }
 
 // ---- Licence provider
-const PUB = path.join(ROOT, 'licence', 'public.pem');
+const PUB = config.licencePublicKey || path.join(ROOT, 'licence', 'public.pem');
 export function licenceStatus() {
   if (config.deploymentMode !== 'onprem') return { mode: 'saas', valid: true, message: 'Entitlements are managed by the platform configuration.' };
   try {
@@ -48,7 +49,7 @@ export function licenceStatus() {
     const ok = crypto.verify(null, Buffer.from(JSON.stringify(lic.payload)), pub, Buffer.from(lic.signature, 'base64'));
     if (!ok) return { mode: 'onprem', valid: false, message: 'Licence signature is invalid.' };
     if (lic.payload.expires && lic.payload.expires < new Date().toISOString().slice(0, 10)) return { mode: 'onprem', valid: false, payload: lic.payload, message: 'Licence expired.' };
-    const users = get('SELECT COUNT(*) n FROM users WHERE status=?', 'Active').n;
+    const users = get('SELECT COUNT(*) n FROM users WHERE status=? AND is_platform_admin=0', 'Active').n;
     if (lic.payload.seats && users > lic.payload.seats) return { mode: 'onprem', valid: false, payload: lic.payload, message: `Active users (${users}) exceed licensed seats (${lic.payload.seats}).` };
     return { mode: 'onprem', valid: true, payload: lic.payload, message: 'Licence valid.' };
   } catch (e) {
@@ -61,4 +62,29 @@ export function installLicence(text) {
   fs.mkdirSync(path.dirname(config.licenceFile), { recursive: true });
   fs.writeFileSync(config.licenceFile, JSON.stringify(lic, null, 2));
   return licenceStatus();
+}
+
+// ---- Licence content enforced on-premises: packs, add-ons and standards must be licensed, and
+// active users stay within the licensed seats (CD D30).
+function onpremLicence() {
+  if (config.deploymentMode !== 'onprem') return null;
+  const st = licenceStatus();
+  return st.valid && st.payload ? st.payload : null;
+}
+export function assertLicensed(items) {
+  const lic = onpremLicence();
+  if (!lic || !Array.isArray(lic.packs)) return;
+  const missing = [...new Set(items.filter(Boolean))].filter(x => !lic.packs.includes(x));
+  if (missing.length) throw new HttpError(402, 'NOT_LICENSED', `Not included in the licence: ${missing.join(', ')}.`);
+}
+export function licensedBasePack(preferred) {
+  const lic = onpremLicence();
+  if (!lic || !Array.isArray(lic.packs) || lic.packs.includes(preferred)) return preferred;
+  return ['DMS-ENT', 'DMS-PRO', 'DMS-SME'].find(p => lic.packs.includes(p)) || preferred;
+}
+export function assertSeats(adding = 1) {
+  const lic = onpremLicence();
+  if (!lic?.seats) return;
+  const active = get('SELECT COUNT(*) n FROM users WHERE status=? AND is_platform_admin=0', 'Active').n;
+  if (active + adding > lic.seats) throw new HttpError(402, 'SEATS_EXCEEDED', `The licence allows ${lic.seats} active users; ${active} are active.`);
 }

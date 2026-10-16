@@ -59,6 +59,8 @@ export function AppProvider({ children }) {
   const loadSession = useCallback(async () => {
     const m = await api('/auth/me');
     setMe(m);
+    // An account with an initial password changes it first (production mode); the rest loads after.
+    if (m.user.mustChangePassword) return m;
     // Table views and panel widths follow the user from one browser to another.
     setPrefsSync((tables) => api('/auth/prefs', { method: 'PUT', body: { tables } }).catch(() => {}), m.prefs?.tables);
     setPanelSync((panels) => api('/auth/prefs', { method: 'PUT', body: { panels } }).catch(() => {}), m.prefs?.panels);

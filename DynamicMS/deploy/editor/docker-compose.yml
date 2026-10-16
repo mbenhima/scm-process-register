@@ -1,0 +1,25 @@
+# DynamicMS — editor side (SaaS hosted by the editor), production mode.
+# Start:  docker compose --env-file .env up -d      (from this folder)
+# The database starts empty: catalog, libraries and the platform administrator of .env only.
+services:
+  dynamicms:
+    image: dynamicms:2026.10
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    container_name: dynamicms-editor
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      APP_MODE: production
+      DEPLOYMENT_MODE: saas
+      INIT_DATA: empty
+    ports:
+      - "${HTTP_PORT:-4000}:4000"
+    volumes:
+      - dynamicms-data:/data
+      # Optional setup file: groups, organizations, users and projects created at start-up.
+      - ./setup.json:/config/setup.json:ro
+
+volumes:
+  dynamicms-data:

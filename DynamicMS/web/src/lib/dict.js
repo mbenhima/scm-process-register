@@ -6783,5 +6783,61 @@ export const DICT = {
 "Approved": {
 "fr": "Approuvé",
 "ar": "معتمد"
+},
+"Initial password": {
+"fr": "Mot de passe initial",
+"ar": "كلمة المرور الأولية"
+},
+"Given to the person, who changes it at first sign-in. Required in production: at least 12 characters with upper case, lower case and a digit.": {
+"fr": "Communiqué à la personne, qui le change à sa première connexion. Obligatoire en production : au moins 12 caractères avec majuscule, minuscule et chiffre.",
+"ar": "تُسلَّم إلى الشخص الذي يغيّرها عند أول تسجيل دخول. مطلوبة في وضع الإنتاج: 12 حرفًا على الأقل مع حرف كبير وحرف صغير ورقم."
+},
+"Choose your password": {
+"fr": "Choisissez votre mot de passe",
+"ar": "اختر كلمة المرور"
+},
+"Your account was created with an initial password. Choose your own password to continue.": {
+"fr": "Votre compte a été créé avec un mot de passe initial. Choisissez votre propre mot de passe pour continuer.",
+"ar": "أُنشئ حسابك بكلمة مرور أولية. اختر كلمة المرور الخاصة بك للمتابعة."
+},
+"At least 12 characters with upper case, lower case and a digit.": {
+"fr": "Au moins 12 caractères avec majuscule, minuscule et chiffre.",
+"ar": "12 حرفًا على الأقل مع حرف كبير وحرف صغير ورقم."
+},
+"Confirm the new password": {
+"fr": "Confirmer le nouveau mot de passe",
+"ar": "تأكيد كلمة المرور الجديدة"
+},
+"The two passwords differ.": {
+"fr": "Les deux mots de passe sont différents.",
+"ar": "كلمتا المرور مختلفتان."
+},
+"Save the password": {
+"fr": "Enregistrer le mot de passe",
+"ar": "حفظ كلمة المرور"
+},
+"Licence installed: {m}": {
+"fr": "Licence installée : {m}",
+"ar": "تم تثبيت الترخيص: {m}"
+},
+"Customer": {
+"fr": "Client",
+"ar": "العميل"
+},
+"Seats": {
+"fr": "Postes",
+"ar": "المقاعد"
+},
+"Expires": {
+"fr": "Expire le",
+"ar": "ينتهي في"
+},
+"Licensed items": {
+"fr": "Éléments sous licence",
+"ar": "العناصر المرخّصة"
+},
+"Install a licence file": {
+"fr": "Installer un fichier de licence",
+"ar": "تثبيت ملف ترخيص"
 }
 };

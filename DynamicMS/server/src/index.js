@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { config, ROOT } from './config.js';
-import { openDb, migrate, isInitialized, get } from './db.js';
+import { openDb, closeDb, migrate, isInitialized, get } from './db.js';
 import { authenticate } from './auth.js';
 import { HttpError, langOf } from './http.js';
 import { scan } from './services/alerts.js';
@@ -26,17 +26,30 @@ import admin from './routes/admin.js';
 import ptemplates from './routes/ptemplates.js';
 import entries from './routes/entries.js';
 import { runMigrations } from './services/migrations.js';
+import { SETUP_SECRET, applySetupFile } from './ops/setup.js';
 
 // ---- Startup guards
-if (process.env.NODE_ENV === 'production' && config.jwtSecret === 'dynamicms-local-dev-secret-change-me') {
-  console.error('Refusing to start: set JWT_SECRET to a long random value in production.');
-  process.exit(1);
-}
+const PROD = config.appMode === 'production';
+const refuse = (msg) => { console.error(`Refusing to start: ${msg}`); process.exit(1); };
+if ((PROD || process.env.NODE_ENV === 'production') && (config.jwtSecret === 'dynamicms-local-dev-secret-change-me' || config.jwtSecret.length < 32)) refuse('set JWT_SECRET to a random value of at least 32 characters.');
 openDb();
 migrate();
 if (!isInitialized()) {
-  console.error('The database is empty. Run "npm run seed" first, then "npm run dev".');
-  process.exit(1);
+  if (!PROD) {
+    console.error('The database is empty. Run "npm run seed" first, then "npm run dev".');
+    process.exit(1);
+  }
+  // Production first start: the database is created here (FR-DA-OPS-01).
+  const strong = (pw) => pw.length >= 12 && /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /\d/.test(pw);
+  if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) refuse('set ADMIN_EMAIL and ADMIN_PASSWORD for the first start.');
+  if (!strong(config.adminPassword)) refuse('ADMIN_PASSWORD needs at least 12 characters with upper case, lower case and a digit.');
+  if (config.initData === 'demo' && (!process.env.SEED_PASSWORD || !strong(config.demoPassword))) refuse('INIT_DATA=demo needs SEED_PASSWORD (at least 12 characters with upper case, lower case and a digit).');
+  closeDb();
+  console.log(`First start: creating the database (${config.initData === 'demo' ? 'seeded demonstration data' : 'catalog and administrator only'}).`);
+  const { seedDatabase } = await import('./seed/run.js');
+  await seedDatabase({ demo: config.initData === 'demo' });
+  openDb();
+  migrate();
 }
 // Versioned data migrations of an upgrade, each run once and recorded (NFR-DA-MAINT-11).
 for (const m of runMigrations()) console.log(`Migration ${m.id}: ${m.summary}`);
@@ -51,15 +64,22 @@ app.use('/api', rateLimit({ windowMs: 60_000, limit: 1200, standardHeaders: 'dra
 
 app.get('/api/health', (req, res) => {
   const seeded = get("SELECT value FROM meta WHERE key='seeded_at'")?.value;
-  res.json({ status: 'ok', version: '1.0.0', seededAt: seeded, deployment: config.deploymentMode, licence: licenceStatus().valid ? 'valid' : 'invalid', time: new Date().toISOString() });
+  res.json({ status: 'ok', version: '1.0.0', mode: config.appMode, demo: config.appMode === 'demo', seededAt: seeded, deployment: config.deploymentMode, licence: licenceStatus().valid ? 'valid' : 'invalid', time: new Date().toISOString() });
 });
 app.use('/api/auth', auth);
 
 // Everything below requires a valid token.
 app.use('/api', authenticate, (req, _res, next) => { req.lang = langOf(req); next(); });
-// On-premises without a valid licence the platform turns read-only (CD D30).
+// An account created with an initial password must set its own before anything else.
 app.use('/api', (req, _res, next) => {
-  if (req.method === 'GET' || req.user?.is_platform_admin || req.path.startsWith('/admin/licence')) return next();
+  if (req.user?.must_change_password && req.headers['x-dms-setup'] !== SETUP_SECRET) return next(new HttpError(403, 'PASSWORD_CHANGE_REQUIRED', 'Change your password before continuing.'));
+  next();
+});
+// On-premises without a valid licence the platform turns read-only (CD D30). In production nobody
+// bypasses it, the platform administrator included; only installing a licence stays possible.
+app.use('/api', (req, _res, next) => {
+  if (req.method === 'GET' || req.path.startsWith('/admin/licence')) return next();
+  if (!PROD && req.user?.is_platform_admin) return next();
   if (!licenceStatus().valid) return next(new HttpError(402, 'LICENCE_INVALID', 'The licence is not valid; the platform is read-only.'));
   next();
 });
@@ -98,7 +118,8 @@ app.use((err, req, res, _next) => {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(ROOT, 'src', 'index.js')) {
   app.listen(config.port, () => {
-    console.log(`DynamicMS API listening on http://localhost:${config.port} (${config.deploymentMode})`);
+    console.log(`DynamicMS API listening on http://localhost:${config.port} (${config.deploymentMode}, ${config.appMode})`);
+    if (config.setupFile) applySetupFile().catch(e => console.error('[setup]', e.message));
     scheduleBackups();
     const tick = () => { try { const n = scan(); if (n) console.log(`[alerts] ${n} new time-based alerts`); } catch (e) { console.error('[alerts]', e.message); } };
     setTimeout(tick, 5000).unref();

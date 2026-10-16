@@ -5,6 +5,7 @@ import Shell from './components/Shell.jsx';
 import { Loading, Toasts } from './components/ui.jsx';
 import { DialogHost, SessionExpired, OfflineBanner } from './components/Dialogs.jsx';
 import LeaveGuard from './components/LeaveGuard.jsx';
+import FirstPassword from './pages/FirstPassword.jsx';
 import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
 import Tasks from './pages/Tasks.jsx';
@@ -45,6 +46,7 @@ export default function App() {
   const loc = useLocation();
   if (booting) return <Loading />;
   if (!me) return <><Login /><Toasts /></>;
+  if (me.user.mustChangePassword) return <><FirstPassword /><Toasts /></>;
   return (
     <Shell>
       <OfflineBanner />

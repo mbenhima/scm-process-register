@@ -1,2 +1,8 @@
 __pycache__/
 *.pyc
+
+# Deployment secrets
+deploy/*/.env
+deploy/*/setup.json
+deploy/customer/licence/*.pem
+sandbox-ca.crt

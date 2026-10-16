@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LogIn, Workflow, Layers, ListChecks } from 'lucide-react';
 import { useApp } from '../lib/state.jsx';
 import { Field, IconBadge } from '../components/ui.jsx';
@@ -17,6 +17,9 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  // Demonstration accounts are listed only when the server runs in demo mode, never in production.
+  const [demo, setDemo] = useState(false);
+  useEffect(() => { fetch('/api/health').then(r => r.json()).then(h => setDemo(h.demo === true)).catch(() => setDemo(false)); }, []);
   const submit = async (e) => {
     e.preventDefault();
     setBusy(true); setError(null);
@@ -40,13 +43,13 @@ export default function Login() {
           <Field label={t('Password')} required error={error}>{(id) => <input id={id} className="input" type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} required aria-invalid={!!error} />}</Field>
           <div className="row"><button className="btn btn-primary" type="submit" disabled={busy || !email || !password}><LogIn size={18} />{busy ? t('Signing in…') : t('Sign in')}</button></div>
         </form>
-        <details className="card flat tight">
+        {demo && <details className="card flat tight">
           <summary className="strong" style={{ cursor: 'pointer' }}>{t('Demonstration accounts')}</summary>
           <p className="small muted" style={{ marginTop: 8 }}>{t('Password for every organization account: {pw}', { pw: 'Demo@2026' })}</p>
           <ul className="list small">
             {DEMO.map(([e, d]) => <li key={e}><button type="button" className="link-btn" onClick={() => { setEmail(e); setPassword(e.startsWith('admin@dynamicms') ? 'Admin@2026' : 'Demo@2026'); toast(t('Account filled in. Select Sign in.')); }}>{e}</button><div className="muted xsmall">{d}</div></li>)}
           </ul>
-        </details>
+        </details>}
       </div>
       <aside className="login-aside">
         <span className="ring" style={{ width: 420, height: 420, insetInlineEnd: -140, top: -120 }} />

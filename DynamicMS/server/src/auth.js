@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 // Authentication (JWT) and authorization: RBAC permission matrix and pack entitlement
 // are two independent checks (FR-DA-RBAC-02, FR-DA-CFG-03).
 import jwt from 'jsonwebtoken';
@@ -36,7 +37,7 @@ export function authenticate(req, _res, next) {
   const u = get(`SELECT u.*, o.group_id AS group_id FROM users u LEFT JOIN organizations o ON o.id = u.org_id WHERE u.id = ?`, payload.sub);
   if (!u || u.status !== 'Active') return next(new HttpError(401, 'USER_DISABLED', 'Account disabled.'));
   const roles = JSON.parse(u.roles || '[]');
-  req.user = { id: u.id, org_id: u.org_id, group_id: u.group_id, email: u.email, name: u.name, roles, lang: u.lang, is_platform_admin: !!u.is_platform_admin, perms: permsOf(roles, !!u.is_platform_admin) };
+  req.user = { id: u.id, org_id: u.org_id, group_id: u.group_id, email: u.email, name: u.name, roles, lang: u.lang, is_platform_admin: !!u.is_platform_admin, must_change_password: !!u.must_change_password, perms: permsOf(roles, !!u.is_platform_admin) };
   next();
 }
 
@@ -51,4 +52,23 @@ export function assertPerm(req, perm) { if (!can(req, perm)) throw forbidden('PE
 export function assertFeature(orgId, feature) {
   const org = get('SELECT * FROM organizations WHERE id=?', orgId);
   if (!org || !hasFeature(org, feature)) throw new HttpError(402, 'NOT_ENTITLED', `This feature (${feature}) is not included in the organization's configuration.`);
+}
+
+// Password rule: production asks for 12 characters with upper case, lower case and a digit.
+export function passwordProblem(pw) {
+  const s = String(pw || '');
+  const min = config.appMode === 'production' ? 12 : 8;
+  if (s.length < min || !/[A-Z]/.test(s) || !/[a-z]/.test(s) || !/\d/.test(s)) return `Use at least ${min} characters with upper case, lower case and a digit.`;
+  return null;
+}
+
+/** Hash and flag of a new account's password: in production an initial password is required
+ * and must be changed at first sign-in; in demo mode the demonstration password is the default. */
+export function initialPassword(given) {
+  if (config.appMode === 'production') {
+    const problem = passwordProblem(given);
+    if (problem) throw new HttpError(400, 'INITIAL_PASSWORD_REQUIRED', `Initial password: ${problem}`);
+    return { hash: bcrypt.hashSync(String(given), 10), mustChange: 1 };
+  }
+  return { hash: bcrypt.hashSync(String(given || config.demoPassword), 10), mustChange: 0 };
 }

@@ -1,0 +1,27 @@
+# DynamicMS — customer side (on-premises: data center, private cloud or air-gapped), production mode
+# with seeded data. Start:  docker compose --env-file .env up -d      (from this folder)
+# The first start loads the seeded data (about one minute). Writing is locked until the licence
+# file issued by the editor is installed (Administration > Licence).
+services:
+  dynamicms:
+    image: dynamicms:2026.10
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    container_name: dynamicms
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      APP_MODE: production
+      DEPLOYMENT_MODE: onprem
+      INIT_DATA: demo
+      LICENCE_PUBLIC_KEY: /licence/public.pem
+    ports:
+      - "${HTTP_PORT:-4000}:4000"
+    volumes:
+      - dynamicms-data:/data
+      # Public key of the editor, used to verify the licence file (never the private key).
+      - ./licence/public.pem:/licence/public.pem:ro
+
+volumes:
+  dynamicms-data:

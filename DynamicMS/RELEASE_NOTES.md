@@ -21,6 +21,11 @@ and is safe to run again (NFR-DA-MAINT-11). The server log lists the migrations 
 
 ### What is new
 
+- Production mode (`APP_MODE=production`) and Docker deployment for the editor side (SaaS) and the
+  customer side (on-premises): no demonstration account on the sign-in page, administrator from the
+  environment, password change at first sign-in, setup file, licence enforced on-premises
+  (read-only until installed, licensed packs and seats), licence installation in Administration.
+
 - Multi-Record Data Entry on every table of records (SRS 4.49): paste, import with repair and
   undo, export, edit conflicts, draft backup, full-screen workspace, phone list.
 - AI governance: every AI suggestion runs through an active AI Use Case serving its place, with
