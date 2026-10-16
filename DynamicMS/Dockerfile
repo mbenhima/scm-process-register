@@ -32,7 +32,6 @@ COPY --from=deps /app/server/node_modules server/node_modules
 COPY server/package.json server/
 COPY server/src server/src
 COPY server/seed server/seed
-COPY server/tools server/tools
 # Validation rules shared by the server and the web client.
 COPY web/package.json web/package.json
 COPY web/src/lib/multientry.js web/src/lib/multientry.js
