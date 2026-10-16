@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { confirmLeave } from '../lib/navguard.jsx';
 import { ProcessDocs } from '../components/StepModules.jsx';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useI18n } from '../lib/i18n.jsx';
+import { useI18n, relText } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { get, post, put, patch, del, api, download } from '../lib/api.js';
 import { PageHead, Card, Guard, DataTable, StatusPill, Progress, Btn, Icon, Kpi, useAction, Modal, JustifyDialog, AiBadge, KV, Field, IconBadge, Tabs, Legend, Select } from '../components/ui.jsx';
@@ -83,7 +83,7 @@ export function E2EInstance() {
       <DataTable search={false} rows={x.tasks} onRow={async r => { if (r.id !== taskId && await confirmLeave()) setSp({ task: r.id }); }} columns={[
         { key: 'sort', label: '#', num: true }, { key: 'uft_id', label: t('col.task'), render: r => <span><span className="strong">{r.uft_id}</span><br /><UftName id={r.uft_id} /></span> },
         { key: 'status', label: t('col.status'), render: r => <StatusPill value={r.status} /> }, { key: 'owner_name', label: t('col.owner') }, { key: 'due', label: t('col.due'), render: r => <span className={r.status !== 'Completed' && new Date(r.due_date) < new Date() ? 'strong' : ''}>{fmtDate(r.due_date)}</span> }]} /></Card>
-      <Card title={t('run.card')}><KV items={[[t('run.trigger'), L(x.e2e.trigger)], [t('run.terminal'), L(x.e2e.terminal)], [t('run.feeds'), x.e2e.feedsInto || '—'], [t('run.consumes'), x.e2e.consumes || '—'], [t('run.supported'), x.e2e.supportedBy || '—'], [t('run.mps'), x.e2e.mps.join(', ')], [t('run.modules'), L(x.e2e.modules)],
+      <Card title={t('run.card')}><KV items={[[t('run.trigger'), L(x.e2e.trigger)], [t('run.terminal'), L(x.e2e.terminal)], [t('run.feeds'), relText(x.e2e.feedsInto, t) || '—'], [t('run.consumes'), relText(x.e2e.consumes, t) || '—'], [t('run.supported'), relText(x.e2e.supportedBy, t) || '—'], [t('run.mps'), x.e2e.mps.join(', ')], [t('run.modules'), L(x.e2e.modules)],
         [t('col.progress'), <span className="row"><Progress value={x.instance.progress} /><span>{x.instance.progress}%</span></span>], [t('col.status'), <StatusPill value={x.instance.status} />]]} />
         <div className="label" style={{ marginTop: 'var(--aiv-space-4)' }}>{t('readiness.title')}</div><Readiness instanceId={id} /></Card></div>
     {taskId && <TaskPanel id={taskId} project={x.project} tasks={x.tasks} onGo={async tid => { if (await confirmLeave()) setSp({ task: tid }); }} onClose={async () => { if (await confirmLeave()) setSp({}); }} onChanged={d.reload} />}

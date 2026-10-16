@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useI18n } from '../lib/i18n.jsx';
+import { useI18n, relText } from '../lib/i18n.jsx';
 import { useSession, useData } from '../lib/session.jsx';
 import { post, put, get } from '../lib/api.js';
 import { PageHead, Card, Guard, DataTable, StatusPill, Btn, Icon, Tabs, KV, AiBadge, useAction, JustifyDialog, Seg, Legend, Progress, Field, Select } from '../components/ui.jsx';
@@ -50,7 +50,7 @@ export function E2EDetail() {
   const { id } = useParams(); const { t, L } = useI18n(); const d = useData('/process/e2e/' + id); const [tab, setTab] = useState('tasks');
   return (<Guard state={d}>{x => { const e = x.e2e; return (<>
     <PageHead eyebrow={`${e.id} · ${L(e.type)}`} title={L(e.name)} subtitle={L(e.description)}><Link className="btn" to={'/process/bpmn?e2e=' + e.id}><Icon name="Shapes" />{t('nav.bpmn')}</Link></PageHead>
-    <div className="grid split"><Card><KV items={[[t('run.trigger'), L(e.trigger)], [t('run.terminal'), L(e.terminal)], [t('run.feeds'), (e.feedsInto || '—')], [t('run.consumes'), e.consumes || '—'], [t('run.supported'), e.supportedBy || '—'], [t('run.mps'), e.mps.map(m => <Link key={m} to={'/process/mp/' + m} style={{ marginInlineEnd: 8 }}>{m}</Link>)], [t('run.modules'), L(e.modules)]]} /></Card>
+    <div className="grid split"><Card><KV items={[[t('run.trigger'), L(e.trigger)], [t('run.terminal'), L(e.terminal)], [t('run.feeds'), (relText(e.feedsInto, t) || '—')], [t('run.consumes'), relText(e.consumes, t) || '—'], [t('run.supported'), relText(e.supportedBy, t) || '—'], [t('run.mps'), e.mps.map(m => <Link key={m} to={'/process/mp/' + m} style={{ marginInlineEnd: 8 }}>{m}</Link>)], [t('run.modules'), L(e.modules)]]} /></Card>
       <Card title={t('e2e.chain')}><p className="small">{t('e2e.fedBy')}: {x.chainIn.map(c => <Link key={c.id} to={'/process/e2e/' + c.id} style={{ marginInlineEnd: 8 }}>{c.id}</Link>)}</p><p className="small">{t('e2e.feeds')}: {x.chainOut.map(c => <Link key={c} to={'/process/e2e/' + c} style={{ marginInlineEnd: 8 }}>{c}</Link>)}</p></Card></div>
     <Tabs value={tab} onChange={setTab} tabs={[{ id: 'tasks', label: t('e2e.userTasks'), count: x.ufts.length }, { id: 'racsi', label: 'RACSI' }, { id: 'bpmn', label: t('e2e.bpmnFlow') }, { id: 'guide', label: t('run.whatToType') }]} />
     {tab === 'tasks' && <DataTable search={false} rows={x.ufts} columns={[{ key: 'id', label: 'ID' }, { key: 'name', label: t('col.name'), render: u => <span><span className="strong">{L(u.name)}</span> {u.ai.length > 0 && <AiBadge tier={u.ai[0].tier} />}</span> }, { key: 'description', label: t('field.description'), text: u => L(u.description) }, { key: 'steps', label: t('run.steps'), text: u => u.steps.join(', ') }]} />}

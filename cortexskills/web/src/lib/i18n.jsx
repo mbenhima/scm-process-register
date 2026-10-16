@@ -25,4 +25,6 @@ export function I18nProvider({ children }) {
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 export const useI18n = () => useContext(Ctx);
+/** Chain relations are lists of process codes; the two written as a sentence in the catalog are shown translated. */
+export const relText = (v, t) => (v === 'All E2E processes' ? t('run.relAll') : String(v || '').startsWith('— (root chain;') ? t('run.relRootRef') : v);
 function humanize(key) { const last = String(key).split('.').pop(); return last.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c => c.toUpperCase()); }

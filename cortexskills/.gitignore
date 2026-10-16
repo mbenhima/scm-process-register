@@ -5,3 +5,4 @@ web/dist/
 *.log
 .env
 deliverables/docker/
+tools/docs/shots/**/.jpg-*/
