@@ -12,8 +12,10 @@ const path = await import('node:path');
 const { config } = await import('../src/config.js');
 // Two modes: "npm run seed" loads the demonstration data (development only); "npm run init" (--production) creates an
 // empty production database: reference catalog, templates and packs, and one platform administrator, no organization.
+// --production --reference-data also loads the organizations of every vertical and SME as reference examples: their
+// users are inactive with an unusable password (no demonstration account); only the platform administrator signs in.
 const argv = process.argv.slice(2); const arg = k => { const i = argv.indexOf('--' + k); return i >= 0 ? argv[i + 1] : undefined; };
-const PROD = argv.includes('--production');
+const PROD = argv.includes('--production'); const REF = PROD && argv.includes('--reference-data');
 const stop = msg => { console.error('\n  ' + msg.split('\n').join('\n  ') + '\n'); process.exit(1); };
 if (!PROD && String(process.env.NODE_ENV || '').toLowerCase() === 'production') stop('npm run seed loads the demonstration data and erases the database: it is disabled in production mode.\nTo create the production database, run: npm run init');
 let admin = null;
@@ -85,9 +87,20 @@ if (PROD) {
   // Production: the platform administrator only; organizations are created with "npm run admin -- org-create".
   const { hashPassword } = await import('../src/auth.js');
   run(`INSERT INTO users(id,org_id,email,name,password_hash,language,title,is_platform,created_at) VALUES(?,?,?,?,?,?,?,1,?)`, U('user:platform'), null, admin.email, admin.name, hashPassword(admin.password), 'en', 'Platform Administrator', now());
+  let refOrgs = 0;
+  if (REF) {
+    // Reference examples: every vertical and SME, full runs. The people of these organizations cannot sign in: an
+    // unusable password (a random secret that is never kept) and an inactive account.
+    console.log('• Reference organizations: every vertical and SME, full runs (a few minutes)…');
+    const { seedTenants } = await import('./tenants.js');
+    const crypto = await import('node:crypto');
+    refOrgs = seedTenants(hashPassword(crypto.randomBytes(32).toString('base64'))).length;
+    run(`UPDATE users SET active=0 WHERE is_platform=0`);
+    run(`INSERT OR REPLACE INTO meta(key,value) VALUES('reference_data','yes')`); run(`INSERT OR REPLACE INTO meta(key,value) VALUES('guidance_1_13','seed')`);
+  }
   for (const [k, v] of [['seeded_at', now()], ['data_mode', 'production'], ['ai_catalog_1_12', 'seed'], ['version', JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version]]) run(`INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)`, k, v);
   const { backupNow } = await import('../src/services/ops.js'); backupNow('init');
-  console.log(`\n  Production database ready in ${Math.round((Date.now() - t0) / 1000)} s: reference catalog, ${one('SELECT COUNT(*) n FROM records WHERE org_id IS NULL').n} library records, no organization.`);
+  console.log(`\n  Production database ready in ${Math.round((Date.now() - t0) / 1000)} s: reference catalog, ${one('SELECT COUNT(*) n FROM records WHERE org_id IS NULL').n} library records, ${refOrgs ? refOrgs + ' reference organizations (no account can sign in)' : 'no organization'}.`);
   console.log(`  Platform administrator: ${admin.email}. Remove ADMIN_PASSWORD from server/.env now.`);
   console.log('  Next: npm start, then create each customer organization with  npm run admin -- org-create  (see the installation guide).\n');
   db.close(); process.exit(0);

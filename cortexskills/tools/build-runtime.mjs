@@ -2,7 +2,8 @@
 // shortened, comments and formatting removed) in place of the original, the folder layout is kept so the runtime finds
 // its data files, and the built web client is copied as is (already minified by Vite, no source maps).
 // Excluded: tests, the vendor signing tool and keys, translation sources, data, settings, dependencies (npm ci).
-// Edition "customer" also removes every price from the reference catalog (no commercial content in the database).
+// Edition "customer" also removes every price from the reference catalog (no commercial content in the database): prices,
+// price rules, packaging rules and the priced licensing text of the modules.
 // Usage: node tools/build-runtime.mjs <outDir> [customer|editor]
 import fs from 'node:fs';
 import path from 'node:path';
@@ -29,9 +30,16 @@ for (const f of walk(SRV)) {
     const src = fs.readFileSync(f, 'utf8'); const shebang = src.startsWith('#!') ? src.slice(0, src.indexOf('\n') + 1) : '';
     const r = esbuild.transformSync(shebang ? src.slice(shebang.length) : src, { loader: 'js', format: 'esm', target: 'node22', minify: true, legalComments: 'none', charset: 'utf8' });
     fs.writeFileSync(to, shebang + r.code); js++; bytesIn += src.length; bytesOut += r.code.length;
+  } else if (rel === 'i18n/dictionary.json') {
+    // Delivered runtimes name no demonstration account anywhere (the sign-in hint is removed from the dictionary).
+    const dct = JSON.parse(fs.readFileSync(f, 'utf8')); delete dct['login.demo'];
+    fs.writeFileSync(to, JSON.stringify(dct)); other++;
   } else if (edition === 'customer' && rel === 'seed/data/catalog.json') {
     const c = JSON.parse(fs.readFileSync(f, 'utf8'));
     for (const k of ['packs', 'bundles', 'addOns', 'smePacks']) if (c[k]) c[k] = strip(c[k]);
+    // No sales rule and no price in the module licensing text: the packaging rules go, a module shows its tier only.
+    c.packagingRules = [];
+    for (const m of c.modules || []) { m.Licensing_Model = m.Tier; m.Rate_Limit = String(m.Rate_Limit || '').replace(/ ?\(\$[^)]*\)/g, ''); }
     fs.writeFileSync(to, JSON.stringify(c)); other++;
   } else if (edition === 'customer' && rel === 'seed/content/framework.json') {
     const c = JSON.parse(fs.readFileSync(f, 'utf8')); c.smePacks = strip(c.smePacks || []);
@@ -46,5 +54,6 @@ const maps = walk(path.join(out, 'web', 'dist')).filter(f => f.endsWith('.map'))
 // Nothing readable left behind: no test, no signing tool, no private key, no source map.
 const all = walk(out).map(f => path.relative(out, f));
 const bad = all.filter(f => /(^|\/)test\/|sign-licence|vendor-private|\.map$/.test(f));
+if (/Admin#2026|CortexSkills#2026/.test(fs.readFileSync(path.join(out, 'server/i18n/dictionary.json'), 'utf8'))) bad.push('demonstration password in the dictionary');
 if (bad.length) { console.error('Unexpected files in the runtime:', bad); process.exit(1); }
 console.log(`runtime (${edition}): ${js} JavaScript files minified (${Math.round(bytesIn / 1024)} KB → ${Math.round(bytesOut / 1024)} KB), ${other} data files, web client copied → ${out}`);

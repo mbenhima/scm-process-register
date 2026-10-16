@@ -8,7 +8,7 @@ export CSLIC_HOME=${CSLIC_HOME:-$HOME/.cortexskills-editeur}
 VER=$(cat "$DIR/../application/VERSION" 2>/dev/null || true); IMG=${CSLIC_IMAGE:-cortexskills-editeur:$VER}
 command -v docker >/dev/null 2>&1 || { echo "  ERREUR : Docker est nécessaire (curl -fsSL https://get.docker.com | sudo sh)." >&2; exit 1; }
 if ! docker image inspect "$IMG" >/dev/null 2>&1; then
-  A="$DIR/../application/cortexskills-editeur-docker-image-$VER.tar.gz"
+  A="$DIR/../application/Docker_Image_Runtime_Editor_CortexSkills_$VER.tar.gz"
   [ -f "$A" ] || { echo "  ERREUR : image $IMG absente et archive introuvable ($A)." >&2; exit 1; }
   docker load -i "$A" >/dev/null
 fi

@@ -36,6 +36,7 @@ WORKDIR /app/server
 USER node
 VOLUME ["/data"]
 EXPOSE 4000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+# Le premier démarrage charge les données de référence (5 à 15 minutes) : délai de démarrage de 30 minutes.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30m --retries=3 \
   CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||4000)+'/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 ENTRYPOINT ["cortexskills-start"]

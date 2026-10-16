@@ -1,9 +1,11 @@
-CortexSkills @VERSION@ — Paquet éditeur Docker (Linux)
-Procédure complète : « CortexSkills — Guide d'installation éditeur (Docker) ».
+CortexSkills @VERSION@ — Exécutable Docker, côté éditeur (cloud privé / sur site Linux, local Windows)
+Procédure complète : Guide_Installation_Docker_Runtime_Editor_Linux_Windows_CortexSkills_FR.docx.
+Aucun code source dans ce paquet : l'application est dans l'image déjà construite.
 
   application/        CortexSkills pour vos propres installations (tarifs visibles), image déjà construite :
-                        ./installer.sh local                                    scénario a — localhost (http://localhost:4000)
-                        ./installer.sh serveur <nom DNS> [auto|internal|files]  scénario b — cloud privé / sur site (HTTPS)
+                        ./installer.sh serveur <nom DNS> [auto|internal|files]  scénario a — cloud privé / sur site, Linux (HTTPS)
+                        ./installer.sh local                                    scénario b — localhost sous Windows (terminal
+                                                                                Ubuntu WSL) ou Linux : http://localhost:4000
                         ./licences.sh …       organisations et licences installées
                         ./sauvegarder.sh      sauvegarde hors du conteneur (et vers une autre machine)
                         ./mettre-a-jour.sh    passage à une nouvelle version
@@ -15,6 +17,8 @@ Procédure complète : « CortexSkills — Guide d'installation éditeur (Docker
 Premiers pas (sur votre poste, dans ce dossier)
   1. ./gestion-licences/cslic importer poste-signature && rm -r poste-signature
   2. ./gestion-licences/cslic-sauvegarder ~/coffre
-  3. Scénario a :  cd application && ./installer.sh local
-  4. Scénario b :  copier application/ sur le serveur, puis ./installer.sh serveur competences.mondomaine.ma auto
-Le paquet client (CortexSkills-Client-Docker-@VERSION@.zip et son .sha256) s'envoie tel quel à chaque client.
+  3. Scénario a :  copier application/ sur le serveur Linux, puis ./installer.sh serveur competences.mondomaine.ma auto
+  4. Scénario b :  sous Windows (Docker Desktop), dans le terminal Ubuntu : cd application && ./installer.sh local
+                   ou en PowerShell, sans script : guide, chapitre 5.
+  Premier démarrage : chargement des données de référence de toutes les verticales et des PME (5 à 15 minutes).
+Le paquet client (Docker_Runtime_Customer_Linux_CortexSkills_@VERSION@.zip et son .sha256) s'envoie tel quel à chaque client.

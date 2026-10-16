@@ -16,7 +16,6 @@ const b = t => ({ text: t, bold: true });
 const today = new Date().toISOString().slice(0, 10).split('-').reverse().join('/');
 const task = uft => d.tasks.find(t => t.uft === uft);
 const W2 = [2800, 6846];
-const PASS = 'CortexSkills#2026';
 
 // Value of a cell as typed in the application (KPI by code and name).
 const cellText = (f, v) => (f?.type === 'kpi' && /^KPI-\d+$/.test(String(v)) ? `${v} (${kpi[v] || ''})` : v);
@@ -69,8 +68,8 @@ body.push(H1('1. Le cas et ce guide'),
   table(['Phase', 'Processus', 'Tâches', 'Jalon à la fin'], d.phases.map(p => [`Phase ${p.phase}`, `${p.e2e} — ${p.name}`, String(p.tasks), (d.gates.find(g => g.phase === p.phase) || {}).gate || '—']), [1200, 5400, 900, 2146], { size: 18 }),
   P(`Au total : ${d.phases.length} processus, ${nTasks} tâches, ${nSteps} étapes, et les jalons de fin de phase. Le modèle de projet « ${d.project.template.name} » ne garde que ces six processus : c’est ce qui fait de ce cas un cas simple.`, { size: 20 }),
   H2('1.2 Les comptes du cas'),
-  table(['Rôle dans le cas', 'Nom', 'E-mail de connexion'], [['Responsable formation (pilote du projet)', d.users.find(u => /headld/.test(u.email))?.name, 'headld@cliniquealamal.ma'], ['Analyste formation', d.users.find(u => /analyst/.test(u.email))?.name, 'analyst@cliniquealamal.ma'], ['DRH, présidente du comité de pilotage (jalons)', d.users.find(u => /hrd@/.test(u.email))?.name, 'hrd@cliniquealamal.ma'], ['Administrateur (canaux, intégrations)', d.users.find(u => /admin@/.test(u.email))?.name, 'admin@cliniquealamal.ma']], [3600, 2400, 3646]),
-  P(`Mot de passe de démonstration : ${PASS}. Dans votre installation, utilisez vos propres comptes ; les rôles sont les mêmes.`, { size: 20, before: 60 }),
+  table(['Rôle dans le cas', 'Nom', 'E-mail dans le cas'], [['Responsable formation (pilote du projet)', d.users.find(u => /headld/.test(u.email))?.name, 'headld@cliniquealamal.ma'], ['Analyste formation', d.users.find(u => /analyst/.test(u.email))?.name, 'analyst@cliniquealamal.ma'], ['DRH, présidente du comité de pilotage (jalons)', d.users.find(u => /hrd@/.test(u.email))?.name, 'hrd@cliniquealamal.ma'], ['Administrateur (canaux, intégrations)', d.users.find(u => /admin@/.test(u.email))?.name, 'admin@cliniquealamal.ma']], [3600, 2400, 3646]),
+  P('Ces personnes sont celles du cas. Dans votre installation, l’administrateur de votre organisation crée vos propres comptes (Administration › Utilisateurs, ou la console d’installation) et leur attribue ces rôles ; aucun compte de démonstration n’existe dans la version livrée.', { size: 20, before: 60 }),
   H2('1.3 Les trois façons de remplir une étape'),
   P('Chaque étape d’un tableau ou d’un formulaire se remplit de trois façons, que vous pouvez combiner : vous partez d’une proposition, vous la corrigez, vous complétez à la main.'),
   table(['Façon', 'Bouton', 'Ce que fait l’application'], [['Saisie manuelle', 'Ajouter une ligne · Coller (Ctrl+V)', 'Vous tapez les valeurs, ou vous collez un tableau dont la première ligne porte les titres exacts des colonnes ; l’Aperçu du collage vérifie chaque cellule avant « Appliquer ».'],
@@ -301,5 +300,5 @@ for (const f of q.forms) {
 
 const doc = document({ title: 'CortexSkills — Guide du cas Clinique Al Amal', credit: `CortexSkills ${version} · Guide utilisateur · Cas Clinique Al Amal`, sections: (() => { const secs = [[]]; for (const x of body) { if (x && x.landscapeBlock) { secs.push({ landscape: true, children: x.landscapeBlock }, []); } else secs[secs.length - 1].push(x); } return secs.filter(x => !Array.isArray(x) || x.length); })(), lang: 'fr-FR' });
 fs.mkdirSync(out, { recursive: true });
-const file = path.join(out, 'CortexSkills_Guide_Utilisateur_FR.docx');
+const file = path.join(out, 'Guide_Utilisateur_Customer_CortexSkills_FR.docx');
 D.Packer.toBuffer(doc).then(x => { fs.writeFileSync(file, x); console.log(file, (x.length / 1024).toFixed(0) + ' KB'); });

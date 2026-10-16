@@ -31,7 +31,8 @@ after(() => server?.close());
 test('health endpoint exposes no tenant data', async () => {
   const r = await call('GET', '/api/health');
   assert.equal(r.status, 200);
-  assert.deepEqual(Object.keys(r.data).sort(), ['initialized', 'mode', 'status', 'version']);
+  assert.deepEqual(Object.keys(r.data).sort(), ['demoAccounts', 'initialized', 'mode', 'status', 'version']);
+  assert.equal(typeof r.data.demoAccounts, 'boolean');
 });
 
 test('every API call except login requires a token', async () => {

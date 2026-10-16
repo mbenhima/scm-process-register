@@ -1,0 +1,948 @@
+{
+ "orgs": [
+  {
+   "name": {
+    "en": "Oasis Construction & Engineering",
+    "fr": "Oasis Construction & Ingénierie",
+    "ar": "واحة للبناء والهندسة"
+   },
+   "sector": "AEC",
+   "segment": "LARGE",
+   "employees": 3800,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Souss BTP Solutions",
+    "fr": "Souss BTP Solutions",
+    "ar": "سوس للبناء والأشغال العمومية"
+   },
+   "sector": "AEC",
+   "segment": "SME",
+   "employees": 42,
+   "city": "Agadir",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Aero Atlas Nouaceur",
+    "fr": "Aero Atlas Nouaceur",
+    "ar": "أيرو أطلس النواصر"
+   },
+   "sector": "AERO",
+   "segment": "LARGE",
+   "employees": 2600,
+   "city": "Nouaceur",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Precision Aero Composites",
+    "fr": "Precision Aero Composites",
+    "ar": "بريسيجن أيرو للمواد المركبة"
+   },
+   "sector": "AERO",
+   "segment": "SME",
+   "employees": 120,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Atlas Motors Kénitra",
+    "fr": "Atlas Motors Kénitra",
+    "ar": "أطلس موتورز القنيطرة"
+   },
+   "sector": "AUTO",
+   "segment": "LARGE",
+   "employees": 4200,
+   "city": "Kénitra",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Tanger Auto Parts",
+    "fr": "Tanger Auto Parts",
+    "ar": "طنجة لقطع غيار السيارات"
+   },
+   "sector": "AUTO",
+   "segment": "SME",
+   "employees": 85,
+   "city": "Tanger",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Sahel Home & Living",
+    "fr": "Sahel Maison & Déco",
+    "ar": "الساحل للمنزل والديكور"
+   },
+   "sector": "CPEX",
+   "segment": "LARGE",
+   "employees": 1700,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Poterie Safi Design",
+    "fr": "Poterie Safi Design",
+    "ar": "فخار آسفي للتصميم"
+   },
+   "sector": "CPEX",
+   "segment": "SME",
+   "employees": 22,
+   "city": "Safi",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Sahel Consumer Brands",
+    "fr": "Sahel Consumer Brands",
+    "ar": "الساحل للعلامات الاستهلاكية"
+   },
+   "sector": "CPG",
+   "segment": "LARGE",
+   "employees": 2400,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Savonnerie Beldi",
+    "fr": "Savonnerie Beldi",
+    "ar": "صابون البلدي"
+   },
+   "sector": "CPG",
+   "segment": "SME",
+   "employees": 18,
+   "city": "Marrakech",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Horizon Distribution",
+    "fr": "Horizon Distribution",
+    "ar": "أفق للتوزيع"
+   },
+   "sector": "DIST",
+   "segment": "LARGE",
+   "employees": 2800,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Distri Oriental",
+    "fr": "Distri Oriental",
+    "ar": "توزيع الشرق"
+   },
+   "sector": "DIST",
+   "segment": "SME",
+   "employees": 60,
+   "city": "Oujda",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Atlas Electronics Group",
+    "fr": "Atlas Electronics Group",
+    "ar": "أطلس للإلكترونيات"
+   },
+   "sector": "ELEC",
+   "segment": "LARGE",
+   "employees": 1500,
+   "city": "Mohammedia",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Circuitec Oujda",
+    "fr": "Circuitec Oujda",
+    "ar": "سيركويتك وجدة"
+   },
+   "sector": "ELEC",
+   "segment": "SME",
+   "employees": 38,
+   "city": "Oujda",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Oasis Energy & Utilities",
+    "fr": "Oasis Énergie & Services",
+    "ar": "واحة للطاقة والمرافق"
+   },
+   "sector": "ENUT",
+   "segment": "LARGE",
+   "employees": 4600,
+   "city": "Ouarzazate",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Solaris Maintenance Services",
+    "fr": "Solaris Maintenance Services",
+    "ar": "سولاريس لخدمات الصيانة"
+   },
+   "sector": "ENUT",
+   "segment": "SME",
+   "employees": 65,
+   "city": "Ouarzazate",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Atlas Steel Structures",
+    "fr": "Atlas Structures Métalliques",
+    "ar": "أطلس للهياكل المعدنية"
+   },
+   "sector": "FABA",
+   "segment": "LARGE",
+   "employees": 1200,
+   "city": "Settat",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Atelier Métal Berrechid",
+    "fr": "Atelier Métal Berrechid",
+    "ar": "ورشة المعادن برشيد"
+   },
+   "sector": "FABA",
+   "segment": "SME",
+   "employees": 26,
+   "city": "Berrechid",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Sahel Agro Industries",
+    "fr": "Sahel Agro Industries",
+    "ar": "الساحل للصناعات الغذائية"
+   },
+   "sector": "FNB",
+   "segment": "LARGE",
+   "employees": 2900,
+   "city": "Meknès",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Coopérative Laitière Al Baraka",
+    "fr": "Coopérative Laitière Al Baraka",
+    "ar": "التعاونية الفلاحية للحليب البركة"
+   },
+   "sector": "FNB",
+   "segment": "SME",
+   "employees": 55,
+   "city": "El Jadida",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Atlas Textile & Footwear",
+    "fr": "Atlas Textile & Chaussure",
+    "ar": "أطلس للنسيج والأحذية"
+   },
+   "sector": "FTAP",
+   "segment": "LARGE",
+   "employees": 3400,
+   "city": "Tanger",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Atelier Cuir Fès",
+    "fr": "Atelier Cuir Fès",
+    "ar": "ورشة الجلد فاس"
+   },
+   "sector": "FTAP",
+   "segment": "SME",
+   "employees": 32,
+   "city": "Fès",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Maghreb Hospitals Group",
+    "fr": "Groupe Hospitalier Maghreb",
+    "ar": "مجموعة مستشفيات المغرب"
+   },
+   "sector": "HCPR",
+   "segment": "LARGE",
+   "employees": 4700,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Santéora Private Clinics Group",
+    "fr": "Groupe Santéora Cliniques Privées",
+    "ar": "مجموعة مصحات سانتيورا الخاصة"
+   },
+   "sector": "HCPR",
+   "segment": "LARGE",
+   "employees": 2600,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Regional Hospital Centre",
+    "fr": "Centre Hospitalier Régional",
+    "ar": "المركز الاستشفائي الجهوي"
+   },
+   "sector": "HCPR",
+   "segment": "LARGE",
+   "employees": 3400,
+   "city": "Région",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Clinique Al Amal",
+    "fr": "Clinique Al Amal",
+    "ar": "مصحة الأمل"
+   },
+   "sector": "HCPR",
+   "segment": "SME",
+   "employees": 95,
+   "city": "Marrakech",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Maghreb Life Sciences",
+    "fr": "Maghreb Life Sciences",
+    "ar": "مغرب لعلوم الحياة"
+   },
+   "sector": "HLS",
+   "segment": "LARGE",
+   "employees": 3100,
+   "city": "Rabat",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "BioLab Diagnostics Rabat",
+    "fr": "BioLab Diagnostics Rabat",
+    "ar": "بيولاب للتشخيص الرباط"
+   },
+   "sector": "HLS",
+   "segment": "SME",
+   "employees": 60,
+   "city": "Rabat",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Autoroutes & Ouvrages du Nord",
+    "fr": "Autoroutes & Ouvrages du Nord",
+    "ar": "طرق ومنشآت الشمال"
+   },
+   "sector": "INFR",
+   "segment": "LARGE",
+   "employees": 2100,
+   "city": "Tétouan",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Géo Inspect Maroc",
+    "fr": "Géo Inspect Maroc",
+    "ar": "جيو إنسبكت المغرب"
+   },
+   "sector": "INFR",
+   "segment": "SME",
+   "employees": 30,
+   "city": "Tétouan",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Horizon Logistics Tanger Med",
+    "fr": "Horizon Logistique Tanger Med",
+    "ar": "أفق للوجستيك طنجة المتوسط"
+   },
+   "sector": "LOGI",
+   "segment": "LARGE",
+   "employees": 3300,
+   "city": "Tanger",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Trans Atlas Express",
+    "fr": "Trans Atlas Express",
+    "ar": "ترانس أطلس إكسبريس"
+   },
+   "sector": "LOGI",
+   "segment": "SME",
+   "employees": 80,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Maghreb Machines Industries",
+    "fr": "Maghreb Machines Industries",
+    "ar": "مغرب ماشينز للصناعات"
+   },
+   "sector": "MACH",
+   "segment": "LARGE",
+   "employees": 1800,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Fès Mécanique de Précision",
+    "fr": "Fès Mécanique de Précision",
+    "ar": "فاس للميكانيك الدقيق"
+   },
+   "sector": "MACH",
+   "segment": "SME",
+   "employees": 45,
+   "city": "Fès",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Atlas Manufacturing Group",
+    "fr": "Atlas Manufacturing Group",
+    "ar": "أطلس للصناعة"
+   },
+   "sector": "MFGG",
+   "segment": "LARGE",
+   "employees": 3000,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Plasti Meknès",
+    "fr": "Plasti Meknès",
+    "ar": "بلاستي مكناس"
+   },
+   "sector": "MFGG",
+   "segment": "SME",
+   "employees": 58,
+   "city": "Meknès",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Atlantique Petrochemicals",
+    "fr": "Atlantique Pétrochimie",
+    "ar": "الأطلسي للبتروكيماويات"
+   },
+   "sector": "PETR",
+   "segment": "LARGE",
+   "employees": 2700,
+   "city": "Mohammedia",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Chem Services Safi",
+    "fr": "Chem Services Safi",
+    "ar": "كيم سيرفيس آسفي"
+   },
+   "sector": "PETR",
+   "segment": "SME",
+   "employees": 75,
+   "city": "Safi",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Maghreb Pharma Distribution",
+    "fr": "Maghreb Pharma Distribution",
+    "ar": "مغرب فارما للتوزيع"
+   },
+   "sector": "PHAR",
+   "segment": "LARGE",
+   "employees": 1400,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "PharmaLog Services",
+    "fr": "PharmaLog Services",
+    "ar": "فارمالوغ للخدمات"
+   },
+   "sector": "PHAR",
+   "segment": "SME",
+   "employees": 44,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Pharma Maghreb Process",
+    "fr": "Pharma Maghreb Process",
+    "ar": "فارما مغرب للعمليات"
+   },
+   "sector": "PHPR",
+   "segment": "LARGE",
+   "employees": 2200,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Galénix Laboratoires",
+    "fr": "Galénix Laboratoires",
+    "ar": "مختبرات غالينيكس"
+   },
+   "sector": "PHPR",
+   "segment": "SME",
+   "employees": 90,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Sahel Packaging & Bottling",
+    "fr": "Sahel Conditionnement & Embouteillage",
+    "ar": "الساحل للتعبئة والتغليف"
+   },
+   "sector": "PKGD",
+   "segment": "LARGE",
+   "employees": 1900,
+   "city": "Fès",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Emballages Kénitra",
+    "fr": "Emballages Kénitra",
+    "ar": "تغليف القنيطرة"
+   },
+   "sector": "PKGD",
+   "segment": "SME",
+   "employees": 52,
+   "city": "Kénitra",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Horizon Private Universities",
+    "fr": "Horizon Universités Privées",
+    "ar": "أفق للجامعات الخاصة"
+   },
+   "sector": "PRED",
+   "segment": "LARGE",
+   "employees": 1100,
+   "city": "Rabat",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "École Al Manar",
+    "fr": "École Al Manar",
+    "ar": "مدرسة المنار"
+   },
+   "sector": "PRED",
+   "segment": "SME",
+   "employees": 46,
+   "city": "Kénitra",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Phosphates & Minerals Atlas",
+    "fr": "Phosphates & Minéraux Atlas",
+    "ar": "أطلس للفوسفاط والمعادن"
+   },
+   "sector": "PROC",
+   "segment": "LARGE",
+   "employees": 5600,
+   "city": "Khouribga",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Minerals Lab Khouribga",
+    "fr": "Minerals Lab Khouribga",
+    "ar": "مختبر المعادن خريبكة"
+   },
+   "sector": "PROC",
+   "segment": "SME",
+   "employees": 40,
+   "city": "Khouribga",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Académie Régionale Rabat-Salé",
+    "fr": "Académie Régionale Rabat-Salé",
+    "ar": "الأكاديمية الجهوية الرباط سلا"
+   },
+   "sector": "PUED",
+   "segment": "LARGE",
+   "employees": 5800,
+   "city": "Rabat",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Lycée Pilote Ibn Sina",
+    "fr": "Lycée Pilote Ibn Sina",
+    "ar": "الثانوية النموذجية ابن سينا"
+   },
+   "sector": "PUED",
+   "segment": "SME",
+   "employees": 70,
+   "city": "Salé",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Sahel Retail Stores",
+    "fr": "Sahel Retail Stores",
+    "ar": "متاجر الساحل"
+   },
+   "sector": "RETL",
+   "segment": "LARGE",
+   "employees": 5200,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Marrakech Concept Store",
+    "fr": "Marrakech Concept Store",
+    "ar": "متجر مراكش المفاهيمي"
+   },
+   "sector": "RETL",
+   "segment": "SME",
+   "employees": 24,
+   "city": "Marrakech",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Atlas Semiconductor Packaging",
+    "fr": "Atlas Semiconductor Packaging",
+    "ar": "أطلس لتغليف أشباه الموصلات"
+   },
+   "sector": "SEMI",
+   "segment": "LARGE",
+   "employees": 1600,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "MicroTest Engineering",
+    "fr": "MicroTest Engineering",
+    "ar": "مايكروتست للهندسة"
+   },
+   "sector": "SEMI",
+   "segment": "SME",
+   "employees": 35,
+   "city": "Rabat",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Chantiers Navals du Détroit",
+    "fr": "Chantiers Navals du Détroit",
+    "ar": "أوراش المضيق لبناء السفن"
+   },
+   "sector": "SHIP",
+   "segment": "LARGE",
+   "employees": 1300,
+   "city": "Tanger",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Marine Outfitting Agadir",
+    "fr": "Marine Outfitting Agadir",
+    "ar": "التجهيز البحري أكادير"
+   },
+   "sector": "SHIP",
+   "segment": "SME",
+   "employees": 48,
+   "city": "Agadir",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Fédération Nationale des Coopératives",
+    "fr": "Fédération Nationale des Coopératives",
+    "ar": "الفيدرالية الوطنية للتعاونيات"
+   },
+   "sector": "SSE",
+   "segment": "LARGE",
+   "employees": 900,
+   "city": "Rabat",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "Coopérative Argan Tiznit",
+    "fr": "Coopérative Argan Tiznit",
+    "ar": "تعاونية أركان تيزنيت"
+   },
+   "sector": "SSE",
+   "segment": "SME",
+   "employees": 28,
+   "city": "Tiznit",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Oasis Telecom",
+    "fr": "Oasis Télécom",
+    "ar": "واحة للاتصالات"
+   },
+   "sector": "TELC",
+   "segment": "LARGE",
+   "employees": 3900,
+   "city": "Rabat",
+   "projects": 2,
+   "users": 29
+  },
+  {
+   "name": {
+    "en": "NetConnect Services",
+    "fr": "NetConnect Services",
+    "ar": "نت كونكت للخدمات"
+   },
+   "sector": "TELC",
+   "segment": "SME",
+   "employees": 70,
+   "city": "Rabat",
+   "projects": 2,
+   "users": 11
+  },
+  {
+   "name": {
+    "en": "Horizon Services Group",
+    "fr": "Groupe Horizon Services",
+    "ar": "مجموعة هورايزون للخدمات"
+   },
+   "sector": "UNI",
+   "segment": "LARGE",
+   "employees": 1800,
+   "city": "Casablanca",
+   "projects": 2,
+   "users": 29
+  }
+ ],
+ "sectors": {
+  "AEC": {
+   "en": "AEC & Construction",
+   "fr": "Architecture, ingénierie et construction",
+   "ar": "الهندسة المعمارية والبناء"
+  },
+  "AERO": {
+   "en": "Aerospace & Defense",
+   "fr": "Aéronautique et défense",
+   "ar": "الطيران والدفاع"
+  },
+  "AUTO": {
+   "en": "Automotive",
+   "fr": "Automobile",
+   "ar": "صناعة السيارات"
+  },
+  "CPEX": {
+   "en": "Consumer Products Extended",
+   "fr": "Produits de consommation étendus",
+   "ar": "المنتجات الاستهلاكية الموسعة"
+  },
+  "CPG": {
+   "en": "Consumer Packaged Goods",
+   "fr": "Biens de consommation emballés",
+   "ar": "السلع الاستهلاكية المعبأة"
+  },
+  "DIST": {
+   "en": "Distribution",
+   "fr": "Distribution",
+   "ar": "التوزيع"
+  },
+  "ELEC": {
+   "en": "Electronics & High-Tech",
+   "fr": "Électronique et haute technologie",
+   "ar": "الإلكترونيات والتكنولوجيا المتقدمة"
+  },
+  "ENUT": {
+   "en": "Energy & Utilities",
+   "fr": "Énergie et services publics",
+   "ar": "الطاقة والمرافق"
+  },
+  "FABA": {
+   "en": "Fabrication & Assembly",
+   "fr": "Fabrication et assemblage",
+   "ar": "التصنيع والتجميع"
+  },
+  "FNB": {
+   "en": "Food & Beverage",
+   "fr": "Agroalimentaire et boissons",
+   "ar": "الصناعات الغذائية والمشروبات"
+  },
+  "FTAP": {
+   "en": "Footwear & Apparel",
+   "fr": "Chaussure et habillement",
+   "ar": "الأحذية والملابس"
+  },
+  "HCPR": {
+   "en": "Healthcare Providers",
+   "fr": "Établissements de santé",
+   "ar": "مؤسسات تقديم الرعاية الصحية"
+  },
+  "HLS": {
+   "en": "Healthcare & Life Sciences",
+   "fr": "Santé et sciences de la vie",
+   "ar": "الصحة وعلوم الحياة"
+  },
+  "INFR": {
+   "en": "Infrastructure",
+   "fr": "Infrastructures",
+   "ar": "البنى التحتية"
+  },
+  "LOGI": {
+   "en": "Logistics",
+   "fr": "Logistique",
+   "ar": "اللوجستيك"
+  },
+  "MACH": {
+   "en": "Industrial Machinery",
+   "fr": "Machines industrielles",
+   "ar": "الآلات الصناعية"
+  },
+  "MFGG": {
+   "en": "Manufacturing (Generic)",
+   "fr": "Industrie manufacturière (générique)",
+   "ar": "الصناعة التحويلية (عامة)"
+  },
+  "PETR": {
+   "en": "Process / Petrochemical",
+   "fr": "Procédés / Pétrochimie",
+   "ar": "العمليات والبتروكيماويات"
+  },
+  "PHAR": {
+   "en": "Pharma",
+   "fr": "Pharmacie",
+   "ar": "الصيدلة"
+  },
+  "PHPR": {
+   "en": "Pharmaceutical & Process",
+   "fr": "Pharmaceutique et procédés",
+   "ar": "الصناعة الدوائية والعمليات"
+  },
+  "PKGD": {
+   "en": "Process / Packaged Goods",
+   "fr": "Procédés / Produits conditionnés",
+   "ar": "العمليات والمنتجات المعبأة"
+  },
+  "PRED": {
+   "en": "Private Education",
+   "fr": "Enseignement privé",
+   "ar": "التعليم الخاص"
+  },
+  "PROC": {
+   "en": "Process Industries",
+   "fr": "Industries de procédés",
+   "ar": "صناعات العمليات"
+  },
+  "PUED": {
+   "en": "Public Education",
+   "fr": "Enseignement public",
+   "ar": "التعليم العمومي"
+  },
+  "RETL": {
+   "en": "Retail",
+   "fr": "Commerce de détail",
+   "ar": "تجارة التجزئة"
+  },
+  "SEMI": {
+   "en": "Semiconductor & Electronics",
+   "fr": "Semi-conducteurs et électronique",
+   "ar": "أشباه الموصلات والإلكترونيات"
+  },
+  "SHIP": {
+   "en": "Shipbuilding",
+   "fr": "Construction navale",
+   "ar": "بناء السفن"
+  },
+  "SSE": {
+   "en": "Social & Solidarity Economy",
+   "fr": "Économie sociale et solidaire",
+   "ar": "الاقتصاد الاجتماعي والتضامني"
+  },
+  "TELC": {
+   "en": "Telecommunications",
+   "fr": "Télécommunications",
+   "ar": "الاتصالات"
+  },
+  "UNI": {
+   "en": "Universal (all sectors)",
+   "fr": "Universel (tous secteurs)"
+  }
+ }
+}

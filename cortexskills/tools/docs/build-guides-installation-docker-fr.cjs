@@ -1,9 +1,11 @@
 // Construit les guides d'installation Docker en français (Word, avec table des matières) :
-//  - CortexSkills_Guide_Installation_Client_Docker_FR.docx : le client installe le paquet client (Docker, Linux) et active sa
-//    licence — sans aucun élément commercial ;
-//  - CortexSkills_Guide_Installation_Editeur_{Linux,Windows}_Docker_FR.docx : l’éditeur, un guide par système — poste de signature, scénario 1 (local), scénario 2
-//    (cloud privé / sur site), gestion des licences (créer, lire, modifier, révoquer, supprimer), paquets clients.
-// Exécution : node build-guides-installation-fr.cjs <dossier>, puis python3 topdf.py <fichiers> pour les PDF.
+//  - Guide_Installation_Docker_Runtime_Customer_Linux_CortexSkills_FR.docx : le client installe l'exécutable Docker
+//    (Linux, cloud privé ou sur site) et active sa licence — sans aucun élément commercial ;
+//  - Guide_Installation_Docker_Runtime_Editor_Linux_Windows_CortexSkills_FR.docx : l'éditeur — poste de signature,
+//    scénario a (cloud privé / sur site, serveur Linux), scénario b (localhost sous Windows), gestion des licences (CRUD).
+// Les deux installations chargent au premier démarrage les organisations de référence de toutes les verticales et des
+// PME (reference-orgs.json), sans aucun compte de démonstration.
+// Exécution : node build-guides-installation-docker-fr.cjs <dossier>, puis python3 topdf.py <fichiers> pour les PDF.
 const path = require('path'); const fs = require('fs');
 const B = require('./brand.cjs'); const { D, C, P, H1, H2, H3, bullet, code, callout, table, shot, cover, tocPage, document, spacer } = B;
 const out = process.argv[2] || path.join(__dirname, '../../deliverables');
@@ -13,13 +15,28 @@ const SH = f => path.join(__dirname, 'shots/docker-fr', f + '.png');
 let n = 0; const steps = items => { const ref = 'fsteps' + (n++ || ''); return items.map(t => B.numbered(t, ref)); };
 const cmd = s => s.split('\n').map(l => code(l));
 const b = t => ({ text: t, bold: true });
-const PKG = `CortexSkills-Client-Docker-${V}`, ED = `CortexSkills-Editeur-Docker-${V}`, IMG = `cortexskills-client:${V}`, ARC = `cortexskills-client-docker-image-${V}.tar.gz`, ARE = `cortexskills-editeur-docker-image-${V}.tar.gz`;
+const PKG = `Docker_Runtime_Customer_Linux_CortexSkills_${V}`, ED = `Docker_Runtime_Editor_Linux_Windows_CortexSkills_${V}`, IMG = `cortexskills-client:${V}`, ARC = `Docker_Image_Runtime_Customer_CortexSkills_${V}.tar.gz`, ARE = `Docker_Image_Runtime_Editor_CortexSkills_${V}.tar.gz`;
+const GC = 'Guide_Installation_Docker_Runtime_Customer_Linux_CortexSkills_FR', GE = 'Guide_Installation_Docker_Runtime_Editor_Linux_Windows_CortexSkills_FR', GU = 'Guide_Utilisateur_Customer_CortexSkills_FR';
+// Les organisations de référence chargées au premier démarrage (REFERENCE_DATA=oui).
+const REF = JSON.parse(fs.readFileSync(path.join(__dirname, 'reference-orgs.json'), 'utf8'));
+const nLarge = REF.orgs.filter(o => o.segment === 'LARGE').length, nSme = REF.orgs.filter(o => o.segment === 'SME').length;
+const refTable = () => table(['Secteur', 'Grandes entreprises', 'PME'], Object.entries(REF.sectors).sort((a, b) => a[1].fr.localeCompare(b[1].fr, 'fr')).map(([k, v]) => [`${v.fr} (${k})`,
+  REF.orgs.filter(o => o.sector === k && o.segment === 'LARGE').map(o => o.name.fr).join(' ; ') || '—', REF.orgs.filter(o => o.sector === k && o.segment === 'SME').map(o => o.name.fr).join(' ; ') || '—']), [3000, 3800, 2846], { size: 15 });
+const refIntro = (who) => [
+  P(`Au premier démarrage, l’installation charge ${REF.orgs.length} organisations de référence : ${nLarge} grandes entreprises et ${nSme} PME, dans toutes les verticales (${Object.keys(REF.sectors).length - 1} secteurs et un cas universel). Chacune a deux projets complets (orientation Numérique et IA) avec ses processus, tâches, étapes, questionnaires, plans, documents et indicateurs : ce sont des exemples à consulter, en français, anglais et arabe.`),
+  callout('Aucun compte de démonstration', [
+    'La page de connexion ne mentionne aucun compte ; aucun mot de passe de démonstration n’existe dans cette version de production.',
+    'Les personnes des organisations de référence ne peuvent pas se connecter : leurs comptes sont désactivés et leur mot de passe, tiré au hasard à l’installation, n’est connu de personne.',
+    `Seul l’administrateur de la plateforme (ADMIN_EMAIL) se connecte au départ ; il consulte les organisations de référence en lecture (Portefeuille › Groupes et organisations).${who === 'client' ? ' Vos propres utilisateurs sont ceux de votre organisation (chapitre 8).' : ' Vos organisations clientes se créent avec licences.sh (chapitre 6).'}`,
+    'Elles n’ont pas de licence : elles ne comptent pas dans le nombre d’utilisateurs de votre licence. Pour une base vide, mettez REFERENCE_DATA=non dans .env avant le premier démarrage.']),
+];
+
 const W2 = [3000, 6646];
 const ADM = 'docker compose exec cortexskills cortexskills-admin';
 
 // =============================================================== GUIDE CLIENT
 const client = [
-  ...cover({ eyebrow: 'Guide d’installation Docker — Client', title: 'CortexSkills', subtitle: 'Installer CortexSkills sur votre serveur Linux avec Docker (cloud privé ou sur site), à partir de l’image livrée, et activer votre licence', meta: [`Version ${V} · ${today}`, 'AI Value'] }),
+  ...cover({ eyebrow: 'Guide d’installation — Exécutable Docker — Côté client — Linux', title: 'CortexSkills', subtitle: 'Installer l’exécutable CortexSkills sur votre serveur Linux avec Docker (cloud privé ou sur site), avec les données de référence de toutes les verticales et des PME, et activer votre licence', meta: [`Version ${V} · ${today}`, 'AI Value'] }),
   ...tocPage('Table des matières'),
 
   H1('1. Ce que vous installez'),
@@ -33,10 +50,12 @@ const client = [
   ], W2),
   spacer(),
   callout('Ce que contient l’image — et ce qu’elle ne contient pas', [
-    'Le paquet ne contient aucun code : seulement l’archive de l’image, des fichiers de configuration et la liste des empreintes.',
+    'Le paquet ne contient aucun code : seulement l’archive de l’image, des fichiers de configuration, la documentation et la liste des empreintes.',
     'Dans l’image : Node.js 22 et l’exécutable CortexSkills (sans code source), les écrans web compilés et la clé publique de l’éditeur (elle vérifie la licence, elle ne peut pas en créer). Ni npm, ni outil de développement.',
     'Hors de l’image : votre licence, vos réglages et secrets, vos données.',
     'Le port de l’application (4000) n’est ouvert que sur 127.0.0.1 : les utilisateurs passent par HTTPS.']),
+  H2('1.1 Les données de référence'),
+  ...refIntro('client'),
 
   H1('2. Prérequis'),
   H2('2.1 Serveur'),
@@ -44,7 +63,7 @@ const client = [
     ['Système', 'Linux 64 bits x86-64 (amd64)', 'Ubuntu 22.04 / 24.04 LTS, Debian 12, RHEL / Rocky / AlmaLinux 9'],
     ['Processeur', '2 vCPU', '4 vCPU'],
     ['Mémoire', '4 Go', '8 Go'],
-    ['Disque', '20 Go libres (images d’environ 450 Mo, données, sauvegardes)', '50 Go sur un stockage sauvegardé'],
+    ['Disque', '25 Go libres : images (environ 450 Mo), base avec les données de référence (environ 0,9 Go), sauvegardes quotidiennes (environ 0,8 Go chacune, 7 jours par défaut)', '50 Go sur un stockage sauvegardé'],
     ['Logiciels', 'Docker Engine 24 ou plus récent avec le plugin compose ; unzip ; sha256sum', 'Dernière version stable de Docker Engine'],
   ], [2000, 3600, 4046], { size: 18 }),
   H2('2.2 Réseau'),
@@ -57,11 +76,11 @@ const client = [
   ], W2),
   H2('2.3 Ce que vous recevez de l’éditeur'),
   table(['Fichier', 'Rôle'], [
-    [`${PKG}.zip`, 'Le paquet d’installation : l’archive des images Docker (CortexSkills et Caddy), les fichiers compose, la configuration HTTPS, le modèle de réglages et la liste des empreintes. Aucun code.'],
+    [`${PKG}.zip`, 'Le paquet d’installation : l’archive des images Docker (CortexSkills et Caddy), les fichiers compose, la configuration HTTPS, le modèle de réglages, la documentation et la liste des empreintes. Aucun code.'],
     [`${PKG}.zip.part00 … part04`, 'Le même paquet en cinq parties, si l’envoi est découpé (taille maximale des pièces jointes). Reconstituez-le au chapitre 4.'],
     [`${PKG}.zip.sha256`, 'L’empreinte SHA-256 du paquet, pour vérifier qu’il est intact (chapitre 4).'],
-    ['Ce guide (Word et PDF)', 'Installation, activation de la licence, exploitation.'],
-    ['Le Guide utilisateur (Word et PDF)', 'Utilisation de l’application, sur un cas réel complet.'],
+    [`${GC}.docx / .pdf`, 'Ce guide : installation, activation de la licence, exploitation (aussi dans le dossier documentation/ du paquet).'],
+    [`${GU}.docx / .pdf`, 'Le Guide utilisateur : utilisation de l’application sur un cas réel complet (aussi dans documentation/).'],
     ['Plus tard : <Votre_entreprise>.lic', 'Votre fichier de licence, envoyé par l’éditeur après votre demande (chapitre 9).'],
   ], W2),
 
@@ -82,6 +101,7 @@ const client = [
     ['licence/', 'Déposez ici le fichier .lic reçu de l’éditeur.'],
     ['certs/', 'Mode de certificat « files » : votre certificat cert.pem et sa clé key.pem.'],
     ['LISEZMOI.txt', 'Rappel des commandes essentielles.'],
+    ['documentation/', `${GC} et ${GU}, en Word et en PDF.`],
   ], W2, { size: 18 }),
 
   H1('5. Réglages (.env)'),
@@ -96,7 +116,8 @@ const client = [
     ['JWT_SECRET', 'Valeur aléatoire de 32 caractères ou plus (signe les sessions).', 'résultat de openssl rand'],
     ['CHANNEL_SECRET_KEY', 'Autre valeur aléatoire (chiffre les identifiants enregistrés).', 'résultat de openssl rand'],
     ['ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD', 'L’administrateur de la plateforme, créé au premier démarrage. Mot de passe : 12 caractères min., majuscule, minuscule, chiffre, symbole. Effacez ADMIN_PASSWORD ensuite.', 'it.ops@votre-entreprise.ma'],
-    ['BACKUP_RETENTION_DAYS', 'Jours de conservation des sauvegardes quotidiennes.', '30'],
+    ['REFERENCE_DATA', 'Premier démarrage : « oui » charge les organisations de référence (1.1) ; « non » crée une base vide.', 'oui'],
+    ['BACKUP_RETENTION_DAYS', 'Jours de conservation des sauvegardes quotidiennes (environ 0,8 Go chacune).', '7'],
     ['SMTP_*', 'Votre messagerie pour les invitations, relances et notifications.', 'smtp.votre-entreprise.ma, 587'],
     ['WHATSAPP_*', 'Facultatif : WhatsApp Business Cloud API.', '—'],
   ], [2400, 4800, 2446], { size: 17 }),
@@ -113,10 +134,14 @@ const client = [
 
   H1('7. Charger l’image et démarrer'),
   ...cmd(`docker load -i ${ARC}       # 1 à 2 minutes ; aucun accès Internet\ndocker image ls | grep -E 'cortexskills|caddy'\ndocker compose up -d\ndocker compose logs -f cortexskills   # Ctrl+C pour quitter\ndocker compose ps                     # cortexskills : « healthy »`),
-  P('Au premier démarrage, l’application crée la base de production (catalogue de référence, modèles, administrateur de la plateforme) en quelques secondes, puis démarre. Le contrôle de santé répond :'),
-  ...cmd(`curl -sk https://competences.votre-entreprise.ma/api/health\n{"status":"ok","initialized":true,"mode":"onprem","version":"${V}"}`),
+  P('Au premier démarrage, l’application crée la base de production — catalogue de référence, modèles, administrateur de la plateforme et organisations de référence (1.1) — puis démarre. Cette étape dure de 5 à 15 minutes selon le serveur : ne l’interrompez pas. Le journal affiche « Production database ready … 61 reference organizations (no account can sign in) », puis « CortexSkills API is running ». Le contrôle de santé répond :'),
+  ...cmd(`curl -sk https://competences.votre-entreprise.ma/api/health\n{"status":"ok","initialized":true,"mode":"onprem","version":"${V}","demoAccounts":false}`),
   P('Effacez ensuite la valeur de ADMIN_PASSWORD dans .env et relancez docker compose up -d.', { size: 20 }),
-  ...shot(SH('01_connexion'), 'La page de connexion à votre adresse', 500),
+  ...shot(SH('01_connexion'), 'La page de connexion à votre adresse : aucun compte de démonstration', 500),
+  P('Connectez-vous avec ADMIN_EMAIL et son mot de passe : les organisations de référence sont dans Portefeuille › Groupes et organisations.', { size: 20 }),
+  ...shot(SH('05_organisations_reference'), 'Les organisations de référence, vues par l’administrateur de la plateforme', 560),
+  H2('7.1 Les organisations de référence'),
+  refTable(),
 
   H1('8. Créer votre organisation'),
   P('L’organisation est votre entreprise dans CortexSkills, avec ses utilisateurs, ses projets et sa licence :'),
@@ -165,7 +190,7 @@ const client = [
   ], [2900, 6746], { size: 17 }),
   P('Les conteneurs redémarrent seuls après un redémarrage du serveur (restart: unless-stopped), si le service Docker est activé.', { size: 20 }),
   H2('10.2 Sauvegardes'),
-  P('L’application écrit chaque jour une sauvegarde de la base dans /data/backups. Avant toute intervention, et chaque jour, copiez les sauvegardes hors du serveur :'),
+  P('L’application écrit chaque jour une sauvegarde de la base dans /data/backups (environ 0,8 Go chacune avec les données de référence ; BACKUP_RETENTION_DAYS jours conservés). Avant toute intervention, et chaque jour, copiez les sauvegardes hors du serveur :'),
   ...cmd(`${ADM} backup\ndocker compose cp cortexskills:/data/backups ./sauvegardes-$(date +%F)\ndocker compose cp cortexskills:/data/attachments ./pieces-jointes-$(date +%F)\n# puis copiez ces dossiers vers votre stockage de sauvegarde`),
   H2('10.3 Restauration'),
   ...cmd('docker compose stop cortexskills\ndocker compose run --rm --no-deps --entrypoint cortexskills-admin cortexskills restore            # liste les sauvegardes\ndocker compose run --rm --no-deps --entrypoint cortexskills-admin cortexskills restore <fichier.db>\ndocker compose start cortexskills'),
@@ -180,7 +205,7 @@ const client = [
     'Le conteneur s’exécute avec un utilisateur sans privilège, sur un système de fichiers en lecture seule, sans capacité Linux et sans élévation de privilèges.',
     'Le port de l’application n’écoute que sur 127.0.0.1 ; seul le HTTPS est exposé.',
     'Gardez .env lisible par les seuls administrateurs (chmod 600) et ses secrets dans votre coffre.',
-    'Mots de passe stockés hachés ; sessions limitées à JWT_TTL (12 h par défaut) ; chaque action d’administration est inscrite au journal d’audit.',
+    'Mots de passe stockés hachés ; sessions limitées à JWT_TTL (12 h par défaut) ; chaque action d’administration est inscrite au journal d’audit. Aucun compte de démonstration : seuls l’administrateur de la plateforme et les utilisateurs que vous créez peuvent se connecter.',
     'Appliquez les mises à jour du système et de Docker, et les mises à jour de CortexSkills envoyées par l’éditeur.',
   ].map(t => bullet(t)),
 
@@ -188,6 +213,9 @@ const client = [
   table(['Ce que vous voyez', 'Cause', 'Que faire'], [
     ['« will not start in production mode » dans le journal', 'Un réglage de .env manque ou est dangereux.', 'Lisez la liste du journal : chaque ligne nomme le réglage à corriger, puis docker compose up -d.'],
     ['« Premier démarrage : renseignez ADMIN_EMAIL et ADMIN_PASSWORD »', 'Premier démarrage sans administrateur.', 'Renseignez-les dans .env, redémarrez, puis effacez ADMIN_PASSWORD.'],
+    ['docker compose ps : « health: starting » pendant plusieurs minutes', 'Premier démarrage : chargement des données de référence.', 'Normal (5 à 15 minutes) : suivez docker compose logs -f cortexskills. Ne redémarrez pas pendant cette étape.'],
+    ['Un compte d’une organisation de référence est refusé', 'Ces comptes ne peuvent pas se connecter (1.1).', 'Connectez-vous avec l’administrateur de la plateforme ou avec les comptes de votre organisation.'],
+    ['« No space left on device »', 'Disque plein (sauvegardes).', 'Libérez de la place, réduisez BACKUP_RETENTION_DAYS et copiez les sauvegardes hors du serveur.'],
     ['sha256sum : « FAILED »', 'Paquet incomplet ou altéré (souvent une partie manquante).', 'Vérifiez que toutes les parties sont présentes et reconstituez le paquet ; sinon demandez un nouvel envoi.'],
     ['docker compose up : « pull access denied » / image introuvable', 'L’archive n’a pas été chargée.', `docker load -i ${ARC}`],
     ['« exec format error » au démarrage', 'Serveur arm64 : l’image livrée est x86-64.', 'Utilisez un serveur x86-64 ou demandez la version arm64 à l’éditeur.'],
@@ -209,13 +237,16 @@ const ADDONS = [['AD-01', 'Apprentissage immersif (RV/RA/simulation)'], ['AD-02'
 // Blocs communs aux deux guides éditeur (Linux, Windows).
 const overview = os => [
   H1('1. Vue d’ensemble'),
-  P(`Tout ce dont l’éditeur a besoin tient dans ${ED}.zip ; le paquet client, ${PKG}.zip, s’envoie tel quel aux clients. Aucun des deux ne contient de code : seulement des archives d’images Docker déjà construites, des fichiers de configuration et des scripts. Ce guide décrit l’installation ${os === 'win' ? 'sous Windows (poste Windows 10 / 11 et serveur Windows Server)' : 'sous Linux (poste et serveur Linux)'} ; un guide distinct existe pour ${os === 'win' ? 'Linux' : 'Windows'}.`),
+  P(`Tout ce dont l’éditeur a besoin tient dans ${ED}.zip ; l’exécutable client, ${PKG}.zip, s’envoie tel quel aux clients. Aucun des deux ne contient de code : seulement des archives d’images Docker déjà construites, des fichiers de configuration, des scripts et la documentation. Ce guide décrit deux scénarios : a — cloud privé ou sur site, sur un serveur Linux (HTTPS) ; b — localhost, sur un poste Windows 10 / 11 avec Docker Desktop. Les deux installations sont des versions de production : données de référence de toutes les verticales et des PME, aucun compte de démonstration.`),
   table(['Dans le paquet éditeur', 'Contenu', 'Où l’utiliser'], [
-    ['application/', `CortexSkills pour vos propres installations (tarifs visibles) : ${ARE} (images CortexSkills éditeur et Caddy), compose, HTTPS, scripts installer.sh, licences.sh, sauvegarder.sh, mettre-a-jour.sh.`, 'Scénario 1 : votre poste (localhost). Scénario 2 : un serveur de cloud privé ou sur site.'],
+    ['application/', `CortexSkills pour vos propres installations (tarifs visibles) : ${ARE} (images CortexSkills éditeur et Caddy), compose, HTTPS, scripts installer.sh, licences.sh, sauvegarder.sh, mettre-a-jour.sh.`, 'Scénario a : un serveur Linux de cloud privé ou sur site. Scénario b : votre poste Windows (localhost).'],
+    ['documentation/', `${GE} (ce guide), en Word et en PDF.`, 'Votre poste.'],
     ['gestion-licences/', 'cslic (licences : importer, créer, lister, afficher, modifier, renouveler, révoquer, supprimer, vérifier) et cslic-sauvegarder (sauvegarde chiffrée). cslic s’exécute dans l’image éditeur : aucun code sur le poste.', 'Votre poste uniquement : le poste de signature.'],
     ['poste-signature/', 'Votre paire de clés de signature (vendor-private.pem, vendor-public.pem), créée pour vous lors de la préparation des paquets ; les images contiennent la clé publique correspondante.', 'À importer une fois (cslic importer), puis à supprimer du paquet.'],
-    [`${PKG}.zip (fichier séparé)`, 'Le paquet client : image client (sans tarif ni élément commercial), compose, HTTPS, réglages, empreintes.', 'Envoyé tel quel aux clients avec son .sha256, le Guide d’installation client et le Guide utilisateur.'],
+    [`${PKG}.zip (fichier séparé)`, 'L’exécutable client : image client (sans tarif ni élément commercial), compose, HTTPS, réglages, documentation, empreintes.', `Envoyé tel quel aux clients avec son .sha256 ; il contient ${GC} et ${GU}.`],
   ], [2300, 4600, 2746], { size: 17 }),
+  H2('1.1 Les données de référence'),
+  ...refIntro('editeur'),
   spacer(),
   callout('Comment l’application est protégée', [
     'Aucun code dans les paquets : ni fichier source, ni code minifié, ni Dockerfile ; seulement des images Docker déjà construites. Dans les images, l’exécutable est compacté (sans commentaires ni noms lisibles), sans tests, outil de signature ni npm.',
@@ -225,21 +256,21 @@ const overview = os => [
     'Conteneur non privilégié, en lecture seule, port local uniquement.']),
   P('Limite à connaître : un logiciel installé chez un client peut toujours être étudié par un administrateur déterminé disposant de tous les droits sur le serveur. La protection technique se complète par le contrat (licence d’utilisation, interdiction de rétro-ingénierie, droit d’audit, nombre d’utilisateurs, date de fin).', { size: 20, color: C.muted }),
 ];
-const keyRules = callout('Règles de la clé privée', ['Elle ne quitte jamais votre poste : ni serveur de scénario 2, ni client, ni messagerie, ni dépôt de code.', 'Si elle est perdue, vous ne pouvez plus émettre ni renouveler de licence ; si elle est divulguée, n’importe qui peut en émettre. Dans les deux cas, il faut une nouvelle paire de clés et de nouveaux paquets et licences pour tous les clients.', 'Sur un autre poste, restaurez la sauvegarde chiffrée ; ne créez pas de nouvelle paire (cslic init), sauf changement de clés volontaire (chapitre 7).', 'Cette paire a été créée pour vous lors de la préparation des paquets : elle n’est conservée nulle part ailleurs que dans le paquet éditeur. Après l’import et la sauvegarde, supprimez aussi le fichier zip reçu.'], C.light);
+const keyRules = callout('Règles de la clé privée', ['Elle ne quitte jamais votre poste : ni serveur du scénario a, ni client, ni messagerie, ni dépôt de code.', 'Si elle est perdue, vous ne pouvez plus émettre ni renouveler de licence ; si elle est divulguée, n’importe qui peut en émettre. Dans les deux cas, il faut une nouvelle paire de clés et de nouveaux paquets et licences pour tous les clients.', 'Sur un autre poste, restaurez la sauvegarde chiffrée ; ne créez pas de nouvelle paire (cslic init), sauf changement de clés volontaire (chapitre 7).', 'Cette paire a été créée pour vous lors de la préparation des paquets : elle n’est conservée nulle part ailleurs que dans le paquet éditeur. Après l’import et la sauvegarde, supprimez aussi le fichier zip reçu.'], C.light);
 const signing = os => [
   H1('3. Le poste de signature (une seule fois)'),
-  ...(os === 'win' ? [P('Dans le terminal Ubuntu (menu Démarrer › Ubuntu), dans le dossier du paquet décompressé au chapitre 2 :')] : []),
+  P('Le poste de signature est votre poste de travail : Windows (dans le terminal Ubuntu de WSL, menu Démarrer › Ubuntu) ou Linux. Dans le dossier du paquet décompressé au chapitre 2 :'),
   ...steps(['Installez votre paire de clés et créez le registre des licences, puis supprimez le dossier poste-signature :']),
   ...cmd(`cd ~/cortexskills/${ED}\n./gestion-licences/cslic importer poste-signature\nrm -r poste-signature`),
   P('cslic enregistre tout dans ~/.cortexskills-editeur : cles/vendor-private.pem (secrète), cles/vendor-public.pem, registre.json, licences/, archives/ et journal.log. Il affiche l’empreinte de la clé publique : notez-la, vos clients peuvent la comparer. cslic s’exécute dans l’image éditeur (chargée automatiquement depuis application/) ; lancez-le depuis le dossier du paquet, avec des fichiers situés dans ce dossier ou dans ~/.cortexskills-editeur.', { size: 20 }),
   ...steps(['Sauvegardez immédiatement le poste de signature, hors ligne et chiffré :']),
-  ...cmd(`./gestion-licences/cslic-sauvegarder ~/coffre          # demande un mot de passe ; produit cortexskills-editeur-AAAA-MM-JJ.tar.gz.enc\n# restauration : openssl enc -d -aes-256-cbc -pbkdf2 -in <fichier.enc> | tar -xz -C ~${os === 'win' ? '\n# copie vers Windows (clé USB, coffre) :\ncp ~/coffre/*.enc /mnt/c/Users/<vous>/Documents/' : ''}`),
+  ...cmd(`./gestion-licences/cslic-sauvegarder ~/coffre          # demande un mot de passe ; produit cortexskills-editeur-AAAA-MM-JJ.tar.gz.enc\n# restauration : openssl enc -d -aes-256-cbc -pbkdf2 -in <fichier.enc> | tar -xz -C ~\n# sous Windows, copie vers un support hors ligne (clé USB, coffre) :\ncp ~/coffre/*.enc /mnt/c/Users/<vous>/Documents/`),
   keyRules,
-  ...(os === 'win' ? [P('Le dossier ~/.cortexskills-editeur est sur le disque Linux de WSL, où la clé privée n’est lisible que par vous ; ne le placez jamais sur C: (/mnt/c), où ces droits ne sont pas appliqués.', { size: 20 })] : []),
+  P('Sous Windows, le dossier ~/.cortexskills-editeur est sur le disque Linux de WSL, où la clé privée n’est lisible que par vous ; ne le placez jamais sur C: (/mnt/c), où ces droits ne sont pas appliqués.', { size: 20 }),
   P('Pour taper simplement « cslic » depuis le dossier du paquet : alias cslic="$HOME/cortexskills/' + ED + '/gestion-licences/cslic" (à ajouter dans ~/.bashrc).', { size: 20 }),
   ...(os === 'win' ? [
     H2('3.1 Sans WSL : cslic depuis PowerShell'),
-    P('Si vous n’utilisez pas le terminal Ubuntu (méthode du chapitre 4.2), cslic se lance aussi depuis PowerShell, Docker Desktop étant démarré :'),
+    P('Si vous n’utilisez pas le terminal Ubuntu (méthode du chapitre 5.2), cslic se lance aussi depuis PowerShell, Docker Desktop étant démarré :'),
     ...cmd(`cd C:\\CortexSkills\\${ED}\nNew-Item -ItemType Directory -Force $env:USERPROFILE\\.cortexskills-editeur | Out-Null\nicacls $env:USERPROFILE\\.cortexskills-editeur /inheritance:r /grant:r "$($env:USERNAME):(OI)(CI)F"\ndocker load -i application\\${ARE}\nfunction cslic { docker run --rm -i --network none -e CSLIC_HOME=/cslic -v "$env:USERPROFILE\\.cortexskills-editeur:/cslic" -v "$($PWD.Path):/work" -w /work --entrypoint node cortexskills-editeur:${V} /app/tools/cslic.mjs @args }\ncslic importer poste-signature; Remove-Item -Recurse poste-signature`),
     P('La commande icacls réserve le dossier des clés à votre compte Windows. Ajoutez la fonction cslic à votre profil PowerShell (notepad $PROFILE) pour la retrouver à chaque session. Sauvegarde : copiez %USERPROFILE%\\.cortexskills-editeur dans une archive 7-Zip chiffrée (AES-256), conservée hors ligne.', { size: 20 }),
   ] : []),
@@ -257,7 +288,7 @@ const linuxServer = (pfx, inVm) => { const H = inVm ? H3 : H2; return [
     ['internal', 'Réseau privé sans Internet : autorité interne de Caddy (avertissement du navigateur tant qu’elle n’est pas approuvée).'],
     ['files', 'Certificat de l’entreprise : copiez certs/cert.pem et certs/key.pem avant installer.sh.'],
   ], [2000, 7646], { size: 18 }),
-  P('installer.sh charge l’image, demande l’administrateur de la plateforme, génère les secrets, démarre et répond « CortexSkills fonctionne : https://competences.mondomaine.ma ». Renseignez ensuite les lignes SMTP_* de .env pour que les invitations et relances partent réellement, puis docker compose up -d.', { size: 20 }),
+  P('installer.sh charge l’image, demande l’administrateur de la plateforme, génère les secrets et démarre. Au premier démarrage, il charge les données de référence (5 à 15 minutes), puis répond « CortexSkills fonctionne : https://competences.mondomaine.ma ». Renseignez ensuite les lignes SMTP_* de .env pour que les invitations et relances partent réellement, puis docker compose up -d. Disque : 25 Go libres (base d’environ 0,9 Go et sauvegardes d’environ 0,8 Go chacune).', { size: 20 }),
 ]; };
 const operate = pfx => [
   H2(`${pfx} Exploiter`),
@@ -270,7 +301,7 @@ const operate = pfx => [
 ];
 const licences = os => [
   H1('6. Gestion des licences'),
-  P(`Une licence suit toujours le même cycle. La signature (création, modification) se fait sur votre poste avec cslic ; l’installation et le retrait se font sur l’installation concernée avec licences.sh (scénarios 1 et 2) ou par le client (cortexskills-admin).${os === 'win' ? ' Sous Windows, ces commandes se tapent dans le terminal Ubuntu ; les équivalents PowerShell sont en 6.7.' : ''}`),
+  P('Une licence suit toujours le même cycle. La signature (création, modification) se fait sur votre poste avec cslic ; l’installation et le retrait se font sur l’installation concernée avec licences.sh (scénarios a et b) ou par le client (cortexskills-admin). Sous Windows, ces commandes se tapent dans le terminal Ubuntu ; les équivalents PowerShell sont en 6.7.'),
   table(['Étape', 'Sur le poste de signature (cslic)', 'Sur l’installation'], [
     ['Demande', '—', './licences.sh organisation … puis ./licences.sh demande <domaine> → Organization ID'],
     ['Créer (C)', 'cslic creer …', './licences.sh installer <fichier.lic>'],
@@ -280,7 +311,7 @@ const licences = os => [
     ['Supprimer (D)', 'cslic supprimer L-0001 --oui', '—'],
   ], [1500, 4000, 4146], { size: 16 }),
   H2('6.1 Créer'),
-  ...steps([[b('Créer l’organisation sur l’installation '), '(dossier application/ en scénario 1, /opt/cortexskills/actuel en scénario 2) :']]),
+  ...steps([[b('Créer l’organisation sur l’installation '), '(/opt/cortexskills/actuel en scénario a, dossier application/ en scénario b) :']]),
   ...cmd('./licences.sh organisation --name "Clinique Exemple" --domain clinique-exemple.ma \\\n  --admin-email admin@clinique-exemple.ma --admin-name "Admin Clinique" --admin-password \'Str0ng#Passw0rd2026\' --lang fr\n./licences.sh demande clinique-exemple.ma          # affiche l’Organization ID'),
   ...steps([[b('Signer sur votre poste :'), '']]),
   ...cmd('cslic creer --societe "Clinique Exemple" --org-id <Organization ID> --plan SME-GRO --utilisateurs 50 \\\n  --fin 2027-12-31 --addons AD-11 --ref CONTRAT-2026-014'),
@@ -294,8 +325,8 @@ const licences = os => [
     ['--fonctions, --ref, --notes', 'Mentions libres ; référence du contrat ; notes internes.', 'Facultatif.'],
   ], [1800, 3700, 4146], { size: 16 }),
   P('cslic attribue un numéro (L-0001, L-0002…), écrit le fichier ~/.cortexskills-editeur/licences/L-0001_v1_Clinique_Exemple.lic et l’inscrit au registre. Une seule licence active par organisation : pour la changer, modifiez-la.', { size: 20 }),
-  ...steps([[b('Installer. '), 'Scénario 1 : directement depuis votre poste. Scénario 2 : copiez d’abord le fichier sur le serveur.']]),
-  ...cmd(`# scénario 1 (dossier application/)\n./licences.sh installer ~/.cortexskills-editeur/licences/L-0001_v1_Clinique_Exemple.lic\n# scénario 2\nscp ~/.cortexskills-editeur/licences/L-0001_v1_Clinique_Exemple.lic utilisateur@serveur:/opt/cortexskills/actuel/licence/\n./licences.sh installer licence/L-0001_v1_Clinique_Exemple.lic          # sur le serveur`),
+  ...steps([[b('Installer. '), 'Scénario a : copiez d’abord le fichier sur le serveur. Scénario b : directement depuis votre poste.']]),
+  ...cmd(`# scénario a\nscp ~/.cortexskills-editeur/licences/L-0001_v1_Clinique_Exemple.lic utilisateur@serveur:/opt/cortexskills/actuel/licence/\n./licences.sh installer licence/L-0001_v1_Clinique_Exemple.lic          # sur le serveur\n# scénario b (terminal Ubuntu, dossier application/)\n./licences.sh installer ~/.cortexskills-editeur/licences/L-0001_v1_Clinique_Exemple.lic`),
   H2('6.2 Lire'),
   ...cmd('cslic lister                     # licences actives : numéro, société, plan, utilisateurs, fin, version, état\ncslic lister --tout --csv registre.csv   # tout l’historique, exporté pour un tableur\ncslic afficher L-0001            # détail et historique (création, modifications, révocation)\n./licences.sh liste              # sur l’installation : licences installées et leur état\n./licences.sh detail clinique-exemple.ma'),
   P('États : ACTIVE, ACTIVE (n j) dans les 30 derniers jours, EXPIRÉE, RÉVOQUÉE. Le journal ~/.cortexskills-editeur/journal.log trace chaque opération (date, utilisateur, licence).', { size: 20 }),
@@ -304,20 +335,20 @@ const licences = os => [
   P('Chaque modification signe une nouvelle version (L-0001_v2_…lic) et l’inscrit dans l’historique. Installez-la comme la première (./licences.sh installer …, ou par le client) : elle remplace la précédente, sans redémarrage.', { size: 20 }),
   H2('6.4 Révoquer et retirer'),
   ...cmd('cslic revoquer L-0001 --motif "contrat résilié"\n./licences.sh retirer clinique-exemple.ma        # sur l’installation : les utilisateurs ne peuvent plus se connecter'),
-  P('Sur vos installations (scénarios 1 et 2), le retrait est immédiat. Chez un client qui installe lui-même, une licence ne peut pas être annulée à distance : elle cesse à sa date de fin. Préférez donc des durées d’un an, renouvelées, et appliquez le contrat. Les données de l’organisation restent dans le volume.', { size: 20 }),
+  P('Sur vos installations (scénarios a et b), le retrait est immédiat. Chez un client qui installe lui-même, une licence ne peut pas être annulée à distance : elle cesse à sa date de fin. Préférez donc des durées d’un an, renouvelées, et appliquez le contrat. Les données de l’organisation restent dans le volume.', { size: 20 }),
   H2('6.5 Supprimer'),
   ...cmd('cslic supprimer L-0001 --oui            # licence révoquée ou expirée ; --force pour une licence encore active'),
   P('La fiche et toutes les versions du fichier sont déplacées dans ~/.cortexskills-editeur/archives ; la ligne disparaît du registre. Le journal garde la trace de l’opération.', { size: 20 }),
   H2('6.6 Un client qui installe chez lui'),
   ...steps([
-    `Envoyer au client : ${PKG}.zip (ou ses parties) et ${PKG}.zip.sha256, le Guide d’installation client (Docker) et le Guide utilisateur (Word et PDF). Le paquet est le même pour tous les clients : il contient votre clé publique.`,
+    `Envoyer au client : ${PKG}.zip (ou ses parties) et ${PKG}.zip.sha256 ; le paquet contient ${GC} et ${GU} (Word et PDF, dossier documentation/). Le paquet est le même pour tous les clients : il contient votre clé publique.`,
     'Recevoir les lignes de sa demande (licence-request) : société et Organization ID.',
     'Signer avec cslic creer (6.1) et lui envoyer le fichier .lic par e-mail. Il l’installe avec licence-install, sans accès de votre part à son serveur.',
     'Renouvellements et changements : cslic modifier / renouveler, puis envoi de la nouvelle version.',
   ]),
   ...(os === 'win' ? [
     H2('6.7 Équivalents PowerShell'),
-    P('Dans le dossier application/ (installation du chapitre 4.2) ; cslic est la fonction PowerShell du chapitre 3.1, lancée depuis le dossier du paquet :'),
+    P('Dans le dossier application/ (installation du chapitre 5.2) ; cslic est la fonction PowerShell du chapitre 3.1, lancée depuis le dossier du paquet :'),
     table(['Terminal Ubuntu', 'PowerShell'], [
       ['./licences.sh organisation …', 'docker compose exec cortexskills cortexskills-admin org-create …'],
       ['./licences.sh demande <domaine>', 'docker compose exec cortexskills cortexskills-admin licence-request --org <domaine>'],
@@ -328,13 +359,12 @@ const licences = os => [
     ], [3600, 6046], { size: 16 }),
   ] : []),
 ];
-const newVersion = os => [
+const newVersion = () => [
   H1('7. Nouvelle version ou changement de clés'),
-  P(`Les images se construisent à partir du code source (CortexSkills-source-${V}.zip), sur un poste Linux${os === 'win' ? ' — sous Windows, dans le terminal Ubuntu (WSL 2) avec Docker Desktop —' : ''} avec Node.js 22, Docker et un accès Internet (images de base et bibliothèques) :`),
-  ...cmd(`unzip CortexSkills-source-${V}.zip && cd CortexSkills-source\n(cd server && npm ci) && (cd web && npm ci)\nbash tools/package-docker.sh --cle-publique ~/.cortexskills-editeur/cles/vendor-public.pem --parties 24m\n# → deliverables/docker/${PKG}.zip et ${ED}.zip, leurs .sha256 et leurs parties`),
   ...[
-    'Le script construit l’image client (sans tarif) et l’image éditeur, contrôle qu’aucun code ne figure dans les paquets, et calcule les empreintes.',
-    'Changement de clés (clé perdue ou divulguée) : créez une nouvelle paire avec cslic init dans un nouveau CSLIC_HOME, reconstruisez les paquets avec la nouvelle clé publique, puis réémettez et renvoyez toutes les licences ; les anciennes ne sont plus reconnues par les nouvelles images.',
+    `Nouvelle version : vous recevez de nouveaux paquets ${ED.replace(V, '<version>')}.zip et ${PKG.replace(V, '<version>')}.zip, construits à partir du code source par l’équipe de développement (le code source ne fait pas partie de cette livraison). Sur chaque installation : copiez le nouveau dossier application/ à côté de l’actuel, puis ./mettre-a-jour.sh <ancien dossier> (sauvegarde, reprise des réglages et des licences, chargement de la nouvelle image, migration de la base). Les données et les licences sont conservées ; les données de référence ne sont pas rechargées.`,
+    'Les nouveaux paquets sont construits avec votre clé publique (vendor-public.pem, que vous pouvez exporter avec cslic cle-publique) : vos licences restent valables.',
+    'Changement de clés (clé perdue ou divulguée) : créez une nouvelle paire avec cslic init dans un nouveau CSLIC_HOME, faites reconstruire les paquets avec la nouvelle clé publique, puis réémettez et renvoyez toutes les licences ; les anciennes ne sont plus reconnues par les nouvelles images.',
   ].map(t => bullet(t)),
   H1('8. Plans et add-ons'),
   table(['Plan', 'Nom', 'Contient'], PLANS, [1300, 5300, 3046], { size: 16 }),
@@ -352,138 +382,90 @@ const TROUBLE = [
 const COMMANDS = [
   ['Poste', 'cslic importer poste-signature · cslic-sauvegarder <dossier> · cslic empreinte', 'Clés et sauvegarde'],
   ['Poste', 'cslic creer · lister · afficher · modifier · renouveler · revoquer · supprimer · verifier', 'Licences (CRUD)'],
-  ['Poste (code source)', 'bash tools/package-docker.sh --cle-publique <pem> --parties 24m', 'Nouvelle version des paquets'],
-  ['Installation', './installer.sh local · ./installer.sh serveur <dns> [auto|internal|files]', 'Scénarios 1 et 2'],
+  ['Installation', './installer.sh serveur <dns> [auto|internal|files] · ./installer.sh local', 'Scénarios a et b'],
   ['Installation', './licences.sh organisation · organisations · demande · installer · liste · detail · retirer', 'Organisations et licences installées'],
   ['Installation', './sauvegarder.sh · ./mettre-a-jour.sh <ancien dossier>', 'Exploitation'],
   ['Installation', 'docker compose exec cortexskills cortexskills-admin help', 'Console complète'],
 ];
-const scenario1Intro = P('Sur votre poste, pour démontrer, former ou piloter avec un client, à l’adresse http://localhost:4000, dans le même mode de production sur site que chez un client.');
+const scenario1Intro = P('Sur votre poste Windows, pour démontrer, former ou piloter avec un client, à l’adresse http://localhost:4000, dans le même mode de production sur site que chez un client, avec les données de référence.');
 const installerSteps = [
   P('installer.sh demande l’e-mail et le mot de passe de l’administrateur de la plateforme, puis :'),
   ...[
     'vérifie Docker et l’absence de clé privée dans le dossier ;',
     `charge l’image depuis ${ARE} (1 à 2 minutes la première fois, sans Internet) ;`,
     'écrit .env avec des secrets générés (PUBLIC_URL=http://localhost:4000, sans HTTPS) et démarre ;',
+    'au premier démarrage, charge les données de référence de toutes les verticales et des PME (5 à 15 minutes) ;',
     'attend que l’application soit en bonne santé, puis efface le mot de passe de .env.',
   ].map(t => bullet(t)),
 ];
-const coverOf = os => [...cover({ eyebrow: `Guide d’installation Docker — Éditeur — ${os === 'win' ? 'Windows' : 'Linux'}`, title: 'CortexSkills', subtitle: os === 'win' ? 'Sous Windows : poste de signature, scénario 1 (localhost, Windows 10 / 11), scénario 2 (cloud privé / sur site, Windows Server), gestion des licences' : 'Sous Linux : poste de signature, scénario 1 (localhost), scénario 2 (cloud privé / sur site), gestion des licences', meta: [`Version ${V} · ${today}`, 'Interne — AI Value'] }), ...tocPage('Table des matières')];
+const coverE = [...cover({ eyebrow: 'Guide d’installation — Exécutable Docker — Côté éditeur — Linux et Windows', title: 'CortexSkills', subtitle: 'Poste de signature, scénario a (cloud privé / sur site, serveur Linux), scénario b (localhost sous Windows), données de référence et gestion des licences (créer, lire, modifier, révoquer, supprimer)', meta: [`Version ${V} · ${today}`, 'Interne — AI Value'] }), ...tocPage('Table des matières')];
 
-// =============================================================== GUIDE ÉDITEUR — LINUX
-const editeurLinux = [
-  ...coverOf('linux'), ...overview('linux'),
-  H1('2. Prérequis'),
+// =============================================================== GUIDE ÉDITEUR — LINUX ET WINDOWS
+const editeur = [
+  ...coverE, ...overview(),
+  H1('2. Prérequis et préparation'),
+  H2('2.1 Machines'),
   table(['Machine', 'Besoin'], [
-    ['Votre poste (signature et scénario 1)', 'Linux 64 bits x86-64 (Ubuntu 22.04 / 24.04, Debian 12, Fedora, RHEL…) ; Docker Engine 24+ avec compose (cslic s’exécute dans l’image éditeur) ; unzip, sha256sum, openssl.'],
-    ['Serveur (scénario 2)', 'Linux 64 bits x86-64, 2 vCPU, 4 Go de RAM, 25 Go de disque (jusqu’à environ 100 utilisateurs actifs ; 4 vCPU / 8 Go au-delà) ; Docker Engine 24+ avec compose ; un nom DNS ; ports 80/443.'],
-    ['Internet', 'Pas nécessaire pour installer : les images sont dans les archives (serveurs isolés possibles).'],
+    ['Serveur (scénario a)', 'Linux 64 bits x86-64 (Ubuntu 22.04 / 24.04, Debian 12, RHEL / Rocky / AlmaLinux 9), 2 vCPU, 4 Go de RAM, 25 Go de disque libre (jusqu’à environ 100 utilisateurs actifs ; 4 vCPU / 8 Go au-delà) ; Docker Engine 24+ avec compose ; un nom DNS ; ports 80/443.'],
+    ['Poste Windows (signature et scénario b)', 'Windows 10 22H2 ou Windows 11, 64 bits, virtualisation activée dans le BIOS (Intel VT-x / AMD-V), 8 Go de RAM conseillés, 25 Go de disque libre ; WSL 2 avec Ubuntu 24.04 ; Docker Desktop (moteur WSL 2). Docker Desktop est gratuit pour les entreprises de moins de 250 salariés et moins de 10 M$ de chiffre d’affaires, payant au-delà.'],
+    ['Poste de signature sous Linux (au choix)', 'Linux 64 bits avec Docker Engine 24+ (cslic s’exécute dans l’image éditeur) ; unzip, sha256sum, openssl.'],
+    ['Internet', 'Pas nécessaire pour installer CortexSkills : les images sont dans les archives (serveurs isolés possibles). Nécessaire pour installer WSL, Ubuntu et Docker.'],
   ], W2),
-  P('Docker sur le poste (Ubuntu ou Debian) :', { size: 20 }),
-  ...cmd('sudo apt update && sudo apt -y install unzip openssl\ncurl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh\nsudo usermod -aG docker $USER && sudo systemctl enable --now docker       # puis reconnectez-vous'),
-  P('Reconstituer, vérifier et décompresser le paquet éditeur :', { size: 20 }),
-  ...cmd(`mkdir -p ~/cortexskills && cd ~/cortexskills\ncat ${ED}.zip.part* > ${ED}.zip          # si reçu en parties\nsha256sum -c ${ED}.zip.sha256 && unzip ${ED}.zip && cd ${ED}`),
-  ...signing('linux'),
-  H1('4. Scénario 1 — Installation locale (localhost)'),
-  scenario1Intro,
-  ...cmd(`cd ~/cortexskills/${ED}/application\n./installer.sh local`),
-  ...installerSteps,
-  P('Ouvrez http://localhost:4000. Arrêt : docker compose stop ; relance : docker compose up -d (dans application/).'),
-  H1('5. Scénario 2 — Cloud privé ou sur site (version éditeur)'),
-  P('Sur un serveur Linux que vous administrez — cloud privé, serveur sur site, ou VPS — pour un pilote ou une démonstration accessible en HTTPS. Mêmes protections que chez un client ; la signature reste sur votre poste.'),
-  ...linuxServer('5'), ...operate('5.4'),
-  ...licences('linux'), ...newVersion('linux'),
-  H1('9. Dépannage'),
-  table(['Ce que vous voyez', 'Cause', 'Que faire'], [...TROUBLE,
-    ['« permission denied … docker.sock »', 'Votre utilisateur n’est pas dans le groupe docker.', 'sudo usermod -aG docker $USER, puis reconnectez-vous.'],
-    ['Caddy n’obtient pas de certificat (auto)', 'DNS ou ports 80/443.', 'Vérifiez le DNS et le pare-feu (ufw) ; docker compose logs caddy ; ou mode internal / files.'],
-  ], [3200, 3000, 3446], { size: 16 }),
-  H1('10. Référence des commandes'),
-  table(['Où', 'Commande', 'Rôle'], COMMANDS, [1600, 5600, 2446], { size: 16 }),
-];
-
-// =============================================================== GUIDE ÉDITEUR — WINDOWS
-const editeurWindows = [
-  ...coverOf('win'), ...overview('win'),
-  H1('2. Prérequis et préparation du poste Windows'),
-  table(['Machine', 'Besoin'], [
-    ['Votre poste (signature et scénario 1)', 'Windows 10 22H2 ou Windows 11, 64 bits, virtualisation activée dans le BIOS (Intel VT-x / AMD-V), 8 Go de RAM conseillés ; WSL 2 avec Ubuntu 24.04 ; Docker Desktop (moteur WSL 2). Docker Desktop est gratuit pour les entreprises de moins de 250 salariés et moins de 10 M$ de chiffre d’affaires, payant au-delà.'],
-    ['Serveur (scénario 2)', 'Windows Server 2022 ou 2025 : une machine virtuelle Linux sous Hyper-V (recommandé) ou WSL 2 avec Ubuntu et Docker Engine ; 2 vCPU, 4 Go de RAM, 40 Go de disque pour CortexSkills ; un nom DNS ; ports 80/443.'],
-    ['Internet', 'Pas nécessaire pour installer CortexSkills : les images sont dans les archives. Nécessaire pour installer WSL, Ubuntu et Docker.'],
-  ], W2),
-  P('Les images CortexSkills sont des images Linux : sous Windows, Docker Desktop les exécute dans WSL 2 (le Linux intégré à Windows). La méthode recommandée utilise les scripts du paquet dans le terminal Ubuntu ; PowerShell est possible pour le scénario 1 (4.2).'),
-  H2('2.1 Installer WSL 2 et Ubuntu'),
+  P('Les images CortexSkills sont des images Linux : sous Windows, Docker Desktop les exécute dans WSL 2 (le Linux intégré à Windows). Les scripts du paquet se lancent dans le terminal Ubuntu ; PowerShell est possible sans les scripts (5.2).'),
+  H2('2.2 Préparer le poste Windows'),
   P('Dans PowerShell ouvert en administrateur, puis redémarrez et créez l’utilisateur Ubuntu demandé au premier lancement :'),
   ...cmd('wsl --install -d Ubuntu-24.04\nwsl --update'),
-  H2('2.2 Installer Docker Desktop'),
   ...steps(['Téléchargez Docker Desktop for Windows (docker.com) et installez-le en gardant « Use WSL 2 instead of Hyper-V ».', 'Settings › Resources › WSL integration : activez Ubuntu-24.04, puis Apply & Restart.', 'Settings › General : « Start Docker Desktop when you sign in ».', 'Dans le terminal Ubuntu (menu Démarrer › Ubuntu), vérifiez :']),
   ...cmd('docker version && docker compose version\nsudo apt update && sudo apt -y install unzip openssl'),
+  P('Poste de signature sous Linux : installez Docker avec curl -fsSL https://get.docker.com | sudo sh, puis sudo usermod -aG docker $USER.', { size: 20 }),
   H2('2.3 Reconstituer, vérifier et décompresser le paquet'),
-  P('Dans le terminal Ubuntu ; vos téléchargements Windows sont visibles sous /mnt/c :'),
-  ...cmd(`mkdir -p ~/cortexskills && cd ~/cortexskills\ncp /mnt/c/Users/<vous>/Downloads/${ED}.zip* .\ncat ${ED}.zip.part* > ${ED}.zip\nsha256sum -c ${ED}.zip.sha256 && unzip ${ED}.zip && cd ${ED}`),
+  P('Dans le terminal Ubuntu (ou sous Linux) ; vos téléchargements Windows sont visibles sous /mnt/c :'),
+  ...cmd(`mkdir -p ~/cortexskills && cd ~/cortexskills\ncp /mnt/c/Users/<vous>/Downloads/${ED}.zip* .\ncat ${ED}.zip.part* > ${ED}.zip          # si reçu en parties\nsha256sum -c ${ED}.zip.sha256 && unzip ${ED}.zip && cd ${ED}\n(cd application && sha256sum -c --quiet SHA256SUMS.txt && echo "contenu intact")`),
   callout('Décompressez dans Ubuntu, pas dans Windows', ['Décompresser le paquet avec l’Explorateur Windows puis l’utiliser depuis Ubuntu casse les droits d’exécution des scripts (« Permission denied ») et la protection de la clé privée.', 'Travaillez dans ~/cortexskills (disque Linux de WSL) : c’est aussi beaucoup plus rapide que /mnt/c.'], C.light),
-  P('Sans WSL (PowerShell seulement) :', { size: 20 }),
+  P('Sans WSL (PowerShell seulement, scénario b de 5.2) :', { size: 20 }),
   ...cmd(`cd $env:USERPROFILE\\Downloads\ncmd /c "copy /b ${ED}.zip.part00+${ED}.zip.part01+${ED}.zip.part02+${ED}.zip.part03+${ED}.zip.part04 ${ED}.zip"\n(Get-FileHash ${ED}.zip -Algorithm SHA256).Hash.ToLower()     # identique au contenu du .sha256\nExpand-Archive ${ED}.zip -DestinationPath C:\\CortexSkills`),
   ...signing('win'),
-  H1('4. Scénario 1 — Installation locale (localhost, Windows 10 / 11)'),
+  H1('4. Scénario a — Cloud privé ou sur site (serveur Linux)'),
+  P('Sur un serveur Linux que vous administrez — cloud privé, serveur sur site, ou VPS — pour un pilote ou une démonstration accessible en HTTPS. Mêmes protections que chez un client ; la signature reste sur votre poste.'),
+  ...linuxServer('4'), ...operate('4.4'),
+  H1('5. Scénario b — Localhost sous Windows'),
   scenario1Intro,
-  H2('4.1 Avec le terminal Ubuntu (recommandé)'),
+  H2('5.1 Avec le terminal Ubuntu (recommandé)'),
   ...cmd(`cd ~/cortexskills/${ED}/application\n./installer.sh local`),
   ...installerSteps,
   P('Ouvrez http://localhost:4000 dans le navigateur Windows : Docker Desktop publie le port sur Windows. Arrêt et relance : docker compose stop / up -d dans le terminal Ubuntu, ou l’onglet Containers de Docker Desktop.'),
-  H2('4.2 Avec PowerShell (sans les scripts)'),
+  H2('5.2 Avec PowerShell (sans les scripts)'),
   P('Les scripts .sh ne s’exécutent pas dans PowerShell : faites leurs étapes à la main, dans le paquet décompressé en C:\\CortexSkills (2.3).'),
   ...cmd(`cd C:\\CortexSkills\\${ED}\\application\ndocker load -i ${ARE}\nfunction Secret { $b = New-Object byte[] 48; [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($b); ([Convert]::ToBase64String($b)) -replace '[+/=]','' }\nSecret; Secret                       # deux secrets pour .env\nCopy-Item env.example .env; notepad .env`),
   table(['Ligne de .env', 'Valeur (localhost)'], [
     ['PUBLIC_URL, CORS_ORIGIN', 'http://localhost:4000'], ['DOMAIN', 'localhost'], ['COMPOSE_PROFILES', 'vide (pas de HTTPS en local)'],
     ['JWT_SECRET, CHANNEL_SECRET_KEY', 'les deux valeurs affichées par Secret'], ['ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD', 'votre administrateur de la plateforme'],
+    ['REFERENCE_DATA', 'oui (données de référence) ou non (base vide)'],
   ], W2, { size: 18 }),
-  ...cmd('docker compose up -d\ndocker compose ps          # cortexskills : healthy\nnotepad .env               # effacez la valeur de ADMIN_PASSWORD\ndocker compose up -d'),
+  ...cmd('docker compose up -d\ndocker compose logs -f cortexskills   # premier démarrage : 5 à 15 minutes, jusqu’à « CortexSkills API is running »\ndocker compose ps          # cortexskills : healthy\nnotepad .env               # effacez la valeur de ADMIN_PASSWORD\ndocker compose up -d'),
   P('Licences en PowerShell : chapitre 6.7.', { size: 20 }),
-  H1('5. Scénario 2 — Cloud privé ou sur site (Windows Server)'),
-  P('Sur un serveur Windows Server 2022 ou 2025 que vous administrez, pour un pilote ou une démonstration accessible en HTTPS. Les images étant des images Linux, deux méthodes :'),
-  table(['Méthode', 'Pour', 'Principe'], [
-    ['A. Machine virtuelle Linux sous Hyper-V (recommandé)', 'Production : démarrage automatique, réseau et sauvegardes simples.', 'Une VM Ubuntu 24.04 sur le serveur ; CortexSkills s’y installe comme sur un serveur Linux.'],
-    ['B. WSL 2 sur Windows Server', 'Pilote, sans hyperviseur disponible.', 'Ubuntu dans WSL 2 avec Docker Engine (pas Docker Desktop) ; réseau et démarrage automatique à configurer.'],
-  ], [3000, 2900, 3746], { size: 17 }),
-  H2('5.1 Méthode A — Créer la machine virtuelle'),
-  ...cmd('# PowerShell administrateur sur le serveur\nInstall-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart\nNew-VMSwitch -Name "Externe" -NetAdapterName (Get-NetAdapter | Where-Object Status -eq Up | Select-Object -First 1).Name -AllowManagementOS $true\nNew-VM -Name CortexSkills -Generation 2 -MemoryStartupBytes 4GB -NewVHDPath C:\\VMs\\CortexSkills.vhdx -NewVHDSizeBytes 40GB -SwitchName "Externe"\nSet-VMProcessor CortexSkills -Count 2\nSet-VMFirmware CortexSkills -SecureBootTemplate MicrosoftUEFICertificateAuthority\nAdd-VMDvdDrive CortexSkills -Path C:\\ISO\\ubuntu-24.04-live-server-amd64.iso\nSet-VM CortexSkills -AutomaticStartAction Start\nStart-VM CortexSkills'),
-  P('Installez Ubuntu Server dans la VM (console Hyper-V, option OpenSSH server cochée), donnez-lui une adresse fixe, puis suivez 5.2 et 5.4 dans la VM. AutomaticStartAction démarre la VM avec le serveur ; les conteneurs redémarrent seuls.', { size: 20 }),
-  H2('5.2 Méthode A — Installer CortexSkills dans la machine virtuelle'),
-  ...linuxServer('5.2', true),
-  H2('5.3 Méthode B — WSL 2 sur Windows Server'),
-  ...steps([[b('Installer Ubuntu '), '(PowerShell administrateur, puis redémarrage) :']]),
-  ...cmd('wsl --install -d Ubuntu-24.04\nwsl --update'),
-  ...steps([[b('Activer systemd et installer Docker Engine '), 'dans le terminal Ubuntu :']]),
-  ...cmd('printf "[boot]\\nsystemd=true\\n" | sudo tee /etc/wsl.conf\n# depuis PowerShell : wsl --shutdown, puis rouvrez Ubuntu\ncurl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh\nsudo usermod -aG docker $USER && sudo systemctl enable --now docker\nsudo apt -y install unzip rsync'),
-  ...steps([[b('Copier et installer '), '(dans Ubuntu ; le dossier application/ peut venir de C: par /mnt/c) :']]),
-  ...cmd(`sudo mkdir -p /opt/cortexskills && sudo chown $USER /opt/cortexskills\ncp -r /mnt/c/Transfert/application /opt/cortexskills/cortexskills-${V} && ln -sfn /opt/cortexskills/cortexskills-${V} /opt/cortexskills/actuel\ncd /opt/cortexskills/actuel && ./installer.sh serveur competences.mondomaine.ma auto`),
-  ...steps([[b('Rendre l’application joignable depuis le réseau '), '(PowerShell administrateur) :']]),
-  ...cmd(`# Windows Server 2025 : réseau WSL « miroir » — fichier C:\\Users\\<compte>\\.wslconfig :\n[wsl2]\nnetworkingMode=mirrored\n# Windows Server 2022 : redirection des ports vers WSL (à refaire après chaque redémarrage)\n$ip = (wsl -d Ubuntu-24.04 hostname -I).Trim().Split(' ')[0]\nnetsh interface portproxy add v4tov4 listenport=443 listenaddress=0.0.0.0 connectport=443 connectaddress=$ip\nnetsh interface portproxy add v4tov4 listenport=80 listenaddress=0.0.0.0 connectport=80 connectaddress=$ip\n# les deux versions : pare-feu\nNew-NetFirewallRule -DisplayName "CortexSkills HTTP/HTTPS" -Direction Inbound -Protocol TCP -LocalPort 80,443 -Action Allow`),
-  ...steps([[b('Démarrer avec Windows. '), 'WSL ne démarre pas seul : tâche planifiée au démarrage, avec le compte qui a installé Ubuntu (« exécuter même si l’utilisateur n’est pas connecté ») ; elle maintient WSL actif et Docker relance les conteneurs :']]),
-  ...cmd('schtasks /create /tn "CortexSkills WSL" /sc onstart /ru <domaine\\compte> /rp * /tr "wsl.exe -d Ubuntu-24.04 -u root -- sh -c \'systemctl start docker; sleep infinity\'"'),
-  ...operate('5.4'),
-  P('Méthode A : ces commandes se tapent dans la VM. Méthode B : dans le terminal Ubuntu du serveur (systemd assure la crontab). Copiez les sauvegardes hors du serveur.', { size: 20, color: C.muted }),
-  ...licences('win'), ...newVersion('win'),
+  H2('5.3 Les organisations de référence'),
+  refTable(),
+  ...licences('win'), ...newVersion(),
   H1('9. Dépannage'),
   table(['Ce que vous voyez', 'Cause', 'Que faire'], [...TROUBLE,
+    ['« health: starting » pendant plusieurs minutes', 'Premier démarrage : chargement des données de référence.', 'Normal (5 à 15 minutes) ; installer.sh attend jusqu’à 30 minutes. Ne redémarrez pas pendant cette étape.'],
+    ['Un compte d’une organisation de référence est refusé', 'Ces comptes ne peuvent pas se connecter (1.1).', 'Administrateur de la plateforme, ou comptes des organisations créées avec licences.sh.'],
+    ['« permission denied … docker.sock »', 'Votre utilisateur n’est pas dans le groupe docker.', 'sudo usermod -aG docker $USER, puis reconnectez-vous.'],
+    ['Caddy n’obtient pas de certificat (auto)', 'DNS ou ports 80/443.', 'Vérifiez le DNS et le pare-feu (ufw) ; docker compose logs caddy ; ou mode internal / files.'],
     ['« docker: command not found » dans Ubuntu', 'Intégration WSL de Docker Desktop désactivée.', 'Docker Desktop › Settings › Resources › WSL integration : activez Ubuntu-24.04.'],
     ['« Permission denied » ou « /bin/bash^M » au lancement d’un script', 'Paquet décompressé avec l’Explorateur Windows.', 'Décompressez avec unzip dans ~/cortexskills (2.3).'],
     ['WSL ne s’installe pas / « virtualisation désactivée »', 'Virtualisation désactivée dans le BIOS, ou WSL ancien.', 'Activez Intel VT-x / AMD-V ; wsl --update.'],
     ['Docker Desktop ne démarre pas', 'WSL 2 absent ou Hyper-V désactivé.', 'wsl --status ; réinstallez Docker Desktop avec le moteur WSL 2.'],
     ['PowerShell : « le chemin … n’est pas reconnu » pour cslic', 'La fonction cslic n’est pas définie dans cette session.', 'Ajoutez-la à $PROFILE (3.1).'],
-    ['Serveur (WSL) : site injoignable depuis le réseau', 'Ports de WSL non publiés.', 'networkingMode=mirrored (2025) ou netsh portproxy (2022), et règle de pare-feu (5.3).'],
-    ['Serveur (WSL) : application arrêtée après un redémarrage', 'WSL n’est pas démarré.', 'Tâche planifiée « CortexSkills WSL » (5.3).'],
   ], [3200, 3000, 3446], { size: 16 }),
   H1('10. Référence des commandes'),
   table(['Où', 'Commande', 'Rôle'], [...COMMANDS,
-    ['Poste Windows (PowerShell)', 'wsl --install -d Ubuntu-24.04 · docker load -i <archive> · docker compose up -d · fonction cslic (3.1)', 'Préparation, scénario 1 sans les scripts'],
-    ['Windows Server', 'New-VM … (Hyper-V) · networkingMode=mirrored · netsh interface portproxy · New-NetFirewallRule · schtasks /create', 'Scénario 2'],
+    ['Poste Windows (PowerShell)', 'wsl --install -d Ubuntu-24.04 · docker load -i <archive> · docker compose up -d · fonction cslic (3.1)', 'Préparation, scénario b sans les scripts'],
   ], [1600, 5600, 2446], { size: 16 }),
 ];
 
 fs.mkdirSync(out, { recursive: true });
 const write = (body, title, credit, file) => D.Packer.toBuffer(document({ title, credit, sections: [body], lang: 'fr-FR' })).then(buf => { fs.writeFileSync(path.join(out, file), buf); console.log('écrit', file); });
-write(client, 'CortexSkills — Guide d’installation client (Docker)', `CortexSkills ${V} · Guide d’installation client`, 'CortexSkills_Guide_Installation_Client_Docker_FR.docx')
-  .then(() => write(editeurLinux, 'CortexSkills — Guide d’installation éditeur Linux (Docker)', `CortexSkills ${V} · Guide d’installation éditeur — Linux`, 'CortexSkills_Guide_Installation_Editeur_Linux_Docker_FR.docx'))
-  .then(() => write(editeurWindows, 'CortexSkills — Guide d’installation éditeur Windows (Docker)', `CortexSkills ${V} · Guide d’installation éditeur — Windows`, 'CortexSkills_Guide_Installation_Editeur_Windows_Docker_FR.docx'));
+write(client, 'CortexSkills — Guide d’installation, exécutable Docker, côté client (Linux)', `CortexSkills ${V} · Guide d’installation — client — Linux`, GC + '.docx')
+  .then(() => write(editeur, 'CortexSkills — Guide d’installation, exécutable Docker, côté éditeur (Linux et Windows)', `CortexSkills ${V} · Guide d’installation — éditeur — Linux et Windows`, GE + '.docx'));

@@ -11,7 +11,9 @@ import * as CH from '../services/channels.js';
 const r = Router();
 r.post('/auth/login', ah(req => login(req)));
 // Liveness only: no tenant data (FR-DA-OPS-06).
-r.get('/health', (req, res) => res.json({ status: 'ok', initialized: isSeeded(), mode: config.deploymentMode, version: one(`SELECT value FROM meta WHERE key='version'`)?.value || 'unknown' }));
+// demoAccounts: the sign-in page shows the demonstration accounts only for demonstration data outside production.
+r.get('/health', (req, res) => res.json({ status: 'ok', initialized: isSeeded(), mode: config.deploymentMode, version: one(`SELECT value FROM meta WHERE key='version'`)?.value || 'unknown',
+  demoAccounts: String(process.env.NODE_ENV || '').toLowerCase() !== 'production' && one(`SELECT value FROM meta WHERE key='data_mode'`)?.value === 'demo' }));
 r.get('/i18n', (req, res) => res.json({ languages: getLanguages(), dictionary: getDictionary() }));
 
 // ------------------------------------------------------------------ respondent link (Application channel)

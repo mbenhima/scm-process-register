@@ -16,7 +16,7 @@ command -v docker >/dev/null || echec "Docker n'est pas installé : curl -fsSL h
 docker compose version >/dev/null 2>&1 || echec "Le plugin docker compose manque (paquet docker-compose-plugin)."
 [ ! -e vendor-private.pem ] || echec "vendor-private.pem ne doit jamais être ici. Il reste sur le poste de signature (~/.cortexskills-editeur)."
 [ "$TLS" != "files" ] || { [ -f certs/cert.pem ] && [ -f certs/key.pem ]; } || echec "Mode files : copiez certs/cert.pem et certs/key.pem."
-ARCHIVE="cortexskills-editeur-docker-image-$VER.tar.gz"
+ARCHIVE="Docker_Image_Runtime_Editor_CortexSkills_$VER.tar.gz"
 if ! docker image inspect "cortexskills-editeur:$VER" >/dev/null 2>&1; then
   [ -f "$ARCHIVE" ] || echec "Archive de l'image introuvable : $ARCHIVE"
   dire "Chargement de l'image (1 à 2 minutes)..."; docker load -i "$ARCHIVE" >/dev/null
@@ -36,7 +36,7 @@ if [ ! -f .env ]; then
   chmod 600 .env; dire "Réglages écrits dans .env (secrets générés). Gardez-en une copie dans votre coffre de mots de passe."
 fi
 
-sain() { sleep 2; for i in $(seq 1 60); do [ "$(docker inspect -f '{{.State.Health.Status}}' cortexskills 2>/dev/null || true)" = healthy ] && return 0; sleep 3; done; docker compose logs --tail 40 cortexskills; echec "CortexSkills n'a pas démarré correctement (journal ci-dessus)."; }
+sain() { sleep 2; dire "Démarrage (au premier démarrage, chargement des données de référence : 5 à 15 minutes)…"; for i in $(seq 1 600); do [ "$(docker inspect -f '{{.State.Health.Status}}' cortexskills 2>/dev/null || true)" = healthy ] && return 0; sleep 3; done; docker compose logs --tail 40 cortexskills; echec "CortexSkills n'a pas démarré correctement (journal ci-dessus)."; }
 dire "Démarrage..."; docker compose up -d; sain
 if grep -q '^ADMIN_PASSWORD=.\+' .env; then sed -i 's|^ADMIN_PASSWORD=.*|ADMIN_PASSWORD=|' .env; docker compose up -d >/dev/null 2>&1; sain; dire "ADMIN_PASSWORD effacé de .env (l'administrateur existe)."; fi
 dire "CortexSkills $VER fonctionne : $(grep '^PUBLIC_URL=' .env | cut -d= -f2-)"
