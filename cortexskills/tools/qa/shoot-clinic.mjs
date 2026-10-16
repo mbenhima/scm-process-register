@@ -5,13 +5,16 @@ import { createRequire } from 'node:module'; import fs from 'node:fs';
 const require = createRequire(import.meta.url); const { chromium } = require(process.env.PW || 'playwright');
 const [base = 'http://localhost:4000', caseFile, out] = process.argv.slice(2);
 const c = JSON.parse(fs.readFileSync(caseFile, 'utf8')); fs.mkdirSync(out, { recursive: true });
-const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 1000 }, locale: 'fr-FR' });
+// CLINIC_LANG=en: the English case (clinic-case-en.json) in the English interface.
+const L = process.env.CLINIC_LANG === 'en' ? 'en' : 'fr'; const X = (f, e) => (L === 'fr' ? f : e); const LOC = X('fr-FR', 'en-GB');
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 1000 }, locale: LOC });
+await p.addInitScript(l => { try { localStorage.setItem('cs.lang', l); } catch {} }, L);
 const errors = []; p.on('pageerror', e => errors.push(e.message)); p.on('response', r => { if (r.url().includes('/api/') && r.status() >= 400 && !r.url().includes('/public/')) errors.push(`${r.status()} ${r.url().replace(base, '')}`); });
 await p.goto(base + '/login'); await p.fill('input[type=email]', 'headld@cliniquealamal.ma'); await p.fill('input[type=password]', 'CortexSkills#2026'); await p.click('button[type=submit]');
 await p.waitForURL(u => !u.pathname.startsWith('/login'), { timeout: 20000 });
 const token = await p.evaluate(() => Object.entries(localStorage).find(([k]) => /token/i.test(k))?.[1]);
 const api = path => p.evaluate(async ([path, t]) => (await fetch('/api' + path, { headers: { Authorization: 'Bearer ' + t } })).json(), [path, token]);
-await p.evaluate(async t => fetch('/api/me/language', { method: 'PUT', headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }, body: JSON.stringify({ language: 'fr' }) }), token);
+await p.evaluate(async ([t, l]) => fetch('/api/me/language', { method: 'PUT', headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }, body: JSON.stringify({ language: l }) }), [token, L]);
 const shot = async (name, opts = {}) => { await p.waitForTimeout(opts.wait ?? 700); await p.screenshot({ path: `${out}/${name}.png`, fullPage: !!opts.full }); };
 // 1. New project: fields in the order Name, Focus, Description, Template; the template library.
 await p.goto(base + '/projects/new'); await p.waitForLoadState('networkidle'); await shot('01_new_project');
@@ -41,7 +44,7 @@ for (const [uft, name] of SHOTS) {
 }
 // 3. The respondent's page (the respondent who has not answered yet).
 const last = c.tasks.find(t => t.uft === 'UFT-33-06')?.steps[0]?.invitations?.find(i => !c.answered.some(a => a.name === i.name));
-if (last) { const ctx2 = await b.newContext({ viewport: { width: 1280, height: 1000 }, locale: 'fr-FR' }); const q = await ctx2.newPage(); q.on('pageerror', e => errors.push('respond: ' + e.message));
+if (last) { const ctx2 = await b.newContext({ viewport: { width: 1280, height: 1000 }, locale: LOC }); await ctx2.addInitScript(l => { try { localStorage.setItem('cs.lang', l); } catch {} }, L); const q = await ctx2.newPage(); q.on('pageerror', e => errors.push('respond: ' + e.message));
   await q.goto(last.url.replace(/^https?:\/\/[^/]+/, base)); await q.waitForLoadState('networkidle'); await q.waitForTimeout(1200);
   await q.screenshot({ path: `${out}/30_respond_top.png` }); await q.mouse.wheel(0, 2200); await q.waitForTimeout(500); await q.screenshot({ path: `${out}/31_respond_middle.png` }); await ctx2.close(); }
 // 4. Questionnaire page, integrations.
@@ -49,30 +52,30 @@ await p.goto(`${base}/questionnaires/${c.questionnaire.id}?tab=design`); await p
 // Who answers what: the assignment of the Management form, then the form one respondent receives.
 await p.goto(`${base}/questionnaires/${c.questionnaire.id}?tab=assign`); await p.waitForLoadState('networkidle'); await p.waitForTimeout(900);
 await p.locator('.seg button', { hasText: /Management/ }).first().click().catch(() => {}); await p.waitForTimeout(500);
-await p.locator('label', { hasText: 'Seulement les éléments affectés' }).locator('input').check().catch(() => {}); await p.waitForTimeout(400);
-await p.locator('.card').filter({ hasText: 'Affecter les sections' }).first().screenshot({ path: `${out}/25c_assign.png` }).catch(() => {});
-await p.locator('.card').filter({ hasText: 'Ce que reçoit chaque répondant' }).first().screenshot({ path: `${out}/25d_assign_summary.png` }).catch(() => {});
-await p.locator('tr', { hasText: 'Rachid Amrani' }).locator('button[aria-label="Aperçu"]').first().click().catch(() => {}); await p.waitForTimeout(1200);
-await p.locator('.dialog .qsection').filter({ hasText: 'Questions spécifiques' }).first().screenshot({ path: `${out}/25e_assign_preview.png` }).catch(() => {}); await p.keyboard.press('Escape').catch(() => {});
+await p.locator('label', { hasText: X('Seulement les éléments affectés', 'Only assigned elements') }).locator('input').check().catch(() => {}); await p.waitForTimeout(400);
+await p.locator('.card').filter({ hasText: X('Affecter les sections', 'Assign sections') }).first().screenshot({ path: `${out}/25c_assign.png` }).catch(() => {});
+await p.locator('.card').filter({ hasText: X('Ce que reçoit chaque répondant', 'What each respondent receives') }).first().screenshot({ path: `${out}/25d_assign_summary.png` }).catch(() => {});
+await p.locator('tr', { hasText: 'Rachid Amrani' }).locator(X('button[aria-label="Aperçu"]', 'button[aria-label="Preview"]')).first().click().catch(() => {}); await p.waitForTimeout(1200);
+await p.locator('.dialog .qsection').filter({ hasText: X('Questions spécifiques', 'Sector-specific questions') }).first().screenshot({ path: `${out}/25e_assign_preview.png` }).catch(() => {}); await p.keyboard.press('Escape').catch(() => {});
 await p.goto(`${base}/questionnaires/${c.questionnaire.id}?tab=log`); await p.waitForLoadState('networkidle'); await shot('33_questionnaire_log');
 // 5. Campaigns of the real flow: the forms as the people see them; a capsule link still open; the project's widgets.
 for (const [purpose, name] of [['assessment', '80_form_assessment'], ['convocation', '81_form_convocation'], ['l2', '82_form_test'], ['l3', '83_form_l3']]) {
   const qid = c.flow?.campaigns?.[purpose];
   if (!qid) continue; await p.goto(`${base}/questionnaires/${qid}?tab=design`); await p.waitForLoadState('networkidle'); await shot(name);
 }
-const capQ = c.flow?.openCapsule; if (capQ) { const ctx3 = await b.newContext({ viewport: { width: 1100, height: 1000 }, locale: 'fr-FR' }); const q3 = await ctx3.newPage(); await q3.goto(capQ.replace(/^https?:\/\/[^/]+/, base)); await q3.waitForLoadState('networkidle'); await q3.waitForTimeout(1000); await q3.screenshot({ path: `${out}/84_capsule_respond.png` }); await ctx3.close(); }
+const capQ = c.flow?.openCapsule; if (capQ) { const ctx3 = await b.newContext({ viewport: { width: 1100, height: 1000 }, locale: LOC }); await ctx3.addInitScript(l => { try { localStorage.setItem('cs.lang', l); } catch {} }, L); const q3 = await ctx3.newPage(); await q3.goto(capQ.replace(/^https?:\/\/[^/]+/, base)); await q3.waitForLoadState('networkidle'); await q3.waitForTimeout(1000); await q3.screenshot({ path: `${out}/84_capsule_respond.png` }); await ctx3.close(); }
 await p.goto(`${base}/projects/${pid}`); await p.waitForLoadState('networkidle'); await p.waitForTimeout(900); await shot('85_project_widgets', { full: true });
 // 6. The three ways to fill a step, on an open step of a temporary project (deleted afterwards).
 { const tpl = (await api('/project-templates/for-creation')).find(x => x.own && /SIMPLE/.test(x.code || ''));
-  const tmp = await p.evaluate(async ([tpl, t]) => (await fetch('/api/projects', { method: 'POST', headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }, body: JSON.stringify({ creation_mode: 'catalog', template_id: tpl, name: 'Démo — trois façons de remplir', focus: 'AI', complexity: {} }) })).json(), [tpl.id, token]);
+  const tmp = await p.evaluate(async ([tpl, t, name]) => (await fetch('/api/projects', { method: 'POST', headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }, body: JSON.stringify({ creation_mode: 'catalog', template_id: tpl, name, focus: 'AI', complexity: {} }) })).json(), [tpl.id, token, X('Démo — trois façons de remplir', 'Demo — three ways to fill')]);
   const ws = await api(`/projects/${tmp.id}/workspace`); const run = ws.phases.flatMap(ph => ph.items).find(x => x.e2e_id === 'E2E-02'); const inst = await api(`/e2e-instances/${run.id}`); const tk = inst.tasks.find(x => x.uft_id === 'UFT-02-01');
   await p.goto(`${base}/runs/${run.id}?task=${tk.id}`); await p.waitForLoadState('networkidle'); await p.waitForTimeout(900);
   { const h = p.locator('.drawer .step-head').first(); if ((await h.getAttribute('aria-expanded')) !== 'true') await h.click(); } await p.waitForTimeout(800);
   await p.locator('.drawer').screenshot({ path: `${out}/90_empty_step.png` }).catch(() => {});
-  await p.locator('.drawer button', { hasText: 'Depuis le modèle' }).first().click(); await p.waitForTimeout(1200);
+  await p.locator('.drawer button', { hasText: X('Depuis le modèle', 'From the template') }).first().click(); await p.waitForTimeout(1200);
   await p.locator('.drawer .ai-proposal').screenshot({ path: `${out}/91_template_proposal.png` }).catch(() => {});
-  await p.locator('.drawer .ai-proposal button', { hasText: /Rejeter tout|Tout rejeter/ }).first().click().catch(() => {}); await p.waitForTimeout(500);
-  await p.locator('.drawer button', { hasText: 'Proposer des lignes avec l’IA' }).first().click().catch(() => {}); await p.waitForTimeout(1500);
+  await p.locator('.drawer .ai-proposal button', { hasText: /Rejeter tout|Tout rejeter|Reject all/ }).first().click().catch(() => {}); await p.waitForTimeout(500);
+  await p.locator('.drawer button', { hasText: X('Proposer des lignes avec l’IA', 'Propose rows with AI') }).first().click().catch(() => {}); await p.waitForTimeout(1500);
   await p.locator('.drawer .ai-proposal').screenshot({ path: `${out}/92_ai_proposal.png` }).catch(() => {});
   await p.evaluate(async ([id, t]) => fetch('/api/projects/' + id, { method: 'DELETE', headers: { Authorization: 'Bearer ' + t } }), [tmp.id, token]); }
 await p.goto(`${base}/admin/channels`); await p.waitForLoadState('networkidle'); await shot('34_channels');

@@ -13,6 +13,7 @@ const [maj, min] = process.versions.node.split('.').map(Number);
 if (maj < 22 || (maj === 22 && min < 13)) { console.error(`  CortexSkills needs Node.js 22.13 or newer (found ${process.versions.node}).`); process.exit(1); }
 process.env.CORTEXSKILLS_ENV ||= path.join(PKG, '.env');
 process.env.NODE_ENV = 'production';
+process.env.CORTEXSKILLS_CMD ||= 'cortexskills admin';   // command names in the console's help and messages
 // Data in <package>/data unless DATA_DIR is set (environment or .env), decided before config.js fixes the paths.
 if (!process.env.DATA_DIR) {
   const line = fs.existsSync(process.env.CORTEXSKILLS_ENV) && fs.readFileSync(process.env.CORTEXSKILLS_ENV, 'utf8').split(/\r?\n/).find(l => /^\s*DATA_DIR\s*=\s*\S/.test(l));

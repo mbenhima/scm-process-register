@@ -19,7 +19,9 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const [cmd = 'aide', ...rest] = process.argv.slice(2);
 const pos = []; const a = {};
-for (let i = 0; i < rest.length; i++) { if (rest[i].startsWith('--')) { const k = rest[i].slice(2); const v = rest[i + 1] && !rest[i + 1].startsWith('--') ? rest[++i] : true; a[k] = v; } else pos.push(rest[i]); }
+// English option names are accepted too (--company, --users, --end, --features, --reason, --all, --yes).
+const ALIAS = { company: 'societe', users: 'utilisateurs', end: 'fin', features: 'fonctions', reason: 'motif', all: 'tout', yes: 'oui' };
+for (let i = 0; i < rest.length; i++) { if (rest[i].startsWith('--')) { const k = ALIAS[rest[i].slice(2)] || rest[i].slice(2); const v = rest[i + 1] && !rest[i + 1].startsWith('--') ? rest[++i] : true; a[k] = v; } else pos.push(rest[i]); }
 const fail = m => { console.error(`\n  ERREUR : ${m}\n`); process.exit(1); };
 const ok = m => console.log(`\n  ${m}\n`);
 const today = () => new Date().toISOString().slice(0, 10);
@@ -181,5 +183,8 @@ switch (cmd) {
   cslic cle-publique [dossier]                       copie vendor-public.pem (pour les paquets clients)
   cslic empreinte                                    empreinte SHA-256 de la clé publique
   cslic-sauvegarder [dossier]                        archive chiffrée du poste de signature
+
+  English: import · create --company --org-id --plan --users --end [--addons] · list [--all] · show · update · renew
+           revoke --reason · delete --yes · verify · public-key · fingerprint · help
 `);
 }

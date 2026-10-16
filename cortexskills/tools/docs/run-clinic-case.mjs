@@ -9,12 +9,16 @@ import fs from 'node:fs';
 const BASE = (process.argv[2] || 'http://localhost:4000') + '/api';
 const S = '../../server/';
 process.chdir(new URL(S, import.meta.url).pathname);
-const { one, all } = await import(S + 'src/db.js');
+const { one, all, run } = await import(S + 'src/db.js');
 const cat = await import(S + 'src/catalog.js');
 const { answersFor } = await import(S + 'seed/questionnaire-answers.js');
 const { rowFor } = await import(S + 'seed/release110.js');
 const { rng, pick } = await import(S + 'src/lib/util.js');
-const fr = v => (v && typeof v === 'object' && !Array.isArray(v) ? pick(v, 'fr') : v);
+// CLINIC_LANG=en runs the same case in English (clinic-case-en.json, English guide); French by default.
+const L = process.env.CLINIC_LANG === 'en' ? 'en' : 'fr';
+const X = (f, e) => (L === 'fr' ? f : e);
+const fr = v => (v && typeof v === 'object' && !Array.isArray(v) ? pick(v, L) : v);       // value in the language of the case
+const frPick = v => (v && typeof v === 'object' && !Array.isArray(v) ? pick(v, 'fr') : v); // French label, to find an element
 let token = null;
 async function api(method, path, body, tries = 0) {
   // The public response page is rate limited (120 calls a minute per address): wait and try again.
@@ -29,7 +33,7 @@ const PASS = 'CortexSkills#2026';
 const tokens = {};
 // Sessions are signed like the sign-in does (the sign-in itself is rate limited to 10 attempts per 5 minutes).
 const jwt = (await import(S + 'node_modules/jsonwebtoken/index.js')).default; const { config } = await import(S + 'src/config.js');
-const login = async email => { if (tokens[email]) { token = tokens[email]; return; } const u = one(`SELECT id FROM users WHERE email=?`, email); token = jwt.sign({ sub: u.id }, config.jwtSecret, { expiresIn: config.jwtTtl }); tokens[email] = token; await api('PUT', '/me/language', { language: 'fr' }); };
+const login = async email => { if (tokens[email]) { token = tokens[email]; return; } const u = one(`SELECT id FROM users WHERE email=?`, email); token = jwt.sign({ sub: u.id }, config.jwtSecret, { expiresIn: config.jwtTtl }); tokens[email] = token; await api('PUT', '/me/language', { language: L }); };
 
 // ------------------------------------------------------------------ the clinic and its people
 const ORG = one(`SELECT * FROM organizations WHERE email_domain='cliniquealamal.ma'`);
@@ -40,17 +44,17 @@ const out = { generatedAt: new Date().toISOString(), org: { id: ORG.id, name: fr
   users: users.map(u => ({ name: u.name, email: u.email, title: u.title })), tasks: [], gates: [], questionnaire: null };
 // Respondents of the campaign (fictitious people of the clinic; the guide asks to replace the e-mails and phones).
 const STAKEHOLDERS = [
-  ['Dr Salma Benjelloun', 'dg.salma@cliniquealamal.ma', '+212 6 61 00 00 01', 'Directrice générale', 'Opérations', 'MS', 'Email', 'Sponsor', 'Sponsor de la mission ; valide les axes prioritaires.'],
-  ['Hajar Tazi', 'hrd@cliniquealamal.ma', '+212 6 61 00 00 02', 'DRH / président du comité de pilotage', 'Ressources humaines', 'MS', 'Email', 'Decision maker', 'Préside le comité de pilotage.'],
-  ['Dr Youssef Alaoui', 'directeur.medical@cliniquealamal.ma', '+212 6 61 00 00 03', 'Directeur médical', 'Soins cliniques et infirmiers', 'MS', 'Combination', 'Decision maker', 'Porte le projet de triage assisté par IA.'],
-  ['Nadia Berrada', 'cadre.sante@cliniquealamal.ma', '+212 6 61 00 00 04', 'Cadre de santé', 'Soins cliniques et infirmiers', 'MO', 'Combination', 'Change relay', 'Encadre 24 infirmiers ; relais du changement.'],
-  ['Omar El Fassi', 'urgences@cliniquealamal.ma', '+212 6 61 00 00 05', 'Responsable des urgences', 'Soins cliniques et infirmiers', 'MO', 'WhatsApp', 'Respondent', 'Service pilote du triage IA.'],
-  ['Leila Chraibi', 'qualite@cliniquealamal.ma', '+212 6 61 00 00 06', 'Responsable qualité', 'Qualité et HSE', 'MO', 'Email', 'Expert', 'Référente accréditation et gestion des risques.'],
-  ['Samira Ouazzani', 'infirmiere.urgences@cliniquealamal.ma', '+212 6 61 00 00 07', 'Infirmière', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Infirmière d’accueil et d’orientation aux urgences.'],
-  ['Rachid Amrani', 'radiologie@cliniquealamal.ma', '+212 6 61 00 00 08', 'Technicien de radiologie', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Utilisateur de l’aide à la lecture d’images.'],
-  ['Mehdi Tahiri', 'infirmier.urgences2@cliniquealamal.ma', '+212 6 61 00 00 09', 'Infirmière', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Infirmier d’accueil aux urgences (équipe de nuit).'],
-  ['Youssra Bennis', 'infirmiere.hospit@cliniquealamal.ma', '+212 6 61 00 00 10', 'Infirmière', 'Soins cliniques et infirmiers', 'OP', 'Email', 'Respondent', 'Infirmière en hospitalisation, renfort aux urgences.'],
-  ['Imane Zerouali', 'radiologie2@cliniquealamal.ma', '+212 6 61 00 00 11', 'Technicien de radiologie', 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', 'Manipulatrice en radiologie.'],
+  ['Dr Salma Benjelloun', 'dg.salma@cliniquealamal.ma', '+212 6 61 00 00 01', X('Directrice générale', 'Chief Executive Officer'), 'Opérations', 'MS', 'Email', 'Sponsor', X('Sponsor de la mission ; valide les axes prioritaires.', 'Sponsor of the mission; validates the priority areas.')],
+  ['Hajar Tazi', 'hrd@cliniquealamal.ma', '+212 6 61 00 00 02', X('DRH / président du comité de pilotage', 'HR Director / steering committee chair'), 'Ressources humaines', 'MS', 'Email', 'Decision maker', X('Préside le comité de pilotage.', 'Chairs the steering committee.')],
+  ['Dr Youssef Alaoui', 'directeur.medical@cliniquealamal.ma', '+212 6 61 00 00 03', X('Directeur médical', 'Medical Director'), 'Soins cliniques et infirmiers', 'MS', 'Combination', 'Decision maker', X('Porte le projet de triage assisté par IA.', 'Leads the AI-assisted triage project.')],
+  ['Nadia Berrada', 'cadre.sante@cliniquealamal.ma', '+212 6 61 00 00 04', X('Cadre de santé', 'Head nurse'), 'Soins cliniques et infirmiers', 'MO', 'Combination', 'Change relay', X('Encadre 24 infirmiers ; relais du changement.', 'Manages 24 nurses; change relay.')],
+  ['Omar El Fassi', 'urgences@cliniquealamal.ma', '+212 6 61 00 00 05', X('Responsable des urgences', 'Head of emergency department'), 'Soins cliniques et infirmiers', 'MO', 'WhatsApp', 'Respondent', X('Service pilote du triage IA.', 'Pilot department of AI triage.')],
+  ['Leila Chraibi', 'qualite@cliniquealamal.ma', '+212 6 61 00 00 06', X('Responsable qualité', 'Quality manager'), 'Qualité et HSE', 'MO', 'Email', 'Expert', X('Référente accréditation et gestion des risques.', 'Accreditation and risk management lead.')],
+  ['Samira Ouazzani', 'infirmiere.urgences@cliniquealamal.ma', '+212 6 61 00 00 07', X('Infirmière', 'Nurse'), 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', X('Infirmière d’accueil et d’orientation aux urgences.', 'Emergency reception and triage nurse.')],
+  ['Rachid Amrani', 'radiologie@cliniquealamal.ma', '+212 6 61 00 00 08', X('Technicien de radiologie', 'Radiology technician'), 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', X('Utilisateur de l’aide à la lecture d’images.', 'User of the image-reading aid.')],
+  ['Mehdi Tahiri', 'infirmier.urgences2@cliniquealamal.ma', '+212 6 61 00 00 09', X('Infirmière', 'Nurse'), 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', X('Infirmier d’accueil aux urgences (équipe de nuit).', 'Emergency reception nurse (night shift).')],
+  ['Youssra Bennis', 'infirmiere.hospit@cliniquealamal.ma', '+212 6 61 00 00 10', X('Infirmière', 'Nurse'), 'Soins cliniques et infirmiers', 'OP', 'Email', 'Respondent', X('Infirmière en hospitalisation, renfort aux urgences.', 'Inpatient nurse, reinforcement in the emergency department.')],
+  ['Imane Zerouali', 'radiologie2@cliniquealamal.ma', '+212 6 61 00 00 11', X('Technicien de radiologie', 'Radiology technician'), 'Soins cliniques et infirmiers', 'OP', 'WhatsApp', 'Respondent', X('Manipulatrice en radiologie.', 'Radiographer.')],
 ];
 
 // ------------------------------------------------------------------ who answers what (sections, sub-sections, questions)
@@ -66,15 +70,16 @@ async function assignQuestions(qid) {
   const who = n => v.forms.flatMap(f => f.respondents).find(r => r.name === n).stakeholder_id;
   const mbr = v.forms.find(f => f.code === 'QT-IFPAC-MBR'); const mgt = v.forms.find(f => f.code === 'QT-IFPAC-MGT');
   const triage = mbr.elements.find(e => e.item === 'm_triage').ref;
-  const sub = n => mgt.elements.find(e => e.level === 'subsection' && /^(machines|produits)/i.test(fr(e.label)) && fr(e.label).toLowerCase().startsWith(n)).ref;
+  const sub = n => mgt.elements.find(e => e.level === 'subsection' && /^(machines|produits)/i.test(frPick(e.label)) && frPick(e.label).toLowerCase().startsWith(n)).ref;
   const manual = [
-    { ref: triage, ids: (v.assignments[triage] || []).filter(id => id !== who('Youssra Bennis')), note: 'Youssra Bennis travaille en hospitalisation : elle ne fait pas le tri à l’accueil des urgences.' },
-    { ref: sub('machines'), ids: [who('Dr Youssef Alaoui'), who('Leila Chraibi')], note: 'Équipements et capacité : direction médicale et qualité.' },
-    { ref: sub('produits'), ids: [who('Dr Youssef Alaoui')], note: 'Offre de soins : direction médicale.' }];
+    { ref: triage, ids: (v.assignments[triage] || []).filter(id => id !== who('Youssra Bennis')), note: X('Youssra Bennis travaille en hospitalisation : elle ne fait pas le tri à l’accueil des urgences.', 'Youssra Bennis works on the inpatient ward: she does not triage at the emergency reception.') },
+    { ref: sub('machines'), ids: [who('Dr Youssef Alaoui'), who('Leila Chraibi')], note: X('Équipements et capacité : direction médicale et qualité.', 'Equipment and capacity: medical management and quality.') },
+    { ref: sub('produits'), ids: [who('Dr Youssef Alaoui')], note: X('Offre de soins : direction médicale.', 'Care offering: medical management.') }];
   v = await api('PUT', `/questionnaires/${qid}/assignments`, { assignments: Object.fromEntries(manual.map(m => [m.ref, m.ids])), merge: true });
   // A table pasted from Excel: level, element, respondents (names or job titles).
-  const paste = [['Section', 'Performance par fonction et niveau (1 – 5 ; 5 : plus haute)', 'Dr Youssef Alaoui, Hajar Tazi'],
-    ['Section', 'Les projets en cours', 'Cadre de santé, Responsable des urgences, Responsable qualité']];
+  const secLabel = t => { for (const f of v.forms) for (const e of f.elements) if (frPick(e.label) === t) return fr(e.label); return t; };
+  const paste = [['Section', secLabel('Performance par fonction et niveau (1 – 5 ; 5 : plus haute)'), 'Dr Youssef Alaoui, Hajar Tazi'],
+    ['Section', secLabel('Les projets en cours'), X('Cadre de santé, Responsable des urgences, Responsable qualité', 'Head nurse, Head of emergency department, Quality manager')]];
   const pasted = await api('POST', `/questionnaires/${qid}/assignments/paste`, { text: paste.map(r => r.join('\t')).join('\n'), apply: true });
   v = pasted.view;
   const final = Object.entries(v.assignments).map(([ref, ids]) => ({ ref, ...lbl(v, ref), who: names(v, ids) }));
@@ -90,11 +95,11 @@ const taskRec = id => one(`SELECT * FROM task_instances WHERE id=?`, id);
 async function stepsOf(tid) { return api('GET', `/tasks/${tid}/steps`); }
 function snapStep(s) { return { id: s.id, name: fr(s.name), role: fr(s.role), kind: s.form.kind, kindLabel: fr(s.form.kindLabel), pattern: s.form.pattern, module: s.form.module || null,
   fields: s.form.fields.map(f => ({ key: f.key, label: fr(f.label), type: f.type, required: !!f.required, options: (f.options || []).map(o => ({ value: String(o.value), label: fr(o.label) || String(o.value) })), help: fr(f.help) || '' })) }; }
-const lbl = (f, v) => { if (v == null || v === '') return ''; if (f.type === 'boolean') return v === true || v === 'true' ? 'Oui' : 'Non';
+const lbl = (f, v) => { if (v == null || v === '') return ''; if (f.type === 'boolean') return v === true || v === 'true' ? X('Oui', 'Yes') : X('Non', 'No');
   const one1 = x => f.options?.find(o => o.value === String(x))?.label || String(x);
   if (f.type === 'multi') return String(v).split(/\s*,\s*/).filter(Boolean).map(one1).join(', ');
-  if (f.type === 'date') { const m = String(v).match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? `${m[3]}/${m[2]}/${m[1]}` : String(v); }
-  if (f.type === 'number') return String(v).replace('.', ',');
+  if (f.type === 'date') { const m = String(v).match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? (L === 'fr' ? `${m[3]}/${m[2]}/${m[1]}` : `${m[1]}-${m[2]}-${m[3]}`) : String(v); }
+  if (f.type === 'number') return L === 'fr' ? String(v).replace('.', ',') : String(v);
   return f.options?.length ? one1(v) : String(fr(v)); };
 async function runTask(e2e, t, { fill, actor = HEAD, notes = {} } = {}) {
   await login(actor);
@@ -126,7 +131,7 @@ const tasksOf = (pid, e2e) => all(`SELECT t.* FROM task_instances t JOIN e2e_ins
 
 
 // ------------------------------------------------------------------ generic values from the clinic's own context
-const frDeep = v => (v && typeof v === 'object' && !Array.isArray(v) ? ('fr' in v || 'en' in v ? pick(v, 'fr') : Object.fromEntries(Object.entries(v).map(([k, x]) => [k, frDeep(x)]))) : v);
+const frDeep = v => (v && typeof v === 'object' && !Array.isArray(v) ? ('fr' in v || 'en' in v ? pick(v, L) : Object.fromEntries(Object.entries(v).map(([k, x]) => [k, frDeep(x)]))) : v);
 function clinicCtx(pid) {
   const p = one(`SELECT * FROM projects WHERE id=?`, pid); const v = cat.get('verticalSeed', ORG.sector);
   return { themes: [...(v.themes?.ai || []), ...(v.themes?.digital || []).slice(0, 1)], positions: all(`SELECT data FROM records WHERE entity='Position' AND org_id=? LIMIT 6`, ORG.id).map(x => JSON.parse(x.data).title).filter(Boolean),
@@ -162,59 +167,62 @@ async function passGate(pid, phase, note) {
 async function runAll(pid) {
   const r = rng('clinic-case'); const ctx = clinicCtx(pid);
   const group = ORG.group_id ? fr(JSON.parse(one(`SELECT name FROM groups_ WHERE id=?`, ORG.group_id)?.name || '{}')) : '';
-  const fnName = n => ctx.functions.map(fr).find(x => x === n) || n;
+  const fnName = n => { const f = ctx.functions.find(x => frPick(x) === n); return f ? fr(f) : n; };
+  const roleName = n => { const r = ctx.roles.find(x => frPick(x) === n); return r ? fr(r) : n; };
   // ---------------- E2E-32 — scope of work
   const T32 = tasksOf(pid, 'E2E-32'); const R = (i, extra) => ({ rationale: extra, ...{} });
   const dec = (extra) => ({ rationale: extra });
-  await runTask('E2E-32', T32[0], { fill: { 'MP-53.1': { group: 'Yes', groupName: group, ...dec('La clinique fait partie du groupe ; la mission ne couvre que Clinique Al Amal.') }, 'MP-53.2': { group: 'Yes', organization: ORG.id, ...dec('Mission limitée à la clinique de Marrakech (95 salariés).') } } });
-  await runTask('E2E-32', T32[1], { fill: { 'MP-53.3': { sector: 'HCPR', ...dec('Établissement de soins privé : référentiels JCI et ISO 7101.') } } });
-  await runTask('E2E-32', T32[2], { fill: { 'MP-53.4': { levels: 'MS, MO, OP', ...dec('La direction, les cadres et les soignants répondent au diagnostic.') } } });
+  await runTask('E2E-32', T32[0], { fill: { 'MP-53.1': { group: 'Yes', groupName: group, ...dec(X('La clinique fait partie du groupe ; la mission ne couvre que Clinique Al Amal.', 'The clinic belongs to the group; the mission covers Al Amal Clinic only.')) }, 'MP-53.2': { group: 'Yes', organization: ORG.id, ...dec(X('Mission limitée à la clinique de Marrakech (95 salariés).', 'Mission limited to the Marrakech clinic (95 employees).')) } } });
+  await runTask('E2E-32', T32[1], { fill: { 'MP-53.3': { sector: 'HCPR', ...dec(X('Établissement de soins privé : référentiels JCI et ISO 7101.', 'Private healthcare facility: JCI and ISO 7101 standards.')) } } });
+  await runTask('E2E-32', T32[2], { fill: { 'MP-53.4': { levels: 'MS, MO, OP', ...dec(X('La direction, les cadres et les soignants répondent au diagnostic.', 'Management, supervisors and caregivers answer the diagnostic.')) } } });
   await runTask('E2E-32', T32[3], { fill: { 'MP-53.5': [
-    { function: fnName('Soins cliniques et infirmiers'), ms: true, mo: true, op: true, note: 'Urgences, hospitalisation, imagerie' },
-    { function: fnName('Qualité et HSE'), ms: false, mo: true, op: true, note: 'Accréditation, gestion des risques' },
-    { function: fnName('Ressources humaines'), ms: true, mo: true, op: false, note: 'Plan de formation, GPEC' },
-    { function: fnName("Systèmes d'information"), ms: false, mo: true, op: true, note: 'DPI, outils IA' },
-    { function: fnName('Opérations'), ms: true, mo: true, op: false, note: 'Direction générale, admissions' }] } });
-  await runTask('E2E-32', T32[4], { fill: { 'MP-53.6': { orientation: 'AI', ...dec('Priorité de la direction : triage et imagerie assistés par l’IA.') }, 'MP-53.7': [
-    { item: 'Préparation au triage assisté par IA aux urgences', orientation: 'AI', weight: '2', description: 'Capacité des équipes d’accueil à utiliser et contrôler la proposition de tri.', owner: U(HEAD).name, source: 'Function head' },
-    { item: 'Maîtrise de la protection des données de santé', orientation: 'AI', weight: '1.5', description: 'Loi 09-08 et règles de la CNDP appliquées aux outils IA.', owner: U(HEAD).name, source: 'Interview' }] } });
+    { function: fnName('Soins cliniques et infirmiers'), ms: true, mo: true, op: true, note: X('Urgences, hospitalisation, imagerie', 'Emergency, inpatient care, imaging') },
+    { function: fnName('Qualité et HSE'), ms: false, mo: true, op: true, note: X('Accréditation, gestion des risques', 'Accreditation, risk management') },
+    { function: fnName('Ressources humaines'), ms: true, mo: true, op: false, note: X('Plan de formation, GPEC', 'Training plan, workforce planning') },
+    { function: fnName("Systèmes d'information"), ms: false, mo: true, op: true, note: X('DPI, outils IA', 'Electronic patient record, AI tools') },
+    { function: fnName('Opérations'), ms: true, mo: true, op: false, note: X('Direction générale, admissions', 'General management, admissions') }] } });
+  await runTask('E2E-32', T32[4], { fill: { 'MP-53.6': { orientation: 'AI', ...dec(X('Priorité de la direction : triage et imagerie assistés par l’IA.', 'Management priority: AI-assisted triage and imaging.')) }, 'MP-53.7': [
+    { item: X('Préparation au triage assisté par IA aux urgences', 'Readiness for AI-assisted triage in the emergency department'), orientation: 'AI', weight: '2', description: X('Capacité des équipes d’accueil à utiliser et contrôler la proposition de tri.', 'Ability of the reception teams to use and check the triage proposal.'), owner: U(HEAD).name, source: 'Function head' },
+    { item: X('Maîtrise de la protection des données de santé', 'Command of health data protection'), orientation: 'AI', weight: '1.5', description: X('Loi 09-08 et règles de la CNDP appliquées aux outils IA.', 'Law 09-08 and CNDP rules applied to AI tools.'), owner: U(HEAD).name, source: 'Interview' }] } });
   await runTask('E2E-32', T32[5], { actor: ANALYST, fill: { 'MP-53.8': STAKEHOLDERS.map(([item, email, phone, role, fn, level, channel, category, description]) => ({ item, email, phone, role, function: fnName(fn), level, site: 'Marrakech', channel, category, description, owner: U(HEAD).name, source: 'Org chart' })) } });
-  await runTask('E2E-32', T32[6], { fill: { 'MP-53.9': { decision: 'Approved', rationale: 'Chaque fonction du périmètre a au moins un répondant ; complétude 100 %.' } } });
-  await runTask('E2E-32', T32[7], { actor: HRD, fill: { 'MP-53.9': { decision: 'Approved', rationale: 'Périmètre aligné sur le projet médical 2027 de la clinique.' },
-    'MP-53.10': async (s, t) => { const d = await api('POST', `/projects/${pid}/documents`, { doc_type: 'DT-E2E-32', lang: 'fr' }); return { document: { code: 'DT-E2E-32', title: d.title, version: d.versionLabel, status: d.status, id: d.id } }; } } });
+  await runTask('E2E-32', T32[6], { fill: { 'MP-53.9': { decision: 'Approved', rationale: X('Chaque fonction du périmètre a au moins un répondant ; complétude 100 %.', 'Every function in scope has at least one respondent; completeness 100%.') } } });
+  await runTask('E2E-32', T32[7], { actor: HRD, fill: { 'MP-53.9': { decision: 'Approved', rationale: X('Périmètre aligné sur le projet médical 2027 de la clinique.', 'Scope aligned with the clinic’s 2027 medical project.') },
+    'MP-53.10': async (s, t) => { const d = await api('POST', `/projects/${pid}/documents`, { doc_type: 'DT-E2E-32', lang: L }); return { document: { code: 'DT-E2E-32', title: d.title, version: d.versionLabel, status: d.status, id: d.id } }; } } });
   await runTask('E2E-32', T32[8], { actor: ANALYST });
 
   // ---------------- E2E-33 — questionnaire campaign, for real
   const T33 = tasksOf(pid, 'E2E-33');
   const tpls = all(`SELECT id, data FROM records WHERE entity='QuestionnaireTemplate' AND org_id IS NULL`).map(x => ({ id: x.id, ...JSON.parse(x.data) }));
   const order = ['QT-IFPAC-DG', 'QT-IFPAC-MGT', 'QT-IFPAC-MBR'].map(c => tpls.find(t => t.code === c)).filter(Boolean);
-  await runTask('E2E-33', T33[0], { actor: ANALYST, fill: { 'MP-54.1': { decision: 'Approved', templates: order.map(x => x.id).join(', '), rationale: 'Un formulaire par population : direction générale (atelier), management (cadres) et collaborateurs (soignants).' } } });
+  await runTask('E2E-33', T33[0], { actor: ANALYST, fill: { 'MP-54.1': { decision: 'Approved', templates: order.map(x => x.id).join(', '), rationale: X('Un formulaire par population : direction générale (atelier), management (cadres) et collaborateurs (soignants).', 'One form per population: general management (workshop), management (supervisors) and employees (caregivers).') } } });
   const q0 = one(`SELECT json_extract(fields,'$.questionnaire_id') q FROM step_records WHERE project_id=? AND step_id='MP-54.1'`, pid).q;
-  const MANUAL_Q = 'Quels gestes du tri aux urgences aimeriez-vous voir assistés par l’IA, et lesquels doivent rester entièrement humains ?';
+  const MANUAL_Q_FR = 'Quels gestes du tri aux urgences aimeriez-vous voir assistés par l’IA, et lesquels doivent rester entièrement humains ?';
+  const MANUAL_Q_EN = 'Which emergency triage tasks would you like AI to assist with, and which must remain entirely human?';
+  const MANUAL_Q = X(MANUAL_Q_FR, MANUAL_Q_EN);
   await runTask('E2E-33', T33[1], { actor: ANALYST, fill: { 'MP-54.2': async () => {
     const tai = await api('POST', `/questionnaires/${q0}/ai-tailor`, {});
     const q = await api('GET', `/questionnaires/${q0}`);
-    const forms = q.forms.map(f => (f.code !== 'QT-IFPAC-MBR' ? f : { ...f, sections: f.sections.map(s => (s.id !== 'ai_sector' ? s : { ...s, items: [...s.items, { key: 'm_triage', label: { en: MANUAL_Q, fr: MANUAL_Q, ar: MANUAL_Q } }] })) }));
+    const forms = q.forms.map(f => (f.code !== 'QT-IFPAC-MBR' ? f : { ...f, sections: f.sections.map(s => (s.id !== 'ai_sector' ? s : { ...s, items: [...s.items, { key: 'm_triage', label: { en: MANUAL_Q_EN, fr: MANUAL_Q_FR, ar: MANUAL_Q_FR } }] })) }));
     await api('PATCH', `/questionnaires/${q0}`, { forms });
     return { ai: { added: tai.added }, manual: MANUAL_Q }; } } });
   const REWORD = { from: null, to: null };
   await runTask('E2E-33', T33[2], { actor: ANALYST, fill: { 'MP-54.3': async () => {
     const q = await api('GET', `/questionnaires/${q0}`);
     // Reword one AI question in the clinic's vocabulary, then validate every AI question.
-    const forms = q.forms.map(f => ({ ...f, sections: f.sections.map(s => (s.id !== 'ai_sector' ? s : { ...s, items: s.items.map((it, i) => { if (i === 0 && f.code === 'QT-IFPAC-MBR') { REWORD.from = fr(it.label); REWORD.to = 'Dans votre service, à quelle fréquence utilisez-vous un outil numérique pour orienter un patient à l’accueil des urgences ?'; return { ...it, label: { ...it.label, fr: REWORD.to } }; } return it; }) })) }));
+    const forms = q.forms.map(f => ({ ...f, sections: f.sections.map(s => (s.id !== 'ai_sector' ? s : { ...s, items: s.items.map((it, i) => { if (i === 0 && f.code === 'QT-IFPAC-MBR') { REWORD.from = fr(it.label); REWORD.to = X('Dans votre service, à quelle fréquence utilisez-vous un outil numérique pour orienter un patient à l’accueil des urgences ?', 'In your department, how often do you use a digital tool to direct a patient at the emergency reception?'); return { ...it, label: { ...it.label, [L]: REWORD.to } }; } return it; }) })) }));
     await api('PATCH', `/questionnaires/${q0}`, { forms });
     await api('POST', `/questionnaires/${q0}/validate`, { all: true });
     return { reworded: REWORD }; } } });
   await runTask('E2E-33', T33[3], { fill: { 'MP-54.4': [
-    { role: 'Analyste formation', R: true, A: false, C: false, S: false, I: false, sections: '', note: 'Conçoit et suit le questionnaire' },
-    { role: 'Responsable formation', R: false, A: true, C: false, S: false, I: false, sections: '', note: 'Un seul A par section' },
-    { role: 'Consultant (chef de projet / associé)', R: false, A: false, C: true, S: false, I: false, sections: '', note: '' },
-    { role: 'Manager / manager recruteur', R: false, A: false, C: false, S: true, I: false, sections: '', note: 'Relance ses équipes' },
-    { role: 'DRH / président du comité de pilotage', R: false, A: false, C: false, S: false, I: true, sections: '', note: '' }] } });
+    { role: roleName('Analyste formation'), R: true, A: false, C: false, S: false, I: false, sections: '', note: X('Conçoit et suit le questionnaire', 'Designs and follows the questionnaire') },
+    { role: roleName('Responsable formation'), R: false, A: true, C: false, S: false, I: false, sections: '', note: X('Un seul A par section', 'A single A per section') },
+    { role: roleName('Consultant (chef de projet / associé)'), R: false, A: false, C: true, S: false, I: false, sections: '', note: '' },
+    { role: roleName('Manager / manager recruteur'), R: false, A: false, C: false, S: true, I: false, sections: '', note: X('Relance ses équipes', 'Reminds their teams') },
+    { role: roleName('DRH / président du comité de pilotage'), R: false, A: false, C: false, S: false, I: true, sections: '', note: '' }] } });
   await runTask('E2E-33', T33[4], { actor: ANALYST, fill: { 'MP-54.5': [
-    { level: 'MS', channels: 'Email, Face-to-Face', population: 'Management', every: '3', max: '2', note: 'Atelier en présentiel pour la direction' },
+    { level: 'MS', channels: 'Email, Face-to-Face', population: 'Management', every: '3', max: '2', note: X('Atelier en présentiel pour la direction', 'Face-to-face workshop for management') },
     { level: 'MO', channels: 'Email, WhatsApp', population: 'Management', every: '3', max: '2', note: '' },
-    { level: 'OP', channels: 'WhatsApp, Email', population: 'Member', every: '2', max: '2', note: 'Soignants en horaires décalés' }] } });
+    { level: 'OP', channels: 'WhatsApp, Email', population: 'Member', every: '2', max: '2', note: X('Soignants en horaires décalés', 'Caregivers on shifts') }] } });
   // Distribution: every stakeholder of MP-53.8 becomes a respondent; the messages leave on each channel.
   await runTask('E2E-33', T33[5], { actor: ANALYST, fill: { 'MP-54.6': async () => {
     await api('POST', `/questionnaires/${q0}/invitations`, {});
@@ -234,8 +242,8 @@ async function runAll(pid) {
       const tokenStr = (await (async () => { token = saved; const l = await api('GET', `/invitations/${i.id}/link`); token = null; return l.url.split('/respond/')[1]; })());
       const view = await api('GET', `/public/q/${tokenStr}`);
       const st = STAKEHOLDERS.find(x => x[0] === i.name) || STAKEHOLDERS[0];
-      const ans = answersFor(view.form, { lang: 'fr', name: i.name, position: st[3], reportsTo: 'Dr Salma Benjelloun', theme: ctx.themes[k % ctx.themes.length], core: { fr: 'Soins cliniques et infirmiers', en: 'Clinical care' }, standard: 'ISO 7101', sector: { fr: 'Établissements de santé', en: 'Healthcare' }, org: { fr: out.org.name, en: out.org.name }, functions: ['Soins cliniques et infirmiers', 'Qualité et HSE'], functionName: st[4] }, r, { skip: 0 });
-      if (view.form.sections.some(s => s.id === 'ai_sector' && s.items.some(x => x.key === 'm_triage'))) ans.answers.ai_sector = { ...(ans.answers.ai_sector || {}), m_triage: k % 2 ? 'Le score de gravité proposé à l’accueil ; la décision d’orientation reste à l’infirmière.' : 'La pré-saisie des constantes et l’alerte sur les signes de gravité ; l’annonce au patient reste humaine.' };
+      const ans = answersFor(view.form, { lang: L, name: i.name, position: st[3], reportsTo: 'Dr Salma Benjelloun', theme: ctx.themes[k % ctx.themes.length], core: { fr: 'Soins cliniques et infirmiers', en: 'Clinical care' }, standard: 'ISO 7101', sector: { fr: 'Établissements de santé', en: 'Healthcare' }, org: { fr: out.org.name, en: out.org.name }, functions: [fnName('Soins cliniques et infirmiers'), fnName('Qualité et HSE')], functionName: fnName(st[4]) }, r, { skip: 0 });
+      if (view.form.sections.some(s => s.id === 'ai_sector' && s.items.some(x => x.key === 'm_triage'))) ans.answers.ai_sector = { ...(ans.answers.ai_sector || {}), m_triage: k % 2 ? X('Le score de gravité proposé à l’accueil ; la décision d’orientation reste à l’infirmière.', 'The severity score proposed at reception; the referral decision stays with the nurse.') : X('La pré-saisie des constantes et l’alerte sur les signes de gravité ; l’annonce au patient reste humaine.', 'Pre-entry of vital signs and the alert on signs of severity; telling the patient stays human.') };
       await api('POST', `/public/q/${tokenStr}`, { answers: ans.answers || ans, flags: ans.flags || {}, consent: true, final: true });
       answered.push({ name: i.name, form: i.template_code, sample: Object.entries(ans.answers || ans).slice(0, 3).map(([sid, a]) => ({ section: sid, value: JSON.stringify(a).slice(0, 220) })) });
     }
@@ -243,14 +251,14 @@ async function runAll(pid) {
   await runTask('E2E-33', T33[8], { actor: ANALYST, fill: { 'MP-54.9': async () => ({ stats: (await api('GET', `/questionnaires/${q0}/stats`)) }) } });
   await runTask('E2E-33', T33[9], { actor: ANALYST, fill: { 'MP-54.10': async () => { const ds = await api('GET', `/questionnaires/${q0}/dataset`); return { dataset: { responses: ds.responses, competences: ds.competences.slice(0, 10), softSkills: ds.softSkills.slice(0, 8) } }; } } });
   await runTask('E2E-33', T33[10], { actor: ANALYST, fill: { 'MP-54.11': async () => ({ feed: await api('POST', `/questionnaires/${q0}/feed`, {}) }),
-    'MP-54.12': async () => { const d = await api('POST', `/projects/${pid}/documents`, { doc_type: 'DT-E2E-33', lang: 'fr' }); return { document: { code: 'DT-E2E-33', title: d.title, version: d.versionLabel, status: d.status, id: d.id } }; } } });
+    'MP-54.12': async () => { const d = await api('POST', `/projects/${pid}/documents`, { doc_type: 'DT-E2E-33', lang: L }); return { document: { code: 'DT-E2E-33', title: d.title, version: d.versionLabel, status: d.status, id: d.id } }; } } });
   await runTask('E2E-33', T33[11], { actor: ANALYST });
   const qf = await api('GET', `/questionnaires/${q0}`);
   out.questionnaire = { id: q0, label: fr(qf.label), status: qf.status, stats: qf.stats.total, forms: qf.forms.map(f => ({ code: f.code, name: fr(f.name), population: f.population,
     sections: f.sections.map(s => ({ id: s.id, type: s.type, title: fr(s.title), origin: s.origin || 'template', instructions: fr(s.instructions) || '', racsi: s.racsi || null,
       items: (s.items || s.fields || s.rows || s.boxes || []).map(x => ({ label: fr(x.label || x.title) || x.key, origin: x.origin || null })), columns: (s.columns || []).map(c => fr(c.label)) })) })) };
   out.answered = answered;
-  await passGate(pid, 1, `Périmètre approuvé, ${answered.length} réponses sur ${STAKEHOLDERS.length} collectées et consolidées.`);
+  await passGate(pid, 1, X(`Périmètre approuvé, ${answered.length} réponses sur ${STAKEHOLDERS.length} collectées et consolidées.`, `Scope approved, ${answered.length} responses out of ${STAKEHOLDERS.length} collected and consolidated.`));
 
   await runFlow(pid);
 }
@@ -296,7 +304,7 @@ async function flowTask(e2e, t, plan, actor = HEAD) {
   if (taskRec(t.id).status === 'Not started') await api('PATCH', `/tasks/${t.id}`, { status: 'In progress' });
   const st = await stepsOf(t.id); const order = plan._order || st.steps.map(s => s.id);
   for (const sid of order) { const s = st.steps.find(x => x.id === sid); if (!s) continue; if (s.done) { rec.steps.push({ ...snapStep(s), skipped: true }); continue; }
-    if (s.form.module === 'document') await api('POST', `/projects/${t.project_id}/documents`, { doc_type: s.form.doc, lang: 'fr' });
+    if (s.form.module === 'document') await api('POST', `/projects/${t.project_id}/documents`, { doc_type: s.form.doc, lang: L });
     console.log(' ', t.uft_id, sid); rec.steps.push(await flowStep(t, s, plan[sid] || {})); }
   rec.steps.sort((a, b) => st.steps.findIndex(x => x.id === a.id) - st.steps.findIndex(x => x.id === b.id));
   const task = await api('GET', `/tasks/${t.id}`); rec.guidance = fr(task.task.guidance); rec.output = task.summary || rec.outputName;
@@ -318,21 +326,21 @@ async function answerCampaign(pid, purpose, answer) {
 const LV = { 'Samira Ouazzani': { triage: [2, 1], ethi: [2, 2], esprit: [2, 2] }, 'Mehdi Tahiri': { triage: [2, 2], ethi: [1, 2], esprit: [3, 2] }, 'Youssra Bennis': { triage: [1, 1], ethi: [2, 2], esprit: [2, 2] },
   'Rachid Amrani': { imag: [2, 1], ethi: [2, 2], esprit: [2, 1] }, 'Imane Zerouali': { imag: [1, 1], ethi: [2, 1], esprit: [2, 2] }, 'Omar El Fassi': { triage: [3, 2], ethi: [2, 2], esprit: [3, 3] },
   'Nadia Berrada': { triage: [2, 2], ethi: [3, 2], esprit: [3, 3] }, 'Leila Chraibi': { ethi: [3, 3], esprit: [3, 3], triage: [1, 1], imag: [1, 1] } };
-const lvOf = (name, label, mgr) => { const k = Object.keys(LV[name] || {}).find(x => new RegExp(x, 'i').test(label.normalize('NFD').replace(/[̀-ͯ]/g, ''))); return k ? LV[name][k][mgr ? 1 : 0] : 2; };
+const lvOf = (name, label, mgr) => { const k = Object.keys(LV[name] || {}).find(x => new RegExp(x, 'i').test(String(label).normalize('NFD').replace(/[̀-ͯ]/g, ''))); return k ? LV[name][k][mgr ? 1 : 0] : 2; };
 async function runFlow(pid) {
   const T = e2e => tasksOf(pid, e2e);
   // ---------------- E2E-02 — skills diagnosis
   const D = T('E2E-02');
-  await flowTask('E2E-02', D[0], { 'MP-02.1': { mode: 'template', renumber: 'C', edit: r => (/lits|effectifs/i.test(r.item) ? null : r), note: 'Le modèle propose les thèmes IA du secteur ; la ligne « Planification IA des lits et des effectifs » a été supprimée (hors périmètre de ce premier cycle) et les codes renumérotés C-01 à C-04.' } }, ANALYST);
-  await flowTask('E2E-02', D[1], { 'MP-02.2': { mode: 'ai', note: 'L’IA relie chaque compétence aux postes concernés (triage pour les urgences et les soins, imagerie pour la radiologie) et propose la criticité.' } }, ANALYST);
-  await flowTask('E2E-02', D[2], { 'MP-02.3': { mode: 'ai', note: 'L’IA reprend les parties prenantes des niveaux OP et MO dont le poste a des cibles, et désigne le manager de la même fonction.' } }, ANALYST);
-  await flowTask('E2E-02', D[3], { 'MP-02.4': { answer: () => answerCampaign(pid, 'assessment', view => { const mgr = /^MGR-/.test(view.form.code || '') || /Évaluation de/.test(fr(view.form.name)); const subj = mgr ? fr(view.form.name).replace(/^Évaluation de /, '').replace(/ \(.*$/, '') : view.respondent.name;
-    const lv = view.form.sections.find(x => x.id === 'levels'); return { levels: Object.fromEntries(lv.items.map(it => [it.key, String(lvOf(subj, fr(it.label), mgr))])), evidence: { evidence: mgr ? `Observé en service sur les dernières semaines (${subj}).` : 'Utilisation quotidienne du dossier patient ; premiers essais de l’outil.' } }; }) },
+  await flowTask('E2E-02', D[0], { 'MP-02.1': { mode: 'template', renumber: 'C', edit: r => (/lits|effectifs|\bbeds?\b/i.test(r.item) ? null : r), note: X('Le modèle propose les thèmes IA du secteur ; la ligne « Planification IA des lits et des effectifs » a été supprimée (hors périmètre de ce premier cycle) et les codes renumérotés C-01 à C-04.', 'The template proposes the AI themes of the sector; the line on AI bed and staff planning was deleted (out of the scope of this first cycle) and the codes renumbered C-01 to C-04.') } }, ANALYST);
+  await flowTask('E2E-02', D[1], { 'MP-02.2': { mode: 'ai', note: X('L’IA relie chaque compétence aux postes concernés (triage pour les urgences et les soins, imagerie pour la radiologie) et propose la criticité.', 'AI links each competency to the positions concerned (triage for emergency and care, imaging for radiology) and proposes the criticality.') } }, ANALYST);
+  await flowTask('E2E-02', D[2], { 'MP-02.3': { mode: 'ai', note: X('L’IA reprend les parties prenantes des niveaux OP et MO dont le poste a des cibles, et désigne le manager de la même fonction.', 'AI takes the OP and MO stakeholders whose position has targets, and names the manager of the same function.') } }, ANALYST);
+  await flowTask('E2E-02', D[3], { 'MP-02.4': { answer: () => answerCampaign(pid, 'assessment', view => { const mgr = /^MGR-/.test(view.form.code || '') || /Évaluation de/.test(frPick(view.form.name)); const subj = mgr ? frPick(view.form.name).replace(/^Évaluation de /, '').replace(/ \(.*$/, '') : view.respondent.name;
+    const lv = view.form.sections.find(x => x.id === 'levels'); return { levels: Object.fromEntries(lv.items.map(it => [it.key, String(lvOf(subj, frPick(it.label), mgr))])), evidence: { evidence: mgr ? X(`Observé en service sur les dernières semaines (${subj}).`, `Observed on the ward over the last weeks (${subj}).`) : X('Utilisation quotidienne du dossier patient ; premiers essais de l’outil.', 'Daily use of the patient record; first trials of the tool.') } }; }) },
     'MP-02.5': { after: ['consolidate'] } });
-  await flowTask('E2E-02', D[4], { 'MP-02.6': { mode: 'ai', note: 'Règle de l’IA : le niveau du manager compte double ; un écart de deux niveaux entre auto-évaluation et manager est signalé.' } }, ANALYST);
+  await flowTask('E2E-02', D[4], { 'MP-02.6': { mode: 'ai', note: X('Règle de l’IA : le niveau du manager compte double ; un écart de deux niveaux entre auto-évaluation et manager est signalé.', 'AI rule: the manager’s level counts double; a two-level gap between self-assessment and manager is flagged.') } }, ANALYST);
   await flowTask('E2E-02', D[5], { 'MP-02.7': { mode: 'ai' } });
   await flowTask('E2E-02', D[6], { 'MP-03.1': { after: ['gaps'] }, 'MP-03.2': { mode: 'ai' }, 'MP-28.3': { mode: 'ai' }, 'MP-28.1': {} }, ANALYST);
-  await passGate(pid, 2, 'Écarts de compétences validés par la direction médicale.');
+  await passGate(pid, 2, X('Écarts de compétences validés par la direction médicale.', 'Skill gaps validated by the medical management.'));
   // ---------------- E2E-01 — training plan
   const P = T('E2E-01');
   await flowTask('E2E-01', P[0], { 'MP-01.1': { mode: 'ai' } });
@@ -343,39 +351,39 @@ async function runFlow(pid) {
   await flowTask('E2E-01', P[5], { 'MP-19.1': { mode: 'ai' }, 'MP-19.2': { mode: 'ai' } });
   await flowTask('E2E-01', P[6], { 'MP-01.4': { mode: 'template' }, 'MP-01.5': {}, 'MP-04.1': {}, _order: ['MP-01.4', 'MP-01.5', 'MP-04.1'] });
   await flowTask('E2E-01', P[7], { 'MP-01.6': { mode: 'ai' }, 'MP-01.7': { before: ['diffuse'] } }, HRD);
-  await passGate(pid, 3, 'Plan de formation 2027 approuvé par le comité de pilotage.');
+  await passGate(pid, 3, X('Plan de formation 2027 approuvé par le comité de pilotage.', '2027 training plan approved by the steering committee.'));
   // ---------------- E2E-05 — delivery
   const L = T('E2E-05');
   await flowTask('E2E-05', L[0], { 'MP-06.3': { mode: 'ai' },
-    'MP-06.4': { mode: 'template', first: () => answerCampaign(pid, 'review', (v, i) => ({ approve: { approve: { value: 'Yes', comment: i ? 'Ajouter un cas sur un patient âgé polypathologique.' : 'Conforme aux protocoles du service.' } }, comments: { comments: i ? 'Prévoir 30 minutes de pratique sur poste.' : 'RAS' } })) },
+    'MP-06.4': { mode: 'template', first: () => answerCampaign(pid, 'review', (v, i) => ({ approve: { approve: { value: 'Yes', comment: i ? X('Ajouter un cas sur un patient âgé polypathologique.', 'Add a case on an elderly patient with multiple conditions.') : X('Conforme aux protocoles du service.', 'Consistent with the department’s protocols.') } }, comments: { comments: i ? X('Prévoir 30 minutes de pratique sur poste.', 'Plan 30 minutes of hands-on practice.') : X('RAS', 'Nothing to add') } })) },
     'MP-06.6': { mode: 'ai' } });
   const crs = all(`SELECT data FROM records WHERE entity='TrainingCourse' AND project_id=?`, pid).map(x => JSON.parse(x.data)); const codes = f => (crs.filter(f).map(c => c.training_code).join(', ') || crs.map(c => c.training_code).join(', '));
   await flowTask('E2E-05', L[1], { 'MP-11.1': { mode: 'ai' }, 'MP-11.2': { rows: [
-    { item: 'Hicham Tazi', organisation: 'Interne', email: 'trainer@cliniquealamal.ma', phone: '+212 6 61 00 00 12', start: '2026-11-01', end: '2027-12-31', courses: codes(c => c.provider !== 'External'), dayRate: '0' },
-    { item: 'Dr Karim Lahlou', organisation: 'Maghreb Learning Partners', email: 'k.lahlou@maghreb-lp.ma', phone: '+212 6 61 00 00 13', start: '2026-11-15', end: '2027-06-30', courses: codes(c => c.provider === 'External'), dayRate: '7000' }], note: 'Saisie manuelle : le formateur interne de la clinique et un formateur externe.' } });
+    { item: 'Hicham Tazi', organisation: X('Interne', 'Internal'), email: 'trainer@cliniquealamal.ma', phone: '+212 6 61 00 00 12', start: '2026-11-01', end: '2027-12-31', courses: codes(c => c.provider !== 'External'), dayRate: '0' },
+    { item: 'Dr Karim Lahlou', organisation: 'Maghreb Learning Partners', email: 'k.lahlou@maghreb-lp.ma', phone: '+212 6 61 00 00 13', start: '2026-11-15', end: '2027-06-30', courses: codes(c => c.provider === 'External'), dayRate: '7000' }], note: X('Saisie manuelle : le formateur interne de la clinique et un formateur externe.', 'Manual entry: the clinic’s internal trainer and an external trainer.') } });
   await flowTask('E2E-05', L[2], { 'MP-07.1': { mode: 'ai' }, 'MP-07.2': {} });
-  await flowTask('E2E-05', L[3], { 'MP-07.3': { mode: 'ai' }, 'MP-07.4': { before: ['send'], answer: () => answerCampaign(pid, 'convocation', v => (v.respondent.name === 'Youssra Bennis' ? { confirm: { confirm: { value: 'No', comment: 'En congé ce jour-là.' } } } : { confirm: { confirm: { value: 'Yes' } } })) }, 'MP-17.1': { after: ['provision'] } });
+  await flowTask('E2E-05', L[3], { 'MP-07.3': { mode: 'ai' }, 'MP-07.4': { before: ['send'], answer: () => answerCampaign(pid, 'convocation', v => (v.respondent.name === 'Youssra Bennis' ? { confirm: { confirm: { value: 'No', comment: X('En congé ce jour-là.', 'On leave that day.') } } } : { confirm: { confirm: { value: 'Yes' } } })) }, 'MP-17.1': { after: ['provision'] } });
   await flowTask('E2E-05', L[4], { 'MP-25.1': { mode: 'ai' }, 'MP-25.2': { mode: 'template' }, 'MP-25.3': { before: ['push'], answer: () => answerCampaign(pid, 'capsule', (v, i) => (i % 3 === 2 ? null : { useful: { useful: { value: i % 4 ? 'Yes' : 'No', comment: '' } } })) }, 'MP-25.4': { mode: 'template' }, 'MP-25.5': {} });
   await flowTask('E2E-05', L[5], { 'MP-30.1': { mode: 'ai' }, 'MP-30.2': { mode: 'template' }, 'MP-30.3': { mode: 'ai' },
-    'MP-30.4': { mode: 'template', edit: r => (r.item === 'Youssra Bennis' ? null : { ...r, score: String({ 'Samira Ouazzani': 78, 'Mehdi Tahiri': 85, 'Youssra Bennis': 0, 'Rachid Amrani': 72, 'Imane Zerouali': 64, 'Omar El Fassi': 90, 'Nadia Berrada': 82 }[r.item] ?? 75), observation: r.item === 'Imane Zerouali' ? 'Signalement IA transmis sans vérifier la qualité de l’image.' : 'Données vérifiées, décision justifiée et tracée.' }), note: 'Le modèle liste les apprenants de chaque séance ; le formateur saisit le score et l’observation.' },
+    'MP-30.4': { mode: 'template', edit: r => (r.item === 'Youssra Bennis' ? null : { ...r, score: String({ 'Samira Ouazzani': 78, 'Mehdi Tahiri': 85, 'Youssra Bennis': 0, 'Rachid Amrani': 72, 'Imane Zerouali': 64, 'Omar El Fassi': 90, 'Nadia Berrada': 82 }[r.item] ?? 75), observation: r.item === 'Imane Zerouali' ? X('Signalement IA transmis sans vérifier la qualité de l’image.', 'AI flag sent without checking the image quality.') : X('Données vérifiées, décision justifiée et tracée.', 'Data checked, decision justified and recorded.') }), note: X('Le modèle liste les apprenants de chaque séance ; le formateur saisit le score et l’observation.', 'The template lists the learners of each session; the trainer enters the score and the observation.') },
     'MP-30.5': { mode: 'ai' }, 'MP-30.6': { after: ['record'] } });
   await flowTask('E2E-05', L[6], { 'MP-07.5': { mode: 'template' } });
   await flowTask('E2E-05', L[7], { 'MP-07.6': { mode: 'ai' } }, HRD);
-  await flowTask('E2E-05', L[8], { 'MP-11.3': { mode: 'template', edit: (() => { let n = 117; return r => ({ ...r, item: `MLP-2026-${++n}` }); })(), note: 'Le modèle calcule le montant attendu (heures × tarif journalier) et le nombre de présents ; le n° de facture est saisi depuis la facture reçue.' },
+  await flowTask('E2E-05', L[8], { 'MP-11.3': { mode: 'template', edit: (() => { let n = 117; return r => ({ ...r, item: `MLP-2026-${++n}` }); })(), note: X('Le modèle calcule le montant attendu (heures × tarif journalier) et le nombre de présents ; le n° de facture est saisi depuis la facture reçue.', 'The template computes the expected amount (hours × day rate) and the number present; the invoice number is entered from the invoice received.') },
     'MP-11.5': { mode: 'ai' }, 'MP-11.4': { mode: 'ai' }, 'MP-11.6': {}, _order: ['MP-11.3', 'MP-11.5', 'MP-11.4', 'MP-11.6'] });
-  await passGate(pid, 4, 'Sessions réalisées, présences et évaluations à chaud enregistrées.');
+  await passGate(pid, 4, X('Sessions réalisées, présences et évaluations à chaud enregistrées.', 'Sessions delivered, attendance and immediate evaluations recorded.'));
   // ---------------- E2E-07 — evaluation
   const E = T('E2E-07');
   await flowTask('E2E-07', E[0], { 'MP-09.1': { mode: 'template' } });
   await flowTask('E2E-07', E[1], { 'MP-09.2': { mode: 'ai' } });
-  await flowTask('E2E-07', E[2], { 'MP-09.3': { before: ['send'], answer: () => answerCampaign(pid, 'l1', (v, i) => ({ rating: Object.fromEntries(v.form.sections.find(x => x.id === 'rating').items.map((it, k) => [it.key, String([[5, 4, 5, 5, 4], [4, 4, 3, 4, 4], [5, 5, 4, 5, 5], [3, 4, 3, 4, 3], [4, 5, 4, 4, 5]][i % 5][k % 5])])), open: { apply: ['Vérifier les constantes avant de lire la proposition de l’outil.', 'Tracer l’écart entre la proposition et ma décision.', 'Transmettre le signalement avec l’image au radiologue.'][i % 3], improve: i % 2 ? 'Plus de cas pratiques.' : 'Une demi-journée de plus.' } })) } }, ANALYST);
+  await flowTask('E2E-07', E[2], { 'MP-09.3': { before: ['send'], answer: () => answerCampaign(pid, 'l1', (v, i) => ({ rating: Object.fromEntries(v.form.sections.find(x => x.id === 'rating').items.map((it, k) => [it.key, String([[5, 4, 5, 5, 4], [4, 4, 3, 4, 4], [5, 5, 4, 5, 5], [3, 4, 3, 4, 3], [4, 5, 4, 4, 5]][i % 5][k % 5])])), open: { apply: X(['Vérifier les constantes avant de lire la proposition de l’outil.', 'Tracer l’écart entre la proposition et ma décision.', 'Transmettre le signalement avec l’image au radiologue.'], ['Check the vital signs before reading the tool’s proposal.', 'Record the gap between the proposal and my decision.', 'Send the flag with the image to the radiologist.'])[i % 3], improve: i % 2 ? X('Plus de cas pratiques.', 'More practical cases.') : X('Une demi-journée de plus.', 'Half a day more.') } })) } }, ANALYST);
   const key = () => JSON.parse(one(`SELECT data FROM records WHERE entity='Questionnaire' AND project_id=? AND json_extract(data,'$.purpose')='l2'`, pid).data).answer_keys;
   await flowTask('E2E-07', E[3], { 'MP-09.4': { before: ['send'], answer: () => { const keys = key(); return answerCampaign(pid, 'l2', (v, i) => ({ quiz: Object.fromEntries(Object.entries(keys[v.form.code] || {}).map(([k, x], j) => [k, (i === 2 && j < 2) || (i === 4 && j === 0) ? (x.answer === 'A' ? 'C' : 'A') : x.answer])) })); } } });
-  await flowTask('E2E-07', E[4], { 'MP-09.5': { before: ['send'], answer: () => answerCampaign(pid, 'l3', (v, i) => ({ levels: Object.fromEntries(v.form.sections.find(x => x.id === 'levels').items.map(it => [it.key, String(i === 3 ? 2 : 3)])), facts: { facts: i === 3 ? 'Utilise l’outil mais oublie encore de tracer sa décision.' : 'Vérifie les données, décide et trace la décision en autonomie.' } })) } });
+  await flowTask('E2E-07', E[4], { 'MP-09.5': { before: ['send'], answer: () => answerCampaign(pid, 'l3', (v, i) => ({ levels: Object.fromEntries(v.form.sections.find(x => x.id === 'levels').items.map(it => [it.key, String(i === 3 ? 2 : 3)])), facts: { facts: i === 3 ? X('Utilise l’outil mais oublie encore de tracer sa décision.', 'Uses the tool but still forgets to record the decision.') : X('Vérifie les données, décide et trace la décision en autonomie.', 'Checks the data, decides and records the decision independently.') } })) } });
   await flowTask('E2E-07', E[5], { 'MP-09.6': { after: ['compute'] }, 'MP-10.3': { after: ['compute'] } }, ANALYST);
   await flowTask('E2E-07', E[6], { 'MP-09.7': { mode: 'ai' }, 'MP-20.5': { mode: 'ai' } }, ANALYST);
   await flowTask('E2E-07', E[7], { 'MP-10.4': {}, 'MP-10.6': { mode: 'ai' }, 'MP-10.2': { mode: 'ai' } }, ANALYST);
-  await passGate(pid, 5, 'Efficacité évaluée aux niveaux 1 à 3 ; actions d’amélioration engagées.');
+  await passGate(pid, 5, X('Efficacité évaluée aux niveaux 1 à 3 ; actions d’amélioration engagées.', 'Effectiveness evaluated at levels 1 to 3; improvement actions started.'));
   // What the case produced, for the guide.
   const R = (e, f) => all(`SELECT data FROM records WHERE entity=? AND project_id=?`, e, pid).map(x => f(JSON.parse(x.data)));
   out.flow = { kpis: all(`SELECT kpi_id, value, target, status FROM kpi_values WHERE project_id=?`, pid), messages: all(`SELECT kind, channel, recipient, subject, status, body FROM messages WHERE project_id=? ORDER BY created_at`, pid).map(m => ({ ...m, body: (m.body || '').slice(0, 700) })),
@@ -391,13 +399,15 @@ if (process.env.CLINIC_STAGE !== 'import') {
   await login(HEAD);
   const tpls = await api('GET', '/project-templates/for-creation');
   const tpl = tpls.find(x => x.own && /SIMPLE/.test(x.code || ''));
-  const name = 'Compétences IA 2027 — Clinique Al Amal';
-  const old = one(`SELECT id FROM projects WHERE org_id=? AND json_extract(name,'$.fr')=?`, ORG.id, name);
+  const name = X('Compétences IA 2027 — Clinique Al Amal', 'AI Skills 2027 — Al Amal Clinic');
+  const old = one(`SELECT id FROM projects WHERE org_id=? AND (json_extract(name,'$.fr')=? OR json_extract(name,'$.en')=?)`, ORG.id, name, name);
   if (old) { await api('DELETE', `/projects/${old.id}`); console.log('previous case project deleted', old.id); }
-  const p = await api('POST', '/projects', { creation_mode: 'catalog', template_id: tpl.id, name, focus: 'AI', description: 'Premier cycle complet de développement des compétences en IA de la clinique : triage aux urgences et aide à la lecture d’images.', complexity: {} });
+  const p = await api('POST', '/projects', { creation_mode: 'catalog', template_id: tpl.id, name, focus: 'AI', description: X('Premier cycle complet de développement des compétences en IA de la clinique : triage aux urgences et aide à la lecture d’images.', 'First complete cycle of AI skills development at the clinic: emergency triage and image-reading aid.'), complexity: {} });
   out.project = { id: p.id, name, template: { code: tpl.code, name: tpl.name }, focus: 'AI', mode: p.mode, track: p.track };
   out.phases = all(`SELECT phase, e2e_id FROM e2e_instances WHERE project_id=? ORDER BY phase, sort`, p.id).map(x => ({ phase: x.phase, e2e: x.e2e_id, name: fr(cat.get('e2e', x.e2e_id).name), tasks: tasksOf(p.id, x.e2e_id).length }));
   await runAll(p.id);
-  fs.writeFileSync(new URL('./clinic-case.json', import.meta.url).pathname.replace('/server/', '/tools/docs/'), JSON.stringify(out, null, 1));
+  fs.writeFileSync(new URL(L === 'fr' ? './clinic-case.json' : './clinic-case-en.json', import.meta.url).pathname.replace('/server/', '/tools/docs/'), JSON.stringify(out, null, 1));
   console.log('project', p.id, 'tasks', out.tasks.length);
+  // The English run switched the clinic's accounts to English: they go back to French, the language of their seed.
+  if (L !== 'fr') run(`UPDATE users SET language='fr' WHERE org_id=?`, ORG.id);
 }

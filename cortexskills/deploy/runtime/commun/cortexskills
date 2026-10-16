@@ -1,7 +1,8 @@
 #!/bin/sh
-# CortexSkills (exécutable, Linux) : ./cortexskills start | admin <commande> | backup | restore [fichier] | version
-# Utilise le Node.js livré dans runtime/ ; les réglages sont dans .env, les données dans data/ (à côté de ce script).
+# CortexSkills (exécutable, Linux) : ./cortexskills start | admin <commande> | secrets | backup | restore [fichier] | version
+# Node.js 22.13 ou plus récent est nécessaire : CORTEXSKILLS_NODE, sinon « node » du PATH (/usr/bin, /usr/local/bin).
+# Les réglages sont dans .env, les données dans data/ (à côté de ce script).
 DIR=$(cd "$(dirname "$0")" && pwd)
-NODE="$DIR/runtime/node/bin/node"; [ -x "$NODE" ] || NODE="$DIR/runtime/node-linux/bin/node"
-[ -x "$NODE" ] || { echo "  ERREUR : Node.js livré introuvable ($DIR/runtime)." >&2; exit 1; }
+NODE=${CORTEXSKILLS_NODE:-$(command -v node || true)}
+[ -n "$NODE" ] && [ -x "$NODE" ] || { echo "  ERROR / ERREUR : Node.js 22 not found / introuvable. Install Node.js 22 LTS (see the installation guide / voir le guide d’installation) or set CORTEXSKILLS_NODE." >&2; exit 1; }
 exec "$NODE" --no-warnings "$DIR/app/server/tools/launcher.js" "$@"

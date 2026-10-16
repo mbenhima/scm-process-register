@@ -9,9 +9,10 @@ export const isProduction = () => String(process.env.NODE_ENV || '').toLowerCase
 const weak = v => !v || v.length < 32 || /change-me|local-secret|local-development|example/i.test(v);
 
 export function productionProblems(dataMode) {
+  const SECRETS = process.env.CORTEXSKILLS_CMD ? 'cortexskills secrets' : 'npm run secrets';
   const p = [];
-  if (weak(process.env.JWT_SECRET)) p.push('JWT_SECRET is missing, shorter than 32 characters or a development value. Generate one with "npm run secrets".');
-  if (weak(process.env.CHANNEL_SECRET_KEY)) p.push('CHANNEL_SECRET_KEY is missing, shorter than 32 characters or a development value. Generate one with "npm run secrets".');
+  if (weak(process.env.JWT_SECRET)) p.push(`JWT_SECRET is missing, shorter than 32 characters or a development value. Generate one with "${SECRETS}".`);
+  if (weak(process.env.CHANNEL_SECRET_KEY)) p.push(`CHANNEL_SECRET_KEY is missing, shorter than 32 characters or a development value. Generate one with "${SECRETS}".`);
   if (config.deploymentMode === 'saas' && weak(process.env.LICENSE_HMAC_SECRET)) p.push('LICENSE_HMAC_SECRET is missing, shorter than 32 characters or a development value (SaaS licences are signed with it).');
   if (process.env.JWT_SECRET && process.env.JWT_SECRET === process.env.CHANNEL_SECRET_KEY) p.push('JWT_SECRET and CHANNEL_SECRET_KEY must be different.');
   // HTTPS everywhere, except an evaluation on the machine itself (http://localhost or http://127.0.0.1).

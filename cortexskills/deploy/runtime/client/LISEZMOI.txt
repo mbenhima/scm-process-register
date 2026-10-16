@@ -1,6 +1,6 @@
 CortexSkills @VERSION@ — Exécutable minifié, côté client (Linux x64, cloud privé ou sur site)
-Procédure complète : documentation/Guide_Installation_Runtime_Customer_Linux_CortexSkills_FR.docx (et .pdf).
-Aucun code source lisible : serveur minifié, interface compilée et minifiée, Node.js @NODE@ fourni (aucune installation).
+Procédure complète : Guide_Installation_Runtime_Customer_Linux_CortexSkills_FR (Word / PDF, livré avec ce fichier).
+Aucun code source lisible : serveur minifié, interface compilée et minifiée. Prérequis : Node.js 22 LTS (22.13 ou plus).
 
 Contenu
   cortexskills            lance l'application et sa console (start, admin, secrets, backup, restore, version)
@@ -9,20 +9,17 @@ Contenu
   config/                 cortexskills.service (systemd, durci) et nginx-cortexskills.conf (HTTPS)
   licence/                déposez ici le fichier de licence (.lic) reçu de l'éditeur
   app/                    l'application (exécutable, en lecture seule)
-  runtime/node/           Node.js @NODE@ (linux-x64), distribution officielle
-  documentation/          guide d'installation et guide utilisateur (Word et PDF)
-  SHA256SUMS.txt          empreintes des fichiers du paquet
+  data/                   vos données (créées au premier démarrage)
+  SHA256SUMS.txt          empreintes des fichiers
 
 Démarrage rapide (dossier conseillé : /opt/cortexskills)
-  1. sha256sum -c Runtime_Customer_Linux_CortexSkills_@VERSION@.zip.sha256
-  2. sudo unzip Runtime_Customer_Linux_CortexSkills_@VERSION@.zip -d /opt && sudo mv /opt/Runtime_Customer_Linux_CortexSkills_@VERSION@ /opt/cortexskills
-  3. cd /opt/cortexskills && sha256sum -c SHA256SUMS.txt
-  4. sudo cp env.example .env && ./cortexskills secrets && sudo nano .env
-  5. sudo ./installer-service.sh && journalctl -u cortexskills -f
-     (premier démarrage : chargement des données de référence, 5 à 15 minutes, jusqu'à « CortexSkills API is running »)
+  1. Node.js 22 :  sudo tar -xJf node-v22.22.2-linux-x64.tar.xz -C /usr/local --strip-components=1 && node -v
+  2. sha256sum -c Runtime_Customer_Linux_CortexSkills_@VERSION@.tar.xz.sha256
+  3. sudo mkdir -p /opt/cortexskills && sudo tar -xJf Runtime_Customer_Linux_CortexSkills_@VERSION@.tar.xz -C /opt/cortexskills --strip-components=1
+  4. cd /opt/cortexskills && sha256sum -c --quiet SHA256SUMS.txt && sudo cp env.example .env && ./cortexskills secrets && sudo nano .env
+  5. sudo ./installer-service.sh && journalctl -u cortexskills -f      (premier démarrage : 5 à 15 minutes)
   6. HTTPS : config/nginx-cortexskills.conf → /etc/nginx/conf.d/cortexskills.conf
   7. sudo -u cortexskills ./cortexskills admin org-create --name "Votre entreprise" --domain votre-entreprise.ma \
        --admin-email admin@votre-entreprise.ma --admin-name "Prénom Nom" --admin-password '<mot de passe fort>' --lang fr
   8. sudo -u cortexskills ./cortexskills admin licence-request --org votre-entreprise.ma   → à envoyer à l'éditeur
-  9. Copiez le fichier .lic reçu dans licence/, puis :
-     sudo -u cortexskills ./cortexskills admin licence-install --file licence/<fichier>.lic
+  9. sudo -u cortexskills ./cortexskills admin licence-install --file licence/<fichier>.lic

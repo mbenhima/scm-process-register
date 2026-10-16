@@ -30,16 +30,31 @@ const BANK = [
   [/./, [['Une suggestion d’un outil d’IA doit être :', 'Appliquée sans vérification ; Vérifiée et confrontée au jugement professionnel avant d’agir ; Ignorée systématiquement ; Validée par le service informatique', 'B'],
     ['Quelle donnée ne doit jamais être saisie dans un outil d’IA public non autorisé ?', 'Le nom de la formation ; Les données d’identification d’un patient ; La date du jour ; Le nom du service', 'B'],
     ['Que faire si l’outil d’IA donne un résultat incohérent ?', 'Le signaler et tracer l’incident ; Recommencer jusqu’à obtenir le résultat attendu ; Ne rien dire ; Arrêter d’utiliser l’ordinateur', 'A']]]];
-const BANK_EN = { 'B': 'B' };
+// English version of the bank, question by question (same order, same right answers).
+const BANK_EN = [
+  [['The AI triage tool proposes a low priority for a patient whose condition worries you. What do you do?', 'You follow the tool’s proposal ; You reassess the patient, decide on your clinical judgement, then record the gap ; You wait for a colleague’s opinion without noting anything ; You change the data entered to get another priority'],
+    ['Before reading the triage tool’s proposal, you must first:', 'Check that the vital signs and the reason entered are complete and accurate ; Print the patient record ; Warn the head doctor ; Nothing in particular'],
+    ['What must the record of an AI-assisted triage decision contain?', 'Only the final priority ; The proposed priority, the priority chosen and the reason for any gap ; The name of the software vendor ; The expected waiting time'],
+    ['An AI triage tool is most likely to be wrong when:', 'The input data are incomplete or unusual ; The patient is known to the facility ; It is used during the day ; The department is quiet']],
+  [['The AI tool flags a “suspected nodule” on an X-ray. The right reflex is:', 'Consider the diagnosis made ; Send the flag to the radiologist with the image, without concluding yourself ; Delete the flag if it looks wrong ; Wait for the next examination'],
+    ['A “false positive” of the imaging tool means:', 'The tool flags an anomaly that does not exist ; The tool misses an anomaly that is present ; The image is blurred ; The patient refused the examination'],
+    ['Why check the image quality before the AI analysis?', 'To keep to the schedule ; Because a poor-quality image can distort the tool’s result ; To reduce the dose ; It is not useful'],
+    ['Who remains responsible for the final interpretation of the examination?', 'The tool vendor ; The technician alone ; The radiologist ; The administration']],
+  [['A suggestion from an AI tool must be:', 'Applied without checking ; Checked and compared with professional judgement before acting ; Always ignored ; Validated by the IT department'],
+    ['Which data must never be entered in an unauthorised public AI tool?', 'The name of the course ; A patient’s identification data ; Today’s date ; The name of the department'],
+    ['What should you do if the AI tool gives an inconsistent result?', 'Report it and record the incident ; Start again until you get the expected result ; Say nothing ; Stop using the computer']]];
 function questionRows({ t, lang }, ai) {
   const out = [];
   for (const c of C.courses(t.project_id)) {
-    const set = BANK.find(([rx]) => rx.test(norm(c.name_text)))[1]; const gen = BANK[BANK.length - 1][1];
+    // French bank for French, English bank otherwise (same questions, same right answers).
+    const bi = BANK.findIndex(([rx]) => rx.test(norm(c.name_text))); const tr = (k, j) => (lang === 'fr' ? null : BANK_EN[k][j]);
+    const set = BANK[bi][1].map((x, j) => (tr(bi, j) ? [tr(bi, j)[0], tr(bi, j)[1], x[2]] : x));
+    const gen = BANK[BANK.length - 1][1].map((x, j) => (tr(BANK.length - 1, j) ? [tr(BANK.length - 1, j)[0], tr(BANK.length - 1, j)[1], x[2]] : x));
     const qs = ai ? [...set, ...gen.slice(0, 1)] : set.slice(0, 3);
-    for (const [q, ch, a] of qs) out.push({ course: c.training_code, item: lang === 'fr' ? q : q, choices: ch, answer: a, points: '1' });
+    for (const [q, ch, a] of qs) out.push({ course: c.training_code, item: q, choices: ch, answer: a, points: '1' });
     if (ai) for (const o of (c.objectives || []).slice(1, 2)) out.push({ course: c.training_code, item: T(lang, `Which behaviour shows the objective “${str(o, lang)}”?`, `Quel comportement montre l’objectif « ${str(o, lang)} » ?`, `أي سلوك يظهر الهدف؟`), choices: T(lang, 'Doing it without checking ; Doing it, checking the result and recording the decision ; Asking someone else to do it ; Postponing it', 'Le faire sans vérifier ; Le faire, vérifier le résultat et tracer la décision ; Demander à quelqu’un d’autre de le faire ; Le reporter', 'القيام به دون تحقق ; القيام به والتحقق والتوثيق ; طلبه من غيره ; تأجيله'), answer: 'B', points: '1' });
   }
-  void BANK_EN; return out;
+  return out;
 }
 
 /* ------------------------------------------------------------------ MP-09.3 level 1, MP-09.4 level 2, MP-09.5 level 3 */

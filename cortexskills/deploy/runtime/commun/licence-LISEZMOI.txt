@@ -1,3 +1,3 @@
-Déposez ici le fichier de licence (.lic) envoyé par l'éditeur, puis, depuis le dossier du paquet :
+Déposez ici le fichier de licence (.lic) envoyé par l'éditeur / Put the licence file (.lic) received from the vendor here.
   Linux   :  sudo -u cortexskills ./cortexskills admin licence-install --file licence/<fichier>.lic
   Windows :  cortexskills admin licence-install --file licence\<fichier>.lic

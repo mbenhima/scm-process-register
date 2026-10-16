@@ -2,6 +2,8 @@
 # Gestionnaire de licences CortexSkills (poste de signature, Linux). « ./cslic aide » pour la liste des commandes.
 # Clés, registre et licences dans CSLIC_HOME (par défaut ~/.cortexskills-editeur), jamais sur un serveur.
 DIR=$(cd "$(dirname "$0")" && pwd)
+NODE=${CORTEXSKILLS_NODE:-$(command -v node || true)}
+[ -n "$NODE" ] || { echo "  ERROR / ERREUR : Node.js 22 not found / introuvable (see the installation guide / voir le guide d’installation)." >&2; exit 1; }
 export CSLIC_HOME="${CSLIC_HOME:-$HOME/.cortexskills-editeur}"
 mkdir -p "$CSLIC_HOME" && chmod 700 "$CSLIC_HOME"
-exec "$DIR/runtime/node-linux/bin/node" --no-warnings "$DIR/app/tools/cslic.mjs" "$@"
+exec "$NODE" --no-warnings "$DIR/app/tools/cslic.mjs" "$@"

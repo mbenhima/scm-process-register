@@ -5,13 +5,18 @@
 import { createRequire } from 'node:module'; import fs from 'node:fs';
 const require = createRequire(import.meta.url); const { chromium } = require(process.env.PW || 'playwright');
 const [base, out, cEmail, cPass, pEmail, pPass] = process.argv.slice(2); fs.mkdirSync(out, { recursive: true });
+// SHOT_LANG=en: the same screens in English (English installation guides).
+const LG = process.env.SHOT_LANG === 'en' ? 'en' : 'fr';
 const b = await chromium.launch();
 const session = async (email, pass) => {
-  const ctx = await b.newContext({ viewport: { width: 1360, height: 860 }, locale: 'fr-FR', ignoreHTTPSErrors: true }); const p = await ctx.newPage();
-  await p.goto(base + '/login'); await p.evaluate(() => localStorage.setItem('cs.lang', 'fr')); await p.reload(); await p.waitForLoadState('networkidle');
+  const ctx = await b.newContext({ viewport: { width: 1360, height: 860 }, locale: LG === 'fr' ? 'fr-FR' : 'en-GB', ignoreHTTPSErrors: true }); const p = await ctx.newPage();
+  await p.goto(base + '/login'); await p.evaluate(l => localStorage.setItem('cs.lang', l), LG); await p.reload(); await p.waitForLoadState('networkidle');
   if (!email) return p;
   await p.fill('input[type=email]', email); await p.fill('input[type=password]', pass); await p.click('button[type=submit]');
-  await p.waitForURL(u => !u.pathname.startsWith('/login'), { timeout: 30000 }); return p;
+  await p.waitForURL(u => !u.pathname.startsWith('/login'), { timeout: 30000 });
+  // The signed-in user's own language wins over the browser's: set it to the language of the shots.
+  await p.evaluate(async l => { const t = Object.entries(localStorage).find(([k]) => /token/i.test(k))?.[1]; await fetch('/api/me/language', { method: 'PUT', headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }, body: JSON.stringify({ language: l }) }); localStorage.setItem('cs.lang', l); }, LG);
+  await p.reload(); await p.waitForLoadState('networkidle').catch(() => {}); return p;
 };
 const go = async (p, url, name, wait = 1500) => { await p.goto(base + url); await p.waitForLoadState('networkidle').catch(() => {}); await p.waitForTimeout(wait); await p.screenshot({ path: `${out}/${name}.png` }); };
 { const p = await session(); await p.waitForTimeout(800); await p.screenshot({ path: `${out}/01_connexion.png` }); }

@@ -19,27 +19,29 @@ const findOrg = key => { if (!key) fail('Give the organization: --org <id or e-m
 const name = o => { const n = J(o.name, o.name); return typeof n === 'object' ? n.en || n.fr || Object.values(n)[0] : n; };
 const audit = (entity, id, action, after) => run(`INSERT INTO audit_log(id,org_id,user_id,entity,entity_id,action,after_val,created_at) VALUES(?,?,?,?,?,?,?,?)`, uuid(), entity === 'Organization' ? id : null, null, entity, id, action, S({ ...after, by: 'server console' }), now());
 
+// The delivered runtimes run this console as « cortexskills admin » (launcher.js sets CORTEXSKILLS_CMD).
+const CMD = process.env.CORTEXSKILLS_CMD || 'npm run admin --';
 migrate();
-if (!isSeeded()) fail('The database is not initialized. Run first: npm run init');
+if (!isSeeded()) fail(process.env.CORTEXSKILLS_CMD ? 'The database is not initialized. Run first: cortexskills start' : 'The database is not initialized. Run first: npm run init');
 
 const HELP = `
   CortexSkills provider console (mode: ${config.deploymentMode})
 
-  npm run admin -- org-create --name "Acme Group" --domain acme.com --pack BND-03 --seats 300 --days 365
+  ${CMD} org-create --name "Acme Group" --domain acme.com --pack BND-03 --seats 300 --days 365
                      --admin-email jane.doe@acme.com --admin-name "Jane Doe" --admin-password "Str0ng#Passw0rd"
                      [--segment LARGE|SME] [--sector HCPR] [--employees 1200] [--lang en|fr|ar] [--country Morocco] [--city Casablanca]
-  npm run admin -- org-list
-  npm run admin -- licence     --org acme.com [--pack BND-05] [--seats 500] [--days 365]      (SaaS: renew, resize, change pack)
-  npm run admin -- addon       --org acme.com --id AD-08 --on | --off
-  npm run admin -- packs                                                                  (list packs, bundles, add-ons, standards)
-  npm run admin -- user-create --org acme.com --email john@acme.com --name "John" --password "..." [--role R-03]
-  npm run admin -- password    --email john@acme.com --password "New#Passw0rd2026"
-  npm run admin -- platform-admin --email ops@vendor.com --name "Ops" --password "..."
-  npm run admin -- licence-request --org acme.com                                        (OnPrem: what to send to the vendor)
-  npm run admin -- licence-install --file /path/to/acme.lic                              (OnPrem: install or replace the vendor-signed licence)
-  npm run admin -- licence-list                                                          (OnPrem: installed licences and their state)
-  npm run admin -- licence-show --org acme.com                                           (OnPrem: details of one licence)
-  npm run admin -- licence-remove --org acme.com --yes                                   (OnPrem: remove a licence from this installation)
+  ${CMD} org-list
+  ${CMD} licence     --org acme.com [--pack BND-05] [--seats 500] [--days 365]      (SaaS: renew, resize, change pack)
+  ${CMD} addon       --org acme.com --id AD-08 --on | --off
+  ${CMD} packs                                                                  (list packs, bundles, add-ons, standards)
+  ${CMD} user-create --org acme.com --email john@acme.com --name "John" --password "..." [--role R-03]
+  ${CMD} password    --email john@acme.com --password "New#Passw0rd2026"
+  ${CMD} platform-admin --email ops@vendor.com --name "Ops" --password "..."
+  ${CMD} licence-request --org acme.com                                        (OnPrem: what to send to the vendor)
+  ${CMD} licence-install --file /path/to/acme.lic                              (OnPrem: install or replace the vendor-signed licence)
+  ${CMD} licence-list                                                          (OnPrem: installed licences and their state)
+  ${CMD} licence-show --org acme.com                                           (OnPrem: details of one licence)
+  ${CMD} licence-remove --org acme.com --yes                                   (OnPrem: remove a licence from this installation)
 `;
 
 switch (cmd) {
@@ -47,7 +49,7 @@ switch (cmd) {
     if (!a.name || !a.domain) fail('org-create needs --name and --domain (the e-mail domain of the customer).');
     const domain = String(a.domain).toLowerCase(); if (one(`SELECT id FROM organizations WHERE email_domain=?`, domain)) fail(`An organization already uses the domain ${domain}.`);
     const seg = String(a.segment || 'LARGE').toUpperCase(); const packId = a.pack || (seg === 'SME' ? 'SME-ESS' : 'PK-01');
-    if (!packs().some(p => p.id === packId)) fail(`Unknown pack ${packId}. List them with: npm run admin -- packs`);
+    if (!packs().some(p => p.id === packId)) fail(`Unknown pack ${packId}. List them with: ${CMD} packs`);
     if (a.sector && !cat.get('verticalSeed', a.sector)) fail(`Unknown sector ${a.sector}. Sectors: ${cat.list('verticalSeed').map(v => v.id).join(', ')}`);
     if (!a['admin-email'] || !strong(a['admin-password'])) fail('Give the customer administrator: --admin-email, --admin-name and a strong --admin-password (12+ characters, upper and lower case, digit, symbol).');
     if (one(`SELECT id FROM users WHERE email=?`, String(a['admin-email']).toLowerCase())) fail(`The e-mail ${a['admin-email']} is already used.`);
@@ -81,7 +83,7 @@ switch (cmd) {
   }
   case 'addon': {
     if (config.deploymentMode === 'onprem') fail('OnPrem mode: add-ons come from the vendor-signed licence file (licence-install).');
-    const o = findOrg(a.org); if (!cat.get('addOn', a.id)) fail(`Unknown add-on ${a.id}. List them with: npm run admin -- packs`);
+    const o = findOrg(a.org); if (!cat.get('addOn', a.id)) fail(`Unknown add-on ${a.id}. List them with: ${CMD} packs`);
     const set = new Set(J(one(`SELECT addons FROM org_config WHERE org_id=?`, o.id).addons, [])); a.off ? set.delete(a.id) : set.add(a.id);
     run(`UPDATE org_config SET addons=?, updated_at=? WHERE org_id=?`, S([...set]), now(), o.id); audit('Organization', o.id, a.off ? 'addon.off' : 'addon.on', { addon: a.id });
     console.log(`\n  ${name(o)}: add-ons ${[...set].join(', ') || 'none'}\n`);
@@ -119,12 +121,12 @@ switch (cmd) {
     break;
   }
   case 'licence-install': {
-    if (config.deploymentMode !== 'onprem') fail('licence-install is for OnPrem mode (DEPLOYMENT_MODE=onprem). In SaaS mode use: npm run admin -- licence --org ...');
+    if (config.deploymentMode !== 'onprem') fail(`licence-install is for OnPrem mode (DEPLOYMENT_MODE=onprem). In SaaS mode use: ${CMD} licence --org ...`);
     if (!a.file || !fs.existsSync(a.file)) fail('Give the licence file received from the vendor: --file /path/to/file.lic');
     let raw; try { raw = fs.readFileSync(a.file, 'utf8'); } catch (e) { fail(`Cannot read ${a.file} (${e.code}). Make it readable by everyone: chmod 644 <file>.`); }
     let lic; try { lic = JSON.parse(raw); } catch { fail('The file is not a CortexSkills licence (invalid JSON).'); }
     if (!OnPremLicenceProvider.verify(lic)) fail('The licence signature is not valid: the file was modified or was not signed by the vendor. Ask the vendor for a new file.');
-    const o = one(`SELECT * FROM organizations WHERE id=?`, lic.companyId); if (!o) fail(`The licence is for Organization ID ${lic.companyId}, which does not exist in this database. Check the ID sent to the vendor (npm run admin -- org-list).`);
+    const o = one(`SELECT * FROM organizations WHERE id=?`, lic.companyId); if (!o) fail(`The licence is for Organization ID ${lic.companyId}, which does not exist in this database. Check the ID sent to the vendor (${CMD} org-list).`);
     const existing = fs.existsSync(config.licenceFile) ? J(fs.readFileSync(config.licenceFile, 'utf8'), []) : [];
     const list = (Array.isArray(existing) ? existing : [existing]).filter(l => l && l.companyId !== lic.companyId); list.push(lic);
     fs.writeFileSync(config.licenceFile, JSON.stringify(list, null, 2));
