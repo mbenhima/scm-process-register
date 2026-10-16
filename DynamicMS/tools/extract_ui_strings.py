@@ -27,6 +27,9 @@ EXTRA_STRINGS = [
     'complete', 'save', 'reopen', 'assign', 'create', 'update',
     'periodicity', 'list', 'assess', 'decision', 'document', 'communicate', 'train', 'monitor', 'plan', 'execute', 'configure', 'close', 'escalate', 'ai', 'service',
     'Text Generation', 'Summarization', 'Classification', 'Recommendation', 'Prediction',
+    'Step', 'End-to-end process', 'Place in the application', 'Works', 'Authentication failure', 'Model not found', 'Rate limited', 'Unreachable',
+    'The provider is disabled; enable it first.', 'Choose a provider and a model and type the key (and the HTTPS endpoint for a custom model).',
+    'Seeded', 'Custom', 'Duplicate', 'Suggested', 'Draft', 'Approved',
     'Brief', 'Detailed description', 'Goal', 'Goals', 'Trigger', 'End', 'Phase (E2E)', 'Order', 'Purpose', 'Entry criteria', 'Exit criteria', 'Approvers (one per line)', 'Items (one per line)', 'Macro process', 'Task',
 ]
 

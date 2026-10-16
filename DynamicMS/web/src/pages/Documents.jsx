@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { confirmDialog } from '../components/Dialogs.jsx';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Plus, Download, FilePlus2, RefreshCw, Trash2, Pencil, ArrowUp, ArrowDown, Copy, Upload, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
@@ -156,7 +157,7 @@ function Templates({ orgId, projectId }) {
   const [open, setOpen] = useState(null); const [nw, setNw] = useState(null); const [cat, setCat] = useState('');
   if (!data) return <Loading />;
   const create = async () => { try { const r = await api(`/orgs/${orgId}/doc-templates`, { method: 'POST', body: { code: nw.code, name: nw.name, docType: nw.docType, category: nw.category, toc: true, formats: ['DOCX', 'PDF'] } }); toast(t('Template {code} created.', { code: r.code })); setNw(null); reload(); setOpen(r.code); } catch (e) { toast(e.message, 'error'); } };
-  const retire = async (x) => { if (!window.confirm(t('Retire template {code}?', { code: x.code }))) return; try { await api(`/doc-templates/${x.id}`, { method: 'DELETE' }); toast(t('Template retired.')); reload(); } catch (e) { toast(e.message, 'error'); } };
+  const retire = async (x) => { if (!(await confirmDialog({ title: t('Retire template {code}?', { code: x.code }), confirmLabel: t('Retire'), danger: true }))) return; try { await api(`/doc-templates/${x.id}`, { method: 'DELETE' }); toast(t('Template retired.')); reload(); } catch (e) { toast(e.message, 'error'); } };
   const rows = data.items.filter(x => !cat || x.category === cat);
   return (
     <>
@@ -290,7 +291,7 @@ export function DocumentDetail() {
   const saveMeta = async () => { try { await api(`/documents/${d.id}`, { method: 'PUT', body: meta }); toast(t('Document updated.')); setMeta(null); reload(); } catch (e) { toast(e.message, 'error'); } };
   const del = async () => {
     const published = d.versions.some(x => ['Published', 'Superseded'].includes(x.status));
-    const j = published ? window.prompt(t('A published document is retired, not deleted. Justification:')) : (window.confirm(t('Delete this draft document?')) ? 'ok' : null);
+    const j = published ? await confirmDialog({ title: t('Retire this document?'), message: t('A published document is retired, not deleted.'), confirmLabel: t('Retire'), danger: true, input: { label: t('Justification') } }) : ((await confirmDialog({ title: t('Delete this draft document?'), confirmLabel: t('Delete'), danger: true })) ? 'ok' : null);
     if (!j) return;
     try { const r = await api(`/documents/${d.id}${published ? `?justification=${encodeURIComponent(j)}` : ''}`, { method: 'DELETE' }); toast(r.retired ? t('Document retired.') : t('Document deleted.')); if (r.deleted) navigate('/documents'); else reload(); } catch (e) { toast(e.message, 'error'); }
   };

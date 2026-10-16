@@ -49,8 +49,12 @@ export function AppProvider({ children }) {
     return id;
   }, []);
 
-  const logout = useCallback(() => { setToken(null); setMe(null); setTree(null); setProjectIdState(null); }, []);
-  useEffect(() => { setUnauthorizedHandler(logout); }, [logout]);
+  const [sessionExpired, setSessionExpired] = useState(false);
+  const logout = useCallback(() => { setSessionExpired(false); setToken(null); setMe(null); setTree(null); setProjectIdState(null); }, []);
+  // An expired session opens the "Sign in again" dialog instead of dropping the screen (FR-DA-STA-03).
+  const meRef = useRef(null);
+  useEffect(() => { meRef.current = me; }, [me]);
+  useEffect(() => { setUnauthorizedHandler(() => { if (meRef.current) setSessionExpired(true); else logout(); }); }, [logout]);
 
   const loadSession = useCallback(async () => {
     const m = await api('/auth/me');
@@ -101,8 +105,8 @@ export function AppProvider({ children }) {
 
   // Memoized so consumers do not re-render (and lose focus) on unrelated parent renders.
   const prefs = useMemo(() => me?.prefs || {}, [me]);
-  const value = useMemo(() => ({ lang, setLang, t, L, fmtDate, fmtNum, me, booting, login, logout, tree, orgs, reloadTree: loadSession, project, projectId, setProjectId, can, hasFeature, readOnly, prefs, savePrefs, toast, dismissToast, toasts, alertCount, setAlertCount }),
-    [lang, setLang, t, L, fmtDate, fmtNum, me, booting, login, logout, tree, orgs, loadSession, project, projectId, setProjectId, can, hasFeature, readOnly, prefs, savePrefs, toast, dismissToast, toasts, alertCount]);
+  const value = useMemo(() => ({ lang, setLang, t, L, fmtDate, fmtNum, me, booting, login, logout, tree, orgs, reloadTree: loadSession, project, projectId, setProjectId, can, hasFeature, readOnly, prefs, savePrefs, toast, dismissToast, toasts, alertCount, setAlertCount, sessionExpired }),
+    [lang, setLang, t, L, fmtDate, fmtNum, me, booting, login, logout, tree, orgs, loadSession, project, projectId, setProjectId, can, hasFeature, readOnly, prefs, savePrefs, toast, dismissToast, toasts, alertCount, sessionExpired]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 

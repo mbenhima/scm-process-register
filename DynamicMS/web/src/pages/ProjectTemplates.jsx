@@ -1,4 +1,5 @@
 // Project templates: the catalog of templates (library and the organization's own) and the
+import { confirmDialog } from '../components/Dialogs.jsx';
 // template editor. A template defines everything a new project contains — end-to-end
 // processes, macro processes, tasks and steps, business rules, controls, risks and
 // opportunities, alerts, KPIs and reporting — and every part is editable (full CRUD).
@@ -106,7 +107,7 @@ export function ProjectTemplate() {
   const status = async (s) => { try { await api(`/project-templates/${id}/status`, { method: 'POST', body: { status: s } }); toast(s === 'Published' ? t('Template published: it is offered when creating a project.') : t('Status changed.')); reload(); } catch (e) { toast(e.message, 'error'); } };
   const copy = async () => { try { const r = await api('/project-templates', { method: 'POST', body: { copyOf: id } }); toast(t('Copy created: you can now customize it.')); navigate(`/project-templates/${r.id}`); } catch (e) { toast(e.message, 'error'); } };
   const del = async () => {
-    if (!window.confirm(t('Delete this template? A template used by projects is retired instead.'))) return;
+    if (!(await confirmDialog({ title: t('Delete this template?'), message: t('A template used by projects is retired instead.'), confirmLabel: t('Delete'), danger: true }))) return;
     try { const r = await api(`/project-templates/${id}`, { method: 'DELETE' }); toast(r.status === 'Retired' ? t('Template retired: projects use it.') : t('Template deleted.')); navigate('/project-templates'); } catch (e) { toast(e.message, 'error'); }
   };
   const tabs = [
@@ -190,7 +191,7 @@ function Processes({ d, ro, put, reload }) {
     await put({ [kind]: { [id]: fields } }).catch(() => reload());
   }, [put, reload]);
   const removeCustom = async (kind, id) => {
-    if (!window.confirm(t('Delete this custom element and everything it contains?'))) return;
+    if (!(await confirmDialog({ title: t('Delete this custom element?'), message: t('Everything it contains is deleted too.'), confirmLabel: t('Delete'), danger: true }))) return;
     await put({ custom: { [kind]: { remove: [id] } } }); reload();
   };
   const phase = st.find(e => e.id === open) || st[0];

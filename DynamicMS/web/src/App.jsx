@@ -3,6 +3,7 @@ import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { useApp } from './lib/state.jsx';
 import Shell from './components/Shell.jsx';
 import { Loading, Toasts } from './components/ui.jsx';
+import { DialogHost, SessionExpired, OfflineBanner } from './components/Dialogs.jsx';
 import LeaveGuard from './components/LeaveGuard.jsx';
 import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
@@ -46,6 +47,7 @@ export default function App() {
   if (!me) return <><Login /><Toasts /></>;
   return (
     <Shell>
+      <OfflineBanner />
       <ErrorBoundary resetKey={loc.pathname + loc.search}>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -93,6 +95,8 @@ export default function App() {
       </ErrorBoundary>
       <Toasts />
       <LeaveGuard />
+      <DialogHost />
+      <SessionExpired />
     </Shell>
   );
 }

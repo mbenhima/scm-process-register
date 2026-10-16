@@ -83,9 +83,10 @@ export function RacsiGrid({ value, onChange, roles, disabled, t, lang }) {
 }
 
 function NewKpiModal({ onClose, onCreated, stepId, t }) {
+  const { toast } = useApp();
   const [f, setF] = useState({ name: '', formula: '', unit: '%', target: '', direction: 'up', frequency: 'Monthly' });
   const [busy, setBusy] = useState(false);
-  const save = async () => { setBusy(true); try { const r = await api(`/steps/${stepId}/kpis`, { method: 'POST', body: f }); onCreated(r.id); } catch (e) { alert(e.message); } finally { setBusy(false); } };
+  const save = async () => { setBusy(true); try { const r = await api(`/steps/${stepId}/kpis`, { method: 'POST', body: f }); onCreated(r.id); } catch (e) { toast(e.message, 'error'); } finally { setBusy(false); } };
   return (
     <Modal title={t('New KPI')} onClose={onClose} footer={<><button className="btn" onClick={onClose}>{t('Cancel')}</button><button className="btn btn-primary" disabled={busy || !f.name || f.target === ''} onClick={save}>{t('Create KPI')}</button></>}>
       <div className="stack">

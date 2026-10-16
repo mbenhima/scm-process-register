@@ -5339,5 +5339,1449 @@ export const DICT = {
 "Resize the context panel": {
 "fr": "Redimensionner le panneau de contexte",
 "ar": "تغيير حجم لوحة السياق"
+},
+"Which model answers": {
+"fr": "Quel modèle répond",
+"ar": "أي نموذج يجيب"
+},
+"The model chosen for the AI use case, on the Organization connection.": {
+"fr": "Le modèle choisi pour le cas d'usage IA, sur la connexion de l'organisme.",
+"ar": "النموذج المختار لحالة استخدام الذكاء الاصطناعي، عبر اتصال المؤسسة."
+},
+"Else the Organization model: shared by every user, set by an administrator, its key stored encrypted on the server.": {
+"fr": "Sinon le modèle de l'organisme : partagé par tous les utilisateurs, défini par un administrateur, sa clé chiffrée sur le serveur.",
+"ar": "وإلا نموذج المؤسسة: مشترك بين جميع المستخدمين، يحدده مسؤول، ومفتاحه مخزن مشفرًا على الخادم."
+},
+"Else your personal connection: for you only, its key kept in this browser and sent with each request, never stored on the server.": {
+"fr": "Sinon votre connexion personnelle : pour vous seul, sa clé gardée dans ce navigateur et envoyée avec chaque demande, jamais stockée sur le serveur.",
+"ar": "وإلا اتصالك الشخصي: لك وحدك، مفتاحه محفوظ في هذا المتصفح ويُرسل مع كل طلب، ولا يُخزَّن أبدًا على الخادم."
+},
+"Else the built-in engine (rules and retrieval on your data), which is also the fallback on any error.": {
+"fr": "Sinon le moteur intégré (règles et recherche dans vos données), qui sert aussi de solution de repli en cas d'erreur.",
+"ar": "وإلا المحرك المدمج (القواعد والاسترجاع من بياناتك)، وهو أيضًا البديل عند أي خطأ."
+},
+"Personal connection saved in this browser.": {
+"fr": "Connexion personnelle enregistrée dans ce navigateur.",
+"ar": "تم حفظ الاتصال الشخصي في هذا المتصفح."
+},
+"Personal connection removed from this browser.": {
+"fr": "Connexion personnelle supprimée de ce navigateur.",
+"ar": "تمت إزالة الاتصال الشخصي من هذا المتصفح."
+},
+"Personal AI connection": {
+"fr": "Connexion IA personnelle",
+"ar": "اتصال الذكاء الاصطناعي الشخصي"
+},
+"Used only when the organization has no live model. The key stays in this browser: it is sent with each AI request and never stored, logged or returned by the server.": {
+"fr": "Utilisée seulement lorsque l'organisme n'a pas de modèle en ligne. La clé reste dans ce navigateur : elle est envoyée avec chaque demande d'IA et n'est jamais stockée, journalisée ni renvoyée par le serveur.",
+"ar": "يُستخدم فقط عندما لا يكون للمؤسسة نموذج مباشر. يبقى المفتاح في هذا المتصفح: يُرسل مع كل طلب ذكاء اصطناعي ولا يخزنه الخادم ولا يسجله ولا يعيده أبدًا."
+},
+"Choose": {
+"fr": "Choisir",
+"ar": "اختر"
+},
+"Kept in this browser only.": {
+"fr": "Gardée dans ce navigateur uniquement.",
+"ar": "محفوظ في هذا المتصفح فقط."
+},
+"Save in this browser": {
+"fr": "Enregistrer dans ce navigateur",
+"ar": "حفظ في هذا المتصفح"
+},
+"AI proposal": {
+"fr": "Proposition de l'IA",
+"ar": "اقتراح الذكاء الاصطناعي"
+},
+"AI-generated — to be reviewed by a person": {
+"fr": "Généré par l'IA — à revoir par une personne",
+"ar": "مُولَّد بالذكاء الاصطناعي — يراجعه شخص"
+},
+"Augmented AI": {
+"fr": "IA augmentée",
+"ar": "الذكاء الاصطناعي المعزز"
+},
+"Assistive AI": {
+"fr": "IA d'assistance",
+"ar": "الذكاء الاصطناعي المساعد"
+},
+"Accept all": {
+"fr": "Tout accepter",
+"ar": "قبول الكل"
+},
+"Reject all": {
+"fr": "Tout rejeter",
+"ar": "رفض الكل"
+},
+"AI use case": {
+"fr": "Cas d'usage IA",
+"ar": "حالة استخدام الذكاء الاصطناعي"
+},
+"Built-in engine (rules and retrieval)": {
+"fr": "Moteur intégré (règles et recherche)",
+"ar": "المحرك المدمج (القواعد والاسترجاع)"
+},
+"Why the live model was not used": {
+"fr": "Pourquoi le modèle en ligne n'a pas été utilisé",
+"ar": "سبب عدم استخدام النموذج المباشر"
+},
+"References retrieved": {
+"fr": "Références retrouvées",
+"ar": "المراجع المسترجعة"
+},
+"View the exact prompt": {
+"fr": "Voir l'invite exacte",
+"ar": "عرض الموجّه الدقيق"
+},
+"{n} items proposed; {p} to review.": {
+"fr": "{n} éléments proposés ; {p} à revoir.",
+"ar": "{n} بنود مقترحة؛ {p} للمراجعة."
+},
+"item {n}": {
+"fr": "élément {n}",
+"ar": "البند {n}"
+},
+"Rejected": {
+"fr": "Rejeté",
+"ar": "مرفوض"
+},
+"Exact prompt sent": {
+"fr": "Invite exacte envoyée",
+"ar": "الموجّه الدقيق المرسل"
+},
+"Required in at least one language.": {
+"fr": "Obligatoire dans au moins une langue.",
+"ar": "مطلوب بلغة واحدة على الأقل."
+},
+"Edit the AI use case": {
+"fr": "Modifier le cas d'usage IA",
+"ar": "تعديل حالة استخدام الذكاء الاصطناعي"
+},
+"New AI use case": {
+"fr": "Nouveau cas d'usage IA",
+"ar": "حالة استخدام ذكاء اصطناعي جديدة"
+},
+"Give the reason for this change.": {
+"fr": "Indiquez la raison de cette modification.",
+"ar": "اذكر سبب هذا التغيير."
+},
+"AI use case saved with a new version.": {
+"fr": "Cas d'usage IA enregistré avec une nouvelle version.",
+"ar": "تم حفظ حالة الاستخدام بإصدار جديد."
+},
+"AI use case created as a deactivated Draft; review it before activation.": {
+"fr": "Cas d'usage IA créé comme brouillon désactivé ; revoyez-le avant activation.",
+"ar": "أُنشئت حالة الاستخدام كمسودة غير مفعّلة؛ راجعها قبل التفعيل."
+},
+"Model task type": {
+"fr": "Type de tâche du modèle",
+"ar": "نوع مهمة النموذج"
+},
+"This organization": {
+"fr": "Cet organisme",
+"ar": "هذه المؤسسة"
+},
+"Global": {
+"fr": "Global",
+"ar": "عام"
+},
+"Primary step": {
+"fr": "Étape principale",
+"ar": "الخطوة الرئيسية"
+},
+"Fields read and proposed": {
+"fr": "Champs lus et proposés",
+"ar": "الحقول المقروءة والمقترحة"
+},
+"Further links": {
+"fr": "Autres liens",
+"ar": "روابط إضافية"
+},
+"The use case serves every step reached through its links.": {
+"fr": "Le cas d'usage sert chaque étape atteinte par ses liens.",
+"ar": "تخدم حالة الاستخدام كل خطوة تصل إليها روابطها."
+},
+"Linked to": {
+"fr": "Lié à",
+"ar": "مرتبط بـ"
+},
+"Element": {
+"fr": "Élément",
+"ar": "العنصر"
+},
+"Type a code or a name": {
+"fr": "Saisissez un code ou un nom",
+"ar": "اكتب رمزًا أو اسمًا"
+},
+"Remove the link": {
+"fr": "Supprimer le lien",
+"ar": "إزالة الرابط"
+},
+"Add a link": {
+"fr": "Ajouter un lien",
+"ar": "إضافة رابط"
+},
+"Left empty, it is derived from the primary step and stored.": {
+"fr": "Laissé vide, il est déduit de l'étape principale et enregistré.",
+"ar": "إذا تُرك فارغًا يُستنتج من الخطوة الرئيسية ويُحفظ."
+},
+"Expected output": {
+"fr": "Sortie attendue",
+"ar": "المخرج المتوقع"
+},
+"Left empty, it is derived from the form of the primary step and stored.": {
+"fr": "Laissée vide, elle est déduite du formulaire de l'étape principale et enregistrée.",
+"ar": "إذا تُرك فارغًا يُستنتج من نموذج الخطوة الرئيسية ويُحفظ."
+},
+"Owning module": {
+"fr": "Module propriétaire",
+"ar": "الوحدة المالكة"
+},
+"Left empty, the module of the primary step.": {
+"fr": "Laissé vide, le module de l'étape principale.",
+"ar": "إذا تُرك فارغًا، وحدة الخطوة الرئيسية."
+},
+"Reason for the change": {
+"fr": "Raison de la modification",
+"ar": "سبب التغيير"
+},
+"Confirm": {
+"fr": "Confirmer",
+"ar": "تأكيد"
+},
+"You're offline. Changes will sync when you're back.": {
+"fr": "Vous êtes hors ligne. Les modifications seront synchronisées à votre retour.",
+"ar": "أنت غير متصل. ستتم مزامنة التغييرات عند عودتك."
+},
+"Your session has expired": {
+"fr": "Votre session a expiré",
+"ar": "انتهت صلاحية جلستك"
+},
+"Sign in again": {
+"fr": "Se reconnecter",
+"ar": "تسجيل الدخول مجددًا"
+},
+"For your security, you were signed out after a period of inactivity. Unsaved table rows are kept in this browser and restored after you sign in.": {
+"fr": "Pour votre sécurité, vous avez été déconnecté après une période d'inactivité. Les lignes de tableau non enregistrées sont gardées dans ce navigateur et restaurées après la connexion.",
+"ar": "حفاظًا على أمانك، تم تسجيل خروجك بعد فترة من عدم النشاط. تُحفظ صفوف الجداول غير المحفوظة في هذا المتصفح وتُستعاد بعد تسجيل الدخول."
+},
+"Leave this page?": {
+"fr": "Quitter cette page ?",
+"ar": "مغادرة هذه الصفحة؟"
+},
+"Stay on the page": {
+"fr": "Rester sur la page",
+"ar": "البقاء في الصفحة"
+},
+"Discard and leave": {
+"fr": "Abandonner et quitter",
+"ar": "تجاهل والمغادرة"
+},
+"Save and leave": {
+"fr": "Enregistrer et quitter",
+"ar": "حفظ والمغادرة"
+},
+"{n} rows are not saved": {
+"fr": "{n} lignes ne sont pas enregistrées",
+"ar": "{n} صفوف غير محفوظة"
+},
+"{n} with errors": {
+"fr": "{n} avec erreurs",
+"ar": "{n} بها أخطاء"
+},
+"Some rows could not be saved: correct them or discard them before leaving.": {
+"fr": "Certaines lignes n'ont pas pu être enregistrées : corrigez-les ou abandonnez-les avant de quitter.",
+"ar": "تعذّر حفظ بعض الصفوف: صححها أو تجاهلها قبل المغادرة."
+},
+"Retire this element?": {
+"fr": "Retirer cet élément ?",
+"ar": "سحب هذا العنصر؟"
+},
+"Unknown person": {
+"fr": "Personne inconnue",
+"ar": "شخص غير معروف"
+},
+"Unknown role": {
+"fr": "Rôle inconnu",
+"ar": "دور غير معروف"
+},
+"Unknown KPI": {
+"fr": "KPI inconnu",
+"ar": "مؤشر غير معروف"
+},
+"Every function is already listed.": {
+"fr": "Toutes les fonctions sont déjà listées.",
+"ar": "جميع الوظائف مدرجة بالفعل."
+},
+"{n} rows added.": {
+"fr": "{n} lignes ajoutées.",
+"ar": "تمت إضافة {n} صفوف."
+},
+"Add every function not yet listed": {
+"fr": "Ajouter toutes les fonctions non listées",
+"ar": "إضافة كل وظيفة غير مدرجة"
+},
+"Chart copied as an image.": {
+"fr": "Graphique copié comme image.",
+"ar": "تم نسخ الرسم البياني كصورة."
+},
+"The browser did not allow copying; download the PNG instead.": {
+"fr": "Le navigateur n'a pas autorisé la copie ; téléchargez plutôt le PNG.",
+"ar": "لم يسمح المتصفح بالنسخ؛ نزّل ملف PNG بدلًا من ذلك."
+},
+"No data for this period.": {
+"fr": "Aucune donnée pour cette période.",
+"ar": "لا توجد بيانات لهذه الفترة."
+},
+"Chart tools": {
+"fr": "Outils du graphique",
+"ar": "أدوات الرسم البياني"
+},
+"Chart": {
+"fr": "Graphique",
+"ar": "الرسم البياني"
+},
+"Data table": {
+"fr": "Tableau de données",
+"ar": "جدول البيانات"
+},
+"Copy the chart as an image": {
+"fr": "Copier le graphique comme image",
+"ar": "نسخ الرسم البياني كصورة"
+},
+"Download PNG": {
+"fr": "Télécharger en PNG",
+"ar": "تنزيل PNG"
+},
+"Download SVG": {
+"fr": "Télécharger en SVG",
+"ar": "تنزيل SVG"
+},
+"Download the data (CSV)": {
+"fr": "Télécharger les données (CSV)",
+"ar": "تنزيل البيانات (CSV)"
+},
+"Print": {
+"fr": "Imprimer",
+"ar": "طباعة"
+},
+"Comparison": {
+"fr": "Comparaison",
+"ar": "المقارنة"
+},
+"Count": {
+"fr": "Nombre",
+"ar": "العدد"
+},
+"Month": {
+"fr": "Mois",
+"ar": "الشهر"
+},
+"Changed, not saved": {
+"fr": "Modifié, non enregistré",
+"ar": "معدَّل، غير محفوظ"
+},
+"Waiting for the connection": {
+"fr": "En attente de la connexion",
+"ar": "في انتظار الاتصال"
+},
+"More actions for row {n}": {
+"fr": "Autres actions pour la ligne {n}",
+"ar": "إجراءات أخرى للصف {n}"
+},
+"Open in the Row Editor": {
+"fr": "Ouvrir dans l'éditeur de ligne",
+"ar": "فتح في محرر الصف"
+},
+"Copy the row": {
+"fr": "Copier la ligne",
+"ar": "نسخ الصف"
+},
+"Fill down the row above": {
+"fr": "Recopier la ligne du dessus",
+"ar": "تعبئة من الصف أعلاه"
+},
+"Select row {n}": {
+"fr": "Sélectionner la ligne {n}",
+"ar": "تحديد الصف {n}"
+},
+"row {n}": {
+"fr": "ligne {n}",
+"ar": "الصف {n}"
+},
+"Retry saving row {n}": {
+"fr": "Réessayer d'enregistrer la ligne {n}",
+"ar": "إعادة محاولة حفظ الصف {n}"
+},
+"Retry": {
+"fr": "Réessayer",
+"ar": "إعادة المحاولة"
+},
+"Insert a row below row {n}": {
+"fr": "Insérer une ligne sous la ligne {n}",
+"ar": "إدراج صف تحت الصف {n}"
+},
+"Insert row below": {
+"fr": "Insérer une ligne dessous",
+"ar": "إدراج صف أسفله"
+},
+"Paste": {
+"fr": "Coller",
+"ar": "لصق"
+},
+"Saving": {
+"fr": "Enregistrement",
+"ar": "جارٍ الحفظ"
+},
+"Batch {d} of {n} saved.": {
+"fr": "Lot {d} sur {n} enregistré.",
+"ar": "تم حفظ الدفعة {d} من {n}."
+},
+"{n} rows saved.": {
+"fr": "{n} lignes enregistrées.",
+"ar": "تم حفظ {n} صفوف."
+},
+"{n} rows could not be saved.": {
+"fr": "{n} lignes n'ont pas pu être enregistrées.",
+"ar": "تعذّر حفظ {n} صفوف."
+},
+"Row {n} added.": {
+"fr": "Ligne {n} ajoutée.",
+"ar": "تمت إضافة الصف {n}."
+},
+"Row {n} duplicated.": {
+"fr": "Ligne {n} dupliquée.",
+"ar": "تم تكرار الصف {n}."
+},
+"{n} rows deleted.": {
+"fr": "{n} lignes supprimées.",
+"ar": "تم حذف {n} صفوف."
+},
+"Delete {n} rows?": {
+"fr": "Supprimer {n} lignes ?",
+"ar": "حذف {n} صفوف؟"
+},
+"The {n} selected rows will be deleted. You can undo it for 10 seconds.": {
+"fr": "Les {n} lignes sélectionnées seront supprimées. Vous pouvez annuler pendant 10 secondes.",
+"ar": "سيتم حذف الصفوف المحددة وعددها {n}. يمكنك التراجع خلال 10 ثوانٍ."
+},
+"Delete {n} rows": {
+"fr": "Supprimer {n} lignes",
+"ar": "حذف {n} صفوف"
+},
+"Paste or import undone: {a} rows removed, {b} restored.": {
+"fr": "Collage ou import annulé : {a} lignes retirées, {b} restaurées.",
+"ar": "تم التراجع عن اللصق أو الاستيراد: أُزيل {a} صفوف واستُعيد {b}."
+},
+"Undone.": {
+"fr": "Annulé.",
+"ar": "تم التراجع."
+},
+"Redone.": {
+"fr": "Rétabli.",
+"ar": "تمت الإعادة."
+},
+"{n} rows selected.": {
+"fr": "{n} lignes sélectionnées.",
+"ar": "تم تحديد {n} صفوف."
+},
+"{n} rows copied with their column titles.": {
+"fr": "{n} lignes copiées avec leurs titres de colonnes.",
+"ar": "تم نسخ {n} صفوف مع عناوين أعمدتها."
+},
+"{n} rows pasted: {a} added, {b} changed; {c} cells to correct.": {
+"fr": "{n} lignes collées : {a} ajoutées, {b} modifiées ; {c} cellules à corriger.",
+"ar": "تم لصق {n} صفوف: {a} مضافة، {b} معدلة؛ {c} خلايا للتصحيح."
+},
+"{n} rows pasted.": {
+"fr": "{n} lignes collées.",
+"ar": "تم لصق {n} صفوف."
+},
+"This table is read-only": {
+"fr": "Ce tableau est en lecture seule",
+"ar": "هذا الجدول للقراءة فقط"
+},
+"Up to {n} rows can be pasted at once; use Import for more.": {
+"fr": "Jusqu'à {n} lignes peuvent être collées à la fois ; utilisez Importer au-delà.",
+"ar": "يمكن لصق {n} صفًا كحد أقصى في المرة الواحدة؛ استخدم الاستيراد لما يزيد."
+},
+"{n} rows imported.": {
+"fr": "{n} lignes importées.",
+"ar": "تم استيراد {n} صفوف."
+},
+"Changes discarded.": {
+"fr": "Modifications abandonnées.",
+"ar": "تم تجاهل التغييرات."
+},
+"Waiting for the connection: {n} rows will be saved when it returns.": {
+"fr": "En attente de la connexion : {n} lignes seront enregistrées à son retour.",
+"ar": "في انتظار الاتصال: سيتم حفظ {n} صفوف عند عودته."
+},
+"{n} rows with errors": {
+"fr": "{n} lignes avec erreurs",
+"ar": "{n} صفوف بها أخطاء"
+},
+"{n} unsaved rows": {
+"fr": "{n} lignes non enregistrées",
+"ar": "{n} صفوف غير محفوظة"
+},
+"All changes saved": {
+"fr": "Toutes les modifications sont enregistrées",
+"ar": "تم حفظ جميع التغييرات"
+},
+"{n} records.": {
+"fr": "{n} enregistrements.",
+"ar": "{n} سجلات."
+},
+"the page": {
+"fr": "la page",
+"ar": "الصفحة"
+},
+"Edit one by one": {
+"fr": "Modifier une par une",
+"ar": "التعديل واحدًا تلو الآخر"
+},
+"Discard the changes?": {
+"fr": "Abandonner les modifications ?",
+"ar": "تجاهل التغييرات؟"
+},
+"Keep them": {
+"fr": "Les garder",
+"ar": "الاحتفاظ بها"
+},
+"Discard": {
+"fr": "Abandonner",
+"ar": "تجاهل"
+},
+"{n} changed rows return to their saved values and new unsaved rows are removed.": {
+"fr": "{n} lignes modifiées reprennent leurs valeurs enregistrées et les nouvelles lignes non enregistrées sont retirées.",
+"ar": "تعود {n} صفوف معدلة إلى قيمها المحفوظة وتُزال الصفوف الجديدة غير المحفوظة."
+},
+"Select every row shown": {
+"fr": "Sélectionner toutes les lignes affichées",
+"ar": "تحديد كل الصفوف المعروضة"
+},
+"Sort": {
+"fr": "Trier",
+"ar": "ترتيب"
+},
+"Full-screen entry": {
+"fr": "Saisie plein écran",
+"ar": "إدخال بملء الشاشة"
+},
+"Status of {name}": {
+"fr": "Statut de {name}",
+"ar": "حالة {name}"
+},
+"Zoom": {
+"fr": "Zoom",
+"ar": "تكبير"
+},
+"Zoom level": {
+"fr": "Niveau de zoom",
+"ar": "مستوى التكبير"
+},
+"Fit": {
+"fr": "Ajuster",
+"ar": "ملاءمة"
+},
+"Return to page": {
+"fr": "Revenir à la page",
+"ar": "العودة إلى الصفحة"
+},
+"Back to {name}": {
+"fr": "Retour à {name}",
+"ar": "العودة إلى {name}"
+},
+"Draft restored from {at}.": {
+"fr": "Brouillon restauré du {at}.",
+"ar": "تمت استعادة المسودة من {at}."
+},
+"{n} rows changed elsewhere since.": {
+"fr": "{n} lignes modifiées ailleurs depuis.",
+"ar": "{n} صفوف تغيّرت في مكان آخر منذ ذلك الحين."
+},
+"Review the conflicts": {
+"fr": "Examiner les conflits",
+"ar": "مراجعة التعارضات"
+},
+"Discard the draft": {
+"fr": "Abandonner le brouillon",
+"ar": "تجاهل المسودة"
+},
+"{n} rows were changed by someone else.": {
+"fr": "{n} lignes ont été modifiées par quelqu'un d'autre.",
+"ar": "غيّر شخص آخر {n} صفوف."
+},
+"Resolve": {
+"fr": "Résoudre",
+"ar": "حل"
+},
+"You are offline. Your changes will be saved when the connection returns.": {
+"fr": "Vous êtes hors ligne. Vos modifications seront enregistrées au retour de la connexion.",
+"ar": "أنت غير متصل. ستُحفظ تغييراتك عند عودة الاتصال."
+},
+"{title}: table actions": {
+"fr": "{title} : actions du tableau",
+"ar": "{title}: إجراءات الجدول"
+},
+"Search in the table": {
+"fr": "Rechercher dans le tableau",
+"ar": "البحث في الجدول"
+},
+"Issues": {
+"fr": "Problèmes",
+"ar": "المشكلات"
+},
+"Rows with errors": {
+"fr": "Lignes avec erreurs",
+"ar": "الصفوف التي بها أخطاء"
+},
+"Wrap long text": {
+"fr": "Renvoyer le texte long à la ligne",
+"ar": "التفاف النص الطويل"
+},
+"View": {
+"fr": "Affichage",
+"ar": "العرض"
+},
+"Continuous": {
+"fr": "Continu",
+"ar": "متواصل"
+},
+"Pages": {
+"fr": "Pages",
+"ar": "صفحات"
+},
+"Columns": {
+"fr": "Colonnes",
+"ar": "الأعمدة"
+},
+"hidden": {
+"fr": "masquées",
+"ar": "مخفية"
+},
+"Redo": {
+"fr": "Rétablir",
+"ar": "إعادة"
+},
+"Export": {
+"fr": "Exporter",
+"ar": "تصدير"
+},
+"Current view — Excel": {
+"fr": "Vue actuelle — Excel",
+"ar": "العرض الحالي — Excel"
+},
+"Current view — CSV": {
+"fr": "Vue actuelle — CSV",
+"ar": "العرض الحالي — CSV"
+},
+"Selected rows — Excel": {
+"fr": "Lignes sélectionnées — Excel",
+"ar": "الصفوف المحددة — Excel"
+},
+"Selected rows — CSV": {
+"fr": "Lignes sélectionnées — CSV",
+"ar": "الصفوف المحددة — CSV"
+},
+"Propose with AI": {
+"fr": "Proposer avec l'IA",
+"ar": "اقترح بالذكاء الاصطناعي"
+},
+"Open full screen": {
+"fr": "Ouvrir en plein écran",
+"ar": "فتح بملء الشاشة"
+},
+"Remove the filter": {
+"fr": "Retirer le filtre",
+"ar": "إزالة عامل التصفية"
+},
+"Clear all": {
+"fr": "Tout effacer",
+"ar": "مسح الكل"
+},
+"Selected rows": {
+"fr": "Lignes sélectionnées",
+"ar": "الصفوف المحددة"
+},
+"{n} selected": {
+"fr": "{n} sélectionnées",
+"ar": "{n} محددة"
+},
+"Set a field": {
+"fr": "Renseigner un champ",
+"ar": "تعيين حقل"
+},
+"Copy": {
+"fr": "Copier",
+"ar": "نسخ"
+},
+"Clear the selection": {
+"fr": "Effacer la sélection",
+"ar": "مسح التحديد"
+},
+"No rows yet.": {
+"fr": "Aucune ligne pour l'instant.",
+"ar": "لا توجد صفوف بعد."
+},
+"Add the first row": {
+"fr": "Ajouter la première ligne",
+"ar": "إضافة الصف الأول"
+},
+"{n} shown.": {
+"fr": "{n} affichées.",
+"ar": "{n} معروضة."
+},
+"{n} selected.": {
+"fr": "{n} sélectionnées.",
+"ar": "{n} محددة."
+},
+"Total {c}": {
+"fr": "Total {c}",
+"ar": "الإجمالي {c}"
+},
+"{label}: batch {d} of {n}": {
+"fr": "{label} : lot {d} sur {n}",
+"ar": "{label}: الدفعة {d} من {n}"
+},
+"{d} of {n} batches": {
+"fr": "{d} lots sur {n}",
+"ar": "{d} من {n} دفعات"
+},
+"{n} failed": {
+"fr": "{n} en échec",
+"ar": "{n} فشلت"
+},
+"Resume": {
+"fr": "Reprendre",
+"ar": "استئناف"
+},
+"Retry all failed": {
+"fr": "Réessayer tous les échecs",
+"ar": "إعادة محاولة كل ما فشل"
+},
+"Tab and Enter move between cells · Esc cancels a cell · Ctrl+Z / Ctrl+Shift+Z undo and redo · Ctrl+D duplicates · Ctrl+S saves · paste rows from Word or Excel · Ctrl+Shift+F full screen": {
+"fr": "Tab et Entrée passent d'une cellule à l'autre · Échap annule une cellule · Ctrl+Z / Ctrl+Maj+Z annulent et rétablissent · Ctrl+D duplique · Ctrl+S enregistre · collez des lignes depuis Word ou Excel · Ctrl+Maj+F plein écran",
+"ar": "Tab وEnter للتنقل بين الخلايا · Esc يلغي الخلية · Ctrl+Z / Ctrl+Shift+Z للتراجع والإعادة · Ctrl+D للتكرار · Ctrl+S للحفظ · الصق صفوفًا من Word أو Excel · Ctrl+Shift+F لملء الشاشة"
+},
+"Paste rows": {
+"fr": "Coller des lignes",
+"ar": "لصق صفوف"
+},
+"Continue": {
+"fr": "Continuer",
+"ar": "متابعة"
+},
+"Press Ctrl+V (Cmd+V) in the box to paste the rows copied from Word, Excel, a CSV file, a web page or another application.": {
+"fr": "Appuyez sur Ctrl+V (Cmd+V) dans la zone pour coller les lignes copiées depuis Word, Excel, un fichier CSV, une page web ou une autre application.",
+"ar": "اضغط Ctrl+V (Cmd+V) في المربع للصق الصفوف المنسوخة من Word أو Excel أو ملف CSV أو صفحة ويب أو تطبيق آخر."
+},
+"Rows to paste": {
+"fr": "Lignes à coller",
+"ar": "الصفوف المراد لصقها"
+},
+"Set a field on {n} rows": {
+"fr": "Renseigner un champ sur {n} lignes",
+"ar": "تعيين حقل على {n} صفوف"
+},
+"Apply to {n} rows": {
+"fr": "Appliquer à {n} lignes",
+"ar": "تطبيق على {n} صفوف"
+},
+"Save and new": {
+"fr": "Enregistrer et nouveau",
+"ar": "حفظ وجديد"
+},
+"Column {n}": {
+"fr": "Colonne {n}",
+"ar": "العمود {n}"
+},
+"Paste preview": {
+"fr": "Aperçu du collage",
+"ar": "معاينة اللصق"
+},
+"Apply": {
+"fr": "Appliquer",
+"ar": "تطبيق"
+},
+"{a} rows will be added, {o} rows overwritten; {i} invalid cells are marked and kept for correction.": {
+"fr": "{a} lignes seront ajoutées, {o} lignes remplacées ; {i} cellules invalides sont signalées et gardées pour correction.",
+"ar": "ستُضاف {a} صفوف وتُستبدل {o} صفوف؛ تُعلَّم {i} خلايا غير صالحة وتُحفظ للتصحيح."
+},
+"Ignored columns: {list}.": {
+"fr": "Colonnes ignorées : {list}.",
+"ar": "الأعمدة المتجاهلة: {list}."
+},
+"The first row holds the column titles": {
+"fr": "La première ligne contient les titres des colonnes",
+"ar": "يحتوي الصف الأول على عناوين الأعمدة"
+},
+"Field for pasted column {n}": {
+"fr": "Champ de la colonne collée {n}",
+"ar": "حقل العمود الملصوق {n}"
+},
+"Ignore this column": {
+"fr": "Ignorer cette colonne",
+"ar": "تجاهل هذا العمود"
+},
+"Row": {
+"fr": "Ligne",
+"ar": "الصف"
+},
+"Added": {
+"fr": "Ajoutée",
+"ar": "مضاف"
+},
+"Overwritten": {
+"fr": "Remplacée",
+"ar": "مستبدل"
+},
+"Filled": {
+"fr": "Renseignée",
+"ar": "معبّأ"
+},
+"Required fields without a column stay to be typed: {list}.": {
+"fr": "Les champs obligatoires sans colonne restent à saisir : {list}.",
+"ar": "الحقول المطلوبة دون عمود تبقى للإدخال: {list}."
+},
+"Import rows": {
+"fr": "Importer des lignes",
+"ar": "استيراد صفوف"
+},
+"Import {n} rows": {
+"fr": "Importer {n} lignes",
+"ar": "استيراد {n} صفوف"
+},
+"Cancel the import?": {
+"fr": "Annuler l'import ?",
+"ar": "إلغاء الاستيراد؟"
+},
+"Continue the import": {
+"fr": "Poursuivre l'import",
+"ar": "متابعة الاستيراد"
+},
+"Cancel the import": {
+"fr": "Annuler l'import",
+"ar": "إلغاء الاستيراد"
+},
+"The file and the corrections made are not kept.": {
+"fr": "Le fichier et les corrections apportées ne sont pas conservés.",
+"ar": "لا يُحتفظ بالملف ولا بالتصحيحات المُجراة."
+},
+"Import stages": {
+"fr": "Étapes de l'import",
+"ar": "مراحل الاستيراد"
+},
+"Accepted: a spreadsheet workbook (.xlsx), delimited text (.csv, .txt: comma, semicolon or tab) or text pasted below. Up to {n} rows and {m} MB.": {
+"fr": "Acceptés : un classeur (.xlsx), du texte délimité (.csv, .txt : virgule, point-virgule ou tabulation) ou du texte collé ci-dessous. Jusqu'à {n} lignes et {m} Mo.",
+"ar": "المقبول: مصنف جداول (.xlsx) أو نص محدد (.csv أو .txt: فاصلة أو فاصلة منقوطة أو جدولة) أو نص ملصوق أدناه. حتى {n} صف و{m} ميغابايت."
+},
+"The template holds the column titles (required ones marked with *) and an example row.": {
+"fr": "Le modèle contient les titres des colonnes (les obligatoires marqués d'un *) et une ligne d'exemple.",
+"ar": "يحتوي النموذج على عناوين الأعمدة (المطلوبة معلّمة بـ *) وصف مثال."
+},
+"Download the template (Excel)": {
+"fr": "Télécharger le modèle (Excel)",
+"ar": "تنزيل النموذج (Excel)"
+},
+"Download the template (CSV)": {
+"fr": "Télécharger le modèle (CSV)",
+"ar": "تنزيل النموذج (CSV)"
+},
+"Column": {
+"fr": "Colonne",
+"ar": "العمود"
+},
+"Drop a file here or choose one": {
+"fr": "Déposez un fichier ici ou choisissez-en un",
+"ar": "أسقط ملفًا هنا أو اختر واحدًا"
+},
+"Or paste the rows here": {
+"fr": "Ou collez les lignes ici",
+"ar": "أو الصق الصفوف هنا"
+},
+"Use the pasted text": {
+"fr": "Utiliser le texte collé",
+"ar": "استخدام النص الملصوق"
+},
+"Reading the file…": {
+"fr": "Lecture du fichier…",
+"ar": "جارٍ قراءة الملف…"
+},
+"{name}: {type}, {size} KB, {n} rows.": {
+"fr": "{name} : {type}, {size} Ko, {n} lignes.",
+"ar": "{name}: {type}، {size} كيلوبايت، {n} صفوف."
+},
+"Encoding: {e}.": {
+"fr": "Encodage : {e}.",
+"ar": "الترميز: {e}."
+},
+"Text encoding": {
+"fr": "Encodage du texte",
+"ar": "ترميز النص"
+},
+"Column of the file": {
+"fr": "Colonne du fichier",
+"ar": "عمود الملف"
+},
+"Sample values": {
+"fr": "Exemples de valeurs",
+"ar": "قيم نموذجية"
+},
+"Field for {c}": {
+"fr": "Champ pour {c}",
+"ar": "الحقل لـ {c}"
+},
+"Leave out": {
+"fr": "Écarter",
+"ar": "استبعاد"
+},
+"Choose a column for every required field: {list}.": {
+"fr": "Choisissez une colonne pour chaque champ obligatoire : {list}.",
+"ar": "اختر عمودًا لكل حقل مطلوب: {list}."
+},
+"{n} rows need attention.": {
+"fr": "{n} lignes demandent votre attention.",
+"ar": "{n} صفوف تحتاج إلى انتباه."
+},
+"Show only the rows that need attention": {
+"fr": "Afficher seulement les lignes à traiter",
+"ar": "عرض الصفوف التي تحتاج إلى انتباه فقط"
+},
+"Leave the duplicates out": {
+"fr": "Écarter les doublons",
+"ar": "استبعاد التكرارات"
+},
+"Left out": {
+"fr": "Écartée",
+"ar": "مستبعد"
+},
+"To correct": {
+"fr": "À corriger",
+"ar": "للتصحيح"
+},
+"Ready": {
+"fr": "Prête",
+"ar": "جاهز"
+},
+"Keep": {
+"fr": "Garder",
+"ar": "احتفاظ"
+},
+"Ready: {n}": {
+"fr": "Prêtes : {n}",
+"ar": "جاهز: {n}"
+},
+"With a warning (duplicates kept): {n}": {
+"fr": "Avec avertissement (doublons gardés) : {n}",
+"ar": "مع تحذير (تكرارات محتفظ بها): {n}"
+},
+"With errors: {n}": {
+"fr": "Avec erreurs : {n}",
+"ar": "بها أخطاء: {n}"
+},
+"Left out: {n}": {
+"fr": "Écartées : {n}",
+"ar": "مستبعدة: {n}"
+},
+"Leave them out": {
+"fr": "Les écarter",
+"ar": "استبعادها"
+},
+"Import them as rows to correct": {
+"fr": "Les importer comme lignes à corriger",
+"ar": "استيرادها كصفوف للتصحيح"
+},
+"Value given to every imported row (optional)": {
+"fr": "Valeur donnée à chaque ligne importée (facultatif)",
+"ar": "قيمة تُعطى لكل صف مستورد (اختياري)"
+},
+"None": {
+"fr": "Aucun",
+"ar": "لا شيء"
+},
+"Fill the empty cells of {c}": {
+"fr": "Remplir les cellules vides de {c}",
+"ar": "تعبئة الخلايا الفارغة في {c}"
+},
+"Fill the empty {c}": {
+"fr": "Remplir les {c} vides",
+"ar": "تعبئة {c} الفارغة"
+},
+"Value not in the list": {
+"fr": "Valeur absente de la liste",
+"ar": "قيمة غير موجودة في القائمة"
+},
+"Replace…": {
+"fr": "Remplacer…",
+"ar": "استبدال…"
+},
+"With": {
+"fr": "Par",
+"ar": "بـ"
+},
+"Replace in {c}": {
+"fr": "Remplacer dans {c}",
+"ar": "استبدال في {c}"
+},
+"Edit conflicts": {
+"fr": "Conflits de modification",
+"ar": "تعارضات التعديل"
+},
+"Decide later": {
+"fr": "Décider plus tard",
+"ar": "القرار لاحقًا"
+},
+"These rows were changed or deleted by someone else since you started. Choose, for each one, which version to keep.": {
+"fr": "Ces lignes ont été modifiées ou supprimées par quelqu'un d'autre depuis que vous avez commencé. Choisissez, pour chacune, la version à garder.",
+"ar": "غيّر شخص آخر هذه الصفوف أو حذفها منذ أن بدأت. اختر لكل صف النسخة التي تحتفظ بها."
+},
+"Deleted on the server": {
+"fr": "Supprimée sur le serveur",
+"ar": "محذوف على الخادم"
+},
+"Changed by {who} on {at}": {
+"fr": "Modifiée par {who} le {at}",
+"ar": "عدّله {who} في {at}"
+},
+"another user": {
+"fr": "un autre utilisateur",
+"ar": "مستخدم آخر"
+},
+"Your version": {
+"fr": "Votre version",
+"ar": "نسختك"
+},
+"Server version": {
+"fr": "Version du serveur",
+"ar": "نسخة الخادم"
+},
+"Keep my version": {
+"fr": "Garder ma version",
+"ar": "الاحتفاظ بنسختي"
+},
+"Take the server version": {
+"fr": "Prendre la version du serveur",
+"ar": "اعتماد نسخة الخادم"
+},
+"Drop my version": {
+"fr": "Abandonner ma version",
+"ar": "التخلي عن نسختي"
+},
+"Long optional texts are shown in the Row Editor until you show their column.": {
+"fr": "Les textes longs facultatifs sont affichés dans l'éditeur de ligne tant que leur colonne est masquée.",
+"ar": "تُعرض النصوص الطويلة الاختيارية في محرر الصف ما دام عمودها مخفيًا."
+},
+"Pin the first column": {
+"fr": "Figer la première colonne",
+"ar": "تثبيت العمود الأول"
+},
+"optional": {
+"fr": "facultatif",
+"ar": "اختياري"
+},
+"Move {c} up": {
+"fr": "Monter {c}",
+"ar": "تحريك {c} لأعلى"
+},
+"Move {c} down": {
+"fr": "Descendre {c}",
+"ar": "تحريك {c} لأسفل"
+},
+"Reset the columns": {
+"fr": "Réinitialiser les colonnes",
+"ar": "إعادة تعيين الأعمدة"
+},
+"Add a filter": {
+"fr": "Ajouter un filtre",
+"ar": "إضافة عامل تصفية"
+},
+"Operator": {
+"fr": "Opérateur",
+"ar": "المعامل"
+},
+"Add the filter": {
+"fr": "Ajouter le filtre",
+"ar": "إضافة عامل التصفية"
+},
+"No error.": {
+"fr": "Aucune erreur.",
+"ar": "لا يوجد خطأ."
+},
+"Row {n}": {
+"fr": "Ligne {n}",
+"ar": "الصف {n}"
+},
+"Enter a number": {
+"fr": "Saisissez un nombre",
+"ar": "أدخل رقمًا"
+},
+"Enter a date": {
+"fr": "Saisissez une date",
+"ar": "أدخل تاريخًا"
+},
+"Not in the list": {
+"fr": "Absent de la liste",
+"ar": "غير موجود في القائمة"
+},
+"Minimum {n}": {
+"fr": "Minimum {n}",
+"ar": "الحد الأدنى {n}"
+},
+"Maximum {n}": {
+"fr": "Maximum {n}",
+"ar": "الحد الأقصى {n}"
+},
+"The Organization model is shared by every user of the organization; its key is stored encrypted on the server and never shown again. Each user can also set a personal connection in Settings, kept in their browser only.": {
+"fr": "Le modèle de l'organisme est partagé par tous ses utilisateurs ; sa clé est chiffrée sur le serveur et n'est plus jamais affichée. Chaque utilisateur peut aussi définir une connexion personnelle dans Paramètres, gardée dans son navigateur uniquement.",
+"ar": "نموذج المؤسسة مشترك بين جميع مستخدميها؛ يُخزَّن مفتاحه مشفرًا على الخادم ولا يُعرض مجددًا. ويمكن لكل مستخدم أيضًا تعيين اتصال شخصي في الإعدادات يُحفظ في متصفحه فقط."
+},
+"Duplicate created as a deactivated Draft.": {
+"fr": "Copie créée comme brouillon désactivé.",
+"ar": "أُنشئت نسخة كمسودة غير مفعّلة."
+},
+"Custom use case deleted; its usage log is kept.": {
+"fr": "Cas d'usage personnalisé supprimé ; son journal d'utilisation est conservé.",
+"ar": "حُذفت حالة الاستخدام المخصصة؛ ويُحتفظ بسجل استخدامها."
+},
+"Reviewed and activated.": {
+"fr": "Revu et activé.",
+"ar": "تمت المراجعة والتفعيل."
+},
+"Deactivated: no new suggestion from this use case.": {
+"fr": "Désactivé : plus aucune suggestion de ce cas d'usage.",
+"ar": "غير مفعّلة: لا اقتراحات جديدة من حالة الاستخدام هذه."
+},
+"Custom use case quota reached ({n}).": {
+"fr": "Quota de cas d'usage personnalisés atteint ({n}).",
+"ar": "تم بلوغ حصة حالات الاستخدام المخصصة ({n})."
+},
+"Proposed": {
+"fr": "Proposé",
+"ar": "مقترح"
+},
+"Edited": {
+"fr": "Modifié",
+"ar": "معدَّل"
+},
+"Specification complete": {
+"fr": "Spécification complète",
+"ar": "المواصفة مكتملة"
+},
+"Identification": {
+"fr": "Identification",
+"ar": "التعريف"
+},
+"based on": {
+"fr": "basé sur",
+"ar": "مبنية على"
+},
+"Links": {
+"fr": "Liens",
+"ar": "الروابط"
+},
+"No link: the use case serves no place.": {
+"fr": "Aucun lien : le cas d'usage ne sert aucun emplacement.",
+"ar": "لا روابط: حالة الاستخدام لا تخدم أي موضع."
+},
+"Primary": {
+"fr": "Principal",
+"ar": "رئيسي"
+},
+"Fields read": {
+"fr": "Champs lus",
+"ar": "الحقول المقروءة"
+},
+"Fields proposed": {
+"fr": "Champs proposés",
+"ar": "الحقول المقترحة"
+},
+"Version {v}": {
+"fr": "Version {v}",
+"ar": "الإصدار {v}"
+},
+"{p}% complete": {
+"fr": "{p} % complète",
+"ar": "مكتملة بنسبة {p}%"
+},
+"Empty": {
+"fr": "Vide",
+"ar": "فارغ"
+},
+"Edit the specification": {
+"fr": "Modifier la spécification",
+"ar": "تعديل المواصفة"
+},
+"Open the specification": {
+"fr": "Ouvrir la spécification",
+"ar": "فتح المواصفة"
+},
+"Running…": {
+"fr": "Exécution…",
+"ar": "جارٍ التشغيل…"
+},
+"Test run": {
+"fr": "Essai",
+"ar": "تشغيل تجريبي"
+},
+"Complete the prompt specification before activation.": {
+"fr": "Complétez la spécification de l'invite avant l'activation.",
+"ar": "أكمل مواصفة الموجّه قبل التفعيل."
+},
+"Activate": {
+"fr": "Activer",
+"ar": "تفعيل"
+},
+"{a} versions of the use case · {b} versions of its specification": {
+"fr": "{a} versions du cas d'usage · {b} versions de sa spécification",
+"ar": "{a} إصدارات لحالة الاستخدام · {b} إصدارات لمواصفتها"
+},
+"Append-only: every proposal and every item accepted, edited or rejected is a new entry.": {
+"fr": "Ajout seul : chaque proposition et chaque élément accepté, modifié ou rejeté est une nouvelle entrée.",
+"ar": "إضافة فقط: كل اقتراح وكل بند مقبول أو معدَّل أو مرفوض هو إدخال جديد."
+},
+"Spec.": {
+"fr": "Spéc.",
+"ar": "المواصفة"
+},
+"Activate the AI use case": {
+"fr": "Activer le cas d'usage IA",
+"ar": "تفعيل حالة استخدام الذكاء الاصطناعي"
+},
+"Deactivate the AI use case": {
+"fr": "Désactiver le cas d'usage IA",
+"ar": "إلغاء تفعيل حالة استخدام الذكاء الاصطناعي"
+},
+"You confirm that a person reviewed this use case and its specification.": {
+"fr": "Vous confirmez qu'une personne a revu ce cas d'usage et sa spécification.",
+"ar": "تؤكد أن شخصًا راجع حالة الاستخدام هذه ومواصفتها."
+},
+"No new suggestion will be produced from this use case; content already reviewed stays.": {
+"fr": "Aucune nouvelle suggestion ne sera produite par ce cas d'usage ; le contenu déjà revu reste.",
+"ar": "لن تُنتج اقتراحات جديدة من حالة الاستخدام هذه؛ ويبقى المحتوى الذي تمت مراجعته."
+},
+"Delete this custom use case?": {
+"fr": "Supprimer ce cas d'usage personnalisé ?",
+"ar": "حذف حالة الاستخدام المخصصة هذه؟"
+},
+"Its usage log is kept. This cannot be undone.": {
+"fr": "Son journal d'utilisation est conservé. Cette action est définitive.",
+"ar": "يُحتفظ بسجل استخدامها. لا يمكن التراجع عن ذلك."
+},
+"Use case suggested as a deactivated Draft with a complete specification; review it before activation.": {
+"fr": "Cas d'usage suggéré comme brouillon désactivé avec une spécification complète ; revoyez-le avant activation.",
+"ar": "اقتُرحت حالة الاستخدام كمسودة غير مفعّلة بمواصفة مكتملة؛ راجعها قبل التفعيل."
+},
+"Library figures": {
+"fr": "Chiffres de la bibliothèque",
+"ar": "أرقام المكتبة"
+},
+"Active in this project": {
+"fr": "Actifs dans ce projet",
+"ar": "المفعّلة في هذا المشروع"
+},
+"Active in the organization": {
+"fr": "Actifs dans l'organisme",
+"ar": "المفعّلة في المؤسسة"
+},
+"{n} in the organization": {
+"fr": "{n} dans l'organisme",
+"ar": "{n} في المؤسسة"
+},
+"Custom use cases (quota)": {
+"fr": "Cas d'usage personnalisés (quota)",
+"ar": "حالات الاستخدام المخصصة (الحصة)"
+},
+"Quota reached": {
+"fr": "Quota atteint",
+"ar": "تم بلوغ الحصة"
+},
+"Average specification completeness": {
+"fr": "Complétude moyenne des spécifications",
+"ar": "متوسط اكتمال المواصفات"
+},
+"Tasks supported by AI": {
+"fr": "Tâches soutenues par l'IA",
+"ar": "المهام المدعومة بالذكاء الاصطناعي"
+},
+"The Solution Pack allows {n} custom AI use cases; creation and duplication are disabled until one is deleted.": {
+"fr": "Le Solution Pack autorise {n} cas d'usage IA personnalisés ; la création et la copie sont désactivées jusqu'à la suppression de l'un d'eux.",
+"ar": "تسمح حزمة الحلول بـ {n} حالة استخدام مخصصة؛ الإنشاء والنسخ معطلان حتى تُحذف إحداها."
+},
+"Coverage of the process design": {
+"fr": "Couverture de la conception des processus",
+"ar": "تغطية تصميم العمليات"
+},
+"State": {
+"fr": "État",
+"ar": "الحالة"
+},
+"Inactive": {
+"fr": "Inactif",
+"ar": "غير مفعّل"
+},
+"Specification": {
+"fr": "Spécification",
+"ar": "المواصفة"
+},
+"Coverage": {
+"fr": "Couverture",
+"ar": "التغطية"
+},
+"All tasks": {
+"fr": "Toutes les tâches",
+"ar": "كل المهام"
+},
+"Covered": {
+"fr": "Couverte",
+"ar": "مغطاة"
+},
+"Not covered": {
+"fr": "Non couverte",
+"ar": "غير مغطاة"
+},
+"{c} of {n} tasks covered by an active AI use case.": {
+"fr": "{c} tâches sur {n} couvertes par un cas d'usage IA actif.",
+"ar": "{c} من {n} مهام مغطاة بحالة استخدام مفعّلة."
+},
+"inactive": {
+"fr": "inactif",
+"ar": "غير مفعّلة"
+},
+"Suggest a use case": {
+"fr": "Suggérer un cas d'usage",
+"ar": "اقتراح حالة استخدام"
+},
+"Answers come from the DynamicMS help, the standards knowledge base and your project records, through the AI use case of the assistant; with a live model, the model writes the answer from the references shown.": {
+"fr": "Les réponses proviennent de l'aide DynamicMS, de la base de connaissances des normes et des enregistrements de votre projet, via le cas d'usage IA de l'assistant ; avec un modèle en ligne, le modèle rédige la réponse à partir des références affichées.",
+"ar": "تأتي الإجابات من تعليمات DynamicMS وقاعدة معرفة المعايير وسجلات مشروعك عبر حالة استخدام المساعد؛ ومع نموذج مباشر يكتب النموذج الإجابة انطلاقًا من المراجع المعروضة."
+},
+"No active AI use case serves the assistant, so it offers no AI action.": {
+"fr": "Aucun cas d'usage IA actif ne sert l'assistant : il n'offre donc aucune action d'IA.",
+"ar": "لا توجد حالة استخدام مفعّلة تخدم المساعد، لذلك لا يقدم أي إجراء ذكاء اصطناعي."
+},
+"Retire this document?": {
+"fr": "Retirer ce document ?",
+"ar": "سحب هذه الوثيقة؟"
+},
+"A published document is retired, not deleted.": {
+"fr": "Un document publié est retiré, pas supprimé.",
+"ar": "تُسحب الوثيقة المنشورة ولا تُحذف."
+},
+"Cost": {
+"fr": "Coût",
+"ar": "التكلفة"
+},
+"Total cost": {
+"fr": "Coût total",
+"ar": "التكلفة الإجمالية"
+},
+"Optional; in one of the currencies enabled for the organization.": {
+"fr": "Facultatif ; dans l'une des devises activées pour l'organisme.",
+"ar": "اختياري؛ بإحدى العملات المفعّلة للمؤسسة."
+},
+"Currency": {
+"fr": "Devise",
+"ar": "العملة"
+},
+"Currencies saved.": {
+"fr": "Devises enregistrées.",
+"ar": "تم حفظ العملات."
+},
+"Currencies": {
+"fr": "Devises",
+"ar": "العملات"
+},
+"Every amount is recorded with its currency; totals are given per currency, never added across currencies.": {
+"fr": "Chaque montant est enregistré avec sa devise ; les totaux sont donnés par devise, jamais additionnés entre devises.",
+"ar": "يُسجَّل كل مبلغ بعملته؛ وتُعطى المجاميع لكل عملة على حدة ولا تُجمع عبر العملات."
+},
+"Default currency": {
+"fr": "Devise par défaut",
+"ar": "العملة الافتراضية"
+},
+"Enabled currencies": {
+"fr": "Devises activées",
+"ar": "العملات المفعّلة"
+},
+"Delete this template?": {
+"fr": "Supprimer ce modèle ?",
+"ar": "حذف هذا النموذج؟"
+},
+"A template used by projects is retired instead.": {
+"fr": "Un modèle utilisé par des projets est retiré à la place.",
+"ar": "يُسحب النموذج المستخدم في مشاريع بدلًا من حذفه."
+},
+"Delete this custom element?": {
+"fr": "Supprimer cet élément personnalisé ?",
+"ar": "حذف هذا العنصر المخصص؟"
+},
+"Everything it contains is deleted too.": {
+"fr": "Tout ce qu'il contient est aussi supprimé.",
+"ar": "يُحذف كل ما يحتويه أيضًا."
+},
+"{n} entries.": {
+"fr": "{n} entrées.",
+"ar": "{n} إدخالات."
+},
+"No active AI use case serves this step.": {
+"fr": "Aucun cas d'usage IA actif ne sert cette étape.",
+"ar": "لا توجد حالة استخدام مفعّلة تخدم هذه الخطوة."
+},
+"Suggestion": {
+"fr": "Suggestion",
+"ar": "الاقتراح"
+},
+"No active AI use case serves this step, so it offers no AI action.": {
+"fr": "Aucun cas d'usage IA actif ne sert cette étape : elle n'offre donc aucune action d'IA.",
+"ar": "لا توجد حالة استخدام مفعّلة تخدم هذه الخطوة، لذلك لا تقدم أي إجراء ذكاء اصطناعي."
+},
+"Suggest an AI use case for this step": {
+"fr": "Suggérer un cas d'usage IA pour cette étape",
+"ar": "اقتراح حالة استخدام للذكاء الاصطناعي لهذه الخطوة"
+},
+"Place in the application": {
+"fr": "Emplacement dans l'application",
+"ar": "موضع في التطبيق"
+},
+"Works": {
+"fr": "Fonctionne",
+"ar": "يعمل"
+},
+"Authentication failure": {
+"fr": "Échec d'authentification",
+"ar": "فشل المصادقة"
+},
+"Model not found": {
+"fr": "Modèle introuvable",
+"ar": "النموذج غير موجود"
+},
+"Rate limited": {
+"fr": "Débit limité",
+"ar": "تم تقييد المعدل"
+},
+"Unreachable": {
+"fr": "Injoignable",
+"ar": "تعذّر الوصول"
+},
+"The provider is disabled; enable it first.": {
+"fr": "Le fournisseur est désactivé ; activez-le d'abord.",
+"ar": "المزوّد معطل؛ فعّله أولًا."
+},
+"Choose a provider and a model and type the key (and the HTTPS endpoint for a custom model).": {
+"fr": "Choisissez un fournisseur et un modèle et saisissez la clé (et l'adresse HTTPS pour un modèle personnalisé).",
+"ar": "اختر مزوّدًا ونموذجًا واكتب المفتاح (وعنوان HTTPS لنموذج مخصص)."
+},
+"Suggested": {
+"fr": "Suggéré",
+"ar": "مقترح"
+},
+"Draft": {
+"fr": "Brouillon",
+"ar": "مسودة"
+},
+"Approved": {
+"fr": "Approuvé",
+"ar": "معتمد"
 }
 };

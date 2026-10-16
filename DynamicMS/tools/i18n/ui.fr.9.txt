@@ -1,0 +1,361 @@
+1336	Quel modèle répond
+1337	Le modèle choisi pour le cas d'usage IA, sur la connexion de l'organisme.
+1338	Sinon le modèle de l'organisme : partagé par tous les utilisateurs, défini par un administrateur, sa clé chiffrée sur le serveur.
+1339	Sinon votre connexion personnelle : pour vous seul, sa clé gardée dans ce navigateur et envoyée avec chaque demande, jamais stockée sur le serveur.
+1340	Sinon le moteur intégré (règles et recherche dans vos données), qui sert aussi de solution de repli en cas d'erreur.
+1341	Connexion personnelle enregistrée dans ce navigateur.
+1342	Connexion personnelle supprimée de ce navigateur.
+1343	Connexion IA personnelle
+1344	Utilisée seulement lorsque l'organisme n'a pas de modèle en ligne. La clé reste dans ce navigateur : elle est envoyée avec chaque demande d'IA et n'est jamais stockée, journalisée ni renvoyée par le serveur.
+1345	Choisir
+1346	Gardée dans ce navigateur uniquement.
+1347	Enregistrer dans ce navigateur
+1348	Proposition de l'IA
+1349	Généré par l'IA — à revoir par une personne
+1350	IA augmentée
+1351	IA d'assistance
+1352	Tout accepter
+1353	Tout rejeter
+1354	Cas d'usage IA
+1355	Moteur intégré (règles et recherche)
+1356	Pourquoi le modèle en ligne n'a pas été utilisé
+1357	Références retrouvées
+1358	Voir l'invite exacte
+1359	{n} éléments proposés ; {p} à revoir.
+1360	élément {n}
+1361	Rejeté
+1362	Invite exacte envoyée
+1363	Obligatoire dans au moins une langue.
+1364	Modifier le cas d'usage IA
+1365	Nouveau cas d'usage IA
+1366	Indiquez la raison de cette modification.
+1367	Cas d'usage IA enregistré avec une nouvelle version.
+1368	Cas d'usage IA créé comme brouillon désactivé ; revoyez-le avant activation.
+1369	Type de tâche du modèle
+1370	Cet organisme
+1371	Global
+1372	Étape principale
+1373	Champs lus et proposés
+1374	Autres liens
+1375	Le cas d'usage sert chaque étape atteinte par ses liens.
+1376	Lié à
+1377	Élément
+1378	Saisissez un code ou un nom
+1379	Supprimer le lien
+1380	Ajouter un lien
+1381	Laissé vide, il est déduit de l'étape principale et enregistré.
+1382	Sortie attendue
+1383	Laissée vide, elle est déduite du formulaire de l'étape principale et enregistrée.
+1384	Module propriétaire
+1385	Laissé vide, le module de l'étape principale.
+1386	Raison de la modification
+1387	Confirmer
+1388	Vous êtes hors ligne. Les modifications seront synchronisées à votre retour.
+1389	Votre session a expiré
+1390	Se reconnecter
+1391	Pour votre sécurité, vous avez été déconnecté après une période d'inactivité. Les lignes de tableau non enregistrées sont gardées dans ce navigateur et restaurées après la connexion.
+1392	Quitter cette page ?
+1393	Rester sur la page
+1394	Abandonner et quitter
+1395	Enregistrer et quitter
+1396	{n} lignes ne sont pas enregistrées
+1397	{n} avec erreurs
+1398	Certaines lignes n'ont pas pu être enregistrées : corrigez-les ou abandonnez-les avant de quitter.
+1399	Retirer cet élément ?
+1400	Personne inconnue
+1401	Rôle inconnu
+1402	KPI inconnu
+1403	Toutes les fonctions sont déjà listées.
+1404	{n} lignes ajoutées.
+1405	Ajouter toutes les fonctions non listées
+1406	Graphique copié comme image.
+1407	Le navigateur n'a pas autorisé la copie ; téléchargez plutôt le PNG.
+1408	Aucune donnée pour cette période.
+1409	Outils du graphique
+1410	Graphique
+1411	Tableau de données
+1412	Copier le graphique comme image
+1413	Télécharger en PNG
+1414	Télécharger en SVG
+1415	Télécharger les données (CSV)
+1416	Imprimer
+1417	Comparaison
+1418	Nombre
+1419	Mois
+1420	Modifié, non enregistré
+1421	En attente de la connexion
+1422	Autres actions pour la ligne {n}
+1423	Ouvrir dans l'éditeur de ligne
+1424	Copier la ligne
+1425	Recopier la ligne du dessus
+1426	Sélectionner la ligne {n}
+1427	ligne {n}
+1428	Réessayer d'enregistrer la ligne {n}
+1429	Réessayer
+1430	Insérer une ligne sous la ligne {n}
+1431	Insérer une ligne dessous
+1432	Coller
+1433	Enregistrement
+1434	Lot {d} sur {n} enregistré.
+1435	{n} lignes enregistrées.
+1436	{n} lignes n'ont pas pu être enregistrées.
+1437	Ligne {n} ajoutée.
+1438	Ligne {n} dupliquée.
+1439	{n} lignes supprimées.
+1440	Supprimer {n} lignes ?
+1441	Les {n} lignes sélectionnées seront supprimées. Vous pouvez annuler pendant 10 secondes.
+1442	Supprimer {n} lignes
+1443	Collage ou import annulé : {a} lignes retirées, {b} restaurées.
+1444	Annulé.
+1445	Rétabli.
+1446	{n} lignes sélectionnées.
+1447	{n} lignes copiées avec leurs titres de colonnes.
+1448	{n} lignes collées : {a} ajoutées, {b} modifiées ; {c} cellules à corriger.
+1449	{n} lignes collées.
+1450	Ce tableau est en lecture seule
+1451	Jusqu'à {n} lignes peuvent être collées à la fois ; utilisez Importer au-delà.
+1452	{n} lignes importées.
+1453	Modifications abandonnées.
+1454	En attente de la connexion : {n} lignes seront enregistrées à son retour.
+1455	{n} lignes avec erreurs
+1456	{n} lignes non enregistrées
+1457	Toutes les modifications sont enregistrées
+1458	{n} enregistrements.
+1459	la page
+1460	Modifier une par une
+1461	Abandonner les modifications ?
+1462	Les garder
+1463	Abandonner
+1464	{n} lignes modifiées reprennent leurs valeurs enregistrées et les nouvelles lignes non enregistrées sont retirées.
+1465	Sélectionner toutes les lignes affichées
+1466	Trier
+1467	Saisie plein écran
+1468	Statut de {name}
+1469	Zoom
+1470	Niveau de zoom
+1471	Ajuster
+1472	Revenir à la page
+1473	Retour à {name}
+1474	Brouillon restauré du {at}.
+1475	{n} lignes modifiées ailleurs depuis.
+1476	Examiner les conflits
+1477	Abandonner le brouillon
+1478	{n} lignes ont été modifiées par quelqu'un d'autre.
+1479	Résoudre
+1480	Vous êtes hors ligne. Vos modifications seront enregistrées au retour de la connexion.
+1481	{title} : actions du tableau
+1482	Rechercher dans le tableau
+1483	Problèmes
+1484	Lignes avec erreurs
+1485	Renvoyer le texte long à la ligne
+1486	Affichage
+1487	Continu
+1488	Pages
+1489	Colonnes
+1490	masquées
+1491	Rétablir
+1492	Exporter
+1493	Vue actuelle — Excel
+1494	Vue actuelle — CSV
+1495	Lignes sélectionnées — Excel
+1496	Lignes sélectionnées — CSV
+1497	Proposer avec l'IA
+1498	Ouvrir en plein écran
+1499	Retirer le filtre
+1500	Tout effacer
+1501	Lignes sélectionnées
+1502	{n} sélectionnées
+1503	Renseigner un champ
+1504	Copier
+1505	Effacer la sélection
+1506	Aucune ligne pour l'instant.
+1507	Ajouter la première ligne
+1508	{n} affichées.
+1509	{n} sélectionnées.
+1510	Total {c}
+1511	{label} : lot {d} sur {n}
+1512	{d} lots sur {n}
+1513	{n} en échec
+1514	Reprendre
+1515	Réessayer tous les échecs
+1516	Tab et Entrée passent d'une cellule à l'autre · Échap annule une cellule · Ctrl+Z / Ctrl+Maj+Z annulent et rétablissent · Ctrl+D duplique · Ctrl+S enregistre · collez des lignes depuis Word ou Excel · Ctrl+Maj+F plein écran
+1517	Coller des lignes
+1518	Continuer
+1519	Appuyez sur Ctrl+V (Cmd+V) dans la zone pour coller les lignes copiées depuis Word, Excel, un fichier CSV, une page web ou une autre application.
+1520	Lignes à coller
+1521	Renseigner un champ sur {n} lignes
+1522	Appliquer à {n} lignes
+1523	Enregistrer et nouveau
+1524	Colonne {n}
+1525	Aperçu du collage
+1526	Appliquer
+1527	{a} lignes seront ajoutées, {o} lignes remplacées ; {i} cellules invalides sont signalées et gardées pour correction.
+1528	Colonnes ignorées : {list}.
+1529	La première ligne contient les titres des colonnes
+1530	Champ de la colonne collée {n}
+1531	Ignorer cette colonne
+1532	Ligne
+1533	Ajoutée
+1534	Remplacée
+1535	Renseignée
+1536	Les champs obligatoires sans colonne restent à saisir : {list}.
+1537	Importer des lignes
+1538	Importer {n} lignes
+1539	Annuler l'import ?
+1540	Poursuivre l'import
+1541	Annuler l'import
+1542	Le fichier et les corrections apportées ne sont pas conservés.
+1543	Étapes de l'import
+1544	Acceptés : un classeur (.xlsx), du texte délimité (.csv, .txt : virgule, point-virgule ou tabulation) ou du texte collé ci-dessous. Jusqu'à {n} lignes et {m} Mo.
+1545	Le modèle contient les titres des colonnes (les obligatoires marqués d'un *) et une ligne d'exemple.
+1546	Télécharger le modèle (Excel)
+1547	Télécharger le modèle (CSV)
+1548	Colonne
+1549	Déposez un fichier ici ou choisissez-en un
+1550	Ou collez les lignes ici
+1551	Utiliser le texte collé
+1552	Lecture du fichier…
+1553	{name} : {type}, {size} Ko, {n} lignes.
+1554	Encodage : {e}.
+1555	Encodage du texte
+1556	Colonne du fichier
+1557	Exemples de valeurs
+1558	Champ pour {c}
+1559	Écarter
+1560	Choisissez une colonne pour chaque champ obligatoire : {list}.
+1561	{n} lignes demandent votre attention.
+1562	Afficher seulement les lignes à traiter
+1563	Écarter les doublons
+1564	Écartée
+1565	À corriger
+1566	Prête
+1567	Garder
+1568	Prêtes : {n}
+1569	Avec avertissement (doublons gardés) : {n}
+1570	Avec erreurs : {n}
+1571	Écartées : {n}
+1572	Les écarter
+1573	Les importer comme lignes à corriger
+1574	Valeur donnée à chaque ligne importée (facultatif)
+1575	Aucun
+1576	Remplir les cellules vides de {c}
+1577	Remplir les {c} vides
+1578	Valeur absente de la liste
+1579	Remplacer…
+1580	Par
+1581	Remplacer dans {c}
+1582	Conflits de modification
+1583	Décider plus tard
+1584	Ces lignes ont été modifiées ou supprimées par quelqu'un d'autre depuis que vous avez commencé. Choisissez, pour chacune, la version à garder.
+1585	Supprimée sur le serveur
+1586	Modifiée par {who} le {at}
+1587	un autre utilisateur
+1588	Votre version
+1589	Version du serveur
+1590	Garder ma version
+1591	Prendre la version du serveur
+1592	Abandonner ma version
+1593	Les textes longs facultatifs sont affichés dans l'éditeur de ligne tant que leur colonne est masquée.
+1594	Figer la première colonne
+1595	facultatif
+1596	Monter {c}
+1597	Descendre {c}
+1598	Réinitialiser les colonnes
+1599	Ajouter un filtre
+1600	Opérateur
+1601	Ajouter le filtre
+1602	Aucune erreur.
+1603	Ligne {n}
+1604	Saisissez un nombre
+1605	Saisissez une date
+1606	Absent de la liste
+1607	Minimum {n}
+1608	Maximum {n}
+1609	Le modèle de l'organisme est partagé par tous ses utilisateurs ; sa clé est chiffrée sur le serveur et n'est plus jamais affichée. Chaque utilisateur peut aussi définir une connexion personnelle dans Paramètres, gardée dans son navigateur uniquement.
+1610	Copie créée comme brouillon désactivé.
+1611	Cas d'usage personnalisé supprimé ; son journal d'utilisation est conservé.
+1612	Revu et activé.
+1613	Désactivé : plus aucune suggestion de ce cas d'usage.
+1614	Quota de cas d'usage personnalisés atteint ({n}).
+1615	Proposé
+1616	Modifié
+1617	Spécification complète
+1618	Identification
+1619	basé sur
+1620	Liens
+1621	Aucun lien : le cas d'usage ne sert aucun emplacement.
+1622	Principal
+1623	Champs lus
+1624	Champs proposés
+1625	Version {v}
+1626	{p} % complète
+1627	Vide
+1628	Modifier la spécification
+1629	Ouvrir la spécification
+1630	Exécution…
+1631	Essai
+1632	Complétez la spécification de l'invite avant l'activation.
+1633	Activer
+1634	{a} versions du cas d'usage · {b} versions de sa spécification
+1635	Ajout seul : chaque proposition et chaque élément accepté, modifié ou rejeté est une nouvelle entrée.
+1636	Spéc.
+1637	Activer le cas d'usage IA
+1638	Désactiver le cas d'usage IA
+1639	Vous confirmez qu'une personne a revu ce cas d'usage et sa spécification.
+1640	Aucune nouvelle suggestion ne sera produite par ce cas d'usage ; le contenu déjà revu reste.
+1641	Supprimer ce cas d'usage personnalisé ?
+1642	Son journal d'utilisation est conservé. Cette action est définitive.
+1643	Cas d'usage suggéré comme brouillon désactivé avec une spécification complète ; revoyez-le avant activation.
+1644	Chiffres de la bibliothèque
+1645	Actifs dans ce projet
+1646	Actifs dans l'organisme
+1647	{n} dans l'organisme
+1648	Cas d'usage personnalisés (quota)
+1649	Quota atteint
+1650	Complétude moyenne des spécifications
+1651	Tâches soutenues par l'IA
+1652	Le Solution Pack autorise {n} cas d'usage IA personnalisés ; la création et la copie sont désactivées jusqu'à la suppression de l'un d'eux.
+1653	Couverture de la conception des processus
+1654	État
+1655	Inactif
+1656	Spécification
+1657	Couverture
+1658	Toutes les tâches
+1659	Couverte
+1660	Non couverte
+1661	{c} tâches sur {n} couvertes par un cas d'usage IA actif.
+1662	inactif
+1663	Suggérer un cas d'usage
+1664	Les réponses proviennent de l'aide DynamicMS, de la base de connaissances des normes et des enregistrements de votre projet, via le cas d'usage IA de l'assistant ; avec un modèle en ligne, le modèle rédige la réponse à partir des références affichées.
+1665	Aucun cas d'usage IA actif ne sert l'assistant : il n'offre donc aucune action d'IA.
+1666	Retirer ce document ?
+1667	Un document publié est retiré, pas supprimé.
+1668	Coût
+1669	Coût total
+1670	Facultatif ; dans l'une des devises activées pour l'organisme.
+1671	Devise
+1672	Devises enregistrées.
+1673	Devises
+1674	Chaque montant est enregistré avec sa devise ; les totaux sont donnés par devise, jamais additionnés entre devises.
+1675	Devise par défaut
+1676	Devises activées
+1677	Supprimer ce modèle ?
+1678	Un modèle utilisé par des projets est retiré à la place.
+1679	Supprimer cet élément personnalisé ?
+1680	Tout ce qu'il contient est aussi supprimé.
+1681	{n} entrées.
+1682	Aucun cas d'usage IA actif ne sert cette étape.
+1683	Suggestion
+1684	Aucun cas d'usage IA actif ne sert cette étape : elle n'offre donc aucune action d'IA.
+1685	Suggérer un cas d'usage IA pour cette étape
+1686	Emplacement dans l'application
+1687	Fonctionne
+1688	Échec d'authentification
+1689	Modèle introuvable
+1690	Débit limité
+1691	Injoignable
+1692	Le fournisseur est désactivé ; activez-le d'abord.
+1693	Choisissez un fournisseur et un modèle et saisissez la clé (et l'adresse HTTPS pour un modèle personnalisé).
+1694	Suggéré
+1695	Brouillon
+1696	Approuvé

@@ -591,3 +591,12 @@ body.me-full-open { overflow: hidden; }
 .me-actions .btn-icon.btn-sm { width: 36px; height: 36px; min-height: 36px; }
 .me-actions .me-retry { opacity: 1; color: var(--aiv-critical-ink); }
 .me-row-menu { inset-inline-start: auto; inset-inline-end: 0; min-width: 220px; }
+
+/* Chart tools, data table and empty state (FR-DA-VIZ-04, -07, -08) */
+.chart-frame { position: relative; }
+.chart-frame .chart { min-height: 240px; }
+.chart-tools { display: flex; justify-content: flex-end; gap: var(--sp-4); margin-bottom: var(--sp-4); flex-wrap: wrap; }
+.chart-empty { min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-8); color: var(--aiv-muted); font-size: var(--fs-14); }
+.heat .cell { flex-direction: column; line-height: 1.1; }
+.heat .heat-s { font-size: var(--fs-12); font-weight: 400; color: var(--aiv-ink); opacity: .75; }
+.offline-banner { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: var(--sp-8); padding: var(--sp-8) var(--sp-16); background: var(--st-2); color: var(--aiv-navy); font-weight: 600; font-size: var(--fs-14); }

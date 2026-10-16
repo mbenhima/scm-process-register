@@ -1333,3 +1333,364 @@
 1333	From template {c} v{v}
 1334	The reports defined by the project template (Project templates › Reporting); the reference catalog applies to projects created without a template.
 1335	Resize the context panel
+1336	Which model answers
+1337	The model chosen for the AI use case, on the Organization connection.
+1338	Else the Organization model: shared by every user, set by an administrator, its key stored encrypted on the server.
+1339	Else your personal connection: for you only, its key kept in this browser and sent with each request, never stored on the server.
+1340	Else the built-in engine (rules and retrieval on your data), which is also the fallback on any error.
+1341	Personal connection saved in this browser.
+1342	Personal connection removed from this browser.
+1343	Personal AI connection
+1344	Used only when the organization has no live model. The key stays in this browser: it is sent with each AI request and never stored, logged or returned by the server.
+1345	Choose
+1346	Kept in this browser only.
+1347	Save in this browser
+1348	AI proposal
+1349	AI-generated — to be reviewed by a person
+1350	Augmented AI
+1351	Assistive AI
+1352	Accept all
+1353	Reject all
+1354	AI use case
+1355	Built-in engine (rules and retrieval)
+1356	Why the live model was not used
+1357	References retrieved
+1358	View the exact prompt
+1359	{n} items proposed; {p} to review.
+1360	item {n}
+1361	Rejected
+1362	Exact prompt sent
+1363	Required in at least one language.
+1364	Edit the AI use case
+1365	New AI use case
+1366	Give the reason for this change.
+1367	AI use case saved with a new version.
+1368	AI use case created as a deactivated Draft; review it before activation.
+1369	Model task type
+1370	This organization
+1371	Global
+1372	Primary step
+1373	Fields read and proposed
+1374	Further links
+1375	The use case serves every step reached through its links.
+1376	Linked to
+1377	Element
+1378	Type a code or a name
+1379	Remove the link
+1380	Add a link
+1381	Left empty, it is derived from the primary step and stored.
+1382	Expected output
+1383	Left empty, it is derived from the form of the primary step and stored.
+1384	Owning module
+1385	Left empty, the module of the primary step.
+1386	Reason for the change
+1387	Confirm
+1388	You're offline. Changes will sync when you're back.
+1389	Your session has expired
+1390	Sign in again
+1391	For your security, you were signed out after a period of inactivity. Unsaved table rows are kept in this browser and restored after you sign in.
+1392	Leave this page?
+1393	Stay on the page
+1394	Discard and leave
+1395	Save and leave
+1396	{n} rows are not saved
+1397	{n} with errors
+1398	Some rows could not be saved: correct them or discard them before leaving.
+1399	Retire this element?
+1400	Unknown person
+1401	Unknown role
+1402	Unknown KPI
+1403	Every function is already listed.
+1404	{n} rows added.
+1405	Add every function not yet listed
+1406	Chart copied as an image.
+1407	The browser did not allow copying; download the PNG instead.
+1408	No data for this period.
+1409	Chart tools
+1410	Chart
+1411	Data table
+1412	Copy the chart as an image
+1413	Download PNG
+1414	Download SVG
+1415	Download the data (CSV)
+1416	Print
+1417	Comparison
+1418	Count
+1419	Month
+1420	Changed, not saved
+1421	Waiting for the connection
+1422	More actions for row {n}
+1423	Open in the Row Editor
+1424	Copy the row
+1425	Fill down the row above
+1426	Select row {n}
+1427	row {n}
+1428	Retry saving row {n}
+1429	Retry
+1430	Insert a row below row {n}
+1431	Insert row below
+1432	Paste
+1433	Saving
+1434	Batch {d} of {n} saved.
+1435	{n} rows saved.
+1436	{n} rows could not be saved.
+1437	Row {n} added.
+1438	Row {n} duplicated.
+1439	{n} rows deleted.
+1440	Delete {n} rows?
+1441	The {n} selected rows will be deleted. You can undo it for 10 seconds.
+1442	Delete {n} rows
+1443	Paste or import undone: {a} rows removed, {b} restored.
+1444	Undone.
+1445	Redone.
+1446	{n} rows selected.
+1447	{n} rows copied with their column titles.
+1448	{n} rows pasted: {a} added, {b} changed; {c} cells to correct.
+1449	{n} rows pasted.
+1450	This table is read-only
+1451	Up to {n} rows can be pasted at once; use Import for more.
+1452	{n} rows imported.
+1453	Changes discarded.
+1454	Waiting for the connection: {n} rows will be saved when it returns.
+1455	{n} rows with errors
+1456	{n} unsaved rows
+1457	All changes saved
+1458	{n} records.
+1459	the page
+1460	Edit one by one
+1461	Discard the changes?
+1462	Keep them
+1463	Discard
+1464	{n} changed rows return to their saved values and new unsaved rows are removed.
+1465	Select every row shown
+1466	Sort
+1467	Full-screen entry
+1468	Status of {name}
+1469	Zoom
+1470	Zoom level
+1471	Fit
+1472	Return to page
+1473	Back to {name}
+1474	Draft restored from {at}.
+1475	{n} rows changed elsewhere since.
+1476	Review the conflicts
+1477	Discard the draft
+1478	{n} rows were changed by someone else.
+1479	Resolve
+1480	You are offline. Your changes will be saved when the connection returns.
+1481	{title}: table actions
+1482	Search in the table
+1483	Issues
+1484	Rows with errors
+1485	Wrap long text
+1486	View
+1487	Continuous
+1488	Pages
+1489	Columns
+1490	hidden
+1491	Redo
+1492	Export
+1493	Current view — Excel
+1494	Current view — CSV
+1495	Selected rows — Excel
+1496	Selected rows — CSV
+1497	Propose with AI
+1498	Open full screen
+1499	Remove the filter
+1500	Clear all
+1501	Selected rows
+1502	{n} selected
+1503	Set a field
+1504	Copy
+1505	Clear the selection
+1506	No rows yet.
+1507	Add the first row
+1508	{n} shown.
+1509	{n} selected.
+1510	Total {c}
+1511	{label}: batch {d} of {n}
+1512	{d} of {n} batches
+1513	{n} failed
+1514	Resume
+1515	Retry all failed
+1516	Tab and Enter move between cells · Esc cancels a cell · Ctrl+Z / Ctrl+Shift+Z undo and redo · Ctrl+D duplicates · Ctrl+S saves · paste rows from Word or Excel · Ctrl+Shift+F full screen
+1517	Paste rows
+1518	Continue
+1519	Press Ctrl+V (Cmd+V) in the box to paste the rows copied from Word, Excel, a CSV file, a web page or another application.
+1520	Rows to paste
+1521	Set a field on {n} rows
+1522	Apply to {n} rows
+1523	Save and new
+1524	Column {n}
+1525	Paste preview
+1526	Apply
+1527	{a} rows will be added, {o} rows overwritten; {i} invalid cells are marked and kept for correction.
+1528	Ignored columns: {list}.
+1529	The first row holds the column titles
+1530	Field for pasted column {n}
+1531	Ignore this column
+1532	Row
+1533	Added
+1534	Overwritten
+1535	Filled
+1536	Required fields without a column stay to be typed: {list}.
+1537	Import rows
+1538	Import {n} rows
+1539	Cancel the import?
+1540	Continue the import
+1541	Cancel the import
+1542	The file and the corrections made are not kept.
+1543	Import stages
+1544	Accepted: a spreadsheet workbook (.xlsx), delimited text (.csv, .txt: comma, semicolon or tab) or text pasted below. Up to {n} rows and {m} MB.
+1545	The template holds the column titles (required ones marked with *) and an example row.
+1546	Download the template (Excel)
+1547	Download the template (CSV)
+1548	Column
+1549	Drop a file here or choose one
+1550	Or paste the rows here
+1551	Use the pasted text
+1552	Reading the file…
+1553	{name}: {type}, {size} KB, {n} rows.
+1554	Encoding: {e}.
+1555	Text encoding
+1556	Column of the file
+1557	Sample values
+1558	Field for {c}
+1559	Leave out
+1560	Choose a column for every required field: {list}.
+1561	{n} rows need attention.
+1562	Show only the rows that need attention
+1563	Leave the duplicates out
+1564	Left out
+1565	To correct
+1566	Ready
+1567	Keep
+1568	Ready: {n}
+1569	With a warning (duplicates kept): {n}
+1570	With errors: {n}
+1571	Left out: {n}
+1572	Leave them out
+1573	Import them as rows to correct
+1574	Value given to every imported row (optional)
+1575	None
+1576	Fill the empty cells of {c}
+1577	Fill the empty {c}
+1578	Value not in the list
+1579	Replace…
+1580	With
+1581	Replace in {c}
+1582	Edit conflicts
+1583	Decide later
+1584	These rows were changed or deleted by someone else since you started. Choose, for each one, which version to keep.
+1585	Deleted on the server
+1586	Changed by {who} on {at}
+1587	another user
+1588	Your version
+1589	Server version
+1590	Keep my version
+1591	Take the server version
+1592	Drop my version
+1593	Long optional texts are shown in the Row Editor until you show their column.
+1594	Pin the first column
+1595	optional
+1596	Move {c} up
+1597	Move {c} down
+1598	Reset the columns
+1599	Add a filter
+1600	Operator
+1601	Add the filter
+1602	No error.
+1603	Row {n}
+1604	Enter a number
+1605	Enter a date
+1606	Not in the list
+1607	Minimum {n}
+1608	Maximum {n}
+1609	The Organization model is shared by every user of the organization; its key is stored encrypted on the server and never shown again. Each user can also set a personal connection in Settings, kept in their browser only.
+1610	Duplicate created as a deactivated Draft.
+1611	Custom use case deleted; its usage log is kept.
+1612	Reviewed and activated.
+1613	Deactivated: no new suggestion from this use case.
+1614	Custom use case quota reached ({n}).
+1615	Proposed
+1616	Edited
+1617	Specification complete
+1618	Identification
+1619	based on
+1620	Links
+1621	No link: the use case serves no place.
+1622	Primary
+1623	Fields read
+1624	Fields proposed
+1625	Version {v}
+1626	{p}% complete
+1627	Empty
+1628	Edit the specification
+1629	Open the specification
+1630	Running…
+1631	Test run
+1632	Complete the prompt specification before activation.
+1633	Activate
+1634	{a} versions of the use case · {b} versions of its specification
+1635	Append-only: every proposal and every item accepted, edited or rejected is a new entry.
+1636	Spec.
+1637	Activate the AI use case
+1638	Deactivate the AI use case
+1639	You confirm that a person reviewed this use case and its specification.
+1640	No new suggestion will be produced from this use case; content already reviewed stays.
+1641	Delete this custom use case?
+1642	Its usage log is kept. This cannot be undone.
+1643	Use case suggested as a deactivated Draft with a complete specification; review it before activation.
+1644	Library figures
+1645	Active in this project
+1646	Active in the organization
+1647	{n} in the organization
+1648	Custom use cases (quota)
+1649	Quota reached
+1650	Average specification completeness
+1651	Tasks supported by AI
+1652	The Solution Pack allows {n} custom AI use cases; creation and duplication are disabled until one is deleted.
+1653	Coverage of the process design
+1654	State
+1655	Inactive
+1656	Specification
+1657	Coverage
+1658	All tasks
+1659	Covered
+1660	Not covered
+1661	{c} of {n} tasks covered by an active AI use case.
+1662	inactive
+1663	Suggest a use case
+1664	Answers come from the DynamicMS help, the standards knowledge base and your project records, through the AI use case of the assistant; with a live model, the model writes the answer from the references shown.
+1665	No active AI use case serves the assistant, so it offers no AI action.
+1666	Retire this document?
+1667	A published document is retired, not deleted.
+1668	Cost
+1669	Total cost
+1670	Optional; in one of the currencies enabled for the organization.
+1671	Currency
+1672	Currencies saved.
+1673	Currencies
+1674	Every amount is recorded with its currency; totals are given per currency, never added across currencies.
+1675	Default currency
+1676	Enabled currencies
+1677	Delete this template?
+1678	A template used by projects is retired instead.
+1679	Delete this custom element?
+1680	Everything it contains is deleted too.
+1681	{n} entries.
+1682	No active AI use case serves this step.
+1683	Suggestion
+1684	No active AI use case serves this step, so it offers no AI action.
+1685	Suggest an AI use case for this step
+1686	Place in the application
+1687	Works
+1688	Authentication failure
+1689	Model not found
+1690	Rate limited
+1691	Unreachable
+1692	The provider is disabled; enable it first.
+1693	Choose a provider and a model and type the key (and the HTTPS endpoint for a custom model).
+1694	Suggested
+1695	Draft
+1696	Approved

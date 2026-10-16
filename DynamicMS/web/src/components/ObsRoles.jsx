@@ -1,4 +1,5 @@
 // OBS roles (FR-DA-OBS): roles defined in units, linked to one or more functions, played by
+import { confirmDialog } from './Dialogs.jsx';
 // one or more people (holder, deputy, acting) with dates and allocation. Views by role, by
 // function and by person; every change of a role is versioned.
 import { useState } from 'react';
@@ -29,7 +30,7 @@ export default function ObsRoles({ orgId, write }) {
       toast(t('Role saved (new version).')); setEd(null); reload();
     } catch (e) { toast(e.message, 'error'); }
   };
-  const retire = async (r) => { const j = window.prompt(t('Justification')); if (!j) return; try { await api(`/obs-roles/${r.id}`, { method: 'DELETE', body: { justification: j } }); toast(t('Role retired; its assignments ended today.')); reload(); } catch (e) { toast(e.message, 'error'); } };
+  const retire = async (r) => { const j = await confirmDialog({ title: t('Retire this element?'), confirmLabel: t('Retire'), danger: true, input: { label: t('Justification') } }); if (!j) return; try { await api(`/obs-roles/${r.id}`, { method: 'DELETE', body: { justification: j } }); toast(t('Role retired; its assignments ended today.')); reload(); } catch (e) { toast(e.message, 'error'); } };
   const assign = async () => { try { await api(`/obs-roles/${asg.roleId}/assignments`, { method: 'POST', body: asg }); toast(t('Person assigned to the role.')); setAsg(null); reload(); } catch (e) { toast(e.message, 'error'); } };
   const endAsg = async (a) => { try { const r = await api(`/role-assignments/${a.id}`, { method: 'PUT', body: { endDate: new Date().toISOString().slice(0, 10) } }); toast(r.openWork?.length ? t('Assignment ended. {n} open actions of this person need a new owner.', { n: r.openWork.length }) : t('Assignment ended.')); reload(); } catch (e) { toast(e.message, 'error'); } };
   const fnName = (id) => tx((fns?.items || []).find(f => f.id === id)?.data?.name, lang) || id;

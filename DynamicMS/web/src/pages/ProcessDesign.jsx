@@ -1,4 +1,5 @@
 // Process design editor (FR-DA-PDM): full create, read, update and delete on functions,
+import { confirmDialog } from '../components/Dialogs.jsx';
 // phases, macro processes, tasks, steps, gates and checklists, with version history,
 // comparison and restore of any version. Changes apply to projects started after them.
 import { useEffect, useState } from 'react';
@@ -46,7 +47,7 @@ export default function ProcessDesign() {
       setSel(null); list.reload();
     } catch (e) { toast(e.message, 'error'); }
   };
-  const retire = async () => { const j = window.prompt(t('Justification')); if (!j) return; try { const r = await api(`/orgs/${orgId}/design/${type}/${encodeURIComponent(sel.id)}`, { method: 'DELETE', body: { justification: j } }); toast(r.status === 'Deleted' ? t('Deleted; it can be restored from its history.') : t('Retired: it is used by projects or is a reference element.')); setSel(null); list.reload(); } catch (e) { toast(e.message, 'error'); } };
+  const retire = async () => { const j = await confirmDialog({ title: t('Retire this element?'), confirmLabel: t('Retire'), danger: true, input: { label: t('Justification') } }); if (!j) return; try { const r = await api(`/orgs/${orgId}/design/${type}/${encodeURIComponent(sel.id)}`, { method: 'DELETE', body: { justification: j } }); toast(r.status === 'Deleted' ? t('Deleted; it can be restored from its history.') : t('Retired: it is used by projects or is a reference element.')); setSel(null); list.reload(); } catch (e) { toast(e.message, 'error'); } };
   const fieldInput = (k) => {
     const common = { value: ed[k] ?? '', onChange: (e) => setEd({ ...ed, [k]: e.target.value }), disabled: !manage };
     if (k === 'ownerRoleCode' || k === 'roleCode') return (id) => <select id={id} className="select" {...common}><option value="">—</option>{(roles || []).map(r => <option key={r.code} value={r.code}>{tx(r.name, lang)}</option>)}</select>;

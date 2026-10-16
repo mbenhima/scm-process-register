@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { confirmDialog } from '../components/Dialogs.jsx';
 import { ModelPrecedence, TEST_LABEL } from '../components/AiConnection.jsx';
 import { ShieldCheck, Database, Upload, Plus, Building2, Users, Sparkles, KeyRound } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
@@ -131,7 +132,7 @@ function Tenancy() {
   const [g, setG] = useState(null); const [o, setO] = useState(null);
   const admin = me.user.isPlatformAdmin;
   const saveGroup = async () => { try { if (g.id) await api(`/tenancy/groups/${g.id}`, { method: 'PUT', body: g }); else await api('/tenancy/groups', { method: 'POST', body: g }); toast(t('Group saved.')); setG(null); groups.reload(); } catch (e) { toast(e.message, 'error'); } };
-  const delGroup = async (x) => { if (!window.confirm(t('Delete group {n}?', { n: tx(x.name, lang) }))) return; try { await api(`/tenancy/groups/${x.id}`, { method: 'DELETE' }); groups.reload(); } catch (e) { toast(e.message, 'error'); } };
+  const delGroup = async (x) => { if (!(await confirmDialog({ title: t('Delete group {n}?', { n: tx(x.name, lang) }), confirmLabel: t('Delete'), danger: true }))) return; try { await api(`/tenancy/groups/${x.id}`, { method: 'DELETE' }); groups.reload(); } catch (e) { toast(e.message, 'error'); } };
   const saveOrg = async () => {
     try {
       const body = { ...o, groupId: o.inGroup === 'yes' ? o.groupId : null };
