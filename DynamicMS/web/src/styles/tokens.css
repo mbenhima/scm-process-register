@@ -89,6 +89,12 @@
 
 /* Aliases used by the stylesheets (all resolve to the tokens above). */
 :root {
+  /* Accessible text and borders for the Critical and success states (derived from the Status
+     Scale for 4.5 : 1 contrast on white; the only colors defined outside the chart §17 block). */
+  --aiv-critical-ink: #8A2B22;
+  --aiv-critical-line: #A8322A;
+  --aiv-success-ink: #1B7A4B;
+  --aiv-overlay: rgb(18 58 95 / 0.45);
 
   /* Status scale (semantic only, always red to green) */
   --st-1: var(--aiv-status-1);

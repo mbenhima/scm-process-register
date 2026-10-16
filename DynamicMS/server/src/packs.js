@@ -36,9 +36,9 @@ export const FEATURES = {
 
 // Base packs: feature list, AI tier and quota ceilings (FR-DA-CFG-02).
 export const BASE_PACKS = {
-  'DMS-SME': { features: ['core', 'governance', 'ai_assistive', 'assistant', 'benchmark', 'wbs'], aiTier: 'Assistive', quotas: { users: 25, projects: 10, obsNodes: 80, customAi: 2 } },
-  'DMS-PRO': { features: ['core', 'governance', 'bpmn_edit', 'ai_assistive', 'assistant', 'benchmark', 'benchmark_group', 'wbs', 'integrations', 'verticals', 'multi_site'], aiTier: 'Assistive', quotas: { users: 100, projects: 60, obsNodes: 600, customAi: 10 } },
-  'DMS-ENT': { features: ['core', 'governance', 'bpmn_edit', 'ai_assistive', 'ai_augmented', 'assistant', 'benchmark', 'benchmark_group', 'wbs', 'integrations', 'verticals', 'multi_site'], aiTier: 'Assistive+Augmented', quotas: { users: 500, projects: 500, obsNodes: 5000, customAi: 50 } },
+  'DMS-SME': { features: ['core', 'governance', 'ai_assistive', 'assistant', 'benchmark', 'wbs'], aiTier: 'Assistive', quotas: { users: 25, projects: 10, obsNodes: 80, customAi: 2, rowsPerTable: 2000 } },
+  'DMS-PRO': { features: ['core', 'governance', 'bpmn_edit', 'ai_assistive', 'assistant', 'benchmark', 'benchmark_group', 'wbs', 'integrations', 'verticals', 'multi_site'], aiTier: 'Assistive', quotas: { users: 100, projects: 60, obsNodes: 600, customAi: 10, rowsPerTable: 10000 } },
+  'DMS-ENT': { features: ['core', 'governance', 'bpmn_edit', 'ai_assistive', 'ai_augmented', 'assistant', 'benchmark', 'benchmark_group', 'wbs', 'integrations', 'verticals', 'multi_site'], aiTier: 'Assistive+Augmented', quotas: { users: 500, projects: 500, obsNodes: 5000, customAi: 50, rowsPerTable: 50000 } },
 };
 export const CAPABILITY_FEATURES = { 'DMS-AI': ['ai_augmented', 'assistant'], 'DMS-CERT': ['certification'], 'DMS-ESG': ['esg'] };
 export const ADDON_FEATURES = {

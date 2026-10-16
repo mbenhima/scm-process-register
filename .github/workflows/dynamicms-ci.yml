@@ -1,0 +1,33 @@
+# DynamicMS continuous integration (NFR-DA-PORT-05, NFR-DA-VDS-01, FR-DA-DOC-12).
+# The suites that share the seeded database run one after another, never in parallel.
+name: DynamicMS CI
+on:
+  push:
+    paths: ['DynamicMS/**', '.github/workflows/dynamicms-ci.yml']
+  pull_request:
+    paths: ['DynamicMS/**', '.github/workflows/dynamicms-ci.yml']
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: DynamicMS
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install
+        run: |
+          npm --prefix server ci
+          npm --prefix web ci
+      - name: Design tokens (no raw color outside the token file)
+        run: npm --prefix web run check:tokens
+      - name: Multi-record entry logic tests
+        run: npm --prefix web test
+      - name: Seed the demonstration database
+        run: npm --prefix server run seed
+      - name: API tests, end-to-end import and Office file validation (one suite at a time)
+        run: npm --prefix server test
+      - name: Build the web client
+        run: npm --prefix web run build

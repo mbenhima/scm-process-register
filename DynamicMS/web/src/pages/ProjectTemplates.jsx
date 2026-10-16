@@ -8,9 +8,8 @@ import { Plus, Copy, Trash2, CheckCircle2, Undo2, Archive, FolderPlus, ChevronRi
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { PageHead, Card, Loading, ErrorBox, Status, Table, Tabs, Field, Modal, Kpi, tx, usePaged, Pager } from '../components/ui.jsx';
-import InlineGrid from '../components/InlineGrid.jsx';
+import MultiEntry from '../components/multientry/MultiEntry.jsx';
 
-const SEVERITIES = ['Low', 'Medium', 'High', 'Critical'];
 
 // ------------------------------------------------------------------ Catalog of templates
 export default function ProjectTemplates() {
@@ -120,7 +119,6 @@ export function ProjectTemplate() {
     { id: 'kpis', label: t('KPIs'), count: d.counts.kpis },
     { id: 'reports', label: t('Reporting'), count: d.counts.reports },
   ];
-  const saveList = (k) => async (rows) => { await put({ lists: { [k]: rows } }); setData(x => ({ ...x, lists: { ...x.lists, [k]: rows.map(({ _key, ...r }) => r) }, counts: { ...x.counts, [k]: rows.length } })); };
   return (
     <>
       <PageHead eyebrow={`${t('Project template')} · ${d.code}`} title={tx(d.name, lang)}
@@ -140,67 +138,12 @@ export function ProjectTemplate() {
       <div key={id}>
       <TabPanel id="overview" tab={tab} seen={seen}><Overview d={d} ro={ro} put={put} reload={reload} /></TabPanel>
       <TabPanel id="processes" tab={tab} seen={seen}><Processes d={d} ro={ro} put={put} reload={reload} /></TabPanel>
-      <TabPanel id="rules" tab={tab} seen={seen}><InlineGrid id={`tpl-rules`} readOnly={ro} rows={d.lists.rules} onSave={saveList('rules')} countLabel={n => t('{n} business rules', { n })} addLabel={t('Add a rule')} newRow={() => ({ type: 'Validation', severity: 'Medium', owner: 'ims_manager' })}
-        columns={[
-          { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'BR-…' },
-          { key: 'mp', label: t('Macro process'), type: 'select', options: d.mpOptions.map(m => ({ value: m.id, label: `${m.code} ${m.name}` })), width: 220, carry: true },
-          { key: 'condition', label: t('Condition'), type: 'textarea', required: true, width: 300 },
-          { key: 'action', label: t('Action'), type: 'textarea', required: true, width: 240 },
-          { key: 'type', label: t('Type'), type: 'select', required: true, options: ['Validation', 'Calculation', 'Routing', 'Notification', 'Constraint'].map(v => ({ value: v, label: L(v) })), width: 140 },
-          { key: 'severity', label: t('Severity'), type: 'select', required: true, options: SEVERITIES.map(v => ({ value: v, label: L(v) })), width: 120 },
-          { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
-        ]} /></TabPanel>
-      <TabPanel id="controls" tab={tab} seen={seen}><InlineGrid id="tpl-controls" readOnly={ro} rows={d.lists.controls} onSave={saveList('controls')} countLabel={n => t('{n} controls', { n })} addLabel={t('Add a control')} newRow={() => ({ type: 'Preventive', frequency: 'Quarterly', owner: 'ims_manager' })}
-        columns={[
-          { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'CTL-…' },
-          { key: 'name', label: t('Control'), required: true, width: 280 },
-          { key: 'description', label: t('Description'), type: 'textarea', width: 300 },
-          { key: 'type', label: t('Type'), type: 'select', required: true, options: ['Preventive', 'Detective', 'Corrective', 'Directive'].map(v => ({ value: v, label: L(v) })), width: 140 },
-          { key: 'frequency', label: t('Frequency'), type: 'select', required: true, options: ['Continuous', 'Daily', 'Weekly', 'Monthly', 'Quarterly', 'Semi-annual', 'Annual', 'Per event'].map(v => ({ value: v, label: L(v) })), width: 140 },
-          { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
-          { key: 'mp', label: t('Macro process'), type: 'select', options: d.mpOptions.map(m => ({ value: m.id, label: `${m.code} ${m.name}` })), width: 220, carry: true },
-        ]} /></TabPanel>
-      <TabPanel id="risks" tab={tab} seen={seen}><InlineGrid id="tpl-risks" readOnly={ro} rows={d.lists.risks} onSave={saveList('risks')} countLabel={n => t('{n} risks and opportunities', { n })} addLabel={t('Add a risk or opportunity')} newRow={() => ({ kind: 'Risk', likelihood: 3, impact: 3, owner: 'risk_manager' })}
-        columns={[
-          { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'RSK-…' },
-          { key: 'kind', label: t('Kind'), type: 'select', required: true, options: ['Risk', 'Opportunity'].map(v => ({ value: v, label: L(v) })), width: 130, carry: true },
-          { key: 'title', label: t('Title'), required: true, width: 300 },
-          { key: 'category', label: t('Category'), width: 140, carry: true },
-          { key: 'likelihood', label: t('Likelihood (1–5)'), type: 'number', min: 1, max: 5, required: true, width: 110, validate: v => (v < 1 || v > 5 ? t('From 1 to 5') : null) },
-          { key: 'impact', label: t('Impact (1–5)'), type: 'number', min: 1, max: 5, required: true, width: 110, validate: v => (v < 1 || v > 5 ? t('From 1 to 5') : null) },
-          { key: 'score', label: t('Score'), readOnly: true, width: 80, render: r => (+r.likelihood || 0) * (+r.impact || 0) },
-          { key: 'treatment', label: t('Treatment'), width: 160 },
-          { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
-          { key: 'mp', label: t('Macro process'), type: 'select', options: d.mpOptions.map(m => ({ value: m.id, label: `${m.code} ${m.name}` })), width: 220 },
-        ]} /></TabPanel>
-      <TabPanel id="alerts" tab={tab} seen={seen}><InlineGrid id="tpl-alerts" readOnly={ro} rows={d.lists.alerts} onSave={saveList('alerts')} countLabel={n => t('{n} alerts', { n })} addLabel={t('Add an alert')} newRow={() => ({ severity: 'Medium', enabled: true, escalation: 'ims_manager' })}
-        columns={[
-          { key: 'id', label: t('Code'), width: 150, required: true, placeholder: 'ALR-…' },
-          { key: 'name', label: t('Alert'), required: true, width: 340 },
-          { key: 'severity', label: t('Severity'), type: 'select', required: true, options: SEVERITIES.map(v => ({ value: v, label: L(v) })), width: 120 },
-          { key: 'escalation', label: t('Escalated to'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 220 },
-          { key: 'enabled', label: t('Active'), type: 'checkbox', width: 90 },
-        ]} /></TabPanel>
-      <TabPanel id="kpis" tab={tab} seen={seen}><InlineGrid id="tpl-kpis" readOnly={ro} rows={d.lists.kpis} onSave={saveList('kpis')} countLabel={n => t('{n} KPIs', { n })} addLabel={t('Add a KPI')} newRow={() => ({ frequency: 'Monthly', owner: 'performance_manager' })}
-        columns={[
-          { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'KPI-…' },
-          { key: 'name', label: t('KPI'), required: true, width: 260 },
-          { key: 'formula', label: t('Formula'), type: 'textarea', required: true, width: 280 },
-          { key: 'target', label: t('Target'), required: true, width: 110, placeholder: '≥ 95%' },
-          { key: 'unit', label: t('Unit'), width: 80 },
-          { key: 'frequency', label: t('Frequency'), type: 'select', required: true, options: ['Weekly', 'Monthly', 'Quarterly', 'Semi-annual', 'Annual'].map(v => ({ value: v, label: L(v) })), width: 140 },
-          { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
-          { key: 'mp', label: t('Macro process'), type: 'select', options: d.mpOptions.map(m => ({ value: m.id, label: `${m.code} ${m.name}` })), width: 220, carry: true },
-        ]} /></TabPanel>
-      <TabPanel id="reports" tab={tab} seen={seen}><InlineGrid id="tpl-reports" readOnly={ro} rows={d.lists.reports} onSave={saveList('reports')} countLabel={n => t('{n} reports', { n })} addLabel={t('Add a report')} newRow={() => ({ format: 'PDF', owner: 'ims_manager' })}
-        columns={[
-          { key: 'id', label: t('Code'), width: 110, required: true, placeholder: 'RPT-…' },
-          { key: 'name', label: t('Report'), required: true, width: 300 },
-          { key: 'audience', label: t('Audience'), width: 220 },
-          { key: 'frequency', label: t('Frequency'), required: true, width: 160 },
-          { key: 'format', label: t('Format'), type: 'select', required: true, options: ['PDF', 'DOCX', 'XLSX', 'CSV', 'Dashboard'].map(v => ({ value: v, label: v })), width: 120 },
-          { key: 'owner', label: t('Owner'), type: 'select', required: true, options: d.roles.map(r => ({ value: r.code, label: r.name })), width: 200 },
-        ]} /></TabPanel>
+      <TabPanel id="rules" tab={tab} seen={seen}><MultiEntry source={`tpl:${id}:rules`} readOnly={ro} countLabel={n => t('{n} business rules', { n })} newRow={() => ({ type: 'Validation', severity: 'Medium', owner: 'ims_manager' })} backLabel={`${d.code} ${tx(d.name, lang)}`} onRowsChange={rows => setData(x => ({ ...x, counts: { ...x.counts, rules: rows.length } }))} /></TabPanel>
+      <TabPanel id="controls" tab={tab} seen={seen}><MultiEntry source={`tpl:${id}:controls`} readOnly={ro} countLabel={n => t('{n} controls', { n })} newRow={() => ({ type: 'Preventive', frequency: 'Quarterly', owner: 'ims_manager' })} backLabel={`${d.code} ${tx(d.name, lang)}`} onRowsChange={rows => setData(x => ({ ...x, counts: { ...x.counts, controls: rows.length } }))} /></TabPanel>
+      <TabPanel id="risks" tab={tab} seen={seen}><MultiEntry source={`tpl:${id}:risks`} readOnly={ro} countLabel={n => t('{n} risks and opportunities', { n })} newRow={() => ({ kind: 'Risk', likelihood: 3, impact: 3, owner: 'risk_manager' })} backLabel={`${d.code} ${tx(d.name, lang)}`} onRowsChange={rows => setData(x => ({ ...x, counts: { ...x.counts, risks: rows.length } }))} /></TabPanel>
+      <TabPanel id="alerts" tab={tab} seen={seen}><MultiEntry source={`tpl:${id}:alerts`} readOnly={ro} countLabel={n => t('{n} alerts', { n })} newRow={() => ({ severity: 'Medium', enabled: true, escalation: 'ims_manager' })} backLabel={`${d.code} ${tx(d.name, lang)}`} onRowsChange={rows => setData(x => ({ ...x, counts: { ...x.counts, alerts: rows.length } }))} /></TabPanel>
+      <TabPanel id="kpis" tab={tab} seen={seen}><MultiEntry source={`tpl:${id}:kpis`} readOnly={ro} countLabel={n => t('{n} KPIs', { n })} newRow={() => ({ frequency: 'Monthly', owner: 'performance_manager' })} backLabel={`${d.code} ${tx(d.name, lang)}`} onRowsChange={rows => setData(x => ({ ...x, counts: { ...x.counts, kpis: rows.length } }))} /></TabPanel>
+      <TabPanel id="reports" tab={tab} seen={seen}><MultiEntry source={`tpl:${id}:reports`} readOnly={ro} countLabel={n => t('{n} reports', { n })} newRow={() => ({ format: 'PDF', owner: 'ims_manager' })} backLabel={`${d.code} ${tx(d.name, lang)}`} onRowsChange={rows => setData(x => ({ ...x, counts: { ...x.counts, reports: rows.length } }))} /></TabPanel>
       </div>
     </>
   );

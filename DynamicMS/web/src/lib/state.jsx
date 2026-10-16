@@ -2,6 +2,8 @@
 // server-side user preferences, toasts and shared reference data.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { api, setApiLang, setToken, getToken, setUnauthorizedHandler } from './api.js';
+import { setPrefsSync } from './entrystore.js';
+import { setPanelSync } from './layout.jsx';
 import { DICT } from './dict.js';
 
 const Ctx = createContext(null);
@@ -39,10 +41,11 @@ export function AppProvider({ children }) {
   // Toasts (graphical chart §8.11): 5 s by default, errors stay until dismissed; an optional
   // action (e.g. Undo) runs before the toast closes.
   const dismissToast = useCallback((id) => setToasts(ts => ts.filter(x => x.id !== id)), []);
-  const toast = useCallback((message, kind = 'ok', action = null) => {
+  // opts.duration lengthens a notification whose action must stay available (Undo 5 to 60 s).
+  const toast = useCallback((message, kind = 'ok', action = null, opts = {}) => {
     const id = ++tid.current;
     setToasts(ts => [...ts, { id, message, kind, action }]);
-    if (kind !== 'error') setTimeout(() => setToasts(ts => ts.filter(x => x.id !== id)), 5000);
+    if (kind !== 'error') setTimeout(() => setToasts(ts => ts.filter(x => x.id !== id)), opts.duration || 5000);
     return id;
   }, []);
 
@@ -52,6 +55,9 @@ export function AppProvider({ children }) {
   const loadSession = useCallback(async () => {
     const m = await api('/auth/me');
     setMe(m);
+    // Table views and panel widths follow the user from one browser to another.
+    setPrefsSync((tables) => api('/auth/prefs', { method: 'PUT', body: { tables } }).catch(() => {}), m.prefs?.tables);
+    setPanelSync((panels) => api('/auth/prefs', { method: 'PUT', body: { panels } }).catch(() => {}), m.prefs?.panels);
     const tr = await api('/tenancy/tree');
     setTree(tr);
     const all = [...tr.groups.flatMap(g => g.orgs), ...tr.independent];

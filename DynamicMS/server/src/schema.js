@@ -280,9 +280,27 @@ CREATE TABLE IF NOT EXISTS role_assignments (
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, holder_type TEXT DEFAULT 'Holder', allocation INTEGER DEFAULT 100,
   start_date TEXT, end_date TEXT, created_at TEXT);
 CREATE INDEX IF NOT EXISTS ix_roleassign_org ON role_assignments(org_id);
+-- Versioned data migrations run once at the first start of an upgrade (NFR-DA-MAINT-11).
+CREATE TABLE IF NOT EXISTS schema_migrations (id TEXT PRIMARY KEY, seq INTEGER, applied_at TEXT, summary TEXT);
+
+-- Multi-record entry (FR-DA-MRE-19 to 30): paste operations, import sessions and batch
+-- operations, each with what it created and changed so that it is undone as one operation.
+CREATE TABLE IF NOT EXISTS paste_operations (
+  id TEXT PRIMARY KEY, org_id TEXT NOT NULL, source TEXT NOT NULL, user_id TEXT, rows_created INTEGER DEFAULT 0,
+  rows_changed INTEGER DEFAULT 0, mapping TEXT, changes TEXT, at TEXT, undone_at TEXT);
+CREATE TABLE IF NOT EXISTS import_sessions (
+  id TEXT PRIMARY KEY, org_id TEXT NOT NULL, source TEXT NOT NULL, user_id TEXT, file_name TEXT, file_type TEXT,
+  encoding TEXT, row_count INTEGER, stage TEXT, mapping TEXT, status TEXT, result TEXT, changes TEXT,
+  created_at TEXT, committed_at TEXT, undone_at TEXT);
+CREATE TABLE IF NOT EXISTS batch_operations (
+  id TEXT PRIMARY KEY, org_id TEXT NOT NULL, source TEXT NOT NULL, user_id TEXT, kind TEXT, total_rows INTEGER,
+  batch_size INTEGER, batches_total INTEGER, batches_done INTEGER DEFAULT 0, failed INTEGER DEFAULT 0, status TEXT,
+  created_at TEXT, updated_at TEXT);
+
 `;
 
 // Columns added after the first release are declared here so existing databases upgrade in place.
+
 export const ADDITIVE_COLUMNS = {
   organizations: { logo_text: 'TEXT' },
   projects: { progress_cache: 'INTEGER', blueprint: 'TEXT' },
@@ -292,5 +310,6 @@ export const ADDITIVE_COLUMNS = {
   attachments: { version: 'INTEGER DEFAULT 1', group_id: 'TEXT', note: 'TEXT' },
   ai_usecases: { model: 'TEXT', prompt_spec: 'TEXT' },
   audits: { frequency: 'TEXT', frequency_custom: 'TEXT', criteria: 'TEXT', objectives: 'TEXT', team: 'TEXT', auditees: 'TEXT', method: 'TEXT', duration_h: 'REAL', processes: 'TEXT' },
+  registers: { updated_at: 'TEXT', updated_by: 'TEXT' },
   findings: { code: 'TEXT', requirement: 'TEXT', evidence: 'TEXT', area: 'TEXT', auditee: 'TEXT', due_date: 'TEXT', correction: 'TEXT', root_cause: 'TEXT', verification: 'TEXT', verified_at: 'TEXT' },
 };

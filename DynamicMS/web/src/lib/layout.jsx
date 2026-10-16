@@ -13,15 +13,20 @@ const MOBILE = 768;
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
+// Panel widths are a user preference kept with the shell preferences on the server and cached
+// in the browser for an immediate layout (FR-DA-PNL-06).
+let panelSync = null; let serverWidths = null;
+export function setPanelSync(fn, initial) { panelSync = fn; if (initial && typeof initial === 'object') serverWidths = initial; }
 export function readWidths() {
   let w = {};
-  try { w = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch { w = {}; }
+  try { w = JSON.parse(localStorage.getItem(KEY) || 'null') || serverWidths || {}; } catch { w = serverWidths || {}; }
   return {
     leftWidth: clamp(Number(w.leftWidth) || PANELS.left.def, PANELS.left.min, PANELS.left.max),
     rightWidth: clamp(Number(w.rightWidth) || PANELS.right.def, PANELS.right.min, PANELS.right.max),
   };
 }
-export function writeWidths(w) { try { localStorage.setItem(KEY, JSON.stringify(w)); } catch { /* storage blocked */ } }
+let syncT = null;
+export function writeWidths(w) { try { localStorage.setItem(KEY, JSON.stringify(w)); } catch { /* storage blocked */ } clearTimeout(syncT); syncT = setTimeout(() => panelSync?.(w), 800); }
 export function resetWidths() { try { localStorage.removeItem(KEY); } catch { /* storage blocked */ } }
 
 // Keeps the centre at its minimum width when the window shrinks.

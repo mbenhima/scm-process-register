@@ -213,6 +213,8 @@ export function Field({ label, hint, error, required, children, id }) {
   );
 }
 
+// Open dialogs, topmost last: Escape and the focus trap apply to the topmost one only.
+const modalStack = [];
 export function Modal({ title, onClose, children, footer, wide, full }) {
   const ref = useRef(null);
   // Callers pass a new onClose on every render: read it through a ref so the focus effect runs
@@ -223,8 +225,11 @@ export function Modal({ title, onClose, children, footer, wide, full }) {
     const prev = document.activeElement;
     const el = ref.current;
     el?.querySelector('input, select, textarea, button:not([data-close])')?.focus();
+    const me = {};
+    modalStack.push(me);
     const onKey = (e) => {
-      if (e.key === 'Escape') closeRef.current();
+      if (modalStack[modalStack.length - 1] !== me) return;
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeRef.current(); return; }
       if (e.key === 'Tab' && el) {
         const f = [...el.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(x => !x.disabled);
         if (!f.length) return;
@@ -233,7 +238,7 @@ export function Modal({ title, onClose, children, footer, wide, full }) {
       }
     };
     document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('keydown', onKey); prev?.focus?.(); };
+    return () => { document.removeEventListener('keydown', onKey); const i = modalStack.indexOf(me); if (i >= 0) modalStack.splice(i, 1); prev?.focus?.(); };
   }, []);
   const { t } = useApp();
   return (

@@ -24,7 +24,8 @@ import reports from './routes/reports.js';
 import analytics from './routes/analytics.js';
 import admin from './routes/admin.js';
 import ptemplates from './routes/ptemplates.js';
-import { applyE2eRenames } from './catalog/renames.js';
+import entries from './routes/entries.js';
+import { runMigrations } from './services/migrations.js';
 
 // ---- Startup guards
 if (process.env.NODE_ENV === 'production' && config.jwtSecret === 'dynamicms-local-dev-secret-change-me') {
@@ -37,7 +38,8 @@ if (!isInitialized()) {
   console.error('The database is empty. Run "npm run seed" first, then "npm run dev".');
   process.exit(1);
 }
-{ const n = applyE2eRenames(); if (n) console.log(`Renamed end-to-end processes: ${n} catalog entries and documents updated.`); }
+// Versioned data migrations of an upgrade, each run once and recorded (NFR-DA-MAINT-11).
+for (const m of runMigrations()) console.log(`Migration ${m.id}: ${m.summary}`);
 
 export const app = express();
 app.disable('x-powered-by');
@@ -72,6 +74,7 @@ app.use('/api', ai);
 app.use('/api', design);
 app.use('/api', reports);
 app.use('/api', ptemplates);
+app.use('/api', entries);
 app.use('/api', analytics);
 app.use('/api/admin', admin);
 app.use('/api', (req, _res, next) => next(new HttpError(404, 'NOT_FOUND', 'Unknown endpoint.')));

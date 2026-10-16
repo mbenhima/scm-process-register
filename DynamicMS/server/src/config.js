@@ -25,4 +25,9 @@ export const config = {
   adminPassword: 'Admin@2026',
   cacheTtlMs: 30000,
   minBenchmarkSample: 3,
+  // Multi-record entry limits (FR-DA-MRE-22, -29, -30; NFR-DA-SEC-22).
+  pasteMaxRows: envInt('PASTE_MAX_ROWS', 1000),
+  importMaxRows: envInt('IMPORT_MAX_ROWS', 10000),
+  importMaxBytes: envInt('IMPORT_MAX_BYTES', 10 * 1024 * 1024),
+  batchSize: envInt('BATCH_SIZE', 300),
 };

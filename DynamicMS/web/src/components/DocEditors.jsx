@@ -5,6 +5,7 @@ import { memo, useEffect, useState } from 'react';
 import { Plus, Trash2, ArrowUp, ArrowDown, Upload, Image as ImageIcon, Type, Table2, PenLine, Copy } from 'lucide-react';
 import { useApp } from '../lib/state.jsx';
 import { api, blobUrl } from '../lib/api.js';
+import { token } from '../lib/tokens.js';
 import { Field } from './ui.jsx';
 
 export const FONTS = ['Open Sans', 'Montserrat', 'Arial', 'Calibri', 'Times New Roman', 'Georgia'];
@@ -31,7 +32,7 @@ export async function uploadPicture(orgId, file) {
 const ColorField = ({ label, value, onChange, disabled, clearable = true }) => (
   <Field label={label}>{(id) => (
     <div className="row" style={{ gap: 8 }}>
-      <input id={id} type="color" className="swatch" disabled={disabled} value={value || '#123A5F'} onChange={e => onChange(e.target.value.toUpperCase())} />
+      <input id={id} type="color" className="swatch" disabled={disabled} value={value || token('--aiv-navy')} onChange={e => onChange(e.target.value.toUpperCase())} />
       <input className="input" style={{ maxWidth: 120 }} aria-label={label} disabled={disabled} value={value || ''} placeholder="—" onChange={e => onChange(e.target.value)} />
       {clearable && value && !disabled && <button type="button" className="btn btn-sm btn-ghost" onClick={() => onChange('')}>×</button>}
     </div>
@@ -47,9 +48,9 @@ export function FormatEditor({ value, onChange, disabled, orgId, layout }) {
     <Field label={label}>{(id) => <select id={id} className="select" disabled={disabled} value={f[k] === undefined ? '' : f[k] ? 'yes' : 'no'} onChange={e => set(k, e.target.value === '' ? undefined : e.target.value === 'yes')}><option value="">{t('Template default')}</option><option value="yes">{t('Yes')}</option><option value="no">{t('No')}</option></select>}</Field>
   );
   const upload = async (file) => { try { const r = await uploadPicture(orgId, file); onChange({ ...f, logo: 'template', logoFile: r.file }); toast(t('Logo uploaded.')); } catch (e) { toast(e.message, 'error'); } };
-  const head = f.headingColor || layout?.titleColor || '#123A5F';
-  const th = f.tableHeaderColor || layout?.primaryColor || '#123A5F';
-  const acc = f.accentColor || layout?.accentColor || '#1876C6';
+  const head = f.headingColor || layout?.titleColor || token('--aiv-navy');
+  const th = f.tableHeaderColor || layout?.primaryColor || token('--aiv-navy');
+  const acc = f.accentColor || layout?.accentColor || token('--aiv-azure');
   return (
     <div className="grid-main format-editor">
       <div className="stack">
@@ -102,7 +103,7 @@ export function FormatEditor({ value, onChange, disabled, orgId, layout }) {
           <div style={{ color: head, fontFamily: f.headingFont || 'Montserrat', fontWeight: 800, fontSize: `${(f.headingSize || 14) * 1.3}px`, lineHeight: 1.2 }}>{t('Quality policy')}</div>
           <div style={{ height: 3, background: th, margin: '10px 0' }} />
           <div style={{ color: head, fontFamily: f.headingFont || 'Montserrat', fontWeight: 800, fontSize: `${(f.headingSize || 14) * 1.05}px` }}>{f.numbered === false ? '' : '1. '}{t('Purpose and scope')}</div>
-          <p style={{ color: '#2C3E50', margin: '4px 0 8px' }}>{t('This document defines the commitments of the organization and how they are met, reviewed and improved.')}</p>
+          <p style={{ color: 'var(--aiv-ink)', margin: '4px 0 8px' }}>{t('This document defines the commitments of the organization and how they are met, reviewed and improved.')}</p>
           <table className="data" style={{ fontSize: 10 }}><thead><tr><th style={{ background: th }}>{t('Item')}</th><th style={{ background: th }}>{t('Status')}</th></tr></thead><tbody><tr><td>{t('Example row')}</td><td>{t('Published')}</td></tr></tbody></table>
           <p className="xsmall muted" style={{ marginTop: 10, textAlign: 'start' }}>{(typeof f.footerText === 'string' && f.footerText) || layout?.footerText || t('Organization · code · version')}{f.pageNumbers === false ? '' : ` · ${t('Page 1 / 2')}`}</p>
         </div>

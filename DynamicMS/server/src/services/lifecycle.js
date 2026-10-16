@@ -238,7 +238,7 @@ function validateFields(kind, fields, step) {
 // Localized text values entered by users are stored under the author's language;
 // values already stored as {en, fr, ar} (seeded or untouched) are kept as they are.
 const textVal = (v, lang) => (v && typeof v === 'object' ? v : String(v ?? '').trim() ? { [lang]: String(v) } : null);
-function normCell(type, v, lang) {
+export function normCell(type, v, lang) {
   if (v === undefined) return undefined;
   if (['text', 'textarea'].includes(type)) return textVal(v, lang);
   if (['number', 'score'].includes(type)) return v === '' || v === null ? null : +v;

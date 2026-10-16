@@ -261,6 +261,9 @@ async function main() {
   await seedDemoTemplates();
   run("INSERT INTO meta(key,value) VALUES('seeded_at',?)", new Date().toISOString());
   run("INSERT INTO meta(key,value) VALUES('seed_today',?)", TODAY);
+  // A fresh database goes through the same data migrations as an upgraded one.
+  const { runMigrations } = await import('../services/migrations.js');
+  for (const m of runMigrations()) log(`migration ${m.id}: ${m.summary}`);
   const count = (t) => get(`SELECT COUNT(*) n FROM ${t}`).n;
   log(`done: ${orgs.length} organizations, ${nProj} projects, ${nSteps} steps; users ${count('users')}, KPIs ${count('kpis')}, NCs ${count('ncs')}, actions ${count('actions')}, documents ${count('documents')}, alerts ${count('alerts')}`);
   getDbCheckpoint();

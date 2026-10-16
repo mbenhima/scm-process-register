@@ -1,12 +1,15 @@
 // Inputs of the step forms: plain fields, record tables with add / edit / delete (rows),
 // decision matrix, KPI picker with "new KPI", organization units and people from the OBS,
 // RACSI in five columns, document templates, standards and links to produced records.
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Trash2, X, FileText, Table2, ListChecks, Gauge, Grid3x3, Maximize2, ChevronLeft, ChevronRight, Library, Sparkles, Copy } from 'lucide-react';
 import { useApp } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { Field, Modal, tx } from './ui.jsx';
+import MultiEntry from './multientry/MultiEntry.jsx';
+import AiProposal from './AiProposal.jsx';
+import { norm } from '../lib/multientry.js';
 
 const FREQ = ['Annual', 'Semi-annual', 'Quarterly', 'Monthly', 'Weekly'];
 const cellText = (v, lang) => (v === null || v === undefined ? '' : typeof v === 'object' && !Array.isArray(v) ? (v.name ? tx(v.name, lang) : tx(v, lang)) : Array.isArray(v) ? v.map(x => cellText(x, lang)).join(', ') : String(v));
@@ -244,142 +247,54 @@ function LibraryModal({ ctx, onAdd, onClose }) {
   );
 }
 
-// Stable row keys (graphical chart §15): kept beside the rows, never keyed by position, so
-// typing keeps the focus in the cell after a row is added, duplicated or deleted.
-let rowSeq = 0;
-const newRowKey = () => `k${Date.now().toString(36)}${(rowSeq++).toString(36)}`;
-const isEmpty = (v) => v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length);
-
-// Inline editable table of records (chart §14): Add row below the table, duplicate (Ctrl+D) and
-// delete (with Undo) per row, Duplicate previous row, carry-over of the category from the row
-// above, keyboard map (Enter moves down, Enter on the last row adds a row, Esc reverts the cell),
-// paste of rows from a spreadsheet, validation of required cells on blur and a running count.
+// Record table of a step form: a Multi-Entry (SRS 4.49) saved row by row on the server, with
+// the step's own cell editors for people, roles, KPIs, organization units, parties and macro
+// processes; the library and the AI add rows to it.
+const STEP_TYPES = ['combo', 'mp', 'parties', 'person', 'kpi', 'obs', 'role', 'score'];
 export function RowsEditor({ field, value, onChange, disabled, ctx }) {
   const { t, lang } = ctx;
   const { toast } = useApp();
-  const raw = Array.isArray(value) ? value : [];
-  // Stable keys kept beside the data (never stored): aligned with the rows by index and
-  // spliced on insert / delete, so an edited row keeps its key and its focus.
-  const keyList = useRef([]);
-  while (keyList.current.length < raw.length) keyList.current.push(newRowKey());
-  if (keyList.current.length > raw.length) keyList.current.length = raw.length;
-  const rows = raw.map((r, i) => ({ ...r, _k: keyList.current[i] }));
-  const strip = (list) => list.map(({ _k, ...r }) => r);
-  const [open, setOpen] = useState(null);
   const [lib, setLib] = useState(false);
-  const [aiBusy, setAiBusy] = useState(false);
   const [aiNote, setAiNote] = useState(null);
-  const [errors, setErrors] = useState({});
-  const wrap = useRef(null);
-  const before = useRef({});
-  const pendingFocus = useRef(null);
-  const latest = useRef(rows); latest.current = rows;
-  const carry = field.columns.filter(c => ['category', 'type', 'kind', 'factor', 'pestle'].includes(c.key) || c.carry).map(c => c.key);
-  const blank = (above) => Object.fromEntries(field.columns.map(c => [c.key, c.type === 'obs' || c.type === 'parties' ? [] : (carry.includes(c.key) && above && !isEmpty(above[c.key]) ? above[c.key] : '')]));
+  const entry = useRef(null);
+  const pickers = ctx.pickers;
+  const columns = useMemo(() => {
+    const roleName = (c) => tx(pickers?.roles.find(r => r.code === c)?.name, lang) || c || '';
+    const cols = field.columns.map(c => {
+      const display = c.type === 'person' ? (v) => pickers?.users.find(u => u.id === v)?.name || ''
+        : c.type === 'role' ? (v) => roleName(v)
+          : c.type === 'kpi' ? (v) => { const k = pickers?.kpis.find(x => x.id === v); return k ? `${k.code} — ${tx(k.name, lang)}` : ''; }
+            : c.type === 'mp' ? (v) => mpLabel(v, pickers?.mps, lang)
+              : ['parties', 'obs', 'combo', 'text', 'textarea', undefined].includes(c.type) ? (v) => cellText(v?.name !== undefined && !Array.isArray(v) ? v.name : v, lang) : undefined;
+      // Pasted or imported text is matched to the people, roles, KPIs and macro processes listed.
+      const parse = c.type === 'person' ? (s) => { const n = norm(s); const u = pickers?.users.find(x => norm(x.name) === n || norm(x.email) === n || n.startsWith(norm(x.name))); return u ? { value: u.id } : { value: '', error: t('Unknown person') }; }
+        : c.type === 'role' ? (s) => { const n = norm(s); const r = pickers?.roles.find(x => x.code === s.trim() || norm(tx(x.name, lang)) === n || Object.values(x.name || {}).some(y => norm(y) === n)); return r ? { value: r.code } : { value: '', error: t('Unknown role') }; }
+          : c.type === 'kpi' ? (s) => { const code = s.trim().split(/\s|—|\(/)[0]; const k = pickers?.kpis.find(x => x.code === code || norm(tx(x.name, lang)) === norm(s)); return k ? { value: k.id } : { value: '', error: t('Unknown KPI') }; }
+            : c.type === 'mp' ? (s) => { const code = s.trim().split(/\s|\(/)[0]; const m = pickers?.mps?.find(x => x.code === code || x.id === code); return { value: m ? m.id : s.trim() }; }
+              : ['obs', 'parties'].includes(c.type) ? (s) => ({ value: s.split(/[;,\n]/).map(x => x.trim()).filter(Boolean).map(name => { const u = c.type === 'obs' ? pickers?.obs.find(n => norm(tx(n.name, lang)) === norm(name)) : null; return { id: u?.id || null, name: u ? u.name : name }; }) })
+                : undefined;
+      return { ...c, display, parse, custom: c.type === 'select' ? true : c.custom };
+    });
+    if (field.createsActions || field.createsObjectives) cols.push({ key: '_link', type: 'text', readOnly: true, computed: true, label: t('Record created'), display: (v, r) => (r._actionId ? t('Action') : r._registerId ? t('Objective') : '') });
+    return cols;
+  }, [field, pickers, lang, t]);
+  const renderCell = useCallback((col, v, onCell, { row, big }) => (STEP_TYPES.includes(col.type) ? <Cell col={col} value={v} onChange={onCell} ctx={ctx} big={big} rows={entry.current?.rows?.() || []} /> : undefined), [ctx]);
+  const blank = () => Object.fromEntries(field.columns.map(c => [c.key, c.type === 'obs' || c.type === 'parties' ? [] : '']));
   const suggestNeeds = async () => {
-    setAiBusy(true); setAiNote(null);
+    setAiNote(null);
     try {
       const r = await api(`/steps/${ctx.stepId}/needs-suggest`, { method: 'POST', body: {} });
-      onChange([...strip(rows), ...r.rows.map(x => ({ ...blank(), ...x }))]);
-      setAiNote({ engine: r.engine, error: r.llmError, n: r.rows.length });
-    } catch (e) { setAiNote({ error: e.message, n: 0 }); } finally { setAiBusy(false); }
+      setAiNote({ engine: r.engine, error: r.llmError, n: r.rows.length, rows: r.rows, logId: r.logId, usecase: r.usecase, warning: r.warning, prompt: r.prompt, sources: r.sources });
+    } catch (e) { setAiNote({ error: e.message, n: 0 }); }
   };
-  const set = (i, key, v) => { onChange(strip(latest.current.map((r, j) => (j === i ? { ...r, [key]: v } : r)))); const ek = `${latest.current[i]?._k}:${key}`; if (errors[ek]) setErrors(e => { const n = { ...e }; delete n[ek]; return n; }); };
-  const focusCell = (k, col) => { const el = wrap.current?.querySelector(`[data-row="${k}"][data-col="${col}"] :is(input, select, textarea, button)`); el?.focus(); if (el && (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && !['checkbox', 'radio', 'date'].includes(el.type)))) el.select?.(); };
-  useEffect(() => { if (pendingFocus.current) { const [k, c] = pendingFocus.current; pendingFocus.current = null; focusCell(k, c); } });
-  const firstCol = field.columns[0]?.key;
-  const insert = (at, row) => { const k = newRowKey(); keyList.current.splice(at, 0, k); const n = strip(rows); n.splice(at, 0, row); onChange(n); return k; };
-  const add = (afterIndex = rows.length - 1) => { pendingFocus.current = [insert(afterIndex + 1, blank(rows[afterIndex])), firstCol]; };
-  const duplicate = (i) => { const { _k, _actionId, _registerId, ...copy } = rows[i]; pendingFocus.current = [insert(i + 1, copy), firstCol]; };
-  const del = (i) => {
-    const { _k, ...row } = rows[i];
-    keyList.current.splice(i, 1);
-    onChange(strip(rows.filter((_, j) => j !== i)));
-    toast(t('Row {n} deleted.', { n: i + 1 }), 'info', { label: t('Undo'), run: () => { const at = Math.min(i, latest.current.length); keyList.current.splice(at, 0, _k); const n = strip(latest.current); n.splice(at, 0, row); onChange(n); } });
-  };
-  // Required cells are checked when the user leaves them (never on each keystroke).
-  const onBlurCell = (r, c) => {
-    delete before.current[`${r._k}:${c.key}`];
-    const cur = latest.current.find(x => x._k === r._k);
-    if (c.required && cur && isEmpty(cur[c.key]) && field.columns.some(x => !isEmpty(cur[x.key]))) setErrors(e => ({ ...e, [`${r._k}:${c.key}`]: t('Required') }));
-  };
-  const onKeyDownCell = (e, i, c) => {
-    const k = rows[i]._k;
-    const mod = e.ctrlKey || e.metaKey;
-    if (mod && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicate(i); return; }
-    if (e.key === 'Escape' && `${k}:${c.key}` in before.current) { e.preventDefault(); e.stopPropagation(); set(i, c.key, before.current[`${k}:${c.key}`]); return; }
-    if (e.key === 'Enter' && !e.shiftKey && e.target.tagName === 'INPUT' && !e.target.closest('.combo-menu')) {
-      e.preventDefault();
-      if (i === rows.length - 1) add(i); else focusCell(rows[i + 1]._k, c.key);
-    }
-  };
-  const onFocusCell = (r, c) => { const key = `${r._k}:${c.key}`; if (!(key in before.current)) before.current[key] = r[c.key]; };
-  // Paste of tab-separated rows (Excel, Google Sheets) from the focused cell.
-  const onPaste = (e, i, c) => {
-    const text = e.clipboardData?.getData('text/plain');
-    if (!text || (!text.includes('\t') && !text.includes('\n'))) return;
-    const simple = field.columns.filter(x => ['text', 'textarea', 'number', 'date', 'select', 'combo', undefined].includes(x.type));
-    const c0 = simple.findIndex(x => x.key === c.key);
-    if (c0 < 0) return;
-    e.preventDefault();
-    const lines = text.replace(/\r/g, '').split('\n').filter((l, j, a) => l.length || j < a.length - 1);
-    const n = strip(rows);
-    lines.forEach((line, j) => {
-      const ri = i + j;
-      if (ri >= n.length) n.push(blank(n[n.length - 1]));
-      const r = { ...n[ri] };
-      line.split('\t').forEach((v, q) => { const col = simple[c0 + q]; if (col) r[col.key] = col.type === 'select' ? ((col.options || []).find(o => o === v.trim() || String(o).toLowerCase() === v.trim().toLowerCase()) ?? r[col.key]) : v; });
-      n[ri] = r;
-    });
-    onChange(n);
-    toast(t('{n} row(s) pasted.', { n: lines.length }));
-  };
-  const wide = field.columns.length > 4;
-  const linked = rows.some(r => r._actionId || r._registerId);
   return (
     <div className="rows-editor">
-      <div className="row-between">
-        <span className="small muted" aria-live="polite">{t('{n} rows', { n: rows.length })}</span>
-        {!disabled && rows.length > 0 && <button type="button" className="btn btn-sm btn-ghost" onClick={() => duplicate(rows.length - 1)}><Copy size={14} />{t('Duplicate previous row')}</button>}
-      </div>
-      <div className="table-wrap" ref={wrap}>
-        <table className={`data rows ${wide ? 'wide' : ''}`}>
-          <thead><tr><th scope="col" style={{ width: 36 }}>#</th>{field.columns.map(c => <th key={c.key} scope="col">{c.required && <span className="req" aria-hidden="true">*</span>}{tx(c.label, lang)}</th>)}{linked && <th scope="col">{t('Record created')}</th>}<th scope="col" style={{ width: disabled ? 44 : 120 }}><span className="sr-only">{t('Actions')}</span></th></tr></thead>
-          <tbody>
-            {rows.map((r, i) => (
-              <tr key={r._k}>
-                <td className="muted">{i + 1}</td>
-                {field.columns.map(c => {
-                  const err = errors[`${r._k}:${c.key}`];
-                  return (
-                    <td key={c.key} data-row={r._k} data-col={c.key} className={err ? 'cell-error' : ''} style={disabled ? undefined : { minWidth: c.wide ? 280 : c.type === 'textarea' ? 220 : ['person', 'kpi', 'obs', 'parties', 'mp', 'combo'].includes(c.type) ? 210 : c.type === 'date' ? 140 : 120 }}
-                      onFocusCapture={() => onFocusCell(r, c)} onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) onBlurCell(r, c); }} onKeyDownCapture={(e) => onKeyDownCell(e, i, c)} onPasteCapture={disabled ? undefined : (e) => onPaste(e, i, c)}>
-                      <Cell col={c} value={r[c.key]} disabled={disabled} ctx={ctx} rows={rows} onChange={(v) => set(i, c.key, v)} />
-                      {err && <span className="cell-msg" role="alert">{err}</span>}
-                    </td>
-                  );
-                })}
-                {linked && <td>{r._actionId ? <Link to="/actions" className="tag s4">{t('Action')}</Link> : r._registerId ? <Link to="/registers?reg=objectives" className="tag s4">{t('Objective')}</Link> : '—'}</td>}
-                <td className="row-actions">
-                  <button type="button" className="btn btn-ghost btn-icon btn-sm" title={t('Open the row in a large window')} aria-label={t('Open row {n}', { n: i + 1 })} onClick={() => setOpen(i)}><Maximize2 size={16} /></button>
-                  {!disabled && <button type="button" className="btn btn-ghost btn-icon btn-sm" title={`${t('Duplicate row')} (Ctrl+D)`} aria-label={t('Duplicate row {n}', { n: i + 1 })} onClick={() => duplicate(i)}><Copy size={16} /></button>}
-                  {!disabled && <button type="button" className="btn btn-ghost btn-icon btn-sm" aria-label={t('Delete row {n}', { n: i + 1 })} onClick={() => del(i)}><Trash2 size={16} /></button>}
-                </td>
-              </tr>
-            ))}
-            {!rows.length && <tr><td colSpan={field.columns.length + 3} className="muted small">{t('No row yet.')}</td></tr>}
-          </tbody>
-        </table>
-      </div>
-      {!disabled && <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
-        <button type="button" className="btn btn-sm" onClick={() => add()}><Plus size={14} />{field.needs ? t('Type a need') : t('Add a row')}</button>
-        {field.needs && <button type="button" className="btn btn-sm" onClick={() => setLib(true)}><Library size={14} />{t('Add from the library')}</button>}
-        {field.needs && <button type="button" className="btn btn-sm" disabled={aiBusy} onClick={suggestNeeds}><Sparkles size={14} />{aiBusy ? t('Preparing…') : t('Suggest with AI')}</button>}
-        <span className="xsmall muted">{t('Enter moves down · Enter on the last row adds a row · Esc reverts · Ctrl+D duplicates · paste rows from a spreadsheet · open a row in a large window for long texts')}</span>
-      </div>}
-      {aiNote && <div className={`callout ${aiNote.error ? 'warn' : 'good'} small`} role="status"><span>{aiNote.n ? t('{n} need(s) suggested by {engine}: review them, link the parties and delete what does not apply.', { n: aiNote.n, engine: String(aiNote.engine || '').startsWith('rules') ? t('the built-in engine') : aiNote.engine }) : ''} {aiNote.error ? t('Language model: {e}', { e: aiNote.error }) : ''}</span></div>}
-      {open !== null && rows[open] && <RowModal field={field} rows={rows} index={open} setIndex={setOpen} set={set} disabled={disabled} ctx={ctx} onClose={() => setOpen(null)} />}
-      {lib && <LibraryModal ctx={ctx} onClose={() => setLib(false)} onAdd={(list) => { onChange([...strip(rows), ...list.map(x => ({ ...blank(), need: x.need, origin: 'Library' }))]); setLib(false); }} />}
+      <MultiEntry source={`step:${ctx.stepId}:${field.key}`} columns={columns} renderCell={renderCell} readOnly={disabled} apiRef={entry}
+        title={tx(field.label, lang)} countLabel={(n) => { const l = tx(field.label, lang); return `${n} ${lang === 'ar' ? l : l.charAt(0).toLowerCase() + l.slice(1)}.`; }} newRow={blank} onRowsChange={onChange}
+        aiPropose={field.needs && !disabled ? suggestNeeds : undefined}
+        extraActions={field.needs && !disabled ? <button type="button" className="btn btn-sm" onClick={() => setLib(true)}><Library size={14} />{t('Add from the library')}</button> : null} />
+      {aiNote && <AiProposal note={aiNote} columns={columns} ctx={ctx} onClose={() => setAiNote(null)} onAccept={(rows) => entry.current?.insertRows(rows.map(x => ({ ...blank(), ...x, origin: 'AI' })))} />}
+      {lib && <LibraryModal ctx={ctx} onClose={() => setLib(false)} onAdd={(list) => { entry.current?.insertRows(list.map(x => ({ ...blank(), need: x.need, origin: 'Library' }))); setLib(false); toast(t('{n} rows added.', { n: list.length })); }} />}
       {field.createsActions && <p className="hint">{t('On completion, each row becomes an action in the Action plan, with its owner and due date.')}</p>}
       {field.createsObjectives && <p className="hint">{t('On completion, each row becomes an entry of the objectives register.')}</p>}
     </div>

@@ -425,3 +425,50 @@ test('document templates: formatting, picture sections and rendering', async () 
     assert.ok(r.body.byteLength > 2000, f);
   }
 });
+
+test('multi-record entry: row stamps, edit conflicts, server checks, import and its undo (FR-DA-MRE)', async () => {
+  const t = await login('ims@atlas-sme.example');
+  const tree = (await call('GET', '/tenancy/tree', t)).body;
+  const proj = tree.independent[0].projects.find(p => p.ms_type === 'QMS');
+  const src = encodeURIComponent(`reg:${proj.id}:context`);
+  const open = (await call('GET', `/entries/${src}`, t)).body;
+  assert.equal(open.readOnly, false);
+  assert.ok(open.columns.some(c => c.key === 'title' && c.required));
+  const n0 = open.rows.length;
+  // A new row without its required value is refused like a typed row; a valid one is created.
+  const r1 = (await call('POST', `/entries/${src}/ops`, t, { upserts: [{ _cid: 'a', type: 'External' }, { _cid: 'b', title: 'Energy price volatility', type: 'External' }] })).body;
+  assert.equal(r1.results[0].ok, false);
+  assert.ok(r1.results[0].errors.title);
+  const created = r1.results[1];
+  assert.equal(created.ok, true);
+  // A change based on the current stamp passes; one based on an older stamp is an Edit Conflict.
+  const ok = (await call('POST', `/entries/${src}/ops`, t, { upserts: [{ _cid: 'c', _rid: created._rid, _base: created.stamp, title: 'Energy price volatility (gas)' }] })).body.results[0];
+  assert.equal(ok.ok, true);
+  const stale = (await call('POST', `/entries/${src}/ops`, t, { upserts: [{ _cid: 'd', _rid: created._rid, _base: created.stamp, title: 'Old view' }] })).body.results[0];
+  assert.equal(stale.ok, false);
+  assert.ok(stale.conflict && stale.conflict.by);
+  const forced = (await call('POST', `/entries/${src}/ops`, t, { upserts: [{ _cid: 'e', _rid: created._rid, _base: created.stamp, title: 'Overwritten' }], force: [created._rid] })).body.results[0];
+  assert.equal(forced.ok, true);
+  // Import: the file is read on the server, committed as an Import Session and undone as one operation.
+  const csv = 'Title;Type;Category\nPort strike;External;Supply\n"Skills gap, welding";Internal;People\n';
+  const up = await fetch(`${base}/entries/${src}/import?lang=en`, { method: 'POST', headers: { Authorization: `Bearer ${t}`, 'Content-Type': 'application/octet-stream', 'X-File-Name': 'context.csv' }, body: Buffer.from(csv, 'utf8') });
+  const parsed = await up.json();
+  assert.equal(up.status, 200);
+  assert.equal(parsed.encoding, 'utf-8');
+  assert.deepEqual(parsed.rows[2], ['Skills gap, welding', 'Internal', 'People']);
+  const bad = await fetch(`${base}/entries/${src}/import`, { method: 'POST', headers: { Authorization: `Bearer ${t}`, 'X-File-Name': 'x.xlsx' }, body: Buffer.from('not a workbook') });
+  assert.equal(bad.status, 400);
+  const commit = (await call('POST', `/entries/${src}/ops`, t, { kind: 'import', opId: parsed.sessionId, upserts: parsed.rows.slice(1).map((r, i) => ({ _cid: `i${i}`, title: r[0], type: r[1], category: r[2] })) })).body;
+  assert.ok(commit.results.every(x => x.ok));
+  assert.equal((await call('GET', `/entries/${src}`, t)).body.rows.length, n0 + 3);
+  const undo = (await call('POST', `/entries/ops/${parsed.sessionId}/undo`, t)).body;
+  assert.equal(undo.removed, 2);
+  assert.equal((await call('GET', `/entries/${src}`, t)).body.rows.length, n0 + 1);
+  // Export: the file name keeps non-Latin text (RFC 6266) and formulas are neutralized.
+  const ex = await fetch(`${base}/entries/${src}/export?lang=fr`, { method: 'POST', headers: { Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ headers: ['Titre'], rows: [['=1+1']], format: 'csv' }) });
+  assert.match(ex.headers.get('content-disposition'), /filename\*=UTF-8''/);
+  assert.ok((await ex.text()).includes("'=1+1"));
+  // A read-only user cannot change the rows.
+  const aud = await login('auditor@atlas-sme.example');
+  assert.equal((await call('POST', `/entries/${src}/ops`, aud, { upserts: [{ _cid: 'z', title: 'x' }] })).status, 403);
+});

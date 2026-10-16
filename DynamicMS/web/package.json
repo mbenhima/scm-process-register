@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 5173"
+    "preview": "vite preview --port 5173",
+    "test": "node --test --test-concurrency=1 test/",
+    "check:tokens": "node tools/check-tokens.mjs"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.3.0",

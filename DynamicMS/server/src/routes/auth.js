@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import rateLimit from 'express-rate-limit';
 import { get, all, run, now, J, P } from '../db.js';
 import { sign, authenticate } from '../auth.js';
-import { h, HttpError, send, langOf, row } from '../http.js';
+import { h, HttpError, send, langOf, row, bad } from '../http.js';
 import { orgConfig } from '../packs.js';
 import { ROLES } from '../permissions.js';
 
@@ -40,7 +40,9 @@ r.get('/me', authenticate, h((req, res) => {
 
 r.put('/prefs', authenticate, h((req, res) => {
   const cur = P(get('SELECT data FROM user_prefs WHERE user_id=?', req.user.id)?.data) || {};
-  const allowed = ['dock', 'pinned', 'collapsed', 'favorites', 'density', 'projectId'];
+  // Shell, panel widths (FR-DA-PNL-06) and table views (TableViewPreference, FR-DA-MRE-11, -16, -20).
+  const allowed = ['dock', 'pinned', 'collapsed', 'favorites', 'density', 'projectId', 'panels', 'tables'];
+  if (req.body?.tables && JSON.stringify(req.body.tables).length > 200000) throw bad('PREFS_TOO_LARGE', 'Too many table preferences.');
   const next = { ...DEFAULT_PREFS, ...cur };
   for (const k of allowed) if (k in (req.body || {})) next[k] = req.body[k];
   if (!['start', 'end', 'top', 'bottom'].includes(next.dock)) next.dock = 'start';

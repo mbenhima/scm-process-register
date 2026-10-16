@@ -18,11 +18,11 @@ const i18n = (lang, prev, v) => (v === undefined ? prev : v === null || v === ''
 function visible(req, t) {
   return t && (t.org_id === null || t.org_id === req.user.org_id || req.user.is_platform_admin);
 }
-function editable(req, t) {
+export function editable(req, t) {
   if (!can(req, 'templates.manage')) return false;
   return t.org_id ? (t.org_id === req.user.org_id || req.user.is_platform_admin) : !!req.user.is_platform_admin;
 }
-function load(req, id) {
+export function load(req, id) {
   const t = get('SELECT * FROM project_templates WHERE id=?', id);
   if (!visible(req, t)) throw notFound('Template');
   return t;

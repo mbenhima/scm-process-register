@@ -1,7 +1,7 @@
 // Renamed end-to-end processes (feedback "E2E process names", October 2026). The catalog is
 // stored in the database, so installations seeded before the change are updated at start-up:
 // the E2E names of the catalog and the titles of the documents that still carry an old name.
-import { all, run, get, J, P, now, tx } from '../db.js';
+import { all, run, get, J, P, now } from '../db.js';
 
 export const E2E_RENAMES = {
   'E2E-05': { from: 'People To Capability', name: { en: 'Resources To Readiness', fr: 'Des ressources à la disponibilité opérationnelle', ar: 'من الموارد إلى الجاهزية' } },
@@ -27,7 +27,7 @@ export function applyE2eRenames() {
     changed++;
   }
   if (!changed) return 0;
-  tx(() => {
+  {
     run("UPDATE catalog_items SET data=?, version=version+1, updated_at=? WHERE kind='bundle' AND id='e2e'", J(e2e), now());
     for (const d of all('SELECT id, title FROM documents')) {
       const t = P(d.title);
@@ -36,6 +36,6 @@ export function applyE2eRenames() {
       for (const l of Object.keys(t)) for (const [o, n] of Object.entries(old)) if (typeof t[l] === 'string' && t[l].includes(o)) { t[l] = t[l].split(o).join(n); hit = true; }
       if (hit) { run('UPDATE documents SET title=? WHERE id=?', J(t), d.id); changed++; }
     }
-  });
+  }
   return changed;
 }
