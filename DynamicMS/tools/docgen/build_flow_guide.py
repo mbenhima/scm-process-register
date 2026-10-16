@@ -165,58 +165,148 @@ def cut(v, n):
     return s if len(s) <= n else s[:n - 1] + '…'
 
 
-def row_lines(doc, f):
-    """The rows of a record table, one line per row, values in the order of the columns."""
-    cols = f['columns']; rows = f.get('rows') or []
-    for i, r in enumerate(rows):
-        q = _p(doc, 7.5, after=0, indent=0.8)
-        _r(q, f"{i + 1}. ", 7.5, True, color=AZURE)
-        vals = [cut(r[j] if j < len(r) else '', 95) or '—' for j in range(len(cols))]
-        for j, v in enumerate(vals):
-            if j:
-                _r(q, '  ·  ', 7.5, True, color=AZURE)
-            _r(q, v, 7.5, bold=(j == 0), color=NAVY if j == 0 else INK)
+USABLE = 18.6  # cm between the 1.2 cm margins
+
+
+def _tbl_base(doc, widths):
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    from docx.enum.table import WD_TABLE_ALIGNMENT
+    t = doc.add_table(rows=0, cols=len(widths))
+    t.alignment = WD_TABLE_ALIGNMENT.LEFT
+    t.autofit = False
+    tblPr = t._tbl.tblPr
+    borders = OxmlElement('w:tblBorders')
+    for side in ('top', 'left', 'bottom', 'right', 'insideH', 'insideV'):
+        e = OxmlElement(f'w:{side}'); e.set(qn('w:val'), 'single'); e.set(qn('w:sz'), '4'); e.set(qn('w:space'), '0'); e.set(qn('w:color'), LINE)
+        borders.append(e)
+    tblPr.append(borders)
+    lay = OxmlElement('w:tblLayout'); lay.set(qn('w:type'), 'fixed'); tblPr.append(lay)
+    tw = tblPr.find(qn('w:tblW'))
+    if tw is None:
+        tw = OxmlElement('w:tblW'); tblPr.append(tw)
+    tw.set(qn('w:w'), str(int(sum(widths) * 567))); tw.set(qn('w:type'), 'dxa')
+    ind = OxmlElement('w:tblInd'); ind.set(qn('w:w'), str(int(0.45 * 567))); ind.set(qn('w:type'), 'dxa'); tblPr.append(ind)
+    mar = OxmlElement('w:tblCellMar')
+    for side, v in (('top', 0), ('bottom', 0), ('left', 40), ('right', 40)):
+        e = OxmlElement(f'w:{side}'); e.set(qn('w:w'), str(v)); e.set(qn('w:type'), 'dxa'); mar.append(e)
+    tblPr.append(mar)
+    for gc, wcm in zip(t._tbl.tblGrid.findall(qn('w:gridCol')), widths):
+        gc.set(qn('w:w'), str(int(wcm * 567)))
+    return t
+
+
+def _cell(cell, text, width, fill, size, bold=False, color=INK):
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    cell.width = Cm(width)
+    tcPr = cell._tc.get_or_add_tcPr()
+    shd = OxmlElement('w:shd'); shd.set(qn('w:val'), 'clear'); shd.set(qn('w:color'), 'auto'); shd.set(qn('w:fill'), fill); tcPr.append(shd)
+    p = cell.paragraphs[0]
+    pf = p.paragraph_format; pf.space_before = Pt(0); pf.space_after = Pt(0); pf.line_spacing = Pt(round(size * 1.16, 1))
+    lines = str(text if text not in (None, '') else '').split('\n')
+    for i, line in enumerate(lines):
+        r = p.add_run(line)
+        r.font.size = Pt(size); r.bold = bold; r.font.color.rgb = rgb(color)
+        if i < len(lines) - 1:
+            r.add_break()
+
+
+def _widths(headers, rows, total=USABLE - 0.45):
+    """Each column at least as wide as its title on one line (when the row allows it); the rest
+    of the width shared by the length of the values."""
+    import statistics
+    def shortest(j):
+        vals = [len(str(r[j])) for r in rows if j < len(r) and r[j] not in (None, '')]
+        m = max(vals) if vals else 0
+        return m * 0.122 + 0.25 if m <= 14 else 0
+    need = [min(5.0, max(len(h) * 0.118 + 0.25, shortest(j))) for j, h in enumerate(headers)]
+    if sum(need) > total:
+        need = [x * total / sum(need) for x in need]
+    weight = []
+    for j, h in enumerate(headers):
+        vals = [len(str(r[j])) if j < len(r) and r[j] is not None else 0 for r in rows] or [0]
+        weight.append(max(1.0, min(90, statistics.mean(vals) * 0.6 + max(vals) * 0.4)))
+    # widths proportional to the values, but never below the title width
+    w = [max(n, wt * total / sum(weight)) for n, wt in zip(need, weight)]
+    for _ in range(4):
+        over = sum(w) - total
+        if over <= 0.01:
+            break
+        flex = [i for i, (x, n) in enumerate(zip(w, need)) if x > n + 0.01]
+        if not flex:
+            break
+        room = sum(w[i] - need[i] for i in flex)
+        for i in flex:
+            w[i] -= over * (w[i] - need[i]) / room
+    tot = sum(w)
+    return [x * total / tot for x in w]
+
+
+def type_table(doc, headers, rows, size=6.6, first_bold=False):
+    """A what-to-type table: the header row carries the field or column titles exactly as in the
+    application, so the rows copied from this guide paste into the step's table (the paste
+    preview matches the columns by their titles)."""
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    widths = _widths(headers, rows)
+    t = _tbl_base(doc, widths)
+    hdr = t.add_row()
+    trPr = hdr._tr.get_or_add_trPr()
+    th = OxmlElement('w:tblHeader'); th.set(qn('w:val'), 'true'); trPr.append(th)
+    cs = OxmlElement('w:cantSplit'); trPr.append(cs)
+    for i, h in enumerate(headers):
+        _cell(hdr.cells[i], h, widths[i], NAVY, size - 0.5, True, 'FFFFFF')
+    for ri, row in enumerate(rows):
+        tr = t.add_row()
+        tr._tr.get_or_add_trPr().append(OxmlElement('w:cantSplit'))
+        for i in range(len(headers)):
+            v = row[i] if i < len(row) else ''
+            _cell(tr.cells[i], '' if v in (None,) else v, widths[i], 'FFFFFF' if ri % 2 == 0 else BG, size, first_bold and i == 0, NAVY if first_bold and i == 0 else INK)
+    return t
+
+
+def _bands(fields, maxw=USABLE - 0.45):
+    """Splits the simple fields of a step into bands of at most 5 columns that fit the width."""
+    out, cur, curw = [], [], 0
+    for f in fields:
+        need = max(len(f['field']) * 0.75, min(70, len(str(f.get('value') or ''))), 6) + 3
+        if cur and (len(cur) >= 6 or curw + need > 200):
+            out.append(cur); cur, curw = [], 0
+        cur.append(f); curw += need
+    return out + ([cur] if cur else [])
 
 
 def step_block(doc, s, task_label=None):
-    """The step line, then at once what to type: the simple fields continue the same line after
-    "What to type ▸"; each record table follows on the next lines, one line per row."""
+    """The step line, then at once what to type in it as tables: the simple fields in a table
+    whose header row holds the field names, then each record table with the column titles of
+    the application, one row per record."""
     k = KIND_PDCA.get(s['kind'], 'D')
     simple = [f for f in s['type_'] if f.get('columns') is None]
     tables = [f for f in s['type_'] if f.get('columns') is not None]
-    p = _p(doc, 8, before=2, after=0, keep=bool(tables))
+    p = _p(doc, 7.8, before=3, after=0.5, keep=bool(simple or tables))
     p.paragraph_format.left_indent = Cm(0.45); p.paragraph_format.first_line_indent = Cm(-0.45)
     badge(p, k, 7)
     _r(p, s['id'] + '  ', 8, True, color=AZURE)
     _r(p, s['name'], 8, True, color=NAVY)
-    _r(p, f"  ({s['role']} · {s['form']})  ", 7.5, color=MUTED)
-    _r(p, X('What to type ▸ ', 'À saisir ▸ '), 7.5, True, color=TEAL)
+    _r(p, f"  ({s['role']} · {s['form']})", 7.5, color=MUTED)
     if not simple and not tables:
-        _r(p, X('nothing to type: select Complete step.', 'rien à saisir : sélectionnez Terminer l\'étape.'), 7.5, italic=True)
-    for i, f in enumerate(simple):
-        if i:
-            _r(p, '  ·  ', 7.5, color=MUTED)
-        _r(p, f"{f['field']}: " if LANG == 'en' else f"{f['field']} : ", 7.5, True, color=NAVY)
-        v = f.get('value')
-        _r(p, '—' if v in (None, '') else cut(v, 240), 7.5)
+        _r(p, X('  — nothing to type: select Complete step.', '  — rien à saisir : sélectionnez Terminer l\'étape.'), 7.5, italic=True, color=TEAL)
+        return
+    _r(p, X('  What to type ▾', '  À saisir ▾'), 7.5, True, color=TEAL)
+    for band in _bands(simple):
+        type_table(doc, [f['field'] for f in band], [['—' if f.get('value') in (None, '') else str(f['value']) for f in band]])
     for ti, f in enumerate(tables):
-        if ti == 0 and not simple:
-            q = p
-        else:
-            q = _p(doc, 7.5, after=0, indent=0.45, keep=True)
         n = len(f.get('rows') or [])
-        _r(q, f"{f['field']} — " + X(f"type {n} row{'s' if n != 1 else ''}", f"saisissez {n} ligne{'s' if n != 1 else ''}"), 7.5, True, color=NAVY)
-        if f['type'] != 'racsi':
-            _r(q, X(' (columns: ', ' (colonnes : ') + ' · '.join(f['columns']) + ')', 7.5, italic=True, color=MUTED)
-        _r(q, ':' if LANG == 'en' else ' :', 7.5, True, color=NAVY)
-        if f['type'] == 'racsi':
-            r0 = (f.get('rows') or [[]])[0]
-            q2 = _p(doc, 7.5, after=0, indent=0.8)
-            _r(q2, ' · '.join(f"{c}: {v}" for c, v in zip(f['columns'], r0) if v), 7.5)
+        label = f"{f['field']} — " + X(f"{n} row{'s' if n != 1 else ''} to paste or type", f"{n} ligne{'s' if n != 1 else ''} à coller ou saisir")
+        if ti == 0 and not simple:
+            _r(p, '  ' + label, 7.5, True, color=NAVY)
         else:
-            row_lines(doc, f)
+            q = _p(doc, 7.5, before=1.5, after=0.5, indent=0.45, keep=True)
+            _r(q, label, 7.5, True, color=NAVY)
+        type_table(doc, f['columns'], [[('' if c is None else str(c)) for c in r] for r in (f.get('rows') or [])], first_bold=True)
     if s.get('creates'):
-        q = _p(doc, 7.5, after=0, indent=0.45)
+        q = _p(doc, 7.5, after=1, indent=0.45)
         _r(q, X('On completion: ', 'À la clôture : '), 7.5, True, color=GREEN)
         _r(q, X(' and ', ' et ').join(X('each row becomes an action of the Action plan', 'chaque ligne devient une action du plan d\'actions') if c == 'actions' else X('each row becomes an objective of the register', 'chaque ligne devient un objectif du registre') for c in s['creates']) + '.', 7.5, italic=True)
 
@@ -241,10 +331,11 @@ def about(doc, data):
     ], [4.2, 12.8], size=9, bold_first=True)
     doc.add_heading(X('How to read a step', 'Comment lire une étape'), level=2)
     bullets(doc, [
-        (X('Step, then what to type. ', 'Étape, puis ce qu\'il faut saisir. '), X('Each step gives its badge, identifier, name, role and form, immediately followed by "What to type ▸" with the value of every field. The rows of its record tables follow at once, one line per row with the values in the order of the columns, before the next step.', 'Chaque étape donne son badge, son identifiant, son nom, son rôle et son formulaire, immédiatement suivis de « À saisir ▸ » avec la valeur de chaque champ. Les lignes de ses tableaux d\'enregistrements suivent aussitôt, une ligne par enregistrement avec les valeurs dans l\'ordre des colonnes, avant l\'étape suivante.')),
+        (X('Step, then what to type. ', 'Étape, puis ce qu\'il faut saisir. '), X('Each step gives its PDCA badge, identifier, name, role and form, immediately followed by its what-to-type tables, before the next step. The first table holds the simple fields: its header row gives the field names as shown in the form, the row below gives the value to type or choose.', 'Chaque étape donne son badge PDCA, son identifiant, son nom, son rôle et son formulaire, immédiatement suivis de ses tableaux à saisir, avant l\'étape suivante. Le premier tableau contient les champs simples : sa ligne d\'en-tête donne le nom des champs tels qu\'affichés dans le formulaire, la ligne suivante la valeur à saisir ou à choisir.')),
+        (X('Record tables: copy and paste. ', 'Tableaux d\'enregistrements : copier-coller. '), X('A record table of the step follows with the column titles of the application and one row per record. Select the table in this guide (header row included), copy it (Ctrl+C), click the first cell of the same table in DynamicMS and paste (Ctrl+V): the paste preview matches the columns by their titles; select Apply. You can also type the rows one by one.', 'Un tableau d\'enregistrements de l\'étape suit, avec les titres de colonnes de l\'application et une ligne par enregistrement. Sélectionnez le tableau dans ce guide (ligne d\'en-tête comprise), copiez-le (Ctrl+C), cliquez la première cellule du même tableau dans DynamicMS et collez (Ctrl+V) : l\'aperçu du collage associe les colonnes par leur titre ; sélectionnez Appliquer. Vous pouvez aussi saisir les lignes une à une.')),
         (X('PDCA badge. ', 'Badge PDCA. '), X('P (Plan: identify, set, configure, assign), D (Do: execute, document, communicate, train), C (Check: monitor, assess, review), A (Act: decide, close, escalate). Inside each macro process the badges show its own small PDCA cycle.', 'P (Planifier : identifier, fixer, configurer, affecter), D (Réaliser : exécuter, documenter, communiquer, former), C (Vérifier : surveiller, évaluer, revoir), A (Agir : décider, clore, escalader). Dans chaque macro-processus, les badges montrent son propre petit cycle PDCA.')),
-        (X('Values. ', 'Valeurs. '), X('Type the values as written; choose list values as written; dates are in the format YYYY-MM-DD. Long texts of record tables are shortened with … in this guide only.', 'Saisissez les valeurs telles qu\'écrites ; choisissez les valeurs de liste telles qu\'écrites ; les dates sont au format AAAA-MM-JJ. Les textes longs des tableaux sont abrégés par … dans ce guide uniquement.')),
-        (X('Completing. ', 'Terminer. '), X('After typing, select Save draft to keep the draft or Complete step to finish it; the next step opens. A phase ends with its gate (checklist, then Go, Hold or No-Go).', 'Après la saisie, sélectionnez Enregistrer le brouillon pour le conserver ou Terminer l\'étape pour la finir ; l\'étape suivante s\'ouvre. Une phase se termine par son jalon (liste de contrôle, puis Go, En attente ou No-Go).')),
+        (X('Values. ', 'Valeurs. '), X('Type the values as written; choose list values as written; dates are in the format YYYY-MM-DD; amounts carry their currency (MAD by default for this organization).', 'Saisissez les valeurs telles qu\'écrites ; choisissez les valeurs de liste telles qu\'écrites ; les dates sont au format AAAA-MM-JJ ; les montants portent leur devise (MAD par défaut pour cet organisme).')),
+        (X('Completing. ', 'Terminer. '), X('Rows are saved as you type (the footer of the table shows All changes saved). Select Complete step to finish the step; the next step opens. A phase ends with its gate (checklist, then Go, Hold or No-Go).', 'Les lignes sont enregistrées au fil de la saisie (le pied du tableau indique Toutes les modifications sont enregistrées). Sélectionnez Terminer l\'étape pour la finir ; l\'étape suivante s\'ouvre. Une phase se termine par son jalon (liste de contrôle, puis Go, En attente ou No-Go).')),
     ], size=10)
     p2 = _p(doc, 9, before=4, after=2)
     _r(p2, X('Example — ', 'Exemple — '), 9, True, color=NAVY)
@@ -336,9 +427,9 @@ def run_chapter(doc, data):
                 _r(q, X('Task ', 'Tâche ') + f"{tk['id']} — {tk['name']}", 8, True, color=TEAL)
                 for s in tk['steps']:
                     step_block(doc, s)
-            if mp['id'] in SHOTS_AFTER_MP:
+            if mp['id'] in SHOTS_AFTER_MP and mp['id'] == 'MP-001':
                 n, cap = SHOTS_AFTER_MP[mp['id']]
-                shot(doc, n, cap[0] if LANG == 'en' else cap[1], 11)
+                shot(doc, n, cap[0] if LANG == 'en' else cap[1], 12)
         if ph['gate']:
             g = ph['gate']
             doc.add_heading(X(f"Gate — {g['name']}", f"Jalon — {g['name']}"), level=3)
@@ -357,9 +448,9 @@ def run_chapter(doc, data):
                 _r(q, X('Decision: ', 'Décision : '), 9, True, color=NAVY)
                 _r(q, X('this phase is still active in the demonstration database; when its last step is complete, Top Management selects Go to close the cycle and open the next one.', 'cette phase est encore active dans la base de démonstration ; quand sa dernière étape est terminée, la direction sélectionne Go pour clore le cycle et ouvrir le suivant.'), 9)
         callout(doc, X(f"{fd[ph['id']][1]}", f"{fd[ph['id']][1]}"), X('PDCA link —', 'Lien PDCA —'))
-        if ph['id'] in SHOTS_AFTER_PHASE:
+        if ph['id'] in SHOTS_AFTER_PHASE and ph['id'] in ('E2E-09',):
             n, cap = SHOTS_AFTER_PHASE[ph['id']]
-            shot(doc, n, cap[0] if LANG == 'en' else cap[1], 11)
+            shot(doc, n, cap[0] if LANG == 'en' else cap[1], 10)
 
 
 SOURCE_GROUPS = [
@@ -473,6 +564,21 @@ def review_chapter(doc, data, reports):
     ])
 
 
+def ai_chapter(doc, data):
+    doc.add_heading(X('AI assistance in the run, under human control', 'L\'assistance de l\'IA dans le déroulement, sous contrôle humain'), level=1)
+    para(doc, X('Every AI suggestion comes from an active AI use case linked to the step or screen where it is shown. A screen with no active use case offers no AI action. Each proposal is labelled "AI-generated — to be reviewed by a person"; each item is accepted, edited or rejected, and every outcome is written to the usage log, which can only grow.',
+                'Chaque suggestion de l\'IA provient d\'un cas d\'usage IA actif lié à l\'étape ou à l\'écran où elle apparaît. Un écran sans cas d\'usage actif n\'offre aucune action d\'IA. Chaque proposition porte la mention « Généré par l\'IA — à revoir par une personne » ; chaque élément est accepté, modifié ou rejeté, et chaque décision est écrite dans le journal d\'utilisation, qui ne peut que s\'allonger.'), size=9.5)
+    rows = [
+        ['A1', X('Use an AI proposal in a step', 'Utiliser une proposition de l\'IA dans une étape'), X('Step MP-056.5 (Transformation Manager, transformation@horizon-universal.example) › AI assistance › Suggest', 'Étape MP-056.5 (responsable de la transformation, transformation@horizon-universal.example) › Assistance IA › Suggérer'), X('Edit an item if needed, then Accept or Reject each item, or Accept all. Accepted items are inserted in the step.', 'Modifiez un élément si besoin, puis Acceptez ou Rejetez chaque élément, ou Tout accepter. Les éléments acceptés sont insérés dans l\'étape.')],
+        ['A2', X('Propose rows of a table', 'Proposer les lignes d\'un tableau'), X('Needs step (MP-001.5) › Propose with AI', 'Étape des besoins (MP-001.5) › Proposer avec l\'IA'), X('One proposed need per interested party; Accept the relevant rows: they are added with Entered from = AI.', 'Un besoin proposé par partie intéressée ; acceptez les lignes pertinentes : elles sont ajoutées avec Origine de la saisie = AI.')],
+        ['A3', X('Govern the AI use cases', 'Gouverner les cas d\'usage IA'), X('Intelligence › AI use cases (AI Governance Officer or administrator)', 'Intelligence › Cas d\'usage IA (responsable de la gouvernance de l\'IA ou administrateur)'), X('Library figures and filters; Coverage of the process design › Suggest a use case for a task not covered; open a use case › Edit (reason required), Duplicate, Test run, Activate after review.', 'Chiffres et filtres de la bibliothèque ; Couverture de la conception des processus › Suggérer un cas d\'usage pour une tâche non couverte ; ouvrir un cas d\'usage › Modifier (raison obligatoire), Dupliquer, Essai, Activer après revue.')],
+        ['A4', X('Choose the model', 'Choisir le modèle'), X('Administration › AI models (Organization) or Settings › Personal AI connection', 'Administration › Modèles d\'IA (organisme) ou Paramètres › Connexion IA personnelle'), X('Order used: model of the use case, Organization model, personal connection (key kept in the browser only), built-in engine.', 'Ordre utilisé : modèle du cas d\'usage, modèle de l\'organisme, connexion personnelle (clé gardée dans le navigateur seulement), moteur intégré.')],
+    ]
+    type_table(doc, ['#', X('Action', 'Action'), X('Where', 'Où'), X('What to do', 'Ce qu\'il faut faire')], rows, size=7.5, first_bold=True)
+    shot(doc, 'ai-proposal', X('Figure — An AI proposal: use case, engine, reason, human checkpoint, references, then each item to accept or reject.', 'Figure — Une proposition de l\'IA : cas d\'usage, moteur, raison, point de contrôle humain, références, puis chaque élément à accepter ou rejeter.'), 11)
+    shot(doc, 'ai-usecase', X('Figure — The page of an AI use case: outcomes logged, identification, activation, specification and versions.', 'Figure — La page d\'un cas d\'usage IA : décisions journalisées, identification, activation, spécification et versions.'), 11)
+
+
 def records_chapter(doc, data):
     doc.add_heading(X('Records created by the run', 'Enregistrements créés par le déroulement'), level=1)
     rec = data['records']
@@ -519,9 +625,16 @@ def build(lang):
     doc = new_document(title, X('DynamicMS — User Guide (full real run)', 'DynamicMS — Guide utilisateur (déroulement réel complet)'))
     sec = doc.sections[0]
     for side in ('left_margin', 'right_margin'):
-        setattr(sec, side, Cm(1.5))
-    sec.top_margin = Cm(1.5); sec.bottom_margin = Cm(1.4)
-    sec.header_distance = Cm(0.6); sec.footer_distance = Cm(0.6)
+        setattr(sec, side, Cm(1.2))
+    sec.top_margin = Cm(1.4); sec.bottom_margin = Cm(1.2)
+    sec.header_distance = Cm(0.5); sec.footer_distance = Cm(0.5)
+    # A smaller header icon on the pages of the run (the cover keeps the full logo).
+    for para_ in sec.header.paragraphs:
+        for run_ in para_.runs:
+            for ext in run_._r.iter():
+                if ext.tag.endswith('}extent'):
+                    cx, cy = int(ext.get('cx')), int(ext.get('cy')); k = 0.6
+                    ext.set('cx', str(int(cx * k))); ext.set('cy', str(int(cy * k)))
     for name, size, before, after in (('Heading 2', 14, 10, 4), ('Heading 3', 10.5, 6, 1)):
         st = doc.styles[name]; st.font.size = Pt(size)
         st.paragraph_format.space_before = Pt(before); st.paragraph_format.space_after = Pt(after)
@@ -542,6 +655,7 @@ def build(lang):
     page_break(doc)
     review_chapter(doc, data, reports)
     page_break(doc)
+    ai_chapter(doc, data)
     records_chapter(doc, data)
     faq(doc)
     path = os.path.join(OUT, f'DynamicMS_User_Guide_Full_Run_{lang.upper()}.docx')
