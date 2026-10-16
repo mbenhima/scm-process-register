@@ -7,7 +7,7 @@ import multer from 'multer';
 import bcrypt from 'bcryptjs';
 import { all, get, run, uid, now, J, P, tx, getDb } from '../db.js';
 import { requirePerm, can, assertFeature, invalidateMatrix, loadMatrix } from '../auth.js';
-import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadOrgRow, paginate, HttpError, orgAccess } from '../http.js';
+import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadOrgRow, paginate, HttpError, orgAccess, attachment } from '../http.js';
 import { audit, snapshot, versions } from '../services/audit.js';
 import { orgConfig, computePrice, BASE_PACKS, CAPABILITY_FEATURES, ADDON_FEATURES, COMPLIANCE_STANDARDS, NON_CERT_DISCLOSURE, FEATURES } from '../packs.js';
 import { ROLES, PERMISSIONS, BASELINE_CLASSES } from '../permissions.js';
@@ -201,7 +201,7 @@ r.get('/attachments/:id/download', requirePerm('records.view', 'execution.view')
   const a = loadOrgRow(req, 'attachments', req.params.id, false, 'Attachment');
   const file = path.join(config.storageDir, a.path);
   if (!fs.existsSync(file)) throw notFound('File');
-  res.setHeader('Content-Type', a.mime); res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(a.filename)}"`);
+  res.setHeader('Content-Type', a.mime); attachment(res, a.filename);
   fs.createReadStream(file).pipe(res);
 }));
 r.delete('/attachments/:id', requirePerm('records.manage'), h((req, res) => {

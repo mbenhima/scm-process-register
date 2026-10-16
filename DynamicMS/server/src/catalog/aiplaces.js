@@ -6,6 +6,7 @@ const L = (en, fr, ar) => ({ en, fr, ar });
 export const PLACES = {
   'project.draft': L('Project creation — draft from a description', 'Création de projet — brouillon à partir d\'une description', 'إنشاء المشروع — مسودة من وصف'),
   assistant: L('AI Assistant', 'Assistant IA', 'المساعد الذكي'),
+  'form.funclevel': L('Function × Level Matrix of a step', 'Matrice Fonction × Niveau d\'une étape', 'مصفوفة الوظيفة × المستوى لخطوة'),
 };
 
 export const PLACE_USECASES = [
@@ -38,6 +39,16 @@ export const PLACE_USECASES = [
     output: L('An answer grounded in the references shown with it', 'Une réponse fondée sur les références affichées avec elle', 'إجابة مستندة إلى المراجع المعروضة معها'),
     scope: 'Tenant', custom: false, approval: 'Approved', tier: 'Assistive',
     inputs: ['question', 'mode'], outputs: ['answer'],
+  },
+  {
+    id: 'AIUC-P04', place: 'module', module: 'form.funclevel', step: null, mp: null,
+    name: L('Propose the decision levels of each function from the OBS', 'Proposer les niveaux de décision de chaque fonction à partir de l\'OBS', 'اقتراح مستويات القرار لكل وظيفة انطلاقًا من الهيكل التنظيمي'),
+    taskType: L('Recommendation', 'Recommandation', 'التوصية'), risk: 'Low', riskName: L('Low', 'Faible', 'منخفض'),
+    checkpoint: L('The step owner accepts, edits or rejects each proposed row before completing the step.', 'Le responsable de l\'étape accepte, modifie ou rejette chaque ligne proposée avant de terminer l\'étape.', 'يقبل مسؤول الخطوة كل صف مقترح أو يعدّله أو يرفضه قبل إكمال الخطوة.'),
+    trigger: L('The user selects Propose with AI in a Function × Level Matrix', 'L\'utilisateur choisit Proposer avec l\'IA dans une matrice Fonction × Niveau', 'يختار المستخدم «اقترح بالذكاء الاصطناعي» في مصفوفة الوظيفة × المستوى'),
+    output: L('One row per function: the decision levels ticked, the accountable role', 'Une ligne par fonction : niveaux de décision cochés, rôle responsable', 'صف لكل وظيفة: مستويات القرار المحددة والدور المسؤول'),
+    scope: 'Tenant', custom: false, approval: 'Approved', tier: 'Assistive',
+    inputs: ['obs'], outputs: ['matrix'],
   },
 ];
 

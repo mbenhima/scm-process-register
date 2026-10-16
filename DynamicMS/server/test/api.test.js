@@ -12,10 +12,11 @@ process.env.DB_FILE = tmp;
 process.env.BACKUP_DIR = path.join(path.dirname(tmp), 'backups');
 process.env.STORAGE_DIR = path.join(path.dirname(tmp), 'storage');
 const { app } = await import('../src/index.js');
+const { checkPackage } = await import('../src/services/ooxml.js');
 
 let server; let base;
 before(() => new Promise(res => { server = app.listen(0, () => { base = `http://127.0.0.1:${server.address().port}/api`; res(); }); }));
-after(() => server.close());
+after(() => { server.close(); try { fs.rmSync(path.dirname(tmp), { recursive: true, force: true }); } catch { /* best effort */ } });
 
 async function call(method, url, token, body, lang = 'en') {
   const r = await fetch(base + url + (url.includes('?') ? '&' : '?') + `lang=${lang}`, { method, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: body ? JSON.stringify(body) : undefined });
@@ -119,6 +120,29 @@ test('reports export in all formats and languages', async () => {
     const r = await call('GET', `/projects/${pid}/reports/status?format=${fmt}`, q, null, lang);
     assert.equal(r.status, 200, `${fmt} ${lang}`);
     assert.ok(r.body.byteLength > 500, `${fmt} ${lang} size`);
+    // Office files open without a repair prompt (FR-DA-DOC-12).
+    if (['xlsx', 'docx', 'pptx'].includes(fmt)) { const c = await checkPackage(Buffer.from(r.body)); assert.ok(c.ok, `${fmt} ${lang}: ${c.errors.join('; ')}`); }
+  }
+  // CSV keeps non-Latin text: UTF-8 with a byte-order mark; a non-Latin name is sent encoded (NFR-DA-I18N-07).
+  const csv = await fetch(`${base}/projects/${pid}/reports/status?format=csv&lang=ar`, { headers: { Authorization: `Bearer ${q}` } });
+  const bytes = new Uint8Array(await csv.arrayBuffer());
+  assert.deepEqual([...bytes.slice(0, 3)], [0xEF, 0xBB, 0xBF]);
+  assert.match(csv.headers.get('content-disposition') || '', /filename\*=UTF-8''/);
+});
+
+test('generated documents from templates pass the Office package check (FR-DA-DOC-12)', async () => {
+  const q = await login('ims@horizon-universal.example');
+  const me = (await call('GET', '/auth/me', q)).body;
+  const tree = (await call('GET', '/tenancy/tree', q)).body;
+  const pid = tree.groups.flatMap(g => g.orgs).find(o => o.id === me.org.id).projects.find(p => p.code === 'HZ-UNI-QMS').id;
+  const docs = (await call('GET', `/projects/${pid}/documents`, q)).body;
+  const list = (Array.isArray(docs) ? docs : docs.items || []).slice(0, 4);
+  assert.ok(list.length);
+  for (const d of list) for (const fmt of ['docx', 'xlsx', 'pptx']) {
+    const r = await call('GET', `/documents/${d.id}/download?format=${fmt}`, q, null, 'fr');
+    assert.equal(r.status, 200, `${d.code} ${fmt}`);
+    const c = await checkPackage(Buffer.from(r.body));
+    assert.ok(c.ok, `${d.code} ${fmt}: ${c.errors.join('; ')}`);
   }
 });
 
@@ -541,4 +565,55 @@ test('AI governance: use case form, duplicate, coverage, governed generation, ap
   assert.ok(dr.logId && dr.usecase.code === 'AIUC-P02' && dr.items.length === 4);
   const as = (await call('POST', '/assistant/ask', ims, { question: 'How do I reopen a completed step?', mode: 'help' })).body;
   assert.ok(as.logId && as.usecase.code === 'AIUC-P03' && as.sources.length);
+});
+
+test('SRS 1.9 data rules: currencies, translations kept on save, Function × Level Matrix, reopen clears completion (FR-DA-I18N-09, 10; SFM-08, 09)', async () => {
+  const admin = await login('admin@horizon-universal.example');
+  const ims = await login('ims@horizon-universal.example');
+  const me = (await call('GET', '/auth/me', ims)).body;
+  const orgId = me.org.id;
+  const tree = (await call('GET', '/tenancy/tree', ims)).body;
+  const pid = tree.groups.flatMap(g => g.orgs).find(o => o.id === orgId).projects.find(p => p.code === 'HZ-UNI-QMS').id;
+  // Currencies: default MAD for a Moroccan organization, enabled list, amount stored with its currency.
+  const org = (await call('GET', `/orgs/${orgId}`, ims)).body;
+  assert.equal(org.currency, 'MAD'); assert.ok(org.currencies.includes('EUR'));
+  assert.equal((await call('POST', `/projects/${pid}/ncs`, ims, { title: 'Scratched housing', description: 'Scratch found at final inspection', source: 'Internal', criticality: 'Minor', cost: 1200, costCurrency: 'JPY' })).status, 400);
+  const nc = (await call('POST', `/projects/${pid}/ncs`, ims, { title: 'Scratched housing', description: 'Scratch found at final inspection', source: 'Internal', criticality: 'Minor', cost: 1200, costCurrency: 'EUR' })).body;
+  const ncd = (await call('GET', `/ncs/${nc.id}`, ims)).body;
+  assert.equal(ncd.cost_currency, 'EUR');
+  assert.equal((await call('PUT', `/orgs/${orgId}`, admin, { currency: 'MAD', currencies: ['MAD', 'EUR', 'USD', 'GBP'] })).status, 200);
+  assert.ok((await call('GET', `/orgs/${orgId}`, ims)).body.currencies.includes('GBP'));
+  // Function × Level Matrix chosen from the meaning of the step.
+  const { formKindOf } = await import('../src/catalog/forms.js');
+  assert.equal(formKindOf('Map functions to decision levels', 'User Task'), 'funclevel');
+  const sl = (await call('GET', `/projects/${pid}/steps?mp=MP-001`, ims)).body;
+  const steps = Array.isArray(sl) ? sl : sl.items || sl.rows || [];
+  const needs = steps.find(x => x.step_id === 'MP-001.5');
+  const fl = (await call('POST', `/steps/${needs.id}/funclevel-suggest`, ims, {})).body;
+  assert.ok(fl.rows.length >= 10 && fl.usecase.code && fl.rows.every(r => typeof r.strategic === 'boolean'));
+  // Translations kept: a text saved unchanged in French keeps its English and Arabic.
+  const open = steps.find(x => x.status !== 'Done' && x.step_id !== 'MP-001.5');
+  if (open) {
+    const s0 = (await call('GET', `/steps/${open.id}?raw=1`, ims)).body;
+    const tf = (s0.step.form.fields || []).find(f => ['text', 'textarea'].includes(f.type));
+    if (tf && s0.canPerform && !s0.locked) {
+      await call('PUT', `/steps/${open.id}`, ims, { fields: { [tf.key]: { en: 'Scope agreed', fr: 'Périmètre convenu', ar: 'تم الاتفاق على النطاق' } } });
+      await call('PUT', `/steps/${open.id}`, ims, { fields: { [tf.key]: 'Périmètre convenu' } }, 'fr');
+      const s1 = (await call('GET', `/steps/${open.id}?raw=1`, ims)).body;
+      assert.deepEqual(s1.fields[tf.key], { en: 'Scope agreed', fr: 'Périmètre convenu', ar: 'تم الاتفاق على النطاق' });
+    }
+  }
+  // Reopen clears every completion mark of the step.
+  const done = steps.find(x => x.status === 'Done');
+  if (done) {
+    const r = await call('POST', `/steps/${done.id}/reopen`, ims, { justification: 'Figures to correct after the review' });
+    if (r.status === 200) {
+      const s2 = (await call('GET', `/steps/${done.id}`, ims)).body;
+      assert.equal(s2.status, 'InProgress'); assert.equal(s2.completed_at, null);
+      const mp = (await call('GET', `/projects/${pid}/mps/MP-001`, ims)).body;
+      const st = mp.tasks.flatMap(t => t.steps).find(x => x.exec?.id === done.id);
+      assert.equal(st.exec.status, 'InProgress'); assert.equal(st.exec.completed_at, null); assert.equal(st.exec.completedBy, null);
+      assert.notEqual(mp.status, 'Completed');
+    }
+  }
 });

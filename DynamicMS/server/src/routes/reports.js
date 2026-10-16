@@ -3,7 +3,7 @@
 import { Router } from 'express';
 import { all, get, P } from '../db.js';
 import { requirePerm } from '../auth.js';
-import { h, send, bad, loadProject, langOf, notFound } from '../http.js';
+import { h, send, bad, loadProject, langOf, notFound, attachment } from '../http.js';
 import { catalog, loc } from '../catalog/store.js';
 import { toPdf, toXlsx, toDocx, toCsv } from '../services/render.js';
 import { toPptx } from '../services/pptx.js';
@@ -99,11 +99,11 @@ r.get('/projects/:id/reports/:type', requirePerm('reports.export'), h(async (req
   const name = `${p.code}-${req.params.type}-${lang}`;
   audit(req, p.org_id, 'report', p.id, 'export', null, { type: req.params.type, format: fmt, lang }, null);
   if (fmt === 'json') return res.json(model);
-  if (fmt === 'pdf') { res.setHeader('Content-Type', 'application/pdf'); res.setHeader('Content-Disposition', `attachment; filename="${name}.pdf"`); return toPdf(model, lang, res); }
-  if (fmt === 'xlsx') { const buf = await toXlsx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); res.setHeader('Content-Disposition', `attachment; filename="${name}.xlsx"`); return res.send(Buffer.from(buf)); }
-  if (fmt === 'docx') { const buf = await toDocx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'); res.setHeader('Content-Disposition', `attachment; filename="${name}.docx"`); return res.send(buf); }
-  if (fmt === 'pptx') { await materialize(model); const buf = await toPptx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'); res.setHeader('Content-Disposition', `attachment; filename="${name}.pptx"`); return res.send(buf); }
-  if (fmt === 'csv') { res.setHeader('Content-Type', 'text/csv; charset=utf-8'); res.setHeader('Content-Disposition', `attachment; filename="${name}.csv"`); return res.send(toCsv(model)); }
+  if (fmt === 'pdf') { res.setHeader('Content-Type', 'application/pdf'); attachment(res, `${name}.pdf`); return toPdf(model, lang, res); }
+  if (fmt === 'xlsx') { const buf = await toXlsx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); attachment(res, `${name}.xlsx`); return res.send(Buffer.from(buf)); }
+  if (fmt === 'docx') { const buf = await toDocx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'); attachment(res, `${name}.docx`); return res.send(buf); }
+  if (fmt === 'pptx') { await materialize(model); const buf = await toPptx(model, lang); res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'); attachment(res, `${name}.pptx`); return res.send(buf); }
+  if (fmt === 'csv') { res.setHeader('Content-Type', 'text/csv; charset=utf-8'); attachment(res, `${name}.csv`); return res.send(toCsv(model)); }
   throw bad('BAD_FORMAT', 'Format must be pdf, xlsx, docx, pptx, csv or json.');
 }));
 

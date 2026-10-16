@@ -86,3 +86,10 @@ export function paginate(req, max = 500) {
 }
 
 export const i18nText = (v, lang) => (v === null || v === undefined ? null : typeof v === 'object' ? v : { [lang]: String(v) });
+
+// Content-Disposition with a Latin fallback and the UTF-8 name (NFR-DA-I18N-07, RFC 6266), so a
+// download never fails because of the language of its name.
+export function attachment(res, name) {
+  const ascii = String(name).normalize('NFD').replace(/\p{M}/gu, '').replace(/[^\x20-\x7e]/g, '_').replace(/["\\]/g, '_');
+  res.setHeader('Content-Disposition', `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`);
+}

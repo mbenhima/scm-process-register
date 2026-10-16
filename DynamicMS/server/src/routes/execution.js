@@ -205,6 +205,32 @@ r.post('/steps/:id/needs-suggest', requirePerm('execution.perform'), h(async (re
   audit(req, e.org_id, 'step', e.id, 'ai_suggest_needs', null, { engine: out.engine, rows: out.rows.length, llmError: out.error || null }, null);
   send(req, res, out);
 }));
+// Function × Level Matrix: rows proposed from the OBS (FR-DA-SFM-08), through the AI Use Case
+// serving the step, else the use case of the matrix form (FR-DA-AI-23).
+r.post('/steps/:id/funclevel-suggest', requirePerm('execution.perform'), h(async (req, res) => {
+  const e = loadOrgRow(req, 'step_exec', req.params.id, true, 'Step');
+  const lang = req.lang || 'en';
+  const u = servingUseCases(e.org_id, e.project_id, { step: e.step_id })[0] || requireServing(e.org_id, e.project_id, { module: 'form.funclevel' });
+  const c = catalog();
+  const roles = all('SELECT id, code, name, functions, reports_to FROM obs_roles WHERE org_id=? AND status=?', e.org_id, 'Active');
+  const byId = Object.fromEntries(roles.map(x => [x.id, x]));
+  const levelOf = (x) => (!x.reports_to || /top_management|ceo|director/.test(x.code) ? 'strategic' : !byId[x.reports_to]?.reports_to ? 'tactical' : 'operational');
+  const builtin = () => ({
+    rows: c.functions.map(f => {
+      const rs = roles.filter(x => (P(x.functions) || []).includes(f.id));
+      const lv = new Set(rs.map(levelOf));
+      const owner = rs.find(x => levelOf(x) === 'tactical') || rs[0];
+      return { function: f.name, strategic: lv.has('strategic') || !rs.length, tactical: lv.has('tactical'), operational: lv.has('operational') || rs.some(x => x.reports_to && byId[x.reports_to]), owner: owner?.code || '', decisions: rs.length ? { en: `Roles: ${rs.map(x => P(x.name)?.en || x.code).join(', ')}`, fr: `Rôles : ${rs.map(x => P(x.name)?.fr || x.code).join(', ')}`, ar: `الأدوار: ${rs.map(x => P(x.name)?.ar || x.code).join('، ')}` } : null, origin: 'AI' };
+    }),
+    confidence: 0.7, sources: [{ type: 'obs', id: 'obs_roles', title: 'OBS roles and the functions they are linked to' }],
+  });
+  const base = builtin();
+  const lines = [`Functions: ${c.functions.map(f => `${f.id} ${f.name.en}`).join('; ')}`, `OBS roles (code → functions → reports to): ${roles.map(x => `${x.code} → ${(P(x.functions) || []).join('/')} → ${byId[x.reports_to]?.code || 'none'}`).join('; ')}`, 'Answer as JSON: [{"function": "<function name>", "strategic": true|false, "tactical": true|false, "operational": true|false, "owner": "<role code>"}].'];
+  const out = await generate(req, { usecase: u, projectId: e.project_id, recordType: 'step', recordId: e.id, prompt: assemble(u, lang, lines),
+    parse: (text) => { try { const j = JSON.parse(String(text).replace(/^```(json)?|```$/gm, '').trim()); if (!Array.isArray(j) || !j.length) return null; return { rows: j.map(x => { const f = c.functions.find(y => [y.id, y.name.en, y.name.fr, y.name.ar].includes(x.function)); return { function: f ? f.name : { [lang]: String(x.function || '') }, strategic: !!x.strategic, tactical: !!x.tactical, operational: !!x.operational, owner: roles.some(r2 => r2.code === x.owner) ? x.owner : '', origin: 'AI' }; }), sources: base.sources }; } catch { return null; } },
+    builtin: () => base, count: (o) => o.rows.length });
+  send(req, res, out);
+}));
 // A new KPI created from a step form (the performer may not hold governance rights).
 r.post('/steps/:id/kpis', requirePerm('execution.perform'), h((req, res) => {
   const e = loadOrgRow(req, 'step_exec', req.params.id, true, 'Step');

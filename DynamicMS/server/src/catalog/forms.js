@@ -69,6 +69,22 @@ export const FORM_KINDS = {
   // Needs and expectations of interested parties (ISO 9001 §4.2, ISO 14001 §4.2, ISO 45001 §4.2):
   // one row per need, mapped to one or more interested parties; rows typed, taken from the
   // library or suggested by the AI. The optional matrix rates how well the needs are handled.
+  // Function × Level Matrix (FR-DA-SFM-08): one row per function, one tick column per decision level.
+  funclevel: {
+    label: L('Function × Level Matrix', 'Matrice Fonction × Niveau', 'مصفوفة الوظيفة × المستوى'),
+    fields: [
+      { key: 'matrix', type: 'rows', required: true, funcLevel: true, label: L('Decision levels of each function', 'Niveaux de décision de chaque fonction', 'مستويات القرار لكل وظيفة'), columns: [
+        { key: 'function', type: 'combo', options: 'functions', required: true, wide: true, label: L('Function', 'Fonction', 'الوظيفة') },
+        { key: 'strategic', type: 'checkbox', label: L('Strategic', 'Stratégique', 'استراتيجي') },
+        { key: 'tactical', type: 'checkbox', label: L('Tactical', 'Tactique', 'تكتيكي') },
+        { key: 'operational', type: 'checkbox', label: L('Operational', 'Opérationnel', 'تشغيلي') },
+        { key: 'owner', type: 'role', label: L('Accountable role', 'Rôle responsable', 'الدور المسؤول') },
+        { key: 'decisions', type: 'textarea', label: L('Decisions taken at these levels', 'Décisions prises à ces niveaux', 'القرارات المتخذة في هذه المستويات') },
+        { key: 'origin', type: 'select', options: ['Manual', 'Library', 'AI'], label: L('Entered from', 'Origine de la saisie', 'مصدر الإدخال') },
+      ] },
+      { key: 'comment', type: 'textarea', label: L('Comment', 'Commentaire', 'تعليق') },
+    ],
+  },
   needs: {
     label: L('Needs and expectations', 'Besoins et attentes', 'الاحتياجات والتوقعات'),
     scale: SCORE_SCALE,
@@ -266,6 +282,8 @@ export const FORM_KINDS = {
 };
 
 const RULES = [
+  // The meaning of the step, not only its object (FR-DA-SFM-08).
+  [/(map|assign|allocate|link|define|distribute|match)\b.{0,40}\bfunctions?\b.{0,40}\b(decision|authority|management|organi[sz]ational) levels?|\bfunctions? (to|by|per|across|and) (the )?(decision|authority|management) levels?|function\s*[×x]\s*level/i, 'funclevel'],
   [/^(fix|set|establish) (review )?(periodicity|frequency)|^(set|establish) frequency|periodicity/i, 'periodicity'],
   [/^(cascade$|cascade objectives|define smart|define objectives|set targets|set objectives|translate policy)/i, 'objectives'],
   [/^(approve|obtain approval|validate|confirm|certify|close and obtain|issue certification|accept|go\/no-go|lock for approval|approve startup|review and approve)/i, 'decision'],

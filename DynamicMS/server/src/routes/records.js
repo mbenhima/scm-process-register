@@ -1,6 +1,7 @@
 // Records: nonconformities, actions (two-party verification), audits and findings,
 // documented information with versions, registers, REX and WBS.
 import { Router } from 'express';
+import { currencyFor } from '../services/money.js';
 import { all, get, run, uid, now, J, P, tx } from '../db.js';
 import { requirePerm, can, assertFeature } from '../auth.js';
 import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadProject, loadOrgRow, conflict, paginate } from '../http.js';
@@ -29,8 +30,8 @@ r.post('/projects/:id/ncs', requirePerm('records.create'), h((req, res) => {
   const code = `NC-${p.code}-${String(n + 1).padStart(3, '0')}`;
   const today = now().slice(0, 10);
   const owner = userIn(p.org_id, b.ownerUser) || get(`SELECT id FROM users WHERE org_id=? AND roles LIKE '%quality_manager%' LIMIT 1`, p.org_id);
-  run('INSERT INTO ncs(id,org_id,project_id,code,title,description,source,category,criticality,status,stage,detected_at,due_date,mp_id,owner_user,cost,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-    id, p.org_id, p.id, code, J(tr(req, b.title)), J(tr(req, b.description)), b.source, b.category || 'Product', b.criticality, 'Open', 'Open', b.detectedAt || today, addDays(today, b.criticality === 'Critical' ? 15 : 45), p.mode === 'SME' ? 'MP-158' : 'MP-018', owner?.id || req.user.id, b.cost ? +b.cost : null, now());
+  run('INSERT INTO ncs(id,org_id,project_id,code,title,description,source,category,criticality,status,stage,detected_at,due_date,mp_id,owner_user,cost,created_at,cost_currency) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+    id, p.org_id, p.id, code, J(tr(req, b.title)), J(tr(req, b.description)), b.source, b.category || 'Product', b.criticality, 'Open', 'Open', b.detectedAt || today, addDays(today, b.criticality === 'Critical' ? 15 : 45), p.mode === 'SME' ? 'MP-158' : 'MP-018', owner?.id || req.user.id, b.cost ? +b.cost : null, now(), b.cost ? currencyFor(p.org_id, b.costCurrency) : null);
   audit(req, p.org_id, 'nc', id, 'create', null, b, null);
   snapshot(req, p.org_id, 'nc', id, { ...b, code, stage: 'Open' }, null);
   if (b.criticality === 'Critical') raise({ orgId: p.org_id, projectId: p.id, type: 'NC_CRITICAL', title: { [req.lang]: `${code} — ${b.title}` }, entityType: 'nc', entityId: id, escalation: ['quality_manager', 'top_management'] });
@@ -57,7 +58,7 @@ r.put('/ncs/:id', requirePerm('records.manage'), h((req, res) => {
     if (!b.rex && !get('SELECT 1 FROM rex WHERE source_type=? AND source_id=?', 'nc', n.id)) throw bad('REX_REQUIRED', 'Record the lessons learned (REX) to close the nonconformity.');
   }
   tx(() => {
-    run('UPDATE ncs SET stage=?, status=?, root_cause=?, closed_at=?, criticality=COALESCE(?,criticality), cost=COALESCE(?,cost) WHERE id=?', stage, stage === 'Closed' ? 'Closed' : 'Open', J(rootCause), stage === 'Closed' ? now().slice(0, 10) : null, b.criticality || null, b.cost ?? null, n.id);
+    run('UPDATE ncs SET stage=?, status=?, root_cause=?, closed_at=?, criticality=COALESCE(?,criticality), cost=COALESCE(?,cost), cost_currency=COALESCE(?,cost_currency) WHERE id=?', stage, stage === 'Closed' ? 'Closed' : 'Open', J(rootCause), stage === 'Closed' ? now().slice(0, 10) : null, b.criticality || null, b.cost ?? null, b.cost !== undefined && b.cost !== null ? currencyFor(n.org_id, b.costCurrency) : null, n.id);
     if (stage === 'Closed' && b.rex) {
       run('INSERT INTO rex(id,org_id,project_id,source_type,source_id,went_well,not_well,root_cause,recommendation,category,rating,mp_id,created_by,created_at,version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)',
         uid(), n.org_id, n.project_id, 'nc', n.id, J(tr(req, b.rex.wentWell || '')), J(tr(req, b.rex.notWell || '')), J(rootCause), J(tr(req, b.rex.recommendation || '')), n.category, +b.rex.rating || 3, 'MP-022', req.user.id, now());

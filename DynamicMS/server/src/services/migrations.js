@@ -71,6 +71,20 @@ defineMigration('2026.10.3-ai-governance', () => {
   return `${added} use cases added, ${linked} linked, ${derived} derived fields stored, ${specs} specifications completed, ${split} log entries split into proposal and outcome`;
 });
 
+// Currencies (FR-DA-I18N-09): each organization gets the default currency of its country and
+// its enabled currencies; every recorded amount gets the currency it was typed in.
+export const COUNTRY_CURRENCY = { MA: 'MAD', FR: 'EUR', BE: 'EUR', DE: 'EUR', AE: 'AED', SA: 'SAR', EG: 'EGP', TN: 'TND', QA: 'USD', CA: 'CAD', ZA: 'ZAR', GB: 'GBP', US: 'USD' };
+defineMigration('2026.10.4-currencies', () => {
+  let orgs = 0; let amounts = 0;
+  for (const o of all('SELECT id, country, currency, currencies FROM organizations')) {
+    if (o.currencies) continue;
+    const def = (!o.currency || o.currency === 'USD') ? (COUNTRY_CURRENCY[o.country] || 'USD') : o.currency;
+    run('UPDATE organizations SET currency=?, currencies=? WHERE id=?', def, J([...new Set([def, 'EUR', 'USD'])]), o.id); orgs++;
+  }
+  amounts += run("UPDATE ncs SET cost_currency=(SELECT currency FROM organizations o WHERE o.id=ncs.org_id) WHERE cost IS NOT NULL AND cost_currency IS NULL").changes || 0;
+  return `${orgs} organizations given a default and enabled currencies; ${amounts} amounts given their currency`;
+});
+
 /** Runs the migrations not yet recorded, in order; returns those run now. */
 export function runMigrations() {
   const done = new Set(all('SELECT id FROM schema_migrations').map(r => r.id));

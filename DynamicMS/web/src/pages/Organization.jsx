@@ -69,6 +69,7 @@ export default function Organization() {
           <div className="stack">
             <Card title={t('Usage against quotas')}><div className="stack"><Quota label={t('Users')} used={o.usage.users} max={o.config.quotas.users} /><Quota label={t('Projects')} used={o.usage.projects} max={o.config.quotas.projects} /><Quota label={t('OBS nodes')} used={o.usage.obsNodes} max={o.config.quotas.obsNodes} /><Quota label={t('Custom AI use cases')} used={o.usage.customAi} max={o.config.quotas.customAi} /></div></Card>
             <Card title={t('Verticals')}>{o.verticals.length ? o.verticals.map(v => <div key={v.id} className="row small"><span className="tag s5">{v.vertical}</span><span className="muted">v{v.version} · {v.validation} · {fmtDate(v.activated_at)}</span></div>) : <p className="small muted">{t('No vertical activated; universal processes only.')}</p>}</Card>
+            <Currencies o={o} write={write && can('tenancy.manage')} onSaved={org.reload} />
             <Card title={t('Group benchmarking')}><p className="small">{o.benchmark_sharing ? t('This organization shares its aggregated metrics with its group.') : t('This organization does not share its metrics with its group.')}</p></Card>
           </div>
         </div>
@@ -123,5 +124,23 @@ export default function Organization() {
         </Modal>
       )}
     </>
+  );
+}
+
+// Default currency and enabled currencies of the organization (FR-DA-I18N-09).
+function Currencies({ o, write, onSaved }) {
+  const { t, toast } = useApp();
+  const [def, setDef] = useState(o.currency);
+  const [on, setOn] = useState(o.currencies || []);
+  const save = async () => { try { await api(`/orgs/${o.id}`, { method: 'PUT', body: { currency: def, currencies: [...new Set([def, ...on])] } }); toast(t('Currencies saved.')); onSaved(); } catch (e) { toast(e.message, 'error'); } };
+  return (
+    <Card title={t('Currencies')}>
+      <p className="small muted">{t('Every amount is recorded with its currency; totals are given per currency, never added across currencies.')}</p>
+      <Field label={t('Default currency')}>{(id) => <select id={id} className="select" style={{ maxWidth: 200 }} disabled={!write} value={def} onChange={e => setDef(e.target.value)}>{(o.currencyList || []).map(c => <option key={c} value={c}>{c}</option>)}</select>}</Field>
+      <fieldset style={{ border: 0, padding: 0, margin: '8px 0 0' }}><legend className="small strong">{t('Enabled currencies')}</legend>
+        <div className="row" style={{ flexWrap: 'wrap', gap: 12 }}>{(o.currencyList || []).map(c => <label key={c} className="checkbox small"><input type="checkbox" disabled={!write || c === def} checked={c === def || on.includes(c)} onChange={e => setOn(e.target.checked ? [...on, c] : on.filter(x => x !== c))} /><span>{c}</span></label>)}</div>
+      </fieldset>
+      {write && <div className="row" style={{ marginTop: 12 }}><button type="button" className="btn btn-primary" onClick={save}>{t('Save')}</button></div>}
+    </Card>
   );
 }

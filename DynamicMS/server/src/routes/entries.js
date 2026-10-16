@@ -1,11 +1,12 @@
 // Multi-record entry interfaces (SRS 7.2, FR-DA-MRE-19 to 31): open a Multi-Entry, save rows
 // with their Row Stamps, undo a paste or an import as one audited operation, read an imported
 // file (untrusted input, NFR-DA-SEC-22), give the import template and export the current view.
+import { safePackage } from '../services/ooxml.js';
 import express, { Router } from 'express';
 import ExcelJS from 'exceljs';
 import { get, run, uid, now, J, P } from '../db.js';
 import { requirePerm } from '../auth.js';
-import { h, bad, notFound, HttpError, langOf } from '../http.js';
+import { h, bad, notFound, HttpError, langOf, attachment } from '../http.js';
 import { audit } from '../services/audit.js';
 import { config } from '../config.js';
 import { openSource, readStamped, REASONS } from '../services/entrysources.js';
@@ -147,11 +148,7 @@ r.put('/entries/import/:id', requirePerm('records.view', 'execution.view', 'proc
   res.json({ ok: true });
 }));
 
-// Content-Disposition with a Latin fallback and the UTF-8 name (NFR-DA-I18N-07, RFC 6266).
-export function attachment(res, name) {
-  const ascii = String(name).normalize('NFD').replace(/\p{M}/gu, '').replace(/[^\x20-\x7e]/g, '_').replace(/["\\]/g, '_');
-  res.setHeader('Content-Disposition', `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`);
-}
+export { attachment };
 
 // Import template (stage 1): column titles, required ones marked, and an example row.
 r.get('/entries/:source/template', requirePerm('records.view', 'execution.view', 'process.view', 'templates.manage'), h(async (req, res) => {
@@ -169,7 +166,7 @@ r.get('/entries/:source/template', requirePerm('records.view', 'execution.view',
   ws.columns.forEach(c => { c.width = 24; });
   attachment(res, `${name}.xlsx`);
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.send(Buffer.from(await wb.xlsx.writeBuffer()));
+  res.send(await safePackage(Buffer.from(await wb.xlsx.writeBuffer())));
 }));
 
 // Export of the current view (FR-DA-MRE-31): display values with the grid's column titles,
@@ -190,7 +187,7 @@ r.post('/entries/:source/export', requirePerm('records.view', 'execution.view', 
   if (headers.length) ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: headers.length } };
   attachment(res, `${name}.xlsx`);
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.send(Buffer.from(await wb.xlsx.writeBuffer()));
+  res.send(await safePackage(Buffer.from(await wb.xlsx.writeBuffer())));
 }));
 
 export default r;

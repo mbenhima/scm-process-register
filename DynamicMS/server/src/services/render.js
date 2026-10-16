@@ -5,6 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import PDFDocument from 'pdfkit';
 import ExcelJS from 'exceljs';
+import { safePackage } from './ooxml.js';
 import * as docx from 'docx';
 
 const require = createRequire(import.meta.url);
@@ -438,7 +439,7 @@ export async function toXlsx(model, lang) {
     if (t.caption) { ws.addRow([]); const cr = ws.addRow([t.caption]); cr.getCell(1).font = { name: BODY_FONT, italic: true, size: 9, color: { argb: 'FF5A6B7B' } }; }
     ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: t.columns.length } };
   });
-  return wb.xlsx.writeBuffer();
+  return safePackage(Buffer.from(await wb.xlsx.writeBuffer()));
 }
 
 // ---------------------------------------------------------------- DOCX
@@ -529,14 +530,15 @@ export async function toDocx(model, lang) {
       children,
     }],
   });
-  return Packer.toBuffer(d);
+  return safePackage(await Packer.toBuffer(d));
 }
 
 // ---------------------------------------------------------------- CSV
 export function toCsv(model) {
   const sec = (model.sections || []).find(s => s.table);
   if (!sec) return '';
-  const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  // A cell starting with = + - @ is written as text so a spreadsheet does not run it (NFR-DA-SEC-21).
+  const q = (v) => { let x = String(v ?? ''); if (/^[=+\-@\t\r]/.test(x) && !/^-?\d+([.,]\d+)?%?$/.test(x)) x = `'${x}`; return `"${x.replace(/"/g, '""')}"`; };
   const lines = [sec.table.columns.map(c => q(c.label)).join(',')];
   for (const r of sec.table.rows) lines.push(sec.table.columns.map(c => q(r[c.key])).join(','));
   return '﻿' + lines.join('\r\n');

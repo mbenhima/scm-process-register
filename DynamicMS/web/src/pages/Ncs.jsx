@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Plus, Check } from 'lucide-react';
+import { fmtMoney, totalsByCurrency } from '../lib/money.js';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { PageHead, Card, Loading, ErrorBox, Status, Table, tx, Modal, Field, Tabs } from '../components/ui.jsx';
@@ -34,11 +35,12 @@ export function ActionModal({ projectId, orgId, source, onClose, onDone }) {
 }
 
 export default function Ncs() {
-  const { t, L, lang, projectId, fmtDate, toast, can, readOnly } = useApp();
+  const { t, L, lang, projectId, project, fmtDate, toast, can, readOnly } = useApp();
   const navigate = useNavigate();
   const [tab, setTab] = useState('open');
   const { data, loading, error, reload } = useData(projectId ? `/projects/${projectId}/ncs` : null);
   const [nw, setNw] = useState(null);
+  const org = useData(nw && project?.org?.id ? `/orgs/${project.org.id}` : null);
   if (!projectId) return <NoProject />;
   const create = async () => {
     try { const r = await api(`/projects/${projectId}/ncs`, { method: 'POST', body: nw }); toast(t('Problem reported as {code}.', { code: r.code })); setNw(null); navigate(`/ncs/${r.id}`); } catch (e) { toast(e.message, 'error'); }
@@ -58,9 +60,11 @@ export default function Ncs() {
           { key: 'stage', label: t('Stage'), render: n => <Status value={n.stage} /> },
           { key: 'detected_at', label: t('Detected'), render: n => fmtDate(n.detected_at) },
           { key: 'owner_name', label: t('Owner') },
+          { key: 'cost', label: t('Cost'), render: n => (n.cost ? fmtMoney(n.cost, n.cost_currency, lang) : '—'), sortValue: n => n.cost || 0 },
           { key: 'actions', label: t('Actions'), width: 70 },
         ]} />
       )}
+      {rows.some(n => n.cost) && <p className="small" role="status"><span className="strong">{t('Total cost')}: </span>{totalsByCurrency(rows, 'cost', 'cost_currency', lang).join(' · ')}</p>}
       {nw && (
         <Modal title={t('Report a problem')} onClose={() => setNw(null)} footer={<><button className="btn" onClick={() => setNw(null)}>{t('Cancel')}</button><button className="btn btn-primary" disabled={!nw.title || !nw.description} onClick={create}>{t('Submit')}</button></>}>
           <div className="stack">
@@ -69,6 +73,7 @@ export default function Ncs() {
             <div className="form-grid">
               <Field label={t('Source')}>{(id) => <select id={id} className="select" value={nw.source} onChange={e => setNw({ ...nw, source: e.target.value })}>{SOURCES.map(s => <option key={s} value={s}>{L(s)}</option>)}</select>}</Field>
               <Field label={t('Criticality')} hint={t('Critical raises an alert to the Quality Manager and top management.')}>{(id) => <select id={id} className="select" value={nw.criticality} onChange={e => setNw({ ...nw, criticality: e.target.value })}>{['Minor', 'Major', 'Critical'].map(s => <option key={s} value={s}>{L(s)}</option>)}</select>}</Field>
+              <Field label={t('Cost of the problem')} hint={t('Optional; in one of the currencies enabled for the organization.')}>{(id) => <div className="row" style={{ gap: 8, flexWrap: 'nowrap' }}><input id={id} className="input num" type="number" min="0" step="0.01" value={nw.cost || ''} onChange={e => setNw({ ...nw, cost: e.target.value })} /><select className="select" style={{ width: 'auto' }} aria-label={t('Currency')} value={nw.costCurrency || org.data?.currency || ''} onChange={e => setNw({ ...nw, costCurrency: e.target.value })}>{(org.data?.currencies || []).map(c => <option key={c} value={c}>{c}</option>)}</select></div>}</Field>
               <Field label={t('Category')}>{(id) => <select id={id} className="select" value={nw.category} onChange={e => setNw({ ...nw, category: e.target.value })}>{['Product', 'Documentation', 'Supplier', 'Competence', 'Metrology', 'OH&S', 'Environment'].map(s => <option key={s} value={s}>{L(s)}</option>)}</select>}</Field>
             </div>
           </div>
@@ -119,7 +124,7 @@ export function NcDetail() {
           <Card title={t('Analysis')}>
             <p className="small"><span className="strong">{t('Root cause')}: </span>{tx(n.root_cause, lang) || <span className="muted">{t('Not recorded yet')}</span>}</p>
             <p className="small"><span className="strong">{t('Owner')}: </span>{n.owner?.name || '—'}</p>
-            {n.cost ? <p className="small"><span className="strong">{t('Cost of the problem')}: </span>{n.cost}</p> : null}
+            {n.cost ? <p className="small"><span className="strong">{t('Cost of the problem')}: </span>{fmtMoney(n.cost, n.cost_currency, lang)}</p> : null}
             {manage && next && <button className="btn btn-primary" onClick={() => (n.stage === 'Analysis' && !n.root_cause ? setRc('') : next === 'Closed' && !n.rex.length ? setRex({ wentWell: '', notWell: '', recommendation: '', rating: 4 }) : advance())}>{t('Move to {s}', { s: L(next) })}</button>}
           </Card>
           <Card><Attachments entityType="nc" entityId={n.id} /></Card>

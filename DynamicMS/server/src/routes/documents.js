@@ -8,7 +8,7 @@ import path from 'node:path';
 import multer from 'multer';
 import { all, get, run, uid, now, J, P, tx } from '../db.js';
 import { requirePerm, can } from '../auth.js';
-import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadProject, loadOrgRow, conflict } from '../http.js';
+import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadProject, loadOrgRow, conflict, attachment } from '../http.js';
 import { audit, snapshot } from '../services/audit.js';
 import { DOC_TEMPLATES, TEMPLATE_CATEGORIES, templateByCode } from '../content/templates.js';
 import { buildContent, documentModel, diagramSvg, SOURCE_NAMES } from '../services/docdata.js';
@@ -336,7 +336,7 @@ r.get('/documents/:id/download', requirePerm('records.view'), h(async (req, res)
   if (fmt !== 'xlsx') await materialize(model);
   if (v.status !== 'Published') model.subtitle = `${model.subtitle ? model.subtitle + ' · ' : ''}${{ en: 'UNCONTROLLED DRAFT', fr: 'PROJET NON MAÎTRISÉ', ar: 'مسودة غير خاضعة للضبط' }[req.lang]}`;
   const name = `${safeName(d.code)}_v${v.version}.${fmt}`;
-  res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(name)}"`);
+  attachment(res, name);
   audit(req, d.org_id, 'document', d.id, 'download', null, { version: v.version, format: fmt }, null);
   if (fmt === 'pdf') { res.setHeader('Content-Type', 'application/pdf'); return toPdf(model, req.lang, res); }
   if (fmt === 'docx') { res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'); return res.send(await toDocx(model, req.lang)); }

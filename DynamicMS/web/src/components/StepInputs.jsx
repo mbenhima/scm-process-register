@@ -280,10 +280,19 @@ export function RowsEditor({ field, value, onChange, disabled, ctx }) {
   }, [field, pickers, lang, t]);
   const renderCell = useCallback((col, v, onCell, { row, big }) => (STEP_TYPES.includes(col.type) ? <Cell col={col} value={v} onChange={onCell} ctx={ctx} big={big} rows={entry.current?.rows?.() || []} /> : undefined), [ctx]);
   const blank = () => Object.fromEntries(field.columns.map(c => [c.key, c.type === 'obs' || c.type === 'parties' ? [] : '']));
+  // Function × Level Matrix (FR-DA-SFM-08): add every function not yet listed.
+  const addMissingFunctions = () => {
+    const fnCol = field.columns.find(c => c.key === 'function');
+    const listed = new Set((entry.current?.rows?.() || []).map(r => norm(tx(r.function, 'en'))));
+    const missing = (fnCol?.options || []).filter(o => !listed.has(norm(tx(o, 'en'))));
+    if (!missing.length) { toast(t('Every function is already listed.')); return; }
+    entry.current?.insertRows(missing.map(o => ({ ...blank(), function: o, origin: 'Library' })));
+    toast(t('{n} rows added.', { n: missing.length }));
+  };
   const suggestNeeds = async () => {
     setAiNote(null);
     try {
-      const r = await api(`/steps/${ctx.stepId}/needs-suggest`, { method: 'POST', body: {} });
+      const r = await api(`/steps/${ctx.stepId}/${field.funcLevel ? 'funclevel' : 'needs'}-suggest`, { method: 'POST', body: {} });
       setAiNote({ engine: r.engine, error: r.error, n: r.rows.length, rows: r.rows, logId: r.logId, usecase: r.usecase, warning: r.warning, prompt: r.prompt, sources: r.sources });
     } catch (e) { setAiNote({ error: e.message, n: 0 }); }
   };
@@ -291,9 +300,14 @@ export function RowsEditor({ field, value, onChange, disabled, ctx }) {
     <div className="rows-editor">
       <MultiEntry source={`step:${ctx.stepId}:${field.key}`} columns={columns} renderCell={renderCell} readOnly={disabled} apiRef={entry}
         title={tx(field.label, lang)} countLabel={(n) => { const l = tx(field.label, lang); return `${n} ${lang === 'ar' ? l : l.charAt(0).toLowerCase() + l.slice(1)}.`; }} newRow={blank} onRowsChange={onChange}
-        aiPropose={field.needs && !disabled && ctx.ai ? suggestNeeds : undefined}
-        extraActions={field.needs && !disabled ? <button type="button" className="btn btn-sm" onClick={() => setLib(true)}><Library size={14} />{t('Add from the library')}</button> : null} />
-      {aiNote && <AiProposal note={aiNote} columns={columns} ctx={ctx} onClose={() => setAiNote(null)} onAccept={(rows) => entry.current?.insertRows(rows.map(x => ({ ...blank(), ...x, origin: 'AI' })))} />}
+        aiPropose={(field.needs || field.funcLevel) && !disabled && (ctx.ai || field.funcLevel) ? suggestNeeds : undefined}
+        extraActions={field.needs && !disabled ? <button type="button" className="btn btn-sm" onClick={() => setLib(true)}><Library size={14} />{t('Add from the library')}</button>
+          : field.funcLevel && !disabled ? <button type="button" className="btn btn-sm" onClick={addMissingFunctions}><Plus size={14} />{t('Add every function not yet listed')}</button> : null} />
+      {aiNote && <AiProposal note={aiNote} columns={columns} ctx={ctx} onClose={() => setAiNote(null)} onAccept={(rows) => {
+        // A proposed function already listed replaces nothing: it is skipped, the others are added.
+        const listed = field.funcLevel ? new Set((entry.current?.rows?.() || []).map(r => norm(tx(r.function, 'en')))) : null;
+        entry.current?.insertRows(rows.filter(x => !listed || !listed.has(norm(tx(x.function, 'en')))).map(x => ({ ...blank(), ...x, origin: 'AI' })));
+      }} />}
       {lib && <LibraryModal ctx={ctx} onClose={() => setLib(false)} onAdd={(list) => { entry.current?.insertRows(list.map(x => ({ ...blank(), need: x.need, origin: 'Library' }))); setLib(false); toast(t('{n} rows added.', { n: list.length })); }} />}
       {field.createsActions && <p className="hint">{t('On completion, each row becomes an action in the Action plan, with its owner and due date.')}</p>}
       {field.createsObjectives && <p className="hint">{t('On completion, each row becomes an entry of the objectives register.')}</p>}

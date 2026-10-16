@@ -8,7 +8,7 @@ export function writePersonal(v) {
   try { if (v) localStorage.setItem(KEY, JSON.stringify(v)); else localStorage.removeItem(KEY); } catch { /* storage blocked */ }
 }
 // The requests that generate an AI suggestion — only they carry the connection.
-const GENERATION = /^\/(ai\/suggest|ai\/usecases\/[^/]+\/test|ai\/personal\/test|steps\/[^/]+\/needs-suggest|orgs\/[^/]+\/projects\/draft|assistant\/ask)(\?|$)/;
+const GENERATION = /^\/(ai\/suggest|steps\/[^/]+\/funclevel-suggest|ai\/usecases\/[^/]+\/test|ai\/personal\/test|steps\/[^/]+\/needs-suggest|orgs\/[^/]+\/projects\/draft|assistant\/ask)(\?|$)/;
 export function personalHeader(path, method) {
   if (method !== 'POST' || !GENERATION.test(path)) return {};
   const v = readPersonal();

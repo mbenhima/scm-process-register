@@ -2,6 +2,7 @@
 // graphical chart: a title slide, a KPI slide, one slide per text section and tables split
 // over as many slides as their rows need (navy header, alternate rows, status fills).
 // Arabic is laid out right to left.
+import { safePackage } from './ooxml.js';
 import PptxGenJS from 'pptxgenjs';
 import { C, STATUS, itemsOf, palette } from './render.js';
 
@@ -122,5 +123,5 @@ export async function toPptx(model, lang) {
     }
     flush();
   }
-  return pres.write({ outputType: 'nodebuffer' });
+  return safePackage(await pres.write({ outputType: 'nodebuffer' }));
 }

@@ -253,23 +253,33 @@ function normObs(v, lang) {
   const one = (x) => (typeof x === 'string' ? { id: null, name: { [lang]: x } } : { id: x.id || null, name: typeof x.name === 'string' ? { [lang]: x.name } : x.name });
   return Array.isArray(v) ? v.filter(Boolean).map(one) : one(v);
 }
-function normalizeFields(kind, fields, lang, step) {
+// A text the user did not change keeps every stored translation (FR-DA-I18N-10).
+const isI18n = (v) => v && typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length > 0 && Object.keys(v).every(k => ['en', 'fr', 'ar'].includes(k));
+function keepText(type, v, prev, lang) {
+  if (!['text', 'textarea', 'combo'].includes(type) || typeof v !== 'string' || !isI18n(prev)) return normCell(type, v, lang);
+  if (!v.trim()) return null;
+  if ((prev[lang] ?? prev.en) === v) return prev;
+  return type === 'combo' ? { [lang]: v } : { ...prev, [lang]: v };
+}
+function normalizeFields(kind, fields, lang, step, prevFields = {}) {
   const def = formFor(step, kind);
   const out = {};
   for (const f of def.fields) {
     const v = fields?.[f.key];
     if (v === undefined) continue;
     if (f.columns && Array.isArray(v)) {
+      const before = Array.isArray(prevFields[f.key]) ? Object.fromEntries(prevFields[f.key].filter(r => r?._rid).map(r => [r._rid, r])) : {};
       out[f.key] = v.filter(r => r && typeof r === 'object').map(r => {
         const o = {};
-        for (const c of f.columns) { const x = normCell(c.type, r[c.key], lang); if (x !== undefined) o[c.key] = x; }
+        const pr = r._rid ? before[r._rid] || {} : {};
+        for (const c of f.columns) { const x = keepText(c.type, r[c.key], pr[c.key], lang); if (x !== undefined) o[c.key] = x; }
         for (const k of Object.keys(r)) if (k.startsWith('_')) o[k] = r[k];
         // Interactions keep a readable item "Macro process 1 → Macro process 2".
         if (f.rule === 'interactions' && (o.from || o.to)) o.item = mpPair(o.from, o.to);
         return o;
       });
     } else if (f.type === 'obs') out[f.key] = normObs(v, lang);
-    else out[f.key] = normCell(f.type, v, lang);
+    else out[f.key] = keepText(f.type, v, prevFields[f.key], lang);
   }
   if ((kind === 'assess' || kind === 'needs') && Array.isArray(out.matrix)) out.score = matrixScore(out.matrix);
   return out;
@@ -288,7 +298,7 @@ export function saveStep(req, exec, fields, complete) {
   if (phaseLocked(exec)) throw conflict('PHASE_LOCKED', 'The phase gate is decided; the step can no longer change.');
   const lang = req.lang || 'en';
   const step = cat.stepById[exec.step_id];
-  const norm = normalizeFields(exec.form_kind, fields, lang, step);
+  const norm = normalizeFields(exec.form_kind, fields, lang, step, P(exec.fields) || {});
   const merged = { ...(P(exec.fields) || {}), ...norm };
   const applied = cat.rules.filter(r => r.step === exec.step_id).map(r => ({ id: r.id, type: r.type, condition: r.condition, action: r.action }));
   if (complete) {

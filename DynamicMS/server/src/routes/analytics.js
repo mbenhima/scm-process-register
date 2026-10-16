@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { all, get, P } from '../db.js';
 import { requirePerm, can, assertFeature } from '../auth.js';
-import { h, send, bad, loadProject, requireOrg, orgAccess, langOf, forbidden } from '../http.js';
+import { h, send, bad, loadProject, requireOrg, orgAccess, langOf, forbidden, attachment } from '../http.js';
 import { catalog, loc } from '../catalog/store.js';
 import { config } from '../config.js';
 
@@ -57,7 +57,7 @@ r.get('/portfolio', requirePerm('tenancy.view', 'dashboard.view'), h((req, res) 
     const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
     const lines = [['Code', 'Project', 'Organization', 'MS', 'Progress', ...stages.map(s => s.id)].map(q).join(',')];
     for (const x of rowsOut) lines.push([x.code, loc(x.name, lang), loc(x.org, lang), x.ms, `${x.progress}%`, ...stages.map(s => x.cells[s.id].status + (x.cells[s.id].runs > 1 ? ` (x${x.cells[s.id].runs})` : ''))].map(q).join(','));
-    res.setHeader('Content-Type', 'text/csv; charset=utf-8'); res.setHeader('Content-Disposition', 'attachment; filename="portfolio.csv"');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8'); attachment(res, 'portfolio.csv');
     return res.send('﻿' + lines.join('\r\n'));
   }
   send(req, res, { stages, rows: rowsOut, totals, legend: ['Completed', 'In progress', 'At gate', 'On hold', 'Not started', 'Not applicable'] });

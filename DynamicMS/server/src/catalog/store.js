@@ -2,6 +2,7 @@
 import { all, run, now, J } from '../db.js';
 import { overlayCustoms } from '../services/blueprint.js';
 import { withPlaces } from './aiplaces.js';
+import { CHOICES } from './stepforms.js';
 
 let cache = null;
 
@@ -22,6 +23,8 @@ export function load() {
 
 export function indexCatalog(c) {
   withPlaces(c);
+  // The functions of the process design are the rows of a Function × Level Matrix.
+  if (Array.isArray(c.functions)) CHOICES.functions = c.functions.map(f => f.name);
   c.mpById = Object.fromEntries((c.macroProcesses || []).map(m => [m.id, m]));
   c.mpByCode = Object.fromEntries((c.macroProcesses || []).map(m => [m.code, m]));
   c.stepById = Object.fromEntries((c.steps || []).map(s => [s.id, s]));

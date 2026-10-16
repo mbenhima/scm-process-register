@@ -11,6 +11,8 @@ import { ROLES } from '../permissions.js';
 import { catalog } from '../catalog/store.js';
 import { config } from '../config.js';
 import { seedLibrary } from '../services/aiusecases.js';
+import { CURRENCIES, orgCurrencies } from '../services/money.js';
+import { COUNTRY_CURRENCY } from '../services/migrations.js';
 import { generate, requireServing } from '../services/aigen.js';
 import { assemble } from '../services/aiprompt.js';
 
@@ -72,7 +74,7 @@ r.get('/orgs/:id', requirePerm('tenancy.view', 'dashboard.view'), h((req, res) =
   const cfg = orgConfig(o);
   const usage = { users: get('SELECT COUNT(*) n FROM users WHERE org_id=?', o.id).n, projects: get('SELECT COUNT(*) n FROM projects WHERE org_id=?', o.id).n, obsNodes: get('SELECT COUNT(*) n FROM obs_nodes WHERE org_id=?', o.id).n, customAi: get('SELECT COUNT(*) n FROM ai_usecases WHERE org_id=? AND custom=1', o.id).n };
   send(req, res, {
-    ...o, access, group: o.group_id ? row(get('SELECT id, name FROM groups_ WHERE id=?', o.group_id)) : null, config: cfg, usage, entitledMps: entitledMps(o).size,
+    ...o, currencies: orgCurrencies(o).enabled, currencyList: CURRENCIES, access, group: o.group_id ? row(get('SELECT id, name FROM groups_ WHERE id=?', o.group_id)) : null, config: cfg, usage, entitledMps: entitledMps(o).size,
     price: can(req, 'config.manage') ? computePrice(o) : null,
     verticals: rows(all('SELECT * FROM vertical_activations WHERE org_id=?', o.id)),
     onboarding: row(get('SELECT * FROM onboarding_plans WHERE org_id=?', o.id)) || null,
@@ -104,6 +106,8 @@ r.post('/orgs', requirePerm('tenancy.manage'), h((req, res) => {
     if (b.groupId && !get('SELECT 1 FROM groups_ WHERE id=?', b.groupId)) throw bad('BAD_GROUP', 'Unknown group.');
     if (b.adminEmail && get('SELECT 1 FROM users WHERE email=?', b.adminEmail.toLowerCase())) throw new HttpError(409, 'EMAIL_TAKEN', 'This administrator e-mail is already used.');
     if (b.adminEmail) run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at) VALUES(?,?,?,?,?,?,?,0,?,?)', uid(), id, b.adminEmail.toLowerCase(), b.adminName || 'Administrator', bcrypt.hashSync(b.adminPassword || config.demoPassword, 10), J(['tenant_admin']), b.lang || 'en', 'Active', now());
+    const cur = CURRENCIES.includes(b.currency) ? b.currency : (COUNTRY_CURRENCY[b.country] || 'USD');
+    run('UPDATE organizations SET currency=?, currencies=? WHERE id=?', cur, J([...new Set([cur, ...(Array.isArray(b.currencies) ? b.currencies.filter(x => CURRENCIES.includes(x)) : ['EUR', 'USD'])])]), id);
     const c = catalog();
     seedLibrary(id);
     for (const b2 of c.rules) run('INSERT INTO business_rules(id,org_id,code,step_ref,mp_id,condition,action_code,action,rule_type,severity,owner_role,active,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,1,?)', uid(), id, b2.id, b2.step, b2.mp, J(b2.condition), b2.actionId, J(b2.action), b2.type, 'Medium', c.mpById[b2.mp]?.ownerRoleCode || 'ims_manager', now());
@@ -117,8 +121,11 @@ r.put('/orgs/:id', requirePerm('tenancy.manage'), h((req, res) => {
   const o = get('SELECT * FROM organizations WHERE id=?', req.params.id);
   const b = req.body || {};
   const name = b.name ? { ...P(o.name), [req.lang]: b.name } : P(o.name);
-  run('UPDATE organizations SET name=?, employees=COALESCE(?,employees), country=COALESCE(?,country), default_lang=COALESCE(?,default_lang), benchmark_sharing=COALESCE(?,benchmark_sharing) WHERE id=?',
-    J(name), b.employees ?? null, b.country ?? null, b.lang ?? null, b.benchmarkSharing === undefined ? null : (b.benchmarkSharing ? 1 : 0), o.id);
+  // Default currency and enabled currencies (FR-DA-I18N-09).
+  if (b.currency !== undefined && !CURRENCIES.includes(b.currency)) throw bad('BAD_CURRENCY', `Choose a currency among ${CURRENCIES.join(', ')}.`);
+  const enabled = Array.isArray(b.currencies) ? [...new Set(b.currencies.filter(c => CURRENCIES.includes(c)))] : null;
+  run('UPDATE organizations SET name=?, employees=COALESCE(?,employees), country=COALESCE(?,country), default_lang=COALESCE(?,default_lang), benchmark_sharing=COALESCE(?,benchmark_sharing), currency=COALESCE(?,currency), currencies=COALESCE(?,currencies) WHERE id=?',
+    J(name), b.employees ?? null, b.country ?? null, b.lang ?? null, b.benchmarkSharing === undefined ? null : (b.benchmarkSharing ? 1 : 0), b.currency || null, enabled ? J(enabled) : null, o.id);
   audit(req, o.id, 'organization', o.id, 'update', row(o), b, null);
   snapshot(req, o.id, 'organization', o.id, row(get('SELECT * FROM organizations WHERE id=?', o.id)), null);
   res.json({ ok: true });

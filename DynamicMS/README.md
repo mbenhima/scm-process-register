@@ -19,6 +19,10 @@ npm run dev       # open http://localhost:5173
 
 Sign in with `quality@horizon-universal.example`, `ims@atlas-sme.example` or `quality@nova-aec.example`. The password for every organization account is `Demo@2026`. The platform administrator is `admin@dynamicms.example` with password `Admin@2026`.
 
+## Upgrade
+
+Replace the files, keep `server/data/`, then restart the server: it migrates the data in place at its first start (no reseed). See `RELEASE_NOTES.md`.
+
 ## Demonstration data
 
 | Tenancy | Organizations | Projects |
