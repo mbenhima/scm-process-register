@@ -68,3 +68,26 @@ cd ../server && JWT_SECRET=<long random value> NODE_ENV=production npm start   #
 ```
 
 See `deliverables/DynamicMS_Installation_Guide.pdf` for configuration, backups, on-premises licensing and troubleshooting.
+
+## Editions and runtime images (customer, editor)
+
+The same code builds three editions, chosen at build time (`__EDITION__`):
+
+| Edition | Use | Commercial data | Licences |
+|---|---|---|---|
+| `dev` | Development from the source (`npm run dev`, `npm start`) | Shown | Issued and verified |
+| `editor` | The editor's production platform (SaaS, private cloud, or localhost on Windows) | Shown | Issued, changed, revoked (Administration › Licences) |
+| `customer` | The customer's on-premises platform | Removed (prices, bundles, discounts, quotes) | Verified with the embedded public key only |
+
+`runtime/` builds the production images, without application source code:
+
+```bash
+cd runtime && npm ci
+./build-image.sh customer   # or: editor
+```
+
+- Server: bundled, tree-shaken and minified (esbuild), then compiled to V8 bytecode in the image.
+- Web client: minified JavaScript and CSS, chunks loaded on demand, Brotli and gzip copies served as they are; hashed assets cached for a year.
+- Output: `runtime/dist/Docker_Runtime_<Edition>_Linux_DynamicMS_2026.10_Image.tar.gz` and its SHA-256.
+- Installation packages: `runtime/deploy/customer-linux`, `editor-linux`, `editor-windows`. French guides in `deliverables/Guide_Installation_Docker_Runtime_*`.
+- The licence signing key (private) is never in the repository; `runtime/keys/` holds only the public key embedded in the customer edition.
