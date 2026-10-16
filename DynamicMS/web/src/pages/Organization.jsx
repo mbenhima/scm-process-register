@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { COMMERCIAL } from '../lib/edition.js';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import ObsRoles from '../components/ObsRoles.jsx';
 import { Plus, Building2, FolderTree } from 'lucide-react';
@@ -57,7 +58,7 @@ export default function Organization() {
                 <div><div className="xsmall muted">{t('Licensed macro processes')}</div><div className="strong">{o.entitledMps}</div></div>
               </div>
               <p className="small" style={{ marginTop: 16 }}>{t('Features')}: {o.config.features.join(' · ')}</p>
-              {o.price && <p className="small"><span className="strong">{t('Monthly price')}: </span>{o.price.totalMonthly} USD ({t('bundle discount {b}%', { b: o.price.bundleDiscountPct })})</p>}
+              {COMMERCIAL && o.price && <p className="small"><span className="strong">{t('Monthly price')}: </span>{o.price.totalMonthly} USD ({t('bundle discount {b}%', { b: o.price.bundleDiscountPct })})</p>}
             </Card>
             {o.onboarding && (
               <Card title={t('SME onboarding')} action={<Status value={o.onboarding.status} />}>

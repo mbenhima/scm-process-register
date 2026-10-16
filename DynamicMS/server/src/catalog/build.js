@@ -1,18 +1,12 @@
 // Builds the normalized, trilingual reference catalog from the extracted source
 // documents (seed/catalog/catalog.en.json) and their translations (seed/catalog/i18n.json).
-import fs from 'node:fs';
-import path from 'node:path';
-import { ROOT } from '../config.js';
+import { readSources } from './sources.js';
 import { formKindOf } from './forms.js';
 import { explicitStepName, explicitTaskName, stepDescriptions } from './naming.js';
 import { MP_REORDER, MP_OBJECTS, MP_CLAUSES } from './objects.js';
 
-const DIR = path.join(ROOT, 'seed', 'catalog');
-
 export function loadSources() {
-  const en = JSON.parse(fs.readFileSync(path.join(DIR, 'catalog.en.json'), 'utf8'));
-  const dict = JSON.parse(fs.readFileSync(path.join(DIR, 'i18n.json'), 'utf8'));
-  return { en, dict };
+  return readSources();
 }
 
 export function makeT(dict) {

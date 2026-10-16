@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  define: { __EDITION__: JSON.stringify(process.env.BUILD_EDITION || 'dev') },
   css: { postcss: { plugins: [] } },
   // Pre-bundle every dependency at start-up: without it the development server discovers
   // dependencies on the first visit, re-optimizes them and reloads, which can leave the first

@@ -12,3 +12,39 @@
 1708	Expire le
 1709	Éléments sous licence
 1710	Installer un fichier de licence
+1711	Licence {c} réémise en version {v}.
+1712	Licence {c} émise.
+1713	Modifier la licence {c}
+1714	Nouvelle licence
+1715	Réémettre la licence
+1716	Émettre la licence
+1717	Contact chez le client
+1718	Postes (comptes actifs)
+1719	Expire le
+1720	Notes
+1721	Le client installe le nouveau fichier de licence ; la version précédente reste dans l'historique.
+1722	Révoquer la licence {c} ?
+1723	La licence ne peut plus être téléchargée ni modifiée. Une installation qui la détient déjà continue de fonctionner jusqu'à sa date d'expiration ou jusqu'à l'installation d'une autre licence.
+1724	Révoquer
+1725	Raison
+1726	Licence {c} révoquée.
+1727	Supprimer la licence {c} ?
+1728	La licence et son historique sont supprimés ; la piste d'audit conserve la suppression.
+1729	Licence {c} supprimée.
+1730	Clé de signature
+1731	Télécharger la clé publique
+1732	Empreinte
+1733	Fichier de la clé
+1734	Licences des clients
+1735	Aucune licence émise pour l'instant.
+1736	Émettez la première licence d'un client sur site.
+1737	Télécharger le fichier de licence
+1738	Licences
+1739	Rôles et permissions, configuration, intégrations, piste d'audit, import de données et exploitation de la plateforme.
+1740	Packs de base
+1741	Normes de conformité et de sécurité
+1742	Clé de signature prête.
+1743	Aucune clé de signature : placez la clé privée de l'éditeur à cet emplacement.
+1744	Cette clé ne correspond pas à celle des installations clientes : leurs licences seraient refusées.
+1745	Révoquée
+1746	Expirée

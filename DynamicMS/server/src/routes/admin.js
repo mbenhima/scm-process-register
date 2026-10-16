@@ -7,6 +7,7 @@ import multer from 'multer';
 import bcrypt from 'bcryptjs';
 import { all, get, run, uid, now, J, P, tx, getDb } from '../db.js';
 import { requirePerm, can, assertFeature, invalidateMatrix, loadMatrix, initialPassword, passwordProblem } from '../auth.js';
+import { keyStatus, licensableItems, listLicences, getLicence, createLicence, updateLicence, revokeLicence, deleteLicence, licenceFile, publicKeyPem } from '../services/licences.js';
 import { h, send, row, rows, bad, notFound, forbidden, requireOrg, loadOrgRow, paginate, HttpError, orgAccess, attachment } from '../http.js';
 import { audit, snapshot, versions } from '../services/audit.js';
 import { orgConfig, computePrice, BASE_PACKS, CAPABILITY_FEATURES, ADDON_FEATURES, COMPLIANCE_STANDARDS, NON_CERT_DISCLOSURE, FEATURES } from '../packs.js';
@@ -235,6 +236,43 @@ r.post('/integrations/:id/test', requirePerm('integrations.manage'), h((req, res
   run('UPDATE integrations SET health=?, checked_at=? WHERE id=?', ok ? 'OK' : 'Failed', now(), i.id);
   run('INSERT INTO integration_log(id,org_id,integration_id,direction,record,result,at) VALUES(?,?,?,?,?,?,?)', uid(), i.org_id, i.id, 'test', 'connection', ok ? 'OK' : 'Missing endpoint or credential', now());
   res.json({ health: ok ? 'OK' : 'Failed' });
+}));
+
+// ---- Licence management (editor edition): issue, change, revoke, delete, download.
+const issuer = (req, _res, next) => {
+  if (!config.licenceIssuing) return next(notFound('Endpoint'));
+  if (!req.user.is_platform_admin) return next(forbidden());
+  next();
+};
+r.get('/licences', issuer, h((req, res) => res.json({ key: keyStatus(), items: licensableItems(), licences: listLicences() })));
+r.get('/licences/public-key', issuer, h((req, res) => { attachment(res, 'DynamicMS_Licence_PublicKey.pem'); res.type('application/x-pem-file').send(publicKeyPem()); }));
+r.get('/licences/:id', issuer, h((req, res) => res.json(getLicence(req.params.id))));
+r.get('/licences/:id/file', issuer, h((req, res) => {
+  const f = licenceFile(req.params.id);
+  audit(req, null, 'licence', req.params.id, 'download', null, { name: f.name }, null);
+  attachment(res, f.name); res.type('application/json').send(f.text);
+}));
+r.post('/licences', issuer, h((req, res) => {
+  const l = createLicence(req.body || {}, req.user);
+  audit(req, null, 'licence', l.id, 'create', null, { code: l.code, customer: l.customer, seats: l.seats, expires: l.expires, packs: l.packs }, null);
+  res.status(201).json(l);
+}));
+r.put('/licences/:id', issuer, h((req, res) => {
+  const before = getLicence(req.params.id);
+  const l = updateLicence(req.params.id, req.body || {}, req.user);
+  audit(req, null, 'licence', l.id, 'update', { seats: before.seats, expires: before.expires, packs: before.packs, version: before.version }, { seats: l.seats, expires: l.expires, packs: l.packs, version: l.version }, req.body?.reason || null);
+  res.json(l);
+}));
+r.post('/licences/:id/revoke', issuer, h((req, res) => {
+  const l = revokeLicence(req.params.id, req.body?.reason);
+  audit(req, null, 'licence', l.id, 'revoke', null, { reason: l.revokeReason }, l.revokeReason);
+  res.json(l);
+}));
+r.delete('/licences/:id', issuer, h((req, res) => {
+  const before = getLicence(req.params.id);
+  deleteLicence(req.params.id);
+  audit(req, null, 'licence', req.params.id, 'delete', { code: before.code, customer: before.customer }, null, null);
+  res.json({ ok: true });
 }));
 
 // ---- Operations (FR-DA-OPS)

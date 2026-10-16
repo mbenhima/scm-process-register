@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { COMMERCIAL } from '../lib/edition.js';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useApp, useData } from '../lib/state.jsx';
 import { PageHead, Card, Loading, ErrorBox, Tabs, Table, tx, Search, Kpi } from '../components/ui.jsx';
@@ -21,13 +22,13 @@ export default function Process() {
   const act = useData(tab === 'activation' ? '/catalog/activation' : null);
   const [ref, setRef] = useState('rules');
   const refData = useData(tab === 'reference' ? `/catalog/reference/${ref}` : null, [ref]);
-  const com = useData(tab === 'commercial' ? '/catalog/commercial' : null);
+  const com = useData(COMMERCIAL && tab === 'commercial' ? '/catalog/commercial' : null);
   const refCols = useMemo(() => { const r = refData.data?.[0]; return r ? Object.keys(r).filter(k => !/Name$/.test(k) || !Object.keys(r).includes(k.replace(/Name$/, ''))).slice(0, 7) : []; }, [refData.data]);
   return (
     <>
       <PageHead eyebrow={t('Design')} title={t('Process design')} subtitle={t('The reference model every project runs: end-to-end processes, macro processes, tasks and steps, with their governance and vertical activation.')} />
       {sum.data && <div className="grid-kpi" style={{ marginBottom: 24 }}>{[['e2e', t('End-to-end processes')], ['macroProcesses', t('Macro processes')], ['tasks', t('Tasks')], ['steps', t('Steps')], ['verticals', t('Verticals')], ['requirements', t('SRS requirements')]].map(([k, l]) => <Kpi key={k} value={sum.data[k].toLocaleString()} label={l} />)}</div>}
-      <Tabs label={t('Process design views')} value={tab} onChange={setTab} tabs={[{ id: 'e2e', label: t('E2E processes') }, { id: 'mps', label: t('Macro processes') }, { id: 'verticals', label: t('Verticals') }, { id: 'activation', label: t('Activation matrix') }, { id: 'reference', label: t('Reference lists') }, { id: 'commercial', label: t('Packs and pricing') }]} />
+      <Tabs label={t('Process design views')} value={tab} onChange={setTab} tabs={[{ id: 'e2e', label: t('E2E processes') }, { id: 'mps', label: t('Macro processes') }, { id: 'verticals', label: t('Verticals') }, { id: 'activation', label: t('Activation matrix') }, { id: 'reference', label: t('Reference lists') }, ...(COMMERCIAL ? [{ id: 'commercial', label: t('Packs and pricing') }] : [])]} />
       {tab === 'e2e' && (e2e.data ? (
         <div className="grid-cards">{e2e.data.map(e => (
           <Link key={e.id} to={`/process/e2e/${e.id}`} className="phase-card" style={{ textDecoration: 'none' }}>
@@ -66,7 +67,7 @@ export default function Process() {
           {refData.data ? <Table rows={refData.data.map((r, i) => ({ _k: i, ...r }))} rowKey="_k" maxRows={300} columns={refCols.map(k => ({ key: k, label: k, render: r => cell(r[k], lang), sortValue: r => cell(r[k], lang) }))} /> : <Loading />}
         </>
       )}
-      {tab === 'commercial' && (com.data ? (
+      {COMMERCIAL && tab === 'commercial' && (com.data ? (
         <div className="stack">
           <Card title={t('Solution packs')}><Table rows={com.data.packs} columns={[{ key: 'id', label: 'ID' }, { key: 'name', label: t('Pack'), render: p => <span className="strong">{tx(p.name, lang)}</span> }, { key: 'type', label: t('Type'), render: p => tx(p.typeName, lang) }, { key: 'price', label: t('Price') }, { key: 'users', label: t('Users') }, { key: 'mps', label: t('Macro processes'), render: p => p.mps.length }]} /></Card>
           <Card title={t('Add-ons')}><Table rows={com.data.addons} columns={[{ key: 'id', label: 'ID' }, { key: 'name', label: t('Add-on'), render: a => tx(a.name, lang) }, { key: 'category', label: t('Category'), render: a => tx(a.category, lang) }, { key: 'price', label: t('Price') }]} /></Card>

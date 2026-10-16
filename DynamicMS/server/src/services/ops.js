@@ -41,11 +41,18 @@ export function scheduleBackups() {
 
 // ---- Licence provider
 const PUB = config.licencePublicKey || path.join(ROOT, 'licence', 'public.pem');
+// A runtime build carries the editor's public key compiled in; the customer edition accepts no other.
+/* global __LICENCE_PUBLIC_KEY__ */
+export const EMBEDDED_PUBLIC_KEY = typeof __LICENCE_PUBLIC_KEY__ !== 'undefined' ? __LICENCE_PUBLIC_KEY__ : '';
+export function licencePublicKey() {
+  if (EMBEDDED_PUBLIC_KEY && (config.edition === 'customer' || !config.licencePublicKey)) return crypto.createPublicKey(EMBEDDED_PUBLIC_KEY);
+  return crypto.createPublicKey(fs.readFileSync(PUB));
+}
 export function licenceStatus() {
   if (config.deploymentMode !== 'onprem') return { mode: 'saas', valid: true, message: 'Entitlements are managed by the platform configuration.' };
   try {
     const lic = JSON.parse(fs.readFileSync(config.licenceFile, 'utf8'));
-    const pub = crypto.createPublicKey(fs.readFileSync(PUB));
+    const pub = licencePublicKey();
     const ok = crypto.verify(null, Buffer.from(JSON.stringify(lic.payload)), pub, Buffer.from(lic.signature, 'base64'));
     if (!ok) return { mode: 'onprem', valid: false, message: 'Licence signature is invalid.' };
     if (lic.payload.expires && lic.payload.expires < new Date().toISOString().slice(0, 10)) return { mode: 'onprem', valid: false, payload: lic.payload, message: 'Licence expired.' };

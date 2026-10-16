@@ -6839,5 +6839,149 @@ export const DICT = {
 "Install a licence file": {
 "fr": "Installer un fichier de licence",
 "ar": "تثبيت ملف ترخيص"
+},
+"Licence {c} re-issued as version {v}.": {
+"fr": "Licence {c} réémise en version {v}.",
+"ar": "أُعيد إصدار الترخيص {c} بالإصدار {v}."
+},
+"Licence {c} issued.": {
+"fr": "Licence {c} émise.",
+"ar": "تم إصدار الترخيص {c}."
+},
+"Change licence {c}": {
+"fr": "Modifier la licence {c}",
+"ar": "تعديل الترخيص {c}"
+},
+"New licence": {
+"fr": "Nouvelle licence",
+"ar": "ترخيص جديد"
+},
+"Re-issue the licence": {
+"fr": "Réémettre la licence",
+"ar": "إعادة إصدار الترخيص"
+},
+"Issue the licence": {
+"fr": "Émettre la licence",
+"ar": "إصدار الترخيص"
+},
+"Customer contact": {
+"fr": "Contact chez le client",
+"ar": "جهة الاتصال لدى العميل"
+},
+"Seats (active accounts)": {
+"fr": "Postes (comptes actifs)",
+"ar": "المقاعد (الحسابات النشطة)"
+},
+"Expires on": {
+"fr": "Expire le",
+"ar": "ينتهي في"
+},
+"Notes": {
+"fr": "Notes",
+"ar": "ملاحظات"
+},
+"The customer installs the new licence file; the previous version stays in the history.": {
+"fr": "Le client installe le nouveau fichier de licence ; la version précédente reste dans l'historique.",
+"ar": "يثبّت العميل ملف الترخيص الجديد؛ ويبقى الإصدار السابق في السجل."
+},
+"Revoke licence {c}?": {
+"fr": "Révoquer la licence {c} ?",
+"ar": "إلغاء الترخيص {c}؟"
+},
+"The licence can no longer be downloaded or changed. An installation that already holds it keeps working until its expiry date or until another licence is installed.": {
+"fr": "La licence ne peut plus être téléchargée ni modifiée. Une installation qui la détient déjà continue de fonctionner jusqu'à sa date d'expiration ou jusqu'à l'installation d'une autre licence.",
+"ar": "لا يمكن بعد ذلك تنزيل الترخيص أو تعديله. يستمر عمل التثبيت الذي يملكه حتى تاريخ انتهائه أو حتى تثبيت ترخيص آخر."
+},
+"Revoke": {
+"fr": "Révoquer",
+"ar": "إلغاء"
+},
+"Reason": {
+"fr": "Raison",
+"ar": "السبب"
+},
+"Licence {c} revoked.": {
+"fr": "Licence {c} révoquée.",
+"ar": "تم إلغاء الترخيص {c}."
+},
+"Delete licence {c}?": {
+"fr": "Supprimer la licence {c} ?",
+"ar": "حذف الترخيص {c}؟"
+},
+"The licence and its history are deleted; the audit trail keeps the deletion.": {
+"fr": "La licence et son historique sont supprimés ; la piste d'audit conserve la suppression.",
+"ar": "يُحذف الترخيص وسجله؛ ويحتفظ سجل التدقيق بعملية الحذف."
+},
+"Licence {c} deleted.": {
+"fr": "Licence {c} supprimée.",
+"ar": "تم حذف الترخيص {c}."
+},
+"Signing key": {
+"fr": "Clé de signature",
+"ar": "مفتاح التوقيع"
+},
+"Download the public key": {
+"fr": "Télécharger la clé publique",
+"ar": "تنزيل المفتاح العام"
+},
+"Fingerprint": {
+"fr": "Empreinte",
+"ar": "البصمة"
+},
+"Key file": {
+"fr": "Fichier de la clé",
+"ar": "ملف المفتاح"
+},
+"Customer licences": {
+"fr": "Licences des clients",
+"ar": "تراخيص العملاء"
+},
+"No licence issued yet.": {
+"fr": "Aucune licence émise pour l'instant.",
+"ar": "لم يصدر أي ترخيص بعد."
+},
+"Issue the first licence of an on-premises customer.": {
+"fr": "Émettez la première licence d'un client sur site.",
+"ar": "أصدر أول ترخيص لعميل في موقعه."
+},
+"Download the licence file": {
+"fr": "Télécharger le fichier de licence",
+"ar": "تنزيل ملف الترخيص"
+},
+"Licences": {
+"fr": "Licences",
+"ar": "التراخيص"
+},
+"Roles and permissions, configuration, integrations, audit trail, data import and platform operations.": {
+"fr": "Rôles et permissions, configuration, intégrations, piste d'audit, import de données et exploitation de la plateforme.",
+"ar": "الأدوار والصلاحيات والإعدادات والتكاملات وسجل التدقيق واستيراد البيانات وتشغيل المنصة."
+},
+"Base packs": {
+"fr": "Packs de base",
+"ar": "الحزم الأساسية"
+},
+"Compliance & Security Standards": {
+"fr": "Normes de conformité et de sécurité",
+"ar": "معايير الامتثال والأمن"
+},
+"Signing key ready.": {
+"fr": "Clé de signature prête.",
+"ar": "مفتاح التوقيع جاهز."
+},
+"No signing key: place the editor private key at this path.": {
+"fr": "Aucune clé de signature : placez la clé privée de l'éditeur à cet emplacement.",
+"ar": "لا يوجد مفتاح توقيع: ضع المفتاح الخاص للمحرر في هذا المسار."
+},
+"This key does not match the key of the customer installations: their licences would be refused.": {
+"fr": "Cette clé ne correspond pas à celle des installations clientes : leurs licences seraient refusées.",
+"ar": "هذا المفتاح لا يطابق مفتاح تثبيتات العملاء: ستُرفض تراخيصهم."
+},
+"Revoked": {
+"fr": "Révoquée",
+"ar": "ملغى"
+},
+"Expired": {
+"fr": "Expirée",
+"ar": "منتهٍ"
 }
 };

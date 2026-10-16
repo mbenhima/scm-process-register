@@ -4,6 +4,8 @@ import { ModelPrecedence, TEST_LABEL } from '../components/AiConnection.jsx';
 import { ShieldCheck, Database, Upload, Plus, Building2, Users, Sparkles, KeyRound } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
+import { COMMERCIAL, LICENCE_ISSUING } from '../lib/edition.js';
+import Licences from '../components/Licences.jsx';
 import { PageHead, Card, Loading, ErrorBox, Status, Tabs, Table, tx, Field, IconBadge, Modal } from '../components/ui.jsx';
 
 function Matrix() {
@@ -37,7 +39,7 @@ function Config({ orgId }) {
   // The refetch after this form's own save keeps the choices made meanwhile.
   const keepDraft = useRef(false);
   useEffect(() => { if (!data) return; if (keepDraft.current) { keepDraft.current = false; return; } setF({ pack: data.config.pack, industryPacks: data.config.industryPacks, capabilityPacks: data.config.capabilityPacks, addons: data.config.addons, complianceStandards: data.config.complianceStandards, deploymentMode: data.config.deploymentMode }); }, [data]);
-  useEffect(() => { if (f && can('config.manage')) api('/admin/pricing/quote', { method: 'POST', body: f }).then(setQuote).catch(() => {}); }, [f, can]);
+  useEffect(() => { if (COMMERCIAL && f && can('config.manage')) api('/admin/pricing/quote', { method: 'POST', body: f }).then(setQuote).catch(() => {}); }, [f, can]);
   if (!data || !f) return <Loading />;
   const tog = (k, id) => setF({ ...f, [k]: f[k].includes(id) ? f[k].filter(x => x !== id) : [...f[k], id] });
   const added = f.complianceStandards.filter(s => !data.config.complianceStandards.includes(s));
@@ -56,7 +58,7 @@ function Config({ orgId }) {
       </div>
       <div className="stack">
         <Card title={t('Deployment')}><select className="select" aria-label={t('Deployment mode')} disabled={!edit} value={f.deploymentMode} onChange={e => setF({ ...f, deploymentMode: e.target.value })}>{data.deploymentModes.map(d => <option key={d.code} value={d.code}>{d.code} — {tx(d.name, lang)} (×{d.multiplier})</option>)}</select></Card>
-        {quote && <Card title={t('Monthly price')} action={<span className="serif" style={{ fontSize: 30, fontWeight: 700, color: 'var(--aiv-azure)' }}>{quote.totalMonthly}</span>}><Table rows={quote.lines} rowKey="id" columns={[{ key: 'id', label: t('Item') }, { key: 'monthly', label: 'USD' }]} /><p className="small" style={{ marginTop: 8 }}>{t('Subtotal {s} · bundle discount {b}% · deployment {d}', { s: quote.subtotal, b: quote.bundleDiscountPct, d: quote.deploymentMode })}</p><p className="caption">{t('List prices of the packs catalog in USD per month; annual commitment saves 15%.')}</p></Card>}
+        {COMMERCIAL && quote && <Card title={t('Monthly price')} action={<span className="serif" style={{ fontSize: 30, fontWeight: 700, color: 'var(--aiv-azure)' }}>{quote.totalMonthly}</span>}><Table rows={quote.lines} rowKey="id" columns={[{ key: 'id', label: t('Item') }, { key: 'monthly', label: 'USD' }]} /><p className="small" style={{ marginTop: 8 }}>{t('Subtotal {s} · bundle discount {b}% · deployment {d}', { s: quote.subtotal, b: quote.bundleDiscountPct, d: quote.deploymentMode })}</p><p className="caption">{t('List prices of the packs catalog in USD per month; annual commitment saves 15%.')}</p></Card>}
         {edit && <button className="btn btn-primary" disabled={added.length > 0 && !ack} onClick={save}>{t('Save configuration')}</button>}
       </div>
     </div>
@@ -267,13 +269,14 @@ export default function Admin() {
     ...(me.user.isPlatformAdmin || can('tenancy.manage') ? [{ id: 'tenancy', label: t('Groups and organizations') }] : []),
     ...(can('ai.view') ? [{ id: 'llm', label: t('AI models') }] : []),
     { id: 'ops', label: t('Operations') },
+    ...(LICENCE_ISSUING && me.user.isPlatformAdmin ? [{ id: 'licences', label: t('Licences') }] : []),
   ];
   const wanted = new URLSearchParams(window.location.search).get('tab');
   const [tab, setTab] = useState(tabs.some(x => x.id === wanted) ? wanted : tabs[0]?.id);
   if (!orgId && !me.user.isPlatformAdmin) return <ErrorBox error={{ status: 403, message: '' }} />;
   return (
     <>
-      <PageHead eyebrow={t('Organization')} title={t('Administration')} subtitle={t('Roles and permissions, commercial configuration, integrations, audit trail, data import and platform operations.')} />
+      <PageHead eyebrow={t('Organization')} title={t('Administration')} subtitle={COMMERCIAL ? t('Roles and permissions, commercial configuration, integrations, audit trail, data import and platform operations.') : t('Roles and permissions, configuration, integrations, audit trail, data import and platform operations.')} />
       <Tabs label={t('Administration')} value={tab} onChange={setTab} tabs={tabs} />
       {tab === 'matrix' && <Matrix />}
       {tab === 'config' && orgId && <Config orgId={orgId} />}
@@ -281,6 +284,7 @@ export default function Admin() {
       {tab === 'audit' && orgId && <AuditTrail orgId={orgId} />}
       {tab === 'import' && orgId && <Import orgId={orgId} />}
       {tab === 'ops' && <Operations />}
+      {tab === 'licences' && LICENCE_ISSUING && <Licences />}
       {tab === 'tenancy' && <Tenancy />}
       {tab === 'llm' && orgId && <Llm orgId={orgId} />}
     </>

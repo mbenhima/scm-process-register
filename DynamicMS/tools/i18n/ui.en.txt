@@ -1708,3 +1708,39 @@
 1708	Expires
 1709	Licensed items
 1710	Install a licence file
+1711	Licence {c} re-issued as version {v}.
+1712	Licence {c} issued.
+1713	Change licence {c}
+1714	New licence
+1715	Re-issue the licence
+1716	Issue the licence
+1717	Customer contact
+1718	Seats (active accounts)
+1719	Expires on
+1720	Notes
+1721	The customer installs the new licence file; the previous version stays in the history.
+1722	Revoke licence {c}?
+1723	The licence can no longer be downloaded or changed. An installation that already holds it keeps working until its expiry date or until another licence is installed.
+1724	Revoke
+1725	Reason
+1726	Licence {c} revoked.
+1727	Delete licence {c}?
+1728	The licence and its history are deleted; the audit trail keeps the deletion.
+1729	Licence {c} deleted.
+1730	Signing key
+1731	Download the public key
+1732	Fingerprint
+1733	Key file
+1734	Customer licences
+1735	No licence issued yet.
+1736	Issue the first licence of an on-premises customer.
+1737	Download the licence file
+1738	Licences
+1739	Roles and permissions, configuration, integrations, audit trail, data import and platform operations.
+1740	Base packs
+1741	Compliance & Security Standards
+1742	Signing key ready.
+1743	No signing key: place the editor private key at this path.
+1744	This key does not match the key of the customer installations: their licences would be refused.
+1745	Revoked
+1746	Expired

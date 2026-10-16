@@ -30,6 +30,9 @@ EXTRA_STRINGS = [
     'Step', 'End-to-end process', 'Place in the application', 'Works', 'Authentication failure', 'Model not found', 'Rate limited', 'Unreachable',
     'The provider is disabled; enable it first.', 'Choose a provider and a model and type the key (and the HTTPS endpoint for a custom model).',
     'Seeded', 'Custom', 'Duplicate', 'Suggested', 'Draft', 'Approved',
+    'Base packs', 'Industry packs', 'Capability packs', 'Add-ons', 'Compliance & Security Standards', 'Signing key ready.',
+    'No signing key: place the editor private key at this path.', 'This key does not match the key of the customer installations: their licences would be refused.',
+    'Revoked', 'Expired', 'Active', 'Mode', 'Version',
     'Brief', 'Detailed description', 'Goal', 'Goals', 'Trigger', 'End', 'Phase (E2E)', 'Order', 'Purpose', 'Entry criteria', 'Exit criteria', 'Approvers (one per line)', 'Items (one per line)', 'Macro process', 'Task',
 ]
 

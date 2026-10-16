@@ -34,25 +34,32 @@ const refuse = (msg) => { console.error(`Refusing to start: ${msg}`); process.ex
 if ((PROD || process.env.NODE_ENV === 'production') && (config.jwtSecret === 'dynamicms-local-dev-secret-change-me' || config.jwtSecret.length < 32)) refuse('set JWT_SECRET to a random value of at least 32 characters.');
 openDb();
 migrate();
-if (!isInitialized()) {
-  if (!PROD) {
-    console.error('The database is empty. Run "npm run seed" first, then "npm run dev".');
-    process.exit(1);
-  }
+// The database is ready at once when it exists; a production first start creates it (asynchronous).
+async function firstStart() {
   // Production first start: the database is created here (FR-DA-OPS-01).
   const strong = (pw) => pw.length >= 12 && /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /\d/.test(pw);
   if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) refuse('set ADMIN_EMAIL and ADMIN_PASSWORD for the first start.');
   if (!strong(config.adminPassword)) refuse('ADMIN_PASSWORD needs at least 12 characters with upper case, lower case and a digit.');
-  if (config.initData === 'demo' && (!process.env.SEED_PASSWORD || !strong(config.demoPassword))) refuse('INIT_DATA=demo needs SEED_PASSWORD (at least 12 characters with upper case, lower case and a digit).');
+  if (config.initData === 'demo' && (!process.env.SEED_PASSWORD || !strong(config.demoPassword))) refuse('The seeded data needs SEED_PASSWORD (at least 12 characters with upper case, lower case and a digit).');
   closeDb();
-  console.log(`First start: creating the database (${config.initData === 'demo' ? 'seeded demonstration data' : 'catalog and administrator only'}).`);
+  console.log(`First start: creating the database (${config.initData === 'demo' ? 'seeded data of every vertical and SME' : 'catalog and administrator only'}).`);
   const { seedDatabase } = await import('./seed/run.js');
   await seedDatabase({ demo: config.initData === 'demo' });
   openDb();
   migrate();
 }
-// Versioned data migrations of an upgrade, each run once and recorded (NFR-DA-MAINT-11).
-for (const m of runMigrations()) console.log(`Migration ${m.id}: ${m.summary}`);
+const migrateData = () => { for (const m of runMigrations()) console.log(`Migration ${m.id}: ${m.summary}`); };
+export let ready;
+if (isInitialized()) {
+  // Versioned data migrations of an upgrade, each run once and recorded (NFR-DA-MAINT-11).
+  migrateData();
+  ready = Promise.resolve();
+} else if (!PROD) {
+  console.error('The database is empty. Run "npm run seed" first, then "npm run dev".');
+  process.exit(1);
+} else {
+  ready = firstStart().then(migrateData);
+}
 
 export const app = express();
 app.disable('x-powered-by');
@@ -60,6 +67,26 @@ app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: { policy: 'same-site' } }));
 app.use(cors({ origin: config.corsOrigin.split(','), credentials: false }));
 app.use(express.json({ limit: '5mb' }));
+// Customer edition: no commercial data leaves the server (prices, price matrix, bundles,
+// discounts, commercial agreements); the commercial catalog and the price quote do not exist.
+const COMMERCIAL_KEYS = new Set(['price', 'prices', 'priceMatrix', 'annualPrice', 'totalMonthly', 'subtotal', 'bundleDiscountPct', 'annualDiscountPct', 'multiplier', 'bundles', 'bundleDiscounts', 'agreements', 'clusters', 'licensingLinks', 'licensing', 'recommendedAddons']);
+const stripCommercial = (v) => {
+  if (Array.isArray(v)) return v.map(stripCommercial);
+  if (v && typeof v === 'object' && v.constructor === Object) {
+    const o = {};
+    for (const [k, x] of Object.entries(v)) if (!COMMERCIAL_KEYS.has(k)) o[k] = stripCommercial(x);
+    return o;
+  }
+  return v;
+};
+if (!config.commercial) {
+  app.use('/api', (req, res, next) => {
+    if (/^\/(catalog\/commercial|admin\/pricing)\b/.test(req.path)) return next(new HttpError(404, 'NOT_FOUND', 'Unknown endpoint.'));
+    const json = res.json.bind(res);
+    res.json = (body) => json(stripCommercial(body));
+    next();
+  });
+}
 app.use('/api', rateLimit({ windowMs: 60_000, limit: 1200, standardHeaders: 'draft-7', legacyHeaders: false }));
 
 app.get('/api/health', (req, res) => {
@@ -116,13 +143,14 @@ app.use((err, req, res, _next) => {
   res.status(500).json({ error: { code: 'SERVER_ERROR', message: 'Unexpected error. The incident was logged.' } });
 });
 
-if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(ROOT, 'src', 'index.js')) {
-  app.listen(config.port, () => {
+// A runtime build always serves; from the source, only when this file is the entry point.
+if (config.edition !== 'dev' || (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(ROOT, 'src', 'index.js'))) {
+  ready.then(() => app.listen(config.port, () => {
     console.log(`DynamicMS API listening on http://localhost:${config.port} (${config.deploymentMode}, ${config.appMode})`);
     if (config.setupFile) applySetupFile().catch(e => console.error('[setup]', e.message));
     scheduleBackups();
     const tick = () => { try { const n = scan(); if (n) console.log(`[alerts] ${n} new time-based alerts`); } catch (e) { console.error('[alerts]', e.message); } };
     setTimeout(tick, 5000).unref();
     setInterval(tick, 15 * 60_000).unref();
-  });
+  })).catch(e => { console.error(e); process.exit(1); });
 }

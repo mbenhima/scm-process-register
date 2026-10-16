@@ -11,6 +11,14 @@ fs.copyFileSync(src, tmp);
 process.env.DB_FILE = tmp;
 process.env.BACKUP_DIR = path.join(path.dirname(tmp), 'backups');
 process.env.STORAGE_DIR = path.join(path.dirname(tmp), 'storage');
+// Licence management: a signing key of the test only.
+{
+  const crypto = await import('node:crypto');
+  const kdir = path.join(path.dirname(tmp), 'keys'); fs.mkdirSync(kdir, { recursive: true });
+  const k = crypto.generateKeyPairSync('ed25519');
+  fs.writeFileSync(path.join(kdir, 'private.pem'), k.privateKey.export({ type: 'pkcs8', format: 'pem' }));
+  process.env.LICENCE_KEYS_DIR = kdir;
+}
 const { app } = await import('../src/index.js');
 const { checkPackage } = await import('../src/services/ooxml.js');
 
@@ -616,4 +624,33 @@ test('SRS 1.9 data rules: currencies, translations kept on save, Function × Lev
       assert.notEqual(mp.status, 'Completed');
     }
   }
+});
+
+test('licence management: issue, re-issue, download, verify, revoke, delete (editor)', async () => {
+  const crypto = await import('node:crypto');
+  const admin = await login('admin@dynamicms.example', 'Admin@2026');
+  const tenant = await login('admin@horizon-universal.example');
+  assert.equal((await call('GET', '/admin/licences', tenant)).status, 403);
+  const reg = (await call('GET', '/admin/licences', admin)).body;
+  assert.equal(reg.key.present, true); assert.ok(reg.items.base.includes('DMS-PRO'));
+  assert.equal((await call('POST', '/admin/licences', admin, { customer: 'X', seats: 5, expires: '2030-01-01', packs: ['DMS-AI'] })).body.error.code, 'BASE_PACK_REQUIRED');
+  assert.equal((await call('POST', '/admin/licences', admin, { customer: 'X', seats: 5, expires: '2020-01-01', packs: ['DMS-PRO'] })).body.error.code, 'BAD_EXPIRY');
+  const l = (await call('POST', '/admin/licences', admin, { customer: 'Atlas Health Group', contact: 'it@atlas.example', seats: 1500, expires: '2028-12-31', packs: ['DMS-PRO', 'DMS-LSCI', 'DMS-CERT'], deploymentMode: 'DEP-5' })).body;
+  assert.match(l.code, /^LIC-\d{4}-\d{3}$/); assert.equal(l.version, 1); assert.equal(l.status, 'Active');
+  const up = (await call('PUT', `/admin/licences/${l.id}`, admin, { seats: 2000, reason: 'Second hospital' })).body;
+  assert.equal(up.version, 2); assert.equal(up.seats, 2000); assert.equal(up.versions.length, 2);
+  // The downloaded file verifies with the public key.
+  const r = await fetch(`${base}/admin/licences/${l.id}/file`, { headers: { Authorization: `Bearer ${admin}` } });
+  assert.match(r.headers.get('content-disposition'), /Licence_LIC-.*_v2_Atlas_Health_Group\.lic/);
+  const lic = await r.json();
+  const pem = await (await fetch(`${base}/admin/licences/public-key`, { headers: { Authorization: `Bearer ${admin}` } })).text();
+  assert.ok(crypto.verify(null, Buffer.from(JSON.stringify(lic.payload)), crypto.createPublicKey(pem), Buffer.from(lic.signature, 'base64')));
+  assert.equal(lic.payload.seats, 2000); assert.deepEqual(lic.payload.packs, ['DMS-PRO', 'DMS-LSCI', 'DMS-CERT']);
+  // A delivered, valid licence is revoked before deletion.
+  assert.equal((await call('DELETE', `/admin/licences/${l.id}`, admin)).body.error.code, 'IN_USE');
+  assert.equal((await call('POST', `/admin/licences/${l.id}/revoke`, admin, {})).body.error.code, 'REASON_REQUIRED');
+  assert.equal((await call('POST', `/admin/licences/${l.id}/revoke`, admin, { reason: 'Contract ended' })).body.status, 'Revoked');
+  assert.equal((await call('GET', `/admin/licences/${l.id}/file`, admin)).status, 409);
+  assert.equal((await call('DELETE', `/admin/licences/${l.id}`, admin)).status, 200);
+  assert.equal((await call('GET', `/admin/licences/${l.id}`, admin)).status, 404);
 });

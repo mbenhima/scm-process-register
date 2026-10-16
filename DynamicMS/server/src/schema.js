@@ -2,6 +2,16 @@
 // platform-wide catalogs (catalog_items, groups_, permission catalog).
 // Multilingual text columns hold JSON {"en":..,"fr":..,"ar":..}.
 export const SCHEMA = `
+-- Licences issued by the editor to on-premises customers (editor edition).
+CREATE TABLE IF NOT EXISTS licences (
+  id TEXT PRIMARY KEY, code TEXT UNIQUE NOT NULL, customer TEXT NOT NULL, contact TEXT, seats INTEGER NOT NULL,
+  expires TEXT NOT NULL, packs TEXT NOT NULL, deployment_mode TEXT NOT NULL, notes TEXT,
+  status TEXT NOT NULL DEFAULT 'Active', version INTEGER NOT NULL DEFAULT 1, payload TEXT, signature TEXT,
+  issued_at TEXT, issued_by TEXT, revoked_at TEXT, revoke_reason TEXT, downloads INTEGER DEFAULT 0, created_at TEXT, updated_at TEXT);
+CREATE TABLE IF NOT EXISTS licence_versions (
+  id TEXT PRIMARY KEY, licence_id TEXT NOT NULL REFERENCES licences(id) ON DELETE CASCADE, version INTEGER NOT NULL,
+  payload TEXT NOT NULL, signature TEXT NOT NULL, issued_at TEXT, issued_by TEXT, reason TEXT);
+
 CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT);
 
 CREATE TABLE IF NOT EXISTS catalog_items (
