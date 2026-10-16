@@ -32,7 +32,7 @@ EXTRA_STRINGS = [
     'Seeded', 'Custom', 'Duplicate', 'Suggested', 'Draft', 'Approved',
     'Base packs', 'Industry packs', 'Capability packs', 'Add-ons', 'Compliance & Security Standards', 'Signing key ready.',
     'No signing key: place the editor private key at this path.', 'This key does not match the key of the customer installations: their licences would be refused.',
-    'Revoked', 'Expired', 'Active', 'Mode', 'Version',
+    'Revoked', 'Expired', 'Active', 'Mode', 'Version', 'No licence installed.', 'The licence file cannot be read.', 'Licence valid.', 'Licence signature is invalid.', 'Licence expired.', 'Entitlements are managed by the platform configuration.',
     'Brief', 'Detailed description', 'Goal', 'Goals', 'Trigger', 'End', 'Phase (E2E)', 'Order', 'Purpose', 'Entry criteria', 'Exit criteria', 'Approvers (one per line)', 'Items (one per line)', 'Macro process', 'Task',
 ]
 

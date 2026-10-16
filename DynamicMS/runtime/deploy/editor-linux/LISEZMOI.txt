@@ -1,0 +1,13 @@
+DynamicMS 2026.10 — runtime éditeur pour Linux (cloud privé ou serveur sur site)
+
+Contenu
+  docker-compose.yml   définition du service
+  .env.example         modèle des paramètres (copié en .env par install.sh)
+  install.sh           installation : contrôle, empreinte, chargement de l'image, clé, démarrage
+  backup.sh            sauvegarde complète des données
+  restore.sh           restauration d'une sauvegarde
+  nginx/dynamicms.conf exemple de proxy inverse HTTPS
+  secrets/             emplacement de la clé privée de signature des licences
+
+Installation : voir Guide_Installation_Docker_Runtime_Editor_Linux_Windows_DynamicMS_FR.
+Placer dans le dossier parent l'archive de l'image (+ .sha256) et la clé privée, puis :  sudo ./install.sh

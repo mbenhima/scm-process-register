@@ -1,0 +1,23 @@
+# DynamicMS 2026.10 — runtime éditeur (Linux, cloud privé ou serveur sur site).
+# Démarrage : docker compose up -d   (depuis ce dossier, après ./install.sh)
+services:
+  dynamicms:
+    image: dynamicms-editor:2026.10
+    container_name: dynamicms-editor
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Clé privée de signature des licences, montée en lecture seule (voir secrets/LISEZMOI.txt).
+      LICENCE_SIGNING_KEY: /run/secrets/licence_private.pem
+    ports:
+      - "${HTTP_BIND:-127.0.0.1}:${HTTP_PORT:-4000}:4000"
+    volumes:
+      - dynamicms-editor-data:/data
+      - ./secrets/licence_private.pem:/run/secrets/licence_private.pem:ro
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+
+volumes:
+  dynamicms-editor-data:
+    name: dynamicms-editor-data

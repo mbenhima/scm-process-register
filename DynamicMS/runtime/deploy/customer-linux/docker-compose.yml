@@ -1,0 +1,21 @@
+# DynamicMS 2026.10 — runtime client (Linux, cloud privé ou serveur sur site).
+# Démarrage : docker compose up -d   (depuis ce dossier, après ./install.sh)
+services:
+  dynamicms:
+    image: dynamicms-customer:2026.10
+    container_name: dynamicms
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      # Par défaut, l'application n'écoute que sur le serveur lui-même (127.0.0.1), derrière le
+      # proxy inverse HTTPS (nginx/dynamicms.conf). HTTP_BIND=0.0.0.0 l'expose sur le réseau.
+      - "${HTTP_BIND:-127.0.0.1}:${HTTP_PORT:-4000}:4000"
+    volumes:
+      - dynamicms-data:/data
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+
+volumes:
+  dynamicms-data:
+    name: dynamicms-data

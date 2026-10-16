@@ -1,0 +1,13 @@
+DynamicMS 2026.10 — runtime client pour Linux (cloud privé ou serveur sur site)
+
+Contenu
+  docker-compose.yml   définition du service
+  .env.example         modèle des paramètres (copié en .env par install.sh)
+  install.sh           installation : contrôle, empreinte, chargement de l'image, démarrage
+  backup.sh            sauvegarde complète des données
+  restore.sh           restauration d'une sauvegarde
+  nginx/dynamicms.conf exemple de proxy inverse HTTPS
+  licence/             licence d'évaluation (90 jours) ; la licence définitive est fournie par l'éditeur
+
+Installation : voir Guide_Installation_Docker_Runtime_Customer_Linux_DynamicMS_FR (Word ou PDF).
+Placer l'archive de l'image et son fichier .sha256 dans le dossier parent, puis :  sudo ./install.sh

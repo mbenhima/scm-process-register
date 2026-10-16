@@ -100,7 +100,7 @@ export default function Licences() {
             { key: 'actions', label: t('Actions'), sortable: false, render: l => (
               <div className="row" style={{ gap: 4 }}>
                 <button type="button" className="btn btn-sm btn-ghost btn-icon" title={t('Download the licence file')} aria-label={t('Download the licence file')} disabled={l.status === 'Revoked'} onClick={() => act(async () => { await download(`/admin/licences/${l.id}/file`, `${l.code}.lic`); data.reload(); })}><Download size={16} /></button>
-                <button type="button" className="btn btn-sm btn-ghost btn-icon" title={t('Change')} aria-label={t('Change')} disabled={l.status === 'Revoked'} onClick={() => setForm(l)}><Pencil size={16} /></button>
+                <button type="button" className="btn btn-sm btn-ghost btn-icon" title={t('Change the licence')} aria-label={t('Change the licence')} disabled={l.status === 'Revoked'} onClick={() => setForm(l)}><Pencil size={16} /></button>
                 <button type="button" className="btn btn-sm btn-ghost btn-icon" title={t('Revoke')} aria-label={t('Revoke')} disabled={l.status === 'Revoked'} onClick={() => revoke(l)}><Ban size={16} /></button>
                 <button type="button" className="btn btn-sm btn-ghost btn-icon" title={t('Delete')} aria-label={t('Delete')} onClick={() => remove(l)}><Trash2 size={16} /></button>
               </div>) },

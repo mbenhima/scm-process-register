@@ -6983,5 +6983,37 @@ export const DICT = {
 "Expired": {
 "fr": "Expirée",
 "ar": "منتهٍ"
+},
+"Change the licence": {
+"fr": "Modifier la licence",
+"ar": "تعديل الترخيص"
+},
+"The licence file was not installed: {m}": {
+"fr": "Le fichier de licence n'a pas été installé : {m}",
+"ar": "لم يُثبَّت ملف الترخيص: {m}"
+},
+"No licence installed.": {
+"fr": "Aucune licence installée.",
+"ar": "لا يوجد ترخيص مثبّت."
+},
+"The licence file cannot be read.": {
+"fr": "Le fichier de licence est illisible.",
+"ar": "تعذّرت قراءة ملف الترخيص."
+},
+"Licence valid.": {
+"fr": "Licence valide.",
+"ar": "الترخيص صالح."
+},
+"Licence signature is invalid.": {
+"fr": "La signature de la licence n'est pas valide.",
+"ar": "توقيع الترخيص غير صالح."
+},
+"Licence expired.": {
+"fr": "Licence expirée.",
+"ar": "انتهت صلاحية الترخيص."
+},
+"Entitlements are managed by the platform configuration.": {
+"fr": "Les droits sont gérés par la configuration de la plateforme.",
+"ar": "تُدار الصلاحيات من خلال إعدادات المنصة."
 }
 };

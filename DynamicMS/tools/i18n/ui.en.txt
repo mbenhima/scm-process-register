@@ -1744,3 +1744,11 @@
 1744	This key does not match the key of the customer installations: their licences would be refused.
 1745	Revoked
 1746	Expired
+1747	Change the licence
+1748	The licence file was not installed: {m}
+1749	No licence installed.
+1750	The licence file cannot be read.
+1751	Licence valid.
+1752	Licence signature is invalid.
+1753	Licence expired.
+1754	Entitlements are managed by the platform configuration.

@@ -60,7 +60,7 @@ export function licenceStatus() {
     if (lic.payload.seats && users > lic.payload.seats) return { mode: 'onprem', valid: false, payload: lic.payload, message: `Active users (${users}) exceed licensed seats (${lic.payload.seats}).` };
     return { mode: 'onprem', valid: true, payload: lic.payload, message: 'Licence valid.' };
   } catch (e) {
-    return { mode: 'onprem', valid: false, message: `No valid licence file (${e.code || e.message}).` };
+    return { mode: 'onprem', valid: false, message: e.code === 'ENOENT' ? 'No licence installed.' : 'The licence file cannot be read.' };
   }
 }
 export function installLicence(text) {

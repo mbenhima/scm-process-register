@@ -57,7 +57,7 @@ function Config({ orgId }) {
         </Card>
       </div>
       <div className="stack">
-        <Card title={t('Deployment')}><select className="select" aria-label={t('Deployment mode')} disabled={!edit} value={f.deploymentMode} onChange={e => setF({ ...f, deploymentMode: e.target.value })}>{data.deploymentModes.map(d => <option key={d.code} value={d.code}>{d.code} — {tx(d.name, lang)} (×{d.multiplier})</option>)}</select></Card>
+        {COMMERCIAL && <Card title={t('Deployment')}><select className="select" aria-label={t('Deployment mode')} disabled={!edit} value={f.deploymentMode} onChange={e => setF({ ...f, deploymentMode: e.target.value })}>{data.deploymentModes.map(d => <option key={d.code} value={d.code}>{d.code} — {tx(d.name, lang)} (×{d.multiplier})</option>)}</select></Card>}
         {COMMERCIAL && quote && <Card title={t('Monthly price')} action={<span className="serif" style={{ fontSize: 30, fontWeight: 700, color: 'var(--aiv-azure)' }}>{quote.totalMonthly}</span>}><Table rows={quote.lines} rowKey="id" columns={[{ key: 'id', label: t('Item') }, { key: 'monthly', label: 'USD' }]} /><p className="small" style={{ marginTop: 8 }}>{t('Subtotal {s} · bundle discount {b}% · deployment {d}', { s: quote.subtotal, b: quote.bundleDiscountPct, d: quote.deploymentMode })}</p><p className="caption">{t('List prices of the packs catalog in USD per month; annual commitment saves 15%.')}</p></Card>}
         {edit && <button className="btn btn-primary" disabled={added.length > 0 && !ack} onClick={save}>{t('Save configuration')}</button>}
       </div>
@@ -116,7 +116,7 @@ function Operations() {
     if (!file) return;
     try {
       const r = await api('/admin/licence', { method: 'POST', body: { licence: await file.text() } });
-      toast(r.valid ? t('Licence installed: {m}', { m: r.message }) : r.message, r.valid ? 'ok' : 'error');
+      toast(r.valid ? t('Licence installed: {m}', { m: t(r.message) }) : t('The licence file was not installed: {m}', { m: t(r.message.replace(' The licence file was not installed.', '')) }), r.valid ? 'ok' : 'error');
       lic.reload();
     } catch (e) { toast(e.message, 'error'); } finally { if (licFile.current) licFile.current.value = ''; }
   };
@@ -128,7 +128,7 @@ function Operations() {
       </Card>
       <div className="stack">
         <Card title={t('Licence')} action={<IconBadge icon={ShieldCheck} accent={lic.data?.valid} size="sm" />}>{lic.data && <>
-          <p className="small"><Status value={lic.data.valid ? 'Valid' : 'Failed'} /> {lic.data.mode.toUpperCase()}</p><p className="small">{lic.data.message}</p>
+          <p className="small"><Status value={lic.data.valid ? 'Valid' : 'Failed'} /> {lic.data.mode.toUpperCase()}</p><p className="small">{t(lic.data.message)}</p>
           {lic.data.payload && <dl className="small lic-kv">
             <dt>{t('Customer')}</dt><dd>{lic.data.payload.customer}</dd>
             <dt>{t('Seats')}</dt><dd>{lic.data.payload.seats}</dd>

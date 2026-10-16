@@ -48,3 +48,11 @@
 1744	Cette clé ne correspond pas à celle des installations clientes : leurs licences seraient refusées.
 1745	Révoquée
 1746	Expirée
+1747	Modifier la licence
+1748	Le fichier de licence n'a pas été installé : {m}
+1749	Aucune licence installée.
+1750	Le fichier de licence est illisible.
+1751	Licence valide.
+1752	La signature de la licence n'est pas valide.
+1753	Licence expirée.
+1754	Les droits sont gérés par la configuration de la plateforme.

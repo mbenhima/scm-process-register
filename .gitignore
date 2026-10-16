@@ -6,3 +6,6 @@ deploy/*/.env
 deploy/*/setup.json
 deploy/customer/licence/*.pem
 sandbox-ca.crt
+DynamicMS/runtime/deploy/*/secrets/*.pem
+DynamicMS/runtime/deploy/*/.env
+DynamicMS/runtime/deploy/*/sauvegardes/
