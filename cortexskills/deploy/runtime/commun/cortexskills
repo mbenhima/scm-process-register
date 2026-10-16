@@ -1,0 +1,7 @@
+#!/bin/sh
+# CortexSkills (exécutable, Linux) : ./cortexskills start | admin <commande> | backup | restore [fichier] | version
+# Utilise le Node.js livré dans runtime/ ; les réglages sont dans .env, les données dans data/ (à côté de ce script).
+DIR=$(cd "$(dirname "$0")" && pwd)
+NODE="$DIR/runtime/node/bin/node"; [ -x "$NODE" ] || NODE="$DIR/runtime/node-linux/bin/node"
+[ -x "$NODE" ] || { echo "  ERREUR : Node.js livré introuvable ($DIR/runtime)." >&2; exit 1; }
+exec "$NODE" --no-warnings "$DIR/app/server/tools/launcher.js" "$@"

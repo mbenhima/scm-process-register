@@ -3,7 +3,7 @@
 // keys are record identifiers, autofocus runs once, validation and saving never move focus or reset a draft.
 import { Children, isValidElement, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, forwardRef } from 'react';
 import { createPortal } from 'react-dom';
-import * as Icons from 'lucide-react';
+import * as Icons from './icons.gen.js'; // only the icons the application names (tools/gen-icons.mjs)
 import { useI18n } from '../lib/i18n.jsx';
 import { useSession } from '../lib/session.jsx';
 import { downloadCsv } from '../lib/api.js';

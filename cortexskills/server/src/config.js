@@ -4,9 +4,11 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(here, '..');
+const EDITION = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'edition.json'), 'utf8')); } catch { return null; } })();
 
-// Optional .env file (KEY=VALUE lines) next to package.json. Real environment variables win.
-const envFile = path.join(ROOT, '.env');
+// Optional .env file (KEY=VALUE lines) next to package.json, or the file named by CORTEXSKILLS_ENV (the delivered
+// runtimes keep it at the root of the package). Real environment variables win.
+const envFile = process.env.CORTEXSKILLS_ENV || path.join(ROOT, '.env');
 if (fs.existsSync(envFile)) {
   for (const line of fs.readFileSync(envFile, 'utf8').split(/\r?\n/)) {
     const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
@@ -18,6 +20,8 @@ const dataDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path
 
 export const config = {
   port: Number(process.env.PORT || 4000),
+  // Network interface to listen on (HOST=127.0.0.1 behind a reverse proxy); every interface when empty.
+  host: process.env.HOST || undefined,
   dataDir,
   dbFile: path.join(dataDir, 'cortexskills.db'),
   backupDir: path.join(dataDir, 'backups'),
@@ -29,9 +33,12 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET || 'cortexskills-local-development-secret-change-me',
   jwtTtl: process.env.JWT_TTL || '12h',
   hmacSecret: process.env.LICENSE_HMAC_SECRET || 'cortexskills-licence-hmac-local-secret',
-  deploymentMode: (process.env.DEPLOYMENT_MODE || 'saas').toLowerCase(),
+  // A delivered runtime (edition.json, written by tools/build-runtime.mjs) always runs on-premises under a signed
+  // licence, and the customer edition never shows commercial information, whatever .env says.
+  deploymentMode: EDITION ? 'onprem' : (process.env.DEPLOYMENT_MODE || 'saas').toLowerCase(),
   // Customer edition: COMMERCIAL_INFO=hidden removes prices, quotes and the pricing screen (on-premises customers).
-  commercialInfo: String(process.env.COMMERCIAL_INFO || 'shown').toLowerCase() !== 'hidden',
+  commercialInfo: EDITION?.edition === 'customer' ? false : String(process.env.COMMERCIAL_INFO || 'shown').toLowerCase() !== 'hidden',
+  edition: EDITION?.edition || null,
   backupRetentionDays: Number(process.env.BACKUP_RETENTION_DAYS || 14),
   corsOrigin: process.env.CORS_ORIGIN || '*',
   // Base URL of the web client, used in the response links sent by email and WhatsApp (falls back to the request origin).

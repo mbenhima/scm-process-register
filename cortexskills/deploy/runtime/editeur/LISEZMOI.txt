@@ -1,0 +1,29 @@
+CortexSkills @VERSION@ — Exécutable minifié, côté éditeur (Linux x64 et Windows x64)
+Procédure complète : documentation/Guide_Installation_Runtime_Editor_Linux_Windows_CortexSkills_FR.docx (et .pdf).
+Aucun code source lisible : serveur et gestionnaire de licences minifiés, interface compilée et minifiée,
+Node.js @NODE@ fourni pour Linux et pour Windows (aucune installation).
+
+Deux scénarios
+  a) Cloud privé / sur site (serveur Linux) : ./cortexskills, sudo ./installer-service.sh, config/ (systemd, Nginx).
+  b) Localhost sous Windows (poste de l'éditeur) : cortexskills.cmd start, puis http://localhost:4000.
+
+Contenu
+  cortexskills / cortexskills.cmd   l'application et sa console (start, admin, secrets, backup, restore, version)
+  cslic / cslic.cmd                 gestionnaire de licences (CRUD) du poste de signature
+  cslic-sauvegarder                 archive chiffrée du poste de signature (Linux)
+  installer-service.sh              service Linux (systemd)
+  env.example                       modèle du fichier de réglages .env
+  config/                           cortexskills.service, nginx-cortexskills.conf
+  licence/                          fichiers de licence (.lic) à installer
+  app/                              l'application (exécutable)
+  runtime/node-linux, node-windows  Node.js @NODE@, distributions officielles
+  poste-signature/                  paire de clés de signature : à importer une fois (cslic importer), puis à supprimer
+  documentation/                    guide d'installation (Word et PDF)
+  SHA256SUMS.txt                    empreintes des fichiers du paquet
+
+Scénario b, Windows, en 4 commandes (invite de commandes, dans le dossier du paquet)
+  copy env.example .env      puis dans .env : PUBLIC_URL=http://localhost:4000, CORS_ORIGIN=http://localhost:4000,
+                             les deux secrets (cortexskills secrets), ADMIN_EMAIL, ADMIN_PASSWORD
+  cortexskills start         (premier démarrage : 5 à 15 minutes)
+  cslic importer poste-signature
+  cslic aide

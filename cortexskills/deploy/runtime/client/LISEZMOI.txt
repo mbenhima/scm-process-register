@@ -1,0 +1,28 @@
+CortexSkills @VERSION@ — Exécutable minifié, côté client (Linux x64, cloud privé ou sur site)
+Procédure complète : documentation/Guide_Installation_Runtime_Customer_Linux_CortexSkills_FR.docx (et .pdf).
+Aucun code source lisible : serveur minifié, interface compilée et minifiée, Node.js @NODE@ fourni (aucune installation).
+
+Contenu
+  cortexskills            lance l'application et sa console (start, admin, secrets, backup, restore, version)
+  installer-service.sh    installe le service Linux (systemd) : sudo ./installer-service.sh
+  env.example             modèle du fichier de réglages .env
+  config/                 cortexskills.service (systemd, durci) et nginx-cortexskills.conf (HTTPS)
+  licence/                déposez ici le fichier de licence (.lic) reçu de l'éditeur
+  app/                    l'application (exécutable, en lecture seule)
+  runtime/node/           Node.js @NODE@ (linux-x64), distribution officielle
+  documentation/          guide d'installation et guide utilisateur (Word et PDF)
+  SHA256SUMS.txt          empreintes des fichiers du paquet
+
+Démarrage rapide (dossier conseillé : /opt/cortexskills)
+  1. sha256sum -c Runtime_Customer_Linux_CortexSkills_@VERSION@.zip.sha256
+  2. sudo unzip Runtime_Customer_Linux_CortexSkills_@VERSION@.zip -d /opt && sudo mv /opt/Runtime_Customer_Linux_CortexSkills_@VERSION@ /opt/cortexskills
+  3. cd /opt/cortexskills && sha256sum -c SHA256SUMS.txt
+  4. sudo cp env.example .env && ./cortexskills secrets && sudo nano .env
+  5. sudo ./installer-service.sh && journalctl -u cortexskills -f
+     (premier démarrage : chargement des données de référence, 5 à 15 minutes, jusqu'à « CortexSkills API is running »)
+  6. HTTPS : config/nginx-cortexskills.conf → /etc/nginx/conf.d/cortexskills.conf
+  7. sudo -u cortexskills ./cortexskills admin org-create --name "Votre entreprise" --domain votre-entreprise.ma \
+       --admin-email admin@votre-entreprise.ma --admin-name "Prénom Nom" --admin-password '<mot de passe fort>' --lang fr
+  8. sudo -u cortexskills ./cortexskills admin licence-request --org votre-entreprise.ma   → à envoyer à l'éditeur
+  9. Copiez le fichier .lic reçu dans licence/, puis :
+     sudo -u cortexskills ./cortexskills admin licence-install --file licence/<fichier>.lic

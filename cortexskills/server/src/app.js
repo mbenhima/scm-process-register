@@ -57,8 +57,23 @@ export async function createApp({ background = true } = {}) {
   // Optional production mode: serve the built web client from ../web/dist when present.
   const dist = path.resolve(ROOT, '..', 'web', 'dist');
   if (fs.existsSync(dist)) {
-    app.use(express.static(dist));
-    app.get(/^(?!\/api).*/, (req, res) => res.sendFile(path.join(dist, 'index.html')));
+    // Built files carry a content hash in their name: cached for a year; the Brotli or gzip copy written at build time is
+    // sent as it is (no compression per request). index.html is never cached, so a new release is picked up at once.
+    const TYPES = { '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json', '.ttf': 'font/ttf', '.eot': 'application/vnd.ms-fontobject', '.html': 'text/html; charset=utf-8' };
+    app.get(/^\/assets\//, (req, res, next) => {
+      const file = path.join(dist, path.normalize(decodeURIComponent(req.path)).replace(/^(\.\.[/\\])+/, ''));
+      if (!file.startsWith(dist + path.sep)) return next();
+      const accept = String(req.headers['accept-encoding'] || ''); const type = TYPES[path.extname(file)];
+      for (const [enc, ext] of [['br', '.br'], ['gzip', '.gz']]) {
+        if (type && accept.includes(enc) && fs.existsSync(file + ext)) {
+          res.set({ 'Content-Encoding': enc, 'Content-Type': type, Vary: 'Accept-Encoding', 'Cache-Control': 'public, max-age=31536000, immutable' });
+          return res.sendFile(file + ext);
+        }
+      }
+      next();
+    });
+    app.use(express.static(dist, { index: false, setHeaders: (res, f) => res.setHeader('Cache-Control', /[\\/]assets[\\/]/.test(f) ? 'public, max-age=31536000, immutable' : 'no-cache') }));
+    app.get(/^(?!\/api).*/, (req, res) => { res.setHeader('Cache-Control', 'no-cache'); res.sendFile(path.join(dist, 'index.html')); });
   }
   app.use((err, req, res, next) => (err.status === 404 && err.message === 'nf') ? res.status(404).json({ error: 'err.notFound', message: 'Not found' }) : errorHandler(err, req, res, next));
   if (background) {

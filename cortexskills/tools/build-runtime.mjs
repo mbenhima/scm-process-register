@@ -28,7 +28,7 @@ for (const f of walk(SRV)) {
   const to = path.join(DST, rel); fs.mkdirSync(path.dirname(to), { recursive: true });
   if (/\.(m?js)$/.test(rel)) {
     const src = fs.readFileSync(f, 'utf8'); const shebang = src.startsWith('#!') ? src.slice(0, src.indexOf('\n') + 1) : '';
-    const r = esbuild.transformSync(shebang ? src.slice(shebang.length) : src, { loader: 'js', format: 'esm', target: 'node22', minify: true, legalComments: 'none', charset: 'utf8' });
+    const r = esbuild.transformSync(shebang ? src.slice(shebang.length) : src, { loader: 'js', format: 'esm', target: 'node22', platform: 'node', minify: true, treeShaking: true, drop: ['debugger'], legalComments: 'none', charset: 'utf8' });
     fs.writeFileSync(to, shebang + r.code); js++; bytesIn += src.length; bytesOut += r.code.length;
   } else if (rel === 'i18n/dictionary.json') {
     // Delivered runtimes name no demonstration account anywhere (the sign-in hint is removed from the dictionary).
@@ -46,6 +46,9 @@ for (const f of walk(SRV)) {
     fs.writeFileSync(to, JSON.stringify(c)); other++;
   } else { fs.copyFileSync(f, to); other++; }
 }
+// Edition marker read by the server (config.js): a delivered runtime is always on-premises, and the customer edition never
+// shows commercial information.
+fs.writeFileSync(path.join(DST, 'edition.json'), JSON.stringify({ edition, deploymentMode: 'onprem', commercialInfo: edition === 'customer' ? 'hidden' : 'shown' }));
 // The built web client (npm run build in web/ before).
 const dist = path.join(ROOT, 'web', 'dist');
 if (!fs.existsSync(path.join(dist, 'index.html'))) { console.error('Build the web client first: cd web && npm run build'); process.exit(1); }

@@ -1,0 +1,32 @@
+# Service Linux (systemd) de CortexSkills. Installé par « sudo ./installer-service.sh » (chemin @DIR@ remplacé).
+[Unit]
+Description=CortexSkills
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=cortexskills
+Group=cortexskills
+WorkingDirectory=@DIR@
+ExecStart=@DIR@/cortexskills start
+Restart=on-failure
+RestartSec=5
+# Premier démarrage : chargement des données de référence (5 à 15 minutes).
+TimeoutStartSec=30min
+# Durcissement : l'application ne peut écrire que dans data/.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+ReadWritePaths=@DIR@/data
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target
