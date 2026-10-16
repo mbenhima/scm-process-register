@@ -10,6 +10,9 @@ import { audit, snapshot } from '../services/audit.js';
 import { ROLES } from '../permissions.js';
 import { catalog } from '../catalog/store.js';
 import { config } from '../config.js';
+import { seedLibrary } from '../services/aiusecases.js';
+import { generate, requireServing } from '../services/aigen.js';
+import { assemble } from '../services/aiprompt.js';
 
 const r = Router();
 
@@ -102,8 +105,7 @@ r.post('/orgs', requirePerm('tenancy.manage'), h((req, res) => {
     if (b.adminEmail && get('SELECT 1 FROM users WHERE email=?', b.adminEmail.toLowerCase())) throw new HttpError(409, 'EMAIL_TAKEN', 'This administrator e-mail is already used.');
     if (b.adminEmail) run('INSERT INTO users(id,org_id,email,name,password_hash,roles,lang,is_platform_admin,status,created_at) VALUES(?,?,?,?,?,?,?,0,?,?)', uid(), id, b.adminEmail.toLowerCase(), b.adminName || 'Administrator', bcrypt.hashSync(b.adminPassword || config.demoPassword, 10), J(['tenant_admin']), b.lang || 'en', 'Active', now());
     const c = catalog();
-    for (const a of c.aiUseCases) run('INSERT INTO ai_usecases(id,org_id,code,name,tier,module,trigger_,expected_output,checkpoint,prompt,task_type,risk_level,linked_step,linked_mp,custom,active,approval,version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,1,?,1,?)',
-      uid(), id, a.id, J(a.name), a.tier, null, J(c.stepById[a.step]?.name || null), J(a.name), J(a.checkpoint), J(a.prompt || null), J(a.taskType), a.risk, a.step, a.mp, a.approval, now());
+    seedLibrary(id);
     for (const b2 of c.rules) run('INSERT INTO business_rules(id,org_id,code,step_ref,mp_id,condition,action_code,action,rule_type,severity,owner_role,active,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,1,?)', uid(), id, b2.id, b2.step, b2.mp, J(b2.condition), b2.actionId, J(b2.action), b2.type, 'Medium', c.mpById[b2.mp]?.ownerRoleCode || 'ims_manager', now());
     for (const ct of c.controls) run('INSERT INTO controls(id,org_id,code,name,description,type,coso,frequency,owner_role,effectiveness,standard,step_refs,mp_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', uid(), id, ct.id, J(ct.name), J(ct.description), ct.type, ct.coso, 'Quarterly', 'ims_manager', 'Not tested', 'ISO 9001', J(ct.steps), ct.steps[0]?.split('.')[0] || null, now());
     audit(req, id, 'organization', id, 'create', null, b, null);
@@ -139,12 +141,21 @@ r.post('/orgs/:id/projects/score', requirePerm('project.create'), h((req, res) =
   const o = get('SELECT * FROM organizations WHERE id=?', req.params.id);
   send(req, res, scoreComplexity(req.body?.levels || {}, o.sector));
 }));
-r.post('/orgs/:id/projects/draft', requirePerm('project.create'), h((req, res) => {
+// Project draft (FR-DA-PCM-04) through its AI Use Case (FR-DA-AI-23): four items the user
+// accepts or rejects one by one — management system, track, complexity levels, closest template.
+export const DRAFT_ITEMS = ['msType', 'track', 'levels', 'template'];
+r.post('/orgs/:id/projects/draft', requirePerm('project.create'), h(async (req, res) => {
   requireOrg(req, req.params.id, true);
   const o = row(get('SELECT * FROM organizations WHERE id=?', req.params.id));
-  const d = draftFromDescription(o, req.body?.description || '');
-  run('INSERT INTO ai_usage_log(id,org_id,project_id,usecase_id,record_type,record_id,user_id,outcome,confidence,source,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)', uid(), o.id, null, null, 'project-draft', null, req.user.id, 'Pending', d.confidence, 'rules', now());
-  send(req, res, d);
+  const desc = String(req.body?.description || '').slice(0, 2000);
+  const u = requireServing(o.id, null, { module: 'project.draft' });
+  const d = draftFromDescription(o, desc);
+  const lang = req.lang || 'en';
+  const prompt = assemble(u, lang, [`Organization: ${typeof o.name === 'object' ? o.name[lang] || o.name.en : o.name} (${o.size}, sector ${o.sector}).`, `Description: ${desc}`, `Built-in proposal: management system ${d.msType}, mode ${d.mode}${d.track ? `, track ${d.track}` : ''}, complexity score ${d.score}/100${d.template ? `, closest template ${d.template.code}` : ''}.`, 'Answer as JSON: {"msType": "...", "rationale": "..."} — msType is one of the management systems of the built-in proposal or a combination such as "QMS+EMS".']);
+  const out = await generate(req, { usecase: u, projectId: null, recordType: 'project-draft', recordId: null, prompt,
+    parse: (text) => { try { const j = JSON.parse(String(text).replace(/^```(json)?|```$/gm, '').trim()); return j && typeof j === 'object' ? { ...d, ...(j.msType ? { msType: String(j.msType).slice(0, 40) } : {}), rationale: j.rationale ? { [lang]: String(j.rationale).slice(0, 600) } : d.rationale } : null; } catch { return null; } },
+    builtin: () => d, count: () => DRAFT_ITEMS.length });
+  send(req, res, { ...out, items: DRAFT_ITEMS });
 }));
 r.get('/orgs/:id/templates', requirePerm('project.create', 'templates.manage'), h((req, res) => {
   requireOrg(req, req.params.id);

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { ModelPrecedence, TEST_LABEL } from '../components/AiConnection.jsx';
 import { ShieldCheck, Database, Upload, Plus, Building2, Users, Sparkles, KeyRound } from 'lucide-react';
 import { useApp, useData } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
@@ -205,7 +206,7 @@ function Llm({ orgId }) {
       <div className="stack">
         <Card title={t('Language model for the AI use cases')} action={<IconBadge icon={Sparkles} accent={f.enabled} size="sm" />}>
           <div className="stack">
-            <p className="small muted">{t('Choose a standard provider and model, or a custom model with an OpenAI-compatible API. Without a provider, the built-in engine (rules and retrieval on your data) answers. Every suggestion stays a suggestion until a person accepts it.')}</p>
+            <p className="small muted">{t('The Organization model is shared by every user of the organization; its key is stored encrypted on the server and never shown again. Each user can also set a personal connection in Settings, kept in their browser only.')} {t('Choose a standard provider and model, or a custom model with an OpenAI-compatible API. Without a provider, the built-in engine (rules and retrieval on your data) answers. Every suggestion stays a suggestion until a person accepts it.')}</p>
             <div className="form-grid">
               <Field label={t('Provider')}>{(id) => <select id={id} className="select" disabled={!edit} value={f.provider} onChange={e => { const p = data.providers.find(x => x.id === e.target.value); setF({ ...f, provider: e.target.value, model: p.models[0]?.id || '', baseUrl: p.needsBaseUrl ? f.baseUrl : '' }); }}>{data.providers.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}</select>}</Field>
               <Field label={t('Model')}>{(id) => (prov.customModel || prov.kind === 'azure') ? <input id={id} className="input" disabled={!edit} value={f.model} onChange={e => setF({ ...f, model: e.target.value })} placeholder={prov.kind === 'azure' ? t('Deployment name') : t('Model name')} /> : <select id={id} className="select" disabled={!edit} value={f.model} onChange={e => setF({ ...f, model: e.target.value })}>{prov.models.map(m => <option key={m.id} value={m.id}>{m.name} ({m.id})</option>)}</select>}</Field>
@@ -217,7 +218,8 @@ function Llm({ orgId }) {
               <Field label={t('Maximum answer length (tokens)')}>{(id) => <input id={id} className="input num" type="number" min="100" max="4000" disabled={!edit} value={f.maxTokens} onChange={e => setF({ ...f, maxTokens: e.target.value })} />}</Field>
             </div>
             <label className="checkbox"><input type="checkbox" disabled={!edit || prov.kind === 'builtin'} checked={!!f.enabled && prov.kind !== 'builtin'} onChange={e => setF({ ...f, enabled: e.target.checked })} /><span>{t('Use this model for the AI use cases (the built-in engine stays the fallback)')}</span></label>
-            <div className="row">{edit && <button className="btn btn-primary" onClick={save}>{t('Save')}</button>}<button className="btn" onClick={run}>{t('Test the connection')}</button>{test && <span className={`tag ${test.ok ? 's5' : 's1'}`}>{test.message}</span>}</div>
+            <div className="row">{edit && <button className="btn btn-primary" onClick={save}>{t('Save')}</button>}<button className="btn" onClick={run}>{t('Test the connection')}</button>{test && <span className={`tag ${test.ok ? 's5' : 's1'}`} role="status">{test.category && TEST_LABEL[test.category] ? t(TEST_LABEL[test.category]) : test.message}</span>}</div>
+            <ModelPrecedence />
           </div>
         </Card>
       </div>

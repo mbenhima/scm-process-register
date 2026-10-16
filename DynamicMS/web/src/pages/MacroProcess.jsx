@@ -130,7 +130,7 @@ export default function MacroProcess() {
         <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
           <Card title={t('Business rules')}>{data.rules.length ? <ul className="list small">{data.rules.map(r => <li key={r.id}><span className="strong">{r.id}</span> · {L(r.type)}<br />{tx(r.condition, lang)} → <span className="muted">{tx(r.action, lang)}</span></li>)}</ul> : <p className="small muted">{t('No rule on this process.')}</p>}</Card>
           <Card title={t('Controls')}>{data.controls.length ? <ul className="list small">{data.controls.map(c => <li key={c.id}><span className="strong">{c.id}</span> · {L(c.coso)}<br />{tx(c.name, lang)}</li>)}</ul> : <p className="small muted">{t('No control on this process.')}</p>}</Card>
-          <Card title={t('AI use cases')}>{data.aiUseCases.length ? <ul className="list small">{data.aiUseCases.map(a => <li key={a.id}><span className="strong">{a.id}</span> · {L(a.tier)}<br />{tx(a.name, lang)}<br /><span className="muted">{tx(a.checkpoint, lang)}</span></li>)}</ul> : <p className="small muted">{t('No AI use case on this process.')}</p>}</Card>
+          <Card title={t('AI use cases')}>{data.aiUseCases.length ? <ul className="list small">{data.aiUseCases.map(a => <li key={a.id}><span className="strong">{a.code}</span> · {a.tier === 'Augmented' ? t('Augmented AI') : t('Assistive AI')}<br />{tx(a.name, lang)}<br /><span className="muted">{tx(a.checkpoint, lang)}</span></li>)}</ul> : <p className="small muted">{t('No AI use case on this process.')}</p>}</Card>
         </div>
       )}
     </>

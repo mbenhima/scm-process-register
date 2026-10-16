@@ -3,9 +3,10 @@ import { useApp } from '../lib/state.jsx';
 import { api } from '../lib/api.js';
 import { PageHead, Card, Field, tx } from '../components/ui.jsx';
 import { useNavItems } from '../components/Shell.jsx';
+import { PersonalConnection } from '../components/AiConnection.jsx';
 
 export default function Settings() {
-  const { t, lang, setLang, me, prefs, savePrefs, toast } = useApp();
+  const { t, lang, setLang, me, prefs, savePrefs, toast, can } = useApp();
   const items = useNavItems();
   const [pw, setPw] = useState({ current: '', next: '' });
   const change = async () => { try { await api('/auth/password', { method: 'PUT', body: pw }); toast(t('Password changed.')); setPw({ current: '', next: '' }); } catch (e) { toast(e.message, 'error'); } };
@@ -30,6 +31,7 @@ export default function Settings() {
             <div className="row" style={{ marginTop: 16 }}><button className="btn" onClick={() => savePrefs({ dock: 'start', pinned: true, collapsed: [], favorites: ['home', 'lifecycle', 'alerts'] })}>{t('Reset menu preferences')}</button></div>
           </Card>
         </div>
+        <div className="stack">
         <Card title={t('Change password')}>
           <div className="stack">
             <Field label={t('Current password')}>{(id) => <input id={id} className="input" type="password" autoComplete="current-password" value={pw.current} onChange={e => setPw({ ...pw, current: e.target.value })} />}</Field>
@@ -37,6 +39,8 @@ export default function Settings() {
             <div className="row"><button className="btn btn-primary" disabled={!pw.current || pw.next.length < 8} onClick={change}>{t('Change password')}</button></div>
           </div>
         </Card>
+        {can('ai.use') || can('assistant.use') ? <PersonalConnection /> : null}
+        </div>
       </div>
     </>
   );

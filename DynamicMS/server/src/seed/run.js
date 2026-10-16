@@ -4,6 +4,7 @@
 // Usage: npm run seed   (drops and recreates data/dynamicms.db)
 import { seedObsRoles } from '../services/obsroles.js';
 import { defaultSpec } from '../services/aiprompt.js';
+import { seedLibrary, setLinks } from '../services/aiusecases.js';
 import fs from 'node:fs';
 import bcrypt from 'bcryptjs';
 import { config } from '../config.js';
@@ -192,15 +193,8 @@ function seedOrg(cat, o, idx, groupIds, libs, hash) {
     cs.controls.forEach((c, j) => run('INSERT INTO controls(id,org_id,code,name,description,type,coso,frequency,owner_role,effectiveness,standard,step_refs,mp_id,obs_node,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
       uid(), id, `${sId}-C${j + 1}`, J(c), J(c), 'Preventive', 'Control Activities', 'Quarterly', 'compliance_officer', 'Not tested', sId, J([]), null, rootId, created));
   }
-  const aiUsecases = [];
-  for (const a of cat.aiUseCases) {
-    const aid = uid();
-    run('INSERT INTO ai_usecases(id,org_id,code,name,tier,module,trigger_,expected_output,checkpoint,prompt,task_type,risk_level,linked_step,linked_mp,custom,active,approval,version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,1,?,1,?)',
-      aid, id, a.id, J(a.name), a.tier, cat.mpById[a.mp]?.module || null, J(cat.stepById[a.step]?.name || null), J(a.name), J(a.checkpoint), J(a.prompt || null), J(a.taskType), a.risk, a.step, a.mp, a.approval, created);
-    aiUsecases.push({ id: aid, mp: a.mp, code: a.id });
-  }
-  // Every use case gets its prompt specification, populated for its linked step (FR-DA-AIP-07).
-  for (const u of all('SELECT * FROM ai_usecases WHERE org_id=?', id)) run('UPDATE ai_usecases SET prompt_spec=? WHERE id=?', J(defaultSpec(u)), u.id);
+  // The library with derived fields, links and a complete specification per entry (FR-DA-AI-01, -13; FR-DA-AIP-07).
+  const aiUsecases = seedLibrary(id, created);
   if (large) {
     const aid = uid();
     run('INSERT INTO ai_usecases(id,org_id,code,name,tier,module,trigger_,expected_output,checkpoint,prompt,task_type,risk_level,linked_step,linked_mp,custom,active,approval,version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,1,?)',
@@ -209,6 +203,9 @@ function seedOrg(cat, o, idx, groupIds, libs, hash) {
       J(S('Quality Manager accepts, edits or rejects each option', 'Le responsable qualité accepte, modifie ou rejette chaque option', 'يقبل مدير الجودة كل خيار أو يعدّله أو يرفضه')),
       J(fill(S('You assist the quality team of {0}. Propose three containment actions for the defect below, citing past REX where relevant.', 'Vous assistez l\'équipe qualité de {0}. Proposez trois actions de confinement pour le défaut ci-dessous, en citant le REX pertinent.', 'أنت تساعد فريق الجودة في {0}. اقترح ثلاثة إجراءات احتواء للعيب أدناه مع الاستشهاد بالدروس المستفادة ذات الصلة.'), o.name)),
       J(S('Recommendation', 'Recommandation', 'توصية')), 'Medium', 'MP-019.1', 'MP-019', 'Approved', created);
+    run("UPDATE ai_usecases SET origin='Custom', scope='Tenant', spec_version=1 WHERE id=?", aid);
+    setLinks(id, aid, [{ type: 'step', id: 'MP-019.1', primary: true }]);
+    run('UPDATE ai_usecases SET prompt_spec=? WHERE id=?', J(defaultSpec(get('SELECT * FROM ai_usecases WHERE id=?', aid))), aid);
     aiUsecases.push({ id: aid, mp: 'MP-019', code: 'AIUC-C01' });
   }
   for (const t of ['STEP_OVERDUE', 'KPI_OFF_TARGET', 'NC_CRITICAL', 'ACTION_OVERDUE', 'DOC_REVIEW_DUE', 'GATE_PENDING', ...cat.alerts.map(a => a.id)]) run('INSERT INTO alert_settings(org_id,type,enabled) VALUES(?,?,1)', id, t);

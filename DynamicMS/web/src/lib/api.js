@@ -1,4 +1,5 @@
 // Thin API client: bearer token, language, JSON errors, file downloads.
+import { personalHeader } from './personalai.js';
 let token = null;
 try { token = sessionStorage.getItem('dms.token'); } catch { token = null; }
 let lang = 'en';
@@ -17,7 +18,7 @@ export async function api(path, { method = 'GET', body, raw = false, signal } = 
   const sep = path.includes('?') ? '&' : '?';
   const res = await fetch(`/api${path}${sep}lang=${lang}${raw ? '&raw=1' : ''}`, {
     method, signal,
-    headers: { ...(body && !(body instanceof FormData) ? { 'Content-Type': 'application/json' } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    headers: { ...(body && !(body instanceof FormData) ? { 'Content-Type': 'application/json' } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...personalHeader(path, method) },
     body: body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
   });
   if (res.status === 401 && !path.startsWith('/auth/login')) { onUnauthorized(); }

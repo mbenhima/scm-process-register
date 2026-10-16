@@ -284,14 +284,14 @@ export function RowsEditor({ field, value, onChange, disabled, ctx }) {
     setAiNote(null);
     try {
       const r = await api(`/steps/${ctx.stepId}/needs-suggest`, { method: 'POST', body: {} });
-      setAiNote({ engine: r.engine, error: r.llmError, n: r.rows.length, rows: r.rows, logId: r.logId, usecase: r.usecase, warning: r.warning, prompt: r.prompt, sources: r.sources });
+      setAiNote({ engine: r.engine, error: r.error, n: r.rows.length, rows: r.rows, logId: r.logId, usecase: r.usecase, warning: r.warning, prompt: r.prompt, sources: r.sources });
     } catch (e) { setAiNote({ error: e.message, n: 0 }); }
   };
   return (
     <div className="rows-editor">
       <MultiEntry source={`step:${ctx.stepId}:${field.key}`} columns={columns} renderCell={renderCell} readOnly={disabled} apiRef={entry}
         title={tx(field.label, lang)} countLabel={(n) => { const l = tx(field.label, lang); return `${n} ${lang === 'ar' ? l : l.charAt(0).toLowerCase() + l.slice(1)}.`; }} newRow={blank} onRowsChange={onChange}
-        aiPropose={field.needs && !disabled ? suggestNeeds : undefined}
+        aiPropose={field.needs && !disabled && ctx.ai ? suggestNeeds : undefined}
         extraActions={field.needs && !disabled ? <button type="button" className="btn btn-sm" onClick={() => setLib(true)}><Library size={14} />{t('Add from the library')}</button> : null} />
       {aiNote && <AiProposal note={aiNote} columns={columns} ctx={ctx} onClose={() => setAiNote(null)} onAccept={(rows) => entry.current?.insertRows(rows.map(x => ({ ...blank(), ...x, origin: 'AI' })))} />}
       {lib && <LibraryModal ctx={ctx} onClose={() => setLib(false)} onAdd={(list) => { entry.current?.insertRows(list.map(x => ({ ...blank(), need: x.need, origin: 'Library' }))); setLib(false); toast(t('{n} rows added.', { n: list.length })); }} />}

@@ -14,7 +14,17 @@ import { templatesForMp } from '../content/templates.js';
 import { checkName } from '../catalog/naming.js';
 import { templateLibrary } from './documents.js';
 import { formFor, stepRule } from '../catalog/stepforms.js';
-import { needsLibrary, suggestNeeds } from '../services/needs.js';
+import { needsLibrary, needsInputs, parseNeeds, builtinNeeds } from '../services/needs.js';
+import { generate, requireServing } from '../services/aigen.js';
+import { servingUseCases } from '../services/aiusecases.js';
+
+// The active AI Use Cases serving steps (FR-DA-AI-12, -23): only they are shown and can run.
+function aiOfSteps(orgId, projectId, stepIds) {
+  const seen = new Map();
+  for (const sid of stepIds) for (const u of servingUseCases(orgId, projectId, { step: sid })) if (!seen.has(u.id)) seen.set(u.id, { id: u.id, code: u.code, name: P(u.name), checkpoint: P(u.checkpoint), tier: u.tier, step: sid });
+  return [...seen.values()];
+}
+import { assemble } from '../services/aiprompt.js';
 
 const r = Router();
 // Names given by the project's template to reference phases, macro processes and steps.
@@ -59,7 +69,7 @@ r.get('/projects/:id/mps/:mpId', requirePerm('execution.view'), h((req, res) => 
     mp: { ...m, name: nm.mp?.[m.id] || m.name, e2eName: nm.e2e?.[m.e2e] || c.e2eById[m.e2e].name, ownerRoleCode: pm.owner_role || m.ownerRoleCode, ownerRoleName: pm.owner_role ? roleName(pm.owner_role) : m.ownerRoleName }, status: pm.status, progress: pm.progress, started_at: pm.started_at, completed_at: pm.completed_at,
     tasks: (c.tasksByMp[m.id] || []).map(t => ({ id: t.id, name: t.name, seq: t.seq, steps: stepDefs.filter(s => taskOf(s) === t.id).map(s => ({ id: s.id, seq: s.seq, name: nm.step?.[s.id] || s.name, brief: s.brief, type: s.typeName, role: byStep[s.id]?.assignee_role ? roleName(byStep[s.id].assignee_role) : s.roleName, formKind: s.formKind, exec: byStep[s.id] ? { id: byStep[s.id].id, status: byStep[s.id].status, due_date: byStep[s.id].due_date, completed_at: byStep[s.id].completed_at, value: byStep[s.id].value, assignee: byStep[s.id].assignee_name, completedBy: byStep[s.id].completed_by_name } : null })) })),
     racsi, canEditRacsi: can(req, 'governance.manage') || can(req, 'project.manage'), kpis: rows(all('SELECT id, code, name, target_text, direction FROM kpis WHERE project_id=? AND mp_id=?', p.id, m.id)),
-    rules: c.rules.filter(x => x.mp === m.id), controls: c.controls.filter(x => x.steps.some(s => s.startsWith(m.id + '.'))), aiUseCases: c.aiUseCases.filter(a => a.mp === m.id),
+    rules: c.rules.filter(x => x.mp === m.id), controls: c.controls.filter(x => x.steps.some(s => s.startsWith(m.id + '.'))), aiUseCases: aiOfSteps(p.org_id, p.id, (c.stepsByMp[m.id] || []).map(x => x.id)),
   });
 }));
 
@@ -110,7 +120,7 @@ function stepDetail(req, e) {
     assignee: e.assignee_user ? get('SELECT id, name, email FROM users WHERE id=?', e.assignee_user) : null,
     completedBy: e.completed_by ? get('SELECT id, name FROM users WHERE id=?', e.completed_by) : null,
     prev: siblings[i - 1]?.id || null, next: siblings[i + 1]?.id || null, position: i + 1, count: siblings.length,
-    rules: c.rules.filter(x => x.step === s.id), controls: c.controls.filter(x => x.steps.includes(s.id)), aiUseCases: c.aiUseCases.filter(a => a.step === s.id),
+    rules: c.rules.filter(x => x.step === s.id), controls: c.controls.filter(x => x.steps.includes(s.id)), aiUseCases: aiOfSteps(e.org_id, e.project_id, [s.id]), aiCanSuggest: can(req, 'ai.manage'),
     templates: templatesForMp(m.id, get('SELECT ms_type FROM projects WHERE id=?', e.project_id).ms_type).map(t => ({ code: t.code, name: t.name })),
     documents: rows(all('SELECT id, code, title, status, current_version, template_id FROM documents WHERE project_id=? AND (source_step=? OR mp_id=?) ORDER BY code', e.project_id, e.id, m.id)),
     stepRacsi: stepRacsiOf(e.project_id, s.id),
@@ -185,8 +195,14 @@ r.post('/steps/:id/needs-suggest', requirePerm('execution.perform'), h(async (re
   const parties = Array.isArray(req.body?.parties) && req.body.parties.length ? req.body.parties : projectParties(e.project_id);
   if (!parties.length) throw bad('NO_PARTIES', 'Identify the interested parties first (previous step), or choose them in the table.');
   const nm = (v) => (v && typeof v === 'object' ? v[req.lang] ?? v.en : v);
-  const out = await suggestNeeds(e.org_id, { parties, lang: req.lang || 'en', context: `${nm(P(org.name))}, sector ${org.sector}; project ${nm(P(p.name))}; standards ${(P(p.standards) || []).join(', ')}` });
-  audit(req, e.org_id, 'step', e.id, 'ai_suggest_needs', null, { engine: out.engine, rows: out.rows.length, llmError: out.llmError || null }, null);
+  const context = `${nm(P(org.name))}, sector ${org.sector}; project ${nm(P(p.name))}; standards ${(P(p.standards) || []).join(', ')}`;
+  // Through the AI Use Case serving the step; none active → no AI action (FR-DA-AI-23).
+  const u = requireServing(e.org_id, e.project_id, { step: e.step_id });
+  const lang = req.lang || 'en';
+  const out = await generate(req, { usecase: u, projectId: e.project_id, recordType: 'step', recordId: e.id, prompt: assemble(u, lang, needsInputs(parties, context, lang)),
+    parse: (text) => { const rows2 = parseNeeds(text, parties, lang); return rows2.length ? { rows: rows2, sources: [{ type: 'llm', id: 'llm', title: 'Language model' }] } : null; },
+    builtin: () => builtinNeeds(parties), count: (o) => o.rows.length });
+  audit(req, e.org_id, 'step', e.id, 'ai_suggest_needs', null, { engine: out.engine, rows: out.rows.length, llmError: out.error || null }, null);
   send(req, res, out);
 }));
 // A new KPI created from a step form (the performer may not hold governance rights).

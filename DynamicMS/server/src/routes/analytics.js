@@ -30,7 +30,7 @@ r.get('/projects/:id/dashboard', requirePerm('dashboard.view'), h((req, res) => 
   const heat = all(`SELECT likelihood l, impact i, COUNT(*) n FROM risks WHERE project_id=? AND kind<>'Opportunity' GROUP BY l, i`, p.id);
   const upcoming = all(`SELECT id, step_id, mp_id, due_date, status, assignee_role FROM step_exec WHERE project_id=? AND status<>'Done' ORDER BY due_date LIMIT 8`, p.id).map(x => ({ ...x, name: c.stepById[x.step_id]?.name, mpCode: c.mpById[x.mp_id]?.code }));
   const audits = all(`SELECT id, code, title, type, planned_date, status FROM audits WHERE project_id=? AND status='Planned' ORDER BY planned_date LIMIT 4`, p.id).map(a => ({ ...a, title: P(a.title) }));
-  const ai = get(`SELECT COUNT(*) n, SUM(outcome='Accepted') acc, SUM(outcome='Edited') ed, SUM(outcome='Rejected') rej FROM ai_usage_log WHERE project_id=?`, p.id);
+  const ai = get(`SELECT SUM(parent_id IS NULL) n, SUM(outcome='Accepted') acc, SUM(outcome='Edited') ed, SUM(outcome='Rejected') rej FROM ai_usage_log WHERE project_id=?`, p.id);
   const monthly = all(`SELECT substr(completed_at,1,7) m, COUNT(*) n FROM step_exec WHERE project_id=? AND status='Done' GROUP BY m ORDER BY m`, p.id);
   send(req, res, { steps: s, mine, phases, kpis, ncs, actions, alerts, heat, upcoming, audits, ai, monthly, progress: Math.round(100 * s.done / Math.max(1, s.n)) });
 }));
@@ -77,7 +77,7 @@ export const METRICS = [
   { id: 'effective', unit: '%', good: 'up', label: L('Effective actions', 'Actions efficaces', 'الإجراءات الفعالة'), explain: L('Evaluated actions judged effective by an independent evaluator.', 'Actions évaluées jugées efficaces par un évaluateur indépendant.', 'الإجراءات المقيّمة التي حكم مقيّم مستقل بفعاليتها.'),
     sql: `SELECT 100.0*SUM(effectiveness='Effective')/MAX(1,SUM(effectiveness IS NOT NULL)) v FROM actions WHERE project_id=?` },
   { id: 'ai', unit: '%', good: 'up', label: L('AI suggestions accepted', 'Suggestions IA acceptées', 'اقتراحات الذكاء الاصطناعي المقبولة'), explain: L('Accepted or edited suggestions out of all decided suggestions.', 'Suggestions acceptées ou modifiées parmi les suggestions tranchées.', 'الاقتراحات المقبولة أو المعدلة من بين الاقتراحات المحسومة.'),
-    sql: `SELECT 100.0*SUM(outcome IN ('Accepted','Edited'))/MAX(1,SUM(outcome<>'Pending')) v FROM ai_usage_log WHERE project_id=?` },
+    sql: `SELECT 100.0*SUM(outcome IN ('Accepted','Edited'))/MAX(1,SUM(outcome IN ('Accepted','Edited','Rejected'))) v FROM ai_usage_log WHERE project_id=?` },
 ];
 function metricValue(m, projectId) {
   if (m.compute === 'kpi') {

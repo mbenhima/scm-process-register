@@ -85,6 +85,8 @@ export function defaultGrant(roleCode, perm) {
   const role = ROLES.find(r => r.code === roleCode);
   const p = PERMISSIONS.find(x => x[0] === perm);
   if (!role || !p) return false;
+  // The AI Governance Officer holds the AI-use-case-management capability (FR-DA-AI-01).
+  if (roleCode === 'ai_governance_officer' && perm === 'ai.manage') return true;
   return p[2].split(' ').includes(role.cls);
 }
 

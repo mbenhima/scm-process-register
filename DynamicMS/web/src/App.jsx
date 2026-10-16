@@ -26,6 +26,7 @@ import Portfolio from './pages/Portfolio.jsx';
 import Benchmark from './pages/Benchmark.jsx';
 import Assistant from './pages/Assistant.jsx';
 import AiUseCases from './pages/AiUseCases.jsx';
+import AiUseCase from './pages/AiUseCase.jsx';
 import Knowledge from './pages/Knowledge.jsx';
 import Process, { E2EDetail, CatalogMp } from './pages/Process.jsx';
 import Libraries from './pages/Libraries.jsx';
@@ -72,6 +73,7 @@ export default function App() {
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/assistant" element={<Assistant />} />
         <Route path="/ai" element={<AiUseCases />} />
+        <Route path="/ai/:id" element={<AiUseCase />} />
         <Route path="/knowledge" element={<Knowledge />} />
         <Route path="/process" element={<Process />} />
         <Route path="/process/e2e/:id" element={<E2EDetail />} />

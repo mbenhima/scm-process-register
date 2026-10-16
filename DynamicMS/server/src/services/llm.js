@@ -77,11 +77,41 @@ export function saveConfig(orgId, b, prev) {
 }
 
 // Calls the configured provider. Returns { text, provider, model } or throws.
-export async function complete(orgId, { system, user, model: override }, fetchImpl = fetch) {
+// The provider client. Only the generation service (services/aigen.js) calls it
+// (NFR-DA-MAINT-04). A connection is { provider, model, baseUrl, key, temperature, maxTokens, apiVersion }.
+export function orgConnection(orgId) {
   const c = llmConfig(orgId);
   const p = byId[c.provider];
   if (!c.enabled || !p || p.kind === 'builtin') return null;
-  const key = decrypt(c.apiKeyEnc);
+  return { source: 'organization', provider: c.provider, model: c.model, baseUrl: c.baseUrl, key: decrypt(c.apiKeyEnc), temperature: c.temperature, maxTokens: c.maxTokens, apiVersion: c.apiVersion };
+}
+/** A personal connection sent by the browser for one request (FR-DA-AI-08); checked, never stored. */
+export function personalConnection(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const p = byId[raw.provider];
+  if (!p || p.kind === 'builtin' || !raw.apiKey || !String(raw.model || '').trim()) return null;
+  const baseUrl = String(raw.baseUrl || '').trim();
+  if (p.needsBaseUrl && !/^https:\/\/[\w.-]+(:\d+)?(\/[\w./-]*)?$/.test(baseUrl)) return null;
+  // No call to a private or local address from the server.
+  if (baseUrl && /^https:\/\/(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|169\.254\.|\[|0\.)/i.test(baseUrl)) return null;
+  return { source: 'personal', provider: p.id, model: String(raw.model).trim().slice(0, 120), baseUrl: p.needsBaseUrl ? baseUrl : '', key: String(raw.apiKey), temperature: Math.min(1, Math.max(0, +(raw.temperature ?? 0.2))), maxTokens: Math.min(4000, Math.max(100, +(raw.maxTokens || 800))), apiVersion: raw.apiVersion || '2024-10-21' };
+}
+/** Outcome category of a connection test (FR-DA-AI-15). */
+export function errorCategory(message) {
+  const m = String(message || '');
+  if (/401|403|refused|invalid.*key|unauthori|authenticat/i.test(m)) return 'authentication';
+  if (/404|not.?found|does not exist|unknown model/i.test(m)) return 'model';
+  if (/429|rate|quota|overloaded/i.test(m)) return 'rate';
+  return 'unreachable';
+}
+
+export async function complete(orgId, req, fetchImpl = fetch) {
+  return callModel(orgConnection(orgId), req, fetchImpl);
+}
+export async function callModel(c, { system, user, model: override }, fetchImpl = fetch) {
+  const p = c ? byId[c.provider] : null;
+  if (!c || !p || p.kind === 'builtin') return null;
+  const key = c.key;
   if (!key) throw new Error('API key missing or unreadable.');
   const model = override || c.model;
   const ctl = new AbortController();

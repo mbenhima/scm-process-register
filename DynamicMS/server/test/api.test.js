@@ -136,7 +136,7 @@ test('assistant, AI suggestion with feedback, dashboard, benchmark, portfolio', 
   const uc = ucs.find(u => u.code === 'AIUC-C01');
   const ai = (await call('POST', '/ai/suggest', q, { projectId: pid, usecaseId: uc.id, input: 'torque out of tolerance' })).body;
   assert.ok(ai.items.length && ai.logId);
-  assert.equal((await call('POST', '/ai/feedback', q, { logId: ai.logId, outcome: 'Accepted' })).status, 200);
+  assert.equal((await call('POST', '/ai/feedback', q, { logId: ai.logId, outcome: 'Accepted' })).status, 201);
   const d = (await call('GET', `/projects/${pid}/dashboard`, q)).body;
   assert.ok(d.phases.length && d.kpis.length);
   const ceo = await login('ceo@horizon-aut.example');
@@ -471,4 +471,74 @@ test('multi-record entry: row stamps, edit conflicts, server checks, import and 
   // A read-only user cannot change the rows.
   const aud = await login('auditor@atlas-sme.example');
   assert.equal((await call('POST', `/entries/${src}/ops`, aud, { upserts: [{ _cid: 'z', title: 'x' }] })).status, 403);
+});
+
+test('AI governance: use case form, duplicate, coverage, governed generation, append-only log, model precedence (FR-DA-AI-01, 07, 13, 21-26)', async () => {
+  const gov = await login('admin@horizon-universal.example');
+  const ims = await login('ims@horizon-universal.example');
+  const me = (await call('GET', '/auth/me', ims)).body;
+  const orgId = me.org.id;
+  const tree = (await call('GET', '/tenancy/tree', ims)).body;
+  const pid = tree.groups.flatMap(g => g.orgs).find(o => o.id === orgId).projects.find(p => p.code === 'HZ-UNI-QMS').id;
+  const lib = (await call('GET', `/orgs/${orgId}/ai/usecases?projectId=${pid}`, gov)).body;
+  assert.ok(lib.figures.byTier.Assistive > 0 && lib.figures.tasksSupported > 0 && lib.figures.customQuota > 0);
+  // Every seeded specification is complete (FR-DA-AIP-07).
+  assert.ok(lib.items.filter(u => !u.custom).every(u => u.completeness === 100), 'seeded specs complete');
+  assert.ok(lib.items.some(u => u.code === 'AIUC-P01') && lib.items.some(u => u.code === 'AIUC-P02') && lib.items.some(u => u.code === 'AIUC-P03'));
+  // Form: created deactivated as a Draft with a complete specification; derived fields stored.
+  const cr = await call('POST', `/orgs/${orgId}/ai/usecases`, gov, { name: { en: 'Propose audit questions', fr: 'Proposer des questions d\'audit' }, checkpoint: { en: 'The lead auditor reviews each question.' }, taskType: 'Text Generation', tier: 'Assistive', primaryStep: 'MP-001.5', links: [{ type: 'mp', id: 'MP-002' }] });
+  assert.equal(cr.status, 201, JSON.stringify(cr.body));
+  const page = (await call('GET', `/ai/usecases/${cr.body.id}?projectId=${pid}&raw=1`, gov)).body;
+  assert.equal(page.active, 0); assert.equal(page.approval, 'Draft'); assert.ok(page.module && page.trigger_ && page.expected_output);
+  assert.ok(page.specCompleteness.complete && page.links.length === 2 && page.links[0].primary && page.links[0].inputs.length);
+  assert.equal((await call('PUT', `/ai/usecases/${cr.body.id}`, gov, { name: { en: 'Renamed' } })).status, 400, 'justification required');
+  assert.equal((await call('PUT', `/ai/usecases/${cr.body.id}`, gov, { name: { en: 'Renamed' }, justification: 'Clearer name' })).status, 200);
+  // Duplicate records its base; seeded entries are never deleted.
+  const p01 = lib.items.find(u => u.code === 'AIUC-P01');
+  const dup = await call('POST', `/ai/usecases/${p01.id}/duplicate`, gov, {});
+  assert.equal(dup.status, 201);
+  const dp = (await call('GET', `/ai/usecases/${dup.body.id}`, gov)).body;
+  assert.equal(dp.basedOn.id, p01.id); assert.equal(dp.active, 0); assert.equal(dp.versions.spec, 1);
+  assert.equal((await call('DELETE', `/ai/usecases/${p01.id}`, gov)).status, 400);
+  assert.equal((await call('DELETE', `/ai/usecases/${dup.body.id}`, gov)).status, 200);
+  // Coverage of the process design, with a suggestion for a task that has none.
+  const cov = (await call('GET', `/orgs/${orgId}/ai/coverage?covered=0`, gov)).body;
+  assert.ok(cov.total > 100 && cov.items.length && cov.items.every(t => !t.covered));
+  const sg = await call('POST', `/orgs/${orgId}/ai/usecases/suggest`, gov, { taskId: cov.items[0].id });
+  assert.equal(sg.status, 201);
+  assert.equal((await call('GET', `/ai/usecases/${sg.body.id}?raw=1`, gov)).body.approval, 'Draft');
+  // Governed generation: the needs step runs through AIUC-P01; deactivated → no AI action.
+  const sl = (await call('GET', `/projects/${pid}/steps?mp=MP-001`, ims)).body;
+  const exec = (Array.isArray(sl) ? sl : sl.items || sl.rows || []).find(x => x.step_id === 'MP-001.5');
+  assert.ok(exec?.id, 'needs step found');
+  {
+    const sv = (await call('GET', `/orgs/${orgId}/ai/serving?projectId=${pid}&step=MP-001.5`, ims)).body;
+    assert.ok(sv.items.some(u => u.code === 'AIUC-P01'));
+    const out = (await call('POST', `/steps/${exec.id}/needs-suggest`, ims, {})).body;
+    assert.ok(out.logId && out.rows.length && out.usecase.code === 'AIUC-P01' && out.engine === 'rules+retrieval' && out.warning && out.prompt.system);
+    assert.equal((await call('POST', '/ai/feedback', ims, { logId: out.logId, item: 0, outcome: 'Edited' })).status, 201);
+    assert.equal((await call('POST', '/ai/feedback', ims, { logId: out.logId, item: 0, outcome: 'Accepted' })).status, 409, 'an item is decided once');
+    assert.equal((await call('POST', '/ai/feedback', ims, { logId: out.logId, item: 1, outcome: 'Rejected' })).status, 201);
+    const log = (await call('GET', `/projects/${pid}/ai/log`, gov)).body.filter(l => l.id === out.logId || l.parent_id === out.logId);
+    assert.deepEqual(log.map(l => l.outcome).sort(), ['Edited', 'Proposed', 'Rejected']);
+    assert.ok(log.every(l => l.spec_version >= 1 && l.engine === 'builtin' && l.model));
+    // The personal connection is used when the organization has none (FR-DA-AI-24); its key is never returned.
+    const conn = Buffer.from(JSON.stringify({ provider: 'custom', model: 'm1', baseUrl: 'https://llm.example.invalid/v1', apiKey: 'sk-personal-secret' })).toString('base64');
+    const r2 = await fetch(`${base}/steps/${exec.id}/needs-suggest?lang=en`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${ims}`, 'X-DMS-LLM': conn }, body: '{}' });
+    const b2 = await r2.text();
+    assert.ok(!b2.includes('sk-personal-secret'));
+    const j2 = JSON.parse(b2);
+    assert.ok(j2.error && j2.engine === 'rules+retrieval', 'fell back after trying the personal connection');
+    const ov = await call('PUT', `/projects/${pid}/ai/overrides/${p01.id}`, gov, { state: 'Inactive' });
+    assert.equal(ov.status, 200);
+    assert.equal((await call('POST', `/steps/${exec.id}/needs-suggest`, ims, {})).status, 409);
+    await call('PUT', `/projects/${pid}/ai/overrides/${p01.id}`, gov, { state: 'Inherit' });
+  }
+  // No edit or delete route on the log.
+  assert.equal((await call('PUT', '/ai/log/x', gov, {})).status, 404);
+  // Project draft and assistant go through their use cases.
+  const dr = (await call('POST', `/orgs/${orgId}/projects/draft`, ims, { description: 'ISO 9001 for a 40-person service company' })).body;
+  assert.ok(dr.logId && dr.usecase.code === 'AIUC-P02' && dr.items.length === 4);
+  const as = (await call('POST', '/assistant/ask', ims, { question: 'How do I reopen a completed step?', mode: 'help' })).body;
+  assert.ok(as.logId && as.usecase.code === 'AIUC-P03' && as.sources.length);
 });

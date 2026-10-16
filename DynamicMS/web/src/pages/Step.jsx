@@ -7,6 +7,7 @@ import { api, download } from '../lib/api.js';
 import { PageHead, Card, Loading, ErrorBox, Status, Field, Modal, tx, IconBadge } from '../components/ui.jsx';
 import { StepField, RecordsList, isEmptyValue } from '../components/StepInputs.jsx';
 import Attachments from '../components/Attachments.jsx';
+import AiProposal from '../components/AiProposal.jsx';
 
 export default function Step() {
   const { id } = useParams();
@@ -45,7 +46,7 @@ export default function Step() {
   }, [s]);
   const editable = s && s.status !== 'Done' && s.canPerform && !s.locked && !readOnly;
   const aiUc = useMemo(() => s?.aiUseCases?.[0], [s]);
-  const ctx = { t, lang, L, pickers, mpId: s?.mp?.id, stepId: s?.id, role: s?.assignee_role, templates: s?.templates || [], reloadPickers: loadPickers };
+  const ctx = { t, lang, L, pickers, mpId: s?.mp?.id, stepId: s?.id, role: s?.assignee_role, templates: s?.templates || [], reloadPickers: loadPickers, ai: !!s?.aiUseCases?.length, aiCanSuggest: !!s?.aiCanSuggest, orgId: s?.org_id };
 
   const submit = async (complete) => {
     const missing = complete ? fields.filter(f => f.required && !f.computed && isEmptyValue(vals[f.key])) : [];
@@ -64,12 +65,9 @@ export default function Step() {
   const doReopen = async () => {
     try { await api(`/steps/${id}/reopen`, { method: 'POST', body: { justification: just } }); toast(t('Step reopened.')); setReopen(false); setJust(''); reload(); } catch (e) { toast(e.message, 'error'); }
   };
-  const orgUc = async () => {
-    const orgUcs = await api(`/orgs/${s.org_id}/ai/usecases`);
-    const uc = orgUcs.items.find(u => u.code === aiUc.id) || orgUcs.items.find(u => u.linked_step === s.step_id);
-    if (!uc) throw new Error(t('No AI use case is configured for this step.'));
-    return uc;
-  };
+  // Only an active AI Use Case serving this step can run here (FR-DA-AI-23).
+  const orgUc = async () => { if (!aiUc) throw new Error(t('No active AI use case serves this step.')); return aiUc; };
+  const suggestUc = async () => { try { const r = await api(`/orgs/${s.org_id}/ai/usecases/suggest`, { method: 'POST', body: { stepId: s.step_id } }); toast(t('Use case suggested as a deactivated Draft with a complete specification; review it before activation.')); navigate(`/ai/${r.id}`); } catch (e) { toast(e.message, 'error'); } };
   const askAi = async () => {
     setAiBusy(true);
     try {
@@ -82,18 +80,13 @@ export default function Step() {
     } catch (e) { toast(e.message, 'error'); } finally { setAiBusy(false); }
   };
   const showPrompt = async () => { try { const uc = await orgUc(); setPrompt(await api(`/ai/usecases/${uc.id}/prompt?projectId=${s.project_id}&stepId=${s.id}`)); } catch (e) { toast(e.message, 'error'); } };
-  const aiOutcome = async (outcome) => {
-    try {
-      await api('/ai/feedback', { method: 'POST', body: { logId: ai.logId, outcome } });
-      if (outcome !== 'Rejected') {
-        const rowsF = fields.find(f => f.type === 'rows');
-        const target = fields.find(f => f.key === 'final') || fields.find(f => f.type === 'textarea') || fields.find(f => f.type === 'text');
-        if (rowsF) { const k0 = rowsF.columns[0].key; setVals(v => ({ ...v, [rowsF.key]: [...(v[rowsF.key] || []), ...ai.items.map(x => ({ [k0]: x }))] })); }
-        else if (target) setVals(v => ({ ...v, [target.key]: `${typeof v[target.key] === 'string' && v[target.key] ? v[target.key] + '\n' : tx(v[target.key], lang) ? tx(v[target.key], lang) + '\n' : ''}${ai.items.join('\n')}` }));
-      }
-      toast(outcome === 'Rejected' ? t('Suggestion rejected and logged.') : t('Suggestion inserted. Review it before completing the step.'));
-      setAi(null);
-    } catch (e) { toast(e.message, 'error'); }
+  // Accepted items go into the step: the rows of a table field, else the text field (FR-DA-AIP-15).
+  const insertAi = (texts) => {
+    const rowsF = fields.find(f => f.type === 'rows');
+    const target = fields.find(f => f.key === 'final') || fields.find(f => f.type === 'textarea') || fields.find(f => f.type === 'text');
+    if (rowsF) { const k0 = rowsF.columns[0].key; setVals(v => ({ ...v, [rowsF.key]: [...(v[rowsF.key] || []), ...texts.map(x => ({ [k0]: x, origin: 'AI' }))] })); }
+    else if (target) setVals(v => ({ ...v, [target.key]: `${typeof v[target.key] === 'string' && v[target.key] ? v[target.key] + '\n' : tx(v[target.key], lang) ? tx(v[target.key], lang) + '\n' : ''}${texts.join('\n')}` }));
+    toast(t('Suggestion inserted. Review it before completing the step.'));
   };
   const generate = async () => {
     try {
@@ -142,15 +135,21 @@ export default function Step() {
           </Card>
           {aiUc && (
             <Card className="tint" title={t('AI assistance')} action={<div className="row" style={{ gap: 8 }}><button className="btn btn-sm" onClick={showPrompt}><Eye size={16} />{t('View prompt')}</button>{editable && <button className="btn btn-sm" disabled={aiBusy} onClick={askAi}><Sparkles size={16} />{aiBusy ? t('Preparing…') : t('Suggest')}</button>}</div>}>
-              <p className="small">{aiUc.id} · {tx(aiUc.name, lang)} · <span className="muted">{tx(aiUc.checkpoint, lang)}</span></p>
+              <p className="small">{aiUc.code} · {aiUc.tier === 'Augmented' ? t('Augmented AI') : t('Assistive AI')} · {tx(aiUc.name, lang)} · <span className="muted">{tx(aiUc.checkpoint, lang)}</span></p>
               {ai && (
-                <div className="card tight stack-8">
-                  {ai.items.length === 1 ? <p className="small" style={{ margin: 0, whiteSpace: 'pre-line' }}>{ai.items[0]}</p> : <ul className="small" style={{ margin: 0, paddingInlineStart: 20 }}>{ai.items.map((x, i) => <li key={i}>{x}</li>)}</ul>}
+                <>
                   {ai.warning && <div className="callout warn small" role="status"><span>{ai.warning} {can('ai.manage') && <Link to="/admin?tab=llm">{t('Open AI models')}</Link>}</span></div>}
-                  <p className="xsmall muted" style={{ margin: 0 }}>{t('Confidence {c}%', { c: Math.round(ai.confidence * 100) })} · {t('Engine')}: {String(ai.engine).startsWith('rules') ? t('built-in engine (rules and retrieval)') : ai.engine}{ai.sources?.length ? ` · ${t('Sources')}: ${ai.sources.map(x => x.title).join(', ')}` : ''}</p>
-                  <div className="row"><button className="btn btn-sm btn-primary" onClick={() => aiOutcome('Accepted')}>{t('Accept')}</button><button className="btn btn-sm" onClick={() => aiOutcome('Edited')}>{t('Insert and edit')}</button><button className="btn btn-sm btn-danger" onClick={() => aiOutcome('Rejected')}>{t('Reject')}</button></div>
-                </div>
+                  <AiProposal note={{ ...ai, rows: (ai.items || []).map(x => ({ text: x })) }} columns={[{ key: 'text', type: 'textarea', label: t('Suggestion') }]} ctx={ctx}
+                    onAccept={(list) => insertAi(list.map(r => r.text))} onClose={() => setAi(null)} />
+                  <p className="xsmall muted">{t('Confidence {c}%', { c: Math.round((ai.confidence || 0) * 100) })}</p>
+                </>
               )}
+            </Card>
+          )}
+          {!aiUc && s.aiCanSuggest && !readOnly && s.step?.type === 'AI-Assisted Task' && (
+            <Card className="flat" title={t('AI assistance')}>
+              <p className="small muted">{t('No active AI use case serves this step, so it offers no AI action.')}</p>
+              <button type="button" className="btn btn-sm" onClick={suggestUc}><Sparkles size={16} />{t('Suggest an AI use case for this step')}</button>
             </Card>
           )}
           <Card title={t('Documents of this step')} action={can('records.manage') && !readOnly && <button className="btn btn-sm" onClick={() => setGen({ template: s.templates?.[0]?.code || '', templateName: s.templates?.[0]?.name || '', summary: '' })}><FilePlus2 size={16} />{t('Generate document')}</button>}>

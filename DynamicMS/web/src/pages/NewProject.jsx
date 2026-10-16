@@ -16,6 +16,9 @@ export default function NewProject() {
   const org = useData(orgId ? `/orgs/${orgId}` : null);
   const { data: templates } = useData(orgId ? `/orgs/${orgId}/templates` : null);
   const { data: criteria } = useData('/admin/libraries/criteria');
+  // The draft is offered only when an active AI Use Case serves this place (FR-DA-AI-23).
+  const serving = useData(orgId ? `/orgs/${orgId}/ai/serving?module=project.draft` : null);
+  const aiOn = !!serving.data?.items?.length;
   const [sp] = useSearchParams();
   const preset = sp.get('template') || '';
   const [mode, setMode] = useState(preset ? 'catalog' : null);
@@ -45,6 +48,8 @@ export default function NewProject() {
     if (accepted.template && draft.template) next.templateId = draft.template.id;
     setF(next);
     if (accepted.levels) setLevels(l => ({ ...l, ...draft.levels }));
+    // Each item of the draft is logged as accepted or rejected (FR-DA-AI-07).
+    if (draft.logId) (draft.items || ['msType', 'track', 'levels', 'template']).forEach((k, i) => api('/ai/feedback', { method: 'POST', body: { logId: draft.logId, item: i, outcome: accepted[k] ? 'Accepted' : 'Rejected' } }).catch(() => {}));
     toast(t('Suggestion applied item by item; review the fields below.'));
   };
   const chosenTrack = isSme ? (f.track || score?.recommendedTrack) : null;
@@ -63,7 +68,7 @@ export default function NewProject() {
     <>
       <PageHead eyebrow={tx(org.data.name, lang)} title={t('New project')} subtitle={t('Start from the template catalog, build it manually from the gate and checklist libraries, or let the assistant draft it from a short description.')} />
       <div className="grid-cards" style={{ marginBottom: 24 }}>
-        {[['catalog', LibraryBig, t('From the catalog'), t('Copies the phases, gates, checklists and roles of a published template.')], ['manual', PencilRuler, t('Manual'), t('You choose the system, the track and the gates attached to each phase.')], ['ai', Sparkles, t('With AI'), t('Describe the project; accept, change or reject each suggested item.')]].map(([id, I, title, text]) => (
+        {[['catalog', LibraryBig, t('From the catalog'), t('Copies the phases, gates, checklists and roles of a published template.')], ['manual', PencilRuler, t('Manual'), t('You choose the system, the track and the gates attached to each phase.')], ['ai', Sparkles, t('With AI'), t('Describe the project; accept, change or reject each suggested item.')]].filter(([id]) => id !== 'ai' || aiOn).map(([id, I, title, text]) => (
           <button key={id} className="phase-card" aria-pressed={mode === id} aria-current={mode === id} onClick={() => setMode(id)}>
             <IconBadge icon={I} accent={mode === id} /><span className="strong">{title}</span><span className="small">{text}</span>
           </button>
@@ -78,6 +83,8 @@ export default function NewProject() {
                 <div className="row" style={{ marginTop: 12 }}><button className="btn" disabled={!desc.trim() || busy} onClick={askAi}><Sparkles size={16} />{t('Draft the project')}</button></div>
                 {draft && (
                   <div className="card tight stack-8" style={{ marginTop: 16 }}>
+                    <p className="small strong"><Sparkles size={14} aria-hidden="true" /> {t('AI-generated — to be reviewed by a person')}{draft.usecase ? ` · ${draft.usecase.code} — ${tx(draft.usecase.name, lang)}` : ''}</p>
+                    <p className="xsmall muted">{t('Engine')}: {String(draft.engine || '').startsWith('llm:') ? draft.engine.replace(/^llm:/, '') : t('Built-in engine (rules and retrieval)')}{draft.warning ? ` — ${draft.warning}` : ''}</p>
                     <p className="small strong">{tx(draft.rationale, lang)} · {t('Confidence {c}%', { c: Math.round(draft.confidence * 100) })}</p>
                     {[['msType', t('Management system'), draft.msType], ['track', t('Track'), draft.track ? L(draft.track) : '—'], ['template', t('Closest template'), draft.template ? tx(draft.template.name, lang) : '—'], ['levels', t('Complexity levels'), t('Score {s}/100', { s: draft.score })]].map(([k, l, v]) => (
                       <label key={k} className="checkbox small"><input type="checkbox" checked={!!accepted[k]} onChange={e => setAccepted({ ...accepted, [k]: e.target.checked })} /><span><span className="strong">{l}: </span>{v}</span></label>

@@ -281,6 +281,11 @@ CREATE TABLE IF NOT EXISTS role_assignments (
   start_date TEXT, end_date TEXT, created_at TEXT);
 CREATE INDEX IF NOT EXISTS ix_roleassign_org ON role_assignments(org_id);
 -- Versioned data migrations run once at the first start of an upgrade (NFR-DA-MAINT-11).
+CREATE TABLE IF NOT EXISTS ai_usecase_links (
+  id TEXT PRIMARY KEY, org_id TEXT NOT NULL, usecase_id TEXT NOT NULL REFERENCES ai_usecases(id) ON DELETE CASCADE,
+  target_type TEXT NOT NULL, target_id TEXT NOT NULL, primary_ INTEGER DEFAULT 0, inputs TEXT, outputs TEXT, created_at TEXT);
+CREATE INDEX IF NOT EXISTS ix_ai_links_target ON ai_usecase_links(org_id, target_type, target_id);
+CREATE INDEX IF NOT EXISTS ix_ai_links_uc ON ai_usecase_links(usecase_id);
 CREATE TABLE IF NOT EXISTS schema_migrations (id TEXT PRIMARY KEY, seq INTEGER, applied_at TEXT, summary TEXT);
 
 -- Multi-record entry (FR-DA-MRE-19 to 30): paste operations, import sessions and batch
@@ -308,7 +313,8 @@ export const ADDITIVE_COLUMNS = {
   project_templates: { content: 'TEXT', updated_at: 'TEXT', updated_by: 'TEXT', source_id: 'TEXT' },
   documents: { target: 'TEXT', source_step: 'TEXT', updated_at: 'TEXT' },
   attachments: { version: 'INTEGER DEFAULT 1', group_id: 'TEXT', note: 'TEXT' },
-  ai_usecases: { model: 'TEXT', prompt_spec: 'TEXT' },
+  ai_usecases: { model: 'TEXT', prompt_spec: 'TEXT', based_on: 'TEXT', spec_version: 'INTEGER DEFAULT 1', scope: 'TEXT', origin: 'TEXT', updated_at: 'TEXT' },
+  ai_usage_log: { parent_id: 'TEXT', item: 'INTEGER', spec_version: 'INTEGER', engine: 'TEXT', model: 'TEXT', items: 'INTEGER' },
   audits: { frequency: 'TEXT', frequency_custom: 'TEXT', criteria: 'TEXT', objectives: 'TEXT', team: 'TEXT', auditees: 'TEXT', method: 'TEXT', duration_h: 'REAL', processes: 'TEXT' },
   registers: { updated_at: 'TEXT', updated_by: 'TEXT' },
   findings: { code: 'TEXT', requirement: 'TEXT', evidence: 'TEXT', area: 'TEXT', auditee: 'TEXT', due_date: 'TEXT', correction: 'TEXT', root_cause: 'TEXT', verification: 'TEXT', verified_at: 'TEXT' },

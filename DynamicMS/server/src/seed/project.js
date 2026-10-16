@@ -599,15 +599,20 @@ export function generateProject(ctx) {
   // ---- AI usage log (human-in-the-loop outcomes)
   const aiSteps = stepRows.filter(x => x.status === 'Done' && x.s.formKind === 'ai');
   const ucs = ctx.aiUsecases;
+  // Append-only log: the Proposed entry of each run, then one entry per item decided (FR-DA-AI-07).
+  const logRun = (uc, recordType, recordId, by, at, conf, outcomes) => {
+    const lid = uid();
+    run('INSERT INTO ai_usage_log(id,org_id,project_id,usecase_id,record_type,record_id,user_id,outcome,confidence,source,created_at,spec_version,engine,model,items) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+      lid, oid, pid, uc.id, recordType, recordId, by, 'Proposed', conf, 'rules+retrieval', at, 1, 'builtin', 'rules-retrieval', outcomes.length);
+    outcomes.forEach((o, i) => run('INSERT INTO ai_usage_log(id,org_id,project_id,usecase_id,record_type,record_id,user_id,outcome,confidence,source,created_at,parent_id,item,spec_version,engine,model) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+      uid(), oid, pid, uc.id, recordType, recordId, by, o, conf, 'rules+retrieval', at, lid, i, 1, 'builtin', 'rules-retrieval'));
+  };
   for (const x of aiSteps) {
     const uc = ucs.find(u => u.mp === x.mp.id) || ucs[r.int(0, ucs.length - 1)];
-    const f = x.completedAt;
-    run('INSERT INTO ai_usage_log(id,org_id,project_id,usecase_id,record_type,record_id,user_id,outcome,confidence,source,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
-      uid(), oid, pid, uc.id, 'step', x.id, x.by, r.pick(['Accepted', 'Edited', 'Edited', 'Rejected']), Math.round((0.62 + r.next() * 0.33) * 100) / 100, 'rules+retrieval', f);
+    logRun(uc, 'step', x.id, x.by, x.completedAt, Math.round((0.62 + r.next() * 0.33) * 100) / 100, Array.from({ length: r.int(1, 3) }, () => r.pick(['Accepted', 'Edited', 'Edited', 'Rejected'])));
   }
   for (const uc of ucs.filter(u => mpSet.has(u.mp))) {
-    for (let k = 0; k < r.int(1, 3); k++) run('INSERT INTO ai_usage_log(id,org_id,project_id,usecase_id,record_type,record_id,user_id,outcome,confidence,source,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
-      uid(), oid, pid, uc.id, 'usecase', null, U(r.pick(['quality_manager', 'ims_manager', 'risk_manager'])).id, r.pick(['Accepted', 'Edited', 'Rejected']), Math.round((0.55 + r.next() * 0.4) * 100) / 100, 'rules+retrieval', ts(addDays(start, r.int(30, days(start, TODAY) - 1)), r));
+    for (let k = 0; k < r.int(1, 3); k++) logRun(uc, 'usecase', null, U(r.pick(['quality_manager', 'ims_manager', 'risk_manager'])).id, ts(addDays(start, r.int(30, days(start, TODAY) - 1)), r), Math.round((0.55 + r.next() * 0.4) * 100) / 100, [r.pick(['Accepted', 'Edited', 'Rejected'])]);
   }
   if (large && ucs[4]) run('INSERT INTO ai_project_overrides(usecase_id,project_id,org_id,state) VALUES(?,?,?,?)', ucs[4].id, pid, oid, 'Inactive');
 

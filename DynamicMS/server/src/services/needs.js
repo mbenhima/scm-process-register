@@ -2,7 +2,6 @@
 // organization plus a reference list, not linked to any party) and the AI suggestion (the
 // organization's language model when configured, the built-in engine otherwise).
 import { all, P } from '../db.js';
-import { complete, llmConfig } from './llm.js';
 
 const L = (en, fr, ar) => ({ en, fr, ar });
 // Reference library by kind of party (ISO 9001 / 14001 / 45001 §4.2 practice).
@@ -43,32 +42,32 @@ export function needsLibrary(orgId) {
   return out;
 }
 
-// AI suggestion: one need per line "party | need | how addressed" from the language model,
-// or the built-in engine (reference needs matched to each party).
-export async function suggestNeeds(orgId, { parties, context, lang }) {
-  const cfg = llmConfig(orgId);
-  let llmError = null;
-  if (cfg.enabled && cfg.provider !== 'builtin') {
-    try {
-      const names = parties.map(p => en(p.name ?? p));
-      const r = await complete(orgId, {
-        system: 'You are an ISO 9001 / 14001 / 45001 lead implementer. You list the needs and expectations of interested parties (clause 4.2) for a real organization. Answer with lines only, one need per line, in the format: party | need or expectation | how the organization addresses it. No numbering, no header.',
-        user: `Organization and scope: ${context}\nInterested parties: ${names.join('; ')}\nGive 2 or 3 relevant needs per party, specific to this organization. Write in ${lang === 'fr' ? 'French' : lang === 'ar' ? 'Arabic' : 'English'}. Use the party names exactly as given.`,
-      });
-      if (r?.text) {
-        const rows = r.text.split(/\r?\n/).map(l => l.split('|').map(x => x.trim())).filter(x => x.length >= 2 && x[1]).map(([party, need, response]) => {
-          const p = parties.find(x => en(x.name ?? x).toLowerCase() === party.toLowerCase()) || parties.find(x => party.toLowerCase().includes(en(x.name ?? x).toLowerCase().slice(0, 8)));
-          return { need: { [lang]: need }, parties: p ? [{ id: null, name: p.name ?? p }] : [], response: response ? { [lang]: response } : null, origin: 'AI', priority: 'Medium' };
-        });
-        if (rows.length) return { rows, engine: `${r.provider} · ${r.model}` };
-        llmError = 'The language model answer could not be read.';
-      }
-    } catch (e) { llmError = e.message; }
-  }
+// AI suggestion, produced through the AI Use Case serving the step (services/aigen.js): the
+// inputs of the prompt, the reading of the model answer (lines "party | need | how addressed",
+// or the JSON of the step form) and the built-in engine (reference needs matched to each party).
+export function needsInputs(parties, context, lang) {
+  return [
+    `Organization and scope: ${context}`,
+    `Interested parties: ${parties.map(p => en(p.name ?? p)).join('; ')}`,
+    `Give 2 or 3 relevant needs per party, specific to this organization. Use the party names exactly as given. Write in ${lang === 'fr' ? 'French' : lang === 'ar' ? 'Arabic' : 'English'}.`,
+    'Answer with lines only, one need per line: party | need or expectation | how the organization addresses it. No numbering, no header.',
+  ];
+}
+export function parseNeeds(text, parties, lang) {
+  const match = (party) => parties.find(x => en(x.name ?? x).toLowerCase() === String(party || '').toLowerCase()) || parties.find(x => String(party || '').toLowerCase().includes(en(x.name ?? x).toLowerCase().slice(0, 8)));
+  const mk = (party, need, response) => { const p = match(party); return { need: { [lang]: need }, parties: p ? [{ id: null, name: p.name ?? p }] : [], response: response ? { [lang]: response } : null, origin: 'AI', priority: 'Medium' }; };
+  try {
+    const j = JSON.parse(String(text).replace(/^```(json)?|```$/gm, '').trim());
+    const list = Array.isArray(j) ? j : j.needs;
+    if (Array.isArray(list) && list.length) return list.filter(x => x && (x.need || x[1])).map(x => mk(typeof x.parties === 'string' ? x.parties : x.party, String(x.need), x.response ? String(x.response) : null));
+  } catch { /* not JSON: lines */ }
+  return String(text).split(/\r?\n/).map(l => l.split('|').map(x => x.trim())).filter(x => x.length >= 2 && x[1]).map(([party, need, response]) => mk(party, need, response));
+}
+export function builtinNeeds(parties) {
   const rows = [];
   for (const p of parties) {
     const k = kindOfParty(p.name ?? p);
     for (const x of NEEDS_LIBRARY.filter(n => n.kind === k).slice(0, 3)) rows.push({ need: x.need, parties: [{ id: null, name: p.name ?? p }], origin: 'AI', priority: k === 'customer' || k === 'authority' ? 'High' : 'Medium' });
   }
-  return { rows, engine: 'rules+retrieval', llmError };
+  return { rows, confidence: 0.6, sources: [{ type: 'library', id: 'needs', title: 'Reference library of needs (ISO 9001 / 14001 / 45001 §4.2)' }] };
 }

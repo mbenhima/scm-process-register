@@ -1,6 +1,7 @@
 // In-memory reference catalog, loaded from catalog_items and localized per request.
 import { all, run, now, J } from '../db.js';
 import { overlayCustoms } from '../services/blueprint.js';
+import { withPlaces } from './aiplaces.js';
 
 let cache = null;
 
@@ -20,6 +21,7 @@ export function load() {
 }
 
 export function indexCatalog(c) {
+  withPlaces(c);
   c.mpById = Object.fromEntries((c.macroProcesses || []).map(m => [m.id, m]));
   c.mpByCode = Object.fromEntries((c.macroProcesses || []).map(m => [m.code, m]));
   c.stepById = Object.fromEntries((c.steps || []).map(s => [s.id, s]));
