@@ -8,7 +8,7 @@
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Copy, Trash2, Plus, Check, Loader2, AlertCircle, Save, Maximize2, Minimize2, ZoomIn, ZoomOut, Undo2, Redo2, Filter, Columns3, Upload, Download, ClipboardPaste, Search as SearchIcon, X, MoreHorizontal, Rows3, Wand2, RotateCcw, CloudOff, CornerDownRight, WrapText, Sparkles } from 'lucide-react';
 import { useApp } from '../../lib/state.jsx';
-import { api, ApiError } from '../../lib/api.js';
+import { api, ApiError, getToken } from '../../lib/api.js';
 import { tx } from '../ui.jsx';
 import { CellEditor, labelText, displayValue } from './cells.jsx';
 import { ConfirmDialog, RowEditor, PastePreview, ImportWizard, ConflictsDialog, ColumnChooser, FilterBuilder, IssuesList, filterText } from './dialogs.jsx';
@@ -652,7 +652,6 @@ export default function MultiEntry(props) {
       return;
     }
     try {
-      const { getToken } = await import('../../lib/api.js');
       const res = await fetch(`/api/entries/${encodeURIComponent(source)}/export?lang=${lang}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` }, body: JSON.stringify({ headers, rows: data, format: 'xlsx' }) });
       if (!res.ok) throw new ApiError(res.status, 'EXPORT', res.statusText);
       const blob = await res.blob();

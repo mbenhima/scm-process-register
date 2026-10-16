@@ -171,7 +171,7 @@ def customer():
 
     h1(doc, 'À propos de ce guide')
     para(doc, 'Ce guide s\'adresse à l\'administrateur système qui installe DynamicMS sur l\'infrastructure du client : un serveur Linux dans le centre de données du client ou une machine virtuelle de son cloud privé. Il couvre la préparation du serveur, l\'installation du runtime, le premier accès, l\'activation de la licence, l\'exploitation courante et le dépannage.')
-    bullets(doc, [('Runtime : ', 'l\'application est livrée exécutable, sans code source. Le serveur est compilé en code machine virtuel (bytecode V8) et l\'interface web est obfusquée.'),
+    bullets(doc, [('Runtime : ', 'l\'application est livrée exécutable, sans code source. Version de production optimisée : le serveur est minifié puis compilé en code machine virtuel (bytecode V8) ; l\'interface web est minifiée, découpée en modules chargés à la demande et précompressée (Brotli, gzip).'),
                   ('Données initialisées : ', 'au premier démarrage, l\'application charge les données de tous les secteurs et des PME (chapitre 8), utiles à l\'évaluation et à la formation.'),
                   ('Mode production : ', 'aucun compte n\'est affiché sur la page de connexion ; chaque compte reçoit un mot de passe initial qu\'il remplace à sa première connexion.'),
                   ('Conventions : ', 'les commandes sont à exécuter sur le serveur, dans un terminal, avec un compte disposant de sudo.')], size=10)
@@ -199,7 +199,7 @@ def customer():
 
     h1(doc, 'Ce que contient le runtime')
     table(doc, ['Élément', 'Description'], [
-        ['Application', 'Serveur DynamicMS compilé (bytecode) et interface web obfusquée ; aucun fichier source.'],
+        ['Application', 'Serveur DynamicMS minifié et compilé (bytecode V8), interface web minifiée et précompressée ; aucun fichier source.'],
         ['Mode', 'Production, sur site : la licence est exigée pour toute modification des données.'],
         ['Données', 'Créées au premier démarrage dans le volume dynamicms-data : catalogue (12 processus de bout en bout, 162 macro-processus), données initialisées de tous les secteurs et des PME.'],
         ['Licence', 'Vérifiée par la clé publique de l\'éditeur intégrée à l\'application ; aucune autre clé n\'est acceptée.'],
@@ -318,7 +318,7 @@ def editor():
 
     h1(doc, 'À propos de ce guide')
     para(doc, 'Ce guide s\'adresse à l\'équipe de l\'éditeur qui installe sa propre instance de DynamicMS et émet les licences des clients. Deux scénarios sont couverts : un serveur Linux en cloud privé ou sur site (scénario A) et un poste Windows en local (scénario B).')
-    bullets(doc, [('Runtime : ', 'l\'application est livrée exécutable, sans code source : serveur compilé en bytecode V8, interface web obfusquée.'),
+    bullets(doc, [('Runtime : ', 'l\'application est livrée exécutable, sans code source : serveur minifié et compilé en bytecode V8, interface web minifiée, chargée à la demande et précompressée.'),
                   ('Données initialisées : ', 'tous les secteurs et les PME, chargés au premier démarrage.'),
                   ('Mode production : ', 'aucun compte affiché sur la page de connexion ; mot de passe initial à remplacer à la première connexion.'),
                   ('Gestion des licences : ', 'création, consultation, modification (réémission), révocation, suppression et téléchargement des licences des clients (chapitre 8).')], size=10)
@@ -342,7 +342,7 @@ def editor():
         ['Éléments commerciaux', 'Visibles (packs, tarifs, devis)', 'Masqués'],
         ['Données initialisées', 'Tous les secteurs et PME', 'Tous les secteurs et PME'],
         ['Comptes de démonstration', 'Aucun', 'Aucun'],
-        ['Code source', 'Non livré (bytecode, interface obfusquée)', 'Non livré (bytecode, interface obfusquée)'],
+        ['Code source', 'Non livré (bytecode, interface minifiée)', 'Non livré (bytecode, interface minifiée)'],
     ], [3.6, 6.7, 6.7], size=9)
     callout(doc, 'Laisser DEPLOYMENT_MODE à sa valeur par défaut : l\'instance de l\'éditeur fonctionne en mode SaaS, sans licence. Le mode sur site (licence obligatoire) est celui du runtime client.', 'Important —')
 

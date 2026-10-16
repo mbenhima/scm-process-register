@@ -23,6 +23,7 @@
     "@resvg/resvg-wasm": "^2.6.2",
     "bcryptjs": "^2.4.3",
     "bidi-js": "^1.0.3",
+    "compression": "^1.8.0",
     "cors": "^2.8.5",
     "docx": "^9.0.2",
     "exceljs": "^4.4.0",

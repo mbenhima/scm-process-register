@@ -4,6 +4,7 @@ import path from 'node:path';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
+import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { config, ROOT } from './config.js';
 import { openDb, closeDb, migrate, isInitialized, get } from './db.js';
@@ -66,6 +67,8 @@ app.disable('x-powered-by');
 app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: { policy: 'same-site' } }));
 app.use(cors({ origin: config.corsOrigin.split(','), credentials: false }));
+// gzip of JSON, HTML, CSS and JavaScript responses (files already compressed are left as they are).
+app.use(compression({ threshold: 1024 }));
 app.use(express.json({ limit: '5mb' }));
 // Customer edition: no commercial data leaves the server (prices, price matrix, bundles,
 // discounts, commercial agreements); the commercial catalog and the price quote do not exist.
@@ -129,8 +132,24 @@ app.use('/api', (req, _res, next) => next(new HttpError(404, 'NOT_FOUND', 'Unkno
 // Serves the built web client when present (single-host production mode).
 const dist = path.resolve(ROOT, '..', 'web', 'dist');
 if (fs.existsSync(dist)) {
+  // Built assets carry a content hash in their name: cached for a year; index.html is revalidated.
+  // A production build ships Brotli and gzip copies of its text assets: served as they are, so no
+  // CPU is spent compressing them on each request.
+  const TYPES = { '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json' };
+  app.get(/^\/assets\/[\w.-]+\.(js|css|svg|json)$/, (req, res, next) => {
+    const accept = String(req.headers['accept-encoding'] || '');
+    for (const [enc, ext] of [['br', '.br'], ['gzip', '.gz']]) {
+      const file = path.join(dist, req.path + ext);
+      if (accept.includes(enc) && fs.existsSync(file)) {
+        res.set({ 'Content-Type': TYPES[path.extname(req.path)], 'Content-Encoding': enc, 'Vary': 'Accept-Encoding', 'Cache-Control': 'public, max-age=31536000, immutable' });
+        return res.sendFile(file);
+      }
+    }
+    next();
+  });
+  app.use('/assets', express.static(path.join(dist, 'assets'), { maxAge: '365d', immutable: true, index: false }));
   app.use(express.static(dist, { maxAge: '1h', index: false }));
-  app.get(/^\/(?!api).*/, (_req, res) => res.sendFile(path.join(dist, 'index.html')));
+  app.get(/^\/(?!api).*/, (_req, res) => res.sendFile(path.join(dist, 'index.html'), { headers: { 'Cache-Control': 'no-cache' } }));
 }
 
 app.use((err, req, res, _next) => {

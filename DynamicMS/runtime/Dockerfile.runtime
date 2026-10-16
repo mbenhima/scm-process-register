@@ -1,6 +1,6 @@
-# DynamicMS — protected runtime image. Built by runtime/build-image.sh from runtime/out/<edition>:
-# the server is compiled to V8 bytecode in the first stage; only the bytecode, the third-party
-# libraries and the obfuscated web client reach the final image (no application source code).
+# DynamicMS — production runtime image. Built by runtime/build-image.sh from runtime/out/<edition>:
+# the minified server is compiled to V8 bytecode in the first stage; only the bytecode, the
+# third-party libraries and the minified web client reach the final image (no application source).
 ARG NODE_IMAGE=node:22-bookworm-slim
 
 FROM ${NODE_IMAGE} AS compile

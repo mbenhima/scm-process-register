@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight, Upload, Download, AlertCircle, ArrowUp, Arro
 import { Modal, Field } from '../ui.jsx';
 import { CellEditor, labelText, displayValue } from './cells.jsx';
 import { proposeMapping, looksLikeHeader, convertValue, validateRow, missingRequired, findDuplicates, OPERATORS, norm } from '../../lib/multientry.js';
-import { api, getToken } from '../../lib/api.js';
+import { api, getToken, download } from '../../lib/api.js';
 
 export function ConfirmDialog({ title, children, actions, onClose }) {
   return (
@@ -186,8 +186,8 @@ export function ImportWizard({ source, columns, existing, limits, onCommit, onCl
           <p>{t('Accepted: a spreadsheet workbook (.xlsx), delimited text (.csv, .txt: comma, semicolon or tab) or text pasted below. Up to {n} rows and {m} MB.', { n: limits?.importMaxRows || 10000, m: Math.round((limits?.importMaxBytes || 10485760) / 1048576) })}</p>
           <p className="small muted">{t('The template holds the column titles (required ones marked with *) and an example row.')}</p>
           <div className="row">
-            <a className="btn" href="#" onClick={async (e) => { e.preventDefault(); const { download } = await import('../../lib/api.js'); download(`/entries/${encodeURIComponent(source)}/template`, 'template.xlsx'); }}><Download size={16} />{t('Download the template (Excel)')}</a>
-            <a className="btn" href="#" onClick={async (e) => { e.preventDefault(); const { download } = await import('../../lib/api.js'); download(`/entries/${encodeURIComponent(source)}/template?format=csv`, 'template.csv'); }}><Download size={16} />{t('Download the template (CSV)')}</a>
+            <a className="btn" href="#" onClick={(e) => { e.preventDefault(); download(`/entries/${encodeURIComponent(source)}/template`, 'template.xlsx'); }}><Download size={16} />{t('Download the template (Excel)')}</a>
+            <a className="btn" href="#" onClick={(e) => { e.preventDefault(); download(`/entries/${encodeURIComponent(source)}/template?format=csv`, 'template.csv'); }}><Download size={16} />{t('Download the template (CSV)')}</a>
           </div>
           <table className="data small"><thead><tr><th scope="col">{t('Column')}</th><th scope="col">{t('Required')}</th><th scope="col">{t('Type')}</th></tr></thead>
             <tbody>{editable.map(c => <tr key={c.key}><td>{labelText(c.label, t, lang)}</td><td>{c.required ? t('Yes') : t('No')}</td><td>{t(c.type === 'select' ? 'List' : c.type === 'number' ? 'Number' : c.type === 'date' ? 'Date' : c.type === 'checkbox' ? 'Yes / No' : 'Text')}</td></tr>)}</tbody></table>
